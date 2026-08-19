@@ -210,11 +210,11 @@ impl GameState {
             ..
         } = &mut self.nations.majors[&nation];
 
-        common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gems]) * 500;
+        common.treasury += major.need_target_by_type[ResourceKind::Gems] * 500;
         city.stockpile[ResourceKind::Gems] = 0;
         city.stockpile.verify_stocks();
 
-        common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gold]) * 200;
+        common.treasury += major.need_target_by_type[ResourceKind::Gold] * 200;
         city.stockpile[ResourceKind::Gold] = 0;
         city.stockpile.verify_stocks();
 
@@ -614,7 +614,7 @@ fn settle_purchase(
     price: i32,
 ) {
     major.purchased_items_by_resource[resource] += amount;
-    let cost = i32::from(price) * i32::from(amount);
+    let cost = price * amount;
     common.treasury -= cost;
 
     if amount > 0 {
@@ -623,7 +623,7 @@ fn settle_purchase(
     } else {
         major.budget_pool_base -= cost;
         if is_special_nation_interaction_resource(resource) {
-            major.special_resource_trade_balance -= i32::from(amount);
+            major.special_resource_trade_balance -= amount;
         }
     }
 }

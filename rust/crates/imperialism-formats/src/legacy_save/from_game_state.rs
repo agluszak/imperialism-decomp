@@ -97,11 +97,11 @@ impl LegacySaveV62 {
                 .map()
                 .tiles
                 .iter()
-                .map(|tile| option_i8(tile.owner_nation.map(TileContext::get)))
+                .map(|tile| option_i8(tile.owner_nation.map(TileContext::to_retail_tag)))
                 .collect(),
             preview_economic_year_offset: turn.economic_turn as i16,
             preview_difficulty: turn.difficulty.retail(),
-            preview_active_nation: turn.active_nation.get(),
+            preview_active_nation: turn.active_nation.retail_slot(),
             preview_active_nation_name: active_name,
         };
 
@@ -116,7 +116,7 @@ impl LegacySaveV62 {
         let simulation = LegacySimulationPrefix {
             language_code: 0,
             economic_turn: turn.economic_turn as i16,
-            active_nation: i16::from(turn.active_nation.get()),
+            active_nation: i16::from(turn.active_nation.retail_slot()),
             turn_state_code: turn.phase().retail() as i16,
             mode: 0,
             previous_turn_state_code: 0,
@@ -282,7 +282,7 @@ fn military_unit_dto(id: MilitaryUnitId, unit: &MilitaryUnitState) -> LegacyMili
         unit_type: i16::from(unit.unit_type().retail()),
         stationed_province: option_i16(unit.stationed_province().map(ProvinceId::get)),
         order_target: option_i16(unit.order().target().map(ProvinceId::get)),
-        owner_nation: i16::from(unit.owner_nation().get()),
+        owner_nation: i16::from(unit.owner_nation().retail_slot()),
         roster_id: r16(unit.roster_id()),
         registered: u8::from(unit.registered()),
         order: unit.order().code().get(),
@@ -577,7 +577,7 @@ fn town_dto(tile: TileId, town: &TownState) -> LegacyTown {
         tile_index: tile.get() as i16,
         opaque_fields: [0; 2],
         created_turn: r16(town.created_turn),
-        owner_nation: i16::from(town.owner_nation.get()),
+        owner_nation: i16::from(town.owner_nation.retail_slot()),
         resource_yield_by_type: resource_i16(&town.resource_yield_by_type),
         transport_linked: u8::from(town.transport_linked),
         enabled: town.enabled,
@@ -615,7 +615,7 @@ fn civilian_unit_dto(
         unit_type: i16::from(unit.unit_type().retail()),
         tile_index: tile,
         order_target: target,
-        owner_nation: i16::from(unit.owner_nation().get()),
+        owner_nation: i16::from(unit.owner_nation().retail_slot()),
         roster_id: r16(unit.roster_id()),
         registered: u8::from(unit.registered()),
         order,
@@ -647,7 +647,7 @@ fn mission_dto(
     military: &[(MilitaryUnitId, MilitaryUnitState)],
 ) -> LegacyMission {
     let common = LegacyMissionCommon {
-        source_nation: i16::from(mission.nation.get()),
+        source_nation: i16::from(mission.nation.retail_slot()),
         state: mission.state,
         importance_bits: mission.importance_bits,
         flag: u8::from(mission.held),
@@ -729,7 +729,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
         .map(|(_, ship)| LegacyShip {
             ship_type: i16::from(ship.ship_type.retail()),
             aggression: ship.aggression.retail(),
-            nation: i16::from(ship.nation.get()),
+            nation: i16::from(ship.nation.retail_slot()),
             name: ship.name.clone(),
             strength: r16(ship.strength),
             selection: ship.selection.retail(),
@@ -752,7 +752,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
     let admirals = state
         .admirals_in_retail_order()
         .map(|(_, admiral)| LegacyAdmiral {
-            nation: i16::from(admiral.nation.get()),
+            nation: i16::from(admiral.nation.retail_slot()),
             name: admiral.name.clone(),
             experience: r16(admiral.experience),
             ship_index: admiral
@@ -782,7 +782,7 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
                 target_ordinal,
                 location_ordinal: i16::try_from(force.location.get())
                     .expect("task-force location ordinal fits a save short"),
-                nation: i16::from(force.nation.get()),
+                nation: i16::from(force.nation.retail_slot()),
                 defeated: u8::from(force.defeated),
                 ingot_tile: r16(force.ingot_tile),
                 ships: force
@@ -969,8 +969,8 @@ fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
             .river_sprite
             .map(RiverSprite::retail)
             .unwrap_or(0),
-        owner_nation: option_i8(tile.owner_nation.map(TileContext::get)),
-        former_owner_nation: option_i8(tile.former_owner_nation.map(TileContext::get)),
+        owner_nation: option_i8(tile.owner_nation.map(TileContext::to_retail_tag)),
+        former_owner_nation: option_i8(tile.former_owner_nation.map(TileContext::to_retail_tag)),
         secondary_owner_nation: option_i8(tile.secondary_owner_nation.map(|id| id.get() as u8)),
         owner_border_mask: tile.owner_border_mask,
         city_border_mask: tile.city_border_mask,
@@ -1033,8 +1033,8 @@ fn province_dto(province: &ProvinceState) -> LegacyProvince {
         }
     }
     LegacyProvince {
-        owner_nation: option_i8(province.owner().map(NationId::get)),
-        former_owner_nation: option_i8(province.former_owner().map(NationId::get)),
+        owner_nation: option_i8(province.owner().map(NationId::retail_slot)),
+        former_owner_nation: option_i8(province.former_owner().map(NationId::retail_slot)),
         development_stage: province.development_stage().retail(),
         fort_level: province.fort_level().retail(),
         city_tile: option_i16(province.city_tile().map(TileId::get)),
@@ -1091,7 +1091,7 @@ fn zone_dto(zone: &Zone, ordinal: i16) -> LegacyZone {
         display_name: zone.display_name.clone(),
         status_code: zone.status_code.map_or(-1, r16),
         tile_or_terrain_id: option_i32(zone.target_tile.map(TileId::get)),
-        seed_nation_id: option_i16(zone.seed_owner.map(|tag| tag.get() as usize)),
+        seed_nation_id: option_i16(zone.seed_owner.map(|tag| tag.to_retail_tag() as usize)),
         active_tile_index: option_i16(zone.active_tile.map(TileId::get)),
         context_ordinal: ordinal,
     }
@@ -1169,7 +1169,7 @@ fn notices_to_records(notices: &[DiplomacyNotice]) -> LegacyFixedRecordList {
         .map(|notice| {
             let mut record = vec![0_u8; 4];
             record[..2].copy_from_slice(&r16(notice.code).to_le_bytes());
-            record[2..4].copy_from_slice(&i16::from(notice.source.get()).to_le_bytes());
+            record[2..4].copy_from_slice(&i16::from(notice.source.retail_slot()).to_le_bytes());
             record
         })
         .collect::<Vec<_>>();
@@ -1186,7 +1186,7 @@ fn proposals_to_records(proposals: &[DiplomacyProposal]) -> LegacyFixedRecordLis
         .map(|proposal| {
             let mut record = vec![0_u8; 4];
             record[..2].copy_from_slice(&proposal.policy.retail().to_le_bytes());
-            record[2..4].copy_from_slice(&i16::from(proposal.source.get()).to_le_bytes());
+            record[2..4].copy_from_slice(&i16::from(proposal.source.retail_slot()).to_le_bytes());
             record
         })
         .collect::<Vec<_>>();
@@ -1204,7 +1204,7 @@ fn deal_book_records(entries: &[TradeDealBookEntry]) -> LegacyFixedRecordList {
             let mut record = vec![0_u8; 12];
             let kind = deal_book_entry_kind_to_retail(entry.kind);
             record[..2].copy_from_slice(&kind.to_le_bytes());
-            record[2..4].copy_from_slice(&i16::from(entry.nation.get()).to_le_bytes());
+            record[2..4].copy_from_slice(&i16::from(entry.nation.retail_slot()).to_le_bytes());
             record[4..6].copy_from_slice(&r16(entry.amount).to_le_bytes());
             record[8..12].copy_from_slice(&entry.unit_price.to_le_bytes());
             record
@@ -1316,7 +1316,7 @@ fn army_reports_from_state(
                 ),
             ]
             .map(|(slot, side)| LegacyBattleReportSide {
-                nation: side.nation.get(),
+                nation: side.nation.retail_slot(),
                 name: battle_report_text
                     .get(index)
                     .map(|text| text[slot].name.clone())

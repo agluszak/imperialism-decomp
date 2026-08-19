@@ -77,7 +77,7 @@ impl GameState {
         phase.recurring_grant[minor] = ResourceTable::default();
         phase.status_by_major[minor] = ResourceTable::default();
 
-        let owner = TileContext::from_nation(minor.nation());
+        let owner = TileContext::from(minor);
         for index in 0..STRATEGIC_TILE_COUNT {
             let tile = &self.map[TileId::new(index)];
             if tile.owner_nation != Some(owner) {
@@ -87,8 +87,7 @@ impl GameState {
                 for resource in tile.edge_resources.into_iter().flatten() {
                     let yield_level = resource_capability_level(tile, resource);
                     phase.recurring_grant[minor][resource] += yield_level;
-                    phase.status_by_major[minor][resource][usize::from(great_power.get())] +=
-                        yield_level;
+                    phase.status_by_major[minor][resource][great_power.get()] += yield_level;
                     if let Some(state) = self.nations.minors.get_mut(&minor) {
                         state.trade.current_supply[resource] += yield_level;
                     }
@@ -109,14 +108,10 @@ impl GameState {
         let mut aid = Vec::new();
         for major in MajorNationId::all() {
             for (resource, scale) in [(ResourceKind::Gold, 200), (ResourceKind::Gems, 500)] {
-                let yield_level = phase.status_by_major[minor][resource][usize::from(major.get())];
+                let yield_level = phase.status_by_major[minor][resource][major.get()];
                 if yield_level != 0 {
                     let standing = self.diplomacy.standings[minor.nation()][major.nation()];
-                    aid.push((
-                        major,
-                        resource,
-                        i32::from(standing) * i32::from(yield_level) * scale / 255,
-                    ));
+                    aid.push((major, resource, standing * yield_level * scale / 255));
                 }
             }
         }

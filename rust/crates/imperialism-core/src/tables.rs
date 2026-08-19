@@ -43,13 +43,13 @@ macro_rules! fixed_table {
             type Output = T;
 
             fn index(&self, id: $id) -> &Self::Output {
-                &self.0[id.index()]
+                &self.0[id.get()]
             }
         }
 
         impl<T> IndexMut<$id> for $name<T> {
             fn index_mut(&mut self, id: $id) -> &mut Self::Output {
-                &mut self.0[id.index()]
+                &mut self.0[id.get()]
             }
         }
     };
@@ -246,13 +246,13 @@ impl<T> Index<MinorNationId> for MinorNationTable<T> {
     type Output = T;
 
     fn index(&self, nation: MinorNationId) -> &Self::Output {
-        &self.0[nation.index()]
+        &self.0[nation.get()]
     }
 }
 
 impl<T> IndexMut<MinorNationId> for MinorNationTable<T> {
     fn index_mut(&mut self, nation: MinorNationId) -> &mut Self::Output {
-        &mut self.0[nation.index()]
+        &mut self.0[nation.get()]
     }
 }
 
@@ -286,13 +286,13 @@ impl<T> Index<ProvinceId> for ProvinceTable<T> {
     type Output = T;
 
     fn index(&self, province: ProvinceId) -> &Self::Output {
-        &self.0[province.index()]
+        &self.0[province.get()]
     }
 }
 
 impl<T> IndexMut<ProvinceId> for ProvinceTable<T> {
     fn index_mut(&mut self, province: ProvinceId) -> &mut Self::Output {
-        &mut self.0[province.index()]
+        &mut self.0[province.get()]
     }
 }
 

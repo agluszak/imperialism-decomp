@@ -86,9 +86,8 @@ impl NavyBattle {
                 }
                 let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
                 let speed =
-                    (i32::from(ship.experience / 100) + 5 + descriptor.navy_priority_weight * 10)
-                        / 10;
-                let strength = i32::from(ship.strength);
+                    ((ship.experience / 100) + 5 + descriptor.navy_priority_weight * 10) / 10;
+                let strength = ship.strength;
                 units.push(NavyUnit {
                     ship: ship_id,
                     ship_type: ship.ship_type,
@@ -101,7 +100,7 @@ impl NavyBattle {
                     action_points: speed * 10,
                     // `TNavyTacUnit::InitializeFromSourceShip` never writes +0x10.
                     quality: 0,
-                    order_seed: state.rng.next_crt_rand() as i32,
+                    order_seed: state.rng.next_crt_rand(),
                     destroyed: false,
                 });
             }
@@ -200,7 +199,7 @@ impl NavyBattle {
         for band in (0..=action_points).step_by(10) {
             for tile in 0..TILE_COUNT as i32 {
                 let cost = self.move_costs[tile as usize];
-                if cost < band as i32 {
+                if cost < band {
                     continue;
                 }
                 for (direction, neighbor) in navy_neighbors(tile).into_iter().enumerate() {
@@ -213,7 +212,7 @@ impl NavyBattle {
                         10
                     };
                     let next = cost + step;
-                    if next <= action_points as i32
+                    if next <= action_points
                         && (self.move_costs[neighbor as usize] == -1
                             || next < self.move_costs[neighbor as usize])
                     {
@@ -375,7 +374,7 @@ impl GameState {
         }
         for unit in &battle.units {
             if let Some(ship) = self.ships.get_mut(&unit.ship) {
-                ship.strength = unit.strength.clamp(0, i32::from(i32::MAX)) as i32;
+                ship.strength = unit.strength.clamp(0, i32::MAX);
             }
         }
         for force in battle.forces {

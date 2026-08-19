@@ -664,8 +664,7 @@ impl GameState {
                     && state.edge_resources.into_iter().flatten().any(|resource| {
                         civilian_required_kind(resource) == Some(kind)
                             && (civilian_resource_always_qualifies(resource)
-                                || self.map[tile].owner_nation
-                                    == Some(TileContext::from_nation(nation.nation())))
+                                || self.map[tile].owner_nation == Some(TileContext::from(nation)))
                     })
                     && self.max_resource_capability_for_order(tile, kind, nation)
                         > (state.development.surface.get() as i32)
@@ -738,7 +737,7 @@ impl GameState {
             self.technology.city_capabilities_by_nation[nation].primary_civilian_distance_terrain;
         if !rail_terrain_allowed(self.map[origin].terrain, access)
             || !rail_terrain_allowed(self.map[destination].terrain, access)
-            || self.map[destination].owner_nation != Some(TileContext::from_nation(nation.nation()))
+            || self.map[destination].owner_nation != Some(TileContext::from(nation))
             || self.map[origin]
                 .transport_links
                 .contains(TileTransportLinks::for_direction(segment.direction()))
@@ -750,7 +749,7 @@ impl GameState {
 
     fn civilian_owned_by(&self, nation: MajorNationId, tile: TileId) -> bool {
         let state = &self.map[tile];
-        state.owner_nation == Some(TileContext::from_nation(nation.nation()))
+        state.owner_nation == Some(TileContext::from(nation))
             || state.secondary_owner_nation == Some(nation)
     }
 
@@ -959,7 +958,7 @@ impl GameState {
         {
             return Err(RailOrderRejection::InvalidTarget);
         }
-        if self.map[destination].owner_nation != Some(TileContext::from_nation(unit.owner_nation)) {
+        if self.map[destination].owner_nation != Some(TileContext::from(unit.owner_nation)) {
             return Err(RailOrderRejection::InvalidTarget);
         }
         if self.map[origin]
@@ -1346,12 +1345,7 @@ impl GameState {
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
         self.nations.major_mut(nation).towns.insert(
             tile,
-            TownState::constructed(
-                tile,
-                nation.nation(),
-                enabled,
-                self.turn.economic_turn as i32,
-            ),
+            TownState::constructed(tile, nation.nation(), enabled, self.turn.economic_turn),
         );
     }
 
@@ -1361,7 +1355,7 @@ impl GameState {
 
     fn flood_fill_region_marker(&mut self, tile: TileId, nation: MajorNationId) {
         let marker = self.map.allocate_region_marker();
-        let owner = Some(TileContext::from_nation(nation.nation()));
+        let owner = Some(TileContext::from(nation));
         self.map[tile].region = Some(marker);
         self.stamp_region_last_turn_tick(tile);
         let neighbors: Vec<TileId> = self
@@ -1391,7 +1385,7 @@ impl GameState {
             return;
         };
         if self.map.provinces[province].last_turn_tick == 999 {
-            self.map.provinces[province].last_turn_tick = self.turn.economic_turn as i32;
+            self.map.provinces[province].last_turn_tick = self.turn.economic_turn;
         }
     }
 
@@ -1420,8 +1414,8 @@ impl GameState {
             let Some(unit) = self.civilian_units.get_mut(&id) else {
                 continue;
             };
-            unit.next_on_tile = heads[tile.index()];
-            heads[tile.index()] = Some(id);
+            unit.next_on_tile = heads[tile.get()];
+            heads[tile.get()] = Some(id);
         }
     }
 
@@ -1582,7 +1576,7 @@ mod tests {
 
     fn engineer_on(state: &mut GameState, origin: TileId, destination: TileId) -> CivilianUnitId {
         let nation = MajorNationId::new(0);
-        let owner = Some(TileContext::from_nation(nation));
+        let owner = Some(TileContext::from(nation));
         state.map[origin].owner_nation = owner;
         state.map[origin].terrain = TerrainKind::Plains;
         state.map[destination].owner_nation = owner;
@@ -1686,12 +1680,12 @@ mod tests {
             Err(RailOrderRejection::InvalidTarget)
         );
         state.map[destination].terrain = TerrainKind::Plains;
-        state.map[destination].owner_nation = Some(TileContext::from_nation(MajorNationId::new(1)));
+        state.map[destination].owner_nation = Some(TileContext::from(MajorNationId::new(1)));
         assert_eq!(
             state.order_rail_construction(unit, destination),
             Err(RailOrderRejection::InvalidTarget)
         );
-        state.map[destination].owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[destination].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         state.map[origin]
             .transport_links
             .insert_direction(HexDirection::East);
@@ -1721,7 +1715,7 @@ mod tests {
         state.civilian_units[&unit].unit_type = CivilianUnitKind::Miner;
         let (_, destination) = interior();
         state.civilian_units[&unit].location = CivilianLocation::OnMap(origin);
-        state.map[destination].owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[destination].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         assert_eq!(
             state.order_rail_construction(unit, destination),
             Err(RailOrderRejection::IneligibleUnit)
@@ -1805,7 +1799,7 @@ mod tests {
             CivilianWorkOrder::Idle,
             MajorNationId::new(0).nation(),
         );
-        state.map[miner_tile].owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[miner_tile].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         state.map[miner_tile].edge_resources = [Some(ResourceKind::Oil), None];
         state.map[miner_tile].development.resource_visible_to_majors[MajorNationId::new(0)] = true;
         state.activate_civilian_selection(miner);
@@ -1824,7 +1818,7 @@ mod tests {
         );
 
         let move_tile = state.map.geometry().tile(MapPosition::new(3, 12)).unwrap();
-        state.map[move_tile].owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[move_tile].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         state.map[move_tile].gate = 1;
         assert_eq!(
             state.civilian_tile_action(miner, move_tile),
@@ -1853,10 +1847,10 @@ mod tests {
             .expect("interior tile has an eastern neighbor");
         let nation = MajorNationId::new(0);
         let major = MajorNationId::new(0);
-        state.map[origin].owner_nation = Some(TileContext::from_nation(nation));
+        state.map[origin].owner_nation = Some(TileContext::from(nation));
         state.map[origin].terrain = TerrainKind::Plains;
         state.map[origin].gate = 1;
-        state.map[rail_target].owner_nation = Some(TileContext::from_nation(nation));
+        state.map[rail_target].owner_nation = Some(TileContext::from(nation));
         state.map[rail_target].terrain = TerrainKind::Plains;
         state.map[rail_target].gate = 1;
         state.map.provinces[ProvinceId::new(0)] = ProvinceState::new(
@@ -1938,8 +1932,8 @@ mod tests {
         let nation = MajorNationId::new(0);
         let major = MajorNationId::new(0);
         let minor = MinorNationId::new(0);
-        state.map[source].owner_nation = Some(TileContext::from_nation(nation));
-        state.map[target].owner_nation = Some(TileContext::from_nation(minor));
+        state.map[source].owner_nation = Some(TileContext::from(nation));
+        state.map[target].owner_nation = Some(TileContext::from(minor));
         state.map[target].terrain = TerrainKind::Plains;
         state.map[target].gate = 8;
         state.map[target].edge_resources[0] = Some(ResourceKind::Gems);
@@ -1990,7 +1984,7 @@ mod tests {
         order: CivilianWorkOrder,
         nation: NationId,
     ) -> CivilianUnitId {
-        state.map[tile].owner_nation = Some(TileContext::from_nation(nation));
+        state.map[tile].owner_nation = Some(TileContext::from(nation));
         let id = CivilianUnitId::new(id);
         state.civilian_units.insert(
             id,
@@ -2022,7 +2016,7 @@ mod tests {
         let redeploy_tile = geometry.tile(MapPosition::new(6, 12)).unwrap();
         let develop_tile = geometry.tile(MapPosition::new(7, 10)).unwrap();
         let nation = MajorNationId::new(0);
-        state.map[TileId::new(1)].owner_nation = Some(TileContext::from_nation(nation));
+        state.map[TileId::new(1)].owner_nation = Some(TileContext::from(nation));
 
         state.map.provinces[ProvinceId::new(0)] = ProvinceState::new(
             Some(nation.nation()),
@@ -2103,13 +2097,10 @@ mod tests {
         );
         state.map[port_tile].flags.insert(TileFlags::BASE_TRANSPORT);
         let sea_tile = geometry
-            .neighbor(
-                port_tile,
-                HexDirection::ALL[usize::from(port_tile.get()) % 6],
-            )
+            .neighbor(port_tile, HexDirection::ALL[port_tile.get() % 6])
             .expect("port tile has a bounded neighbor");
         state.map[sea_tile].terrain = TerrainKind::Water;
-        state.map[sea_tile].owner_nation = Some(TileContext::new(0x17));
+        state.map[sea_tile].owner_nation = Some(TileContext::from_retail_tag(0x17));
         civilian_on(
             &mut state,
             7,

@@ -714,7 +714,7 @@ mod tests {
             category
                 .offers
                 .iter()
-                .map(|row| (row.nation.get(), row.amount))
+                .map(|row| (row.nation.retail_slot(), row.amount))
                 .collect::<Vec<_>>(),
             vec![(22, 1), (3, 4)]
         );
@@ -722,7 +722,7 @@ mod tests {
             category
                 .bids
                 .iter()
-                .map(|row| row.nation.get())
+                .map(|row| row.nation.retail_slot())
                 .collect::<Vec<_>>(),
             vec![0, 5]
         );

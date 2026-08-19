@@ -215,7 +215,7 @@ impl GameState {
                     buyer,
                     amount,
                     commodity,
-                    i32::from(price),
+                    price,
                 );
             }
             if let Some(buyer_major) = NationId::as_major(buyer) {
@@ -225,7 +225,7 @@ impl GameState {
                     seller,
                     amount,
                     commodity,
-                    i32::from(price),
+                    price,
                 );
             }
         } else if let Some(buyer_major) = NationId::as_major(buyer) {
@@ -235,7 +235,7 @@ impl GameState {
                 seller,
                 amount,
                 commodity,
-                i32::from(price),
+                price,
             );
         }
     }
@@ -305,23 +305,19 @@ impl GameState {
         let need_current = state.trade.current_supply[resource];
         let mut grants = Vec::new();
         for major in MajorNationId::all() {
-            let link = phase.status_by_major[minor][resource][usize::from(major.get())];
+            let link = phase.status_by_major[minor][resource][major.get()];
             if link == 0 {
                 continue;
             }
             let standing = self.diplomacy.standings[minor.nation()][major.nation()];
-            let neg_delta = -i32::from(amount);
-            let int_factor = if i32::from(link) < neg_delta {
-                i32::from(link)
-            } else {
-                neg_delta
-            };
+            let neg_delta = -amount;
+            let int_factor = if link < neg_delta { link } else { neg_delta };
             let mut float_amount = (link as f32) / (need_current as f32);
-            float_amount *= (standing as f32);
-            float_amount *= (price as f32);
-            float_amount *= (amount as f32);
+            float_amount *= standing as f32;
+            float_amount *= price as f32;
+            float_amount *= amount as f32;
             float_amount *= GRANT_DELTA_SCALE;
-            let integer_amount = (int_factor * i32::from(standing) * i32::from(price) / 255) as f32;
+            let integer_amount = (int_factor * standing * price / 255) as f32;
             let mut grant_amount = float_amount as i32;
             let integer_grant = integer_amount as i32;
             if integer_grant > grant_amount {

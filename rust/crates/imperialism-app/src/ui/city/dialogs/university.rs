@@ -418,7 +418,7 @@ pub(in crate::ui::city) fn sync_university_details(
             UniversityDisplay::Description => text.0.clone_from(&row.description),
             UniversityDisplay::LaborCost => text.0 = 1.to_string(),
             UniversityDisplay::MaterialCost => text.0 = spec.primary.per_unit().to_string(),
-            UniversityDisplay::CashCost => text.0 = format_currency(i32::from(spec.cash_per_unit)),
+            UniversityDisplay::CashCost => text.0 = format_currency(spec.cash_per_unit),
             UniversityDisplay::LaborAvailable => text.0 = workforce_available.to_string(),
             UniversityDisplay::MaterialAvailable => {
                 text.0 = city.stockpile[spec.primary.resource].to_string()
@@ -448,7 +448,7 @@ pub(in crate::ui::city) fn sync_university_details(
                 city.stockpile[spec.primary.resource] < spec.primary.per_unit()
             }
             UniversityDisplay::LaborAvailable => workforce_available < 1,
-            UniversityDisplay::Treasury => major.common.treasury < i32::from(spec.cash_per_unit),
+            UniversityDisplay::Treasury => major.common.treasury < spec.cash_per_unit,
             _ => continue,
         };
         color.0 = city_stock_color(insufficient, &selection);

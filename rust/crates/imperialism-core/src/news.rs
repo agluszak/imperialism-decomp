@@ -410,8 +410,8 @@ impl GameState {
             }
         }
 
-        let cur_tick = self.turn.economic_turn as i32;
-        let year = (self.turn.economic_turn / 4) as i32;
+        let cur_tick = self.turn.economic_turn;
+        let year = self.turn.economic_turn / 4;
         let mut misses = 0;
         while row < 3 && misses < 4 {
             let mut pick;
@@ -432,7 +432,7 @@ impl GameState {
             }
             let id = story_ids[pick];
             if id > 9 && id % 10 == 0 {
-                if year < id as i32 - 10 || year >= id as i32 {
+                if year < id - 10 || year >= id {
                     continue;
                 }
             } else if id != 1 {
@@ -441,7 +441,7 @@ impl GameState {
             let other = random_other_major(&mut self.rng, nation);
             page.stories[column][row] = Some(NewsStory {
                 template_index: pick as u16,
-                story_id: id as i32,
+                story_id: id,
                 feature: true,
                 arguments: [
                     nation_mask_arg(nation.nation().bit() as i32),
@@ -469,7 +469,7 @@ fn create_event_stories(
     column: &mut usize,
     row: &mut usize,
 ) {
-    let nation_slot = (nation.get() as i32);
+    let nation_slot = nation.get() as i32;
     let mut ordinal = 0;
     let mut code = 0;
     while code <= 0x18 {
@@ -610,12 +610,20 @@ fn create_event_stories(
         if let Some(template) = find_template(story_ids, want_id) {
             page.stories[*column][*row] = Some(NewsStory {
                 template_index: template as u16,
-                story_id: want_id as i32,
+                story_id: want_id,
                 feature: true,
                 arguments: [
                     location,
-                    nation_mask_arg(1 << report.sides[BattleReportSideSlot::Left].nation.get()),
-                    nation_mask_arg(1 << report.sides[BattleReportSideSlot::Right].nation.get()),
+                    nation_mask_arg(
+                        1 << report.sides[BattleReportSideSlot::Left]
+                            .nation
+                            .table_index(),
+                    ),
+                    nation_mask_arg(
+                        1 << report.sides[BattleReportSideSlot::Right]
+                            .nation
+                            .table_index(),
+                    ),
                     NewsArgument::Empty,
                 ],
             });
@@ -649,7 +657,7 @@ fn create_event_stories(
                         };
                         page.stories[*column][*row] = Some(NewsStory {
                             template_index: template as u16,
-                            story_id: want_id as i32,
+                            story_id: want_id,
                             feature: false,
                             arguments: [
                                 parm0,
@@ -689,11 +697,11 @@ fn event_code(event: &PendingNewspaperEvent) -> i32 {
 fn event_subject(event: &PendingNewspaperEvent) -> i32 {
     match event {
         PendingNewspaperEvent::InterNation { subject, .. }
-        | PendingNewspaperEvent::Shortage { subject, .. } => (subject.get() as i32),
+        | PendingNewspaperEvent::Shortage { subject, .. } => subject.get() as i32,
         PendingNewspaperEvent::Miscellaneous {
             audience: Some(nation),
             ..
-        } => (nation.get() as i32),
+        } => nation.get() as i32,
         PendingNewspaperEvent::Miscellaneous { audience: None, .. } => 999,
     }
 }
@@ -773,7 +781,7 @@ fn place_event_story(
 ) {
     page.stories[*column][*row] = Some(NewsStory {
         template_index: template as u16,
-        story_id: want_id as i32,
+        story_id: want_id,
         feature: false,
         arguments: [parm0, parm1, NewsArgument::Empty, NewsArgument::Empty],
     });

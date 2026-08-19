@@ -481,7 +481,7 @@ struct ArmyCategoryCase {
 #[ignore = "requires the native C++ oracle"]
 fn army_select_category() {
     compare_native("army_select_category", |state, case: ArmyCategoryCase| {
-        i32::from(state.activate_first_idle_unit_by_category(case.province, case.category))
+        state.activate_first_idle_unit_by_category(case.province, case.category)
     })
     .unwrap();
 }
@@ -578,7 +578,7 @@ fn army_selection_cycling() {
     compare_native("army_selection_cycling", |state, case: ArmyProvinceCase| {
         state
             .find_next_selectable_army_province(state.turn().active_nation, Some(case.province))
-            .map(|province| (province.get() as i32))
+            .map(|province| province.get() as i32)
             .unwrap_or(-1)
     })
     .unwrap();
@@ -737,7 +737,7 @@ fn navy_selection_cycling() {
     compare_native("navy_selection_cycling", |state, case: NavyZoneCase| {
         state
             .next_navy_order_zone(state.turn().active_nation, Some(case.zone))
-            .map(|zone| (zone.get() as i32))
+            .map(|zone| zone.get() as i32)
             .unwrap_or(-1)
     })
     .unwrap();

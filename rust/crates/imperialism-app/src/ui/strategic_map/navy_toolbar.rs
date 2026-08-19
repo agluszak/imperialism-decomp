@@ -207,7 +207,7 @@ fn sync_navy_toolbar(
             }
             if available > 0 {
                 *visibility = Visibility::Visible;
-                set_count_text(arrow_entity, &mut counts, Some(i32::from(selected.max(0))));
+                set_count_text(arrow_entity, &mut counts, Some(selected.max(0)));
             } else {
                 *visibility = Visibility::Hidden;
                 set_count_text(arrow_entity, &mut counts, None);

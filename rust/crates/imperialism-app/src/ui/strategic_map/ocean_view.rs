@@ -308,9 +308,9 @@ fn ocean_label_position(
     ocean: &OceanViewport,
 ) -> Option<Vec2> {
     let MapPosition { row, column } = geometry.position(tile);
-    let y = (i32::from(row) - ocean.origin.y) * OCEAN_CELL_PIXELS + 8;
-    let x = (i32::from(column) - ocean.origin.x).rem_euclid(RETAIL_MAP_COLUMNS) * OCEAN_CELL_PIXELS
-        + i32::from(row & 1) * 8;
+    let y = (row - ocean.origin.y) * OCEAN_CELL_PIXELS + 8;
+    let x = (column - ocean.origin.x).rem_euclid(RETAIL_MAP_COLUMNS) * OCEAN_CELL_PIXELS
+        + (row & 1) * 8;
     ((0..=VIEWPORT_WIDTH as i32).contains(&x) && (0..=VIEWPORT_HEIGHT as i32).contains(&y))
         .then_some(Vec2::new(x as f32, y as f32))
 }
@@ -338,14 +338,14 @@ fn ocean_tile_at_position(state: &GameState, normalized: Vec2, origin: IVec2) ->
         return None;
     }
     let row = origin.y + y / OCEAN_CELL_PIXELS;
-    if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
+    if !(0..STRATEGIC_MAP_HEIGHT).contains(&row) {
         return None;
     }
     let adjusted = x + if row & 1 == 0 { 8 } else { 0 };
     let column = origin.x + adjusted / OCEAN_CELL_PIXELS;
     let column = if state.map().geometry().wraps_horizontally() {
-        column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
-    } else if (0..i32::from(STRATEGIC_MAP_WIDTH)).contains(&column) {
+        column.rem_euclid(STRATEGIC_MAP_WIDTH)
+    } else if (0..STRATEGIC_MAP_WIDTH).contains(&column) {
         column
     } else {
         return None;

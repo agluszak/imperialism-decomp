@@ -56,7 +56,7 @@ impl GameState {
                 };
                 let die = if threshold == 14 { 6 } else { 4 };
                 for _ in 0..3 {
-                    threshold += (self.rng.next_crt_rand() % die) as i32;
+                    threshold += self.rng.next_crt_rand() % die;
                 }
                 self.diplomacy.influence_thresholds[province] = threshold;
             }
@@ -109,12 +109,12 @@ impl GameState {
                     self.rng.next_crt_rand() % 50 + 50
                 };
             } else {
-                chairman_side[nation] =
-                    (i32::from(self.diplomacy.standings[chairman.nation()][nation]) * 100 / 255
-                        + power[chairman].relations)
-                        / 2;
+                chairman_side[nation] = (self.diplomacy.standings[chairman.nation()][nation] * 100
+                    / 255
+                    + power[chairman].relations)
+                    / 2;
                 counterpart_side[nation] =
-                    (i32::from(self.diplomacy.standings[counterpart.nation()][nation]) * 100 / 255
+                    (self.diplomacy.standings[counterpart.nation()][nation] * 100 / 255
                         + power[counterpart].relations)
                         / 2;
             }
@@ -164,14 +164,14 @@ impl GameState {
                         }
                     }
                 }
-                let threshold = i32::from(self.diplomacy.influence_thresholds[province]);
+                let threshold = self.diplomacy.influence_thresholds[province];
                 if chairman_score - counterpart_score >= threshold {
-                    let residual = (chairman_score - counterpart_score - threshold) as i32;
+                    let residual = chairman_score - counterpart_score - threshold;
                     vote_residual[province] = Some(residual);
                     max_residual = max_residual.max(residual);
                     Some(chairman)
                 } else if counterpart_score - chairman_score >= threshold {
-                    let residual = (counterpart_score - chairman_score - threshold) as i32;
+                    let residual = counterpart_score - chairman_score - threshold;
                     vote_residual[province] = Some(residual);
                     max_residual = max_residual.max(residual);
                     Some(counterpart)
@@ -191,7 +191,7 @@ impl GameState {
                     let _tier = self.rng.next_crt_rand() % 15 + 1;
                 }
                 Some(residual) => {
-                    let _tier = i32::from(max_residual - residual + 15);
+                    let _tier = max_residual - residual + 15;
                 }
                 None => {}
             }
@@ -241,17 +241,14 @@ impl GameState {
                 .filter(|unit| {
                     unit.nation == nation.nation() && !unit.unit_type.is_militia_category()
                 })
-                .map(|unit| {
-                    ARMY_POWER_WEIGHT[unit.unit_type] * (i32::from(unit.experience) / 100 + 10) / 10
-                })
+                .map(|unit| ARMY_POWER_WEIGHT[unit.unit_type] * (unit.experience / 100 + 10) / 10)
                 .sum::<i32>()
                 + self
                     .ships
                     .values()
                     .filter(|ship| ship.nation == nation.nation())
                     .map(|ship| {
-                        NAVY_POWER_WEIGHT[ship.ship_type] * (i32::from(ship.experience) / 100 + 10)
-                            / 10
+                        NAVY_POWER_WEIGHT[ship.ship_type] * (ship.experience / 100 + 10) / 10
                     })
                     .sum::<i32>()
                 + 500;
@@ -259,7 +256,7 @@ impl GameState {
             let mut relation_count = 0;
             for other in NationId::all() {
                 if other != nation.nation() && self.nations.common(other).is_some() {
-                    relation_sum += i32::from(self.diplomacy.standings[nation.nation()][other]);
+                    relation_sum += self.diplomacy.standings[nation.nation()][other];
                     relation_count += 1;
                 }
             }
@@ -269,7 +266,7 @@ impl GameState {
                 .map(|&item| self.nations.majors[&nation].city.orders.items[item].accumulated_value)
                 .sum();
             territory[nation] = self.nations.majors[&nation].common.owned_regions().len() as i32;
-            technology[nation] = i32::from(self.nations.majors[&nation].city.population.count);
+            technology[nation] = self.nations.majors[&nation].city.population.count;
             maxima.military = maxima.military.max(rows[nation].military);
             maxima.relations = maxima.relations.max(rows[nation].relations);
             maxima.territory = maxima.territory.max(territory[nation]);

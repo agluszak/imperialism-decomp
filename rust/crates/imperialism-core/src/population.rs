@@ -128,8 +128,8 @@ impl CityState {
     /// rotated resources was short.
     pub fn apply_population_strike(&mut self) -> bool {
         let baseline = self.population.baseline_labor;
-        let skilled = i32::from(baseline.medium) + i32::from(baseline.high);
-        let mut cycles = (skilled / 10) as i32;
+        let skilled = baseline.medium + baseline.high;
+        let mut cycles = skilled / 10;
         let mut consumption = StrikePhaseTable::from_array([0; 4]);
 
         while cycles != 0 {
@@ -224,8 +224,8 @@ impl PopulationState {
         }
         let supported = self.count + order_quantity;
         match resource {
-            ResourceKind::Grain => ((i32::from(supported) + 1) / 2) as i32,
-            ResourceKind::Fruit => ((i32::from(supported) + 2) / 4) as i32,
+            ResourceKind::Grain => (supported + 1) / 2,
+            ResourceKind::Fruit => (supported + 2) / 4,
             ResourceKind::Livestock => supported / 4,
             _ => self.predicted_need_by_resource[resource],
         }
@@ -405,9 +405,9 @@ impl FoodRemainders {
     }
 
     fn consume_normal_needs(&mut self, population: i32) -> i32 {
-        let grain_need = ((i32::from(population) + 1) / 2) as i32;
-        let fruit_need = ((i32::from(population) + 2) / 4) as i32;
-        let animal_need = (i32::from(population) / 4) as i32;
+        let grain_need = (population + 1) / 2;
+        let fruit_need = (population + 2) / 4;
+        let animal_need = population / 4;
         let mut unmet = 0;
         consume_need(&mut self.grain, grain_need, &mut unmet);
         consume_need(&mut self.fruit, fruit_need, &mut unmet);

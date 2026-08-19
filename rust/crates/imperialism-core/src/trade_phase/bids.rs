@@ -32,7 +32,7 @@ impl GameState {
             let Some(state) = self.nations.minors.get_mut(&minor) else {
                 return;
             };
-            if i32::from(state.trade.thresholds.random_offer_price)
+            if state.trade.thresholds.random_offer_price
                 < self.market.rows[trade_commodity(random_resource)].price
             {
                 state.trade.offers[random_resource] = state.trade.current_supply[random_resource];
@@ -42,7 +42,7 @@ impl GameState {
                 .map(TradeCommodity::resource)
                 .chain([ResourceKind::Food])
             {
-                if i32::from(state.trade.thresholds.general_offer_price)
+                if state.trade.thresholds.general_offer_price
                     < self.market.rows[trade_commodity(resource)].price
                 {
                     state.trade.offers[resource] = state.trade.current_supply[resource];
@@ -95,7 +95,7 @@ impl GameState {
             }
             let price =
                 self.market.rows[TradeCommodity::from_retail(rolled).expect("manufactured")].price;
-            if i32::from(state.trade.thresholds.primary_manufactured_price) < price {
+            if state.trade.thresholds.primary_manufactured_price < price {
                 state.trade.primary_manufactured_request = None;
             } else {
                 state.trade.primary_manufactured_request = TradeCommodity::from_retail(rolled);
@@ -105,7 +105,7 @@ impl GameState {
         state.trade.secondary_manufactured_request = None;
         for commodity in MANUFACTURED_COMMODITIES {
             if self.market.rows[commodity].price
-                < i32::from(state.trade.thresholds.secondary_manufactured_price)
+                < state.trade.thresholds.secondary_manufactured_price
                 && Some(commodity) != state.trade.primary_manufactured_request
             {
                 state.trade.secondary_manufactured_request = Some(commodity);
@@ -137,8 +137,8 @@ impl GameState {
                 let value = if stock < metric { stock } else { metric };
                 let row = &mut self.market.rows[commodity];
                 row.offer_count += 1;
-                row.amount_offered += i32::from(value);
-                let factor = if row.price < i32::from(state.trade.thresholds.random_offer_price) {
+                row.amount_offered += value;
+                let factor = if row.price < state.trade.thresholds.random_offer_price {
                     0.0
                 } else {
                     offer_factor(base, value)
@@ -158,7 +158,7 @@ impl GameState {
             }
             let row = &mut self.market.rows[TradeCommodity::Food];
             row.offer_count += 1;
-            row.amount_offered += i32::from(metric);
+            row.amount_offered += metric;
             row.adjusted_offer_count += offer_factor(base, metric);
         }
 
@@ -197,7 +197,7 @@ impl GameState {
                     row.request_count += 1;
                 } else if metric > 0 {
                     row.offer_count += 1;
-                    row.amount_offered += i32::from(metric);
+                    row.amount_offered += metric;
                     row.adjusted_offer_count += offer_factor(base, metric).min(2.0);
                 }
             }

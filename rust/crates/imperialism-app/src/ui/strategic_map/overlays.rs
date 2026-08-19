@@ -74,7 +74,7 @@ pub(super) fn city_marker_offset(state: &GameState, tile: TileId) -> Option<u16>
     let flags = tile_state.flags.bits();
     let minor_sprites = tile_state
         .former_owner_nation
-        .is_some_and(|owner| usize::from(owner.get()) >= MajorNationId::COUNT);
+        .is_some_and(|owner| owner.nation().and_then(NationId::as_major).is_none());
     if !minor_sprites {
         if flags & 1 != 0 {
             return Some(0x6c0);

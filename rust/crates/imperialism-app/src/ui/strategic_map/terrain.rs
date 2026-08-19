@@ -72,8 +72,7 @@ pub(super) fn compose_strategic_base_tile(
             column: origin_column,
             ..
         } = state.map().geometry().position(view_origin);
-        (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
-            .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+        (origin_column + VIEWPORT_TILE_SPAN / 2).rem_euclid(STRATEGIC_MAP_WIDTH)
     };
     let MapPosition {
         column: tile_column,

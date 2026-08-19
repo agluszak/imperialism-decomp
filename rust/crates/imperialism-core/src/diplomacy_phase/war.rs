@@ -199,14 +199,14 @@ impl GameState {
             if self.war_number(nation) > score {
                 all_beatable = false;
             } else {
-                beatable[usize::from(other.get())] = true;
+                beatable[other.get()] = true;
             }
         }
         if !all_beatable {
             return;
         }
         for other in majors() {
-            if beatable[usize::from(other.get())] {
+            if beatable[other.get()] {
                 self.queue_war(nation.nation(), other.nation(), Some(minor));
             }
         }
@@ -360,7 +360,7 @@ impl GameState {
         else {
             return;
         };
-        let index = usize::from(zone.get());
+        let index = zone.get();
         if let Some(entry) = targets.get_mut(index) {
             *entry = flag;
         }

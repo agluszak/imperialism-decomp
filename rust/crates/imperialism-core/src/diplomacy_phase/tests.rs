@@ -511,7 +511,7 @@ fn declaring_war_marks_the_target_first_port_zone_as_a_candidate() {
     let mut minor = independent_minor(7);
     minor.add_province(ProvinceId::new(0));
     state.nations.minors.insert(MinorNationId::new(0), minor);
-    state.map[TileId::new(30)].former_owner_nation = Some(TileContext::from_nation(nation(7)));
+    state.map[TileId::new(30)].former_owner_nation = Some(TileContext::from(nation(7)));
     state.ocean.zones = vec![
         ZoneKind::Zone(empty_zone(Vec::new())),
         ZoneKind::PortZone(PortZone {

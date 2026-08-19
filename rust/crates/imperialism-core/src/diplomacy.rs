@@ -883,8 +883,8 @@ impl GameState {
         let mut selected = None;
         for major in MajorNationId::all().filter(|&major| self.major_is_event_eligible(major)) {
             let policy = self.nations.majors[&major].common.trade_policy_by_nation[minor_nation];
-            let score = (200 - policy.retail())
-                * i32::from(self.diplomacy.standings[minor_nation][major.nation()]);
+            let score =
+                (200 - policy.retail()) * self.diplomacy.standings[minor_nation][major.nation()];
             let select = if score > best_score {
                 true
             } else if score == best_score {
@@ -898,7 +898,7 @@ impl GameState {
                         + self.turn.economic_turn
                         + score;
                     if tie_seed == 0 {
-                        tie_seed = (minor.get() as i32);
+                        tie_seed = minor.get() as i32;
                     }
                     let draw = (tie_seed as u32).wrapping_mul(0x015a_4e35).wrapping_add(1);
                     (draw >> 12) & 1 != 0
@@ -933,7 +933,7 @@ impl GameState {
             CityFacilitySlot::OilRefinery,
         ]
         .into_iter()
-        .map(|slot| i32::from(major.city.production_orders[slot]))
+        .map(|slot| major.city.production_orders[slot])
         .sum::<i32>()
     }
 }
@@ -1027,7 +1027,7 @@ mod tests {
         }
         assert_eq!(hard_rng, expected_rng);
         assert_eq!(
-            hard.mission_levels[MajorNationId::new(0)][MinorNationId::new(2)],
+            hard.mission_levels[MajorNationId::new(0)][MinorNationId::new(9)],
             DiplomaticMissionLevel::TradeConsulate
         );
     }

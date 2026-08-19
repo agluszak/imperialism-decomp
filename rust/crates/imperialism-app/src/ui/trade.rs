@@ -562,7 +562,7 @@ fn on_trade_amount_bar_click(
             .set_player_trade_order(nation, commodity, PlayerTradeOrder::None);
         return;
     }
-    let quantity = i32::from(x) * i32::from(capacity) / 100 + 1;
+    let quantity = i32::from(x) * capacity / 100 + 1;
     session
         .game
         .set_player_trade_order(nation, commodity, PlayerTradeOrder::Sell(quantity));
@@ -770,24 +770,22 @@ fn sync_trade_presence(
 fn trade_advisory_needed(major: &MajorNation, kind: TradeAdvisoryKind) -> bool {
     let city = &major.city;
     let economy = &major.economy;
-    let building =
-        |slot| i32::from(city.building_type(slot, economy, major.common.owned_region_count()));
-    let stock_and_target = |resource| {
-        i32::from(city.stockpile[resource]) + i32::from(economy.need_target_by_type[resource])
-    };
+    let building = |slot| city.building_type(slot, economy, major.common.owned_region_count());
+    let stock_and_target =
+        |resource| city.stockpile[resource] + economy.need_target_by_type[resource];
     match kind {
         TradeAdvisoryKind::Food => {
-            let on_hand = i32::from(city.stockpile[ResourceKind::Food])
-                + i32::from(city.stockpile[ResourceKind::Livestock])
-                + i32::from(city.stockpile[ResourceKind::Grain])
-                + i32::from(city.stockpile[ResourceKind::Fruit])
-                + i32::from(economy.need_target_by_type[ResourceKind::Livestock])
-                + i32::from(economy.need_target_by_type[ResourceKind::Fruit])
-                + i32::from(economy.need_target_by_type[ResourceKind::Fish])
-                + i32::from(economy.need_target_by_type[ResourceKind::Grain]);
-            let required = i32::from(city.population.predicted_need(ResourceKind::Livestock))
-                + i32::from(city.population.predicted_need(ResourceKind::Fruit))
-                + i32::from(city.population.predicted_need(ResourceKind::Grain));
+            let on_hand = city.stockpile[ResourceKind::Food]
+                + city.stockpile[ResourceKind::Livestock]
+                + city.stockpile[ResourceKind::Grain]
+                + city.stockpile[ResourceKind::Fruit]
+                + economy.need_target_by_type[ResourceKind::Livestock]
+                + economy.need_target_by_type[ResourceKind::Fruit]
+                + economy.need_target_by_type[ResourceKind::Fish]
+                + economy.need_target_by_type[ResourceKind::Grain];
+            let required = city.population.predicted_need(ResourceKind::Livestock)
+                + city.population.predicted_need(ResourceKind::Fruit)
+                + city.population.predicted_need(ResourceKind::Grain);
             on_hand < required
         }
         TradeAdvisoryKind::Textile => {

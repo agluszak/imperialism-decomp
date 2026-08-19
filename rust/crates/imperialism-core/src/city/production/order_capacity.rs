@@ -246,7 +246,7 @@ pub(crate) fn set_power_plant_quantity(
         return false;
     };
 
-    if i32::from(population.strength) < -i32::from(delta) {
+    if population.strength < -delta {
         state.progress.quantity -= delta;
         return false;
     }

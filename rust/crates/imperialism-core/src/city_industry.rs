@@ -62,9 +62,8 @@ impl CityState {
         let mut remaining: i32 = SHIP_TYPE_WEIGHTS
             .iter()
             .filter(|(_, weights)| weights.random_draw_block == 0)
-            .map(|(ship_type, _)| i32::from(self.ship_order_count_by_type[ship_type]))
+            .map(|(ship_type, _)| self.ship_order_count_by_type[ship_type])
             .sum();
-        let max_weight = i32::from(max_weight);
 
         while remaining > 0 && allocated_weight < max_weight {
             let mut roll = rng.next_crt_rand() % remaining + 1;
@@ -74,11 +73,11 @@ impl CityState {
                     if weights.random_draw_block != 0 {
                         return None;
                     }
-                    roll -= i32::from(self.ship_order_count_by_type[ship_type]);
+                    roll -= self.ship_order_count_by_type[ship_type];
                     (roll < 1).then_some(ship_type)
                 })
                 .expect("positive unblocked ship order count selects a ship type");
-            let weight = i32::from(SHIP_TYPE_WEIGHTS[selected].allocation);
+            let weight = SHIP_TYPE_WEIGHTS[selected].allocation;
             if max_weight < weight && weight - 1 < rng.next_crt_rand() % max_weight {
                 break;
             }
@@ -106,8 +105,8 @@ impl CityState {
             } else {
                 weights.average
             };
-            weighted_sum += i32::from(weight) * i32::from(count);
-            total_count += i32::from(count);
+            weighted_sum += weight * count;
+            total_count += count;
         }
 
         if total_count == 0 {

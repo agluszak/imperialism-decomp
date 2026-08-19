@@ -69,10 +69,10 @@ impl Seapoint {
 
 impl SeaSegment {
     fn init_from_points(p0: Seapoint, p1: Seapoint) -> Self {
-        let mut x0 = (p0.coord % OVERLAY_WIDTH) as i32;
-        let mut y0 = (p0.coord / OVERLAY_WIDTH) as i32;
-        let mut x1 = (p1.coord % OVERLAY_WIDTH) as i32;
-        let mut y1 = (p1.coord / OVERLAY_WIDTH) as i32;
+        let mut x0 = p0.coord % OVERLAY_WIDTH;
+        let mut y0 = p0.coord / OVERLAY_WIDTH;
+        let mut x1 = p1.coord % OVERLAY_WIDTH;
+        let mut y1 = p1.coord / OVERLAY_WIDTH;
         let region_a = p0.lo as u8;
         let region_b = p0.hi as u8;
         if y1 < y0 || (y0 == y1 && x1 < x0) {
@@ -131,10 +131,10 @@ pub(crate) fn merge_small_water_regions(
             let routes = links
                 .iter()
                 .map(|link| OceanRoute {
-                    start_column: i32::from(link.x0),
-                    start_row: i32::from(link.y0),
-                    end_column: i32::from(link.x1),
-                    end_row: i32::from(link.y1),
+                    start_column: link.x0,
+                    start_row: link.y0,
+                    end_column: link.x1,
+                    end_row: link.y1,
                 })
                 .collect();
             let zone_links = links
@@ -177,8 +177,8 @@ pub(crate) fn merge_small_water_regions(
                 if merged_flags[other] == 0 {
                     bias += 0x1388;
                 }
-                let width = i32::from(link.x1) - i32::from(link.x0);
-                let height = i32::from(link.y1) - i32::from(link.y0);
+                let width = link.x1 - link.x0;
+                let height = link.y1 - link.y0;
                 let area_sq = width * width * height * height;
                 // MSVC `_ftol` truncates toward zero; same for positive values via `as i32`.
                 let score = (f64::from(area_sq).sqrt() * f64::from(tile_counts[other])
@@ -200,7 +200,7 @@ pub(crate) fn merge_small_water_regions(
                         let Some(neighbor) = geometry.neighbor(tile_id, direction) else {
                             continue;
                         };
-                        let neighbor_region = water_region_id(&tiles[usize::from(neighbor.get())]);
+                        let neighbor_region = water_region_id(&tiles[neighbor.get()]);
                         if neighbor_region >= 0 && neighbor_region != region {
                             merge_target = Some(neighbor_region as usize);
                             break 'tiles;
@@ -291,7 +291,7 @@ fn hex_neighbor(geometry: MapGeometry, tile_index: i32, direction: HexDirection)
     let Some(neighbor) = geometry.neighbor(TileId::new(tile_index as usize), direction) else {
         return -1;
     };
-    (neighbor.get() as i32)
+    neighbor.get() as i32
 }
 
 fn overlay_coord_from_tile_edge(tile_index: i32, lower: bool) -> i32 {

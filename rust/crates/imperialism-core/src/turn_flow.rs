@@ -654,8 +654,8 @@ mod tests {
     use crate::{
         AutoGreatPowerState, BattleReport, BattleReportKind, BattleReportLocation,
         BattleReportSide, BattleReportSideSlot, BattleReportSideTable, DiplomacyPolicy,
-        DiplomaticRelationship, MajorNationId, NationId, ProvinceId, ResourceKind, ShipType,
-        TileContext, TileId, TradeProgress,
+        DiplomaticRelationship, MajorNationId, ProvinceId, ResourceKind, ShipType, TileContext,
+        TileId, TradeProgress,
     };
 
     fn seed_town_tiles(state: &mut crate::GameState) {
@@ -680,7 +680,7 @@ mod tests {
                 crate::ProvinceId::new(major_id.get()),
             );
             state.map.provinces[crate::ProvinceId::new(major_id.get())].region_class = Some(0);
-            state.map[tile].owner_nation = Some(TileContext::from_nation(nation));
+            state.map[tile].owner_nation = Some(TileContext::from(nation));
         }
     }
 

@@ -266,7 +266,7 @@ impl GameState {
                 if in_port {
                     let (damaged, ready): (Vec<_>, Vec<_>) = ships.into_iter().partition(|ship| {
                         let ship = self.ship(*ship).expect("unordered ship exists");
-                        i32::from(ship.strength) < NAVY_DESCRIPTORS[ship.ship_type].stock_cap
+                        ship.strength < NAVY_DESCRIPTORS[ship.ship_type].stock_cap
                     });
                     self.commit_rebuilt_force(
                         zone,
@@ -584,12 +584,10 @@ impl GameState {
             .map(|(&child, _)| {
                 let ship = self.ship(child).expect("task-force ship exists");
                 let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
-                let quality = i32::from(ship.experience / 100);
+                let quality = ship.experience / 100;
                 let priority = (quality + descriptor.navy_priority_weight * 10 + 5) / 10;
                 let resolve = (quality + descriptor.resolve_weight * 10 + 5) / 10;
-                ((priority + descriptor.calculate_weight) * 100
-                    + resolve
-                    + i32::from(ship.strength))
+                ((priority + descriptor.calculate_weight) * 100 + resolve + ship.strength)
                     / descriptor.task_force_weight
             })
             .sum()
@@ -602,8 +600,8 @@ impl GameState {
             return false;
         };
         let weight = NavalAggressionTable::from_array([200, 100, 50]);
-        let this = self.task_force_battle_strength(outer) as i32 as i32;
-        let other = self.task_force_battle_strength(inner) as i32 as i32;
+        let this = self.task_force_battle_strength(outer);
+        let other = self.task_force_battle_strength(inner);
         if this * 100 < weight[outer_force.aggression] * other {
             if other * 100 < weight[inner_force.aggression] * this || inner_force.defeated {
                 return false;
@@ -770,7 +768,7 @@ impl GameState {
                     .values()
                     .find(|admiral| admiral.ship == Some(flagship))
             })
-            .map_or(0, |admiral| i32::from(admiral.experience / 100))
+            .map_or(0, |admiral| admiral.experience / 100)
     }
 
     fn task_force_power_at_or_above_tier(&self, force: TaskForceId, tier: i32) -> f32 {
@@ -781,9 +779,8 @@ impl GameState {
             .filter_map(|(&child, _)| {
                 let ship = self.ship(child).expect("task-force ship exists");
                 let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
-                (descriptor.priority_tier >= tier).then_some(
-                    (i32::from(ship.experience / 100) + descriptor.resolve_weight * 10 + 5) / 10,
-                )
+                (descriptor.priority_tier >= tier)
+                    .then_some(((ship.experience / 100) + descriptor.resolve_weight * 10 + 5) / 10)
             })
             .sum::<i32>() as f32
     }
@@ -1099,10 +1096,10 @@ impl GameState {
         let distances = self.zone_hop_distances_from(destination);
         let mut current = location;
         for _ in 0..hops {
-            let current_distance = distances[usize::from(current.get())];
+            let current_distance = distances[current.get()];
             let mut stepped = false;
             for &neighbor in &self.zone(current).primary_neighbors {
-                if distances[usize::from(neighbor.get())] < current_distance {
+                if distances[neighbor.get()] < current_distance {
                     current = neighbor;
                     stepped = true;
                     break;

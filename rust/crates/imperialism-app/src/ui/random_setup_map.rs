@@ -527,8 +527,10 @@ mod tests {
 
     #[test]
     fn renders_major_nation_palette_indices() {
-        let pixels =
-            compose_preview_indices(&tiles(Some(TileContext::new(0))), MajorNationId::new(1));
+        let pixels = compose_preview_indices(
+            &tiles(Some(TileContext::from_retail_tag(0))),
+            MajorNationId::new(1),
+        );
 
         assert_eq!(pixels.len(), PREVIEW_PIXEL_COUNT);
         assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], 0x16);
@@ -536,8 +538,9 @@ mod tests {
 
     #[test]
     fn distinct_sea_zones_render_as_one_unbordered_ocean() {
-        let mut map = tiles(Some(TileContext::new(NationId::COUNT as u8)));
-        map[TileId::new(1000).get()].owner = Some(TileContext::new((NationId::COUNT + 1) as u8));
+        let mut map = tiles(Some(TileContext::from_retail_tag(NationId::COUNT as u8)));
+        map[TileId::new(1000).get()].owner =
+            Some(TileContext::from_retail_tag((NationId::COUNT + 1) as u8));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 
@@ -561,7 +564,7 @@ mod tests {
     #[test]
     fn retains_the_native_odd_row_stride_spill() {
         let mut map = tiles(None);
-        map[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileContext::new(0));
+        map[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileContext::from_retail_tag(0));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 

@@ -144,7 +144,7 @@ const INDUSTRY_COST: ShipTypeTable<i32> =
     ShipTypeTable::from_array([0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18]);
 
 pub(crate) fn ship_stock_cap(ship_type: ShipType) -> i32 {
-    NAVY_DESCRIPTORS[ship_type].stock_cap as i32
+    NAVY_DESCRIPTORS[ship_type].stock_cap
 }
 
 pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
@@ -154,12 +154,12 @@ pub(crate) fn ship_creates_navy_object(ship_type: ShipType) -> bool {
 pub(crate) fn ship_capabilities(ship_type: ShipType) -> ShipCapabilities {
     let descriptor = NAVY_DESCRIPTORS[ship_type];
     ShipCapabilities {
-        resolve_weight: descriptor.resolve_weight as i32,
-        calculation_weight: descriptor.calculate_weight as i32,
-        task_force_weight: descriptor.task_force_weight as i32,
-        stock_capacity: descriptor.stock_cap as i32,
-        navy_priority_weight: descriptor.navy_priority_weight as i32,
-        resource_weight: descriptor.resource_weight as i32,
+        resolve_weight: descriptor.resolve_weight,
+        calculation_weight: descriptor.calculate_weight,
+        task_force_weight: descriptor.task_force_weight,
+        stock_capacity: descriptor.stock_cap,
+        navy_priority_weight: descriptor.navy_priority_weight,
+        resource_weight: descriptor.resource_weight,
     }
 }
 
@@ -181,7 +181,7 @@ pub(crate) fn navy_category_baselines(
         totals[NavyPriorityComponent::Strength] +=
             (calc * descriptor.stock_cap * 100) / descriptor.task_force_weight;
         totals[NavyPriorityComponent::Descriptor] += descriptor.navy_priority_weight;
-        totals[NavyPriorityComponent::Industry] += i32::from(INDUSTRY_COST[ship_type]);
+        totals[NavyPriorityComponent::Industry] += INDUSTRY_COST[ship_type];
     }
     if enabled_count == 0 {
         return totals;
@@ -206,21 +206,20 @@ pub(crate) fn ship_priority_contribution(
     let descriptor = NAVY_DESCRIPTORS[ship.ship_type];
     match category {
         NavyPriorityComponent::Resolve => {
-            let quantity_term =
-                i32::from(ship.experience / 100) + descriptor.resolve_weight * 10 + 5;
+            let quantity_term = (ship.experience / 100) + descriptor.resolve_weight * 10 + 5;
             let weight = descriptor.calculate_weight;
             (quantity_term / 10 * weight * weight * 100) / divisor
         }
         NavyPriorityComponent::Strength => {
             let weight = descriptor.calculate_weight;
-            (weight * i32::from(ship.strength) * 10000) / (descriptor.task_force_weight * divisor)
+            (weight * ship.strength * 10000) / (descriptor.task_force_weight * divisor)
         }
         NavyPriorityComponent::Descriptor => (descriptor.descriptor_weight * 100) / divisor,
         NavyPriorityComponent::Industry => {
             if ship.strength < 1 {
                 0
             } else {
-                (i32::from(INDUSTRY_COST[ship.ship_type]) * 100) / divisor
+                (INDUSTRY_COST[ship.ship_type] * 100) / divisor
             }
         }
     }
@@ -242,7 +241,7 @@ pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts
 impl GameState {
     fn zone_hop_distances_from(&self, origin: OceanZoneId) -> Vec<i32> {
         let mut distances = vec![UNREACHED; self.ocean.zones.len()];
-        let start = usize::from(origin.get());
+        let start = origin.get();
         if start >= distances.len() {
             return distances;
         }
@@ -252,10 +251,10 @@ impl GameState {
         while head < queue.len() {
             let current = queue[head];
             head += 1;
-            let current_index = usize::from(current.get());
+            let current_index = current.get();
             let next_level = distances[current_index] + 1;
             for &neighbor in &self.zone(current).primary_neighbors {
-                let neighbor_index = usize::from(neighbor.get());
+                let neighbor_index = neighbor.get();
                 if neighbor_index < distances.len() && next_level < distances[neighbor_index] {
                     distances[neighbor_index] = next_level;
                     queue.push(neighbor);
@@ -288,20 +287,20 @@ impl GameState {
 
     fn is_port_zone(&self, zone: OceanZoneId) -> bool {
         matches!(
-            self.ocean.zones.get(usize::from(zone.get())),
+            self.ocean.zones.get(zone.get()),
             Some(ZoneKind::PortZone(_))
         )
     }
 
     fn port_owned_by(&self, zone: OceanZoneId, nation: NationId) -> bool {
-        let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(usize::from(zone.get())) else {
+        let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(zone.get()) else {
             return false;
         };
-        self.map[port.port_tile].owner_nation == Some(TileContext::from_nation(nation))
+        self.map[port.port_tile].owner_nation == Some(TileContext::from(nation))
     }
 
     fn zone(&self, zone: OceanZoneId) -> &Zone {
-        self.ocean.zones[usize::from(zone.get())].zone()
+        self.ocean.zones[zone.get()].zone()
     }
 }
 
@@ -351,10 +350,7 @@ fn navy_required_from_profile(profile: NavyPriorityTable<i32>, total: f32) -> [u
 }
 
 fn hop_distance(distances: &[i32], zone: OceanZoneId) -> i32 {
-    distances
-        .get(usize::from(zone.get()))
-        .copied()
-        .unwrap_or(UNREACHED)
+    distances.get(zone.get()).copied().unwrap_or(UNREACHED)
 }
 
 fn accumulate_ship_categories(
@@ -367,7 +363,7 @@ fn accumulate_ship_categories(
         return;
     }
     let baselines = navy_category_baselines(enabled);
-    let scale = (ship.strength as f32) / (max_strength as f32);
+    let scale = (ship.strength / max_strength) as f32;
     vector[NavyPriorityComponent::Resolve] +=
         ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines) as f32 * scale;
     vector[NavyPriorityComponent::Strength] +=
@@ -446,7 +442,7 @@ pub(super) mod tests {
     fn navy_capitol_warning_fires_when_hostile_ships_outscore_friendly() {
         let mut state = game_state();
         let tile = TileId::new(1);
-        state.map[tile].former_owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[tile].former_owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         state.ocean.zones = vec![
             ZoneKind::Zone(zone(vec![OceanZoneId::new(1)])),
             ZoneKind::PortZone(PortZone {

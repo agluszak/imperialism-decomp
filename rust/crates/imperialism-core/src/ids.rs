@@ -49,6 +49,7 @@ macro_rules! dense_id {
 }
 
 dense_id!(MajorNationId, 7, "major-nation ID");
+dense_id!(MinorNationId, 16, "minor-nation ID");
 dense_id!(TileId, 6_480, "strategic tile ID");
 dense_id!(ProvinceId, 0x180, "province ID");
 
@@ -68,84 +69,17 @@ impl MajorNationId {
     pub const fn nation(self) -> NationId {
         NationId::Major(self)
     }
+}
 
-    pub(crate) const fn table_index(self) -> usize {
-        self.0
+impl MinorNationId {
+    pub const fn nation(self) -> NationId {
+        NationId::Minor(self)
     }
 }
 
 impl TileId {
     pub(crate) const fn from_index_unchecked(value: usize) -> Self {
         Self(value)
-    }
-
-    pub(crate) const fn index(self) -> usize {
-        self.0
-    }
-}
-
-impl ProvinceId {
-    pub(crate) const fn index(self) -> usize {
-        self.0
-    }
-}
-
-impl MajorNationId {
-    pub(crate) const fn index(self) -> usize {
-        self.0
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(transparent)]
-pub struct MinorNationId(usize);
-
-impl MinorNationId {
-    pub const COUNT: usize = 16;
-
-    pub const fn new(value: usize) -> Self {
-        assert!(value < Self::COUNT, "minor-nation ID is out of range");
-        Self(value)
-    }
-
-    pub const fn try_new(value: usize) -> Option<Self> {
-        if value < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    pub const fn nation(self) -> NationId {
-        NationId::Minor(self)
-    }
-
-    pub const fn get(self) -> usize {
-        self.0
-    }
-
-    pub(crate) const fn index(self) -> usize {
-        self.0
-    }
-
-    pub(crate) const fn table_index(self) -> usize {
-        self.0
-    }
-
-    pub fn all() -> impl DoubleEndedIterator<Item = Self> + ExactSizeIterator {
-        (0..Self::COUNT).map(Self::new)
-    }
-}
-
-impl<'de> Deserialize<'de> for MinorNationId {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let value = usize::deserialize(deserializer)?;
-        Self::try_new(value).ok_or_else(|| {
-            serde::de::Error::custom(format_args!("minor-nation ID {value} is out of range"))
-        })
     }
 }
 
@@ -214,12 +148,6 @@ impl NationId {
     pub const fn retail_slot(self) -> u8 {
         self.table_index() as u8
     }
-
-    /// Retail combined slot. Prefer [`Self::retail_slot`] at format boundaries
-    /// and [`Self::as_major`] / [`Self::as_minor`] in gameplay.
-    pub const fn get(self) -> u8 {
-        self.retail_slot()
-    }
 }
 
 /// Ownership or map context of a strategic tile.
@@ -249,10 +177,6 @@ impl From<MinorNationId> for TileContext {
 }
 
 impl TileContext {
-    pub fn from_nation(nation: impl Into<NationId>) -> Self {
-        Self::Nation(nation.into())
-    }
-
     /// Retail owner byte: `0..23` is a nation, `23 + zone` is an ocean zone.
     pub const fn from_retail_tag(tag: u8) -> Self {
         match NationId::from_retail_slot(tag) {
@@ -268,15 +192,6 @@ impl TileContext {
             Self::Ocean(zone) => (NationId::COUNT + zone.0) as u8,
             Self::Unknown(value) => value as u8,
         }
-    }
-
-    /// Retail owner byte. Prefer [`Self::from_retail_tag`].
-    pub const fn new(tag: u8) -> Self {
-        Self::from_retail_tag(tag)
-    }
-
-    pub const fn get(self) -> u8 {
-        self.to_retail_tag()
     }
 
     pub const fn nation(self) -> Option<NationId> {
@@ -340,10 +255,6 @@ pub struct OceanZoneId(usize);
 impl OceanZoneId {
     pub const fn new(value: usize) -> Self {
         Self(value)
-    }
-
-    pub(crate) const fn index(self) -> usize {
-        self.0
     }
 
     pub const fn get(self) -> usize {

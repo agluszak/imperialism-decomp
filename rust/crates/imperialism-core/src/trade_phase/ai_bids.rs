@@ -464,7 +464,7 @@ impl GameState {
             TradeCommodity::Coal,
             TradeCommodity::Iron,
         ] {
-            let mut priority = self.market.rows[commodity].price as i32;
+            let mut priority = self.market.rows[commodity].price;
             if matches!(commodity, TradeCommodity::Coal | TradeCommodity::Iron) {
                 priority -= 15;
             }
@@ -475,7 +475,7 @@ impl GameState {
                 &mut prices,
                 (
                     TradeCommodity::Oil,
-                    self.market.rows[TradeCommodity::Oil].price as i32 - 15,
+                    self.market.rows[TradeCommodity::Oil].price - 15,
                 ),
                 compare_commodity_price,
             );
@@ -587,7 +587,7 @@ impl GameState {
         let mut amounts = ResourceTable::<i32>::default();
         let mut selected_prices = prices.into_iter().rev().cycle();
         let mut iteration = 0_i32;
-        while target > 0 && iteration < i32::from(target) * 3 {
+        while target > 0 && iteration < target * 3 {
             let resource = selected_prices
                 .next()
                 .expect("cycled processed prices are never empty");
@@ -615,10 +615,7 @@ impl GameState {
         ] {
             insert_sorted(
                 &mut prices,
-                (
-                    resource,
-                    self.market.rows[trade_commodity(resource)].price as i32,
-                ),
+                (resource, self.market.rows[trade_commodity(resource)].price),
                 compare_resource_price,
             );
         }

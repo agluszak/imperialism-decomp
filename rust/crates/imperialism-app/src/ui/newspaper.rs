@@ -263,7 +263,7 @@ fn format_nation_names(
             continue;
         }
         if string_group {
-            names.push(get_string(assets, 0x2711, nation.get() as i16));
+            names.push(get_string(assets, 0x2711, i16::from(nation.retail_slot())));
         } else if let Some(name) = state.nations().display_name(nation) {
             names.push(name.to_owned());
         }

@@ -7,7 +7,7 @@ use super::*;
 pub fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId) -> TileId {
     const VIEWPORT_TILE_SPAN: i32 = 9;
 
-    let owner = TileContext::from_nation(human_nation.nation());
+    let owner = TileContext::from(human_nation);
     let geometry = world.geometry();
     let mut column_sum = 0_u32;
     let mut row_sum = 0_u32;
@@ -24,8 +24,6 @@ pub fn capital_selection_view_origin(world: &MapMgr, human_nation: MajorNationId
             continue;
         }
         let MapPosition { row, column } = geometry.position(tile);
-        let row = i32::from(row);
-        let column = i32::from(column);
         column_sum += column as u32;
         row_sum += row as u32;
         tile_count += 1;
@@ -126,7 +124,7 @@ pub(super) fn apply_tile_post_passes(
 fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
     let province_count = tiles
         .iter()
-        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
+        .filter_map(|tile| tile.province.map(|province| province.get() + 1))
         .max()
         .unwrap_or(0);
     let mut masks = vec![0_u8; province_count];
@@ -137,7 +135,7 @@ fn build_province_resource_presence_masks(tiles: &[TileState]) -> Vec<i8> {
         let Some(province) = tile.province else {
             continue;
         };
-        let mask = &mut masks[province.index()];
+        let mask = &mut masks[province.get()];
         for resource in tile.edge_resources.into_iter().flatten() {
             let resource = resource.retail();
             if resource < 8 {
@@ -157,7 +155,7 @@ pub(super) fn assign_province_fallback_capitals(
 ) -> Vec<Option<TileId>> {
     let province_count = tiles
         .iter()
-        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
+        .filter_map(|tile| tile.province.map(|province| province.get() + 1))
         .max()
         .unwrap_or(0);
     let mut linked_by_province: Vec<Vec<usize>> = vec![Vec::new(); province_count];
@@ -169,7 +167,7 @@ pub(super) fn assign_province_fallback_capitals(
         let Some(province) = tile.province else {
             continue;
         };
-        linked_by_province[province.index()].push(index);
+        linked_by_province[province.get()].push(index);
     }
 
     for (province_index, linked) in linked_by_province.iter().enumerate() {
@@ -186,9 +184,9 @@ pub(super) fn assign_province_fallback_capitals(
                     .into_iter()
                     .flatten()
                     .any(|neighbor| {
-                        let neighbor_tile = &tiles[usize::from(neighbor.get())];
+                        let neighbor_tile = &tiles[neighbor.get()];
                         match neighbor_tile.province {
-                            Some(province) => province.index() != province_index,
+                            Some(province) => province.get() != province_index,
                             None => false,
                         }
                     });

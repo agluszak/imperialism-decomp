@@ -49,7 +49,7 @@ impl GameState {
             .unwrap_or_else(|| {
                 self.missions
                     .values()
-                    .position(|queued| queued.nation.get() > nation.get())
+                    .position(|queued| queued.nation.table_index() > nation.table_index())
                     .unwrap_or(self.missions.len())
             });
         self.missions.shift_insert(position, id, mission);
@@ -76,14 +76,14 @@ impl GameState {
         let army = self.army_unit_power(nation.nation()) as f32;
         let city = &self.nations.majors[&nation].city;
         let reinforcement = {
-            let labor = i32::from(city.population.baseline_labor.low);
-            let budget = i32::from(city.population.strength).min(labor);
-            let arms = i32::from(city.stockpile[ResourceKind::Arms]);
+            let labor = city.population.baseline_labor.low;
+            let budget = city.population.strength.min(labor);
+            let arms = city.stockpile[ResourceKind::Arms];
             budget
                 .min(arms)
                 .min((self.army_unit_power(nation.nation()) / 2).max(0)) as f32
         };
-        let metalworks = i32::from(city.production_orders[CityFacilitySlot::Metalworks]);
+        let metalworks = city.production_orders[CityFacilitySlot::Metalworks];
         let production = metalworks.min((army * 0.25) as i32);
         army + reinforcement + production as f32
     }
@@ -92,8 +92,8 @@ impl GameState {
     pub(crate) fn naval_force(&self, nation: MajorNationId) -> f32 {
         let city = &self.nations.majors[&nation].city;
         let ship_production = self.technology.naval_production_capacity(
-            i32::from(city.production_orders[CityFacilitySlot::LumberMill]),
-            i32::from(city.production_orders[CityFacilitySlot::SteelMill]),
+            city.production_orders[CityFacilitySlot::LumberMill],
+            city.production_orders[CityFacilitySlot::SteelMill],
         );
         let navy = self.navy_arms(nation.nation()) as f32;
         let production = ship_production.min(navy as i32) as f32;
@@ -225,7 +225,7 @@ impl GameState {
         let Some(port) = self.first_port_zone_for_nation(nation.nation()) else {
             return false;
         };
-        let neighbors = match &self.ocean.zones[usize::from(port.get())] {
+        let neighbors = match &self.ocean.zones[port.get()] {
             ZoneKind::PortZone(port) => &port.zone.primary_neighbors,
             ZoneKind::Zone(zone) => &zone.primary_neighbors,
         };

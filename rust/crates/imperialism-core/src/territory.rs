@@ -673,7 +673,7 @@ mod tests {
         for tile in [20, 21] {
             state.map[TileId::new(tile)].province = Some(ProvinceId::new(2));
             state.map[TileId::new(tile)].owner_nation =
-                Some(TileContext::from_nation(MajorNationId::new(0)));
+                Some(TileContext::from(MajorNationId::new(0)));
         }
         state.map[TileId::new(20)].flags = crate::TileFlags::from_bits_retain(0x14);
         state.nations.majors[&MajorNationId::new(0)].towns.insert(
@@ -683,8 +683,7 @@ mod tests {
         state.map.provinces[ProvinceId::new(2)].linked_tiles =
             vec![TileId::new(20), TileId::new(21)];
         state.map[TileId::new(22)].province = Some(ProvinceId::new(5));
-        state.map[TileId::new(22)].owner_nation =
-            Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[TileId::new(22)].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
 
         state.change_province_owner(ProvinceId::new(2), MajorNationId::new(1).nation());
 
@@ -715,12 +714,12 @@ mod tests {
         for tile in [20, 21] {
             assert_eq!(
                 state.map[TileId::new(tile)].owner_nation,
-                Some(TileContext::from_nation(MajorNationId::new(1)))
+                Some(TileContext::from(MajorNationId::new(1)))
             );
         }
         assert_eq!(
             state.map[TileId::new(22)].owner_nation,
-            Some(TileContext::from_nation(MajorNationId::new(0)))
+            Some(TileContext::from(MajorNationId::new(0)))
         );
         assert_eq!(state.map[TileId::new(20)].owner_border_mask, 0x3d);
         assert!(
@@ -763,8 +762,7 @@ mod tests {
         set_province(&mut state, 2, Some(0), &[10], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation =
-            Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[TileId::new(20)].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
 
         let destination_regions: Vec<u16> = (10..18).collect();
         set_owned(
@@ -844,12 +842,10 @@ mod tests {
         set_province(&mut state, 2, Some(7), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation =
-            Some(TileContext::from_nation(MinorNationId::new(0)));
+        state.map[TileId::new(20)].owner_nation = Some(TileContext::from(MinorNationId::new(0)));
         state.map[TileId::new(20)].secondary_owner_nation = Some(MajorNationId::new(2));
         set_owned(&mut state, MajorNationId::new(1).nation(), &[]);
-        state.map[TileId::new(1)].owner_nation =
-            Some(TileContext::from_nation(MajorNationId::new(2)));
+        state.map[TileId::new(1)].owner_nation = Some(TileContext::from(MajorNationId::new(2)));
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
@@ -979,8 +975,7 @@ mod tests {
         set_province(&mut state, 2, Some(0), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation =
-            Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[TileId::new(20)].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         set_owned(&mut state, MajorNationId::new(1).nation(), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
         let destination = &mut state.nations.majors[&MajorNationId::new(1)];
@@ -1006,8 +1001,7 @@ mod tests {
         set_province(&mut state, 2, Some(0), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation =
-            Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[TileId::new(20)].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         set_owned(&mut state, MajorNationId::new(1).nation(), &[10]);
         set_province(&mut state, 10, Some(1), &[], Some(0));
         let destination = &mut state.nations.majors[&MajorNationId::new(1)];
@@ -1052,8 +1046,7 @@ mod tests {
         set_province(&mut state, 9, Some(1), &[], Some(0));
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
-        state.map[TileId::new(20)].owner_nation =
-            Some(TileContext::from_nation(MajorNationId::new(0)));
+        state.map[TileId::new(20)].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         state.civilian_units.insert(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(

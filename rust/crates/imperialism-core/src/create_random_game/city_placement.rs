@@ -88,7 +88,7 @@ pub(super) fn bootstrap_minors(
     port_zones: &mut PortZoneTable,
 ) {
     for minor_id in MinorNationId::all() {
-        let owner = TileContext::from_nation(minor_id.nation());
+        let owner = TileContext::from(minor_id);
         let Some(home) = select_minor_home_tile(world, owner, crt) else {
             continue;
         };
@@ -204,7 +204,7 @@ pub(super) fn spawn_initial_militia_for_minor(
     let nation = minor_id.nation();
     let set_garrison_orders = matches!(difficulty, Difficulty::Introductory | Difficulty::Easy);
     for &province in owned_provinces {
-        let capital = province_capitals[province.index()];
+        let capital = province_capitals[province.get()];
         if let Some(capital) = capital
             && world[capital].flags.has_base_transport()
         {
@@ -332,7 +332,6 @@ pub(crate) fn name_units_for_nation(
     }
 }
 pub(crate) fn english_ordinal(value: i32) -> String {
-    let value = i32::from(value);
     let suffix = match value % 10 {
         1 if value != 11 => "st",
         2 if value != 12 => "nd",
@@ -347,7 +346,7 @@ pub(super) fn select_best_secondary_home_tile(
     nation: MajorNationId,
     university: &UniversityTechnologyState,
 ) -> Option<TileId> {
-    let owner = TileContext::from_nation(nation.nation());
+    let owner = TileContext::from(nation);
     let mut best_score: i32 = -1;
     let mut best_tile: Option<TileId> = None;
     for index in 0..STRATEGIC_TILE_COUNT {
@@ -367,7 +366,7 @@ pub(super) fn select_best_secondary_home_tile(
         if state.flags.has_base_transport() {
             score = 32_000;
         }
-        if (best_score as i32) < (score as i32) {
+        if best_score < (score as i32) {
             best_score = score;
             best_tile = Some(tile);
         }
@@ -384,18 +383,17 @@ pub(super) fn frog_city_score(yields: &ResourceTable<i32>) -> i32 {
     let food_bonus =
         ((yields[ResourceKind::Fish] + yields[ResourceKind::Livestock]) * 2).clamp(0, 4);
     let raw_material = (yields[ResourceKind::Timber] * 2).clamp(0, 12);
-    let soft = i32::from(yields[ResourceKind::Cotton])
-        + i32::from(yields[ResourceKind::Wool])
-        + i32::from(yields[ResourceKind::Gold]);
+    let soft =
+        yields[ResourceKind::Cotton] + yields[ResourceKind::Wool] + yields[ResourceKind::Gold];
     soft * 3
-        + i32::from(yields[ResourceKind::Coal])
-        + i32::from(yields[ResourceKind::Iron])
-        + i32::from(raw_material)
-        + i32::from(clamped_grain) * 1000
-        + i32::from(clamped_fruit) * 1000
-        + i32::from(grain_surplus)
-        + i32::from(fruit_surplus)
-        + i32::from(food_bonus)
+        + yields[ResourceKind::Coal]
+        + yields[ResourceKind::Iron]
+        + raw_material
+        + clamped_grain * 1000
+        + clamped_fruit * 1000
+        + grain_surplus
+        + fruit_surplus
+        + food_bonus
 }
 /// `TTown::CalculateCityResources` (0x005b73e0) for an enabled Frog City marker.
 pub(crate) fn calculate_city_resources(
@@ -405,7 +403,7 @@ pub(crate) fn calculate_city_resources(
     university: &UniversityTechnologyState,
 ) -> ResourceTable<i32> {
     let geometry = world.geometry();
-    let owner = TileContext::from_nation(nation.nation());
+    let owner = TileContext::from(nation);
     let mut yields = ResourceTable::default();
     // Directions 0..5 are hex neighbors; 6 is the home tile itself (`TownNeighborTile`).
     for tile in geometry
@@ -462,7 +460,7 @@ pub(crate) fn resource_capability_requirement_level(tile: &TileState, edge: usiz
     } else {
         packed
     };
-    i32::from(resource_development_yield(resource, index.min(3)))
+    resource_development_yield(resource, index.min(3))
 }
 /// Accept-time AI `PlaceCity`: province capital rewrite, flags, flood-fill, farmland nibble.
 pub(super) fn place_ai_capital(
@@ -471,9 +469,9 @@ pub(super) fn place_ai_capital(
     tile: TileId,
     nation: MajorNationId,
 ) {
-    let index = tile.index();
+    let index = tile.get();
     set_region_tile_subtype_and_refresh_neighbor_flags(world, province_capitals, tile);
-    let owner = TileContext::from_nation(nation.nation());
+    let owner = TileContext::from(nation);
     place_city(world, tile, owner);
 
     let origin_marker = world[tile].region;
@@ -506,14 +504,14 @@ pub(super) fn set_region_tile_subtype_and_refresh_neighbor_flags(
     let Some(province) = world[new_tile].province else {
         return;
     };
-    let province_index = province.index();
+    let province_index = province.get();
     if let Some(old_tile) = province_capitals[province_index] {
-        let old_index = usize::from(old_tile.get());
+        let old_index = old_tile.get();
         world[old_tile].flags = TileFlags::empty();
         world[old_tile].edge_resources[0] = Some(ResourceKind::Grain);
         world[old_tile].gate = resolve_region_tile_subtype_code(&world[old_tile], old_index);
     }
-    let new_index = usize::from(new_tile.get());
+    let new_index = new_tile.get();
     world[new_tile].flags = TileFlags::PROVINCE_ANCHOR_STATE;
     province_capitals[province_index] = Some(new_tile);
     world[new_tile].gate = resolve_region_tile_subtype_code(&world[new_tile], new_index);
@@ -529,7 +527,7 @@ pub(super) fn initialize_world_tile_neighbor_connection_mask_if_needed(
     world: &mut MapMgr,
     tile: TileId,
 ) {
-    let index = tile.index();
+    let index = tile.get();
     if world[tile].gate == 1 {
         return;
     }

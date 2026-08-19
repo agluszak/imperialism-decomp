@@ -186,7 +186,7 @@ impl GeneratedMap {
     }
 
     pub fn tile(&self, tile: TileId) -> GeneratedTerrainTile {
-        self.tiles[tile.index()]
+        self.tiles[tile.get()]
     }
 
     pub fn tiles(&self) -> &[GeneratedTerrainTile] {
@@ -511,7 +511,7 @@ fn generate_random_map_impl(
                 after_keyword: after_keyword.expect("trace collection summarizes scenario keyword"),
                 map_lcg_after_validation: rng.state(),
                 rotation_column,
-                seed_candidate_tiles: seed_candidate_tiles.map(|tile| (tile.get() as i32)),
+                seed_candidate_tiles: seed_candidate_tiles.map(|tile| tile.get() as i32),
                 accepted,
             });
         }
@@ -521,7 +521,7 @@ fn generate_random_map_impl(
                 provinces
                     .into_iter()
                     .map(|province| GeneratedProvince {
-                        owner: TileContext::new(
+                        owner: TileContext::from_retail_tag(
                             u8::try_from(province.owner_nation)
                                 .expect("accepted province owner is nonnegative"),
                         ),
@@ -1066,7 +1066,9 @@ fn normalize_generated_tile(tile: GeneratedTerrainTileScratch) -> GeneratedTerra
     GeneratedTerrainTile {
         terrain: tile.terrain_kind,
         river: RiverSegment::from_connection_code(tile.river_sprite_code),
-        owner: u8::try_from(tile.owner_nation).ok().map(TileContext::new),
+        owner: u8::try_from(tile.owner_nation)
+            .ok()
+            .map(TileContext::from_retail_tag),
         gate: (tile.gate_flag != -1).then_some(GenerationGate(tile.gate_flag)),
         province: usize::try_from(tile.province_index)
             .ok()
@@ -1437,7 +1439,7 @@ fn keyword_matches(text: &[u8], keyword: &[u8]) -> bool {
 fn full_neighbor(geometry: MapGeometry, tile: usize, direction: HexDirection) -> Option<usize> {
     geometry
         .neighbor(TileId::new(tile), direction)
-        .map(|tile| tile.index())
+        .map(|tile| tile.get())
 }
 
 fn sampled_hex_direction(rng: &mut RetailLcg) -> HexDirection {
@@ -1518,7 +1520,7 @@ mod tests {
             [
                 tile.terrain.retail() as u8,
                 tile.river.map_or(0, RiverSegment::connection_code),
-                tile.owner.map_or(-1, |owner| owner.get() as i8) as u8,
+                tile.owner.map_or(-1, |owner| owner.to_retail_tag() as i8) as u8,
                 tile.gate.map_or(-1, GenerationGate::get) as u8,
                 province[0],
                 province[1],

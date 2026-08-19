@@ -11,14 +11,14 @@ pub(crate) fn random_game_names() -> RandomGameNames {
     let mut localized_nation_names = NationTable::default();
     let mut province_names_by_nation = NationTable::default();
     for nation in NationId::all() {
-        localized_nation_names[nation] = format!("N{}", nation.get());
+        localized_nation_names[nation] = format!("N{}", nation.retail_slot());
         let count = if NationId::as_major(nation).is_some() {
             8
         } else {
             4
         };
         province_names_by_nation[nation] = (0..count)
-            .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
+            .map(|ordinal| format!("N{}P{}", nation.retail_slot(), ordinal + 1))
             .collect();
     }
     RandomGameNames {
@@ -190,6 +190,6 @@ pub(crate) fn game_state() -> GameState {
     };
     // Town markers must sit on owned land. The turn loop reaches city/transport
     // on this fixture, and that phase rebuilds yields from those markers.
-    state.map[TileId::new(1)].owner_nation = Some(TileContext::from_nation(MajorNationId::new(0)));
+    state.map[TileId::new(1)].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
     state
 }

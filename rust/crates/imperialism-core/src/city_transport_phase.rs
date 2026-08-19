@@ -236,7 +236,7 @@ impl GameState {
             }
 
             let last_turn_tick = self.map.provinces[province_id].last_turn_tick;
-            let turn_delta = economic_turn.wrapping_sub(i32::from(last_turn_tick)) as u32;
+            let turn_delta = economic_turn.wrapping_sub(last_turn_tick) as u32;
             if turn_delta <= 4 {
                 continue;
             }
@@ -263,32 +263,30 @@ impl GameState {
                     let cotton_wool =
                         resource_sums[ResourceKind::Cotton] + resource_sums[ResourceKind::Wool];
                     if cotton_wool != 0
-                        && i32::from(development[ResourceKind::Fabric]) < clothing_limit
-                        && i32::from(development[ResourceKind::Fabric]) < cotton_wool / 2
+                        && development[ResourceKind::Fabric] < clothing_limit
+                        && development[ResourceKind::Fabric] < cotton_wool / 2
                     {
                         pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Fabric] += 1;
                     }
                     if resource_sums[ResourceKind::Timber] != 0
-                        && i32::from(development[ResourceKind::Lumber]) < furniture_limit
-                        && i32::from(development[ResourceKind::Lumber])
+                        && development[ResourceKind::Lumber] < furniture_limit
+                        && development[ResourceKind::Lumber]
                             < resource_sums[ResourceKind::Timber] / 2
                     {
                         pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Lumber] += 1;
                     }
                     if resource_sums[ResourceKind::Coal] != 0
-                        && i32::from(development[ResourceKind::Steel]) < steel_limit
-                        && i32::from(development[ResourceKind::Steel])
-                            < resource_sums[ResourceKind::Coal] / 2
+                        && development[ResourceKind::Steel] < steel_limit
+                        && development[ResourceKind::Steel] < resource_sums[ResourceKind::Coal] / 2
                     {
                         pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Steel] += 1;
                     }
                     if resource_sums[ResourceKind::Oil] != 0
                         && oil_drilling
-                        && i32::from(development[ResourceKind::Fuel])
-                            < resource_sums[ResourceKind::Oil] / 2
+                        && development[ResourceKind::Fuel] < resource_sums[ResourceKind::Oil] / 2
                     {
                         pending_stage = ProvinceDevelopmentStage::Village;
                         development[ResourceKind::Fuel] += 1;
@@ -297,22 +295,22 @@ impl GameState {
 
                 if turn_delta > 9 && turn_delta & 1 != 0 {
                     if development[ResourceKind::Fabric] != 0
-                        && i32::from(development[ResourceKind::Clothing])
-                            < i32::from(development[ResourceKind::Fabric]) / 2
+                        && development[ResourceKind::Clothing]
+                            < development[ResourceKind::Fabric] / 2
                     {
                         pending_stage = ProvinceDevelopmentStage::Town;
                         development[ResourceKind::Clothing] += 1;
                     }
                     if development[ResourceKind::Lumber] != 0
-                        && i32::from(development[ResourceKind::Furniture])
-                            < i32::from(development[ResourceKind::Lumber]) / 2
+                        && development[ResourceKind::Furniture]
+                            < development[ResourceKind::Lumber] / 2
                     {
                         pending_stage = ProvinceDevelopmentStage::Town;
                         development[ResourceKind::Furniture] += 1;
                     }
                     if development[ResourceKind::Steel] != 0
-                        && i32::from(development[ResourceKind::Hardware])
-                            < i32::from(development[ResourceKind::Steel]) / 2
+                        && development[ResourceKind::Hardware]
+                            < development[ResourceKind::Steel] / 2
                     {
                         pending_stage = ProvinceDevelopmentStage::Town;
                         development[ResourceKind::Hardware] += 1;
@@ -349,7 +347,7 @@ impl GameState {
 
     /// `TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage`.
     pub(crate) fn compile_great_power_relationship_delta_lines(&mut self, nation: MajorNationId) {
-        let pressure = i32::from(self.nations.major(nation).economy.pressure_counter);
+        let pressure = self.nations.major(nation).economy.pressure_counter;
         let threshold = COMPILE_THRESHOLD_BY_DIFFICULTY[self.turn.difficulty];
         if threshold > pressure {
             return;
@@ -371,8 +369,7 @@ impl GameState {
                 continue;
             };
             let price = self.market.rows[commodity].price;
-            interaction_score =
-                (interaction_score as f32 - (price * i32::from(stock)) as f32 * -0.25) as i32;
+            interaction_score = (interaction_score as f32 - (price * stock) as f32 * -0.25) as i32;
         }
         self.nations.majors[&nation].common.treasury += interaction_score;
     }
@@ -440,7 +437,7 @@ impl GameState {
 }
 
 fn building_type_limit(production: i32) -> i32 {
-    i32::from(production) / 4
+    production / 4
 }
 
 #[cfg(test)]
@@ -587,7 +584,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
         state.nations.majors[&nation].common.home_tile = Some(home);
-        state.map[home].former_owner_nation = Some(TileContext::from_nation(nation.nation()));
+        state.map[home].former_owner_nation = Some(TileContext::from(nation));
         state.ocean.zones = vec![
             ZoneKind::Zone(empty_zone()),
             ZoneKind::PortZone(PortZone {
@@ -639,7 +636,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         let home = TileId::new(1);
         state.nations.majors[&nation].common.home_tile = Some(home);
-        state.map[home].former_owner_nation = Some(TileContext::from_nation(nation.nation()));
+        state.map[home].former_owner_nation = Some(TileContext::from(nation));
         state.ocean.zones = vec![ZoneKind::PortZone(PortZone {
             zone: empty_zone(),
             port_tile: home,

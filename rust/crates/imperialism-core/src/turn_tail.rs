@@ -54,8 +54,8 @@ impl GameState {
         let treasury = self.nations.majors[&nation].common.treasury;
         let mut base_pressure = sum_aid_allocation(&self.nations.majors[&nation].economy);
         let need = &self.nations.majors[&nation].economy.need_target_by_type;
-        base_pressure += i32::from(need[ResourceKind::Gold]) * 200;
-        base_pressure += i32::from(need[ResourceKind::Gems]) * 500;
+        base_pressure += need[ResourceKind::Gold] * 200;
+        base_pressure += need[ResourceKind::Gems] * 500;
         base_pressure += self.nations.majors[&nation].economy.budget_pool_base;
         let floor = BASE_PRESSURE[difficulty];
         if base_pressure < floor {
@@ -86,8 +86,7 @@ impl GameState {
                 } else {
                     *pressure += 1;
                 }
-                let pressure_tier =
-                    i32::from(self.nations.majors[&nation].economy.pressure_counter);
+                let pressure_tier = self.nations.majors[&nation].economy.pressure_counter;
                 if PRESSURE_HARD_ALERT[difficulty] <= pressure_tier {
                     hard_alert = true;
                 } else if pressure_tier >= PRESSURE_COMPILE_THRESHOLD[difficulty] {
@@ -95,10 +94,10 @@ impl GameState {
                 }
             }
         } else if self.nations.majors[&nation].economy.pressure_counter != 0 {
-            let next = i32::from(self.nations.majors[&nation].economy.escalation_counter)
+            let next = self.nations.majors[&nation].economy.escalation_counter
                 - PRESSURE_DECAY_STEP[difficulty];
             self.nations.majors[&nation].economy.escalation_counter =
-                next.max(PRESSURE_MIN_FLOOR[difficulty]) as i32;
+                next.max(PRESSURE_MIN_FLOOR[difficulty]);
             self.nations.majors[&nation].economy.pressure_counter = 0;
         }
 
@@ -112,9 +111,8 @@ impl GameState {
             return false;
         }
 
-        let drain = (199
-            - i32::from(self.nations.majors[&nation].economy.escalation_counter) * treasury)
-            / 200;
+        let drain =
+            (199 - self.nations.majors[&nation].economy.escalation_counter * treasury) / 200;
         self.nations.majors[&nation].economy.army_movement_budget = drain;
         self.nations.majors[&nation].common.treasury = treasury - drain;
         false
@@ -302,11 +300,11 @@ impl GameState {
 
     fn treasury_status_prompt_code(&self, nation: MajorNationId) -> i32 {
         let last_effort = self.diplomacy.last_diplomatic_effort_turn;
-        let tick = self.turn.economic_turn as i32;
+        let tick = self.turn.economic_turn;
         if last_effort == 0 && tick == 3 {
             return 0x25;
         }
-        if i32::from(last_effort) - self.turn.economic_turn > 4
+        if last_effort - self.turn.economic_turn > 4
             && self.nations.majors[&nation].common.treasury >= 10_000
         {
             return 0x27;
@@ -384,8 +382,8 @@ fn sum_aid_allocation(economy: &GreatPowerState) -> i32 {
 }
 
 fn raise_escalation(economy: &mut GreatPowerState, difficulty: Difficulty) {
-    let next = i32::from(economy.escalation_counter) + PRESSURE_RISE_STEP[difficulty];
-    economy.escalation_counter = next.min(PRESSURE_RISE_CAP[difficulty]) as i32;
+    let next = economy.escalation_counter + PRESSURE_RISE_STEP[difficulty];
+    economy.escalation_counter = next.min(PRESSURE_RISE_CAP[difficulty]);
 }
 
 #[cfg(test)]

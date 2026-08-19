@@ -75,7 +75,7 @@ impl AdvisoryRoute {
                 target: Some(_), ..
             } => AdvisoryMissionKind::Invade,
             Self::Sea { zone, target: None } => {
-                if matches!(zones[usize::from(zone.get())], ZoneKind::PortZone(_)) {
+                if matches!(zones[zone.get()], ZoneKind::PortZone(_)) {
                     AdvisoryMissionKind::Blockade
                 } else {
                     AdvisoryMissionKind::Invade
@@ -392,7 +392,7 @@ impl GameState {
         }
         if zone.is_some()
             && related.is_none()
-            && let Some(ordinal) = zone.map(|zone| usize::from(zone.get()))
+            && let Some(ordinal) = zone.map(|zone| zone.get())
             && self.zone_target(nation, ordinal) != Some(AiTargetState::Candidate)
         {
             return;
@@ -452,11 +452,7 @@ impl GameState {
         if let Some(zone) = zone
             && related.is_none()
         {
-            self.set_zone_target(
-                nation,
-                usize::from(zone.get()),
-                AiTargetState::MissionQueued,
-            );
+            self.set_zone_target(nation, zone.get(), AiTargetState::MissionQueued);
         }
         if let Some(province) = related {
             self.set_province_target(nation, province, AiTargetState::MissionQueued);
@@ -504,7 +500,7 @@ impl GameState {
             }
             AdvisoryMissionKind::Blockade => {
                 let port = zone?;
-                let target = self.ocean.zones[usize::from(port.get())]
+                let target = self.ocean.zones[port.get()]
                     .zone()
                     .primary_neighbors
                     .first()
@@ -759,14 +755,14 @@ impl GameState {
         let mut mask = 0u16;
         for ship in self.ships.values() {
             if ship.location == zone {
-                mask |= 1 << ship.nation.get();
+                mask |= 1 << ship.nation.table_index();
             }
         }
         mask
     }
 
     pub(crate) fn zone_value_average(&self, zone: OceanZoneId) -> i32 {
-        match &self.ocean.zones[usize::from(zone.get())] {
+        match &self.ocean.zones[zone.get()] {
             ZoneKind::PortZone(port) => {
                 let Some(owner) = self.map[port.port_tile]
                     .owner_nation
@@ -903,7 +899,7 @@ impl GameState {
     }
 
     fn zone_has_secondary_neighbor_owner(&self, zone: OceanZoneId, nation: NationId) -> bool {
-        self.ocean.zones[usize::from(zone.get())]
+        self.ocean.zones[zone.get()]
             .zone()
             .secondary_neighbors
             .iter()
@@ -1009,11 +1005,10 @@ fn ship_studliness(ship: &ShipState) -> i32 {
     if task_force == 0 {
         return 0;
     }
-    let quantity_term = i32::from(ship.experience) / 100;
+    let quantity_term = ship.experience / 100;
     let navy_term = (quantity_term + desc.navy_priority_weight * 10 + 5) / 10;
     let resolve_term = (quantity_term + desc.resolve_weight * 10 + 5) / 10;
-    ((navy_term + desc.calculate_weight) * 100 + resolve_term + i32::from(ship.strength))
-        / task_force
+    ((navy_term + desc.calculate_weight) * 100 + resolve_term + ship.strength) / task_force
 }
 
 fn empty_army() -> ArmyMissionState {

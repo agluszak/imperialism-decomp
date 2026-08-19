@@ -815,7 +815,7 @@ fn direction_from_tiles(source: TileId, dest: TileId) -> HexDirection {
 }
 
 fn hex_area_tile(anchor: TileId, direction: HexDirection) -> Option<TileId> {
-    let index = (anchor.get() as i32);
+    let index = anchor.get() as i32;
     let row = index / STRATEGIC_MAP_WIDTH;
     let col = index % STRATEGIC_MAP_WIDTH;
     let mut hex_x = row % 2 + col * 2 + HEX_COL_DELTA[direction];
@@ -1071,7 +1071,7 @@ mod tests {
         let nation = state.turn.active_nation;
         let tile = TileId::new(10);
         state.map[tile].flags.insert(TileFlags::CITY_MARKER);
-        state.map[tile].owner_nation = Some(TileContext::from_nation(nation));
+        state.map[tile].owner_nation = Some(TileContext::from(nation));
         state.map[tile].province = Some(ProvinceId::new(3));
         own(&mut state, ProvinceId::new(3));
         assert_eq!(

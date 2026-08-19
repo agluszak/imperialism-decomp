@@ -195,7 +195,7 @@ fn apply_offer_sheet_pose(
         i16::from(offer.commodity.resource().retail()),
     );
     let amount = offer.amount.to_string();
-    let price = format_currency(i32::from(offer.price));
+    let price = format_currency(offer.price);
     set_text(
         commands,
         tree.find(root, fourcc!("offe")),

@@ -185,9 +185,9 @@ pub fn create_random_game(
     initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
     let mut port_status_rng = RetailLcg::from_state(runtime_seed);
     for port in port_zones.ports.iter().rev() {
-        debug_assert_eq!(usize::from(port.ordinal.get()), ocean_zones.len());
+        debug_assert_eq!(port.ordinal.get(), ocean_zones.len());
         if let Some(neighbor) = port.primary_neighbor {
-            let neighbor = &mut ocean_zones[usize::from(neighbor.get())];
+            let neighbor = &mut ocean_zones[neighbor.get()];
             let neighbor = match neighbor {
                 ZoneKind::Zone(zone) => zone,
                 ZoneKind::PortZone(port) => &mut port.zone,

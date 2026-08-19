@@ -22,8 +22,8 @@ impl GameState {
                 continue;
             }
             let level = u8::from(town.enabled != 0) + 1;
-            influence[usize::from(town_tile.get())] = level;
-            let owner = Some(TileContext::from_nation(nation.nation()));
+            influence[town_tile.get()] = level;
+            let owner = Some(TileContext::from(nation));
             for neighbor in self
                 .map
                 .geometry()
@@ -32,7 +32,7 @@ impl GameState {
                 .flatten()
             {
                 let tile = &self.map[neighbor];
-                let entry = &mut influence[usize::from(neighbor.get())];
+                let entry = &mut influence[neighbor.get()];
                 if (tile.owner_nation == owner || tile.gate == 0) && *entry < level {
                     *entry = level;
                 }
@@ -165,7 +165,7 @@ impl GameState {
         if !home_linked {
             self.mark_transport_component(nation, home_tile, &mut influence);
             for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
-                if influence[tile.index()] != 0 && unblocked_port {
+                if influence[tile.get()] != 0 && unblocked_port {
                     home_linked = true;
                     break;
                 }
@@ -173,7 +173,7 @@ impl GameState {
         }
 
         for ((&tile, town), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
-            if unblocked_port && home_linked && town.active && influence[tile.index()] == 0 {
+            if unblocked_port && home_linked && town.active && influence[tile.get()] == 0 {
                 self.mark_transport_component(nation, tile, &mut influence);
             }
         }
@@ -183,15 +183,14 @@ impl GameState {
             .iter()
             .zip(&unblocked_ports)
             .map(|((&tile, town), &unblocked_port)| {
-                !((influence[tile.index()] == 0 || !town.active)
-                    && (!unblocked_port || !home_linked))
+                !((influence[tile.get()] == 0 || !town.active) && (!unblocked_port || !home_linked))
             })
             .collect::<Vec<_>>();
 
         if home_linked {
             for ((&tile, _), &unblocked_port) in major.towns.iter().zip(&unblocked_ports) {
                 if unblocked_port {
-                    influence[tile.index()] = 1;
+                    influence[tile.get()] = 1;
                 }
             }
         }
@@ -199,11 +198,11 @@ impl GameState {
     }
 
     fn mark_transport_component(&self, nation: MajorNationId, start: TileId, influence: &mut [u8]) {
-        let owner = Some(TileContext::from_nation(nation.nation()));
+        let owner = Some(TileContext::from(nation));
         let geometry = self.map.geometry();
         let mut pending = vec![start];
         while let Some(tile) = pending.pop() {
-            let index = tile.index();
+            let index = tile.get();
             if influence[index] != 0 {
                 continue;
             }
@@ -216,7 +215,7 @@ impl GameState {
                     continue;
                 }
                 if let Some(neighbor) = geometry.neighbor(tile, direction)
-                    && influence[usize::from(neighbor.get())] == 0
+                    && influence[neighbor.get()] == 0
                     && self.map[neighbor].owner_nation == owner
                 {
                     pending.push(neighbor);
@@ -278,12 +277,12 @@ impl GameState {
             return true;
         }
         for candidate in MajorNationId::all().map(MajorNationId::nation) {
-            if active_nations & (1_u32 << candidate.get()) == 0 {
+            if active_nations & candidate.bit() == 0 {
                 continue;
             }
             if self.diplomacy.relationships[candidate][origin_nation] == DiplomaticRelationship::War
                 && self.diplomacy.relationship_turns[candidate][origin_nation]
-                    .is_none_or(|turn| i32::from(turn) != self.turn.economic_turn)
+                    .is_none_or(|turn| turn != self.turn.economic_turn)
             {
                 return false;
             }
@@ -298,7 +297,7 @@ pub(crate) fn civilian_sea_scan_neighbor(tile: TileId, direction: HexDirection) 
     const COLUMN_X2_DELTAS: HexDirectionTable<i32> =
         HexDirectionTable::from_array([1, 2, 1, -1, -2, -1]);
     const ROW_DELTAS: HexDirectionTable<i32> = HexDirectionTable::from_array([-1, 0, 1, 1, 0, -1]);
-    const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH as i32 * 2;
+    const RASTER_WIDTH: i32 = STRATEGIC_MAP_WIDTH * 2;
 
     let row = tile.get() as i32 / STRATEGIC_MAP_WIDTH;
     let column = tile.get() as i32 % STRATEGIC_MAP_WIDTH;
@@ -426,7 +425,7 @@ mod tests {
             .geometry()
             .neighbor(home, HexDirection::East)
             .unwrap();
-        let owner = Some(TileContext::from_nation(nation.nation()));
+        let owner = Some(TileContext::from(nation));
         state.map[home].owner_nation = owner;
         state.map[second].owner_nation = owner;
         state.map[home]
@@ -474,14 +473,14 @@ mod tests {
         let mut state = crate::test_support::game_state();
         let home = TileId::new(2_210);
         let origin = MajorNationId::new(6);
-        state.map[home].owner_nation = Some(TileContext::from_nation(origin));
+        state.map[home].owner_nation = Some(TileContext::from(origin));
         for direction in HexDirection::ALL {
             let neighbor = civilian_sea_scan_neighbor(home, direction);
             state.map[neighbor].terrain = TerrainKind::Plains;
         }
         let sea = civilian_sea_scan_neighbor(home, HexDirection::NorthEast);
         state.map[sea].terrain = TerrainKind::Water;
-        state.map[sea].owner_nation = Some(TileContext::new(0x17));
+        state.map[sea].owner_nation = Some(TileContext::from_retail_tag(0x17));
 
         state.turn.economic_turn = 10;
         let hostile = MajorNationId::new(0);

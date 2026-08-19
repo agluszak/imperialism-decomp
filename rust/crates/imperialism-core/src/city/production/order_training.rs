@@ -24,8 +24,8 @@ pub(crate) fn training_limit(
         workforce_limit
     } else {
         let affordable = (treasury + owner.diplomacy_budget_base / 100).max(0) / cash_per_unit;
-        if affordable < i32::from(workforce_limit) {
-            affordable as i32
+        if affordable < workforce_limit {
+            affordable
         } else {
             workforce_limit
         }
@@ -38,7 +38,7 @@ pub(crate) fn training_limit(
     };
     limit.min_with(cash_limit, ProductionConstraint::Treasury);
     limit.min_with(paper_limit, ProductionConstraint::Resources);
-    if i32::from(progress.quantity) + i32::from(limit.maximum) > 99 {
+    if progress.quantity + limit.maximum > 99 {
         limit.maximum = 99 - progress.quantity;
     }
     OrderLimit {
@@ -61,8 +61,8 @@ pub(crate) fn set_training_quantity(
     };
 
     let (paper_change, cash_change) = match level {
-        TrainingLevel::Medium => (delta, i32::from(delta) * 100),
-        TrainingLevel::High => (delta * 2, i32::from(delta) * 1_000),
+        TrainingLevel::Medium => (delta, delta * 100),
+        TrainingLevel::High => (delta * 2, delta * 1_000),
     };
     stockpile.wrapping_add_and_verify(ResourceKind::Paper, paper_change.wrapping_neg());
     *treasury -= cash_change;
@@ -87,7 +87,7 @@ pub(crate) fn produce_training(
             baseline.medium += progress.quantity;
         }
         TrainingLevel::High => {
-            let new_level = i32::from(baseline.high) + i32::from(progress.quantity);
+            let new_level = baseline.high + progress.quantity;
             if new_level >= 10 {
                 let payload = if owner.pending_actions[PendingActionKind::UniversityExpansion]
                     .status()

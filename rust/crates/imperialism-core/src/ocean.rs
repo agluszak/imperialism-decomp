@@ -43,13 +43,13 @@ impl std::ops::Index<OceanZoneId> for Ocean {
     type Output = ZoneKind;
 
     fn index(&self, id: OceanZoneId) -> &Self::Output {
-        &self.zones[id.index()]
+        &self.zones[id.get()]
     }
 }
 
 impl std::ops::IndexMut<OceanZoneId> for Ocean {
     fn index_mut(&mut self, id: OceanZoneId) -> &mut Self::Output {
-        &mut self.zones[id.index()]
+        &mut self.zones[id.get()]
     }
 }
 
@@ -160,14 +160,14 @@ impl GameState {
             )
         }) {
             self.port_zone_index_for_tile(best_sea)
-                .map(|index| OceanZoneId::new(index))
+                .map(OceanZoneId::new)
         } else {
             self.map[best_sea].owner_nation.and_then(TileContext::ocean)
         };
 
         let ordinal = OceanZoneId::new(self.ocean.zones.len());
         if let Some(linked) = linked {
-            let linked_index = usize::from(linked.get());
+            let linked_index = linked.get();
             if linked_index < self.ocean.zones.len() {
                 let neighbor = match &mut self.ocean.zones[linked_index] {
                     ZoneKind::Zone(zone) => &mut zone.primary_neighbors,
@@ -214,7 +214,7 @@ impl GameState {
 
         for nation in MajorNationId::all() {
             if let Some(auto) = self.nations.major_mut(nation).auto.as_mut()
-                && auto.zone_targets.len() == usize::from(ordinal.get())
+                && auto.zone_targets.len() == ordinal.get()
             {
                 auto.zone_targets.push(AiTargetState::Unmarked);
             }
@@ -245,7 +245,7 @@ fn select_live_port_sea_tile(
     tile: TileId,
     seed_owner: TileContext,
 ) -> Option<TileId> {
-    let tile_index = tile.index();
+    let tile_index = tile.get();
     for offset in 0..6 {
         let direction = HexDirection::ALL[(tile_index + offset) % 6];
         let Some(candidate) = geometry.neighbor(tile, direction) else {

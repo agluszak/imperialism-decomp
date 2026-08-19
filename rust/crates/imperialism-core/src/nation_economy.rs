@@ -223,9 +223,7 @@ impl GreatPowerState {
             ResourceKind::Arms,
         ] {
             let potential = self.item_potentials[resource];
-            if potential > 0
-                && i32::from(self.purchased_items_by_resource[resource]) + i32::from(potential) > 0
-            {
+            if potential > 0 && self.purchased_items_by_resource[resource] + potential > 0 {
                 return false;
             }
         }

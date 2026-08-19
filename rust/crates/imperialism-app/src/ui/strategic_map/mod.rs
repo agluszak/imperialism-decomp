@@ -397,7 +397,7 @@ fn draw_civilian_hover_highlight(
     {
         return;
     }
-    let owner = TileContext::from_nation(state.turn().active_nation);
+    let owner = TileContext::from(state.turn().active_nation);
     let neighbors = state.map().geometry().neighbors(hovered).map(|neighbor| {
         neighbor.filter(|&neighbor| {
             let neighbor = state.map()[neighbor];
@@ -464,12 +464,10 @@ pub(super) fn for_each_visible_strategic_tile(
         row: origin_row,
         column: origin_column,
     } = state.map().geometry().position(view_origin);
-    let origin_row = i32::from(origin_row);
-    let origin_column = i32::from(origin_column);
 
     for row_delta in 0..=7 {
         let row = origin_row + row_delta;
-        if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
+        if !(0..STRATEGIC_MAP_HEIGHT).contains(&row) {
             continue;
         }
         let odd_row_offset = if row & 1 != 0 { TILE_SIZE / 2 } else { 0 };
@@ -527,7 +525,7 @@ pub(super) fn draw_city_site_selection(
     let (x, y) = strategic_tile_screen_origin(state, view_origin, tile);
     draw_frame(viewport, x, y, MAP_SELECTION_PALETTE_INDEX);
 
-    let active_owner = TileContext::from_nation(nation.nation());
+    let active_owner = TileContext::from(nation);
     let neighbors = state.map().geometry().neighbors(tile).map(|neighbor| {
         neighbor.filter(|&neighbor| {
             let neighbor = state.map()[neighbor];
@@ -636,8 +634,8 @@ pub(super) fn strategic_tile_screen_origin(
         column: origin_column,
     } = state.map().geometry().position(view_origin);
     let MapPosition { row, column } = state.map().geometry().position(tile);
-    let y = (i32::from(row) - i32::from(origin_row)) * TILE_SIZE;
-    let mut x = (i32::from(column) - i32::from(origin_column)) * TILE_SIZE;
+    let y = (row - origin_row) * TILE_SIZE;
+    let mut x = (column - origin_column) * TILE_SIZE;
     if row & 1 != 0 {
         x += TILE_SIZE / 2;
         if x >= 0x1ae0 {
@@ -679,8 +677,7 @@ pub(super) fn compose_strategic_tile(
             column: origin_column,
             ..
         } = state.map().geometry().position(view_origin);
-        (i32::from(origin_column) + VIEWPORT_TILE_SPAN / 2)
-            .rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+        (origin_column + VIEWPORT_TILE_SPAN / 2).rem_euclid(STRATEGIC_MAP_WIDTH)
     };
     let MapPosition {
         column: tile_column,
@@ -712,7 +709,7 @@ pub(super) fn compose_strategic_tile(
 
 fn normalize_map_column(column: i32) -> i32 {
     // Draw and ConvertPoint modulo the column even when the viewport itself is bounded.
-    column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+    column.rem_euclid(STRATEGIC_MAP_WIDTH)
 }
 
 fn copy_clipped_tile(source: &[u8], screen_x: i32, screen_y: i32, destination: &mut [u8]) {
@@ -788,11 +785,11 @@ fn strategic_tile_at_position(
         row: origin_row,
         column: origin_column,
     } = state.map().geometry().position(view_origin);
-    let row = i32::from(origin_row) + y / TILE_SIZE;
-    if !(0..i32::from(STRATEGIC_MAP_HEIGHT)).contains(&row) {
+    let row = origin_row + y / TILE_SIZE;
+    if !(0..STRATEGIC_MAP_HEIGHT).contains(&row) {
         return None;
     }
-    let absolute_x = i32::from(origin_column) * TILE_SIZE + x;
+    let absolute_x = origin_column * TILE_SIZE + x;
     let column = if row & 1 != 0 {
         (absolute_x + TILE_SIZE / 2) / TILE_SIZE - 1
     } else {

@@ -197,7 +197,7 @@ impl GameState {
                 );
                 self.nations.majors[&nation]
                     .economy
-                    .development_grant_by_nation[minor] += amount as i32;
+                    .development_grant_by_nation[minor] += amount;
             }
         }
         if budget > 1000 {
@@ -222,7 +222,7 @@ impl GameState {
                         let slot = &mut self.nations.majors[&nation]
                             .economy
                             .development_grant_by_nation[minor];
-                        *slot += amount as i32;
+                        *slot += amount;
                         *slot
                     };
                     if cumulative >= 5000 {

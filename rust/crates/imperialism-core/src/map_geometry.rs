@@ -150,7 +150,7 @@ impl MapGeometry {
     }
 
     pub const fn position(self, tile: TileId) -> MapPosition {
-        let index = tile.index() as i32;
+        let index = tile.get() as i32;
         MapPosition {
             row: index / STRATEGIC_MAP_WIDTH,
             column: index % STRATEGIC_MAP_WIDTH,
@@ -200,7 +200,7 @@ mod tests {
     fn round_trips_retail_tile_coordinates() {
         let geometry = MapGeometry::new(MapTopology::Wrapping);
         let last = geometry.tile(MapPosition::new(59, 107)).unwrap();
-        assert_eq!(last.index(), 6479);
+        assert_eq!(last.get(), 6479);
         assert_eq!(geometry.position(last), MapPosition::new(59, 107));
     }
 

@@ -114,7 +114,7 @@ impl MapMgr {
     /// stores `(short)id + 1`. The start tile is stamped with the low 8 bits.
     pub(crate) fn allocate_region_marker(&mut self) -> RegionId {
         let marker = RegionId::new(self.next_region_marker_id as u8);
-        self.next_region_marker_id = i32::from(self.next_region_marker_id as i32) + 1;
+        self.next_region_marker_id += 1;
         marker
     }
 
@@ -128,7 +128,7 @@ impl MapMgr {
 
         let geometry = self.geometry();
         let MapPosition { row, column } = geometry.position(tile);
-        let mut column = i32::from(column) - VIEWPORT_TILE_SPAN / 2;
+        let mut column = column - VIEWPORT_TILE_SPAN / 2;
         if self.topology == MapTopology::Bounded {
             column = column.clamp(1, 0x6e - VIEWPORT_TILE_SPAN);
         }
@@ -137,7 +137,7 @@ impl MapMgr {
         } else if column >= STRATEGIC_MAP_WIDTH {
             column -= STRATEGIC_MAP_WIDTH;
         }
-        let row = (i32::from(row) - 3).clamp(0, 0x35);
+        let row = (row - 3).clamp(0, 0x35);
         geometry
             .tile(MapPosition::new(row, column))
             .expect("retail strategic-map viewport origin is inside the map")
@@ -157,11 +157,11 @@ impl MapMgr {
         let MapPosition { row, column } = geometry.position(origin);
         debug_assert!((-1..=1).contains(&row_delta));
         debug_assert!((-1..=1).contains(&column_delta));
-        let row = (i32::from(row) + row_delta).clamp(0, MAX_ORIGIN_ROW);
+        let row = (row + row_delta).clamp(0, MAX_ORIGIN_ROW);
         let column = if self.topology.wraps_horizontally() {
-            (i32::from(column) + column_delta).rem_euclid(STRATEGIC_MAP_WIDTH)
+            (column + column_delta).rem_euclid(STRATEGIC_MAP_WIDTH)
         } else {
-            (i32::from(column) + column_delta).clamp(1, 0x6e - VIEWPORT_TILE_SPAN)
+            (column + column_delta).clamp(1, 0x6e - VIEWPORT_TILE_SPAN)
         };
         geometry
             .tile(MapPosition::new(row, column))
@@ -197,7 +197,7 @@ impl MapMgr {
         home_tile: Option<TileId>,
         wrap_bias: bool,
     ) -> Option<TileId> {
-        let owner = TileContext::from_nation(nation);
+        let owner = TileContext::from(nation);
         let home_region_class = home_tile.map(|home| {
             let province = self[home]
                 .province
@@ -243,10 +243,7 @@ impl MapMgr {
                     if self[tile].owner_nation != Some(owner) {
                         continue;
                     }
-                    let MapPosition {
-                        row,
-                        column: mut column,
-                    } = self.geometry().position(tile);
+                    let MapPosition { row, mut column } = self.geometry().position(tile);
                     if column < 0x36 && west_count < east_count {
                         column = 0x6b;
                     }
@@ -271,7 +268,7 @@ impl MapMgr {
         self.tiles
             .iter()
             .rposition(|tile| tile.owner_nation == Some(owner))
-            .map(|index| TileId::new(index))
+            .map(TileId::new)
     }
 
     /// Retail `UpdateTilePrimaryAndSecondaryNeighborLinksByPriority`.
@@ -332,7 +329,7 @@ impl MapMgr {
     /// great powers' ordered town lists before province-level country dispatch.
     pub fn set_owner(&mut self, nations: &mut Nations, tile: TileId, new_owner: NationId) {
         let old_owner = self[tile].owner_nation;
-        let new_owner_tag = Some(TileContext::from_nation(new_owner));
+        let new_owner_tag = Some(TileContext::from(new_owner));
         if old_owner == new_owner_tag {
             return;
         }
@@ -495,13 +492,13 @@ impl Index<TileId> for MapMgr {
     type Output = TileState;
 
     fn index(&self, index: TileId) -> &Self::Output {
-        &self.tiles[index.index()]
+        &self.tiles[index.get()]
     }
 }
 
 impl IndexMut<TileId> for MapMgr {
     fn index_mut(&mut self, index: TileId) -> &mut Self::Output {
-        &mut self.tiles[index.index()]
+        &mut self.tiles[index.get()]
     }
 }
 

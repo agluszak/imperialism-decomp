@@ -153,7 +153,7 @@ impl LegacyCountryBase {
                     MilitaryOrder::idle(targets, target_mirrors)
                 } else {
                     MilitaryOrder::retail(
-                        MilitaryOrderCode::from_retail(i32::from(unit.order)),
+                        MilitaryOrderCode::from_retail(unit.order),
                         target,
                         targets,
                         target_mirrors,
@@ -197,13 +197,7 @@ impl LegacyGreatPowerPostCity {
                     nation,
                     unit_type,
                     tile.map_or(CivilianLocation::OffMap, CivilianLocation::OnMap),
-                    civilian_work_order(
-                        i32::from(unit.order),
-                        tile,
-                        target,
-                        unit.remaining_turns,
-                        topology,
-                    ),
+                    civilian_work_order(unit.order, tile, target, unit.remaining_turns, topology),
                     nation_id_from_retail_i16(unit.owner_nation),
                     n(unit.roster_id),
                     unit.registered != 0,
@@ -899,7 +893,7 @@ impl LegacySaveV62 {
         let live_ocean_context_count = ocean.zones.len();
         let mut majors = IndexMap::new();
         for (&major_id, nation) in &self.major_nations {
-            let slot = usize::from(major_id.get());
+            let slot = major_id.get();
             let nation_id = major_id.nation();
             let great_power = nation.great_power();
             let city = great_power
@@ -1198,7 +1192,7 @@ fn rebuild_ocean_neighbors(ocean: &mut Ocean, map: &MapMgr) {
             .expect("retail port zone has a target tile");
             let owner = map[target_tile]
                 .owner_nation
-                .map(TileContext::get)
+                .map(TileContext::to_retail_tag)
                 .filter(|&owner| owner >= 0x17)
                 .expect("retail port-zone target tile has a base ocean zone");
             let base_index = usize::from(owner - 0x17);
@@ -1265,7 +1259,7 @@ fn ocean_zone_for_tile(ocean: &Ocean, map: &MapMgr, tile: TileId) -> Option<usiz
     }
     let ordinal = map[tile]
         .owner_nation
-        .map(TileContext::get)?
+        .map(TileContext::to_retail_tag)?
         .checked_sub(0x17)?;
     let ordinal = usize::from(ordinal);
     matches!(ocean.zones.get(ordinal), Some(ZoneKind::Zone(_))).then_some(ordinal)

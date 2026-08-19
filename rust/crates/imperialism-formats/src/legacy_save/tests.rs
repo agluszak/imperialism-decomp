@@ -394,7 +394,7 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
         assert_projected_zone(&port.zone, &saved.zone);
         assert_eq!(port.port_tile.get(), saved.port_tile_index as usize);
         assert_eq!(port.zone.primary_neighbors.len(), 1);
-        let linked = usize::from(port.zone.primary_neighbors[0].get());
+        let linked = port.zone.primary_neighbors[0].get();
         let ZoneKind::Zone(linked_zone) = &state.ocean().zones[linked] else {
             panic!("port zone linked to another port zone")
         };
@@ -403,13 +403,13 @@ fn projects_exact_fixture_phase_ten_inputs_and_ocean() {
                 .primary_neighbors
                 .contains(&OceanZoneId::new(saved.zone.context_ordinal as usize))
         );
-        let tile = usize::from(port.port_tile.get());
+        let tile = port.port_tile.get();
         assert_eq!(
             state.map()[port.port_tile]
                 .former_owner_nation
                 .and_then(TileContext::nation)
                 .unwrap()
-                .get(),
+                .retail_slot(),
             save.map.tiles[tile].former_owner_nation as u8,
         );
     }
@@ -440,7 +440,7 @@ fn assert_projected_zone(zone: &Zone, saved: &LegacyZone) {
         (saved.tile_or_terrain_id != -1).then_some(saved.tile_or_terrain_id as usize)
     );
     assert_eq!(
-        zone.seed_owner.map(TileContext::get),
+        zone.seed_owner.map(TileContext::to_retail_tag),
         (saved.seed_nation_id != -1).then_some(saved.seed_nation_id as u8)
     );
     assert_eq!(
@@ -905,7 +905,7 @@ fn battle_report_text_round_trips_outside_game_state() {
 fn eliminated_major_slot_stays_absent_through_save_and_load() {
     let eliminated = MajorNationId::new(0);
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    save.simulation.nation_availability[usize::from(eliminated.get())] = 0;
+    save.simulation.nation_availability[eliminated.get()] = 0;
     save.simulation.nation_count -= 1;
     save.major_nations.shift_remove(&eliminated);
 
@@ -930,7 +930,7 @@ fn eliminated_major_slot_stays_absent_through_save_and_load() {
 fn eliminated_minor_slot_stays_absent_through_save_and_load() {
     let eliminated = MinorNationId::new(0);
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
-    save.simulation.nation_availability[usize::from(eliminated.get())] = 0;
+    save.simulation.nation_availability[eliminated.get()] = 0;
     save.simulation.nation_count -= 1;
     save.minor_nations.shift_remove(&eliminated);
 

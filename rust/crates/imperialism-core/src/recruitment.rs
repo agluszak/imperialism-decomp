@@ -5,7 +5,7 @@ use crate::{
     ShipType, TileContext, TileFlags, TileId, TurnSummary,
 };
 #[cfg(test)]
-use crate::{CivilianUnitId, MapGeometry, MapMgr, MapPosition, MapTopology, MilitaryUnitId};
+use crate::{CivilianUnitId, MapMgr, MapPosition, MilitaryUnitId};
 
 impl GameState {
     pub(crate) fn find_reachable_recruit_spawn_tile(
@@ -258,7 +258,7 @@ impl GameState {
                 if introductory_navy
                     && let Some(home) = self.nations.home_tile(nation)
                     && let Some(port) = self.port_zone_for_city_tile(home)
-                    && let Some(&neighbor) = self.ocean.zones[usize::from(port.get())]
+                    && let Some(&neighbor) = self.ocean.zones[port.get()]
                         .zone()
                         .primary_neighbors
                         .first()
@@ -433,7 +433,7 @@ impl GameState {
                 if let Some(current_level) = pending.growth_reward_level() {
                     let military_power = self.selected_military_power_score(nation_id);
                     if let Some(payload) =
-                        pending_military_action_payload(military_power, i32::from(current_level))
+                        pending_military_action_payload(military_power, current_level)
                     {
                         let major = &mut self.nations.majors[&nation].economy;
                         major.pending_actions[PendingActionKind::ArmyGrowthReward]
@@ -617,8 +617,8 @@ mod tests {
             .neighbor(start, crate::HexDirection::NorthEast)
             .unwrap();
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::new(0));
-        state.map[first_neighbor].owner_nation = Some(crate::TileContext::new(0));
+        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
+        state.map[first_neighbor].owner_nation = Some(crate::TileContext::from_retail_tag(0));
         state
             .civilian_units
             .insert(CivilianUnitId::new(1), civilian(1, 0, start));
@@ -633,7 +633,7 @@ mod tests {
     fn active_flag_two_is_allowed_only_for_the_retail_unit_type() {
         let start = TileId::new(200);
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::new(0));
+        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
         state.map[start].flags = TileFlags::RECRUITMENT_RESERVED;
 
         assert_eq!(state.find_reachable_recruit_spawn_tile(start, false), None);
@@ -647,7 +647,7 @@ mod tests {
     fn occupancy_checks_the_tile_owner_not_an_unrelated_civilian() {
         let start = TileId::new(200);
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::new(0));
+        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
         state
             .civilian_units
             .insert(CivilianUnitId::new(1), civilian(1, 1, start));
@@ -666,8 +666,8 @@ mod tests {
             .neighbor(start, crate::HexDirection::NorthEast)
             .unwrap();
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::new(0));
-        state.map[first_neighbor].owner_nation = Some(crate::TileContext::new(0));
+        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
+        state.map[first_neighbor].owner_nation = Some(crate::TileContext::from_retail_tag(0));
         state
             .civilian_units
             .insert(CivilianUnitId::new(40), civilian(40, 0, start));
@@ -694,7 +694,7 @@ mod tests {
     fn negative_quantity_skips_spawns_but_keeps_retail_tail_effects() {
         let start = TileId::new(200);
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::new(0));
+        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
         state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Miner, -2);
 
         assert!(state.civilian_units.is_empty());

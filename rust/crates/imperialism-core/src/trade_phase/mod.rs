@@ -239,7 +239,7 @@ impl GameState {
                         deal.buyer,
                         deal.seller,
                         transfer,
-                        deal.price as i32,
+                        deal.price,
                         commodity,
                     )
                     .inspect(|offer| session.pending = Some(*offer))
@@ -450,7 +450,7 @@ pub(super) fn offer_or_grant(
     threshold: i32,
     price: i32,
 ) {
-    if i32::from(threshold) < price {
+    if threshold < price {
         state.trade.offers[resource] = state.trade.current_supply[resource];
     } else if recurring[resource] != 0 {
         state.trade.offers[resource] = recurring[resource];
@@ -533,11 +533,7 @@ pub(super) fn offer_factor(base: f64, amount: i32) -> f64 {
 }
 
 pub(super) fn subsidy_from_stock(stock: i32) -> i32 {
-    if stock == 0 {
-        0
-    } else {
-        (i32::from(stock) / 2).min(5) as i32
-    }
+    if stock == 0 { 0 } else { (stock / 2).min(5) }
 }
 
 pub(super) fn trades_first(proposal: TradeCommodity, category: TradeCommodity) -> TradeCommodity {
@@ -563,25 +559,25 @@ pub(super) fn insert_sorted<T>(list: &mut Vec<T>, item: T, mut cmp: impl FnMut(&
 pub(super) fn compare_deals(a: &RankedDeal, b: &RankedDeal) -> i32 {
     let invert = MANUFACTURED_COMMODITIES.contains(&a.category);
     let mut score_a = if invert {
-        (0xff - i32::from(a.standing)) * a.price
+        (0xff - a.standing) * a.price
     } else {
-        -(a.price * i32::from(a.standing))
+        -(a.price * a.standing)
     };
     let mut score_b = if invert {
-        (0xff - i32::from(b.standing)) * b.price
+        (0xff - b.standing) * b.price
     } else {
-        -(b.price * i32::from(b.standing))
+        -(b.price * b.standing)
     };
     if score_a == score_b {
-        score_a = (i32::from(a.offer_amount) * (a.buyer.get() as i32)
+        score_a = (a.offer_amount * (a.buyer.table_index() as i32)
             + a.price
-            + (a.seller.get() as i32) * i32::from(a.standing)
+            + (a.seller.table_index() as i32) * a.standing
             + i32::from(a.category as u8))
             % 7;
         score_b = (i32::from(b.category as u8)
-            + i32::from(b.offer_amount) * (b.buyer.get() as i32)
+            + b.offer_amount * (b.buyer.table_index() as i32)
             + b.price
-            + (b.seller.get() as i32) * i32::from(b.standing))
+            + (b.seller.table_index() as i32) * b.standing)
             % 7;
     }
     if score_a <= score_b { -1 } else { 1 }
@@ -592,7 +588,11 @@ pub(super) fn compare_by_nation(
     b: &TradeDealBookEntry,
     rng: &mut RngState,
 ) -> i32 {
-    compare_relationship((a.nation.get() as i32), (b.nation.get() as i32), rng)
+    compare_relationship(
+        a.nation.table_index() as i32,
+        b.nation.table_index() as i32,
+        rng,
+    )
 }
 
 pub(super) fn compare_relationship(a_key: i32, b_key: i32, rng: &mut RngState) -> i32 {

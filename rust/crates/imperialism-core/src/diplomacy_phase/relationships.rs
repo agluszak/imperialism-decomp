@@ -79,7 +79,7 @@ impl GameState {
         }
         self.diplomacy.relationships[source][target] = relationship;
         self.diplomacy.relationships[target][source] = relationship;
-        let turn = self.turn.economic_turn as i32;
+        let turn = self.turn.economic_turn;
         self.diplomacy.relationship_turns[source][target] = Some(turn);
         self.diplomacy.relationship_turns[target][source] = Some(turn);
 
@@ -237,8 +237,8 @@ impl GameState {
                 self.set_relationship(source, target, 0x31);
             }
         } else {
-            let adjustment = ((0x5a - i32::from(pair_standing)) * i32::from(pair_standing)) / 200;
-            let delta = adjustment as i32;
+            let adjustment = ((0x5a - pair_standing) * pair_standing) / 200;
+            let delta = adjustment;
             if delta < 0 {
                 self.set_relationship(source, target, pair_standing + delta);
             }
@@ -269,12 +269,11 @@ impl GameState {
             };
             let current = self.diplomacy.standings[source][candidate];
             let target_candidate = self.diplomacy.standings[target][candidate];
-            let mut adjustment = ((0x5a - i32::from(target_candidate)) * i32::from(pair_standing))
-                / (divisor * 0x32);
+            let mut adjustment = ((0x5a - target_candidate) * pair_standing) / (divisor * 0x32);
             if source == MajorNationId::new(0).nation() {
-                adjustment = i32::from(adjustment as i32) / 2;
+                adjustment /= 2;
             }
-            let delta = adjustment as i32;
+            let delta = adjustment;
             let applied = if current < 0x32 {
                 if delta > 0 && current + delta > 0x31 {
                     0x31 - current

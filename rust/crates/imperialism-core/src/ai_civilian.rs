@@ -17,7 +17,7 @@ impl GameState {
         self.continue_civilian_orders(nation);
 
         let owned_tiles: Vec<TileId> = (0..STRATEGIC_TILE_COUNT)
-            .map(|index| TileId::new(index))
+            .map(TileId::new)
             .filter(|&tile| self.tile_owned_by(tile, nation))
             .collect();
 
@@ -123,7 +123,7 @@ impl GameState {
     }
 
     fn tile_owned_by(&self, tile: TileId, nation: MajorNationId) -> bool {
-        self.map[tile].owner_nation == Some(TileContext::from_nation(nation.nation()))
+        self.map[tile].owner_nation == Some(TileContext::from(nation))
     }
 
     fn create_sea_distance_map(
@@ -138,7 +138,7 @@ impl GameState {
             .apply_town_transport_links(nation)
             .unwrap_or_else(|| vec![0; STRATEGIC_TILE_COUNT]);
         expand_distance_map(self, owned_tiles, allowed, |tile| {
-            transport[tile_index(tile)] != 0
+            transport[tile.get()] != 0
         })
     }
 
@@ -185,13 +185,13 @@ impl GameState {
                     work_delta[resource] = work_delta[resource].wrapping_add(gain << 2);
                 }
             } else {
-                let distance = primary[tile_index(tile)];
+                let distance = primary[tile.get()];
                 let mut reachable = true;
                 if distance == 0 || distance < 9 || !self.can_build_port_at_tile(tile) {
                     reachable = false;
                     for direction in HexDirection::ALL {
                         let neighbor = civilian_sea_scan_neighbor(tile, direction);
-                        let neighbor_distance = primary[tile_index(neighbor)];
+                        let neighbor_distance = primary[neighbor.get()];
                         if (neighbor_distance > 0 && neighbor_distance < 9)
                             || self.can_build_port_at_tile(neighbor)
                         {
@@ -246,8 +246,8 @@ impl GameState {
             .towns
             .iter()
             .find_map(|(&tile, town)| {
-                let primary_distance = primary[tile_index(tile)];
-                let secondary_distance = secondary[tile_index(tile)];
+                let primary_distance = primary[tile.get()];
+                let secondary_distance = secondary[tile.get()];
                 (!town.transport_linked
                     && (primary_distance < 12
                         || (secondary_distance < 8 && secondary_distance > 2)))
@@ -272,8 +272,8 @@ impl GameState {
             if self.map[tile].region.is_some() {
                 continue;
             }
-            let primary_distance = primary[tile_index(tile)];
-            let secondary_distance = secondary[tile_index(tile)];
+            let primary_distance = primary[tile.get()];
+            let secondary_distance = secondary[tile.get()];
             if !((primary_distance > 0 && primary_distance < 9)
                 || self.can_build_port_at_tile(tile)
                 || (secondary_distance > 2 && secondary_distance < 6))
@@ -406,9 +406,9 @@ impl GameState {
             .interior_civilian
             .railhead_target
             .expect("railhead continuation requires a target");
-        let primary_distance = primary[tile_index(target)];
+        let primary_distance = primary[target.get()];
         if (primary_distance == 0 || primary_distance > 9) && !self.can_build_port_at_tile(target) {
-            if secondary[tile_index(target)] < 3 {
+            if secondary[target.get()] < 3 {
                 self.nations.majors[&nation]
                     .economy
                     .interior_civilian
@@ -737,12 +737,12 @@ impl GameState {
                 if major == nation {
                     continue;
                 }
-                let standing = (self.diplomacy.standings[major.nation()][minor_nation] as f32);
+                let standing = self.diplomacy.standings[major.nation()][minor_nation] as f32;
                 if standing > strongest {
                     strongest = standing;
                 }
             }
-            relation_scale[usize::from(minor_nation.get())] =
+            relation_scale[minor_nation.table_index()] =
                 (self.diplomacy.standings[nation.nation()][minor_nation] as f32) / strongest;
         }
 
@@ -782,13 +782,13 @@ impl GameState {
                 .economy
                 .interior_civilian
                 .exterior_need_by_resource;
-            resource_weights[ResourceKind::Cotton] = i32::from(exterior[ResourceKind::Cotton]) + 1;
-            resource_weights[ResourceKind::Wool] = i32::from(exterior[ResourceKind::Wool]) + 1;
-            resource_weights[ResourceKind::Timber] = i32::from(exterior[ResourceKind::Timber]);
-            resource_weights[ResourceKind::Coal] = i32::from(exterior[ResourceKind::Coal]) + 5;
-            resource_weights[ResourceKind::Iron] = i32::from(exterior[ResourceKind::Iron]) + 5;
+            resource_weights[ResourceKind::Cotton] = exterior[ResourceKind::Cotton] + 1;
+            resource_weights[ResourceKind::Wool] = exterior[ResourceKind::Wool] + 1;
+            resource_weights[ResourceKind::Timber] = exterior[ResourceKind::Timber];
+            resource_weights[ResourceKind::Coal] = exterior[ResourceKind::Coal] + 5;
+            resource_weights[ResourceKind::Iron] = exterior[ResourceKind::Iron] + 5;
             if self.technology.city_capabilities_by_nation[nation].oil_drilling {
-                resource_weights[ResourceKind::Oil] = i32::from(exterior[ResourceKind::Oil]) + 10;
+                resource_weights[ResourceKind::Oil] = exterior[ResourceKind::Oil] + 10;
             }
         }
         let oil = self.technology.city_capabilities_by_nation[nation].oil_drilling;
@@ -829,10 +829,10 @@ impl GameState {
                 if !has_active_prospecting
                     && !visible
                     && prospector_count != 0
-                    && relation_scale[usize::from(owner.get())] != 0.0
+                    && relation_scale[owner.table_index()] != 0.0
                 {
                     insert_scored_candidate(
-                        relation_scale[usize::from(owner.get())],
+                        relation_scale[owner.table_index()],
                         tile.get() as i32,
                         &mut prospecting_scores,
                         &mut prospecting_tiles,
@@ -846,7 +846,7 @@ impl GameState {
                 for resource in self.map[tile].edge_resources.into_iter().flatten() {
                     score += resource_weights[resource] as f32;
                 }
-                score *= relation_scale[usize::from(owner.get())];
+                score *= relation_scale[owner.table_index()];
                 if score != 0.0 {
                     insert_scored_candidate(
                         score,
@@ -978,30 +978,29 @@ fn expand_distance_map(
     let mut remaining = owned_tiles.len() as i32;
     for &tile in owned_tiles {
         if seed(tile) {
-            distance[tile_index(tile)] = 1;
+            distance[tile.get()] = 1;
             remaining -= 1;
         }
     }
     while remaining != 0 {
-        let previous = remaining as i32;
+        let previous = remaining;
         for &tile in owned_tiles {
-            if distance[tile_index(tile)] != 0 || !terrain_allowed(state.map[tile].terrain, allowed)
-            {
+            if distance[tile.get()] != 0 || !terrain_allowed(state.map[tile].terrain, allowed) {
                 continue;
             }
             let mut best = 0_i8;
             for neighbor in state.map.geometry().neighbors(tile).into_iter().flatten() {
-                let neighbor_distance = distance[tile_index(neighbor)];
+                let neighbor_distance = distance[neighbor.get()];
                 if neighbor_distance != 0 && (best == 0 || neighbor_distance < best) {
                     best = neighbor_distance;
                 }
             }
             if best != 0 {
-                distance[tile_index(tile)] = best.wrapping_add(1);
+                distance[tile.get()] = best.wrapping_add(1);
                 remaining -= 1;
             }
         }
-        if previous == remaining as i32 {
+        if previous == remaining {
             remaining = 0;
         }
     }
@@ -1011,13 +1010,13 @@ fn expand_distance_map(
 fn trace_descending(start: TileId, scores: &[i8]) -> (TileId, TileId) {
     let mut current = start;
     let mut previous = start;
-    let mut score = scores[tile_index(current)];
+    let mut score = scores[current.get()];
     while score != 1 {
         let desired = score.wrapping_sub(1);
         let mut chosen = HexDirection::NorthWest;
         for direction in HexDirection::ALL {
             chosen = direction;
-            score = scores[tile_index(civilian_sea_scan_neighbor(current, direction))];
+            score = scores[civilian_sea_scan_neighbor(current, direction).get()];
             if score == desired {
                 break;
             }
@@ -1052,11 +1051,6 @@ fn insert_scored_candidate(
     scores[insertion] = score;
     tiles[insertion] = tile;
 }
-
-fn tile_index(tile: TileId) -> usize {
-    tile.index()
-}
-
 pub(crate) fn extractive_resource(resource: ResourceKind) -> bool {
     matches!(
         resource,

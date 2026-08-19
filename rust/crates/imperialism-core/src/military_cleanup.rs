@@ -70,7 +70,7 @@ impl GameState {
             if !self.nation_is_eligible_for_optional_phase(nation.nation()) {
                 continue;
             }
-            let slot = nation.table_index();
+            let slot = nation.get();
             let mut category = NavyPriorityTable::default();
             for ship in self.ships.values() {
                 if ship.nation != nation.nation() {
@@ -131,7 +131,7 @@ impl GameState {
         nation: MajorNationId,
         metrics: &mut NationOrderPriorityMetrics,
     ) {
-        let slot = nation.table_index();
+        let slot = nation.get();
         let mut total_regions = 0;
         let mut compatible_regions = 0;
         self.count_pressure_regions(nation.nation(), &mut total_regions, &mut compatible_regions);
@@ -170,7 +170,7 @@ impl GameState {
             if peer == nation {
                 continue;
             }
-            let peer_slot = usize::from(peer.get());
+            let peer_slot = peer.get();
             let peer_combined = metrics.combined_divergence[peer_slot];
             if peer_combined < minimum_peer_combined || minimum_peer_combined == PRESSURE_UNSET {
                 minimum_peer_combined = peer_combined;
@@ -354,7 +354,7 @@ impl GameState {
         if !compatible {
             let kind = self.latest_militia_kind(nation);
             let costs = kind.class_costs();
-            let sum: i32 = costs.iter().map(|&cost| i32::from(cost)).sum();
+            let sum: i32 = costs.iter().copied().sum();
             if sum == 0 {
                 return [0; 5];
             }
@@ -558,7 +558,7 @@ fn defend_pressure_scale(
     let Some(major) = NationId::as_major(nation) else {
         return 1.0;
     };
-    let slot = usize::from(major.get());
+    let slot = major.get();
     let mut b68 = metrics.unit_divergence[slot];
     if b68 <= 0.0 {
         b68 = 1.0;
@@ -901,7 +901,7 @@ mod tests {
         let nation = MajorNationId::new(0);
         state.nations.majors[&nation].auto = Some(AutoGreatPowerState::default());
         let tile = TileId::new(1);
-        state.map[tile].former_owner_nation = Some(TileContext::from_nation(nation.nation()));
+        state.map[tile].former_owner_nation = Some(TileContext::from(nation));
         state.ocean.zones = vec![
             ZoneKind::Zone(Zone {
                 display_name: String::new(),

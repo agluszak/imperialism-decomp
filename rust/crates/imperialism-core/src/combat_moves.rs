@@ -239,7 +239,7 @@ impl GameState {
             }
             let composition = STACK_COMPOSITION[max_class][min_class];
             let roll = self.rng.next_crt_rand();
-            stack.sort_key = (composition << 8) + (roll & 0xff) as i32;
+            stack.sort_key = (composition << 8) + (roll & 0xff);
         }
         sort_stacks_descending(&mut stacks, &mut self.rng);
         stacks
@@ -439,7 +439,7 @@ impl GameState {
         if self.diplomacy.relationships[source][target] != DiplomaticRelationship::War {
             return false;
         }
-        self.diplomacy.relationship_turns[source][target] != Some(self.turn.economic_turn as i32)
+        self.diplomacy.relationship_turns[source][target] != Some(self.turn.economic_turn)
     }
 
     fn finalize_military_units_without_ui(

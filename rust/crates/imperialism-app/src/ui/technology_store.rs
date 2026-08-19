@@ -276,7 +276,7 @@ fn spawn_technology_row(
         .string(0x2712, i16::from(technology.retail()) + 1)
         .expect("retail technology name");
     let available_year =
-        1815 + i32::from(game.technology().scheduled_unlock_turn_by_technology[technology]) / 4;
+        1815 + game.technology().scheduled_unlock_turn_by_technology[technology] / 4;
     spawn_row_text(
         commands,
         row_entity,
@@ -590,10 +590,8 @@ fn project_technology_status(
                     .string(0x274f, 1)
                     .expect("retail technology completion template");
                 let year = (1815
-                    + i32::from(
-                        session.game.technology().completion_year_by_nation[nation][technology],
-                    ))
-                .to_string();
+                    + session.game.technology().completion_year_by_nation[nation][technology])
+                    .to_string();
                 fill_brackets(&template, &[&year])
             }
             TechnologyResearchStatus::Pending => {

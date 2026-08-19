@@ -535,8 +535,7 @@ impl GameState {
         self.nations.major_mut(nation).common.treasury -= cost;
         self.technology.research_status_by_nation[nation][technology] =
             TechnologyResearchStatus::Pending;
-        self.technology.completion_year_by_nation[nation][technology] =
-            (self.turn.economic_turn / 4) as i32;
+        self.technology.completion_year_by_nation[nation][technology] = self.turn.economic_turn / 4;
         Ok(TechnologyResearchToggle::Purchased)
     }
 
@@ -545,9 +544,7 @@ impl GameState {
         let economic_turn = self.turn.economic_turn;
         for tech_id in Technology::all().skip(3) {
             if !self.technology.global_unlocks_by_technology[tech_id] {
-                if i32::from(self.technology.scheduled_unlock_turn_by_technology[tech_id])
-                    == economic_turn
-                {
+                if self.technology.scheduled_unlock_turn_by_technology[tech_id] == economic_turn {
                     apply_city_order_capability_unlock(&mut self.technology, tech_id);
                     self.pending
                         .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
@@ -573,8 +570,7 @@ impl GameState {
                 self.nations.major_mut(nation).common.treasury -= TECH_ITEM_PURCHASE_COST[tech_id];
                 self.technology.research_status_by_nation[nation][tech_id] =
                     TechnologyResearchStatus::Pending;
-                self.technology.completion_year_by_nation[nation][tech_id] =
-                    (economic_turn / 4) as i32;
+                self.technology.completion_year_by_nation[nation][tech_id] = economic_turn / 4;
             }
         }
     }
@@ -646,8 +642,7 @@ impl GameState {
         }
         self.technology.research_status_by_nation[nation][tech_id] =
             TechnologyResearchStatus::Researched;
-        self.technology.completion_year_by_nation[nation][tech_id] =
-            (self.turn.economic_turn / 4) as i32;
+        self.technology.completion_year_by_nation[nation][tech_id] = self.turn.economic_turn / 4;
 
         let difficulty = self.turn.difficulty.retail();
         let era_offset =
@@ -865,7 +860,7 @@ impl GameState {
         let requirements = self.technology.city_capabilities_by_nation[nation]
             .university
             .requirement_levels;
-        let owner = TileContext::from_nation(nation.nation());
+        let owner = TileContext::from(nation);
         for tile in self.map.tiles.iter_mut() {
             if tile.owner_nation != Some(owner) || !tile.flags.contains(TileFlags::BASE_TRANSPORT) {
                 continue;
@@ -957,7 +952,7 @@ impl GameState {
         let diplomacy_eligible = self.nations.majors[&nation].economy.diplomacy_eligible;
         let treasury = self.nations.majors[&nation].common.treasury;
         if diplomacy_eligible
-            && i32::from(cash_cost)
+            && cash_cost
                 > self.nations.majors[&nation]
                     .economy
                     .available_diplomacy_budget(treasury)
@@ -972,7 +967,7 @@ impl GameState {
             .city_mut(nation)
             .stockpile
             .wrapping_add_and_verify(ResourceKind::Fuel, -fuel_cost);
-        self.nations.majors[&nation].common.treasury -= i32::from(cash_cost);
+        self.nations.majors[&nation].common.treasury -= cash_cost;
         self.military_units
             .get_mut(&id)
             .expect("upgraded unit remains present")
@@ -1281,7 +1276,7 @@ mod tests {
         );
         assert_eq!(
             state.technology.completion_year_by_nation[active][Technology::CottonGin],
-            (state.turn.economic_turn / 4) as i32
+            state.turn.economic_turn / 4
         );
     }
 

@@ -145,7 +145,7 @@ pub fn peek_save_preview_owners(bytes: &[u8]) -> Option<Vec<Option<TileContext>>
             .iter()
             .map(|&byte| {
                 let value = byte as i8;
-                (value != -1).then(|| TileContext::new(value as u8))
+                (value != -1).then(|| TileContext::from_retail_tag(value as u8))
             })
             .collect(),
     )
@@ -373,7 +373,7 @@ mod tests {
         bytes[HEADER_OWNERS_OFFSET + 1] = 0xff;
         let owners = peek_save_preview_owners(&bytes).unwrap();
         assert_eq!(owners.len(), STRATEGIC_TILE_COUNT);
-        assert_eq!(owners[0], Some(TileContext::new(3)));
+        assert_eq!(owners[0], Some(TileContext::from_retail_tag(3)));
         assert_eq!(owners[1], None);
         assert!(peek_save_preview_owners(&bytes[..HEADER_OWNERS_OFFSET]).is_none());
     }

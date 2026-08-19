@@ -95,10 +95,7 @@ pub(crate) struct OceanViewport {
 impl OceanViewport {
     pub(crate) fn center_on(&mut self, tile: TileId, geometry: &MapGeometry) {
         let MapPosition { row, column } = geometry.position(tile);
-        self.set_upper_left(
-            IVec2::new(i32::from(column) - 0x10, i32::from(row) - 0x0e),
-            geometry,
-        );
+        self.set_upper_left(IVec2::new(column - 0x10, row - 0x0e), geometry);
     }
 
     pub(crate) fn nudge(&mut self, edges: MapEdges, geometry: &MapGeometry) {
@@ -117,7 +114,7 @@ impl OceanViewport {
 
     pub(crate) fn set_upper_left(&mut self, origin: IVec2, geometry: &MapGeometry) {
         self.origin.x = if geometry.wraps_horizontally() {
-            origin.x.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH))
+            origin.x.rem_euclid(STRATEGIC_MAP_WIDTH)
         } else {
             origin.x.clamp(0, 0x4c)
         };
@@ -403,7 +400,7 @@ pub(crate) fn cycle_map_interaction_selection(
 }
 
 pub(crate) fn navy_zone_center_tile(state: &GameState, zone: OceanZoneId) -> Option<TileId> {
-    let zone = state.ocean().zones.get(usize::from(zone.get()))?;
+    let zone = state.ocean().zones.get(zone.get())?;
     match zone {
         imperialism_core::ZoneKind::PortZone(port) => {
             port.zone.target_tile.or(Some(port.port_tile))

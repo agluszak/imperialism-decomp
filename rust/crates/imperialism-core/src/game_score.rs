@@ -44,8 +44,8 @@ impl GameState {
     /// `TGreatPower::GenerateGameScore`. Row 11 is `subtotal * difficulty percent / 10`.
     pub fn generate_game_score(&self, nation: MajorNationId) -> GameScore {
         let major = &self.nations.majors[&nation];
-        let labor = i32::from(major.city.population.baseline_labor.strength());
-        let transport = i32::from(major.economy.capacities.transport);
+        let labor = major.city.population.baseline_labor.strength();
+        let transport = major.economy.capacities.transport;
         let industry = [
             CityFacilitySlot::TextileMill,
             CityFacilitySlot::ClothingFactory,
@@ -55,7 +55,7 @@ impl GameState {
             CityFacilitySlot::FurnitureFactory,
         ]
         .iter()
-        .map(|&slot| i32::from(major.city.production_orders[slot]))
+        .map(|&slot| major.city.production_orders[slot])
         .sum();
         let mut provinces = major.common.owned_regions().len() as i32;
         for minor in MinorNationId::all() {
@@ -80,7 +80,7 @@ impl GameState {
             if other == nation.nation() || self.nations.common(other).is_none() {
                 continue;
             }
-            relation_sum += i32::from(self.diplomacy.standings[nation.nation()][other]);
+            relation_sum += self.diplomacy.standings[nation.nation()][other];
             relation_count += 1;
         }
         let diplomacy = if relation_count == 0 {
@@ -88,7 +88,7 @@ impl GameState {
         } else {
             relation_sum / relation_count
         };
-        let merchant_marine = i32::from(major.city.merchant_capacity());
+        let merchant_marine = major.city.merchant_capacity();
         let year = (100 - self.turn.economic_turn / 4) * 10;
         let subtotal = labor
             + transport

@@ -22,15 +22,14 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
         CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
         _ => unreachable!("industry amount bar has an item order"),
     };
-    let mut quantity = if capacity > 0
-        && i32::from(x) < i32::from(INDUSTRY_BAR_WIDTH) / (i32::from(capacity) * 2)
-    {
-        0
-    } else if capacity > 0 {
-        i32::from(x) * capacity / i32::from(INDUSTRY_BAR_WIDTH) + 1
-    } else {
-        1
-    };
+    let mut quantity =
+        if capacity > 0 && i32::from(x) < i32::from(INDUSTRY_BAR_WIDTH) / (capacity * 2) {
+            0
+        } else if capacity > 0 {
+            i32::from(x) * capacity / i32::from(INDUSTRY_BAR_WIDTH) + 1
+        } else {
+            1
+        };
     if quantity == 0 && x != 0 && previous == 0 {
         quantity = 1;
     }

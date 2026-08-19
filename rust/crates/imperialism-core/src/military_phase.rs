@@ -61,7 +61,7 @@ impl GameState {
             self.pay_for_military(nation);
             if self.nations.major(nation).auto.is_none() {
                 self.nations.majors[&nation].economy.army_movement_budget =
-                    i32::from(self.nations.majors[&nation].economy.capacities.transport) / 5;
+                    self.nations.majors[&nation].economy.capacities.transport / 5;
             } else {
                 self.select_and_queue_advisory_map_missions_for(nation);
                 self.give_auto_great_power_army_orders(nation.nation());

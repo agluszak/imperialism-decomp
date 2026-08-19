@@ -1219,7 +1219,7 @@ fn nation_name(state: &GameState, nation: NationId) -> String {
 }
 
 fn flag_rect(nation: NationId) -> Rect {
-    let left = f32::from(nation.get()) * ICON_WIDTH;
+    let left = f32::from(nation.retail_slot()) * ICON_WIDTH;
     Rect::new(left, 0.0, left + ICON_WIDTH, ICON_HEIGHT)
 }
 

@@ -251,7 +251,7 @@ fn sync_city_site_hover(
 
 fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile: TileId) -> bool {
     let tile_state = state.map()[tile];
-    tile_state.owner_nation == Some(TileContext::from_nation(nation.nation()))
+    tile_state.owner_nation == Some(TileContext::from(nation))
         && !matches!(
             tile_state.terrain,
             TerrainKind::Hills | TerrainKind::Mountain | TerrainKind::Swamp
@@ -511,8 +511,7 @@ fn spawn_numbered_resource_item(
 }
 
 fn new_city_extra_height(visible: i32) -> i32 {
-    ((i32::from(visible) * RESOURCE_ITEM_WIDTH) / (NEW_CITY_DIALOG_WIDTH - 0x20) + 1)
-        * RESOURCE_ITEM_HEIGHT
+    ((visible * RESOURCE_ITEM_WIDTH) / (NEW_CITY_DIALOG_WIDTH - 0x20) + 1) * RESOURCE_ITEM_HEIGHT
 }
 
 fn bind_city_site_notice(

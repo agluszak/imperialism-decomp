@@ -5,7 +5,7 @@ pub(super) fn build_province_adjacency(world: &MapMgr) -> Vec<Vec<ProvinceId>> {
     let province_count = world
         .tiles
         .iter()
-        .filter_map(|tile| tile.province.map(|province| province.index() + 1))
+        .filter_map(|tile| tile.province.map(|province| province.get() + 1))
         .max()
         .unwrap_or(0);
     let mut adjacency = vec![Vec::new(); province_count];
@@ -14,7 +14,7 @@ pub(super) fn build_province_adjacency(world: &MapMgr) -> Vec<Vec<ProvinceId>> {
         let Some(province) = tile.province else {
             continue;
         };
-        let province_index = province.index();
+        let province_index = province.get();
         for neighbor in geometry.neighbors(TileId::new(index)).into_iter().flatten() {
             let Some(neighbor_province) = world[neighbor].province else {
                 continue;
@@ -142,10 +142,10 @@ pub(super) fn province_mission_available(
     adjacency: &[Vec<ProvinceId>],
     zones: &[ZoneKind],
 ) -> bool {
-    let province_usize = province.index();
+    let province_usize = province.get();
     let neighbors = &adjacency[province_usize];
     for &adjacent in neighbors {
-        let Some(capital) = province_capitals[usize::from(adjacent.get())] else {
+        let Some(capital) = province_capitals[adjacent.get()] else {
             continue;
         };
         if world[capital].owner_nation == Some(nation) {
@@ -156,7 +156,7 @@ pub(super) fn province_mission_available(
     // itself has neighbors is available.
     if !neighbors.is_empty() {
         for &adjacent in neighbors {
-            if !adjacency[usize::from(adjacent.get())].is_empty() {
+            if !adjacency[adjacent.get()].is_empty() {
                 return true;
             }
         }
@@ -174,7 +174,7 @@ pub(super) fn queue_map_action_missions_for_port_zone_candidates(
     zones: &[ZoneKind],
     nation: MajorNationId,
 ) -> Vec<MissionState> {
-    let owner = TileContext::from_nation(nation.nation());
+    let owner = TileContext::from(nation);
     let owned = owned_province_ids(world, province_capitals, owner);
     let mut missions = Vec::new();
 
@@ -238,7 +238,7 @@ pub(super) fn initialize_ai_targets(
                 _ => None,
             };
             if let Some(target) = target {
-                auto.zone_targets[usize::from(target.get())] = AiTargetState::MissionQueued;
+                auto.zone_targets[target.get()] = AiTargetState::MissionQueued;
             }
             if let MissionData::DefendProvince { province, .. } = &mission.data {
                 auto.province_targets[*province] = AiTargetState::MissionQueued;

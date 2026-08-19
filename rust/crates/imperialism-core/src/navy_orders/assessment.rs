@@ -292,7 +292,7 @@ impl GameState {
             let scale = if max_strength == 0 {
                 0.0
             } else {
-                (ship.strength as f32 / max_strength as f32)
+                (ship.strength / max_strength) as f32
             };
             vector[NavyPriorityComponent::Resolve] +=
                 ship_priority_contribution(ship, NavyPriorityComponent::Resolve, &baselines) as f32

@@ -20,7 +20,7 @@ impl GameState {
                 .max(self.naval_force(peer));
         }
         let tick = self.clamped_quarter() as f32;
-        let standing = (self.diplomacy.standings[nation.nation()][target] as f32);
+        let standing = self.diplomacy.standings[nation.nation()][target] as f32;
         let combined = own + ally as f32;
         let score =
             (strongest / combined + (standing + own) / (tick + combined - STRENGTH_OFFSET)) * 0.5;
@@ -75,7 +75,7 @@ impl GameState {
         if enemy_army_threshold(self.turn.difficulty) >= self.army_unit_power(nation.nation()) {
             return false;
         }
-        let year = i32::from(self.turn.diplomacy_year_term_raw);
+        let year = self.turn.diplomacy_year_term_raw;
         let progress =
             (self.turn.year_quarters() + year) / (year_divisor(self.turn.difficulty, year) + year);
         let average = truncated_average(
@@ -142,7 +142,7 @@ impl GameState {
         ally: f32,
     ) -> f32 {
         let year = self.clamped_quarter() as f32;
-        let standing = (self.diplomacy.standings[nation.nation()][target.nation()] as f32);
+        let standing = self.diplomacy.standings[nation.nation()][target.nation()] as f32;
         let denom = standing - ally * ALLY_WEIGHT + target_score;
         let numer = year + self_score - YEAR_BIAS;
         #[allow(clippy::float_cmp)]
@@ -220,8 +220,8 @@ impl GameState {
         let Some(target_major) = NationId::as_major(target) else {
             return self_score;
         };
-        let standing_target = (self.diplomacy.standings[nation.nation()][target] as f32);
-        let standing_partner = (self.diplomacy.standings[nation.nation()][partner] as f32);
+        let standing_target = self.diplomacy.standings[nation.nation()][target] as f32;
+        let standing_partner = self.diplomacy.standings[nation.nation()][partner] as f32;
         let denom = standing_target - ally * ALLY_WEIGHT + self.target_force(target_major, partner);
         #[allow(clippy::float_cmp)]
         if denom == 0.0 {
@@ -381,8 +381,8 @@ impl GameState {
         } else {
             self.allied_army(opponent)
         };
-        let standing_opp = (self.diplomacy.standings[nation.nation()][opponent.nation()] as f32);
-        let standing_partner = (self.diplomacy.standings[nation.nation()][partner.nation()] as f32);
+        let standing_opp = self.diplomacy.standings[nation.nation()][opponent.nation()] as f32;
+        let standing_partner = self.diplomacy.standings[nation.nation()][partner.nation()] as f32;
         let denom = standing_opp - ally * ALLY_WEIGHT + opponent_score;
         let mut numer = if swap {
             standing_partner - partner_score * ALLY_WEIGHT + self_score

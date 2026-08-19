@@ -150,9 +150,9 @@ impl GameState {
             }
             economy.update_need_target(resource, current_target + available_capacity);
             if resource == ResourceKind::Gold {
-                common.treasury += i32::from(available_capacity) * 200;
+                common.treasury += available_capacity * 200;
             } else if resource == ResourceKind::Gems {
-                common.treasury += i32::from(available_capacity) * 500;
+                common.treasury += available_capacity * 500;
             } else {
                 city.adjust_stock(resource, available_capacity);
             }
@@ -161,7 +161,7 @@ impl GameState {
             economy.update_need_target(resource, current_target + available_supply);
             if resource == ResourceKind::Gold {
                 // Retail's short branch uses the Gems value here.
-                common.treasury += i32::from(available_supply) * 500;
+                common.treasury += available_supply * 500;
             } else {
                 city.adjust_stock(resource, available_supply);
             }
@@ -250,7 +250,7 @@ impl GameState {
             .economy
             .interior_civilian
             .average_development_order_allocation;
-        let target = average as i32 + 2;
+        let target = average + 2;
         let baseline = self.nations.city(nation).population.baseline_labor;
         let capacity =
             self.nations.city(nation).production_accum[CityFacilitySlot::RegionalPopulation];
@@ -584,7 +584,7 @@ impl GameState {
         self.nations.majors[&nation]
             .economy
             .interior_civilian
-            .average_development_order_allocation = i32::from(total / 20);
+            .average_development_order_allocation = total / 20;
     }
 
     pub(crate) fn determine_ai_trade_bid(&mut self, nation: MajorNationId) {

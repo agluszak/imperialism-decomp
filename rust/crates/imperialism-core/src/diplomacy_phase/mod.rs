@@ -226,8 +226,7 @@ impl GameState {
 
     pub(crate) fn war_stamp_stale(&self, source: NationId, target: NationId) -> bool {
         self.at_war(source, target)
-            && self.diplomacy.relationship_turns[source][target]
-                != Some(self.turn.economic_turn as i32)
+            && self.diplomacy.relationship_turns[source][target] != Some(self.turn.economic_turn)
     }
 
     pub(super) fn owns_former_province_of(&self, owner: MajorNationId, former: NationId) -> bool {
@@ -404,7 +403,7 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].proposals,
             proposal,
-            |entry| (entry.source.get() as i32),
+            |entry| entry.source.table_index() as i32,
         );
     }
 
@@ -413,7 +412,7 @@ impl GameState {
             &mut self.rng,
             &mut self.pending.nations[nation].turn_events,
             notice,
-            |entry| (entry.source.get() as i32),
+            |entry| entry.source.table_index() as i32,
         );
     }
 }
@@ -477,7 +476,7 @@ pub(super) fn select_grant_amount(budget: i32) -> i32 {
 }
 
 pub(super) fn grant_notice_code(grant: DiplomacyGrant) -> i32 {
-    let amount = grant.amount as i32;
+    let amount = grant.amount;
     if grant.recurring {
         amount | 0x4000
     } else {

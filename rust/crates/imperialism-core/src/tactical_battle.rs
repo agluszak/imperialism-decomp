@@ -981,7 +981,7 @@ impl Battle {
         }
 
         for unit in &mut this.units {
-            unit.field24 = state.rng.next_crt_rand() as i32;
+            unit.field24 = state.rng.next_crt_rand();
         }
         this.records.extend(
             this.units
@@ -1028,8 +1028,8 @@ impl Battle {
             state: TacticalUnitState::Ready,
             action_points: BASE_ACTION_POINTS[unit_type],
             ai_state: 0,
-            strength: i32::from(unit.strength),
-            morale: i32::from(unit.strength),
+            strength: unit.strength,
+            morale: unit.strength,
             quality: unit.experience / 100,
             sap_target: -1,
             flag3c: unit.order.code() == MilitaryOrderCode::Sleep
@@ -1492,7 +1492,7 @@ impl Battle {
             for list in lists {
                 for idx in list {
                     let source = self.units[idx].source;
-                    let strength = self.units[idx].strength as i32;
+                    let strength = self.units[idx].strength;
                     state.military_units[&source].strength = strength;
                     if strength == 0 {
                         destroyed.push(source);
@@ -1848,7 +1848,7 @@ impl Battle {
             self.sides[side]
                 .projection_sums
                 .add_assign(self.units[idx].projection);
-            let range = self.unit_range(idx) as i32;
+            let range = self.unit_range(idx);
             if range > self.sides[side].max_range {
                 self.sides[side].max_range = range;
             }
@@ -2064,11 +2064,7 @@ impl Battle {
                 continue;
             }
             self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
-                TacticalCombatClass::Infantry
-                    if self.unit_range(idx) > i32::from(opponent_range) =>
-                {
-                    0x11
-                }
+                TacticalCombatClass::Infantry if self.unit_range(idx) > opponent_range => 0x11,
                 TacticalCombatClass::Infantry
                     if self.units[idx].unit_type.tactical_category()
                         == ArmyUnitCategory::LightInfantry =>
@@ -2106,11 +2102,7 @@ impl Battle {
         let opponent_range = self.sides[side.opponent()].max_non_artillery_range;
         for &idx in &self.sides[side].units.clone() {
             self.units[idx].ai_state = match AI_CLASS[self.units[idx].unit_type] {
-                TacticalCombatClass::Infantry
-                    if self.unit_range(idx) > i32::from(opponent_range) =>
-                {
-                    0x11
-                }
+                TacticalCombatClass::Infantry if self.unit_range(idx) > opponent_range => 0x11,
                 TacticalCombatClass::Infantry
                     if self.units[idx].unit_type.tactical_category()
                         == ArmyUnitCategory::LightInfantry =>
@@ -2875,12 +2867,12 @@ impl Battle {
             for tile in TACTICAL_STRIDE..TACTICAL_TILE_COUNT as i32 {
                 if column < self.column_count
                     && column != edge_column
-                    && self.cost(tile) >= cost_level as i32
+                    && self.cost(tile) >= cost_level
                 {
                     let neighbors = self.neighbors(tile);
                     for direction in HexDirection::ALL {
                         let neighbor = neighbors[direction];
-                        let neighbor_index = neighbor as i32;
+                        let neighbor_index = neighbor;
                         if neighbor_index == -1 {
                             continue;
                         }
@@ -2904,7 +2896,7 @@ impl Battle {
                             }
                         }
                         let new_cost = MOVE_COST[category][record.terrain] + self.cost(tile);
-                        if i32::from(new_cost) > action_points {
+                        if new_cost > action_points {
                             continue;
                         }
                         let existing = self.cost(neighbor);
@@ -3142,7 +3134,7 @@ impl Battle {
         for &neighbor in self.neighbors(self.units[unit].tile).values() {
             if neighbor != -1 {
                 let cost = self.cost(neighbor);
-                if cost != -1 && i32::from(cost) <= self.units[unit].action_points {
+                if cost != -1 && cost <= self.units[unit].action_points {
                     return true;
                 }
             }
@@ -3196,7 +3188,7 @@ impl Battle {
                 stopped = self.reaction_fire(state, path[step_count as usize]);
             }
         }
-        self.units[unit].action_points -= i32::from(self.cost(path[step_count as usize]));
+        self.units[unit].action_points -= self.cost(path[step_count as usize]);
         let arrived = path[step_count as usize];
         let exit_column = (((arrived / 29) & 1) + 2 * (arrived % 29)) / 2;
         let side = self.units[unit].side;
@@ -3541,10 +3533,9 @@ impl Battle {
         let mut new_state = self.units[target].state;
         let mut new_morale = self.units[target].morale;
         if new_state == TacticalUnitState::Ready {
-            new_morale +=
-                self.units[target].strength / 10 * (i32::from(self.units[rallier].quality) + 3);
+            new_morale += self.units[target].strength / 10 * (self.units[rallier].quality + 3);
         } else if new_state == TacticalUnitState::MoraleBroken {
-            let quality = i32::from(self.units[rallier].quality);
+            let quality = self.units[rallier].quality;
             if state.rng.next_crt_rand() % 100 < (quality + 5) * 10 {
                 new_morale = self.units[target].strength / 10 + 20;
                 new_state = TacticalUnitState::Ready;
@@ -4036,7 +4027,7 @@ mod tests {
                 .max_by_key(|&tile| battle.inner.cost(tile))
                 .and_then(TacticalHex::from_index)
                 .expect("selected unit has a destination");
-            let move_cost = i32::from(battle.inner.cost(destination.index()));
+            let move_cost = battle.inner.cost(destination.index());
             let mut probe = battle.inner.clone();
             let expected = probe
                 .select_next_record_unit()

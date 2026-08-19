@@ -43,7 +43,7 @@ impl GameState {
                 let pending = &mut self.nations.majors[&major].economy.pending_actions
                     [PendingActionKind::ColonyMonumentMerchantCapacity];
                 if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                    pending.queue_with_payload((subject.get() as i32));
+                    pending.queue_with_payload(subject.table_index() as i32);
                 }
             }
             self.add_treaty_event(InterNationNewsKind::NationJoinedEmpire, master, subject);
@@ -55,7 +55,7 @@ impl GameState {
             let pending = &mut self.nations.majors[&master_major].economy.pending_actions
                 [PendingActionKind::AnnexedGreatPowerCapitalExpansion];
             if !pending.status().has_reached(PendingActionStatus::HANDLED) {
-                pending.queue_with_payload((subject.get() as i32));
+                pending.queue_with_payload(subject.table_index() as i32);
             }
         }
     }
@@ -133,7 +133,7 @@ impl GameState {
             let Some(owner) = NationId::as_major(unit.owner_nation) else {
                 return true;
             };
-            !enemies[usize::from(owner.get())]
+            !enemies[owner.get()]
         });
     }
 
@@ -165,7 +165,7 @@ impl GameState {
             let Some(owner) = NationId::as_major(unit.owner_nation) else {
                 continue;
             };
-            if !targets[usize::from(owner.get())] {
+            if !targets[owner.get()] {
                 continue;
             }
             let Some(home) = self.nations.majors[&owner].common.home_tile else {
@@ -201,7 +201,7 @@ impl GameState {
             let Some(owner) = self.map[tile].secondary_owner_nation else {
                 continue;
             };
-            let index = usize::from(owner.get());
+            let index = owner.get();
             if boycott[index] {
                 notify[index] = true;
                 self.map[tile].secondary_owner_nation = None;

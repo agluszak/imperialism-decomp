@@ -2,9 +2,9 @@ use crate::color::DibPalette;
 use crate::media::{MovieId, MusicTrack, SoundId};
 use crate::retail_resources::*;
 use crate::{PictureId, RetailCursor, RetailFontFace};
-use imperialism_core::{
-    MajorNationId, MinorNationId, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
-};
+#[cfg(test)]
+use imperialism_core::{MajorNationId, MinorNationId};
+use imperialism_core::{NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames};
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
 use std::collections::BTreeMap;
@@ -184,7 +184,8 @@ impl RetailAssets {
         let mut localized_nation_names = NationTable::default();
         for nation in NationId::all() {
             // `TSimMgr::GetString(0x2715, nationSlot)` adds one before direct lookup.
-            localized_nation_names[nation] = self.string(0x2715, i16::from(nation.get()) + 1)?;
+            localized_nation_names[nation] =
+                self.string(0x2715, i16::from(nation.retail_slot()) + 1)?;
         }
 
         let mut province_names_by_nation: NationTable<Vec<String>> = NationTable::default();
@@ -197,7 +198,7 @@ impl RetailAssets {
             for ordinal in 1..=name_count {
                 // `TSimMgr::GetString(group, offset)` adds one before the direct resource lookup.
                 province_names_by_nation[nation].push(self.string(
-                    8000 + i16::from(nation.get()),
+                    8000 + i16::from(nation.retail_slot()),
                     i16::try_from(ordinal + 1).expect("province-name ordinal fits i16"),
                 )?);
             }

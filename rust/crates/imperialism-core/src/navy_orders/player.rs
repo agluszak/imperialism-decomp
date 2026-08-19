@@ -206,7 +206,7 @@ impl GameState {
             };
             worst = worst.min(descriptor_weight(ship.ship_type));
         }
-        let limit = if worst == 10_000 { 0 } else { worst as i32 };
+        let limit = if worst == 10_000 { 0 } else { worst };
         hop_distance(&self.zone_hop_distances_from(entry.location), zone) <= limit
     }
 
@@ -303,12 +303,7 @@ impl GameState {
     pub fn cancel_task_force(&mut self, force: TaskForceId) -> Option<TileId> {
         let context = self.task_force(force).and_then(|entry| {
             let zone = entry.location;
-            let target = self
-                .ocean
-                .zones
-                .get(usize::from(zone.get()))?
-                .zone()
-                .target_tile;
+            let target = self.ocean.zones.get(zone.get())?.zone().target_tile;
             Some((zone, entry.nation, target))
         });
         self.destroy_task_force_ingot(force);
@@ -412,7 +407,7 @@ impl GameState {
         if len == 0 {
             return None;
         }
-        let start = from.map(|zone| usize::from(zone.get()));
+        let start = from.map(|zone| zone.get());
         let mut index = start.unwrap_or(len).wrapping_sub(1);
         while index < len {
             let zone = OceanZoneId::new(index);
@@ -437,7 +432,7 @@ impl GameState {
             return 0xb;
         }
         if (7..=13).contains(&action) {
-            return i32::from(action) - 5;
+            return action - 5;
         }
         if (14..=21).contains(&action) {
             let resolved = self.zone_for_sea_tile(tile);
@@ -565,11 +560,11 @@ impl GameState {
         };
         let location = entry.location;
         let candidate_is_port = matches!(
-            self.ocean.zones.get(usize::from(candidate.get())),
+            self.ocean.zones.get(candidate.get()),
             Some(ZoneKind::PortZone(_))
         );
         let location_is_port = matches!(
-            self.ocean.zones.get(usize::from(location.get())),
+            self.ocean.zones.get(location.get()),
             Some(ZoneKind::PortZone(_))
         );
         if candidate == location {
@@ -585,7 +580,7 @@ impl GameState {
             && self
                 .ocean
                 .zones
-                .get(usize::from(candidate.get()))
+                .get(candidate.get())
                 .and_then(|zone| zone.zone().primary_neighbors.first().copied())
                 == Some(location)
         {
@@ -609,14 +604,14 @@ impl GameState {
     }
 
     fn port_zone_owned_by(&self, zone: OceanZoneId, nation: NationId) -> bool {
-        let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(usize::from(zone.get())) else {
+        let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(zone.get()) else {
             return false;
         };
-        self.map[port.port_tile].owner_nation == Some(TileContext::from_nation(nation))
+        self.map[port.port_tile].owner_nation == Some(TileContext::from(nation))
     }
 
     fn port_zone_hostile_to(&self, zone: OceanZoneId, nation: NationId) -> bool {
-        let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(usize::from(zone.get())) else {
+        let Some(ZoneKind::PortZone(port)) = self.ocean.zones.get(zone.get()) else {
             return false;
         };
         let Some(owner) = self.map[port.port_tile]
@@ -760,7 +755,7 @@ impl GameState {
         let Some(tile) = self
             .ocean
             .zones
-            .get(usize::from(zone.get()))
+            .get(zone.get())
             .and_then(|zone| zone.zone().target_tile)
         else {
             return;
@@ -788,7 +783,7 @@ impl GameState {
                 && ship.nation == nation
                 && self.task_force_of_ship(ship_id).is_none()
         });
-        let Some(zone) = self.ocean.zones.get(usize::from(zone.get())) else {
+        let Some(zone) = self.ocean.zones.get(zone.get()) else {
             return;
         };
         let Some(active_tile) = zone.zone().active_tile else {

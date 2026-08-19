@@ -252,7 +252,7 @@ impl GameState {
             .ships
             .values()
             .filter(|ship| ship.nation == nation_id)
-            .map(|ship| i32::from(ship_order_costs(ship.ship_type).arms))
+            .map(|ship| ship_order_costs(ship.ship_type).arms)
             .sum();
         if arms < 25 {
             return;

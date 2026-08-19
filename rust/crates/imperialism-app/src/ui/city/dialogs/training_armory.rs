@@ -358,7 +358,7 @@ pub(in crate::ui::city) fn sync_armory_details(
             ArmoryDetail::SecondaryCost => secondary
                 .map(|item| item.per_unit().to_string())
                 .unwrap_or_default(),
-            ArmoryDetail::CashCost => format_currency(i32::from(spec.cash_per_unit)),
+            ArmoryDetail::CashCost => format_currency(spec.cash_per_unit),
             ArmoryDetail::WorkforceAvailable => workforce_available.to_string(),
             ArmoryDetail::PrimaryAvailable => primary_available.to_string(),
             ArmoryDetail::SecondaryAvailable => secondary
@@ -382,7 +382,7 @@ pub(in crate::ui::city) fn sync_armory_details(
             ArmoryDetail::SecondaryAvailable => {
                 secondary_available.is_some_and(|available| available < spec.primary.per_unit())
             }
-            ArmoryDetail::Treasury => major.common.treasury < i32::from(spec.cash_per_unit),
+            ArmoryDetail::Treasury => major.common.treasury < spec.cash_per_unit,
             _ => false,
         };
         color.0 = city_stock_color(warning, &selection);

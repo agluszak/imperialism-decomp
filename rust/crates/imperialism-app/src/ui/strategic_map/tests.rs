@@ -118,7 +118,7 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
         .geometry()
         .tile(MapPosition::new(row + 2, column + 2))
         .expect("interior visible tile");
-    parts.map[hovered].owner_nation = Some(TileContext::from_nation(active));
+    parts.map[hovered].owner_nation = Some(TileContext::from(active));
     parts.map[hovered].terrain = TerrainKind::Plains;
     parts.map[hovered].region = None;
     parts.map[hovered].province = None;
@@ -290,7 +290,7 @@ fn bounded_seam_tiles_use_the_dedicated_seam_frame() {
 fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let mut fixture = MapFixture::new();
     let nation = MajorNationId::new(6);
-    let owner = TileContext::from_nation(nation.nation());
+    let owner = TileContext::from(nation);
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
         map[origin].owner_nation = Some(owner);
@@ -323,7 +323,7 @@ fn city_marker_offsets_follow_former_owner_and_development_stage() {
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
         map[origin].flags = TileFlags::from_bits_retain(1);
-        map[origin].former_owner_nation = Some(TileContext::from_nation(MajorNationId::new(6)));
+        map[origin].former_owner_nation = Some(TileContext::from(MajorNationId::new(6)));
     });
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x6c0));
 
@@ -334,7 +334,7 @@ fn city_marker_offsets_follow_former_owner_and_development_stage() {
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x700));
 
     fixture.edit(|map, origin| {
-        map[origin].former_owner_nation = Some(TileContext::new(8));
+        map[origin].former_owner_nation = Some(TileContext::from_retail_tag(8));
         map[origin].flags = TileFlags::from_bits_retain(1);
     });
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x9c0));
@@ -440,7 +440,7 @@ fn city_tiles_blit_the_capital_improvement_ink() {
         map[origin].terrain = TerrainKind::Plains;
         map[origin].gate = 1;
         map[origin].flags = TileFlags::from_bits_retain(1);
-        map[origin].former_owner_nation = Some(TileContext::from_nation(MajorNationId::new(6)));
+        map[origin].former_owner_nation = Some(TileContext::from(MajorNationId::new(6)));
         map[origin].edge_resources = [None, None];
     });
 
@@ -459,7 +459,7 @@ fn nation_borders_use_the_owner_palette() {
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
         map[origin].terrain = TerrainKind::Plains;
-        map[origin].owner_nation = Some(TileContext::from_nation(MajorNationId::new(6)));
+        map[origin].owner_nation = Some(TileContext::from(MajorNationId::new(6)));
         map[origin].owner_border_mask = 1;
         map[origin].city_border_mask = 0;
     });
@@ -467,11 +467,11 @@ fn nation_borders_use_the_owner_palette() {
     let mut pixels = vec![1_u8; (TILE_SIZE * TILE_SIZE) as usize];
     compose_strategic_borders(&fixture.state(), origin, &mut pixels);
     assert!(
-        pixels.contains(&MAJOR_NATION_BORDER_PALETTES[usize::from(MajorNationId::new(6).get())]),
+        pixels.contains(&MAJOR_NATION_BORDER_PALETTES[MajorNationId::new(6).get()]),
         "major nation 6 must stroke with retail palette 0x2e"
     );
     assert!(
-        !pixels.contains(&MAJOR_NATION_BORDER_PALETTES[usize::from(MajorNationId::new(0).get())]),
+        !pixels.contains(&MAJOR_NATION_BORDER_PALETTES[MajorNationId::new(0).get()]),
         "a nation-6 border must not use another major's palette"
     );
 }

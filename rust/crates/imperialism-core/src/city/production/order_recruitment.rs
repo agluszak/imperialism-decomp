@@ -31,10 +31,9 @@ pub(crate) fn recruit_limit(
     limit.min_with(primary_limit, ProductionConstraint::Resources);
     limit.min_with(secondary_limit, ProductionConstraint::Resources);
     if spec.cash_per_unit != 0 && owner.diplomacy_eligible {
-        let affordable =
-            (owner.available_diplomacy_budget(treasury) / i32::from(spec.cash_per_unit)).max(0);
-        if affordable < i32::from(limit.maximum) {
-            limit.min_with(affordable as i32, ProductionConstraint::Treasury);
+        let affordable = (owner.available_diplomacy_budget(treasury) / spec.cash_per_unit).max(0);
+        if affordable < limit.maximum {
+            limit.min_with(affordable, ProductionConstraint::Treasury);
         }
     }
     OrderLimit {
@@ -67,7 +66,7 @@ pub(crate) fn set_recruit_quantity(
         );
     }
     population.remove_population(spec.workforce, delta);
-    let cash_change = i32::from(spec.cash_per_unit) * i32::from(delta);
+    let cash_change = spec.cash_per_unit * delta;
     *treasury -= cash_change;
     true
 }

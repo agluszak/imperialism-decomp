@@ -435,7 +435,7 @@ fn smooth_minimap_atlas(atlas: &mut [u8]) {
 fn atlas_owner_palette(owner: Option<TileContext>) -> Option<u8> {
     let owner_code = match owner {
         None => -1,
-        Some(tag) => i16::from(tag.get()),
+        Some(tag) => i16::from(tag.to_retail_tag()),
     };
     if owner_code >= 0x17 {
         return None;
@@ -833,17 +833,23 @@ mod tests {
                     .geometry()
                     .tile(MapPosition::new(row, column))
                     .unwrap();
-                parts.map[tile].owner_nation = Some(TileContext::new(0));
+                parts.map[tile].owner_nation = Some(TileContext::from_retail_tag(0));
             }
         }
         let sea = parts.map.geometry().tile(MapPosition::new(10, 40)).unwrap();
-        parts.map[sea].owner_nation = Some(TileContext::new(0x17));
+        parts.map[sea].owner_nation = Some(TileContext::from_retail_tag(0x17));
         let state = GameState::from_parts(parts);
         let atlas = compose_minimap_atlas(&state);
         assert_eq!(atlas[20 * ATLAS_WIDTH + 20], view_mgr_color(0x3e));
         assert_eq!(atlas[20 * ATLAS_WIDTH + 80], view_mgr_color(0x32));
-        assert_eq!(atlas_owner_palette(Some(TileContext::new(0))), Some(0x15));
-        assert_eq!(atlas_owner_palette(Some(TileContext::new(0x17))), None);
+        assert_eq!(
+            atlas_owner_palette(Some(TileContext::from_retail_tag(0))),
+            Some(0x15)
+        );
+        assert_eq!(
+            atlas_owner_palette(Some(TileContext::from_retail_tag(0x17))),
+            None
+        );
         assert_eq!(atlas_owner_palette(None), Some(0xff));
         assert_eq!(view_mgr_color(0x3e), 0x15);
         assert_eq!(view_mgr_color(0x32), 0x1a);

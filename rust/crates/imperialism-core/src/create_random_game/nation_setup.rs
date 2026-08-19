@@ -108,16 +108,17 @@ pub(super) fn choose_foreign_ministers(
 
     let mut region_class_by_nation = [None; NATION_COUNT];
     for province in map.provinces() {
-        region_class_by_nation[usize::from(province.owner.get())] = Some(province.region_class);
+        region_class_by_nation[province.owner.nation().unwrap().table_index()] =
+            Some(province.region_class);
     }
 
-    let major_count = usize::from(MajorNationId::COUNT);
+    let major_count = MajorNationId::COUNT;
     let isolation_by_major = MajorNationTable::from_fn(|nation| {
-        let class = region_class_by_nation[nation.table_index()]
+        let class = region_class_by_nation[nation.get()]
             .expect("accepted random maps assign a region class to every major nation");
-        if (0..major_count).any(|other| {
-            other != nation.table_index() && region_class_by_nation[other] == Some(class)
-        }) {
+        if (0..major_count)
+            .any(|other| other != nation.get() && region_class_by_nation[other] == Some(class))
+        {
             0
         } else if (major_count..NATION_COUNT)
             .any(|other| region_class_by_nation[other] == Some(class))
@@ -168,7 +169,7 @@ pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> Minor
         ),
         consortium_members: std::array::from_fn(|offset| MinorNationId::new(first_member + offset)),
         trade: MinorTradeState {
-            thresholds: MINOR_TRADE_THRESHOLDS[nation.table_index()],
+            thresholds: MINOR_TRADE_THRESHOLDS[nation.get()],
             ..MinorTradeState::default()
         },
     }
@@ -213,7 +214,7 @@ pub(super) const fn minor_trade_thresholds(
 pub(super) fn initialize_minor_trade_state(world: &MapMgr, nations: &mut Nations) {
     for nation in MinorNationId::all() {
         let minor = &mut nations.minors[&nation];
-        let owner = TileContext::from_nation(nation.nation());
+        let owner = TileContext::from(nation);
         let mut counts = ResourceTable::default();
         for tile in world.tiles.iter() {
             if tile.owner_nation != Some(owner) || tile.gate == 0xf {

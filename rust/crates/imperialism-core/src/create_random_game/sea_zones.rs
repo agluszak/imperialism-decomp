@@ -102,7 +102,7 @@ pub(super) fn initialize_sea_zone_neighbors(
 ) {
     for &[left, right] in links {
         for (source, neighbor) in [(left, right), (right, left)] {
-            let ZoneKind::Zone(zone) = &mut zones[usize::from(source.get())] else {
+            let ZoneKind::Zone(zone) = &mut zones[source.get()] else {
                 unreachable!("water-region links only name base zones")
             };
             if !zone.primary_neighbors.contains(&neighbor) {
@@ -166,8 +166,8 @@ pub(super) fn generate_base_zone_status_codes(
             Some(zone.secondary_neighbors[index])
         };
         let needs_fallback_name = match selected_city {
-            Some(city) if !used_cities[usize::from(city.get())] => {
-                used_cities[usize::from(city.get())] = true;
+            Some(city) if !used_cities[city.get()] => {
+                used_cities[city.get()] = true;
                 false
             }
             _ => true,
@@ -200,7 +200,7 @@ pub(super) fn generate_province_names(
         let owner = province
             .owner()
             .expect("a populated fresh-map province has an owner");
-        let ordinal = &mut next_ordinal[usize::from(owner.get())];
+        let ordinal = &mut next_ordinal[owner.table_index()];
         province.name = names.province_names_by_nation[owner]
             .get(*ordinal)
             .expect("retail province-name table covers every generated province")
@@ -250,8 +250,8 @@ pub(super) fn generate_zone_display_names(
                     Some(zone.secondary_neighbors[index])
                 };
                 match selected_city {
-                    Some(province) if !used_cities[province.index()] => {
-                        used_cities[province.index()] = true;
+                    Some(province) if !used_cities[province.get()] => {
+                        used_cities[province.get()] = true;
                         world.provinces[province].name.clone()
                     }
                     _ => {
@@ -298,7 +298,7 @@ fn base_zone_status_category(zones: &[ZoneKind], ordinal: usize) -> u32 {
     };
     let mut category = zone.primary_neighbors.len() as u32;
     if category == 2 {
-        let first = usize::from(zone.primary_neighbors[0].get());
+        let first = zone.primary_neighbors[0].get();
         let second = zone.primary_neighbors[1];
         let ZoneKind::Zone(first) = &zones[first] else {
             unreachable!("base-zone links name base zones before ports exist")
@@ -340,7 +340,7 @@ pub(super) fn build_sea_zone_cost_field(world: &MapMgr, geometry: MapGeometry) -
                     }
                     continue;
                 };
-                let neighbor_index = usize::from(neighbor.get());
+                let neighbor_index = neighbor.get();
                 if current == 0 && world[neighbor].owner_nation != world[tile].owner_nation {
                     costs[index] = -1;
                     changed += 1;
@@ -382,7 +382,7 @@ pub(super) fn select_sea_zone_seed_tile(
             continue;
         }
 
-        let mut score = i32::from(costs[index]) * 12;
+        let mut score = costs[index] * 12;
         for (direction, neighbor) in HexDirection::ALL.into_iter().zip(geometry.neighbors(tile)) {
             let Some(neighbor) = neighbor else {
                 continue;
@@ -390,7 +390,7 @@ pub(super) fn select_sea_zone_seed_tile(
             if world[neighbor].owner_nation != Some(owner) {
                 continue;
             }
-            let neighbor_cost = i32::from(costs[usize::from(neighbor.get())]);
+            let neighbor_cost = costs[neighbor.get()];
             score += neighbor_cost * 2;
             if matches!(direction, HexDirection::East | HexDirection::West) {
                 score += neighbor_cost;
@@ -403,7 +403,7 @@ pub(super) fn select_sea_zone_seed_tile(
             equal_best_count = 1;
         } else if best_score == score {
             equal_best_count += 1;
-            if crt.next_rand() % i32::from(equal_best_count) == 0 || best_tile < 0xd8 {
+            if crt.next_rand() % equal_best_count == 0 || best_tile < 0xd8 {
                 best_tile = index as i32;
                 best_score = score;
             }
@@ -575,7 +575,7 @@ pub(super) fn select_port_sea_tile(
     tile: TileId,
     seed_nation: NationId,
 ) -> Option<TileId> {
-    let tile_index = tile.index();
+    let tile_index = tile.get();
     for direction in HexDirection::ALL
         .into_iter()
         .cycle()

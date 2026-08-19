@@ -150,7 +150,7 @@ pub(crate) fn produce_item(
     *production += state.progress.quantity;
     stockpile.wrapping_add(item.resource(), state.progress.quantity);
     stockpile.verify_stocks();
-    *rolling_item_production_score += i32::from(state.progress.quantity);
+    *rolling_item_production_score += state.progress.quantity;
     match item.inputs() {
         ItemInputs::Double(primary) => {
             state.tracking_by_resource[primary] = 0;
@@ -160,7 +160,7 @@ pub(crate) fn produce_item(
             state.tracking_by_resource[secondary] = 0;
         }
     }
-    state.accumulated_value += i32::from(state.progress.quantity);
+    state.accumulated_value += state.progress.quantity;
 }
 
 pub(crate) fn restock_item(

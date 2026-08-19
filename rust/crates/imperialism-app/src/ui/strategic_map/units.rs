@@ -872,8 +872,7 @@ fn civilian_sprite(
         kind: unit.unit_type(),
         pose: civilian_pose(unit.order(), foreign, selected),
         frame: 0,
-        owner_badge: foreign
-            .then(|| owner_flag_slot(Some(TileContext::from_nation(unit.owner_nation())))),
+        owner_badge: foreign.then(|| owner_flag_slot(Some(TileContext::from(unit.owner_nation())))),
         framed: foreign,
     }
 }
@@ -928,7 +927,7 @@ fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
 
 fn civilian_tile_is_visible(owner: Option<TileContext>, active: NationId) -> bool {
     match owner {
-        Some(owner) if usize::from(owner.get()) >= MajorNationId::COUNT => true,
+        Some(owner) if owner.nation().and_then(NationId::as_major).is_none() => true,
         Some(owner) => owner.nation() == Some(active),
         None => false,
     }
@@ -1186,15 +1185,15 @@ mod tests {
     fn civilians_are_hidden_on_foreign_great_power_land() {
         let active = MajorNationId::new(6);
         assert!(civilian_tile_is_visible(
-            Some(TileContext::from_nation(active)),
+            Some(TileContext::from(active)),
             active.nation()
         ));
         assert!(!civilian_tile_is_visible(
-            Some(TileContext::from_nation(MajorNationId::new(0))),
+            Some(TileContext::from(MajorNationId::new(0))),
             active.nation()
         ));
         assert!(civilian_tile_is_visible(
-            Some(TileContext::new(8)),
+            Some(TileContext::from_retail_tag(8)),
             active.nation()
         ));
         assert!(!civilian_tile_is_visible(None, active.nation()));
@@ -1254,10 +1253,10 @@ mod tests {
     #[test]
     fn owner_flag_slots_collapse_minor_nations() {
         assert_eq!(
-            owner_flag_slot(Some(TileContext::from_nation(MajorNationId::new(3)))),
+            owner_flag_slot(Some(TileContext::from(MajorNationId::new(3)))),
             3
         );
-        assert_eq!(owner_flag_slot(Some(TileContext::new(8))), 7);
+        assert_eq!(owner_flag_slot(Some(TileContext::from_retail_tag(8))), 7);
         assert_eq!(owner_flag_slot(None), 7);
     }
 
