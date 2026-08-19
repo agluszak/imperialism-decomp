@@ -1215,7 +1215,7 @@ mod tests {
         );
         assert_eq!(resource_specialty_icon_cell(ResourceKind::Cotton).x, 0.0);
         assert_eq!(
-            resource_overlay_cell(ResourceKind::Iron, 1).map(|cell| cell.x),
+            resource_overlay_cell(ResourceKind::Coal, 1).map(|cell| cell.x),
             Some(228.0)
         );
         assert_eq!(
