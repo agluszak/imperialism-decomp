@@ -223,214 +223,175 @@ fn draw_guide_pattern(
     color: u8,
     pen: i32,
 ) {
-    match relation {
-        0 => draw_guide_set_a(pixels, variant, color, pen),
-        1 => draw_guide_set_b(pixels, variant, color, pen),
-        2 => draw_guide_set_c(pixels, variant, color, pen),
-        3 => draw_guide_set_d(pixels, variant, color, pen),
-        4 => draw_guide_set_tile(pixels, variant, color, pen),
-        5 => draw_guide_set_e(pixels, variant, color, pen),
-        6 => draw_guide_set_f(pixels, variant, color, pen),
-        7 => draw_guide_set_g(pixels, variant, color, pen),
-        8 => draw_guide_set_h(pixels, variant, color, pen),
-        9 => draw_guide_set_i(pixels, variant, color, pen),
-        _ => {}
+    for path in guide_paths(relation, variant) {
+        stroke_guide(pixels, path.origin, path.points, color, pen);
     }
 }
 
-fn draw_guide_set_a(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    if variant == 0 {
-        stroke_guide(
-            pixels,
-            (0x18, 0),
-            &[(0x20, 9), (0x26, 6), (0x2c, 8)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 1 {
-        stroke_guide(
-            pixels,
-            (0x16, 0),
-            &[(0x1e, 10), (0x26, 8), (0x2c, 10)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 2 {
-        stroke_guide(
-            pixels,
-            (0x1a, 0),
-            &[(0x22, 6), (0x26, 4), (0x2c, 6)],
-            color,
-            pen,
-        );
-    }
+struct GuidePath {
+    origin: (i32, i32),
+    points: &'static [(i32, i32)],
 }
 
-fn draw_guide_set_b(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    if variant == 0 {
-        stroke_guide(
-            pixels,
-            (0x2c, 8),
-            &[(0x36, 0xd), (0x34, 0x14), (0x3a, 0x19), (0x38, 0x20)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 1 {
-        stroke_guide(
-            pixels,
-            (0x2c, 10),
-            &[(0x34, 0xf), (0x31, 0x14), (0x38, 0x19), (0x36, 0x20)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 2 {
-        stroke_guide(
-            pixels,
-            (0x2c, 6),
-            &[(0x37, 0xb), (0x36, 0x13), (0x3c, 0x19), (0x3a, 0x20)],
-            color,
-            pen,
-        );
-    }
-}
-
-fn draw_guide_set_c(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    let (x1, x2, x3) = if variant == 1 {
-        (0x36, 0x34, 0x38)
-    } else if variant == 2 {
-        (0x3a, 0x38, 0x3c)
-    } else {
-        (0x38, 0x36, 0x3a)
-    };
-    stroke_guide(
-        pixels,
-        (x1, 0),
-        &[(x2, 9), (x3, 0x12), (x2, 0x19), (x1, 0x20)],
-        color,
-        pen,
-    );
-}
-
-fn draw_guide_set_d(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    if variant == 1 {
-        stroke_guide(pixels, (0x2c, 10), &[(0x39, 0)], color, pen);
-        return;
-    }
-    if variant == 2 {
-        stroke_guide(pixels, (0x2c, 5), &[(0x37, -3)], color, pen);
-        return;
-    }
-    stroke_guide(pixels, (0x2c, 8), &[(0x38, 0)], color, pen);
-}
-
-fn draw_guide_set_tile(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    draw_guide_set_b(pixels, variant, color, pen);
-    draw_guide_set_d(pixels, variant, color, pen);
-}
-
-fn draw_guide_set_e(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    if variant == 1 {
-        stroke_guide(pixels, (0x2c, 0x36), &[(0x39, 0x3e)], color, pen);
-        return;
-    }
-    if variant == 2 {
-        stroke_guide(pixels, (0x2c, 0x3a), &[(0x3a, 0x42)], color, pen);
-        return;
-    }
-    stroke_guide(pixels, (0x2c, 0x38), &[(0x39, 0x40)], color, pen);
-}
-
-fn draw_guide_set_f(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    let (x1, x2, x3) = if variant == 1 {
-        (0x36, 0x34, 0x38)
-    } else if variant == 2 {
-        (0x3a, 0x38, 0x3c)
-    } else {
-        (0x38, 0x36, 0x3a)
-    };
-    stroke_guide(
-        pixels,
-        (x1, 0x20),
-        &[(x2, 0x29), (x3, 0x32), (x2, 0x39), (x1, 0x40)],
-        color,
-        pen,
-    );
-}
-
-fn draw_guide_set_g(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    if variant == 0 {
-        stroke_guide(
-            pixels,
-            (0x2c, 0x38),
-            &[(0x36, 0x33), (0x34, 0x2c), (0x3a, 0x27), (0x38, 0x20)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 1 {
-        stroke_guide(
-            pixels,
-            (0x2c, 0x36),
-            &[(0x34, 0x31), (0x30, 0x2c), (0x37, 0x27), (0x36, 0x20)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 2 {
-        stroke_guide(
-            pixels,
-            (0x2c, 0x3a),
-            &[(0x37, 0x35), (0x36, 0x2d), (0x3c, 0x27), (0x3a, 0x20)],
-            color,
-            pen,
-        );
-    }
-}
-
-fn draw_guide_set_h(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    draw_guide_set_g(pixels, variant, color, pen);
-    draw_guide_set_e(pixels, variant, color, pen);
-}
-
-fn draw_guide_set_i(pixels: &mut IndexedPicture, variant: i32, color: u8, pen: i32) {
-    if variant == 0 {
-        stroke_guide(
-            pixels,
-            (0x18, 0x40),
-            &[(0x1a, 0x3b), (0x24, 0x36), (0x2a, 0x38), (0x2c, 0x38)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 1 {
-        stroke_guide(
-            pixels,
-            (0x16, 0x3f),
-            &[(0x18, 0x39), (0x24, 0x33), (0x2a, 0x36), (0x2c, 0x36)],
-            color,
-            pen,
-        );
-        return;
-    }
-    if variant == 2 {
-        stroke_guide(
-            pixels,
-            (0x1a, 0x40),
-            &[(0x1c, 0x3b), (0x24, 0x38), (0x2a, 0x3a), (0x2c, 0x3a)],
-            color,
-            pen,
-        );
+fn guide_paths(relation: u8, variant: i32) -> &'static [GuidePath] {
+    match (relation, variant) {
+        (0, 0) => &[GuidePath {
+            origin: (0x18, 0),
+            points: &[(0x20, 9), (0x26, 6), (0x2c, 8)],
+        }],
+        (0, 1) => &[GuidePath {
+            origin: (0x16, 0),
+            points: &[(0x1e, 10), (0x26, 8), (0x2c, 10)],
+        }],
+        (0, 2) => &[GuidePath {
+            origin: (0x1a, 0),
+            points: &[(0x22, 6), (0x26, 4), (0x2c, 6)],
+        }],
+        (1, 0) => &[GuidePath {
+            origin: (0x2c, 8),
+            points: &[(0x36, 0xd), (0x34, 0x14), (0x3a, 0x19), (0x38, 0x20)],
+        }],
+        (1, 1) => &[GuidePath {
+            origin: (0x2c, 10),
+            points: &[(0x34, 0xf), (0x31, 0x14), (0x38, 0x19), (0x36, 0x20)],
+        }],
+        (1, 2) => &[GuidePath {
+            origin: (0x2c, 6),
+            points: &[(0x37, 0xb), (0x36, 0x13), (0x3c, 0x19), (0x3a, 0x20)],
+        }],
+        (2, 0) => &[GuidePath {
+            origin: (0x38, 0),
+            points: &[(0x36, 9), (0x3a, 0x12), (0x36, 0x19), (0x38, 0x20)],
+        }],
+        (2, 1) => &[GuidePath {
+            origin: (0x36, 0),
+            points: &[(0x34, 9), (0x38, 0x12), (0x34, 0x19), (0x36, 0x20)],
+        }],
+        (2, 2) => &[GuidePath {
+            origin: (0x3a, 0),
+            points: &[(0x38, 9), (0x3c, 0x12), (0x38, 0x19), (0x3a, 0x20)],
+        }],
+        (3, 0) => &[GuidePath {
+            origin: (0x2c, 8),
+            points: &[(0x38, 0)],
+        }],
+        (3, 1) => &[GuidePath {
+            origin: (0x2c, 10),
+            points: &[(0x39, 0)],
+        }],
+        (3, 2) => &[GuidePath {
+            origin: (0x2c, 5),
+            points: &[(0x37, -3)],
+        }],
+        (4, 0) => &[
+            GuidePath {
+                origin: (0x2c, 8),
+                points: &[(0x36, 0xd), (0x34, 0x14), (0x3a, 0x19), (0x38, 0x20)],
+            },
+            GuidePath {
+                origin: (0x2c, 8),
+                points: &[(0x38, 0)],
+            },
+        ],
+        (4, 1) => &[
+            GuidePath {
+                origin: (0x2c, 10),
+                points: &[(0x34, 0xf), (0x31, 0x14), (0x38, 0x19), (0x36, 0x20)],
+            },
+            GuidePath {
+                origin: (0x2c, 10),
+                points: &[(0x39, 0)],
+            },
+        ],
+        (4, 2) => &[
+            GuidePath {
+                origin: (0x2c, 6),
+                points: &[(0x37, 0xb), (0x36, 0x13), (0x3c, 0x19), (0x3a, 0x20)],
+            },
+            GuidePath {
+                origin: (0x2c, 5),
+                points: &[(0x37, -3)],
+            },
+        ],
+        (5, 0) => &[GuidePath {
+            origin: (0x2c, 0x38),
+            points: &[(0x39, 0x40)],
+        }],
+        (5, 1) => &[GuidePath {
+            origin: (0x2c, 0x36),
+            points: &[(0x39, 0x3e)],
+        }],
+        (5, 2) => &[GuidePath {
+            origin: (0x2c, 0x3a),
+            points: &[(0x3a, 0x42)],
+        }],
+        (6, 0) => &[GuidePath {
+            origin: (0x38, 0x20),
+            points: &[(0x36, 0x29), (0x3a, 0x32), (0x36, 0x39), (0x38, 0x40)],
+        }],
+        (6, 1) => &[GuidePath {
+            origin: (0x36, 0x20),
+            points: &[(0x34, 0x29), (0x38, 0x32), (0x34, 0x39), (0x36, 0x40)],
+        }],
+        (6, 2) => &[GuidePath {
+            origin: (0x3a, 0x20),
+            points: &[(0x38, 0x29), (0x3c, 0x32), (0x38, 0x39), (0x3a, 0x40)],
+        }],
+        (7, 0) => &[GuidePath {
+            origin: (0x2c, 0x38),
+            points: &[(0x36, 0x33), (0x34, 0x2c), (0x3a, 0x27), (0x38, 0x20)],
+        }],
+        (7, 1) => &[GuidePath {
+            origin: (0x2c, 0x36),
+            points: &[(0x34, 0x31), (0x30, 0x2c), (0x37, 0x27), (0x36, 0x20)],
+        }],
+        (7, 2) => &[GuidePath {
+            origin: (0x2c, 0x3a),
+            points: &[(0x37, 0x35), (0x36, 0x2d), (0x3c, 0x27), (0x3a, 0x20)],
+        }],
+        (8, 0) => &[
+            GuidePath {
+                origin: (0x2c, 0x38),
+                points: &[(0x36, 0x33), (0x34, 0x2c), (0x3a, 0x27), (0x38, 0x20)],
+            },
+            GuidePath {
+                origin: (0x2c, 0x38),
+                points: &[(0x39, 0x40)],
+            },
+        ],
+        (8, 1) => &[
+            GuidePath {
+                origin: (0x2c, 0x36),
+                points: &[(0x34, 0x31), (0x30, 0x2c), (0x37, 0x27), (0x36, 0x20)],
+            },
+            GuidePath {
+                origin: (0x2c, 0x36),
+                points: &[(0x39, 0x3e)],
+            },
+        ],
+        (8, 2) => &[
+            GuidePath {
+                origin: (0x2c, 0x3a),
+                points: &[(0x37, 0x35), (0x36, 0x2d), (0x3c, 0x27), (0x3a, 0x20)],
+            },
+            GuidePath {
+                origin: (0x2c, 0x3a),
+                points: &[(0x3a, 0x42)],
+            },
+        ],
+        (9, 0) => &[GuidePath {
+            origin: (0x18, 0x40),
+            points: &[(0x1a, 0x3b), (0x24, 0x36), (0x2a, 0x38), (0x2c, 0x38)],
+        }],
+        (9, 1) => &[GuidePath {
+            origin: (0x16, 0x3f),
+            points: &[(0x18, 0x39), (0x24, 0x33), (0x2a, 0x36), (0x2c, 0x36)],
+        }],
+        (9, 2) => &[GuidePath {
+            origin: (0x1a, 0x40),
+            points: &[(0x1c, 0x3b), (0x24, 0x38), (0x2a, 0x3a), (0x2c, 0x3a)],
+        }],
+        _ => &[],
     }
 }
 

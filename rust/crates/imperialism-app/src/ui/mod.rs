@@ -17,6 +17,7 @@ mod map_help;
 mod naval_battle;
 mod newspaper;
 mod offer_sheet;
+mod owner_map;
 mod preferences;
 mod query_floater;
 mod random_setup;

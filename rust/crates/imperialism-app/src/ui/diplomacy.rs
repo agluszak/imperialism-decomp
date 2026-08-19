@@ -7,10 +7,7 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::random_setup_map::{
-    compose_owner_preview_indices, compose_owner_preview_indices_with_fill,
-    preview_image_from_indices,
-};
+use super::owner_map::OwnerMap;
 use super::retail::{ModalDialog, RetailTree, ancestor_with};
 use super::session::apply_turn_stop;
 use crate::AppState;
@@ -2186,8 +2183,8 @@ fn render_diplomacy_map(
     let (entity, image_node) = map.into_inner();
     let state = &session.game;
     let framed = screen.framed_nation;
-    let pixels = match screen.interaction_mode() {
-        1 => compose_owner_preview_indices_with_fill(
+    let owner_map = match screen.interaction_mode() {
+        1 => OwnerMap::compose_with_fill(
             |tile| state.map()[tile].owner_nation,
             framed,
             |nation| {
@@ -2195,14 +2192,14 @@ fn render_diplomacy_map(
                     .palette()
             },
         ),
-        4 => compose_owner_preview_indices_with_fill(
+        4 => OwnerMap::compose_with_fill(
             |tile| state.map()[tile].owner_nation,
             framed,
             |nation| diplomacy_relationship_fill(state, framed, nation),
         ),
-        _ => compose_owner_preview_indices(|tile| state.map()[tile].owner_nation, framed),
+        _ => OwnerMap::compose(|tile| state.map()[tile].owner_nation, framed),
     };
-    let image = preview_image_from_indices(&pixels, assets.default_dib_palette());
+    let image = owner_map.to_image(assets.default_dib_palette());
     if let Some(image_node) = image_node {
         assets.replace_image(&image_node.image, image);
     } else {

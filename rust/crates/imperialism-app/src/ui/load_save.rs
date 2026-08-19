@@ -4,7 +4,7 @@ use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::random_setup_map::{compose_owner_preview_indices, preview_image_from_indices};
+use crate::ui::owner_map::OwnerMap;
 use crate::ui::retail::{ModalDialog, RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
@@ -446,11 +446,11 @@ fn apply_load_okay_pictures(
     ));
 }
 
-fn satellite_preview_indices(
+fn satellite_preview(
     owners: impl Fn(TileId) -> Option<TileOwnerTag>,
     selected_nation: NationId,
-) -> Vec<u8> {
-    compose_owner_preview_indices(owners, selected_nation)
+) -> OwnerMap {
+    OwnerMap::compose(owners, selected_nation)
 }
 
 fn apply_satellite_preview(
@@ -458,9 +458,9 @@ fn apply_satellite_preview(
     assets: &mut RetailUiAssets,
     entity: Entity,
     image_node: Option<&ImageNode>,
-    pixels: &[u8],
+    owner_map: &OwnerMap,
 ) {
-    let image = preview_image_from_indices(pixels, assets.default_dib_palette());
+    let image = owner_map.to_image(assets.default_dib_palette());
     if let Some(image_node) = image_node {
         assets.replace_image(&image_node.image, image);
     } else {
@@ -500,9 +500,9 @@ fn sync_load_save_preview(
                 return;
             };
             let selected = session.game.turn().active_nation;
-            let pixels =
-                satellite_preview_indices(|tile| session.game.map()[tile].owner_nation, selected);
-            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
+            let owner_map =
+                satellite_preview(|tile| session.game.map()[tile].owner_nation, selected);
+            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &owner_map);
         }
         LoadSavePreviewKey::Slot(slot) => {
             let path = retail_save_path(&save_dir.0, slot);
@@ -517,11 +517,11 @@ fn sync_load_save_preview(
             else {
                 return;
             };
-            let pixels = satellite_preview_indices(
+            let owner_map = satellite_preview(
                 |tile| owners.get(usize::from(tile.get())).copied().flatten(),
                 selected,
             );
-            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &pixels);
+            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &owner_map);
         }
     }
 }
@@ -1310,13 +1310,13 @@ mod tests {
                 original.map()[TileId::new(index as u16)].owner_nation
             );
         }
-        let pixels = satellite_preview_indices(
+        let owner_map = satellite_preview(
             |tile| owners.get(usize::from(tile.get())).copied().flatten(),
             original.turn().active_nation,
         );
-        assert_eq!(pixels.len(), 324 * 180);
+        assert_eq!(owner_map.picture.pixels.len(), 324 * 180);
         assert!(
-            pixels.iter().any(|&index| index != 0x10),
+            owner_map.picture.pixels.iter().any(|&index| index != 0x10),
             "satellite preview should paint claimed land, not only the off-map key"
         );
     }

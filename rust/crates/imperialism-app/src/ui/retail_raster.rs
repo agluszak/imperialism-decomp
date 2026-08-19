@@ -35,6 +35,7 @@ pub(in crate::ui) trait IndexedRasterExt {
         );
     }
     fn line_to_gdi(&mut self, start: IVec2, end: IVec2, color: u8, pen_width: i32);
+    fn line_bresenham_inclusive(&mut self, start: IVec2, end: IVec2, color: u8);
     fn frame_rect(&mut self, rect: IRect, color: u8);
     fn to_image(&self, palette: &DibPalette) -> Image;
     fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image;
@@ -124,6 +125,29 @@ impl IndexedRasterExt for IndexedPicture {
             if twice_error < delta.x {
                 error += delta.x;
                 point.y += step.y;
+            }
+        }
+    }
+
+    fn line_bresenham_inclusive(&mut self, mut point: IVec2, end: IVec2, color: u8) {
+        let delta_x = (end.x - point.x).abs();
+        let step_x = if point.x < end.x { 1 } else { -1 };
+        let delta_y = -(end.y - point.y).abs();
+        let step_y = if point.y < end.y { 1 } else { -1 };
+        let mut error = delta_x + delta_y;
+        loop {
+            self.put(point, color);
+            if point == end {
+                break;
+            }
+            let doubled = error * 2;
+            if doubled >= delta_y {
+                error += delta_y;
+                point.x += step_x;
+            }
+            if doubled <= delta_x {
+                error += delta_x;
+                point.y += step_y;
             }
         }
     }
@@ -310,5 +334,12 @@ mod tests {
                 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 0, 0, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0
             ]
         );
+    }
+
+    #[test]
+    fn inclusive_bresenham_has_its_own_endpoint_and_tie_breaking() {
+        let mut picture = indexed_picture(4, 3, 0);
+        picture.line_bresenham_inclusive(IVec2::ZERO, IVec2::new(3, 2), 7);
+        assert_eq!(picture.pixels, [7, 0, 0, 0, 0, 7, 7, 0, 0, 0, 0, 7]);
     }
 }

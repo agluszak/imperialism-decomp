@@ -396,10 +396,10 @@ pub(super) fn compose_minimap_atlas(state: &GameState) -> IndexedPicture {
         };
         let column = (index % MAP_COLUMNS as usize) * 2;
         let row = (index / MAP_COLUMNS as usize) * 2;
-        atlas.pixels[row * ATLAS_WIDTH + column] = palette_index;
-        atlas.pixels[row * ATLAS_WIDTH + column + 1] = palette_index;
-        atlas.pixels[(row + 1) * ATLAS_WIDTH + column] = palette_index;
-        atlas.pixels[(row + 1) * ATLAS_WIDTH + column + 1] = palette_index;
+        atlas.fill_rect(
+            IRect::new(column as i32, row as i32, column as i32 + 2, row as i32 + 2),
+            palette_index,
+        );
     }
     smooth_minimap_atlas(&mut atlas.pixels);
     atlas
@@ -407,25 +407,18 @@ pub(super) fn compose_minimap_atlas(state: &GameState) -> IndexedPicture {
 
 fn smooth_minimap_atlas(atlas: &mut [u8]) {
     let mut scratch = atlas.to_vec();
-    let stride = ATLAS_WIDTH as i32;
-    let mut compare = stride * 2 + 1;
-    let mut scratch_pos = 0x1b1;
-    for _ in 0..0x70 {
-        for _ in 0..0xd6 {
-            let center = atlas[compare as usize];
-            let left = atlas[(compare - 1) as usize];
-            let right = atlas[(compare + 1) as usize];
-            if atlas[(compare - stride) as usize] != center && (left != center || right != center) {
-                scratch[scratch_pos] = if left != center { left } else { right };
+    for y in 2..114 {
+        for x in 1..215 {
+            let index = y * ATLAS_WIDTH + x;
+            let center = atlas[index];
+            let left = atlas[index - 1];
+            let right = atlas[index + 1];
+            if (atlas[index - ATLAS_WIDTH] != center || atlas[index + ATLAS_WIDTH] != center)
+                && (left != center || right != center)
+            {
+                scratch[index] = if left != center { left } else { right };
             }
-            if atlas[(compare + stride) as usize] != center && (left != center || right != center) {
-                scratch[scratch_pos] = if left != center { left } else { right };
-            }
-            compare += 1;
-            scratch_pos += 1;
         }
-        compare += stride - 0xd6;
-        scratch_pos += 2;
     }
     atlas.copy_from_slice(&scratch);
 }
