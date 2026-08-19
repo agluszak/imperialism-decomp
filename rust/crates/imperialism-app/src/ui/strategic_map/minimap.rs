@@ -43,6 +43,8 @@ const OCEAN_MARKER: ViewportMarker = ViewportMarker {
 const MARKER_WIDTH: i32 = DETAILED_MARKER.half_width;
 #[cfg(test)]
 const MARKER_HEIGHT: i32 = DETAILED_MARKER.half_height;
+const MARKER_PALETTE: u8 = 0x13;
+#[cfg(test)]
 const WHITE_RGBA: [u8; 4] = [0xff, 0xff, 0xff, 0xff];
 
 #[derive(Component)]
@@ -371,20 +373,17 @@ pub(super) fn compose_minimap(
     let window = minimap_window(view_origin, marker);
     let mut picture = indexed_picture(FRAME_WIDTH, FRAME_HEIGHT, 0);
     blit_minimap_window(&atlas, window, state.map().topology, &mut picture);
-    let mut image = picture.to_image(palette);
-    let rgba = image
-        .data
-        .as_mut()
-        .expect("composed minimap keeps CPU pixels");
-    let marker_origin = viewport_marker(window, drag_pixel, marker);
-    draw_white_rect(
-        rgba,
-        marker_origin.0,
-        marker_origin.1,
-        marker_origin.0 + marker.half_width * 2,
-        marker_origin.1 + marker.half_height * 2,
+    let (x, y) = viewport_marker(window, drag_pixel, marker);
+    picture.frame_rect(
+        IRect::new(
+            x,
+            y,
+            x + marker.half_width * 2 + 1,
+            y + marker.half_height * 2 + 1,
+        ),
+        MARKER_PALETTE,
     );
-    (image, window)
+    (picture.to_image(palette), window)
 }
 
 pub(super) fn compose_minimap_atlas(state: &GameState) -> IndexedPicture {
@@ -543,25 +542,6 @@ pub(super) fn minimap_release_cell(
         column -= MAP_COLUMNS;
     }
     (column, row.clamp(0, MAP_ROWS))
-}
-
-fn draw_white_rect(rgba: &mut [u8], left: i32, top: i32, right: i32, bottom: i32) {
-    for x in left..=right {
-        put_rgba(rgba, x, top);
-        put_rgba(rgba, x, bottom);
-    }
-    for y in top..=bottom {
-        put_rgba(rgba, left, y);
-        put_rgba(rgba, right, y);
-    }
-}
-
-fn put_rgba(rgba: &mut [u8], x: i32, y: i32) {
-    if !(0..FRAME_WIDTH).contains(&x) || !(0..FRAME_HEIGHT).contains(&y) {
-        return;
-    }
-    let start = ((y * FRAME_WIDTH + x) as usize) * 4;
-    rgba[start..start + 4].copy_from_slice(&WHITE_RGBA);
 }
 
 /// Retail `TViewMgr::GetColor`.
@@ -865,6 +845,7 @@ mod tests {
         palette[view_mgr_color(4)] = Rgb::new(0xc4, 0xc4, 0x2a);
         palette[view_mgr_color(5)] = Rgb::new(0x8b, 0x3a, 0x8b);
         palette[view_mgr_color(6)] = Rgb::new(0x2a, 0xc4, 0xa6);
+        palette[MARKER_PALETTE] = Rgb::new(0xff, 0xff, 0xff);
         palette
     }
 }

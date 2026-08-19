@@ -52,27 +52,37 @@ impl OceanRenderAssets {
     }
 }
 
-pub(super) struct OceanRaster(IndexedPicture);
+pub(super) fn compose_ocean_raster(
+    state: &GameState,
+    ocean: &OceanViewport,
+    interaction: &StrategicInteraction,
+    hovered: Option<TileId>,
+    assets: &OceanRenderAssets,
+) -> IndexedPicture {
+    let mut picture = draw_base_ownership_and_borders(state, ocean);
+    draw_improvements(&mut picture, state, ocean, assets);
+    draw_unit_overlays(&mut picture, state, ocean, assets);
+    draw_routes(&mut picture, state, ocean);
+    draw_selection(&mut picture, state, ocean, interaction, hovered);
+    picture
+}
 
-impl OceanRaster {
-    pub(super) fn compose(
-        state: &GameState,
-        ocean: &OceanViewport,
-        interaction: &StrategicInteraction,
-        hovered: Option<TileId>,
-        assets: &OceanRenderAssets,
-    ) -> Self {
-        let mut picture = draw_base_ownership_and_borders(state, ocean);
-        draw_improvements(&mut picture, state, ocean, assets);
-        draw_unit_overlays(&mut picture, state, ocean, assets);
-        draw_routes(&mut picture, state, ocean);
-        draw_selection(&mut picture, state, ocean, interaction, hovered);
-        Self(picture)
-    }
+fn ocean_cell(x: i32, y: i32) -> IRect {
+    IRect::new(x, y, x + OCEAN_TILE, y + OCEAN_TILE)
+}
 
-    pub(super) fn into_picture(self) -> IndexedPicture {
-        self.0
-    }
+fn blit_ocean_sprite(
+    destination: &mut IndexedPicture,
+    source: &IndexedPicture,
+    source_x: i32,
+    at: IVec2,
+) {
+    destination.blit_keyed(
+        source,
+        IRect::new(source_x, 0, source_x + OCEAN_TILE, OCEAN_TILE),
+        at,
+        0x10,
+    );
 }
 
 fn draw_base_ownership_and_borders(state: &GameState, ocean: &OceanViewport) -> IndexedPicture {
@@ -92,28 +102,12 @@ fn draw_base_ownership_and_borders(state: &GameState, ocean: &OceanViewport) -> 
             let unwrapped_column = ocean.origin.x + column_delta;
             let column = if unwrapped_column >= i32::from(STRATEGIC_MAP_WIDTH) {
                 if blank_wrapped_right {
-                    picture.fill_rect(
-                        IRect::new(
-                            screen_x,
-                            screen_y,
-                            screen_x + OCEAN_TILE,
-                            screen_y + OCEAN_TILE,
-                        ),
-                        BOUNDED_MAP_BLANK,
-                    );
+                    picture.fill_rect(ocean_cell(screen_x, screen_y), BOUNDED_MAP_BLANK);
                     continue;
                 }
                 unwrapped_column - i32::from(STRATEGIC_MAP_WIDTH)
             } else if blank_wrapped_left && unwrapped_column > 60 {
-                picture.fill_rect(
-                    IRect::new(
-                        screen_x,
-                        screen_y,
-                        screen_x + OCEAN_TILE,
-                        screen_y + OCEAN_TILE,
-                    ),
-                    BOUNDED_MAP_BLANK,
-                );
+                picture.fill_rect(ocean_cell(screen_x, screen_y), BOUNDED_MAP_BLANK);
                 continue;
             } else {
                 unwrapped_column
@@ -125,15 +119,7 @@ fn draw_base_ownership_and_borders(state: &GameState, ocean: &OceanViewport) -> 
             let owner = ocean_owner(tile_state.owner_nation);
             let water = tile_state.terrain == TerrainKind::Water;
             if !water {
-                picture.fill_rect(
-                    IRect::new(
-                        screen_x,
-                        screen_y,
-                        screen_x + OCEAN_TILE,
-                        screen_y + OCEAN_TILE,
-                    ),
-                    OWNER_PALETTE[owner],
-                );
+                picture.fill_rect(ocean_cell(screen_x, screen_y), OWNER_PALETTE[owner]);
             }
             if screen_x >= 0 {
                 draw_ocean_borders(
@@ -230,12 +216,7 @@ fn draw_improvements(
                 };
             let screen_x = column_delta * OCEAN_TILE - if row & 1 == 0 { 8 } else { 0 };
             let screen_y = row_delta * OCEAN_TILE;
-            surface.blit_keyed(
-                picture,
-                IRect::new(source_x, 0, source_x + OCEAN_TILE, OCEAN_TILE),
-                IVec2::new(screen_x, screen_y),
-                0x10,
-            );
+            blit_ocean_sprite(surface, picture, source_x, IVec2::new(screen_x, screen_y));
         }
     }
 }
@@ -303,15 +284,10 @@ fn draw_unit_overlays(
             continue;
         };
         picture.fill_rect(
-            IRect::new(x, y, x + OCEAN_TILE, y + OCEAN_TILE),
+            ocean_cell(x, y),
             OWNER_PALETTE[ocean_owner(state.map()[tile].owner_nation)],
         );
-        picture.blit_keyed(
-            &assets.base_a,
-            IRect::new(0xe0, 0, 0xe0 + OCEAN_TILE, OCEAN_TILE),
-            IVec2::new(x, y),
-            0x10,
-        );
+        blit_ocean_sprite(picture, &assets.base_a, 0xe0, IVec2::new(x, y));
     }
 
     let mut drawn_provinces = Vec::new();
@@ -330,25 +306,14 @@ fn draw_unit_overlays(
             continue;
         };
         picture.fill_rect(
-            IRect::new(x, y, x + OCEAN_TILE, y + OCEAN_TILE),
+            ocean_cell(x, y),
             OWNER_PALETTE[ocean_owner(state.map()[tile].owner_nation)],
         );
         let source_x = ocean_improvement_source_x(&state.map()[tile]);
         if source_x < 1024 {
-            picture.blit_keyed(
-                &assets.base_a,
-                IRect::new(source_x, 0, source_x + OCEAN_TILE, OCEAN_TILE),
-                IVec2::new(x, y),
-                0x10,
-            );
+            blit_ocean_sprite(picture, &assets.base_a, source_x, IVec2::new(x, y));
         } else {
-            let source_x = source_x - 1024;
-            picture.blit_keyed(
-                &assets.base_b,
-                IRect::new(source_x, 0, source_x + OCEAN_TILE, OCEAN_TILE),
-                IVec2::new(x, y),
-                0x10,
-            );
+            blit_ocean_sprite(picture, &assets.base_b, source_x - 1024, IVec2::new(x, y));
         }
     }
 }
@@ -452,7 +417,7 @@ fn draw_ocean_tile_frame(
     let Some((x, y)) = ocean_tile_screen_origin(geometry, tile, ocean) else {
         return;
     };
-    picture.frame_rect(IRect::new(x, y, x + OCEAN_TILE, y + OCEAN_TILE), 0x20);
+    picture.frame_rect(ocean_cell(x, y), 0x20);
 }
 
 fn draw_ocean_borders(
@@ -796,12 +761,7 @@ mod tests {
             height: 16,
             pixels,
         };
-        indices.blit_keyed(
-            &picture,
-            IRect::new(16, 0, 32, OCEAN_TILE),
-            IVec2::new(10, 20),
-            0x10,
-        );
+        blit_ocean_sprite(&mut indices, &picture, 16, IVec2::new(10, 20));
         assert_eq!(pixel(&indices, 12, 23), 0x77);
         assert_eq!(pixel(&indices, 11, 23), 0x44);
     }

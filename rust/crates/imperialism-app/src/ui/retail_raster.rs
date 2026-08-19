@@ -87,15 +87,16 @@ impl IndexedRasterExt for IndexedPicture {
             return;
         };
         for row in 0..blit.height {
-            for column in 0..blit.width {
-                let source_index =
-                    ((blit.source.y + row) * source.width as i32 + blit.source.x + column) as usize;
-                let pixel = source.pixels[source_index];
-                if pixel != transparent {
-                    let destination_index = ((blit.destination.y + row) * self.width as i32
-                        + blit.destination.x
-                        + column) as usize;
-                    self.pixels[destination_index] = pixel;
+            let source_start =
+                ((blit.source.y + row) * source.width as i32 + blit.source.x) as usize;
+            let destination_start =
+                ((blit.destination.y + row) * self.width as i32 + blit.destination.x) as usize;
+            let width = blit.width as usize;
+            let source_row = &source.pixels[source_start..source_start + width];
+            let destination_row = &mut self.pixels[destination_start..destination_start + width];
+            for (&source_pixel, destination_pixel) in source_row.iter().zip(destination_row) {
+                if source_pixel != transparent {
+                    *destination_pixel = source_pixel;
                 }
             }
         }
@@ -287,5 +288,27 @@ mod tests {
         let mut picture = indexed_picture(4, 2, 0);
         picture.line_to_gdi(IVec2::new(0, 0), IVec2::new(3, 0), 7, 1);
         assert_eq!(picture.pixels, [7, 7, 7, 0, 0, 0, 0, 0]);
+    }
+
+    #[test]
+    fn diagonal_gdi_line_excludes_endpoint() {
+        let mut picture = indexed_picture(4, 4, 0);
+        picture.line_to_gdi(IVec2::ZERO, IVec2::new(3, 3), 7, 1);
+        assert_eq!(
+            picture.pixels,
+            [7, 0, 0, 0, 0, 7, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0]
+        );
+    }
+
+    #[test]
+    fn wide_gdi_line_stamps_two_by_two_pixels_and_excludes_endpoint() {
+        let mut picture = indexed_picture(6, 4, 0);
+        picture.line_to_gdi(IVec2::ZERO, IVec2::new(3, 0), 7, 2);
+        assert_eq!(
+            picture.pixels,
+            [
+                0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 0, 0, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0
+            ]
+        );
     }
 }

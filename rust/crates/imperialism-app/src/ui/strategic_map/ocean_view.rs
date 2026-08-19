@@ -3,7 +3,7 @@
 use super::map_interaction::{
     MapProjection, OceanViewport, StrategicInteraction, StrategicViewport,
 };
-use super::ocean_raster::{OceanRaster, OceanRenderAssets};
+use super::ocean_raster::{OceanRenderAssets, compose_ocean_raster};
 use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use crate::AppState;
 use crate::ui::GameSession;
@@ -147,7 +147,7 @@ fn sync_ocean_canvas(
         {
             continue;
         }
-        let raster = OceanRaster::compose(
+        let picture = compose_ocean_raster(
             &session.game,
             &viewport.ocean,
             &interaction,
@@ -155,9 +155,7 @@ fn sync_ocean_canvas(
             &render_assets.0,
         );
         if let Some(mut existing) = images.get_mut(&node.image) {
-            *existing = raster
-                .into_picture()
-                .to_image(retail.assets().default_dib_palette());
+            *existing = picture.to_image(retail.assets().default_dib_palette());
             canvas.composed = Some(key);
         }
     }
