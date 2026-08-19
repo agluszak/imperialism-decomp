@@ -186,6 +186,17 @@ class UiCodegenTests(unittest.TestCase):
             oil_case,
         )
 
+        rust_ui = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        oil_dialog = rust_ui[
+            rust_ui.index("pub fn citydlog_9206()") : rust_ui.index(
+                "pub fn citydlog_9209()"
+            )
+        ]
+        self.assertIn("template(|_context| Ok(CaptionedWindow))", oil_dialog)
+        self.assertNotIn("RetailWindowStyle", rust_ui)
+
     def test_offer_purchase_control_keeps_windows_style_payload(self) -> None:
         offer_factory = self.rendered[0x00430C50]
         offer_case = offer_factory[offer_factory.index("case kTurnEventOfferSheet:") :]

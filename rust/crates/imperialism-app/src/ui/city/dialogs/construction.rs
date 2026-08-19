@@ -72,10 +72,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             capacity_value,
             can_reserve,
         },
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
+        ModalWindow,
         DespawnOnExit(AppState::City),
     ));
 }
@@ -135,7 +132,11 @@ fn bind_building_change_common(
     ));
     let okay = tree.find(root, fourcc!("okay"));
     let mut okay_commands = commands.entity(okay);
-    okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
+    okay_commands.insert((
+        CityBuildingChangeChoice { slot, accept: true },
+        ModalDefault,
+        DismissWindow,
+    ));
     okay_commands.observe(on_city_building_change_choice);
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
@@ -143,10 +144,14 @@ fn bind_building_change_common(
     let cancel = tree.find(root, fourcc!("cncl"));
     commands
         .entity(cancel)
-        .insert(CityBuildingChangeChoice {
-            slot,
-            accept: false,
-        })
+        .insert((
+            CityBuildingChangeChoice {
+                slot,
+                accept: false,
+            },
+            ModalCancel,
+            DismissWindow,
+        ))
         .observe(on_city_building_change_choice);
 }
 
@@ -316,10 +321,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
             next_level,
             can_reserve,
         },
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
+        ModalWindow,
         DespawnOnExit(AppState::City),
     ));
 }
@@ -360,9 +362,7 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
 pub(in crate::ui::city) fn on_city_building_change_choice(
     activate: On<Activate>,
     choices: Query<&CityBuildingChangeChoice>,
-    parents: Query<&ChildOf>,
     mut session: ResMut<GameSession>,
-    mut commands: Commands,
 ) {
     let Ok(choice) = choices.get(activate.entity) else {
         return;
@@ -391,10 +391,4 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
             .game
             .set_city_order_quantity(nation, order, quantity);
     }
-
-    let mut dialog = activate.entity;
-    while let Ok(parent) = parents.get(dialog) {
-        dialog = parent.parent();
-    }
-    commands.entity(dialog).despawn();
 }

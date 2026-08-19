@@ -4,15 +4,13 @@ use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, ui_string,
 };
 use crate::ui::random_setup_map;
-use crate::ui::retail::ModalDialog;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
+use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
-use bevy::input::ButtonState;
-use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::AutoFocus;
-use bevy::input_focus::tab_navigation::{TabGroup, TabIndex};
+use bevy::input_focus::tab_navigation::TabIndex;
 use bevy::prelude::*;
 use bevy::text::TextCursorStyle;
 use bevy::text::{EditableText, TextEditChange};
@@ -437,7 +435,6 @@ fn sync_country_name_from_setup(
 #[derive(SystemParam)]
 struct RandomSetupActivation<'w, 's> {
     actions: Query<'w, 's, &'static RandomSetupAction>,
-    dialog_open: Query<'w, 's, (), With<ModalDialog>>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
     names: Res<'w, RandomGameNamesResource>,
@@ -451,9 +448,6 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
         .actions
         .get(activate.entity)
         .expect("random-setup Activate is bound on a RandomSetupAction control");
-    if !random_setup.dialog_open.is_empty() {
-        return;
-    }
     match *action {
         RandomSetupAction::Accept => {
             accept_random_setup(
@@ -474,14 +468,11 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
 
 fn on_random_setup_globe(
     _activate: On<Activate>,
-    dialogs: Query<(), With<ModalDialog>>,
     clock_seed: Res<RandomSetupClockSeed>,
     mut setup: ResMut<RandomGameSetup>,
     mut preview: ResMut<RandomSetupPreview>,
 ) {
-    if dialogs.is_empty() {
-        regenerate_random_setup_planet(clock_seed.0, &mut setup, &mut preview);
-    }
+    regenerate_random_setup_planet(clock_seed.0, &mut setup, &mut preview);
 }
 
 fn on_difficulty_selected(
@@ -583,10 +574,7 @@ fn open_planet_seed_dialog(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::linger_954()).id();
     commands.entity(root).insert((
         PlanetSeedDialogRoot,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
+        ModalWindow,
         DespawnOnExit(AppState::RandomSetup),
     ));
 }
@@ -598,55 +586,38 @@ fn bind_planet_seed_dialog(
     setup: Res<RandomGameSetup>,
 ) {
     let plan = tree.find(*root, fourcc!("plan"));
-    commands
-        .entity(plan)
-        .insert((
-            PlanetSeedField,
-            SelectAllOnFocus,
-            AutoFocus,
-            TabIndex(0),
-            EditableText {
-                max_characters: Some(PLANET_SEED_MAX_CHARS),
-                allow_newlines: false,
-                ..EditableText::new(setup.planet_seed.clone())
-            },
-        ))
-        .observe(on_planet_seed_enter);
+    commands.entity(plan).insert((
+        PlanetSeedField,
+        SelectAllOnFocus,
+        AutoFocus,
+        TabIndex(0),
+        EditableText {
+            max_characters: Some(PLANET_SEED_MAX_CHARS),
+            allow_newlines: false,
+            ..EditableText::new(setup.planet_seed.clone())
+        },
+    ));
 
     let okay = tree.find(*root, OKAY);
     commands
         .entity(okay)
-        .insert((PlanetSeedAccept, TabIndex(1)))
+        .insert((PlanetSeedAccept, ModalDefault, DismissWindow, TabIndex(1)))
         .observe(on_planet_seed_accept);
     // Retail cancel control stays disabled; Escape does not dismiss.
+    commands
+        .entity(tree.find(*root, fourcc!("cncl")))
+        .insert(ModalCancel);
 }
 
 #[derive(SystemParam)]
 struct PlanetSeedCommit<'w, 's> {
     fields: Query<'w, 's, &'static EditableText, With<PlanetSeedField>>,
-    dialogs: Query<'w, 's, Entity, With<PlanetSeedDialogRoot>>,
     clock_seed: Res<'w, RandomSetupClockSeed>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
-    commands: Commands<'w, 's>,
 }
 
 fn on_planet_seed_accept(_activate: On<Activate>, mut commit: PlanetSeedCommit) {
-    commit_planet_seed_dialog(&mut commit);
-}
-
-fn on_planet_seed_enter(
-    mut input: On<bevy::input_focus::FocusedInput<KeyboardInput>>,
-    mut commit: PlanetSeedCommit,
-) {
-    let event = &input.input;
-    if event.state != ButtonState::Pressed
-        || event.repeat
-        || (event.key_code != KeyCode::Enter && event.key_code != KeyCode::NumpadEnter)
-    {
-        return;
-    }
-    input.propagate(false);
     commit_planet_seed_dialog(&mut commit);
 }
 
@@ -666,9 +637,6 @@ fn commit_planet_seed_dialog(commit: &mut PlanetSeedCommit<'_, '_>) {
                 RetailCrtRng::from_state(commit.clock_seed.0),
             ),
         );
-    }
-    for root in commit.dialogs.iter() {
-        commit.commands.entity(root).despawn();
     }
 }
 

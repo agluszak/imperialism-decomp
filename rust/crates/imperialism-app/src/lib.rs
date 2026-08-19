@@ -85,37 +85,38 @@ impl RetailAssetsResource {
 pub(crate) struct RandomGameNamesResource(pub(crate) RandomGameNames);
 
 fn add_game_plugins(app: &mut App) {
-    app.add_plugins((
-        TabNavigationPlugin,
-        ui::RetailUiPlugin,
-        ui::RetailViewportPlugin,
-        ui::QueryFloaterPlugin,
-        ui::MainMenuPlugin,
-        ui::LoadSavePlugin,
-        ui::RandomSetupPlugin,
-        ui::MapPreviewPlugin,
-        ui::CitySitePlugin,
-        ui::GameShellPlugin,
-        ui::CityPlugin,
-        ui::TransportPlugin,
-        ui::TradePlugin,
-        ui::DiplomacyPlugin,
-        ui::DealBookPlugin,
-    ))
-    .add_plugins((
-        media::ImperialismMediaPlugin,
-        ui::CursorPlugin,
-        ui::TechnologyAdvancePlugin,
-        ui::TechnologyStorePlugin,
-        ui::NewspaperPlugin,
-        ui::LandBattlePlugin,
-        ui::NavalBattlePlugin,
-        ui::EndgamePlugin,
-        ui::BattleReportPlugin,
-        ui::CreditsPlugin,
-        ui::PreferencesPlugin,
-        ui::OfferSheetPlugin,
-    ));
+    app.add_plugins(ui::UiWindowPlugin)
+        .add_plugins((
+            TabNavigationPlugin,
+            ui::RetailUiPlugin,
+            ui::RetailViewportPlugin,
+            ui::QueryFloaterPlugin,
+            ui::MainMenuPlugin,
+            ui::LoadSavePlugin,
+            ui::RandomSetupPlugin,
+            ui::MapPreviewPlugin,
+            ui::CitySitePlugin,
+            ui::GameShellPlugin,
+            ui::CityPlugin,
+            ui::TransportPlugin,
+            ui::TradePlugin,
+            ui::DiplomacyPlugin,
+            ui::DealBookPlugin,
+        ))
+        .add_plugins((
+            media::ImperialismMediaPlugin,
+            ui::CursorPlugin,
+            ui::TechnologyAdvancePlugin,
+            ui::TechnologyStorePlugin,
+            ui::NewspaperPlugin,
+            ui::LandBattlePlugin,
+            ui::NavalBattlePlugin,
+            ui::EndgamePlugin,
+            ui::BattleReportPlugin,
+            ui::CreditsPlugin,
+            ui::PreferencesPlugin,
+            ui::OfferSheetPlugin,
+        ));
 }
 
 pub fn run(

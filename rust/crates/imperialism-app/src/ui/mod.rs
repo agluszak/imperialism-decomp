@@ -34,6 +34,7 @@ mod test_support;
 mod trade;
 mod transport;
 mod viewport;
+pub(crate) mod window;
 
 pub(crate) use battle_reports::BattleReportPlugin;
 pub(crate) use city::CityPlugin;
@@ -61,6 +62,7 @@ pub(crate) use technology_store::TechnologyStorePlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 pub(crate) use viewport::RetailViewportPlugin;
+pub(crate) use window::UiWindowPlugin;
 
 use bevy::prelude::{DetectChanges, Res};
 

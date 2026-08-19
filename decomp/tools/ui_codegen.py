@@ -1866,6 +1866,33 @@ def _rust_has_shipped_font(text: UiTextPayload) -> bool:
     return text.mode in (1, 2, 3)
 
 
+def _rust_window_is_captioned(node: UiSemanticNode) -> bool:
+    window = node.family.window
+    if window is None:
+        return False
+    descriptor = (
+        window.flags,
+        window.style_type,
+        window.topmost,
+        window.resource_6f,
+        window.resource_6e,
+        window.captioned_frame,
+        window.resource_6c,
+        window.resource_71,
+    )
+    styles = {
+        (8, 2, 0, 1, 1, 0, 0, 1): False,
+        (0x80, 0x1F40, 1, 1, 1, 0, 0, 1): False,
+        (0x80, 0x1F40, 1, 1, 1, 1, 0, 1): True,
+    }
+    try:
+        return styles[descriptor]
+    except KeyError as exc:
+        raise ValueError(
+            f"{node.tag}: unsupported recovered window descriptor {descriptor}"
+        ) from exc
+
+
 def _indent(lines: Iterable[str], spaces: int) -> list[str]:
     prefix = " " * spaces
     return [prefix + line if line else "" for line in lines]
@@ -1887,6 +1914,8 @@ def _render_bsn_node(
             f"{x}, {y}, {width}, {height})"
         ),
     ]
+    if _rust_window_is_captioned(node):
+        lines.append("    template(|_context| Ok(CaptionedWindow))")
     if any(int(value) for value in insets):
         lines.extend(
             [
@@ -2081,6 +2110,7 @@ def render_rust_ui(
         "",
         "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
         "use super::retail::*;",
+        "use super::window::CaptionedWindow;",
         "use bevy::prelude::*;",
         "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
         "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",

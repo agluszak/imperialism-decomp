@@ -4,7 +4,7 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{RetailTree, RetailUiAssets, ancestor_with};
+use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
@@ -320,7 +320,6 @@ fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
         commands,
         (OfferSheetNotice, OfferSheetNoticeBody(body)),
         AppState::OfferSheet,
-        20,
     );
 }
 
@@ -334,24 +333,12 @@ fn bind_offer_sheet_notice(
         return;
     };
     let (root, body) = notice.into_inner();
-    let linger = bind_linger_dialog(root, &tree);
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_body(&mut commands, &mut assets, &body.0);
     commands
         .entity(linger.okay)
         .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_offer_sheet_notice_activate);
-}
-
-fn on_offer_sheet_notice_activate(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    notices: Query<(), With<OfferSheetNotice>>,
-    mut commands: Commands,
-) {
-    let root = ancestor_with(activate.entity, &parents, &notices)
-        .expect("offer-sheet notice close belongs to its dialog");
-    commands.entity(root).despawn();
+        .remove::<InteractionDisabled>();
 }
 
 #[cfg(test)]

@@ -1,5 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, ancestor_with};
+use super::window::FloatingWindow;
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -100,7 +101,6 @@ enum MapHelpAction {
     Topics,
     Previous,
     Next,
-    Close,
 }
 
 pub(crate) fn register(app: &mut App) {
@@ -124,7 +124,7 @@ fn spawn_for_context(commands: &mut Commands, context: HelpContext) {
             set: 0,
             topic: None,
         },
-        GlobalZIndex(30),
+        FloatingWindow,
         DespawnOnExit(context.app_state()),
     ));
 }
@@ -135,16 +135,9 @@ fn bind_added_help(
     tree: RetailTree,
     mut assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
-    mut nodes: Query<&mut Node>,
 ) {
     for (root, state) in &roots {
         let view = tree.view(root);
-        let window = view.find(fourcc!("WIND"));
-        nodes.get_mut(window).expect("help window node").height = px(339);
-        nodes
-            .get_mut(view.find(fourcc!("DLOG")))
-            .expect("help dialog node")
-            .top = px(24);
         let context = state.context;
         let title = fill_brackets(
             &retail.get_string(0x2749, 6),
@@ -201,63 +194,6 @@ fn bind_added_help(
             LINK_BLUE,
         );
 
-        let (close_font, close_layout, close_line_height, _) = assets
-            .text_style(RetailTextStylePreset {
-                font_family: 1,
-                face_flags: 0,
-                point_size: 12,
-                alignment: 1,
-            })
-            .expect("retail help close-box style");
-
-        commands.entity(window).with_children(|parent| {
-            parent
-                .spawn((
-                    Node {
-                        position_type: PositionType::Absolute,
-                        left: px(0),
-                        top: px(0),
-                        width: px(390),
-                        height: px(24),
-                        border: UiRect::all(px(2)),
-                        ..default()
-                    },
-                    BackgroundColor(Color::srgb(0.52, 0.52, 0.52)),
-                    BorderColor::all(Color::WHITE),
-                    Pickable::IGNORE,
-                ))
-                .with_children(|title| {
-                    title
-                        .spawn((
-                            Node {
-                                position_type: PositionType::Absolute,
-                                right: px(4),
-                                top: px(3),
-                                width: px(18),
-                                height: px(17),
-                                border: UiRect::all(px(1)),
-                                justify_content: JustifyContent::Center,
-                                align_items: AlignItems::Center,
-                                ..default()
-                            },
-                            UiButton,
-                            ActivateOnPress,
-                            MapHelpAction::Close,
-                            ZIndex(1),
-                            BackgroundColor(Color::srgb(0.82, 0.82, 0.82)),
-                            BorderColor::all(Color::srgb(0.25, 0.25, 0.25)),
-                        ))
-                        .observe(on_action)
-                        .with_child((
-                            Text::new("×"),
-                            close_font.clone(),
-                            close_layout,
-                            close_line_height,
-                            TextColor(Color::BLACK),
-                            Pickable::IGNORE,
-                        ));
-                });
-        });
         show_topic_list_raw(root, context, 0, &tree, &retail, &mut commands);
     }
 }
@@ -277,10 +213,6 @@ fn on_action(
     let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
-    if matches!(action, MapHelpAction::Close) {
-        commands.entity(root).despawn();
-        return;
-    }
     let mut state = roots
         .get_mut(root)
         .expect("help action belongs to help root");
@@ -340,7 +272,6 @@ fn apply_action(
             state.topic = None;
             show_topic_list_raw(root, state.context, state.set, tree, assets, commands);
         }
-        MapHelpAction::Close => unreachable!(),
     }
 }
 

@@ -244,8 +244,6 @@ pub(in crate::ui::city) fn bind_industry_dialog(
     capacity_template: String,
     bar_color: Color,
 ) {
-    bind_city_dialog_root(commands, root, tree, page.slot);
-
     let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
     let capacity = tree.find(root, fourcc!("capT"));

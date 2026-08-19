@@ -1,10 +1,10 @@
 //! Post-combat `TBattleReportView` / `TBattleDetailBook`.
 
 use super::generated;
-use super::retail::{ModalDialog, RetailTree};
+use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
+use super::window::{DismissWindow, ModalDefault, ModalWindow};
 use crate::AppState;
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
@@ -65,7 +65,7 @@ fn bind_battle_report(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("okay")))
-        .insert(ActivateOnPress)
+        .insert((ActivateOnPress, ModalDefault, DismissWindow))
         .observe(on_battle_report_close);
     commands
         .entity(tree.find(*root, fourcc!("info")))
@@ -193,18 +193,17 @@ fn spawn_detail(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::diplo_1352()).id();
     commands.entity(root).insert((
         DetailRoot,
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
+        ModalWindow,
         DespawnOnExit(AppState::BattleReport),
     ));
 }
 
 fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
-    commands
-        .entity(tree.find(*root, fourcc!("okay")))
-        .insert(ActivateOnPress)
-        .observe(on_detail_close);
+    commands.entity(tree.find(*root, fourcc!("okay"))).insert((
+        ActivateOnPress,
+        ModalDefault,
+        DismissWindow,
+    ));
 }
 
 fn project_detail(
@@ -311,16 +310,6 @@ fn generated_battle_report_side_text(
         }
     }
     BattleReportSideText { name, overlay }
-}
-
-fn on_detail_close(
-    _activate: On<Activate>,
-    details: Query<Entity, With<DetailRoot>>,
-    mut commands: Commands,
-) {
-    for detail in &details {
-        commands.entity(detail).despawn();
-    }
 }
 
 #[cfg(test)]

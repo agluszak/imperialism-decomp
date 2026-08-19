@@ -3,6 +3,7 @@
 
 use super::city::{CityBuildingActionVisual, CityBuildingVisual};
 use super::retail::*;
+use super::window::CaptionedWindow;
 use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};
@@ -534,6 +535,7 @@ pub fn armory_9208() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 60, 62, 370, 410)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
@@ -1101,6 +1103,7 @@ pub fn citydlog_9200() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 98, 166, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1190,6 +1193,7 @@ pub fn citydlog_9201() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 297, 250, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1268,6 +1272,7 @@ pub fn citydlog_9202() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 206, 98, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1351,6 +1356,7 @@ pub fn citydlog_9203() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 280, 153, 270, 160)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
@@ -1459,6 +1465,7 @@ pub fn citydlog_9204() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 75, 164, 270, 160)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
@@ -1566,6 +1573,7 @@ pub fn citydlog_9205() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 245, 271, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1644,6 +1652,7 @@ pub fn citydlog_9206() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 198, 66, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1722,6 +1731,7 @@ pub fn citydlog_9209() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 110, 57, 270, 270)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 270)
@@ -1851,6 +1861,7 @@ pub fn citydlog_9211() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 254, 98, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1910,6 +1921,7 @@ pub fn citydlog_9212() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 136, 101, 270, 160)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
@@ -1988,6 +2000,7 @@ pub fn citydlog_9213() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 71, 61, 176, 300)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 176, 300)
@@ -2325,6 +2338,7 @@ pub fn citydlog_9214() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 210, 90, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -2393,6 +2407,7 @@ pub fn citydlog_9215() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 63, 236, 270, 120)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -4212,6 +4227,7 @@ pub fn linger_3000() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 100, 100, 390, 315)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 390, 315)
@@ -4303,6 +4319,7 @@ pub fn linger_3005() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 100, 100, 390, 300)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 390, 300)
@@ -7150,6 +7167,7 @@ pub fn shipyard_9207() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 125, 62, 370, 410)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
@@ -11488,6 +11506,7 @@ pub fn univ_9210() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 51, 61, 370, 410)
+                template(|_context| Ok(CaptionedWindow))
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 370, 410)

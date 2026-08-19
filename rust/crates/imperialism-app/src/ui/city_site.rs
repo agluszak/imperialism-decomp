@@ -7,15 +7,14 @@ use crate::ui::hover_help::{
 };
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::ModalDialog;
-use crate::ui::retail::{RetailTree, ancestor_with};
+use crate::ui::retail::RetailTree;
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
     compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
+use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow, no_modal};
 use crate::{AppState, RetailAssetsResource};
-use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -60,12 +59,6 @@ struct CitySiteNotice(String);
 #[derive(Component)]
 struct CitySiteWired;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum NewCityAction {
-    Accept,
-    Cancel,
-}
-
 pub(crate) struct CitySitePlugin;
 
 impl Plugin for CitySitePlugin {
@@ -78,7 +71,7 @@ impl Plugin for CitySitePlugin {
                     bind_city_site_intro,
                     bind_new_city_dialog,
                     bind_city_site_notice,
-                    sync_city_site_hover,
+                    sync_city_site_hover.run_if(no_modal),
                     sync_minimap,
                 )
                     .run_if(in_state(AppState::CitySite)),
@@ -158,7 +151,7 @@ fn bind_city_site_controls(
 }
 
 fn open_city_site_intro(commands: &mut Commands) {
-    spawn_linger_dialog(commands, CitySiteIntro, AppState::CitySite, 20);
+    spawn_linger_dialog(commands, CitySiteIntro, AppState::CitySite);
 }
 
 fn bind_city_site_intro(
@@ -195,24 +188,13 @@ fn bind_city_site_intro(
     commands
         .entity(okay)
         .insert(ActivateOnPress)
-        .remove::<bevy::ui::InteractionDisabled>()
-        .observe(on_city_site_intro_activate);
+        .remove::<bevy::ui::InteractionDisabled>();
     commands.entity(root).insert(CitySiteWired);
-}
-
-fn on_city_site_intro_activate(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    intros: Query<(), With<CitySiteIntro>>,
-    mut commands: Commands,
-) {
-    despawn_modal_root(activate.entity, &parents, &intros, &mut commands);
 }
 
 fn sync_city_site_hover(
     session: Res<GameSession>,
     retail_assets: Res<RetailAssetsResource>,
-    dialog_open: Query<(), With<ModalDialog>>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(
         &StrategicBaseTerrainCanvas,
@@ -221,9 +203,6 @@ fn sync_city_site_hover(
         &mut CitySiteHover,
     )>,
 ) {
-    if !dialog_open.is_empty() {
-        return;
-    }
     let nation = session.active_major_nation();
     for (canvas, cursor, image_node, mut hover) in &mut maps {
         let tile =
@@ -262,15 +241,11 @@ fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile
 fn on_city_site_activate(
     activate: On<Activate>,
     actions: Query<&CitySiteAction>,
-    dialog_open: Query<(), With<ModalDialog>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let action = actions
         .get(activate.entity)
         .expect("city-site Activate is bound on a CitySiteAction control");
-    if !dialog_open.is_empty() {
-        return;
-    }
     match *action {
         CitySiteAction::Cancel => next_state.set(AppState::RandomSetup),
     }
@@ -278,15 +253,11 @@ fn on_city_site_activate(
 
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
-    dialog_open: Query<(), With<ModalDialog>>,
     session: Res<GameSession>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut commands: Commands,
     assets: RetailUiAssets,
 ) {
-    if !dialog_open.is_empty() {
-        return;
-    }
     let cursor = maps
         .get(click.entity)
         .expect("city-site map click is bound on the strategic canvas");
@@ -313,16 +284,13 @@ fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
     let root = commands.spawn_scene(generated::startup_953()).id();
     commands.entity(root).insert((
         NewCityDialogRoot(site),
-        ModalDialog,
-        TabGroup::modal(),
-        GlobalZIndex(20),
-        Pickable::default(),
+        ModalWindow,
         DespawnOnExit(AppState::CitySite),
     ));
 }
 
 fn open_city_site_notice(commands: &mut Commands, body: String) {
-    spawn_linger_dialog(commands, CitySiteNotice(body), AppState::CitySite, 20);
+    spawn_linger_dialog(commands, CitySiteNotice(body), AppState::CitySite);
 }
 
 fn bind_new_city_dialog(
@@ -350,17 +318,15 @@ fn bind_new_city_dialog(
         &mut assets,
         &report,
     );
-    for (tag, action) in [
-        (OKAY, NewCityAction::Accept),
-        (fourcc!("cncl"), NewCityAction::Cancel),
-    ] {
-        let entity = tree.find(root, tag);
-        commands
-            .entity(entity)
-            .insert((action, ActivateOnPress))
-            .remove::<bevy::ui::InteractionDisabled>()
-            .observe(on_new_city_activate);
-    }
+    commands
+        .entity(tree.find(root, OKAY))
+        .insert((ActivateOnPress, ModalDefault, DismissWindow))
+        .remove::<bevy::ui::InteractionDisabled>()
+        .observe(on_new_city_activate);
+    commands
+        .entity(tree.find(root, fourcc!("cncl")))
+        .insert((ActivateOnPress, ModalCancel, DismissWindow))
+        .remove::<bevy::ui::InteractionDisabled>();
     commands.entity(root).insert(CitySiteWired);
 }
 
@@ -544,49 +510,19 @@ fn bind_city_site_notice(
     commands
         .entity(okay)
         .insert(ActivateOnPress)
-        .remove::<bevy::ui::InteractionDisabled>()
-        .observe(on_city_site_notice_activate);
+        .remove::<bevy::ui::InteractionDisabled>();
     commands.entity(root).insert(CitySiteWired);
 }
 
-fn on_city_site_notice_activate(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    notices: Query<(), With<CitySiteNotice>>,
-    mut commands: Commands,
-) {
-    despawn_modal_root(activate.entity, &parents, &notices, &mut commands);
-}
-
 fn on_new_city_activate(
-    activate: On<Activate>,
-    actions: Query<&NewCityAction>,
-    dialogs: Query<(Entity, &NewCityDialogRoot)>,
+    _activate: On<Activate>,
+    dialog: Single<&NewCityDialogRoot>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    mut commands: Commands,
     assets: Res<RetailAssetsResource>,
 ) {
-    let action = actions
-        .get(activate.entity)
-        .expect("new-city Activate is bound on a NewCityAction control");
-    match *action {
-        NewCityAction::Accept => {
-            let Ok((_, dialog)) = dialogs.single() else {
-                return;
-            };
-            let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
-            for (root, _) in &dialogs {
-                commands.entity(root).despawn();
-            }
-            apply_turn_stop(stop, &mut next_state);
-        }
-        NewCityAction::Cancel => {
-            for (root, _) in &dialogs {
-                commands.entity(root).despawn();
-            }
-        }
-    }
+    let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
+    apply_turn_stop(stop, &mut next_state);
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -601,7 +537,7 @@ fn stuff_minister_dialog(
     coat_picture: Option<i16>,
     hide_cancel: bool,
 ) {
-    let linger = bind_linger_dialog(root, tree);
+    let linger = bind_linger_dialog(commands, root, tree);
     if let Some(picture) = gold_picture {
         let gold = assets
             .picture(PictureId::new(picture))
@@ -674,17 +610,6 @@ fn commodity_icon(assets: &mut RetailUiAssets, resource_index: i16) -> Handle<Im
     assets
         .transparent_picture(picture_id, 0x10)
         .expect("retail commodity icon must load")
-}
-
-fn despawn_modal_root<C: Component>(
-    entity: Entity,
-    parents: &Query<&ChildOf>,
-    roots: &Query<(), With<C>>,
-    commands: &mut Commands,
-) {
-    let root = ancestor_with(entity, parents, roots)
-        .expect("city-site modal action belongs to its dialog");
-    commands.entity(root).despawn();
 }
 
 fn retail_lines(text: &str) -> String {

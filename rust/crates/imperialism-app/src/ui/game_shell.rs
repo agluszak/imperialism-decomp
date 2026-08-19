@@ -12,9 +12,7 @@ use crate::ui::hover_help::{
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{
-    RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree, ancestor_with,
-};
+use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree};
 use crate::ui::strategic_map::{
     MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
     StrategicInteraction, StrategicViewport, animate_civilian_selection, animate_civilian_work,
@@ -24,6 +22,7 @@ use crate::ui::strategic_map::{
     register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
     sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
 };
+use crate::ui::window::no_modal;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -76,7 +75,7 @@ impl Plugin for GameShellPlugin {
         .add_systems(
             Update,
             (
-                scroll_strategic_map,
+                scroll_strategic_map.run_if(no_modal),
                 sync_status_date_hover,
                 sync_strategic_base_terrain,
                 sync_strategic_units,
@@ -297,7 +296,6 @@ fn on_ocean_toggle(
             &mut commands,
             TurnSummaryNotice(body),
             AppState::StrategicMap,
-            20,
         );
         return;
     }
@@ -555,7 +553,7 @@ fn spawn_turn_alerts_if_pending(
     if !existing.is_empty() || !session.game.turn_alerts_pending() {
         return;
     }
-    spawn_linger_dialog(&mut commands, TurnAlertNotice, AppState::StrategicMap, 20);
+    spawn_linger_dialog(&mut commands, TurnAlertNotice, AppState::StrategicMap);
 }
 
 fn bind_turn_alert_notice(
@@ -568,7 +566,7 @@ fn bind_turn_alert_notice(
         return;
     };
     let root = *root;
-    let linger = bind_linger_dialog(root, &tree);
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, "Report from your\nAdvisors\n\n");
     linger.set_body(
         &mut commands,
@@ -593,45 +591,26 @@ fn bind_turn_summary_notice(
         return;
     };
     let (root, notice) = notice.into_inner();
-    let linger = bind_linger_dialog(root, &tree);
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, "Imperialism");
     linger.set_body(&mut commands, &mut assets, &notice.0);
     commands
         .entity(linger.okay)
         .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_turn_summary_dismiss);
+        .remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
-fn on_turn_summary_dismiss(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    notices: Query<Entity, With<TurnSummaryNotice>>,
-    mut commands: Commands,
-) {
-    let root = ancestor_with(activate.entity, &parents, &notices)
-        .expect("turn summary belongs to its dialog");
-    commands.entity(root).despawn();
-}
-
-#[allow(clippy::too_many_arguments)]
 fn on_turn_alert_dismiss(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    notices: Query<Entity, With<TurnAlertNotice>>,
+    _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     prefs: Res<super::preferences::GamePreferences>,
     assets: Res<RetailAssetsResource>,
-    mut commands: Commands,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let root = ancestor_with(activate.entity, &parents, &notices)
-        .expect("turn alert belongs to its dialog");
     let stop = session
         .game
         .dismiss_turn_alerts(prefs.turn_alerts_enabled(), assets.news_story_ids());
-    commands.entity(root).despawn();
     apply_turn_stop(stop, &mut next_state);
 }
 

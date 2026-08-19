@@ -7,7 +7,7 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{ModalDialog, RetailTree, ancestor_with};
+use super::retail::{RetailTree, ancestor_with};
 use super::satellite_preview::SatellitePreview;
 use super::session::apply_turn_stop;
 use crate::AppState;
@@ -1307,14 +1307,10 @@ fn on_diplomacy_offer_activate(
 fn on_diplomacy_map_click(
     click: On<Pointer<Click>>,
     maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
-    modals: Query<(), With<ModalDialog>>,
     mut screens: Query<&mut DiplomacyScreen>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
-    if !modals.is_empty() {
-        return;
-    }
     let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
@@ -1417,15 +1413,10 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
 
 fn sync_diplomacy_map_cursor(
     maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
-    modals: Query<(), With<ModalDialog>>,
     screens: Query<&DiplomacyScreen>,
     session: Res<GameSession>,
     mut requested: ResMut<RequestedCursor>,
 ) {
-    if !modals.is_empty() {
-        request_arrow_cursor(&mut requested);
-        return;
-    }
     let Ok(screen) = screens.single() else {
         request_arrow_cursor(&mut requested);
         return;
@@ -1490,17 +1481,6 @@ fn diplomacy_map_cursor_resource_id(
     resource_id
 }
 
-fn on_diplomacy_notice_activate(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    notices: Query<(), With<DiplomacyNotice>>,
-    mut commands: Commands,
-) {
-    let root = ancestor_with(activate.entity, &parents, &notices)
-        .expect("diplomacy notice close belongs to its dialog");
-    commands.entity(root).despawn();
-}
-
 fn open_diplomacy_rejection_notice(
     request: On<OpenDiplomacyRejectionNotice>,
     mut commands: Commands,
@@ -1509,7 +1489,6 @@ fn open_diplomacy_rejection_notice(
         &mut commands,
         DiplomacyNotice(request.rejection),
         AppState::Diplomacy,
-        20,
     );
 }
 
@@ -1522,7 +1501,7 @@ fn bind_diplomacy_notice(
 ) {
     let (root, notice) = *notice;
     let body = get_string(&assets, 0x2754, notice.0.proposal_mode() - 1);
-    let linger = bind_linger_dialog(root, &tree);
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(
         &mut commands,
         &mut assets,
@@ -1534,10 +1513,7 @@ fn bind_diplomacy_notice(
     if let Ok(image) = assets.picture(coat_picture) {
         commands.entity(linger.coat).insert(ImageNode::new(image));
     }
-    commands
-        .entity(linger.okay)
-        .remove::<InteractionDisabled>()
-        .observe(on_diplomacy_notice_activate);
+    commands.entity(linger.okay).remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
@@ -1552,7 +1528,6 @@ fn open_diplomacy_entanglement_notice(
             policy: request.policy,
         },
         AppState::Diplomacy,
-        20,
     );
 }
 
@@ -1566,7 +1541,7 @@ fn bind_diplomacy_entanglement_notice(
     let (root, notice) = *notice;
     let title = get_string(&assets, 0x275d, 5);
     let body = diplomacy_entanglement_body(&session.game, &assets, notice.target, notice.policy);
-    let linger = bind_linger_dialog(root, &tree);
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
@@ -1576,33 +1551,20 @@ fn bind_diplomacy_entanglement_notice(
     }
     commands
         .entity(linger.okay)
-        .insert(DiplomacyEntanglementAction::Confirm)
         .remove::<InteractionDisabled>()
         .observe(on_diplomacy_entanglement_activate);
     commands
         .entity(linger.cancel)
-        .insert(DiplomacyEntanglementAction::Dismiss)
-        .remove::<InteractionDisabled>()
-        .observe(on_diplomacy_entanglement_activate);
-}
-
-#[derive(Component, Clone, Copy)]
-enum DiplomacyEntanglementAction {
-    Confirm,
-    Dismiss,
+        .remove::<InteractionDisabled>();
 }
 
 fn on_diplomacy_entanglement_activate(
     activate: On<Activate>,
-    actions: Query<&DiplomacyEntanglementAction>,
     parents: Query<&ChildOf>,
     notices: Query<(Entity, &DiplomacyEntanglementNotice)>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
     let root = ancestor_with(activate.entity, &parents, &notices)
         .expect("diplomacy entanglement close belongs to its dialog");
     let (_, notice) = notices
@@ -1610,10 +1572,6 @@ fn on_diplomacy_entanglement_activate(
         .expect("diplomacy entanglement close belongs to its dialog");
     let target = notice.target;
     let policy = notice.policy;
-    commands.entity(root).despawn();
-    if !matches!(*action, DiplomacyEntanglementAction::Confirm) {
-        return;
-    }
     let source = session.active_major_nation();
     if let Some(rejection) = player_diplomacy_rejection(
         session

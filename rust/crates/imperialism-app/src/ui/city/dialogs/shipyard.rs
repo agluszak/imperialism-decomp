@@ -122,7 +122,6 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
-    bind_city_dialog_root(commands, root, tree, CityFacilitySlot::Shipyard);
     for (spec, details) in prepared_rows {
         let slot = spec.slot();
         let button = tree.find(root, spec.button_tag);
