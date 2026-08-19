@@ -193,7 +193,7 @@ fn spawn_detail(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::diplo_1352()).id();
     commands.entity(root).insert((
         DetailRoot,
-        ModalWindow::default(),
+        ModalWindow,
         DespawnOnExit(AppState::BattleReport),
     ));
 }

@@ -195,9 +195,13 @@ fn bind_strategic_map(
         .entity(tree.find(*root, fourcc!("send")))
         .insert(Visibility::Hidden);
     let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session);
-    commands.entity(land).observe(on_strategic_map_click);
+    commands.entity(land).observe(
+        on_strategic_map_click.run_if(not(any_with_component::<crate::ui::window::ModalWindow>)),
+    );
     let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree, &session);
-    commands.entity(ocean).observe(on_strategic_map_click);
+    commands.entity(ocean).observe(
+        on_strategic_map_click.run_if(not(any_with_component::<crate::ui::window::ModalWindow>)),
+    );
     bind_minimap(&mut commands, *root, &tree, &mut assets, &session);
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_army_toolbar(&mut commands, &mut assets, *root, &tree);

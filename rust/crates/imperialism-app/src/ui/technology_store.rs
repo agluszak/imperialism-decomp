@@ -452,7 +452,7 @@ fn on_technology_history(
     let root = commands.spawn_scene(generated::techstore_2370()).id();
     commands.entity(root).insert((
         TechnologyHistoryRoot(history.0),
-        ModalWindow::default(),
+        ModalWindow,
         DespawnOnExit(AppState::TechnologyStore),
     ));
 }

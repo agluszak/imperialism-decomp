@@ -11,7 +11,7 @@ use super::retail::{ModalDialog, RetailTree, ancestor_with};
 use super::satellite_preview::SatellitePreview;
 use super::retail::{RetailTree, ancestor_with};
 use super::session::apply_turn_stop;
-use super::window::WindowManager;
+use super::window::ModalWindow;
 use crate::AppState;
 use crate::RetailAssetsResource;
 use bevy::math::Rect;
@@ -394,7 +394,7 @@ impl Plugin for DiplomacyPlugin {
                 project_diplomacy_text,
                 sync_diplomacy_information,
                 render_diplomacy_map,
-                sync_diplomacy_map_cursor,
+                sync_diplomacy_map_cursor.run_if(not(any_with_component::<ModalWindow>)),
             )
                 .chain()
                 .run_if(in_state(AppState::Diplomacy)),
@@ -720,7 +720,7 @@ fn bind_diplomacy_controls(
             ZIndex(1),
             ChildOf(main),
         ))
-        .observe(on_diplomacy_map_click)
+        .observe(on_diplomacy_map_click.run_if(not(any_with_component::<ModalWindow>)))
         .id();
     spawn_diplomacy_map_labels(commands, map, &styles, icon_atlas);
     spawn_diplomacy_panel_text(
@@ -1309,14 +1309,10 @@ fn on_diplomacy_offer_activate(
 fn on_diplomacy_map_click(
     click: On<Pointer<Click>>,
     maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
-    windows: Option<Res<WindowManager>>,
     mut screens: Query<&mut DiplomacyScreen>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
-    if windows.is_some_and(|windows| windows.has_modal()) {
-        return;
-    }
     let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
@@ -1419,15 +1415,10 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
 
 fn sync_diplomacy_map_cursor(
     maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
-    windows: Option<Res<WindowManager>>,
     screens: Query<&DiplomacyScreen>,
     session: Res<GameSession>,
     mut requested: ResMut<RequestedCursor>,
 ) {
-    if windows.is_some_and(|windows| windows.has_modal()) {
-        request_arrow_cursor(&mut requested);
-        return;
-    }
     let Ok(screen) = screens.single() else {
         request_arrow_cursor(&mut requested);
         return;
@@ -1562,33 +1553,24 @@ fn bind_diplomacy_entanglement_notice(
     }
     commands
         .entity(linger.okay)
-        .insert(DiplomacyEntanglementAction::Confirm)
+        .insert(ConfirmDiplomacyEntanglement)
         .remove::<InteractionDisabled>()
         .observe(on_diplomacy_entanglement_activate);
     commands
         .entity(linger.cancel)
-        .insert(DiplomacyEntanglementAction::Dismiss)
-        .remove::<InteractionDisabled>()
-        .observe(on_diplomacy_entanglement_activate);
+        .remove::<InteractionDisabled>();
 }
 
-#[derive(Component, Clone, Copy)]
-enum DiplomacyEntanglementAction {
-    Confirm,
-    Dismiss,
-}
+#[derive(Component)]
+struct ConfirmDiplomacyEntanglement;
 
 fn on_diplomacy_entanglement_activate(
     activate: On<Activate>,
-    actions: Query<&DiplomacyEntanglementAction>,
     parents: Query<&ChildOf>,
     notices: Query<(Entity, &DiplomacyEntanglementNotice)>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
     let root = ancestor_with(activate.entity, &parents, &notices)
         .expect("diplomacy entanglement close belongs to its dialog");
     let (_, notice) = notices
@@ -1596,9 +1578,6 @@ fn on_diplomacy_entanglement_activate(
         .expect("diplomacy entanglement close belongs to its dialog");
     let target = notice.target;
     let policy = notice.policy;
-    if !matches!(*action, DiplomacyEntanglementAction::Confirm) {
-        return;
-    }
     let source = session.active_major_nation();
     if let Some(rejection) = player_diplomacy_rejection(
         session

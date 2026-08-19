@@ -13,7 +13,7 @@ use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
     compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow, WindowManager};
+use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -59,11 +59,8 @@ struct CitySiteNotice(String);
 #[derive(Component)]
 struct CitySiteWired;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum NewCityAction {
-    Accept,
-    Cancel,
-}
+#[derive(Component)]
+struct ConfirmNewCity;
 
 pub(crate) struct CitySitePlugin;
 
@@ -77,7 +74,7 @@ impl Plugin for CitySitePlugin {
                     bind_city_site_intro,
                     bind_new_city_dialog,
                     bind_city_site_notice,
-                    sync_city_site_hover,
+                    sync_city_site_hover.run_if(not(any_with_component::<ModalWindow>)),
                     sync_minimap,
                 )
                     .run_if(in_state(AppState::CitySite)),
@@ -112,7 +109,7 @@ fn bind_city_site(
     commands
         .entity(map)
         .insert(CitySiteHover::default())
-        .observe(on_city_site_map_click);
+        .observe(on_city_site_map_click.run_if(not(any_with_component::<ModalWindow>)));
     open_city_site_intro(&mut commands);
     commands.entity(root).insert(CitySiteWired);
 }
@@ -129,7 +126,7 @@ fn bind_city_site_controls(
     commands
         .entity(cancel)
         .insert((CitySiteAction::Cancel, ActivateOnPress))
-        .observe(on_city_site_activate);
+        .observe(on_city_site_activate.run_if(not(any_with_component::<ModalWindow>)));
     let bar = tree.find(root, fourcc!("curs"));
     bind_hover_help_bar(
         commands,
@@ -201,7 +198,6 @@ fn bind_city_site_intro(
 fn sync_city_site_hover(
     session: Res<GameSession>,
     retail_assets: Res<RetailAssetsResource>,
-    windows: Option<Res<WindowManager>>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(
         &StrategicBaseTerrainCanvas,
@@ -210,9 +206,6 @@ fn sync_city_site_hover(
         &mut CitySiteHover,
     )>,
 ) {
-    if windows.is_some_and(|windows| windows.has_modal()) {
-        return;
-    }
     let nation = session.active_major_nation();
     for (canvas, cursor, image_node, mut hover) in &mut maps {
         let tile =
@@ -251,15 +244,11 @@ fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile
 fn on_city_site_activate(
     activate: On<Activate>,
     actions: Query<&CitySiteAction>,
-    windows: Option<Res<WindowManager>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let action = actions
         .get(activate.entity)
         .expect("city-site Activate is bound on a CitySiteAction control");
-    if windows.is_some_and(|windows| windows.has_modal()) {
-        return;
-    }
     match *action {
         CitySiteAction::Cancel => next_state.set(AppState::RandomSetup),
     }
@@ -267,15 +256,11 @@ fn on_city_site_activate(
 
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
-    windows: Option<Res<WindowManager>>,
     session: Res<GameSession>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut commands: Commands,
     assets: RetailUiAssets,
 ) {
-    if windows.is_some_and(|windows| windows.has_modal()) {
-        return;
-    }
     let cursor = maps
         .get(click.entity)
         .expect("city-site map click is bound on the strategic canvas");
@@ -302,7 +287,7 @@ fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
     let root = commands.spawn_scene(generated::startup_953()).id();
     commands.entity(root).insert((
         NewCityDialogRoot(site),
-        ModalWindow::default(),
+        ModalWindow,
         DespawnOnExit(AppState::CitySite),
     ));
 }
@@ -336,23 +321,15 @@ fn bind_new_city_dialog(
         &mut assets,
         &report,
     );
-    for (tag, action) in [
-        (OKAY, NewCityAction::Accept),
-        (fourcc!("cncl"), NewCityAction::Cancel),
-    ] {
-        let entity = tree.find(root, tag);
-        commands
-            .entity(entity)
-            .insert((action, ActivateOnPress))
-            .remove::<bevy::ui::InteractionDisabled>()
-            .observe(on_new_city_activate);
-        match action {
-            NewCityAction::Accept => commands
-                .entity(entity)
-                .insert((ModalDefault, DismissWindow)),
-            NewCityAction::Cancel => commands.entity(entity).insert((ModalCancel, DismissWindow)),
-        };
-    }
+    commands
+        .entity(tree.find(root, OKAY))
+        .insert((ConfirmNewCity, ActivateOnPress, ModalDefault, DismissWindow))
+        .remove::<bevy::ui::InteractionDisabled>()
+        .observe(on_new_city_activate);
+    commands
+        .entity(tree.find(root, fourcc!("cncl")))
+        .insert((ActivateOnPress, ModalCancel, DismissWindow))
+        .remove::<bevy::ui::InteractionDisabled>();
     commands.entity(root).insert(CitySiteWired);
 }
 
@@ -541,23 +518,14 @@ fn bind_city_site_notice(
 }
 
 fn on_new_city_activate(
-    activate: On<Activate>,
-    actions: Query<&NewCityAction>,
+    _activate: On<Activate>,
     dialog: Single<&NewCityDialogRoot>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Res<RetailAssetsResource>,
 ) {
-    let action = actions
-        .get(activate.entity)
-        .expect("new-city Activate is bound on a NewCityAction control");
-    match *action {
-        NewCityAction::Accept => {
-            let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
-            apply_turn_stop(stop, &mut next_state);
-        }
-        NewCityAction::Cancel => {}
-    }
+    let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
+    apply_turn_stop(stop, &mut next_state);
 }
 
 #[allow(clippy::too_many_arguments)]

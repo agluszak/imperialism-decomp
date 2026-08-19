@@ -72,7 +72,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             capacity_value,
             can_reserve,
         },
-        ModalWindow::default(),
+        ModalWindow,
         DespawnOnExit(AppState::City),
     ));
 }
@@ -321,7 +321,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
             next_level,
             can_reserve,
         },
-        ModalWindow::default(),
+        ModalWindow,
         DespawnOnExit(AppState::City),
     ));
 }

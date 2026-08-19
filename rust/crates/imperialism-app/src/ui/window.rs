@@ -1,7 +1,7 @@
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::tab_navigation::TabGroup;
-use bevy::input_focus::{FocusCause, InputFocus};
+use bevy::input_focus::{AutoFocus, FocusedInput};
 use bevy::picking::events::{Drag, Pointer, Press};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
@@ -9,11 +9,11 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button};
 
 const WINDOW_Z_BASE: i32 = 20;
-const MODAL_Z_BASE: i32 = 100;
 const CAPTION_HEIGHT: f32 = 18.0;
 const CLOSE_SIZE: f32 = 14.0;
 
 #[derive(Component, Debug, Default)]
+#[require(GlobalZIndex)]
 pub struct UiWindow;
 
 #[derive(Component, Debug, Default)]
@@ -21,10 +21,8 @@ pub struct UiWindow;
 pub struct FloatingWindow;
 
 #[derive(Component, Debug, Default)]
-#[require(UiWindow)]
-pub struct ModalWindow {
-    pub owner: Option<Entity>,
-}
+#[require(UiWindow, TabGroup = TabGroup::modal(), Pickable, AutoFocus)]
+pub struct ModalWindow;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RetailWindowStyle {
@@ -35,12 +33,6 @@ pub enum RetailWindowStyle {
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WindowPosition(pub IVec2);
-
-#[derive(Component, Debug)]
-struct WindowContent(Entity);
-
-#[derive(Component, Debug)]
-struct WindowChrome(Entity);
 
 #[derive(Component, Debug, Default)]
 pub struct WindowTitleBar;
@@ -57,159 +49,60 @@ pub struct ModalCancel;
 #[derive(Component, Debug, Default)]
 pub struct DismissWindow;
 
-#[derive(Clone, Copy, Debug)]
-struct ModalEntry {
-    entity: Entity,
-    previous_focus: Option<Entity>,
-}
-
-#[derive(Resource, Debug, Default)]
-pub struct WindowManager {
-    active: Option<Entity>,
-    order: Vec<Entity>,
-    modals: Vec<ModalEntry>,
-}
-
-impl WindowManager {
-    pub fn has_modal(&self) -> bool {
-        !self.modals.is_empty()
-    }
-
-    pub fn top_modal(&self) -> Option<Entity> {
-        self.modals.last().map(|entry| entry.entity)
-    }
-}
+#[derive(Component, Debug, Default)]
+struct ModalScrim;
 
 pub struct UiWindowPlugin;
 
 impl Plugin for UiWindowPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<WindowManager>()
-            .init_resource::<InputFocus>()
-            .add_message::<KeyboardInput>()
-            .add_observer(on_window_added)
-            .add_observer(on_window_removed)
+        app.add_observer(on_window_added)
             .add_observer(on_modal_added)
-            .add_observer(on_modal_removed)
-            .add_observer(on_window_pressed)
+            .add_observer(on_window_pressed.run_if(not(any_with_component::<ModalWindow>)))
             .add_observer(on_window_close)
-            .add_systems(
-                Update,
-                (
-                    bind_recovered_window_hosts,
-                    sync_window_positions,
-                    route_modal_keyboard,
-                ),
-            );
+            .add_systems(Update, (bind_recovered_window_hosts, sync_window_positions));
     }
 }
 
 fn on_window_added(
     added: On<Add, UiWindow>,
-    modals: Query<(), With<ModalWindow>>,
-    mut manager: ResMut<WindowManager>,
-    mut commands: Commands,
+    mut windows: Query<(Entity, &mut GlobalZIndex), With<UiWindow>>,
 ) {
-    manager.order.retain(|entity| *entity != added.entity);
-    manager.order.push(added.entity);
-    if !modals.contains(added.entity) {
-        manager.active = Some(added.entity);
-    }
-    assign_window_z(&manager, &mut commands);
+    raise_window(added.entity, &mut windows);
 }
 
-fn on_window_removed(
-    removed: On<Remove, UiWindow>,
-    mut manager: ResMut<WindowManager>,
-    mut commands: Commands,
-) {
-    manager.order.retain(|entity| *entity != removed.entity);
-    if manager.active == Some(removed.entity) {
-        manager.active = manager
-            .order
-            .iter()
-            .rev()
-            .copied()
-            .find(|entity| !manager.modals.iter().any(|entry| entry.entity == *entity));
-    }
-    assign_window_z(&manager, &mut commands);
-}
-
-fn on_modal_added(
-    added: On<Add, ModalWindow>,
-    mut modals: Query<&mut ModalWindow>,
-    mut manager: ResMut<WindowManager>,
-    mut focus: ResMut<InputFocus>,
-    mut commands: Commands,
-) {
-    let previous = manager.top_modal();
-    let mut modal = modals
-        .get_mut(added.entity)
-        .expect("added modal window remains present");
-    if modal.owner.is_none() {
-        modal.owner = previous.or(manager.active);
-    }
-    manager.modals.retain(|entry| entry.entity != added.entity);
-    manager.modals.push(ModalEntry {
-        entity: added.entity,
-        previous_focus: focus.get(),
-    });
-    focus.set(added.entity, FocusCause::Navigated);
+fn on_modal_added(added: On<Add, ModalWindow>, mut commands: Commands) {
     commands
         .entity(added.entity)
-        .insert((TabGroup::modal(), Pickable::default()));
-    assign_window_z(&manager, &mut commands);
+        .observe(modal_keyboard)
+        .with_child((
+            ModalScrim,
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0),
+                top: px(0),
+                width: percent(100),
+                height: percent(100),
+                ..default()
+            },
+            ZIndex(-1),
+            Pickable::default(),
+            Name::new("modal-scrim"),
+        ));
 }
 
-fn on_modal_removed(
-    removed: On<Remove, ModalWindow>,
-    windows: Query<(), With<UiWindow>>,
-    mut manager: ResMut<WindowManager>,
-    mut focus: ResMut<InputFocus>,
-    mut commands: Commands,
-) {
-    let Some(index) = manager
-        .modals
-        .iter()
-        .position(|entry| entry.entity == removed.entity)
-    else {
-        return;
-    };
-    let removed_entry = manager.modals.remove(index);
-    for entry in &mut manager.modals[index..] {
-        if entry.previous_focus == Some(removed.entity) {
-            entry.previous_focus = removed_entry.previous_focus;
-        }
-    }
-    if index == manager.modals.len() {
-        if let Some(entity) = removed_entry
-            .previous_focus
-            .filter(|entity| windows.contains(*entity))
-        {
-            focus.set(entity, FocusCause::Navigated);
-        } else {
-            focus.clear();
-        }
-    }
-    assign_window_z(&manager, &mut commands);
-}
-
-fn assign_window_z(manager: &WindowManager, commands: &mut Commands) {
-    let mut ordinary = 0;
-    let mut modal = 0;
-    for entity in &manager.order {
-        let is_modal = manager.modals.iter().any(|entry| entry.entity == *entity);
-        let z = if is_modal {
-            modal += 1;
-            MODAL_Z_BASE + modal
-        } else {
-            ordinary += 1;
-            WINDOW_Z_BASE + ordinary
-        };
-        if let Ok(mut entity_commands) = commands.get_entity(*entity) {
-            entity_commands.insert(GlobalZIndex(z));
-        }
-    }
+fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex), With<UiWindow>>) {
+    let next = windows
+        .iter_mut()
+        .map(|(_, z)| z.0)
+        .max()
+        .unwrap_or(WINDOW_Z_BASE)
+        + 1;
+    windows
+        .get_mut(entity)
+        .expect("window being raised remains present")
+        .1
+        .0 = next;
 }
 
 fn bind_recovered_window_hosts(
@@ -223,7 +116,6 @@ fn bind_recovered_window_hosts(
             continue;
         };
         commands.entity(content).insert(Pickable::default());
-        commands.entity(root).insert(WindowContent(content));
         if let Some(position) = windows.get(root).expect("window root remained present").1 {
             let position = position.0;
             commands
@@ -239,8 +131,7 @@ fn bind_recovered_window_hosts(
                 .insert(WindowPosition(node_position(node)));
         }
         if *style == RetailWindowStyle::CaptionedFloating {
-            let chrome = spawn_caption(&mut commands, root, node);
-            commands.entity(root).insert(WindowChrome(chrome));
+            spawn_caption(&mut commands, root, node);
         }
     }
 }
@@ -258,7 +149,7 @@ fn ancestor_window(
     }
 }
 
-fn spawn_caption(commands: &mut Commands, root: Entity, content: &Node) -> Entity {
+fn spawn_caption(commands: &mut Commands, root: Entity, content: &Node) {
     let position = node_position(content);
     let caption = commands
         .spawn((
@@ -308,28 +199,29 @@ fn spawn_caption(commands: &mut Commands, root: Entity, content: &Node) -> Entit
                 Pickable::IGNORE,
             ));
     });
-    caption
 }
 
 fn sync_window_positions(
-    windows: Query<
-        (&WindowPosition, &WindowContent, Option<&WindowChrome>),
-        Changed<WindowPosition>,
-    >,
+    windows: Query<(Entity, &WindowPosition), Changed<WindowPosition>>,
+    parents: Query<&ChildOf>,
+    contents: Query<Entity, With<RetailWindowStyle>>,
+    captions: Query<Entity, With<WindowTitleBar>>,
     mut nodes: Query<&mut Node>,
 ) {
-    for (position, content, chrome) in &windows {
+    for (root, position) in &windows {
+        if let Some(content) = contents
+            .iter()
+            .find(|entity| ancestor_is(*entity, root, &parents))
         {
-            let mut node = nodes
-                .get_mut(content.0)
-                .expect("window content retains its generated Node");
+            let mut node = nodes.get_mut(content).expect("window content has a Node");
             node.left = px(position.0.x);
             node.top = px(position.0.y);
         }
-        if let Some(chrome) = chrome {
-            let mut node = nodes
-                .get_mut(chrome.0)
-                .expect("window chrome remains attached to its host");
+        if let Some(caption) = captions
+            .iter()
+            .find(|entity| ancestor_is(*entity, root, &parents))
+        {
+            let mut node = nodes.get_mut(caption).expect("window caption has a Node");
             node.left = px(position.0.x);
             node.top = px(position.0.y as f32 - CAPTION_HEIGHT);
         }
@@ -346,34 +238,32 @@ fn node_position(node: &Node) -> IVec2 {
     IVec2::new(left.round() as i32, top.round() as i32)
 }
 
+#[allow(clippy::type_complexity)]
 fn on_window_pressed(
     press: On<Pointer<Press>>,
     parents: Query<&ChildOf>,
-    windows: Query<(), With<UiWindow>>,
-    mut manager: ResMut<WindowManager>,
-    mut commands: Commands,
+    mut windows: ParamSet<(
+        Query<(), With<FloatingWindow>>,
+        Query<(Entity, &mut GlobalZIndex), With<UiWindow>>,
+    )>,
 ) {
     if press.event.button != PointerButton::Primary {
         return;
     }
-    let Some(root) = ancestor_component(press.original_event_target(), &parents, &windows) else {
+    let root = {
+        let floating = windows.p0();
+        ancestor_component(press.original_event_target(), &parents, &floating)
+    };
+    let Some(root) = root else {
         return;
     };
-    if manager.top_modal().is_some_and(|top| top != root) {
-        return;
-    }
-    manager.active = Some(root);
-    if !manager.has_modal() {
-        manager.order.retain(|entity| *entity != root);
-        manager.order.push(root);
-    }
-    assign_window_z(&manager, &mut commands);
+    raise_window(root, &mut windows.p1());
 }
 
 fn on_window_dragged(
     drag: On<Pointer<Drag>>,
     parents: Query<&ChildOf>,
-    windows: Query<(), With<UiWindow>>,
+    windows: Query<(), With<FloatingWindow>>,
     mut positions: Query<&mut WindowPosition>,
 ) {
     if drag.event.button != PointerButton::Primary {
@@ -404,33 +294,32 @@ fn on_window_close(
     }
 }
 
-fn route_modal_keyboard(
-    mut input: MessageReader<KeyboardInput>,
-    manager: Res<WindowManager>,
+fn modal_keyboard(
+    mut input: On<FocusedInput<KeyboardInput>>,
     parents: Query<&ChildOf>,
+    modals: Query<(), With<ModalWindow>>,
     defaults: Query<Entity, (With<ModalDefault>, Without<InteractionDisabled>)>,
     cancels: Query<Entity, (With<ModalCancel>, Without<InteractionDisabled>)>,
     mut commands: Commands,
 ) {
-    let Some(root) = manager.top_modal() else {
+    if input.input.state != ButtonState::Pressed || input.input.repeat {
+        return;
+    }
+    let Some(root) = ancestor_component(input.focused_entity, &parents, &modals) else {
         return;
     };
-    for event in input.read() {
-        if event.state != ButtonState::Pressed || event.repeat {
-            continue;
-        }
-        let control = match event.key_code {
-            KeyCode::Enter | KeyCode::NumpadEnter => defaults
-                .iter()
-                .find(|entity| ancestor_is(*entity, root, &parents)),
-            KeyCode::Escape => cancels
-                .iter()
-                .find(|entity| ancestor_is(*entity, root, &parents)),
-            _ => continue,
-        };
-        if let Some(control) = control {
-            commands.trigger(Activate { entity: control });
-        }
+    let control = match input.input.key_code {
+        KeyCode::Enter | KeyCode::NumpadEnter => defaults
+            .iter()
+            .find(|entity| ancestor_is(*entity, root, &parents)),
+        KeyCode::Escape => cancels
+            .iter()
+            .find(|entity| ancestor_is(*entity, root, &parents)),
+        _ => return,
+    };
+    input.propagate(false);
+    if let Some(control) = control {
+        commands.trigger(Activate { entity: control });
     }
 }
 
@@ -463,6 +352,8 @@ fn ancestor_is(mut entity: Entity, ancestor: Entity, parents: &Query<&ChildOf>) 
 mod tests {
     use super::*;
     use bevy::input::keyboard::{Key, NativeKey};
+    use bevy::input_focus::{InputFocus, InputFocusPlugin, dispatch_focused_input};
+    use bevy::window::PrimaryWindow;
 
     #[derive(Resource, Default)]
     struct Activations {
@@ -473,8 +364,12 @@ mod tests {
     fn test_app() -> App {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
+            .add_message::<KeyboardInput>()
+            .add_plugins(InputFocusPlugin)
+            .add_systems(PreUpdate, dispatch_focused_input::<KeyboardInput>)
             .init_resource::<Activations>()
             .add_plugins(UiWindowPlugin);
+        app.world_mut().spawn((Window::default(), PrimaryWindow));
         app
     }
 
@@ -490,44 +385,38 @@ mod tests {
     }
 
     #[test]
-    fn nested_modal_stack_restores_owner_and_focus() {
+    fn windows_derive_structure_order_and_modal_focus_from_components() {
         let mut app = test_app();
-        let owner = app.world_mut().spawn(FloatingWindow).id();
-        app.world_mut()
-            .resource_mut::<InputFocus>()
-            .set(owner, FocusCause::Navigated);
-        let first = app.world_mut().spawn(ModalWindow::default()).id();
-        let second = app.world_mut().spawn(ModalWindow::default()).id();
+        let floating = app.world_mut().spawn(FloatingWindow).id();
+        let first = app.world_mut().spawn(ModalWindow).id();
+        let second = app.world_mut().spawn(ModalWindow).id();
 
-        assert_eq!(
-            app.world().get::<ModalWindow>(first).unwrap().owner,
-            Some(owner)
+        assert!(app.world().get::<UiWindow>(floating).is_some());
+        assert!(app.world().get::<UiWindow>(first).is_some());
+        assert!(app.world().get::<TabGroup>(first).unwrap().modal);
+        assert!(app.world().get::<Pickable>(first).is_some());
+        assert!(app.world().get::<AutoFocus>(first).is_some());
+        assert!(
+            app.world().get::<GlobalZIndex>(floating).unwrap().0
+                < app.world().get::<GlobalZIndex>(first).unwrap().0
         );
-        assert_eq!(
-            app.world().get::<ModalWindow>(second).unwrap().owner,
-            Some(first)
+        assert!(
+            app.world().get::<GlobalZIndex>(first).unwrap().0
+                < app.world().get::<GlobalZIndex>(second).unwrap().0
         );
-        assert_eq!(
-            app.world().resource::<WindowManager>().top_modal(),
-            Some(second)
-        );
-
-        app.world_mut().despawn(second);
-        assert_eq!(
-            app.world().resource::<WindowManager>().top_modal(),
-            Some(first)
-        );
-        assert_eq!(app.world().resource::<InputFocus>().get(), Some(first));
-
-        app.world_mut().despawn(first);
-        assert!(!app.world().resource::<WindowManager>().has_modal());
-        assert_eq!(app.world().resource::<InputFocus>().get(), Some(owner));
+        assert_eq!(app.world().resource::<InputFocus>().get(), Some(second));
+        let scrims = {
+            let world = app.world_mut();
+            let mut query = world.query_filtered::<Entity, With<ModalScrim>>();
+            query.iter(world).count()
+        };
+        assert_eq!(scrims, 2);
     }
 
     #[test]
     fn modal_keyboard_activates_only_enabled_top_controls() {
         let mut app = test_app();
-        let root = app.world_mut().spawn(ModalWindow::default()).id();
+        let root = app.world_mut().spawn(ModalWindow).id();
         let okay = app
             .world_mut()
             .spawn((ModalDefault, ChildOf(root)))
@@ -597,8 +486,12 @@ mod tests {
         };
         assert_eq!(captions, 1);
         assert_eq!(closes, 1);
-        let chrome = app.world().get::<WindowChrome>(root).unwrap().0;
-        assert_eq!(app.world().get::<ChildOf>(chrome).unwrap().parent(), root);
+        let caption = {
+            let world = app.world_mut();
+            let mut query = world.query_filtered::<Entity, With<WindowTitleBar>>();
+            query.single(world).unwrap()
+        };
+        assert_eq!(app.world().get::<ChildOf>(caption).unwrap().parent(), root);
         assert_eq!(app.world().get::<ChildOf>(content).unwrap().parent(), root);
     }
 }

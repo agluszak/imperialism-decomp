@@ -54,12 +54,13 @@ enum CivilianModal {
 
 #[derive(Clone, Copy, Component)]
 enum CivilianModalAction {
-    Close,
-    CancelOrder(CivilianUnitId),
     Engineer(CivilianUnitId, EngineerConstructionChoice),
     ConfirmPurchase(CivilianUnitId, TileId),
     ConfirmDisband(CivilianUnitId),
 }
+
+#[derive(Clone, Copy, Component)]
+struct CancelCivilianOrder(CivilianUnitId);
 
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
@@ -145,11 +146,9 @@ pub(crate) fn spawn_civilian_disband(commands: &mut Commands, unit: CivilianUnit
 }
 
 fn spawn_modal(commands: &mut Commands, root: Entity) {
-    commands.entity(root).insert((
-        MapModal,
-        ModalWindow::default(),
-        DespawnOnExit(AppState::StrategicMap),
-    ));
+    commands
+        .entity(root)
+        .insert((MapModal, ModalWindow, DespawnOnExit(AppState::StrategicMap)));
 }
 
 fn bind_added_map_modals(
@@ -468,22 +467,22 @@ fn bind_added_civilian_modals(
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
                     .entity(linger.okay)
-                    .insert((ActivateOnPress, CivilianModalAction::ConfirmDisband(*unit)))
+                    .insert((
+                        ActivateOnPress,
+                        CivilianModalAction::ConfirmDisband(*unit),
+                        DismissWindow,
+                    ))
                     .observe(on_civilian_modal_action);
                 commands
                     .entity(linger.cancel)
-                    .insert((ActivateOnPress, CivilianModalAction::Close))
-                    .remove::<InteractionDisabled>()
-                    .observe(on_civilian_modal_action);
+                    .insert(ActivateOnPress)
+                    .remove::<InteractionDisabled>();
             }
             CivilianModal::Notice { title, body } => {
                 let linger = bind_linger_dialog(&mut commands, root, &tree);
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
-                commands
-                    .entity(linger.okay)
-                    .insert((ActivateOnPress, CivilianModalAction::Close))
-                    .observe(on_civilian_modal_action);
+                commands.entity(linger.okay).insert(ActivateOnPress);
                 commands.entity(linger.cancel).insert(Visibility::Hidden);
             }
         }
@@ -535,6 +534,7 @@ fn bind_engineer_dialog(
                 ),
                 ActivateOnPress,
                 CivilianModalAction::Engineer(unit, option.choice),
+                DismissWindow,
                 ChildOf(dialog),
             ))
             .observe(on_civilian_modal_action);
@@ -560,27 +560,26 @@ fn bind_engineer_dialog(
         );
         y += 42.0;
     }
-    commands
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(17),
-                top: px(y - 2.0),
-                width: px(61),
-                height: px(24),
-                ..default()
-            },
-            Button,
-            ImageNode::new(
-                assets
-                    .picture(PictureId::new(0x24c4))
-                    .expect("retail cancel picture"),
-            ),
-            ActivateOnPress,
-            CivilianModalAction::Close,
-            ChildOf(dialog),
-        ))
-        .observe(on_civilian_modal_action);
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(17),
+            top: px(y - 2.0),
+            width: px(61),
+            height: px(24),
+            ..default()
+        },
+        Button,
+        ImageNode::new(
+            assets
+                .picture(PictureId::new(0x24c4))
+                .expect("retail cancel picture"),
+        ),
+        ActivateOnPress,
+        ModalCancel,
+        DismissWindow,
+        ChildOf(dialog),
+    ));
     let height = y + 30.0;
     let window = tree.find(root, fourcc!("WIND"));
     commands.entity(window).insert(Node {
@@ -658,20 +657,15 @@ fn bind_purchase_dialog(
     linger.set_body(commands, assets, body);
     commands
         .entity(linger.okay)
-        .insert((
-            ActivateOnPress,
-            if affordable {
-                CivilianModalAction::ConfirmPurchase(unit, tile)
-            } else {
-                CivilianModalAction::Close
-            },
-        ))
-        .observe(on_civilian_modal_action);
+        .insert((ActivateOnPress, DismissWindow));
     if affordable {
         commands
-            .entity(linger.cancel)
-            .insert((ActivateOnPress, CivilianModalAction::Close))
+            .entity(linger.okay)
+            .insert(CivilianModalAction::ConfirmPurchase(unit, tile))
             .observe(on_civilian_modal_action);
+    }
+    if affordable {
+        commands.entity(linger.cancel).insert(ActivateOnPress);
     } else {
         commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
@@ -707,24 +701,20 @@ fn bind_civilian_report(
         &civilian_report_text(assets, state, unit),
         12,
     );
-    commands
-        .entity(tree.find(root, fourcc!("okay")))
-        .insert((
-            ActivateOnPress,
-            CivilianModalAction::Close,
-            ModalDefault,
-            DismissWindow,
-        ))
-        .observe(on_civilian_modal_action);
+    commands.entity(tree.find(root, fourcc!("okay"))).insert((
+        ActivateOnPress,
+        ModalDefault,
+        DismissWindow,
+    ));
     commands
         .entity(tree.find(root, fourcc!("canc")))
         .insert((
             ActivateOnPress,
-            CivilianModalAction::CancelOrder(unit),
+            CancelCivilianOrder(unit),
             ModalCancel,
             DismissWindow,
         ))
-        .observe(on_civilian_modal_action);
+        .observe(on_cancel_civilian_order);
 }
 
 fn civilian_report_text(
@@ -860,8 +850,6 @@ fn insert_retail_text(
 fn on_civilian_modal_action(
     activate: On<Activate>,
     actions: Query<&CivilianModalAction>,
-    child_of: Query<&ChildOf>,
-    roots: Query<(), With<CivilianModal>>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
@@ -871,25 +859,8 @@ fn on_civilian_modal_action(
     let Ok(action) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = modal_root(activate.entity, &child_of, &roots) else {
-        return;
-    };
     let mut completed = false;
     match action {
-        CivilianModalAction::Close => {}
-        CivilianModalAction::CancelOrder(unit) => {
-            if session.game.cancel_civilian_work_order(unit).is_ok()
-                && let Ok((mut interaction, mut viewport)) = interactions.single_mut()
-            {
-                apply_map_transition(
-                    &mut session,
-                    &mut interaction,
-                    &mut viewport,
-                    MapTransition::SetMode(MapInteractionMode::Civilian),
-                );
-                interaction.civilian = Some(unit);
-            }
-        }
         CivilianModalAction::Engineer(unit, choice) => {
             match session.game.queue_engineer_construction(unit, choice) {
                 Ok(()) => {
@@ -931,9 +902,30 @@ fn on_civilian_modal_action(
             completed = session.game.disband_civilian(unit);
         }
     }
-    commands.entity(root).try_despawn();
     if completed && let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
         cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+    }
+}
+
+fn on_cancel_civilian_order(
+    activate: On<Activate>,
+    actions: Query<&CancelCivilianOrder>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut session: ResMut<GameSession>,
+) {
+    let Ok(CancelCivilianOrder(unit)) = actions.get(activate.entity) else {
+        return;
+    };
+    if session.game.cancel_civilian_work_order(*unit).is_ok()
+        && let Ok((mut interaction, mut viewport)) = interactions.single_mut()
+    {
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::SetMode(MapInteractionMode::Civilian),
+        );
+        interaction.civilian = Some(*unit);
     }
 }
 
@@ -943,18 +935,4 @@ fn spawn_notice(commands: &mut Commands, title: String, body: String) {
         CivilianModal::Notice { title, body },
         AppState::StrategicMap,
     );
-}
-
-fn modal_root(
-    mut entity: Entity,
-    child_of: &Query<&ChildOf>,
-    roots: &Query<(), With<CivilianModal>>,
-) -> Option<Entity> {
-    for _ in 0..10 {
-        if roots.contains(entity) {
-            return Some(entity);
-        }
-        entity = child_of.get(entity).ok()?.parent();
-    }
-    None
 }

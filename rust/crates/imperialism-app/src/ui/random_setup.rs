@@ -6,7 +6,7 @@ use crate::ui::hover_help::{
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow, WindowManager};
+use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input_focus::AutoFocus;
@@ -255,7 +255,7 @@ fn bind_random_setup_controls(
         .entity(okay)
         .insert(RandomSetupAction::Accept)
         .remove::<InteractionDisabled>()
-        .observe(on_random_setup_activate);
+        .observe(on_random_setup_activate.run_if(not(any_with_component::<ModalWindow>)));
 
     for (tag, action) in [
         (fourcc!("cncl"), RandomSetupAction::Cancel),
@@ -265,12 +265,12 @@ fn bind_random_setup_controls(
         commands
             .entity(entity)
             .insert((action, ActivateOnPress))
-            .observe(on_random_setup_activate);
+            .observe(on_random_setup_activate.run_if(not(any_with_component::<ModalWindow>)));
     }
     commands
         .entity(tree.find(root, fourcc!("glob")))
         .insert((RandomSetupGlobe, ActivateOnPress))
-        .observe(on_random_setup_globe);
+        .observe(on_random_setup_globe.run_if(not(any_with_component::<ModalWindow>)));
 }
 
 fn bind_random_setup_labels(
@@ -435,7 +435,6 @@ fn sync_country_name_from_setup(
 #[derive(SystemParam)]
 struct RandomSetupActivation<'w, 's> {
     actions: Query<'w, 's, &'static RandomSetupAction>,
-    windows: Option<Res<'w, WindowManager>>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
     names: Res<'w, RandomGameNamesResource>,
@@ -449,12 +448,6 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
         .actions
         .get(activate.entity)
         .expect("random-setup Activate is bound on a RandomSetupAction control");
-    if random_setup
-        .windows
-        .is_some_and(|windows| windows.has_modal())
-    {
-        return;
-    }
     match *action {
         RandomSetupAction::Accept => {
             accept_random_setup(
@@ -475,14 +468,11 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
 
 fn on_random_setup_globe(
     _activate: On<Activate>,
-    windows: Option<Res<WindowManager>>,
     clock_seed: Res<RandomSetupClockSeed>,
     mut setup: ResMut<RandomGameSetup>,
     mut preview: ResMut<RandomSetupPreview>,
 ) {
-    if !windows.is_some_and(|windows| windows.has_modal()) {
-        regenerate_random_setup_planet(clock_seed.0, &mut setup, &mut preview);
-    }
+    regenerate_random_setup_planet(clock_seed.0, &mut setup, &mut preview);
 }
 
 fn on_difficulty_selected(
@@ -584,7 +574,7 @@ fn open_planet_seed_dialog(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::linger_954()).id();
     commands.entity(root).insert((
         PlanetSeedDialogRoot,
-        ModalWindow::default(),
+        ModalWindow,
         DespawnOnExit(AppState::RandomSetup),
     ));
 }

@@ -21,7 +21,7 @@ pub fn spawn_linger_dialog(
     let root = commands.spawn_scene(generated::linger_2020()).id();
     commands
         .entity(root)
-        .insert((extra, ModalWindow::default(), DespawnOnExit(screen)));
+        .insert((extra, ModalWindow, DespawnOnExit(screen)));
     root
 }
 

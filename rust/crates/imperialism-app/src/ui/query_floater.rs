@@ -1,6 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
-use super::window::{DismissWindow, ModalCancel, ModalWindow, WindowManager};
+use super::window::{DismissWindow, ModalCancel, ModalWindow};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -28,7 +28,6 @@ struct QueryFloaterRoot;
 enum QueryFloaterAction {
     Advice,
     DealBook,
-    Cancel,
 }
 
 pub(crate) struct QueryFloaterPlugin;
@@ -44,26 +43,22 @@ pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, 
         .entity(tree.find(root, fourcc!("quer")))
         .insert((OpenQueryFloater, ActivateOnPress))
         .remove::<InteractionDisabled>()
-        .observe(on_open_query_floater);
+        .observe(on_open_query_floater.run_if(not(any_with_component::<ModalWindow>)));
 }
 
 fn on_open_query_floater(
     activate: On<Activate>,
     controls: Query<(), With<OpenQueryFloater>>,
-    windows: Option<Res<WindowManager>>,
     state: Res<State<AppState>>,
     mut commands: Commands,
 ) {
-    if controls.get(activate.entity).is_err() || windows.is_some_and(|windows| windows.has_modal())
-    {
+    if controls.get(activate.entity).is_err() {
         return;
     }
     let root = commands.spawn_scene(generated::linger_4122()).id();
-    commands.entity(root).insert((
-        QueryFloaterRoot,
-        ModalWindow::default(),
-        DespawnOnExit(*state.get()),
-    ));
+    commands
+        .entity(root)
+        .insert((QueryFloaterRoot, ModalWindow, DespawnOnExit(*state.get())));
 }
 
 fn bind_query_floaters(
@@ -106,14 +101,8 @@ fn bind_query_floaters(
             .observe(on_query_floater_activate);
         commands
             .entity(view.find(fourcc!("cncl")))
-            .insert((
-                QueryFloaterAction::Cancel,
-                ActivateOnPress,
-                ModalCancel,
-                DismissWindow,
-            ))
-            .remove::<InteractionDisabled>()
-            .observe(on_query_floater_activate);
+            .insert((ActivateOnPress, ModalCancel, DismissWindow))
+            .remove::<InteractionDisabled>();
         for tag in [
             fourcc!("oref"),
             fourcc!("news"),
@@ -143,7 +132,6 @@ fn on_query_floater_activate(
             commands.insert_resource(ReturnTo(*state.get()));
             next_state.set(AppState::DealBook);
         }
-        QueryFloaterAction::Cancel => {}
     }
 }
 
@@ -159,10 +147,7 @@ mod tests {
             .add_plugins(crate::ui::UiWindowPlugin)
             .insert_state(AppState::Trade)
             .add_observer(on_query_floater_activate);
-        let root = app
-            .world_mut()
-            .spawn((QueryFloaterRoot, ModalWindow::default()))
-            .id();
+        let root = app.world_mut().spawn((QueryFloaterRoot, ModalWindow)).id();
         let action = app
             .world_mut()
             .spawn((QueryFloaterAction::DealBook, DismissWindow, ChildOf(root)))
