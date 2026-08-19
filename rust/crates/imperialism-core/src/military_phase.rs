@@ -24,18 +24,6 @@ impl GameState {
         self.apply_military_orders();
         self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
-        // TODO(navy-tactical): `NavalBattlePlugin` can project `TurnStop::NavalBattle`,
-        // but production still skips the modal battle so a real turn never opens that
-        // screen. Switch this to `carry_out_navy_orders()` once native `military_phase`
-        // fixtures and mid-game saves are ready to stop on player naval encounters.
-        self.carry_out_navy_orders_without_tactical_battles()
-    }
-
-    #[cfg(feature = "oracle")]
-    pub(crate) fn do_military_with_tactical_battles(&mut self) -> Option<NavyOrdersContinuation> {
-        self.apply_military_orders();
-        self.clean_up_army_stacks();
-        self.prepare_to_carry_out_navy_orders();
         self.carry_out_navy_orders()
     }
 

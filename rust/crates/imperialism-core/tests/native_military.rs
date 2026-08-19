@@ -149,7 +149,7 @@ fn military_phase_ships_without_orders() {
 #[ignore = "requires the native C++ oracle"]
 fn military_phase_naval_encounter() {
     compare_native("military_phase_naval_encounter", |state, _: EmptyCase| {
-        differential::do_military_with_tactical_battles(state).map(|continuation| {
+        state.do_military().map(|continuation| {
             let attacker = state
                 .task_forces_in_retail_order()
                 .position(|(id, _)| id == continuation.battle.attacker)
