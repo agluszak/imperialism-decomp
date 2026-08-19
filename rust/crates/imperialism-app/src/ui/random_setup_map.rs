@@ -3,20 +3,18 @@ use super::random_setup::{RandomGameSetup, RandomSetupPreview};
 use super::retail::RetailTree;
 use crate::RetailAssetsResource;
 #[cfg(test)]
-use bevy::asset::RenderAssetUsages;
-#[cfg(test)]
 use bevy::image::ImageSampler;
 use bevy::log::warn;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-#[cfg(test)]
-use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{
     MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapTopology, NationId, TileId, TileOwnerTag,
 };
-use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
+#[cfg(test)]
+use imperialism_formats::Rgb;
+use imperialism_formats::{DibPalette, FourCc, PictureId, fourcc};
 
 use super::retail_raster::indexed_pixels_to_image;
 
@@ -27,7 +25,6 @@ const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
 const FLAG_ATLAS_PICTURE: PictureId = PictureId::new(8699);
 const FLAG_WIDTH: usize = 32;
 const FLAG_HEIGHT: usize = 24;
-const TRANSPARENT_FLAG_RGB: Rgb = Rgb::new(0xff, 0, 0xff);
 const PREVIEW_WIDTH: usize = 324;
 const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
@@ -134,7 +131,7 @@ fn sync_random_setup_flag(
     let handle = if let Some(handle) = transparent_atlas.clone() {
         handle
     } else {
-        match pictures.transformed_picture(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency) {
+        match pictures.transparent_picture(FLAG_ATLAS_PICTURE, OFF_MAP_PALETTE) {
             Ok(handle) => {
                 *transparent_atlas = Some(handle.clone());
                 handle
@@ -166,19 +163,6 @@ fn sync_random_setup_flag(
             });
         }
         flag.nation = Some(setup.nation);
-    }
-}
-
-fn apply_flag_atlas_transparency(image: &mut Image) {
-    let Some(pixels) = image.data.as_mut() else {
-        return;
-    };
-    for pixel in pixels.chunks_exact_mut(4) {
-        // TGWorldPartView blits with palette index 0x10 as its transparent
-        // background; in the default DIB that palette entry is #ff00ff.
-        if pixel[..3] == TRANSPARENT_FLAG_RGB.to_array() {
-            pixel[3] = 0;
-        }
     }
 }
 
@@ -616,28 +600,6 @@ mod tests {
         assert_eq!(
             coat_picture_id(MajorNationId::new(6)),
             PictureId::new(0x11cc)
-        );
-    }
-
-    #[test]
-    fn flag_atlas_transparency_keys_retail_magenta() {
-        let pixels = vec![0xff_u8, 0x00, 0xff, 0xff, 0x11, 0x22, 0x33, 0xff];
-        let mut image = Image::new(
-            Extent3d {
-                width: 2,
-                height: 1,
-                depth_or_array_layers: 1,
-            },
-            TextureDimension::D2,
-            pixels,
-            TextureFormat::Rgba8UnormSrgb,
-            RenderAssetUsages::default(),
-        );
-        apply_flag_atlas_transparency(&mut image);
-        assert_eq!(&image.data.as_ref().unwrap()[..4], &[0xff, 0, 0xff, 0]);
-        assert_eq!(
-            &image.data.as_ref().unwrap()[4..],
-            &[0x11, 0x22, 0x33, 0xff]
         );
     }
 }

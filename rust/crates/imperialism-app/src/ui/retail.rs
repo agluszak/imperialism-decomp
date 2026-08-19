@@ -667,6 +667,31 @@ pub fn ancestor_with<D: QueryData, F: QueryFilter>(
 mod tests {
     use super::*;
     use bevy::ecs::system::SystemState;
+    use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+
+    #[test]
+    fn index_transparency_does_not_key_an_equal_rgb_entry() {
+        let indexed = IndexedPicture {
+            width: 2,
+            height: 1,
+            pixels: vec![0x10, 0x11],
+        };
+        let mut image = Image::new(
+            Extent3d {
+                width: 2,
+                height: 1,
+                depth_or_array_layers: 1,
+            },
+            TextureDimension::D2,
+            vec![0xff, 0, 0xff, 0xff, 0xff, 0, 0xff, 0xff],
+            TextureFormat::Rgba8UnormSrgb,
+            RenderAssetUsages::default(),
+        );
+
+        assert!(apply_index_transparency(&mut image, &indexed, 0x10));
+        assert_eq!(image.data.as_ref().unwrap()[3], 0);
+        assert_eq!(image.data.as_ref().unwrap()[7], 0xff);
+    }
 
     #[test]
     fn picture_swap_selects_preloaded_idle_and_active_handles() {

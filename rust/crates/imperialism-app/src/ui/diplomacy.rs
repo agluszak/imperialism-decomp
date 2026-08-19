@@ -497,11 +497,8 @@ fn bind_diplomacy_screen(
         shadow: assets.palette_color(0xd2),
     };
     let icon_picture = PictureId::new(802);
-    let transparent_rgb = assets.default_dib_palette()[0x10].to_array();
     let icon_atlas = assets
-        .transformed_picture(icon_picture, |image| {
-            apply_diplomacy_atlas_transparency(image, transparent_rgb);
-        })
+        .transparent_picture(icon_picture, 0x10)
         .expect("retail diplomacy icon atlas transparency must apply");
     bind_diplomacy_controls(
         &mut commands,
@@ -817,17 +814,6 @@ fn spawn_diplomacy_map_labels(
                 ChildOf(map),
                 DiplomacyNationIcon { nation, kind },
             ));
-        }
-    }
-}
-
-fn apply_diplomacy_atlas_transparency(image: &mut Image, transparent_rgb: [u8; 3]) {
-    let Some(pixels) = image.data.as_mut() else {
-        return;
-    };
-    for pixel in pixels.chunks_exact_mut(4) {
-        if pixel[..3] == transparent_rgb {
-            pixel[3] = 0;
         }
     }
 }
