@@ -23,11 +23,9 @@ pub(crate) struct LandMapFrame;
 
 #[derive(Component)]
 pub(crate) struct OceanMapCanvas {
+    assets: OceanRenderAssets,
     composed: Option<OceanComposeKey>,
 }
-
-#[derive(Resource)]
-struct CachedOceanRenderAssets(OceanRenderAssets);
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct OceanComposeKey {
@@ -38,14 +36,17 @@ struct OceanComposeKey {
 }
 
 #[derive(Component)]
-pub(crate) struct OceanZoneLabel;
+pub(crate) struct OceanZoneLabel {
+    tile: TileId,
+}
 
 #[derive(Component)]
-pub(crate) struct OceanNationLabel;
+pub(crate) struct OceanNationLabel {
+    nation: NationId,
+}
 
 #[derive(Component)]
 struct OceanLabelAnchor {
-    tile: TileId,
     offset: Vec2,
 }
 
@@ -67,11 +68,11 @@ pub(crate) fn bind_ocean_view(
 ) -> Entity {
     let land = tree.find(root, fourcc!("DLOG"));
     commands.entity(land).insert(LandMapFrame);
-    commands.insert_resource(CachedOceanRenderAssets(OceanRenderAssets::load(|id| {
+    let ocean_assets = OceanRenderAssets::load(|id| {
         assets
             .indexed_picture(PictureId::new(id))
             .unwrap_or_else(|error| panic!("retail ocean picture {id} must load: {error}"))
-    })));
+    });
 
     let ocean = tree.find(root, fourcc!("DOOG"));
     let palette = *assets.default_dib_palette();
@@ -79,7 +80,10 @@ pub(crate) fn bind_ocean_view(
         indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0).to_image(&palette),
     );
     commands.entity(ocean).insert((
-        OceanMapCanvas { composed: None },
+        OceanMapCanvas {
+            assets: ocean_assets,
+            composed: None,
+        },
         ImageNode::new(image),
         Visibility::Hidden,
         RelativeCursorPosition::default(),
@@ -119,7 +123,6 @@ fn sync_ocean_view_frames(
 fn sync_ocean_canvas(
     session: Res<GameSession>,
     maps: Query<(Ref<StrategicInteraction>, Ref<StrategicViewport>)>,
-    render_assets: Res<CachedOceanRenderAssets>,
     retail: Res<crate::RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut canvases: Query<(&mut OceanMapCanvas, &ImageNode, &RelativeCursorPosition)>,
@@ -150,7 +153,7 @@ fn sync_ocean_canvas(
             &viewport.ocean,
             &interaction,
             hovered,
-            &render_assets.0,
+            &canvas.assets,
         );
         if let Some(mut existing) = images.get_mut(&node.image) {
             *existing = picture.to_image(retail.assets().default_dib_palette());
@@ -195,9 +198,8 @@ fn spawn_ocean_labels(
             };
             spawn_ocean_label(
                 parent,
-                OceanZoneLabel,
+                OceanZoneLabel { tile },
                 &zone.zone().display_name,
-                tile,
                 Vec2::new(0.0, 2.0),
                 color,
                 &zone_font,
@@ -211,15 +213,10 @@ fn spawn_ocean_labels(
             let Some(name) = session.game.nations().display_name(nation) else {
                 continue;
             };
-            // Retail stops the nation loop on the first missing computed anchor.
-            let Some(tile) = session.game.ocean_overlay_anchor_for_nation(nation) else {
-                break;
-            };
             spawn_ocean_label(
                 parent,
-                OceanNationLabel,
+                OceanNationLabel { nation },
                 name,
-                tile,
                 Vec2::new(1.0, -13.0),
                 palette_color(&palette, 0x13),
                 &nation_font,
@@ -228,9 +225,8 @@ fn spawn_ocean_labels(
             );
             spawn_ocean_label(
                 parent,
-                OceanNationLabel,
+                OceanNationLabel { nation },
                 name,
-                tile,
                 Vec2::new(0.0, -14.0),
                 palette_color(&palette, 0),
                 &nation_font,
@@ -246,7 +242,6 @@ fn spawn_ocean_label<M: Component>(
     parent: &mut ChildSpawnerCommands,
     marker: M,
     text: &str,
-    tile: TileId,
     offset: Vec2,
     color: Color,
     font: &TextFont,
@@ -255,7 +250,7 @@ fn spawn_ocean_label<M: Component>(
 ) {
     parent.spawn((
         marker,
-        OceanLabelAnchor { tile, offset },
+        OceanLabelAnchor { offset },
         Pickable::IGNORE,
         Visibility::Hidden,
         Text::new(text),
@@ -274,27 +269,89 @@ fn spawn_ocean_label<M: Component>(
 fn sync_ocean_labels(
     session: Res<GameSession>,
     viewports: Query<Ref<StrategicViewport>>,
-    mut labels: Query<(&OceanLabelAnchor, &mut Node, &mut Visibility)>,
+    mut zones: Query<
+        (
+            &OceanZoneLabel,
+            &OceanLabelAnchor,
+            &mut Node,
+            &mut Visibility,
+        ),
+        Without<OceanNationLabel>,
+    >,
+    mut nations: Query<
+        (
+            &OceanNationLabel,
+            &OceanLabelAnchor,
+            &mut Node,
+            &mut Visibility,
+        ),
+        Without<OceanZoneLabel>,
+    >,
 ) {
     let Ok(viewport) = viewports.single() else {
         return;
     };
-    if !viewport.is_changed() {
+    if !viewport.is_changed() && !session.is_changed() {
         return;
     }
     let projection = OceanProjection::new(session.game.map().geometry(), &viewport.ocean);
-    for (anchor, mut node, mut visibility) in &mut labels {
-        let position = (viewport.projection == MapProjection::Overview)
-            .then(|| projection.tile_center(anchor.tile))
-            .flatten();
-        let Some(position) = position else {
-            *visibility = Visibility::Hidden;
-            continue;
-        };
-        *visibility = Visibility::Visible;
-        node.left = Val::Px(position.x + anchor.offset.x - 150.0);
-        node.top = Val::Px(position.y + anchor.offset.y);
+    for (zone, anchor, mut node, mut visibility) in &mut zones {
+        project_ocean_label(
+            &projection,
+            Some(zone.tile),
+            anchor.offset,
+            &viewport,
+            &mut node,
+            &mut visibility,
+        );
     }
+    let nation_tiles = ocean_nation_overlay_tiles(&session.game);
+    for (label, anchor, mut node, mut visibility) in &mut nations {
+        project_ocean_label(
+            &projection,
+            nation_tiles[usize::from(label.nation.get())],
+            anchor.offset,
+            &viewport,
+            &mut node,
+            &mut visibility,
+        );
+    }
+}
+
+fn ocean_nation_overlay_tiles(game: &GameState) -> [Option<TileId>; NationId::COUNT as usize] {
+    let mut tiles = [None; NationId::COUNT as usize];
+    for slot in 0..NationId::COUNT {
+        let nation = NationId::new(slot);
+        if game.nations().display_name(nation).is_none() {
+            continue;
+        }
+        // Retail stops the nation loop on the first missing computed anchor.
+        let Some(tile) = game.ocean_overlay_anchor_for_nation(nation) else {
+            break;
+        };
+        tiles[usize::from(slot)] = Some(tile);
+    }
+    tiles
+}
+
+fn project_ocean_label(
+    projection: &OceanProjection,
+    tile: Option<TileId>,
+    offset: Vec2,
+    viewport: &StrategicViewport,
+    node: &mut Node,
+    visibility: &mut Visibility,
+) {
+    let position = (viewport.projection == MapProjection::Overview)
+        .then(|| tile.and_then(|tile| projection.tile_center(tile)))
+        .flatten();
+    let Some(position) = position else {
+        *visibility = Visibility::Hidden;
+        return;
+    };
+    *visibility = Visibility::Visible;
+    node.left = Val::Px(position.x + offset.x - 150.0);
+    node.top = Val::Px(position.y + offset.y);
 }
 
 fn palette_color(palette: &DibPalette, index: u8) -> Color {
@@ -336,7 +393,7 @@ mod tests {
             .id();
         let sea = app
             .world_mut()
-            .spawn((OceanMapCanvas { composed: None }, Visibility::Hidden))
+            .spawn((test_ocean_canvas(), Visibility::Hidden))
             .id();
 
         app.update();
@@ -402,11 +459,8 @@ mod tests {
         let label = app
             .world_mut()
             .spawn((
-                OceanZoneLabel,
-                OceanLabelAnchor {
-                    tile,
-                    offset: Vec2::ZERO,
-                },
+                OceanZoneLabel { tile },
+                OceanLabelAnchor { offset: Vec2::ZERO },
                 Node::default(),
                 Visibility::Hidden,
             ))
@@ -428,5 +482,94 @@ mod tests {
             app.world().get::<Visibility>(label),
             Some(&Visibility::Visible)
         );
+    }
+
+    #[test]
+    fn nation_ocean_label_follows_the_current_overlay_anchor() {
+        let nation = NationId::new(0);
+        let mut first_parts = beginning_of_game_parts_with(strategic_map_beginning_context());
+        let owner = TileOwnerTag::from_nation(nation);
+        let owned = TileId::all()
+            .filter(|&tile| first_parts.map[tile].owner_nation == Some(owner))
+            .collect::<Vec<_>>();
+        let first_tile = owned[owned.len() / 2];
+        let mut ocean = OceanViewport::default();
+        ocean.center_on(first_tile, &first_parts.map.geometry());
+        let second_tile = owned
+            .iter()
+            .copied()
+            .find(|&tile| {
+                tile != first_tile
+                    && OceanProjection::new(first_parts.map.geometry(), &ocean)
+                        .tile_center(tile)
+                        .is_some()
+            })
+            .expect("nation 0 owns another tile in the same ocean view");
+
+        keep_only_owned_tile(&mut first_parts.map, owner, first_tile);
+        let first = GameSession::new(GameState::from_parts(first_parts));
+        assert_eq!(
+            first.game.ocean_overlay_anchor_for_nation(nation),
+            Some(first_tile)
+        );
+
+        let mut second_parts = beginning_of_game_parts_with(strategic_map_beginning_context());
+        keep_only_owned_tile(&mut second_parts.map, owner, second_tile);
+        let second = GameSession::new(GameState::from_parts(second_parts));
+        assert_eq!(
+            second.game.ocean_overlay_anchor_for_nation(nation),
+            Some(second_tile)
+        );
+
+        let mut app = App::new();
+        app.insert_resource(first);
+        app.add_systems(Update, sync_ocean_labels);
+        app.world_mut().spawn(StrategicViewport {
+            projection: MapProjection::Overview,
+            ocean,
+        });
+        let label = app
+            .world_mut()
+            .spawn((
+                OceanNationLabel { nation },
+                OceanLabelAnchor { offset: Vec2::ZERO },
+                Node::default(),
+                Visibility::Hidden,
+            ))
+            .id();
+
+        app.update();
+        let first_left = app.world().get::<Node>(label).unwrap().left;
+        assert_eq!(
+            app.world().get::<Visibility>(label),
+            Some(&Visibility::Visible)
+        );
+
+        app.insert_resource(second);
+        app.update();
+        assert_ne!(app.world().get::<Node>(label).unwrap().left, first_left);
+        assert_eq!(
+            app.world().get::<Visibility>(label),
+            Some(&Visibility::Visible)
+        );
+    }
+
+    fn test_ocean_canvas() -> OceanMapCanvas {
+        OceanMapCanvas {
+            assets: OceanRenderAssets::load(|_| IndexedPicture {
+                width: 1,
+                height: 1,
+                pixels: vec![0],
+            }),
+            composed: None,
+        }
+    }
+
+    fn keep_only_owned_tile(map: &mut MapMgr, owner: TileOwnerTag, keep: TileId) {
+        for tile in TileId::all() {
+            if map[tile].owner_nation == Some(owner) && tile != keep {
+                map[tile].owner_nation = None;
+            }
+        }
     }
 }
