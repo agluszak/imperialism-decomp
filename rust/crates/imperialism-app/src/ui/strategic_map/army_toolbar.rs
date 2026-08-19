@@ -2,7 +2,7 @@
 
 use super::super::retail::{RetailTree, RetailUiAssets};
 use super::map_interaction::{
-    MapInteractionMode, StrategicInteraction, cycle_map_interaction_selection,
+    MapInteractionMode, StrategicInteraction, StrategicViewport, cycle_map_interaction_selection,
 };
 use super::map_modals::{spawn_army_roster, spawn_garrison};
 use crate::AppState;
@@ -296,12 +296,12 @@ fn on_army_command(
     keys: Res<ButtonInput<KeyCode>>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
-    mut interactions: Query<&mut StrategicInteraction>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
     let Ok(command) = command_query.get(activate.entity) else {
         return;
     };
-    let Ok(mut interaction) = interactions.single_mut() else {
+    let Ok((mut interaction, mut viewport)) = interactions.single_mut() else {
         return;
     };
     let Some(province) = interaction.army else {
@@ -312,19 +312,19 @@ fn on_army_command(
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Sleep);
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         ArmyCommand::Later => {
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Latr);
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         ArmyCommand::Done => {
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Done);
-            cycle_map_interaction_selection(&mut session, &mut interaction);
+            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         ArmyCommand::Garrison => {
             if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
