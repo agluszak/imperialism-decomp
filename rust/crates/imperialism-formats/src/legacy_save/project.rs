@@ -543,11 +543,6 @@ impl LegacyCityOrders {
 
 impl LegacyCityState {
     fn city_state(&self) -> CityState {
-        assert!(
-            self.transport_requests.records.is_empty(),
-            "semantic projection of city transport requests is not implemented"
-        );
-
         let strike_phase = StrikePhase::from_retail(self.population.phase_value)
             .expect("retail population strike phase");
         let accumulator =
@@ -557,6 +552,18 @@ impl LegacyCityState {
         CityState {
             orders: self.orders.city_orders(),
             tasks: self.tasks.iter().map(LegacyCityTask::task_state).collect(),
+            transport_requests: self
+                .transport_requests
+                .iter()
+                .map(|request| CityTransportRequest {
+                    resource: ResourceKind::from_index(
+                        u8::try_from(request.resource_type)
+                            .expect("retail city transport resource type"),
+                    )
+                    .expect("retail city transport resource type"),
+                    requested_amount: request.requested_amount,
+                })
+                .collect(),
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
             food_substitution_count: self.food_substitution_count,
             starvation_population_loss: self.starvation_population_loss,
