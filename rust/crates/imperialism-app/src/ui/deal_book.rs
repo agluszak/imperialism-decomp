@@ -5,7 +5,7 @@ use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::RetailTree;
-use super::session::{apply_turn_stop, clear_return_to};
+use super::session::{apply_turn_stop, clear_return_to, news_story_ids};
 use crate::{AppState, ReturnTo};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -110,9 +110,20 @@ impl Plugin for DealBookPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             OnEnter(AppState::DealBook),
-            (spawn_deal_book, bind_deal_book).chain(),
+            (spawn_deal_book, bind_deal_book_actions).chain(),
         )
-        .add_systems(OnExit(AppState::DealBook), clear_return_to)
+        .add_systems(OnExit(AppState::DealBook), clear_return_to);
+    }
+}
+
+pub(crate) struct DealBookPresentationPlugin;
+
+impl Plugin for DealBookPresentationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            OnEnter(AppState::DealBook),
+            bind_deal_book.after(bind_deal_book_actions),
+        )
         .add_systems(
             Update,
             (hover_deal_book_tabs, sync_deal_book)
@@ -120,6 +131,18 @@ impl Plugin for DealBookPlugin {
                 .run_if(in_state(AppState::DealBook)),
         );
     }
+}
+
+fn bind_deal_book_actions(
+    mut commands: Commands,
+    root: Single<Entity, Added<DealBookRoot>>,
+    tree: RetailTree,
+) {
+    commands
+        .entity(tree.find(*root, fourcc!("end ")))
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_deal_book_close);
 }
 
 fn spawn_deal_book(mut commands: Commands) {
@@ -221,11 +244,6 @@ fn bind_deal_book(
         ChildOf(tabs),
     ));
     commands
-        .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_deal_book_close);
-    commands
         .entity(tree.find(root, fourcc!("quer")))
         .insert(InteractionDisabled);
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
@@ -289,13 +307,15 @@ fn on_deal_book_close(
     return_state: Option<Res<ReturnTo>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Res<crate::RetailAssetsResource>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     if let Some(return_state) = return_state.as_deref() {
         next_state.set(return_state.0);
         return;
     }
-    let stop = session.game.close_turn_deal_book(assets.news_story_ids());
+    let stop = session
+        .game
+        .close_turn_deal_book(news_story_ids(assets.as_deref()));
     apply_turn_stop(stop, &mut next_state);
 }
 

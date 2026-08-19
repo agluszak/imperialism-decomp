@@ -1,11 +1,19 @@
 use super::GameSession;
 use super::retail::{ModalDialog, RetailTag};
-use crate::AppState;
+use crate::{AppState, GamePlugin, RandomGameNamesResource};
+use bevy::asset::AssetPlugin;
+use bevy::camera::NormalizedRenderTarget;
+use bevy::picking::backend::HitData;
+use bevy::picking::events::{Click, Pointer, Press, Release};
+use bevy::picking::pointer::{Location, PointerId};
 use bevy::prelude::*;
+use bevy::scene::ScenePlugin;
+use bevy::state::app::StatesPlugin;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::Activate;
+use bevy::ui_widgets::{Activate, Button as UiButton, ButtonPlugin};
 use imperialism_core::GameState;
 use imperialism_formats::FourCc;
+use std::time::Duration;
 
 const DEFAULT_UPDATE_LIMIT: usize = 32;
 
@@ -17,6 +25,36 @@ pub(crate) struct HeadlessGame {
 impl HeadlessGame {
     pub(crate) fn new(app: App) -> Self {
         Self { app }
+    }
+
+    pub(crate) fn from_game(game: GameState, state: AppState) -> Self {
+        let mut headless = Self::at_state(state);
+        headless.app.insert_resource(GameSession::new(game));
+        headless
+    }
+
+    pub(crate) fn at_state(state: AppState) -> Self {
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            StatesPlugin,
+            ButtonPlugin,
+            GamePlugin,
+        ))
+        .insert_resource(RandomGameNamesResource(
+            imperialism_testkit::random_game_names(),
+        ))
+        .insert_state(state);
+        Self { app }
+    }
+
+    pub(crate) fn from_beginning_of_game() -> Self {
+        Self::from_game(
+            imperialism_testkit::beginning_of_game(),
+            AppState::StrategicMap,
+        )
     }
 
     pub(crate) fn state(&self) -> AppState {
@@ -75,13 +113,69 @@ impl HeadlessGame {
         }
     }
 
-    pub(crate) fn activate_tag(&mut self, tag: FourCc) {
+    pub(crate) fn trigger_action_tag(&mut self, tag: FourCc) {
         let entity = self.entity_with_tag(tag);
-        self.activate_entity(entity);
+        self.trigger_action_entity(entity);
     }
 
-    pub(crate) fn activate_entity(&mut self, entity: Entity) {
+    pub(crate) fn trigger_action_entity(&mut self, entity: Entity) {
         self.app.world_mut().commands().trigger(Activate { entity });
+        self.app.world_mut().flush();
+        self.update();
+    }
+
+    pub(crate) fn press_tag(&mut self, tag: FourCc) {
+        let entity = self.entity_with_tag(tag);
+        assert!(
+            self.app.world().entity(entity).contains::<UiButton>(),
+            "tagged entity {entity:?} is not a Bevy button: {}",
+            self.diagnostics()
+        );
+        let location = Location {
+            target: NormalizedRenderTarget::None {
+                width: 0,
+                height: 0,
+            },
+            position: Vec2::ZERO,
+        };
+        let hit = HitData {
+            camera: Entity::PLACEHOLDER,
+            depth: 0.0,
+            position: None,
+            normal: None,
+            extra: None,
+        };
+        let mut commands = self.app.world_mut().commands();
+        commands.trigger(Pointer::new(
+            PointerId::Mouse,
+            location.clone(),
+            Press {
+                button: PointerButton::Primary,
+                hit: hit.clone(),
+                count: 1,
+            },
+            entity,
+        ));
+        commands.trigger(Pointer::new(
+            PointerId::Mouse,
+            location.clone(),
+            Click {
+                button: PointerButton::Primary,
+                hit: hit.clone(),
+                duration: Duration::ZERO,
+                count: 1,
+            },
+            entity,
+        ));
+        commands.trigger(Pointer::new(
+            PointerId::Mouse,
+            location,
+            Release {
+                button: PointerButton::Primary,
+                hit,
+            },
+            entity,
+        ));
         self.app.world_mut().flush();
         self.update();
     }

@@ -29,7 +29,18 @@ impl Plugin for NewspaperPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             OnEnter(AppState::Newspaper),
-            (spawn_newspaper, bind_newspaper).chain(),
+            (spawn_newspaper, bind_newspaper_actions).chain(),
+        );
+    }
+}
+
+pub(crate) struct NewspaperPresentationPlugin;
+
+impl Plugin for NewspaperPresentationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            OnEnter(AppState::Newspaper),
+            bind_newspaper.after(bind_newspaper_actions),
         )
         .add_systems(
             Update,
@@ -37,6 +48,17 @@ impl Plugin for NewspaperPlugin {
                 .run_if(in_state(AppState::Newspaper).and_then(resource_exists::<GameSession>)),
         );
     }
+}
+
+fn bind_newspaper_actions(
+    mut commands: Commands,
+    root: Single<Entity, Added<NewspaperRoot>>,
+    tree: RetailTree,
+) {
+    commands
+        .entity(tree.find(*root, fourcc!("end ")))
+        .insert(ActivateOnPress)
+        .observe(on_newspaper_activate);
 }
 
 fn spawn_newspaper(mut commands: Commands) {
@@ -64,10 +86,6 @@ fn bind_newspaper(
         &session.game,
         retail.assets().news_table(),
     );
-    commands
-        .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
-        .observe(on_newspaper_activate);
 }
 
 fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {

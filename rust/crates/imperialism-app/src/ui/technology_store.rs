@@ -704,7 +704,7 @@ mod tests {
     #[test]
     fn microscope_control_enters_the_technology_store() {
         let mut app = App::new();
-        let game = crate::ui::test_support::beginning_of_game();
+        let game = imperialism_testkit::beginning_of_game();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
             .insert_state(AppState::StrategicMap)

@@ -122,6 +122,14 @@ pub(crate) fn bind_civilian_toolbar(
             terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
         },
     ));
+}
+
+pub(crate) fn bind_civilian_toolbar_actions(
+    commands: &mut Commands,
+    root: Entity,
+    tree: &RetailTree,
+) {
+    let page = tree.find(root, PAGE_TAG);
     for (tag, command) in [
         (fourcc!("dfnd"), CivilianCommand::Defend),
         (fourcc!("latr"), CivilianCommand::Later),

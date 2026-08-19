@@ -326,7 +326,7 @@ fn on_detail_close(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::beginning_of_game;
+    use imperialism_testkit::beginning_of_game;
 
     #[test]
     fn generated_land_report_text_preserves_retail_caption_and_summary_order() {

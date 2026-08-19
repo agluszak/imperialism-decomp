@@ -47,9 +47,9 @@ struct RandomSetupFlag {
     nation: Option<MajorNationId>,
 }
 
-pub(crate) struct MapPreviewPlugin;
+pub(crate) struct MapPreviewPresentationPlugin;
 
-impl Plugin for MapPreviewPlugin {
+impl Plugin for MapPreviewPresentationPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,

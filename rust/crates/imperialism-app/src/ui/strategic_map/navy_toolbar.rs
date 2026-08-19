@@ -85,24 +85,36 @@ pub(crate) fn bind_navy_toolbar(
             .entity(ship)
             .insert((NavyClassShip, Visibility::Hidden));
         let arrow = tree.child(cluster, fourcc!("arro"));
-        commands
-            .entity(arrow)
-            .insert((
-                NavyClassArrow(class),
-                ImageNode {
-                    image: arrow_atlas.clone(),
-                    rect: Some(Rect::from_corners(
-                        Vec2::new(10.0, 0.0),
-                        Vec2::new(21.0, 16.0),
-                    )),
-                    ..default()
-                },
-                RelativeCursorPosition::default(),
-                ActivateOnPress,
-                Visibility::Hidden,
-            ))
-            .observe(on_navy_class_arrow);
+        commands.entity(arrow).insert((
+            ImageNode {
+                image: arrow_atlas.clone(),
+                rect: Some(Rect::from_corners(
+                    Vec2::new(10.0, 0.0),
+                    Vec2::new(21.0, 16.0),
+                )),
+                ..default()
+            },
+            RelativeCursorPosition::default(),
+            Visibility::Hidden,
+        ));
         spawn_count_label(commands, arrow, assets);
+    }
+}
+
+pub(crate) fn bind_navy_toolbar_actions(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    let page = tree.find(root, PAGE_TAG);
+    const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
+        (NavyToolbarClass::Class0, fourcc!("cls0")),
+        (NavyToolbarClass::Class1, fourcc!("cls1")),
+        (NavyToolbarClass::Class2, fourcc!("cls2")),
+        (NavyToolbarClass::Class3, fourcc!("cls3")),
+    ];
+    for (class, tag) in CLASS_TAGS {
+        let cluster = tree.child(page, tag);
+        commands
+            .entity(tree.child(cluster, fourcc!("arro")))
+            .insert((NavyClassArrow(class), ActivateOnPress))
+            .observe(on_navy_class_arrow);
     }
     for (tag, command) in [
         (fourcc!("dfnd"), NavyCommand::Defend),

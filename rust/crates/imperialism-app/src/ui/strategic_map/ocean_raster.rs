@@ -670,7 +670,7 @@ fn fill_ocean_cell(indices: &mut [u8], x: i32, y: i32, color: u8) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::{beginning_of_game_parts_with, strategic_map_beginning_context};
+    use imperialism_testkit::{beginning_of_game_parts_with, strategic_map_beginning_context};
 
     fn pixel(indices: &[u8], x: usize, y: usize) -> u8 {
         indices[y * VIEWPORT_WIDTH + x]

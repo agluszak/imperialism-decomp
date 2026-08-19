@@ -816,6 +816,7 @@ fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option
 mod tests {
     use super::super::retail::RetailTag;
     use super::*;
+    use crate::ui::test_support::HeadlessGame;
     use bevy::state::app::StatesPlugin;
     use imperialism_testkit::beginning_of_game_parts;
 
@@ -1069,40 +1070,28 @@ mod tests {
             .expect("combat moves stop on the first battle");
         let expected = land_battle_caption(&state, &first);
 
-        let mut app = test_app(state);
-        app.update();
-        app.update();
-        assert_eq!(caption(&mut app), expected);
-        assert_eq!(
-            *app.world().resource::<State<AppState>>().get(),
-            AppState::LandBattle
-        );
-        let auto = action_entity(&mut app, LandBattleAction::Auto);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: auto });
-        app.world_mut().flush();
-        app.update();
+        let mut game = HeadlessGame::new(test_app(state));
+        game.update();
+        game.update();
+        assert_eq!(caption(game.app_mut()), expected);
+        game.assert_state(AppState::LandBattle);
 
-        assert_eq!(
-            *app.world().resource::<State<AppState>>().get(),
-            AppState::LandBattle
-        );
+        let auto = action_entity(game.app_mut(), LandBattleAction::Auto);
+        game.trigger_action_entity(auto);
+
+        game.assert_state(AppState::LandBattle);
         let (second_province, expected_second) = {
-            let session = app.world().resource::<GameSession>();
-            let second = session
-                .game
+            let second = game
+                .core()
                 .pending_land_battle()
                 .cloned()
                 .expect("remaining hostile stack keeps the land-battle stop");
-            (second.province, land_battle_caption(&session.game, &second))
+            (second.province, land_battle_caption(game.core(), &second))
         };
         assert_ne!(second_province, first.province);
-        assert_eq!(caption(&mut app), expected_second);
+        assert_eq!(caption(game.app_mut()), expected_second);
         let mut live_units = {
-            let session = app.world().resource::<GameSession>();
-            session
-                .game
+            game.core()
                 .army_battle()
                 .expect("the second pending battle has fresh live state")
                 .units()
@@ -1110,12 +1099,11 @@ mod tests {
                 .map(|unit| unit.id)
                 .collect::<Vec<_>>()
         };
-        let mut projected_units: Vec<_> = app
-            .world_mut()
-            .query::<&LandBattleUnit>()
-            .iter(app.world())
-            .map(|unit| unit.0)
-            .collect();
+        let mut projected_units: Vec<_> = {
+            let app = game.app_mut();
+            let mut query = app.world_mut().query::<&LandBattleUnit>();
+            query.iter(app.world()).map(|unit| unit.0).collect()
+        };
         live_units.sort_by_key(|id| id.source().get());
         projected_units.sort_by_key(|id| id.source().get());
         assert_eq!(projected_units, live_units);

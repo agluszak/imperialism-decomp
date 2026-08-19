@@ -92,11 +92,9 @@ impl Plugin for GamePlugin {
         app.init_state::<AppState>()
             .add_plugins((
                 ui::RetailUiPlugin,
-                ui::QueryFloaterPlugin,
                 ui::MainMenuPlugin,
                 ui::LoadSavePlugin,
                 ui::RandomSetupPlugin,
-                ui::MapPreviewPlugin,
                 ui::CitySitePlugin,
                 ui::GameShellPlugin,
                 ui::CityPlugin,
@@ -107,10 +105,10 @@ impl Plugin for GamePlugin {
             ))
             .add_plugins((
                 ui::TechnologyAdvancePlugin,
-            ui::TechnologyStorePlugin,
+                ui::TechnologyStorePlugin,
                 ui::NewspaperPlugin,
                 ui::LandBattlePlugin,
-            ui::NavalBattlePlugin,
+                ui::NavalBattlePlugin,
                 ui::EndgamePlugin,
                 ui::BattleReportPlugin,
                 ui::CreditsPlugin,
@@ -125,7 +123,19 @@ pub struct PresentationPlugin;
 
 impl Plugin for PresentationPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((TabNavigationPlugin, ui::RetailViewportPlugin));
+        app.add_plugins((
+            TabNavigationPlugin,
+            ui::RetailPresentationPlugin,
+            ui::MainMenuPresentationPlugin,
+            ui::RandomSetupPresentationPlugin,
+            ui::MapPreviewPresentationPlugin,
+            ui::DealBookPresentationPlugin,
+            ui::NewspaperPresentationPlugin,
+            ui::RetailViewportPlugin,
+            ui::QueryFloaterPlugin,
+            ui::GameShellPresentationPlugin,
+            ui::OfferSheetPresentationPlugin,
+        ));
     }
 }
 
@@ -183,49 +193,30 @@ pub fn run(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use bevy::ecs::schedule::ScheduleLabel;
-    use bevy::state::app::StatesPlugin;
 
-    fn initialize_schedule(app: &mut App, label: impl ScheduleLabel + Clone) {
-        if app.world().resource::<Schedules>().contains(label.clone()) {
-            app.world_mut()
-                .schedule_scope(label, |world, schedule| schedule.initialize(world))
-                .expect("game schedules must initialize headlessly");
+    #[test]
+    fn main_menu_random_setup_and_strategic_map_execute_headlessly() {
+        let mut game = ui::test_support::HeadlessGame::at_state(AppState::MainMenu);
+        game.update();
+        game.press_tag(imperialism_formats::fourcc!("rand"));
+        game.advance_until_state(AppState::RandomSetup);
+        game.press_tag(imperialism_formats::fourcc!("okay"));
+        game.advance_until(|game| game.state() != AppState::RandomSetup);
+        if game.state() == AppState::Newspaper {
+            game.press_tag(imperialism_formats::fourcc!("end "));
         }
+        game.advance_until_state(AppState::StrategicMap);
+        assert_eq!(
+            game.core().turn_continuation(),
+            &imperialism_core::TurnContinuation::None
+        );
     }
 
     #[test]
-    fn game_plugin_schedules_initialize_headlessly() {
-        let mut app = App::new();
-        app.add_plugins((MinimalPlugins, StatesPlugin, GamePlugin));
-
-        initialize_schedule(&mut app, Update);
-        for state in [
-            AppState::MainMenu,
-            AppState::RandomSetup,
-            AppState::LoadSave,
-            AppState::CitySite,
-            AppState::StrategicMap,
-            AppState::Trade,
-            AppState::City,
-            AppState::Transport,
-            AppState::Diplomacy,
-            AppState::DealBook,
-            AppState::OfferSheet,
-            AppState::TechnologyAdvance,
-            AppState::Newspaper,
-            AppState::LandBattle,
-            AppState::NavalBattle,
-            AppState::OpeningCinematic,
-            AppState::CouncilOfGovernors,
-            AppState::BattleReport,
-            AppState::GameScore,
-            AppState::HighScore,
-            AppState::Credits,
-            AppState::Preferences,
-        ] {
-            initialize_schedule(&mut app, OnEnter(state));
-            initialize_schedule(&mut app, OnExit(state));
-        }
+    fn beginning_of_game_builds_the_real_strategic_map_headlessly() {
+        let mut game = ui::test_support::HeadlessGame::from_beginning_of_game();
+        game.update();
+        game.assert_state(AppState::StrategicMap);
+        game.assert_tag_visible(imperialism_formats::fourcc!("DONE"));
     }
 }

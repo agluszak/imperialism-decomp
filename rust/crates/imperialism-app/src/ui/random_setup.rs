@@ -142,11 +142,22 @@ impl Plugin for RandomSetupPlugin {
                 (
                     ensure_random_setup_draft,
                     enter_random_setup,
-                    bind_random_setup,
+                    bind_random_setup_actions,
                 )
                     .chain(),
             )
             .add_systems(Update, bind_planet_seed_dialog);
+    }
+}
+
+pub(crate) struct RandomSetupPresentationPlugin;
+
+impl Plugin for RandomSetupPresentationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            OnEnter(AppState::RandomSetup),
+            bind_random_setup_presentation.after(bind_random_setup_actions),
+        );
     }
 }
 
@@ -172,17 +183,24 @@ fn enter_random_setup(mut commands: Commands) {
         .insert((RandomSetupRoot, DespawnOnExit(AppState::RandomSetup)));
 }
 
-fn bind_random_setup(
+fn bind_random_setup_actions(
+    mut commands: Commands,
+    root: Single<Entity, Added<RandomSetupRoot>>,
+    tree: RetailTree,
+    setup: Res<RandomGameSetup>,
+) {
+    bind_random_setup_controls(&mut commands, *root, &tree, &setup);
+    random_setup_map::attach_random_setup_meanings(&mut commands, *root, &tree);
+}
+
+fn bind_random_setup_presentation(
     mut commands: Commands,
     root: Single<Entity, Added<RandomSetupRoot>>,
     tree: RetailTree,
     mut nodes: Query<&mut Node>,
-    setup: Res<RandomGameSetup>,
     mut assets: RetailUiAssets,
 ) {
-    bind_random_setup_controls(&mut commands, *root, &tree, &setup);
     bind_random_setup_labels(&mut commands, *root, &tree, &mut nodes, &mut assets);
-    random_setup_map::attach_random_setup_meanings(&mut commands, *root, &tree);
     bind_random_setup_hover_help(&mut commands, *root, &tree, &mut nodes, &mut assets);
 }
 
@@ -267,11 +285,13 @@ fn bind_random_setup_controls(
         commands
             .entity(entity)
             .insert((action, ActivateOnPress))
+            .remove::<InteractionDisabled>()
             .observe(on_random_setup_activate);
     }
     commands
         .entity(tree.find(root, fourcc!("glob")))
         .insert((RandomSetupGlobe, ActivateOnPress))
+        .remove::<InteractionDisabled>()
         .observe(on_random_setup_globe);
 }
 
@@ -440,8 +460,8 @@ struct RandomSetupActivation<'w, 's> {
     dialog_open: Query<'w, 's, (), With<ModalDialog>>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
-    names: Res<'w, RandomGameNamesResource>,
-    retail: Res<'w, RetailAssetsResource>,
+    names: Option<Res<'w, RandomGameNamesResource>>,
+    retail: Option<Res<'w, RetailAssetsResource>>,
     next_state: ResMut<'w, NextState<AppState>>,
     commands: Commands<'w, 's>,
 }
@@ -456,11 +476,15 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
     }
     match *action {
         RandomSetupAction::Accept => {
+            let names = random_setup
+                .names
+                .as_deref()
+                .expect("accepting random setup requires random-game names");
             accept_random_setup(
                 &random_setup.setup,
                 &random_setup.preview,
-                &random_setup.names.0,
-                random_setup.retail.assets(),
+                &names.0,
+                random_setup.retail.as_deref(),
                 &mut random_setup.commands,
                 &mut random_setup.next_state,
             );
@@ -533,7 +557,7 @@ fn accept_random_setup(
     setup: &RandomGameSetup,
     preview: &RandomSetupPreview,
     names: &RandomGameNames,
-    assets: &imperialism_formats::RetailAssets,
+    assets: Option<&RetailAssetsResource>,
     commands: &mut Commands,
     next_state: &mut NextState<AppState>,
 ) {
@@ -555,7 +579,7 @@ fn accept_random_setup(
         let stop = enter_strategic_map_without_capital_selection(
             &mut session.game,
             setup.nation,
-            assets.news_table().story_ids(),
+            super::session::news_story_ids(assets),
         );
         apply_turn_stop(stop, next_state);
         commands.insert_resource(session);

@@ -3,6 +3,7 @@
 
 #include "game/city/TCity.h"
 #include "game/city/TItemOrder.h"
+#include "game/city/TPopGrowthOrder.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
 
@@ -82,5 +83,37 @@ RuntimeActionResult RunCreatedItemsPhase(NativeTransition& transition) {
   }
 
   nation->AddCreatedItems();
+  return transition.Finish();
+}
+
+RuntimeActionResult RunPopulationGrowthOrderIsOneShot(NativeTransition& transition) {
+  TGreatPower* nation = ActiveNation();
+  TCity* city = nation->city;
+  TPopGrowthOrder* order = static_cast<TPopGrowthOrder*>(city->trailingOrderSlots1b0[9]);
+  order->SetQuantity(0);
+  city->cityStockFurnitureD2 = static_cast<short>(city->cityStockFurnitureD2 + 1);
+  city->cityStockClothingD0 = static_cast<short>(city->cityStockClothingD0 + 1);
+  city->cityStockCannedFoodC4 = static_cast<short>(city->cityStockCannedFoodC4 + 1);
+  city->productionAccum1fc[0x0f] = static_cast<short>(city->productionAccum1fc[0x0f] + 1);
+  if (!order->SetQuantity(1)) {
+    return RuntimeActionResult::Failure("could not prepare a paid population-growth order");
+  }
+
+  JsonObject args;
+  args.Set("nation", static_cast<int>(ActiveNationSlot()));
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  short populationBefore = city->productionSummary1d8->populationCount08;
+  city->EndCityPhase();
+  short populationAfterFirstPhase = city->productionSummary1d8->populationCount08;
+  city->EndCityPhase();
+  if (order->quantity != 0 || populationAfterFirstPhase != populationBefore + 1 ||
+      city->productionSummary1d8->populationCount08 != populationAfterFirstPhase) {
+    return RuntimeActionResult::Failure(
+        "population-growth order was not consumed exactly once");
+  }
   return transition.Finish();
 }

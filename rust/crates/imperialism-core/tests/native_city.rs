@@ -80,3 +80,16 @@ fn created_items_phase() {
     })
     .unwrap();
 }
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn population_growth_order_is_one_shot() {
+    compare_native(
+        "population_growth_order_is_one_shot",
+        |state, case: NationCase| {
+            state.end_city_phase(case.nation);
+            state.end_city_phase(case.nation);
+        },
+    )
+    .unwrap();
+}

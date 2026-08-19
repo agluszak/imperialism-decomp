@@ -119,8 +119,9 @@ class RuntimeSuiteTests(unittest.TestCase):
                     "name": spec.name,
                     "seed": 7,
                     "status": "passed",
-                    "captures": {},
+                    "captures_path": "captures.json",
                 }
+                (result_dir / "captures.json").write_text("{}", encoding="utf-8")
                 (result_dir / f"{spec.name}.native-result.json").write_text(
                     json.dumps(native), encoding="utf-8"
                 )
@@ -141,7 +142,7 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(
                 set(native),
-                {"name", "seed", "status", "captures"},
+                {"name", "seed", "status", "captures_path"},
             )
             self.assertIn("host", canonical)
             self.assertIn("summary", canonical)
@@ -189,7 +190,7 @@ class RuntimeSuiteTests(unittest.TestCase):
 
             def fake_run(command: list[str], **_kwargs: object) -> SimpleNamespace:
                 name = command[4]
-                status = "skipped" if name == "load_saved_game" else "passed"
+                status = "skipped" if name == "boot_managers" else "passed"
                 result = {"name": name, "status": status}
                 if status == "skipped":
                     result["failure"] = "missing local retail-derived fixture"
@@ -207,7 +208,7 @@ class RuntimeSuiteTests(unittest.TestCase):
             suite = ET.parse(junit).getroot()
             self.assertEqual(returncode, 0)
             self.assertEqual(suite.get("skipped"), "1")
-            skipped = suite.find("./testcase[@name='load_saved_game']/skipped")
+            skipped = suite.find("./testcase[@name='boot_managers']/skipped")
             self.assertIsNotNone(skipped)
             self.assertIn("missing local", skipped.get("message", ""))
 
@@ -284,7 +285,8 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertEqual(returncode, 1)
             self.assertEqual(result["status"], "failed")
             self.assertEqual(result["seed"], 1)
-            self.assertEqual(result["captures"], {})
+            captures_path = Path(result["captures_path"])
+            self.assertEqual(json.loads(captures_path.read_text(encoding="utf-8")), {})
 
     def test_seh_rerun_uses_an_isolated_artifact_directory(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -301,8 +303,9 @@ class RuntimeSuiteTests(unittest.TestCase):
                     "name": "boot_managers",
                     "seed": 1,
                     "status": "failed",
-                    "captures": {},
+                    "captures_path": "captures.json",
                 }
+                (run_dir / "captures.json").write_text("{}", encoding="utf-8")
                 (run_dir / "result.json").write_text(
                     json.dumps(result), encoding="utf-8"
                 )
@@ -353,8 +356,9 @@ class RuntimeSuiteTests(unittest.TestCase):
                     "name": "boot_managers",
                     "seed": 1,
                     "status": status,
-                    "captures": {},
+                    "captures_path": "captures.json",
                 }
+                (run_dir / "captures.json").write_text("{}", encoding="utf-8")
                 (run_dir / "result.json").write_text(json.dumps(native), encoding="utf-8")
                 return self._host(run_dir)
 
@@ -388,7 +392,7 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(
                 set(primary_native),
-                {"name", "seed", "status", "captures"},
+                {"name", "seed", "status", "captures_path"},
             )
 
     def test_oracle_errors_and_mismatches_coexist_with_native_result(self) -> None:
@@ -401,15 +405,19 @@ class RuntimeSuiteTests(unittest.TestCase):
                     "name": "random_game_easy_skips_capital",
                     "seed": 1,
                     "status": "passed",
-                    "captures": {
-                        "ui_tree": {
-                            "snapshots": [{"event": 1}],
-                            "current": None,
-                            "capital_confirmation": None,
-                        },
-                        "map_state": {"wrap": 0},
-                    },
+                    "captures_path": "captures.json",
                 }
+                captures = {
+                    "ui_tree": {
+                        "snapshots": [{"event": 1}],
+                        "current": None,
+                        "capital_confirmation": None,
+                    },
+                    "map_state": {"wrap": 0},
+                }
+                (run_dir / "captures.json").write_text(
+                    json.dumps(captures), encoding="utf-8"
+                )
                 (run_dir / "result.json").write_text(json.dumps(native), encoding="utf-8")
                 return self._host(run_dir)
 

@@ -377,7 +377,7 @@ fn indexed_image(indices: &[u8], palette: &DibPalette) -> Image {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::{
+    use imperialism_testkit::{
         beginning_of_game_parts_with, beginning_of_game_with, strategic_map_beginning_context,
     };
 

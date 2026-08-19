@@ -2542,6 +2542,7 @@ mod tests {
         );
     }
 
+    use crate::ui::test_support::HeadlessGame;
     use imperialism_testkit::beginning_of_game_parts;
 
     fn fixture_parts() -> GameStateParts {
@@ -2647,24 +2648,18 @@ mod tests {
         (app, accept, reject)
     }
 
-    fn activate(app: &mut App, entity: Entity) {
-        app.world_mut().commands().trigger(Activate { entity });
-        app.world_mut().flush();
-        app.update();
-    }
-
     #[test]
     fn accepting_a_diplomacy_offer_calls_the_core_offer_answer() {
         let state = alliance_offer_state();
         let prompt = state
             .current_diplomacy_offer()
             .expect("alliance fixture poses an offer");
-        let (mut app, accept, _) = dialog_app(state);
-        activate(&mut app, accept);
-        let game = &app.world().resource::<GameSession>().game;
-        assert!(game.current_diplomacy_offer().is_none());
+        let (app, accept, _) = dialog_app(state);
+        let mut game = HeadlessGame::new(app);
+        game.trigger_action_entity(accept);
+        assert!(game.core().current_diplomacy_offer().is_none());
         assert_eq!(
-            game.diplomacy().relationships[prompt.nation.nation()][prompt.source],
+            game.core().diplomacy().relationships[prompt.nation.nation()][prompt.source],
             DiplomaticRelationship::Alliance
         );
     }
@@ -2673,10 +2668,10 @@ mod tests {
     fn rejecting_a_war_join_calls_the_core_war_join_answer() {
         let state = war_join_state();
         assert!(state.current_diplomacy_war_join().is_some());
-        let (mut app, _, reject) = dialog_app(state);
-        activate(&mut app, reject);
-        let game = &app.world().resource::<GameSession>().game;
-        assert!(game.current_diplomacy_war_join().is_none());
-        assert!(game.current_diplomacy_offer().is_none());
+        let (app, _, reject) = dialog_app(state);
+        let mut game = HeadlessGame::new(app);
+        game.trigger_action_entity(reject);
+        assert!(game.core().current_diplomacy_war_join().is_none());
+        assert!(game.core().current_diplomacy_offer().is_none());
     }
 }

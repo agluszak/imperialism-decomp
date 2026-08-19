@@ -412,7 +412,7 @@ pub(crate) fn navy_zone_center_tile(state: &GameState, zone: OceanZoneId) -> Opt
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::{beginning_of_game_with, strategic_map_beginning_context};
+    use imperialism_testkit::{beginning_of_game_with, strategic_map_beginning_context};
 
     fn session() -> GameSession {
         GameSession::new(beginning_of_game_with(strategic_map_beginning_context()))

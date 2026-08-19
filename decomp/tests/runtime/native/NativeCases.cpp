@@ -10,6 +10,7 @@ RuntimeActionResult RunCityItemOrderIncrease(NativeTransition& transition);
 RuntimeActionResult RunCityItemOrderDecrease(NativeTransition& transition);
 RuntimeActionResult RunPowerPlantUpgrade(NativeTransition& transition);
 RuntimeActionResult RunCreatedItemsPhase(NativeTransition& transition);
+RuntimeActionResult RunPopulationGrowthOrderIsOneShot(NativeTransition& transition);
 
 RuntimeActionResult RunDirectTransport(NativeTransition& transition);
 RuntimeActionResult RunTransportNeedAllocation(NativeTransition& transition);
@@ -121,6 +122,7 @@ const NativeCase kCases[] = {
     {"city_item_order_decrease", RunCityItemOrderDecrease},
     {"power_plant_upgrade", RunPowerPlantUpgrade},
     {"created_items_phase", RunCreatedItemsPhase},
+    {"population_growth_order_is_one_shot", RunPopulationGrowthOrderIsOneShot},
     {"direct_transport", RunDirectTransport},
     {"transport_need_allocation", RunTransportNeedAllocation},
     {"transported_items_phase", RunTransportedItemsPhase},

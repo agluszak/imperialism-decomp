@@ -1,27 +1,25 @@
-use imperialism_core::{GameState, GameStateParts, NationId};
-use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, peek_save_header};
+use imperialism_core::{
+    GameState, GameStateParts, MajorNationId, NationId, NationTable, RandomGameNames, TileId,
+};
+use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 
 pub const BEGINNING_OF_GAME: &[u8] =
     include_bytes!("../../../../fixtures/retail/beginning_of_game.imp");
 
 pub fn beginning_context() -> LegacyGameStateContext {
-    fixture_context(BEGINNING_OF_GAME)
-}
-
-pub fn fixture_context(bytes: &[u8]) -> LegacyGameStateContext {
-    let selected_nation = peek_save_header(bytes)
-        .and_then(|header| NationId::try_new(header.active_nation))
-        .unwrap_or(NationId::new(0));
     LegacyGameStateContext {
         crt_rand_state: 1,
         map_generation_lcg: 0,
         zone_status_lcg: 0,
-        selected_nation,
     }
 }
 
 pub fn beginning_of_game() -> GameState {
     beginning_of_game_with(beginning_context())
+}
+
+pub fn beginning_map_view_origin() -> TileId {
+    LegacySaveV62::parse(BEGINNING_OF_GAME).map_view_origin()
 }
 
 pub fn beginning_of_game_parts() -> GameStateParts {
@@ -42,6 +40,27 @@ pub fn strategic_map_beginning_context() -> LegacyGameStateContext {
         crt_rand_state: 1,
         map_generation_lcg: 0,
         zone_status_lcg: 3_916_827_792,
-        selected_nation: NationId::new(6),
+    }
+}
+
+pub fn random_game_names() -> RandomGameNames {
+    let mut localized_nation_names = NationTable::default();
+    let mut province_names_by_nation = NationTable::default();
+    for nation in NationId::all() {
+        localized_nation_names[nation] = format!("N{}", nation.get());
+        let count = if MajorNationId::from_nation(nation).is_some() {
+            8
+        } else {
+            4
+        };
+        province_names_by_nation[nation] = (0..count)
+            .map(|ordinal| format!("N{}P{}", nation.get(), ordinal + 1))
+            .collect();
+    }
+    RandomGameNames {
+        localized_nation_names,
+        province_names_by_nation,
+        zone_headline_templates: (0..24).map(|status| format!("S{status} [1]")).collect(),
+        fallback_ocean_names: (0..37).map(|index| format!("Ocean{index}")).collect(),
     }
 }

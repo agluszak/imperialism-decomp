@@ -48,10 +48,22 @@ impl Plugin for OfferSheetPlugin {
             (
                 enter_offer_sheet_phase,
                 spawn_offer_sheet,
-                bind_offer_sheet,
-                pose_offer_sheet,
+                bind_offer_sheet_actions,
             )
                 .chain(),
+        );
+    }
+}
+
+pub(crate) struct OfferSheetPresentationPlugin;
+
+impl Plugin for OfferSheetPresentationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            OnEnter(AppState::OfferSheet),
+            (bind_offer_sheet_presentation, pose_offer_sheet)
+                .chain()
+                .after(bind_offer_sheet_actions),
         )
         .add_systems(
             Update,
@@ -79,7 +91,18 @@ fn spawn_offer_sheet(mut commands: Commands) {
         .insert((OfferSheetRoot, DespawnOnExit(AppState::OfferSheet)));
 }
 
-fn bind_offer_sheet(
+fn bind_offer_sheet_actions(
+    mut commands: Commands,
+    root: Option<Single<Entity, Added<OfferSheetRoot>>>,
+    tree: RetailTree,
+) {
+    let Some(root) = root else {
+        return;
+    };
+    bind_offer_sheet_controls(&mut commands, *root, &tree);
+}
+
+fn bind_offer_sheet_presentation(
     mut commands: Commands,
     root: Option<Single<Entity, Added<OfferSheetRoot>>>,
     tree: RetailTree,
@@ -90,7 +113,6 @@ fn bind_offer_sheet(
         return;
     };
     let root = *root;
-    bind_offer_sheet_controls(&mut commands, root, &tree);
     for tag in [
         fourcc!("ForM"),
         fourcc!("tabs"),
@@ -466,10 +488,38 @@ mod tests {
             if game.state() != AppState::OfferSheet {
                 break;
             }
-            game.activate_tag(fourcc!("reje"));
+            game.trigger_action_tag(fourcc!("reje"));
         }
 
         game.advance_until_state(AppState::StrategicMap);
+        assert_eq!(game.core().turn().phase(), PhaseCode::STRATEGIC_MAP);
+        assert_eq!(game.core().turn_continuation(), &TurnContinuation::None);
+    }
+
+    #[test]
+    fn strategic_map_done_and_real_offer_sheet_resume_to_the_strategic_map() {
+        let mut game = HeadlessGame::from_game(fixture_state(), AppState::StrategicMap);
+        game.update();
+        game.assert_state(AppState::StrategicMap);
+        game.assert_tag_visible(fourcc!("DONE"));
+
+        game.press_tag(fourcc!("DONE"));
+        game.advance_until_state(AppState::OfferSheet);
+        game.assert_tag_visible(fourcc!("reje"));
+
+        for _ in 0..16 {
+            if game.state() != AppState::OfferSheet {
+                break;
+            }
+            game.press_tag(fourcc!("reje"));
+        }
+
+        game.advance_until_state(AppState::DealBook);
+        game.press_tag(fourcc!("end "));
+        game.advance_until_state(AppState::Newspaper);
+        game.press_tag(fourcc!("end "));
+        game.advance_until_state(AppState::StrategicMap);
+        game.assert_no_modal();
         assert_eq!(game.core().turn().phase(), PhaseCode::STRATEGIC_MAP);
         assert_eq!(game.core().turn_continuation(), &TurnContinuation::None);
     }

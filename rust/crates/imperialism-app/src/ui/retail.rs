@@ -18,6 +18,18 @@ const WINE_SYSTEM_FONT_PATH: &str = "/usr/share/wine/fonts/system.ttf";
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RetailTag(pub FourCc);
 
+#[derive(Component, Clone, Copy, Debug)]
+struct RetailPicture(PictureId);
+
+#[derive(Component, Clone, Copy, Debug)]
+struct RetailPictureSwapIds {
+    idle: PictureId,
+    active: PictureId,
+}
+
+#[derive(Component, Clone, Copy, Debug)]
+struct RetailTextStyle(ResolvedRetailTextStyle);
+
 /// Images displayed by a retail picture control in its resting and active states.
 #[derive(Component, Clone, Debug)]
 pub struct RetailPictureSwap {
@@ -58,31 +70,23 @@ pub fn retail_node(tag: FourCc, x: i32, y: i32, width: i32, height: i32) -> impl
 
 pub fn retail_picture(id: i16) -> impl Scene {
     bsn! {
-        template(move |context| {
-            Ok(ImageNode::new(load_template_picture(
-                context,
-                PictureId::new(id),
-            )?))
-        })
+        template(move |_context| Ok(RetailPicture(PictureId::new(id))))
+        ImageNode
     }
 }
 
 pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
     bsn! {
         template(move |context| {
-            let idle = load_template_picture(context, PictureId::new(idle))?;
-            let active = match load_template_picture(context, PictureId::new(active)) {
-                Ok(active) => active,
-                Err(error) => {
-                    warn!("could not preload active retail picture {active}: {error}");
-                    idle.clone()
-                }
-            };
             context.entity.insert(RetailPictureSwap {
-                idle: idle.clone(),
-                active,
+                idle: Handle::default(),
+                active: Handle::default(),
             });
-            Ok(ImageNode::new(idle))
+            context.entity.insert(RetailPictureSwapIds {
+                idle: PictureId::new(idle),
+                active: PictureId::new(active),
+            });
+            Ok(ImageNode::default())
         })
     }
 }
@@ -103,12 +107,8 @@ pub fn retail_text_style(
     let underline = style.underline.then(|| bsn! { Underline });
     let line_height = LineHeight::Px(style.logical_pixel_height as f32);
     bsn! {
-        template(move |context| {
-            Ok(retail_text_components(
-                style,
-                load_template_font(context, style.face),
-            ).0)
-        })
+        template(move |_context| Ok(RetailTextStyle(style)))
+        TextFont
         template(move |_context| Ok(line_height))
         TextLayout::justify(match style.alignment {
             RetailTextAlignment::Left => Justify::Left,
@@ -400,6 +400,101 @@ impl Plugin for RetailUiPlugin {
     }
 }
 
+pub(crate) struct RetailPresentationPlugin;
+
+impl Plugin for RetailPresentationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            Update,
+            (
+                resolve_retail_pictures,
+                resolve_retail_picture_swaps,
+                resolve_retail_text_styles,
+            ),
+        );
+    }
+}
+
+fn resolve_retail_pictures(
+    mut pictures: Query<(&RetailPicture, &mut ImageNode), Added<RetailPicture>>,
+    mut assets: RetailUiAssets,
+) {
+    for (picture, mut node) in &mut pictures {
+        let image = assets
+            .picture(picture.0)
+            .expect("generated retail picture must load");
+        resolve_picture_node(&mut node, image);
+    }
+}
+
+#[allow(clippy::type_complexity)]
+fn resolve_retail_picture_swaps(
+    mut pictures: Query<
+        (
+            &RetailPictureSwapIds,
+            &mut RetailPictureSwap,
+            &mut ImageNode,
+            Has<Pressed>,
+            Has<Checked>,
+        ),
+        Added<RetailPictureSwapIds>,
+    >,
+    mut assets: RetailUiAssets,
+) {
+    for (ids, mut swap, mut node, pressed, checked) in &mut pictures {
+        let idle = assets
+            .picture(ids.idle)
+            .expect("generated idle retail picture must load");
+        let active = assets.picture(ids.active).unwrap_or_else(|error| {
+            warn!(
+                "could not preload active retail picture {:?}: {error}",
+                ids.active
+            );
+            idle.clone()
+        });
+        resolve_picture_swap_node(&mut node, &mut swap, idle, active, pressed || checked);
+    }
+}
+
+fn resolve_picture_node(node: &mut ImageNode, image: Handle<Image>) {
+    node.image = image;
+}
+
+fn resolve_picture_swap_node(
+    node: &mut ImageNode,
+    swap: &mut RetailPictureSwap,
+    idle: Handle<Image>,
+    active: Handle<Image>,
+    selected: bool,
+) {
+    node.image = if selected {
+        active.clone()
+    } else {
+        idle.clone()
+    };
+    swap.idle = idle;
+    swap.active = active;
+}
+
+fn resolve_retail_text_styles(
+    styles: Query<(Entity, &RetailTextStyle), Added<RetailTextStyle>>,
+    mut commands: Commands,
+    mut assets: RetailUiAssets,
+) {
+    for (entity, style) in &styles {
+        let font = load_retail_font(
+            style.0.face,
+            &assets.retail_assets,
+            &mut assets.fonts,
+            &mut assets.font_handles,
+        )
+        .expect("generated retail font must load");
+        commands
+            .entity(entity)
+            .insert(retail_text_components(style.0, font).0);
+    }
+}
+
 fn on_retail_pressed_overlay_state<E: EntityEvent>(
     event: On<E, Pressed>,
     mut nodes: Query<(&mut ImageNode, Has<Pressed>), With<RetailPressedOverlay>>,
@@ -484,40 +579,6 @@ fn decode_retail_picture(picture_id: PictureId, bytes: &[u8]) -> Result<Image, R
     .map_err(|source| RetailPictureError::BmpDecode { picture_id, source })
 }
 
-fn load_template_picture(
-    context: &mut TemplateContext,
-    picture_id: PictureId,
-) -> bevy::ecs::error::Result<Handle<Image>> {
-    Ok(context.entity.world_scope(|world| {
-        world.resource_scope(|world, mut handles: Mut<RetailPictureHandles>| {
-            world.resource_scope(|world, mut images: Mut<Assets<Image>>| {
-                load_retail_picture(
-                    picture_id,
-                    world.resource::<RetailAssetsResource>(),
-                    &mut images,
-                    &mut handles,
-                )
-            })
-        })
-    })?)
-}
-
-fn load_template_font(context: &mut TemplateContext, face: RetailFontFace) -> CachedRetailFont {
-    context.entity.world_scope(|world| {
-        world.resource_scope(|world, mut handles: Mut<RetailFontHandles>| {
-            world.resource_scope(|world, mut fonts: Mut<Assets<Font>>| {
-                load_retail_font(
-                    face,
-                    world.resource::<RetailAssetsResource>(),
-                    &mut fonts,
-                    &mut handles,
-                )
-                .expect("retail font metrics must decode")
-            })
-        })
-    })
-}
-
 fn load_retail_font(
     face: RetailFontFace,
     retail_assets: &RetailAssetsResource,
@@ -567,13 +628,14 @@ fn retail_text_components(
     )
 }
 
-fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
-    let [red, green, blue] = context
-        .resource::<RetailAssetsResource>()
-        .assets()
-        .default_dib_palette()[index]
-        .to_array();
-    Color::srgb_u8(red, green, blue)
+fn template_palette_color(context: &mut TemplateContext, index: u8) -> Color {
+    context.entity.world_scope(|world| {
+        let Some(assets) = world.get_resource::<RetailAssetsResource>() else {
+            return Color::NONE;
+        };
+        let [red, green, blue] = assets.assets().default_dib_palette()[index].to_array();
+        Color::srgb_u8(red, green, blue)
+    })
 }
 
 /// Hierarchy lookup for recovered View tags. The same FourCc can appear in
@@ -667,6 +729,45 @@ pub fn ancestor_with<D: QueryData, F: QueryFilter>(
 mod tests {
     use super::*;
     use bevy::ecs::system::SystemState;
+
+    #[test]
+    fn delayed_picture_resolution_preserves_presentation_fields() {
+        let mut images = Assets::<Image>::default();
+        let resolved = images.add(Image::default());
+        let rect = Rect::from_corners(Vec2::new(1.0, 2.0), Vec2::new(3.0, 4.0));
+        let color = Color::srgba(0.25, 0.5, 0.75, 0.0);
+        let mut node = ImageNode {
+            color,
+            rect: Some(rect),
+            ..default()
+        };
+
+        resolve_picture_node(&mut node, resolved.clone());
+
+        assert_eq!(node.image, resolved);
+        assert_eq!(node.color, color);
+        assert_eq!(node.rect, Some(rect));
+    }
+
+    #[test]
+    fn delayed_picture_swap_resolution_uses_current_semantic_state() {
+        let mut images = Assets::<Image>::default();
+        let idle = images.add(Image::default());
+        let active = images.add(Image::default());
+        let color = Color::srgba(1.0, 1.0, 1.0, 0.25);
+        let mut node = ImageNode { color, ..default() };
+        let mut swap = RetailPictureSwap {
+            idle: Handle::default(),
+            active: Handle::default(),
+        };
+
+        resolve_picture_swap_node(&mut node, &mut swap, idle.clone(), active.clone(), true);
+
+        assert_eq!(swap.idle, idle);
+        assert_eq!(swap.active, active.clone());
+        assert_eq!(node.image, active);
+        assert_eq!(node.color, color);
+    }
 
     #[test]
     fn picture_swap_selects_preloaded_idle_and_active_handles() {

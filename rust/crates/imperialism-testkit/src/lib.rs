@@ -6,9 +6,9 @@ mod native;
 
 pub use differential::{assert_game_state_eq, compare_native, load_save_backed_state, run_native};
 pub use fixtures::{
-    BEGINNING_OF_GAME, beginning_context, beginning_of_game, beginning_of_game_parts,
-    beginning_of_game_parts_with, beginning_of_game_with, fixture_context,
-    strategic_map_beginning_context,
+    BEGINNING_OF_GAME, beginning_context, beginning_map_view_origin, beginning_of_game,
+    beginning_of_game_parts, beginning_of_game_parts_with, beginning_of_game_with,
+    random_game_names, strategic_map_beginning_context,
 };
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,

@@ -28,12 +28,18 @@ impl Plugin for MainMenuPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             OnEnter(AppState::MainMenu),
-            (
-                enter_main_menu,
-                bind_main_menu_actions,
-                bind_main_menu_hover_help,
-            )
-                .chain(),
+            (enter_main_menu, bind_main_menu_actions).chain(),
+        );
+    }
+}
+
+pub(crate) struct MainMenuPresentationPlugin;
+
+impl Plugin for MainMenuPresentationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            OnEnter(AppState::MainMenu),
+            bind_main_menu_hover_help.after(bind_main_menu_actions),
         );
     }
 }

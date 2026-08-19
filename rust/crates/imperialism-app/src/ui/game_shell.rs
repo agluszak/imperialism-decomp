@@ -18,11 +18,12 @@ use crate::ui::retail::{
 use crate::ui::strategic_map::{
     MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
     StrategicInteraction, StrategicViewport, animate_civilian_selection, animate_civilian_work,
-    apply_map_transition, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
-    bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
-    register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
-    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
-    sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
+    apply_map_transition, bind_army_toolbar, bind_army_toolbar_actions, bind_civilian_toolbar,
+    bind_civilian_toolbar_actions, bind_minimap, bind_navy_toolbar, bind_navy_toolbar_actions,
+    bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click, register_army_toolbar,
+    register_civilian_toolbar, register_map_click, register_map_keys, register_map_modals,
+    register_navy_toolbar, register_ocean_view, sync_minimap, sync_strategic_base_terrain,
+    sync_strategic_selection, sync_strategic_units,
 };
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -52,22 +53,34 @@ pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
-        register_civilian_toolbar(app);
-        register_army_toolbar(app);
-        register_navy_toolbar(app);
-        register_map_click(app);
+        app.init_resource::<ButtonInput<KeyCode>>();
         register_map_keys(app);
-        register_map_modals(app);
-        register_ocean_view(app);
-        map_help::register(app);
         app.add_systems(
             OnEnter(AppState::StrategicMap),
             (
                 enter_strategic_map_view,
                 spawn_strategic_map,
-                bind_strategic_map,
+                bind_strategic_map_actions,
             )
                 .chain(),
+        );
+    }
+}
+
+pub(crate) struct GameShellPresentationPlugin;
+
+impl Plugin for GameShellPresentationPlugin {
+    fn build(&self, app: &mut App) {
+        register_civilian_toolbar(app);
+        register_army_toolbar(app);
+        register_navy_toolbar(app);
+        register_map_click(app);
+        register_map_modals(app);
+        register_ocean_view(app);
+        map_help::register(app);
+        app.add_systems(
+            OnEnter(AppState::StrategicMap),
+            bind_strategic_map_presentation.after(bind_strategic_map_actions),
         )
         .add_systems(
             Update,
@@ -163,7 +176,36 @@ fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
     }
 }
 
-fn bind_strategic_map(
+fn bind_strategic_map_actions(
+    mut commands: Commands,
+    root: Single<Entity, Added<StrategicMapRoot>>,
+    tree: RetailTree,
+) {
+    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, false);
+    let flag = tree.find(*root, fourcc!("Flag"));
+    bind_open_flag_menu(&mut commands, flag);
+    super::technology_store::bind_open_control(&mut commands, tree.find(*root, fourcc!("mmap")));
+    let map = tree.find(*root, fourcc!("DLOG"));
+    commands.entity(map).insert((
+        StrategicInteraction::default(),
+        StrategicViewport::default(),
+    ));
+    bind_civilian_toolbar_actions(&mut commands, *root, &tree);
+    bind_army_toolbar_actions(&mut commands, *root, &tree);
+    bind_navy_toolbar_actions(&mut commands, *root, &tree);
+    commands
+        .entity(tree.find(*root, fourcc!("ZmOt")))
+        .insert((MapZoomControl, ActivateOnPress))
+        .remove::<InteractionDisabled>()
+        .observe(on_ocean_toggle);
+    commands
+        .entity(tree.find(*root, fourcc!("DONE")))
+        .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
+        .observe(on_end_turn);
+}
+
+fn bind_strategic_map_presentation(
     mut commands: Commands,
     root: Single<Entity, Added<StrategicMapRoot>>,
     tree: RetailTree,
@@ -172,16 +214,10 @@ fn bind_strategic_map(
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
+    bind_query_floater_control(&mut commands, *root, &tree);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
-    commands
-        .entity(tree.find(*root, fourcc!("DONE")))
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_end_turn);
     let flag = tree.find(*root, fourcc!("Flag"));
     bind_pressed_overlay(&mut commands, &mut pictures, flag);
-    bind_open_flag_menu(&mut commands, flag);
     bind_pressed_overlay(
         &mut commands,
         &mut pictures,
@@ -192,7 +228,6 @@ fn bind_strategic_map(
         &mut pictures,
         tree.find(*root, fourcc!("ZmOt")),
     );
-    super::technology_store::bind_open_control(&mut commands, tree.find(*root, fourcc!("mmap")));
     commands
         .entity(tree.find(*root, fourcc!("send")))
         .insert(Visibility::Hidden);
@@ -228,12 +263,13 @@ fn on_end_turn(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Res<RetailAssetsResource>,
+    assets: Option<Res<RetailAssetsResource>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let stop = session
-        .game
-        .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
+    let stop = session.game.finish_player_orders(
+        prefs.turn_alerts_enabled(),
+        super::session::news_story_ids(assets.as_deref()),
+    );
     apply_turn_stop(stop, &mut next_state);
 }
 
@@ -268,18 +304,13 @@ fn bind_strategic_hover(
             (fourcc!("ZmOt"), String::new()),
         ],
     );
-    commands
-        .entity(tree.find(root, fourcc!("ZmOt")))
-        .insert(MapZoomControl)
-        .insert(ActivateOnPress)
-        .observe(on_ocean_toggle);
 }
 
 fn on_ocean_toggle(
     _activate: On<Activate>,
     keys: Res<ButtonInput<KeyCode>>,
     mut commands: Commands,
-    assets: RetailUiAssets,
+    assets: Option<Res<RetailAssetsResource>>,
     mut session: ResMut<GameSession>,
     mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
@@ -288,10 +319,11 @@ fn on_ocean_toggle(
     };
     if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
         let tag = session.game.map().scenario_tag.as_str();
-        let body = if tag.is_empty() {
-            String::from("Imperialism")
-        } else {
-            crate::ui::fill_brackets(&get_string(&assets, 0x273f, 1), &[tag])
+        let body = match (tag.is_empty(), assets.as_deref()) {
+            (false, Some(assets)) => {
+                crate::ui::fill_brackets(&assets.get_string(0x273f, 1), &[tag])
+            }
+            _ => String::from("Imperialism"),
         };
         spawn_linger_dialog(
             &mut commands,
@@ -638,6 +670,22 @@ fn on_turn_alert_dismiss(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn game_plugin_binds_strategic_navigation_and_map_state_headlessly() {
+        let mut game = crate::ui::test_support::HeadlessGame::from_beginning_of_game();
+        game.update();
+        let world = game.app_mut().world_mut();
+
+        let navigation_count = world.query::<&GameScreenNavAction>().iter(world).count();
+        let map_state_count = world
+            .query::<(&StrategicInteraction, &StrategicViewport)>()
+            .iter(world)
+            .count();
+
+        assert_eq!(navigation_count, 4);
+        assert_eq!(map_state_count, 1);
+    }
 
     #[test]
     fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {

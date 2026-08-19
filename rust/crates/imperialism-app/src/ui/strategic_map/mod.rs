@@ -25,9 +25,13 @@ mod overlays;
 mod terrain;
 mod units;
 
-pub(crate) use army_toolbar::{bind_army_toolbar, register as register_army_toolbar};
+pub(crate) use army_toolbar::{
+    bind_army_toolbar, bind_army_toolbar_actions, register as register_army_toolbar,
+};
 use borders::compose_strategic_borders;
-pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
+pub(crate) use civilian_toolbar::{
+    bind_civilian_toolbar, bind_civilian_toolbar_actions, register_civilian_toolbar,
+};
 pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
 pub(crate) use map_interaction::{
     MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
@@ -36,7 +40,9 @@ pub(crate) use map_interaction::{
 pub(crate) use map_keys::register as register_map_keys;
 pub(crate) use map_modals::register as register_map_modals;
 pub(crate) use minimap::{bind_minimap, sync_minimap};
-pub(crate) use navy_toolbar::{bind_navy_toolbar, register as register_navy_toolbar};
+pub(crate) use navy_toolbar::{
+    bind_navy_toolbar, bind_navy_toolbar_actions, register as register_navy_toolbar,
+};
 pub(crate) use ocean_view::{bind_ocean_view, register as register_ocean_view};
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
@@ -126,8 +132,6 @@ pub(crate) fn bind_strategic_base_terrain(
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         canvas,
-        StrategicInteraction::default(),
-        StrategicViewport::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state, view_origin);
     bind_strategic_selection(commands, map, assets, state, view_origin);

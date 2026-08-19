@@ -88,24 +88,29 @@ pub(crate) fn bind_army_toolbar(
         commands.entity(pic).insert(ArmyPlacard(category));
         spawn_count_label(commands, pic, assets, true);
         let arrow = tree.child(page, arrow_tag(category));
-        commands
-            .entity(arrow)
-            .insert((
-                ArmyArrow(category),
-                ImageNode {
-                    image: arrow_atlas.clone(),
-                    rect: Some(Rect::from_corners(
-                        Vec2::new(10.0, 0.0),
-                        Vec2::new(21.0, 16.0),
-                    )),
-                    ..default()
-                },
-                RelativeCursorPosition::default(),
-                ActivateOnPress,
-                Visibility::Hidden,
-            ))
-            .observe(on_army_arrow);
+        commands.entity(arrow).insert((
+            ImageNode {
+                image: arrow_atlas.clone(),
+                rect: Some(Rect::from_corners(
+                    Vec2::new(10.0, 0.0),
+                    Vec2::new(21.0, 16.0),
+                )),
+                ..default()
+            },
+            RelativeCursorPosition::default(),
+            Visibility::Hidden,
+        ));
         spawn_count_label(commands, arrow, assets, false);
+    }
+}
+
+pub(crate) fn bind_army_toolbar_actions(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    let page = tree.find(root, PAGE_TAG);
+    for category in ArmyUnitCategory::all() {
+        commands
+            .entity(tree.child(page, arrow_tag(category)))
+            .insert((ArmyArrow(category), ActivateOnPress))
+            .observe(on_army_arrow);
     }
     for (tag, command) in [
         (fourcc!("dfnd"), ArmyCommand::Defend),
