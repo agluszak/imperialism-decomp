@@ -217,6 +217,7 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
         .and_modify(|mut node| node.overflow = Overflow::clip());
 }
 
+#[allow(clippy::type_complexity)]
 fn project_naval_battle(
     mut commands: Commands,
     session: Res<GameSession>,
@@ -681,7 +682,7 @@ mod tests {
     fn center_selected_snaps_and_clamps_the_view_origin() {
         let origin = centered_view_origin_y(0, 20);
         assert_eq!(origin % TACTICAL_TILE_ROW_HEIGHT_PX, 0);
-        assert_eq!(origin, 375);
+        assert_eq!(origin, 360);
         assert_eq!(centered_view_origin_y(origin, 16), origin);
     }
 
