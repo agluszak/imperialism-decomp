@@ -1866,10 +1866,10 @@ def _rust_has_shipped_font(text: UiTextPayload) -> bool:
     return text.mode in (1, 2, 3)
 
 
-def _rust_window_style(node: UiSemanticNode) -> str | None:
+def _rust_window_is_captioned(node: UiSemanticNode) -> bool:
     window = node.family.window
     if window is None:
-        return None
+        return False
     descriptor = (
         window.flags,
         window.style_type,
@@ -1881,9 +1881,9 @@ def _rust_window_style(node: UiSemanticNode) -> str | None:
         window.resource_71,
     )
     styles = {
-        (8, 2, 0, 1, 1, 0, 0, 1): "Plain",
-        (0x80, 0x1F40, 1, 1, 1, 0, 0, 1): "Floating",
-        (0x80, 0x1F40, 1, 1, 1, 1, 0, 1): "CaptionedFloating",
+        (8, 2, 0, 1, 1, 0, 0, 1): False,
+        (0x80, 0x1F40, 1, 1, 1, 0, 0, 1): False,
+        (0x80, 0x1F40, 1, 1, 1, 1, 0, 1): True,
     }
     try:
         return styles[descriptor]
@@ -1914,11 +1914,8 @@ def _render_bsn_node(
             f"{x}, {y}, {width}, {height})"
         ),
     ]
-    window_style = _rust_window_style(node)
-    if window_style is not None:
-        lines.append(
-            f"    template(|_context| Ok(RetailWindowStyle::{window_style}))"
-        )
+    if _rust_window_is_captioned(node):
+        lines.append("    template(|_context| Ok(CaptionedWindow))")
     if any(int(value) for value in insets):
         lines.extend(
             [
@@ -2113,7 +2110,7 @@ def render_rust_ui(
         "",
         "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
         "use super::retail::*;",
-        "use super::window::RetailWindowStyle;",
+        "use super::window::CaptionedWindow;",
         "use bevy::prelude::*;",
         "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
         "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",

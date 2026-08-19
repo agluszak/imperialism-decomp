@@ -138,9 +138,6 @@ enum LoadSaveNotice {
 }
 
 #[derive(Component)]
-struct ConfirmLoadNotice;
-
-#[derive(Component)]
 struct FlagMenuRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -164,9 +161,6 @@ enum FlagMenuPending {
 struct FlagMenuPrompt {
     kind: FlagMenuPending,
 }
-
-#[derive(Component)]
-struct AcceptFlagMenuPrompt;
 
 pub(crate) struct LoadSavePlugin;
 
@@ -776,10 +770,7 @@ fn bind_load_save_notice(
     commands.entity(linger.okay).remove::<InteractionDisabled>();
     match notice {
         LoadSaveNotice::ConfirmLoad => {
-            commands
-                .entity(linger.okay)
-                .insert(ConfirmLoadNotice)
-                .observe(on_confirm_load_notice);
+            commands.entity(linger.okay).observe(on_confirm_load_notice);
             commands
                 .entity(linger.cancel)
                 .remove::<InteractionDisabled>();
@@ -824,15 +815,7 @@ pub(crate) fn bind_open_flag_menu(commands: &mut Commands, flag: Entity) {
         .observe(on_open_flag_menu.run_if(not(any_with_component::<ModalWindow>)));
 }
 
-fn on_open_flag_menu(
-    activate: On<Activate>,
-    openers: Query<&OpenFlagMenu>,
-    existing: Query<(), With<FlagMenuRoot>>,
-    mut commands: Commands,
-) {
-    if openers.get(activate.entity).is_err() || !existing.is_empty() {
-        return;
-    }
+fn on_open_flag_menu(_activate: On<Activate>, mut commands: Commands) {
     let root = commands.spawn_scene(generated::linger_4140()).id();
     commands.entity(root).insert((
         FlagMenuRoot,
@@ -970,7 +953,6 @@ fn bind_flag_menu_prompt(
     linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
-        .insert(AcceptFlagMenuPrompt)
         .remove::<InteractionDisabled>()
         .observe(on_flag_menu_prompt_activate);
     commands
@@ -1068,14 +1050,18 @@ mod tests {
         commands.spawn((FlagMenuRoot, ModalWindow, Node::default()));
     }
 
-    fn spawn_test_flag_prompt(mut commands: Commands, kind: FlagMenuPending) {
-        let root = commands
+    fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
+        let root = world
             .spawn((FlagMenuPrompt { kind }, ModalWindow, Node::default()))
             .id();
-        commands
-            .spawn((AcceptFlagMenuPrompt, DismissWindow, ChildOf(root)))
-            .observe(on_flag_menu_prompt_activate);
-        commands.spawn((ModalCancel, DismissWindow, ChildOf(root)));
+        let accept = world
+            .spawn((DismissWindow, ChildOf(root)))
+            .observe(on_flag_menu_prompt_activate)
+            .id();
+        let dismiss = world
+            .spawn((ModalCancel, DismissWindow, ChildOf(root)))
+            .id();
+        (accept, dismiss)
     }
 
     #[test]
@@ -1116,17 +1102,8 @@ mod tests {
         let mut app = test_app(AppState::StrategicMap);
         app.insert_resource(GameSession::new(fixture_state()));
         app.add_systems(Startup, spawn_test_flag_menu);
-        app.add_systems(Startup, |commands: Commands| {
-            spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
-        });
         app.update();
-
-        let accept = app
-            .world_mut()
-            .query_filtered::<Entity, With<AcceptFlagMenuPrompt>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
+        let (accept, _) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::NewGame);
         app.world_mut()
             .commands()
             .trigger(Activate { entity: accept });
@@ -1142,17 +1119,8 @@ mod tests {
     #[test]
     fn accepting_quit_posts_app_exit() {
         let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, |commands: Commands| {
-            spawn_test_flag_prompt(commands, FlagMenuPending::Quit)
-        });
         app.update();
-
-        let accept = app
-            .world_mut()
-            .query_filtered::<Entity, With<AcceptFlagMenuPrompt>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
+        let (accept, _) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::Quit);
         app.world_mut()
             .commands()
             .trigger(Activate { entity: accept });
@@ -1170,17 +1138,8 @@ mod tests {
     fn dismissing_new_game_keeps_the_flag_menu_open() {
         let mut app = test_app(AppState::StrategicMap);
         app.add_systems(Startup, spawn_test_flag_menu);
-        app.add_systems(Startup, |commands: Commands| {
-            spawn_test_flag_prompt(commands, FlagMenuPending::NewGame)
-        });
         app.update();
-
-        let dismiss = app
-            .world_mut()
-            .query_filtered::<Entity, With<ModalCancel>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
+        let (_, dismiss) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::NewGame);
         app.world_mut()
             .commands()
             .trigger(Activate { entity: dismiss });

@@ -1,12 +1,14 @@
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::tab_navigation::TabGroup;
-use bevy::input_focus::{AutoFocus, FocusedInput};
+use bevy::input_focus::{AutoFocus, FocusCause, FocusedInput, InputFocus};
 use bevy::picking::events::{Drag, Pointer, Press};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button};
+
+use super::retail::ancestor_with;
 
 const WINDOW_Z_BASE: i32 = 20;
 const CAPTION_HEIGHT: f32 = 18.0;
@@ -17,28 +19,21 @@ const CLOSE_SIZE: f32 = 14.0;
 pub struct UiWindow;
 
 #[derive(Component, Debug, Default)]
-#[require(UiWindow)]
+#[require(UiWindow, Pickable = Pickable::IGNORE)]
 pub struct FloatingWindow;
 
 #[derive(Component, Debug, Default)]
 #[require(UiWindow, TabGroup = TabGroup::modal(), Pickable, AutoFocus)]
 pub struct ModalWindow;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub enum RetailWindowStyle {
-    Plain,
-    Floating,
-    CaptionedFloating,
-}
+#[derive(Component, Debug, Default)]
+pub struct CaptionedWindow;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WindowPosition(pub IVec2);
 
 #[derive(Component, Debug, Default)]
 pub struct WindowTitleBar;
-
-#[derive(Component, Debug, Default)]
-pub struct WindowClose;
 
 #[derive(Component, Debug, Default)]
 pub struct ModalDefault;
@@ -49,17 +44,16 @@ pub struct ModalCancel;
 #[derive(Component, Debug, Default)]
 pub struct DismissWindow;
 
-#[derive(Component, Debug, Default)]
-struct ModalScrim;
-
 pub struct UiWindowPlugin;
 
 impl Plugin for UiWindowPlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(on_window_added)
-            .add_observer(on_modal_added)
+        app.init_resource::<InputFocus>()
+            .add_observer(on_window_added)
+            .add_observer(on_modal_removed)
             .add_observer(on_window_pressed.run_if(not(any_with_component::<ModalWindow>)))
             .add_observer(on_window_close)
+            .add_observer(modal_keyboard)
             .add_systems(Update, (bind_recovered_window_hosts, sync_window_positions));
     }
 }
@@ -71,24 +65,18 @@ fn on_window_added(
     raise_window(added.entity, &mut windows);
 }
 
-fn on_modal_added(added: On<Add, ModalWindow>, mut commands: Commands) {
-    commands
-        .entity(added.entity)
-        .observe(modal_keyboard)
-        .with_child((
-            ModalScrim,
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(0),
-                top: px(0),
-                width: percent(100),
-                height: percent(100),
-                ..default()
-            },
-            ZIndex(-1),
-            Pickable::default(),
-            Name::new("modal-scrim"),
-        ));
+fn on_modal_removed(
+    removed: On<Remove, ModalWindow>,
+    modals: Query<(Entity, &GlobalZIndex), With<ModalWindow>>,
+    mut focus: ResMut<InputFocus>,
+) {
+    if let Some((entity, _)) = modals
+        .iter()
+        .filter(|(entity, _)| *entity != removed.entity)
+        .max_by_key(|(_, z)| z.0)
+    {
+        focus.set(entity, FocusCause::Navigated);
+    }
 }
 
 fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex), With<UiWindow>>) {
@@ -96,7 +84,8 @@ fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex),
         .iter_mut()
         .map(|(_, z)| z.0)
         .max()
-        .unwrap_or(WINDOW_Z_BASE)
+        .unwrap_or(0)
+        .max(WINDOW_Z_BASE)
         + 1;
     windows
         .get_mut(entity)
@@ -107,11 +96,11 @@ fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex),
 
 fn bind_recovered_window_hosts(
     mut commands: Commands,
-    contents: Query<(Entity, &RetailWindowStyle, &Node), Added<RetailWindowStyle>>,
+    contents: Query<(Entity, &Node), Added<CaptionedWindow>>,
     parents: Query<&ChildOf>,
     windows: Query<(Entity, Option<&WindowPosition>), With<UiWindow>>,
 ) {
-    for (content, style, node) in &contents {
+    for (content, node) in &contents {
         let Some(root) = ancestor_window(content, &parents, &windows) else {
             continue;
         };
@@ -130,9 +119,7 @@ fn bind_recovered_window_hosts(
                 .entity(root)
                 .insert(WindowPosition(node_position(node)));
         }
-        if *style == RetailWindowStyle::CaptionedFloating {
-            spawn_caption(&mut commands, root, node);
-        }
+        spawn_caption(&mut commands, root, node);
     }
 }
 
@@ -184,7 +171,6 @@ fn spawn_caption(commands: &mut Commands, root: Entity, content: &Node) {
                     ..default()
                 },
                 BackgroundColor(Color::srgb_u8(192, 192, 192)),
-                WindowClose,
                 DismissWindow,
                 ZIndex(1),
                 Name::new("retail-window-close"),
@@ -204,7 +190,7 @@ fn spawn_caption(commands: &mut Commands, root: Entity, content: &Node) {
 fn sync_window_positions(
     windows: Query<(Entity, &WindowPosition), Changed<WindowPosition>>,
     parents: Query<&ChildOf>,
-    contents: Query<Entity, With<RetailWindowStyle>>,
+    contents: Query<Entity, With<CaptionedWindow>>,
     captions: Query<Entity, With<WindowTitleBar>>,
     mut nodes: Query<&mut Node>,
 ) {
@@ -252,7 +238,7 @@ fn on_window_pressed(
     }
     let root = {
         let floating = windows.p0();
-        ancestor_component(press.original_event_target(), &parents, &floating)
+        ancestor_with(press.original_event_target(), &parents, &floating)
     };
     let Some(root) = root else {
         return;
@@ -269,7 +255,7 @@ fn on_window_dragged(
     if drag.event.button != PointerButton::Primary {
         return;
     }
-    let Some(root) = ancestor_component(drag.entity, &parents, &windows) else {
+    let Some(root) = ancestor_with(drag.entity, &parents, &windows) else {
         return;
     };
     let mut position = positions
@@ -289,7 +275,7 @@ fn on_window_close(
     if !close.contains(activate.entity) {
         return;
     }
-    if let Some(root) = ancestor_component(activate.entity, &parents, &windows) {
+    if let Some(root) = ancestor_with(activate.entity, &parents, &windows) {
         commands.entity(root).try_despawn();
     }
 }
@@ -305,7 +291,7 @@ fn modal_keyboard(
     if input.input.state != ButtonState::Pressed || input.input.repeat {
         return;
     }
-    let Some(root) = ancestor_component(input.focused_entity, &parents, &modals) else {
+    let Some(root) = ancestor_with(input.focused_entity, &parents, &modals) else {
         return;
     };
     let control = match input.input.key_code {
@@ -320,19 +306,6 @@ fn modal_keyboard(
     input.propagate(false);
     if let Some(control) = control {
         commands.trigger(Activate { entity: control });
-    }
-}
-
-fn ancestor_component<T: Component>(
-    mut entity: Entity,
-    parents: &Query<&ChildOf>,
-    components: &Query<(), With<T>>,
-) -> Option<Entity> {
-    loop {
-        if components.contains(entity) {
-            return Some(entity);
-        }
-        entity = parents.get(entity).ok()?.parent();
     }
 }
 
@@ -352,7 +325,7 @@ fn ancestor_is(mut entity: Entity, ancestor: Entity, parents: &Query<&ChildOf>) 
 mod tests {
     use super::*;
     use bevy::input::keyboard::{Key, NativeKey};
-    use bevy::input_focus::{InputFocus, InputFocusPlugin, dispatch_focused_input};
+    use bevy::input_focus::{InputFocusPlugin, dispatch_focused_input};
     use bevy::window::PrimaryWindow;
 
     #[derive(Resource, Default)]
@@ -392,6 +365,11 @@ mod tests {
         let second = app.world_mut().spawn(ModalWindow).id();
 
         assert!(app.world().get::<UiWindow>(floating).is_some());
+        assert_eq!(
+            app.world().get::<Pickable>(floating),
+            Some(&Pickable::IGNORE)
+        );
+        assert_eq!(app.world().get::<GlobalZIndex>(floating).unwrap().0, 21);
         assert!(app.world().get::<UiWindow>(first).is_some());
         assert!(app.world().get::<TabGroup>(first).unwrap().modal);
         assert!(app.world().get::<Pickable>(first).is_some());
@@ -405,12 +383,26 @@ mod tests {
                 < app.world().get::<GlobalZIndex>(second).unwrap().0
         );
         assert_eq!(app.world().resource::<InputFocus>().get(), Some(second));
-        let scrims = {
-            let world = app.world_mut();
-            let mut query = world.query_filtered::<Entity, With<ModalScrim>>();
-            query.iter(world).count()
-        };
-        assert_eq!(scrims, 2);
+    }
+
+    #[test]
+    fn dismissing_nested_modal_restores_keyboard_to_modal_below() {
+        let mut app = test_app();
+        let first = app.world_mut().spawn(ModalWindow).id();
+        app.world_mut()
+            .spawn((ModalCancel, ChildOf(first)))
+            .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
+                activations.cancel += 1;
+            });
+        let second = app.world_mut().spawn(ModalWindow).id();
+        assert_eq!(app.world().resource::<InputFocus>().get(), Some(second));
+
+        app.world_mut().despawn(second);
+        assert_eq!(app.world().resource::<InputFocus>().get(), Some(first));
+        app.world_mut().write_message(keyboard(KeyCode::Escape));
+        app.update();
+
+        assert_eq!(app.world().resource::<Activations>().cancel, 1);
     }
 
     #[test]
@@ -463,7 +455,7 @@ mod tests {
                     top: px(2),
                     ..default()
                 },
-                RetailWindowStyle::CaptionedFloating,
+                CaptionedWindow,
                 ChildOf(root),
             ))
             .id();
@@ -481,7 +473,7 @@ mod tests {
         };
         let closes = {
             let world = app.world_mut();
-            let mut query = world.query_filtered::<Entity, With<WindowClose>>();
+            let mut query = world.query_filtered::<Entity, With<DismissWindow>>();
             query.iter(world).count()
         };
         assert_eq!(captions, 1);

@@ -394,7 +394,7 @@ impl Plugin for DiplomacyPlugin {
                 project_diplomacy_text,
                 sync_diplomacy_information,
                 render_diplomacy_map,
-                sync_diplomacy_map_cursor.run_if(not(any_with_component::<ModalWindow>)),
+                sync_diplomacy_map_cursor,
             )
                 .chain()
                 .run_if(in_state(AppState::Diplomacy)),
@@ -1414,11 +1414,16 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
 }
 
 fn sync_diplomacy_map_cursor(
+    modals: Query<(), With<ModalWindow>>,
     maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
     screens: Query<&DiplomacyScreen>,
     session: Res<GameSession>,
     mut requested: ResMut<RequestedCursor>,
 ) {
+    if !modals.is_empty() {
+        request_arrow_cursor(&mut requested);
+        return;
+    }
     let Ok(screen) = screens.single() else {
         request_arrow_cursor(&mut requested);
         return;
@@ -1553,16 +1558,12 @@ fn bind_diplomacy_entanglement_notice(
     }
     commands
         .entity(linger.okay)
-        .insert(ConfirmDiplomacyEntanglement)
         .remove::<InteractionDisabled>()
         .observe(on_diplomacy_entanglement_activate);
     commands
         .entity(linger.cancel)
         .remove::<InteractionDisabled>();
 }
-
-#[derive(Component)]
-struct ConfirmDiplomacyEntanglement;
 
 fn on_diplomacy_entanglement_activate(
     activate: On<Activate>,

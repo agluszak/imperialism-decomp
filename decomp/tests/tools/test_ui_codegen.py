@@ -194,7 +194,8 @@ class UiCodegenTests(unittest.TestCase):
                 "pub fn citydlog_9209()"
             )
         ]
-        self.assertIn("RetailWindowStyle::CaptionedFloating", oil_dialog)
+        self.assertIn("template(|_context| Ok(CaptionedWindow))", oil_dialog)
+        self.assertNotIn("RetailWindowStyle", rust_ui)
 
     def test_offer_purchase_control_keeps_windows_style_payload(self) -> None:
         offer_factory = self.rendered[0x00430C50]

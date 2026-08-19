@@ -59,9 +59,6 @@ struct CitySiteNotice(String);
 #[derive(Component)]
 struct CitySiteWired;
 
-#[derive(Component)]
-struct ConfirmNewCity;
-
 pub(crate) struct CitySitePlugin;
 
 impl Plugin for CitySitePlugin {
@@ -323,7 +320,7 @@ fn bind_new_city_dialog(
     );
     commands
         .entity(tree.find(root, OKAY))
-        .insert((ConfirmNewCity, ActivateOnPress, ModalDefault, DismissWindow))
+        .insert((ActivateOnPress, ModalDefault, DismissWindow))
         .remove::<bevy::ui::InteractionDisabled>()
         .observe(on_new_city_activate);
     commands

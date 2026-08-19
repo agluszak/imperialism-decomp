@@ -47,14 +47,10 @@ pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, 
 }
 
 fn on_open_query_floater(
-    activate: On<Activate>,
-    controls: Query<(), With<OpenQueryFloater>>,
+    _activate: On<Activate>,
     state: Res<State<AppState>>,
     mut commands: Commands,
 ) {
-    if controls.get(activate.entity).is_err() {
-        return;
-    }
     let root = commands.spawn_scene(generated::linger_4122()).id();
     commands
         .entity(root)

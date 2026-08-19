@@ -101,9 +101,7 @@ fn navy_selection_cursor_token(
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
-        sync_strategic_map_cursor.run_if(
-            in_state(AppState::StrategicMap).and_then(not(any_with_component::<ModalWindow>)),
-        ),
+        sync_strategic_map_cursor.run_if(in_state(AppState::StrategicMap)),
     );
 }
 
@@ -540,11 +538,16 @@ fn apply_navy_tile_click(
 
 fn sync_strategic_map_cursor(
     session: Res<GameSession>,
+    modals: Query<(), With<ModalWindow>>,
     maps: Query<(Ref<StrategicInteraction>, &StrategicViewport)>,
     land: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     ocean: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
     mut requested: ResMut<RequestedCursor>,
 ) {
+    if !modals.is_empty() {
+        request_arrow_cursor(&mut requested);
+        return;
+    }
     let Ok((interaction, viewport)) = maps.single() else {
         return;
     };

@@ -56,7 +56,6 @@ pub(in crate::ui::city) fn open_city_dialog(
     commands.entity(root).insert((
         CityBuildingDialog { slot },
         FloatingWindow,
-        Pickable::IGNORE,
         DespawnOnExit(AppState::City),
     ));
     if let Some(position) = saved_position {
