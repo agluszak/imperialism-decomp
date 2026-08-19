@@ -137,7 +137,9 @@ pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,
 };
 pub use nations::{AutoGreatPowerState, MajorNation, MinorNation, NationCommonState, Nations};
-pub use navy_orders::{NavyBattle, NavyTargeting, NavyUnitView};
+pub use navy_orders::{
+    NavyActionRejection, NavyBattle, NavyBattleStage, NavyMoveResult, NavyTargeting, NavyUnitView,
+};
 pub use navy_orders::{
     NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarClass, NavyToolbarCounts,
 };

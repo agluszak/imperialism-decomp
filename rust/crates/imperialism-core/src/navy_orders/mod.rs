@@ -236,7 +236,9 @@ mod naval_battle;
 mod player;
 
 pub use execution::{NavyOrdersContinuation, PendingNavalBattle};
-pub use naval_battle::{NavyBattle, NavyTargeting, NavyUnitView};
+pub use naval_battle::{
+    NavyActionRejection, NavyBattle, NavyBattleStage, NavyMoveResult, NavyTargeting, NavyUnitView,
+};
 pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 
 impl GameState {
