@@ -51,6 +51,21 @@ pub struct NavyOrdersContinuation {
     pub(crate) navy_battle: Option<Box<NavyBattle>>,
 }
 
+impl NavyOrdersContinuation {
+    /// Player encounter waiting for the tactical navy battle, with the scan
+    /// cursor past this pair so a later resume continues or finishes orders.
+    pub fn player_encounter(attacker: TaskForceId, defender: TaskForceId) -> Self {
+        Self {
+            pass: NavyPass::MarinesAndRepair,
+            forces: vec![attacker, defender],
+            outer: usize::MAX,
+            inner: 0,
+            battle: PendingNavalBattle { attacker, defender },
+            navy_battle: None,
+        }
+    }
+}
+
 impl GameState {
     pub fn pending_naval_battle(&self) -> Option<&PendingNavalBattle> {
         match &self.continuation {

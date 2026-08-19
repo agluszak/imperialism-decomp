@@ -252,6 +252,32 @@ impl NavyBattle {
         self.outcome
     }
 
+    pub const fn tile_stride() -> i32 {
+        TILE_STRIDE
+    }
+
+    pub const fn tile_count() -> i32 {
+        TILE_COUNT as i32
+    }
+
+    /// Deployment band, or live move-cost tiles already computed for the selection.
+    pub fn selected_reachable_tiles(&self) -> Vec<i32> {
+        let Some(selected) = self.selected else {
+            return Vec::new();
+        };
+        if !self.live {
+            return (0..TILE_COUNT as i32)
+                .filter(|&tile| self.can_deploy(self.current_side, tile))
+                .collect();
+        }
+        if self.units[selected].tile < 0 {
+            return Vec::new();
+        }
+        (0..TILE_COUNT as i32)
+            .filter(|&tile| self.cost(tile) > 0)
+            .collect()
+    }
+
     fn start(&mut self) {
         self.start_side(BattleSide::Defender);
     }
@@ -1112,6 +1138,94 @@ impl GameState {
         Some(self.resume_after_naval_battle(story_ids))
     }
 
+    pub fn selected_navy_unit_reachable_tiles(&self) -> Vec<i32> {
+        match self.navy_battle() {
+            Some(battle) => battle.selected_reachable_tiles(),
+            None => Vec::new(),
+        }
+    }
+
+    pub fn navy_action_at(
+        &mut self,
+        tile: i32,
+        story_ids: &[i32],
+    ) -> Result<Option<crate::TurnStop>, NavyActionRejection> {
+        let active_nation = self.turn.active_nation;
+        let mut battle = self
+            .take_navy_battle()
+            .ok_or(NavyActionRejection::NoLiveBattle)?;
+        let idx = match battle.selected_unit_for_action(active_nation) {
+            Ok(idx) => idx,
+            Err(error) => {
+                self.store_navy_battle(battle);
+                return Err(error);
+            }
+        };
+        if !battle.live {
+            let _ = battle.deploy_click(tile);
+            if !battle.live {
+                self.store_navy_battle(battle);
+                return Ok(None);
+            }
+            return Ok(self.finish_interactive_navy_action(battle, story_ids));
+        }
+        if battle.units[idx].tile < 0 {
+            self.store_navy_battle(battle);
+            return Err(NavyActionRejection::Unplaced);
+        }
+        if let Some(target) = battle.occupants.get(tile as usize).copied().flatten()
+            && battle.units[target].side != battle.units[idx].side
+        {
+            battle.fire_and_maybe_finish(self, idx, tile);
+            return Ok(self.finish_interactive_navy_action(battle, story_ids));
+        }
+        battle.compute_reachable(idx);
+        if battle.cost(tile) <= 0 || battle.occupants[tile as usize].is_some() {
+            self.store_navy_battle(battle);
+            return Err(NavyActionRejection::InvalidTarget);
+        }
+        battle.move_and_maybe_finish(self, idx, tile);
+        Ok(self.finish_interactive_navy_action(battle, story_ids))
+    }
+
+    /// Headless Auto: auto-deploy the current side if needed, then pump both
+    /// sides until the battle commits and navy orders resume.
+    pub fn auto_resolve_navy_battle(&mut self, story_ids: &[i32]) -> crate::TurnStop {
+        let crate::turn_flow::TurnContinuation::NavalBattle(_) = &self.continuation else {
+            panic!("navy-battle auto-resolve requires a navy-orders continuation");
+        };
+        let mut battle = match self.take_navy_battle() {
+            Some(mut live) => {
+                if !live.live {
+                    let slot = side_index(live.current_side);
+                    live.sides[slot].auto_play = true;
+                    live.auto_deploy();
+                }
+                for side in &mut live.sides {
+                    side.auto_play = true;
+                }
+                live
+            }
+            None => {
+                let pending = self
+                    .pending_naval_battle()
+                    .cloned()
+                    .expect("navy battle requires a pending encounter");
+                let mut battle = NavyBattle::new(self, &pending);
+                for side in &mut battle.sides {
+                    side.auto_play = true;
+                }
+                battle.start();
+                battle
+            }
+        };
+        if battle.pump_until_active_input(self) {
+            return self.resume_after_naval_battle(story_ids);
+        }
+        self.store_navy_battle(battle);
+        crate::TurnStop::NavalBattle
+    }
+
     fn finish_interactive_navy_action(
         &mut self,
         mut battle: NavyBattle,
@@ -1530,8 +1644,14 @@ mod tests {
         );
         assert!(
             state
-                .deploy_navy_unit(10 * TILE_STRIDE, &[])
-                .expect("deploy")
+                .selected_navy_unit_reachable_tiles()
+                .contains(&(10 * TILE_STRIDE))
+        );
+        assert_eq!(
+            state
+                .navy_action_at(10 * TILE_STRIDE, &[])
+                .expect("deploy click"),
+            None
         );
         let battle = state.navy_battle().expect("live battle remains");
         assert_eq!(battle.stage(), NavyBattleStage::Live);
