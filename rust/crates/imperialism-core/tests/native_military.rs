@@ -755,3 +755,50 @@ fn navy_empty_toolbar() {
     })
     .unwrap();
 }
+
+fn two_ship_force(state: &GameState, nation: NationId, order: TaskForceOrder) -> TaskForceId {
+    state
+        .task_forces_in_retail_order()
+        .find_map(|(id, force)| {
+            (force.nation == nation && force.order == order && force.ships().len() >= 2)
+                .then_some(id)
+        })
+        .expect("native navy tactical fixture force")
+}
+
+fn other_two_ship_force(state: &GameState, active: NationId, order: TaskForceOrder) -> TaskForceId {
+    state
+        .task_forces_in_retail_order()
+        .find_map(|(id, force)| {
+            (force.nation != active && force.order == order && force.ships().len() >= 2)
+                .then_some(id)
+        })
+        .expect("native navy tactical opposing force")
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_battle_accepted_deploy_tiles() {
+    compare_native(
+        "navy_battle_accepted_deploy_tiles",
+        |state, _: EmptyCase| {
+            let active = state.turn().active_nation;
+            let our = two_ship_force(state, active, TaskForceOrder::Patrol);
+            let enemy = other_two_ship_force(state, active, TaskForceOrder::Blockade);
+            differential::navy_tactical_init_snapshot(state, our, enemy)
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn navy_battle_player_as_defender() {
+    compare_native("navy_battle_player_as_defender", |state, _: EmptyCase| {
+        let active = state.turn().active_nation;
+        let our = two_ship_force(state, active, TaskForceOrder::Blockade);
+        let enemy = other_two_ship_force(state, active, TaskForceOrder::Patrol);
+        differential::navy_tactical_init_snapshot(state, our, enemy)
+    })
+    .unwrap();
+}

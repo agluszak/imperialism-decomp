@@ -495,12 +495,12 @@ mod tests {
 
     fn player_naval_battle_state() -> GameState {
         let mut parts = beginning_of_game_parts();
-        let attacker = parts.turn.active_nation;
-        let defender = NationId::new(1);
-        parts.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
-        parts.diplomacy.relationships[attacker][defender] = DiplomaticRelationship::War;
-        parts.diplomacy.relationship_turns[defender][attacker] = None;
-        parts.diplomacy.relationship_turns[attacker][defender] = None;
+        let player = parts.turn.active_nation;
+        let hostile = NationId::new(1);
+        parts.diplomacy.relationships[hostile][player] = DiplomaticRelationship::War;
+        parts.diplomacy.relationships[player][hostile] = DiplomaticRelationship::War;
+        parts.diplomacy.relationship_turns[hostile][player] = None;
+        parts.diplomacy.relationship_turns[player][hostile] = None;
 
         let location = OceanZoneId::new(0);
         let attacker_ship = parts.object_ids.ship();
@@ -513,7 +513,7 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location,
                 aggression: NavalAggression::Balanced,
-                nation: attacker,
+                nation: hostile,
                 name: String::new(),
                 strength: 900,
                 experience: 0,
@@ -526,7 +526,7 @@ mod tests {
                 ship_type: ShipType::Frigate,
                 location,
                 aggression: NavalAggression::Balanced,
-                nation: defender,
+                nation: player,
                 name: String::new(),
                 strength: 900,
                 experience: 0,
@@ -540,7 +540,7 @@ mod tests {
                 TaskForceOrder::Patrol,
                 TaskForceTarget::None,
                 location,
-                attacker,
+                hostile,
                 false,
                 -1,
                 [(attacker_ship, true)]
@@ -555,7 +555,7 @@ mod tests {
                 TaskForceOrder::Blockade,
                 TaskForceTarget::None,
                 location,
-                defender,
+                player,
                 false,
                 -1,
                 [(defender_ship, true)]
@@ -571,7 +571,7 @@ mod tests {
             parts.turn.turn_flow_status_flags,
             parts.turn.quarter_gate_by_decade,
             parts.turn.difficulty,
-            attacker,
+            player,
         );
         parts.continuation = TurnContinuation::NavalBattle(
             NavyOrdersContinuation::player_encounter(attacker_force, defender_force),
@@ -707,7 +707,16 @@ mod tests {
             probe.navy_battle().unwrap().stage(),
             NavyBattleStage::Deploying
         );
-        assert!(!expected.is_empty(), "defender auto-deploys before input");
+        assert!(
+            expected.is_empty(),
+            "player-as-defender starts undeployed; auto-deploy does not run first"
+        );
+        assert!(
+            probe
+                .selected_navy_unit_reachable_tiles()
+                .contains(&(5 * 0x1d)),
+            "retail DeployTacticalUnitToTile accepts defender rows tile/29 in 5..=6"
+        );
 
         let mut app = test_app(state);
         app.update();
@@ -761,7 +770,7 @@ mod tests {
                     .selected_navy_unit_reachable_tiles()
                     .into_iter()
                     .next()
-                    .expect("attacker has a deployment tile")
+                    .expect("defender has a deployment tile")
             });
         let dest_pixel = {
             let (x, y, w, h) = NavalBattleTileMap::new(0, 0).tile_rect(destination);

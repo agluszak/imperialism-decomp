@@ -5,6 +5,10 @@ use serde::{Deserialize, Serialize};
 
 const TILE_COUNT: usize = 0xb4;
 const TILE_STRIDE: i32 = 6;
+/// `DeployTacticalUnitToTile` / hit-distance row width. Original `0x005a55c0` uses
+/// signed-divide-by-29 magic (`0x8d3dcb09`); `InitTacticalBattle` (`0x005a5540`)
+/// still sets `tacticalTileStride40 = 6` for neighbor walks and auto-deploy origins.
+const DEPLOY_ROW_WIDTH: i32 = 0x1d;
 const MOVE_COSTS: [i16; 6] = [15, 10, 20, 40, 20, 10];
 const UNIT_TYPE_BY_SHIP_TYPE: [i8; 14] = [-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7];
 const ATTACK_POWER: [f32; 8] = [3.0, 3.5, 4.0, 4.0, 8.0, 8.0, 15.0, 15.0];
@@ -260,15 +264,20 @@ impl NavyBattle {
         TILE_COUNT as i32
     }
 
+    /// Tiles `DeployTacticalUnitToTile` would accept for `side` on the empty 180-cell grid.
+    pub fn deployable_tiles(&self, side: BattleSide) -> Vec<i32> {
+        (0..TILE_COUNT as i32)
+            .filter(|&tile| self.can_deploy(side, tile))
+            .collect()
+    }
+
     /// Deployment band, or live move-cost tiles already computed for the selection.
     pub fn selected_reachable_tiles(&self) -> Vec<i32> {
         let Some(selected) = self.selected else {
             return Vec::new();
         };
         if !self.live {
-            return (0..TILE_COUNT as i32)
-                .filter(|&tile| self.can_deploy(self.current_side, tile))
-                .collect();
+            return self.deployable_tiles(self.current_side);
         }
         if self.units[selected].tile < 0 {
             return Vec::new();
@@ -352,8 +361,24 @@ impl NavyBattle {
         if !(0..TILE_COUNT as i32).contains(&tile) || self.occupants[tile as usize].is_some() {
             return false;
         }
-        let row = tile / TILE_STRIDE;
+        let row = tile / DEPLOY_ROW_WIDTH;
         deploy_rows(side, self.battlefield_column_count).contains(&row)
+    }
+
+    fn can_fire_on(&self, unit: usize, tile: i32) -> bool {
+        if !self.units[unit].selected {
+            return false;
+        }
+        let Some(target) = self.occupants.get(tile as usize).copied().flatten() else {
+            return false;
+        };
+        if self.units[target].side == self.units[unit].side
+            || self.units[target].state != NavyUnitState::Ready
+        {
+            return false;
+        }
+        let range = NAVY_DESCRIPTORS[self.units[unit].ship_type].calculate_weight;
+        navy_hit_distance(self.units[unit].tile, tile) <= range
     }
 
     fn handover_after_side_ready(&mut self) {
@@ -799,7 +824,7 @@ impl NavyBattle {
     }
 
     fn cost(&self, tile: i32) -> i16 {
-        if tile < 0 {
+        if !(0..TILE_COUNT as i32).contains(&tile) {
             return self.move_costs[TILE_COUNT];
         }
         self.move_costs[tile as usize]
@@ -874,9 +899,9 @@ impl NavyBattle {
 
     fn evaluate_outcome(&mut self) {
         let live = [BattleSide::Attacker, BattleSide::Defender].map(|side| {
-            self.units
-                .iter()
-                .any(|unit| unit.side == side && unit.state == NavyUnitState::Ready)
+            self.records.iter().any(|&idx| {
+                self.units[idx].side == side && self.units[idx].state == NavyUnitState::Ready
+            })
         });
         if live[0] && live[1] && self.round < ROUND_LIMIT {
             return;
@@ -1013,6 +1038,10 @@ impl GameState {
             self.store_navy_battle(battle);
             return Err(NavyActionRejection::Unplaced);
         }
+        if !(0..TILE_COUNT as i32).contains(&tile) {
+            self.store_navy_battle(battle);
+            return Err(NavyActionRejection::InvalidTarget);
+        }
         battle.compute_reachable(idx);
         if battle.cost(tile) <= 0 || battle.occupants[tile as usize].is_some() {
             self.store_navy_battle(battle);
@@ -1045,11 +1074,11 @@ impl GameState {
             self.store_navy_battle(battle);
             return Err(NavyActionRejection::InvalidTarget);
         }
-        let Some(target) = battle.occupants.get(tile as usize).copied().flatten() else {
+        if battle.units[idx].tile < 0 {
             self.store_navy_battle(battle);
-            return Err(NavyActionRejection::InvalidTarget);
-        };
-        if battle.units[target].side == battle.units[idx].side {
+            return Err(NavyActionRejection::Unplaced);
+        }
+        if !battle.can_fire_on(idx, tile) {
             self.store_navy_battle(battle);
             return Err(NavyActionRejection::InvalidTarget);
         }
@@ -1173,11 +1202,13 @@ impl GameState {
             self.store_navy_battle(battle);
             return Err(NavyActionRejection::Unplaced);
         }
-        if let Some(target) = battle.occupants.get(tile as usize).copied().flatten()
-            && battle.units[target].side != battle.units[idx].side
-        {
+        if battle.can_fire_on(idx, tile) {
             battle.fire_and_maybe_finish(self, idx, tile);
             return Ok(self.finish_interactive_navy_action(battle, story_ids));
+        }
+        if !(0..TILE_COUNT as i32).contains(&tile) {
+            self.store_navy_battle(battle);
+            return Err(NavyActionRejection::InvalidTarget);
         }
         battle.compute_reachable(idx);
         if battle.cost(tile) <= 0 || battle.occupants[tile as usize].is_some() {
@@ -1254,6 +1285,41 @@ impl GameState {
         };
         continuation.navy_battle = Some(Box::new(battle));
     }
+
+    #[cfg(feature = "oracle")]
+    pub(crate) fn navy_tactical_init_snapshot(
+        &mut self,
+        our: TaskForceId,
+        enemy: TaskForceId,
+    ) -> crate::differential::NavyTacticalInitSnapshot {
+        let battle = NavyBattle::new(
+            self,
+            &PendingNavalBattle {
+                attacker: our,
+                defender: enemy,
+            },
+        );
+        crate::differential::NavyTacticalInitSnapshot {
+            column_count: battle.battlefield_column_count,
+            current_side: side_index(battle.current_side) as i32,
+            side0_nation: i32::from(battle.nations[0].get()),
+            side1_nation: i32::from(battle.nations[1].get()),
+            side0_selected: i32::from(
+                battle
+                    .units
+                    .iter()
+                    .any(|unit| unit.side == BattleSide::Attacker && unit.selected),
+            ),
+            side1_selected: i32::from(
+                battle
+                    .units
+                    .iter()
+                    .any(|unit| unit.side == BattleSide::Defender && unit.selected),
+            ),
+            side0_tiles: battle.deployable_tiles(BattleSide::Attacker),
+            side1_tiles: battle.deployable_tiles(BattleSide::Defender),
+        }
+    }
 }
 
 fn side_index(side: BattleSide) -> usize {
@@ -1272,8 +1338,8 @@ fn side_from_index(index: usize) -> BattleSide {
 }
 
 fn deploy_rows(side: BattleSide, column_count: i32) -> std::ops::RangeInclusive<i32> {
-    // `TNavyBattle` init sets stride 6. Auto-deploy origins (`column_count * 6 - 25`
-    // and tile 0x29) only land in these row bands when row = tile / 6.
+    // `TNavyBattle::DeployTacticalUnitToTile` (0x005a55c0) uses row = tile / 29.
+    // Auto-deploy origins still use stride 6 (`column_count * 6 - 25` and tile 0x29).
     if side == BattleSide::Attacker {
         column_count - 6..=column_count - 5
     } else {
@@ -1464,24 +1530,27 @@ mod tests {
     }
 
     #[test]
-    fn navy_deployment_uses_stride_six_rows_matching_auto_deploy_origins() {
-        let mut attacker = unit(1, BattleSide::Attacker, -2, 0);
-        attacker.tile = -2;
-        let mut defender = unit(2, BattleSide::Defender, -2, 0);
-        defender.tile = -2;
+    fn navy_deployment_uses_the_retail_29_wide_row_index() {
+        let attacker = unit(1, BattleSide::Attacker, -2, 0);
+        let defender = unit(2, BattleSide::Defender, -2, 0);
         let mut battle = battle(vec![attacker, defender]);
         battle.live = false;
-        battle.sides[0].ready = false;
-        battle.sides[1].ready = false;
-        battle.current_side = BattleSide::Defender;
-        battle.selected = Some(1);
-        assert!(battle.place_and_advance(1, 5 * TILE_STRIDE));
-        battle.current_side = BattleSide::Attacker;
-        battle.selected = Some(0);
-        battle.sides[0].ready = false;
-        assert!(battle.place_and_advance(0, 10 * TILE_STRIDE));
-        assert!(!battle.can_deploy(BattleSide::Attacker, 5 * TILE_STRIDE));
-        assert!(!battle.can_deploy(BattleSide::Defender, 10 * TILE_STRIDE));
+        battle.occupants.fill(None);
+        assert!(battle.can_deploy(BattleSide::Defender, 5 * DEPLOY_ROW_WIDTH));
+        assert!(battle.can_deploy(BattleSide::Defender, 6 * DEPLOY_ROW_WIDTH));
+        assert!(battle.place_and_advance(1, 5 * DEPLOY_ROW_WIDTH));
+        assert!(!battle.can_deploy(BattleSide::Defender, 4 * DEPLOY_ROW_WIDTH + 28));
+        assert!(!battle.can_deploy(BattleSide::Defender, DEFENDER_AUTO_DEPLOY_START));
+        assert!(
+            battle.deployable_tiles(BattleSide::Attacker).is_empty(),
+            "frigate column_count 16 puts attacker rows 10-11 off the 180-cell grid"
+        );
+        assert_eq!(
+            battle.deployable_tiles(BattleSide::Defender),
+            (5 * DEPLOY_ROW_WIDTH..TILE_COUNT as i32)
+                .filter(|&tile| battle.occupants[tile as usize].is_none())
+                .collect::<Vec<_>>()
+        );
     }
 
     #[test]
@@ -1568,6 +1637,86 @@ mod tests {
     }
 
     #[test]
+    fn navy_outcome_ignores_undeployed_reserve_ships() {
+        let mut battle = battle(vec![
+            unit(1, BattleSide::Attacker, 7, 0),
+            unit(2, BattleSide::Attacker, -2, 0),
+            unit(3, BattleSide::Defender, 41, 0),
+        ]);
+        battle.retire_undeployed(BattleSide::Attacker);
+        assert_eq!(battle.sides[0].secondary, vec![1]);
+        assert!(!battle.records.contains(&1));
+        battle.units[0].state = NavyUnitState::Destroyed;
+        battle.evaluate_outcome();
+        assert_eq!(
+            battle.outcome,
+            Some(1),
+            "a Ready ship retired to reserve must not keep its side alive"
+        );
+    }
+
+    fn attach_live_battle(state: &mut GameState, battle: NavyBattle) {
+        state.turn.active_nation = NationId::new(0);
+        state.continuation = crate::turn_flow::TurnContinuation::NavalBattle(
+            crate::NavyOrdersContinuation::player_encounter(
+                TaskForceId::new(1),
+                TaskForceId::new(2),
+            ),
+        );
+        state.store_navy_battle(battle);
+    }
+
+    #[test]
+    fn navy_fire_rejects_a_second_shot_during_the_same_activation() {
+        let mut state = game_state();
+        let mut battle = battle(vec![
+            unit(1, BattleSide::Attacker, 7, 0),
+            unit(2, BattleSide::Defender, 8, 0),
+        ]);
+        battle.units[0].quality = 20;
+        battle.compute_reachable(0);
+        attach_live_battle(&mut state, battle);
+        assert_eq!(state.fire_navy_unit(8, &[]), Ok(None));
+        assert_eq!(
+            state.fire_navy_unit(8, &[]),
+            Err(NavyActionRejection::InvalidTarget)
+        );
+    }
+
+    #[test]
+    fn navy_fire_rejects_an_out_of_range_shot_without_advancing_rng() {
+        let mut state = game_state();
+        let battle = battle(vec![
+            unit(1, BattleSide::Attacker, 0, 0),
+            unit(2, BattleSide::Defender, 6 * DEPLOY_ROW_WIDTH, 0),
+        ]);
+        attach_live_battle(&mut state, battle);
+        let before = state.rng;
+        assert_eq!(
+            state.fire_navy_unit(6 * DEPLOY_ROW_WIDTH, &[]),
+            Err(NavyActionRejection::InvalidTarget)
+        );
+        assert_eq!(state.rng, before);
+    }
+
+    #[test]
+    fn navy_move_rejects_an_out_of_grid_tile() {
+        let mut state = game_state();
+        attach_live_battle(
+            &mut state,
+            battle(vec![unit(1, BattleSide::Attacker, 7, 0)]),
+        );
+        assert_eq!(
+            state.move_navy_unit(TILE_COUNT as i32, &[]),
+            Err(NavyActionRejection::InvalidTarget)
+        );
+        assert_eq!(
+            state.move_navy_unit(10_000, &[]),
+            Err(NavyActionRejection::InvalidTarget)
+        );
+    }
+
+    #[test]
     fn navy_round_limit_completes_the_battle() {
         let mut battle = battle(vec![
             unit(1, BattleSide::Attacker, 7, 0),
@@ -1617,21 +1766,22 @@ mod tests {
     }
 
     #[test]
-    fn player_deployment_and_done_reach_a_live_selected_ship() {
+    fn player_as_defender_deployment_reaches_a_live_selected_ship() {
         let mut state = game_state();
-        let attacker = NationId::new(0);
-        let defender = NationId::new(1);
-        state.turn.active_nation = attacker;
-        state.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
+        let player = NationId::new(0);
+        let hostile = NationId::new(1);
+        state.turn.active_nation = player;
+        state.diplomacy.relationships[player][hostile] = DiplomaticRelationship::War;
+        state.diplomacy.relationships[hostile][player] = DiplomaticRelationship::War;
         encounter_force(
             &mut state,
-            attacker,
+            hostile,
             OceanZoneId::new(0),
             TaskForceOrder::Patrol,
         );
         encounter_force(
             &mut state,
-            defender,
+            player,
             OceanZoneId::new(0),
             TaskForceOrder::Blockade,
         );
@@ -1642,14 +1792,19 @@ mod tests {
             state.navy_battle().map(NavyBattle::stage),
             Some(NavyBattleStage::Deploying)
         );
+        assert_eq!(
+            state.navy_battle().map(NavyBattle::current_side),
+            Some(BattleSide::Defender)
+        );
+        let deploy_tile = 5 * DEPLOY_ROW_WIDTH;
         assert!(
             state
                 .selected_navy_unit_reachable_tiles()
-                .contains(&(10 * TILE_STRIDE))
+                .contains(&deploy_tile)
         );
         assert_eq!(
             state
-                .navy_action_at(10 * TILE_STRIDE, &[])
+                .navy_action_at(deploy_tile, &[])
                 .expect("deploy click"),
             None
         );

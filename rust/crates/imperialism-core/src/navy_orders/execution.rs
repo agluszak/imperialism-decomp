@@ -1592,7 +1592,10 @@ mod tests {
         assert_eq!(battle.selected_ship(), Some(attacker_ship));
         let units: Vec<_> = battle.units().collect();
         assert_eq!(units[0].tile, -2);
-        assert_eq!(units[1].tile, 0x29);
+        assert_eq!(
+            units[1].tile, -2,
+            "auto-deploy origin 0x29 is row 1 under tile/29, not defender rows 5..=6"
+        );
         assert_eq!(battle.battlefield_column_count(), 16);
         assert_eq!(battle.move_cost_rotation_start(), rotation);
         for (offset, cost) in [15, 10, 20, 40, 20, 10].into_iter().enumerate() {

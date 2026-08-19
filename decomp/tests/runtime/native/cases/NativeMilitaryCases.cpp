@@ -35,6 +35,13 @@
 #include "game/tactical/TArmyBattle.h"
 #include "game/tactical/TArmyPlayer.h"
 #include "game/tactical/TArmyTacUnit.h"
+#include "game/tactical/TNavyAutoPlayer.h"
+#include "game/tactical/TNavyBattle.h"
+#include "game/tactical/TNavyHumanPlayer.h"
+#include "game/tactical/TNavyPlayer.h"
+#include "game/tactical/TNavyTacUnit.h"
+#include "game/tactical/TTacticalUnit.h"
+#include "game/TList.h"
 #include "game/tactical/hex_tile_distance.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -435,6 +442,123 @@ int TaskForceQueueIndex(TTaskForce* expected) {
   return -1;
 }
 
+TZone* FindUnoccupiedMapZone() {
+  TZone* candidate;
+  for (candidate = g_pMapActionContextListHead; candidate != 0; candidate = candidate->prev18) {
+    int occupied = 0;
+    TShip* ship;
+    for (ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+      if (ship->location == candidate) {
+        occupied = 1;
+        break;
+      }
+    }
+    if (occupied == 0) {
+      return candidate;
+    }
+  }
+  return 0;
+}
+
+TTaskForce* CreateFrigateForce(TZone* zone, short nation, int shipCount, int orders,
+                               void* orderTarget) {
+  int i;
+  TTaskForce* force;
+  for (i = 0; i < shipCount; ++i) {
+    TShip* ship = new TShip();
+    ship->IShip(3, zone, nation, "navy-tactical");
+  }
+  force = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(nation);
+  if (force != 0) {
+    force->SubmitOrders(orders, orderTarget);
+  }
+  return force;
+}
+
+void ProbeNavyDeployTiles(TNavyBattle* battle, TTacticalUnit* unit, JsonArray* tiles) {
+  TTacticalPlayer* player;
+  TTacticalUnit* savedSelected;
+  TTacticalUnit* occupant;
+  int savedTile;
+  int savedCursor;
+  int savedSide;
+  int savedLive;
+  char savedReady;
+  int tile;
+  if (unit == 0) {
+    return;
+  }
+  player = (&battle->tacticalPlayer14)[unit->side20];
+  savedTile = unit->tileIndex8;
+  savedReady = player->sideReadyFlag10;
+  savedCursor = player->cursorIndex18;
+  savedSelected = battle->selectedUnit1c;
+  savedSide = battle->currentSideC;
+  savedLive = battle->battleLive10;
+  for (tile = 0; tile < battle->tacticalTileCount3c; ++tile) {
+    occupant = battle->tileGrid4[tile].occupant4;
+    battle->DeployTacticalUnitToTile(unit, tile);
+    if (unit->tileIndex8 == tile) {
+      tiles->Add(tile);
+      unit->tileIndex8 = savedTile;
+      battle->tileGrid4[tile].occupant4 = occupant;
+      player->sideReadyFlag10 = savedReady;
+      player->cursorIndex18 = savedCursor;
+      battle->selectedUnit1c = savedSelected;
+      battle->currentSideC = savedSide;
+      battle->battleLive10 = savedLive;
+    }
+  }
+}
+
+JSON_Value* CaptureNavyTacticalInit(TTaskForce* ourForce, TTaskForce* enemyForce) {
+  TNavyBattle* battle;
+  TNavyHumanPlayer* ourPlayer;
+  TNavyAutoPlayer* enemyPlayer;
+  TTacticalUnit* side0Unit;
+  TTacticalUnit* side1Unit;
+  JsonObject snapshot;
+  JsonArray side0Tiles;
+  JsonArray side1Tiles;
+
+  battle = new TNavyBattle();
+  battle->recordList20 = new TList();
+  ourPlayer = new TNavyHumanPlayer();
+  ourPlayer->INavyHumanPlayer(ourForce, 1, ourForce->nation);
+  ourPlayer->secondaryList8 = new TList();
+  enemyPlayer = new TNavyAutoPlayer();
+  enemyPlayer->INavyAutoPlayer(enemyForce, 0, enemyForce->nation);
+  enemyPlayer->secondaryList8 = new TList();
+  battle->InitTacticalBattle(ourPlayer, enemyPlayer);
+
+  side0Unit = static_cast<TTacticalUnit*>(ourPlayer->unitList4->GetEntryByOrdinal(1));
+  side1Unit = static_cast<TTacticalUnit*>(enemyPlayer->unitList4->GetEntryByOrdinal(1));
+  ProbeNavyDeployTiles(battle, side0Unit, &side0Tiles);
+  ProbeNavyDeployTiles(battle, side1Unit, &side1Tiles);
+
+  snapshot.Set("column_count", battle->battlefieldColumnCount34);
+  snapshot.Set("current_side", battle->currentSideC);
+  snapshot.Set("side0_nation", ourPlayer->nationIndex1C);
+  snapshot.Set("side1_nation", enemyPlayer->nationIndex1C);
+  snapshot.Set("side0_selected", side0Unit != 0 ? static_cast<int>(side0Unit->selectedFlag18) : 0);
+  snapshot.Set("side1_selected", side1Unit != 0 ? static_cast<int>(side1Unit->selectedFlag18) : 0);
+  snapshot.Set("side0_tiles", side0Tiles.Release());
+  snapshot.Set("side1_tiles", side1Tiles.Release());
+
+  battle->Free();
+  return snapshot.Release();
+}
+
+short FirstHostileNation(short activeNation) {
+  short nation;
+  for (nation = 0; nation < kMajorNationCount; ++nation) {
+    if (nation != activeNation && g_apNationStates[nation] != 0) {
+      return nation;
+    }
+  }
+  return -1;
+}
+
 } // namespace
 
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition) {
@@ -599,6 +723,58 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
   battle.Set("attacker", attackerIndex);
   battle.Set("defender", defenderIndex);
   return transition.Finish(battle.Release());
+}
+
+RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition) {
+  const short activeNation = ActiveNationSlot();
+  short hostileNation = FirstHostileNation(activeNation);
+  TZone* zone = FindUnoccupiedMapZone();
+  TTaskForce* attacker;
+  TTaskForce* defender;
+  JsonObject args;
+  RuntimeActionResult started;
+  JSON_Value* snapshot;
+  if (hostileNation < 0 || zone == 0) {
+    return RuntimeActionResult::Failure("the fixture cannot create a naval encounter");
+  }
+  attacker = CreateFrigateForce(zone, activeNation, 2, 3, 0);
+  defender = CreateFrigateForce(zone, hostileNation, 2, 6, zone);
+  if (attacker == 0 || defender == 0) {
+    return RuntimeActionResult::Failure("could not create the naval task forces");
+  }
+  ForceWarBetween(activeNation, hostileNation);
+  started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  snapshot = CaptureNavyTacticalInit(attacker, defender);
+  return transition.Finish(snapshot);
+}
+
+RuntimeActionResult RunNavyBattlePlayerAsDefender(NativeTransition& transition) {
+  const short activeNation = ActiveNationSlot();
+  short hostileNation = FirstHostileNation(activeNation);
+  TZone* zone = FindUnoccupiedMapZone();
+  TTaskForce* attacker;
+  TTaskForce* defender;
+  JsonObject args;
+  RuntimeActionResult started;
+  JSON_Value* snapshot;
+  if (hostileNation < 0 || zone == 0) {
+    return RuntimeActionResult::Failure("the fixture cannot create a naval encounter");
+  }
+  attacker = CreateFrigateForce(zone, hostileNation, 2, 3, 0);
+  defender = CreateFrigateForce(zone, activeNation, 2, 6, zone);
+  if (attacker == 0 || defender == 0) {
+    return RuntimeActionResult::Failure("could not create the naval task forces");
+  }
+  ForceWarBetween(activeNation, hostileNation);
+  started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  snapshot = CaptureNavyTacticalInit(defender, attacker);
+  return transition.Finish(snapshot);
 }
 
 RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition) {
