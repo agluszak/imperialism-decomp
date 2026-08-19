@@ -20,5 +20,6 @@ imperialism-formats = { path = "../imperialism-formats" }
 thiserror.workspace = true
 
 [dev-dependencies]
+imperialism-testkit = { path = "../imperialism-testkit" }
 indexmap.workspace = true
 tempfile = "3"

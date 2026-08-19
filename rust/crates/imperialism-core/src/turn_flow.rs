@@ -236,6 +236,10 @@ impl TurnState {
 }
 
 impl GameState {
+    pub const fn turn_continuation(&self) -> &TurnContinuation {
+        &self.continuation
+    }
+
     /// Ends player orders on the strategic map and runs the turn until the next stop.
     pub fn finish_player_orders(
         &mut self,

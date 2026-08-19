@@ -816,8 +816,8 @@ fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option
 mod tests {
     use super::super::retail::RetailTag;
     use super::*;
-    use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
+    use imperialism_testkit::beginning_of_game_parts;
 
     fn fixture_parts() -> GameStateParts {
         beginning_of_game_parts()

@@ -911,10 +911,10 @@ fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
 mod tests {
     use super::super::retail::RetailTag;
     use super::*;
-    use crate::ui::test_support::beginning_of_game;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
     use bevy::state::app::StatesPlugin;
+    use imperialism_testkit::beginning_of_game;
 
     #[derive(Component)]
     struct TestTradeRoot;

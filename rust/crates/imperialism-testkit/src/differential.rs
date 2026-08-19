@@ -12,12 +12,9 @@ use std::collections::HashMap;
 use std::fmt::Debug;
 use std::fs;
 use std::path::Path;
-use std::process::Command;
 
 use crate::first_serialized_difference;
-use crate::runtime_capture::repository_root;
-
-const NATIVE_ORACLE_JUST: &str = "native-oracle";
+use crate::{NativeCommand, NativeRun};
 
 #[derive(Debug, Deserialize)]
 struct SaveBackedCapture {
@@ -130,51 +127,13 @@ where
     C: DeserializeOwned,
     R: DeserializeOwned,
 {
-    let output_dir = tempfile::Builder::new()
-        .prefix("imperialism-native-")
-        .tempdir()
-        .context("creating a unique native result directory")?;
-    let output = Command::new("just")
-        .current_dir(repository_root()?.join("decomp"))
-        .args(["--quiet", NATIVE_ORACLE_JUST, case_name, "--seed", "1"])
-        .env("IMPERIALISM_RUNTIME_RESULT_DIR", output_dir.path())
-        .output()
-        .context("launching the native transition oracle")?;
-    if !output.status.success() {
-        let detail = String::from_utf8_lossy(&output.stderr).trim().to_owned();
-        bail!("native transition case {case_name} failed:\n{detail}");
-    }
-
-    let result_path = output_dir.path().join("result.json");
-    let result_json: serde_json::Value = serde_json::from_slice(
-        &fs::read(&result_path)
-            .with_context(|| format!("reading native result {}", result_path.display()))?,
-    )
-    .with_context(|| format!("parsing native result {}", result_path.display()))?;
-    let status = result_json.get("status").and_then(|value| value.as_str());
-    if status != Some("passed") {
-        bail!(
-            "native transition case {case_name} status {}",
-            status.unwrap_or("missing")
-        );
-    }
-
-    let captures_name = result_json
-        .get("captures_path")
-        .and_then(|value| value.as_str())
-        .unwrap_or("captures.json");
-    let captures_path = output_dir.path().join(captures_name);
-    let captures: serde_json::Value = serde_json::from_slice(
-        &fs::read(&captures_path)
-            .with_context(|| format!("reading native captures {}", captures_path.display()))?,
-    )
-    .with_context(|| format!("parsing native captures {}", captures_path.display()))?;
+    let run = NativeRun::execute(NativeCommand::Transition(case_name))?;
 
     Ok(NativeCaptures {
-        before: read_save_backed_capture(output_dir.path(), &captures, "before")?,
-        case: read_capture(&captures, "case")?,
-        result: read_capture(&captures, "result")?,
-        after: read_save_backed_capture(output_dir.path(), &captures, "after")?,
+        before: read_save_backed_capture(run.capture_dir(), run.captures(), "before")?,
+        case: run.capture("case")?,
+        result: run.capture("result")?,
+        after: read_save_backed_capture(run.capture_dir(), run.captures(), "after")?,
     })
 }
 

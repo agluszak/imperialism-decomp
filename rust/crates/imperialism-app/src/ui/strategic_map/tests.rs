@@ -10,12 +10,12 @@ use super::terrain::{
     uses_river_mouth_coast_frame,
 };
 use super::*;
-use crate::ui::test_support::{
-    beginning_map_view_origin, beginning_of_game_parts_with, strategic_map_beginning_context,
-};
 use imperialism_core::{
     GameState, GameStateParts, MapMgr, MapTopology, NationId, STRATEGIC_TILE_COUNT, TerrainKind,
     TileId, TileOwnerTag, TileRendering, TileState,
+};
+use imperialism_testkit::{
+    beginning_map_view_origin, beginning_of_game_parts_with, strategic_map_beginning_context,
 };
 
 fn fixture_parts() -> GameStateParts {

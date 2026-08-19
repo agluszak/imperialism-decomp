@@ -2542,7 +2542,7 @@ mod tests {
         );
     }
 
-    use crate::ui::test_support::beginning_of_game_parts;
+    use imperialism_testkit::beginning_of_game_parts;
 
     fn fixture_parts() -> GameStateParts {
         beginning_of_game_parts()

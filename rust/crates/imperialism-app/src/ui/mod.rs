@@ -27,7 +27,7 @@ mod strategic_map;
 mod technology;
 mod technology_store;
 #[cfg(test)]
-mod test_support;
+pub(crate) mod test_support;
 mod trade;
 mod transport;
 mod viewport;

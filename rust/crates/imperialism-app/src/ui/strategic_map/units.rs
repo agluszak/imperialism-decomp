@@ -967,7 +967,7 @@ fn naval_action_frame(action: Option<TileAction>) -> Option<u16> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::{
+    use imperialism_testkit::{
         beginning_map_view_origin, beginning_of_game_with, strategic_map_beginning_context,
     };
 

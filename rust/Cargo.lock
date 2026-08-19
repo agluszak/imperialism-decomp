@@ -3092,6 +3092,7 @@ dependencies = [
  "gstreamer-video",
  "imperialism-core",
  "imperialism-formats",
+ "imperialism-testkit",
  "indexmap",
  "tempfile",
  "thiserror 2.0.19",

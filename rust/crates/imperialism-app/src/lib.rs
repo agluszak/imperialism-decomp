@@ -84,38 +84,58 @@ impl RetailAssetsResource {
 #[derive(Resource)]
 pub(crate) struct RandomGameNamesResource(pub(crate) RandomGameNames);
 
-fn add_game_plugins(app: &mut App) {
-    app.add_plugins((
-        TabNavigationPlugin,
-        ui::RetailUiPlugin,
-        ui::RetailViewportPlugin,
-        ui::QueryFloaterPlugin,
-        ui::MainMenuPlugin,
-        ui::LoadSavePlugin,
-        ui::RandomSetupPlugin,
-        ui::MapPreviewPlugin,
-        ui::CitySitePlugin,
-        ui::GameShellPlugin,
-        ui::CityPlugin,
-        ui::TransportPlugin,
-        ui::TradePlugin,
-        ui::DiplomacyPlugin,
-        ui::DealBookPlugin,
-    ))
-    .add_plugins((
-        media::ImperialismMediaPlugin,
-        ui::CursorPlugin,
-        ui::TechnologyAdvancePlugin,
-        ui::TechnologyStorePlugin,
-        ui::NewspaperPlugin,
-        ui::LandBattlePlugin,
-        ui::NavalBattlePlugin,
-        ui::EndgamePlugin,
-        ui::BattleReportPlugin,
-        ui::CreditsPlugin,
-        ui::PreferencesPlugin,
-        ui::OfferSheetPlugin,
-    ));
+/// Deterministic game flow, screen routing, semantic bindings, and gameplay projection.
+pub struct GamePlugin;
+
+impl Plugin for GamePlugin {
+    fn build(&self, app: &mut App) {
+        app.init_state::<AppState>()
+            .add_plugins((
+                ui::RetailUiPlugin,
+                ui::QueryFloaterPlugin,
+                ui::MainMenuPlugin,
+                ui::LoadSavePlugin,
+                ui::RandomSetupPlugin,
+                ui::MapPreviewPlugin,
+                ui::CitySitePlugin,
+                ui::GameShellPlugin,
+                ui::CityPlugin,
+                ui::TransportPlugin,
+                ui::TradePlugin,
+                ui::DiplomacyPlugin,
+                ui::DealBookPlugin,
+            ))
+            .add_plugins((
+                ui::TechnologyAdvancePlugin,
+            ui::TechnologyStorePlugin,
+                ui::NewspaperPlugin,
+                ui::LandBattlePlugin,
+            ui::NavalBattlePlugin,
+                ui::EndgamePlugin,
+                ui::BattleReportPlugin,
+                ui::CreditsPlugin,
+                ui::PreferencesPlugin,
+                ui::OfferSheetPlugin,
+            ));
+    }
+}
+
+/// Rendering and layout behavior shared by every production presentation backend.
+pub struct PresentationPlugin;
+
+impl Plugin for PresentationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_plugins((TabNavigationPlugin, ui::RetailViewportPlugin));
+    }
+}
+
+/// Host integrations that require the production window, cursor, or media stack.
+pub struct PlatformPlugin;
+
+impl Plugin for PlatformPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_plugins((media::ImperialismMediaPlugin, ui::CursorPlugin));
+    }
 }
 
 pub fn run(
@@ -153,9 +173,59 @@ pub fn run(
     app.insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names))
         .insert_resource(ui::SaveDirectory(save_directory));
-    add_game_plugins(&mut app);
+    app.add_plugins((GamePlugin, PresentationPlugin, PlatformPlugin));
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bevy::ecs::schedule::ScheduleLabel;
+    use bevy::state::app::StatesPlugin;
+
+    fn initialize_schedule(app: &mut App, label: impl ScheduleLabel + Clone) {
+        if app.world().resource::<Schedules>().contains(label.clone()) {
+            app.world_mut()
+                .schedule_scope(label, |world, schedule| schedule.initialize(world))
+                .expect("game schedules must initialize headlessly");
+        }
+    }
+
+    #[test]
+    fn game_plugin_schedules_initialize_headlessly() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, StatesPlugin, GamePlugin));
+
+        initialize_schedule(&mut app, Update);
+        for state in [
+            AppState::MainMenu,
+            AppState::RandomSetup,
+            AppState::LoadSave,
+            AppState::CitySite,
+            AppState::StrategicMap,
+            AppState::Trade,
+            AppState::City,
+            AppState::Transport,
+            AppState::Diplomacy,
+            AppState::DealBook,
+            AppState::OfferSheet,
+            AppState::TechnologyAdvance,
+            AppState::Newspaper,
+            AppState::LandBattle,
+            AppState::NavalBattle,
+            AppState::OpeningCinematic,
+            AppState::CouncilOfGovernors,
+            AppState::BattleReport,
+            AppState::GameScore,
+            AppState::HighScore,
+            AppState::Credits,
+            AppState::Preferences,
+        ] {
+            initialize_schedule(&mut app, OnEnter(state));
+            initialize_schedule(&mut app, OnExit(state));
+        }
+    }
 }

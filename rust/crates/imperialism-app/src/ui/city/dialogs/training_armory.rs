@@ -411,7 +411,7 @@ pub(in crate::ui::city) fn sync_armory_details(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::beginning_of_game;
+    use imperialism_testkit::beginning_of_game;
 
     #[test]
     fn armory_uses_the_recovered_windows_font_families() {

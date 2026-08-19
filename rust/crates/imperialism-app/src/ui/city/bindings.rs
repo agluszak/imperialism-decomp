@@ -514,7 +514,7 @@ mod tests {
 
     #[test]
     fn beginning_of_game_does_not_open_unbuilt_oil_or_power() {
-        let state = crate::ui::test_support::beginning_of_game();
+        let state = imperialism_testkit::beginning_of_game();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         assert_eq!(
             city_building_click(&state, nation, CityFacilitySlot::OilRefinery),

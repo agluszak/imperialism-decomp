@@ -1051,8 +1051,8 @@ fn on_flag_menu_prompt_activate(
 mod tests {
     use super::*;
     use crate::ui::retail::RetailTag;
-    use crate::ui::test_support::beginning_of_game;
     use imperialism_formats::load_game_from_path;
+    use imperialism_testkit::beginning_of_game;
 
     fn fixture_state() -> GameState {
         beginning_of_game()

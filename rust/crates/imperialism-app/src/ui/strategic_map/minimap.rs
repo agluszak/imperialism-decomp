@@ -703,7 +703,7 @@ pub(super) fn view_mgr_color(event_code: i16) -> u8 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::{
+    use imperialism_testkit::{
         beginning_of_game_parts_with, beginning_of_game_with, strategic_map_beginning_context,
     };
 

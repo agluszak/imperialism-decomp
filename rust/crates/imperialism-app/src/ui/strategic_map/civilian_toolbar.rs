@@ -800,7 +800,7 @@ fn locate_node(commands: &mut Commands, entity: Entity, position: Vec2) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::test_support::{beginning_of_game_with, strategic_map_beginning_context};
+    use imperialism_testkit::{beginning_of_game_with, strategic_map_beginning_context};
 
     fn fixture_state() -> GameState {
         beginning_of_game_with(strategic_map_beginning_context())

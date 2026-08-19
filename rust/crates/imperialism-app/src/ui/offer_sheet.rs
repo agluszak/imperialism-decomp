@@ -269,7 +269,7 @@ fn on_offer_sheet_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
-    assets: RetailUiAssets,
+    assets: Option<Res<crate::RetailAssetsResource>>,
     news: Option<Res<crate::RetailAssetsResource>>,
 ) {
     if !notices.is_empty() {
@@ -291,14 +291,20 @@ fn on_offer_sheet_activate(
             else {
                 spawn_offer_quantity_error(
                     &mut commands,
-                    get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                    assets
+                        .as_deref()
+                        .expect("production Offer Sheet has retail assets")
+                        .get_string(OFFER_STRING_GROUP, 0x10),
                 );
                 return;
             };
             if amount < 0 || amount > offer.amount {
                 spawn_offer_quantity_error(
                     &mut commands,
-                    get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                    assets
+                        .as_deref()
+                        .expect("production Offer Sheet has retail assets")
+                        .get_string(OFFER_STRING_GROUP, 0x10),
                 );
                 return;
             }
@@ -358,8 +364,9 @@ fn on_offer_sheet_notice_activate(
 mod tests {
     use super::super::retail::RetailTag;
     use super::*;
-    use crate::ui::test_support::beginning_of_game_parts;
+    use crate::ui::test_support::HeadlessGame;
     use bevy::state::app::StatesPlugin;
+    use imperialism_testkit::beginning_of_game_parts;
     use indexmap::IndexMap;
 
     fn fixture_state() -> GameState {
@@ -433,22 +440,37 @@ mod tests {
         let TradeProgress::Offer(_) = state.begin_trade_phase() else {
             panic!("beginning-of-game fixture must produce a pending offer");
         };
-        let mut app = test_app(state);
-        app.update();
-        assert!(
-            app.world()
-                .resource::<GameSession>()
-                .game
-                .pending_trade_offer()
-                .is_some()
-        );
-        let bound = app
-            .world_mut()
-            .query::<&OfferSheetAction>()
-            .iter(app.world())
-            .copied()
-            .collect::<Vec<_>>();
+        let mut game = HeadlessGame::new(test_app(state));
+        game.update();
+        game.assert_state(AppState::OfferSheet);
+        game.assert_no_modal();
+        game.assert_tag_visible(fourcc!("reje"));
+        assert!(game.core().pending_trade_offer().is_some());
+        let app = game.app_mut();
+        let mut query = app.world_mut().query::<&OfferSheetAction>();
+        let bound = query.iter(app.world()).copied().collect::<Vec<_>>();
         assert!(bound.contains(&OfferSheetAction::Accept));
         assert!(bound.contains(&OfferSheetAction::Reject));
+    }
+
+    #[test]
+    fn rejecting_turn_offers_resumes_to_the_strategic_map() {
+        let mut state = fixture_state();
+        let TradeProgress::Offer(_) = state.begin_trade_phase() else {
+            panic!("beginning-of-game fixture must produce a pending offer");
+        };
+        let mut game = HeadlessGame::new(test_app(state));
+        game.update();
+
+        for _ in 0..16 {
+            if game.state() != AppState::OfferSheet {
+                break;
+            }
+            game.activate_tag(fourcc!("reje"));
+        }
+
+        game.advance_until_state(AppState::StrategicMap);
+        assert_eq!(game.core().turn().phase(), PhaseCode::STRATEGIC_MAP);
+        assert_eq!(game.core().turn_continuation(), &TurnContinuation::None);
     }
 }

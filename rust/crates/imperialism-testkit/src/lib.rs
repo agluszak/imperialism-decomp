@@ -1,18 +1,30 @@
 #![forbid(unsafe_code)]
 
 mod differential;
-mod runtime_capture;
+mod fixtures;
+mod native;
 
 pub use differential::{assert_game_state_eq, compare_native, load_save_backed_state, run_native};
+pub use fixtures::{
+    BEGINNING_OF_GAME, beginning_context, beginning_of_game, beginning_of_game_parts,
+    beginning_of_game_parts_with, beginning_of_game_with, fixture_context,
+    strategic_map_beginning_context,
+};
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
     differential::{
         CoarseMapTrace, RandomMapTerrainTrace, trace_coarse_random_map, trace_random_map_terrain,
     },
 };
-pub use runtime_capture::{RuntimeRun, run_runtime};
+pub use native::{NativeCommand, NativeRun};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
+
+pub type RuntimeRun = NativeRun;
+
+pub fn run_runtime(scenario: &str) -> anyhow::Result<RuntimeRun> {
+    NativeRun::execute(NativeCommand::RuntimeScenario(scenario))
+}
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
