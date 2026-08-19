@@ -1785,7 +1785,7 @@ mod tests {
             OceanZoneId::new(0),
             TaskForceOrder::Blockade,
         );
-        let continuation = state.do_military().expect("player encounter");
+        let continuation = state.carry_out_navy_orders().expect("player encounter");
         state.continuation = crate::turn_flow::TurnContinuation::NavalBattle(continuation);
         state.ensure_navy_battle();
         assert_eq!(
