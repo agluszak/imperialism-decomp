@@ -1,4 +1,5 @@
 use crate::RetailAssetsResource;
+use crate::ui::window::ModalWindow;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::prelude::*;
@@ -24,7 +25,10 @@ impl Plugin for CursorPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RequestedCursor>()
             .add_systems(Startup, load_turn_event_cursors)
-            .add_systems(PostUpdate, apply_requested_cursor);
+            .add_systems(
+                PostUpdate,
+                (suppress_modal_cursor, apply_requested_cursor).chain(),
+            );
     }
 }
 
@@ -34,6 +38,15 @@ pub(crate) fn request_turn_event_cursor(requested: &mut ResMut<RequestedCursor>,
 
 pub(crate) fn request_arrow_cursor(requested: &mut ResMut<RequestedCursor>) {
     requested.set_if_neq(RequestedCursor::Arrow);
+}
+
+fn suppress_modal_cursor(
+    modals: Query<(), With<ModalWindow>>,
+    mut requested: ResMut<RequestedCursor>,
+) {
+    if !modals.is_empty() {
+        request_arrow_cursor(&mut requested);
+    }
 }
 
 fn load_turn_event_cursors(

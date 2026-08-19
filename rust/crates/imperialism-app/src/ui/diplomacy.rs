@@ -7,11 +7,9 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{ModalDialog, RetailTree, ancestor_with};
-use super::satellite_preview::SatellitePreview;
 use super::retail::{RetailTree, ancestor_with};
+use super::satellite_preview::SatellitePreview;
 use super::session::apply_turn_stop;
-use super::window::ModalWindow;
 use crate::AppState;
 use crate::RetailAssetsResource;
 use bevy::math::Rect;
@@ -1414,16 +1412,11 @@ fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
 }
 
 fn sync_diplomacy_map_cursor(
-    modals: Query<(), With<ModalWindow>>,
     maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
     screens: Query<&DiplomacyScreen>,
     session: Res<GameSession>,
     mut requested: ResMut<RequestedCursor>,
 ) {
-    if !modals.is_empty() {
-        request_arrow_cursor(&mut requested);
-        return;
-    }
     let Ok(screen) = screens.single() else {
         request_arrow_cursor(&mut requested);
         return;

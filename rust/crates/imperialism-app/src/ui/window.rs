@@ -16,13 +16,17 @@ const CLOSE_SIZE: f32 = 14.0;
 
 #[derive(Component, Debug, Default)]
 #[require(GlobalZIndex)]
-pub struct UiWindow;
+struct UiWindow;
 
 #[derive(Component, Debug, Default)]
 #[require(UiWindow, Pickable = Pickable::IGNORE)]
 pub struct FloatingWindow;
 
 #[derive(Component, Debug, Default)]
+/// Modal interaction rooted at a generated full-viewport `retail_view` entity.
+///
+/// The root's absolute 640x480 pickable node is the pointer barrier. Custom
+/// modals without that generated root must provide equivalent geometry.
 #[require(UiWindow, TabGroup = TabGroup::modal(), Pickable, AutoFocus)]
 pub struct ModalWindow;
 
@@ -441,6 +445,26 @@ mod tests {
         app.update();
         assert_eq!(app.world().resource::<Activations>().cancel, 1);
         assert!(app.world().get_entity(okay).is_ok());
+    }
+
+    #[test]
+    fn focused_modal_child_routes_enter_to_the_modal_default() {
+        let mut app = test_app();
+        let root = app.world_mut().spawn(ModalWindow).id();
+        assert_eq!(app.world().resource::<InputFocus>().get(), Some(root));
+
+        let field = app.world_mut().spawn((AutoFocus, ChildOf(root))).id();
+        app.world_mut()
+            .spawn((ModalDefault, ChildOf(root)))
+            .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
+                activations.default += 1;
+            });
+        assert_eq!(app.world().resource::<InputFocus>().get(), Some(field));
+
+        app.world_mut().write_message(keyboard(KeyCode::Enter));
+        app.update();
+
+        assert_eq!(app.world().resource::<Activations>().default, 1);
     }
 
     #[test]

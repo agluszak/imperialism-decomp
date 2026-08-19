@@ -7,7 +7,7 @@ use crate::ui::hover_help::{
 };
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailTree};
+use crate::ui::retail::RetailTree;
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
