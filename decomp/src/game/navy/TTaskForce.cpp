@@ -1703,7 +1703,7 @@ bool TTaskForce::Encounter(TTaskForce* other) {
     return 0;
   }
 
-  if (g_pSimMgr->preferenceValues[3] != 0) {
+  if (g_pSimMgr->preferenceValues[1] != 0) {
     if (g_pSimMgr->GetActiveNationId() == nation ||
         g_pSimMgr->GetActiveNationId() == other->nation) {
       return 1;
@@ -1914,7 +1914,7 @@ bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
   if (otherShipCount == 0) {
     return 0;
   }
-  if (g_pSimMgr->preferenceValues[3] != 0) {
+  if (g_pSimMgr->preferenceValues[1] != 0) {
     if (g_pSimMgr->GetActiveNationId() == nation ||
         g_pSimMgr->GetActiveNationId() == other->nation) {
       return 1;
