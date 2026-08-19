@@ -609,7 +609,7 @@ impl MilitaryUnitKind {
     }
 }
 
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Default, Deserialize, Serialize)]
 pub(crate) struct ActionClassScores {
     pub(crate) infantry: f32,
     pub(crate) cavalry: f32,

@@ -21,5 +21,6 @@ bool CaptureGameState(RuntimeRun& run, const char* name);
 // {save, ephemeral} where ephemeral holds non-persisted GameState fields.
 bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name);
 void CaptureRuntimeGameState(RuntimeRun& run);
+unsigned int RuntimeCrtRandStateForTests();
 
 #endif

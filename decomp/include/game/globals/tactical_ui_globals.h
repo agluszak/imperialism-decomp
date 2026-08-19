@@ -24,18 +24,6 @@ extern TechPrerequisitePair g_aTechItemPrerequisitePairs[34];
 extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
 
 extern "C" {
-extern int g_nTacticalTileWidthPx_006A5430;
-
-extern int g_nTacticalTileRowHeightPx_006A5434;
-
-extern int g_nTacticalBattlefieldSurfaceWidth_006A5448;
-
-extern int g_nTacticalBattlefieldSurfaceHeight_006A544C;
-
-extern int g_nTacticalUnitSpriteCellWidth_006A5498;
-
-extern int g_nTacticalUnitSpriteCellHeight_006A549C;
-
 extern char g_nForceTacticalBattleViewFlag_006A4758;
 
 // 26 (start, end) capability-priority range pairs followed by two padding shorts.
@@ -45,3 +33,7 @@ extern short g_anCapabilityPriorityRangeData_0066ABA4[54];
 extern "C" const char s_SourcePathUTacViews_00699FF4[];
 
 } // extern "C"
+
+extern CSize g_tacticalTileSize_006A5430;
+extern CSize g_tacticalBattlefieldSurfaceSize_006A5448;
+extern CSize g_tacticalUnitSpriteCellSize_006A5498;

@@ -48,6 +48,7 @@ pub struct NavyOrdersContinuation {
     outer: usize,
     inner: usize,
     pub battle: PendingNavalBattle,
+    pub(crate) navy_battle: Option<Box<NavyBattle>>,
 }
 
 impl GameState {
@@ -398,6 +399,7 @@ impl GameState {
                                         attacker: outer_force,
                                         defender: inner_force,
                                     },
+                                    navy_battle: None,
                                 });
                             }
                             self.resolve_strategic_naval_battle(outer_force, inner_force);
@@ -886,7 +888,7 @@ impl GameState {
         }
     }
 
-    fn prune_sunk_force_ships(&mut self, force: TaskForceId) {
+    pub(super) fn prune_sunk_force_ships(&mut self, force: TaskForceId) {
         let sunk = self
             .task_force(force)
             .expect("battle task force exists")
@@ -1535,6 +1537,60 @@ mod tests {
         let second = state.resume_navy_orders(first).expect("second encounter");
         assert_eq!(second.battle.attacker, second_attacker);
         assert_eq!(second.battle.defender, second_defender);
+    }
+
+    #[test]
+    fn pending_encounter_initializes_the_recovered_headless_navy_battle_once() {
+        let mut state = game_state();
+        let attacker = NationId::new(0);
+        let defender = NationId::new(1);
+        state.turn.active_nation = attacker;
+        state.diplomacy.relationships[defender][attacker] = DiplomaticRelationship::War;
+        let (attacker_ship, attacker_force) = encounter_force(
+            &mut state,
+            attacker,
+            OceanZoneId::new(0),
+            TaskForceOrder::Patrol,
+        );
+        let (defender_ship, defender_force) = encounter_force(
+            &mut state,
+            defender,
+            OceanZoneId::new(0),
+            TaskForceOrder::Blockade,
+        );
+        let continuation = state.carry_out_navy_orders().expect("player encounter");
+        assert_eq!(continuation.battle.attacker, attacker_force);
+        assert_eq!(continuation.battle.defender, defender_force);
+        state.continuation = crate::turn_flow::TurnContinuation::NavalBattle(continuation);
+
+        let mut expected_rng = state.rng;
+        expected_rng.next_crt_rand();
+        expected_rng.next_crt_rand();
+        let rotation = (expected_rng.next_crt_rand() % 6) as usize;
+        let battle = state.ensure_navy_battle();
+        assert_eq!(
+            battle.units().map(|unit| unit.ship).collect::<Vec<_>>(),
+            vec![attacker_ship, defender_ship]
+        );
+        assert_eq!(battle.battlefield_column_count(), 16);
+        assert_eq!(battle.move_cost_rotation_start(), rotation);
+        for (offset, cost) in [15, 10, 20, 40, 20, 10].into_iter().enumerate() {
+            assert_eq!(
+                battle.move_costs_by_direction()[(rotation + offset) % 6],
+                cost
+            );
+        }
+        assert_eq!(state.rng, expected_rng);
+        state.ensure_navy_battle();
+        assert_eq!(
+            state.rng, expected_rng,
+            "idempotent initialization consumes no RNG"
+        );
+
+        let encoded = serde_json::to_vec(&state).expect("serialize navy battle");
+        let restored: GameState =
+            serde_json::from_slice(&encoded).expect("deserialize navy battle");
+        assert_eq!(restored.navy_battle(), state.navy_battle());
     }
 
     #[test]

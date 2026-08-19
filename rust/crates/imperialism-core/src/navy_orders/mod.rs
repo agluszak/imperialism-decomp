@@ -232,9 +232,11 @@ fn descriptor_weight(ship_type: ShipType) -> i32 {
 
 mod assessment;
 mod execution;
+mod naval_battle;
 mod player;
 
 pub use execution::{NavyOrdersContinuation, PendingNavalBattle};
+pub use naval_battle::{NavyBattle, NavyTargeting, NavyUnitView};
 pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 
 impl GameState {

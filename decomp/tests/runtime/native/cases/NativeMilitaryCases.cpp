@@ -1,6 +1,7 @@
 #include "NativeCases.h"
 #include "JsonArray.h"
 #include "JsonObject.h"
+#include "RuntimeGameStateCapture.h"
 #include "parson.h"
 
 #include "game/city/TCity.h"
@@ -32,6 +33,9 @@
 #include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/tactical/TArmyBattle.h"
+#include "game/tactical/TArmyPlayer.h"
+#include "game/tactical/TArmyTacUnit.h"
+#include "game/tactical/hex_tile_distance.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
@@ -45,6 +49,104 @@ unsigned int FloatBits(float value) {
   unsigned int bits = 0;
   memcpy(&bits, &value, sizeof(bits));
   return bits;
+}
+
+JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
+  TArmyTacUnit* units[256];
+  int count = battle->recordList20->GetCount();
+  int index;
+  int scan;
+  JsonObject snapshot;
+  JsonArray unitArray;
+  JsonArray fortStrength;
+
+  if (count > 256) {
+    count = 256;
+  }
+  for (index = 0; index < count; ++index) {
+    units[index] = static_cast<TArmyTacUnit*>(battle->recordList20->GetEntryByOrdinal(index + 1));
+  }
+  for (index = 0; index < count; ++index) {
+    for (scan = index + 1; scan < count; ++scan) {
+      if (units[scan]->sourceUnit38->persistentUnitId20 <
+          units[index]->sourceUnit38->persistentUnitId20) {
+        TArmyTacUnit* swap = units[index];
+        units[index] = units[scan];
+        units[scan] = swap;
+      }
+    }
+  }
+  for (index = 0; index < count; ++index) {
+    TArmyTacUnit* unit = units[index];
+    JsonObject record;
+    record.Set("source", unit->sourceUnit38->persistentUnitId20);
+    record.Set("side", unit->side20);
+    record.Set("tile", unit->tileIndex8);
+    record.Set("action_points", unit->actionPoints28);
+    record.Set("strength", unit->strength4);
+    record.Set("morale", unit->morale34);
+    record.Set("state", unit->state1c);
+    unitArray.Add(record.Release());
+  }
+  snapshot.SetOptional(
+      "selected", battle->selectedUnit1c != 0
+                      ? static_cast<TArmyTacUnit*>(battle->selectedUnit1c)
+                            ->sourceUnit38->persistentUnitId20
+                      : -1);
+  snapshot.Set("current_side", battle->currentSideC);
+  snapshot.Set("round", battle->roundCounter74);
+  snapshot.Set("outcome", battle->battleOutcome44);
+  snapshot.Set("units", unitArray.Release());
+  for (index = 0; index < 8; ++index) {
+    fortStrength.Add(battle->fortStrengthPoints54[index]);
+  }
+  snapshot.Set("fort_strength", fortStrength.Release());
+  snapshot.Set("crt_rand", RuntimeCrtRandStateForTests());
+  return snapshot.Release();
+}
+
+void StopActiveNationArmyPlayerForInput(TArmyBattle* battle) {
+  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer14);
+  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer18);
+  ourPlayer->notWatchedFlagE = (ourPlayer->nationIndex1C == ActiveNationSlot()) ? 0 : 1;
+  enemyPlayer->notWatchedFlagE = (enemyPlayer->nationIndex1C == ActiveNationSlot()) ? 0 : 1;
+}
+
+bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
+  int guard = 20000;
+  while (battle->battleOutcome44 == kTacticalBattleInProgress) {
+    TArmyPlayer* player = static_cast<TArmyPlayer*>(
+        battle->currentSideC == 0 ? battle->tacticalPlayer14 : battle->tacticalPlayer18);
+    if (battle->pendingEndOfActionFlag48 != 0 &&
+        player->nationIndex1C == ActiveNationSlot() && player->notWatchedFlagE == 0) {
+      return true;
+    }
+    if (guard-- <= 0) {
+      return false;
+    }
+    battle->NextMove();
+  }
+  return true;
+}
+
+bool AutoArmyBattleToCommit(TArmyBattle* battle) {
+  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer14);
+  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer18);
+  int guard = 20000;
+  ourPlayer->notWatchedFlagE = 1;
+  enemyPlayer->notWatchedFlagE = 1;
+  if (battle->pendingEndOfActionFlag48 != 0) {
+    TArmyPlayer* current = battle->currentSideC == 0 ? ourPlayer : enemyPlayer;
+    current->AdvanceTacticalTurnPulse();
+  }
+  while (battle->battleOutcome44 == kTacticalBattleInProgress) {
+    if (guard-- <= 0) {
+      return false;
+    }
+    battle->NextMove();
+  }
+  battle->NextMove();
+  return true;
 }
 
 void ClearAllMilitaryOrders() {
@@ -643,6 +745,308 @@ RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
   }
   battle->NextMove();
   return transition.Finish();
+}
+
+RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition) {
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  TArmyMgr* army;
+  TArmyBattle* battle;
+  JsonObject args;
+  JsonArray snapshots;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->preferenceValues[0] = 0;
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  army->ResolveNextMove();
+  battle = army->activeBattleView3a4;
+  if (battle == 0) {
+    return RuntimeActionResult::Failure("identical orders did not create a land battle");
+  }
+  StopActiveNationArmyPlayerForInput(battle);
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("tactical battle did not reach active-nation input");
+  }
+  snapshots.Add(CaptureArmyBattleSnapshot(battle));
+  battle->FinishTacticalActionAndPostNextMoveCommand();
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("Done did not reach the next active-nation input");
+  }
+  snapshots.Add(CaptureArmyBattleSnapshot(battle));
+  if (!AutoArmyBattleToCommit(battle)) {
+    return RuntimeActionResult::Failure("tactical auto did not terminate after Done");
+  }
+  return transition.Finish(snapshots.Release());
+}
+
+RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  TArmyMgr* army;
+  TArmyBattle* battle;
+  JsonObject args;
+  JsonObject result;
+  JsonArray snapshots;
+  JsonArray targets;
+  JsonArray actuals;
+  int reactionStopped = 0;
+  int inputGuard = 20;
+  int tile;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->preferenceValues[0] = 0;
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  army->ResolveNextMove();
+  battle = army->activeBattleView3a4;
+  if (battle == 0) {
+    return RuntimeActionResult::Failure("identical orders did not create a land battle");
+  }
+  StopActiveNationArmyPlayerForInput(battle);
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("tactical battle did not reach active-nation input");
+  }
+  snapshots.Add(CaptureArmyBattleSnapshot(battle));
+  while (!reactionStopped && battle->battleOutcome44 == kTacticalBattleInProgress &&
+         inputGuard-- > 0) {
+    int target = -1;
+    int bestDistance = 9999;
+    TTacticalUnit* moving = battle->selectedUnit1c;
+    for (tile = 0; tile < battle->tacticalTileCount3c; ++tile) {
+      int enemyTile;
+      int distance;
+      if (battle->tileMoveCostArray24[tile] <= 0 || battle->tileGrid4[tile].occupant4 != 0) {
+        continue;
+      }
+      distance = 9999;
+      for (enemyTile = 0; enemyTile < battle->tacticalTileCount3c; ++enemyTile) {
+        TTacticalUnit* occupant = battle->tileGrid4[enemyTile].occupant4;
+        if (occupant != 0 && occupant->side20 != moving->side20) {
+          int candidate = ComputeHexTileDistanceFromIndices(tile, enemyTile);
+          if (candidate < distance) {
+            distance = candidate;
+          }
+        }
+      }
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        target = tile;
+      }
+    }
+    if (target < 0) {
+      return RuntimeActionResult::Failure(
+          "selected tactical unit did not reach a reaction-fire move target");
+    }
+    battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(moving, target);
+    targets.Add(target);
+    actuals.Add(moving->tileIndex8);
+    reactionStopped = moving->tileIndex8 != target;
+    if (!PumpArmyBattleToActiveNationInput(battle)) {
+      return RuntimeActionResult::Failure("Move did not reach the next active-nation input");
+    }
+    snapshots.Add(CaptureArmyBattleSnapshot(battle));
+  }
+  if (!reactionStopped) {
+    return RuntimeActionResult::Failure("fixture did not produce reaction-stopped movement");
+  }
+  result.Set("targets", targets.Release());
+  result.Set("actuals", actuals.Release());
+  result.Set("snapshots", snapshots.Release());
+  if (!AutoArmyBattleToCommit(battle)) {
+    return RuntimeActionResult::Failure("tactical auto did not terminate after Move");
+  }
+  return transition.Finish(result.Release());
+}
+
+RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition, int hoverState,
+                                                    int defenderActive) {
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  TArmyMgr* army;
+  TArmyBattle* battle;
+  JsonObject args;
+  JsonObject result;
+  JsonArray kinds;
+  JsonArray targets;
+  JsonArray actuals;
+  JsonArray snapshots;
+  int guard = 40;
+  int attacked = 0;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure("fixture has no hostile army redeploy");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+  g_pSimMgr->activeNationSlot = defenderActive ? defender : unit->ownerNationSlot18;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->preferenceValues[0] = 0;
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  army->ResolveNextMove();
+  battle = army->activeBattleView3a4;
+  if (battle == 0) {
+    return RuntimeActionResult::Failure("identical orders did not create a land battle");
+  }
+  StopActiveNationArmyPlayerForInput(battle);
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("battle did not reach active-nation input");
+  }
+  snapshots.Add(CaptureArmyBattleSnapshot(battle));
+  while (!attacked && battle->battleOutcome44 == kTacticalBattleInProgress && guard-- > 0) {
+    int target = -1;
+    int tile;
+    for (tile = 0; tile < battle->tacticalTileCount3c; ++tile) {
+      if (battle->ComputeTacticalHoverCursorStateIndex(tile) == hoverState) {
+        target = tile;
+        break;
+      }
+    }
+    if (target >= 0) {
+      battle->DispatchTacticalActionByHoverStateIndex(target);
+      kinds.Add(2);
+      targets.Add(target);
+      actuals.Add(-1);
+      attacked = 1;
+    } else if (hoverState == 5) {
+      battle->FinishTacticalActionAndPostNextMoveCommand();
+      kinds.Add(0);
+      targets.Add(-1);
+      actuals.Add(-1);
+    } else {
+      int bestDistance = 9999;
+      TTacticalUnit* moving = battle->selectedUnit1c;
+      for (tile = 0; tile < battle->tacticalTileCount3c; ++tile) {
+        int enemyTile;
+        int distance = 9999;
+        if (battle->tileMoveCostArray24[tile] <= 0 || battle->tileGrid4[tile].occupant4 != 0) {
+          continue;
+        }
+        for (enemyTile = 0; enemyTile < battle->tacticalTileCount3c; ++enemyTile) {
+          TTacticalUnit* occupant = battle->tileGrid4[enemyTile].occupant4;
+          if (occupant != 0 && occupant->side20 != moving->side20) {
+            int candidate = ComputeHexTileDistanceFromIndices(tile, enemyTile);
+            if (candidate < distance) distance = candidate;
+          }
+        }
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          target = tile;
+        }
+      }
+      if (target < 0) {
+        battle->FinishTacticalActionAndPostNextMoveCommand();
+        kinds.Add(0);
+        targets.Add(-1);
+        actuals.Add(-1);
+      } else {
+        battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(moving, target);
+        kinds.Add(1);
+        targets.Add(target);
+        actuals.Add(moving->tileIndex8);
+      }
+    }
+    if (!PumpArmyBattleToActiveNationInput(battle)) {
+      return RuntimeActionResult::Failure("input did not return to active nation");
+    }
+    snapshots.Add(CaptureArmyBattleSnapshot(battle));
+  }
+  if (!attacked) {
+    return RuntimeActionResult::Failure("fixture did not reach requested attack type");
+  }
+  result.Set("kinds", kinds.Release());
+  result.Set("targets", targets.Release());
+  result.Set("actuals", actuals.Release());
+  result.Set("snapshots", snapshots.Release());
+  if (!AutoArmyBattleToCommit(battle)) {
+    return RuntimeActionResult::Failure("tactical auto did not terminate after Attack");
+  }
+  return transition.Finish(result.Release());
+}
+
+RuntimeActionResult RunInteractiveArmyBattleMelee(NativeTransition& transition) {
+  return RunInteractiveArmyBattleAttack(transition, 0xa, 1);
+}
+
+RuntimeActionResult RunInteractiveArmyBattleRanged(NativeTransition& transition) {
+  return RunInteractiveArmyBattleAttack(transition, 5, 1);
+}
+
+RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition) {
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  TArmyMgr* army;
+  TArmyBattle* battle;
+  JsonObject args;
+
+  ClearAllMilitaryOrders();
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure("fixture has no hostile army redeploy");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) return started;
+  g_pSimMgr->preferenceValues[0] = 0;
+  army = g_pMapContextActionManager;
+  army->FormStacks();
+  army->nextStackOrdinal10 = 1;
+  army->ResolveNextMove();
+  battle = army->activeBattleView3a4;
+  if (battle == 0) return RuntimeActionResult::Failure("land battle was not created");
+  StopActiveNationArmyPlayerForInput(battle);
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("battle did not reach active-nation input");
+  }
+  JSON_Value* initial = CaptureArmyBattleSnapshot(battle);
+  TArmyPlayer* player = static_cast<TArmyPlayer*>(
+      battle->currentSideC == 0 ? battle->tacticalPlayer14 : battle->tacticalPlayer18);
+  player->fieldF = 1;
+  player->notWatchedFlagE = 1;
+  player->SelectAndApplyTacticalCursorModeProfile(0);
+  player->AdvanceTacticalTurnPulse();
+  if (!AutoArmyBattleToCommit(battle)) {
+    JsonFreeValue(initial);
+    return RuntimeActionResult::Failure("retreat did not terminate");
+  }
+  return transition.Finish(initial);
 }
 
 // FormStacks once, stop at the first tactical battle, then continue from the

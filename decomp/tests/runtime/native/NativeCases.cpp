@@ -50,6 +50,11 @@ RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition);
 RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition);
+RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition);
+RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition);
+RuntimeActionResult RunInteractiveArmyBattleMelee(NativeTransition& transition);
+RuntimeActionResult RunInteractiveArmyBattleRanged(NativeTransition& transition);
+RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& transition);
 RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
@@ -153,6 +158,11 @@ const NativeCase kCases[] = {
     {"combat_moves_uncontested", RunCombatMovesUncontested},
     {"combat_moves_creates_battle", RunCombatMovesCreatesBattle},
     {"auto_resolve_land_battle", RunAutoResolveLandBattle},
+    {"interactive_army_battle_done", RunInteractiveArmyBattleDone},
+    {"interactive_army_battle_move", RunInteractiveArmyBattleMove},
+    {"interactive_army_battle_melee", RunInteractiveArmyBattleMelee},
+    {"interactive_army_battle_ranged", RunInteractiveArmyBattleRanged},
+    {"interactive_army_battle_retreat", RunInteractiveArmyBattleRetreat},
     {"combat_moves_resumes_after_battle", RunCombatMovesResumesAfterBattle},
     {"combat_moves_battle_then_later_movement", RunCombatMovesBattleThenLaterMovement},
     {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},

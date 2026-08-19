@@ -3,6 +3,7 @@
 use crate::units::TacticalCombatClass;
 use crate::{ArmyCategoryTable, FortLevelTable, MilitaryUnitTable, TacticalCombatClassTable};
 use enum_map::{Enum, EnumMap};
+use serde::{Deserialize, Serialize};
 
 pub(crate) const TACTICAL_TILE_COUNT: usize = 0x1b3;
 pub(crate) const TACTICAL_STRIDE: i32 = 0x1d;
@@ -10,7 +11,7 @@ pub(crate) const TACTICAL_ROWS: i32 = 15;
 
 /// Five unrecovered tactical-map terrain classes. Class four is impassable in every
 /// recovered deployment, pathing, and combat-table use.
-#[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, Eq, PartialEq, Serialize)]
 pub(crate) enum TacticalTerrain {
     Class0,
     Class1,

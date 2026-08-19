@@ -3030,6 +3030,18 @@ JSON_Value* CapturePending() {
 
 } // namespace
 
+unsigned int RuntimeCrtRandStateForTests() {
+  struct CrtThreadDataPrefix {
+    unsigned char prefix00[0x14];
+    unsigned int randState14;
+  };
+  CrtThreadDataPrefix* threadData = static_cast<CrtThreadDataPrefix*>(_getptd());
+  if (threadData == 0) {
+    return 0;
+  }
+  return threadData->randState14;
+}
+
 bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 ||
       g_pGlobalMapState->cityScoreTable == 0 || g_pSimMgr == 0 || g_pTradeMgr == 0 ||

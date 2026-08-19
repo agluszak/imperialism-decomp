@@ -109,6 +109,7 @@ fn add_game_plugins(app: &mut App) {
         ui::TechnologyStorePlugin,
         ui::NewspaperPlugin,
         ui::LandBattlePlugin,
+        ui::NavalBattlePlugin,
         ui::EndgamePlugin,
         ui::BattleReportPlugin,
         ui::CreditsPlugin,
