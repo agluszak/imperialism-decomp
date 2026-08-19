@@ -488,7 +488,7 @@ mod tests {
         let tile = TileId::all()
             .find(|&tile| {
                 let t = &state.map[tile];
-                t.owner_nation == Some(TileContext::from_retail_tag(6))
+                t.owner_nation == Some(TileContext::from(MajorNationId::new(6)))
                     && supports_city_site_terrain(t.terrain)
             })
             .expect("human owns some city-capable terrain");
@@ -502,11 +502,11 @@ mod tests {
             .next()
             .expect("interior tiles still have neighbors on a wrapping map");
         state.map[sea].terrain = TerrainKind::Water;
-        state.map[sea].owner_nation = Some(TileContext::from_retail_tag(0x17));
+        state.map[sea].owner_nation = Some(TileContext::Ocean(OceanZoneId::new(0)));
         state.map[sea].action = None;
         for direction in HexDirection::ALL {
             let around = home_site_scan_neighbor(sea, direction);
-            state.map[around].owner_nation = Some(TileContext::from_retail_tag(6));
+            state.map[around].owner_nation = Some(TileContext::from(MajorNationId::new(6)));
         }
 
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
@@ -613,7 +613,7 @@ mod tests {
         );
         assert_eq!(
             state.map[home].owner_nation,
-            Some(TileContext::from_retail_tag(6))
+            Some(TileContext::from(MajorNationId::new(6)))
         );
         assert!(state.map[home].flags.is_city());
         let mut story_ids = vec![1; 360];
@@ -697,7 +697,7 @@ mod tests {
 
     #[test]
     fn home_site_sea_scan_uses_its_retail_edge_wrap_and_owner_test() {
-        let owner = TileContext::from_retail_tag(6);
+        let owner = TileContext::from(MajorNationId::new(6));
         let mut world = MapMgr::new(
             MapTopology::Bounded,
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
@@ -729,7 +729,7 @@ mod tests {
         let start = geometry.tile(MapPosition::new(10, 10)).unwrap();
         let south_east = geometry.neighbor(start, HexDirection::SouthEast).unwrap();
         let water = geometry.neighbor(south_east, HexDirection::East).unwrap();
-        let owner = TileContext::from_retail_tag(6);
+        let owner = TileContext::from(MajorNationId::new(6));
         world[start].owner_nation = Some(owner);
         world[start].rendering.river_sprite = crate::RiverSprite::canonical_for_connection(1);
         world[south_east].owner_nation = Some(owner);
@@ -740,7 +740,7 @@ mod tests {
             &world, &geometry, start
         ));
 
-        world[south_east].owner_nation = Some(TileContext::from_retail_tag(5));
+        world[south_east].owner_nation = Some(TileContext::from(MajorNationId::new(5)));
         assert!(!river_reaches_sea_without_crossing_nation(
             &world, &geometry, start
         ));

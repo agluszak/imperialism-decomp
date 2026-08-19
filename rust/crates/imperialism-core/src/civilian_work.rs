@@ -2100,7 +2100,7 @@ mod tests {
             .neighbor(port_tile, HexDirection::ALL[port_tile.get() % 6])
             .expect("port tile has a bounded neighbor");
         state.map[sea_tile].terrain = TerrainKind::Water;
-        state.map[sea_tile].owner_nation = Some(TileContext::from_retail_tag(0x17));
+        state.map[sea_tile].owner_nation = Some(TileContext::Ocean(OceanZoneId::new(0)));
         civilian_on(
             &mut state,
             7,

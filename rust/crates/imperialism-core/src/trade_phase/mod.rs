@@ -29,7 +29,6 @@ pub(super) const DEAL_CATEGORY_ORDER: [TradeCommodity; TradeCommodity::LENGTH] =
     TradeCommodity::Horses,
     TradeCommodity::Oil,
 ];
-pub(super) const NO_RESOURCE: i32 = -10;
 pub(super) const GRANT_DELTA_SCALE: f32 = -1.0 / 255.0;
 pub(super) const RELATION_SCALE: f64 = 1.0 / 255.0;
 pub(super) const RELATION_RAND_SCALE: f64 = 32767.0;
@@ -459,12 +458,6 @@ pub(super) fn offer_or_grant(
 
 pub(super) fn trade_commodity(resource: ResourceKind) -> TradeCommodity {
     TradeCommodity::from_resource(resource).expect("market commodity")
-}
-
-pub(super) fn resource_code(commodity: Option<TradeCommodity>) -> i32 {
-    commodity.map_or(NO_RESOURCE, |commodity| {
-        i32::from(commodity.resource().retail())
-    })
 }
 
 pub(super) fn preferred_nation(status: CountryStatus, own: NationId) -> NationId {

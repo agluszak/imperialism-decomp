@@ -13,9 +13,8 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, fourcc};
+use imperialism_formats::{RetailPicture, fourcc, retail_picture};
 
-const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
 
 #[derive(Component)]
@@ -242,9 +241,9 @@ fn apply_offer_sheet_pose(
         };
     }
 
-    if let Ok(icon) = assets.picture(PictureId::new(
-        COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail()),
-    )) {
+    if let Ok(icon) = assets.picture(retail_picture(RetailPicture::ResourceIcon(
+        offer.commodity.resource(),
+    ))) {
         commands
             .entity(tree.find(root, fourcc!("icon")))
             .insert(ImageNode::new(icon));

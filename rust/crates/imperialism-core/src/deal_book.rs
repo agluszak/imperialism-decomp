@@ -513,23 +513,27 @@ mod tests {
     use super::*;
     use crate::test_support::game_state;
 
-    fn nation(slot: u8) -> NationId {
-        NationId::from_retail_slot(slot).unwrap()
+    fn gp(id: usize) -> NationId {
+        MajorNationId::new(id).nation()
     }
 
-    fn major(slot: u8) -> MajorNationId {
-        MajorNationId::new(usize::from(slot))
+    fn mn(id: usize) -> NationId {
+        MinorNationId::new(id).nation()
+    }
+
+    fn major(id: usize) -> MajorNationId {
+        MajorNationId::new(id)
     }
 
     fn entry(
         kind: DealBookEntryKind,
-        counterparty: u8,
+        counterparty: NationId,
         amount: i32,
         unit_price: i32,
     ) -> TradeDealBookEntry {
         TradeDealBookEntry {
             kind,
-            nation: nation(counterparty),
+            nation: counterparty,
             amount,
             unit_price,
         }
@@ -540,12 +544,13 @@ mod tests {
         let mut state = game_state();
         let economy = &mut state.nations.major_mut(major(0)).economy;
         economy.deal_book[TradeCommodity::Cotton] = vec![
-            entry(DealBookEntryKind::Accept, 3, 2, 100),
-            entry(DealBookEntryKind::Offer, 4, 1, 100),
+            entry(DealBookEntryKind::Accept, gp(3), 2, 100),
+            entry(DealBookEntryKind::Offer, gp(4), 1, 100),
         ];
-        economy.deal_book[TradeCommodity::Wool] = vec![entry(DealBookEntryKind::Offer, 2, 5, 90)];
+        economy.deal_book[TradeCommodity::Wool] =
+            vec![entry(DealBookEntryKind::Offer, gp(2), 5, 90)];
         economy.deal_book[TradeCommodity::Arms] =
-            vec![entry(DealBookEntryKind::Accept, 1, 0, -123_456)];
+            vec![entry(DealBookEntryKind::Accept, gp(1), 0, -123_456)];
 
         let history = state.deal_book_history(major(0));
         assert!(matches!(
@@ -638,7 +643,7 @@ mod tests {
                     ..
                 }
             ] if lines == &[DealBookAidLine {
-                nation: nation(7),
+                nation: mn(0),
                 amount: 40
             }]
         ));
@@ -650,7 +655,7 @@ mod tests {
         let mut state = game_state();
         let economy = &mut state.nations.major_mut(major(0)).economy;
         economy.deal_book[TradeCommodity::Cotton] = (0..12)
-            .map(|index| entry(DealBookEntryKind::Accept, 1, index + 1, 100))
+            .map(|index| entry(DealBookEntryKind::Accept, gp(1), index + 1, 100))
             .collect();
         let pages = state.deal_book_history(major(0)).sold_pages();
         assert!(pages.len() >= 2);
@@ -704,27 +709,27 @@ mod tests {
     fn category_rows_use_signed_current_offers_and_descending_offer_nations() {
         let mut state = game_state();
         let row = &mut state.market.rows[TradeCommodity::Cotton];
-        row.current_offer_by_nation[nation(0)] = -2;
-        row.current_offer_by_nation[nation(3)] = 4;
-        row.current_offer_by_nation[nation(22)] = 1;
-        row.current_offer_by_nation[nation(5)] = -1;
+        row.current_offer_by_nation[gp(0)] = -2;
+        row.current_offer_by_nation[gp(3)] = 4;
+        row.current_offer_by_nation[mn(15)] = 1;
+        row.current_offer_by_nation[gp(5)] = -1;
         let category = state.deal_book_category(major(0), TradeCommodity::Cotton);
         assert!(category.player_participated);
         assert_eq!(
             category
                 .offers
                 .iter()
-                .map(|row| (row.nation.retail_slot(), row.amount))
+                .map(|row| (row.nation, row.amount))
                 .collect::<Vec<_>>(),
-            vec![(22, 1), (3, 4)]
+            vec![(mn(15), 1), (gp(3), 4)]
         );
         assert_eq!(
             category
                 .bids
                 .iter()
-                .map(|row| row.nation.retail_slot())
+                .map(|row| row.nation)
                 .collect::<Vec<_>>(),
-            vec![0, 5]
+            vec![gp(0), gp(5)]
         );
         assert!(matches!(
             category.sell_pages()[0][0],
@@ -735,7 +740,7 @@ mod tests {
     #[test]
     fn category_sell_uses_the_fallback_header_when_the_player_did_not_participate() {
         let mut state = game_state();
-        state.market.rows[TradeCommodity::Wool].current_offer_by_nation[nation(3)] = 2;
+        state.market.rows[TradeCommodity::Wool].current_offer_by_nation[gp(3)] = 2;
         let category = state.deal_book_category(major(0), TradeCommodity::Wool);
         assert!(!category.player_participated);
         assert!(matches!(

@@ -200,9 +200,7 @@ impl GameState {
 
     pub(crate) fn recompute_tile_strategic_score_heatmap(&mut self) {
         let mut resource_weights = ResourceTable::<i32>::default();
-        for resource in 0..=16 {
-            let commodity = TradeCommodity::from_retail(resource)
-                .expect("manufactured heatmap weights use trade commodities");
+        for commodity in TradeCommodity::ALL {
             resource_weights[commodity.resource()] = self.market.rows[commodity].base_price;
         }
         resource_weights[ResourceKind::Gems] = 500;
@@ -518,36 +516,16 @@ mod tests {
         assert_eq!(state.military_units[&id].order().target(), Some(hold));
     }
 
-    fn set_owned_province(state: &mut GameState, province: u16, owner: u8, adjacent: &[u16]) {
-        let owner = NationId::from_retail_slot(owner).unwrap();
-        let id = ProvinceId::new(usize::from(province));
-        state.map.provinces[id] = ProvinceState::new(
-            Some(owner),
-            Some(owner),
-            ProvinceDevelopmentStage::None,
-            adjacent
-                .iter()
-                .copied()
-                .map(|id| ProvinceId::new(usize::from(id)))
-                .collect(),
-            vec![TileId::new(0); adjacent.len()],
-            None,
-            FortLevel::None,
-            None,
-            0,
-            None,
-            None,
-            Vec::new(),
-            ResourceTable::default(),
-            MajorNationTable::default(),
-            0,
-            false,
-            0,
-            String::new(),
-        );
+    fn set_owned_province(
+        state: &mut GameState,
+        province: ProvinceId,
+        owner: NationId,
+        adjacent: &[ProvinceId],
+    ) {
+        state.map.provinces[province] = crate::test_support::owned_province(owner, adjacent);
         state
             .nations
-            .append_owned_region_during_construction(owner, id);
+            .append_owned_region_during_construction(owner, province);
     }
 
     fn add_armor(state: &mut GameState, nation: NationId, province: ProvinceId) {
@@ -577,8 +555,18 @@ mod tests {
         let attacker = MajorNationId::new(0);
         let defender = MajorNationId::new(1);
         state.nations.majors[&attacker].auto = Some(AutoGreatPowerState::default());
-        set_owned_province(&mut state, 0, 0, &[1]);
-        set_owned_province(&mut state, 1, 1, &[0]);
+        set_owned_province(
+            &mut state,
+            ProvinceId::new(0),
+            attacker.nation(),
+            &[ProvinceId::new(1)],
+        );
+        set_owned_province(
+            &mut state,
+            ProvinceId::new(1),
+            defender.nation(),
+            &[ProvinceId::new(0)],
+        );
         state.nations.majors[&attacker]
             .economy
             .candidate_nation_flags[defender.nation()] = true;
@@ -618,8 +606,18 @@ mod tests {
         let attacker = MajorNationId::new(0);
         let defender = MajorNationId::new(1);
         state.nations.majors[&attacker].auto = None;
-        set_owned_province(&mut state, 0, 0, &[1]);
-        set_owned_province(&mut state, 1, 1, &[0]);
+        set_owned_province(
+            &mut state,
+            ProvinceId::new(0),
+            attacker.nation(),
+            &[ProvinceId::new(1)],
+        );
+        set_owned_province(
+            &mut state,
+            ProvinceId::new(1),
+            defender.nation(),
+            &[ProvinceId::new(0)],
+        );
         state.nations.majors[&attacker]
             .economy
             .candidate_nation_flags[defender.nation()] = true;

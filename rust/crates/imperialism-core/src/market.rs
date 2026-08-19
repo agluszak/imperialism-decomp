@@ -97,6 +97,25 @@ impl TradeCommodity {
     ];
     pub const MANUFACTURED: [Self; 4] =
         [Self::Clothing, Self::Furniture, Self::Hardware, Self::Arms];
+    pub const ALL: [Self; 17] = [
+        Self::Cotton,
+        Self::Wool,
+        Self::Timber,
+        Self::Coal,
+        Self::Iron,
+        Self::Horses,
+        Self::Oil,
+        Self::Food,
+        Self::Fabric,
+        Self::Lumber,
+        Self::Paper,
+        Self::Steel,
+        Self::Fuel,
+        Self::Clothing,
+        Self::Furniture,
+        Self::Hardware,
+        Self::Arms,
+    ];
 
     pub const fn from_resource(resource: ResourceKind) -> Option<Self> {
         match resource {
@@ -329,7 +348,7 @@ impl TradeMarketState {
 }
 
 pub(crate) fn all_trade_commodities() -> impl ExactSizeIterator<Item = TradeCommodity> {
-    (0..TradeCommodity::LENGTH).map(TradeCommodity::from_usize)
+    TradeCommodity::ALL.into_iter()
 }
 
 fn market_price(row: &TradeMarketRow) -> i32 {

@@ -43,7 +43,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     let city = &state.nations().major(nation).city;
     let material_pictures = SHIPYARD_MATERIALS.map(|resource| {
         assets
-            .transparent_picture(PictureId::new(700 + i16::from(resource.retail())), 0x10)
+            .transparent_picture(retail_picture(RetailPicture::ResourceIcon(resource)), 0x10)
             .expect("retail Shipyard material picture must load")
     });
     let (detail_font, _, detail_line_height, _) = assets

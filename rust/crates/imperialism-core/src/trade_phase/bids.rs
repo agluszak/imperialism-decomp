@@ -76,29 +76,28 @@ impl GameState {
             return;
         };
         if saved_primary == state.trade.primary_manufactured_request {
-            let current = resource_code(state.trade.primary_manufactured_request);
+            let current = state.trade.primary_manufactured_request;
             let mut rolled;
             loop {
                 let roll = self.rng.next_crt_rand() % 100;
                 rolled = if roll < 0x1e {
-                    0x0d
+                    TradeCommodity::Clothing
                 } else if roll < 0x3c {
-                    0x0e
+                    TradeCommodity::Furniture
                 } else if roll > 0x59 {
-                    0x10
+                    TradeCommodity::Arms
                 } else {
-                    0x0f
+                    TradeCommodity::Hardware
                 };
-                if rolled != current {
+                if Some(rolled) != current {
                     break;
                 }
             }
-            let price =
-                self.market.rows[TradeCommodity::from_retail(rolled).expect("manufactured")].price;
+            let price = self.market.rows[rolled].price;
             if state.trade.thresholds.primary_manufactured_price < price {
                 state.trade.primary_manufactured_request = None;
             } else {
-                state.trade.primary_manufactured_request = TradeCommodity::from_retail(rolled);
+                state.trade.primary_manufactured_request = Some(rolled);
             }
         }
 

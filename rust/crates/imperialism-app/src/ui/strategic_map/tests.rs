@@ -334,7 +334,7 @@ fn city_marker_offsets_follow_former_owner_and_development_stage() {
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x700));
 
     fixture.edit(|map, origin| {
-        map[origin].former_owner_nation = Some(TileContext::from_retail_tag(8));
+        map[origin].former_owner_nation = Some(TileContext::from(MinorNationId::new(1)));
         map[origin].flags = TileFlags::from_bits_retain(1);
     });
     assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x9c0));
@@ -467,11 +467,11 @@ fn nation_borders_use_the_owner_palette() {
     let mut pixels = vec![1_u8; (TILE_SIZE * TILE_SIZE) as usize];
     compose_strategic_borders(&fixture.state(), origin, &mut pixels);
     assert!(
-        pixels.contains(&MAJOR_NATION_BORDER_PALETTES[MajorNationId::new(6).get()]),
+        pixels.contains(&MAJOR_NATION_BORDER_PALETTES[MajorNationId::new(6)]),
         "major nation 6 must stroke with retail palette 0x2e"
     );
     assert!(
-        !pixels.contains(&MAJOR_NATION_BORDER_PALETTES[MajorNationId::new(0).get()]),
+        !pixels.contains(&MAJOR_NATION_BORDER_PALETTES[MajorNationId::new(0)]),
         "a nation-6 border must not use another major's palette"
     );
 }
@@ -503,6 +503,7 @@ fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
     assert!(
         indices.contains(&CITY_BORDER_PALETTE)
             || MAJOR_NATION_BORDER_PALETTES
+                .as_array()
                 .iter()
                 .any(|palette| indices.contains(palette)),
         "ownership borders should copy nation or city palette ink"

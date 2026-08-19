@@ -1007,10 +1007,9 @@ mod tests {
             &mut introductory_rng,
         );
         assert_eq!(introductory_rng.state(), 2_745_024);
-        for target in 11..15 {
+        for minor in [4, 5, 6, 7].map(MinorNationId::new) {
             assert_eq!(
-                introductory.mission_levels[MajorNationId::new(6)]
-                    [NationId::from_retail_slot(target as u8).unwrap()],
+                introductory.mission_levels[MajorNationId::new(6)][minor.nation()],
                 DiplomaticMissionLevel::TradeConsulate
             );
         }

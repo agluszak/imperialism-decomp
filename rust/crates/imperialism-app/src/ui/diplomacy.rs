@@ -1547,7 +1547,7 @@ fn bind_diplomacy_notice(
     );
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500 + source.get() as i16);
+    let coat_picture = retail_picture(RetailPicture::DialogCoat(source));
     if let Ok(image) = assets.picture(coat_picture) {
         commands.entity(linger.coat).insert(ImageNode::new(image));
     }
@@ -1587,7 +1587,7 @@ fn bind_diplomacy_entanglement_notice(
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500 + source.get() as i16);
+    let coat_picture = retail_picture(RetailPicture::DialogCoat(source));
     if let Ok(image) = assets.picture(coat_picture) {
         commands.entity(linger.coat).insert(ImageNode::new(image));
     }

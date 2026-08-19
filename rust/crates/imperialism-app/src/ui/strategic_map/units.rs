@@ -14,9 +14,12 @@ use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
-use enum_map::Enum;
+use enum_map::{Enum, EnumMap};
 use imperialism_core::*;
-use imperialism_formats::*;
+use imperialism_formats::{
+    ArmyCountBucket, CivilianPosePicture, DibPalette, FleetVisualEra, IndexedPicture, OwnerBadge,
+    PictureId, RetailPicture, owner_flag_cell_width, owner_flag_source_x, retail_picture,
+};
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 use std::time::Duration;
@@ -24,16 +27,6 @@ use std::time::Duration;
 const UNIT_TRANSPARENT_INDEX: u8 = 0x10;
 const FOREIGN_CIVILIAN_FRAME_INDEX: u8 = 0x13;
 const STRATEGIC_NAVAL_FRAME_COUNT: i32 = 18;
-const CIVILIAN_IDLE_PICTURE_BASE: i16 = 400;
-const CIVILIAN_WORKING_PICTURE_BASE: i16 = 418;
-const ARMY_COUNT_PICTURE_IDS: [i16; 4] = [570, 572, 574, 576];
-const OWNER_FLAG_PICTURE_ID: i16 = 580;
-const FLEET_ATLAS_PICTURE_BASE: i16 = 1_380;
-const CIVILIAN_SPRITE_CLASS: CivilianUnitTable<u8> =
-    CivilianUnitTable::from_array([2, 3, 1, 6, 0, 7, 5, 4, 8]);
-const CIVILIAN_ANIMATION_PICTURE_IDS: CivilianUnitTable<i16> = CivilianUnitTable::from_array([
-    14_000, 14_005, 14_011, 14_015, 14_021, 14_026, 14_030, 14_035, 14_040,
-]);
 const CIVILIAN_ANIMATION_FRAME_COUNTS: CivilianUnitTable<u8> =
     CivilianUnitTable::from_array([5, 4, 2, 4, 3, 2, 3, 3, 2]);
 const CIVILIAN_ANIMATION_LOGICAL_COUNTS: CivilianUnitTable<u8> =
@@ -75,12 +68,12 @@ enum StrategicUnitSprite {
         kind: CivilianUnitKind,
         pose: CivilianPose,
         frame: u8,
-        owner_badge: Option<u8>,
+        owner_badge: Option<OwnerBadge>,
         framed: bool,
     },
     Army {
-        bucket: u8,
-        owner_slot: u8,
+        bucket: ArmyCountBucket,
+        owner: OwnerBadge,
     },
     Naval {
         frame: u16,
@@ -100,7 +93,7 @@ struct VisibleStrategicUnit {
 struct StrategicUnitProjectKey {
     view_origin: TileId,
     active_nation: NationId,
-    fleet_atlas: i16,
+    fleet_atlas: PictureId,
     visible: u64,
 }
 
@@ -158,10 +151,10 @@ impl CivilianSelectionPulse {
 #[derive(Component)]
 pub(crate) struct StrategicUnitSprites {
     civilians: HashMap<(CivilianUnitKind, CivilianPose), Vec<IndexedPicture>>,
-    army_counts: [IndexedPicture; 4],
+    army_counts: EnumMap<ArmyCountBucket, IndexedPicture>,
     owner_flags: IndexedPicture,
     fleet_frames: Vec<IndexedPicture>,
-    fleet_atlas_id: i16,
+    fleet_atlas_id: PictureId,
     composed: HashMap<StrategicUnitSprite, Handle<Image>>,
 }
 
@@ -225,7 +218,7 @@ pub(crate) fn sync_strategic_units(
             continue;
         };
         let selected = interaction.civilian;
-        let fleet_id = fleet_atlas_picture_id(state).get();
+        let fleet_id = fleet_atlas_picture_id(state);
         if sprites.fleet_atlas_id != fleet_id {
             sprites.fleet_frames = load_fleet_frames(&assets, state);
             sprites.fleet_atlas_id = fleet_id;
@@ -414,9 +407,11 @@ fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> St
             }
         }
     }
-    let army_counts = ARMY_COUNT_PICTURE_IDS.map(|id| load_required_picture(assets, id));
-    let owner_flags = load_required_picture(assets, OWNER_FLAG_PICTURE_ID);
-    let fleet_atlas_id = fleet_atlas_picture_id(state).get();
+    let army_counts = EnumMap::from_fn(|bucket| {
+        load_required_picture(assets, retail_picture(RetailPicture::ArmyCount(bucket)))
+    });
+    let owner_flags = load_required_picture(assets, retail_picture(RetailPicture::OwnerFlagStrip));
+    let fleet_atlas_id = fleet_atlas_picture_id(state);
     let fleet_frames = load_fleet_frames(assets, state);
     StrategicUnitSprites {
         civilians,
@@ -438,39 +433,39 @@ fn load_civilian_pictures(
         return (0..CIVILIAN_ANIMATION_FRAME_COUNTS[kind])
             .map(|frame| {
                 assets
-                    .indexed_picture(PictureId::new(picture_id + i16::from(frame)))
+                    .indexed_picture(civilian_animation_frame(kind, frame))
                     .ok()
                     .map(first_tile_frame)
             })
             .collect();
     }
-    if let Ok(picture) = assets.indexed_picture(PictureId::new(picture_id)) {
+    if let Ok(picture) = assets.indexed_picture(picture_id) {
         return Some(vec![first_tile_frame(picture)]);
     }
     assets
-        .indexed_picture(PictureId::new(civilian_picture_id(
-            kind,
-            CivilianPose::Animated,
-        )))
+        .indexed_picture(civilian_picture_id(kind, CivilianPose::Animated))
         .ok()
         .map(|picture| vec![first_tile_frame(picture)])
 }
 
-fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> i16 {
-    match pose {
-        CivilianPose::Idle => CIVILIAN_IDLE_PICTURE_BASE + i16::from(civilian_sprite_class(kind)),
-        CivilianPose::Selected => {
-            CIVILIAN_IDLE_PICTURE_BASE + 9 + i16::from(civilian_sprite_class(kind))
-        }
-        CivilianPose::Working => {
-            CIVILIAN_WORKING_PICTURE_BASE + i16::from(civilian_sprite_class(kind))
-        }
-        CivilianPose::Animated => CIVILIAN_ANIMATION_PICTURE_IDS[kind],
-    }
+fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> PictureId {
+    retail_picture(RetailPicture::Civilian {
+        kind,
+        pose: match pose {
+            CivilianPose::Idle => CivilianPosePicture::Idle,
+            CivilianPose::Selected => CivilianPosePicture::Selected,
+            CivilianPose::Working => CivilianPosePicture::Working,
+            CivilianPose::Animated => CivilianPosePicture::Animated,
+        },
+    })
+}
+
+fn civilian_animation_frame(kind: CivilianUnitKind, frame: u8) -> PictureId {
+    retail_picture(RetailPicture::CivilianAnimation { kind, frame })
 }
 
 fn load_fleet_frames(assets: &RetailUiAssets, state: &GameState) -> Vec<IndexedPicture> {
-    let atlas = load_required_picture(assets, fleet_atlas_picture_id(state).get());
+    let atlas = load_required_picture(assets, fleet_atlas_picture_id(state));
     (0..STRATEGIC_NAVAL_FRAME_COUNT as u32)
         .filter_map(|frame| {
             let x = frame * TILE_SIZE as u32;
@@ -480,8 +475,7 @@ fn load_fleet_frames(assets: &RetailUiAssets, state: &GameState) -> Vec<IndexedP
         .collect()
 }
 
-fn load_required_picture(assets: &RetailUiAssets, id: i16) -> IndexedPicture {
-    let picture_id = PictureId::new(id);
+fn load_required_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedPicture {
     assets.indexed_picture(picture_id).unwrap_or_else(|error| {
         panic!("retail strategic unit picture {picture_id} must load: {error}")
     })
@@ -552,12 +546,12 @@ fn compose_unit_sprite(
                 .get(&(kind, pose))?
                 .get(usize::from(frame))?
                 .clone();
-            if let Some(slot) = owner_badge {
+            if let Some(badge) = owner_badge {
                 blit_indexed(
                     &sprites.owner_flags,
-                    i32::from(slot) * 9,
+                    owner_flag_source_x(badge),
                     0,
-                    9,
+                    owner_flag_cell_width(),
                     6,
                     &mut picture,
                     28,
@@ -569,8 +563,8 @@ fn compose_unit_sprite(
             }
             Some(picture)
         }
-        StrategicUnitSprite::Army { bucket, owner_slot } => {
-            let count = sprites.army_counts.get(usize::from(bucket))?;
+        StrategicUnitSprite::Army { bucket, owner } => {
+            let count = &sprites.army_counts[bucket];
             let mut picture = transparent_tile();
             blit_indexed(
                 count,
@@ -584,9 +578,9 @@ fn compose_unit_sprite(
             );
             blit_indexed(
                 &sprites.owner_flags,
-                i32::from(owner_slot) * 9,
+                owner_flag_source_x(owner),
                 0,
-                9,
+                owner_flag_cell_width(),
                 6,
                 &mut picture,
                 7,
@@ -705,7 +699,7 @@ fn strategic_unit_project_key(
     StrategicUnitProjectKey {
         view_origin,
         active_nation: state.turn().active_nation,
-        fleet_atlas: fleet_atlas_picture_id(state).get(),
+        fleet_atlas: fleet_atlas_picture_id(state),
         visible: hasher.finish(),
     }
 }
@@ -714,14 +708,13 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
     let nation = NationId::as_major(state.turn().active_nation)
         .expect("strategic map requires an active major nation");
     let status = &state.technology().research_status_by_nation[nation];
-    let mut variant = 0;
-    if status[Technology::AdvancedIronWorking] == TechnologyResearchStatus::Researched {
-        variant = 1;
-    }
-    if status[Technology::MarineEngineering] == TechnologyResearchStatus::Researched {
-        variant = 2;
-    }
-    PictureId::new(FLEET_ATLAS_PICTURE_BASE + nation.get() as i16 + variant * 7)
+    retail_picture(RetailPicture::FleetAtlas {
+        nation,
+        era: FleetVisualEra::from_research(
+            status[Technology::AdvancedIronWorking] == TechnologyResearchStatus::Researched,
+            status[Technology::MarineEngineering] == TechnologyResearchStatus::Researched,
+        ),
+    })
 }
 
 fn visible_strategic_units(
@@ -809,8 +802,8 @@ fn army_badge_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> 
     Some(ProjectedUnit {
         identity: StrategicUnitIdentity::Army(province),
         sprite: StrategicUnitSprite::Army {
-            bucket: army_count_bucket(displayed),
-            owner_slot: owner_flag_slot(tile_state.owner_nation),
+            bucket: ArmyCountBucket::from_displayed_count(displayed),
+            owner: OwnerBadge::from_tile_owner(tile_state.owner_nation),
         },
     })
 }
@@ -872,7 +865,8 @@ fn civilian_sprite(
         kind: unit.unit_type(),
         pose: civilian_pose(unit.order(), foreign, selected),
         frame: 0,
-        owner_badge: foreign.then(|| owner_flag_slot(Some(TileContext::from(unit.owner_nation())))),
+        owner_badge: foreign
+            .then(|| OwnerBadge::from_tile_owner(Some(TileContext::from(unit.owner_nation())))),
         framed: foreign,
     }
 }
@@ -921,10 +915,6 @@ fn civilian_uses_work_animation(order: &CivilianWorkOrder) -> bool {
     )
 }
 
-fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
-    CIVILIAN_SPRITE_CLASS[kind]
-}
-
 fn civilian_tile_is_visible(owner: Option<TileContext>, active: NationId) -> bool {
     match owner {
         Some(owner) if owner.nation().and_then(NationId::as_major).is_none() => true,
@@ -938,25 +928,6 @@ fn garrison_filler(kind: MilitaryUnitKind) -> bool {
         kind,
         MilitaryUnitKind::Minutemen | MilitaryUnitKind::Militia | MilitaryUnitKind::Conscripts
     )
-}
-
-fn army_count_bucket(displayed: u16) -> u8 {
-    match displayed {
-        0 => 0,
-        1..=5 => 1,
-        6..=10 => 2,
-        _ => 3,
-    }
-}
-
-fn owner_flag_slot(owner: Option<TileContext>) -> u8 {
-    match owner
-        .and_then(TileContext::nation)
-        .and_then(NationId::as_major)
-    {
-        Some(id) => id.get() as u8,
-        None => MajorNationId::COUNT as u8,
-    }
 }
 
 fn naval_action_frame(action: Option<TileAction>) -> Option<u16> {
@@ -1052,7 +1023,7 @@ mod tests {
         );
         assert_eq!(
             civilian_picture_id(CivilianUnitKind::Engineer, CivilianPose::Selected),
-            409
+            PictureId::new(409)
         );
     }
 
@@ -1111,19 +1082,6 @@ mod tests {
                 framed: false,
             }
         );
-    }
-
-    #[test]
-    fn civilian_sprite_classes_match_the_retail_order_type_table() {
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Engineer), 0);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Farmer), 1);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Miner), 2);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Prospector), 3);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Developer), 4);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Fisherman), 5);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Forester), 6);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Rancher), 7);
-        assert_eq!(civilian_sprite_class(CivilianUnitKind::Driller), 8);
     }
 
     #[test]
@@ -1193,7 +1151,7 @@ mod tests {
             active.nation()
         ));
         assert!(civilian_tile_is_visible(
-            Some(TileContext::from_retail_tag(8)),
+            Some(TileContext::from(MinorNationId::new(1))),
             active.nation()
         ));
         assert!(!civilian_tile_is_visible(None, active.nation()));
@@ -1201,12 +1159,30 @@ mod tests {
 
     #[test]
     fn army_count_buckets_match_retail_thresholds() {
-        assert_eq!(army_count_bucket(0), 0);
-        assert_eq!(army_count_bucket(1), 1);
-        assert_eq!(army_count_bucket(5), 1);
-        assert_eq!(army_count_bucket(6), 2);
-        assert_eq!(army_count_bucket(10), 2);
-        assert_eq!(army_count_bucket(11), 3);
+        assert_eq!(
+            ArmyCountBucket::from_displayed_count(0),
+            ArmyCountBucket::Empty
+        );
+        assert_eq!(
+            ArmyCountBucket::from_displayed_count(1),
+            ArmyCountBucket::Few
+        );
+        assert_eq!(
+            ArmyCountBucket::from_displayed_count(5),
+            ArmyCountBucket::Few
+        );
+        assert_eq!(
+            ArmyCountBucket::from_displayed_count(6),
+            ArmyCountBucket::Several
+        );
+        assert_eq!(
+            ArmyCountBucket::from_displayed_count(10),
+            ArmyCountBucket::Several
+        );
+        assert_eq!(
+            ArmyCountBucket::from_displayed_count(11),
+            ArmyCountBucket::Many
+        );
         assert!(garrison_filler(MilitaryUnitKind::Minutemen));
         assert!(garrison_filler(MilitaryUnitKind::Militia));
         assert!(garrison_filler(MilitaryUnitKind::Conscripts));
@@ -1227,18 +1203,18 @@ mod tests {
         };
         let sprites = StrategicUnitSprites {
             civilians: HashMap::new(),
-            army_counts: std::array::from_fn(|_| count.clone()),
+            army_counts: EnumMap::from_fn(|_| count.clone()),
             owner_flags: flags,
             fleet_frames: Vec::new(),
-            fleet_atlas_id: 0,
+            fleet_atlas_id: PictureId::new(0),
             composed: HashMap::new(),
         };
 
         let picture = compose_unit_sprite(
             &sprites,
             StrategicUnitSprite::Army {
-                bucket: 0,
-                owner_slot: 0,
+                bucket: ArmyCountBucket::Empty,
+                owner: OwnerBadge::Major(MajorNationId::new(0)),
             },
         )
         .unwrap();
@@ -1251,13 +1227,16 @@ mod tests {
     }
 
     #[test]
-    fn owner_flag_slots_collapse_minor_nations() {
+    fn owner_badges_collapse_minor_nations() {
         assert_eq!(
-            owner_flag_slot(Some(TileContext::from(MajorNationId::new(3)))),
-            3
+            OwnerBadge::from_tile_owner(Some(TileContext::from(MajorNationId::new(3)))),
+            OwnerBadge::Major(MajorNationId::new(3))
         );
-        assert_eq!(owner_flag_slot(Some(TileContext::from_retail_tag(8))), 7);
-        assert_eq!(owner_flag_slot(None), 7);
+        assert_eq!(
+            OwnerBadge::from_tile_owner(Some(TileContext::from(MinorNationId::new(1)))),
+            OwnerBadge::Neutral
+        );
+        assert_eq!(OwnerBadge::from_tile_owner(None), OwnerBadge::Neutral);
     }
 
     #[test]

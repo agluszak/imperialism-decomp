@@ -700,7 +700,7 @@ mod tests {
         clear_map(&mut parts);
         let land = parts.map.geometry().tile(MapPosition::new(2, 10)).unwrap();
         parts.map[land].terrain = TerrainKind::Plains;
-        parts.map[land].owner_nation = Some(TileContext::from_retail_tag(3));
+        parts.map[land].owner_nation = Some(TileContext::from(MajorNationId::new(3)));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
@@ -719,10 +719,10 @@ mod tests {
             .neighbor(tile, HexDirection::West)
             .unwrap();
         parts.map[tile].terrain = TerrainKind::Plains;
-        parts.map[tile].owner_nation = Some(TileContext::from_retail_tag(2));
+        parts.map[tile].owner_nation = Some(TileContext::from(MajorNationId::new(2)));
         parts.map[tile].province = Some(ProvinceId::new(1));
         parts.map[west].terrain = TerrainKind::Plains;
-        parts.map[west].owner_nation = Some(TileContext::from_retail_tag(2));
+        parts.map[west].owner_nation = Some(TileContext::from(MajorNationId::new(2)));
         parts.map[west].province = Some(ProvinceId::new(2));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
@@ -742,9 +742,9 @@ mod tests {
             .geometry()
             .neighbor(tile, HexDirection::West)
             .unwrap();
-        parts.map[tile].owner_nation = Some(TileContext::from_retail_tag(1));
+        parts.map[tile].owner_nation = Some(TileContext::from(MajorNationId::new(1)));
         parts.map[west].terrain = TerrainKind::Plains;
-        parts.map[west].owner_nation = Some(TileContext::from_retail_tag(2));
+        parts.map[west].owner_nation = Some(TileContext::from(MajorNationId::new(2)));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
@@ -762,9 +762,9 @@ mod tests {
         let left = parts.map.geometry().tile(MapPosition::new(3, 0)).unwrap();
         let right = parts.map.geometry().tile(MapPosition::new(3, 107)).unwrap();
         parts.map[left].terrain = TerrainKind::Plains;
-        parts.map[left].owner_nation = Some(TileContext::from_retail_tag(0));
+        parts.map[left].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
         parts.map[right].terrain = TerrainKind::Plains;
-        parts.map[right].owner_nation = Some(TileContext::from_retail_tag(1));
+        parts.map[right].owner_nation = Some(TileContext::from(MajorNationId::new(1)));
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 

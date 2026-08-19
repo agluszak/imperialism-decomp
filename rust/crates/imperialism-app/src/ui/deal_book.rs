@@ -19,7 +19,6 @@ const HISTORY_BACKGROUND: i16 = 0x2260;
 const CATEGORY_BACKGROUND: i16 = 0x2263;
 const TAB_STRIP_BASE: i16 = 0x2266;
 const FLAG_ATLAS: i16 = 680;
-const COMMODITY_ICON_BASE: i16 = 700;
 const PAGE_LEFT: f32 = 65.0;
 const PAGE_RIGHT: f32 = 314.0;
 const PAGE_TOP: f32 = 89.0;
@@ -159,11 +158,11 @@ fn bind_deal_book(
         flags: assets
             .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
             .expect("retail deal-book flag atlas must load"),
-        commodities: ResourceTable::from_array(std::array::from_fn(|index| {
+        commodities: ResourceTable::from_fn(|resource| {
             assets
-                .transparent_picture(PictureId::new(COMMODITY_ICON_BASE + index as i16), 0x10)
+                .transparent_picture(retail_picture(RetailPicture::ResourceIcon(resource)), 0x10)
                 .expect("retail deal-book commodity icon must load")
-        })),
+        }),
     };
     let (body, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {

@@ -22,6 +22,8 @@ macro_rules! dense_id {
                 }
             }
 
+            /// Dense table index for typed collections and format adapters.
+            /// Do not use this to invent a second protocol (`base + id`, `id * width`).
             pub const fn get(self) -> usize {
                 self.0
             }

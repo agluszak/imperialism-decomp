@@ -6,37 +6,41 @@ const TECH_ITEM_PURCHASE_COST: TechnologyTable<i32> = TechnologyTable::from_arra
     0, 0, 1000, 1000, 1500, 1500, 1500, 1500, 3000, 3000, 3000, 6000, 7000, 10000, 12000, 12000,
     12000, 12000, 12000, 25000, 20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000,
 ]);
-const TECH_ITEM_PREREQUISITES: TechnologyTable<(u8, u8)> = TechnologyTable::from_array([
-    (0, 0),
-    (0, 0),
-    (0, 0),
-    (0, 0),
-    (0, 0),
-    (1, 0),
-    (1, 0),
-    (0, 0),
-    (7, 3),
-    (0, 0),
-    (2, 0),
-    (0, 0),
-    (6, 0),
-    (0, 0),
-    (11, 0),
-    (0, 0),
-    (8, 0),
-    (10, 0),
-    (10, 0),
-    (0, 0),
-    (7, 0),
-    (15, 0),
-    (13, 0),
-    (5, 12),
-    (9, 10),
-    (14, 0),
-    (19, 0),
-    (24, 0),
-    (26, 0),
-]);
+const TECH_ITEM_PREREQUISITES: TechnologyTable<[Option<Technology>; 2]> =
+    TechnologyTable::from_array([
+        [None, None],
+        [None, None],
+        [None, None],
+        [None, None],
+        [None, None],
+        [Some(Technology::HighPressureSteamEngine), None],
+        [Some(Technology::HighPressureSteamEngine), None],
+        [None, None],
+        [Some(Technology::FeedGrasses), Some(Technology::CottonGin)],
+        [None, None],
+        [Some(Technology::SeedDrill), None],
+        [None, None],
+        [Some(Technology::IronRailroadBridge), None],
+        [None, None],
+        [Some(Technology::BessemerConverter), None],
+        [None, None],
+        [Some(Technology::SpinningJenny), None],
+        [Some(Technology::SteelPlows), None],
+        [Some(Technology::SteelPlows), None],
+        [None, None],
+        [Some(Technology::FeedGrasses), None],
+        [Some(Technology::AdvancedIronWorking), None],
+        [Some(Technology::RifledArtillery), None],
+        [
+            Some(Technology::SquareSetTimbering),
+            Some(Technology::CompoundSteamEngine),
+        ],
+        [Some(Technology::Paddlewheels), Some(Technology::SteelPlows)],
+        [Some(Technology::BreechLoadingRifles), None],
+        [Some(Technology::OilDrilling), None],
+        [Some(Technology::MarineEngineering), None],
+        [Some(Technology::Chemistry), None],
+    ]);
 
 /// Per-nation University capability state used by city production and recruitment.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
@@ -473,10 +477,11 @@ impl GameState {
         nation: MajorNationId,
         technology: Technology,
     ) -> [Option<Technology>; 2] {
-        let (primary, secondary) = TECH_ITEM_PREREQUISITES[technology];
         let mut missing = [None, None];
-        for (output, id) in missing.iter_mut().zip([primary, secondary]) {
-            let prerequisite = Technology::from_index(id).expect("retail prerequisite id");
+        for (output, prerequisite) in missing.iter_mut().zip(TECH_ITEM_PREREQUISITES[technology]) {
+            let Some(prerequisite) = prerequisite else {
+                continue;
+            };
             if self.technology.research_status_by_nation[nation][prerequisite]
                 != TechnologyResearchStatus::Researched
             {
@@ -1170,6 +1175,27 @@ mod tests {
         assert_eq!(
             TechnologyState::default().latest_global_unlock,
             Technology::SeedDrill
+        );
+    }
+
+    #[test]
+    fn technology_prerequisites_are_named_technologies() {
+        let state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        assert_eq!(
+            state.missing_technology_prerequisites(nation, Technology::SeedDrill),
+            [None, None]
+        );
+        assert_eq!(
+            state.missing_technology_prerequisites(nation, Technology::SpinningJenny),
+            [Some(Technology::FeedGrasses), Some(Technology::CottonGin)]
+        );
+        assert_eq!(
+            state.missing_technology_prerequisites(nation, Technology::Dynamite),
+            [
+                Some(Technology::SquareSetTimbering),
+                Some(Technology::CompoundSteamEngine)
+            ]
         );
     }
 

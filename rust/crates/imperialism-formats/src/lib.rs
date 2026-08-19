@@ -10,6 +10,7 @@ mod legacy_save;
 mod legacy_stream;
 mod media;
 mod retail_assets;
+mod retail_catalog;
 mod retail_fonts;
 mod retail_resources;
 mod retail_ui;
@@ -26,6 +27,10 @@ pub use legacy_save::{
 };
 pub use media::{MovieId, MusicTrack, SoundId};
 pub use retail_assets::{NewsTable, RetailAssetError, RetailAssets};
+pub use retail_catalog::{
+    ArmyCountBucket, CivilianPosePicture, FleetVisualEra, OwnerBadge, RetailAtlasCell,
+    RetailPicture, owner_flag_cell_width, owner_flag_source_x, retail_picture, setup_flag_cell,
+};
 pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError,
     RetailTextAlignment, RetailTextStyleError, RetailTextStylePreset,

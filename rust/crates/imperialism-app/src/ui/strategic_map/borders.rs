@@ -4,8 +4,8 @@ use super::TILE_SIZE;
 
 pub(super) const CITY_BORDER_PALETTE: u8 = 0x13;
 pub(super) const MINOR_NATION_BORDER_PALETTE: u8 = 0x0a;
-pub(super) const MAJOR_NATION_BORDER_PALETTES: [u8; MAJOR_NATION_COUNT] =
-    [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
+pub(super) const MAJOR_NATION_BORDER_PALETTES: MajorNationTable<u8> =
+    MajorNationTable::from_array([0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e]);
 pub(super) fn compose_strategic_borders(state: &GameState, tile: TileId, pixels: &mut [u8]) {
     let tile_state = state.map()[tile];
     if tile_state.owner_border_mask != 0 {
@@ -248,7 +248,7 @@ fn border_palette(owner: Option<TileContext>) -> u8 {
     owner
         .and_then(TileContext::nation)
         .and_then(NationId::as_major)
-        .map(|nation| MAJOR_NATION_BORDER_PALETTES[nation.get()])
+        .map(|nation| MAJOR_NATION_BORDER_PALETTES[nation])
         .unwrap_or(MINOR_NATION_BORDER_PALETTE)
 }
 

@@ -494,7 +494,7 @@ mod tests {
         }
         let sea = civilian_sea_scan_neighbor(home, HexDirection::NorthEast);
         state.map[sea].terrain = TerrainKind::Water;
-        state.map[sea].owner_nation = Some(TileContext::from_retail_tag(0x17));
+        state.map[sea].owner_nation = Some(TileContext::Ocean(OceanZoneId::new(0)));
 
         state.turn.economic_turn = 10;
         let hostile = MajorNationId::new(0);

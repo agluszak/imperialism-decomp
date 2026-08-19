@@ -529,13 +529,13 @@ mod tests {
         }
     }
 
-    fn civilian(_id: i32, nation: u8, tile: TileId) -> CivilianUnitState {
+    fn civilian(_id: i32, nation: NationId, tile: TileId) -> CivilianUnitState {
         CivilianUnitState {
-            nation: NationId::from_retail_slot(nation).expect("test nation"),
+            nation,
             unit_type: CivilianUnitKind::Miner,
             location: crate::CivilianLocation::OnMap(tile),
             order: CivilianWorkOrder::Idle,
-            owner_nation: NationId::from_retail_slot(nation).expect("test nation"),
+            owner_nation: nation,
             roster_id: 0,
             registered: false,
             next_on_tile: None,
@@ -588,19 +588,16 @@ mod tests {
 
     fn military_unit(
         _id: i32,
-        nation: u8,
+        nation: NationId,
         unit_type: MilitaryUnitKind,
-        province: i32,
+        province: ProvinceId,
     ) -> MilitaryUnitState {
         MilitaryUnitState {
-            nation: NationId::from_retail_slot(nation).expect("test nation"),
+            nation,
             unit_type,
-            stationed_province: ProvinceId::try_new(province as usize),
-            order: crate::MilitaryOrder::idle(
-                [ProvinceId::try_new(province as usize); 3],
-                [ProvinceId::try_new(province as usize); 3],
-            ),
-            owner_nation: NationId::from_retail_slot(nation).expect("test nation"),
+            stationed_province: Some(province),
+            order: crate::MilitaryOrder::idle([Some(province); 3], [Some(province); 3]),
+            owner_nation: nation,
             roster_id: 0,
             registered: true,
             name: String::new(),
@@ -619,11 +616,13 @@ mod tests {
             .neighbor(start, crate::HexDirection::NorthEast)
             .unwrap();
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
-        state.map[first_neighbor].owner_nation = Some(crate::TileContext::from_retail_tag(0));
-        state
-            .civilian_units
-            .insert(CivilianUnitId::new(1), civilian(1, 0, start));
+        state.map[start].owner_nation = Some(crate::TileContext::from(MajorNationId::new(0)));
+        state.map[first_neighbor].owner_nation =
+            Some(crate::TileContext::from(MajorNationId::new(0)));
+        state.civilian_units.insert(
+            CivilianUnitId::new(1),
+            civilian(1, MajorNationId::new(0).nation(), start),
+        );
 
         assert_eq!(
             state.find_reachable_recruit_spawn_tile(start, false),
@@ -635,7 +634,7 @@ mod tests {
     fn active_flag_two_is_allowed_only_for_the_retail_unit_type() {
         let start = TileId::new(200);
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
+        state.map[start].owner_nation = Some(crate::TileContext::from(MajorNationId::new(0)));
         state.map[start].flags = TileFlags::RECRUITMENT_RESERVED;
 
         assert_eq!(state.find_reachable_recruit_spawn_tile(start, false), None);
@@ -649,10 +648,11 @@ mod tests {
     fn occupancy_checks_the_tile_owner_not_an_unrelated_civilian() {
         let start = TileId::new(200);
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
-        state
-            .civilian_units
-            .insert(CivilianUnitId::new(1), civilian(1, 1, start));
+        state.map[start].owner_nation = Some(crate::TileContext::from(MajorNationId::new(0)));
+        state.civilian_units.insert(
+            CivilianUnitId::new(1),
+            civilian(1, MajorNationId::new(1).nation(), start),
+        );
 
         assert_eq!(
             state.find_reachable_recruit_spawn_tile(start, false),
@@ -668,11 +668,13 @@ mod tests {
             .neighbor(start, crate::HexDirection::NorthEast)
             .unwrap();
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
-        state.map[first_neighbor].owner_nation = Some(crate::TileContext::from_retail_tag(0));
-        state
-            .civilian_units
-            .insert(CivilianUnitId::new(40), civilian(40, 0, start));
+        state.map[start].owner_nation = Some(crate::TileContext::from(MajorNationId::new(0)));
+        state.map[first_neighbor].owner_nation =
+            Some(crate::TileContext::from(MajorNationId::new(0)));
+        state.civilian_units.insert(
+            CivilianUnitId::new(40),
+            civilian(40, MajorNationId::new(0).nation(), start),
+        );
         state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 2);
 
         assert_eq!(state.civilian_units.len(), 2);
@@ -696,7 +698,7 @@ mod tests {
     fn negative_quantity_skips_spawns_but_keeps_retail_tail_effects() {
         let start = TileId::new(200);
         let mut state = game(start);
-        state.map[start].owner_nation = Some(crate::TileContext::from_retail_tag(0));
+        state.map[start].owner_nation = Some(crate::TileContext::from(MajorNationId::new(0)));
         state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Miner, -2);
 
         assert!(state.civilian_units.is_empty());
@@ -723,7 +725,12 @@ mod tests {
                 let id = MilitaryUnitId::new(41 + index);
                 (
                     id,
-                    military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17),
+                    military_unit(
+                        41 + index,
+                        MajorNationId::new(0).nation(),
+                        MilitaryUnitKind::Skirmishers,
+                        crate::ProvinceId::new(17),
+                    ),
                 )
             })
             .collect();
@@ -753,7 +760,12 @@ mod tests {
                 let id = MilitaryUnitId::new(41 + index);
                 (
                     id,
-                    military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17),
+                    military_unit(
+                        41 + index,
+                        MajorNationId::new(0).nation(),
+                        MilitaryUnitKind::Skirmishers,
+                        crate::ProvinceId::new(17),
+                    ),
                 )
             })
             .collect();

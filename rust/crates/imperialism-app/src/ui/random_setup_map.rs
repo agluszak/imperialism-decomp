@@ -11,25 +11,24 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{
-    MAJOR_NATION_COUNT, MajorNationId, MapGeometry, MapPosition, MapTopology, NationId,
-    TileContext, TileId,
+    MajorNationId, MajorNationTable, MapGeometry, MapPosition, MapTopology, NationId, TileContext,
+    TileId,
 };
-use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
+use imperialism_formats::{
+    DibPalette, FourCc, RetailPicture, Rgb, fourcc, retail_picture, setup_flag_cell,
+};
 
 const MAP_TAG: FourCc = fourcc!("map ");
 const COAT_TAG: FourCc = fourcc!("coat");
 const FLAG_TAG: FourCc = fourcc!("flag");
-const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
-const FLAG_ATLAS_PICTURE: PictureId = PictureId::new(8699);
-const FLAG_WIDTH: usize = 32;
-const FLAG_HEIGHT: usize = 24;
 const TRANSPARENT_FLAG_RGB: Rgb = Rgb::new(0xff, 0, 0xff);
 const PREVIEW_WIDTH: usize = 324;
 const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
 const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
-const MAJOR_NATION_PALETTES: [u8; MAJOR_NATION_COUNT] = [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
+const MAJOR_NATION_PALETTES: MajorNationTable<u8> =
+    MajorNationTable::from_array([0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e]);
 
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
@@ -96,7 +95,7 @@ fn sync_random_setup_coat(
         if coat.nation == Some(setup.nation) {
             continue;
         }
-        let picture_id = coat_picture_id(setup.nation);
+        let picture_id = retail_picture(RetailPicture::SetupCoat(setup.nation));
         let handle = match pictures.picture(picture_id) {
             Ok(handle) => handle,
             Err(error) => {
@@ -112,10 +111,6 @@ fn sync_random_setup_coat(
     }
 }
 
-fn coat_picture_id(nation: MajorNationId) -> PictureId {
-    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + nation.get() as i16)
-}
-
 fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
@@ -127,10 +122,11 @@ fn sync_random_setup_flag(
     if !setup.is_changed() && !added {
         return;
     }
+    let flag_strip = retail_picture(RetailPicture::SetupFlagStrip);
     let handle = if let Some(handle) = transparent_atlas.clone() {
         handle
     } else {
-        match pictures.transformed_picture(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency) {
+        match pictures.transformed_picture(flag_strip, apply_flag_atlas_transparency) {
             Ok(handle) => {
                 *transparent_atlas = Some(handle.clone());
                 handle
@@ -138,7 +134,7 @@ fn sync_random_setup_flag(
             Err(error) => {
                 warn!(
                     "could not apply transparency to retail setup flag atlas {:?}: {error}",
-                    FLAG_ATLAS_PICTURE
+                    flag_strip
                 );
                 return;
             }
@@ -149,8 +145,8 @@ fn sync_random_setup_flag(
         if flag.nation == Some(setup.nation) {
             continue;
         }
-        let left = setup.nation.get() as f32 * FLAG_WIDTH as f32;
-        let rect = Rect::new(left, 0.0, left + FLAG_WIDTH as f32, FLAG_HEIGHT as f32);
+        let cell = setup_flag_cell(setup.nation);
+        let rect = Rect::new(cell.x, cell.y, cell.x + cell.width, cell.y + cell.height);
         if let Some(mut image_node) = image_node {
             image_node.image = handle.clone();
             image_node.rect = Some(rect);
@@ -447,7 +443,7 @@ fn is_selection_maskable(palette: u8) -> bool {
 }
 
 fn major_nation_palette(nation: MajorNationId) -> u8 {
-    MAJOR_NATION_PALETTES[nation.get()]
+    MAJOR_NATION_PALETTES[nation]
 }
 
 fn nation_at_preview_position(
@@ -469,7 +465,7 @@ fn nation_at_preview_position(
 }
 
 fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
-    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[nation.get()] == palette)
+    MajorNationId::all().find(|&nation| MAJOR_NATION_PALETTES[nation] == palette)
 }
 
 pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {
@@ -509,8 +505,10 @@ fn preview_image(palette_indices: &[u8], palette: &DibPalette) -> Image {
 mod tests {
     use super::*;
     use imperialism_core::{
-        GeneratedTerrainTile, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TerrainKind, TileContext,
+        GeneratedTerrainTile, OceanZoneId, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TerrainKind,
+        TileContext,
     };
+    use imperialism_formats::PictureId;
 
     fn tiles(owner: Option<TileContext>) -> Vec<GeneratedTerrainTile> {
         vec![
@@ -528,7 +526,7 @@ mod tests {
     #[test]
     fn renders_major_nation_palette_indices() {
         let pixels = compose_preview_indices(
-            &tiles(Some(TileContext::from_retail_tag(0))),
+            &tiles(Some(TileContext::from(MajorNationId::new(0)))),
             MajorNationId::new(1),
         );
 
@@ -538,9 +536,8 @@ mod tests {
 
     #[test]
     fn distinct_sea_zones_render_as_one_unbordered_ocean() {
-        let mut map = tiles(Some(TileContext::from_retail_tag(NationId::COUNT as u8)));
-        map[TileId::new(1000).get()].owner =
-            Some(TileContext::from_retail_tag((NationId::COUNT + 1) as u8));
+        let mut map = tiles(Some(TileContext::Ocean(OceanZoneId::new(0))));
+        map[TileId::new(1000).get()].owner = Some(TileContext::Ocean(OceanZoneId::new(1)));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 
@@ -564,7 +561,8 @@ mod tests {
     #[test]
     fn retains_the_native_odd_row_stride_spill() {
         let mut map = tiles(None);
-        map[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileContext::from_retail_tag(0));
+        map[STRATEGIC_MAP_WIDTH as usize + 107].owner =
+            Some(TileContext::from(MajorNationId::new(0)));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 
@@ -621,11 +619,11 @@ mod tests {
     #[test]
     fn selected_nation_uses_the_retail_coat_picture_range() {
         assert_eq!(
-            coat_picture_id(MajorNationId::new(0)),
+            retail_picture(RetailPicture::SetupCoat(MajorNationId::new(0))),
             PictureId::new(0x11c6)
         );
         assert_eq!(
-            coat_picture_id(MajorNationId::new(6)),
+            retail_picture(RetailPicture::SetupCoat(MajorNationId::new(6))),
             PictureId::new(0x11cc)
         );
     }

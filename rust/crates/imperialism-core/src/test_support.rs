@@ -10,16 +10,15 @@ use indexmap::IndexMap;
 pub(crate) fn random_game_names() -> RandomGameNames {
     let mut localized_nation_names = NationTable::default();
     let mut province_names_by_nation = NationTable::default();
-    for nation in NationId::all() {
-        localized_nation_names[nation] = format!("N{}", nation.retail_slot());
-        let count = if NationId::as_major(nation).is_some() {
-            8
-        } else {
-            4
-        };
-        province_names_by_nation[nation] = (0..count)
-            .map(|ordinal| format!("N{}P{}", nation.retail_slot(), ordinal + 1))
-            .collect();
+    for id in MajorNationId::all() {
+        localized_nation_names[id.nation()] = format!("{id:?}");
+        province_names_by_nation[id.nation()] =
+            (1..=8).map(|ordinal| format!("{id:?}P{ordinal}")).collect();
+    }
+    for id in MinorNationId::all() {
+        localized_nation_names[id.nation()] = format!("{id:?}");
+        province_names_by_nation[id.nation()] =
+            (1..=4).map(|ordinal| format!("{id:?}P{ordinal}")).collect();
     }
     RandomGameNames {
         localized_nation_names,
@@ -192,4 +191,27 @@ pub(crate) fn game_state() -> GameState {
     // on this fixture, and that phase rebuilds yields from those markers.
     state.map[TileId::new(1)].owner_nation = Some(TileContext::from(MajorNationId::new(0)));
     state
+}
+
+pub(crate) fn owned_province(owner: NationId, adjacent: &[ProvinceId]) -> ProvinceState {
+    ProvinceState::new(
+        Some(owner),
+        Some(owner),
+        ProvinceDevelopmentStage::None,
+        adjacent.to_vec(),
+        vec![TileId::new(0); adjacent.len()],
+        None,
+        FortLevel::None,
+        None,
+        0,
+        None,
+        None,
+        Vec::new(),
+        ResourceTable::default(),
+        MajorNationTable::default(),
+        0,
+        false,
+        0,
+        String::new(),
+    )
 }
