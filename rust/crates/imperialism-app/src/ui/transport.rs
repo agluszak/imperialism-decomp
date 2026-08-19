@@ -4,6 +4,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
+use super::hover_help::catalog_string;
 use super::retail::RetailTree;
 use crate::AppState;
 use bevy::picking::hover::Hovered;
@@ -761,9 +762,7 @@ fn transport_hover_text(
     } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
         transport_string(assets, 3)
     } else {
-        assets
-            .string(0x2711, i16::from(resource.retail()) + 1)
-            .expect("retail transport commodity name must load")
+        catalog_string(assets, RetailString::ResourceName(resource))
     };
 
     if allocation == TransportAllocation::GOLD || allocation == TransportAllocation::GEMS {

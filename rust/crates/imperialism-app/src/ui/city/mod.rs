@@ -26,6 +26,8 @@ mod lifecycle;
 
 pub(super) use building_visuals::{CityBuildingActionVisual, CityBuildingVisual};
 
+pub(in crate::ui::city) use super::hover_help::catalog_string;
+
 use bindings::*;
 use building_visuals::*;
 use common_controls::*;

@@ -306,8 +306,10 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     let mut hit_regions = Vec::new();
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
-        let offset = i16::from(visual.slot as u8);
-        let mask_picture = PictureId::new(7100 + level as i16 * 16 + offset);
+        let mask_picture = retail_picture(RetailPicture::CityHitMask {
+            slot: visual.slot,
+            level,
+        });
         let mask = match assets.indexed_picture(mask_picture) {
             Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(&indexed) {
                 Some(mask) => mask,
@@ -631,12 +633,7 @@ pub(in crate::ui::city) fn sync_city_hover_title(
     let nation = session.active_major_nation();
     let text = hovered.map_or_else(String::new, |building| {
         if city_oil_industry_unlocked(&session.game, nation, building.slot) {
-            assets
-                .string(
-                    CITY_BUILDING_STRING_GROUP,
-                    city_string_index(i16::from(building.slot.retail())),
-                )
-                .expect("retail English City string")
+            city_building_name(assets, building.slot)
         } else {
             String::new()
         }

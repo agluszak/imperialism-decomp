@@ -2,7 +2,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
+use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, catalog_string, get_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, RetailUiAssets, ancestor_with};
 use super::session::{GameSession, apply_turn_stop};
@@ -13,7 +13,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{RetailPicture, fourcc, retail_picture};
+use imperialism_formats::{RetailPicture, RetailString, fourcc, retail_picture};
 
 const OFFER_STRING_GROUP: i16 = 0x2740;
 
@@ -188,10 +188,9 @@ fn apply_offer_sheet_pose(
         .display_name(offer.seller)
         .unwrap_or("")
         .to_owned();
-    let commodity = get_string(
+    let commodity = catalog_string(
         assets,
-        0x2711,
-        i16::from(offer.commodity.resource().retail()),
+        RetailString::ResourceName(offer.commodity.resource()),
     );
     let amount = offer.amount.to_string();
     let price = format_currency(offer.price);

@@ -80,14 +80,10 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             spec,
             Some(ShipyardRowData {
                 ship_type,
-                ship_name: assets
-                    .string(0x2716, i16::from(ship_type.retail()) + 1)
-                    .expect("retail ship name"),
-                description: assets
-                    .string(0x2752, i16::from(ship_type.retail()))
-                    .expect("retail ship description"),
+                ship_name: catalog_string(assets, RetailString::ShipName(ship_type)),
+                description: catalog_string(assets, RetailString::ShipDescription(ship_type)),
                 picture: assets
-                    .picture(PictureId::new(9834 + i16::from(ship_type.retail())))
+                    .picture(retail_picture(RetailPicture::ShipPortrait(ship_type)))
                     .expect("retail Shipyard detail picture"),
                 materials: SHIPYARD_MATERIALS
                     .iter()
@@ -116,7 +112,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         )
     });
     let queue_icons = assets
-        .transparent_picture(PictureId::new(9807), 0x10)
+        .transparent_picture(retail_picture(RetailPicture::ShipyardQueueStrip), 0x10)
         .expect("retail Shipyard queue icons must load");
     let stat_labels: [String; 6] =
         std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
@@ -145,7 +141,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             Visibility::Hidden
         });
         if let Some(row_data) = details.as_ref() {
-            let source_left = f32::from(row_data.ship_type.retail() - 1) * 80.0;
+            let cell = shipyard_queue_cell(row_data.ship_type);
             commands.spawn((
                 Node {
                     position_type: PositionType::Absolute,
@@ -157,7 +153,12 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                 },
                 ImageNode {
                     image: queue_icons.clone(),
-                    rect: Some(Rect::new(source_left, 0.0, source_left + 80.0, 45.0)),
+                    rect: Some(Rect::new(
+                        cell.x,
+                        cell.y,
+                        cell.x + cell.width,
+                        cell.y + cell.height,
+                    )),
                     ..default()
                 },
                 Pickable::IGNORE,

@@ -4,6 +4,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
+use super::hover_help::catalog_string;
 use super::retail::RetailTree;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, ReturnTo};
@@ -18,7 +19,6 @@ use imperialism_formats::*;
 const HISTORY_BACKGROUND: i16 = 0x2260;
 const CATEGORY_BACKGROUND: i16 = 0x2263;
 const TAB_STRIP_BASE: i16 = 0x2266;
-const FLAG_ATLAS: i16 = 680;
 const PAGE_LEFT: f32 = 65.0;
 const PAGE_RIGHT: f32 = 314.0;
 const PAGE_TOP: f32 = 89.0;
@@ -156,7 +156,7 @@ fn bind_deal_book(
             .picture(PictureId::new(tab_base))
             .expect("retail deal-book filled tab strip must load"),
         flags: assets
-            .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
+            .transparent_picture(retail_picture(RetailPicture::DealBookFlagStrip), 0x10)
             .expect("retail deal-book flag atlas must load"),
         commodities: ResourceTable::from_fn(|resource| {
             assets
@@ -601,7 +601,7 @@ fn project_category(
     set_picture(pictures, background, screen.pictures.category.clone());
     commands.entity(history).remove::<InteractionDisabled>();
     let template = get_string(assets, 0x2741, 3);
-    let commodity_name = get_string(assets, 0x2711, i16::from(commodity.resource().retail()));
+    let commodity_name = catalog_string(assets, RetailString::ResourceName(commodity.resource()));
     set_text(
         texts,
         deal_book_title(titles, DealBookTitle::Left),
@@ -795,7 +795,7 @@ fn spawn_commodity_header(
     resource: ResourceKind,
     market_price: i32,
 ) {
-    let name = get_string(assets, 0x2711, i16::from(resource.retail()));
+    let name = catalog_string(assets, RetailString::ResourceName(resource));
     spawn_icon(
         commands,
         screen.pictures.commodities[resource].clone(),
@@ -1142,10 +1142,9 @@ fn format_deal_line(
     deal: DealBookDealLine,
 ) -> String {
     let counterparty = nation_name(state, deal.counterparty);
-    let commodity = get_string(
+    let commodity = catalog_string(
         assets,
-        0x2711,
-        i16::from(deal.commodity.resource().retail()),
+        RetailString::ResourceName(deal.commodity.resource()),
     );
     if deal.amount != 0 {
         let amount = deal.amount.to_string();
@@ -1218,8 +1217,8 @@ fn nation_name(state: &GameState, nation: NationId) -> String {
 }
 
 fn flag_rect(nation: NationId) -> Rect {
-    let left = f32::from(nation.retail_slot()) * ICON_WIDTH;
-    Rect::new(left, 0.0, left + ICON_WIDTH, ICON_HEIGHT)
+    let cell = deal_book_flag_cell(nation);
+    Rect::new(cell.x, cell.y, cell.x + cell.width, cell.y + cell.height)
 }
 
 fn place_page(nodes: &mut Query<&mut Node>, entity: Entity, left: f32, top: f32) {

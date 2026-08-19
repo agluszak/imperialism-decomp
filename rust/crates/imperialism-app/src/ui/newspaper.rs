@@ -1,6 +1,6 @@
 use super::fill_brackets;
 use super::generated;
-use super::hover_help::get_string;
+use super::hover_help::{catalog_string, get_string};
 use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
@@ -8,7 +8,7 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
+use imperialism_formats::{NewsTable, RetailString, RetailTextStylePreset, fourcc};
 
 const COLUMN_X: [f32; 3] = [24.0, 226.0, 428.0];
 const COLUMN_WIDTH: f32 = 188.0;
@@ -263,7 +263,7 @@ fn format_nation_names(
             continue;
         }
         if string_group {
-            names.push(get_string(assets, 0x2711, i16::from(nation.retail_slot())));
+            names.push(catalog_string(assets, RetailString::NewsNationName(nation)));
         } else if let Some(name) = state.nations().display_name(nation) {
             names.push(name.to_owned());
         }

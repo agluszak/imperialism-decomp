@@ -222,8 +222,8 @@ pub(in crate::ui::city) fn bind_construction_dialog(
         tree,
         BuildingChangePresentation {
             slot,
-            picture: PictureId::new(9250 + i16::from(slot as u8) * 5),
-            name: city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail())),
+            picture: retail_picture(RetailPicture::CityConstruction { slot, stage: 0 }),
+            name: city_building_name(assets, slot),
             capacity,
             cost: city_string(assets, CITY_TEXT_STRING_GROUP, 0x14),
             warning_text: city_string(
@@ -260,7 +260,10 @@ pub(in crate::ui::city) fn bind_expansion_dialog(
         tree,
         BuildingChangePresentation {
             slot,
-            picture: PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level)),
+            picture: retail_picture(RetailPicture::CityConstruction {
+                slot,
+                stage: next_level,
+            }),
             name: building_name,
             capacity: format_retail_number(
                 &city_string(assets, CITY_TEXT_STRING_GROUP, 0x10),
@@ -303,11 +306,7 @@ pub(in crate::ui::city) fn on_city_expansion_open(
     );
     let can_reserve = needed <= session.game.city_order_limit(nation, order).maximum;
     let root = commands.spawn_scene(generated::citydlog_9221()).id();
-    let building_name = city_string(
-        &assets,
-        CITY_BUILDING_STRING_GROUP,
-        i16::from(open.slot.retail()),
-    );
+    let building_name = city_building_name(&assets, open.slot);
     commands.entity(root).insert((
         ExpansionDialog {
             slot: open.slot,

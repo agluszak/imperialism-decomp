@@ -2,20 +2,16 @@
 
 use super::map_interaction::{MapInteractionMode, OceanViewport, StrategicInteraction};
 use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
+use enum_map::EnumMap;
 use imperialism_core::*;
-use imperialism_formats::IndexedPicture;
+use imperialism_formats::{
+    FleetVisualEra, IndexedPicture, OceanImprovementKind, OwnerBadge, RetailPicture,
+    ocean_border_palette, ocean_fill_palette, ocean_improvement_source_x, retail_picture,
+};
 
 const OCEAN_TILE: i32 = 16;
 const OCEAN_FILL: u8 = 0x1a;
 const BOUNDED_MAP_BLANK: u8 = 0x16;
-const OWNER_PALETTE: [u8; 24] = [
-    0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c, 0xbd, 0x0a, 0x0b, 0x0d, 0x29, 0xde, 0xdf, 0xfa, 0x2c, 0x31,
-    0x33, 0x41, 0x48, 0xd0, 0xcd, 0xce, 0xcf, OCEAN_FILL,
-];
-const BORDER_PALETTE: [u8; 24] = [
-    0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae, 0xca, 0x7d, 0x7d, 0x7d, 0x7d, 0xe2, 0xe2, 0xe2, 0xe2, 0x51,
-    0x51, 0x51, 0x51, 0xf0, 0xf0, 0xf0, 0xf0, 0xc6,
-];
 const VERTICAL_OFFSETS: [[i32; 16]; 3] = [
     [5, 6, 7, 11, 5, 6, 7, 8, 10, 11, 12, 13, 2, 3, 4, 5],
     [2, 3, 9, 13, 2, 11, 12, 13, 2, 3, 4, 5, 10, 11, 12, 13],
@@ -31,7 +27,7 @@ pub(super) struct OceanRenderAssets {
     base_a: IndexedPicture,
     base_b: IndexedPicture,
     visited: IndexedPicture,
-    active: Vec<IndexedPicture>,
+    active: EnumMap<FleetVisualEra, MajorNationTable<IndexedPicture>>,
 }
 
 impl OceanRenderAssets {
@@ -40,12 +36,16 @@ impl OceanRenderAssets {
             base_a: picture(1422),
             base_b: picture(1423),
             visited: picture(807),
-            active: (0..21).map(|offset| picture(1401 + offset)).collect(),
+            active: EnumMap::from_fn(|era| {
+                MajorNationTable::from_fn(|nation| {
+                    picture(retail_picture(RetailPicture::OceanFleet { nation, era }).get())
+                })
+            }),
         }
     }
 
-    fn active(&self, nation: MajorNationId, variant: usize) -> &IndexedPicture {
-        &self.active[variant * MajorNationId::COUNT + nation.get()]
+    fn active(&self, nation: MajorNationId, era: FleetVisualEra) -> &IndexedPicture {
+        &self.active[era][nation]
     }
 }
 
@@ -105,10 +105,10 @@ fn draw_base_ownership_and_borders(state: &GameState, ocean: &OceanViewport) -> 
                 continue;
             };
             let tile_state = state.map()[tile];
-            let owner = ocean_owner(tile_state.owner_nation);
+            let owner = ocean_owner_paint(tile_state.owner_nation);
             let water = tile_state.terrain == TerrainKind::Water;
             if !water {
-                fill_ocean_cell(&mut indices, screen_x, screen_y, OWNER_PALETTE[owner]);
+                fill_ocean_cell(&mut indices, screen_x, screen_y, paint_fill(owner));
             }
             if screen_x >= 0 {
                 draw_ocean_borders(
@@ -127,8 +127,35 @@ fn draw_base_ownership_and_borders(state: &GameState, ocean: &OceanViewport) -> 
     indices
 }
 
-fn ocean_owner(owner: Option<TileContext>) -> usize {
-    owner.map_or(23, |owner| owner.to_retail_tag().min(23) as usize)
+fn ocean_owner_paint(owner: Option<TileContext>) -> OceanOwnerPaint {
+    match owner.and_then(TileContext::nation) {
+        Some(NationId::Major(id)) => OceanOwnerPaint::Major(id),
+        Some(NationId::Minor(id)) => OceanOwnerPaint::Minor(id),
+        None => OceanOwnerPaint::Unowned,
+    }
+}
+
+#[derive(Clone, Copy, Eq, PartialEq)]
+enum OceanOwnerPaint {
+    Major(MajorNationId),
+    Minor(MinorNationId),
+    Unowned,
+}
+
+fn paint_fill(paint: OceanOwnerPaint) -> u8 {
+    match paint {
+        OceanOwnerPaint::Major(id) => ocean_fill_palette(Some(TileContext::from(id))),
+        OceanOwnerPaint::Minor(id) => ocean_fill_palette(Some(TileContext::from(id))),
+        OceanOwnerPaint::Unowned => ocean_fill_palette(None),
+    }
+}
+
+fn paint_border(paint: OceanOwnerPaint) -> u8 {
+    match paint {
+        OceanOwnerPaint::Major(id) => ocean_border_palette(Some(TileContext::from(id))),
+        OceanOwnerPaint::Minor(id) => ocean_border_palette(Some(TileContext::from(id))),
+        OceanOwnerPaint::Unowned => ocean_border_palette(None),
+    }
 }
 
 fn draw_improvements(
@@ -139,16 +166,13 @@ fn draw_improvements(
 ) {
     let active = NationId::as_major(state.turn().active_nation).map(|nation| {
         let status = &state.technology().research_status_by_nation[nation];
-        let variant = if status[Technology::MarineEngineering]
-            == TechnologyResearchStatus::Researched
-        {
-            2
-        } else if status[Technology::AdvancedIronWorking] == TechnologyResearchStatus::Researched {
-            1
-        } else {
-            0
-        };
-        assets.active(nation, variant)
+        assets.active(
+            nation,
+            FleetVisualEra::from_research(
+                status[Technology::AdvancedIronWorking] == TechnologyResearchStatus::Researched,
+                status[Technology::MarineEngineering] == TechnologyResearchStatus::Researched,
+            ),
+        )
     });
     let geometry = state.map().geometry();
     let bounded = !geometry.wraps_horizontally();
@@ -196,7 +220,7 @@ fn draw_improvements(
                         i32::from(tile_state.per_tile_visited - 1) * 16,
                     )
                 } else {
-                    let source_x = ocean_improvement_source_x(&tile_state);
+                    let source_x = ocean_improvement_source_x_for_tile(&tile_state);
                     if source_x < 1024 {
                         (&assets.base_a, source_x)
                     } else {
@@ -210,33 +234,12 @@ fn draw_improvements(
     }
 }
 
-fn ocean_improvement_source_x(tile: &TileState) -> i32 {
-    let owner = tile
-        .owner_nation
-        .map(TileContext::to_retail_tag)
-        .unwrap_or(23);
-    if tile.flags.contains(TileFlags::BASE_TRANSPORT) {
-        return if owner < 7 {
-            i32::from(owner + 0x16) * 16
-        } else {
-            0x1d * 16
-        };
-    }
-    if tile.flags.contains(TileFlags::CITY_MARKER) {
-        return if owner < 7 {
-            i32::from(owner * 2 + 0x40) * 16
-        } else {
-            0x4e * 16
-        };
-    }
-    if tile.flags.contains(TileFlags::PORT) {
-        return if owner < 7 {
-            i32::from(owner + 0x26) * 16
-        } else {
-            0x2d * 16
-        };
-    }
-    0
+fn ocean_improvement_source_x_for_tile(tile: &TileState) -> i32 {
+    OceanImprovementKind::from_tile_flags(tile.flags)
+        .map(|kind| {
+            ocean_improvement_source_x(kind, OwnerBadge::from_tile_owner(tile.owner_nation))
+        })
+        .unwrap_or(0)
 }
 
 fn blit_ocean_sprite(
@@ -278,7 +281,7 @@ fn draw_routes(indices: &mut [u8], state: &GameState, ocean: &OceanViewport) {
             (route.start_row - ocean.origin.y) * 16,
             end_x * 8,
             (route.end_row - ocean.origin.y) * 16,
-            BORDER_PALETTE[23],
+            ocean_border_palette(None),
         );
     }
 }
@@ -300,7 +303,7 @@ fn draw_unit_overlays(
             indices,
             x,
             y,
-            OWNER_PALETTE[ocean_owner(state.map()[tile].owner_nation)],
+            ocean_fill_palette(state.map()[tile].owner_nation),
         );
         blit_ocean_sprite(indices, &assets.base_a, 0xe0, x, y);
     }
@@ -324,9 +327,9 @@ fn draw_unit_overlays(
             indices,
             x,
             y,
-            OWNER_PALETTE[ocean_owner(state.map()[tile].owner_nation)],
+            ocean_fill_palette(state.map()[tile].owner_nation),
         );
-        let source_x = ocean_improvement_source_x(&state.map()[tile]);
+        let source_x = ocean_improvement_source_x_for_tile(&state.map()[tile]);
         if source_x < 1024 {
             blit_ocean_sprite(indices, &assets.base_a, source_x, x, y);
         } else {
@@ -439,7 +442,7 @@ fn draw_ocean_borders(
     tile: TileId,
     x: i32,
     y: i32,
-    owner: usize,
+    owner: OceanOwnerPaint,
     province: Option<ProvinceId>,
     water: bool,
     indices: &mut [u8],
@@ -447,29 +450,28 @@ fn draw_ocean_borders(
     let geometry = state.map().geometry();
     let neighbors = geometry.neighbors(tile);
     let owners = neighbors.map(|neighbor| {
-        neighbor
-            .map(|neighbor| ocean_owner(state.map()[neighbor].owner_nation) as i32)
-            .unwrap_or(-1)
+        neighbor.map(|neighbor| ocean_owner_paint(state.map()[neighbor].owner_nation))
     });
     let provinces =
         neighbors.map(|neighbor| neighbor.and_then(|neighbor| state.map()[neighbor].province));
-    let current = BORDER_PALETTE[owner];
+    let current = paint_border(owner);
     let mut put = |local_x: i32, local_y: i32, color: u8| {
         put_ocean_pixel(indices, x + local_x, y + local_y, color);
     };
+    let west_fill = paint_fill(owners[4].unwrap_or(OceanOwnerPaint::Major(MajorNationId::new(0))));
 
-    if owners[4] < 0 || owners[4] == owner as i32 {
+    if owners[4].is_none() || owners[4] == Some(owner) {
         if province != provinces[4] {
             for py in 0..16 {
                 put(0, py, current);
             }
         }
     } else {
-        let neighbor = owners[4] as usize;
-        let border = BORDER_PALETTE[neighbor];
+        let neighbor = owners[4].unwrap();
+        let border = paint_border(neighbor);
         let pattern = (tile.get() % 4) * 4;
         if owners[5] == owners[4] {
-            put(0, 0, OWNER_PALETTE[neighbor]);
+            put(0, 0, paint_fill(neighbor));
             put(1, 0, border);
             put(0, 1, border);
             put(1, 1, current);
@@ -494,21 +496,21 @@ fn draw_ocean_borders(
             put(0, 14, border);
             put(1, 14, current);
             put(0, 15, border);
-            put(1, 15, OWNER_PALETTE[neighbor]);
+            put(1, 15, paint_fill(neighbor));
         } else {
             put(0, 14, current);
             put(0, 15, current);
         }
     }
 
-    if owners[1] >= 0 && owners[1] != owner as i32 {
-        let neighbor = owners[1] as usize;
-        let border = BORDER_PALETTE[neighbor];
+    if owners[1].is_some() && owners[1] != Some(owner) {
+        let neighbor = owners[1].unwrap();
+        let border = paint_border(neighbor);
         let neighbor_tile = neighbors[1].unwrap();
         let pattern = (neighbor_tile.get() % 4) * 4;
         if owners[0] == owners[1] {
             put(14, 0, border);
-            put(15, 0, OWNER_PALETTE[owners[4].max(0) as usize]);
+            put(15, 0, west_fill);
             put(15, 1, border);
             put(14, 1, current);
         } else {
@@ -532,7 +534,7 @@ fn draw_ocean_borders(
             put(15, 14, border);
             put(14, 14, current);
             put(15, 15, border);
-            put(14, 15, OWNER_PALETTE[owners[4].max(0) as usize]);
+            put(14, 15, west_fill);
         } else {
             put(15, 14, current);
             put(15, 15, current);
@@ -553,17 +555,17 @@ fn draw_upper_edge(
     put: &mut impl FnMut(i32, i32, u8),
     tile: TileId,
     neighbors: [Option<TileId>; 6],
-    owners: [i32; 6],
+    owners: [Option<OceanOwnerPaint>; 6],
     province: Option<ProvinceId>,
     provinces: [Option<ProvinceId>; 6],
-    owner: usize,
+    owner: OceanOwnerPaint,
     water: bool,
     right: bool,
 ) {
     let direction = if right { 0 } else { 5 };
     let base_x = if right { 8 } else { 0 };
-    let current = BORDER_PALETTE[owner];
-    if owners[direction] < 0 || owners[direction] == owner as i32 {
+    let current = paint_border(owner);
+    if owners[direction].is_none() || owners[direction] == Some(owner) {
         if province != provinces[direction] {
             for px in 0..8 {
                 put(base_x + px, 0, current);
@@ -571,15 +573,15 @@ fn draw_upper_edge(
         }
         return;
     }
-    let neighbor = owners[direction] as usize;
-    let border = BORDER_PALETTE[neighbor];
+    let neighbor = owners[direction].unwrap();
+    let border = paint_border(neighbor);
     let pattern_tile = if right {
         neighbors[direction].unwrap()
     } else {
         tile
     };
     let pattern = (pattern_tile.get() % 4) * 2;
-    if (!right && owners[5] != owners[4]) || (right && owners[5] != owner as i32) {
+    if (!right && owners[5] != owners[4]) || (right && owners[5] != Some(owner)) {
         put(base_x, 0, current);
         put(base_x + 1, 0, current);
     }
@@ -596,7 +598,7 @@ fn draw_upper_edge(
             put(base_x + a, 2, current);
         }
     }
-    if (!right && owners[0] != owner as i32) || (right && owners[0] != owners[1]) {
+    if (!right && owners[0] != Some(owner)) || (right && owners[0] != owners[1]) {
         put(base_x + 6, 0, current);
         put(base_x + 7, 0, current);
     }
@@ -606,19 +608,19 @@ fn draw_lower_edge(
     put: &mut impl FnMut(i32, i32, u8),
     tile: TileId,
     neighbors: [Option<TileId>; 6],
-    owners: [i32; 6],
-    owner: usize,
+    owners: [Option<OceanOwnerPaint>; 6],
+    owner: OceanOwnerPaint,
     water: bool,
     right: bool,
 ) {
     let direction = if right { 2 } else { 3 };
-    if owners[direction] < 0 || owners[direction] == owner as i32 {
+    if owners[direction].is_none() || owners[direction] == Some(owner) {
         return;
     }
     let base_x = if right { 8 } else { 0 };
-    let current = BORDER_PALETTE[owner];
-    let neighbor = owners[direction] as usize;
-    let border = BORDER_PALETTE[neighbor];
+    let current = paint_border(owner);
+    let neighbor = owners[direction].unwrap();
+    let border = paint_border(neighbor);
     let pattern_tile = if right {
         neighbors[direction].unwrap()
     } else {
@@ -704,7 +706,10 @@ mod tests {
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
-        assert_eq!(pixel(&indices, 160, 40), OWNER_PALETTE[3]);
+        assert_eq!(
+            pixel(&indices, 160, 40),
+            ocean_fill_palette(Some(TileContext::from(MajorNationId::new(3))))
+        );
         assert_eq!(pixel(&indices, 176, 40), OCEAN_FILL);
     }
 
@@ -728,7 +733,10 @@ mod tests {
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
         for y in 32..48 {
-            assert_eq!(pixel(&indices, 152, y), BORDER_PALETTE[2]);
+            assert_eq!(
+                pixel(&indices, 152, y),
+                ocean_border_palette(Some(TileContext::from(MajorNationId::new(2))))
+            );
         }
     }
 
@@ -748,10 +756,22 @@ mod tests {
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
-        assert_eq!(pixel(&indices, 152, 38), BORDER_PALETTE[1]);
-        assert_eq!(pixel(&indices, 153, 34), BORDER_PALETTE[1]);
-        assert_eq!(pixel(&indices, 154, 34), BORDER_PALETTE[1]);
-        assert_eq!(pixel(&indices, 152, 34), BORDER_PALETTE[2]);
+        assert_eq!(
+            pixel(&indices, 152, 38),
+            ocean_border_palette(Some(TileContext::from(MajorNationId::new(1))))
+        );
+        assert_eq!(
+            pixel(&indices, 153, 34),
+            ocean_border_palette(Some(TileContext::from(MajorNationId::new(1))))
+        );
+        assert_eq!(
+            pixel(&indices, 154, 34),
+            ocean_border_palette(Some(TileContext::from(MajorNationId::new(1))))
+        );
+        assert_eq!(
+            pixel(&indices, 152, 34),
+            ocean_border_palette(Some(TileContext::from(MajorNationId::new(2))))
+        );
     }
 
     #[test]
@@ -768,8 +788,15 @@ mod tests {
         let state = GameState::from_parts(parts);
         let indices = draw_base_ownership_and_borders(&state, &OceanViewport::default());
 
-        assert_eq!(pixel(&indices, 0, 48), BORDER_PALETTE[0]);
-        assert!(indices.contains(&BORDER_PALETTE[1]));
+        assert_eq!(
+            pixel(&indices, 0, 48),
+            ocean_border_palette(Some(TileContext::from(MajorNationId::new(0))))
+        );
+        assert!(
+            indices.contains(&ocean_border_palette(Some(TileContext::from(
+                MajorNationId::new(1)
+            ))))
+        );
     }
 
     #[test]
@@ -814,8 +841,8 @@ mod tests {
         let ocean = OceanViewport::default();
         let mut indices = vec![0; VIEWPORT_WIDTH * VIEWPORT_HEIGHT];
         draw_routes(&mut indices, &state, &ocean);
-        assert_eq!(pixel(&indices, 0, 32), BORDER_PALETTE[23]);
-        assert_eq!(pixel(&indices, 8, 32), BORDER_PALETTE[23]);
+        assert_eq!(pixel(&indices, 0, 32), ocean_border_palette(None));
+        assert_eq!(pixel(&indices, 8, 32), ocean_border_palette(None));
         assert_eq!(pixel(&indices, 16, 32), 0);
         assert_eq!(pixel(&indices, 200, 32), 0);
     }

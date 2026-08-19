@@ -1,6 +1,5 @@
 use super::*;
 
-pub(in crate::ui::city) const CITY_BUILDING_STRING_GROUP: i16 = 0x2719;
 pub(in crate::ui::city) const CITY_TEXT_STRING_GROUP: i16 = 0x2738;
 
 #[derive(Clone, Copy)]
@@ -435,18 +434,17 @@ pub(in crate::ui::city) fn city_building_picture(
     if !should_draw {
         return None;
     }
-    if slot == CityFacilitySlot::PowerPlant {
-        return Some(PictureId::new(if city.power_plant_upgrade_queued {
-            7011
-        } else {
-            7027
-        }));
-    }
-    let offset = i16::from(slot.retail());
-    let normal = level == 0 || offset > 5 || !expanding || !slot.is_capacity_center();
-    Some(PictureId::new(
-        (if normal { 7000 } else { 7300 }) + level as i16 * 16 + offset,
-    ))
+    Some(retail_picture(if slot == CityFacilitySlot::PowerPlant {
+        RetailPicture::PowerPlant {
+            upgrade_queued: city.power_plant_upgrade_queued,
+        }
+    } else {
+        RetailPicture::CityScene {
+            slot,
+            level,
+            expanding,
+        }
+    }))
 }
 
 pub(in crate::ui::city) fn city_string(

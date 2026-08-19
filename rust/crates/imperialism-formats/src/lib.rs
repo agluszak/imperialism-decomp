@@ -28,8 +28,10 @@ pub use legacy_save::{
 pub use media::{MovieId, MusicTrack, SoundId};
 pub use retail_assets::{NewsTable, RetailAssetError, RetailAssets};
 pub use retail_catalog::{
-    ArmyCountBucket, CivilianPosePicture, FleetVisualEra, OwnerBadge, RetailAtlasCell,
-    RetailPicture, owner_flag_cell_width, owner_flag_source_x, retail_picture, setup_flag_cell,
+    ArmyCountBucket, CivilianPosePicture, FleetVisualEra, OceanImprovementKind, OwnerBadge,
+    RetailAtlasCell, RetailPicture, RetailString, RetailStringId, deal_book_flag_cell,
+    ocean_border_palette, ocean_fill_palette, ocean_improvement_source_x, owner_flag_cell_width,
+    owner_flag_source_x, retail_picture, retail_string, setup_flag_cell, shipyard_queue_cell,
 };
 pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError,

@@ -66,7 +66,7 @@ pub(in crate::ui::city) fn city_building_name(
     assets: &RetailUiAssets,
     slot: CityFacilitySlot,
 ) -> String {
-    city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail()))
+    catalog_string(assets, RetailString::CityBuildingName(slot))
 }
 
 pub(in crate::ui::city) fn configure_industry_dialog(

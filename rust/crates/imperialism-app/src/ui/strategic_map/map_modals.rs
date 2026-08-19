@@ -8,6 +8,7 @@ use crate::AppState;
 use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::generated;
+use crate::ui::hover_help::catalog_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{ModalDialog, RetailTree};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
@@ -16,7 +17,7 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
+use imperialism_formats::{PictureId, RetailString, RetailTextStylePreset, SoundId, fourcc};
 
 #[derive(Component)]
 struct MapModal;
@@ -762,7 +763,7 @@ fn civilian_report_text(
                     ) {
                         continue;
                     }
-                    let name = get_string(assets, 0x2711, i16::from(resource.retail()));
+                    let name = catalog_string(assets, RetailString::ResourceName(resource));
                     if edge == 0 {
                         primary = name;
                     } else {
