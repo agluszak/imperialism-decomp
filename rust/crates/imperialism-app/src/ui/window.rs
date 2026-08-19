@@ -51,11 +51,15 @@ impl Plugin for UiWindowPlugin {
         app.init_resource::<InputFocus>()
             .add_observer(on_window_added)
             .add_observer(on_modal_removed)
-            .add_observer(on_window_pressed.run_if(not(any_with_component::<ModalWindow>)))
+            .add_observer(on_window_pressed)
             .add_observer(on_window_close)
             .add_observer(modal_keyboard)
             .add_systems(Update, (bind_recovered_window_hosts, sync_window_positions));
     }
+}
+
+pub fn no_modal(modals: Query<(), With<ModalWindow>>) -> bool {
+    modals.is_empty()
 }
 
 fn on_window_added(

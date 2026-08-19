@@ -13,7 +13,7 @@ use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
     compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow, no_modal};
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -71,7 +71,7 @@ impl Plugin for CitySitePlugin {
                     bind_city_site_intro,
                     bind_new_city_dialog,
                     bind_city_site_notice,
-                    sync_city_site_hover.run_if(not(any_with_component::<ModalWindow>)),
+                    sync_city_site_hover.run_if(no_modal),
                     sync_minimap,
                 )
                     .run_if(in_state(AppState::CitySite)),
@@ -106,7 +106,7 @@ fn bind_city_site(
     commands
         .entity(map)
         .insert(CitySiteHover::default())
-        .observe(on_city_site_map_click.run_if(not(any_with_component::<ModalWindow>)));
+        .observe(on_city_site_map_click);
     open_city_site_intro(&mut commands);
     commands.entity(root).insert(CitySiteWired);
 }
@@ -123,7 +123,7 @@ fn bind_city_site_controls(
     commands
         .entity(cancel)
         .insert((CitySiteAction::Cancel, ActivateOnPress))
-        .observe(on_city_site_activate.run_if(not(any_with_component::<ModalWindow>)));
+        .observe(on_city_site_activate);
     let bar = tree.find(root, fourcc!("curs"));
     bind_hover_help_bar(
         commands,

@@ -812,7 +812,7 @@ pub(crate) fn bind_open_flag_menu(commands: &mut Commands, flag: Entity) {
         .entity(flag)
         .insert(OpenFlagMenu)
         .remove::<InteractionDisabled>()
-        .observe(on_open_flag_menu.run_if(not(any_with_component::<ModalWindow>)));
+        .observe(on_open_flag_menu);
 }
 
 fn on_open_flag_menu(_activate: On<Activate>, mut commands: Commands) {

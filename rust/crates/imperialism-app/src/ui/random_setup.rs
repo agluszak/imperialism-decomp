@@ -255,7 +255,7 @@ fn bind_random_setup_controls(
         .entity(okay)
         .insert(RandomSetupAction::Accept)
         .remove::<InteractionDisabled>()
-        .observe(on_random_setup_activate.run_if(not(any_with_component::<ModalWindow>)));
+        .observe(on_random_setup_activate);
 
     for (tag, action) in [
         (fourcc!("cncl"), RandomSetupAction::Cancel),
@@ -265,12 +265,12 @@ fn bind_random_setup_controls(
         commands
             .entity(entity)
             .insert((action, ActivateOnPress))
-            .observe(on_random_setup_activate.run_if(not(any_with_component::<ModalWindow>)));
+            .observe(on_random_setup_activate);
     }
     commands
         .entity(tree.find(root, fourcc!("glob")))
         .insert((RandomSetupGlobe, ActivateOnPress))
-        .observe(on_random_setup_globe.run_if(not(any_with_component::<ModalWindow>)));
+        .observe(on_random_setup_globe);
 }
 
 fn bind_random_setup_labels(

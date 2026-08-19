@@ -720,7 +720,7 @@ fn bind_diplomacy_controls(
             ZIndex(1),
             ChildOf(main),
         ))
-        .observe(on_diplomacy_map_click.run_if(not(any_with_component::<ModalWindow>)))
+        .observe(on_diplomacy_map_click)
         .id();
     spawn_diplomacy_map_labels(commands, map, &styles, icon_atlas);
     spawn_diplomacy_panel_text(

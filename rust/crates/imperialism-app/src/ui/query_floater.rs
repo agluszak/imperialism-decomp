@@ -43,7 +43,7 @@ pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, 
         .entity(tree.find(root, fourcc!("quer")))
         .insert((OpenQueryFloater, ActivateOnPress))
         .remove::<InteractionDisabled>()
-        .observe(on_open_query_floater.run_if(not(any_with_component::<ModalWindow>)));
+        .observe(on_open_query_floater);
 }
 
 fn on_open_query_floater(

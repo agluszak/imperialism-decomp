@@ -22,6 +22,7 @@ use crate::ui::strategic_map::{
     register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
     sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
 };
+use crate::ui::window::no_modal;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -74,7 +75,7 @@ impl Plugin for GameShellPlugin {
         .add_systems(
             Update,
             (
-                scroll_strategic_map,
+                scroll_strategic_map.run_if(no_modal),
                 sync_status_date_hover,
                 sync_strategic_base_terrain,
                 sync_strategic_units,
@@ -195,13 +196,9 @@ fn bind_strategic_map(
         .entity(tree.find(*root, fourcc!("send")))
         .insert(Visibility::Hidden);
     let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session);
-    commands.entity(land).observe(
-        on_strategic_map_click.run_if(not(any_with_component::<crate::ui::window::ModalWindow>)),
-    );
+    commands.entity(land).observe(on_strategic_map_click);
     let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree, &session);
-    commands.entity(ocean).observe(
-        on_strategic_map_click.run_if(not(any_with_component::<crate::ui::window::ModalWindow>)),
-    );
+    commands.entity(ocean).observe(on_strategic_map_click);
     bind_minimap(&mut commands, *root, &tree, &mut assets, &session);
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_army_toolbar(&mut commands, &mut assets, *root, &tree);

@@ -1,5 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, ancestor_with};
+use super::window::{DismissWindow, UiWindow};
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -100,7 +101,6 @@ enum MapHelpAction {
     Topics,
     Previous,
     Next,
-    Close,
 }
 
 pub(crate) fn register(app: &mut App) {
@@ -124,6 +124,7 @@ fn spawn_for_context(commands: &mut Commands, context: HelpContext) {
             set: 0,
             topic: None,
         },
+        UiWindow,
         GlobalZIndex(30),
         DespawnOnExit(context.app_state()),
     ));
@@ -242,12 +243,11 @@ fn bind_added_help(
                             },
                             UiButton,
                             ActivateOnPress,
-                            MapHelpAction::Close,
+                            DismissWindow,
                             ZIndex(1),
                             BackgroundColor(Color::srgb(0.82, 0.82, 0.82)),
                             BorderColor::all(Color::srgb(0.25, 0.25, 0.25)),
                         ))
-                        .observe(on_action)
                         .with_child((
                             Text::new("×"),
                             close_font.clone(),
@@ -277,10 +277,6 @@ fn on_action(
     let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
-    if matches!(action, MapHelpAction::Close) {
-        commands.entity(root).despawn();
-        return;
-    }
     let mut state = roots
         .get_mut(root)
         .expect("help action belongs to help root");
@@ -340,7 +336,6 @@ fn apply_action(
             state.topic = None;
             show_topic_list_raw(root, state.context, state.set, tree, assets, commands);
         }
-        MapHelpAction::Close => unreachable!(),
     }
 }
 

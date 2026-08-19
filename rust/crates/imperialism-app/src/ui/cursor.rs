@@ -24,7 +24,7 @@ impl Plugin for CursorPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RequestedCursor>()
             .add_systems(Startup, load_turn_event_cursors)
-            .add_systems(Update, apply_requested_cursor);
+            .add_systems(PostUpdate, apply_requested_cursor);
     }
 }
 
