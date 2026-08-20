@@ -252,7 +252,7 @@ pub(in crate::ui::city) fn sync_shipyard_details(
     selections: Query<Ref<CityRowSelection>>,
     rows: Query<(&CityRowChoice, &ShipyardRowAssets)>,
     mut texts: Query<(&ShipyardDisplay, &mut Text), Without<ImageNode>>,
-    mut images: Query<(&ShipyardDisplay, &mut ImageNode)>,
+    mut images: Query<(&ShipyardDisplay, &mut ImageNode), Without<ShipyardDetailsVisual>>,
     details: Query<(&ShipyardDetailsVisual, &ImageNode)>,
 ) {
     let Some(selection) = selections
