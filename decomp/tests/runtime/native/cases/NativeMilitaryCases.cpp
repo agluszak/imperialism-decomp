@@ -6,6 +6,7 @@
 
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
+#include "game/city_ui/TCityInteriorMinister.h"
 #include "game/city_ui/TCountry.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/globals/navy_globals.h"
@@ -1367,6 +1368,60 @@ RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition) {
       nation->AddPurchasedItems();
     }
   }
+  return transition.Finish();
+}
+
+RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) {
+  TAutoGreatPower* autoNation = 0;
+  short nationSlot = -1;
+  for (short slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation != 0 && nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0 &&
+        g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
+      autoNation = static_cast<TAutoGreatPower*>(nation);
+      nationSlot = slot;
+      break;
+    }
+  }
+  if (autoNation == 0 || g_pMapActionContextListHead == 0) {
+    return RuntimeActionResult::Failure("AI naval-development fixture has no eligible nation");
+  }
+
+  for (int index = 0; index < 16; ++index) {
+    autoNation->interiorMinister->orderShortTableBA[index] = 20;
+  }
+
+  CIterator iter(autoNation->missionQueue);
+  for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+       mission = static_cast<TMission*>(iter.Advance())) {
+    mission->flag10 = 1;
+  }
+  TControlSeaZoneMission* navyMission = new TControlSeaZoneMission(g_pMapActionContextListHead);
+  navyMission->InitializeMissionWithNationIdAndResetPathMarker(nationSlot);
+  navyMission->navyState28 = 2;
+  navyMission->requiredShipEquipageByCategory[0] = 0.0f;
+  navyMission->requiredShipEquipageByCategory[1] = 0.0f;
+  navyMission->requiredShipEquipageByCategory[2] = 0.0f;
+  navyMission->requiredShipEquipageByCategory[3] = 1000.0f;
+  navyMission->flag10 = 0;
+  autoNation->missionQueue->AddTail(navyMission);
+  if (g_pMapActionContextListHead->primaryNeighbors.GetSize() != 0) {
+    TShip* ship = new TShip();
+    ship->IShip(4, g_pMapActionContextListHead->primaryNeighbors.GetAt(0), nationSlot,
+                "naval-development-distance-weight");
+    ship->strength = ship->GetMaxStrength();
+    navyMission->AcceptReenforcement(ship, 0);
+  }
+
+  JsonObject args;
+  args.Set("nation", static_cast<int>(nationSlot));
+  args.Set("average_allocation", 16);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  autoNation->PlanAiDevelopmentActionsFromResourcePools(0);
   return transition.Finish();
 }
 

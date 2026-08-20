@@ -242,7 +242,7 @@ pub use naval_battle::{
 pub use player::{NavyOrder, NavySelectionClick, NavyTileClick, NavyToolbarCounts};
 
 impl GameState {
-    fn zone_hop_distances_from(&self, origin: OceanZoneId) -> Vec<i16> {
+    pub(crate) fn zone_hop_distances_from(&self, origin: OceanZoneId) -> Vec<i16> {
         let mut distances = vec![UNREACHED; self.ocean.zones.len()];
         let start = usize::from(origin.get());
         if start >= distances.len() {
@@ -317,7 +317,7 @@ fn assigned_navy_ships(missions: &IndexMap<MissionId, MissionState>) -> Vec<Ship
     assigned
 }
 
-fn navy_state(data: &MissionData) -> Option<&NavyMissionState> {
+pub(crate) fn navy_state(data: &MissionData) -> Option<&NavyMissionState> {
     match data {
         MissionData::ControlSeaZone(navy)
         | MissionData::Escort(navy)
