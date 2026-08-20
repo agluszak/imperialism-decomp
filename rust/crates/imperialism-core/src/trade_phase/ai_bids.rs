@@ -3,7 +3,7 @@ use crate::market::all_trade_commodities;
 use crate::*;
 
 impl GameState {
-    pub(super) fn set_ai_trade_bids(&mut self, nation: MajorNationId) {
+    pub(crate) fn set_ai_trade_bids(&mut self, nation: MajorNationId) {
         self.prepare_personality_trade_bids(nation);
         let personality = self.nations.majors[&nation]
             .economy
@@ -108,7 +108,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn do_usual_subsidy_rule(&mut self, nation: MajorNationId) {
+    pub(crate) fn do_usual_subsidy_rule(&mut self, nation: MajorNationId) {
         let loop_count = i32::from(self.has_oil(nation)) + 5;
         for resource in RAW_COMMODITIES
             .into_iter()

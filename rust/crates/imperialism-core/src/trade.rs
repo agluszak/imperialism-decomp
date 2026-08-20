@@ -445,13 +445,15 @@ impl GameState {
         self.recall_trade_bids(nation);
     }
 
-    /// Retail `TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`.
-    /// The AutoGreatPower override (`SetTradeBids` / subsidy) is not ported.
-    pub(crate) fn reset_diplomacy_need_slots_7012_if_mode_gate_matches(
-        &mut self,
-        nation: MajorNationId,
-    ) {
-        if self.is_auto(nation) || self.turn.difficulty != Difficulty::Introductory {
+    /// Retail `TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`
+    /// and the `TAutoGreatPower` override.
+    pub fn reset_diplomacy_need_slots_7012_if_mode_gate_matches(&mut self, nation: MajorNationId) {
+        if self.is_auto(nation) {
+            self.set_ai_trade_bids(nation);
+            self.do_usual_subsidy_rule(nation);
+            return;
+        }
+        if self.turn.difficulty != Difficulty::Introductory {
             return;
         }
         for resource in [

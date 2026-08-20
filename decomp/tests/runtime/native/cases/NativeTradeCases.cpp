@@ -6,6 +6,7 @@
 #include "game/city_ui/TCountry.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/gfx_globals.h"
+#include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
 #include "game/trade_ui/TOfferDeskPicture.h"
@@ -121,6 +122,31 @@ RuntimeActionResult RunRecallTradeBids(NativeTransition& transition) {
   }
 
   nation->RecallTradeBids();
+  return transition.Finish();
+}
+
+RuntimeActionResult RunAiCapitalSelectionTradeBids(NativeTransition& transition) {
+  TGreatPower* nation = 0;
+  int nationSlot;
+  for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* candidate = g_apNationStates[nationSlot];
+    if (candidate != 0 && candidate->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
+      nation = candidate;
+      break;
+    }
+  }
+  if (nation == 0) {
+    return RuntimeActionResult::Failure("the loaded fixture has no AutoGreatPower");
+  }
+
+  JsonObject args;
+  args.Set("nation", nationSlot);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  nation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
   return transition.Finish();
 }
 

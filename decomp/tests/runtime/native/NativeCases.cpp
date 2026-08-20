@@ -22,6 +22,7 @@ RuntimeActionResult RunMajorTradeSettlement(NativeTransition& transition);
 RuntimeActionResult RunPurchasedItemsPhase(NativeTransition& transition);
 RuntimeActionResult RunRecallTradeBids(NativeTransition& transition);
 RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition);
+RuntimeActionResult RunAiCapitalSelectionTradeBids(NativeTransition& transition);
 RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition);
 RuntimeActionResult RunTradeMarketPrice(NativeTransition& transition);
 RuntimeActionResult RunTradePolicySet(NativeTransition& transition);
@@ -155,6 +156,7 @@ const NativeCase kCases[] = {
     {"purchased_items_phase", RunPurchasedItemsPhase},
     {"recall_trade_bids", RunRecallTradeBids},
     {"player_trade_phase_reset", RunPlayerTradePhaseReset},
+    {"ai_capital_selection_trade_bids", RunAiCapitalSelectionTradeBids},
     {"trade_capacity_refresh", RunTradeCapacityRefresh},
     {"trade_market_price", RunTradeMarketPrice},
     {"trade_policy_set", RunTradePolicySet},
