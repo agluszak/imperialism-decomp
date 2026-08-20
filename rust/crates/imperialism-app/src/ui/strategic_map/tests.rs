@@ -597,6 +597,41 @@ fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
 }
 
 #[test]
+fn city_site_mode_suppresses_city_art_but_keeps_fortifications() {
+    let state = fixture_state();
+    let focus = state
+        .first_idle_civilian_tile(state.turn().active_nation)
+        .expect("opening save has an idle civilian");
+    let view_origin = state.map().viewport_origin_centered_on(focus);
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
+    let sprites = sprites_from(
+        &terrain,
+        &rivers,
+        &improvements,
+        &icons,
+        &overlays,
+        &order_markers,
+    );
+
+    let strategic =
+        compose_strategic_map_picture_with_city_overlay(&state, view_origin, None, true, sprites);
+    let city_site =
+        compose_strategic_map_picture_with_city_overlay(&state, view_origin, None, false, sprites);
+
+    assert!(
+        (0x90..=0x93)
+            .chain(0x9b..=0x9c)
+            .any(|ink| strategic.pixels.contains(&ink))
+    );
+    assert!(
+        !(0x90..=0x93)
+            .chain(0x9b..=0x9c)
+            .any(|ink| city_site.pixels.contains(&ink))
+    );
+    assert!(city_site.pixels.contains(&0x98));
+}
+
+#[test]
 fn strategic_activity_overlay_uses_the_secondary_owner_frame_on_minor_land() {
     let (terrain, rivers, improvements, icons, _, order_markers) = synthetic_sprites();
     let secondary = MajorNationId::new(2);
