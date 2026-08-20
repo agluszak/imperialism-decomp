@@ -256,36 +256,16 @@ class UiTextPropertyPatch:
 
 
 @dataclass(frozen=True)
-class DiplomacyMapKeyName:
-    node_id: int
-    tag: str
-    rect: tuple[int, int, int, int]
-
-
-@dataclass(frozen=True)
-class DiplomacyMapKeyNames:
-    view: UiResourceKey
-    parent_id: int
+class UiChildNodePatch:
+    resource: UiResourceKey
+    parent_id: str
     parent_tag: str
-    evidence: str
-    text: dict[str, object]
-    children: tuple[DiplomacyMapKeyName, ...]
-
-
-@dataclass(frozen=True)
-class TransportPictureParent:
-    node_id: int
+    type_code: str
     tag: str
-    has_value: bool
-
-
-@dataclass(frozen=True)
-class TransportPictureChildren:
-    view: UiResourceKey
+    class_name: str
+    geometry: tuple[int, int, int, int]
+    family: UiSemanticFamily
     evidence: str
-    text: dict[str, int]
-    total: TransportPictureParent
-    rows: tuple[TransportPictureParent, ...]
 
 
 @dataclass(frozen=True)
@@ -659,82 +639,57 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
     )
 
 
-def load_diplomacy_map_key_names(repo_root: Path) -> DiplomacyMapKeyNames:
+def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, ...]:
     data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
-    section = data["diplomacy_map_key_names"]
-    parent = section["parent"]
-    children = tuple(
-        DiplomacyMapKeyName(
-            node_id=int(row["node"]),
-            tag=_fourcc(row["tag"], "diplomacy_map_key_names/tag"),
-            rect=tuple(int(value) for value in row["rect"]),
+    rows = data.get("windows_child_nodes", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{WINDOWS_DELTA_PATH}: windows_child_nodes must be a list")
+    patches: list[UiChildNodePatch] = []
+    identities: set[tuple[UiResourceKey, str, str]] = set()
+    for index, raw_row in enumerate(rows):
+        context = f"{WINDOWS_DELTA_PATH}: windows_child_nodes[{index}]"
+        row = _mapping(raw_row, context)
+        expected = {
+            "view",
+            "parent",
+            "type",
+            "tag",
+            "class",
+            "geometry",
+            "family",
+            "evidence",
+        }
+        if set(row) != expected:
+            raise ValueError(f"{context}: expected {sorted(expected)!r}")
+        parent = _mapping(row["parent"], f"{context}/parent")
+        if set(parent) != {"node", "tag"}:
+            raise ValueError(f"{context}/parent: expected node and tag")
+        resource = UiResourceKey.parse(str(row["view"]))
+        parent_id = f"0x{int(str(parent['node']), 0):04x}"
+        tag = _fourcc(row["tag"], f"{context}/tag")
+        identity = (resource, parent_id, tag)
+        if identity in identities:
+            raise ValueError(f"{context}: duplicate child {tag!r} under {parent_id}")
+        identities.add(identity)
+        geometry = _sequence(row["geometry"], 4, f"{context}/geometry")
+        family_row = _mapping(row["family"], f"{context}/family")
+        evidence = str(row["evidence"]).strip()
+        if not evidence:
+            raise ValueError(f"{context}: evidence is required")
+        patches.append(
+            UiChildNodePatch(
+                resource=resource,
+                parent_id=parent_id,
+                parent_tag=_fourcc(parent["tag"], f"{context}/parent/tag"),
+                type_code=_fourcc(row["type"], f"{context}/type"),
+                tag=tag,
+                class_name=str(row["class"]),
+                geometry=tuple(int(value) for value in geometry),
+                family=_parse_windows_family(family_row, f"{context}/family"),
+                evidence=evidence,
+            )
         )
-        for row in section["children"]
-    )
-    if any(
-        child.node_id != int.from_bytes(child.tag.encode("ascii"), "big")
-        for child in children
-    ):
-        raise ValueError("diplomacy map-key node ids must equal their FourCC tags")
-    if len({child.tag for child in children}) != len(children):
-        raise ValueError("diplomacy map-key tags must be unique")
-    return DiplomacyMapKeyNames(
-        view=UiResourceKey.parse(str(section["view"])),
-        parent_id=int(parent["node"]),
-        parent_tag=_fourcc(parent["tag"], "diplomacy_map_key_names/parent/tag"),
-        evidence=str(section["evidence"]),
-        text=dict(section["text"]),
-        children=children,
-    )
-
-
-def load_transport_picture_children(repo_root: Path) -> TransportPictureChildren:
-    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
-    context = f"{WINDOWS_DELTA_PATH}: transport_picture_children"
-    section = _mapping(data.get("transport_picture_children"), context)
-    if set(section) != {"view", "evidence", "text", "total", "rows"}:
-        raise ValueError(f"{context}: expected view, evidence, text, total, and rows")
-    evidence = str(section["evidence"]).strip()
-    if not evidence:
-        raise ValueError(f"{context}: evidence is required")
-    text = _mapping(section["text"], f"{context}/text")
-    expected_text = {
-        "font_family",
-        "face_flags",
-        "point_size",
-        "alignment",
-        "color_index",
-    }
-    if set(text) != expected_text:
-        raise ValueError(f"{context}/text: expected {sorted(expected_text)!r}")
-
-    def load_parent(raw: object, row_context: str, *, allow_value: bool) -> TransportPictureParent:
-        row = _mapping(raw, row_context)
-        allowed = {"node", "tag", "value"} if allow_value else {"node", "tag"}
-        if not {"node", "tag"} <= set(row) or set(row) - allowed:
-            raise ValueError(f"{row_context}: malformed transport picture parent")
-        return TransportPictureParent(
-            node_id=int(str(row["node"]), 0),
-            tag=_fourcc(row["tag"], f"{row_context}/tag"),
-            has_value=bool(row.get("value", False)),
-        )
-
-    total = load_parent(section["total"], f"{context}/total", allow_value=False)
-    rows = tuple(
-        load_parent(row, f"{context}/rows[{index}]", allow_value=True)
-        for index, row in enumerate(_sequence(section["rows"], 18, f"{context}/rows"))
-    )
-    if total.tag != "tota" or len({row.tag for row in rows}) != len(rows):
-        raise ValueError(f"{context}: expected tota and 18 unique row tags")
-    if [row.tag for row in rows if row.has_value] != ["gold", "gems"]:
-        raise ValueError(f"{context}: only gold and gems may create valu children")
-    return TransportPictureChildren(
-        view=UiResourceKey.parse(str(section["view"])),
-        evidence=evidence,
-        text={key: int(value) for key, value in text.items()},
-        total=total,
-        rows=rows,
-    )
+    return tuple(patches)
 
 
 def load_city_building_visuals(repo_root: Path) -> CityBuildingVisuals:
@@ -1173,9 +1128,26 @@ def _validate_windows_family(family: dict, context: str) -> None:
     if "text" in family:
         text = _mapping(family["text"], f"{context}/text")
         required = {"resource_id", "resource_index", "source"}
-        optional = {"mode", "flags", "point_size", "style_ref", "theme"}
+        optional = {
+            "mode",
+            "flags",
+            "point_size",
+            "style_ref",
+            "theme",
+            "color_index",
+            "shadow_color_index",
+            "shadow_offset",
+            "center_vertically",
+        }
         if not required <= set(text) or set(text) - (required | optional):
             raise ValueError(f"{context}/text: malformed semantic text binding")
+        if "shadow_offset" in text:
+            _sequence(text["shadow_offset"], 2, f"{context}/text/shadow_offset")
+        if ("shadow_color_index" in text) != ("shadow_offset" in text):
+            raise ValueError(
+                f"{context}/text: shadow_color_index and shadow_offset "
+                "must be declared together"
+            )
     if "number" in family:
         number = _mapping(family["number"], f"{context}/number")
         if set(number) != {"value", "minimum", "maximum"}:
@@ -1225,6 +1197,20 @@ def _parse_windows_family(family: dict, context: str) -> UiSemanticFamily:
             point_size=int(text_row.get("point_size", 0)),
             style_ref=int(text_row.get("style_ref", 0)),
             theme=int(text_row.get("theme", 1)),
+            color_index=(
+                int(text_row["color_index"])
+                if "color_index" in text_row
+                else None
+            ),
+            shadow_color_index=(
+                int(text_row["shadow_color_index"])
+                if "shadow_color_index" in text_row
+                else None
+            ),
+            shadow_offset=tuple(
+                int(value) for value in text_row.get("shadow_offset", (0, 0))
+            ),
+            center_vertically=bool(text_row.get("center_vertically", False)),
         )
         if isinstance(text_row, dict)
         else None
@@ -1770,141 +1756,46 @@ def resource_backed_scene_keys(
     return sorted(keys, key=lambda item: (item.resource_file, item.view_id))
 
 
-def apply_diplomacy_map_key_names(
+def apply_windows_child_node_patches(
     key: UiResourceKey,
     semantic_view: UiSemanticView,
-    names: DiplomacyMapKeyNames,
+    patches: Iterable[UiChildNodePatch],
 ) -> UiSemanticView:
-    if key != names.view:
+    scoped = [patch for patch in patches if patch.resource == key]
+    if not scoped:
         return semantic_view
-    parent_id = f"0x{names.parent_id:04x}"
     nodes_by_id = {node.node_id: node for node in semantic_view.nodes}
-    parent = nodes_by_id.get(parent_id)
-    if parent is None or parent.tag != names.parent_tag:
-        raise ValueError(
-            f"{WINDOWS_DELTA_PATH}: {key.text()} has no "
-            f"{names.parent_tag} parent at 0x{names.parent_id:04x}"
-        )
-    text = names.text
-    additions: list[UiSemanticNode] = []
-    for child in names.children:
-        node_id = f"0x{child.node_id:08x}"
+    additions: dict[str, list[UiSemanticNode]] = {}
+    for patch in scoped:
+        parent = nodes_by_id.get(patch.parent_id)
+        if parent is None or parent.tag != patch.parent_tag:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} has no "
+                f"{patch.parent_tag} parent at {patch.parent_id}"
+            )
+        node_id = f"windows:{patch.parent_id}:{patch.tag}"
         if node_id in nodes_by_id:
             raise ValueError(
                 f"{WINDOWS_DELTA_PATH}: {key.text()} duplicate semantic node {node_id}"
             )
-        nodes_by_id[node_id] = parent
-        additions.append(
-            UiSemanticNode(
-                node_id=node_id,
-                type_code="stat",
-                tag=child.tag,
-                class_name="TStaticText",
-                parent_id=parent_id,
-                geometry=child.rect,
-                state=1,
-                enabled=1,
-                input_gate=1,
-                child_hit_test=1,
-                control_value=0,
-                family=UiSemanticFamily(
-                    text=UiTextPayload(
-                        resource_id=0,
-                        resource_index=-1,
-                        value="",
-                        source=names.evidence,
-                        mode=int(text["font_family"]),
-                        flags=int(text["face_flags"]),
-                        point_size=int(text["point_size"]),
-                        style_ref=0,
-                        theme=int(text["alignment"]),
-                        color_index=int(text["color_index"]),
-                        shadow_color_index=int(text["shadow_color_index"]),
-                        shadow_offset=tuple(int(value) for value in text["shadow_offset"]),
-                        center_vertically=bool(text["center_vertically"]),
-                    )
-                ),
-                source=f"Windows: {names.evidence}",
-                confidence="high",
-            )
-        )
-    parent_index = semantic_view.nodes.index(parent)
-    return replace(
-        semantic_view,
-        nodes=(
-            semantic_view.nodes[: parent_index + 1]
-            + tuple(additions)
-            + semantic_view.nodes[parent_index + 1 :]
-        ),
-    )
-
-
-def apply_transport_picture_children(
-    key: UiResourceKey,
-    semantic_view: UiSemanticView,
-    controls: TransportPictureChildren,
-) -> UiSemanticView:
-    if key != controls.view:
-        return semantic_view
-    parents = (controls.total,) + controls.rows
-    parents_by_id = {f"0x{parent.node_id:04x}": parent for parent in parents}
-    nodes_by_id = {node.node_id: node for node in semantic_view.nodes}
-    for node_id, expected in parents_by_id.items():
-        actual = nodes_by_id.get(node_id)
-        if actual is None or actual.tag != expected.tag:
-            raise ValueError(
-                f"{WINDOWS_DELTA_PATH}: {key.text()} has no "
-                f"{expected.tag} transport picture at {node_id}"
-            )
-
-    text = controls.text
-
-    def child(parent: UiSemanticNode, tag: str, rect: tuple[int, int, int, int]) -> UiSemanticNode:
-        prefix = 0x7400_0000 if tag == "text" else 0x7600_0000
-        return UiSemanticNode(
-            node_id=f"0x{prefix | int(parent.node_id, 16):08x}",
-            type_code="stat",
-            tag=tag,
-            class_name="TMyStaticText",
-            parent_id=parent.node_id,
-            geometry=rect,
+        child = UiSemanticNode(
+            node_id=node_id,
+            type_code=patch.type_code,
+            tag=patch.tag,
+            class_name=patch.class_name,
+            parent_id=patch.parent_id,
+            geometry=patch.geometry,
             state=1,
             enabled=1,
             input_gate=1,
             child_hit_test=1,
             control_value=0,
-            family=UiSemanticFamily(
-                text=UiTextPayload(
-                    resource_id=0,
-                    resource_index=-1,
-                    value="",
-                    source=controls.evidence,
-                    mode=text["font_family"],
-                    flags=text["face_flags"],
-                    point_size=text["point_size"],
-                    style_ref=0,
-                    theme=text["alignment"],
-                    color_index=text["color_index"],
-                )
-            ),
-            source=f"Windows: {controls.evidence}",
+            family=patch.family,
+            source=f"Windows: {patch.evidence}",
             confidence="high",
         )
-
-    additions: dict[str, tuple[UiSemanticNode, ...]] = {}
-    for parent_info in parents:
-        parent_id = f"0x{parent_info.node_id:04x}"
-        parent = nodes_by_id[parent_id]
-        text_rect = (0xA2, 0x14, 0x3C, 0x0B) if parent_info.tag == "tota" else (
-            0x98,
-            0x12,
-            0x46,
-            0x0B,
-        )
-        children = [child(parent, "text", text_rect)]
-        if parent_info.has_value:
-            children.append(child(parent, "valu", (0x32, 0x14, 0x3C, 0x0B)))
-        additions[parent_id] = tuple(children)
+        nodes_by_id[node_id] = child
+        additions.setdefault(patch.parent_id, []).append(child)
 
     nodes: list[UiSemanticNode] = []
     for node in semantic_view.nodes:
@@ -1925,20 +1816,18 @@ def _rust_ui_semantic_views(
 ]:
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
-    diplomacy_map_key_names = load_diplomacy_map_key_names(repo_root)
-    transport_picture_children = load_transport_picture_children(repo_root)
+    child_node_patches = load_windows_child_node_patches(repo_root)
     city_buildings = load_city_building_visuals(repo_root)
     city_building_actions = load_city_building_action_visuals(repo_root)
     scene_keys = set(resource_backed_scene_keys(recipe_list))
-    if diplomacy_map_key_names.view not in scene_keys:
+    unknown_child_views = sorted(
+        {patch.resource for patch in child_node_patches} - scene_keys,
+        key=lambda item: (item.resource_file, item.view_id),
+    )
+    if unknown_child_views:
         raise ValueError(
-            f"{WINDOWS_DELTA_PATH}: diplomacy map-key view "
-            f"{diplomacy_map_key_names.view.text()} is not in the native Rust UI"
-        )
-    if transport_picture_children.view not in scene_keys:
-        raise ValueError(
-            f"{WINDOWS_DELTA_PATH}: transport picture view "
-            f"{transport_picture_children.view.text()} is not in the native Rust UI"
+            f"{WINDOWS_DELTA_PATH}: child-node views are not in the native Rust UI: "
+            + ", ".join(key.text() for key in unknown_child_views)
         )
     if city_buildings.view not in scene_keys:
         raise ValueError(
@@ -1976,11 +1865,8 @@ def _rust_ui_semantic_views(
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches, text_resources
         )
-        semantic_view = apply_diplomacy_map_key_names(
-            key, semantic_view, diplomacy_map_key_names
-        )
-        semantic_view = apply_transport_picture_children(
-            key, semantic_view, transport_picture_children
+        semantic_view = apply_windows_child_node_patches(
+            key, semantic_view, child_node_patches
         )
         scene_views.append((key, semantic_view))
     windows_views = load_windows_views(repo_root)

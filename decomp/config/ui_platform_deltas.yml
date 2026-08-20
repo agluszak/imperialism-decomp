@@ -333,53 +333,39 @@ node_property_patches:
   - {view: Univ.rsrc:9210, node: 0x168c, tag: numb, properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}, evidence: TUniversityView::DoStartup at 0x004cace0 installs the queue quantity style on each available native row}
   - {view: Univ.rsrc:9210, node: 0x18e4, tag: numb, properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}, evidence: TUniversityView::DoStartup at 0x004cace0 installs the queue quantity style on each available native row}
 
-# TMapKey::DoPostCreate creates these seven TDeluxeText controls at runtime on
-# Windows. They belong in the Rust presentation catalog, but not in the
-# generated C++ resource factory that constructs the underlying Mac tree.
-diplomacy_map_key_names:
-  view: Diplo.rsrc:2008
-  parent: {node: 0x0141, tag: mkey}
-  evidence: TMapKey::DoPostCreate at 0x004fcac0 creates nam0 through nam6 under mkey from the recovered legend coordinate tables
-  text:
-    {font_family: 3, face_flags: 0, point_size: 10, alignment: 0, color_index: 0xd2,
-     shadow_color_index: 0x13, shadow_offset: [1, 1], center_vertically: true}
-  children:
-    - {node: 0x6e616d30, tag: nam0, rect: [44, 19, 70, 25]}
-    - {node: 0x6e616d31, tag: nam1, rect: [44, 44, 70, 25]}
-    - {node: 0x6e616d32, tag: nam2, rect: [44, 68, 70, 25]}
-    - {node: 0x6e616d33, tag: nam3, rect: [44, 93, 70, 25]}
-    - {node: 0x6e616d34, tag: nam4, rect: [153, 19, 70, 25]}
-    - {node: 0x6e616d35, tag: nam5, rect: [153, 44, 70, 25]}
-    - {node: 0x6e616d36, tag: nam6, rect: [153, 68, 70, 25]}
+# Child controls created by recovered Windows post-create code after the Mac
+# resource tree is loaded. Each row is a complete semantic node patch; the
+# generator has no screen- or widget-specific child construction rules.
+windows_child_nodes:
+  - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam0, class: TDeluxeText, geometry: [44, 19, 70, 25], family: &diplomacy_map_key_text {text: {resource_id: 0, resource_index: -1, source: g_szEmptyString, mode: 3, flags: 0, point_size: 10, theme: 0, color_index: 0xd2, shadow_color_index: 0x13, shadow_offset: [1, 1], center_vertically: true}}, evidence: &diplomacy_map_key_evidence TMapKey::DoPostCreate at 0x004fcac0 creates nam0 through nam6 under mkey from the recovered legend coordinate tables}
+  - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam1, class: TDeluxeText, geometry: [44, 44, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}
+  - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam2, class: TDeluxeText, geometry: [44, 68, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}
+  - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam3, class: TDeluxeText, geometry: [44, 93, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}
+  - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam4, class: TDeluxeText, geometry: [153, 19, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}
+  - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam5, class: TDeluxeText, geometry: [153, 44, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}
+  - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam6, class: TDeluxeText, geometry: [153, 68, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}
 
-# TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets creates the
-# caption children owned by each TTransportPicture after loading the Mac tree.
-# The two money rows also receive a second `valu` caption.  The gauge itself is
-# TTransportPicture::Refresh custom drawing and is deliberately not a child.
-transport_picture_children:
-  view: Transport.rsrc:2014
-  evidence: TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 creates text at (0x98,0x12,0x46,0x0b), valu at (0x32,0x14,0x3c,0x0b) for resource slots 0x15 and 0x16, and total text at (0xa2,0x14,0x3c,0x0b)
-  text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 0, color_index: 0}
-  total: {node: 0x0591, tag: tota}
-  rows:
-    - {node: 0x0602, tag: fish}
-    - {node: 0x074f, tag: prod}
-    - {node: 0x089c, tag: grai}
-    - {node: 0x09e9, tag: timb}
-    - {node: 0x0b36, tag: lumb}
-    - {node: 0x0c83, tag: furn}
-    - {node: 0x0dd0, tag: coal}
-    - {node: 0x0f1d, tag: iron}
-    - {node: 0x106a, tag: stee}
-    - {node: 0x11b7, tag: hard}
-    - {node: 0x1304, tag: cott}
-    - {node: 0x1451, tag: fabr}
-    - {node: 0x159e, tag: clot}
-    - {node: 0x16eb, tag: "oil "}
-    - {node: 0x1838, tag: fuel}
-    - {node: 0x1985, tag: hors}
-    - {node: 0x1ad2, tag: gold, value: true}
-    - {node: 0x1c1f, tag: gems, value: true}
+  - {view: Transport.rsrc:2014, parent: {node: 0x0591, tag: tota}, type: stat, tag: text, class: TMyStaticText, geometry: [0xa2, 0x14, 0x3c, 0x0b], family: &transport_caption_text {text: {resource_id: 0, resource_index: -1, source: g_szEmptyString, mode: 3, flags: 0, point_size: 10, theme: 0, color_index: 0}}, evidence: &transport_caption_evidence "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 creates row text at (0x98,0x12,0x46,0x0b), gold and gems valu at (0x32,0x14,0x3c,0x0b), and total text at (0xa2,0x14,0x3c,0x0b)"}
+  - {view: Transport.rsrc:2014, parent: {node: 0x0602, tag: fish}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x074f, tag: prod}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x089c, tag: grai}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x09e9, tag: timb}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x0b36, tag: lumb}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x0c83, tag: furn}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x0dd0, tag: coal}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x0f1d, tag: iron}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x106a, tag: stee}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x11b7, tag: hard}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1304, tag: cott}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1451, tag: fabr}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x159e, tag: clot}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x16eb, tag: "oil "}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1838, tag: fuel}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1985, tag: hors}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1ad2, tag: gold}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1ad2, tag: gold}, type: stat, tag: valu, class: TMyStaticText, geometry: [0x32, 0x14, 0x3c, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1c1f, tag: gems}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+  - {view: Transport.rsrc:2014, parent: {node: 0x1c1f, tag: gems}, type: stat, tag: valu, class: TMyStaticText, geometry: [0x32, 0x14, 0x3c, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
 
 # TCityProductionView draws and hit-tests these buildings dynamically rather
 # than constructing sixteen resource-backed child controls. Keep this one
