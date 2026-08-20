@@ -582,14 +582,24 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("strategic map requires an active major nation");
     let status = &state.technology().research_status_by_nation[nation];
-    let mut variant = 0_i16;
-    if status[Technology::AdvancedIronWorking] == TechnologyResearchStatus::Researched {
-        variant = 1;
-    }
-    if status[Technology::MarineEngineering] == TechnologyResearchStatus::Researched {
-        variant = 2;
-    }
+    let variant = fleet_atlas_variant(
+        status[Technology::AdvancedIronWorking],
+        status[Technology::MarineEngineering],
+    );
     PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
+}
+
+fn fleet_atlas_variant(
+    advanced_iron_working: TechnologyResearchStatus,
+    marine_engineering: TechnologyResearchStatus,
+) -> i16 {
+    if marine_engineering != TechnologyResearchStatus::NotStarted {
+        2
+    } else if advanced_iron_working != TechnologyResearchStatus::NotStarted {
+        1
+    } else {
+        0
+    }
 }
 
 fn visible_strategic_units(
@@ -1141,6 +1151,18 @@ mod tests {
         assert_eq!(naval_action_frame(TileAction::try_from_retail(18)), None);
         assert_eq!(naval_action_frame(TileAction::try_from_retail(-14)), None);
         assert_eq!(naval_action_frame(None), None);
+    }
+
+    #[test]
+    fn pending_ship_technologies_select_the_retail_fleet_atlas_variants() {
+        use TechnologyResearchStatus::{NotStarted, Pending, Researched};
+
+        assert_eq!(fleet_atlas_variant(NotStarted, NotStarted), 0);
+        assert_eq!(fleet_atlas_variant(Pending, NotStarted), 1);
+        assert_eq!(fleet_atlas_variant(Researched, NotStarted), 1);
+        assert_eq!(fleet_atlas_variant(NotStarted, Pending), 2);
+        assert_eq!(fleet_atlas_variant(Pending, Pending), 2);
+        assert_eq!(fleet_atlas_variant(Researched, Researched), 2);
     }
 
     #[test]
