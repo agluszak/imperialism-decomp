@@ -106,34 +106,35 @@ fn spawn_opening_cinematic(
     }
 
     let image = images.add(Image::default());
-    commands
-        .spawn((
-            Name::new(format!("Retail movie: {movie_id}")),
-            DespawnOnExit(AppState::OpeningCinematic),
-            Node {
-                position_type: PositionType::Absolute,
-                width: Val::Percent(100.0),
-                height: Val::Percent(100.0),
-                justify_content: JustifyContent::Center,
-                align_items: AlignItems::Center,
-                ..default()
-            },
-            BackgroundColor(Color::BLACK),
-            GlobalZIndex(100),
-            Pickable::IGNORE,
-        ))
-        .with_children(|parent| {
-            parent.spawn((
+    commands.spawn_scene(opening_cinematic_scene(movie_id, image.clone()));
+    commands.insert_resource(ActiveCinematic { movie, image });
+}
+
+fn opening_cinematic_scene(movie_id: MovieId, image: Handle<Image>) -> impl Scene {
+    bsn! {
+        template(move |_context| Ok(Name::new(format!("Retail movie: {movie_id}"))))
+        template(|_context| Ok(DespawnOnExit(AppState::OpeningCinematic)))
+        Node {
+            position_type: PositionType::Absolute,
+            width: Val::Percent(100.0),
+            height: Val::Percent(100.0),
+            justify_content: JustifyContent::Center,
+            align_items: AlignItems::Center,
+        }
+        BackgroundColor(Color::BLACK)
+        GlobalZIndex(100)
+        Pickable::IGNORE
+        Children [
+            (
                 Node {
                     width: Val::Px(640.0),
                     height: Val::Px(480.0),
-                    ..default()
-                },
-                ImageNode::new(image.clone()).with_mode(NodeImageMode::Stretch),
-                Pickable::IGNORE,
-            ));
-        });
-    commands.insert_resource(ActiveCinematic { movie, image });
+                }
+                template(move |_context| Ok(ImageNode::new(image.clone()).with_mode(NodeImageMode::Stretch)))
+                Pickable::IGNORE
+            )
+        ]
+    }
 }
 
 fn pump_opening_cinematic(

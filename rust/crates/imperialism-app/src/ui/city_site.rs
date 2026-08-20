@@ -7,7 +7,7 @@ use crate::ui::hover_help::{
 };
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::RetailTree;
+use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
@@ -423,57 +423,42 @@ fn spawn_numbered_resource_item(
     count: i16,
 ) {
     let icon = commodity_icon(assets, resource_index);
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 9,
-            alignment: -1,
-        })
-        .expect("retail numbered-item count style");
-    let item = commands
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(x as f32),
-                top: Val::Px(y as f32),
-                width: Val::Px(RESOURCE_ITEM_WIDTH as f32),
-                height: Val::Px(RESOURCE_ITEM_HEIGHT as f32),
-                ..default()
-            },
-            ChildOf(parent),
-        ))
-        .id();
-    commands.spawn((
+    commands
+        .spawn_scene(numbered_resource_item_scene(x, y, icon, count))
+        .insert(ChildOf(parent));
+}
+
+fn numbered_resource_item_scene(x: i32, y: i32, icon: Handle<Image>, count: i16) -> impl Scene {
+    bsn! {
         Node {
             position_type: PositionType::Absolute,
-            left: Val::Px(0.0),
-            top: Val::Px(0.0),
-            width: Val::Px(31.0),
-            height: Val::Px(23.0),
-            ..default()
-        },
-        ImageNode::new(icon),
-        Pickable::IGNORE,
-        ChildOf(item),
-    ));
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(0.0),
-            top: Val::Px(RESOURCE_ITEM_HEIGHT as f32 - 12.0),
-            width: Val::Px(RESOURCE_ITEM_WIDTH as f32),
-            height: Val::Px(12.0),
-            ..default()
-        },
-        Text::new(count.to_string()),
-        font,
-        layout,
-        line_height,
-        TextColor(assets.palette_color(0)),
-        Pickable::IGNORE,
-        ChildOf(item),
-    ));
+            left: px(x),
+            top: px(y),
+            width: px(RESOURCE_ITEM_WIDTH),
+            height: px(RESOURCE_ITEM_HEIGHT),
+        }
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0), top: px(0), width: px(31), height: px(23),
+                }
+                template(move |_context| Ok(ImageNode::new(icon.clone())))
+                Pickable::IGNORE
+            ),
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0), top: px(RESOURCE_ITEM_HEIGHT - 12),
+                    width: px(RESOURCE_ITEM_WIDTH), height: px(12),
+                }
+                template(move |_context| Ok(Text::new(count.to_string())))
+                retail_text_style(3, 0, 9, -1)
+                retail_text_color(0)
+                Pickable::IGNORE
+            )
+        ]
+    }
 }
 
 fn new_city_extra_height(visible: i16) -> i32 {
