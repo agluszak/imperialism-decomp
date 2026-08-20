@@ -38,6 +38,7 @@ def _load_delta_config(repo_root: Path) -> dict:
         "functional_parity_cases",
         "node_property_patches",
         "diplomacy_map_key_names",
+        "transport_picture_children",
         "city_buildings",
         "city_building_actions",
         "city_dialog_controls",
