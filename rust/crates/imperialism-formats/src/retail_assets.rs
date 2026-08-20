@@ -1,7 +1,7 @@
 use crate::color::DibPalette;
 use crate::media::{MovieId, MusicTrack, SoundId};
 use crate::retail_resources::*;
-use crate::{PictureId, RetailCursor, RetailFontFace};
+use crate::{PictureId, RetailCursor, RetailFontFace, ScenarioInfo};
 use imperialism_core::{
     MajorNationId, MapMgr, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
     ScenarioInstruction, ScenarioMapId,
@@ -143,6 +143,28 @@ impl RetailAssets {
         })?;
         crate::decode_scenario_script(&bytes)
             .map_err(|source| RetailAssetError::ScenarioScript { path, source })
+    }
+
+    /// Reads every installed single-player scenario chooser entry.
+    pub fn single_player_scenarios(&self) -> Result<Vec<ScenarioInfo>, RetailAssetError> {
+        let mut scenarios = Vec::new();
+        for index in 9..16 {
+            let scenario = ScenarioMapId::new(index);
+            let relative = format!("Scenario/s{index}.inf");
+            let path = self.root.join(&relative);
+            if !path.exists() {
+                continue;
+            }
+            let bytes = fs::read(&path).map_err(|source| RetailAssetError::Io {
+                path: path.clone(),
+                source,
+            })?;
+            scenarios.push(
+                crate::decode_scenario_info(scenario, &bytes)
+                    .map_err(|detail| RetailAssetError::ScenarioInfo { path, detail })?,
+            );
+        }
+        Ok(scenarios)
     }
 
     /// Decodes the fixed retail strategic map for one scenario.
@@ -568,6 +590,8 @@ pub enum RetailAssetError {
     },
     #[error("{}: {detail}", path.display())]
     ScenarioMap { path: PathBuf, detail: String },
+    #[error("could not decode scenario metadata {path}: {detail}")]
+    ScenarioInfo { path: PathBuf, detail: String },
     #[error("{}: invalid PE/resource data: {detail}", path.display())]
     Resource { path: PathBuf, detail: String },
     #[error("no English picture {0} is available")]
@@ -872,6 +896,9 @@ mod tests {
                 .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
         );
         let assets = RetailAssets::open(&root).unwrap();
+        let single_player = assets.single_player_scenarios().unwrap();
+        assert_eq!(single_player.len(), 7);
+        assert_eq!(single_player[0].scenario, ScenarioMapId::new(9));
         for index in [0, 1, 3, 9, 10, 11, 12, 13, 14, 15] {
             let scenario = ScenarioMapId::new(index);
             assert_eq!(
@@ -880,6 +907,18 @@ mod tests {
             );
             assert!(!assets.scenario_script(scenario).unwrap().is_empty());
         }
+
+        let tutorial = ScenarioMapId::new(9);
+        let game = imperialism_core::create_scenario_game(
+            assets.scenario_map(tutorial).unwrap(),
+            tutorial,
+            &assets.scenario_script(tutorial).unwrap(),
+            MajorNationId::new(2),
+            imperialism_core::Difficulty::Easy,
+            1,
+        );
+        assert_eq!(game.turn().scenario_map, Some(tutorial));
+        assert_eq!(game.turn().economic_turn, 44);
     }
 
     #[test]

@@ -974,9 +974,10 @@ mod tests {
             parts.turn.scenario_map,
             parts.turn.economic_turn,
             parts.turn.diplomacy_year_term_raw,
+            parts.turn.selected_asset_set,
             PhaseCode::COMBAT_MOVES,
             parts.turn.turn_flow_status_flags,
-            parts.turn.quarter_gate_by_decade,
+            parts.turn.phase_state_by_decade,
             parts.turn.difficulty,
             parts.turn.active_nation,
         );

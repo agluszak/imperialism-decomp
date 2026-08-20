@@ -55,11 +55,14 @@ pub struct TurnState {
     ///
     /// This is not the 1815-based display calendar.
     pub diplomacy_year_term_raw: i16,
+    /// Retail `TSimMgr::field6a`, selecting the scenario flag/language asset set.
+    pub selected_asset_set: i16,
     pub(crate) phase: PhaseCode,
     /// Persisted turn-flow status bits consumed by the alert and technology phases.
     pub turn_flow_status_flags: u32,
-    /// Retail's decade-boundary presentation state, keyed by `economic_turn / 40`.
-    pub quarter_gate_by_decade: DecadeTable<bool>,
+    /// Retail's twelve persisted decade/council state bytes.
+    /// Zero skips the council gate; scenario scripts also use the distinct state 2.
+    pub phase_state_by_decade: [u8; 12],
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     /// Process-local last tick that showed turn alerts. Not stored in `.imp`.
@@ -79,9 +82,10 @@ impl TurnState {
         scenario_map: Option<ScenarioMapId>,
         economic_turn: i32,
         diplomacy_year_term_raw: i16,
+        selected_asset_set: i16,
         phase: PhaseCode,
         turn_flow_status_flags: u32,
-        quarter_gate_by_decade: DecadeTable<bool>,
+        phase_state_by_decade: [u8; 12],
         difficulty: Difficulty,
         active_nation: NationId,
     ) -> Self {
@@ -89,9 +93,10 @@ impl TurnState {
             scenario_map,
             economic_turn,
             diplomacy_year_term_raw,
+            selected_asset_set,
             phase,
             turn_flow_status_flags,
-            quarter_gate_by_decade,
+            phase_state_by_decade,
             difficulty,
             active_nation,
             last_turn_alert_tick: 0,
@@ -978,7 +983,7 @@ mod tests {
         let mut state = game_state();
         seed_town_tiles(&mut state);
         state.turn.economic_turn = 40;
-        state.turn.quarter_gate_by_decade[crate::Decade::Second] = true;
+        state.turn.phase_state_by_decade[crate::Decade::Second as usize] = 1;
         state.turn.phase = crate::PhaseCode::QUARTER_GATE;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::DecadeCinematic);
         assert_eq!(state.turn.phase(), crate::PhaseCode::SEASON_ADVANCE);

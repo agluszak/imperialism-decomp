@@ -464,6 +464,21 @@ impl TechnologyState {
 }
 
 impl GameState {
+    pub(crate) fn apply_scenario_technology(
+        &mut self,
+        technology: Technology,
+        forced_nation: MajorNationId,
+    ) {
+        apply_city_order_capability_unlock(&mut self.technology, technology);
+        for nation in MajorNationId::all() {
+            if !self.nations.major(nation).economy.diplomacy_eligible || nation == forced_nation {
+                self.technology.completion_year_by_nation[nation][technology] =
+                    (self.turn.economic_turn / 4) as i16;
+                self.apply_ability_unlock(technology, nation);
+            }
+        }
+    }
+
     pub fn technology_purchase_cost(technology: Technology) -> i32 {
         TECH_ITEM_PURCHASE_COST[technology]
     }

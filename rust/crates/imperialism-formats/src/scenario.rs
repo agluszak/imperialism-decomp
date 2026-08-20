@@ -2,6 +2,63 @@ use imperialism_core::*;
 use std::fmt::Display;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ScenarioInfo {
+    pub scenario: ScenarioMapId,
+    pub title: String,
+    pub description: String,
+    pub nation_descriptions: MajorNationTable<String>,
+    pub difficulty_by_nation: MajorNationTable<Option<Difficulty>>,
+    pub preview_nation: MajorNationId,
+}
+
+pub fn decode_scenario_info(scenario: ScenarioMapId, bytes: &[u8]) -> Result<ScenarioInfo, String> {
+    let text = String::from_utf8_lossy(bytes);
+    let fields = text.split('#').collect::<Vec<_>>();
+    if fields.len() < 10 {
+        return Err("scenario metadata is missing fields".to_owned());
+    }
+    let title = fields[0].trim_matches(['\r', '\n']).to_owned();
+    let description = scenario_text(fields[1]);
+    let nation_descriptions =
+        MajorNationTable::from_fn(|nation| scenario_text(fields[2 + usize::from(nation.get())]));
+    let values = fields[9]
+        .split_ascii_whitespace()
+        .map(|value| value.parse::<i16>())
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("invalid scenario selection values: {error}"))?;
+    if values.len() < 8 {
+        return Err("scenario metadata is missing nation selection values".to_owned());
+    }
+    let difficulty_by_nation = MajorNationTable::from_fn(|nation| {
+        let value = values[usize::from(nation.get())];
+        (value >= 0).then(|| Difficulty::try_from(value as u8).expect("scenario difficulty"))
+    });
+    let preview_nation = MajorNationId::try_new(values[7] as u8)
+        .filter(|_| values[7] >= 0)
+        .ok_or_else(|| format!("invalid scenario preview nation {}", values[7]))?;
+    Ok(ScenarioInfo {
+        scenario,
+        title,
+        description,
+        nation_descriptions,
+        difficulty_by_nation,
+        preview_nation,
+    })
+}
+
+fn scenario_text(field: &str) -> String {
+    field
+        .trim_matches(['\r', '\n', ' '])
+        .chars()
+        .map(|ch| match ch {
+            '\r' | '\n' => ' ',
+            '^' => '\r',
+            ch => ch,
+        })
+        .collect()
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ScenarioScriptError {
     offset: usize,
     detail: String,

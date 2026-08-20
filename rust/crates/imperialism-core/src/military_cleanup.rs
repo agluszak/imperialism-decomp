@@ -55,7 +55,7 @@ impl GameState {
         }
         if self.turn.economic_turn % 40 == 0
             && Decade::for_economic_turn(self.turn.economic_turn)
-                .is_some_and(|decade| self.turn.quarter_gate_by_decade[decade])
+                .is_some_and(|decade| self.turn.phase_state_by_decade[decade as usize] != 0)
         {
             self.rebuild_council_ballot(false);
         }
