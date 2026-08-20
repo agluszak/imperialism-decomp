@@ -18,7 +18,7 @@ use imperialism_formats::*;
 const HISTORY_BACKGROUND: i16 = 0x2260;
 const CATEGORY_BACKGROUND: i16 = 0x2263;
 const TAB_STRIP_BASE: i16 = 0x2266;
-const FLAG_ATLAS: i16 = 680;
+const FLAG_ATLAS: i16 = 0x21fb;
 const COMMODITY_ICON_BASE: i16 = 700;
 const PAGE_LEFT: f32 = 65.0;
 const PAGE_RIGHT: f32 = 314.0;
@@ -191,6 +191,30 @@ fn bind_deal_book(
         heading_center: TextLayout::justify(Justify::Center),
         color: Color::BLACK,
     };
+    let (title_font, title_layout, title_line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 18,
+            alignment: 1,
+        })
+        .expect("retail deal-book title text style");
+    commands.entity(tree.find(root, fourcc!("titL"))).insert((
+        title_font.clone(),
+        title_layout,
+        title_line_height,
+        TextColor(Color::BLACK),
+    ));
+    commands.entity(tree.find(root, fourcc!("rtil"))).insert((
+        title_font,
+        title_layout,
+        title_line_height,
+        TextColor(assets.palette_color(0xd2)),
+        TextShadow {
+            offset: Vec2::new(1.0, 1.0),
+            color: assets.palette_color(0x28),
+        },
+    ));
 
     let tabs = tree.find(root, fourcc!("tabs"));
     commands
