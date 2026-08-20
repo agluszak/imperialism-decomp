@@ -57,6 +57,7 @@ impl TownState {
 pub struct CityState {
     pub orders: CityOrders,
     pub tasks: Vec<CityTaskState>,
+    pub transport_requests: Vec<CityTransportRequest>,
     pub power_plant_upgrade_queued: bool,
     pub food_substitution_count: i16,
     pub starvation_population_loss: i16,
@@ -107,6 +108,12 @@ pub enum CityTaskOperation {
     },
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct CityTransportRequest {
+    pub resource: ResourceKind,
+    pub requested_amount: i16,
+}
+
 impl CityState {
     /// Builds the scenario start city. `stockpile` and `production` come from
     /// the difficulty presets, `labor` is the `SetPopulation` triple, and only
@@ -120,6 +127,7 @@ impl CityState {
         Self {
             orders: CityOrders::default(),
             tasks: Vec::new(),
+            transport_requests: Vec::new(),
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,

@@ -34,6 +34,7 @@ pub(crate) fn city() -> CityState {
     CityState {
         orders: CityOrders::default(),
         tasks: Vec::new(),
+        transport_requests: Vec::new(),
         power_plant_upgrade_queued: false,
         food_substitution_count: 0,
         starvation_population_loss: 0,

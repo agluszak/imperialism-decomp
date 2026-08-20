@@ -511,7 +511,14 @@ fn city_dto(
         },
         orders: city_orders_dto(orders),
         tasks: city.tasks.iter().map(city_task_dto).collect(),
-        transport_requests: empty_records(),
+        transport_requests: city
+            .transport_requests
+            .iter()
+            .map(|request| LegacyCityTransportRequest {
+                resource_type: i16::from(request.resource.retail()),
+                requested_amount: request.requested_amount,
+            })
+            .collect(),
     }
 }
 

@@ -2,7 +2,9 @@ use super::PROVINCE_COUNT;
 use super::conversions::*;
 use super::model::*;
 use super::parse::*;
-use super::write::{write_city_tasks, write_navy, write_navy_mission};
+use super::write::{
+    write_city_tasks, write_city_transport_requests, write_navy, write_navy_mission,
+};
 use super::*;
 use crate::legacy_stream::{LegacyStream, LegacyWriter};
 use imperialism_core::*;
@@ -13,6 +15,8 @@ const MIDGAME_NAVY_FIXTURE: &[u8] =
     include_bytes!("../../../../../fixtures/retail/midgame_navy.imp");
 const MIDGAME_CITY_TASKS_FIXTURE: &[u8] =
     include_bytes!("../../../../../fixtures/retail/midgame_city_tasks.imp");
+const MIDGAME_TRANSPORT_REQUESTS_FIXTURE: &[u8] =
+    include_bytes!("../../../../../fixtures/retail/midgame_transport_requests.imp");
 const DIPLOMACY_YEAR_TERM_ABSOLUTE_OFFSET_V62: usize = 0x1a1f;
 const MARKET_ABSOLUTE_OFFSET_V62: usize = 0x1ac1;
 const MARKET_ROW_SERIALIZED_SIZE_V62: usize = 0x9e;
@@ -53,7 +57,7 @@ fn midgame_navy_fixture_is_the_narrow_supported_save_slice() {
             .any(|mission| !mission.ship_ordinals.is_empty())
     );
     assert!(city_tasks(&save).is_empty());
-    assert!(!save.has_transport_requests());
+    assert!(city_transport_requests(&save).is_empty());
 }
 
 #[test]
@@ -113,7 +117,7 @@ fn midgame_city_tasks_fixture_is_the_narrow_supported_save_slice() {
     let save = LegacySaveV62::parse(MIDGAME_CITY_TASKS_FIXTURE);
     assert!(save.navy.task_forces.is_empty());
     assert!(!city_tasks(&save).is_empty());
-    assert!(!save.has_transport_requests());
+    assert!(city_transport_requests(&save).is_empty());
 }
 
 #[test]
@@ -152,6 +156,57 @@ fn encoded_city_tasks(save: &LegacySaveV62) -> Vec<u8> {
         .filter_map(|nation| nation.great_power().city.as_ref())
     {
         write_city_tasks(&mut writer, &city.tasks);
+    }
+    writer.into_bytes()
+}
+
+#[test]
+fn midgame_transport_requests_fixture_is_the_narrow_supported_save_slice() {
+    let save = LegacySaveV62::parse(MIDGAME_TRANSPORT_REQUESTS_FIXTURE);
+    assert!(save.navy.task_forces.is_empty());
+    assert!(city_tasks(&save).is_empty());
+    assert!(!city_transport_requests(&save).is_empty());
+}
+
+#[test]
+fn retail_midgame_transport_requests_round_trip_semantics_and_records() {
+    let retail = LegacySaveV62::parse(MIDGAME_TRANSPORT_REQUESTS_FIXTURE);
+    let original = retail.game_state(game_context());
+    let written = LegacySaveV62::from_game_state(
+        &original,
+        retail.map_view_origin(),
+        &retail.city_window_layout(),
+        &retail.battle_report_text(),
+        &retail.header.save_label,
+        retail.header.saved_session_slot,
+    );
+
+    assert_eq!(
+        encoded_city_transport_requests(&written),
+        encoded_city_transport_requests(&retail)
+    );
+    assert_eq!(written.game_state(game_context()), original);
+    let loaded = load_game_from_bytes(&written.to_bytes(), game_context())
+        .expect("a midgame transport-request save loads through the public boundary");
+    assert_eq!(loaded.game, original);
+}
+
+fn city_transport_requests(save: &LegacySaveV62) -> Vec<&LegacyCityTransportRequest> {
+    save.major_nations
+        .values()
+        .filter_map(|nation| nation.great_power().city.as_ref())
+        .flat_map(|city| &city.transport_requests)
+        .collect()
+}
+
+fn encoded_city_transport_requests(save: &LegacySaveV62) -> Vec<u8> {
+    let mut writer = LegacyWriter::new();
+    for city in save
+        .major_nations
+        .values()
+        .filter_map(|nation| nation.great_power().city.as_ref())
+    {
+        write_city_transport_requests(&mut writer, &city.transport_requests);
     }
     writer.into_bytes()
 }

@@ -249,6 +249,11 @@ pub(crate) enum LegacyCityTask {
     },
 }
 
+pub(crate) struct LegacyCityTransportRequest {
+    pub resource_type: i16,
+    pub requested_amount: i16,
+}
+
 pub(crate) struct LegacyCityState {
     pub power_plant_upgrade_queued: u8,
     pub low_production: u8,
@@ -274,7 +279,7 @@ pub(crate) struct LegacyCityState {
     pub population: LegacyPopulationState,
     pub orders: LegacyCityOrders,
     pub tasks: Vec<LegacyCityTask>,
-    pub transport_requests: LegacyFixedRecordList,
+    pub transport_requests: Vec<LegacyCityTransportRequest>,
 }
 
 pub(crate) struct LegacyProductionOrder {

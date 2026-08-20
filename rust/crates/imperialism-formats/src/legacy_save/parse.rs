@@ -611,8 +611,24 @@ fn read_city(stream: &mut LegacyStream<'_>) -> LegacyCityState {
                 })
                 .collect()
         },
-        transport_requests: read_fixed_record_list(stream),
+        transport_requests: read_city_transport_requests(stream),
     }
+}
+
+fn read_city_transport_requests(stream: &mut LegacyStream<'_>) -> Vec<LegacyCityTransportRequest> {
+    let list = read_fixed_record_list(stream);
+    assert_eq!(list.record_size, 4, "retail city transport record size");
+    list.records
+        .into_iter()
+        .map(|record| LegacyCityTransportRequest {
+            resource_type: i16::from_le_bytes(
+                record[0..2].try_into().expect("record size checked"),
+            ),
+            requested_amount: i16::from_le_bytes(
+                record[2..4].try_into().expect("record size checked"),
+            ),
+        })
+        .collect()
 }
 
 fn read_city_orders(stream: &mut LegacyStream<'_>) -> LegacyCityOrders {

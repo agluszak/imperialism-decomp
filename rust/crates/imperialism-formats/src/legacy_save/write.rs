@@ -4,16 +4,6 @@ use crate::legacy_stream::LegacyWriter;
 use imperialism_core::*;
 
 impl LegacySaveV62 {
-    pub(super) fn has_transport_requests(&self) -> bool {
-        self.major_nations.values().any(|nation| {
-            nation
-                .great_power()
-                .city
-                .as_ref()
-                .is_some_and(|city| !city.transport_requests.records.is_empty())
-        })
-    }
-
     pub fn to_bytes(&self) -> Vec<u8> {
         let mut writer = LegacyWriter::new();
         writer.write_le_u32(super::slots::SAVE_MAGIC);
@@ -516,7 +506,7 @@ fn write_city(writer: &mut LegacyWriter, city: &LegacyCityState) {
     write_population(writer, &city.population);
     write_city_orders(writer, &city.orders);
     write_city_tasks(writer, &city.tasks);
-    write_fixed_record_list(writer, &city.transport_requests);
+    write_city_transport_requests(writer, &city.transport_requests);
 }
 
 pub(super) fn write_city_tasks(writer: &mut LegacyWriter, tasks: &[LegacyCityTask]) {
@@ -552,6 +542,17 @@ pub(super) fn write_city_tasks(writer: &mut LegacyWriter, tasks: &[LegacyCityTas
                 writer.write_le_i16(*waiting_for_order_advance);
             }
         }
+    }
+}
+pub(super) fn write_city_transport_requests(
+    writer: &mut LegacyWriter,
+    requests: &[LegacyCityTransportRequest],
+) {
+    writer.write_le_u16(4);
+    writer.write_le_u32(requests.len() as u32);
+    for request in requests {
+        writer.write_le_i16(request.resource_type);
+        writer.write_le_i16(request.requested_amount);
     }
 }
 
