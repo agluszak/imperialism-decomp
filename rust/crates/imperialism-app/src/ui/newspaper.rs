@@ -13,6 +13,7 @@ use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
 const COLUMN_X: [f32; 3] = [24.0, 226.0, 428.0];
 const COLUMN_WIDTH: f32 = 188.0;
 const STORY_TOP: f32 = 80.0;
+const STORY_HEIGHT: f32 = 396.0;
 
 #[derive(Component)]
 struct NewspaperRoot;
@@ -55,7 +56,7 @@ fn bind_newspaper(
     retail: Res<RetailAssetsResource>,
 ) {
     let root = *root;
-    bind_newspaper_chrome(&mut commands, root, &tree);
+    bind_newspaper_chrome(&mut commands, &mut assets, root, &tree);
     fill_newspaper_stories(
         &mut commands,
         &mut assets,
@@ -70,13 +71,34 @@ fn bind_newspaper(
         .observe(on_newspaper_activate);
 }
 
-fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {
-    commands
-        .entity(tree.find(root, fourcc!("date")))
-        .insert((NewspaperDisplay::Date, Text::default()));
-    commands
-        .entity(tree.find(root, fourcc!("spec")))
-        .insert((NewspaperDisplay::Spec, Text::default()));
+fn bind_newspaper_chrome(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    root: Entity,
+    tree: &RetailTree,
+) {
+    let (font, _, line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 0,
+        })
+        .expect("retail newspaper chrome text style");
+    commands.entity(tree.find(root, fourcc!("date"))).insert((
+        NewspaperDisplay::Date,
+        Text::default(),
+        font.clone(),
+        TextLayout::justify(Justify::Right),
+        line_height,
+    ));
+    commands.entity(tree.find(root, fourcc!("spec"))).insert((
+        NewspaperDisplay::Spec,
+        Text::default(),
+        font,
+        TextLayout::justify(Justify::Left),
+        line_height,
+    ));
 }
 
 fn project_newspaper_chrome(
@@ -104,24 +126,48 @@ fn project_newspaper_date(assets: &RetailUiAssets, economic_turn: i32) -> String
 }
 
 fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
-    // FIXME: `TNewspaperView::StuffValues` switches on `economicTurn % 4`: 0 escalation,
-    // 1 `GetMarketChange()`, 2/3 comparative-power rows. Only season 0 is implemented.
-    // The opening paper is turn 1 after `AdvanceSeason`, so retail shows market change.
-    if state.turn().economic_turn % 4 != 0 {
-        return String::new();
-    }
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("newspaper requires an active major nation");
-    let template = get_string(assets, 0x275e, 0);
-    fill_brackets(
-        &template,
-        &[&state
-            .nations()
-            .major(nation)
-            .economy
-            .escalation_counter
-            .to_string()],
-    )
+    let (template, value) = match state.turn().economic_turn % 4 {
+        0 => (
+            get_string(assets, 0x275e, 0),
+            state
+                .nations()
+                .major(nation)
+                .economy
+                .escalation_counter
+                .to_string(),
+        ),
+        1 => {
+            let sum = (0..TradeCommodity::LENGTH)
+                .map(|index| {
+                    let commodity = TradeCommodity::from_retail(index as i16)
+                        .expect("market index is a retail trade commodity");
+                    let row = &state.market().rows[commodity];
+                    row.price - row.previous_price
+                })
+                .sum::<i32>();
+            let change = sum / TradeCommodity::LENGTH as i32;
+            (
+                get_string(assets, 0x275e, 1),
+                if change > 0 {
+                    format!("+{change}")
+                } else {
+                    change.to_string()
+                },
+            )
+        }
+        2 => (
+            get_string(assets, 0x275e, 2),
+            state.newspaper_commodity_power(nation).to_string(),
+        ),
+        3 => (
+            get_string(assets, 0x275e, 3),
+            state.newspaper_military_power(nation).to_string(),
+        ),
+        _ => unreachable!("economic turn modulo four is in range"),
+    };
+    fill_brackets(&template, &[&value])
 }
 
 fn fill_newspaper_stories(
@@ -140,7 +186,7 @@ fn fill_newspaper_stories(
     let main = tree.find(root, fourcc!("main"));
     let (feature_font, feature_layout, feature_line, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 3,
+            font_family: 0,
             face_flags: 0,
             point_size: 14,
             alignment: 2,
@@ -148,56 +194,65 @@ fn fill_newspaper_stories(
         .expect("newspaper feature headline style");
     let (event_font, event_layout, event_line, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 1,
+            font_family: 1,
+            face_flags: 0,
             point_size: 14,
             alignment: 2,
         })
         .expect("newspaper event headline style");
     let (body_font, body_layout, body_line, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 3,
+            font_family: 0,
             face_flags: 0,
             point_size: 12,
             alignment: 2,
         })
         .expect("newspaper body style");
 
+    let columns = COLUMN_X.map(|left| {
+        commands
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(left),
+                    top: Val::Px(STORY_TOP),
+                    width: Val::Px(COLUMN_WIDTH),
+                    height: Val::Px(STORY_HEIGHT),
+                    flex_direction: FlexDirection::Column,
+                    ..default()
+                },
+                ChildOf(main),
+            ))
+            .id()
+    });
     for (column, stories) in page.stories.iter().enumerate() {
-        let mut y = STORY_TOP;
         for story in stories.iter().flatten() {
             let tokens = story_tokens(assets, state, story);
             let token_refs: Vec<&str> = tokens.iter().map(String::as_str).collect();
             let headline = fill_brackets(news.headline(story.template_index), &token_refs);
             let body = fill_brackets(news.body(story.template_index), &token_refs);
             if story.feature {
-                y += spawn_story_text(
+                spawn_story_text(
                     commands,
-                    main,
-                    column,
-                    y,
+                    columns[column],
                     headline,
                     feature_font.clone(),
                     feature_layout,
                     feature_line,
                 );
             } else {
-                y += spawn_story_text(
+                spawn_story_text(
                     commands,
-                    main,
-                    column,
-                    y,
+                    columns[column],
                     headline,
                     event_font.clone(),
                     event_layout,
                     event_line,
                 );
             }
-            y += spawn_story_text(
+            spawn_story_text(
                 commands,
-                main,
-                column,
-                y,
+                columns[column],
                 body,
                 body_font.clone(),
                 body_layout,
@@ -207,30 +262,19 @@ fn fill_newspaper_stories(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn spawn_story_text(
     commands: &mut Commands,
     parent: Entity,
-    column: usize,
-    y: f32,
     text: String,
     font: TextFont,
     layout: TextLayout,
     line_height: LineHeight,
-) -> f32 {
-    let lines = text.lines().count().max(1) as f32;
-    let height = match line_height {
-        LineHeight::Px(px) => px * lines + 8.0,
-        LineHeight::RelativeToFont(scale) => 16.0 * scale * lines + 8.0,
-    };
+) {
     commands.spawn((
         Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(COLUMN_X[column]),
-            top: Val::Px(y),
-            width: Val::Px(COLUMN_WIDTH),
-            height: Val::Px(height),
-            overflow: Overflow::clip(),
+            width: Val::Percent(100.0),
+            padding: UiRect::all(Val::Px(4.0)),
+            flex_shrink: 0.0,
             ..default()
         },
         Text::new(text),
@@ -240,14 +284,19 @@ fn spawn_story_text(
         TextColor(Color::BLACK),
         ChildOf(parent),
     ));
-    height
 }
 
 fn story_tokens(assets: &RetailUiAssets, state: &GameState, story: &NewsStory) -> [String; 4] {
     std::array::from_fn(|index| match &story.arguments[index] {
         NewsArgument::NationMask { nations } => format_nation_names(assets, state, nations, false),
         NewsArgument::NationList { nations } => format_nation_names(assets, state, nations, true),
-        _ => String::new(),
+        NewsArgument::Province { province } => state.map().provinces[*province].name.clone(),
+        NewsArgument::Zone { ordinal } => state.ocean().zones
+            [usize::try_from(*ordinal).expect("newspaper ocean-zone ordinal is nonnegative")]
+        .zone()
+        .display_name
+        .clone(),
+        NewsArgument::Empty => String::new(),
     })
 }
 
