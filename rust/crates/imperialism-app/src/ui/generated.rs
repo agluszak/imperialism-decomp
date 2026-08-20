@@ -11189,11 +11189,25 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
                                 retail_picture(4019)
+                                Children [
+                                    (
+                                        retail_node(fourcc!("text"), 162, 20, 60, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                ]
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
                                 retail_picture(4001)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11211,6 +11225,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4002)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11226,6 +11246,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
                                 retail_picture(4003)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11243,6 +11269,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4004)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11258,6 +11290,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
                                 retail_picture(4005)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11275,6 +11313,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4006)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11290,6 +11334,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
                                 retail_picture(4007)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11307,6 +11357,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4008)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11322,6 +11378,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
                                 retail_picture(4009)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11339,6 +11401,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4010)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11354,6 +11422,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
                                 retail_picture(4011)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
@@ -11371,6 +11445,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4012)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11386,6 +11466,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
                                 retail_picture(4013)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
@@ -11403,6 +11489,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4014)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11418,6 +11510,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
                                 retail_picture(4015)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
@@ -11435,6 +11533,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4016)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11451,6 +11555,18 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4017)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
+                                        retail_node(fourcc!("valu"), 50, 20, 60, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11466,6 +11582,18 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
                                 retail_picture(4018)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
+                                        retail_node(fourcc!("valu"), 50, 20, 60, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button

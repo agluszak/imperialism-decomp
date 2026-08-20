@@ -213,6 +213,35 @@ diplomacy_map_key_names:
     - {node: 0x6e616d35, tag: nam5, rect: [153, 44, 70, 25]}
     - {node: 0x6e616d36, tag: nam6, rect: [153, 68, 70, 25]}
 
+# TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets creates the
+# caption children owned by each TTransportPicture after loading the Mac tree.
+# The two money rows also receive a second `valu` caption.  The gauge itself is
+# TTransportPicture::Refresh custom drawing and is deliberately not a child.
+transport_picture_children:
+  view: Transport.rsrc:2014
+  evidence: TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 creates text at (0x98,0x12,0x46,0x0b), valu at (0x32,0x14,0x3c,0x0b) for resource slots 0x15 and 0x16, and total text at (0xa2,0x14,0x3c,0x0b)
+  text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 0, color_index: 0}
+  total: {node: 0x0591, tag: tota}
+  rows:
+    - {node: 0x0602, tag: fish}
+    - {node: 0x074f, tag: prod}
+    - {node: 0x089c, tag: grai}
+    - {node: 0x09e9, tag: timb}
+    - {node: 0x0b36, tag: lumb}
+    - {node: 0x0c83, tag: furn}
+    - {node: 0x0dd0, tag: coal}
+    - {node: 0x0f1d, tag: iron}
+    - {node: 0x106a, tag: stee}
+    - {node: 0x11b7, tag: hard}
+    - {node: 0x1304, tag: cott}
+    - {node: 0x1451, tag: fabr}
+    - {node: 0x159e, tag: clot}
+    - {node: 0x16eb, tag: "oil "}
+    - {node: 0x1838, tag: fuel}
+    - {node: 0x1985, tag: hors}
+    - {node: 0x1ad2, tag: gold, value: true}
+    - {node: 0x1c1f, tag: gems, value: true}
+
 # TCityProductionView draws and hit-tests these buildings dynamically rather
 # than constructing sixteen resource-backed child controls. Keep this one
 # recovered table attached to Citymain instead of creating a general scene DSL.

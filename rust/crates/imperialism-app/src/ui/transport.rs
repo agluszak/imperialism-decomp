@@ -195,14 +195,6 @@ fn bind_transport_screen(
     let nation = session.active_major_nation();
     session.game.rebuild_nation_resource_yields(nation);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: 0,
-        })
-        .expect("retail transport ledger text style");
     let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -247,16 +239,7 @@ fn bind_transport_screen(
         assets.palette_color(0x28),
         assets.palette_color(0),
     );
-    bind_transport_controls(
-        &mut commands,
-        *root,
-        &tree,
-        font,
-        layout,
-        line_height,
-        cursor_style,
-        colors,
-    );
+    bind_transport_controls(&mut commands, *root, &tree, cursor_style, colors);
     for binding in TRANSPORT_ROWS {
         let row = tree.find(*root, binding.tag);
         commands
@@ -265,14 +248,10 @@ fn bind_transport_screen(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn bind_transport_controls(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    font: TextFont,
-    layout: TextLayout,
-    line_height: LineHeight,
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
     colors: TransportColors,
 ) {
@@ -302,6 +281,9 @@ fn bind_transport_controls(
                 delta: 1,
             })
             .observe(on_transport_arrow_activate);
+        commands
+            .entity(tree.find(row, fourcc!("text")))
+            .insert(TransportDisplay::RowCaption(binding.allocation));
         let track_left = if index < LEFT_TRANSPORT_ROW_COUNT {
             0x61
         } else {
@@ -321,9 +303,6 @@ fn bind_transport_controls(
             .apply_scene(transport_row_overlay(
                 binding.allocation,
                 track_left,
-                font.clone(),
-                layout,
-                line_height,
                 colors,
             ));
         if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
@@ -334,35 +313,21 @@ fn bind_transport_controls(
             None
         } {
             commands
-                .spawn((
-                    Node {
-                        position_type: PositionType::Absolute,
-                        width: percent(100),
-                        height: percent(100),
-                        ..default()
-                    },
-                    Pickable::IGNORE,
-                    ChildOf(row),
-                ))
-                .apply_scene(transport_money_overlay(
+                .entity(tree.find(row, fourcc!("valu")))
+                .insert(TransportDisplay::Money {
                     resource,
                     unit_value,
-                    font.clone(),
-                    layout,
-                    line_height,
-                ));
+                });
         }
     }
 
     let total = tree.find(root, fourcc!("tota"));
     commands
+        .entity(tree.find(total, fourcc!("text")))
+        .insert(TransportDisplay::CapacityCaption);
+    commands
         .entity(total)
-        .apply_scene(transport_capacity_overlay(
-            font.clone(),
-            layout,
-            line_height,
-            colors,
-        ));
+        .apply_scene(transport_capacity_overlay(colors));
     let cursor = tree.find(root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, cursor_color, cursor_shadow) =
         cursor_style;
@@ -403,9 +368,6 @@ fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocati
 fn transport_row_overlay(
     allocation: TransportAllocation,
     track_left: i32,
-    font: TextFont,
-    layout: TextLayout,
-    line_height: LineHeight,
     colors: TransportColors,
 ) -> impl Scene {
     bsn! {
@@ -444,64 +406,11 @@ fn transport_row_overlay(
                     reached_color: colors.at_limit,
                 }))
             ),
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0x98),
-                    top: px(0x12),
-                    width: px(0x46),
-                    height: px(0x0b),
-                }
-                Text("")
-                template(move |_context| Ok(font.clone()))
-                template(move |_context| Ok(layout))
-                template(move |_context| Ok(line_height))
-                TextColor(Color::BLACK)
-                Pickable::IGNORE
-                template(move |_context| Ok(TransportDisplay::RowCaption(allocation)))
-            ),
         ]
     }
 }
 
-fn transport_money_overlay(
-    resource: ResourceKind,
-    unit_value: i32,
-    font: TextFont,
-    layout: TextLayout,
-    line_height: LineHeight,
-) -> impl Scene {
-    bsn! {
-        Children [
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0x32),
-                    top: px(0x14),
-                    width: px(0x3c),
-                    height: px(0x0b),
-                }
-                Text("")
-                template(move |_context| Ok(font.clone()))
-                template(move |_context| Ok(layout))
-                template(move |_context| Ok(line_height))
-                TextColor(Color::BLACK)
-                Pickable::IGNORE
-                template(move |_context| Ok(TransportDisplay::Money {
-                    resource,
-                    unit_value,
-                }))
-            ),
-        ]
-    }
-}
-
-fn transport_capacity_overlay(
-    font: TextFont,
-    layout: TextLayout,
-    line_height: LineHeight,
-    colors: TransportColors,
-) -> impl Scene {
+fn transport_capacity_overlay(colors: TransportColors) -> impl Scene {
     bsn! {
         Children [
             (transport_track(0x5d, colors.empty, None)),
@@ -521,22 +430,6 @@ fn transport_capacity_overlay(
                     normal_color: colors.below_limit,
                     full_color: colors.at_limit,
                 }))
-            ),
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0xa2),
-                    top: px(0x14),
-                    width: px(0x3c),
-                    height: px(0x0b),
-                }
-                Text("")
-                template(move |_context| Ok(font.clone()))
-                template(move |_context| Ok(layout))
-                template(move |_context| Ok(line_height))
-                TextColor(Color::BLACK)
-                Pickable::IGNORE
-                template(move |_context| Ok(TransportDisplay::CapacityCaption))
             ),
         ]
     }
@@ -908,20 +801,41 @@ mod tests {
         let root = world
             .spawn((TestTransportRoot, TransportScreen, Node::default()))
             .id();
-        for tag in [
-            fourcc!("tran"),
-            fourcc!("tota"),
-            fourcc!("curs"),
-            fourcc!("trea"),
-        ] {
+        for tag in [fourcc!("tran"), fourcc!("curs"), fourcc!("trea")] {
             world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
         }
+        let total = world
+            .spawn((RetailTag(fourcc!("tota")), Node::default(), ChildOf(root)))
+            .id();
+        world.spawn((
+            RetailTag(fourcc!("text")),
+            Node::default(),
+            Text::default(),
+            ChildOf(total),
+        ));
         for binding in TRANSPORT_ROWS {
             let row = world
                 .spawn((RetailTag(binding.tag), Node::default(), ChildOf(root)))
                 .id();
             world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
+            world.spawn((
+                RetailTag(fourcc!("text")),
+                Node::default(),
+                Text::default(),
+                ChildOf(row),
+            ));
+            if matches!(
+                binding.allocation,
+                TransportAllocation::GOLD | TransportAllocation::GEMS
+            ) {
+                world.spawn((
+                    RetailTag(fourcc!("valu")),
+                    Node::default(),
+                    Text::default(),
+                    ChildOf(row),
+                ));
+            }
         }
     }
 
@@ -934,9 +848,6 @@ mod tests {
             &mut commands,
             *root,
             &tree,
-            TextFont::default(),
-            TextLayout::default(),
-            LineHeight::default(),
             (
                 TextFont::default(),
                 TextLayout::default(),
