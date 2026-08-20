@@ -392,6 +392,19 @@ fn technology_decoder_reads_retail_resource_type_fields() {
 }
 
 #[test]
+fn projects_advanced_production_unlock_from_the_exact_v62_flag() {
+    let mut bytes = RETAIL_FIXTURE.to_vec();
+    let offset = TECH_ABSOLUTE_OFFSET_V62 + TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62;
+    bytes[offset + TECH_OIL_DRILLING_ID] = 0;
+    let locked = LegacySaveV62::parse(&bytes).game_state(game_context());
+    assert!(!locked.technology().advanced_production_unlocked());
+
+    bytes[offset + TECH_OIL_DRILLING_ID] = 1;
+    let unlocked = LegacySaveV62::parse(&bytes).game_state(game_context());
+    assert!(unlocked.technology().advanced_production_unlocked());
+}
+
+#[test]
 fn trade_current_offer_decoder_keeps_signed_nation_slots() {
     const MARKET_CURRENT_OFFER_OFFSET_V62: usize = 0x14;
     let mut bytes = [0_u8; MARKET_ROW_SERIALIZED_SIZE_V62];

@@ -209,13 +209,13 @@ impl GameState {
         }
         resource_weights[ResourceKind::Gems] = 500;
         resource_weights[ResourceKind::Gold] = 200;
-        let oil_drilling = self.technology.oil_drilling_available();
+        let advanced_production_unlocked = self.technology.advanced_production_unlocked();
 
         let mut region_scores = ProvinceTable::from_fn(|_| 200);
         for province in ProvinceId::all() {
             for &tile in &self.map.provinces[province].linked_tiles {
                 for resource in self.map[tile].edge_resources.iter().flatten() {
-                    if *resource == ResourceKind::Oil && !oil_drilling {
+                    if *resource == ResourceKind::Oil && !advanced_production_unlocked {
                         continue;
                     }
                     region_scores[province] += i32::from(heatmap_requirement_level(
