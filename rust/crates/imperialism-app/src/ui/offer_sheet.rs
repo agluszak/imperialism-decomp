@@ -13,7 +13,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
 
 const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
@@ -91,6 +91,7 @@ fn bind_offer_sheet(
     };
     let root = *root;
     bind_offer_sheet_controls(&mut commands, root, &tree);
+    bind_offer_sheet_text(&mut commands, &mut assets, root, &tree);
     for tag in [
         fourcc!("ForM"),
         fourcc!("tabs"),
@@ -112,6 +113,74 @@ fn bind_offer_sheet(
         HoverHelpBarStyle::MAIN_MENU,
     );
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
+}
+
+fn bind_offer_sheet_text(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    root: Entity,
+    tree: &RetailTree,
+) {
+    let text_style = |assets: &mut RetailUiAssets, alignment| {
+        assets
+            .text_style(RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 12,
+                alignment,
+            })
+            .expect("retail offer-sheet text style")
+    };
+    let (body, center, body_height, _) = text_style(assets, 1);
+    commands.entity(tree.find(root, fourcc!("offe"))).insert((
+        body.clone(),
+        center,
+        body_height,
+        TextColor(assets.palette_color(0xd2)),
+    ));
+    let (body, right, body_height, _) = text_style(assets, -1);
+    commands.entity(tree.find(root, fourcc!("purT"))).insert((
+        body.clone(),
+        right,
+        body_height,
+        TextColor(assets.palette_color(0xd2)),
+    ));
+    let (body, left, body_height, _) = text_style(assets, -2);
+    for tag in [fourcc!("unit"), fourcc!("noof")] {
+        commands.entity(tree.find(root, tag)).insert((
+            body.clone(),
+            left,
+            body_height,
+            TextColor(assets.palette_color(0xd2)),
+        ));
+    }
+    let (number, center, number_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 14,
+            alignment: 1,
+        })
+        .expect("retail offer-sheet number text style");
+    for tag in [fourcc!("purc"), fourcc!("mCap")] {
+        commands.entity(tree.find(root, tag)).insert((
+            number.clone(),
+            center,
+            number_height,
+            TextColor(Color::BLACK),
+        ));
+    }
+    commands.entity(tree.find(root, fourcc!("info"))).insert((
+        Text::new(get_string(assets, OFFER_STRING_GROUP, 9)),
+        body,
+        TextLayout::justify(Justify::Center),
+        body_height,
+        TextColor(assets.palette_color(0x28)),
+        TextShadow {
+            offset: Vec2::new(1.0, 1.0),
+            color: assets.palette_color(0xd2),
+        },
+    ));
 }
 
 fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
@@ -242,9 +311,10 @@ fn apply_offer_sheet_pose(
         };
     }
 
-    if let Ok(icon) = assets.picture(PictureId::new(
-        COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail()),
-    )) {
+    if let Ok(icon) = assets.transparent_picture(
+        PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
+        0x10,
+    ) {
         commands
             .entity(tree.find(root, fourcc!("icon")))
             .insert(ImageNode::new(icon));
