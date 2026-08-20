@@ -149,6 +149,7 @@ impl GameState {
     /// Human buyers still in the market return [`TradeProgress::Offer`] instead of
     /// settling. The following civilian phase is not started.
     pub fn begin_trade_phase(&mut self) -> TradeProgress {
+        self.select_priority_nations_for_minor_relations();
         let mut phase = TradePhase::new();
         self.initialize_deal_books();
         self.reset_market_rows();

@@ -202,3 +202,70 @@ RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
   result.Set("economic_turn", g_pSimMgr->economicTurn);
   return transition.Finish(result.Release());
 }
+
+RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
+  if (g_pSimMgr == 0 || g_pTechMgr == 0) {
+    return RuntimeActionResult::Failure("turn sequence state is unavailable");
+  }
+
+  JsonArray storyIds;
+  RuntimeActionResult loaded = LoadNewsStoryIds(&storyIds);
+  if (!loaded.Succeeded()) {
+    return loaded;
+  }
+
+  g_pSimMgr->economicTurn = 2;
+  g_pSimMgr->turnStateCode = 5;
+  g_pSimMgr->preferenceValues[8] = 0;
+  for (int techId = 3; techId < 0x1d; ++techId) {
+    g_pTechMgr->perTechUnlockFlag180[techId] = 0;
+    g_pTechMgr->prioritySlots04[techId] = 0;
+  }
+
+  JsonObject operation;
+  operation.Set("story_ids", storyIds.Release());
+  RuntimeActionResult started = transition.Begin(operation.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  JsonArray stops;
+  JsonArray rngStates;
+  JsonArray economicTurns;
+  for (int turn = 0; turn < 2; ++turn) {
+    int stepCount = 0;
+    while (g_pSimMgr->turnStateCode != 0xe && stepCount < 32) {
+      g_pSimMgr->AdvanceGlobalTurnStateMachine();
+      ++stepCount;
+    }
+    if (g_pSimMgr->turnStateCode != 0xe) {
+      return RuntimeActionResult::Failure("turn sequence did not reach the Deal Book");
+    }
+    stops.Add("deal_book");
+    rngStates.Add(RuntimeCrtRandStateForTests());
+
+    while (g_pSimMgr->turnStateCode != 0x12 && stepCount < 48) {
+      g_pSimMgr->AdvanceGlobalTurnStateMachine();
+      ++stepCount;
+    }
+    if (g_pSimMgr->turnStateCode != 0x12) {
+      return RuntimeActionResult::Failure("turn sequence did not reach the newspaper");
+    }
+    stops.Add("newspaper");
+    rngStates.Add(RuntimeCrtRandStateForTests());
+
+    g_pSimMgr->AdvanceGlobalTurnStateMachine();
+    if (g_pSimMgr->turnStateCode != 5) {
+      return RuntimeActionResult::Failure("turn sequence did not return to player orders");
+    }
+    stops.Add("player_orders");
+    rngStates.Add(RuntimeCrtRandStateForTests());
+    economicTurns.Add(g_pSimMgr->economicTurn);
+  }
+
+  JsonObject result;
+  result.Set("stops", stops.Release());
+  result.Set("rng_states", rngStates.Release());
+  result.Set("economic_turns", economicTurns.Release());
+  return transition.Finish(result.Release());
+}

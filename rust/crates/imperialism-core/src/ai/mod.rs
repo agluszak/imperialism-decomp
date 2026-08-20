@@ -25,6 +25,10 @@ pub struct InteriorCivilianState {
     pub(crate) civilian_order_demand_by_resource: ResourceTable<i16>,
     pub(crate) average_development_order_allocation: i32,
     pub(crate) pending_development_actions: Vec<PendingDevelopmentAction>,
+    /// Retail `orderShortTableBA`, which is not saved and is rebuilt after an
+    /// automated city pass before it can constrain the next pass.
+    #[serde(skip)]
+    pub(crate) previous_item_allocation_by_facility: Option<ProductionTable<i16>>,
 }
 
 /// Persistent production quantities requested by an automated interior minister.
@@ -140,6 +144,7 @@ impl InteriorCivilianState {
             civilian_order_demand_by_resource,
             average_development_order_allocation,
             pending_development_actions,
+            previous_item_allocation_by_facility: None,
         }
     }
 
