@@ -126,7 +126,12 @@ pub(crate) fn bind_strategic_base_terrain(
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         canvas,
-        StrategicInteraction::default(),
+        StrategicInteraction {
+            civilian: state
+                .first_idle_civilian(state.turn().active_nation)
+                .map(|(id, _)| id),
+            ..default()
+        },
         StrategicViewport::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state, view_origin);

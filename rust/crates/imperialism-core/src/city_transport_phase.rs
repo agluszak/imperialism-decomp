@@ -53,6 +53,10 @@ impl GameState {
         if self.nations.major(nation).auto.is_none() {
             return;
         }
+        let previous_allocation = self.nations.majors[&nation]
+            .economy
+            .interior_civilian
+            .previous_item_allocation_by_facility;
         for resource in all_resources() {
             self.nations.majors[&nation]
                 .economy
@@ -61,16 +65,17 @@ impl GameState {
         self.rebalance_ai_transport(nation);
         self.end_city_phase(nation);
         self.clear_ai_city_orders(nation);
+        self.process_ai_pending_civilian_recruitment(nation);
         self.process_ai_pending_ship(nation);
-        let temporary_lumber = self.rebalance_ai_labor(nation);
-        self.choose_ai_expansion(nation);
+        let (temporary_lumber, low_skill_shortfall) = self.rebalance_ai_labor(nation);
+        self.choose_ai_expansion(nation, previous_allocation.as_ref());
         self.compute_ai_item_demands(nation);
         if temporary_lumber != 0 {
             self.nations
                 .city_mut(nation)
                 .adjust_stock(ResourceKind::Lumber, temporary_lumber);
         }
-        self.issue_ai_item_orders(nation);
+        self.issue_ai_item_orders(nation, low_skill_shortfall);
         self.fill_ai_transport_capacity(nation);
         self.rebuild_ai_allocation_average(nation);
         self.determine_ai_trade_bid(nation);

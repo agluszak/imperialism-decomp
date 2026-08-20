@@ -307,6 +307,9 @@ impl GameState {
     pub fn close_newspaper(&mut self, music_enabled: bool) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::RETURN_TO_MAP);
         self.return_to_map();
+        if let Some((unit, _)) = self.first_idle_civilian(self.turn.active_nation) {
+            self.activate_civilian_selection(unit);
+        }
         if music_enabled && self.turn.turn_cooldown_defer_counter < 1 {
             self.rng.next_crt_rand();
         }
