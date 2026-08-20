@@ -36,7 +36,14 @@ impl GameState {
         self.apply_military_orders();
         self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
-        self.carry_out_navy_orders()
+        let continuation = self.carry_out_navy_orders()?;
+        self.continuation = TurnContinuation::NavalBattle(continuation);
+        self.prepare_pending_navy_battle();
+        let TurnContinuation::NavalBattle(continuation) = std::mem::take(&mut self.continuation)
+        else {
+            unreachable!("tactical navy battle remains the active continuation")
+        };
+        Some(continuation)
     }
 
     /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
