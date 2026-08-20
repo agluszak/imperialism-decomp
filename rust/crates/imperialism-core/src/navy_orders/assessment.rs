@@ -109,8 +109,11 @@ impl GameState {
             return 0;
         };
         let merchant = self.nations.majors[&major].economy.capacities.trade_offer;
-        (self.sea_zone_importance(nation, cached) * f32::from(merchant) / f32::from(need_cap))
-            .to_bits()
+        let importance = (f64::from(self.sea_zone_importance_score(nation, cached))
+            / f64::from(crate::advisory_missions::MISSION_SCORE_DIVISOR)
+            * f64::from(merchant)
+            / f64::from(need_cap)) as f32;
+        importance.to_bits()
     }
 
     fn write_control_sea_needs(&mut self, mission: MissionId) {

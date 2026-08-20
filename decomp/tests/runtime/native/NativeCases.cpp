@@ -107,6 +107,7 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
 RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition);
 RuntimeActionResult RunTradeTurnStop(NativeTransition& transition);
 
 RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition);
@@ -245,6 +246,7 @@ const NativeCase kCases[] = {
     {"construct_newspaper_page", RunConstructNewspaperPage},
     {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
     {"turn_stop_newspaper", RunNewspaperTurnStop},
+    {"second_turn_sequence", RunSecondTurnSequence},
     {"turn_stop_trade", RunTradeTurnStop},
     {"great_power_pressure_human_debt", RunGreatPowerPressureHumanDebt},
     {"great_power_pressure_ai_noop", RunGreatPowerPressureAiNoop},

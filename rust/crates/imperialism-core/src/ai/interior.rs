@@ -323,7 +323,8 @@ impl GameState {
 
     pub(crate) fn choose_ai_expansion(&mut self, nation: MajorNationId) {
         let mut priority = ExpandableFacility::ALL;
-        {
+        let oil = self.technology.city_capabilities_by_nation[nation].oil_drilling;
+        if !oil {
             let deficits = &mut self.nations.majors[&nation]
                 .economy
                 .interior_civilian
@@ -349,23 +350,46 @@ impl GameState {
         }
 
         let best_facility = priority[0];
-        if self.nations.majors[&nation]
+        let selected = if self.nations.majors[&nation]
             .economy
             .interior_civilian
             .production_deficit_by_slot[best_facility.slot()]
             == 0
             && self.turn.economic_turn & 1 != 0
         {
-            // Every supported building ratio is 0/0. VC5's unordered x87
-            // comparison takes the primary member of the selected pair.
-            let selected =
-                ExpandableFacility::fallback_for_zero_ratio_roll(self.rng.next_crt_rand());
-            self.nations.majors[&nation]
-                .economy
-                .interior_civilian
-                .city_order_demand
-                .expansions[selected] = 1;
-        }
+            let choice = self.rng.next_crt_rand() % if oil { 4 } else { 3 };
+            if choice == 3 {
+                ExpandableFacility::OilRefinery
+            } else {
+                let left = ExpandableFacility::ALL[choice as usize];
+                let right = ExpandableFacility::ALL[choice as usize + 1];
+                let left_level = self.nations.city(nation).production_orders[left.slot()];
+                let right_level = self.nations.city(nation).production_orders[right.slot()];
+                let ratio = left_level as f32 / right_level as f32;
+                // VC5's x87 comparison selects the left member when 0/0 is unordered.
+                if (left_level == 0 && right_level == 0) || ratio <= 2.0 {
+                    left
+                } else {
+                    right
+                }
+            }
+        } else {
+            let mut selected = best_facility;
+            let index = selected as usize;
+            if index & 1 != 0
+                && self.nations.city(nation).production_orders[selected.slot()]
+                    >= self.nations.city(nation).production_orders
+                        [ExpandableFacility::ALL[index - 1].slot()]
+            {
+                selected = ExpandableFacility::ALL[index - 1];
+            }
+            selected
+        };
+        self.nations.majors[&nation]
+            .economy
+            .interior_civilian
+            .city_order_demand
+            .expansions[selected] = 1;
 
         for facility in ExpandableFacility::ALL {
             let requested = self.nations.majors[&nation]

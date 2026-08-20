@@ -1,3 +1,4 @@
+use super::GamePreferences;
 use super::fill_brackets;
 use super::generated;
 use super::hover_help::get_string;
@@ -358,8 +359,11 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
 fn on_newspaper_activate(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
+    preferences: Res<GamePreferences>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let stop = session.game.close_newspaper();
+    let stop = session
+        .game
+        .close_newspaper(preferences.music_volume() != 0);
     apply_turn_stop(stop, &mut next_state);
 }

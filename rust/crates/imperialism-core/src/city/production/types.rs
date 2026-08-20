@@ -378,14 +378,6 @@ impl ExpandableFacility {
         Self::OilRefinery,
     ];
 
-    pub const fn fallback_for_zero_ratio_roll(roll: i32) -> Self {
-        match roll % 3 {
-            0 => Self::TextileMill,
-            1 => Self::ClothingFactory,
-            _ => Self::SteelMill,
-        }
-    }
-
     pub const fn slot(self) -> CityFacilitySlot {
         match self {
             Self::TextileMill => CityFacilitySlot::TextileMill,
