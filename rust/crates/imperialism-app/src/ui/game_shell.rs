@@ -15,7 +15,7 @@ use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree};
 use crate::ui::strategic_map::{
     MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
-    StrategicInteraction, StrategicViewport, animate_civilian_selection, animate_civilian_work,
+    StrategicInteraction, StrategicViewport, animate_civilian_work, animate_strategic_selection,
     apply_map_transition, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
     bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
     register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
@@ -80,7 +80,7 @@ impl Plugin for GameShellPlugin {
                 sync_strategic_base_terrain,
                 sync_strategic_units,
                 sync_strategic_selection,
-                animate_civilian_selection,
+                animate_strategic_selection,
                 animate_civilian_work,
                 sync_minimap,
                 sync_zoom_control,

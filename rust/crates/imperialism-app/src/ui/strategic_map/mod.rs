@@ -43,7 +43,7 @@ use overlays::{
     town_transport_linked,
 };
 use terrain::{compose_strategic_base_tile, uses_bounded_seam_frame};
-pub(crate) use units::{animate_civilian_selection, animate_civilian_work, sync_strategic_units};
+pub(crate) use units::{animate_civilian_work, animate_strategic_selection, sync_strategic_units};
 
 const MAP_TAG: FourCc = fourcc!("DLOG");
 pub(super) const VIEWPORT_WIDTH: usize = 512;
