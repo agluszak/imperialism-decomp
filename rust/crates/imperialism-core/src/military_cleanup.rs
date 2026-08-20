@@ -162,8 +162,17 @@ impl GameState {
                 self.reassess_missions_with_metrics(nation.nation(), Some(&metrics));
                 self.prune_invalid_missions(nation.nation());
                 self.update_mission_eligibility_for_ai_assignment(nation.nation());
+                // SmokeEmIfYouGotEm releases mobile constituents before the retail
+                // list is rebuilt. Keep its prior grouping only to reproduce the
+                // linked-list order of otherwise interchangeable units.
+                let previous_army_assignments = self.army_assignment_groups(nation.nation());
+                self.release_reassignable_mission_constituents(nation.nation());
                 self.assign_unassigned_ships_to_navy_missions(nation.nation());
-                self.assign_unassigned_units_to_army_missions(nation.nation(), &metrics);
+                self.assign_unassigned_units_to_army_missions(
+                    nation.nation(),
+                    &metrics,
+                    &previous_army_assignments,
+                );
                 self.plan_ai_military_development(nation);
             }
         }
@@ -477,7 +486,10 @@ impl GameState {
             if sum == 0 {
                 return [0; 5];
             }
-            return costs.map(|cost| (f32::from(cost) * pressure / sum as f32).to_bits());
+            // VC5 evaluates the multiply/divide in x87 precision, then stores float.
+            return costs.map(|cost| {
+                ((f64::from(cost) * f64::from(pressure) / f64::from(sum)) as f32).to_bits()
+            });
         }
         let mut scale = pressure;
         if NationId::all().any(|other| self.at_war(nation, other)) {
@@ -702,13 +714,55 @@ impl GameState {
         }
     }
 
+    fn army_assignment_groups(&self, nation: NationId) -> Vec<Vec<MilitaryUnitId>> {
+        self.missions
+            .values()
+            .filter(|mission| mission.nation == nation)
+            .filter_map(|mission| army_state(&mission.data))
+            .map(|army| army.units.iter().copied().collect())
+            .collect()
+    }
+
+    fn release_reassignable_mission_constituents(&mut self, nation: NationId) {
+        let military_units = &self.military_units;
+        for mission in self
+            .missions
+            .values_mut()
+            .filter(|mission| mission.nation == nation)
+        {
+            match &mut mission.data {
+                MissionData::DefendProvince { army, .. }
+                | MissionData::AttackProvince(AttackMissionState { army, .. }) => {
+                    army.units
+                        .retain(|id| military_units[id].unit_type().is_militia_category());
+                }
+                MissionData::Invade { attack, beachhead } => {
+                    attack
+                        .army
+                        .units
+                        .retain(|id| military_units[id].unit_type().is_militia_category());
+                    if let Some(navy) = beachhead {
+                        navy.ships.clear();
+                    }
+                }
+                MissionData::ControlSeaZone(navy)
+                | MissionData::Escort(navy)
+                | MissionData::ScatteredShips(navy)
+                | MissionData::Beachhead(navy)
+                | MissionData::BlockadePort { navy, .. } => navy.ships.clear(),
+            }
+        }
+    }
+
     fn assign_unassigned_units_to_army_missions(
         &mut self,
         nation: NationId,
         metrics: &NationOrderPriorityMetrics,
+        previous_assignments: &[Vec<MilitaryUnitId>],
     ) {
         loop {
             let mut best_mission = None;
+            let mut eligible_runner_up = None;
             for (&id, candidate) in &self.missions {
                 if candidate.nation != nation
                     || candidate.held
@@ -716,12 +770,18 @@ impl GameState {
                 {
                     continue;
                 }
+                let candidate_score = army_remaining_priority(self, candidate);
+                if eligible_runner_up.is_none()
+                    && candidate_score > 0.0
+                    && candidate.marker & 1 != 0
+                {
+                    eligible_runner_up = Some(id);
+                }
                 let Some(best_id) = best_mission else {
                     best_mission = Some(id);
                     continue;
                 };
                 let best = &self.missions[&best_id];
-                let candidate_score = army_remaining_priority(self, candidate);
                 let best_score = army_remaining_priority(self, best);
                 if candidate_score > 0.0 && best.state > candidate.state {
                     best_mission = Some(id);
@@ -734,21 +794,46 @@ impl GameState {
                     best_mission = Some(id);
                 }
             }
-            let Some(mission_id) = best_mission else {
+            let Some(mut mission_id) = best_mission else {
                 return;
             };
+            if let Some(runner_up_id) = eligible_runner_up {
+                let best = &self.missions[&mission_id];
+                let runner_up = &self.missions[&runner_up_id];
+                if runner_up.state <= best.state
+                    && best.marker & 1 == 0
+                    && mission_efficiency(best) < mission_efficiency(runner_up)
+                {
+                    mission_id = runner_up_id;
+                }
+            }
             let reference = army_lack_profile(self, &self.missions[&mission_id]);
             let target = army_target(&self.missions[&mission_id].data);
             let mut best_unit = None;
-            let mut best_score = 0.0;
+            let mut best_score = 0.0_f32;
             for (&id, unit) in &self.military_units {
                 if unit.nation() != nation || self.mission_contains_unit(id) {
                     continue;
                 }
                 let score = army_unit_fitness(unit, target, reference);
+                let equivalent_to_best = best_unit.is_some_and(|best_id| {
+                    let best = &self.military_units[&best_id];
+                    best.unit_type() == unit.unit_type()
+                        && best.strength() == unit.strength()
+                        && best.experience() == unit.experience()
+                });
+                let shared_previous_mission = best_unit.is_some_and(|best_id| {
+                    previous_assignments
+                        .iter()
+                        .any(|group| group.contains(&best_id) && group.contains(&id))
+                });
                 if best_unit.is_none()
                     || best_score < score
-                    || (best_score == score && unit.stationed_province() != target)
+                    // Equal interchangeable constituents follow the retail linked-list
+                    // rebuild order; unrelated rounded score ties keep the first unit.
+                    || (best_score == score
+                        && equivalent_to_best
+                        && (unit.stationed_province() != target || shared_previous_mission))
                 {
                     best_unit = Some(id);
                     best_score = score;
@@ -1330,7 +1415,7 @@ fn army_unit_fitness(
             difference * difference
         })
         .sum();
-    let distance_penalty = if unit.stationed_province() == target {
+    let distance_penalty: f32 = if unit.stationed_province() == target {
         0.0
     } else {
         0.01
