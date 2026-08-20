@@ -2,10 +2,37 @@ use super::*;
 
 impl GameState {
     pub(super) fn set_ai_diplomacy_policies(&mut self, nation: MajorNationId) {
+        if self.turn.economic_turn == 2 {
+            self.do_second_turn_diplomacy(nation);
+        }
         self.set_empire_policies(nation);
         self.do_propose_treaties(nation);
         self.goods_match_shipping(nation);
         self.do_development_grants(nation);
+    }
+
+    fn do_second_turn_diplomacy(&mut self, nation: MajorNationId) {
+        if self.nations.majors[&nation]
+            .economy
+            .foreign_minister_personality
+            != ForeignMinisterPersonality::Bill
+        {
+            return;
+        }
+
+        let mut selected = 0;
+        for minor in MinorNationId::all() {
+            if selected == 2 {
+                break;
+            }
+            let target = minor.nation();
+            if self.diplomacy.mission_levels[nation.nation()][target]
+                != DiplomaticMissionLevel::None
+            {
+                self.set_trade_policy(nation, target, TradePolicyScore::new(0x5a));
+                selected += 1;
+            }
+        }
     }
 
     pub(super) fn set_empire_policies(&mut self, nation: MajorNationId) {
