@@ -5,10 +5,7 @@
 //! `pay_for_military`, and `finish_player_orders` from production code.
 
 use crate::military_cleanup::NationOrderPriorityMetrics as Metrics;
-use crate::{
-    CombatMovesContinuation, GameState, MajorNationId, MilitaryUnitId, NavyOrdersContinuation,
-    TaskForceId,
-};
+use crate::{CombatMovesContinuation, GameState, MajorNationId, MilitaryUnitId, TaskForceId};
 use serde::{Deserialize, Serialize};
 
 pub use crate::random_map::{
@@ -25,10 +22,6 @@ pub fn select_and_queue_advisory_map_missions(state: &mut GameState) {
 
 pub fn do_army_movement(state: &mut GameState, nation: MajorNationId) {
     state.do_army_movement(nation);
-}
-
-pub fn do_military_with_tactical_battles(state: &mut GameState) -> Option<NavyOrdersContinuation> {
-    state.do_military_with_tactical_battles()
 }
 
 pub fn resume_combat_moves(

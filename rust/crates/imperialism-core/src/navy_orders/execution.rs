@@ -328,7 +328,7 @@ impl GameState {
             .order = order;
     }
 
-    #[cfg(any(test, feature = "oracle"))]
+    #[cfg(test)]
     pub(crate) fn carry_out_navy_orders(&mut self) -> Option<NavyOrdersContinuation> {
         self.carry_out_navy_orders_with_tactical_battles(true)
     }

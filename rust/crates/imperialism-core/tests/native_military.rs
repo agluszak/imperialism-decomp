@@ -123,12 +123,6 @@ struct InteractiveAttackResult {
     snapshots: Vec<differential::ArmyBattleSnapshot>,
 }
 
-#[derive(Debug, Deserialize, PartialEq)]
-struct NavalBattleResult {
-    attacker: usize,
-    defender: usize,
-}
-
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn military_phase() {
@@ -149,17 +143,7 @@ fn military_phase_ships_without_orders() {
 #[ignore = "requires the native C++ oracle"]
 fn military_phase_naval_encounter() {
     compare_native("military_phase_naval_encounter", |state, _: EmptyCase| {
-        differential::do_military_with_tactical_battles(state).map(|continuation| {
-            let attacker = state
-                .task_forces_in_retail_order()
-                .position(|(id, _)| id == continuation.battle.attacker)
-                .expect("attacking task force remains queued");
-            let defender = state
-                .task_forces_in_retail_order()
-                .position(|(id, _)| id == continuation.battle.defender)
-                .expect("defending task force remains queued");
-            NavalBattleResult { attacker, defender }
-        })
+        state.do_military()
     })
     .unwrap();
 }
