@@ -195,6 +195,10 @@ const char* RuntimeScenario::RandomSetupPlanetSeed() const {
   return 0;
 }
 
+bool RuntimeScenario::UsesLocalizedNames() const {
+  return true;
+}
+
 bool RuntimeScenario::RecordsGameFlow() const {
   // Catalog policy (RuntimeTestSpec.record_game_flow), not a per-scenario override.
   return run != 0 && run->RecordsGameFlow();

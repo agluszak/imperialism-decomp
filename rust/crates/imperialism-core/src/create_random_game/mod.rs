@@ -148,6 +148,9 @@ pub fn create_random_game(
     let mut port_zones = PortZoneTable::new(sea_zone_count(&world));
     let mut mission_queues: MajorNationTable<Vec<MissionState>> =
         MajorNationTable::from_fn(|_| Vec::new());
+    // Nation names and port statuses share this clock-seeded LCG and are interleaved by the
+    // 6→0 major rebuild followed by the 7→22 minor rebuild.
+    let mut zone_status_rng = RetailLcg::from_state(runtime_seed);
 
     // Accept bootstrap (`RebuildPrimaryNationStateForSlot` 6→0): every AI major and the
     // Introductory/Easy human place Frog City. Human Normal+ keeps the tile-0 marker until the
@@ -162,6 +165,8 @@ pub fn create_random_game(
         &ocean_zones,
         &mut mission_queues,
         difficulty,
+        localized_names,
+        &mut zone_status_rng,
     );
 
     let mut military_units = IndexMap::new();
@@ -179,6 +184,8 @@ pub fn create_random_game(
         &mut unit_ids,
         difficulty,
         &mut port_zones,
+        localized_names,
+        &mut zone_status_rng,
     );
     if requires_capital_site_selection(difficulty) {
         world.seed_valid_city_site_candidate_tiles_for_nation(human_nation);
@@ -186,7 +193,6 @@ pub fn create_random_game(
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
-    let mut port_status_rng = RetailLcg::from_state(runtime_seed);
     for port in port_zones.ports.iter().rev() {
         debug_assert_eq!(usize::from(port.ordinal.get()), ocean_zones.len());
         if let Some(neighbor) = port.primary_neighbor {
@@ -202,7 +208,7 @@ pub fn create_random_game(
         ocean_zones.push(ZoneKind::PortZone(PortZone {
             zone: Zone {
                 display_name: String::new(),
-                status_code: Some(20 + (port_status_rng.next_sample_15() & 3) as i16),
+                status_code: Some(port.status_code),
                 target_tile: Some(port.sea_tile),
                 seed_owner: Some(port.seed_owner),
                 active_tile: port.active_tile,
@@ -228,13 +234,20 @@ pub fn create_random_game(
         &post.province_resource_presence_masks,
         &mut nations,
     );
-    generate_province_names(&mut provinces, names);
+    generate_province_names(
+        &mut provinces,
+        preview.scenario_tag.as_bytes(),
+        runtime_seed,
+        localized_names,
+        names,
+    );
     world.provinces = provinces;
     generate_zone_display_names(
         &mut ocean.zones,
         &world,
         preview.scenario_tag.as_bytes(),
         runtime_seed,
+        localized_names,
         names,
     );
     let mut pending = PendingWorkState::default();

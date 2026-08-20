@@ -18,6 +18,8 @@ pub(super) struct PendingPortZone {
     pub(super) seed_owner: TileOwnerTag,
     /// `primaryNeighbors[0]` ordinal (sea zone or another port).
     pub(super) primary_neighbor: Option<OceanZoneId>,
+    /// Port construction rolls this immediately from the shared name/status LCG.
+    pub(super) status_code: i16,
 }
 impl PortZoneTable {
     pub(super) fn new(sea_zone_count: u16) -> Self {
@@ -141,8 +143,9 @@ pub(super) fn initialize_sea_zone_neighbors(
 /// Fresh-map `RegenerateAllMapActionContextStatusCodes` status and RNG work.
 ///
 /// Contexts are walked newest-first. This first map-construction pass consumes the shared-LCG
-/// name draws too because they determine every following zone's status code; a later final pass
-/// rebuilds display names after province names exist.
+/// localized-name cursor draws too because setup has not committed Historical/Random yet; they
+/// determine every following zone's status code. A later final pass rebuilds display names after
+/// province names exist.
 pub(super) fn generate_base_zone_status_codes(
     zones: &mut [ZoneKind],
     scenario_tag: &[u8],
@@ -194,12 +197,21 @@ pub(super) fn generate_base_zone_status_codes(
     }
 }
 
-/// Localized `TMapMgr::GenerateProvinceNames` assignment in fixed province-table order.
+/// `TMapMgr::GenerateProvinceNames` assignment in fixed province-table order.
 pub(super) fn generate_province_names(
     provinces: &mut ProvinceTable<ProvinceState>,
+    scenario_tag: &[u8],
+    runtime_seed: u32,
+    localized_names: bool,
     names: &RandomGameNames,
 ) {
     let mut next_ordinal = [0_usize; NATION_COUNT];
+    let tag_seed = hash_retail_scenario_tag(scenario_tag);
+    let mut rng = RetailLcg::from_state(if tag_seed == 0 {
+        runtime_seed
+    } else {
+        tag_seed as u32
+    });
     for province_id in ProvinceId::all() {
         let province = &mut provinces[province_id];
         if province.linked_tiles.is_empty() {
@@ -208,12 +220,16 @@ pub(super) fn generate_province_names(
         let owner = province
             .owner()
             .expect("a populated fresh-map province has an owner");
-        let ordinal = &mut next_ordinal[usize::from(owner.get())];
-        province.name = names.province_names_by_nation[owner]
-            .get(*ordinal)
-            .expect("retail province-name table covers every generated province")
-            .clone();
-        *ordinal += 1;
+        if localized_names {
+            let ordinal = &mut next_ordinal[usize::from(owner.get())];
+            province.name = names.province_names_by_nation[owner]
+                .get(*ordinal)
+                .expect("retail province-name table covers every generated province")
+                .clone();
+            *ordinal += 1;
+        } else {
+            province.name = crate::mapped_flavor_text::generate_ethnic_name(&mut rng, owner);
+        }
     }
 }
 
@@ -227,6 +243,7 @@ pub(super) fn generate_zone_display_names(
     world: &MapMgr,
     scenario_tag: &[u8],
     runtime_seed: u32,
+    localized_names: bool,
     names: &RandomGameNames,
 ) {
     let tag_seed = hash_retail_scenario_tag(scenario_tag);
@@ -261,6 +278,9 @@ pub(super) fn generate_zone_display_names(
                     Some(province) if !used_cities[usize::from(province.get())] => {
                         used_cities[usize::from(province.get())] = true;
                         world.provinces[province].name.clone()
+                    }
+                    _ if !localized_names => {
+                        crate::mapped_flavor_text::generate_english_name(&mut rng)
                     }
                     _ => {
                         let cursor = *fallback_cursor.get_or_insert_with(|| {
@@ -428,6 +448,7 @@ pub(super) fn ensure_port_zone_for_tile(
     world: &mut MapMgr,
     ports: &mut PortZoneTable,
     tile: TileId,
+    zone_status_rng: &mut RetailLcg,
 ) {
     if !world[tile].flags.has_base_transport() {
         return;
@@ -481,6 +502,7 @@ pub(super) fn ensure_port_zone_for_tile(
             active_tile,
             seed_owner,
             primary_neighbor,
+            status_code: 20 + (zone_status_rng.next_sample_15() & 3) as i16,
         },
     );
 }

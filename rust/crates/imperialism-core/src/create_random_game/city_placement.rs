@@ -32,9 +32,17 @@ pub(super) fn place_initial_frog_cities(
     ocean_zones: &[ZoneKind],
     mission_queues: &mut MajorNationTable<Vec<MissionState>>,
     difficulty: Difficulty,
+    localized_names: bool,
+    zone_status_rng: &mut RetailLcg,
 ) {
     let province_adjacency = build_province_adjacency(world);
     for nation in MajorNationId::all().rev() {
+        if !localized_names {
+            let generated = generate_random_nation_name(zone_status_rng, nation.nation());
+            if nation != human_nation {
+                nations.major_mut(nation).common.display_name = generated;
+            }
+        }
         if nation == human_nation && requires_capital_site_selection(difficulty) {
             continue;
         }
@@ -46,7 +54,7 @@ pub(super) fn place_initial_frog_cities(
             continue;
         };
         place_ai_capital(world, province_capitals, home, nation);
-        ensure_port_zone_for_tile(world, port_zones, home);
+        ensure_port_zone_for_tile(world, port_zones, home, zone_status_rng);
         let major = nations.major_mut(nation);
         major.common.home_tile = Some(home);
         let old_tile = major
@@ -86,15 +94,26 @@ pub(super) fn bootstrap_minors(
     unit_ids: &mut UnitIdAllocator,
     difficulty: Difficulty,
     port_zones: &mut PortZoneTable,
+    localized_names: bool,
+    zone_status_rng: &mut RetailLcg,
 ) {
     for minor_id in MinorNationId::all() {
+        if !localized_names {
+            let generated = generate_random_nation_name(zone_status_rng, minor_id.nation());
+            nations
+                .minors
+                .get_mut(&minor_id)
+                .expect("fresh minor exists")
+                .common
+                .display_name = generated;
+        }
         let owner = TileOwnerTag::from_nation(minor_id.nation());
         let Some(home) = select_minor_home_tile(world, owner, crt) else {
             continue;
         };
         reset_tile_to_base_transport_flag(world, province_capitals, home);
         // Retail calls `EnsurePortZoneForTile` after the minor home stamp.
-        ensure_port_zone_for_tile(world, port_zones, home);
+        ensure_port_zone_for_tile(world, port_zones, home, zone_status_rng);
         if let Some(minor) = nations.minors.get_mut(&minor_id) {
             minor.common.home_tile = Some(home);
         }
@@ -131,6 +150,15 @@ pub(super) fn bootstrap_minors(
             &mut name_ordinals,
             &mut next_roster_id,
         );
+    }
+}
+
+fn generate_random_nation_name(rng: &mut RetailLcg, nation: NationId) -> String {
+    loop {
+        let name = crate::mapped_flavor_text::generate_ethnic_name(rng, nation);
+        if name.chars().count() <= 12 {
+            return name;
+        }
     }
 }
 pub(super) fn select_minor_home_tile(

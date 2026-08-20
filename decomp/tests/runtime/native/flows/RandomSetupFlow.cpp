@@ -105,7 +105,8 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     CaptureRuntimeMapGeneration(scenario.RunState());
-    if (!scenario.RunState().RequestsCapture(kRuntimeCaptureGameState)) {
+    if (!scenario.RunState().RequestsCapture(kRuntimeCaptureGameState) &&
+        scenario.UsesLocalizedNames()) {
       CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
     }
     phase = kSettingCountryName;
@@ -115,7 +116,8 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   }
   if (phase == kCapturingRegeneratedPlanet) {
     CaptureRuntimeMapGeneration(scenario.RunState());
-    if (!scenario.RunState().RequestsCapture(kRuntimeCaptureGameState)) {
+    if (!scenario.RunState().RequestsCapture(kRuntimeCaptureGameState) &&
+        scenario.UsesLocalizedNames()) {
       CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
     }
     phase = kSettingCountryName;
@@ -140,8 +142,20 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       scenario.FailScenario(selected.FailureMessage());
       return kRuntimeFlowRunning;
     }
+    phase = kSelectingNames;
+    scenario.EnterFlowPhase("selecting_names", "select_requested_name_mode");
+    scenario.ContinueAfterAction();
+    return kRuntimeFlowRunning;
+  }
+  if (phase == kSelectingNames) {
+    RuntimeActionResult selected =
+        RandomSetup().SelectLocalizedNames(scenario.UsesLocalizedNames());
+    if (!selected.Succeeded()) {
+      scenario.FailScenario(selected.FailureMessage());
+      return kRuntimeFlowRunning;
+    }
     phase = kActivatingOkay;
-    scenario.EnterFlowPhase("activating_okay", "select_requested_difficulty");
+    scenario.EnterFlowPhase("activating_okay", "select_requested_name_mode");
     scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
