@@ -1,6 +1,12 @@
 //! Native runtime differentials for random-map generation.
 
-use imperialism_testkit::compare_map_generation_terrain;
+use imperialism_testkit::{compare_map_generation_terrain, compare_random_game_names};
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn random_name_game_start() {
+    compare_random_game_names("random_name_game_normal_start").unwrap();
+}
 
 macro_rules! map_generation_terrain {
     ($name:ident, $scenario:expr) => {

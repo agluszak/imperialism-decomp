@@ -28,6 +28,7 @@ public:
   RuntimeActionResult SetCountryName(const char* name);
   RuntimeActionResult RegeneratePlanet(const char* planetSeed);
   RuntimeActionResult SelectDifficulty(int level);
+  RuntimeActionResult SelectLocalizedNames(bool localized);
   bool DifficultyIsSelected(int level) const;
   RuntimeActionResult Accept();
   RuntimeActionResult Cancel();

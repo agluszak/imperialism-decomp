@@ -105,6 +105,21 @@ RuntimeActionResult RandomSetupScreen::SelectDifficulty(int level) {
   return RuntimeActionResult::Success();
 }
 
+RuntimeActionResult RandomSetupScreen::SelectLocalizedNames(bool localized) {
+  const int tag = localized ? kControlTagHist : kControlTagRand;
+  RuntimeActionResult activated = Activate(kControlTagName, tag, "select a world-name mode");
+  if (!activated.Succeeded()) {
+    return activated;
+  }
+  TView* cluster = Find(kControlTagName);
+  if (cluster == 0 || cluster->IsKindOf(RUNTIME_CLASS(TRadioTextCluster)) == 0 ||
+      static_cast<TRadioTextCluster*>(cluster)->selectedTag88 != tag) {
+    return ScreenFailure("select a world-name mode",
+                         CString("the requested world-name mode did not become selected"));
+  }
+  return RuntimeActionResult::Success();
+}
+
 bool RandomSetupScreen::DifficultyIsSelected(int level) const {
   TView* cluster = Find(kControlTagDiff);
   if (cluster == 0 || cluster->IsKindOf(RUNTIME_CLASS(TRadioTextCluster)) == 0) {

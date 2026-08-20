@@ -17,6 +17,7 @@ private:
     kCapturingRegeneratedPlanet,
     kSettingCountryName,
     kSelectingDifficulty,
+    kSelectingNames,
     kActivatingOkay,
     kAtCheckpoint,
     kComplete
