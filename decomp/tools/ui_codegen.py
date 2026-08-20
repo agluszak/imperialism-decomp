@@ -250,6 +250,9 @@ class UiTextPropertyPatch:
     color_index: int | None = None
     shadow_color_index: int | None = None
     shadow_offset: tuple[int, int] | None = None
+    resource_id: int | None = None
+    resource_index: int | None = None
+    resource_file: str | None = None
 
 
 @dataclass(frozen=True)
@@ -578,7 +581,14 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
             raise ValueError(f"{context}/properties: only generic text patches are supported")
         text = _mapping(properties["text"], f"{context}/properties/text")
         required = {"font_family", "face_flags", "point_size", "alignment"}
-        optional = {"color_index", "shadow_color_index", "shadow_offset"}
+        optional = {
+            "color_index",
+            "shadow_color_index",
+            "shadow_offset",
+            "resource_id",
+            "resource_index",
+            "resource_file",
+        }
         if not required <= set(text) or set(text) - (required | optional):
             raise ValueError(
                 f"{context}/properties/text: expected {sorted(required)!r} "
@@ -594,6 +604,15 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
             raise ValueError(
                 f"{context}/properties/text: shadow_color_index and shadow_offset "
                 "must be declared together"
+            )
+        if ("resource_id" in text) != ("resource_index" in text):
+            raise ValueError(
+                f"{context}/properties/text: resource_id and resource_index "
+                "must be declared together"
+            )
+        if "resource_file" in text and "resource_id" not in text:
+            raise ValueError(
+                f"{context}/properties/text: resource_file requires resource_id"
             )
         evidence = str(row["evidence"]).strip()
         if not evidence:
@@ -621,6 +640,11 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
                     else None
                 ),
                 shadow_offset=shadow_offset,
+                resource_id=(int(text["resource_id"]) if "resource_id" in text else None),
+                resource_index=(
+                    int(text["resource_index"]) if "resource_index" in text else None
+                ),
+                resource_file=(str(text["resource_file"]) if "resource_file" in text else None),
             )
         )
     return tuple(
@@ -1038,6 +1062,7 @@ def apply_windows_text_property_patches(
     key: UiResourceKey,
     view: UiSemanticView,
     patches: Iterable[UiTextPropertyPatch],
+    text_resources: TextResources,
 ) -> UiSemanticView:
     scoped = {patch.node_id: patch for patch in patches if patch.resource == key}
     if not scoped:
@@ -1059,12 +1084,19 @@ def apply_windows_text_property_patches(
                 f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} tag "
                 f"{node.tag!r} does not match declared {patch.tag!r}"
             )
-        if node.family.text is None:
-            raise ValueError(
-                f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} has no text binding"
-            )
+        original_text = node.family.text or UiTextPayload(
+            resource_id=0,
+            resource_index=-1,
+            value="",
+            source=patch.evidence,
+            mode=patch.font_family,
+            flags=patch.face_flags,
+            point_size=patch.point_size,
+            style_ref=0,
+            theme=patch.alignment,
+        )
         text = replace(
-            node.family.text,
+            original_text,
             mode=patch.font_family,
             flags=patch.face_flags,
             point_size=patch.point_size,
@@ -1072,18 +1104,39 @@ def apply_windows_text_property_patches(
             color_index=(
                 patch.color_index
                 if patch.color_index is not None
-                else node.family.text.color_index
+                else original_text.color_index
             ),
             shadow_color_index=(
                 patch.shadow_color_index
                 if patch.shadow_color_index is not None
-                else node.family.text.shadow_color_index
+                else original_text.shadow_color_index
             ),
             shadow_offset=(
                 patch.shadow_offset
                 if patch.shadow_offset is not None
-                else node.family.text.shadow_offset
+                else original_text.shadow_offset
             ),
+            resource_id=(
+                patch.resource_id
+                if patch.resource_id is not None
+                else original_text.resource_id
+            ),
+            resource_index=(
+                patch.resource_index
+                if patch.resource_index is not None
+                else original_text.resource_index
+            ),
+            value=(
+                _text_value(
+                    text_resources,
+                    UiResourceKey(patch.resource_file or key.resource_file, key.view_id),
+                    patch.resource_id,
+                    patch.resource_index,
+                )
+                if patch.resource_id is not None and patch.resource_index is not None
+                else original_text.value
+            ),
+            source=patch.evidence if patch.resource_id is not None else original_text.source,
         )
         nodes.append(
             replace(
@@ -1921,7 +1974,7 @@ def _rust_ui_semantic_views(
         semantic_view = normalize_resource_view(key, raw_view, text_resources)
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
-            key, semantic_view, text_property_patches
+            key, semantic_view, text_property_patches, text_resources
         )
         semantic_view = apply_diplomacy_map_key_names(
             key, semantic_view, diplomacy_map_key_names

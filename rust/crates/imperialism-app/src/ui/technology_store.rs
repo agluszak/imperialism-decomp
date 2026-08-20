@@ -145,32 +145,6 @@ fn bind_technology_store(
         .remove::<InteractionDisabled>()
         .observe(on_technology_help);
 
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 14,
-            alignment: -2,
-        })
-        .expect("retail technology-store title style");
-    for (tag, index) in [
-        (fourcc!("ttl1"), 5),
-        (fourcc!("ttl2"), 6),
-        (fourcc!("ttl3"), 7),
-    ] {
-        commands.entity(tree.find(root, tag)).insert((
-            Text::new(
-                assets
-                    .string(0x274f, index)
-                    .expect("retail technology-store heading"),
-            ),
-            title_font.clone(),
-            title_layout,
-            title_line_height,
-            TextColor(Color::BLACK),
-        ));
-    }
-
     let page = tree.find(root, fourcc!("page"));
     nodes
         .get_mut(page)

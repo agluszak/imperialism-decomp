@@ -5,8 +5,9 @@ use super::hover_help::{
 };
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
+use super::retail_raster::IndexedRasterExt;
 use crate::media::RetailAudioAssets;
-use crate::{AppState, ReturnTo};
+use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -16,7 +17,10 @@ use bevy::ui_widgets::{
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
+use imperialism_formats::{
+    PictureId, RetailFontFace, RetailTextStylePreset, SoundId, decode_retail_font_cell_metrics,
+    fourcc, resolve_retail_text_style,
+};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
@@ -117,13 +121,12 @@ struct PreferenceSlider {
     slot: PreferenceSlot,
 }
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-struct PreferenceSliderLayer {
-    lower: bool,
-}
-
 #[derive(Component)]
-struct PreferenceSliderOffLabel;
+struct PreferenceSliderVisual {
+    upper: imperialism_formats::IndexedPicture,
+    lower: imperialism_formats::IndexedPicture,
+    off: String,
+}
 
 pub(crate) struct PreferencesPlugin;
 
@@ -180,27 +183,13 @@ fn bind_preferences(
         ],
     );
 
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail preferences caption style");
-    let color = TextColor(assets.palette_color(0x38));
-
     for (row, &(slot, checkbox_tag, label_tag)) in PREFERENCE_ROWS.iter().enumerate() {
         let checkbox = tree.try_find(root, checkbox_tag);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
-        commands.entity(tree.find(root, label_tag)).insert((
-            Text::new(preference_caption(&assets, row, caption_on)),
-            font.clone(),
-            layout,
-            line_height,
-            color,
-        ));
+        commands
+            .entity(tree.find(root, label_tag))
+            .insert(Text::new(preference_caption(&assets, row, caption_on)));
         let Some(checkbox) = checkbox else {
             continue;
         };
@@ -243,7 +232,6 @@ fn bind_preferences(
         &mut commands,
         &mut assets,
         tree.find(root, fourcc!("musi")),
-        &nodes,
         MUSIC_PICTURE_BASE,
         PreferenceSlot::MusicVolume,
         MUSIC_SLIDER_SCALE,
@@ -254,7 +242,6 @@ fn bind_preferences(
         &mut commands,
         &mut assets,
         tree.find(root, fourcc!("soun")),
-        &nodes,
         SOUND_PICTURE_BASE,
         PreferenceSlot::SoundVolume,
         SOUND_SLIDER_SCALE,
@@ -267,51 +254,13 @@ fn bind_preferences(
         .observe(on_preferences_activate)
         .remove::<InteractionDisabled>();
 
-    let (radio_font, radio_layout, radio_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail auto-resolution option style");
-    let radio_color = TextColor(assets.palette_color(0x28));
-    let radio_shadow = TextShadow {
-        offset: Vec2::ONE,
-        color: assets.palette_color(0x5c),
-    };
     commands
         .entity(tree.find(root, fourcc!("tpca")))
-        .insert((
-            Text::new(ui_string(&assets, 0x2763, 0x18)),
-            font,
-            layout,
-            line_height,
-            color,
-        ))
         .remove::<InteractionDisabled>();
     let yes = tree.find(root, fourcc!("yess"));
     let no = tree.find(root, fourcc!("nooo"));
-    commands.entity(yes).insert((
-        Text::new(ui_string(&assets, 0x2763, 0x16)),
-        radio_font.clone(),
-        radio_layout,
-        radio_line_height,
-        radio_color,
-        radio_shadow,
-        Checked,
-    ));
-    commands
-        .entity(no)
-        .insert((
-            Text::new(ui_string(&assets, 0x2763, 0x17)),
-            radio_font,
-            radio_layout,
-            radio_line_height,
-            radio_color,
-            radio_shadow,
-        ))
-        .remove::<Checked>();
+    commands.entity(yes).insert(Checked);
+    commands.entity(no).remove::<Checked>();
     commands
         .entity(tree.find(root, fourcc!("opca")))
         .remove::<InteractionDisabled>();
@@ -322,22 +271,19 @@ fn bind_volume_slider(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     slider: Entity,
-    nodes: &Query<&mut Node>,
     picture_base: i16,
     slot: PreferenceSlot,
     scale: i16,
     value: i16,
     hover: String,
 ) {
-    let height = node_px_height(nodes, slider).unwrap_or(91);
-    let width = node_px_width(nodes, slider).unwrap_or(102.0);
-    let split = slider_split_from_value(value, height, scale);
     let upper = assets
-        .picture(PictureId::new(picture_base))
+        .indexed_picture(PictureId::new(picture_base))
         .expect("preference slider upper picture");
     let lower = assets
-        .picture(PictureId::new(picture_base + 1))
+        .indexed_picture(PictureId::new(picture_base + 1))
         .expect("preference slider lower picture");
+    let image = assets.add_image(upper.to_image(assets.default_dib_palette()));
     commands
         .entity(slider)
         .insert((
@@ -351,134 +297,17 @@ fn bind_volume_slider(
             PreferenceSlider { slot },
             HoverHelpText(hover),
             DirectlyHovered::default(),
+            ImageNode::new(image),
+            PreferenceSliderVisual {
+                upper,
+                lower,
+                off: get_string(assets, 0x2743, 0x3b),
+            },
         ))
         .observe(slider_self_update)
         .observe(on_preference_slider_change)
         .observe(on_sound_slider_released)
         .remove::<InteractionDisabled>();
-    spawn_slider_layers(commands, slider, upper, lower, split, height, width);
-    let (off_font, off_layout, off_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 1,
-        })
-        .expect("retail slider off-label style");
-    commands.spawn((
-        PreferenceSliderOffLabel,
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(0.0),
-            top: Val::Px(0.0),
-            width: Val::Px(width),
-            height: Val::Px(f32::from(height)),
-            justify_content: JustifyContent::Center,
-            align_items: AlignItems::Center,
-            ..default()
-        },
-        Text::new(get_string(assets, 0x2743, 0x3b)),
-        off_font,
-        off_layout,
-        off_line_height,
-        TextColor(assets.palette_color(0)),
-        TextShadow {
-            offset: Vec2::ONE,
-            color: assets.palette_color(0x28),
-        },
-        if split < SLIDER_SPLIT_PAD {
-            Visibility::Inherited
-        } else {
-            Visibility::Hidden
-        },
-        Pickable::IGNORE,
-        ChildOf(slider),
-    ));
-}
-
-fn spawn_slider_layers(
-    commands: &mut Commands,
-    slider: Entity,
-    upper: Handle<Image>,
-    lower: Handle<Image>,
-    split: i16,
-    height: i16,
-    width: f32,
-) {
-    let fill = slider_fill_height(split);
-    let upper_clip = commands
-        .spawn((
-            PreferenceSliderLayer { lower: false },
-            slider_clip_node(0.0, f32::from(height - fill), width),
-            Pickable::IGNORE,
-            ChildOf(slider),
-        ))
-        .id();
-    commands.spawn((
-        slider_image_node(width, f32::from(height)),
-        ImageNode::new(upper),
-        Pickable::IGNORE,
-        ChildOf(upper_clip),
-    ));
-    let lower_top = f32::from(height - fill);
-    let lower_clip = commands
-        .spawn((
-            PreferenceSliderLayer { lower: true },
-            slider_clip_node(lower_top, f32::from(fill), width),
-            Pickable::IGNORE,
-            ChildOf(slider),
-        ))
-        .id();
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(0.0),
-            top: Val::Px(f32::from(fill - height)),
-            width: Val::Px(width),
-            height: Val::Px(f32::from(height)),
-            ..default()
-        },
-        ImageNode::new(lower),
-        Pickable::IGNORE,
-        ChildOf(lower_clip),
-    ));
-}
-
-fn slider_clip_node(top: f32, height: f32, width: f32) -> Node {
-    Node {
-        position_type: PositionType::Absolute,
-        left: Val::Px(0.0),
-        top: Val::Px(top),
-        width: Val::Px(width),
-        height: Val::Px(height),
-        overflow: Overflow::clip(),
-        ..default()
-    }
-}
-
-fn slider_image_node(width: f32, height: f32) -> Node {
-    Node {
-        position_type: PositionType::Absolute,
-        left: Val::Px(0.0),
-        top: Val::Px(0.0),
-        width: Val::Px(width),
-        height: Val::Px(height),
-        ..default()
-    }
-}
-
-fn node_px_height(nodes: &Query<&mut Node>, entity: Entity) -> Option<i16> {
-    match nodes.get(entity).ok()?.height {
-        Val::Px(height) => Some(height as i16),
-        _ => None,
-    }
-}
-
-fn node_px_width(nodes: &Query<&mut Node>, entity: Entity) -> Option<f32> {
-    match nodes.get(entity).ok()?.width {
-        Val::Px(width) => Some(width),
-        _ => None,
-    }
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
@@ -542,56 +371,52 @@ fn on_sound_slider_released(
 
 #[allow(clippy::type_complexity)]
 fn sync_preference_slider_visuals(
+    retail: Res<RetailAssetsResource>,
+    mut image_assets: ResMut<Assets<Image>>,
     sliders: Query<
-        (Entity, &SliderValue, &SliderRange),
+        (
+            &SliderValue,
+            &SliderRange,
+            &PreferenceSliderVisual,
+            &ImageNode,
+            &Node,
+        ),
         (With<PreferenceSlider>, Changed<SliderValue>),
     >,
-    children: Query<&Children>,
-    mut layers: Query<(&PreferenceSliderLayer, &mut Node)>,
-    mut images: Query<&mut Node, Without<PreferenceSliderLayer>>,
-    mut off_labels: Query<&mut Visibility, With<PreferenceSliderOffLabel>>,
 ) {
-    for (slider, value, range) in &sliders {
-        let Ok(kids) = children.get(slider) else {
-            continue;
-        };
-        let (height, width) = match images.get(slider) {
-            Ok(node) => (
-                match node.height {
-                    Val::Px(height) => height as i16,
-                    _ => 91,
-                },
-                match node.width {
-                    Val::Px(width) => width,
-                    _ => 102.0,
-                },
-            ),
-            Err(_) => (91, 102.0),
+    let font = retail.assets().font_bytes(RetailFontFace::BelweBold);
+    let style = resolve_retail_text_style(RetailTextStylePreset {
+        font_family: 1,
+        face_flags: 0,
+        point_size: 14,
+        alignment: 1,
+    })
+    .expect("retail preference slider text style");
+    let font_size = decode_retail_font_cell_metrics(style.face, font)
+        .expect("retail preference slider font metrics")
+        .em_pixel_size(style.logical_pixel_height) as f32;
+    for (value, range, visual, image_node, node) in &sliders {
+        let height = match node.height {
+            Val::Px(height) => height as i16,
+            _ => visual.upper.height as i16,
         };
         let split = slider_split_from_value(value.0 as i16, height, range.end() as i16);
         let fill = slider_fill_height(split);
-        for child in kids.iter() {
-            if let Ok(mut visibility) = off_labels.get_mut(child) {
-                *visibility = if split < SLIDER_SPLIT_PAD {
-                    Visibility::Inherited
-                } else {
-                    Visibility::Hidden
-                };
-            }
-            let Ok((layer, mut node)) = layers.get_mut(child) else {
-                continue;
-            };
-            if layer.lower {
-                *node = slider_clip_node(f32::from(height - fill), f32::from(fill), width);
-                if let Ok(image_kids) = children.get(child)
-                    && let Some(image) = image_kids.iter().next()
-                    && let Ok(mut image_node) = images.get_mut(image)
-                {
-                    image_node.top = Val::Px(f32::from(fill - height));
-                }
-            } else {
-                *node = slider_clip_node(0.0, f32::from(height - fill), width);
-            }
+        let mut picture = visual.upper.clone();
+        let top = i32::from(height - fill);
+        picture.copy_rect(
+            &visual.lower,
+            IRect::new(0, top, visual.lower.width as i32, i32::from(height)),
+            IVec2::new(0, top),
+        );
+        if split < SLIDER_SPLIT_PAD {
+            let center = visual.upper.width as i32 / 2;
+            let baseline = i32::from(height / 2 + 4);
+            picture.draw_text_center(font, font_size, center, baseline, &visual.off, 0x28);
+            picture.draw_text_center(font, font_size, center + 1, baseline + 1, &visual.off, 0);
+        }
+        if let Some(mut image) = image_assets.get_mut(&image_node.image) {
+            *image = picture.to_image(retail.assets().default_dib_palette());
         }
     }
 }
