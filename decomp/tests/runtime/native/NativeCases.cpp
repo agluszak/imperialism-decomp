@@ -35,6 +35,27 @@ RuntimeActionResult RunDiplomacyReset(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition);
 RuntimeActionResult RunPlayerDiplomacyPolicyPostConsulate(NativeTransition& transition);
 RuntimeActionResult RunPlayerDiplomacyPolicyRejectConsulateOnMajor(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostJoinEmpire(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostAlliance(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyNeedsAllianceEntanglement(NativeTransition& transition);
+RuntimeActionResult
+RunPlayerDiplomacyPolicyConfirmsAllianceEntanglement(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostNonAggressionPact(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostPeaceTreaty(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostDeclareWar(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostEmbassy(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyRetractEmbassy(NativeTransition& transition);
+RuntimeActionResult
+RunPlayerDiplomacyPolicyCannotAffordCommittedConsulate(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyRejectColony(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicySelectSelf(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyPostSubsidy(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyRetractSubsidy(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyBoycottClearsGrant(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyRejectsAlliedBoycott(NativeTransition& transition);
+RuntimeActionResult RunPlayerColonyBoycottPostsAndPropagates(NativeTransition& transition);
+RuntimeActionResult RunPlayerColonyBoycottRetractsAndPropagates(NativeTransition& transition);
+RuntimeActionResult RunPlayerColonyBoycottOwnColonyNoOp(NativeTransition& transition);
 
 RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition);
 RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransition& transition);
@@ -147,6 +168,29 @@ const NativeCase kCases[] = {
     {"player_diplomacy_policy_posts_consulate", RunPlayerDiplomacyPolicyPostConsulate},
     {"player_diplomacy_policy_rejects_consulate_on_major",
      RunPlayerDiplomacyPolicyRejectConsulateOnMajor},
+    {"player_diplomacy_policy_posts_join_empire", RunPlayerDiplomacyPolicyPostJoinEmpire},
+    {"player_diplomacy_policy_posts_alliance", RunPlayerDiplomacyPolicyPostAlliance},
+    {"player_diplomacy_policy_needs_alliance_entanglement",
+     RunPlayerDiplomacyPolicyNeedsAllianceEntanglement},
+    {"player_diplomacy_policy_confirms_alliance_entanglement",
+     RunPlayerDiplomacyPolicyConfirmsAllianceEntanglement},
+    {"player_diplomacy_policy_posts_non_aggression_pact",
+     RunPlayerDiplomacyPolicyPostNonAggressionPact},
+    {"player_diplomacy_policy_posts_peace_treaty", RunPlayerDiplomacyPolicyPostPeaceTreaty},
+    {"player_diplomacy_policy_posts_declare_war", RunPlayerDiplomacyPolicyPostDeclareWar},
+    {"player_diplomacy_policy_posts_embassy", RunPlayerDiplomacyPolicyPostEmbassy},
+    {"player_diplomacy_policy_retracts_embassy", RunPlayerDiplomacyPolicyRetractEmbassy},
+    {"player_diplomacy_policy_cannot_afford_committed_consulate",
+     RunPlayerDiplomacyPolicyCannotAffordCommittedConsulate},
+    {"player_diplomacy_policy_rejects_colony", RunPlayerDiplomacyPolicyRejectColony},
+    {"player_diplomacy_policy_selects_self", RunPlayerDiplomacyPolicySelectSelf},
+    {"player_trade_policy_posts_subsidy", RunPlayerTradePolicyPostSubsidy},
+    {"player_trade_policy_retracts_subsidy", RunPlayerTradePolicyRetractSubsidy},
+    {"player_trade_policy_boycott_clears_grant", RunPlayerTradePolicyBoycottClearsGrant},
+    {"player_trade_policy_rejects_allied_boycott", RunPlayerTradePolicyRejectsAlliedBoycott},
+    {"player_colony_boycott_posts_and_propagates", RunPlayerColonyBoycottPostsAndPropagates},
+    {"player_colony_boycott_retracts_and_propagates", RunPlayerColonyBoycottRetractsAndPropagates},
+    {"player_colony_boycott_own_colony_no_op", RunPlayerColonyBoycottOwnColonyNoOp},
     {"nation_resource_yield_rebuild", RunNationResourceYieldRebuild},
     {"ai_nation_resource_yield_rebuild_clamps_targets",
      RunAiNationResourceYieldRebuildClampsTargets},

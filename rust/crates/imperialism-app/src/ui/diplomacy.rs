@@ -1043,6 +1043,7 @@ fn player_diplomacy_rejection(
     match result {
         PlayerDiplomacyOrderResult::Rejected(rejection) => Some(rejection),
         PlayerDiplomacyOrderResult::Applied
+        | PlayerDiplomacyOrderResult::NotApplied
         | PlayerDiplomacyOrderResult::SelectedNation
         | PlayerDiplomacyOrderResult::NeedsEntanglementConfirmation => None,
     }
