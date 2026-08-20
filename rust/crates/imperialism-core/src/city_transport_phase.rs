@@ -218,7 +218,7 @@ impl GameState {
         let home_tile = self.nations.major(nation).common.home_tile;
         let owned: Vec<ProvinceId> = self.nations.major(nation).common.owned_regions().to_vec();
         let economic_turn = self.turn.economic_turn;
-        let oil_drilling = self.technology.oil_drilling_available();
+        let advanced_production_unlocked = self.technology.advanced_production_unlocked();
         let clothing_limit = building_type_limit(
             self.nations.city(nation).production_orders[CityFacilitySlot::ClothingFactory],
         );
@@ -286,7 +286,7 @@ impl GameState {
                         development[ResourceKind::Steel] += 1;
                     }
                     if resource_sums[ResourceKind::Oil] != 0
-                        && oil_drilling
+                        && advanced_production_unlocked
                         && i32::from(development[ResourceKind::Fuel])
                             < resource_sums[ResourceKind::Oil] / 2
                     {

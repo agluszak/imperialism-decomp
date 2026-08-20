@@ -443,7 +443,7 @@ impl TechnologyState {
         state
     }
 
-    pub fn oil_drilling_available(&self) -> bool {
+    pub fn advanced_production_unlocked(&self) -> bool {
         self.global_unlocks_by_technology[Technology::OilDrilling]
     }
 

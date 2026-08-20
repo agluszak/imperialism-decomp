@@ -39,7 +39,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     state: &GameState,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::Warehouse);
-    let oil_drilling_available = state.technology().oil_drilling_available();
+    let advanced_production_unlocked = state.technology().advanced_production_unlocked();
     let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -98,7 +98,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
         let control = tree.find(root, tag);
         let mut control_commands = commands.entity(control);
-        if oil_drilling_available {
+        if advanced_production_unlocked {
             control_commands
                 .insert(Visibility::Visible)
                 .remove::<InteractionDisabled>();
@@ -106,7 +106,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
             control_commands.insert((Visibility::Hidden, InteractionDisabled));
         }
     }
-    if !oil_drilling_available {
+    if !advanced_production_unlocked {
         return;
     }
 

@@ -101,7 +101,7 @@ struct DealBookScreen {
     page: u16,
     pictures: DealBookPictures,
     fonts: DealBookFonts,
-    oil_drilling: bool,
+    advanced_production_unlocked: bool,
 }
 
 pub(crate) struct DealBookPlugin;
@@ -137,8 +137,8 @@ fn bind_deal_book(
     session: Res<GameSession>,
 ) {
     let root = *root;
-    let oil_drilling = session.game.technology().oil_drilling_available();
-    let tab_base = if oil_drilling {
+    let advanced_production_unlocked = session.game.technology().advanced_production_unlocked();
+    let tab_base = if advanced_production_unlocked {
         TAB_STRIP_BASE + 1
     } else {
         TAB_STRIP_BASE
@@ -304,7 +304,7 @@ fn bind_deal_book(
         page: 0,
         pictures,
         fonts,
-        oil_drilling,
+        advanced_production_unlocked,
     });
 }
 
@@ -378,7 +378,7 @@ fn on_deal_book_tabs_click(
     let Ok(cursor) = tabs.get(click.entity) else {
         return;
     };
-    let Some(commodity) = tab_row(cursor, screen.oil_drilling) else {
+    let Some(commodity) = tab_row(cursor, screen.advanced_production_unlocked) else {
         return;
     };
     click.propagate(false);
@@ -400,7 +400,7 @@ fn hover_deal_book_tabs(
     let Ok((mut node, mut image, mut visibility)) = highlights.single_mut() else {
         return;
     };
-    let commodity = tab_row(*cursor, screen.oil_drilling).or(match screen.mode {
+    let commodity = tab_row(*cursor, screen.advanced_production_unlocked).or(match screen.mode {
         DealBookMode::History => None,
         DealBookMode::Category(commodity) => Some(commodity),
     });
@@ -408,7 +408,7 @@ fn hover_deal_book_tabs(
         *visibility = Visibility::Hidden;
         return;
     };
-    let row = deal_book_tab_index(screen.oil_drilling, commodity)
+    let row = deal_book_tab_index(screen.advanced_production_unlocked, commodity)
         .expect("displayed deal-book commodity has a visible tab");
     let top = f32::from(row) * TAB_ROW_HEIGHT;
     node.top = Val::Px(top);
@@ -416,17 +416,20 @@ fn hover_deal_book_tabs(
     *visibility = Visibility::Visible;
 }
 
-fn tab_row(cursor: &RelativeCursorPosition, oil_drilling: bool) -> Option<TradeCommodity> {
+fn tab_row(
+    cursor: &RelativeCursorPosition,
+    advanced_production_unlocked: bool,
+) -> Option<TradeCommodity> {
     let normalized = cursor.normalized.filter(|_| cursor.cursor_over())?;
     let y = (normalized.y + 0.5) * TAB_STRIP_HEIGHT;
     if y < 0.0 {
         return None;
     }
     let row = (y / TAB_ROW_HEIGHT).floor() as i32;
-    let count = i32::from(deal_book_tab_count(oil_drilling));
+    let count = i32::from(deal_book_tab_count(advanced_production_unlocked));
     (row >= 0 && row < count)
         .then(|| u8::try_from(row).expect("retail deal-book tab row fits in u8"))
-        .and_then(|row| deal_book_tab_commodity(oil_drilling, row))
+        .and_then(|row| deal_book_tab_commodity(advanced_production_unlocked, row))
 }
 
 #[allow(clippy::too_many_arguments)]

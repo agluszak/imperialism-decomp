@@ -114,6 +114,12 @@ impl GameState {
 
         let resource = commodity.resource();
         let current = self.player_trade_order(nation, commodity);
+        if order != PlayerTradeOrder::None
+            && matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel)
+            && !self.technology.advanced_production_unlocked()
+        {
+            return current;
+        }
         let value = match order {
             PlayerTradeOrder::None => 0,
             PlayerTradeOrder::Buy => {
@@ -154,6 +160,11 @@ impl GameState {
             "player trade order requires a diplomacy-eligible major nation"
         );
 
+        if matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel)
+            && !self.technology.advanced_production_unlocked()
+        {
+            return self.player_trade_order(nation, commodity);
+        }
         let PlayerTradeOrder::Sell(quantity) = self.player_trade_order(nation, commodity) else {
             return self.player_trade_order(nation, commodity);
         };
@@ -862,6 +873,33 @@ mod tests {
         assert_eq!(
             game.set_player_trade_order(nation, TradeCommodity::Iron, PlayerTradeOrder::Buy),
             PlayerTradeOrder::Buy
+        );
+    }
+
+    #[test]
+    fn player_trade_orders_reject_locked_advanced_production_rows() {
+        let nation = MajorNationId::new(6);
+        let mut game = state();
+        game.nations.city_mut(nation).stockpile[ResourceKind::Fuel] = 4;
+        game.nations.majors[&nation].economy.capacities.trade_offer = 4;
+
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Oil, PlayerTradeOrder::Buy),
+            PlayerTradeOrder::None
+        );
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Fuel, PlayerTradeOrder::Sell(4)),
+            PlayerTradeOrder::None
+        );
+
+        game.technology.global_unlocks_by_technology[Technology::OilDrilling] = true;
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Oil, PlayerTradeOrder::Buy),
+            PlayerTradeOrder::Buy
+        );
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Fuel, PlayerTradeOrder::Sell(4)),
+            PlayerTradeOrder::Sell(4)
         );
     }
 
