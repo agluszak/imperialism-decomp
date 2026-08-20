@@ -56,6 +56,15 @@ impl HoverHelpBarStyle {
         shadow_palette: 0,
     };
 
+    /// `TTacticalBattleView::DoPostCreate` uses the same recovered 12pt right-aligned
+    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)` style.
+    pub(crate) const TACTICAL: Self = Self {
+        point_size: 12,
+        alignment: -1,
+        text_palette: 0x28,
+        shadow_palette: 0,
+    };
+
     /// `TGamePreferencesPicture::DoPostCreate` restyles `curs` through
     /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)`: 12pt, text palette `0x28`,
     /// shadow palette `0`.
@@ -133,9 +142,16 @@ pub(crate) fn ui_string(assets: &RetailUiAssets, group: i16, index: i16) -> Stri
         .expect("retail hover-help string")
 }
 
+#[allow(clippy::type_complexity)]
 fn sync_hover_help_bar(
     sources: Query<(Entity, &HoverHelpText, &DirectlyHovered)>,
-    changed: Query<(), (With<HoverHelpText>, Changed<DirectlyHovered>)>,
+    changed: Query<
+        (),
+        (
+            With<HoverHelpText>,
+            Or<(Changed<DirectlyHovered>, Changed<HoverHelpText>)>,
+        ),
+    >,
     mut bars: Query<(&mut Text, &mut HoverHelpSource), With<HoverHelpBar>>,
 ) {
     if changed.is_empty() {
