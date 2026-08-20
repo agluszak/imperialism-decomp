@@ -50,7 +50,7 @@ pub(super) fn bootstrap_nations(
             .collect::<IndexMap<_, _>>(),
     )
 }
-pub(super) fn major_nation(
+pub(crate) fn major_nation(
     nation: MajorNationId,
     difficulty: Difficulty,
     human: bool,
@@ -155,7 +155,7 @@ pub(super) fn choose_foreign_ministers(
         }
     })
 }
-pub(super) fn minor_nation(nation: MinorNationId, display_name: String) -> MinorNation {
+pub(crate) fn minor_nation(nation: MinorNationId, display_name: String) -> MinorNation {
     let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
         common: NationCommonState::from_parts(

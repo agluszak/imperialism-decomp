@@ -17,6 +17,11 @@ use bevy::ui_widgets::{
 };
 use enum_map::{Enum, EnumMap};
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
+use std::fs;
+use std::io;
+use std::path::Path;
+
+const PROFILE_FILE: &str = "imperialism.ini";
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
@@ -72,6 +77,7 @@ enum PreferenceSlot {
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct GamePreferences {
     values: EnumMap<PreferenceSlot, i16>,
+    auto_resolution: bool,
 }
 
 impl Default for GamePreferences {
@@ -81,11 +87,65 @@ impl Default for GamePreferences {
             values: EnumMap::from_array([
                 0, 0, 100, 0xff, 0x101, 0x101, 0x101, 0x101, 0x101, 0x101, 0, 0, 0, 0x101,
             ]),
+            auto_resolution: true,
         }
     }
 }
 
 impl GamePreferences {
+    pub(crate) fn load(directory: &Path) -> io::Result<Self> {
+        let mut preferences = Self::default();
+        let path = directory.join(PROFILE_FILE);
+        let profile = match fs::read_to_string(path) {
+            Ok(profile) => profile,
+            Err(error) if error.kind() == io::ErrorKind::NotFound => return Ok(preferences),
+            Err(error) => return Err(error),
+        };
+        let mut settings = false;
+        for line in profile.lines().map(str::trim) {
+            if line.starts_with('[') && line.ends_with(']') {
+                settings = line.eq_ignore_ascii_case("[Settings]");
+                continue;
+            }
+            if !settings {
+                continue;
+            }
+            let Some((key, value)) = line.split_once('=') else {
+                continue;
+            };
+            let Ok(value) = value.trim().parse::<i16>() else {
+                continue;
+            };
+            let key = key.trim();
+            if let Some(index) = key
+                .strip_prefix("Pref")
+                .and_then(|index| index.parse::<usize>().ok())
+                && index < 14
+            {
+                preferences.values.as_mut_array()[index] = value;
+            } else if key == "AutoRes" {
+                preferences.auto_resolution = value != 0;
+            }
+        }
+        preferences.values[PreferenceSlot::MusicVolume] =
+            preferences.values[PreferenceSlot::MusicVolume].clamp(0, 0xff);
+        preferences.values[PreferenceSlot::SoundVolume] =
+            preferences.values[PreferenceSlot::SoundVolume].clamp(0, 100);
+        preferences.values[PreferenceSlot::Unknown1] = 0;
+        preferences.values[PreferenceSlot::Unknown12] = 0;
+        Ok(preferences)
+    }
+
+    fn persist(&self, directory: &Path) -> io::Result<()> {
+        fs::create_dir_all(directory)?;
+        let mut profile = String::from("[Settings]\n");
+        for (index, value) in self.values.as_array().iter().enumerate() {
+            profile.push_str(&format!("Pref{index}={value}\n"));
+        }
+        profile.push_str(&format!("AutoRes={}\n", i16::from(self.auto_resolution)));
+        fs::write(directory.join(PROFILE_FILE), profile)
+    }
+
     /// Preference slot 2: DirectSound master percent, 0..=100.
     pub(crate) fn sound_volume_percent(&self) -> i16 {
         self.values[PreferenceSlot::SoundVolume]
@@ -124,6 +184,9 @@ struct PreferenceSliderLayer {
 
 #[derive(Component)]
 struct PreferenceSliderOffLabel;
+
+#[derive(Component)]
+struct AutoResolutionOption(bool);
 
 pub(crate) struct PreferencesPlugin;
 
@@ -299,7 +362,7 @@ fn bind_preferences(
         radio_line_height,
         radio_color,
         radio_shadow,
-        Checked,
+        AutoResolutionOption(true),
     ));
     commands
         .entity(no)
@@ -310,8 +373,15 @@ fn bind_preferences(
             radio_line_height,
             radio_color,
             radio_shadow,
+            AutoResolutionOption(false),
         ))
         .remove::<Checked>();
+    if prefs.auto_resolution {
+        commands.entity(yes).insert(Checked);
+    } else {
+        commands.entity(yes).remove::<Checked>();
+        commands.entity(no).insert(Checked);
+    }
     commands
         .entity(tree.find(root, fourcc!("opca")))
         .remove::<InteractionDisabled>();
@@ -621,7 +691,9 @@ fn on_preferences_activate(
     _activate: On<Activate>,
     rows: Query<(&PreferenceRow, Has<Checked>)>,
     sliders: Query<(&PreferenceSlider, &SliderValue)>,
+    auto_resolution: Query<(&AutoResolutionOption, Has<Checked>)>,
     mut prefs: ResMut<GamePreferences>,
+    save_directory: Res<super::load_save::SaveDirectory>,
     returning: Res<ReturnTo>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
@@ -632,6 +704,12 @@ fn on_preferences_activate(
     }
     for (slider, value) in &sliders {
         prefs.values[slider.slot] = value.0 as i16;
+    }
+    if let Some((option, _)) = auto_resolution.iter().find(|(_, checked)| *checked) {
+        prefs.auto_resolution = option.0;
+    }
+    if let Err(error) = prefs.persist(&save_directory.0) {
+        warn!("could not persist game preferences: {error}");
     }
     next_state.set(returning.0);
 }
@@ -684,5 +762,23 @@ mod tests {
                 .sound_volume_percent(),
             40
         );
+    }
+
+    #[test]
+    fn profile_overlay_clamps_retail_volume_slots_and_loads_auto_resolution() {
+        let directory = tempfile::tempdir().unwrap();
+        fs::write(
+            directory.path().join(PROFILE_FILE),
+            "[Settings]\nPref1=9\nPref2=110\nPref3=-2\nPref8=0\nPref12=9\nAutoRes=0\n",
+        )
+        .unwrap();
+
+        let preferences = GamePreferences::load(directory.path()).unwrap();
+        assert_eq!(preferences.sound_volume_percent(), 100);
+        assert_eq!(preferences.music_volume(), 0);
+        assert!(!preferences.turn_alerts_enabled());
+        assert_eq!(preferences.values[PreferenceSlot::Unknown1], 0);
+        assert_eq!(preferences.values[PreferenceSlot::Unknown12], 0);
+        assert!(!preferences.auto_resolution);
     }
 }

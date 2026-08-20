@@ -15,6 +15,7 @@ pub(crate) enum AppState {
     #[default]
     MainMenu,
     RandomSetup,
+    Scenario,
     LoadSave,
     CitySite,
     StrategicMap,
@@ -104,6 +105,7 @@ fn add_game_plugins(app: &mut App) {
             ui::DealBookPlugin,
         ))
         .add_plugins((
+            ui::ScenarioPlugin,
             media::ImperialismMediaPlugin,
             ui::CursorPlugin,
             ui::TechnologyAdvancePlugin,
@@ -125,6 +127,7 @@ pub fn run(
     save_directory: PathBuf,
 ) -> anyhow::Result<()> {
     let random_game_names = retail_assets.random_game_names()?;
+    let preferences = ui::GamePreferences::load(&save_directory)?;
     let logical_resolution = ui::generated::LOGICAL_RESOLUTION;
     let mut app = App::new();
     app.insert_resource(ClearColor(Color::BLACK)).add_plugins(
@@ -153,6 +156,7 @@ pub fn run(
     }
     app.insert_resource(RetailAssetsResource::new(retail_assets))
         .insert_resource(RandomGameNamesResource(random_game_names))
+        .insert_resource(preferences)
         .insert_resource(ui::SaveDirectory(save_directory));
     add_game_plugins(&mut app);
     app.world_mut()

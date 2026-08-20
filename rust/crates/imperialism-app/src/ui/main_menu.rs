@@ -17,7 +17,9 @@ struct MainMenuRoot;
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum MainMenuAction {
     RandomGame,
+    Scenario,
     LoadGame,
+    HighScores,
     Preferences,
     Quit,
 }
@@ -52,7 +54,9 @@ fn bind_main_menu_actions(
 ) {
     for (tag, action) in [
         (fourcc!("rand"), MainMenuAction::RandomGame),
+        (fourcc!("scen"), MainMenuAction::Scenario),
         (fourcc!("load"), MainMenuAction::LoadGame),
+        (fourcc!("high"), MainMenuAction::HighScores),
         (fourcc!("pref"), MainMenuAction::Preferences),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
@@ -111,6 +115,7 @@ fn on_main_menu_activate(
         .expect("main-menu Activate is bound on a MainMenuAction control");
     match *action {
         MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
+        MainMenuAction::Scenario => next_state.set(AppState::Scenario),
         MainMenuAction::LoadGame => {
             open_load_save(
                 &mut commands,
@@ -123,6 +128,7 @@ fn on_main_menu_activate(
             commands.insert_resource(ReturnTo(AppState::MainMenu));
             next_state.set(AppState::Preferences);
         }
+        MainMenuAction::HighScores => next_state.set(AppState::HighScore),
         MainMenuAction::Quit => {
             exit.write(AppExit::Success);
         }

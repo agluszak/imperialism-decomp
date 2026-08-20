@@ -7,7 +7,7 @@ mod city_placement;
 mod map_post_pass;
 mod map_render;
 mod missions;
-mod nation_setup;
+pub(crate) mod nation_setup;
 mod sea_zones;
 #[cfg(test)]
 mod tests;

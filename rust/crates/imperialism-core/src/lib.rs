@@ -48,6 +48,7 @@ mod random_setup_name;
 mod recruitment;
 mod resources;
 mod rng;
+mod scenario;
 mod tables;
 mod tactical_battle;
 mod tactical_tables;
@@ -169,6 +170,7 @@ pub use random_setup_name::{COUNTRY_NAME_MAX_CHARS, generate_english_random_setu
 pub(crate) use resources::all_resources;
 pub use resources::{ResourceKind, ResourceTable};
 pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};
+pub use scenario::{ScenarioGameInput, ScenarioInstruction, create_scenario_game};
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,

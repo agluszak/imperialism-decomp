@@ -129,6 +129,11 @@ impl RetailAssets {
         &self.news
     }
 
+    /// Enumerates the sparse retail `Scenario/s0..s63.inf` catalog.
+    pub fn scenario_catalog(&self) -> Result<Vec<crate::ScenarioCatalogEntry>, RetailAssetError> {
+        crate::read_scenario_catalog(&self.root)
+    }
+
     /// Resolves a retail picture using name-before-numeric and library-slot precedence.
     ///
     /// The returned bytes are a BMP file assembled from the retail DIB resource.
@@ -558,6 +563,8 @@ pub enum RetailAssetError {
     NewsTableSize { path: PathBuf },
     #[error("{}: news.tab row {row} text range is outside news.tex", path.display())]
     NewsTextRange { path: PathBuf, row: usize },
+    #[error("{}: invalid retail scenario data: {detail}", path.display())]
+    Scenario { path: PathBuf, detail: String },
 }
 
 fn load_news_table(root: &Path) -> Result<NewsTable, RetailAssetError> {
