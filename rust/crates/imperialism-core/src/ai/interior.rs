@@ -378,7 +378,9 @@ impl GameState {
         interior.city_order_demand.training[TrainingLevel::Medium] =
             (target - baseline.medium).clamp(0, capacity);
         let remaining = capacity - interior.city_order_demand.training[TrainingLevel::Medium];
-        interior.city_order_demand.population_growth = (target - baseline.low).clamp(0, remaining);
+        if baseline.low < target {
+            interior.city_order_demand.population_growth = (target - baseline.low).min(remaining);
+        }
 
         for level in (0..enum_map::enum_len::<TrainingLevel>()).map(TrainingLevel::from_usize) {
             let requested = self.nations.majors[&nation]
@@ -386,6 +388,16 @@ impl GameState {
                 .interior_civilian
                 .city_order_demand
                 .training[level];
+            let paper = match level {
+                TrainingLevel::Medium => requested,
+                TrainingLevel::High => requested * 2,
+            };
+            self.request_ai_resource(
+                nation,
+                ResourceKind::Paper,
+                paper,
+                AiResourcePolicy::FOR_PRODUCTION,
+            );
             let maximum = self
                 .city_order_limit(nation, CityOrderId::Training(level))
                 .maximum;
@@ -405,6 +417,18 @@ impl GameState {
             .interior_civilian
             .city_order_demand
             .population_growth;
+        for resource in [
+            ResourceKind::Food,
+            ResourceKind::Clothing,
+            ResourceKind::Furniture,
+        ] {
+            self.request_ai_resource(
+                nation,
+                resource,
+                requested,
+                AiResourcePolicy::FOR_PRODUCTION,
+            );
+        }
         let maximum = self
             .city_order_limit(nation, CityOrderId::PopulationGrowth)
             .maximum;
@@ -417,7 +441,7 @@ impl GameState {
             .economy
             .interior_civilian
             .city_order_demand
-            .population_growth = 0;
+            .population_growth = requested - accepted;
 
         let city = self.nations.city_mut(nation);
         let clothing = city.stockpile[ResourceKind::Clothing].min(2);

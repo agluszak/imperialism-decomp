@@ -174,31 +174,27 @@ pub(crate) fn restock_item(
     state.progress.limiting_constraint = limit.constraint;
     let saved_requested_quantity = state.requested_quantity;
     state.progress.quantity = 0;
-    if limit.maximum < saved_requested_quantity
+    let requested = if limit.maximum < saved_requested_quantity
         && state.progress.limiting_constraint == ProductionConstraint::Resources
     {
-        let accepted = set_item_quantity(
-            state,
-            stockpile,
-            population,
-            production_accum,
-            item,
-            limit,
-            limit.maximum,
-        );
-        state.requested_quantity = saved_requested_quantity;
-        accepted
+        limit.maximum
     } else {
-        set_item_quantity(
-            state,
-            stockpile,
-            population,
-            production_accum,
-            item,
-            limit,
-            saved_requested_quantity,
-        )
+        saved_requested_quantity
+    };
+    let reset_limit = item_limit_from_fields(state, stockpile, population, production_accum, item);
+    let accepted = set_item_quantity(
+        state,
+        stockpile,
+        population,
+        production_accum,
+        item,
+        reset_limit,
+        requested,
+    );
+    if requested != saved_requested_quantity {
+        state.requested_quantity = saved_requested_quantity;
     }
+    accepted
 }
 
 pub(crate) fn apply_tracked_input_change(
