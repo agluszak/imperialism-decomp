@@ -285,12 +285,18 @@ fn project_strategic_units_onto(
         let Some(image) = unit_sprite_image(sprites, assets, &palette, rendered_sprite) else {
             continue;
         };
-        let (width, height) = (TILE_SIZE, TILE_SIZE);
+        let framed = matches!(
+            unit.sprite,
+            StrategicUnitSprite::Civilian { framed: true, .. }
+        );
+        let frame_margin = i32::from(framed);
+        let width = TILE_SIZE + frame_margin * 2;
+        let height = TILE_SIZE + frame_margin * 2;
         let mut entity = commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
-                left: Val::Px(unit.screen_x as f32),
-                top: Val::Px(unit.screen_y as f32),
+                left: Val::Px((unit.screen_x - frame_margin) as f32),
+                top: Val::Px((unit.screen_y - frame_margin) as f32),
                 width: Val::Px(width as f32),
                 height: Val::Px(height as f32),
                 ..default()
@@ -535,10 +541,17 @@ fn compose_unit_sprite(
                 );
             }
             if framed {
-                picture.frame_rect(
-                    IRect::new(0, 0, picture.width as i32, picture.height as i32),
+                let mut framed = indexed_picture(
+                    picture.width as i32 + 2,
+                    picture.height as i32 + 2,
+                    UNIT_TRANSPARENT_INDEX,
+                );
+                framed.blit_keyed_at(&picture, IVec2::ONE, UNIT_TRANSPARENT_INDEX);
+                framed.frame_rect(
+                    IRect::new(0, 0, framed.width as i32, framed.height as i32),
                     FOREIGN_CIVILIAN_FRAME_INDEX,
                 );
+                picture = framed;
             }
             Some(picture)
         }
@@ -1138,6 +1151,46 @@ mod tests {
         );
         assert_eq!(owner_flag_slot(Some(TileOwnerTag::new(8))), 7);
         assert_eq!(owner_flag_slot(None), 7);
+    }
+
+    #[test]
+    fn foreign_civilian_frame_surrounds_instead_of_overwriting_the_tile_sprite() {
+        let civilian = IndexedPicture {
+            width: TILE_SIZE as u32,
+            height: TILE_SIZE as u32,
+            pixels: vec![5; (TILE_SIZE * TILE_SIZE) as usize],
+        };
+        let mut civilians = HashMap::new();
+        civilians.insert(
+            (CivilianUnitKind::Engineer, CivilianPose::Idle),
+            vec![civilian],
+        );
+        let sprites = StrategicUnitSprites {
+            civilians,
+            army_counts: std::array::from_fn(|_| indexed_picture(1, 1, 0)),
+            owner_flags: indexed_picture(1, 1, 0),
+            fleet_frames: Vec::new(),
+            fleet_atlas_id: 0,
+            composed: HashMap::new(),
+        };
+
+        let picture = compose_unit_sprite(
+            &sprites,
+            StrategicUnitSprite::Civilian {
+                kind: CivilianUnitKind::Engineer,
+                pose: CivilianPose::Idle,
+                frame: 0,
+                owner_badge: None,
+                framed: true,
+            },
+        )
+        .unwrap();
+
+        assert_eq!((picture.width, picture.height), (66, 66));
+        assert_eq!(picture.pixels[0], FOREIGN_CIVILIAN_FRAME_INDEX);
+        assert_eq!(picture.pixels[66 + 1], 5);
+        assert_eq!(picture.pixels[64 * 66 + 64], 5);
+        assert_eq!(picture.pixels[65 * 66 + 65], FOREIGN_CIVILIAN_FRAME_INDEX);
     }
 
     #[test]
