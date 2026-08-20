@@ -34,6 +34,8 @@ impl GameState {
                 continue;
             }
             self.fill_interior_minister_orders(nation);
+            self.process_city_tasks(nation);
+            self.process_city_transport_requests(nation);
             self.calculate_potentials(nation);
             self.execute_nation_pending_action_state_machine(nation);
             self.refresh_great_power_relation_panels_and_dispatch_delta_summary(nation);

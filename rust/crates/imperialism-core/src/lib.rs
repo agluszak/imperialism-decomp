@@ -10,6 +10,7 @@ mod city;
 mod city_economy;
 mod city_industry;
 mod city_site;
+mod city_tasks;
 mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
