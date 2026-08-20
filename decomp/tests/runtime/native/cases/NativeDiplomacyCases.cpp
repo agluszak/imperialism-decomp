@@ -127,6 +127,26 @@ RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition) {
   return transition.Finish(result.Release());
 }
 
+RuntimeActionResult RunSecondTurnDiplomacyPhase(NativeTransition& transition) {
+  g_pSimMgr->economicTurn = 2;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
+  for (int replyNationSlot = 0; replyNationSlot < kMajorNationCount; ++replyNationSlot) {
+    if (g_apNationStates[replyNationSlot] != 0) {
+      g_apNationStates[replyNationSlot]->ReplyToDiplomacyOffers();
+    }
+  }
+
+  JsonObject result;
+  result.Set("kind", "resolved");
+  return transition.Finish(result.Release());
+}
+
 bool TogglePlayerDiplomacyPolicy(TGreatPower* nation, short targetNationSlot, short policyCode,
                                  eDipAction action) {
   if (nation->diplomacyPolicyByNation[targetNationSlot] == policyCode) {

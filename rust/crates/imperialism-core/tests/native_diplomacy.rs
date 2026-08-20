@@ -74,6 +74,15 @@ fn diplomacy_phase_applies_grant_and_consulate() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_diplomacy_phase() {
+    compare_native("second_turn_diplomacy_phase", |state, (): ()| {
+        state.do_diplomacy()
+    })
+    .unwrap();
+}
+
 #[derive(Debug, Deserialize)]
 struct PlayerDiplomacyPolicyCase {
     source: MajorNationId,

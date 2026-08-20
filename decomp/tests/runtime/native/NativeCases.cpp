@@ -33,6 +33,7 @@ RuntimeActionResult RunAidAllocation(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyReset(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnDiplomacyPhase(NativeTransition& transition);
 RuntimeActionResult RunPlayerDiplomacyPolicyPostConsulate(NativeTransition& transition);
 RuntimeActionResult RunPlayerDiplomacyPolicyRejectConsulateOnMajor(NativeTransition& transition);
 
@@ -143,6 +144,7 @@ const NativeCase kCases[] = {
     {"diplomacy_grant_entry_updates_treasury", RunDiplomacyGrantEntry},
     {"diplomacy_reset_preserves_recurring_grants", RunDiplomacyReset},
     {"diplomacy_phase_applies_grant_and_consulate", RunDiplomacyPhase},
+    {"second_turn_diplomacy_phase", RunSecondTurnDiplomacyPhase},
     {"player_diplomacy_policy_posts_consulate", RunPlayerDiplomacyPolicyPostConsulate},
     {"player_diplomacy_policy_rejects_consulate_on_major",
      RunPlayerDiplomacyPolicyRejectConsulateOnMajor},
