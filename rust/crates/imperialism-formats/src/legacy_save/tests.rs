@@ -48,6 +48,18 @@ fn game_context() -> LegacyGameStateContext {
 }
 
 #[test]
+fn retail_manual_and_autosave_phases_resume_on_the_strategic_map() {
+    for saved_phase in [PhaseCode::HOME_PLACEMENT, PhaseCode::RETURN_TO_MAP] {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
+        save.simulation.turn_state_code = saved_phase.retail() as i16;
+
+        let loaded = load_game_from_bytes(&save.to_bytes(), game_context()).unwrap();
+
+        assert_eq!(loaded.game.turn().phase(), PhaseCode::STRATEGIC_MAP);
+    }
+}
+
+#[test]
 fn midgame_navy_fixture_is_the_narrow_supported_save_slice() {
     let save = LegacySaveV62::parse(MIDGAME_NAVY_FIXTURE);
     assert!(!save.navy.task_forces.is_empty());

@@ -80,7 +80,7 @@ pub enum LoadGameError {
     #[error("unsupported save format version {0:#x}")]
     UnsupportedVersion(u32),
     #[error(
-        "this save is in phase {phase:?}; only strategic-map and capital-selection saves can be loaded"
+        "this save is in phase {phase:?}; retail cannot create a single-player save in that phase"
     )]
     UnsupportedPhase { phase: PhaseCode },
     #[error(transparent)]
@@ -220,7 +220,7 @@ pub fn load_game_from_bytes(
     let map_view_origin = save.map_view_origin();
     let city_windows = save.city_window_layout();
     let battle_report_text = save.battle_report_text();
-    let game = save.game_state(context);
+    let mut game = save.game_state(context);
     match game.turn().phase() {
         PhaseCode::STRATEGIC_MAP | PhaseCode::CAPITAL_SELECTION => Ok(LoadedGame {
             game,
@@ -228,6 +228,18 @@ pub fn load_game_from_bytes(
             city_windows,
             battle_report_text,
         }),
+        // Manual saves are written while the optional save screen has phase 4;
+        // the newspaper autosave is written after case 0xf sets phase 0x12.
+        // TSimMgr::ReadFrom resumes both through phase 4 onto the strategic map.
+        PhaseCode::HOME_PLACEMENT | PhaseCode::RETURN_TO_MAP => {
+            game.resume_retail_save_on_strategic_map();
+            Ok(LoadedGame {
+                game,
+                map_view_origin,
+                city_windows,
+                battle_report_text,
+            })
+        }
         phase => Err(LoadGameError::UnsupportedPhase { phase }),
     }
 }

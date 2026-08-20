@@ -242,6 +242,12 @@ impl TurnState {
 }
 
 impl GameState {
+    /// Retail `TSimMgr::ReadFrom` discards the serialized turn phase, enters phase 4,
+    /// and immediately advances to the strategic map.
+    pub fn resume_retail_save_on_strategic_map(&mut self) {
+        self.turn.phase = PhaseCode::STRATEGIC_MAP;
+    }
+
     /// Ends player orders on the strategic map and runs the turn until the next stop.
     pub fn finish_player_orders(
         &mut self,
