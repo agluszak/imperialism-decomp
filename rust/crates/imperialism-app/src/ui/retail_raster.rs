@@ -65,6 +65,15 @@ pub(in crate::ui) trait IndexedRasterExt {
     fn line_bresenham_inclusive(&mut self, start: IVec2, end: IVec2, color: u8);
     fn frame_rect(&mut self, rect: IRect, color: u8);
     fn draw_text(&mut self, font_data: &[u8], size: f32, baseline: IVec2, text: &str, color: u8);
+    fn draw_text_right(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        right: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    );
     fn crop(&self, rect: IRect) -> IndexedPicture;
     fn to_image(&self, palette: &DibPalette) -> Image;
     fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image;
@@ -230,6 +239,32 @@ impl IndexedRasterExt for IndexedPicture {
             }
             x += metrics.advance_width(glyph);
         }
+    }
+
+    fn draw_text_right(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        right: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    ) {
+        let font = FontRef::from_index(font_data, 0).expect("retail font bytes are valid");
+        let charmap = font.charmap();
+        let metrics = font.glyph_metrics(&[]).scale(size);
+        let width = text
+            .chars()
+            .map(|character| metrics.advance_width(charmap.map(character)))
+            .sum::<f32>()
+            .round() as i32;
+        self.draw_text(
+            font_data,
+            size,
+            IVec2::new(right - width, baseline_y),
+            text,
+            color,
+        );
     }
 
     fn crop(&self, rect: IRect) -> IndexedPicture {

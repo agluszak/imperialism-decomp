@@ -4,10 +4,10 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::RetailTree;
-use crate::AppState;
+use super::retail_raster::{IndexedRasterExt, indexed_picture};
+use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_core::*;
@@ -191,11 +191,17 @@ enum TradeDisplay {
     Step(TradeCommodity),
     Offer(TradeCommodity),
     Sell(TradeCommodity),
-    Gauge(TradeCommodity),
-    Price(TradeCommodity),
-    Stock(TradeCommodity),
     Capacity,
     Advisory(TradeAdvisoryKind),
+}
+
+#[derive(Component, Clone, Copy)]
+struct TradeGaugeVisual(TradeCommodity);
+
+#[derive(Component)]
+struct TradeScreenVisual {
+    base: IndexedPicture,
+    rows: [(TradeCommodity, IVec2); TRADE_ROWS.len()],
 }
 
 pub(crate) struct TradePlugin;
@@ -209,7 +215,13 @@ impl Plugin for TradePlugin {
         .add_systems(OnExit(AppState::Trade), remember_trade_orders)
         .add_systems(
             Update,
-            (sync_trade_text, sync_trade_visual, sync_trade_presence)
+            (
+                sync_trade_text,
+                sync_trade_screen_picture,
+                sync_trade_cards,
+                sync_trade_gauges,
+                sync_trade_presence,
+            )
                 .run_if(in_state(AppState::Trade)),
         );
     }
@@ -226,6 +238,7 @@ fn bind_trade_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TradeScreen>>,
     tree: RetailTree,
+    nodes: Query<&Node>,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
@@ -242,14 +255,6 @@ fn bind_trade_screen(
     session.game.recall_player_trade_orders(nation);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
 
-    let (row_font, row_layout, row_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 14,
-            alignment: -1,
-        })
-        .expect("retail trade row text style");
     let pictures = TradePictures {
         bid_active: assets
             .picture(PictureId::new(2111))
@@ -280,27 +285,45 @@ fn bind_trade_screen(
         &mut commands,
         *root,
         &tree,
-        row_font,
-        row_layout,
-        row_line_height,
-        assets.palette_color(0x13),
         pictures,
-        assets.palette_color(0x37),
         session.game.technology().oil_drilling_available(),
     );
+    let palette = *assets.default_dib_palette();
+    for binding in TRADE_ROWS {
+        let row = tree.find(*root, binding.tag);
+        let bar = tree.find(row, fourcc!("bar "));
+        let picture = indexed_picture(100, 7, 0x10);
+        let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
+        commands
+            .entity(bar)
+            .insert((ImageNode::new(image), TradeGaugeVisual(binding.commodity)));
+    }
+    let rows = TRADE_ROWS.map(|binding| {
+        let node = nodes
+            .get(tree.find(*root, binding.tag))
+            .expect("generated trade row has layout");
+        let Val::Px(left) = node.left else {
+            panic!("generated trade row has a pixel left position");
+        };
+        let Val::Px(top) = node.top else {
+            panic!("generated trade row has a pixel top position");
+        };
+        (binding.commodity, IVec2::new(left as i32, top as i32))
+    });
+    let base = assets
+        .indexed_picture(PictureId::new(2101))
+        .expect("retail Trade screen picture must load");
+    let image = assets.add_image(base.to_image(&palette));
+    commands
+        .entity(tree.find(*root, fourcc!("main")))
+        .insert((ImageNode::new(image), TradeScreenVisual { base, rows }));
 }
 
-#[allow(clippy::too_many_arguments)]
 fn bind_trade_controls(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    row_font: TextFont,
-    row_layout: TextLayout,
-    row_line_height: LineHeight,
-    row_color: Color,
     pictures: TradePictures,
-    gauge_color: Color,
     advanced_trade_unlocked: bool,
 ) {
     let selected = tree.find(root, fourcc!("trad"));
@@ -380,95 +403,6 @@ fn bind_trade_controls(
                 RelativeCursorPosition::default(),
             ))
             .observe(on_trade_amount_bar_click);
-        commands
-            .entity(bar)
-            .apply_scene(trade_gauge_overlay(binding.commodity, gauge_color));
-        commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0),
-                    top: px(0),
-                    width: px(0),
-                    height: px(0),
-                    overflow: Overflow::visible(),
-                    ..default()
-                },
-                Pickable::IGNORE,
-                ChildOf(row),
-            ))
-            .apply_scene(trade_row_overlay(
-                binding.commodity,
-                row_font.clone(),
-                row_layout,
-                row_line_height,
-                row_color,
-            ));
-    }
-}
-
-fn trade_gauge_overlay(commodity: TradeCommodity, color: Color) -> impl Scene {
-    bsn! {
-        Children [
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0),
-                    top: px(0),
-                    width: px(0),
-                    height: px(7),
-                }
-                BackgroundColor(color)
-                Pickable::IGNORE
-                template(move |_context| Ok(TradeDisplay::Gauge(commodity)))
-            ),
-        ]
-    }
-}
-
-fn trade_row_overlay(
-    commodity: TradeCommodity,
-    font: TextFont,
-    layout: TextLayout,
-    line_height: LineHeight,
-    color: Color,
-) -> impl Scene {
-    let price_font = font.clone();
-    bsn! {
-        Children [
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(200),
-                    top: px(-2),
-                    width: px(38),
-                    height: px(14),
-                }
-                Text("")
-                template(move |_context| Ok(price_font.clone()))
-                template(move |_context| Ok(layout))
-                template(move |_context| Ok(line_height))
-                TextColor(color)
-                Pickable::IGNORE
-                template(move |_context| Ok(TradeDisplay::Price(commodity)))
-            ),
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(282),
-                    top: px(-2),
-                    width: px(18),
-                    height: px(14),
-                }
-                Text("")
-                template(move |_context| Ok(font.clone()))
-                template(move |_context| Ok(layout))
-                template(move |_context| Ok(line_height))
-                TextColor(color)
-                Pickable::IGNORE
-                template(move |_context| Ok(TradeDisplay::Stock(commodity)))
-            ),
-        ]
     }
 }
 
@@ -587,40 +521,69 @@ fn sync_trade_text(
                     _ => String::new(),
                 };
             }
-            TradeDisplay::Price(commodity) => {
-                text.0 = format_currency(session.game.market().rows[commodity].price);
-            }
-            TradeDisplay::Stock(commodity) => {
-                let stock = major.city.stockpile[commodity.resource()];
-                text.0 = if stock == 0 {
-                    "--".to_owned()
-                } else {
-                    stock.to_string()
-                };
-            }
             TradeDisplay::Capacity => text.0 = capacity.to_string(),
             _ => {}
         }
     }
 }
 
-fn sync_trade_visual(
+fn sync_trade_screen_picture(
     session: Res<GameSession>,
+    retail: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
     roots: Query<(), Added<TradeScreen>>,
-    mut cards: Query<(&TradeDisplay, &mut ImageNode, &mut Node)>,
-    mut gauges: Query<(&TradeDisplay, &mut Node), Without<ImageNode>>,
+    screens: Query<(&TradeScreenVisual, &ImageNode)>,
 ) {
     if !session.is_changed() && roots.is_empty() {
         return;
     }
     let nation = session.active_major_nation();
-    let capacity = session
-        .game
-        .nations()
-        .major(nation)
-        .economy
-        .capacities
-        .trade_offer;
+    let major = session.game.nations().major(nation);
+    let font = retail
+        .assets()
+        .font_bytes(RetailFontFace::BookAntiquaRegular);
+    let style = resolve_retail_text_style(RetailTextStylePreset {
+        font_family: 2,
+        face_flags: 0,
+        point_size: 14,
+        alignment: -1,
+    })
+    .expect("retail Trade custom-drawing text style");
+    let font_size = decode_retail_font_cell_metrics(style.face, font)
+        .expect("retail Trade font metrics")
+        .em_pixel_size(style.logical_pixel_height) as f32;
+    for (screen, image_node) in &screens {
+        let mut picture = screen.base.clone();
+        for &(commodity, origin) in &screen.rows {
+            let stock = match major.city.stockpile[commodity.resource()] {
+                0 => "--".to_owned(),
+                stock => stock.to_string(),
+            };
+            picture.draw_text_right(
+                font,
+                font_size,
+                origin.x + 238,
+                origin.y + 12,
+                &format_currency(session.game.market().rows[commodity].price),
+                0x13,
+            );
+            picture.draw_text_right(font, font_size, origin.x + 300, origin.y + 12, &stock, 0x13);
+        }
+        if let Some(mut image) = images.get_mut(&image_node.image) {
+            *image = picture.to_image(retail.assets().default_dib_palette());
+        }
+    }
+}
+
+fn sync_trade_cards(
+    session: Res<GameSession>,
+    roots: Query<(), Added<TradeScreen>>,
+    mut cards: Query<(&TradeDisplay, &mut ImageNode, &mut Node)>,
+) {
+    if !session.is_changed() && roots.is_empty() {
+        return;
+    }
+    let nation = session.active_major_nation();
     for (display, mut image, mut node) in &mut cards {
         let TradeDisplay::Card {
             commodity,
@@ -651,15 +614,40 @@ fn sync_trade_visual(
         node.width = Val::Px(width);
         node.height = Val::Px(20.0);
     }
-    for (display, mut node) in &mut gauges {
-        let TradeDisplay::Gauge(commodity) = *display else {
-            continue;
-        };
+}
+
+fn sync_trade_gauges(
+    session: Res<GameSession>,
+    retail: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
+    roots: Query<(), Added<TradeScreen>>,
+    gauges: Query<(&TradeGaugeVisual, &ImageNode)>,
+) {
+    if !session.is_changed() && roots.is_empty() {
+        return;
+    }
+    let nation = session.active_major_nation();
+    let capacity = session
+        .game
+        .nations()
+        .major(nation)
+        .economy
+        .capacities
+        .trade_offer;
+    for (gauge, image_node) in &gauges {
+        let commodity = gauge.0;
         let quantity = match session.game.player_trade_order(nation, commodity) {
             PlayerTradeOrder::Sell(quantity) => quantity,
             _ => 0,
         };
-        node.width = Val::Px(trade_gauge_width(quantity, capacity));
+        let mut picture = indexed_picture(100, 7, 0x10);
+        picture.fill_rect(
+            IRect::new(0, 0, trade_gauge_width(quantity, capacity) as i32, 7),
+            0x37,
+        );
+        if let Some(mut image) = images.get_mut(&image_node.image) {
+            *image = picture.to_keyed_image(retail.assets().default_dib_palette(), 0x10);
+        }
     }
 }
 
@@ -964,10 +952,6 @@ mod tests {
             &mut commands,
             *root,
             &tree,
-            TextFont::default(),
-            TextLayout::default(),
-            LineHeight::default(),
-            Color::BLACK,
             TradePictures {
                 bid_active: image.clone(),
                 bid_idle: image.clone(),
@@ -978,7 +962,6 @@ mod tests {
                 clothing_offer_active: image.clone(),
                 clothing_offer_idle: image,
             },
-            Color::WHITE,
             false,
         );
     }
@@ -1014,7 +997,7 @@ mod tests {
         .insert_resource(GameSession::new(state))
         .add_systems(
             Update,
-            (bind_test_trade, sync_trade_visual, sync_trade_presence).chain(),
+            (bind_test_trade, sync_trade_cards, sync_trade_presence).chain(),
         );
         spawn_trade_hierarchy(app.world_mut());
         app.update();

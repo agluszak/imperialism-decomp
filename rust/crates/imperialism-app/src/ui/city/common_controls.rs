@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 
 pub(in crate::ui::city) const INDUSTRY_BAR_WIDTH: i16 = 150;
 pub(in crate::ui::city) const INDUSTRY_BAR_X: f32 = 62.0;
@@ -57,10 +58,11 @@ pub(in crate::ui::city) struct IndustryAmount {
 
 #[derive(Component, Clone, Copy)]
 pub(in crate::ui::city) enum IndustryBar {
-    Fill(IndustryAmount),
-    Maximum(IndustryAmount),
     Quantity(IndustryAmount),
 }
+
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) struct IndustryBarVisual(IndustryAmount);
 
 pub(in crate::ui::city) fn city_building_name(
     assets: &RetailUiAssets,
@@ -78,15 +80,14 @@ pub(in crate::ui::city) fn configure_industry_dialog(
 ) {
     let building_name = city_building_name(assets, page.slot);
     let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
-    let bar_color = assets.palette_color(0x16);
     bind_industry_dialog(
         commands,
+        assets,
         root,
         tree,
         page,
         building_name,
         capacity_template,
-        bar_color,
     );
 }
 
@@ -166,10 +167,10 @@ pub(in crate::ui::city) fn bind_city_order_row(
 
 fn bind_industry_amount_bars(
     commands: &mut Commands,
+    assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
     page: IndustryPage,
-    bar_color: Color,
 ) {
     for binding in page.orders {
         let bound = bind_city_order_row(
@@ -191,39 +192,14 @@ fn bind_industry_amount_bars(
             .entity(bound.quantity)
             .insert(IndustryBar::Quantity(amount));
         let bar = tree.find(bound.row, fourcc!("bar "));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(0.0),
-                top: Val::Px(1.0),
-                width: Val::Px(0.0),
-                height: Val::Px(4.0),
-                ..default()
-            },
-            BackgroundColor(bar_color),
-            Pickable::IGNORE,
-            ChildOf(bar),
-            IndustryBar::Fill(amount),
-            Name::new("city-industry-amount"),
-        ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(0.0),
-                top: Val::Px(0.0),
-                width: Val::Px(1.0),
-                height: Val::Px(5.0),
-                ..default()
-            },
-            BackgroundColor(Color::BLACK),
-            Pickable::IGNORE,
-            ChildOf(bar),
-            IndustryBar::Maximum(amount),
-            Name::new("city-industry-maximum"),
-        ));
+        let picture = indexed_picture(i32::from(INDUSTRY_BAR_WIDTH), 6, 0x10);
+        let palette = *assets.default_dib_palette();
+        let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
         commands
             .entity(bar)
             .insert((
+                ImageNode::new(image),
+                IndustryBarVisual(amount),
                 RelativeCursorPosition::default(),
                 CityIndustryAmountBar {
                     order: binding.order,
@@ -237,12 +213,12 @@ fn bind_industry_amount_bars(
 #[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_industry_dialog(
     commands: &mut Commands,
+    assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
     page: IndustryPage,
     building_name: String,
     capacity_template: String,
-    bar_color: Color,
 ) {
     let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert(Text::new(building_name));
@@ -265,7 +241,7 @@ pub(in crate::ui::city) fn bind_industry_dialog(
             IndustryIndicator::Stock { resource, minimum },
         ));
     }
-    bind_industry_amount_bars(commands, root, tree, page, bar_color);
+    bind_industry_amount_bars(commands, assets, root, tree, page);
     let expansion_action = tree.find(root, fourcc!("expa"));
     commands
         .entity(expansion_action)
@@ -421,7 +397,10 @@ pub(in crate::ui::city) fn sync_industry_indicators(
 pub(in crate::ui::city) fn sync_industry_bars(
     session: Res<GameSession>,
     added: Query<(), Added<IndustryBar>>,
-    mut bars: Query<(&IndustryBar, &mut Node)>,
+    retail: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
+    mut quantities: Query<(&IndustryBar, &mut Node)>,
+    bars: Query<(&IndustryBarVisual, &ImageNode)>,
 ) {
     if city_projection_idle(&session, !added.is_empty()) {
         return;
@@ -436,24 +415,27 @@ pub(in crate::ui::city) fn sync_industry_bars(
             0
         }
     };
-    for (bar, mut node) in &mut bars {
-        match *bar {
-            IndustryBar::Fill(amount) => {
-                let capacity = city.production_orders[amount.slot];
-                let quantity = session.game.city_order_quantity(nation, amount.order);
-                node.width = Val::Px(f32::from(scale(quantity, capacity)));
-            }
-            IndustryBar::Maximum(amount) => {
-                let capacity = city.production_orders[amount.slot];
-                let maximum = session.game.city_order_limit(nation, amount.order).maximum;
-                node.left = Val::Px(f32::from(scale(maximum, capacity)));
-            }
-            IndustryBar::Quantity(amount) => {
-                let capacity = city.production_orders[amount.slot];
-                let quantity = session.game.city_order_quantity(nation, amount.order);
-                node.left = Val::Px(INDUSTRY_BAR_X + f32::from(scale(quantity, capacity)) - 2.0);
-                node.top = Val::Px(INDUSTRY_BAR_Y + 6.0);
-            }
+    for (bar, mut node) in &mut quantities {
+        let IndustryBar::Quantity(amount) = *bar;
+        let capacity = city.production_orders[amount.slot];
+        let quantity = session.game.city_order_quantity(nation, amount.order);
+        node.left = Val::Px(INDUSTRY_BAR_X + f32::from(scale(quantity, capacity)) - 2.0);
+        node.top = Val::Px(INDUSTRY_BAR_Y + 6.0);
+    }
+    for (bar, image_node) in &bars {
+        let amount = bar.0;
+        let capacity = city.production_orders[amount.slot];
+        let quantity = session.game.city_order_quantity(nation, amount.order);
+        let maximum = session.game.city_order_limit(nation, amount.order).maximum;
+        let mut picture = indexed_picture(i32::from(INDUSTRY_BAR_WIDTH), 6, 0x10);
+        picture.fill_rect(
+            IRect::new(0, 1, i32::from(scale(quantity, capacity)), 5),
+            0x16,
+        );
+        let maximum = i32::from(scale(maximum, capacity));
+        picture.fill_rect(IRect::new(maximum, 0, maximum + 1, 5), 0);
+        if let Some(mut image) = images.get_mut(&image_node.image) {
+            *image = picture.to_keyed_image(retail.assets().default_dib_palette(), 0x10);
         }
     }
 }
