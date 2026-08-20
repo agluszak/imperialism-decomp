@@ -719,10 +719,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
     return RuntimeActionResult::Failure("the naval encounter did not retain both task forces");
   }
 
-  JsonObject battle;
-  battle.Set("attacker", attackerIndex);
-  battle.Set("defender", defenderIndex);
-  return transition.Finish(battle.Release());
+  return transition.Finish();
 }
 
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition) {

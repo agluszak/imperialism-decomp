@@ -27,16 +27,8 @@ impl GameState {
         // Windows retail reads preference slot 1 before a player-involved encounter,
         // and its settings initialization forcibly clears that slot. The live turn
         // path therefore always resolves naval combat strategically. Keep the recovered
-        // tactical branch isolated behind the oracle-only entry point below.
+        // tactical branch is entered only by the interactive navy-order path.
         self.carry_out_navy_orders_without_tactical_battles()
-    }
-
-    #[cfg(feature = "oracle")]
-    pub(crate) fn do_military_with_tactical_battles(&mut self) -> Option<NavyOrdersContinuation> {
-        self.apply_military_orders();
-        self.clean_up_army_stacks();
-        self.prepare_to_carry_out_navy_orders();
-        self.carry_out_navy_orders()
     }
 
     /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
