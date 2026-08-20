@@ -1408,7 +1408,7 @@ impl GameState {
         self.prepend_civilian_to_tile_chain(id, tile);
     }
 
-    fn rebuild_civilian_tile_chains(&mut self) {
+    pub(crate) fn rebuild_civilian_tile_chains(&mut self) {
         for unit in self.civilian_units.values_mut() {
             unit.next_on_tile = None;
         }
