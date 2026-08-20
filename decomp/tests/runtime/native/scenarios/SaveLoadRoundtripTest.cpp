@@ -49,6 +49,27 @@ const int kNormalSaveMode = 0;
 const short kFirstNavyShipyardRow = 4;
 const int kPatrolOrder = 3;
 
+bool RemoveRebuiltOceanNeighbors(JSON_Object* state) {
+  JSON_Object* ocean = state != 0 ? json_object_get_object(state, "ocean") : 0;
+  JSON_Array* zones = ocean != 0 ? json_object_get_array(ocean, "zones") : 0;
+  if (zones == 0) {
+    return false;
+  }
+  for (size_t index = 0; index < json_array_get_count(zones); ++index) {
+    JSON_Object* entry = json_array_get_object(zones, index);
+    JSON_Object* zone = entry != 0 ? json_object_get_object(entry, "Zone") : 0;
+    if (zone == 0 && entry != 0) {
+      JSON_Object* port = json_object_get_object(entry, "PortZone");
+      zone = port != 0 ? json_object_get_object(port, "zone") : 0;
+    }
+    if (zone == 0 || json_object_remove(zone, "primary_neighbors") != JSONSuccess ||
+        json_object_remove(zone, "secondary_neighbors") != JSONSuccess) {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState) {
   JSON_Value* value = 0;
   if (!BuildRuntimeGameState(run, &value)) {
@@ -57,12 +78,30 @@ bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState)
   JSON_Object* state = json_value_get_object(value);
   JSON_Object* nations = state != 0 ? json_object_get_object(state, "nations") : 0;
   JSON_Array* majors = nations != 0 ? json_object_get_array(nations, "majors") : 0;
+  JSON_Object* map = state != 0 ? json_object_get_object(state, "map") : 0;
+  JSON_Array* tiles = map != 0 ? json_object_get_array(map, "tiles") : 0;
   // Newspaper pages and per-template reuse ticks live only for the current session; retail's
   // TNewsMgr::WriteTo/ReadFrom persist no bytes, so reopening a save starts them empty.
   if (state == 0 || json_object_remove(state, "news") != JSONSuccess ||
       json_object_remove(state, "turn") != JSONSuccess ||
       json_object_remove(state, "unit_ids") != JSONSuccess ||
-      json_object_remove(state, "rng") != JSONSuccess || majors == 0) {
+      json_object_remove(state, "rng") != JSONSuccess || majors == 0 || tiles == 0) {
+    json_value_free(value);
+    return false;
+  }
+  // TTerrainStateRecord::markerSlotIndex10 is map-view scratch state. It is not serialized,
+  // and TMapDialog resets every slot to -1 when the reloaded strategic map is constructed.
+  for (size_t index = 0; index < json_array_get_count(tiles); ++index) {
+    JSON_Object* tile = json_array_get_object(tiles, index);
+    if (tile == 0 || json_object_remove(tile, "marker_slot_index") != JSONSuccess) {
+      json_value_free(value);
+      return false;
+    }
+  }
+  // Current saves omit both TZone neighbor arrays. TOcean::ReadFrom reconstructs them from map
+  // tiles, and retail may change both order and port-zone membership in that derived graph.
+  // Ordered neighbor captures remain intact for gameplay differentials.
+  if (!RemoveRebuiltOceanNeighbors(state)) {
     json_value_free(value);
     return false;
   }
