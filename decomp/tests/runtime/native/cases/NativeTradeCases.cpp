@@ -541,6 +541,11 @@ RuntimeActionResult RunTradePhaseSellOnly(NativeTransition& transition) {
   return RunTradePhaseCase(transition, false);
 }
 
+RuntimeActionResult RunSecondTurnTradePhase(NativeTransition& transition) {
+  g_pSimMgr->economicTurn = 2;
+  return RunTradePhaseCase(transition, true);
+}
+
 RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
   if (g_pTradeMgr == 0 || g_pSimMgr == 0 || g_pDisplayMgr == 0) {
     return RuntimeActionResult::Failure("trade turn state is unavailable");

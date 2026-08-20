@@ -261,7 +261,10 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
   return transition.Finish();
 }
 
-RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
+RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool secondTurn) {
+  if (secondTurn) {
+    g_pSimMgr->economicTurn = 2;
+  }
   const NationSlot nationSlot = ActiveNationSlot();
   TGreatPower* nation = g_apNationStates[nationSlot];
   if (nation == 0 || nation->trackedObjectList == 0 || g_pGlobalMapState == 0 ||
@@ -381,4 +384,12 @@ RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
     }
   }
   return transition.Finish();
+}
+
+RuntimeActionResult RunCiviliansPhase(NativeTransition& transition) {
+  return RunCiviliansPhaseCase(transition, false);
+}
+
+RuntimeActionResult RunSecondTurnCiviliansPhase(NativeTransition& transition) {
+  return RunCiviliansPhaseCase(transition, true);
 }
