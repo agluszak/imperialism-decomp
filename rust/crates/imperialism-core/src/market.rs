@@ -259,6 +259,17 @@ impl Default for TradeMarketState {
 }
 
 impl TradeMarketState {
+    /// Retail `TTradeMgr::GetMarketChange`.
+    pub(crate) fn market_change(&self) -> i32 {
+        all_trade_commodities()
+            .map(|commodity| {
+                let row = &self.rows[commodity];
+                row.price - row.previous_price
+            })
+            .sum::<i32>()
+            / TradeCommodity::LENGTH as i32
+    }
+
     /// The `SetEmpirePolicies` eligibility test for a minor trade partner.
     pub fn has_maximum_offer_from_minor(
         &self,

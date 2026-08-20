@@ -11,6 +11,17 @@ impl PendingWorkState {
 }
 
 impl GameState {
+    /// The four seasonal values projected by `TNewspaperView::StuffValues`.
+    pub fn newspaper_special_metric(&self, nation: MajorNationId) -> i32 {
+        match self.turn.economic_turn % 4 {
+            0 => i32::from(self.nations.majors[&nation].economy.escalation_counter),
+            1 => self.market.market_change(),
+            2 => self.newspaper_comparative_power(nation).1,
+            3 => self.newspaper_comparative_power(nation).0,
+            _ => unreachable!("economic turns are non-negative"),
+        }
+    }
+
     /// `TNewsMgr::AddTreatyEvent` for a single-player pass.
     pub(crate) fn add_treaty_event(
         &mut self,
@@ -800,6 +811,7 @@ fn random_other_major(rng: &mut RngState, nation: MajorNationId) -> MajorNationI
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::market::all_trade_commodities;
     use crate::test_support::game_state;
 
     fn joined_war(counterpart: MajorNationId) -> PendingNewspaperEvent {
@@ -816,6 +828,26 @@ mod tests {
         let mut ids = vec![1; NEWS_TEMPLATE_COUNT];
         ids[0] = -1003;
         ids
+    }
+
+    #[test]
+    fn newspaper_special_metric_follows_the_four_retail_seasons() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        state.nations.majors[&nation].economy.escalation_counter = 7;
+        for commodity in all_trade_commodities() {
+            state.market.rows[commodity].previous_price = 100;
+            state.market.rows[commodity].price = 103;
+        }
+        for item in ManufacturedItem::ALL.iter().skip(4) {
+            state.nations.majors[&nation].city.orders.items[*item].accumulated_value = 10;
+        }
+
+        let expected = [7, 3, 100, 100];
+        for (turn, expected) in expected.into_iter().enumerate() {
+            state.turn.economic_turn = turn as i32;
+            assert_eq!(state.newspaper_special_metric(nation), expected);
+        }
     }
 
     #[test]
