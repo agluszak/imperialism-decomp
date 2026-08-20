@@ -1012,6 +1012,41 @@ impl GameState {
         }
     }
 
+    pub(crate) fn retire_ship_and_reassign_admiral(&mut self, ship: ShipId) {
+        let admiral = self
+            .admirals
+            .iter()
+            .find_map(|(&id, admiral)| (admiral.ship == Some(ship)).then_some(id));
+        self.remove_ship_completely(ship);
+        let Some(admiral) = admiral else {
+            return;
+        };
+        let nation = self.admirals[&admiral].nation;
+        let assigned = self
+            .admirals
+            .values()
+            .filter_map(|admiral| admiral.ship)
+            .collect::<std::collections::HashSet<_>>();
+        let replacement = self
+            .ships_in_retail_order()
+            .filter_map(|(id, ship)| {
+                (ship.nation == nation && !assigned.contains(&id)).then_some(id)
+            })
+            .reduce(|candidate, ship| self.finest_ship(ship, candidate));
+        if let Some(replacement) = replacement {
+            let force = self.task_force_of_ship(replacement);
+            self.admirals
+                .get_mut(&admiral)
+                .expect("reassigned admiral exists")
+                .ship = Some(replacement);
+            if let Some(force) = force {
+                self.elect_task_force_flagship(force);
+            }
+        } else {
+            self.admirals.shift_remove(&admiral);
+        }
+    }
+
     fn consolidate_mission_ships_to(&mut self, ships: &[ShipId], destination: OceanZoneId) {
         let mut pending = ships.to_vec();
         while let Some(ship) = pending.pop() {

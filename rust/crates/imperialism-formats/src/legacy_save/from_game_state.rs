@@ -977,7 +977,9 @@ fn technology_dto(technology: &TechnologyState) -> LegacyTechnologyState {
                 .map(|kind| i16::from(kind.retail()))
         }),
         research_status_by_nation,
-        selected_resource_type_by_nation: [[0; 14]; MAJOR_NATION_COUNT],
+        selected_resource_type_by_nation: std::array::from_fn(|slot| {
+            enum_u8(&technology.selected_ship_types_by_nation[MajorNationId::new(slot as u8)])
+        }),
         ability_active_by_nation,
         university_recruitment_availability,
         completion_year_offsets: std::array::from_fn(|slot| {

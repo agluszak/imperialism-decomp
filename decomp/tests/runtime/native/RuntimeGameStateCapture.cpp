@@ -748,6 +748,7 @@ JSON_Value* CaptureTechnology() {
     industryEnabledBySlot.Add(enabled != 0);
   }
   JsonArray militaryUnitAbilityActiveByNation;
+  JsonArray selectedShipTypesByNation;
   JsonArray cityCapabilitiesByNation;
   JsonArray researchStatusByNation;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
@@ -786,6 +787,17 @@ JSON_Value* CaptureTechnology() {
       abilityActiveByUnitType.Set(MilitaryUnitKindName(unitType), active != 0);
     }
     militaryUnitAbilityActiveByNation.Add(abilityActiveByUnitType.Release());
+
+    JsonObject selectedShipTypes;
+    for (int shipType = 0; shipType < kIndustryActionSlotCount; ++shipType) {
+      const unsigned char selected =
+          g_pTechMgr->capRowsB333[nationSlot].selectedByResourceType[shipType];
+      if (selected > 1) {
+        FailSemanticCapture("major-nation selected ship-type flag is not boolean");
+      }
+      selectedShipTypes.Set(kShipTypeNames[shipType], selected != 0);
+    }
+    selectedShipTypesByNation.Add(selectedShipTypes.Release());
 
     JsonObject cityCapabilities;
     cityCapabilities.Set("advanced_iron_working", advancedIronWorkingStatus == 2);
@@ -837,6 +849,7 @@ JSON_Value* CaptureTechnology() {
   technology.Set("industry_enabled_by_slot", industryEnabledBySlot.Release());
   technology.Set("military_unit_ability_active_by_nation",
                  militaryUnitAbilityActiveByNation.Release());
+  technology.Set("selected_ship_types_by_nation", selectedShipTypesByNation.Release());
   technology.Set("selected_capability_slots", selectedCapabilitySlotsByNation.Release());
   technology.Set("city_capabilities_by_nation", cityCapabilitiesByNation.Release());
   technology.Set("navy_growth_ship_type", ShipTypeName(g_pTechMgr->activeZoneIndex1d4));

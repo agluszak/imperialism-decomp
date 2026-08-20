@@ -3,10 +3,17 @@
 #include "RuntimeRun.h"
 
 #include "game/globals/shared_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/tactical_ui_globals.h"
+#include "game/city/TCity.h"
+#include "game/city/TShipOrder.h"
+#include "game/navy/TAdmiral.h"
+#include "game/navy/TShip.h"
 #include "game/nation/TGreatPower.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_screens/TSimMgr.h"
+
+#include <string.h>
 
 namespace {
 
@@ -19,6 +26,25 @@ void ClearScheduledUnlocksExcept(int keepTechId, short economicTurn) {
     if (g_pTechMgr->perTechUnlockFlag180[techId] == 0) {
       g_pTechMgr->prioritySlots04[techId] = 0;
     }
+  }
+}
+
+void ClearNationNavy(short nationSlot) {
+  TAdmiral* admiral = g_pNavySecondaryOrderListHead;
+  while (admiral != 0) {
+    TAdmiral* next = admiral->next;
+    if (admiral->nationSlot == nationSlot) {
+      admiral->Free();
+    }
+    admiral = next;
+  }
+  TShip* ship = g_pNavyPrimaryOrderListHead;
+  while (ship != 0) {
+    TShip* next = ship->next;
+    if (ship->nation == nationSlot) {
+      ship->Sink();
+    }
+    ship = next;
   }
 }
 
@@ -70,6 +96,51 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
     return started;
   }
   g_pTechMgr->CheckForAdvances();
+  return transition.Finish();
+}
+
+RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transition) {
+  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short nationSlot = activeNationSlot == 0 ? 1 : 0;
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  TZone* zone = g_pMapActionContextListHead;
+  if (nation == 0 || nation->city == 0 || zone == 0) {
+    return RuntimeActionResult::Failure("technology naval-upgrade fixture is unavailable");
+  }
+
+  ClearNationNavy(nationSlot);
+  memset(g_pTechMgr->capRowsB333[nationSlot].selectedByResourceType, 1, 5);
+  memset(&g_pTechMgr->capRowsB333[nationSlot].selectedByResourceType[5], 0, 9);
+  const short initialShipTypes[8] = {1, 2, 0, 0, 3, 4, 0, 0};
+  for (int slot = 0; slot < 8; ++slot) {
+    nation->city->shipOrderSlots190[slot]->resourceTypeIndex = initialShipTypes[slot];
+  }
+
+  TShip* survivorA = new TShip();
+  survivorA->IShip(3, zone, nationSlot, "technology-survivor-a");
+  survivorA->experience = 100;
+  TShip* survivorB = new TShip();
+  survivorB->IShip(4, zone, nationSlot, "technology-survivor-b");
+  survivorB->experience = 498;
+  TShip* obsolete = new TShip();
+  obsolete->IShip(1, zone, nationSlot, "technology-obsolete");
+  obsolete->experience = 250;
+  TAdmiral* admiral = new TAdmiral(nationSlot);
+  admiral->displayName = "technology-admiral";
+  admiral->experiencePoints = 200;
+  admiral->AssignToShip(obsolete);
+
+  const int technologyId = 9;
+  g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[technologyId] = 1;
+  g_pTechMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[technologyId] = 77;
+
+  JsonObject args;
+  args.Set("nation", nationSlot);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pTechMgr->HandleAbilityUnlock(technologyId, nationSlot);
   return transition.Finish();
 }
 

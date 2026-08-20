@@ -30,6 +30,8 @@ const TECH_ADVANCED_IRON_WORKING_OFFSET_V62: usize = 0x1a5;
 const TECH_MARINE_ENGINEERING_OFFSET_V62: usize = 0x1a8;
 const TECH_ORDER_CAP_ROWS_OFFSET_V62: usize = 0x262;
 const TECH_ORDER_CAP_ROW_SIZE: usize = 0x1d;
+const TECH_SELECTED_SHIP_TYPES_OFFSET_V62: usize = 0x32d;
+const TECH_SELECTED_SHIP_TYPES_ROW_SIZE: usize = 14;
 const TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62: usize = 0x38f;
 const TECH_ABILITY_ACTIVE_ROW_SIZE: usize = 30;
 const TECH_ADVANCED_IRON_WORKING_ID: usize = 0x0f;
@@ -373,6 +375,9 @@ fn technology_decoder_reads_retail_resource_type_fields() {
         + TECH_ADVANCED_IRON_WORKING_ID] = 2;
     bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + 3 * TECH_ORDER_CAP_ROW_SIZE + TECH_OIL_DRILLING_ID] = 2;
     bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + 4 * TECH_ORDER_CAP_ROW_SIZE + 4] = 1;
+    bytes[TECH_SELECTED_SHIP_TYPES_OFFSET_V62
+        + 2 * TECH_SELECTED_SHIP_TYPES_ROW_SIZE
+        + ShipType::ArmoredCruiser as usize] = 1;
     bytes[TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62
         + TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE
         + CivilianUnitKind::Driller as usize] = 1;
@@ -404,6 +409,10 @@ fn technology_decoder_reads_retail_resource_type_fields() {
         2
     );
     assert_eq!(technology.research_status_by_nation[4][4], 1);
+    assert_eq!(
+        technology.selected_resource_type_by_nation[2][ShipType::ArmoredCruiser as usize],
+        1
+    );
     assert_eq!(
         technology.university_recruitment_availability[1][CivilianUnitKind::Driller as usize],
         1
