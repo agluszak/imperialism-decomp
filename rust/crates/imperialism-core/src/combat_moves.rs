@@ -826,6 +826,56 @@ mod tests {
     }
 
     #[test]
+    fn tactical_preference_only_exposes_battles_with_a_human_major() {
+        fn pending_battle() -> GameState {
+            let mut state = game_state();
+            state.turn.economic_turn = 3;
+            state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+            seed_province(&mut state, 1, 0, &[2]);
+            seed_province(&mut state, 2, 1, &[1]);
+            push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+            push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+            state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+                DiplomaticRelationship::War;
+            state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+                DiplomaticRelationship::War;
+            assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+            state
+        }
+
+        let mut watched = pending_battle();
+        assert_eq!(
+            watched.apply_land_battle_watch_policy(crate::TurnStop::LandBattle, true, &[]),
+            crate::TurnStop::LandBattle
+        );
+        assert!(watched.pending_land_battle().is_some());
+
+        let mut disabled = pending_battle();
+        assert_ne!(
+            disabled.apply_land_battle_watch_policy(crate::TurnStop::LandBattle, false, &[]),
+            crate::TurnStop::LandBattle
+        );
+        assert!(disabled.pending_land_battle().is_none());
+
+        let mut ai_only = pending_battle();
+        ai_only
+            .nations
+            .major_mut(MajorNationId::new(0))
+            .economy
+            .diplomacy_eligible = false;
+        ai_only
+            .nations
+            .major_mut(MajorNationId::new(1))
+            .economy
+            .diplomacy_eligible = false;
+        assert_ne!(
+            ai_only.apply_land_battle_watch_policy(crate::TurnStop::LandBattle, true, &[]),
+            crate::TurnStop::LandBattle
+        );
+        assert!(ai_only.pending_land_battle().is_none());
+    }
+
+    #[test]
     fn land_battle_stop_keeps_remaining_stacks_for_resume() {
         let mut state = game_state();
         state.turn.economic_turn = 3;

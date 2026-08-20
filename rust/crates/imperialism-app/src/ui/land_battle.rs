@@ -759,6 +759,7 @@ fn on_land_battle_activate(
     mut music: Option<ResMut<MusicDirector>>,
     time: Option<Res<Time>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
+    prefs: Res<super::preferences::GamePreferences>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -768,25 +769,43 @@ fn on_land_battle_activate(
             if let Ok(Some(stop)) = session
                 .game
                 .finish_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
-                && stop != TurnStop::LandBattle
             {
+                let stop = session.game.apply_land_battle_watch_policy(
+                    stop,
+                    prefs.tactical_battles_enabled(),
+                    super::session::news_story_ids(assets.as_deref()),
+                );
+                if stop != TurnStop::LandBattle {
+                    apply_turn_stop(stop, &mut next_state);
+                }
+            }
+        }
+        LandBattleAction::Auto => {
+            let stop = session
+                .game
+                .auto_resolve_land_battle(super::session::news_story_ids(assets.as_deref()));
+            let stop = session.game.apply_land_battle_watch_policy(
+                stop,
+                prefs.tactical_battles_enabled(),
+                super::session::news_story_ids(assets.as_deref()),
+            );
+            if stop != TurnStop::LandBattle {
                 apply_turn_stop(stop, &mut next_state);
             }
         }
-        LandBattleAction::Auto => match session
-            .game
-            .auto_resolve_land_battle(super::session::news_story_ids(assets.as_deref()))
-        {
-            TurnStop::LandBattle => {}
-            stop => apply_turn_stop(stop, &mut next_state),
-        },
         LandBattleAction::Retreat => {
             if let Ok(Some(stop)) = session
                 .game
                 .retreat_from_army_battle(super::session::news_story_ids(assets.as_deref()))
-                && stop != TurnStop::LandBattle
             {
-                apply_turn_stop(stop, &mut next_state);
+                let stop = session.game.apply_land_battle_watch_policy(
+                    stop,
+                    prefs.tactical_battles_enabled(),
+                    super::session::news_story_ids(assets.as_deref()),
+                );
+                if stop != TurnStop::LandBattle {
+                    apply_turn_stop(stop, &mut next_state);
+                }
             }
         }
     }
@@ -990,8 +1009,11 @@ mod tests {
 
     fn test_app(state: GameState) -> App {
         let mut app = App::new();
+        let mut preferences = super::super::preferences::GamePreferences::default();
+        preferences.set_tactical_battles_enabled(true);
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
+            .insert_resource(preferences)
             .insert_resource(GameSession::new(state))
             .insert_state(AppState::LandBattle)
             .add_systems(

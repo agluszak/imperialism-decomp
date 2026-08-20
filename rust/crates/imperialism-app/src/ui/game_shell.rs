@@ -233,6 +233,11 @@ fn on_end_turn(
     let stop = session
         .game
         .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
+    let stop = session.game.apply_land_battle_watch_policy(
+        stop,
+        prefs.tactical_battles_enabled(),
+        assets.news_story_ids(),
+    );
     apply_turn_stop(stop, &mut next_state);
 }
 
@@ -611,6 +616,11 @@ fn on_turn_alert_dismiss(
     let stop = session
         .game
         .dismiss_turn_alerts(prefs.turn_alerts_enabled(), assets.news_story_ids());
+    let stop = session.game.apply_land_battle_watch_policy(
+        stop,
+        prefs.tactical_battles_enabled(),
+        assets.news_story_ids(),
+    );
     apply_turn_stop(stop, &mut next_state);
 }
 
