@@ -1318,7 +1318,7 @@ impl GameState {
             .order = CivilianWorkOrder::Idle;
     }
 
-    fn queue_depot_construction(&mut self, tile: TileId, nation: MajorNationId) {
+    pub(crate) fn queue_depot_construction(&mut self, tile: TileId, nation: MajorNationId) {
         if self.map[tile].flags.contains(TileFlags::PORT) {
             if let Some(town) = self.find_town_at_mut(nation, tile) {
                 town.active = true;
@@ -1333,7 +1333,7 @@ impl GameState {
         self.map[tile].flags.insert(TileFlags::DEPOT);
     }
 
-    fn queue_port_construction(&mut self, tile: TileId, nation: MajorNationId) {
+    pub(crate) fn queue_port_construction(&mut self, tile: TileId, nation: MajorNationId) {
         if self.map[tile].flags.contains(TileFlags::DEPOT) {
             if let Some(town) = self.find_town_at_mut(nation, tile) {
                 town.enabled = 1;

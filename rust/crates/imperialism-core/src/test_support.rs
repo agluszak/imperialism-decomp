@@ -145,11 +145,10 @@ pub(crate) fn game_state() -> GameState {
             scenario_map: None,
             economic_turn: 1,
             diplomacy_year_term_raw: 1914,
+            selected_asset_set: 0,
             phase: crate::PhaseCode::STRATEGIC_MAP,
             turn_flow_status_flags: 0,
-            quarter_gate_by_decade: DecadeTable::from_array([
-                false, true, true, true, true, true, true, true, true, true,
-            ]),
+            phase_state_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
             last_turn_alert_tick: 0,

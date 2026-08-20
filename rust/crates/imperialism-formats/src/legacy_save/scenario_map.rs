@@ -1,6 +1,9 @@
 use super::model::{LegacyProvince, LegacyTerrainTile};
 use super::project::province_state;
-use imperialism_core::{MapMgr, MapTopology, ProvinceTable, STRATEGIC_TILE_COUNT, TileState};
+use imperialism_core::{
+    MapGeometry, MapMgr, MapTopology, ProvinceTable, STRATEGIC_TILE_COUNT, TerrainKind, TileId,
+    TileState,
+};
 
 const TILE_BYTES: usize = 0x24;
 const PROVINCE_BYTES: usize = 0xa4;
@@ -19,19 +22,120 @@ pub(crate) fn decode_scenario_map(bytes: &[u8]) -> Result<MapMgr, String> {
     }
 
     let (tile_bytes, mut province_bytes) = bytes.split_at(STRATEGIC_TILE_COUNT * TILE_BYTES);
-    let tiles: Vec<TileState> = tile_bytes
+    let legacy_tiles = tile_bytes
         .chunks_exact(TILE_BYTES)
         .map(scenario_tile)
-        .map(|tile| tile.tile_state())
-        .collect();
-    let provinces = ProvinceTable::from_array(std::array::from_fn(|_| {
+        .collect::<Vec<_>>();
+    let tiles: Vec<TileState> = legacy_tiles.iter().map(|tile| tile.tile_state()).collect();
+    let mut legacy_provinces = Vec::with_capacity(PROVINCE_COUNT);
+    for _ in 0..PROVINCE_COUNT {
         let (record, rest) = province_bytes.split_at(PROVINCE_BYTES);
         let (_, rest) = rest.split_at(PROVINCE_NAME_HEADER_BYTES);
         let (name, rest) = rest.split_at(PROVINCE_NAME_BYTES);
         province_bytes = rest;
-        province_state(&scenario_province(record, fixed_text(name)))
+        legacy_provinces.push(scenario_province(record, fixed_text(name)));
+    }
+    rebuild_loaded_provinces(&legacy_tiles, &mut legacy_provinces);
+    let provinces = ProvinceTable::from_array(std::array::from_fn(|index| {
+        province_state(&legacy_provinces[index])
     }));
     Ok(MapMgr::from_parts(MapTopology::Wrapping, tiles, provinces))
+}
+
+/// `TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments` rebuilds the
+/// transient province links discarded by fixed `.map` tables before class assignment.
+#[allow(clippy::needless_range_loop)]
+fn rebuild_loaded_provinces(tiles: &[LegacyTerrainTile], provinces: &mut [LegacyProvince]) {
+    for province in provinces.iter_mut() {
+        province.linked_region_count = 0;
+        province.linked_tile_indices.fill(-1);
+        province.adjacent_region_count = 0;
+        province.adjacent_region_ids.fill(-1);
+        province.adjacent_region_anchor_tiles.fill(-1);
+        province.resource_presence_mask = 0;
+    }
+
+    for (tile_index, tile) in tiles.iter().enumerate() {
+        if tile.terrain_kind == TerrainKind::Water.retail() {
+            continue;
+        }
+        let province = &mut provinces[tile.city_record_index as usize];
+        let count = province.linked_region_count as usize;
+        province.linked_tile_indices[count] = tile_index as i16;
+        province.linked_region_count += 1;
+    }
+
+    let geometry = MapGeometry::new(MapTopology::Wrapping);
+    for province_index in 0..provinces.len() {
+        let linked_count = provinces[province_index].linked_region_count as usize;
+        if linked_count == 0 {
+            continue;
+        }
+        let linked_tiles = provinces[province_index].linked_tile_indices[..linked_count].to_vec();
+        let owner = tiles[linked_tiles[0] as usize].owner_nation;
+        provinces[province_index].owner_nation = owner;
+        provinces[province_index].former_owner_nation = owner;
+
+        for tile_index in linked_tiles {
+            for neighbor in geometry
+                .neighbors(TileId::new(tile_index as u16))
+                .into_iter()
+                .flatten()
+            {
+                let adjacent = tiles[usize::from(neighbor.get())].city_record_index;
+                if adjacent == -1 || adjacent as usize == province_index {
+                    continue;
+                }
+                if provinces[province_index]
+                    .adjacent_region_ids
+                    .contains(&adjacent)
+                {
+                    continue;
+                }
+                let count = provinces[province_index].adjacent_region_count as usize;
+                if count < provinces[province_index].adjacent_region_ids.len() {
+                    provinces[province_index].adjacent_region_ids[count] = adjacent;
+                    provinces[province_index].adjacent_region_anchor_tiles[count] =
+                        neighbor.get() as i16;
+                    provinces[province_index].adjacent_region_count += 1;
+                }
+            }
+            for resource in tiles[tile_index as usize].edge_resources {
+                if resource >= 0 {
+                    provinces[province_index].resource_presence_mask |=
+                        1_i8.wrapping_shl(resource as u32);
+                }
+            }
+        }
+    }
+
+    assign_sequential_region_classes(provinces);
+}
+
+/// Loaded maps leave `regionClassA3` unset. `TMapMgr` assigns one sequential class to
+/// each connected component of populated province records before nation setup reads it.
+fn assign_sequential_region_classes(provinces: &mut [LegacyProvince]) {
+    let mut next_class = 0_i8;
+    for province in 0..provinces.len() {
+        if provinces[province].linked_tile_indices[0] != -1
+            && provinces[province].region_class == -1
+        {
+            assign_region_class(provinces, province, next_class);
+            next_class += 1;
+        }
+    }
+}
+
+fn assign_region_class(provinces: &mut [LegacyProvince], province: usize, class: i8) {
+    if provinces[province].region_class == class {
+        return;
+    }
+    provinces[province].region_class = class;
+    let count = usize::try_from(provinces[province].adjacent_region_count.max(0)).unwrap();
+    let adjacent = provinces[province].adjacent_region_ids[..count].to_vec();
+    for adjacent in adjacent {
+        assign_region_class(provinces, adjacent as usize, class);
+    }
 }
 
 fn scenario_tile(bytes: &[u8]) -> LegacyTerrainTile {

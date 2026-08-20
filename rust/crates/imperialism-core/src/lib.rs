@@ -98,7 +98,9 @@ pub use civilian_work::{
     EngineerConstructionChoice, EngineerConstructionOption, RailOrderRejection, RailSegment,
 };
 pub use combat_moves::{CombatMovesContinuation, PendingLandBattle};
-pub use create_random_game::{RandomGameNames, capital_selection_view_origin, create_random_game};
+pub use create_random_game::{
+    RandomGameNames, capital_selection_view_origin, create_random_game, create_scenario_game,
+};
 pub use deal_book::{
     DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,
     DealBookHistory, DealBookHistoryGroup, DealBookHistoryRow, DealBookOfferRow, DealBookTotals,

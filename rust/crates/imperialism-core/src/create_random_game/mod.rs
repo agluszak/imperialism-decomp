@@ -265,11 +265,10 @@ pub fn create_random_game(
             scenario_map: None,
             economic_turn: 0,
             diplomacy_year_term_raw: 1914,
+            selected_asset_set: 0,
             phase: crate::PhaseCode::CAPITAL_SELECTION,
             turn_flow_status_flags: 0,
-            quarter_gate_by_decade: DecadeTable::from_array([
-                false, true, true, true, true, true, true, true, true, true,
-            ]),
+            phase_state_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty,
             active_nation: human_nation.nation(),
             last_turn_alert_tick: 0,
@@ -301,5 +300,169 @@ pub fn create_random_game(
         battle_reports: Vec::new(),
         continuation: crate::turn_flow::TurnContinuation::None,
     }
+}
+
+/// Builds the retail scenario-start boundary on the fixed map, then executes `sN.scn`.
+pub fn create_scenario_game(
+    mut world: MapMgr,
+    scenario: ScenarioMapId,
+    instructions: &[ScenarioInstruction],
+    human_nation: MajorNationId,
+    difficulty: Difficulty,
+    runtime_seed: u32,
+) -> GameState {
+    world.map_data_ready = true;
+    world.recruit_search_active = true;
+
+    let foreign_ministers = choose_scenario_foreign_ministers(&world, human_nation);
+    let mut nations = Nations::new(
+        MajorNationId::all()
+            .map(|nation| {
+                let owned = ProvinceId::all()
+                    .filter(|&province| world.provinces[province].owner() == Some(nation.nation()))
+                    .count();
+                (
+                    nation,
+                    major_nation(
+                        nation,
+                        difficulty,
+                        nation == human_nation,
+                        foreign_ministers[nation],
+                        owned,
+                        String::new(),
+                    ),
+                )
+            })
+            .collect::<IndexMap<_, _>>(),
+        MinorNationId::all()
+            .map(|nation| (nation, minor_nation(nation, String::new())))
+            .collect::<IndexMap<_, _>>(),
+    );
+    for province in ProvinceId::all() {
+        if let Some(owner) = world.provinces[province].owner() {
+            nations.append_owned_region_during_construction(owner, province);
+        }
+    }
+
+    for nation in NationId::all() {
+        let owner = Some(TileOwnerTag::from_nation(nation));
+        let home = TileId::all().rfind(|&tile| {
+            world[tile].owner_nation == owner
+                && world[tile].flags.contains(TileFlags::BASE_TRANSPORT)
+        });
+        let Some(home) = home else { continue };
+        let common = nations
+            .common_mut(nation)
+            .expect("scenario home nation is present");
+        common.home_tile = Some(home);
+        if let Some(major) = MajorNationId::from_nation(nation) {
+            let state = nations.major_mut(major);
+            state.towns.clear();
+            state
+                .towns
+                .insert(home, TownState::for_frog_city(home, nation));
+        }
+    }
+
+    let mut zone_links = Vec::new();
+    let geometry = world.geometry();
+    for tile in TileId::all() {
+        let Some(left) = world[tile]
+            .owner_nation
+            .map(TileOwnerTag::get)
+            .filter(|&owner| owner >= SEA_OWNER_BIAS)
+        else {
+            continue;
+        };
+        for neighbor in geometry.neighbors(tile).into_iter().flatten() {
+            let Some(right) = world[neighbor]
+                .owner_nation
+                .map(TileOwnerTag::get)
+                .filter(|&owner| owner >= SEA_OWNER_BIAS && owner != left)
+            else {
+                continue;
+            };
+            let pair = [
+                OceanZoneId::new(u16::from(left.min(right) - SEA_OWNER_BIAS)),
+                OceanZoneId::new(u16::from(left.max(right) - SEA_OWNER_BIAS)),
+            ];
+            if !zone_links.contains(&pair) {
+                zone_links.push(pair);
+            }
+        }
+    }
+    let mut zones =
+        initialize_sea_zone_map_markers(&mut world, RetailCrtRng::from_state(runtime_seed));
+    initialize_sea_zone_neighbors(&mut zones, &world, &zone_links);
+
+    initialize_minor_trade_state(&world, &mut nations);
+    let mut crt_rand = RetailCrtRng::from_state(runtime_seed);
+    let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
+    let technology = TechnologyState::for_random_start(runtime_seed);
+    let mut mission_queues: MajorNationTable<Vec<MissionState>> =
+        MajorNationTable::from_fn(|_| Vec::new());
+    initialize_ai_targets(&mut nations, &mission_queues, zones.len() as u16);
+    let mut object_ids = ObjectIdAllocator::default();
+    let missions = flatten_mission_queues(&mut mission_queues)
+        .into_iter()
+        .map(|mission| (object_ids.mission(), mission))
+        .collect();
+
+    let mut state = GameState {
+        turn: TurnState {
+            scenario_map: Some(scenario),
+            economic_turn: 0,
+            diplomacy_year_term_raw: 1914,
+            selected_asset_set: 1,
+            phase: PhaseCode::CAPITAL_SELECTION,
+            turn_flow_status_flags: 0,
+            phase_state_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            difficulty,
+            active_nation: human_nation.nation(),
+            last_turn_alert_tick: 0,
+            turn_alert_mask: 0,
+            turn_cooldown_defer_counter: 0,
+        },
+        unit_ids: UnitIdAllocator::default(),
+        map: world,
+        ocean: Ocean {
+            zones,
+            routes: Vec::new(),
+        },
+        rng: RngState {
+            crt_rand,
+            map_generation: RetailLcg::from_state(runtime_seed),
+            zone_status: RetailLcg::from_state(runtime_seed),
+        },
+        market: TradeMarketState::default(),
+        technology,
+        diplomacy,
+        nations,
+        military_units: IndexMap::new(),
+        civilian_units: IndexMap::new(),
+        object_ids,
+        ships: IndexMap::new(),
+        admirals: IndexMap::new(),
+        task_forces: IndexMap::new(),
+        missions,
+        news: NewsState::default(),
+        pending: PendingWorkState::default(),
+        battle_reports: Vec::new(),
+        continuation: TurnContinuation::None,
+    };
+    // Nation reconstruction creates each fixed-map home port context before the scenario
+    // script runs: primary slots 6..0, then secondary slots 7..22.
+    for nation in MajorNationId::all()
+        .rev()
+        .map(MajorNationId::nation)
+        .chain(MinorNationId::all().map(MinorNationId::nation))
+    {
+        if let Some(home) = state.nations.home_tile(nation) {
+            state.ensure_port_zone_for_tile(home);
+        }
+    }
+
+    state.apply_scenario_script(instructions);
+    state
 }
 pub use map_post_pass::capital_selection_view_origin;

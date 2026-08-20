@@ -116,13 +116,7 @@ impl LegacySaveV62 {
             preview_active_nation_name: active_name,
         };
 
-        let mut phase_state_by_decade = [0_u8; 12];
-        for (destination, &enabled) in phase_state_by_decade
-            .iter_mut()
-            .zip(turn.quarter_gate_by_decade.values())
-        {
-            *destination = u8::from(enabled);
-        }
+        let phase_state_by_decade = turn.phase_state_by_decade;
 
         let simulation = LegacySimulationPrefix {
             language_code: 0,
@@ -156,7 +150,7 @@ impl LegacySaveV62 {
             nation_availability,
             saved_multiplayer_role: 0,
             preference_slot_10: 0,
-            selected_asset_set: 0,
+            selected_asset_set: turn.selected_asset_set,
             diplomacy_year_term_raw: turn.diplomacy_year_term_raw,
             phase_state_by_decade,
             nation_names,

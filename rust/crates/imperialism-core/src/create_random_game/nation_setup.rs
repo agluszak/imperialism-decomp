@@ -86,6 +86,32 @@ pub(super) fn choose_foreign_ministers(
     map: &GeneratedMap,
     human_nation: MajorNationId,
 ) -> MajorNationTable<ForeignMinisterPersonality> {
+    let mut region_class_by_nation = [None; NATION_COUNT];
+    for province in map.provinces() {
+        region_class_by_nation[usize::from(province.owner.get())] = Some(province.region_class);
+    }
+
+    choose_foreign_ministers_from_region_classes(region_class_by_nation, human_nation)
+}
+
+pub(super) fn choose_scenario_foreign_ministers(
+    map: &MapMgr,
+    human_nation: MajorNationId,
+) -> MajorNationTable<ForeignMinisterPersonality> {
+    let mut region_class_by_nation = [None; NATION_COUNT];
+    for province in ProvinceId::all() {
+        let province = &map.provinces[province];
+        if let (Some(owner), Some(region_class)) = (province.owner(), province.region_class) {
+            region_class_by_nation[usize::from(owner.get())] = Some(region_class);
+        }
+    }
+    choose_foreign_ministers_from_region_classes(region_class_by_nation, human_nation)
+}
+
+fn choose_foreign_ministers_from_region_classes(
+    region_class_by_nation: [Option<u8>; NATION_COUNT],
+    human_nation: MajorNationId,
+) -> MajorNationTable<ForeignMinisterPersonality> {
     const PROFILE_ORDER: [usize; 7] = [1, 5, 4, 6, 2, 3, 3];
     const PREFERRED_ISOLATION_BY_PROFILE: [[u8; 3]; 7] = [
         [0, 1, 2],
@@ -105,11 +131,6 @@ pub(super) fn choose_foreign_ministers(
         ForeignMinisterPersonality::Trader,
         ForeignMinisterPersonality::Bill,
     ];
-
-    let mut region_class_by_nation = [None; NATION_COUNT];
-    for province in map.provinces() {
-        region_class_by_nation[usize::from(province.owner.get())] = Some(province.region_class);
-    }
 
     let major_count = usize::from(MajorNationId::COUNT);
     let isolation_by_major = MajorNationTable::from_fn(|nation| {
