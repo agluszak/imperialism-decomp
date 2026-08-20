@@ -1,4 +1,6 @@
 use super::*;
+use crate::ui::retail::RetailPictureSwap;
+use crate::ui::retail_raster::IndexedRasterExt;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct ShipyardRowAssets {
@@ -17,7 +19,7 @@ struct ShipyardRowData {
 struct ShipyardMaterialData {
     resource: ResourceKind,
     required: i16,
-    picture: Handle<Image>,
+    picture: IndexedPicture,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -25,10 +27,12 @@ pub(in crate::ui::city) enum ShipyardDisplay {
     ShipName,
     Description,
     Picture,
-    MaterialIcon { index: usize },
-    MaterialRequired { index: usize },
-    MaterialAvailable { index: usize },
-    Stat { index: usize },
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct ShipyardDetailsVisual {
+    base: IndexedPicture,
+    stat_labels: [String; 6],
 }
 
 pub(in crate::ui::city) fn configure_shipyard_dialog(
@@ -43,33 +47,9 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     let city = &state.nations().major(nation).city;
     let material_pictures = SHIPYARD_MATERIALS.map(|resource| {
         assets
-            .transparent_picture(PictureId::new(700 + i16::from(resource.retail())), 0x10)
+            .indexed_picture(PictureId::new(700 + i16::from(resource.retail())))
             .expect("retail Shipyard material picture must load")
     });
-    let (detail_font, _, detail_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        })
-        .expect("retail Shipyard detail text style");
-    let (title_font, _, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 24,
-            alignment: 1,
-        })
-        .expect("retail Shipyard title text style");
-    let (name_font, _, name_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail Shipyard name text style");
     let prepared_rows: [_; 8] = SHIPYARD_ROWS.map(|spec| {
         let ship_type = city.orders.ships[spec.slot()].ship_type;
         if ship_type == ShipType::NoShip {
@@ -97,7 +77,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                         (required != 0).then(|| ShipyardMaterialData {
                             resource,
                             required,
-                            picture: picture.clone(),
+                            picture: (*picture).clone(),
                         })
                     })
                     .collect(),
@@ -116,7 +96,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         )
     });
     let queue_icons = assets
-        .transparent_picture(PictureId::new(9807), 0x10)
+        .indexed_picture(PictureId::new(9807))
         .expect("retail Shipyard queue icons must load");
     let stat_labels: [String; 6] =
         std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
@@ -144,25 +124,19 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             Visibility::Hidden
         });
         if let Some(row_data) = details.as_ref() {
-            let source_left = f32::from(row_data.ship_type.retail() - 1) * 80.0;
-            commands.spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(spec.overlay_left),
-                    top: Val::Px(12.0),
-                    width: Val::Px(80.0),
-                    height: Val::Px(45.0),
-                    ..default()
+            let (idle, active) = shipyard_queue_pictures(
+                assets,
+                &queue_icons,
+                slot,
+                row_data.ship_type,
+                spec.overlay_left as i32,
+            );
+            commands.entity(button).insert((
+                RetailPictureSwap {
+                    idle: idle.clone(),
+                    active,
                 },
-                ImageNode {
-                    image: queue_icons.clone(),
-                    rect: Some(Rect::new(source_left, 0.0, source_left + 80.0, 45.0)),
-                    ..default()
-                },
-                Pickable::IGNORE,
-                ZIndex(1),
-                ChildOf(button),
-                Name::new(format!("shipyard-queue-icon-{}", slot as u8)),
+                ImageNode::new(idle),
             ));
             commands.entity(button).remove::<InteractionDisabled>();
         } else {
@@ -178,161 +152,26 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                 ShipyardRowAssets { details },
             ))
             .observe(on_city_row_selected);
-        commands.entity(bound.quantity).insert((
-            InteractionDisabled,
-            detail_font.clone(),
-            detail_line_height,
-            TextColor(normal_color),
-        ));
+        commands.entity(bound.quantity).insert(InteractionDisabled);
     }
-    let style_text = |commands: &mut Commands,
-                      tag,
-                      font: TextFont,
-                      line_height: LineHeight,
-                      display: ShipyardDisplay| {
+    let bind_text = |commands: &mut Commands, tag, display: ShipyardDisplay| {
         let entity = tree.find(root, tag);
-        commands.entity(entity).insert((
-            Text::new(""),
-            font,
-            line_height,
-            TextColor(normal_color),
-            display,
-        ));
+        commands.entity(entity).insert(display);
     };
-    style_text(
-        commands,
-        fourcc!("snam"),
-        name_font,
-        name_line_height,
-        ShipyardDisplay::ShipName,
-    );
-    style_text(
-        commands,
-        fourcc!("desc"),
-        detail_font.clone(),
-        detail_line_height,
-        ShipyardDisplay::Description,
-    );
+    bind_text(commands, fourcc!("snam"), ShipyardDisplay::ShipName);
+    bind_text(commands, fourcc!("desc"), ShipyardDisplay::Description);
     let picture = tree.find(root, fourcc!("spic"));
     commands.entity(picture).insert(ShipyardDisplay::Picture);
-    let title = tree.find(root, fourcc!("titl"));
-    commands
-        .entity(title)
-        .insert((title_font, title_line_height, TextColor(normal_color)));
-    for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = tree.find(root, tag);
-        commands.entity(fixed).insert((
-            detail_font.clone(),
-            detail_line_height,
-            TextColor(normal_color),
-        ));
-    }
     let dlog = tree.find(root, fourcc!("DLOG"));
-    for index in 0..4 {
-        let left = 26.0 + index as f32 * 40.0;
-        for top in [152.0, 204.0] {
-            commands.spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(left),
-                    top: Val::Px(top),
-                    width: Val::Px(32.0),
-                    height: Val::Px(24.0),
-                    ..default()
-                },
-                ImageNode::default(),
-                Visibility::Hidden,
-                Pickable::IGNORE,
-                ZIndex(1),
-                ChildOf(dlog),
-                ShipyardDisplay::MaterialIcon { index },
-                Name::new(format!("shipyard-material-icon-{index}-{top}")),
-            ));
-        }
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(58.0 + index as f32 * 40.0),
-                top: Val::Px(168.0),
-                width: Val::Px(24.0),
-                height: Val::Px(16.0),
-                ..default()
-            },
-            Text::new(""),
-            detail_font.clone(),
-            detail_line_height,
-            TextLayout::justify(Justify::Left),
-            TextColor(normal_color),
-            Visibility::Hidden,
-            Pickable::IGNORE,
-            ZIndex(1),
-            ChildOf(dlog),
-            ShipyardDisplay::MaterialRequired { index },
-            Name::new(format!("shipyard-material-value-{index}-false")),
-        ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(58.0 + index as f32 * 40.0),
-                top: Val::Px(220.0),
-                width: Val::Px(24.0),
-                height: Val::Px(16.0),
-                ..default()
-            },
-            Text::new(""),
-            detail_font.clone(),
-            detail_line_height,
-            TextLayout::justify(Justify::Left),
-            TextColor(normal_color),
-            Visibility::Hidden,
-            Pickable::IGNORE,
-            ZIndex(1),
-            ChildOf(dlog),
-            ShipyardDisplay::MaterialAvailable { index },
-            Name::new(format!("shipyard-material-value-{index}-true")),
-        ));
-    }
-    for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(left),
-                top: Val::Px(baseline - 10.0),
-                width: Val::Px(60.0),
-                height: Val::Px(14.0),
-                ..default()
-            },
-            Text::new(stat_labels[index].clone()),
-            detail_font.clone(),
-            detail_line_height,
-            TextLayout::justify(Justify::Left),
-            TextColor(normal_color),
-            Pickable::IGNORE,
-            ZIndex(1),
-            ChildOf(dlog),
-            Name::new(format!("shipyard-stat-{index}-false")),
-        ));
-        commands.spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(left + 60.0),
-                top: Val::Px(baseline - 10.0),
-                width: Val::Px(28.0),
-                height: Val::Px(14.0),
-                ..default()
-            },
-            Text::new(""),
-            detail_font.clone(),
-            detail_line_height,
-            TextLayout::justify(Justify::Left),
-            TextColor(normal_color),
-            Pickable::IGNORE,
-            ZIndex(1),
-            ChildOf(dlog),
-            ShipyardDisplay::Stat { index },
-            Name::new(format!("shipyard-stat-{index}-true")),
-        ));
-    }
+    let base = assets
+        .indexed_picture(PictureId::new(9800))
+        .expect("retail Shipyard dialog picture must load");
+    let palette = *assets.default_dib_palette();
+    let image = assets.add_image(base.to_image(&palette));
+    commands.entity(dlog).insert((
+        ImageNode::new(image),
+        ShipyardDetailsVisual { base, stat_labels },
+    ));
     commands.entity(root).insert(CityRowSelection {
         order: CityOrderId::Ship(ShipOrderSlot::MerchantEarlyPrimary),
         normal_color,
@@ -340,14 +179,81 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
     });
 }
 
+fn shipyard_queue_pictures(
+    assets: &mut RetailUiAssets,
+    queue_icons: &IndexedPicture,
+    slot: ShipOrderSlot,
+    ship_type: ShipType,
+    overlay_left: i32,
+) -> (Handle<Image>, Handle<Image>) {
+    let palette = *assets.default_dib_palette();
+    let source_left = i32::from(ship_type.retail() - 1) * 0x50;
+    let source = IRect::new(source_left, 0, source_left + 0x50, 0x2d);
+    let mut compose = |picture_id| {
+        let mut picture = assets
+            .indexed_picture(PictureId::new(picture_id))
+            .expect("retail Shipyard queue button picture must load");
+        picture.blit_keyed(queue_icons, source, IVec2::new(overlay_left, 0x0c), 0x10);
+        assets.add_image(picture.to_image(&palette))
+    };
+    let idle_id = 9808 + i16::from(slot as u8) * 2;
+    (compose(idle_id), compose(idle_id + 1))
+}
+
+fn draw_shipyard_details(
+    picture: &mut IndexedPicture,
+    font: &[u8],
+    font_size: f32,
+    stat_labels: &[String; 6],
+    row: &ShipyardRowData,
+    city: &CityState,
+) {
+    for (index, material) in row.materials.iter().enumerate() {
+        let text_x = 0x3a + index as i32 * 0x28;
+        picture.blit_keyed_at(&material.picture, IVec2::new(text_x - 0x20, 0x98), 0x10);
+        picture.blit_keyed_at(&material.picture, IVec2::new(text_x - 0x20, 0xcc), 0x10);
+        picture.draw_text(
+            font,
+            font_size,
+            IVec2::new(text_x, 0xb2),
+            &material.required.to_string(),
+            0xd2,
+        );
+        let available = city.stockpile[material.resource];
+        picture.draw_text(
+            font,
+            font_size,
+            IVec2::new(text_x, 0xe6),
+            &available.to_string(),
+            if available < material.required {
+                0xcb
+            } else {
+                0xd2
+            },
+        );
+    }
+    for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
+        let origin = IVec2::new(left as i32, baseline as i32);
+        picture.draw_text(font, font_size, origin, &stat_labels[index], 0xd2);
+        picture.draw_text(
+            font,
+            font_size,
+            origin + IVec2::new(0x3c, 0),
+            &row.stats[index].to_string(),
+            0xd2,
+        );
+    }
+}
+
 pub(in crate::ui::city) fn sync_shipyard_details(
     session: Res<GameSession>,
+    retail: Res<RetailAssetsResource>,
+    mut image_assets: ResMut<Assets<Image>>,
     selections: Query<Ref<CityRowSelection>>,
     rows: Query<(&CityRowChoice, &ShipyardRowAssets)>,
     mut texts: Query<(&ShipyardDisplay, &mut Text), Without<ImageNode>>,
-    mut text_colors: Query<(&ShipyardDisplay, &mut TextColor), Without<ImageNode>>,
-    mut images: Query<(&ShipyardDisplay, &mut ImageNode)>,
-    mut visibilities: Query<(&ShipyardDisplay, &mut Visibility)>,
+    mut images: Query<(&ShipyardDisplay, &mut ImageNode), Without<ShipyardDetailsVisual>>,
+    details: Query<(&ShipyardDetailsVisual, &ImageNode)>,
 ) {
     let Some(selection) = selections
         .iter()
@@ -369,54 +275,39 @@ pub(in crate::ui::city) fn sync_shipyard_details(
         match *display {
             ShipyardDisplay::ShipName => text.0.clone_from(&row.ship_name),
             ShipyardDisplay::Description => text.0.clone_from(&row.description),
-            ShipyardDisplay::MaterialRequired { index } => {
-                if let Some(material) = row.materials.get(index) {
-                    text.0 = material.required.to_string();
-                }
-            }
-            ShipyardDisplay::MaterialAvailable { index } => {
-                if let Some(material) = row.materials.get(index) {
-                    text.0 = city.stockpile[material.resource].to_string();
-                }
-            }
-            ShipyardDisplay::Stat { index } => text.0 = row.stats[index].to_string(),
             _ => {}
         }
-    }
-    for (display, mut color) in &mut text_colors {
-        let ShipyardDisplay::MaterialAvailable { index } = *display else {
-            continue;
-        };
-        let Some(material) = row.materials.get(index) else {
-            continue;
-        };
-        color.0 = city_stock_color(
-            city.stockpile[material.resource] < material.required,
-            &selection,
-        );
     }
     for (display, mut image) in &mut images {
-        match *display {
-            ShipyardDisplay::Picture => image.image.clone_from(&row.picture),
-            ShipyardDisplay::MaterialIcon { index } => {
-                if let Some(material) = row.materials.get(index) {
-                    image.image.clone_from(&material.picture);
-                }
-            }
-            _ => {}
+        if matches!(*display, ShipyardDisplay::Picture) {
+            image.image.clone_from(&row.picture);
         }
     }
-    for (display, mut visibility) in &mut visibilities {
-        let present = match *display {
-            ShipyardDisplay::MaterialIcon { index }
-            | ShipyardDisplay::MaterialRequired { index }
-            | ShipyardDisplay::MaterialAvailable { index } => row.materials.get(index).is_some(),
-            _ => continue,
-        };
-        *visibility = if present {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+    let font = retail
+        .assets()
+        .font_bytes(RetailFontFace::BookAntiquaRegular);
+    let style = resolve_retail_text_style(RetailTextStylePreset {
+        font_family: 3,
+        face_flags: 0,
+        point_size: 10,
+        alignment: -2,
+    })
+    .expect("retail Shipyard custom-drawing text style");
+    let font_size = decode_retail_font_cell_metrics(style.face, font)
+        .expect("retail Shipyard font metrics")
+        .em_pixel_size(style.logical_pixel_height) as f32;
+    for (visual, image_node) in &details {
+        let mut picture = visual.base.clone();
+        draw_shipyard_details(
+            &mut picture,
+            font,
+            font_size,
+            &visual.stat_labels,
+            row,
+            city,
+        );
+        if let Some(mut image) = image_assets.get_mut(&image_node.image) {
+            *image = picture.to_image(retail.assets().default_dib_palette());
+        }
     }
 }

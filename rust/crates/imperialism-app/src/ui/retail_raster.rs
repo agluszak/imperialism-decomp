@@ -5,6 +5,11 @@ use bevy::image::ImageSampler;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use imperialism_formats::{DibPalette, IndexedPicture};
+use swash::{
+    FontRef,
+    scale::{Render, ScaleContext, Source},
+    zeno::Format,
+};
 
 pub(in crate::ui) fn indexed_picture(width: i32, height: i32, fill: u8) -> IndexedPicture {
     assert!(width >= 0 && height >= 0);
@@ -59,6 +64,25 @@ pub(in crate::ui) trait IndexedRasterExt {
     }
     fn line_bresenham_inclusive(&mut self, start: IVec2, end: IVec2, color: u8);
     fn frame_rect(&mut self, rect: IRect, color: u8);
+    fn draw_text(&mut self, font_data: &[u8], size: f32, baseline: IVec2, text: &str, color: u8);
+    fn draw_text_right(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        right: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    );
+    fn draw_text_center(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        center: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    );
     fn crop(&self, rect: IRect) -> IndexedPicture;
     fn to_image(&self, palette: &DibPalette) -> Image;
     fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image;
@@ -193,6 +217,87 @@ impl IndexedRasterExt for IndexedPicture {
         );
         self.fill_rect(
             IRect::new(rect.max.x - 1, rect.min.y, rect.max.x, rect.max.y),
+            color,
+        );
+    }
+
+    fn draw_text(&mut self, font_data: &[u8], size: f32, baseline: IVec2, text: &str, color: u8) {
+        let font = FontRef::from_index(font_data, 0).expect("retail font bytes are valid");
+        let charmap = font.charmap();
+        let metrics = font.glyph_metrics(&[]).scale(size);
+        let mut scale_context = ScaleContext::new();
+        let mut scaler = scale_context.builder(font).size(size).hint(true).build();
+        let mut x = baseline.x as f32;
+        for character in text.chars() {
+            let glyph = charmap.map(character);
+            if let Some(image) = Render::new(&[Source::Outline])
+                .format(Format::Alpha)
+                .render(&mut scaler, glyph)
+            {
+                let left = x.round() as i32 + image.placement.left;
+                let top = baseline.y - image.placement.top;
+                for row in 0..image.placement.height as i32 {
+                    for column in 0..image.placement.width as i32 {
+                        let alpha =
+                            image.data[(row * image.placement.width as i32 + column) as usize];
+                        if alpha >= 0x80 {
+                            self.put(IVec2::new(left + column, top + row), color);
+                        }
+                    }
+                }
+            }
+            x += metrics.advance_width(glyph);
+        }
+    }
+
+    fn draw_text_right(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        right: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    ) {
+        let font = FontRef::from_index(font_data, 0).expect("retail font bytes are valid");
+        let charmap = font.charmap();
+        let metrics = font.glyph_metrics(&[]).scale(size);
+        let width = text
+            .chars()
+            .map(|character| metrics.advance_width(charmap.map(character)))
+            .sum::<f32>()
+            .round() as i32;
+        self.draw_text(
+            font_data,
+            size,
+            IVec2::new(right - width, baseline_y),
+            text,
+            color,
+        );
+    }
+
+    fn draw_text_center(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        center: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    ) {
+        let font = FontRef::from_index(font_data, 0).expect("retail font bytes are valid");
+        let charmap = font.charmap();
+        let metrics = font.glyph_metrics(&[]).scale(size);
+        let width = text
+            .chars()
+            .map(|character| metrics.advance_width(charmap.map(character)))
+            .sum::<f32>()
+            .round() as i32;
+        self.draw_text(
+            font_data,
+            size,
+            IVec2::new(center - width / 2, baseline_y),
+            text,
             color,
         );
     }

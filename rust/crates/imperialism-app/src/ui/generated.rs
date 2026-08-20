@@ -2018,8 +2018,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                retail_text_style(3, 0, 9, -1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("cott"), 23, 16, 36, 17)
@@ -2033,7 +2033,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("timb"), 23, 102, 36, 17)
@@ -2047,7 +2048,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 86, 115, 36, 17)
@@ -2061,7 +2063,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("coal"), 23, 179, 36, 17)
@@ -2075,7 +2078,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("stee"), 86, 173, 36, 17)
@@ -2089,7 +2093,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("arma"), 141, 180, 36, 17)
@@ -2103,7 +2108,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("clot"), 140, 35, 36, 17)
@@ -2117,7 +2123,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("wool"), 23, 49, 36, 17)
@@ -2131,7 +2138,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("pape"), 88, 86, 36, 17)
@@ -2145,7 +2153,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 137, 102, 36, 17)
@@ -2159,7 +2168,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("iron"), 23, 153, 36, 17)
@@ -2173,7 +2183,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("hard"), 140, 156, 36, 17)
@@ -2187,7 +2198,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("hors"), 51, 279, 36, 17)
@@ -2201,7 +2213,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("food"), 131, 233, 36, 17)
@@ -2215,7 +2228,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 89, 214, 36, 17)
@@ -2230,7 +2244,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 Button
                                 InteractionDisabled
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("oil "), 24, 212, 36, 17)
@@ -2245,12 +2260,14 @@ pub fn citydlog_9213() -> impl Scene {
                                 Button
                                 InteractionDisabled
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("name"), 5, 7, 165, 16)
-                                Text("")
-                                TextColor(Color::BLACK)
+                                Text("Warehouse")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("labo"), 124, 279, 36, 17)
@@ -2264,7 +2281,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("powe"), 137, 214, 36, 17)
@@ -2279,7 +2297,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 Button
                                 InteractionDisabled
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("live"), 72, 241, 36, 17)
@@ -2293,7 +2312,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("prod"), 23, 214, 36, 17)
@@ -2307,7 +2327,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("grai"), 72, 214, 36, 17)
@@ -2321,7 +2342,8 @@ pub fn citydlog_9213() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(0)
                             ),
                         ]
                     ),
@@ -4679,18 +4701,33 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("txtb"), 197, 193, 96, 47)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txta"), 57, 193, 96, 47)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txtc"), 57, 396, 96, 47)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txtd"), 197, 396, 96, 47)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txte"), 423, 322, 96, 47)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("opca"), 370, 429, 195, 20)
@@ -4701,16 +4738,20 @@ pub fn linger_4150() -> impl Scene {
                                         retail_node(fourcc!("yess"), 2, 2, 95, 16)
                                         RadioButton
                                         Checked
-                                        Text("")
-                                        TextColor(Color::BLACK)
+                                        Text("Enabled")
+                                        retail_text_style(1, 0, 12, 1)
+                                        retail_text_color(40)
+                                        retail_text_shadow(92, 1, 1)
                                         retail_radio_text_fill()
                                     ),
                                     (
                                         retail_node(fourcc!("nooo"), 98, 2, 95, 16)
                                         RadioButton
                                         Checked
-                                        Text("")
-                                        TextColor(Color::BLACK)
+                                        Text("Disabled")
+                                        retail_text_style(1, 0, 12, 1)
+                                        retail_text_color(40)
+                                        retail_text_shadow(92, 1, 1)
                                         retail_radio_text_fill()
                                     ),
                                 ]
@@ -4718,6 +4759,9 @@ pub fn linger_4150() -> impl Scene {
                             (
                                 retail_node(fourcc!("tpca"), 370, 380, 195, 47)
                                 InteractionDisabled
+                                Text("Switch to Game Resolution When Starting the Game")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 64, 91)
@@ -7197,8 +7241,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7233,8 +7277,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7269,8 +7313,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7305,8 +7349,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7341,8 +7385,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7377,8 +7421,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7413,8 +7457,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7449,8 +7493,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7469,32 +7513,32 @@ pub fn shipyard_9207() -> impl Scene {
                             (
                                 retail_node(fourcc!("snam"), 105, 55, 165, 19)
                                 Text("")
-                                retail_text_style(3, 1, 9, 1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix0"), 25, 132, 44, 14)
                                 Text("Cost:")
-                                retail_text_style(3, 1, 12, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix1"), 23, 183, 80, 17)
                                 Text("Available:")
-                                retail_text_style(3, 1, 12, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("desc"), 207, 125, 135, 104)
                                 Text("")
                                 retail_text_style(3, 0, 10, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 84, 11, 200, 30)
                                 Text("Shipyard")
-                                retail_text_style(3, 1, 24, 1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 24, 1)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("spic"), 231, 74, 86, 45)
@@ -8894,18 +8938,21 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 67, 40, 128, 16)
-                                Text("Static Text")
-                                TextColor(Color::BLACK)
+                                Text("Technologies")
+                                retail_text_style(1, 0, 14, -2)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("ttl2"), 240, 40, 128, 16)
-                                Text("Static Text")
-                                TextColor(Color::BLACK)
+                                Text("Cost")
+                                retail_text_style(1, 0, 14, -2)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("ttl3"), 392, 40, 128, 16)
-                                Text("Static Text")
-                                TextColor(Color::BLACK)
+                                Text("Benefits")
+                                retail_text_style(1, 0, 14, -2)
+                                retail_text_color(0)
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
@@ -11189,11 +11236,25 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
                                 retail_picture(4019)
+                                Children [
+                                    (
+                                        retail_node(fourcc!("text"), 162, 20, 60, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                ]
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
                                 retail_picture(4001)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11211,6 +11272,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4002)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11226,6 +11293,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
                                 retail_picture(4003)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11243,6 +11316,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4004)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11258,6 +11337,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
                                 retail_picture(4005)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11275,6 +11360,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4006)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11290,6 +11381,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
                                 retail_picture(4007)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11307,6 +11404,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4008)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11322,6 +11425,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
                                 retail_picture(4009)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
@@ -11339,6 +11448,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4010)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4020, 4021)
@@ -11354,6 +11469,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
                                 retail_picture(4011)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
@@ -11371,6 +11492,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4012)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11386,6 +11513,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
                                 retail_picture(4013)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
@@ -11403,6 +11536,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4014)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11418,6 +11557,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
                                 retail_picture(4015)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
@@ -11435,6 +11580,12 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4016)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11450,6 +11601,18 @@ pub fn transport_2014() -> impl Scene {
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
                                 retail_picture(4017)
                                 Children [
+                                    (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
+                                        retail_node(fourcc!("valu"), 50, 20, 60, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
@@ -11467,6 +11630,18 @@ pub fn transport_2014() -> impl Scene {
                                 retail_picture(4018)
                                 Children [
                                     (
+                                        retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
+                                        retail_node(fourcc!("valu"), 50, 20, 60, 11)
+                                        Text("")
+                                        retail_text_style(3, 0, 10, 0)
+                                        retail_text_color(0)
+                                    ),
+                                    (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
                                         retail_picture_swap(4022, 4023)
@@ -11481,12 +11656,16 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("titL"), 163, 81, 136, 20)
                                 Text("Transport")
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 18, 1)
+                                retail_text_color(210)
+                                retail_text_shadow(40, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("titR"), 325, 81, 151, 21)
                                 Text("Ledger")
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 18, 1)
+                                retail_text_color(210)
+                                retail_text_shadow(40, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)
@@ -11524,8 +11703,8 @@ pub fn univ_9210() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                retail_text_style(3, 0, 9, 0)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("cpap"), 96, 186, 23, 21)
@@ -11539,56 +11718,56 @@ pub fn univ_9210() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                retail_text_style(3, 0, 9, 0)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix1"), 16, 206, 73, 14)
                                 Text("Available:")
-                                retail_text_style(3, 0, 9, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix0"), 16, 162, 73, 14)
                                 Text("Cost:")
-                                retail_text_style(3, 0, 9, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix2"), 63, 254, 36, 26)
                                 Text("Level\r1")
-                                retail_text_style(3, 0, 9, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("cash"), 123, 182, 62, 13)
                                 Text("$1,000")
-                                retail_text_style(3, 0, 9, -1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("desc"), 15, 82, 110, 77)
                                 Text("")
-                                retail_text_style(3, 0, 9, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("trea"), 120, 224, 64, 14)
                                 Text("$1,000")
-                                retail_text_style(3, 0, 9, -1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 105, 12, 161, 30)
                                 Text("University")
                                 retail_text_style(3, 0, 24, 1)
-                                TextColor(Color::BLACK)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("unit"), 28, 60, 153, 16)
                                 Text("")
-                                retail_text_style(3, 1, 9, 1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 12, 1)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("sele"), 204, 49, 162, 355)
@@ -11612,8 +11791,8 @@ pub fn univ_9210() -> impl Scene {
                                                         }
                                                         Button
                                                         Text("")
-                                                        retail_text_style(3, 0, 9, 1)
-                                                        TextColor(Color::BLACK)
+                                                        retail_text_style(3, 0, 10, -2)
+                                                        retail_text_color(210)
                                                     ),
                                                 ]
                                             ),
@@ -11660,8 +11839,8 @@ pub fn univ_9210() -> impl Scene {
                                                         }
                                                         Button
                                                         Text("")
-                                                        retail_text_style(3, 0, 9, 1)
-                                                        TextColor(Color::BLACK)
+                                                        retail_text_style(3, 0, 10, -2)
+                                                        retail_text_color(210)
                                                     ),
                                                 ]
                                             ),
@@ -11702,8 +11881,8 @@ pub fn univ_9210() -> impl Scene {
                                                         }
                                                         Button
                                                         Text("")
-                                                        retail_text_style(3, 0, 9, 1)
-                                                        TextColor(Color::BLACK)
+                                                        retail_text_style(3, 0, 10, -2)
+                                                        retail_text_color(210)
                                                     ),
                                                 ]
                                             ),
@@ -11744,8 +11923,8 @@ pub fn univ_9210() -> impl Scene {
                                                         }
                                                         Button
                                                         Text("")
-                                                        retail_text_style(3, 0, 9, 1)
-                                                        TextColor(Color::BLACK)
+                                                        retail_text_style(3, 0, 10, -2)
+                                                        retail_text_color(210)
                                                     ),
                                                 ]
                                             ),
@@ -11780,8 +11959,8 @@ pub fn univ_9210() -> impl Scene {
                                                         }
                                                         Button
                                                         Text("")
-                                                        retail_text_style(3, 0, 9, 1)
-                                                        TextColor(Color::BLACK)
+                                                        retail_text_style(3, 0, 10, -2)
+                                                        retail_text_color(210)
                                                     ),
                                                 ]
                                             ),
@@ -11828,8 +12007,8 @@ pub fn univ_9210() -> impl Scene {
                                                         }
                                                         Button
                                                         Text("")
-                                                        retail_text_style(3, 0, 9, 1)
-                                                        TextColor(Color::BLACK)
+                                                        retail_text_style(3, 0, 10, -2)
+                                                        retail_text_color(210)
                                                     ),
                                                 ]
                                             ),
@@ -11864,8 +12043,8 @@ pub fn univ_9210() -> impl Scene {
                                                         }
                                                         Button
                                                         Text("")
-                                                        retail_text_style(3, 0, 9, 1)
-                                                        TextColor(Color::BLACK)
+                                                        retail_text_style(3, 0, 10, -2)
+                                                        retail_text_color(210)
                                                     ),
                                                 ]
                                             ),
@@ -11901,8 +12080,8 @@ pub fn univ_9210() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                retail_text_style(3, 0, 9, 0)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("aexp"), 37, 229, 23, 21)
@@ -11916,20 +12095,20 @@ pub fn univ_9210() -> impl Scene {
                                 }
                                 Button
                                 Text("")
-                                retail_text_style(3, 0, 9, 0)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix3"), 101, 254, 36, 26)
                                 Text("Level\r1")
-                                retail_text_style(3, 0, 9, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix4"), 141, 254, 36, 26)
                                 Text("Level\r1")
-                                retail_text_style(3, 0, 9, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, 1)
+                                retail_text_color(210)
                             ),
                         ]
                     ),

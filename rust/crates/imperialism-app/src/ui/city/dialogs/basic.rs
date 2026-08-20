@@ -38,63 +38,22 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     tree: &RetailTree,
     state: &GameState,
 ) {
-    let building_name = city_building_name(assets, CityFacilitySlot::Warehouse);
     let oil_drilling_available = state.technology().oil_drilling_available();
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail Warehouse title text style");
-    let (value_font, value_layout, value_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: 1,
-        })
-        .expect("retail Warehouse value text style");
-    let text_color = assets.palette_color(0);
-    let name = tree.find(root, fourcc!("name"));
-    commands.entity(name).insert((
-        Text::new(building_name),
-        title_font,
-        title_layout,
-        title_line_height,
-        TextColor(text_color),
-    ));
 
     for &(resource, tag) in &WAREHOUSE_STOCKS {
         let control = tree.find(root, tag);
-        commands.entity(control).insert((
-            Text::new(""),
-            value_font.clone(),
-            value_layout,
-            value_line_height,
-            TextColor(text_color),
-            WarehouseDisplay::Stock(resource),
-        ));
+        commands
+            .entity(control)
+            .insert((Text::new(""), WarehouseDisplay::Stock(resource)));
     }
     let labor = tree.find(root, fourcc!("labo"));
     let power = tree.find(root, fourcc!("powe"));
-    commands.entity(labor).insert((
-        Text::new(""),
-        value_font.clone(),
-        value_layout,
-        value_line_height,
-        TextColor(text_color),
-        WarehouseDisplay::Labor,
-    ));
-    commands.entity(power).insert((
-        Text::new(""),
-        value_font,
-        value_layout,
-        value_line_height,
-        TextColor(text_color),
-        WarehouseDisplay::Power,
-    ));
+    commands
+        .entity(labor)
+        .insert((Text::new(""), WarehouseDisplay::Labor));
+    commands
+        .entity(power)
+        .insert((Text::new(""), WarehouseDisplay::Power));
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
         let control = tree.find(root, tag);
         let mut control_commands = commands.entity(control);

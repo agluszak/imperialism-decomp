@@ -17,7 +17,7 @@ from tools.ui_codegen import (
     load_city_building_action_visuals,
     load_city_building_visuals,
     load_city_dialog_controls,
-    load_diplomacy_map_key_names,
+    load_windows_child_node_patches,
     load_recipes,
     load_text_resources,
     load_ui_views,
@@ -37,7 +37,7 @@ def _load_delta_config(repo_root: Path) -> dict:
         "class_substitutions",
         "functional_parity_cases",
         "node_property_patches",
-        "diplomacy_map_key_names",
+        "windows_child_nodes",
         "city_buildings",
         "city_building_actions",
         "city_dialog_controls",
@@ -76,7 +76,7 @@ def _semantic_snapshot(node) -> dict:
 
 def build_report(repo_root: Path) -> tuple[dict, list[str]]:
     config = _load_delta_config(repo_root)
-    diplomacy_map_key_names = load_diplomacy_map_key_names(repo_root)
+    child_node_patches = load_windows_child_node_patches(repo_root)
     load_city_building_visuals(repo_root)
     load_city_building_action_visuals(repo_root)
     load_city_dialog_controls(repo_root)
@@ -112,7 +112,7 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
         "expected_windows_field_override": 0,
         "expected_windows_class_substitution": 0,
         "windows_only_nodes": 0,
-        "diplomacy_map_key_names": len(diplomacy_map_key_names.children),
+        "windows_child_nodes": len(child_node_patches),
         "unexplained_deltas": 0,
     }
 
@@ -302,23 +302,19 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
             "declared_deltas": DELTA_CONFIG_PATH,
         },
         "summary": summary,
-        "diplomacy_map_key_names": {
-            "view": diplomacy_map_key_names.view.text(),
-            "parent": {
-                "node": f"0x{diplomacy_map_key_names.parent_id:04x}",
-                "tag": diplomacy_map_key_names.parent_tag,
-            },
-            "evidence": diplomacy_map_key_names.evidence,
-            "text": diplomacy_map_key_names.text,
-            "children": [
-                {
-                    "node": f"0x{child.node_id:08x}",
-                    "tag": child.tag,
-                    "rect": child.rect,
-                }
-                for child in diplomacy_map_key_names.children
-            ],
-        },
+        "windows_child_nodes": [
+            {
+                "view": patch.resource.text(),
+                "parent": {"node": patch.parent_id, "tag": patch.parent_tag},
+                "type": patch.type_code,
+                "tag": patch.tag,
+                "class": patch.class_name,
+                "geometry": patch.geometry,
+                "family": asdict(patch.family),
+                "evidence": patch.evidence,
+            }
+            for patch in child_node_patches
+        ],
         "functions": functions,
     }
     return report, errors
