@@ -34,6 +34,14 @@ int g_runtimeCapitolDangerEvaluationCount;
 bool g_runtimeCapitolDangerEvaluatedAtPeace;
 int g_runtimeCapitolDangerThreatMask;
 int g_runtimeCapitolDangerDisplayedMask;
+short g_runtimeTurnAlertBodyIndexes[6];
+int g_runtimeTurnAlertCount;
+bool g_runtimeTurnAlertObservationOnly;
+
+void RecordTurnAlertForRuntimeTest(short bodyIndex) {
+  ASSERT(g_runtimeTurnAlertCount < 6);
+  g_runtimeTurnAlertBodyIndexes[g_runtimeTurnAlertCount++] = bodyIndex;
+}
 } // namespace
 
 void ResetCapitolDangerWarningObservationForRuntimeTest() {
@@ -57,6 +65,23 @@ int CapitolDangerThreatMaskForRuntimeTest() {
 
 int CapitolDangerDisplayedMaskForRuntimeTest() {
   return g_runtimeCapitolDangerDisplayedMask;
+}
+
+void ResetTurnAlertObservationForRuntimeTest() {
+  g_runtimeTurnAlertCount = 0;
+}
+
+int TurnAlertObservationCountForRuntimeTest() {
+  return g_runtimeTurnAlertCount;
+}
+
+short TurnAlertBodyIndexForRuntimeTest(int index) {
+  ASSERT(index >= 0 && index < g_runtimeTurnAlertCount);
+  return g_runtimeTurnAlertBodyIndexes[index];
+}
+
+void SetTurnAlertObservationOnlyForRuntimeTest(bool enabled) {
+  g_runtimeTurnAlertObservationOnly = enabled;
 }
 #endif
 
@@ -705,8 +730,15 @@ char ShowTurnAlertsForActiveNation() {
 #endif
     g_pSimMgr->GetString(0x2753, 0x28, &titleText);
     g_pSimMgr->GetString(0x2753, 0x29, &bodyText);
-    g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),
-                             g_ptNationComparisonModalMessage, 1, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RecordTurnAlertForRuntimeTest(0x29);
+    if (!g_runtimeTurnAlertObservationOnly) {
+#endif
+      g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),
+                               g_ptNationComparisonModalMessage, 1, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    }
+#endif
     anyAlertShown = 1;
   }
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -721,8 +753,15 @@ char ShowTurnAlertsForActiveNation() {
 #endif
     g_pSimMgr->GetString(0x2753, 0x2a, &titleText);
     g_pSimMgr->GetString(0x2753, 0x2b, &bodyText);
-    g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),
-                             g_ptNationComparisonModalMessage, 1, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RecordTurnAlertForRuntimeTest(0x2b);
+    if (!g_runtimeTurnAlertObservationOnly) {
+#endif
+      g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),
+                               g_ptNationComparisonModalMessage, 1, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    }
+#endif
     anyAlertShown = 1;
   }
   if (anyAlertShown == 0) {
@@ -731,8 +770,15 @@ char ShowTurnAlertsForActiveNation() {
       if (promptCode != 0) {
         g_pSimMgr->GetString(0x2753, promptCode - 1, &titleText);
         g_pSimMgr->GetString(0x2753, promptCode, &bodyText);
-        g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
-                                 g_ptNationComparisonModalMessage, 0, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        RecordTurnAlertForRuntimeTest(promptCode);
+        if (!g_runtimeTurnAlertObservationOnly) {
+#endif
+          g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                                   g_ptNationComparisonModalMessage, 0, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        }
+#endif
         anyAlertShown = 1;
       }
     }
@@ -740,8 +786,15 @@ char ShowTurnAlertsForActiveNation() {
       if (g_apNationStates[nationId]->HasAnyCommodityRecordBelowStepValue() != 0) {
         g_pSimMgr->GetString(0x2753, 0x46, &titleText);
         g_pSimMgr->GetString(0x2753, 0x47, &bodyText);
-        g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
-                                 g_ptNationComparisonModalMessage, 2, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        RecordTurnAlertForRuntimeTest(0x47);
+        if (!g_runtimeTurnAlertObservationOnly) {
+#endif
+          g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                                   g_ptNationComparisonModalMessage, 2, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        }
+#endif
         anyAlertShown = 1;
       }
     }
@@ -749,8 +802,15 @@ char ShowTurnAlertsForActiveNation() {
       if (g_apNationStates[nationId]->AnyNeedCurrentExceedsTargetWhenCapMismatch() != 0) {
         g_pSimMgr->GetString(0x2753, 0x22, &titleText);
         g_pSimMgr->GetString(0x2753, 0x23, &bodyText);
-        g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
-                                 g_ptNationComparisonModalMessage, 2, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        RecordTurnAlertForRuntimeTest(0x23);
+        if (!g_runtimeTurnAlertObservationOnly) {
+#endif
+          g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                                   g_ptNationComparisonModalMessage, 2, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        }
+#endif
         anyAlertShown = 1;
       }
     }
@@ -758,8 +818,15 @@ char ShowTurnAlertsForActiveNation() {
     if (starvationCount != 0) {
       g_pSimMgr->GetString(0x2753, 0x20, &titleText);
       g_pSimMgr->GetString(0x2753, 0x21, &bodyText);
-      g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
-                               g_ptNationComparisonModalMessage, 2, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+      RecordTurnAlertForRuntimeTest(0x21);
+      if (!g_runtimeTurnAlertObservationOnly) {
+#endif
+        g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                                 g_ptNationComparisonModalMessage, 2, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+      }
+#endif
       anyAlertShown = 1;
     }
   }

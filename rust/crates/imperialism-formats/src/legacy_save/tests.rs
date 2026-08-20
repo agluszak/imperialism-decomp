@@ -83,6 +83,30 @@ fn retail_midgame_navy_round_trips_semantics_and_navy_records() {
     assert_eq!(loaded.game, original);
 }
 
+#[test]
+fn turn_flow_status_flags_project_and_persist_through_v62() {
+    let mut retail = LegacySaveV62::parse(RETAIL_FIXTURE);
+    retail.simulation.turn_flow_status_flags = 0x1051;
+    let state = retail.game_state(game_context());
+    assert_eq!(state.turn().turn_flow_status_flags, 0x1051);
+
+    let written = LegacySaveV62::from_game_state(
+        &state,
+        retail.map_view_origin(),
+        &retail.city_window_layout(),
+        &retail.battle_report_text(),
+        &retail.header.save_label,
+        retail.header.saved_session_slot,
+    );
+    assert_eq!(written.simulation.turn_flow_status_flags, 0x1051);
+    assert_eq!(
+        LegacySaveV62::parse(&written.to_bytes())
+            .simulation
+            .turn_flow_status_flags,
+        0x1051
+    );
+}
+
 fn navy_missions(save: &LegacySaveV62) -> Vec<&LegacyNavyMission> {
     save.major_nations
         .values()

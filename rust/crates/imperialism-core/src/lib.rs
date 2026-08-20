@@ -192,7 +192,7 @@ pub use turn_flow::{
     CinematicKind, Decade, DecadeTable, PhaseCode, ScenarioMapId, TurnContinuation, TurnState,
     TurnStop,
 };
-pub use turn_tail::{EliminationOutcome, QuarterGateResult};
+pub use turn_tail::{EliminationOutcome, QuarterGateResult, TurnAlert};
 pub use units::{
     ArmyCategoryTable, ArmyUnitCategory, CivilianLocation, CivilianUnitKind, CivilianUnitState,
     CivilianUnitTable, MilitaryEra, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,

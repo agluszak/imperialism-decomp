@@ -65,9 +65,6 @@ pub struct TurnState {
     /// Process-local last tick that showed turn alerts. Not stored in `.imp`.
     #[serde(default)]
     pub last_turn_alert_tick: i32,
-    /// Process-local mask of turn alerts presented at the last stop. Not stored in `.imp`.
-    #[serde(default)]
-    pub(crate) turn_alert_mask: u8,
     /// Retail `g_nTurnCooldownDeferCounter006A43C4`. Not stored in `.imp`.
     #[serde(default)]
     pub turn_cooldown_defer_counter: i16,
@@ -95,7 +92,6 @@ impl TurnState {
             difficulty,
             active_nation,
             last_turn_alert_tick: 0,
-            turn_alert_mask: 0,
             turn_cooldown_defer_counter: 0,
         }
     }
@@ -163,7 +159,7 @@ impl PhaseCode {
 }
 
 /// External interaction required before the core turn driver can continue.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum TurnStop {
     PlayerOrders,
     DiplomacyOffer,
@@ -174,7 +170,7 @@ pub enum TurnStop {
     DealBook,
     TechnologyAdvance,
     Newspaper,
-    TurnAlerts,
+    TurnAlerts(Vec<crate::TurnAlert>),
     /// Turn-machine case `0x0b` after `SorryYouLose`. Distinct from elimination loss.
     GreatPowerLoss,
     /// Turn-machine case `0x0d` / `kTurnEventDiplomacyOffer` (0x0547) battle-report overview.
@@ -243,29 +239,12 @@ impl GameState {
         story_ids: &[i32],
     ) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
-        if self.show_turn_alerts(turn_alerts_enabled) {
-            return TurnStop::TurnAlerts;
+        let alerts = self.show_turn_alerts(turn_alerts_enabled);
+        if !alerts.is_empty() {
+            return TurnStop::TurnAlerts(alerts);
         }
         self.turn.phase = PhaseCode::DIPLOMACY;
         self.advance_turn(story_ids)
-    }
-
-    /// Dismisses turn alerts and re-enters player-order finish on the same phase.
-    pub fn dismiss_turn_alerts(
-        &mut self,
-        turn_alerts_enabled: bool,
-        story_ids: &[i32],
-    ) -> TurnStop {
-        assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
-        self.turn.turn_alert_mask = 0;
-        self.finish_player_orders(turn_alerts_enabled, story_ids)
-    }
-
-    /// True while the driver is stopped on turn alerts that have not been dismissed.
-    pub fn turn_alerts_pending(&self) -> bool {
-        self.turn.phase() == PhaseCode::STRATEGIC_MAP
-            && self.turn.turn_alert_mask != 0
-            && self.turn.last_turn_alert_tick == self.turn.economic_turn
     }
 
     /// Accepts or rejects the diplomacy offer stored in the current continuation.
@@ -1000,6 +979,30 @@ mod tests {
         assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
+    }
+
+    #[test]
+    fn turn_alert_outcome_requires_a_fresh_finish_player_orders() {
+        let mut state = game_state();
+        seed_town_tiles(&mut state);
+        state.turn.economic_turn = 3;
+        state.turn.turn_flow_status_flags = 0x1010;
+        state.diplomacy.last_diplomatic_effort_turn = 0;
+
+        assert_eq!(
+            state.finish_player_orders(true, &[]),
+            crate::TurnStop::TurnAlerts(vec![
+                crate::TurnAlert::Treasury { prompt_code: 0x25 },
+                crate::TurnAlert::Starvation,
+            ])
+        );
+        assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
+
+        assert!(!matches!(
+            state.finish_player_orders(true, &[]),
+            crate::TurnStop::TurnAlerts(_)
+        ));
+        assert_ne!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
     }
 
     #[test]

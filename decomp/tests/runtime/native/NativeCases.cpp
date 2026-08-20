@@ -86,6 +86,7 @@ RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition)
 RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition);
 RuntimeActionResult RunSeasonAdvanceClearsStatusFlags(NativeTransition& transition);
 RuntimeActionResult RunTurnAlertsSkipFirstEconomicTurn(NativeTransition& transition);
+RuntimeActionResult RunTurnAlertsLaterTurn(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
 RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
 RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
@@ -193,6 +194,7 @@ const NativeCase kCases[] = {
     {"great_power_pressure_ai_noop", RunGreatPowerPressureAiNoop},
     {"season_advance_clears_status_flags", RunSeasonAdvanceClearsStatusFlags},
     {"turn_alerts_skip_first_economic_turn", RunTurnAlertsSkipFirstEconomicTurn},
+    {"turn_alerts_later_turn", RunTurnAlertsLaterTurn},
     {"diplomacy_offer_gate", RunDiplomacyOfferGate},
     {"quarter_gate_off_decade", RunQuarterGateOffDecade},
     {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},

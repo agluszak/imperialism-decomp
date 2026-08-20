@@ -1,4 +1,5 @@
 #include "NativeCases.h"
+#include "JsonArray.h"
 #include "JsonObject.h"
 
 #include "game/city/TCity.h"
@@ -6,6 +7,8 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"
 #include "game/military/TArmyMgr.h"
@@ -123,6 +126,35 @@ RuntimeActionResult RunTurnAlertsSkipFirstEconomicTurn(NativeTransition& transit
 
   const char shown = ShowTurnAlertsForActiveNation();
   return transition.Finish(shown != 0);
+}
+
+RuntimeActionResult RunTurnAlertsLaterTurn(NativeTransition& transition) {
+  if (g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
+    return RuntimeActionResult::Failure("turn-alert state is unavailable");
+  }
+
+  g_pSimMgr->economicTurn = 3;
+  g_pSimMgr->preferenceValues[8] = 1;
+  g_pSimMgr->turnFlowStatusFlags = 0x1010;
+  g_pDiplomacyTurnStateManager->lastDiplomaticEffortTurn = 0;
+  g_lastTurnAlertTick_006a31c0 = 0;
+  g_nTurnCooldownDeferCounter006A43C4 = 0;
+  ResetTurnAlertObservationForRuntimeTest();
+  SetTurnAlertObservationOnlyForRuntimeTest(true);
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    SetTurnAlertObservationOnlyForRuntimeTest(false);
+    return started;
+  }
+
+  ShowTurnAlertsForActiveNation();
+  SetTurnAlertObservationOnlyForRuntimeTest(false);
+  JsonArray alerts;
+  for (int index = 0; index < TurnAlertObservationCountForRuntimeTest(); ++index) {
+    alerts.Add(static_cast<int>(TurnAlertBodyIndexForRuntimeTest(index)));
+  }
+  return transition.Finish(alerts.Release());
 }
 
 RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition) {
