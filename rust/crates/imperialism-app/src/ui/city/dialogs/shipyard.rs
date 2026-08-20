@@ -53,23 +53,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             point_size: 10,
             alignment: -2,
         })
-        .expect("retail Shipyard detail text style");
-    let (title_font, _, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 24,
-            alignment: 1,
-        })
-        .expect("retail Shipyard title text style");
-    let (name_font, _, name_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("retail Shipyard name text style");
+        .expect("retail Shipyard custom-drawing text style");
     let prepared_rows: [_; 8] = SHIPYARD_ROWS.map(|spec| {
         let ship_type = city.orders.ships[spec.slot()].ship_type;
         if ship_type == ShipType::NoShip {
@@ -178,55 +162,16 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                 ShipyardRowAssets { details },
             ))
             .observe(on_city_row_selected);
-        commands.entity(bound.quantity).insert((
-            InteractionDisabled,
-            detail_font.clone(),
-            detail_line_height,
-            TextColor(normal_color),
-        ));
+        commands.entity(bound.quantity).insert(InteractionDisabled);
     }
-    let style_text = |commands: &mut Commands,
-                      tag,
-                      font: TextFont,
-                      line_height: LineHeight,
-                      display: ShipyardDisplay| {
+    let bind_text = |commands: &mut Commands, tag, display: ShipyardDisplay| {
         let entity = tree.find(root, tag);
-        commands.entity(entity).insert((
-            Text::new(""),
-            font,
-            line_height,
-            TextColor(normal_color),
-            display,
-        ));
+        commands.entity(entity).insert(display);
     };
-    style_text(
-        commands,
-        fourcc!("snam"),
-        name_font,
-        name_line_height,
-        ShipyardDisplay::ShipName,
-    );
-    style_text(
-        commands,
-        fourcc!("desc"),
-        detail_font.clone(),
-        detail_line_height,
-        ShipyardDisplay::Description,
-    );
+    bind_text(commands, fourcc!("snam"), ShipyardDisplay::ShipName);
+    bind_text(commands, fourcc!("desc"), ShipyardDisplay::Description);
     let picture = tree.find(root, fourcc!("spic"));
     commands.entity(picture).insert(ShipyardDisplay::Picture);
-    let title = tree.find(root, fourcc!("titl"));
-    commands
-        .entity(title)
-        .insert((title_font, title_line_height, TextColor(normal_color)));
-    for tag in [fourcc!("fix0"), fourcc!("fix1")] {
-        let fixed = tree.find(root, tag);
-        commands.entity(fixed).insert((
-            detail_font.clone(),
-            detail_line_height,
-            TextColor(normal_color),
-        ));
-    }
     let dlog = tree.find(root, fourcc!("DLOG"));
     for index in 0..4 {
         let left = 26.0 + index as f32 * 40.0;

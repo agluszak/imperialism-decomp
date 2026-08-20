@@ -7197,8 +7197,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7233,8 +7233,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7269,8 +7269,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7305,8 +7305,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7341,8 +7341,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7377,8 +7377,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7413,8 +7413,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7449,8 +7449,8 @@ pub fn shipyard_9207() -> impl Scene {
                                                 }
                                                 Button
                                                 Text("")
-                                                retail_text_style(3, 0, 9, 1)
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(3, 0, 10, 1)
+                                                retail_text_color(210)
                                             ),
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
@@ -7469,32 +7469,32 @@ pub fn shipyard_9207() -> impl Scene {
                             (
                                 retail_node(fourcc!("snam"), 105, 55, 165, 19)
                                 Text("")
-                                retail_text_style(3, 1, 9, 1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix0"), 25, 132, 44, 14)
                                 Text("Cost:")
-                                retail_text_style(3, 1, 12, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("fix1"), 23, 183, 80, 17)
                                 Text("Available:")
-                                retail_text_style(3, 1, 12, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_style(3, 0, 10, -2)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("desc"), 207, 125, 135, 104)
                                 Text("")
                                 retail_text_style(3, 0, 10, -2)
-                                TextColor(Color::BLACK)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 84, 11, 200, 30)
                                 Text("Shipyard")
-                                retail_text_style(3, 1, 24, 1)
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 24, 1)
+                                retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("spic"), 231, 74, 86, 45)
@@ -11609,12 +11609,16 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("titL"), 163, 81, 136, 20)
                                 Text("Transport")
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 18, 1)
+                                retail_text_color(210)
+                                retail_text_shadow(40, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("titR"), 325, 81, 151, 21)
                                 Text("Ledger")
-                                TextColor(Color::BLACK)
+                                retail_text_style(1, 0, 18, 1)
+                                retail_text_color(210)
+                                retail_text_shadow(40, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)

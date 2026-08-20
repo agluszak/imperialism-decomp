@@ -138,6 +138,81 @@ node_property_patches:
     tag: unit
     properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
     evidence: TArmoryView::DoStartup at 0x004cee20 installs its 12-point unit-name style on unit
+  - view: Shipyard.rsrc:9207
+    node: 0x0413
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x0648
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x087d
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x0ab2
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x0ce7
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x0f1c
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x1151
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x1386
+    tag: numb
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style on each populated queue quantity; the style is invariant for all eight fixed slots
+  - view: Shipyard.rsrc:9207
+    node: 0x14e6
+    tag: snam
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 12-point centered ship-name style on snam
+  - view: Shipyard.rsrc:9207
+    node: 0x154c
+    tag: fix0
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style and Cost caption on fix0
+  - view: Shipyard.rsrc:9207
+    node: 0x15b2
+    tag: fix1
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point style and Available caption on fix1
+  - view: Shipyard.rsrc:9207
+    node: 0x1618
+    tag: desc
+    properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 10-point detail style on desc
+  - view: Shipyard.rsrc:9207
+    node: 0x167e
+    tag: titl
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 24, alignment: 1, color_index: 0xd2}}
+    evidence: TShipyardView::DoStartup at 0x004c8390 installs its 24-point centered style and Shipyard caption on titl
+  - view: Transport.rsrc:2014
+    node: 0x1d6c
+    tag: titL
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 18, alignment: 1, color_index: 0xd2, shadow_color_index: 0x28, shadow_offset: [1, 1]}}
+    evidence: TViewMgr transport-screen startup at 0x005d8380 applies the 18-point 0x2b6b text and 0x2b6c shadow themes to titL, then fills its fixed Transport caption
+  - view: Transport.rsrc:2014
+    node: 0x1de1
+    tag: titR
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 18, alignment: 1, color_index: 0xd2, shadow_color_index: 0x28, shadow_offset: [1, 1]}}
+    evidence: TViewMgr transport-screen startup at 0x005d8380 applies the 18-point 0x2b6b text and 0x2b6c shadow themes to titR, then fills its fixed Ledger caption
   - view: Citydlog.rsrc:9209
     node: 0x07cd
     tag: name

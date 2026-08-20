@@ -193,28 +193,6 @@ fn bind_transport_screen(
     let nation = session.active_major_nation();
     session.game.rebuild_nation_resource_yields(nation);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 18,
-            alignment: 1,
-        })
-        .expect("retail transport title text style");
-    let title_color = assets.palette_color(0xd2);
-    let title_shadow = assets.palette_color(0x28);
-    for tag in [fourcc!("titL"), fourcc!("titR")] {
-        commands.entity(tree.find(*root, tag)).insert((
-            title_font.clone(),
-            title_layout,
-            title_line_height,
-            TextColor(title_color),
-            TextShadow {
-                offset: Vec2::ONE,
-                color: title_shadow,
-            },
-        ));
-    }
     let (cursor_font, cursor_layout, cursor_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
