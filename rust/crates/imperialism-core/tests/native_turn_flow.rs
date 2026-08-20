@@ -129,7 +129,7 @@ fn second_turn_sequence_returns_through_deal_book_and_newspaper() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
-fn five_consecutive_turns_return_through_deal_book_and_newspaper() {
+fn eight_consecutive_turns_return_through_deal_book_and_newspaper() {
     let native = run_native::<SecondTurnSequenceCase, ConsecutiveTurnSequenceResult>(
         "consecutive_turn_sequence",
     )
@@ -139,7 +139,7 @@ fn five_consecutive_turns_return_through_deal_book_and_newspaper() {
     let mut stops = Vec::new();
     let mut rng_states = Vec::new();
     let mut economic_turns = Vec::new();
-    for _ in 0..5 {
+    for _ in 0..8 {
         let mut stop = state.finish_player_orders(false, &native.case.story_ids);
         while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
             stop = match stop {

@@ -6,7 +6,7 @@
 
 class RuntimeTurnEventQueue {
 public:
-  enum { kCapacity = 64 };
+  enum { kCapacity = 128 };
 
   RuntimeTurnEventQueue();
   bool Push(int eventCode);

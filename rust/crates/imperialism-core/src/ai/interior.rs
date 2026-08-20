@@ -477,12 +477,18 @@ impl GameState {
         city.consumed_production_input_by_type[ResourceKind::Clothing] = clothing;
         city.adjust_stock(ResourceKind::Furniture, -furniture);
         city.consumed_production_input_by_type[ResourceKind::Furniture] = furniture;
-        let temporary_lumber = if furniture == 0 && city.stockpile[ResourceKind::Lumber] > 1 {
+        let reserved_lumber = furniture == 0 && city.stockpile[ResourceKind::Lumber] > 1;
+        if reserved_lumber {
             city.adjust_stock(ResourceKind::Lumber, -2);
-            2
-        } else {
-            0
-        };
+        }
+        let interior = self.nations.majors[&nation]
+            .economy
+            .interior_civilian
+            .as_mut();
+        if reserved_lumber {
+            interior.temporary_furniture_substitute_lumber = 2;
+        }
+        let temporary_lumber = interior.temporary_furniture_substitute_lumber;
         (temporary_lumber, requested - accepted)
     }
 

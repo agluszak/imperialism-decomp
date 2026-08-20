@@ -220,6 +220,7 @@ fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &G
         .as_object_mut()
         .expect("GameState serializes as an object");
     state.remove("object_ids");
+    discard_new_town_uninitialized_adjacent_city(state, game.turn().economic_turn);
 
     // Retail saves these ordered lists but not their object pointers. Loader-assigned numeric
     // keys therefore depend on how many other pointer-like objects the capture contains; list
@@ -273,6 +274,42 @@ fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &G
         })
         .collect();
     state.insert("missions".to_owned(), serde_json::Value::Array(missions));
+}
+
+fn discard_new_town_uninitialized_adjacent_city(
+    state: &mut serde_json::Map<String, serde_json::Value>,
+    economic_turn: i32,
+) {
+    let Some(serde_json::Value::Object(majors)) = state
+        .get_mut("nations")
+        .and_then(serde_json::Value::as_object_mut)
+        .and_then(|nations| nations.get_mut("majors"))
+    else {
+        return;
+    };
+    for major in majors.values_mut() {
+        let Some(towns) = major
+            .get_mut("towns")
+            .and_then(serde_json::Value::as_object_mut)
+        else {
+            continue;
+        };
+        for town in towns.values_mut() {
+            let Some(town) = town.as_object_mut() else {
+                continue;
+            };
+            if town
+                .get("created_turn")
+                .and_then(serde_json::Value::as_i64)
+                .is_some_and(|created| created + 1 >= i64::from(economic_turn))
+            {
+                // `TTown::ITown` does not initialize this byte. A town built during the
+                // current turn can be saved before `CalculateRawResources` or
+                // `CalculateResources` assigns it, so the native value is allocator noise.
+                town.remove("has_adjacent_city");
+            }
+        }
+    }
 }
 
 fn serialized_id(id: impl Serialize, kind: &str) -> u64 {

@@ -19,6 +19,10 @@ pub struct InteriorCivilianState {
     pub(crate) deferred_labor_shortfall: i16,
     pub(crate) production_deficit_by_slot: ProductionTable<i16>,
     pub(crate) temporarily_reserved_ship_arms: i16,
+    /// Retail `temporaryFurnitureSubstituteLumber1c2`. This survives city passes but is
+    /// omitted from `TCityInteriorMinister::WriteTo` and resets when a save is loaded.
+    #[serde(skip)]
+    pub(crate) temporary_furniture_substitute_lumber: i16,
     pub(crate) railhead_priority_by_resource: ResourceTable<i16>,
     pub(crate) exterior_need_by_resource: ResourceTable<i16>,
     pub(crate) historical_need_by_resource: ResourceTable<i16>,
@@ -138,6 +142,7 @@ impl InteriorCivilianState {
             deferred_labor_shortfall,
             production_deficit_by_slot,
             temporarily_reserved_ship_arms,
+            temporary_furniture_substitute_lumber: 0,
             railhead_priority_by_resource,
             exterior_need_by_resource,
             historical_need_by_resource,
