@@ -2356,8 +2356,11 @@ mod tests {
 
     fn test_app(state: GameState) -> App {
         let mut app = App::new();
+        let mut preferences = super::super::preferences::GamePreferences::default();
+        preferences.set_tactical_battles_enabled(true);
         app.add_plugins(MinimalPlugins)
             .add_plugins(StatesPlugin)
+            .insert_resource(preferences)
             .insert_resource(GameSession::new(state))
             .insert_state(AppState::LandBattle)
             .add_systems(

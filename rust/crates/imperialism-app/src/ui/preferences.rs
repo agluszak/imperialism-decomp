@@ -109,6 +109,16 @@ impl GamePreferences {
     pub(crate) fn tactical_movement_animations_enabled(&self) -> bool {
         self.values[PreferenceSlot::Unknown5] != 0
     }
+
+    /// Preference slot 0 controls whether human-participant land battles open tactically.
+    pub(crate) fn tactical_battles_enabled(&self) -> bool {
+        self.values[PreferenceSlot::TacticalBattle] != 0
+    }
+
+    #[cfg(test)]
+    pub(crate) fn set_tactical_battles_enabled(&mut self, enabled: bool) {
+        self.values[PreferenceSlot::TacticalBattle] = i16::from(enabled);
+    }
 }
 
 #[derive(Component)]

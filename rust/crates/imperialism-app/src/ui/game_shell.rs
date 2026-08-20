@@ -236,6 +236,11 @@ fn on_end_turn(
     let stop = session
         .game
         .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
+    let stop = session.game.apply_land_battle_watch_policy(
+        stop,
+        prefs.tactical_battles_enabled(),
+        assets.news_story_ids(),
+    );
     match stop {
         imperialism_core::TurnStop::TurnAlerts(alerts) => {
             commands.insert_resource(TurnAlertQueue(alerts.into()));

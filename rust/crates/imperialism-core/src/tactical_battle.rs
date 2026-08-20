@@ -996,6 +996,35 @@ impl GameState {
         })
     }
 
+    /// Applies retail's tactical-battle preference and participant watch flags.
+    /// Unwatched battles run headlessly until the next observable turn stop.
+    pub fn apply_land_battle_watch_policy(
+        &mut self,
+        mut stop: TurnStop,
+        tactical_battles_enabled: bool,
+        story_ids: &[i32],
+    ) -> TurnStop {
+        while stop == TurnStop::LandBattle
+            && !self.pending_land_battle_is_watched(tactical_battles_enabled)
+        {
+            stop = self.auto_resolve_land_battle(story_ids);
+        }
+        stop
+    }
+
+    fn pending_land_battle_is_watched(&self, tactical_battles_enabled: bool) -> bool {
+        if !tactical_battles_enabled {
+            return false;
+        }
+        let battle = self
+            .pending_land_battle()
+            .expect("land-battle stop retains its participants");
+        [battle.attacker_nation, battle.defender_nation]
+            .into_iter()
+            .filter_map(MajorNationId::from_nation)
+            .any(|nation| self.nations.major(nation).economy.diplomacy_eligible)
+    }
+
     /// Headless retail Auto: TArmyPlayer auto-deploy + Auto turn pump + ApplyChanges
     /// + ApplyPostBattleStackOutcomeAndGrowUnitMeters, then remaining combat-moves.
     pub fn auto_resolve_land_battle(&mut self, story_ids: &[i32]) -> TurnStop {
