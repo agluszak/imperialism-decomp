@@ -1326,7 +1326,6 @@ impl GameState {
         } else {
             self.push_new_town(tile, nation, 0);
             self.flood_fill_region_marker(tile, nation);
-            self.finish_new_town(tile, nation);
         }
         if !self.nations.major(nation).economy.diplomacy_eligible {
             self.nations.major_mut(nation).common.treasury -= 2_000;
@@ -1342,7 +1341,6 @@ impl GameState {
         } else {
             self.push_new_town(tile, nation, 1);
             self.flood_fill_region_marker(tile, nation);
-            self.finish_new_town(tile, nation);
         }
         if !self.nations.major(nation).economy.diplomacy_eligible {
             self.nations.major_mut(nation).common.treasury -= 3_000;
@@ -1352,7 +1350,7 @@ impl GameState {
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
-        let needs_naming = self.nations.major(nation).economy.diplomacy_eligible;
+        let needs_naming = self.nations.major(nation).auto.is_none();
         let mut town = TownState::constructed(
             tile,
             nation.nation(),
@@ -1438,6 +1436,14 @@ impl GameState {
                 .iter()
                 .find_map(|(&tile, town)| town.needs_naming.then_some((nation, tile)))
         })
+    }
+
+    /// Retail `TNewTownView::StuffValues` computes raw resources when the naming
+    /// view is actually presented, not when `TTown` is constructed.
+    pub fn prepare_pending_town_naming(&mut self) -> Option<(MajorNationId, TileId)> {
+        let (nation, tile) = self.pending_town_naming()?;
+        self.finish_new_town(tile, nation);
+        Some((nation, tile))
     }
 
     /// Retail `TTownNameDialog::DoPostCreate` selects one of eight STR# 7250 entries.

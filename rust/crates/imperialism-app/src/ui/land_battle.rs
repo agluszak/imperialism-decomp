@@ -374,6 +374,7 @@ fn reset_land_battle_cursor(mut requested: ResMut<RequestedCursor>) {
 fn synchronize_interactive_army_battle(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    prefs: Res<super::preferences::GamePreferences>,
     assets: Option<Res<crate::RetailAssetsResource>>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     mut commands: Commands,
@@ -385,7 +386,16 @@ fn synchronize_interactive_army_battle(
             .synchronize_army_battle(super::session::news_story_ids(assets.as_deref()))
         && let Ok((field, mut view)) = fields.single_mut()
     {
-        queue_land_battle_progress(&mut commands, field, &mut view, progress, &mut next_state);
+        queue_land_battle_progress(
+            &mut commands,
+            field,
+            &mut view,
+            progress,
+            &mut next_state,
+            &mut session.game,
+            prefs.tactical_battles_enabled(),
+            super::session::news_story_ids(assets.as_deref()),
+        );
     }
 }
 
@@ -497,6 +507,7 @@ fn on_confirm_land_battle_retreat(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    prefs: Res<super::preferences::GamePreferences>,
     assets: Option<Res<crate::RetailAssetsResource>>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     mut commands: Commands,
@@ -508,7 +519,16 @@ fn on_confirm_land_battle_retreat(
         return;
     };
     if let Ok((field, mut view)) = fields.single_mut() {
-        queue_land_battle_progress(&mut commands, field, &mut view, progress, &mut next_state);
+        queue_land_battle_progress(
+            &mut commands,
+            field,
+            &mut view,
+            progress,
+            &mut next_state,
+            &mut session.game,
+            prefs.tactical_battles_enabled(),
+            super::session::news_story_ids(assets.as_deref()),
+        );
     }
 }
 
@@ -1872,9 +1892,16 @@ fn queue_land_battle_progress(
     commands: &mut Commands,
     field: Entity,
     view: &mut LandBattlefield,
-    progress: ArmyBattleProgress,
+    mut progress: ArmyBattleProgress,
     next_state: &mut NextState<AppState>,
+    game: &mut GameState,
+    tactical_battles_enabled: bool,
+    story_ids: &[i32],
 ) {
+    if let Some(stop) = progress.stop.take() {
+        progress.stop =
+            Some(game.apply_land_battle_watch_policy(stop, tactical_battles_enabled, story_ids));
+    }
     if progress.events.is_empty() {
         if let Some(stop) = progress.stop
             && stop != TurnStop::LandBattle
@@ -1963,6 +1990,7 @@ fn on_battlefield_click(
     >,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
+    prefs: Res<super::preferences::GamePreferences>,
     assets: Option<Res<crate::RetailAssetsResource>>,
     mut commands: Commands,
 ) {
@@ -1988,7 +2016,16 @@ fn on_battlefield_click(
     else {
         return;
     };
-    queue_land_battle_progress(&mut commands, field, &mut view, progress, &mut next_state);
+    queue_land_battle_progress(
+        &mut commands,
+        field,
+        &mut view,
+        progress,
+        &mut next_state,
+        &mut session.game,
+        prefs.tactical_battles_enabled(),
+        super::session::news_story_ids(assets.as_deref()),
+    );
 }
 
 #[cfg(test)]
@@ -2018,6 +2055,7 @@ fn on_land_battle_activate(
     mut music: Option<ResMut<MusicDirector>>,
     time: Option<Res<Time>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
+    prefs: Res<super::preferences::GamePreferences>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     animations: Query<
         (),
@@ -2066,6 +2104,9 @@ fn on_land_battle_activate(
                     &mut view,
                     progress,
                     &mut next_state,
+                    &mut session.game,
+                    prefs.tactical_battles_enabled(),
+                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
@@ -2081,6 +2122,9 @@ fn on_land_battle_activate(
                     &mut view,
                     progress,
                     &mut next_state,
+                    &mut session.game,
+                    prefs.tactical_battles_enabled(),
+                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
@@ -2104,6 +2148,9 @@ fn on_land_battle_activate(
                     &mut view,
                     progress,
                     &mut next_state,
+                    &mut session.game,
+                    prefs.tactical_battles_enabled(),
+                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
@@ -2121,6 +2168,7 @@ fn land_battle_keyboard(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
+    prefs: Res<super::preferences::GamePreferences>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     animations: Query<
         (),
@@ -2154,7 +2202,16 @@ fn land_battle_keyboard(
             .skip_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
         && let Ok((field, mut view)) = fields.single_mut()
     {
-        queue_land_battle_progress(&mut commands, field, &mut view, progress, &mut next_state);
+        queue_land_battle_progress(
+            &mut commands,
+            field,
+            &mut view,
+            progress,
+            &mut next_state,
+            &mut session.game,
+            prefs.tactical_battles_enabled(),
+            super::session::news_story_ids(assets.as_deref()),
+        );
     }
 }
 

@@ -63,7 +63,7 @@ fn bind_town_naming(
     {
         return;
     }
-    let Some((nation, tile)) = session.game.pending_town_naming() else {
+    let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
         return;
     };
     let suggestion = retail_assets

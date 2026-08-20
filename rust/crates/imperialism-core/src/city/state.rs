@@ -10,6 +10,8 @@ use serde::{Deserialize, Serialize};
 pub struct TownState {
     pub name: String,
     /// A newly completed human depot/port still needs the retail naming dialog.
+    /// This is view-lifecycle state, not a persisted `TTown` field.
+    #[serde(skip)]
     pub needs_naming: bool,
     pub created_turn: i16,
     pub owner_nation: NationId,
@@ -30,7 +32,7 @@ impl TownState {
         created_turn: i16,
     ) -> Self {
         Self {
-            name: "Altown".to_owned(),
+            name: String::new(),
             needs_naming: false,
             created_turn,
             owner_nation,
