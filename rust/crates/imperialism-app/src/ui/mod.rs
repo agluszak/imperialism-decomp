@@ -32,6 +32,7 @@ mod technology;
 mod technology_store;
 #[cfg(test)]
 mod test_support;
+mod town_naming;
 mod trade;
 mod transport;
 mod viewport;
@@ -61,6 +62,7 @@ pub(crate) use scenario_setup::ScenarioSetupPlugin;
 pub(crate) use session::GameSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use technology_store::TechnologyStorePlugin;
+pub(crate) use town_naming::TownNamingPlugin;
 pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 pub(crate) use viewport::RetailViewportPlugin;

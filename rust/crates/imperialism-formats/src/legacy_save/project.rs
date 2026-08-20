@@ -973,6 +973,7 @@ impl LegacySaveV62 {
                         tile,
                         TownState {
                             name: town.name.clone(),
+                            needs_naming: false,
                             created_turn: town.created_turn,
                             owner_nation: NationId::new(town.owner_nation as u8),
                             resource_yield_by_type: ResourceTable::from_array(
