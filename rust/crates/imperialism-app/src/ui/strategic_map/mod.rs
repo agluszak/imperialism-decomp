@@ -63,12 +63,14 @@ struct StrategicMapComposeKey {
     active_nation: NationId,
     selected_civilian: Option<CivilianUnitId>,
     hovered_tile: Option<TileId>,
+    pending_river_mouth_tile: Option<TileId>,
     visible_tiles: u64,
 }
 
 #[derive(Component)]
 pub(crate) struct StrategicSelectionCanvas {
     map: Entity,
+    survey_feedback: IndexedPicture,
     composed: Option<StrategicMapComposeKey>,
 }
 
@@ -80,6 +82,7 @@ pub(crate) struct StrategicBaseTerrainCanvas {
     improvement_pictures: Vec<IndexedPicture>,
     resource_icons: IndexedPicture,
     resource_overlays: IndexedPicture,
+    order_markers: IndexedPicture,
     composed: Option<StrategicMapComposeKey>,
 }
 
@@ -90,6 +93,7 @@ pub(super) struct StrategicMapSprites<'a> {
     pub(super) improvements: &'a [IndexedPicture],
     pub(super) resource_icons: &'a IndexedPicture,
     pub(super) resource_overlays: &'a IndexedPicture,
+    pub(super) order_markers: &'a IndexedPicture,
 }
 
 pub(crate) fn bind_strategic_base_terrain(
@@ -107,12 +111,14 @@ pub(crate) fn bind_strategic_base_terrain(
     let improvement_pictures = load_strategic_improvement_pictures(assets);
     let resource_icons = load_picture(assets, 750);
     let resource_overlays = load_picture(assets, 751);
+    let order_markers = load_picture(assets, 806);
     let canvas = StrategicBaseTerrainCanvas {
         terrain_pictures,
         river_masks,
         improvement_pictures,
         resource_icons,
         resource_overlays,
+        order_markers,
         composed: Some(strategic_map_compose_key(state, view_origin, None, None)),
     };
     let image = compose_strategic_map(
@@ -146,11 +152,13 @@ fn bind_strategic_selection(
     state: &GameState,
     view_origin: TileId,
 ) {
+    let survey_feedback = load_picture(assets, 801);
     let image = assets.add_image(compose_strategic_selection(
         state,
         view_origin,
         None,
         None,
+        &survey_feedback,
         assets.default_dib_palette(),
     ));
     commands.spawn((
@@ -167,6 +175,7 @@ fn bind_strategic_selection(
         Pickable::IGNORE,
         StrategicSelectionCanvas {
             map,
+            survey_feedback,
             composed: Some(strategic_map_compose_key(state, view_origin, None, None)),
         },
         ChildOf(map),
@@ -181,6 +190,7 @@ impl StrategicBaseTerrainCanvas {
             improvements: &self.improvement_pictures,
             resource_icons: &self.resource_icons,
             resource_overlays: &self.resource_overlays,
+            order_markers: &self.order_markers,
         }
     }
 }
@@ -237,6 +247,7 @@ pub(crate) fn sync_strategic_selection(
             session.map_view_origin,
             selected.civilian,
             hovered,
+            &overlay.survey_feedback,
             retail_assets.assets().default_dib_palette(),
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
@@ -341,9 +352,17 @@ fn compose_strategic_selection(
     view_origin: TileId,
     selected_civilian: Option<CivilianUnitId>,
     hovered_tile: Option<TileId>,
+    survey_feedback: &IndexedPicture,
     palette: &DibPalette,
 ) -> Image {
     let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
+    overlays::compose_strategic_survey_feedback(
+        state,
+        view_origin,
+        selected_civilian,
+        survey_feedback,
+        &mut picture,
+    );
     if let (Some(unit), Some(tile)) = (selected_civilian, hovered_tile) {
         draw_civilian_hover_highlight(state, view_origin, unit, tile, &mut picture);
     }
@@ -369,6 +388,7 @@ fn strategic_map_compose_key(
         active_nation: state.turn().active_nation,
         selected_civilian,
         hovered_tile,
+        pending_river_mouth_tile: state.map().pending_river_mouth_tile,
         visible_tiles: hasher.finish(),
     }
 }
@@ -423,7 +443,7 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile.get().hash(hasher);
     tile_state.terrain.hash(hasher);
     tile_state.gate.hash(hasher);
-    tile_state.recruit_search_visited.hash(hasher);
+    tile_state.per_tile_visited.hash(hasher);
     tile_state.rendering.sprite_variant.hash(hasher);
     tile_state
         .rendering
@@ -434,6 +454,7 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
     tile_state.rendering.coast_or_secondary_mask.hash(hasher);
     tile_state.owner_nation.hash(hasher);
     tile_state.former_owner_nation.hash(hasher);
+    tile_state.secondary_owner_nation.hash(hasher);
     tile_state.owner_border_mask.hash(hasher);
     tile_state.city_border_mask.hash(hasher);
     tile_state.flags.bits().hash(hasher);
@@ -626,6 +647,7 @@ pub(super) fn compose_strategic_tile(
     }
     compose_strategic_railways(&tile_state, sprites.river_masks, &mut picture);
     compose_strategic_improvements(state, tile, sprites, &mut picture);
+    overlays::compose_strategic_order_overlay(state, tile, sprites, &mut picture);
     picture
 }
 
