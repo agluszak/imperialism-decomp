@@ -884,6 +884,11 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
                 .ability_active_by_nation
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
+        selected_ship_types_by_nation: MajorNationTable::from_array(
+            legacy
+                .selected_resource_type_by_nation
+                .map(|row| ShipTypeTable::from_array(row.map(|value| value != 0))),
+        ),
         selected_capability_slots: MajorNationTable::from_array(
             legacy
                 .nation_capability_slots
