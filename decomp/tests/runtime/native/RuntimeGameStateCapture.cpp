@@ -1832,7 +1832,7 @@ JSON_Value* CaptureNationCommon(TCountry* country) {
 
 JSON_Value* CaptureCity(TCity* city);
 
-JSON_Value* CaptureTowns(TGreatPower* nation) {
+JSON_Value* CaptureTowns(TGreatPower* nation, bool freshRandomStart) {
   if (nation->townMarkerList == 0) {
     FailSemanticCapture("major nation has no town marker list");
   }
@@ -1859,7 +1859,11 @@ JSON_Value* CaptureTowns(TGreatPower* nation) {
     unsigned char hasAdjacentCity = 0;
     unsigned char active = 0;
     memcpy(&transportLinked, &town->transportLinked, 1);
-    memcpy(&hasAdjacentCity, &town->hasAdjacentCity, 1);
+    // ITown leaves this byte untouched. It first becomes semantic when resource calculation
+    // writes it, so do not publish allocator residue at the immediate fresh-game boundary.
+    if (!freshRandomStart) {
+      memcpy(&hasAdjacentCity, &town->hasAdjacentCity, 1);
+    }
     memcpy(&active, &town->activeFlag, 1);
     if (transportLinked > 1 || active > 1) {
       FailSemanticCapture("major nation town boolean state is not canonical");
@@ -1880,7 +1884,7 @@ JSON_Value* CaptureTowns(TGreatPower* nation) {
   return towns.Release();
 }
 
-JSON_Value* CaptureMajorNationAggregate(int slot) {
+JSON_Value* CaptureMajorNationAggregate(int slot, bool freshRandomStart) {
   TCountry* country = g_apTerrainTypeDescriptorTable[slot];
   TGreatPower* nation = g_apNationStates[slot];
   if (country == 0 || nation == 0 || nation->city == 0) {
@@ -1896,16 +1900,16 @@ JSON_Value* CaptureMajorNationAggregate(int slot) {
   object.Set("common", CaptureNationCommon(country));
   object.Set("economy", CaptureMajorNation(nation));
   object.Set("city", CaptureCity(nation->city));
-  object.Set("towns", CaptureTowns(nation));
+  object.Set("towns", CaptureTowns(nation, freshRandomStart));
   return object.Release();
 }
 
-JSON_Value* CaptureNations() {
+JSON_Value* CaptureNations(bool freshRandomStart) {
   JsonObject nations;
   JsonArray majors;
   JsonArray minors;
   for (int slot = 0; slot < kMajorNationCount; ++slot) {
-    majors.Add(CaptureMajorNationAggregate(slot));
+    majors.Add(CaptureMajorNationAggregate(slot, freshRandomStart));
   }
   for (int minorSlot = kMinorNationFirstSlot; minorSlot < kNationSlotCount; ++minorSlot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[minorSlot];
@@ -2724,7 +2728,7 @@ JSON_Value* CaptureMissionData(TMission* mission) {
   return 0;
 }
 
-JSON_Value* CaptureMissions() {
+JSON_Value* CaptureMissions(bool freshRandomStart) {
   JsonArray missions;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
@@ -2748,7 +2752,9 @@ JSON_Value* CaptureMissions() {
       object.SetOptional("path_nation", static_cast<int>(mission->pathMarker06));
       object.Set("state", static_cast<unsigned int>(mission->state08));
       object.Set("importance_bits", FloatBits(mission->importanceScore0c));
-      object.Set("held", mission->flag10 != 0);
+      // TMission construction leaves flag10 untouched. Hold and ReadFrom make it semantic;
+      // before either operation, the byte is allocator residue rather than gameplay state.
+      object.Set("held", !freshRandomStart && mission->flag10 != 0);
       object.Set("marker", static_cast<unsigned int>(mission->marker11));
       missions.Add(object.Release());
     }
@@ -3042,7 +3048,8 @@ unsigned int RuntimeCrtRandStateForTests() {
   return threadData->randState14;
 }
 
-bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
+static bool BuildRuntimeGameStateWithFreshObjectDefaults(const RuntimeRun& run, JSON_Value** state,
+                                                          bool freshRandomStart) {
   if (state == 0 || g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 ||
       g_pGlobalMapState->cityScoreTable == 0 || g_pSimMgr == 0 || g_pTradeMgr == 0 ||
       g_pDiplomacyTurnStateManager == 0 || g_pTechMgr == 0 || g_pNewsMgr == 0) {
@@ -3062,18 +3069,22 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("market", CaptureMarket());
   object.Set("technology", CaptureTechnology());
   object.Set("diplomacy", CaptureDiplomacy());
-  object.Set("nations", CaptureNations());
+  object.Set("nations", CaptureNations(freshRandomStart));
   object.Set("military_units", CaptureMilitaryUnits());
   object.Set("civilian_units", CaptureCivilianUnits());
   object.Set("ships", CaptureShips());
   object.Set("admirals", CaptureAdmirals());
   object.Set("task_forces", CaptureTaskForces());
-  object.Set("missions", CaptureMissions());
+  object.Set("missions", CaptureMissions(freshRandomStart));
   object.Set("news", CaptureNews());
   object.Set("pending", CapturePending());
   object.Set("battle_reports", CaptureBattleReports());
   *state = object.Release();
   return true;
+}
+
+bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
+  return BuildRuntimeGameStateWithFreshObjectDefaults(run, state, false);
 }
 
 bool CaptureGameState(RuntimeRun& run, const char* name) {
@@ -3082,6 +3093,18 @@ bool CaptureGameState(RuntimeRun& run, const char* name) {
   }
   JSON_Value* state = 0;
   if (!BuildRuntimeGameState(run, &state)) {
+    return false;
+  }
+  run.SetCapture(name, state);
+  return true;
+}
+
+bool CaptureFreshRandomGameState(RuntimeRun& run, const char* name) {
+  if (name == 0) {
+    return false;
+  }
+  JSON_Value* state = 0;
+  if (!BuildRuntimeGameStateWithFreshObjectDefaults(run, &state, true)) {
     return false;
   }
   run.SetCapture(name, state);
