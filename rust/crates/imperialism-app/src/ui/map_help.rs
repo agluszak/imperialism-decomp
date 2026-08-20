@@ -13,6 +13,7 @@ const TRADE_HELP_SETS: [i16; 2] = [0x0bea, 0x0bf4];
 const DIPLOMACY_HELP_SETS: [i16; 2] = [0x0bfe, 0x0c26];
 const TRANSPORT_HELP_SETS: [i16; 1] = [0x0c3a];
 const TECHNOLOGY_HELP_SETS: [i16; 1] = [0x0c08];
+const TACTICAL_HELP_SETS: [i16; 1] = [0x0c76];
 const TOPICS: [FourCc; 5] = [
     fourcc!("nam1"),
     fourcc!("nam2"),
@@ -37,6 +38,7 @@ enum HelpContext {
     Diplomacy,
     Transport,
     TechnologyStore,
+    LandBattle,
 }
 
 impl HelpContext {
@@ -48,6 +50,7 @@ impl HelpContext {
             AppState::Diplomacy => Some(Self::Diplomacy),
             AppState::Transport => Some(Self::Transport),
             AppState::TechnologyStore => Some(Self::TechnologyStore),
+            AppState::LandBattle => Some(Self::LandBattle),
             _ => None,
         }
     }
@@ -60,6 +63,7 @@ impl HelpContext {
             Self::Diplomacy => &DIPLOMACY_HELP_SETS,
             Self::Transport => &TRANSPORT_HELP_SETS,
             Self::TechnologyStore => &TECHNOLOGY_HELP_SETS,
+            Self::LandBattle => &TACTICAL_HELP_SETS,
         }
     }
 
@@ -71,12 +75,17 @@ impl HelpContext {
             Self::Diplomacy => 0x07d8,
             Self::Transport => 0x07de,
             Self::TechnologyStore => 0x08fc,
+            Self::LandBattle => 0x07e0,
         }
     }
 
     const fn topic_count(self, set: usize) -> usize {
         match self {
-            Self::TerrainMap | Self::City | Self::Diplomacy | Self::Transport => 5,
+            Self::TerrainMap
+            | Self::City
+            | Self::Diplomacy
+            | Self::Transport
+            | Self::LandBattle => 5,
             Self::Trade if set == 1 => 4,
             Self::Trade => 5,
             Self::TechnologyStore => 4,
@@ -91,6 +100,7 @@ impl HelpContext {
             Self::Diplomacy => AppState::Diplomacy,
             Self::Transport => AppState::Transport,
             Self::TechnologyStore => AppState::TechnologyStore,
+            Self::LandBattle => AppState::LandBattle,
         }
     }
 }

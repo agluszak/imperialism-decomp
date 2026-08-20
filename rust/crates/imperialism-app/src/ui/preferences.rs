@@ -100,6 +100,11 @@ impl GamePreferences {
     pub(crate) fn turn_alerts_enabled(&self) -> bool {
         self.values[PreferenceSlot::TurnAlerts] != 0
     }
+
+    /// Preference slot 5 gates `TTacticalBattleView::GlideUnit`.
+    pub(crate) fn tactical_movement_animations_enabled(&self) -> bool {
+        self.values[PreferenceSlot::Unknown5] != 0
+    }
 }
 
 #[derive(Component)]
