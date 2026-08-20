@@ -78,6 +78,7 @@ RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition);
 RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition);
 RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& transition);
 RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transition);
+RuntimeActionResult RunTechnologyNavalCapabilitySequence(NativeTransition& transition);
 RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
@@ -190,6 +191,7 @@ const NativeCase kCases[] = {
     {"check_technology_advances", RunCheckTechnologyAdvances},
     {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
     {"technology_naval_capability_upgrade", RunTechnologyNavalCapabilityUpgrade},
+    {"technology_naval_capability_sequence", RunTechnologyNavalCapabilitySequence},
     {"turn_stop_technology", RunTechnologyTurnStop},
     {"construct_newspaper_page", RunConstructNewspaperPage},
     {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
