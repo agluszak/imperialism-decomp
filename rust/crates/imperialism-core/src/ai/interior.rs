@@ -374,13 +374,40 @@ impl GameState {
             .economy
             .interior_civilian
             .as_mut();
-        debug_assert_eq!(interior.deferred_labor_shortfall, 0);
-        interior.city_order_demand.training[TrainingLevel::Medium] =
-            (target - baseline.medium).clamp(0, capacity);
-        let remaining = capacity - interior.city_order_demand.training[TrainingLevel::Medium];
-        if baseline.low < target {
-            interior.city_order_demand.population_growth = (target - baseline.low).min(remaining);
+        let saved_medium = interior.city_order_demand.training[TrainingLevel::Medium];
+        let saved_high = interior.city_order_demand.training[TrainingLevel::High];
+        interior.city_order_demand.training[TrainingLevel::Medium] = 0;
+        interior.city_order_demand.training[TrainingLevel::High] = 0;
+        let mut available_support = capacity;
+        if interior.deferred_labor_shortfall == 0 {
+            if baseline.low < target {
+                let growth = (target - baseline.low).min(available_support);
+                interior.city_order_demand.population_growth = growth;
+                available_support -= growth;
+            }
+            if baseline.medium < target {
+                interior.city_order_demand.training[TrainingLevel::Medium] =
+                    (target - baseline.medium).min(available_support);
+            }
+        } else {
+            let mut low = baseline.low;
+            let mut medium = baseline.medium;
+            while available_support > 0 {
+                if low - saved_medium > target {
+                    interior.city_order_demand.training[TrainingLevel::Medium] += 1;
+                    low -= 1;
+                } else if medium - saved_high > target {
+                    interior.city_order_demand.training[TrainingLevel::High] += 1;
+                    medium -= 1;
+                } else {
+                    interior.city_order_demand.population_growth += 1;
+                }
+                available_support -= 1;
+            }
+            interior.deferred_labor_shortfall = 0;
         }
+        interior.city_order_demand.training[TrainingLevel::Medium] += saved_medium;
+        interior.city_order_demand.training[TrainingLevel::High] += saved_high;
 
         for level in (0..enum_map::enum_len::<TrainingLevel>()).map(TrainingLevel::from_usize) {
             let requested = self.nations.majors[&nation]

@@ -2058,6 +2058,8 @@ short g_mapCursorTokenByStateIndex_00695668[12] = {0, 0, 1000, 0, 0, 0, 1011, 10
 short g_civilianMapCursorTokenByStateIndex_00695680[12] = {0,    1008, 1000, 1005, 1006, 1007,
                                                            1011, 1011, 1010, 0,    0,    0};
 
+} // extern "C"
+
 // These are CSize dynamic initializers, not ordinary callable setters. Their inlined
 // constructors are the tiny bodies at 0x5a6830, 0x5a6860 and 0x5a6890.
 // SYNTHETIC: IMPERIALISM 0x005a6830
@@ -2076,6 +2078,8 @@ CSize g_tacticalBattlefieldSurfaceSize_006A5448(0x5dc, 0x1c2);
 // prototype: void __cdecl InitializeTacticalUnitSpriteCellSize(void)
 // GLOBAL: IMPERIALISM 0x006a5498
 CSize g_tacticalUnitSpriteCellSize_006A5498(0x32, 0x32);
+
+extern "C" {
 
 // Per-unit-type tactical range (int table at 0x6699e8, 30 unit types); artillery on
 // the defending side (side20 == 1, combat category 2) gets +1 from the fort walls.
