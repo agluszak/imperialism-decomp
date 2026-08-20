@@ -703,34 +703,12 @@ fn chained_civilian_on_tile(
     tile: TileId,
     active: NationId,
 ) -> Option<(CivilianUnitId, &CivilianUnitState)> {
-    if let Some(id) = state.civilian_chain_head_on_tile(tile) {
-        let unit = state.civilian_unit(id)?;
-        if !unit.registered() {
-            return Some((id, unit));
-        }
-    }
-    stacked_civilian_on_tile(state.civilian_units(), tile, active)
-}
-
-fn stacked_civilian_on_tile<'a>(
-    units: impl IntoIterator<Item = (CivilianUnitId, &'a CivilianUnitState)>,
-    tile: TileId,
-    active: NationId,
-) -> Option<(CivilianUnitId, &'a CivilianUnitState)> {
-    let mut first = None;
-    let mut owned = None;
-    for (id, unit) in units {
-        if unit.location().tile() != Some(tile) {
-            continue;
-        }
-        if first.is_none() {
-            first = Some((id, unit));
-        }
-        if owned.is_none() && unit.owner_nation() == active {
-            owned = Some((id, unit));
-        }
-    }
-    let selected = owned.or(first)?;
+    let selected = state
+        .civilian_on_tile_for_nation(tile, active)
+        .or_else(|| {
+            let id = state.civilian_chain_head_on_tile(tile)?;
+            Some((id, state.civilian_unit(id)?))
+        })?;
     (!selected.1.registered()).then_some(selected)
 }
 
@@ -840,7 +818,8 @@ fn naval_action_frame(action: Option<TileAction>) -> Option<u16> {
 mod tests {
     use super::*;
     use crate::ui::test_support::{
-        beginning_map_view_origin, beginning_of_game_with, strategic_map_beginning_context,
+        beginning_map_view_origin, beginning_of_game_parts_with, beginning_of_game_with,
+        strategic_map_beginning_context,
     };
 
     fn fixture_state() -> GameState {
@@ -997,50 +976,81 @@ mod tests {
     }
 
     #[test]
-    fn stacking_prefers_the_active_nations_unregistered_civilian() {
+    fn loader_stack_prefers_the_active_nation_below_a_foreign_head() {
         let tile = TileId::new(10);
-        let active = NationId::new(6);
-        let foreign = NationId::new(0);
-        let units = [
-            civilian(
-                1,
-                CivilianUnitKind::Miner,
-                foreign,
-                tile,
-                CivilianWorkOrder::Idle,
-                false,
-            ),
-            civilian(
-                2,
-                CivilianUnitKind::Engineer,
-                active,
-                tile,
-                CivilianWorkOrder::Idle,
-                false,
-            ),
-        ];
-        let (id, selected) =
-            stacked_civilian_on_tile(units.iter().map(|(id, unit)| (*id, unit)), tile, active)
-                .unwrap();
-        assert_eq!(id, CivilianUnitId::from_serialized(2));
+        let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
+        let active = parts.turn.active_nation;
+        let foreign = NationId::new((active.get() + 1) % MajorNationId::COUNT);
+        let active_unit = civilian(
+            1,
+            CivilianUnitKind::Engineer,
+            active,
+            tile,
+            CivilianWorkOrder::Idle,
+            false,
+        );
+        let foreign_head = civilian(
+            2,
+            CivilianUnitKind::Miner,
+            foreign,
+            tile,
+            CivilianWorkOrder::Idle,
+            false,
+        );
+        parts.civilian_units.clear();
+        parts.civilian_units.insert(active_unit.0, active_unit.1);
+        parts.civilian_units.insert(foreign_head.0, foreign_head.1);
+        let state = GameState::from_parts(parts);
+
+        assert_eq!(
+            state.civilian_chain_head_on_tile(tile),
+            Some(foreign_head.0)
+        );
+        let (id, selected) = chained_civilian_on_tile(&state, tile, active).unwrap();
+        assert_eq!(id, active_unit.0);
         assert_eq!(selected.unit_type(), CivilianUnitKind::Engineer);
     }
 
     #[test]
     fn registered_civilians_are_not_drawn_as_field_units() {
         let tile = TileId::new(10);
-        let active = NationId::new(6);
-        let units = [civilian(
+        let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
+        let active = parts.turn.active_nation;
+        let unit = civilian(
             1,
             CivilianUnitKind::Miner,
             active,
             tile,
             CivilianWorkOrder::Idle,
             true,
-        )];
-        assert!(
-            stacked_civilian_on_tile(units.iter().map(|(id, unit)| (*id, unit)), tile, active)
-                .is_none()
+        );
+        parts.civilian_units.clear();
+        parts.civilian_units.insert(unit.0, unit.1);
+        let state = GameState::from_parts(parts);
+        assert!(chained_civilian_on_tile(&state, tile, active).is_none());
+    }
+
+    #[test]
+    fn stacking_falls_back_to_the_foreign_chain_head() {
+        let tile = TileId::new(10);
+        let mut parts = beginning_of_game_parts_with(strategic_map_beginning_context());
+        let active = parts.turn.active_nation;
+        let foreign = NationId::new((active.get() + 1) % MajorNationId::COUNT);
+        let unit = civilian(
+            1,
+            CivilianUnitKind::Miner,
+            foreign,
+            tile,
+            CivilianWorkOrder::Idle,
+            false,
+        );
+        parts.civilian_units.clear();
+        parts.civilian_units.insert(unit.0, unit.1);
+        let state = GameState::from_parts(parts);
+
+        assert_eq!(
+            chained_civilian_on_tile(&state, tile, active).unwrap().0,
+            unit.0
         );
     }
 
