@@ -84,6 +84,8 @@ private:
   }
 };
 
+class LoadMidgameNavyTestCase : public LoadSavedGameTestCase {};
+
 // The harness's fallback when IMPERIALISM_RUNTIME_TEST names a test this binary does not have.
 // Failing loudly beats passing vacuously: a typo in the name would otherwise look like a green
 // run of nothing.
@@ -100,4 +102,5 @@ protected:
 } // namespace
 
 RUNTIME_TEST_FACTORY(LoadSavedGameTestCase, LoadSavedGameTest)
+RUNTIME_TEST_FACTORY(LoadMidgameNavyTestCase, LoadMidgameNavyTest)
 RUNTIME_TEST_FACTORY(UnknownRuntimeTestCase, UnknownRuntimeTest)

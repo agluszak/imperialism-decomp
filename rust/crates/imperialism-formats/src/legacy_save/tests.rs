@@ -2,12 +2,15 @@ use super::PROVINCE_COUNT;
 use super::conversions::*;
 use super::model::*;
 use super::parse::*;
+use super::write::{write_navy, write_navy_mission};
 use super::*;
-use crate::legacy_stream::LegacyStream;
+use crate::legacy_stream::{LegacyStream, LegacyWriter};
 use imperialism_core::*;
 
 const RETAIL_FIXTURE: &[u8] =
     include_bytes!("../../../../../fixtures/retail/beginning_of_game.imp");
+const MIDGAME_NAVY_FIXTURE: &[u8] =
+    include_bytes!("../../../../../fixtures/retail/midgame_navy.imp");
 const DIPLOMACY_YEAR_TERM_ABSOLUTE_OFFSET_V62: usize = 0x1a1f;
 const MARKET_ABSOLUTE_OFFSET_V62: usize = 0x1ac1;
 const MARKET_ROW_SERIALIZED_SIZE_V62: usize = 0x9e;
@@ -36,6 +39,71 @@ fn game_context() -> LegacyGameStateContext {
         map_generation_lcg: 0,
         zone_status_lcg: 3_916_827_792,
     }
+}
+
+#[test]
+fn midgame_navy_fixture_is_the_narrow_supported_save_slice() {
+    let save = LegacySaveV62::parse(MIDGAME_NAVY_FIXTURE);
+    assert!(!save.navy.task_forces.is_empty());
+    assert!(
+        navy_missions(&save)
+            .iter()
+            .any(|mission| !mission.ship_ordinals.is_empty())
+    );
+    assert!(!save.has_city_tasks());
+    assert!(!save.has_transport_requests());
+}
+
+#[test]
+fn retail_midgame_navy_round_trips_semantics_and_navy_records() {
+    let retail = LegacySaveV62::parse(MIDGAME_NAVY_FIXTURE);
+    let original = retail.game_state(game_context());
+    let written = LegacySaveV62::from_game_state(
+        &original,
+        retail.map_view_origin(),
+        &retail.city_window_layout(),
+        &retail.battle_report_text(),
+        &retail.header.save_label,
+        retail.header.saved_session_slot,
+    );
+
+    assert_eq!(
+        encoded_navy_records(&written),
+        encoded_navy_records(&retail)
+    );
+    assert_eq!(written.game_state(game_context()), original);
+    let loaded = load_game_from_bytes(&written.to_bytes(), game_context())
+        .expect("a midgame navy save loads through the public boundary");
+    assert_eq!(loaded.game, original);
+}
+
+fn navy_missions(save: &LegacySaveV62) -> Vec<&LegacyNavyMission> {
+    save.major_nations
+        .values()
+        .filter_map(|nation| match nation {
+            LegacyMajorNationState::Auto(auto) => Some(&auto.missions),
+            LegacyMajorNationState::Other(_) => None,
+        })
+        .flatten()
+        .filter_map(|mission| match mission {
+            LegacyMission::Invade { beachhead, .. } => Some(beachhead),
+            LegacyMission::ControlSeaZone { navy, .. }
+            | LegacyMission::Escort { navy, .. }
+            | LegacyMission::ScatteredShips { navy, .. }
+            | LegacyMission::Beachhead { navy, .. }
+            | LegacyMission::BlockadePort { navy, .. } => Some(navy),
+            LegacyMission::DefendProvince { .. } | LegacyMission::AttackProvince { .. } => None,
+        })
+        .collect()
+}
+
+fn encoded_navy_records(save: &LegacySaveV62) -> Vec<u8> {
+    let mut writer = LegacyWriter::new();
+    write_navy(&mut writer, &save.navy);
+    for mission in navy_missions(save) {
+        write_navy_mission(&mut writer, mission);
+    }
+    writer.into_bytes()
 }
 
 fn push_be_i16(bytes: &mut Vec<u8>, value: i16) {

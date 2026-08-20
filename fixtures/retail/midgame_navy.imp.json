@@ -1,0 +1,9 @@
+{
+  "creation_instructions": "Create a patrol task force and assign a produced AI ship to an existing AI navy mission through the reconstructed gameplay APIs, load that input into retail Imperialism.exe, wait for the strategic map, then invoke retail SaveGameWithModeAndOptionalLabel for slotA. Captured from original executable SHA-256 6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691 in load_save_to_map-20260819T222747Z-157819.",
+  "file": "midgame_navy.imp",
+  "format": "imperialism-save",
+  "format_version": 62,
+  "sha256": "1440817db6155add6053c3a890d992bc74d2cd19bd1df6236e38d5f2f30717e2",
+  "size": 402991,
+  "source_kind": "retail_fixture_oracle"
+}

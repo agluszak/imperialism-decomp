@@ -212,6 +212,7 @@ impl LegacyMission {
         &self,
         nation: NationId,
         military_units: &[LegacyMilitaryUnit],
+        ship_ids: &[ShipId],
     ) -> MissionState {
         let (common, data) = match self {
             Self::DefendProvince { common, army } => {
@@ -253,23 +254,25 @@ impl LegacyMission {
                         *amassing_province,
                         military_units,
                     ),
-                    beachhead: Some(navy_mission_state(beachhead)),
+                    beachhead: Some(navy_mission_state(beachhead, ship_ids)),
                 },
             ),
             Self::ControlSeaZone { common, navy } => (
                 common,
-                MissionData::ControlSeaZone(navy_mission_state(navy)),
+                MissionData::ControlSeaZone(navy_mission_state(navy, ship_ids)),
             ),
-            Self::Escort { common, navy } => {
-                (common, MissionData::Escort(navy_mission_state(navy)))
-            }
+            Self::Escort { common, navy } => (
+                common,
+                MissionData::Escort(navy_mission_state(navy, ship_ids)),
+            ),
             Self::ScatteredShips { common, navy } => (
                 common,
-                MissionData::ScatteredShips(navy_mission_state(navy)),
+                MissionData::ScatteredShips(navy_mission_state(navy, ship_ids)),
             ),
-            Self::Beachhead { common, navy } => {
-                (common, MissionData::Beachhead(navy_mission_state(navy)))
-            }
+            Self::Beachhead { common, navy } => (
+                common,
+                MissionData::Beachhead(navy_mission_state(navy, ship_ids)),
+            ),
             Self::BlockadePort {
                 common,
                 navy,
@@ -277,7 +280,7 @@ impl LegacyMission {
             } => (
                 common,
                 MissionData::BlockadePort {
-                    navy: navy_mission_state(navy),
+                    navy: navy_mission_state(navy, ship_ids),
                     port_zone: optional_ocean_zone_id(*blockade_port_zone)
                         .expect("retail blockade mission has a port zone"),
                 },
@@ -333,11 +336,7 @@ fn attack_mission_state(
     }
 }
 
-fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
-    assert!(
-        mission.ship_ordinals.is_empty(),
-        "semantic projection of navy mission ship references is not implemented"
-    );
+fn navy_mission_state(mission: &LegacyNavyMission, ship_ids: &[ShipId]) -> NavyMissionState {
     NavyMissionState {
         target_zone: optional_ocean_zone_id(mission.target_zone),
         resolved_port_zone: optional_ocean_zone_id(mission.resolved_port_zone),
@@ -347,7 +346,18 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
         state: NavyMissionSelection::from_retail(mission.state)
             .expect("retail navy mission selection"),
         required_equipage_bits: mission.required_equipage_bits,
-        ships: Default::default(),
+        ships: mission
+            .ship_ordinals
+            .iter()
+            .rev()
+            .map(|ordinal| {
+                let ship = ship_ids
+                    .get(usize::try_from(*ordinal).expect("retail ship ordinal is non-negative"))
+                    .copied()
+                    .expect("navy-mission ship ordinal is in the primary ship list");
+                (ship, true)
+            })
+            .collect(),
     }
 }
 
@@ -957,7 +967,11 @@ impl LegacySaveV62 {
                 for mission in &auto.missions {
                     missions.insert(
                         object_ids.mission(),
-                        mission.mission_state(nation_id, &great_power.country.military_units),
+                        mission.mission_state(
+                            nation_id,
+                            &great_power.country.military_units,
+                            &ship_ids,
+                        ),
                     );
                 }
             }

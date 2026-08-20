@@ -4,10 +4,6 @@ use crate::legacy_stream::LegacyWriter;
 use imperialism_core::*;
 
 impl LegacySaveV62 {
-    pub(super) fn has_task_forces(&self) -> bool {
-        !self.navy.task_forces.is_empty()
-    }
-
     pub(super) fn has_city_tasks(&self) -> bool {
         self.major_nations.values().any(|nation| {
             nation
@@ -300,7 +296,7 @@ fn write_zone(writer: &mut LegacyWriter, zone: &LegacyZone) {
     writer.write_le_i16(zone.context_ordinal);
 }
 
-fn write_navy(writer: &mut LegacyWriter, navy: &LegacyNavyState) {
+pub(super) fn write_navy(writer: &mut LegacyWriter, navy: &LegacyNavyState) {
     writer.write_le_u16(navy.ships.len() as u16);
     for ship in navy.ships.iter().rev() {
         writer.write_le_i16(ship.ship_type);
@@ -789,7 +785,7 @@ fn write_army_mission(writer: &mut LegacyWriter, army: &LegacyArmyMission) {
     }
 }
 
-fn write_navy_mission(writer: &mut LegacyWriter, navy: &LegacyNavyMission) {
+pub(super) fn write_navy_mission(writer: &mut LegacyWriter, navy: &LegacyNavyMission) {
     writer.write_le_i16(navy.target_zone);
     writer.write_le_i16(navy.resolved_port_zone);
     for value in navy.required_equipage_bits {

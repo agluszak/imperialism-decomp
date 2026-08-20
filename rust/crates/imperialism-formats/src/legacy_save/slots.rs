@@ -79,8 +79,6 @@ pub enum LoadGameError {
     InvalidMagic,
     #[error("unsupported save format version {0:#x}")]
     UnsupportedVersion(u32),
-    #[error("this save uses navy task forces that the Rust port cannot load yet")]
-    UnsupportedNavy,
     #[error("this save uses city tasks that the Rust port cannot load yet")]
     UnsupportedCityTasks,
     #[error("this save uses city transport requests that the Rust port cannot load yet")]
@@ -223,9 +221,6 @@ pub fn load_game_from_bytes(
         return Err(LoadGameError::UnsupportedVersion(version));
     }
     let save = LegacySaveV62::parse(bytes);
-    if save.has_task_forces() {
-        return Err(LoadGameError::UnsupportedNavy);
-    }
     if save.has_city_tasks() {
         return Err(LoadGameError::UnsupportedCityTasks);
     }

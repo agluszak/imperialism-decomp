@@ -78,6 +78,10 @@ BEGINNING_OF_GAME = RuntimeFixtureSpec(
     "beginning_of_game.imp",
     "retail_fixture_oracle",
 )
+MIDGAME_NAVY = RuntimeFixtureSpec(
+    "midgame_navy.imp",
+    "retail_fixture_oracle",
+)
 
 
 def retail_fixture_case(name: str, factory: str) -> RuntimeTestSpec:
@@ -330,6 +334,16 @@ TESTS = (
         "retail_fixture_oracle",
         fixture=BEGINNING_OF_GAME,
         required_oracles=("map",),
+        native_snapshots=("map_state", "game_state"),
+        record_game_flow=True,
+    ),
+    RuntimeTestSpec(
+        "load_midgame_navy",
+        "LoadMidgameNavyTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=MIDGAME_NAVY,
+        required_oracles=(),
         native_snapshots=("map_state", "game_state"),
         record_game_flow=True,
     ),

@@ -22,6 +22,16 @@ impl LegacySaveV62 {
         let mut nation_names = vec![String::new(); NATION_COUNT];
         let mut major_nations = IndexMap::new();
         let mut minor_nations = IndexMap::new();
+        let ship_ordinals: std::collections::HashMap<ShipId, i16> = state
+            .ships_in_retail_order()
+            .enumerate()
+            .map(|(ordinal, (id, _))| {
+                (
+                    id,
+                    i16::try_from(ordinal).expect("ship ordinal fits a save short"),
+                )
+            })
+            .collect();
 
         for slot in 0..MAJOR_NATION_COUNT {
             let major_id = MajorNationId::new(slot as u8);
@@ -64,6 +74,7 @@ impl LegacySaveV62 {
                     pending,
                     state.map().topology,
                     &city_windows[major_id],
+                    &ship_ordinals,
                 ),
             );
         }
@@ -182,6 +193,7 @@ fn major_nation_dto(
     pending: &NationPendingWork,
     topology: MapTopology,
     city_windows: &ProductionTable<Option<CityWindowPosition>>,
+    ship_ordinals: &std::collections::HashMap<ShipId, i16>,
 ) -> LegacyMajorNationState {
     let power = LegacyGreatPowerState {
         country: country_dto(
@@ -202,7 +214,7 @@ fn major_nation_dto(
             auto_prefix: auto_prefix_dto(auto),
             missions: missions
                 .iter()
-                .map(|mission| mission_dto(mission, military))
+                .map(|mission| mission_dto(mission, military, ship_ordinals))
                 .collect(),
         })),
     }
@@ -640,6 +652,7 @@ fn auto_prefix_dto(auto: &AutoGreatPowerState) -> LegacyAutoGreatPowerPrefix {
 fn mission_dto(
     mission: &MissionState,
     military: &[(MilitaryUnitId, MilitaryUnitState)],
+    ship_ordinals: &std::collections::HashMap<ShipId, i16>,
 ) -> LegacyMission {
     let common = LegacyMissionCommon {
         source_nation: i16::from(mission.nation.get()),
@@ -667,28 +680,28 @@ fn mission_dto(
             amassing_province: option_i16(attack.amassing_province.map(ProvinceId::get)),
             beachhead: beachhead
                 .as_ref()
-                .map(navy_mission_dto)
+                .map(|navy| navy_mission_dto(navy, ship_ordinals))
                 .unwrap_or_else(empty_navy_mission),
         },
         MissionData::ControlSeaZone(navy) => LegacyMission::ControlSeaZone {
             common,
-            navy: navy_mission_dto(navy),
+            navy: navy_mission_dto(navy, ship_ordinals),
         },
         MissionData::Escort(navy) => LegacyMission::Escort {
             common,
-            navy: navy_mission_dto(navy),
+            navy: navy_mission_dto(navy, ship_ordinals),
         },
         MissionData::ScatteredShips(navy) => LegacyMission::ScatteredShips {
             common,
-            navy: navy_mission_dto(navy),
+            navy: navy_mission_dto(navy, ship_ordinals),
         },
         MissionData::Beachhead(navy) => LegacyMission::Beachhead {
             common,
-            navy: navy_mission_dto(navy),
+            navy: navy_mission_dto(navy, ship_ordinals),
         },
         MissionData::BlockadePort { navy, port_zone } => LegacyMission::BlockadePort {
             common,
-            navy: navy_mission_dto(navy),
+            navy: navy_mission_dto(navy, ship_ordinals),
             blockade_port_zone: port_zone.get() as i16,
         },
     }
@@ -801,12 +814,23 @@ fn navy_dto(state: &GameState) -> LegacyNavyState {
     }
 }
 
-fn navy_mission_dto(navy: &NavyMissionState) -> LegacyNavyMission {
+fn navy_mission_dto(
+    navy: &NavyMissionState,
+    ship_ordinals: &std::collections::HashMap<ShipId, i16>,
+) -> LegacyNavyMission {
     LegacyNavyMission {
         target_zone: option_i16(navy.target_zone.map(OceanZoneId::get)),
         resolved_port_zone: option_i16(navy.resolved_port_zone.map(OceanZoneId::get)),
         required_equipage_bits: navy.required_equipage_bits,
-        ship_ordinals: Vec::new(),
+        ship_ordinals: navy
+            .ships
+            .keys()
+            .map(|ship| {
+                *ship_ordinals
+                    .get(ship)
+                    .expect("navy-mission ship is present in the retail ship list")
+            })
+            .collect(),
         state: navy.state.retail(),
     }
 }
