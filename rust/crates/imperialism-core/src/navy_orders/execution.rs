@@ -674,6 +674,18 @@ impl GameState {
         else {
             return;
         };
+        let location = left.location;
+        let left_report_ships = left.ships.keys().copied().collect::<Vec<_>>();
+        let right_report_ships = right.ships.keys().copied().collect::<Vec<_>>();
+        let mut report = BattleReport {
+            participant: None,
+            kind: BattleReportKind::SeaBattle,
+            location: BattleReportLocation::Zone(location),
+            sides: BattleReportSideTable::from_array([
+                self.naval_report_side(left.nation, &left_report_ships),
+                self.naval_report_side(right.nation, &right_report_ships),
+            ]),
+        };
         let left_start = left.ships.len();
         let right_start = right.ships.len();
         let max_tier = left
@@ -748,6 +760,15 @@ impl GameState {
 
         let left_empty = self.task_forces[&left_id].ships.is_empty();
         let right_empty = self.task_forces[&right_id].ships.is_empty();
+        report.participant = if !unreachable && left_empty != right_empty {
+            Some(if left_empty {
+                BattleReportSideSlot::Right
+            } else {
+                BattleReportSideSlot::Left
+            })
+        } else {
+            None
+        };
         if !unreachable && left_empty != right_empty {
             let (loser, winner, loser_start) = if left_empty {
                 (left_id, right_id, left_start)
@@ -776,6 +797,59 @@ impl GameState {
                 .get_mut(&loser)
                 .expect("task force remains queued")
                 .defeated = true;
+        }
+        self.refresh_naval_report_side(
+            &mut report.sides[BattleReportSideSlot::Left],
+            left_id,
+            &left_report_ships,
+        );
+        self.refresh_naval_report_side(
+            &mut report.sides[BattleReportSideSlot::Right],
+            right_id,
+            &right_report_ships,
+        );
+        self.append_battle_report(report);
+    }
+
+    fn naval_report_side(&self, nation: NationId, ships: &[ShipId]) -> BattleReportSide {
+        BattleReportSide {
+            nation,
+            children: ships
+                .iter()
+                .map(|&ship_id| {
+                    let ship = self.ship(ship_id).expect("battle-report ship exists");
+                    BattleReportUnit {
+                        kind: BattleReportUnitKind::Ship(ship.ship_type),
+                        stock_or_required: ship.strength,
+                        name: ship.name.clone(),
+                        strength_bucket: ship.experience / 100,
+                        detail_identity: BATTLE_REPORT_NAVY_IDENTITY,
+                    }
+                })
+                .collect(),
+        }
+    }
+
+    fn refresh_naval_report_side(
+        &self,
+        side: &mut BattleReportSide,
+        force: TaskForceId,
+        ships: &[ShipId],
+    ) {
+        for (row, &ship_id) in side.children.iter_mut().zip(ships) {
+            let still_present = self
+                .task_force(force)
+                .is_some_and(|force| force.ships.contains_key(&ship_id));
+            if still_present {
+                let ship = self
+                    .ship(ship_id)
+                    .expect("surviving battle-report ship exists");
+                row.stock_or_required = ship.strength;
+                row.strength_bucket = ship.experience / 100;
+            } else {
+                row.stock_or_required = 0;
+            }
+            row.detail_identity = BATTLE_REPORT_NAVY_IDENTITY;
         }
     }
 

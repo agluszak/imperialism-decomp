@@ -112,7 +112,8 @@ pub type BattleReportSideTable<T> = EnumMap<BattleReportSideSlot, T>;
 /// Authoritative combat/naval report.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct BattleReport {
-    pub participant: BattleReportSideSlot,
+    /// Winning side, or `None` when retail records no decisive participant (`-1`).
+    pub participant: Option<BattleReportSideSlot>,
     pub kind: BattleReportKind,
     pub location: BattleReportLocation,
     pub sides: BattleReportSideTable<BattleReportSide>,
@@ -120,6 +121,7 @@ pub struct BattleReport {
 
 /// `'army'` (`IMPERIALISM_FOURCC('a','r','m','y')`) written to land detail rows.
 pub const BATTLE_REPORT_ARMY_IDENTITY: u32 = 0x6172_6d79;
+pub const BATTLE_REPORT_NAVY_IDENTITY: u32 = 0x6e61_7679;
 
 impl GameState {
     pub fn battle_reports(&self) -> &[BattleReport] {
@@ -149,11 +151,11 @@ impl GameState {
         let attacker_side = self.land_report_side(attacker, attacker_units);
         let defender_side = self.land_report_side(defender, defender_units);
         self.append_battle_report(BattleReport {
-            participant: if attacker_won {
+            participant: Some(if attacker_won {
                 BattleReportSideSlot::Left
             } else {
                 BattleReportSideSlot::Right
-            },
+            }),
             kind,
             location: BattleReportLocation::Province(province),
             sides: BattleReportSideTable::from_array([attacker_side, defender_side]),
@@ -223,7 +225,7 @@ mod tests {
         assert!(state.battle_reports_pending());
         let report = &state.battle_reports[0];
         assert_eq!(report.kind, BattleReportKind::LandBattle);
-        assert_eq!(report.participant, BattleReportSideSlot::Left);
+        assert_eq!(report.participant, Some(BattleReportSideSlot::Left));
         assert_eq!(
             report.sides[BattleReportSideSlot::Left].children[0].name,
             "1st Regulars"

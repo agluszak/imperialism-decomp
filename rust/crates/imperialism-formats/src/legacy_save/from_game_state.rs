@@ -1342,7 +1342,10 @@ fn army_reports_from_state(
         .iter()
         .enumerate()
         .map(|(index, report)| LegacyBattleReport {
-            participant_index: report.participant.retail(),
+            participant_index: report
+                .participant
+                .map(BattleReportSideSlot::retail)
+                .unwrap_or(u8::MAX),
             displayed_participant: BattleReportSideSlot::Left.retail(),
             kind: report.kind.retail(),
             node_id: match report.location {

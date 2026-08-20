@@ -143,7 +143,13 @@ fn military_phase_ships_without_orders() {
 #[ignore = "requires the native C++ oracle"]
 fn military_phase_naval_encounter() {
     compare_native("military_phase_naval_encounter", |state, _: EmptyCase| {
-        state.do_military()
+        let continuation = state.do_military();
+        let [report] = state.battle_reports() else {
+            panic!("retail strategic naval encounter appends one battle report")
+        };
+        assert_eq!(report.kind, BattleReportKind::SeaBattle);
+        assert_eq!(report.participant, None);
+        continuation
     })
     .unwrap();
 }
