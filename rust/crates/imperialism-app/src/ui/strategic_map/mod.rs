@@ -507,14 +507,31 @@ pub(super) fn compose_strategic_map_picture(
     selected_civilian: Option<CivilianUnitId>,
     sprites: StrategicMapSprites<'_>,
 ) -> IndexedPicture {
+    compose_strategic_map_picture_with_city_overlay(
+        state,
+        view_origin,
+        selected_civilian,
+        true,
+        sprites,
+    )
+}
+
+fn compose_strategic_map_picture_with_city_overlay(
+    state: &GameState,
+    view_origin: TileId,
+    selected_civilian: Option<CivilianUnitId>,
+    city_overlay_visible: bool,
+    sprites: StrategicMapSprites<'_>,
+) -> IndexedPicture {
     let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
     let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
     for projected in projection.visible_tiles() {
-        let tile_picture = compose_strategic_tile(
+        let tile_picture = compose_strategic_tile_with_city_overlay(
             state,
             view_origin,
             projected.tile,
             selected_civilian,
+            city_overlay_visible,
             sprites,
         );
         picture.copy_at(&tile_picture, projected.origin);
@@ -530,7 +547,13 @@ pub(crate) fn compose_city_site_terrain(
     highlighted_tile: Option<TileId>,
     palette: &DibPalette,
 ) -> Image {
-    let mut picture = compose_strategic_map_picture(state, view_origin, None, canvas.sprites());
+    let mut picture = compose_strategic_map_picture_with_city_overlay(
+        state,
+        view_origin,
+        None,
+        false,
+        canvas.sprites(),
+    );
     if let Some(tile) = highlighted_tile {
         draw_city_site_selection(state, view_origin, nation, tile, &mut picture);
     }
@@ -650,11 +673,30 @@ fn draw_line(surface: &mut IndexedPicture, start: (i32, i32), end: (i32, i32), c
     surface.line_to_gdi(start.into(), end.into(), color, 1);
 }
 
+#[cfg(test)]
 pub(super) fn compose_strategic_tile(
     state: &GameState,
     view_origin: TileId,
     tile: TileId,
     selected_civilian: Option<CivilianUnitId>,
+    sprites: StrategicMapSprites<'_>,
+) -> IndexedPicture {
+    compose_strategic_tile_with_city_overlay(
+        state,
+        view_origin,
+        tile,
+        selected_civilian,
+        true,
+        sprites,
+    )
+}
+
+fn compose_strategic_tile_with_city_overlay(
+    state: &GameState,
+    view_origin: TileId,
+    tile: TileId,
+    selected_civilian: Option<CivilianUnitId>,
+    city_overlay_visible: bool,
     sprites: StrategicMapSprites<'_>,
 ) -> IndexedPicture {
     let tile_state = state.map()[tile];
@@ -671,7 +713,7 @@ pub(super) fn compose_strategic_tile(
         compose_strategic_borders(state, tile, &mut picture);
     }
     compose_strategic_railways(&tile_state, sprites.river_masks, &mut picture);
-    compose_strategic_improvements(state, tile, sprites, &mut picture);
+    compose_strategic_improvements(state, tile, city_overlay_visible, sprites, &mut picture);
     overlays::compose_strategic_survey_feedback(
         state,
         tile,

@@ -55,6 +55,7 @@ pub(super) fn compose_strategic_railways(
 pub(super) fn compose_strategic_improvements(
     state: &GameState,
     tile: TileId,
+    city_overlay_visible: bool,
     sprites: StrategicMapSprites<'_>,
     surface: &mut IndexedPicture,
 ) {
@@ -62,7 +63,10 @@ pub(super) fn compose_strategic_improvements(
     let flags = tile_state.flags.bits();
     let city_or_town = flags & 3 != 0 && tile_state.gate != 0;
 
-    if city_or_town && let Some(offset) = city_marker_offset(state, tile) {
+    if city_or_town
+        && city_overlay_visible
+        && let Some(offset) = city_marker_offset(state, tile)
+    {
         blit_improvement_sprite(sprites.improvements, offset, surface);
     }
 
