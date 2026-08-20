@@ -22,7 +22,7 @@ const NEIGHBOR_UNIT_WEIGHT: MilitaryUnitTable<i32> = MilitaryUnitTable::from_arr
     495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200,
 ]);
 
-const MISSION_SCORE_DIVISOR: f32 = 5000.0;
+pub(crate) const MISSION_SCORE_DIVISOR: f32 = 5000.0;
 const PORT_FRIENDLY_MULTIPLIER: f32 = 1.5;
 const PORT_FOREIGN_MULTIPLIER: f32 = 1.25;
 
@@ -818,6 +818,10 @@ impl GameState {
     }
 
     pub(crate) fn sea_zone_importance(&self, nation: NationId, target: OceanZoneId) -> f32 {
+        self.sea_zone_importance_score(nation, target) / MISSION_SCORE_DIVISOR
+    }
+
+    pub(crate) fn sea_zone_importance_score(&self, nation: NationId, target: OceanZoneId) -> f32 {
         let mut score = self.zone_value_average(target) as f32;
         for (_ordinal, kind) in self.ocean.zones.iter().enumerate().rev() {
             let ZoneKind::PortZone(port) = kind else {
@@ -835,7 +839,7 @@ impl GameState {
                 PORT_FOREIGN_MULTIPLIER
             };
         }
-        score / MISSION_SCORE_DIVISOR
+        score
     }
 
     fn has_direct_or_colony_link(&self, province: ProvinceId, nation: NationId) -> bool {

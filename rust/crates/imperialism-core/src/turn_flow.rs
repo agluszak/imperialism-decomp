@@ -323,10 +323,14 @@ impl GameState {
         self.advance_turn(story_ids)
     }
 
-    /// Dismisses the newspaper and returns to player orders.
-    pub fn close_newspaper(&mut self) -> TurnStop {
+    /// Dismisses the newspaper and returns to player orders. Retail's map-entry
+    /// music selection consumes the process-global CRT stream when music is enabled.
+    pub fn close_newspaper(&mut self, music_enabled: bool) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::RETURN_TO_MAP);
         self.return_to_map();
+        if music_enabled && self.turn.turn_cooldown_defer_counter < 1 {
+            self.rng.next_crt_rand();
+        }
         TurnStop::PlayerOrders
     }
 
@@ -756,7 +760,7 @@ mod tests {
         assert_eq!(stop, crate::TurnStop::Newspaper);
         assert_eq!(state.turn.phase(), crate::PhaseCode::RETURN_TO_MAP);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
-        assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
+        assert_eq!(state.close_newspaper(false), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
     }
 
@@ -997,7 +1001,7 @@ mod tests {
             stop = state.acknowledge_technology_report(&[]);
         }
         assert_eq!(stop, crate::TurnStop::Newspaper);
-        assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
+        assert_eq!(state.close_newspaper(false), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
     }

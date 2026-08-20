@@ -1,8 +1,8 @@
 //! Retail CD-cue policy above one Bevy sink.
 //!
 //! `TSoundPlayer` is game policy: active/pending cues, fade-before-switch, a pool, and a
-//! remaining list sampled without replacement. Presentation RNG is independent of the
-//! gameplay CRT stream; native semantic captures do not pump `SelectAndScheduleRandomAudioCue`.
+//! remaining list sampled without replacement. Core turn boundaries consume retail's shared
+//! gameplay CRT draw; this director keeps only the presentation-side cue selection state.
 
 use crate::AppState;
 use crate::RetailAssetsResource;
@@ -38,7 +38,7 @@ pub(crate) struct MusicDirector {
     pool: Vec<MusicTrack>,
     remaining: Vec<MusicTrack>,
     fade: Option<MusicFade>,
-    /// Presentation-only; not the gameplay CRT `rand()` stream.
+    /// Presentation-side cue selection after core has consumed retail's gameplay draw.
     rng: u32,
 }
 
@@ -179,7 +179,7 @@ fn linear_volume(scalar: i16) -> f32 {
     (f32::from(scalar.max(0)) / MUSIC_VOLUME_SCALE).clamp(0.0, 1.0)
 }
 
-/// Independent of CRT `rand()` / gameplay `GameState` RNG.
+/// Presentation-side selection; gameplay-stream consumption happens at core turn boundaries.
 fn presentation_rand(state: &mut u32) -> u32 {
     *state = state.wrapping_mul(1664525).wrapping_add(1013904223);
     *state >> 16
