@@ -34,7 +34,8 @@ protected:
   void Script() override {
     RT_BEGIN();
     // Arrival at kRuntimeCapitalSelectionReady is the assertion; CaptureGameStateIfRequested
-    // records the semantic GameState at result-write time while still parked here.
+    // would otherwise publish the two bytes retail leaves undefined on these fresh objects.
+    RT_REQUIRE(CaptureFreshRandomGameState(RunState(), "game_state"));
     RT_PASS();
     RT_END();
   }
