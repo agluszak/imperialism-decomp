@@ -5,7 +5,9 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::RetailTree;
+use super::retail_raster::IndexedRasterExt;
 use crate::AppState;
+use crate::RetailAssetsResource;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -97,14 +99,6 @@ const TRANSPORT_ROWS: [TransportRowBinding; 18] = [
 
 const LEFT_TRANSPORT_ROW_COUNT: usize = 10;
 
-#[derive(Clone, Copy)]
-struct TransportColors {
-    allocation: Color,
-    empty: Color,
-    below_limit: Color,
-    at_limit: Color,
-}
-
 #[derive(Component)]
 struct TransportScreen;
 
@@ -117,10 +111,25 @@ struct TransportAdjust {
 #[derive(Component, Clone, Copy)]
 struct TransportHover(TransportAllocation);
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum TransportGaugeKind {
     Allocation(TransportAllocation),
     Capacity,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct TransportGaugeKey {
+    value: i16,
+    total: i16,
+    limit: Option<i16>,
+}
+
+#[derive(Component)]
+struct TransportGaugeVisual {
+    kind: TransportGaugeKind,
+    track_left: i32,
+    base: IndexedPicture,
+    rendered: Option<TransportGaugeKey>,
 }
 
 #[derive(Component)]
@@ -130,21 +139,10 @@ struct TransportCursor;
 enum TransportDisplay {
     Row(TransportAllocation),
     RowCaption(TransportAllocation),
-    Track(TransportAllocation),
     CapacityCaption,
     Money {
         resource: ResourceKind,
         unit_value: i32,
-    },
-    Gauge {
-        kind: TransportGaugeKind,
-        normal_color: Color,
-        full_color: Color,
-    },
-    Limit {
-        allocation: TransportAllocation,
-        below_color: Color,
-        reached_color: Color,
     },
 }
 
@@ -160,7 +158,7 @@ impl Plugin for TransportPlugin {
             Update,
             (
                 sync_transport_text,
-                sync_transport_visual,
+                sync_transport_gauges,
                 sync_transport_presence,
                 sync_transport_cursor,
             )
@@ -217,13 +215,6 @@ fn bind_transport_screen(
             },
         ));
     }
-    let colors = TransportColors {
-        // TTransportPicture passes these color codes through TViewMgr::GetColor.
-        allocation: assets.palette_color(0xc6),
-        empty: assets.palette_color(0x27),
-        below_limit: assets.palette_color(0x2d),
-        at_limit: assets.palette_color(0x18),
-    };
     let (cursor_font, cursor_layout, cursor_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -239,13 +230,33 @@ fn bind_transport_screen(
         assets.palette_color(0x28),
         assets.palette_color(0),
     );
-    bind_transport_controls(&mut commands, *root, &tree, cursor_style, colors);
-    for binding in TRANSPORT_ROWS {
+    bind_transport_controls(&mut commands, *root, &tree, cursor_style);
+    for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
         let row = tree.find(*root, binding.tag);
         commands
             .entity(row)
             .insert(TransportHover(binding.allocation));
+        install_transport_gauge(
+            &mut commands,
+            &mut assets,
+            row,
+            TransportGaugeKind::Allocation(binding.allocation),
+            if index < LEFT_TRANSPORT_ROW_COUNT {
+                0x61
+            } else {
+                0x5d
+            },
+            PictureId::new(4001 + index as i16),
+        );
     }
+    install_transport_gauge(
+        &mut commands,
+        &mut assets,
+        tree.find(*root, fourcc!("tota")),
+        TransportGaugeKind::Capacity,
+        0x5d,
+        PictureId::new(4019),
+    );
 }
 
 fn bind_transport_controls(
@@ -253,13 +264,12 @@ fn bind_transport_controls(
     root: Entity,
     tree: &RetailTree,
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
-    colors: TransportColors,
 ) {
     let selected = tree.find(root, fourcc!("tran"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
+    for binding in TRANSPORT_ROWS {
         let row = tree.find(root, binding.tag);
         commands.entity(row).insert((
             TransportDisplay::Row(binding.allocation),
@@ -284,27 +294,6 @@ fn bind_transport_controls(
         commands
             .entity(tree.find(row, fourcc!("text")))
             .insert(TransportDisplay::RowCaption(binding.allocation));
-        let track_left = if index < LEFT_TRANSPORT_ROW_COUNT {
-            0x61
-        } else {
-            0x5d
-        };
-        commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    width: percent(100),
-                    height: percent(100),
-                    ..default()
-                },
-                Pickable::IGNORE,
-                ChildOf(row),
-            ))
-            .apply_scene(transport_row_overlay(
-                binding.allocation,
-                track_left,
-                colors,
-            ));
         if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
             Some((ResourceKind::Gold, 200))
         } else if binding.allocation == TransportAllocation::GEMS {
@@ -325,9 +314,6 @@ fn bind_transport_controls(
     commands
         .entity(tree.find(total, fourcc!("text")))
         .insert(TransportDisplay::CapacityCaption);
-    commands
-        .entity(total)
-        .apply_scene(transport_capacity_overlay(colors));
     let cursor = tree.find(root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, cursor_color, cursor_shadow) =
         cursor_style;
@@ -345,93 +331,49 @@ fn bind_transport_controls(
     ));
 }
 
-fn transport_track(left: i32, color: Color, allocation: Option<TransportAllocation>) -> impl Scene {
-    let display = allocation.map(|allocation| {
-        bsn! {
-            template(move |_context| Ok(TransportDisplay::Track(allocation)))
-        }
-    });
-    bsn! {
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(left),
-            top: px(0x0d),
-            width: px(0x71),
-            height: px(4),
-        }
-        BackgroundColor(color)
-        Pickable::IGNORE
-        {display}
-    }
-}
-
-fn transport_row_overlay(
-    allocation: TransportAllocation,
+fn install_transport_gauge(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    entity: Entity,
+    kind: TransportGaugeKind,
     track_left: i32,
-    colors: TransportColors,
-) -> impl Scene {
-    bsn! {
-        Children [
-            (transport_track(track_left, colors.empty, Some(allocation))),
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(track_left),
-                    top: px(0x0d),
-                    width: px(0),
-                    height: px(4),
-                }
-                BackgroundColor({colors.allocation})
-                ZIndex(1)
-                Pickable::IGNORE
-                template(move |_context| Ok(TransportDisplay::Gauge {
-                    kind: TransportGaugeKind::Allocation(allocation),
-                    normal_color: colors.allocation,
-                    full_color: colors.allocation,
-                }))
-            ),
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(track_left - 1),
-                    top: px(0x12),
-                    width: px(0x73),
-                    height: px(2),
-                }
-                BackgroundColor({colors.below_limit})
-                Pickable::IGNORE
-                template(move |_context| Ok(TransportDisplay::Limit {
-                    allocation,
-                    below_color: colors.below_limit,
-                    reached_color: colors.at_limit,
-                }))
-            ),
-        ]
-    }
+    picture_id: PictureId,
+) {
+    let base = assets
+        .indexed_picture(picture_id)
+        .expect("retail Transport picture must load");
+    let palette = *assets.default_dib_palette();
+    let image = assets.add_image(base.to_image(&palette));
+    commands.entity(entity).insert((
+        ImageNode::new(image),
+        TransportGaugeVisual {
+            kind,
+            track_left,
+            base,
+            rendered: None,
+        },
+    ));
 }
 
-fn transport_capacity_overlay(colors: TransportColors) -> impl Scene {
-    bsn! {
-        Children [
-            (transport_track(0x5d, colors.empty, None)),
-            (
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0x5d),
-                    top: px(0x0d),
-                    width: px(0),
-                    height: px(4),
-                }
-                BackgroundColor({colors.below_limit})
-                ZIndex(1)
-                Pickable::IGNORE
-                template(move |_context| Ok(TransportDisplay::Gauge {
-                    kind: TransportGaugeKind::Capacity,
-                    normal_color: colors.below_limit,
-                    full_color: colors.at_limit,
-                }))
-            ),
-        ]
+fn draw_transport_gauge(
+    picture: &mut IndexedPicture,
+    kind: TransportGaugeKind,
+    track_left: i32,
+    key: TransportGaugeKey,
+) {
+    let marker = track_left + transport_gauge_width(key.value, key.total) as i32;
+    picture.fill_rect(IRect::new(marker, 0x0d, track_left + 0x71, 0x11), 0x3b);
+    let fill = match kind {
+        TransportGaugeKind::Allocation(_) => 0x3a,
+        TransportGaugeKind::Capacity if key.value == key.total => 0x34,
+        TransportGaugeKind::Capacity => 0x33,
+    };
+    picture.fill_rect(IRect::new(track_left, 0x0d, marker, 0x11), fill);
+    if let Some(limit) = key.limit {
+        picture.fill_rect(
+            IRect::new(track_left - 1, 0x12, track_left + 0x72, 0x14),
+            if key.value < limit { 0x33 } else { 0x34 },
+        );
     }
 }
 
@@ -485,72 +427,42 @@ fn sync_transport_text(
     }
 }
 
-fn sync_transport_visual(
+fn sync_transport_gauges(
     session: Res<GameSession>,
+    retail: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
     screens: Query<(), Added<TransportScreen>>,
-    mut displays: Query<(
-        &TransportDisplay,
-        &mut Node,
-        &mut Visibility,
-        &mut BackgroundColor,
-    )>,
+    mut gauges: Query<(&mut TransportGaugeVisual, &ImageNode)>,
 ) {
     if !session.is_changed() && screens.is_empty() {
         return;
     }
     let nation = session.active_major_nation();
     let economy = &session.game.nations().major(nation).economy;
-    for (display, mut node, mut visibility, mut color) in &mut displays {
-        match *display {
-            TransportDisplay::Gauge {
-                kind,
-                normal_color,
-                full_color,
-            } => {
-                let (value, total) = match kind {
-                    TransportGaugeKind::Allocation(allocation) => {
-                        let status = session.game.transport_row_status(nation, allocation);
-                        *visibility = if status.adjustable {
-                            Visibility::Visible
-                        } else {
-                            Visibility::Hidden
-                        };
-                        (status.allocated, status.available)
-                    }
-                    TransportGaugeKind::Capacity => (
-                        economy.capacities.reserved_transport,
-                        economy.capacities.transport,
-                    ),
-                };
-                node.width = Val::Px(transport_gauge_width(value, total));
-                color.0 = if value == total {
-                    full_color
-                } else {
-                    normal_color
-                };
-            }
-            TransportDisplay::Limit {
-                allocation,
-                below_color,
-                reached_color,
-            } => {
+    for (mut gauge, image_node) in &mut gauges {
+        let key = match gauge.kind {
+            TransportGaugeKind::Allocation(allocation) => {
                 let status = session.game.transport_row_status(nation, allocation);
-                if !status.adjustable {
-                    *visibility = Visibility::Hidden;
-                    continue;
+                TransportGaugeKey {
+                    value: status.allocated,
+                    total: status.available,
+                    limit: status.limit,
                 }
-                let Some(limit) = status.limit else {
-                    *visibility = Visibility::Hidden;
-                    continue;
-                };
-                *visibility = Visibility::Visible;
-                color.0 = if status.allocated < limit {
-                    below_color
-                } else {
-                    reached_color
-                };
             }
-            _ => {}
+            TransportGaugeKind::Capacity => TransportGaugeKey {
+                value: economy.capacities.reserved_transport,
+                total: economy.capacities.transport,
+                limit: None,
+            },
+        };
+        if gauge.rendered == Some(key) {
+            continue;
+        }
+        let mut picture = gauge.base.clone();
+        draw_transport_gauge(&mut picture, gauge.kind, gauge.track_left, key);
+        if let Some(mut image) = images.get_mut(&image_node.image) {
+            *image = picture.to_image(retail.assets().default_dib_palette());
+            gauge.rendered = Some(key);
         }
     }
 }
@@ -573,9 +485,9 @@ fn sync_transport_presence(
     let nation = session.active_major_nation();
     for (entity, display, mut visibility, disabled) in &mut rows {
         let allocation = match *display {
-            TransportDisplay::Row(allocation)
-            | TransportDisplay::RowCaption(allocation)
-            | TransportDisplay::Track(allocation) => allocation,
+            TransportDisplay::Row(allocation) | TransportDisplay::RowCaption(allocation) => {
+                allocation
+            }
             TransportDisplay::Money { resource, .. } => match resource {
                 ResourceKind::Gold => TransportAllocation::GOLD,
                 ResourceKind::Gems => TransportAllocation::GEMS,
@@ -745,6 +657,7 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::super::retail::RetailTag;
+    use super::super::retail_raster::indexed_picture;
     use super::*;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
@@ -855,12 +768,6 @@ mod tests {
                 Color::WHITE,
                 Color::BLACK,
             ),
-            TransportColors {
-                allocation: Color::WHITE,
-                empty: Color::BLACK,
-                below_limit: Color::WHITE,
-                at_limit: Color::BLACK,
-            },
         );
     }
 
@@ -892,7 +799,6 @@ mod tests {
                 (
                     bind_test_transport,
                     sync_transport_text,
-                    sync_transport_visual,
                     sync_transport_presence,
                 )
                     .chain(),
@@ -938,24 +844,6 @@ mod tests {
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(after.allocated, before.allocated + 1);
-        let (gauge, visibility, color) = app
-            .world_mut()
-            .query::<(&TransportDisplay, &Node, &Visibility, &BackgroundColor)>()
-            .iter(app.world())
-            .find_map(|(display, node, visibility, color)| match display {
-                TransportDisplay::Gauge {
-                    kind: TransportGaugeKind::Allocation(allocation),
-                    ..
-                } if *allocation == binding.allocation => Some((node, visibility, color)),
-                _ => None,
-            })
-            .unwrap();
-        assert_eq!(
-            gauge.width,
-            Val::Px(transport_gauge_width(after.allocated, after.available))
-        );
-        assert_eq!(*visibility, Visibility::Visible);
-        assert_eq!(color.0, Color::WHITE);
         let caption = app
             .world_mut()
             .query::<(&TransportDisplay, &Text)>()
@@ -994,5 +882,39 @@ mod tests {
             caption,
             format!("{}  /  {}", restored.allocated, restored.available)
         );
+    }
+
+    #[test]
+    fn transport_picture_draws_gauge_and_limit_into_its_own_raster() {
+        let mut picture = indexed_picture(224, 30, 0);
+        draw_transport_gauge(
+            &mut picture,
+            TransportGaugeKind::Allocation(TransportAllocation::GRAIN),
+            0x61,
+            TransportGaugeKey {
+                value: 2,
+                total: 4,
+                limit: Some(3),
+            },
+        );
+
+        let width = picture.width as usize;
+        assert_eq!(picture.pixels[0x0d * width + 0x61], 0x3a);
+        assert_eq!(picture.pixels[0x0d * width + 0x61 + 55], 0x3a);
+        assert_eq!(picture.pixels[0x0d * width + 0x61 + 56], 0x3b);
+        assert_eq!(picture.pixels[0x12 * width + 0x60], 0x33);
+
+        draw_transport_gauge(
+            &mut picture,
+            TransportGaugeKind::Capacity,
+            0x5d,
+            TransportGaugeKey {
+                value: 4,
+                total: 4,
+                limit: None,
+            },
+        );
+        assert_eq!(picture.pixels[0x0d * width + 0x5d], 0x34);
+        assert_eq!(picture.pixels[0x0d * width + 0x5d + 112], 0x34);
     }
 }
