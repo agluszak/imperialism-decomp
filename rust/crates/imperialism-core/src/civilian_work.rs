@@ -653,7 +653,11 @@ impl GameState {
             }
             CivilianUnitKind::Miner | CivilianUnitKind::Driller => {
                 self.civilian_owned_by(nation, tile)
-                    && state.development.resource_visible_to_majors[nation]
+                    && state
+                        .development
+                        .resource_visible_to_majors
+                        .iter()
+                        .any(|&visible| visible)
                     && self.max_resource_capability_for_order(tile, kind, nation)
                         > i16::from(state.development.extractive.get())
             }
@@ -1842,6 +1846,42 @@ mod tests {
                 source: worker_origin,
                 turns: 0,
             }
+        );
+    }
+
+    #[test]
+    fn mining_targets_use_the_retail_nonzero_discovery_bitfield_gate() {
+        let mut state = crate::test_support::game_state();
+        let origin = state.map.geometry().tile(3, 9).unwrap();
+        let target = state.map.geometry().tile(3, 10).unwrap();
+        let nation = NationId::new(0);
+        let major = MajorNationId::new(0);
+        let miner = civilian_on(
+            &mut state,
+            2,
+            CivilianUnitKind::Miner,
+            origin,
+            CivilianWorkOrder::Idle,
+            nation,
+        );
+        state.map[target].owner_nation = Some(TileOwnerTag::from_nation(nation));
+        state.map[target].edge_resources = [Some(ResourceKind::Coal), None];
+        state.technology.city_capabilities_by_nation[major]
+            .university
+            .requirement_levels[ResourceKind::Coal] = UniversityRequirementLevel::One;
+        state.map[target].development.resource_visible_to_majors[MajorNationId::new(1)] = true;
+
+        state.activate_civilian_selection(miner);
+        assert_eq!(
+            state.civilian_tile_action(miner, target),
+            CivilianTileAction::DevelopResource
+        );
+
+        state.map[target].development.resource_visible_to_majors[MajorNationId::new(1)] = false;
+        state.activate_civilian_selection(miner);
+        assert_eq!(
+            state.civilian_tile_action(miner, target),
+            CivilianTileAction::Blocked
         );
     }
 
