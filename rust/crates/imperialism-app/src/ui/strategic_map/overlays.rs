@@ -4,7 +4,6 @@ use imperialism_formats::*;
 
 use crate::ui::retail_raster::IndexedRasterExt;
 
-use super::map_projection::DetailedMapProjection;
 use super::{RIVER_MASK_TRANSPARENT_INDEX, StrategicMapSprites, TILE_SIZE};
 
 pub(super) const RESOURCE_ICON_WIDTH: i32 = 0x14;
@@ -76,19 +75,21 @@ pub(super) fn compose_strategic_improvements(
 
     if !city_or_town {
         compose_strategic_resource_indicators(state, tile, sprites, surface);
-        compose_strategic_activity_overlay(state, tile, sprites.resource_overlays, surface);
     } else if let Some(offset) = fort_marker_offset(state, tile) {
         blit_improvement_sprite(sprites.improvements, offset, surface);
     }
 }
 
-fn compose_strategic_activity_overlay(
+pub(super) fn compose_strategic_activity_overlay(
     state: &GameState,
     tile: TileId,
     atlas: &IndexedPicture,
     surface: &mut IndexedPicture,
 ) {
     let tile = state.map()[tile];
+    if tile.flags.bits() & 3 != 0 && tile.gate != 0 {
+        return;
+    }
     let owner_is_major = tile
         .owner_nation
         .and_then(TileOwnerTag::nation)
@@ -138,7 +139,7 @@ pub(super) fn compose_strategic_order_overlay(
 
 pub(super) fn compose_strategic_survey_feedback(
     state: &GameState,
-    view_origin: TileId,
+    tile: TileId,
     selected: Option<CivilianUnitId>,
     atlas: &IndexedPicture,
     surface: &mut IndexedPicture,
@@ -155,28 +156,25 @@ pub(super) fn compose_strategic_survey_feedback(
     let Some(active) = MajorNationId::from_nation(state.turn().active_nation) else {
         return;
     };
-    let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
-    for projected in projection.visible_tiles() {
-        let tile = state.map()[projected.tile];
-        let city_or_town = tile.flags.bits() & 3 != 0 && tile.gate != 0;
-        if city_or_town
-            || tile.edge_resources[0].is_some_and(|resource| resource_is_prospectable(&resource))
-            || !tile.development.resource_visible_to_majors[active]
-        {
-            continue;
-        }
-        surface.blit_keyed(
-            atlas,
-            IRect::new(
-                SURVEY_FEEDBACK_SOURCE_X,
-                0,
-                SURVEY_FEEDBACK_SOURCE_X + 0x14,
-                0x14,
-            ),
-            projected.origin + SURVEY_FEEDBACK_DESTINATION,
-            RIVER_MASK_TRANSPARENT_INDEX,
-        );
+    let tile = state.map()[tile];
+    let city_or_town = tile.flags.bits() & 3 != 0 && tile.gate != 0;
+    if city_or_town
+        || tile.edge_resources[0].is_some_and(|resource| resource_is_prospectable(&resource))
+        || !tile.development.resource_visible_to_majors[active]
+    {
+        return;
     }
+    surface.blit_keyed(
+        atlas,
+        IRect::new(
+            SURVEY_FEEDBACK_SOURCE_X,
+            0,
+            SURVEY_FEEDBACK_SOURCE_X + 0x14,
+            0x14,
+        ),
+        SURVEY_FEEDBACK_DESTINATION,
+        RIVER_MASK_TRANSPARENT_INDEX,
+    );
 }
 
 pub(super) fn city_marker_offset(state: &GameState, tile: TileId) -> Option<u16> {

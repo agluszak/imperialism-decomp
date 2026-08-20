@@ -70,7 +70,6 @@ struct StrategicMapComposeKey {
 #[derive(Component)]
 pub(crate) struct StrategicSelectionCanvas {
     map: Entity,
-    survey_feedback: IndexedPicture,
     composed: Option<StrategicMapComposeKey>,
 }
 
@@ -82,6 +81,7 @@ pub(crate) struct StrategicBaseTerrainCanvas {
     improvement_pictures: Vec<IndexedPicture>,
     resource_icons: IndexedPicture,
     resource_overlays: IndexedPicture,
+    survey_feedback: IndexedPicture,
     order_markers: IndexedPicture,
     composed: Option<StrategicMapComposeKey>,
 }
@@ -93,6 +93,7 @@ pub(super) struct StrategicMapSprites<'a> {
     pub(super) improvements: &'a [IndexedPicture],
     pub(super) resource_icons: &'a IndexedPicture,
     pub(super) resource_overlays: &'a IndexedPicture,
+    pub(super) survey_feedback: &'a IndexedPicture,
     pub(super) order_markers: &'a IndexedPicture,
 }
 
@@ -111,19 +112,30 @@ pub(crate) fn bind_strategic_base_terrain(
     let improvement_pictures = load_strategic_improvement_pictures(assets);
     let resource_icons = load_picture(assets, 750);
     let resource_overlays = load_picture(assets, 751);
+    let survey_feedback = load_picture(assets, 801);
     let order_markers = load_picture(assets, 806);
+    let selected_civilian = state
+        .first_idle_civilian(state.turn().active_nation)
+        .map(|(id, _)| id);
     let canvas = StrategicBaseTerrainCanvas {
         terrain_pictures,
         river_masks,
         improvement_pictures,
         resource_icons,
         resource_overlays,
+        survey_feedback,
         order_markers,
-        composed: Some(strategic_map_compose_key(state, view_origin, None, None)),
+        composed: Some(strategic_map_compose_key(
+            state,
+            view_origin,
+            selected_civilian,
+            None,
+        )),
     };
     let image = compose_strategic_map(
         state,
         view_origin,
+        selected_civilian,
         canvas.sprites(),
         assets.default_dib_palette(),
     );
@@ -133,15 +145,13 @@ pub(crate) fn bind_strategic_base_terrain(
         RelativeCursorPosition::default(),
         canvas,
         StrategicInteraction {
-            civilian: state
-                .first_idle_civilian(state.turn().active_nation)
-                .map(|(id, _)| id),
+            civilian: selected_civilian,
             ..default()
         },
         StrategicViewport::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state, view_origin);
-    bind_strategic_selection(commands, map, assets, state, view_origin);
+    bind_strategic_selection(commands, map, assets, state, view_origin, selected_civilian);
     map
 }
 
@@ -151,14 +161,13 @@ fn bind_strategic_selection(
     assets: &mut RetailUiAssets,
     state: &GameState,
     view_origin: TileId,
+    selected_civilian: Option<CivilianUnitId>,
 ) {
-    let survey_feedback = load_picture(assets, 801);
     let image = assets.add_image(compose_strategic_selection(
         state,
         view_origin,
+        selected_civilian,
         None,
-        None,
-        &survey_feedback,
         assets.default_dib_palette(),
     ));
     commands.spawn((
@@ -175,8 +184,12 @@ fn bind_strategic_selection(
         Pickable::IGNORE,
         StrategicSelectionCanvas {
             map,
-            survey_feedback,
-            composed: Some(strategic_map_compose_key(state, view_origin, None, None)),
+            composed: Some(strategic_map_compose_key(
+                state,
+                view_origin,
+                selected_civilian,
+                None,
+            )),
         },
         ChildOf(map),
     ));
@@ -190,6 +203,7 @@ impl StrategicBaseTerrainCanvas {
             improvements: &self.improvement_pictures,
             resource_icons: &self.resource_icons,
             resource_overlays: &self.resource_overlays,
+            survey_feedback: &self.survey_feedback,
             order_markers: &self.order_markers,
         }
     }
@@ -199,16 +213,27 @@ pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
+    mut maps: Query<(
+        &mut StrategicBaseTerrainCanvas,
+        &ImageNode,
+        &StrategicInteraction,
+    )>,
 ) {
-    for (mut canvas, image_node) in &mut maps {
-        let key = strategic_map_compose_key(&session.game, session.map_view_origin, None, None);
+    for (mut canvas, image_node, interaction) in &mut maps {
+        let selected_civilian = interaction.civilian;
+        let key = strategic_map_compose_key(
+            &session.game,
+            session.map_view_origin,
+            selected_civilian,
+            None,
+        );
         if canvas.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_map(
             &session.game,
             session.map_view_origin,
+            selected_civilian,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
         );
@@ -247,7 +272,6 @@ pub(crate) fn sync_strategic_selection(
             session.map_view_origin,
             selected.civilian,
             hovered,
-            &overlay.survey_feedback,
             retail_assets.assets().default_dib_palette(),
         );
         let Some(mut existing) = images.get_mut(&image_node.image) else {
@@ -341,10 +365,11 @@ fn river_mask_picture_id(mask: usize) -> PictureId {
 fn compose_strategic_map(
     state: &GameState,
     view_origin: TileId,
+    selected_civilian: Option<CivilianUnitId>,
     sprites: StrategicMapSprites<'_>,
     palette: &DibPalette,
 ) -> Image {
-    compose_strategic_map_picture(state, view_origin, sprites).to_image(palette)
+    compose_strategic_map_picture(state, view_origin, selected_civilian, sprites).to_image(palette)
 }
 
 fn compose_strategic_selection(
@@ -352,17 +377,9 @@ fn compose_strategic_selection(
     view_origin: TileId,
     selected_civilian: Option<CivilianUnitId>,
     hovered_tile: Option<TileId>,
-    survey_feedback: &IndexedPicture,
     palette: &DibPalette,
 ) -> Image {
     let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
-    overlays::compose_strategic_survey_feedback(
-        state,
-        view_origin,
-        selected_civilian,
-        survey_feedback,
-        &mut picture,
-    );
     if let (Some(unit), Some(tile)) = (selected_civilian, hovered_tile) {
         draw_civilian_hover_highlight(state, view_origin, unit, tile, &mut picture);
     }
@@ -487,12 +504,19 @@ fn hash_visible_tile_facts(state: &GameState, tile: TileId, hasher: &mut impl st
 pub(super) fn compose_strategic_map_picture(
     state: &GameState,
     view_origin: TileId,
+    selected_civilian: Option<CivilianUnitId>,
     sprites: StrategicMapSprites<'_>,
 ) -> IndexedPicture {
     let mut picture = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
     let projection = DetailedMapProjection::new(state.map().geometry(), view_origin);
     for projected in projection.visible_tiles() {
-        let tile_picture = compose_strategic_tile(state, view_origin, projected.tile, sprites);
+        let tile_picture = compose_strategic_tile(
+            state,
+            view_origin,
+            projected.tile,
+            selected_civilian,
+            sprites,
+        );
         picture.copy_at(&tile_picture, projected.origin);
     }
     picture
@@ -506,7 +530,7 @@ pub(crate) fn compose_city_site_terrain(
     highlighted_tile: Option<TileId>,
     palette: &DibPalette,
 ) -> Image {
-    let mut picture = compose_strategic_map_picture(state, view_origin, canvas.sprites());
+    let mut picture = compose_strategic_map_picture(state, view_origin, None, canvas.sprites());
     if let Some(tile) = highlighted_tile {
         draw_city_site_selection(state, view_origin, nation, tile, &mut picture);
     }
@@ -630,6 +654,7 @@ pub(super) fn compose_strategic_tile(
     state: &GameState,
     view_origin: TileId,
     tile: TileId,
+    selected_civilian: Option<CivilianUnitId>,
     sprites: StrategicMapSprites<'_>,
 ) -> IndexedPicture {
     let tile_state = state.map()[tile];
@@ -647,6 +672,19 @@ pub(super) fn compose_strategic_tile(
     }
     compose_strategic_railways(&tile_state, sprites.river_masks, &mut picture);
     compose_strategic_improvements(state, tile, sprites, &mut picture);
+    overlays::compose_strategic_survey_feedback(
+        state,
+        tile,
+        selected_civilian,
+        sprites.survey_feedback,
+        &mut picture,
+    );
+    overlays::compose_strategic_activity_overlay(
+        state,
+        tile,
+        sprites.resource_overlays,
+        &mut picture,
+    );
     overlays::compose_strategic_order_overlay(state, tile, sprites, &mut picture);
     picture
 }
