@@ -105,6 +105,15 @@ fn civilians_phase() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_civilians_phase() {
+    compare_native("second_turn_civilians_phase", |state, (): ()| {
+        state.do_civilians();
+    })
+    .unwrap();
+}
+
 #[derive(Debug, Deserialize)]
 struct EmptyCase {}
 
@@ -133,6 +142,15 @@ struct NavalBattleResult {
 #[ignore = "requires the native C++ oracle"]
 fn military_phase() {
     compare_native("military_phase", |state, _: EmptyCase| state.do_military()).unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_military_phase() {
+    compare_native("second_turn_military_phase", |state, _: EmptyCase| {
+        state.do_military()
+    })
+    .unwrap();
 }
 
 #[test]

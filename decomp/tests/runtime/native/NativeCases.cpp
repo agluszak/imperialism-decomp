@@ -28,6 +28,7 @@ RuntimeActionResult RunTradePolicySet(NativeTransition& transition);
 RuntimeActionResult RunTradePolicyStep(NativeTransition& transition);
 RuntimeActionResult RunTradePhase(NativeTransition& transition);
 RuntimeActionResult RunTradePhaseSellOnly(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnTradePhase(NativeTransition& transition);
 
 RuntimeActionResult RunAidAllocation(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition);
@@ -43,6 +44,7 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhase(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnMilitaryPhase(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition);
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition);
@@ -71,6 +73,7 @@ RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition);
 RuntimeActionResult RunCityAndTransportPhase(NativeTransition& transition);
 RuntimeActionResult RunNavyGrowthPending(NativeTransition& transition);
 RuntimeActionResult RunCiviliansPhase(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnCiviliansPhase(NativeTransition& transition);
 RuntimeActionResult RunProvinceLossWithStationedUnit(NativeTransition& transition);
 RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition);
 
@@ -139,6 +142,7 @@ const NativeCase kCases[] = {
     {"trade_policy_step", RunTradePolicyStep},
     {"trade_phase", RunTradePhase},
     {"trade_phase_sell_only", RunTradePhaseSellOnly},
+    {"second_turn_trade_phase", RunSecondTurnTradePhase},
     {"aid_allocation", RunAidAllocation},
     {"diplomacy_grant_entry_updates_treasury", RunDiplomacyGrantEntry},
     {"diplomacy_reset_preserves_recurring_grants", RunDiplomacyReset},
@@ -153,6 +157,7 @@ const NativeCase kCases[] = {
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
     {"military_phase", RunMilitaryPhase},
+    {"second_turn_military_phase", RunSecondTurnMilitaryPhase},
     {"military_phase_ships_without_orders", RunMilitaryPhaseShipsWithoutOrders},
     {"military_phase_naval_encounter", RunMilitaryPhaseNavalEncounter},
     {"navy_battle_accepted_deploy_tiles", RunNavyBattleAcceptedDeployTiles},
@@ -180,6 +185,7 @@ const NativeCase kCases[] = {
     {"city_and_transport_phase", RunCityAndTransportPhase},
     {"navy_growth_pending", RunNavyGrowthPending},
     {"civilians_phase", RunCiviliansPhase},
+    {"second_turn_civilians_phase", RunSecondTurnCiviliansPhase},
     {"province_loss_with_stationed_unit", RunProvinceLossWithStationedUnit},
     {"province_owner_ocean_context", RunProvinceOwnerOceanContext},
     {"check_technology_advances", RunCheckTechnologyAdvances},

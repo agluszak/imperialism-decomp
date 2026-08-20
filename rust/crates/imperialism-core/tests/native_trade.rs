@@ -155,6 +155,15 @@ fn trade_phase_sell_only() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_trade_phase() {
+    compare_native("second_turn_trade_phase", |state, (): ()| {
+        drain_ranked_deals_with_human_auto_accept(state);
+    })
+    .unwrap();
+}
+
 fn drain_ranked_deals_with_human_auto_accept(state: &mut GameState) {
     let mut progress = state.begin_trade_phase();
     while let TradeProgress::Offer(offer) = progress {

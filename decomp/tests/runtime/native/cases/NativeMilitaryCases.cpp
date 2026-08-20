@@ -640,6 +640,19 @@ RuntimeActionResult RunMilitaryPhase(NativeTransition& transition) {
   return transition.Finish();
 }
 
+RuntimeActionResult RunSecondTurnMilitaryPhase(NativeTransition& transition) {
+  g_pSimMgr->economicTurn = 2;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->DoMilitary();
+  return transition.Finish();
+}
+
 RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition) {
   g_pSimMgr->economicTurn = 6;
   TZone* zone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot());
