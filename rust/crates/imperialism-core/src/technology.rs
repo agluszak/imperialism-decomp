@@ -902,11 +902,12 @@ impl GameState {
         let slot = ORDER_SLOT_BY_SHIP_TYPE[usize::from(ship_type.retail())];
         if slot >= 6 {
             let advanced = ShipOrderSlot::from_usize(slot);
-            let previous = self.nations.city(nation).orders.ships[advanced].ship_type;
-            if previous != ShipType::NoShip {
-                self.technology.selected_ship_types_by_nation[nation][previous] = false;
-                self.nations.city_mut(nation).orders.ships[ShipOrderSlot::from_usize(slot - 2)]
-                    .ship_type = previous;
+            let advanced_type = self.nations.city(nation).orders.ships[advanced].ship_type;
+            if advanced_type != ShipType::NoShip {
+                let carried = ShipOrderSlot::from_usize(slot - 2);
+                let displaced = self.nations.city(nation).orders.ships[carried].ship_type;
+                self.technology.selected_ship_types_by_nation[nation][displaced] = false;
+                self.nations.city_mut(nation).orders.ships[carried].ship_type = advanced_type;
             }
         } else if ship_type == ShipType::Freighter {
             let orders = &mut self.nations.city_mut(nation).orders.ships;
@@ -1421,7 +1422,11 @@ mod tests {
                 selected[ship_type],
                 matches!(
                     ship_type,
-                    ShipType::Freighter | ShipType::Dreadnought | ShipType::Battlecruiser
+                    ShipType::AdvancedIronclad
+                        | ShipType::Freighter
+                        | ShipType::ArmoredCruiser
+                        | ShipType::Dreadnought
+                        | ShipType::Battlecruiser
                 ),
                 "unexpected final selection for {ship_type:?}"
             );

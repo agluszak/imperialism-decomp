@@ -39,6 +39,18 @@ fn technology_naval_capability_upgrade() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn technology_naval_capability_sequence() {
+    compare_native(
+        "technology_naval_capability_sequence",
+        |state, case: NationCase| {
+            while state.acknowledge_technology_unlock(case.nation).is_some() {}
+        },
+    )
+    .unwrap();
+}
+
 #[derive(Debug, Deserialize)]
 struct NewspaperCase {
     story_ids: Vec<i32>,

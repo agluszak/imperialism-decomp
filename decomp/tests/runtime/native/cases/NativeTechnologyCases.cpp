@@ -144,6 +144,42 @@ RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transi
   return transition.Finish();
 }
 
+RuntimeActionResult RunTechnologyNavalCapabilitySequence(NativeTransition& transition) {
+  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short nationSlot = activeNationSlot == 0 ? 1 : 0;
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  if (nation == 0 || nation->city == 0) {
+    return RuntimeActionResult::Failure("technology naval-sequence fixture is unavailable");
+  }
+
+  ClearNationNavy(nationSlot);
+  memset(g_pTechMgr->capRowsB333[nationSlot].selectedByResourceType, 1, 5);
+  memset(&g_pTechMgr->capRowsB333[nationSlot].selectedByResourceType[5], 0, 9);
+  const short initialShipTypes[8] = {1, 2, 0, 0, 3, 4, 0, 0};
+  for (int slot = 0; slot < 8; ++slot) {
+    nation->city->shipOrderSlots190[slot]->resourceTypeIndex = initialShipTypes[slot];
+  }
+
+  const int technologyIds[] = {4, 9, 15, 21, 24, 27};
+  for (int index = 0; index < 6; ++index) {
+    const int technologyId = technologyIds[index];
+    g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[technologyId] = 1;
+    g_pTechMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[technologyId] =
+        static_cast<short>(70 + index);
+  }
+
+  JsonObject args;
+  args.Set("nation", nationSlot);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  for (int unlockIndex = 0; unlockIndex < 6; ++unlockIndex) {
+    g_pTechMgr->HandleAbilityUnlock(technologyIds[unlockIndex], nationSlot);
+  }
+  return transition.Finish();
+}
+
 RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
   if (g_pTechMgr == 0 || g_pSimMgr == 0) {
     return RuntimeActionResult::Failure("technology state is unavailable");
