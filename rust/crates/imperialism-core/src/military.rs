@@ -257,7 +257,8 @@ impl GameState {
                 .iter()
                 .filter(|&&neighbor| self.normalized_province_owner(neighbor) == Some(nation))
                 .count();
-            score *= matches as f32 / adjacent.len() as f32 + 1.0;
+            score = (f64::from(record.city_score())
+                * (matches as f64 / adjacent.len() as f64 + 1.0)) as f32;
         }
         (score / 5000.0).to_bits()
     }

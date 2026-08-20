@@ -137,6 +137,15 @@ fn military_phase() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn second_turn_military_cleanup() {
+    compare_native("second_turn_military_cleanup", |state, (): ()| {
+        state.do_military_cleanup();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn military_phase_ships_without_orders() {
     compare_native(
         "military_phase_ships_without_orders",

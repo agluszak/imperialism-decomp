@@ -1328,43 +1328,32 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
   return transition.Finish(result.Release());
 }
 
-// Selection-bit clear, heatmap, militia adoption, and AddPurchasedItems only.
-// Does not invoke navy straggler cleanup, mission prune, AI replan, or
-// power/order metrics.
-RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition) {
-  int slot;
-  if (g_pNavyPrimaryOrderListHead != 0) {
-    g_pNavyPrimaryOrderListHead->selection = 1;
-  }
+RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition) {
+  g_pSimMgr->economicTurn = 2;
 
-  JsonObject args;
-  RuntimeActionResult started = transition.Begin(args.Release());
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;
   }
 
-  if (g_pNavyPrimaryOrderListHead != 0) {
-    TShip* ship;
-    for (ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
-      if (ship->selection == 1) {
-        ship->selection = 0;
+  g_pNavyOrderManager->ClearAllTransientOrders();
+  if (g_pSimMgr->multiplayerSessionRole != 2) {
+    g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
+    RecomputeNationOrderPriorityMetrics();
+    for (int slot = 0; slot < 7; ++slot) {
+      TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+      TGreatPower* nation = g_apNationStates[slot];
+      if (country != 0 && nation != 0 &&
+          (country->encodedNationSlot < 100 || country->encodedNationSlot > 199)) {
+        nation->RefreshTrackedEntriesAndReplanAiDevelopment(0);
       }
     }
   }
-  g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
-  for (slot = 0; slot < 7; ++slot) {
+  for (int slot = 0; slot < 7; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    if (country == 0) {
-      continue;
-    }
-    if (country->encodedNationSlot >= 100 && country->encodedNationSlot < 200) {
-      continue;
-    }
-    if (g_apNationStates[slot] != 0) {
-      TGreatPower* nation = g_apNationStates[slot];
-      if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
-        static_cast<TAutoGreatPower*>(nation)->SeedTrackedEntryAssignmentsFromEligibleUnits();
-      }
+    TGreatPower* nation = g_apNationStates[slot];
+    if (country != 0 && nation != 0 &&
+        (country->encodedNationSlot < 100 || country->encodedNationSlot > 199)) {
       nation->AddPurchasedItems();
     }
   }
