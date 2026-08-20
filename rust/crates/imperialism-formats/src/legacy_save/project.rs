@@ -653,7 +653,7 @@ impl LegacyCityTask {
 }
 
 impl LegacyTerrainTile {
-    fn tile_state(&self) -> TileState {
+    pub(super) fn tile_state(&self) -> TileState {
         let rendering = TileRendering::from_retail(
             self.sprite_variant,
             self.river_sprite,
@@ -1612,7 +1612,7 @@ fn owned_region_id_from_retail(value: i32) -> ProvinceId {
     ProvinceId::new(value as u16)
 }
 
-fn province_state(province: &LegacyProvince) -> ProvinceState {
+pub(super) fn province_state(province: &LegacyProvince) -> ProvinceState {
     let count = province.adjacent_region_count as usize;
     let adjacency = province.adjacent_region_ids[..count]
         .iter()

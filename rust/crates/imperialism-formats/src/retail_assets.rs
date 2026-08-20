@@ -3,7 +3,8 @@ use crate::media::{MovieId, MusicTrack, SoundId};
 use crate::retail_resources::*;
 use crate::{PictureId, RetailCursor, RetailFontFace};
 use imperialism_core::{
-    MajorNationId, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
+    MajorNationId, MapMgr, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
+    ScenarioInstruction, ScenarioMapId,
 };
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
@@ -127,6 +128,33 @@ impl RetailAssets {
 
     pub const fn news_table(&self) -> &NewsTable {
         &self.news
+    }
+
+    /// Decodes the retail startup script for one scenario map.
+    pub fn scenario_script(
+        &self,
+        scenario: ScenarioMapId,
+    ) -> Result<Vec<ScenarioInstruction>, RetailAssetError> {
+        let relative = format!("Scenario/s{}.scn", scenario.index());
+        let path = self.root.join(&relative);
+        let bytes = fs::read(&path).map_err(|source| RetailAssetError::Io {
+            path: path.clone(),
+            source,
+        })?;
+        crate::decode_scenario_script(&bytes)
+            .map_err(|source| RetailAssetError::ScenarioScript { path, source })
+    }
+
+    /// Decodes the fixed retail strategic map for one scenario.
+    pub fn scenario_map(&self, scenario: ScenarioMapId) -> Result<MapMgr, RetailAssetError> {
+        let relative = format!("Scenario/s{}.map", scenario.index());
+        let path = self.root.join(&relative);
+        let bytes = fs::read(&path).map_err(|source| RetailAssetError::Io {
+            path: path.clone(),
+            source,
+        })?;
+        crate::legacy_save::decode_scenario_map(&bytes)
+            .map_err(|detail| RetailAssetError::ScenarioMap { path, detail })
     }
 
     /// Resolves a retail picture using name-before-numeric and library-slot precedence.
@@ -532,6 +560,14 @@ pub enum RetailAssetError {
         #[source]
         source: std::io::Error,
     },
+    #[error("{}: {source}", path.display())]
+    ScenarioScript {
+        path: PathBuf,
+        #[source]
+        source: crate::ScenarioScriptError,
+    },
+    #[error("{}: {detail}", path.display())]
+    ScenarioMap { path: PathBuf, detail: String },
     #[error("{}: invalid PE/resource data: {detail}", path.display())]
     Resource { path: PathBuf, detail: String },
     #[error("no English picture {0} is available")]
@@ -826,6 +862,24 @@ mod tests {
         assert_eq!(peace.height, 32);
         assert_eq!(peace.rgba.len(), 32 * 32 * 4);
         assert!(assets.chrome_backdrop().unwrap().starts_with(b"BM"));
+    }
+
+    #[test]
+    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
+    fn decodes_every_shipped_scenario_map_and_script() {
+        let root = PathBuf::from(
+            std::env::var_os("IMPERIALISM_RETAIL_DIR")
+                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
+        );
+        let assets = RetailAssets::open(&root).unwrap();
+        for index in [0, 1, 3, 9, 10, 11, 12, 13, 14, 15] {
+            let scenario = ScenarioMapId::new(index);
+            assert_eq!(
+                assets.scenario_map(scenario).unwrap().tiles.len(),
+                imperialism_core::STRATEGIC_TILE_COUNT
+            );
+            assert!(!assets.scenario_script(scenario).unwrap().is_empty());
+        }
     }
 
     #[test]

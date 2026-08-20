@@ -3,8 +3,11 @@ mod from_game_state;
 mod model;
 mod parse;
 mod project;
+mod scenario_map;
 mod slots;
 mod write;
+
+pub(crate) use scenario_map::decode_scenario_map;
 
 #[cfg(test)]
 mod tests;
