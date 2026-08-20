@@ -24,6 +24,8 @@ const CIVILIAN_IDLE_PICTURE_BASE: i16 = 400;
 const CIVILIAN_WORKING_PICTURE_BASE: i16 = 418;
 const ARMY_COUNT_PICTURE_IDS: [i16; 4] = [570, 572, 574, 576];
 const OWNER_FLAG_PICTURE_ID: i16 = 580;
+const FORT_PICTURE_IDS: [i16; 3] = [560, 561, 562];
+const ORDER_MARKER_PICTURE_ID: i16 = 806;
 const FLEET_ATLAS_PICTURE_BASE: i16 = 1_380;
 const CIVILIAN_SPRITE_CLASS: CivilianUnitTable<u8> =
     CivilianUnitTable::from_array([2, 3, 1, 6, 0, 7, 5, 4, 8]);
@@ -77,6 +79,8 @@ enum StrategicUnitSprite {
     Army {
         bucket: u8,
         owner_slot: u8,
+        fort_level: u8,
+        order_marker: u8,
     },
     Naval {
         frame: u16,
@@ -156,6 +160,8 @@ pub(crate) struct StrategicUnitSprites {
     civilians: HashMap<(CivilianUnitKind, CivilianPose), Vec<IndexedPicture>>,
     army_counts: [IndexedPicture; 4],
     owner_flags: IndexedPicture,
+    forts: [IndexedPicture; 3],
+    order_markers: IndexedPicture,
     fleet_frames: Vec<IndexedPicture>,
     fleet_atlas_id: i16,
     composed: HashMap<StrategicUnitSprite, Handle<Image>>,
@@ -418,12 +424,16 @@ fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> St
     }
     let army_counts = ARMY_COUNT_PICTURE_IDS.map(|id| load_required_picture(assets, id));
     let owner_flags = load_required_picture(assets, OWNER_FLAG_PICTURE_ID);
+    let forts = FORT_PICTURE_IDS.map(|id| load_required_picture(assets, id));
+    let order_markers = load_required_picture(assets, ORDER_MARKER_PICTURE_ID);
     let fleet_atlas_id = fleet_atlas_picture_id(state).get();
     let fleet_frames = load_fleet_frames(assets, state);
     StrategicUnitSprites {
         civilians,
         army_counts,
         owner_flags,
+        forts,
+        order_markers,
         fleet_frames,
         fleet_atlas_id,
         composed: HashMap::new(),
@@ -555,7 +565,12 @@ fn compose_unit_sprite(
             }
             Some(picture)
         }
-        StrategicUnitSprite::Army { bucket, owner_slot } => {
+        StrategicUnitSprite::Army {
+            bucket,
+            owner_slot,
+            fort_level,
+            order_marker,
+        } => {
             let count = sprites.army_counts.get(usize::from(bucket))?;
             let mut picture = indexed_picture(TILE_SIZE, TILE_SIZE, UNIT_TRANSPARENT_INDEX);
             picture.blit_keyed_at(count, IVec2::ZERO, UNIT_TRANSPARENT_INDEX);
@@ -566,6 +581,22 @@ fn compose_unit_sprite(
                 IVec2::new(7, 2),
                 UNIT_TRANSPARENT_INDEX,
             );
+            if fort_level > 0 {
+                picture.blit_keyed_at(
+                    sprites.forts.get(usize::from(fort_level - 1))?,
+                    IVec2::ZERO,
+                    UNIT_TRANSPARENT_INDEX,
+                );
+            }
+            if order_marker > 0 {
+                let source_x = (i32::from(order_marker) - 1) * TILE_SIZE;
+                picture.blit_keyed(
+                    &sprites.order_markers,
+                    IRect::new(source_x, 0, source_x + TILE_SIZE, TILE_SIZE),
+                    IVec2::ZERO,
+                    UNIT_TRANSPARENT_INDEX,
+                );
+            }
             Some(picture)
         }
         StrategicUnitSprite::Naval { frame } => {
@@ -706,6 +737,8 @@ fn army_badge_on_tile(state: &GameState, tile: TileId) -> Option<ProjectedUnit> 
         sprite: StrategicUnitSprite::Army {
             bucket: army_count_bucket(displayed),
             owner_slot: owner_flag_slot(tile_state.owner_nation),
+            fort_level: state.map().provinces[province].fort_level().retail() as u8,
+            order_marker: u8::try_from(tile_state.per_tile_visited).unwrap_or(0),
         },
     })
 }
@@ -1122,6 +1155,8 @@ mod tests {
             civilians: HashMap::new(),
             army_counts: std::array::from_fn(|_| count.clone()),
             owner_flags: flags,
+            forts: std::array::from_fn(|_| indexed_picture(TILE_SIZE, TILE_SIZE, 0x10)),
+            order_markers: indexed_picture(TILE_SIZE, TILE_SIZE, 0x10),
             fleet_frames: Vec::new(),
             fleet_atlas_id: 0,
             composed: HashMap::new(),
@@ -1132,6 +1167,8 @@ mod tests {
             StrategicUnitSprite::Army {
                 bucket: 0,
                 owner_slot: 0,
+                fort_level: 0,
+                order_marker: 0,
             },
         )
         .unwrap();
@@ -1141,6 +1178,54 @@ mod tests {
             picture.pixels[56 * TILE_SIZE as usize + 7],
             UNIT_TRANSPARENT_INDEX
         );
+    }
+
+    #[test]
+    fn fort_and_order_marker_reapply_above_the_army_badge_in_retail_order() {
+        let count = IndexedPicture {
+            width: 18,
+            height: 38,
+            pixels: vec![2; 18 * 38],
+        };
+        let mut fort = indexed_picture(TILE_SIZE, TILE_SIZE, UNIT_TRANSPARENT_INDEX);
+        fort.pixels[0] = 4;
+        let mut marker = indexed_picture(TILE_SIZE, TILE_SIZE, UNIT_TRANSPARENT_INDEX);
+        marker.pixels[0] = 5;
+        let sprites = StrategicUnitSprites {
+            civilians: HashMap::new(),
+            army_counts: std::array::from_fn(|_| count.clone()),
+            owner_flags: indexed_picture(9, 6, UNIT_TRANSPARENT_INDEX),
+            forts: std::array::from_fn(|_| fort.clone()),
+            order_markers: marker,
+            fleet_frames: Vec::new(),
+            fleet_atlas_id: 0,
+            composed: HashMap::new(),
+        };
+
+        let fort_only = compose_unit_sprite(
+            &sprites,
+            StrategicUnitSprite::Army {
+                bucket: 0,
+                owner_slot: 0,
+                fort_level: 1,
+                order_marker: 0,
+            },
+        )
+        .unwrap();
+        let marked = compose_unit_sprite(
+            &sprites,
+            StrategicUnitSprite::Army {
+                bucket: 0,
+                owner_slot: 0,
+                fort_level: 1,
+                order_marker: 1,
+            },
+        )
+        .unwrap();
+
+        assert_eq!(fort_only.pixels[0], 4);
+        assert_eq!(marked.pixels[0], 5);
+        assert_eq!(marked.pixels[1], 2);
     }
 
     #[test]
@@ -1169,6 +1254,8 @@ mod tests {
             civilians,
             army_counts: std::array::from_fn(|_| indexed_picture(1, 1, 0)),
             owner_flags: indexed_picture(1, 1, 0),
+            forts: std::array::from_fn(|_| indexed_picture(1, 1, 0)),
+            order_markers: indexed_picture(1, 1, 0),
             fleet_frames: Vec::new(),
             fleet_atlas_id: 0,
             composed: HashMap::new(),
