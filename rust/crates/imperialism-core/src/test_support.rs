@@ -153,7 +153,6 @@ pub(crate) fn game_state() -> GameState {
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
             last_turn_alert_tick: 0,
-            turn_alert_mask: 0,
             turn_cooldown_defer_counter: 0,
         },
         unit_ids: crate::UnitIdAllocator::default(),

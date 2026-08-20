@@ -260,7 +260,6 @@ pub fn create_random_game(
             difficulty,
             active_nation: human_nation.nation(),
             last_turn_alert_tick: 0,
-            turn_alert_mask: 0,
             turn_cooldown_defer_counter: 0,
         },
         unit_ids,

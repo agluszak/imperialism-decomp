@@ -141,4 +141,8 @@ int CapitolDangerWarningEvaluationCountForRuntimeTest();
 bool WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest();
 int CapitolDangerThreatMaskForRuntimeTest();
 int CapitolDangerDisplayedMaskForRuntimeTest();
+void ResetTurnAlertObservationForRuntimeTest();
+int TurnAlertObservationCountForRuntimeTest();
+short TurnAlertBodyIndexForRuntimeTest(int index);
+void SetTurnAlertObservationOnlyForRuntimeTest(bool enabled);
 #endif

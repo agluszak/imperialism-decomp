@@ -697,7 +697,6 @@ mod tests {
                 difficulty: Difficulty::Easy,
                 active_nation: NationId::new(6),
                 last_turn_alert_tick: 0,
-                turn_alert_mask: 0,
                 turn_cooldown_defer_counter: 0,
             },
             unit_ids: crate::UnitIdAllocator::default(),

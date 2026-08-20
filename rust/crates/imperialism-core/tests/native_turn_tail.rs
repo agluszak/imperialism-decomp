@@ -40,7 +40,27 @@ fn season_advance_clears_status_flags() {
 #[ignore = "requires the native C++ oracle"]
 fn turn_alerts_skip_first_economic_turn() {
     compare_native("turn_alerts_skip_first_economic_turn", |state, (): ()| {
-        state.show_turn_alerts(true)
+        !state.show_turn_alerts(true).is_empty()
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn turn_alerts_later_turn() {
+    compare_native("turn_alerts_later_turn", |state, (): ()| {
+        state
+            .show_turn_alerts(true)
+            .into_iter()
+            .map(|alert| match alert {
+                TurnAlert::LandCapitolThreatened => 0x29,
+                TurnAlert::NavalCapitolThreatened => 0x2b,
+                TurnAlert::Treasury { prompt_code } => prompt_code,
+                TurnAlert::CommodityShortage => 0x47,
+                TurnAlert::TransportShortage => 0x23,
+                TurnAlert::Starvation => 0x21,
+            })
+            .collect::<Vec<i16>>()
     })
     .unwrap();
 }
