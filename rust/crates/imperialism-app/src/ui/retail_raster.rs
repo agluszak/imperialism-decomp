@@ -74,6 +74,15 @@ pub(in crate::ui) trait IndexedRasterExt {
         text: &str,
         color: u8,
     );
+    fn draw_text_center(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        center: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    );
     fn crop(&self, rect: IRect) -> IndexedPicture;
     fn to_image(&self, palette: &DibPalette) -> Image;
     fn to_keyed_image(&self, palette: &DibPalette, transparent: u8) -> Image;
@@ -262,6 +271,32 @@ impl IndexedRasterExt for IndexedPicture {
             font_data,
             size,
             IVec2::new(right - width, baseline_y),
+            text,
+            color,
+        );
+    }
+
+    fn draw_text_center(
+        &mut self,
+        font_data: &[u8],
+        size: f32,
+        center: i32,
+        baseline_y: i32,
+        text: &str,
+        color: u8,
+    ) {
+        let font = FontRef::from_index(font_data, 0).expect("retail font bytes are valid");
+        let charmap = font.charmap();
+        let metrics = font.glyph_metrics(&[]).scale(size);
+        let width = text
+            .chars()
+            .map(|character| metrics.advance_width(charmap.map(character)))
+            .sum::<f32>()
+            .round() as i32;
+        self.draw_text(
+            font_data,
+            size,
+            IVec2::new(center - width / 2, baseline_y),
             text,
             color,
         );
