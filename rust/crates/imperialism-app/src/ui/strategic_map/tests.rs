@@ -3,7 +3,7 @@ use super::overlays::{
     ACTIVITY_OVERLAY_DESTINATION, ACTIVITY_OVERLAY_HEIGHT, ACTIVITY_OVERLAY_WIDTH,
     IMPROVEMENT_PICTURE_IDS, RESOURCE_ICON_HEIGHT, RESOURCE_ICON_WIDTH, RESOURCE_OVERLAY_HEIGHT,
     RESOURCE_OVERLAY_WIDTH, SURVEY_FEEDBACK_DESTINATION, SURVEY_FEEDBACK_SOURCE_X,
-    city_marker_offset, compose_strategic_survey_feedback, transport_marker_offset,
+    city_marker_offset, transport_marker_offset,
 };
 use super::terrain::{
     BASE_WATER_OFFSETS, coast_corner_variant, compose_strategic_base_tile, frame_for_offset,
@@ -115,6 +115,7 @@ fn sprites_from<'a>(
         improvements,
         resource_icons: icons,
         resource_overlays: overlays,
+        survey_feedback: overlays,
         order_markers,
     }
 }
@@ -198,7 +199,6 @@ fn engineer_same_tile_hover_frames_the_tile_and_construction_neighbors() {
         view_origin,
         Some(engineer),
         Some(hovered),
-        &indexed_picture(0x1a4, 0x14, RIVER_MASK_TRANSPARENT_INDEX),
         &DibPalette::default(),
     );
     let pixels = overlay.data.as_ref().expect("selection overlay pixels");
@@ -329,6 +329,7 @@ fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let mut surface = compose_strategic_map_picture(
         &state,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -407,6 +408,7 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -426,6 +428,7 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -458,6 +461,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -481,6 +485,7 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -510,6 +515,7 @@ fn city_tiles_blit_the_capital_improvement_ink() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -558,6 +564,7 @@ fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
     let indices = compose_strategic_map_picture(
         &state,
         view_origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -622,6 +629,7 @@ fn strategic_activity_overlay_uses_the_secondary_owner_frame_on_minor_land() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -644,6 +652,7 @@ fn strategic_activity_overlay_uses_the_secondary_owner_frame_on_minor_land() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -657,6 +666,31 @@ fn strategic_activity_overlay_uses_the_secondary_owner_frame_on_minor_land() {
         picture.pixels[(activity.y * TILE_SIZE + activity.x) as usize],
         0xd2,
         "retail draws the occupation frame only when the primary owner is not a great power"
+    );
+
+    fixture.edit(|map, origin| {
+        map[origin].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(7)));
+        map[origin].flags = TileFlags::from_bits_retain(1);
+        map[origin].gate = 1;
+    });
+    let picture = compose_strategic_tile(
+        &fixture.state(),
+        origin,
+        origin,
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
+    );
+    assert_ne!(
+        picture.pixels[(activity.y * TILE_SIZE + activity.x) as usize],
+        0xd2,
+        "retail does not draw the occupation frame over a city"
     );
 }
 
@@ -675,6 +709,7 @@ fn per_tile_marker_precedes_the_pending_river_mouth_point() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -692,6 +727,7 @@ fn per_tile_marker_precedes_the_pending_river_mouth_point() {
         &fixture.state(),
         origin,
         origin,
+        None,
         sprites_from(
             &terrain,
             &rivers,
@@ -705,7 +741,7 @@ fn per_tile_marker_precedes_the_pending_river_mouth_point() {
 }
 
 #[test]
-fn selected_surveyor_marks_visible_tiles_without_a_prospectable_first_resource() {
+fn selected_survey_feedback_precedes_the_order_marker() {
     let mut parts = fixture_parts();
     let active = parts.turn.active_nation;
     let view_origin = beginning_map_view_origin();
@@ -728,7 +764,6 @@ fn selected_surveyor_marks_visible_tiles_without_a_prospectable_first_resource()
         )
         .unwrap(),
     );
-    let state = GameState::from_parts(parts);
     let mut atlas = indexed_picture(SURVEY_FEEDBACK_SOURCE_X + 0x14, 0x14, 0x10);
     atlas.fill_rect(
         IRect::new(
@@ -739,15 +774,32 @@ fn selected_surveyor_marks_visible_tiles_without_a_prospectable_first_resource()
         ),
         0xe1,
     );
-    let mut surface = indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0);
-    compose_strategic_survey_feedback(&state, view_origin, Some(surveyor), &atlas, &mut surface);
-    let origin = DetailedMapProjection::new(state.map().geometry(), view_origin)
-        .tile_origin(tile)
-        .unwrap();
-    let feedback = origin + SURVEY_FEEDBACK_DESTINATION;
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
+    let mut sprites = sprites_from(
+        &terrain,
+        &rivers,
+        &improvements,
+        &icons,
+        &overlays,
+        &order_markers,
+    );
+    sprites.survey_feedback = &atlas;
+
+    let state = GameState::from_parts(parts.clone());
+    let surface = compose_strategic_tile(&state, view_origin, tile, Some(surveyor), sprites);
+    let feedback = SURVEY_FEEDBACK_DESTINATION;
     assert_eq!(
-        surface.pixels[(feedback.y * VIEWPORT_WIDTH as i32 + feedback.x) as usize],
+        surface.pixels[(feedback.y * TILE_SIZE + feedback.x) as usize],
         0xe1
+    );
+
+    parts.map[tile].per_tile_visited = 2;
+    let marked = GameState::from_parts(parts);
+    let surface = compose_strategic_tile(&marked, view_origin, tile, Some(surveyor), sprites);
+    assert_eq!(
+        surface.pixels[(feedback.y * TILE_SIZE + feedback.x) as usize],
+        0xc1,
+        "retail blits perTileVisitedFlag0f after survey feedback"
     );
 }
 
