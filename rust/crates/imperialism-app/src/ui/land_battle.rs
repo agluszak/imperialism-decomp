@@ -38,6 +38,7 @@ struct LandBattleRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum LandBattleAction {
+    Target,
     Done,
     Auto,
     Retreat,
@@ -165,6 +166,7 @@ impl Plugin for LandBattlePlugin {
                 synchronize_interactive_army_battle,
                 synchronize_land_battle_visuals,
                 scroll_land_battle,
+                land_battle_keys,
                 project_land_battle,
             )
                 .chain()
@@ -210,6 +212,11 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
         Text::default(),
         TextColor(Color::WHITE),
     ));
+    commands
+        .entity(tree.find(root, fourcc!("targ")))
+        .insert((LandBattleAction::Target, ActivateOnPress))
+        .observe(on_land_battle_activate)
+        .remove::<InteractionDisabled>();
     commands
         .entity(tree.find(root, fourcc!("done")))
         .insert((LandBattleAction::Done, ActivateOnPress))
@@ -760,11 +767,22 @@ fn on_land_battle_activate(
     time: Option<Res<Time>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
     prefs: Res<super::preferences::GamePreferences>,
+    mut fields: Query<&mut LandBattlefield>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
     match *action {
+        LandBattleAction::Target => {
+            if let Ok(Some(target)) = session.game.cycle_selected_army_target()
+                && let (Some(battle), Ok(mut field)) =
+                    (session.game.army_battle(), fields.single_mut())
+            {
+                field.view_origin_x =
+                    centered_view_origin(field.view_origin_x, battle.column_count(), target);
+                field.centered_unit = None;
+            }
+        }
         LandBattleAction::Done => {
             if let Ok(Some(stop)) = session
                 .game
@@ -811,6 +829,38 @@ fn on_land_battle_activate(
     }
     if let Some(music) = music.as_mut() {
         cue_tactical_result(&session.game, music, time.as_deref());
+    }
+}
+
+fn land_battle_keys(
+    keys: Res<ButtonInput<KeyCode>>,
+    mut session: ResMut<GameSession>,
+    mut fields: Query<&mut LandBattlefield>,
+    prefs: Res<super::preferences::GamePreferences>,
+    assets: Option<Res<crate::RetailAssetsResource>>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    if keys.just_pressed(KeyCode::Space)
+        && let Ok(Some(target)) = session.game.cycle_selected_army_target()
+        && let (Some(battle), Ok(mut field)) = (session.game.army_battle(), fields.single_mut())
+    {
+        field.view_origin_x =
+            centered_view_origin(field.view_origin_x, battle.column_count(), target);
+        field.centered_unit = None;
+    }
+    if keys.just_pressed(KeyCode::KeyS)
+        && let Ok(Some(stop)) = session
+            .game
+            .skip_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
+    {
+        let stop = session.game.apply_land_battle_watch_policy(
+            stop,
+            prefs.tactical_battles_enabled(),
+            super::session::news_story_ids(assets.as_deref()),
+        );
+        if stop != TurnStop::LandBattle {
+            apply_turn_stop(stop, &mut next_state);
+        }
     }
 }
 
@@ -1040,6 +1090,7 @@ mod tests {
             ))
             .id();
         commands.spawn((RetailTag(fourcc!("curs")), Node::default(), ChildOf(root)));
+        commands.spawn((RetailTag(fourcc!("targ")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("done")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("auto")), Node::default(), ChildOf(root)));
         commands.spawn((RetailTag(fourcc!("retr")), Node::default(), ChildOf(root)));

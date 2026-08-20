@@ -105,6 +105,18 @@ pub enum ArmyAction {
         attacker: ArmyUnitId,
         target: TacticalHex,
     },
+    DigTrench {
+        engineer: ArmyUnitId,
+        target: TacticalHex,
+    },
+    MineFort {
+        engineer: ArmyUnitId,
+        target: TacticalHex,
+    },
+    Rally {
+        general: ArmyUnitId,
+        target: ArmyUnitId,
+    },
     Done,
 }
 
@@ -267,6 +279,45 @@ impl ArmyBattle {
             .ok_or(ArmyActionRejection::Unplaced)?;
         self.inner.compute_reachable(idx);
         let tile = self.inner.tiles[target.index as usize];
+        let category = self.inner.units[idx].unit_type.tactical_category();
+        let adjacent = self
+            .inner
+            .neighbors(self.inner.units[idx].tile)
+            .values()
+            .any(|&neighbor| neighbor == target.index);
+        if category == ArmyUnitCategory::Engineers && adjacent {
+            let engineer = ArmyUnitId(self.inner.units[idx].source);
+            let intact_fort = tile.deploy_mark.is_fort_wall()
+                && self.inner.fort_strength[(target.index / TACTICAL_STRIDE / 2) as usize] > 0;
+            if intact_fort {
+                self.inner.mine(state, idx, target.index);
+                return Ok(ArmyAction::MineFort { engineer, target });
+            }
+            let source = self.inner.tiles[self.inner.units[idx].tile as usize];
+            if self.inner.units[idx].action_points
+                >= BASE_ACTION_POINTS[self.inner.units[idx].unit_type] / 2
+                && tile.trench_mask & 0x40 == 0
+                && source.trench_mask & 0x40 == 0
+                && tile.trench_mask & 0x80 == 0
+                && tile.occupant.is_none()
+                && tile.terrain != TacticalTerrain::Impassable
+            {
+                self.inner.dig(state, idx, target.index);
+                return Ok(ArmyAction::DigTrench { engineer, target });
+            }
+        } else if category == ArmyUnitCategory::Generals
+            && adjacent
+            && let Some(occupant) = tile.occupant
+            && self.inner.units[occupant].side == self.inner.units[idx].side
+        {
+            let general = ArmyUnitId(self.inner.units[idx].source);
+            let target_unit = ArmyUnitId(self.inner.units[occupant].source);
+            self.inner.rally(state, idx, occupant);
+            return Ok(ArmyAction::Rally {
+                general,
+                target: target_unit,
+            });
+        }
         if self.inner.cost(target.index) > 0 && tile.occupant.is_none() {
             self.inner.move_and_maybe_finish(state, idx, target.index);
             return Ok(ArmyAction::Move(MoveResult {
@@ -278,7 +329,6 @@ impl ArmyBattle {
             self.inner.finish_action();
             return Ok(ArmyAction::Done);
         }
-        let category = self.inner.units[idx].unit_type.tactical_category();
         let intact_fort = tile.deploy_mark.is_fort_wall()
             && self.inner.fort_strength[(target.index / TACTICAL_STRIDE / 2) as usize] > 0;
         let enemy = tile
@@ -299,6 +349,62 @@ impl ArmyBattle {
         let attacker = ArmyUnitId(self.inner.units[idx].source);
         self.inner.fire_and_maybe_finish(state, idx, target.index);
         Ok(ArmyAction::Attack { attacker, target })
+    }
+
+    fn skip(&mut self, active_nation: NationId) -> Result<bool, ArmyActionRejection> {
+        let idx = self.selected_unit_for_action(active_nation)?;
+        if !self.inner.live {
+            return Err(ArmyActionRejection::InvalidTarget);
+        }
+        if self.inner.units[idx].unit_type.tactical_category() == ArmyUnitCategory::Engineers {
+            return Ok(false);
+        }
+        let side = self.inner.current_side;
+        self.inner.sides[side].field20 = true;
+        self.inner.finish_action();
+        Ok(true)
+    }
+
+    fn cycle_target(
+        &mut self,
+        active_nation: NationId,
+    ) -> Result<Option<TacticalHex>, ArmyActionRejection> {
+        let idx = self.selected_unit_for_action(active_nation)?;
+        if !self.inner.live || self.inner.units[idx].tile < 0 {
+            return Err(ArmyActionRejection::Unplaced);
+        }
+        let opponents = self.inner.sides[self.inner.units[idx].side.opponent()]
+            .units
+            .clone();
+        if opponents.is_empty() {
+            self.inner.units[idx].attack_target = None;
+            return Ok(None);
+        }
+        let current = self.inner.units[idx].attack_target;
+        let start = current
+            .and_then(|target| {
+                opponents
+                    .iter()
+                    .position(|&unit| self.inner.units[unit].source == target)
+            })
+            .map_or(0, |position| (position + 1) % opponents.len());
+        let category = self.inner.units[idx].unit_type.tactical_category();
+        let target = (0..opponents.len()).find_map(|offset| {
+            let candidate = opponents[(start + offset) % opponents.len()];
+            let unit = &self.inner.units[candidate];
+            (unit.state == TacticalUnitState::Ready
+                && unit.tile >= 0
+                && self.inner.units[idx].selected
+                && self.inner.reachable_for_action(
+                    self.inner.units[idx].tile,
+                    unit.tile,
+                    direct_fire(category),
+                    self.inner.unit_range(idx),
+                ))
+            .then_some(candidate)
+        });
+        self.inner.units[idx].attack_target = target.map(|target| self.inner.units[target].source);
+        Ok(target.and_then(|target| TacticalHex::from_index(self.inner.units[target].tile)))
     }
 }
 
@@ -427,6 +533,7 @@ struct TacUnit {
     morale: i32,
     quality: i16,
     sap_target: i32,
+    attack_target: Option<MilitaryUnitId>,
     flag3c: bool,
     side: BattleSide,
     field24: i16,
@@ -768,7 +875,6 @@ impl GameState {
         }
     }
 
-    #[cfg(test)]
     fn army_battle_mut(&mut self) -> Option<&mut ArmyBattle> {
         match &mut self.continuation {
             crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
@@ -872,6 +978,40 @@ impl GameState {
         }
         battle.inner.finish_action();
         Ok(self.finish_interactive_army_action(battle, story_ids))
+    }
+
+    /// Retail `skip`: ignored for engineers; other units yield through the sapper phase.
+    pub fn skip_selected_army_unit_action(
+        &mut self,
+        story_ids: &[i32],
+    ) -> Result<Option<TurnStop>, ArmyActionRejection> {
+        let active_nation = self.turn.active_nation;
+        let Some(mut battle) = self.take_army_battle() else {
+            return Err(ArmyActionRejection::NoLiveBattle);
+        };
+        let skipped = match battle.skip(active_nation) {
+            Ok(skipped) => skipped,
+            Err(error) => {
+                self.store_army_battle(battle);
+                return Err(error);
+            }
+        };
+        if !skipped {
+            self.store_army_battle(battle);
+            return Ok(None);
+        }
+        Ok(self.finish_interactive_army_action(battle, story_ids))
+    }
+
+    /// Retail `targ`: cycles among reachable ready enemy units in opposing-list order.
+    pub fn cycle_selected_army_target(
+        &mut self,
+    ) -> Result<Option<TacticalHex>, ArmyActionRejection> {
+        let active_nation = self.turn.active_nation;
+        let Some(battle) = self.army_battle_mut() else {
+            return Err(ArmyActionRejection::NoLiveBattle);
+        };
+        battle.cycle_target(active_nation)
     }
 
     pub fn retreat_from_army_battle(
@@ -1061,6 +1201,7 @@ impl Battle {
             morale: i32::from(unit.strength),
             quality: unit.experience / 100,
             sap_target: -1,
+            attack_target: None,
             flag3c: unit.order.code() == MilitaryOrderCode::Sleep
                 && combat_category(unit.unit_type) == TacticalCombatClass::Infantry,
             side,
@@ -3628,6 +3769,7 @@ mod tests {
             morale: 100,
             quality: 0,
             sap_target: -1,
+            attack_target: None,
             flag3c: false,
             side,
             field24: 0,
@@ -3687,6 +3829,91 @@ mod tests {
         battle.compute_reachable(0);
 
         assert_eq!(battle.cost(target), -1);
+    }
+
+    fn live_action_battle(actor_kind: MilitaryUnitKind) -> (ArmyBattle, TacticalHex) {
+        let source = TACTICAL_STRIDE * 8 + 10;
+        let target = neighbor_list(source)[HexDirection::East];
+        let mut inner = battle();
+        inner.live = true;
+        inner.current_side = BattleSide::Attacker;
+        inner.pending_end = true;
+        inner.sides[BattleSide::Attacker].nation = NationId::new(0);
+        let mut actor = unit(source, BattleSide::Attacker);
+        actor.unit_type = actor_kind;
+        actor.selected = true;
+        actor.action_points = BASE_ACTION_POINTS[actor_kind];
+        inner.units.push(actor);
+        inner.records.push(0);
+        inner.sides[BattleSide::Attacker].units.push(0);
+        inner.tiles[source as usize].occupant = Some(0);
+        inner.selected = Some(0);
+        (
+            ArmyBattle { inner },
+            TacticalHex::from_index(target).unwrap(),
+        )
+    }
+
+    #[test]
+    fn interactive_engineer_clicks_mine_or_extend_trenches_before_moving() {
+        let mut state = game_state();
+        let (mut dig, target) = live_action_battle(MilitaryUnitKind::Sappers);
+        let (action, source) = {
+            let source = dig.inner.units[0].tile;
+            (
+                dig.action_at(target, NationId::new(0), &mut state).unwrap(),
+                source,
+            )
+        };
+        assert!(matches!(action, ArmyAction::DigTrench { target: got, .. } if got == target));
+        assert_ne!(dig.inner.tiles[source as usize].trench_mask, 0);
+        assert_ne!(dig.inner.tiles[target.index() as usize].trench_mask, 0);
+
+        let (mut mine, target) = live_action_battle(MilitaryUnitKind::Sappers);
+        mine.inner.tiles[target.index() as usize].deploy_mark = DeployMark::FortWallLevelOne;
+        let pool = (target.index() / TACTICAL_STRIDE / 2) as usize;
+        mine.inner.fort_strength[pool] = 1_000;
+        let action = mine
+            .action_at(target, NationId::new(0), &mut state)
+            .unwrap();
+        assert!(matches!(action, ArmyAction::MineFort { target: got, .. } if got == target));
+        assert!(mine.inner.fort_strength[pool] < 1_000);
+    }
+
+    #[test]
+    fn interactive_general_rallies_an_adjacent_friendly_unit() {
+        let mut state = game_state();
+        let (mut battle, target) = live_action_battle(MilitaryUnitKind::GeneralEra1);
+        let mut friendly = unit(target.index(), BattleSide::Attacker);
+        friendly.source = MilitaryUnitId::from_serialized(1);
+        friendly.morale = 50;
+        battle.inner.units.push(friendly);
+        battle.inner.sides[BattleSide::Attacker].units.push(1);
+        battle.inner.tiles[target.index() as usize].occupant = Some(1);
+
+        let action = battle
+            .action_at(target, NationId::new(0), &mut state)
+            .unwrap();
+        assert!(matches!(action, ArmyAction::Rally { .. }));
+        assert_eq!(battle.inner.units[1].morale, 80);
+    }
+
+    #[test]
+    fn skip_excludes_engineers_and_target_cycles_reachable_enemies() {
+        let (mut battle, target) = live_action_battle(MilitaryUnitKind::Regulars);
+        let mut enemy = unit(target.index(), BattleSide::Defender);
+        enemy.source = MilitaryUnitId::from_serialized(1);
+        battle.inner.units.push(enemy);
+        battle.inner.sides[BattleSide::Defender].units.push(1);
+        battle.inner.tiles[target.index() as usize].occupant = Some(1);
+
+        assert_eq!(battle.cycle_target(NationId::new(0)), Ok(Some(target)));
+        assert!(battle.skip(NationId::new(0)).unwrap());
+        assert!(battle.inner.sides[BattleSide::Attacker].field20);
+
+        let (mut engineer, _) = live_action_battle(MilitaryUnitKind::Sappers);
+        assert!(!engineer.skip(NationId::new(0)).unwrap());
+        assert!(engineer.inner.pending_end);
     }
 
     fn seed_province(state: &mut GameState, province: u16, owner: u8, adjacency: &[u16]) {
