@@ -13,6 +13,12 @@ struct NationCase {
 }
 
 #[derive(Debug, Deserialize)]
+struct AiDevelopmentCase {
+    nation: MajorNationId,
+    average_allocation: i32,
+}
+
+#[derive(Debug, Deserialize)]
 struct SpecialistRecruitmentCase {
     nation: MajorNationId,
     unit_kind: MilitaryUnitKind,
@@ -141,6 +147,37 @@ fn second_turn_military_cleanup() {
     compare_native("second_turn_military_cleanup", |state, (): ()| {
         state.do_military_cleanup();
     })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn ai_naval_industry_development() {
+    compare_native(
+        "ai_naval_industry_development",
+        |state, case: AiDevelopmentCase| {
+            let before = state
+                .nations()
+                .major(case.nation)
+                .economy
+                .interior_civilian
+                .pending_development_actions()
+                .len();
+            differential::plan_ai_military_development(state, case.nation, case.average_allocation);
+            let actions = state
+                .nations()
+                .major(case.nation)
+                .economy
+                .interior_civilian
+                .pending_development_actions();
+            assert!(actions.len() >= before + 2);
+            assert!(
+                actions[before..]
+                    .iter()
+                    .all(|action| matches!(action, PendingDevelopmentAction::Industry { .. }))
+            );
+        },
+    )
     .unwrap();
 }
 

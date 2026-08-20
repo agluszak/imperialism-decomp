@@ -4,7 +4,8 @@ use crate::military::{
     ActionClassScores, PROVINCE_UNIT_ORDER_WEIGHT, TACTICAL_COMPOSITION, accumulate_unit_priority,
 };
 use crate::navy_orders::{
-    NavyPriorityComponent, NavyPriorityTable, navy_category_baselines, ship_priority_contribution,
+    NAVY_DESCRIPTORS, NavyPriorityComponent, NavyPriorityTable, navy_category_baselines,
+    navy_state, ship_priority_contribution, ship_stock_cap,
 };
 use crate::*;
 
@@ -21,6 +22,9 @@ const PRESSURE_UNSET: f32 = -1.0;
 const PRESSURE_RATIO_CAP: f32 = 1.0;
 const PRESSURE_MIDPOINT: f32 = 0.5;
 const PRESSURE_PEER_SCALE: f32 = 1.1;
+const MISSION_ORDER_DISTANCE_DECAY: [f32; 6] = [1.0, 0.8, 0.64, 0.512, 0.4096, 0.32768];
+const INDUSTRY_CLASS_BY_SHIP_TYPE: ShipTypeTable<i8> =
+    ShipTypeTable::from_array([-1, -1, -1, 1, 0, -1, -1, 2, 3, 0, -1, 1, 3, 2]);
 
 #[derive(Clone, Copy)]
 struct AiCityActionCostProfile {
@@ -28,6 +32,12 @@ struct AiCityActionCostProfile {
     secondary: Option<(TradeCommodity, i16)>,
     base: i16,
     context: i16,
+}
+
+#[derive(Clone, Copy)]
+enum AiDevelopmentSelection {
+    LandUnit(MilitaryUnitKind),
+    Industry(ShipType),
 }
 
 const fn city_action_cost(
@@ -767,14 +777,14 @@ impl GameState {
         })
     }
 
-    fn plan_ai_military_development(&mut self, nation: MajorNationId) {
+    pub(crate) fn plan_ai_military_development(&mut self, nation: MajorNationId) {
         let mut pools = [0_i32; 9];
         for mission in self
             .missions
             .values()
             .filter(|mission| mission.nation == nation.nation() && !mission.held)
         {
-            accumulate_army_development_lack(self, mission, &mut pools);
+            accumulate_development_lack(self, mission, &mut pools);
         }
 
         let average = self.nations.majors[&nation]
@@ -782,7 +792,9 @@ impl GameState {
             .interior_civilian
             .average_development_order_allocation;
         let city_limit = average + 2;
+        let industry_limit = average / 2 + 1;
         let mut city_count = 0;
+        let mut industry_count = 0;
         for _ in 0..99 {
             let mut selected = None;
             let mut best_score = 0.0_f32;
@@ -806,7 +818,7 @@ impl GameState {
                 let score = weighted as f32 / self.ai_city_action_cost(nation, kind, false);
                 if score > best_score {
                     best_score = score;
-                    selected = Some(kind);
+                    selected = Some(AiDevelopmentSelection::LandUnit(kind));
                 }
             }
 
@@ -844,28 +856,105 @@ impl GameState {
                     / self.ai_city_action_cost(nation, upgrade, true);
                 if score > best_score {
                     best_score = score;
-                    selected = Some(upgrade);
+                    selected = Some(AiDevelopmentSelection::LandUnit(upgrade));
                 }
             }
 
-            let Some(kind) = selected else {
+            for class in 0..4 {
+                let Some(ship_type) = self.enabled_industry_type_for_class(class) else {
+                    continue;
+                };
+                let weighted = NavyPriorityComponent::ALL
+                    .into_iter()
+                    .zip(pools[5..].iter().copied())
+                    .filter(|(_, pool)| *pool > 0)
+                    .fold(0.0_f32, |weighted, (component, pool)| {
+                        weighted
+                            + (normalized_industry_action_cost(
+                                &self.technology.industry_enabled_by_slot,
+                                component,
+                                ship_type,
+                            )
+                            .wrapping_mul(pool)) as f32
+                    });
+                let score = weighted / self.ai_industry_action_cost(ship_type);
+                if score > best_score {
+                    best_score = score;
+                    selected = Some(AiDevelopmentSelection::Industry(ship_type));
+                }
+            }
+
+            let Some(selection) = selected else {
                 return;
             };
-            subtract_unit_costs(&mut pools, kind);
-            let apply = city_count < city_limit;
-            city_count += 1;
-            if city_count > city_limit {
+            subtract_development_costs(
+                &mut pools,
+                selection,
+                &self.technology.industry_enabled_by_slot,
+            );
+            let apply = match selection {
+                AiDevelopmentSelection::LandUnit(_) => {
+                    let apply = city_count < city_limit;
+                    city_count += 1;
+                    apply
+                }
+                AiDevelopmentSelection::Industry(_) => {
+                    let apply = industry_count < industry_limit;
+                    industry_count += 1;
+                    apply
+                }
+            };
+            if city_count > city_limit && industry_count > industry_limit {
                 return;
             }
             if apply {
+                let action = match selection {
+                    AiDevelopmentSelection::LandUnit(unit_type) => {
+                        PendingDevelopmentAction::LandUnit { unit_type }
+                    }
+                    AiDevelopmentSelection::Industry(ship_type) => {
+                        let slot =
+                            IndustryCapabilitySlot::ALL[usize::from(ship_type.retail())].facility();
+                        PendingDevelopmentAction::Industry { slot }
+                    }
+                };
                 self.nations.majors[&nation]
                     .economy
                     .interior_civilian
                     .pending_development_actions
-                    .push(PendingDevelopmentAction::LandUnit { unit_type: kind });
+                    .push(action);
             }
-            subtract_unit_costs(&mut pools, kind);
+            subtract_development_costs(
+                &mut pools,
+                selection,
+                &self.technology.industry_enabled_by_slot,
+            );
         }
+    }
+
+    fn enabled_industry_type_for_class(&self, class: i8) -> Option<ShipType> {
+        (1..ShipType::LENGTH).rev().find_map(|index| {
+            let ship_type =
+                ShipType::from_index(index as u8).expect("industry ship type index is in range");
+            (INDUSTRY_CLASS_BY_SHIP_TYPE[ship_type] == class
+                && self.technology.industry_enabled_by_slot[IndustryCapabilitySlot::ALL[index]])
+                .then_some(ship_type)
+        })
+    }
+
+    fn ai_industry_action_cost(&self, ship_type: ShipType) -> f32 {
+        ship_order_costs(ship_type)
+            .iter()
+            .into_iter()
+            .fold(0_i32, |cost, (resource, quantity)| {
+                let commodity = TradeCommodity::from_retail(i16::from(resource.retail()))
+                    .expect("ship material has a market row");
+                cost.wrapping_add(
+                    self.market.rows[commodity]
+                        .price
+                        .wrapping_mul(i32::from(quantity)),
+                )
+            }) as f32
     }
 
     fn ai_city_action_cost(
@@ -899,29 +988,109 @@ impl GameState {
     }
 }
 
-fn accumulate_army_development_lack(
-    state: &GameState,
-    mission: &MissionState,
-    pools: &mut [i32; 9],
-) {
-    let Some(army) = army_state(&mission.data) else {
+fn accumulate_development_lack(state: &GameState, mission: &MissionState, pools: &mut [i32; 9]) {
+    if let Some(army) = army_state(&mission.data) {
+        let actual = army_vector(state, mission).components();
+        let required = army.required_equipage_bits.map(f32::from_bits);
+        for index in 0..5 {
+            let value = if required[index] <= actual[index] {
+                required[index] - actual[index]
+            } else {
+                required[index] - actual[index] + pools[index] as f32
+            };
+            pools[index] = value as i32;
+        }
+    }
+
+    let Some(navy) = navy_state(&mission.data) else {
         return;
     };
-    let actual = army_vector(state, mission).components();
-    let required = army.required_equipage_bits.map(f32::from_bits);
-    for index in 0..5 {
-        let value = if required[index] <= actual[index] {
-            required[index] - actual[index]
-        } else {
-            required[index] - actual[index] + pools[index] as f32
+    let active_target = match navy.state {
+        NavyMissionSelection::AssembleAtPort => navy.resolved_port_zone,
+        NavyMissionSelection::EvadeAtTarget | NavyMissionSelection::ExecuteAtTarget => {
+            navy.target_zone
+        }
+    };
+    let distances = active_target.map(|target| state.zone_hop_distances_from(target));
+    let baselines = navy_category_baselines(&state.technology.industry_enabled_by_slot);
+    let mut actual: NavyPriorityTable<f32> = NavyPriorityTable::default();
+    for &ship_id in navy.ships.keys() {
+        let Some(ship) = state.ship(ship_id) else {
+            continue;
         };
-        pools[index] = value as i32;
+        let max_strength = ship_stock_cap(ship.ship_type);
+        if max_strength == 0 {
+            continue;
+        }
+        let distance = distances.as_ref().map_or(0, |distances| {
+            distances
+                .get(usize::from(ship.location.get()))
+                .copied()
+                .unwrap_or(5)
+                .min(5)
+        });
+        let scale = MISSION_ORDER_DISTANCE_DECAY[distance as usize]
+            * f32::from(ship.strength / max_strength);
+        for component in NavyPriorityComponent::ALL {
+            actual[component] +=
+                ship_priority_contribution(ship, component, &baselines) as f32 * scale;
+        }
+    }
+    let required = NavyPriorityTable::from_array(navy.required_equipage_bits.map(f32::from_bits));
+    for (index, component) in NavyPriorityComponent::ALL.into_iter().enumerate() {
+        pools[5 + index] =
+            (required[component] - actual[component] + pools[5 + index] as f32) as i32;
     }
 }
 
 fn subtract_unit_costs(pools: &mut [i32; 9], kind: MilitaryUnitKind) {
     for (pool, cost) in pools.iter_mut().zip(kind.class_costs()) {
-        *pool -= i32::from(cost);
+        *pool = pool.wrapping_sub(i32::from(cost));
+    }
+}
+
+fn subtract_development_costs(
+    pools: &mut [i32; 9],
+    selection: AiDevelopmentSelection,
+    enabled: &IndustryCapabilityTable<bool>,
+) {
+    match selection {
+        AiDevelopmentSelection::LandUnit(kind) => subtract_unit_costs(pools, kind),
+        AiDevelopmentSelection::Industry(ship_type) => {
+            for (index, component) in NavyPriorityComponent::ALL.into_iter().enumerate() {
+                pools[5 + index] = pools[5 + index].wrapping_sub(normalized_industry_action_cost(
+                    enabled, component, ship_type,
+                ));
+            }
+        }
+    }
+}
+
+fn normalized_industry_action_cost(
+    enabled: &IndustryCapabilityTable<bool>,
+    component: NavyPriorityComponent,
+    ship_type: ShipType,
+) -> i32 {
+    let baseline = navy_category_baselines(enabled)[component];
+    let descriptor = NAVY_DESCRIPTORS[ship_type];
+    match component {
+        NavyPriorityComponent::Resolve => {
+            descriptor.resolve_weight
+                * descriptor.calculate_weight
+                * descriptor.calculate_weight
+                * 100
+                / baseline
+        }
+        NavyPriorityComponent::Strength => {
+            ((descriptor.calculate_weight * descriptor.stock_cap * 100
+                / descriptor.task_force_weight)
+                * 100)
+                / baseline
+        }
+        NavyPriorityComponent::Descriptor => descriptor.navy_priority_weight * 100 / baseline,
+        NavyPriorityComponent::Industry => {
+            i32::from(ship_order_costs(ship_type).arms) * 100 / baseline
+        }
     }
 }
 

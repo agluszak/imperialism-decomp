@@ -123,3 +123,23 @@ impl From<&Metrics> for NationOrderPriorityMetrics {
 pub fn recompute_nation_order_priority_metrics(state: &GameState) -> NationOrderPriorityMetrics {
     NationOrderPriorityMetrics::from(&state.recompute_nation_order_priority_metrics())
 }
+
+pub fn plan_ai_military_development(
+    state: &mut GameState,
+    nation: MajorNationId,
+    average_allocation: i32,
+) {
+    let previous = state.nations.majors[&nation]
+        .economy
+        .interior_civilian
+        .average_development_order_allocation;
+    state.nations.majors[&nation]
+        .economy
+        .interior_civilian
+        .average_development_order_allocation = average_allocation;
+    state.plan_ai_military_development(nation);
+    state.nations.majors[&nation]
+        .economy
+        .interior_civilian
+        .average_development_order_allocation = previous;
+}
