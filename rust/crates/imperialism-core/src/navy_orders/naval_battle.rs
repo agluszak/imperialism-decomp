@@ -108,6 +108,7 @@ pub struct NavyBattle {
     records: Vec<usize>,
     sides: [NavySide; 2],
     battlefield_column_count: i32,
+    tactical_initialized: bool,
     move_cost_rotation_start: usize,
     move_cost_by_direction: [i16; 6],
 }
@@ -166,11 +167,6 @@ impl NavyBattle {
             .max()
             .unwrap_or(0)
             + 11;
-        let rotation = (state.rng.next_crt_rand() % 6) as usize;
-        let mut move_cost_by_direction = [0; 6];
-        for (offset, cost) in MOVE_COSTS.into_iter().enumerate() {
-            move_cost_by_direction[(rotation + offset) % 6] = cost;
-        }
         let records: Vec<usize> = (0..units.len()).collect();
         let active = state.turn.active_nation;
         Self {
@@ -207,8 +203,9 @@ impl NavyBattle {
                 },
             ],
             battlefield_column_count,
-            move_cost_rotation_start: rotation,
-            move_cost_by_direction,
+            tactical_initialized: false,
+            move_cost_rotation_start: 0,
+            move_cost_by_direction: [0; 6],
         }
     }
 
@@ -287,7 +284,20 @@ impl NavyBattle {
             .collect()
     }
 
-    fn start(&mut self) {
+    fn initialize_tactical_map(&mut self, state: &mut GameState) {
+        if self.tactical_initialized {
+            return;
+        }
+        let rotation = (state.rng.next_crt_rand() % 6) as usize;
+        for (offset, cost) in MOVE_COSTS.into_iter().enumerate() {
+            self.move_cost_by_direction[(rotation + offset) % 6] = cost;
+        }
+        self.move_cost_rotation_start = rotation;
+        self.tactical_initialized = true;
+    }
+
+    fn start(&mut self, state: &mut GameState) {
+        self.initialize_tactical_map(state);
         self.start_side(BattleSide::Defender);
     }
 
@@ -963,18 +973,25 @@ impl GameState {
     }
 
     pub fn synchronize_navy_battle(&mut self, story_ids: &[i32]) -> Option<crate::TurnStop> {
-        if self.navy_battle().is_some() {
+        if self
+            .navy_battle()
+            .is_some_and(|battle| battle.tactical_initialized)
+        {
             return None;
         }
         let crate::turn_flow::TurnContinuation::NavalBattle(_) = &self.continuation else {
             return None;
         };
-        let pending = self
-            .pending_naval_battle()
-            .cloned()
-            .expect("navy battle requires a pending encounter");
-        let mut battle = NavyBattle::new(self, &pending);
-        battle.start();
+        let mut battle = if let Some(battle) = self.take_navy_battle() {
+            battle
+        } else {
+            let pending = self
+                .pending_naval_battle()
+                .cloned()
+                .expect("navy battle requires a pending encounter");
+            NavyBattle::new(self, &pending)
+        };
+        battle.start(self);
         if battle.live && battle.pump_until_active_input(self) {
             return Some(self.resume_after_naval_battle(story_ids));
         }
@@ -1227,15 +1244,23 @@ impl GameState {
         };
         let mut battle = match self.take_navy_battle() {
             Some(mut live) => {
-                if !live.live {
-                    let slot = side_index(live.current_side);
-                    live.sides[slot].auto_play = true;
-                    live.auto_deploy();
+                if !live.tactical_initialized {
+                    for side in &mut live.sides {
+                        side.auto_play = true;
+                    }
+                    live.start(self);
+                    live
+                } else {
+                    if !live.live {
+                        let slot = side_index(live.current_side);
+                        live.sides[slot].auto_play = true;
+                        live.auto_deploy();
+                    }
+                    for side in &mut live.sides {
+                        side.auto_play = true;
+                    }
+                    live
                 }
-                for side in &mut live.sides {
-                    side.auto_play = true;
-                }
-                live
             }
             None => {
                 let pending = self
@@ -1246,7 +1271,7 @@ impl GameState {
                 for side in &mut battle.sides {
                     side.auto_play = true;
                 }
-                battle.start();
+                battle.start(self);
                 battle
             }
         };
@@ -1287,18 +1312,29 @@ impl GameState {
     }
 
     #[cfg(feature = "oracle")]
+    pub(crate) fn prepare_pending_navy_battle(&mut self) {
+        let pending = self
+            .pending_naval_battle()
+            .cloned()
+            .expect("navy battle requires a pending encounter");
+        let battle = NavyBattle::new(self, &pending);
+        self.store_navy_battle(battle);
+    }
+
+    #[cfg(feature = "oracle")]
     pub(crate) fn navy_tactical_init_snapshot(
         &mut self,
         our: TaskForceId,
         enemy: TaskForceId,
     ) -> crate::differential::NavyTacticalInitSnapshot {
-        let battle = NavyBattle::new(
+        let mut battle = NavyBattle::new(
             self,
             &PendingNavalBattle {
                 attacker: our,
                 defender: enemy,
             },
         );
+        battle.initialize_tactical_map(self);
         crate::differential::NavyTacticalInitSnapshot {
             column_count: battle.battlefield_column_count,
             current_side: side_index(battle.current_side) as i32,
@@ -1511,6 +1547,7 @@ mod tests {
                 },
             ],
             battlefield_column_count: 16,
+            tactical_initialized: true,
             move_cost_rotation_start: 0,
             move_cost_by_direction: MOVE_COSTS,
         }
