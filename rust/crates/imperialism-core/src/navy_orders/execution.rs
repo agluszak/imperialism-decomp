@@ -1833,6 +1833,32 @@ mod tests {
     }
 
     #[test]
+    fn retail_production_resolves_an_active_nation_naval_encounter_strategically() {
+        let mut state = game_state();
+        let active = NationId::new(0);
+        let enemy = NationId::new(1);
+        state.turn.active_nation = active;
+        state.diplomacy.relationships[enemy][active] = DiplomaticRelationship::War;
+        encounter_force(
+            &mut state,
+            active,
+            OceanZoneId::new(0),
+            TaskForceOrder::Patrol,
+        );
+        encounter_force(
+            &mut state,
+            enemy,
+            OceanZoneId::new(0),
+            TaskForceOrder::Blockade,
+        );
+        let rng_before = state.rng;
+
+        assert_eq!(state.do_military(), None);
+        assert_ne!(state.rng, rng_before);
+        assert!(state.navy_battle().is_none());
+    }
+
+    #[test]
     fn control_sea_give_orders_sails_an_assigned_frigate_one_descriptor_hop() {
         let mut state = game_state();
         let nation = NationId::new(0);

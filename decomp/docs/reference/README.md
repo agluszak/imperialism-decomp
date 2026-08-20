@@ -24,6 +24,8 @@ validation, and score deltas).
   (mask-buffer / packed-color runs, frame/legend fields).
 - `stretch-container.md` — stretch-collection layout and ownership notes.
 - `navy_order_model.md` — navy order / mission model evidence.
+- `navy_tactical_retail.md` — direct Windows retail evidence that production naval combat resolves
+  strategically and the tactical navy classes are dormant.
 - `save_format.md` — retail save format.
 
 ## Game-domain knowledge

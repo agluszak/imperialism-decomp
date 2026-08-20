@@ -24,10 +24,10 @@ impl GameState {
         self.apply_military_orders();
         self.clean_up_army_stacks();
         self.prepare_to_carry_out_navy_orders();
-        // TODO(navy-tactical): `NavalBattlePlugin` can project `TurnStop::NavalBattle`,
-        // but production still skips the modal battle so a real turn never opens that
-        // screen. Switch this to `carry_out_navy_orders()` once native `military_phase`
-        // fixtures and mid-game saves are ready to stop on player naval encounters.
+        // Windows retail reads preference slot 1 before a player-involved encounter,
+        // and its settings initialization forcibly clears that slot. The live turn
+        // path therefore always resolves naval combat strategically. Keep the recovered
+        // tactical branch isolated behind the oracle-only entry point below.
         self.carry_out_navy_orders_without_tactical_battles()
     }
 
