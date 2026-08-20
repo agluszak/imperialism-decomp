@@ -232,9 +232,21 @@ pub(crate) struct LegacyPopulationState {
     pub pending_labor_delta: [i16; 3],
 }
 
-pub(crate) struct LegacyCityTask {
-    pub kind: u8,
-    pub payload: Vec<u8>,
+pub(crate) enum LegacyCityTask {
+    ProductionOrder {
+        order_slot: i16,
+        remaining_attempts: i16,
+        requested_amount: i16,
+        already_queued: i16,
+    },
+    ShipConstruction {
+        order_slot: i16,
+        remaining_attempts: i16,
+        requested_amount: i16,
+        already_queued: i16,
+        requested_ship_type: i16,
+        waiting_for_order_advance: i16,
+    },
 }
 
 pub(crate) struct LegacyCityState {

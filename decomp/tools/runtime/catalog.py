@@ -82,6 +82,10 @@ MIDGAME_NAVY = RuntimeFixtureSpec(
     "midgame_navy.imp",
     "retail_fixture_oracle",
 )
+MIDGAME_CITY_TASKS = RuntimeFixtureSpec(
+    "midgame_city_tasks.imp",
+    "retail_fixture_oracle",
+)
 
 
 def retail_fixture_case(name: str, factory: str) -> RuntimeTestSpec:
@@ -343,6 +347,16 @@ TESTS = (
         ("full",),
         "retail_fixture_oracle",
         fixture=MIDGAME_NAVY,
+        required_oracles=(),
+        native_snapshots=("map_state", "game_state"),
+        record_game_flow=True,
+    ),
+    RuntimeTestSpec(
+        "load_midgame_city_tasks",
+        "LoadMidgameCityTasksTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=MIDGAME_CITY_TASKS,
         required_oracles=(),
         native_snapshots=("map_state", "game_state"),
         record_game_flow=True,

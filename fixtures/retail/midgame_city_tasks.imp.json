@@ -1,0 +1,9 @@
+{
+  "creation_instructions": "Create a city production task through recovered TCityTask::ICityTask and TTaskList::AddTask, write that input through the reconstructed save path, load it into retail Imperialism.exe, wait for the strategic map, then invoke retail SaveGameWithModeAndOptionalLabel for slotA. Captured from original executable SHA-256 6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691 in load_save_to_map-20260819T224010Z-176005.",
+  "file": "midgame_city_tasks.imp",
+  "format": "imperialism-save",
+  "format_version": 62,
+  "sha256": "7b084cee3480890a128dbc1e395335fe2467a26e2bae502b4ba070a26901be5d",
+  "size": 402919,
+  "source_kind": "retail_fixture_oracle"
+}

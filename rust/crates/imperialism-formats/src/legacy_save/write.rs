@@ -4,16 +4,6 @@ use crate::legacy_stream::LegacyWriter;
 use imperialism_core::*;
 
 impl LegacySaveV62 {
-    pub(super) fn has_city_tasks(&self) -> bool {
-        self.major_nations.values().any(|nation| {
-            nation
-                .great_power()
-                .city
-                .as_ref()
-                .is_some_and(|city| !city.tasks.is_empty())
-        })
-    }
-
     pub(super) fn has_transport_requests(&self) -> bool {
         self.major_nations.values().any(|nation| {
             nation
@@ -525,12 +515,44 @@ fn write_city(writer: &mut LegacyWriter, city: &LegacyCityState) {
     writer.write_le_i32(city.rolling_item_production_score);
     write_population(writer, &city.population);
     write_city_orders(writer, &city.orders);
-    writer.write_le_u32(city.tasks.len() as u32);
-    for task in &city.tasks {
-        writer.write_u8(task.kind);
-        writer.write_bytes(&task.payload);
-    }
+    write_city_tasks(writer, &city.tasks);
     write_fixed_record_list(writer, &city.transport_requests);
+}
+
+pub(super) fn write_city_tasks(writer: &mut LegacyWriter, tasks: &[LegacyCityTask]) {
+    writer.write_le_u32(tasks.len() as u32);
+    for task in tasks {
+        match task {
+            LegacyCityTask::ProductionOrder {
+                order_slot,
+                remaining_attempts,
+                requested_amount,
+                already_queued,
+            } => {
+                writer.write_u8(1);
+                writer.write_le_i16(*order_slot);
+                writer.write_le_i16(*remaining_attempts);
+                writer.write_le_i16(*requested_amount);
+                writer.write_le_i16(*already_queued);
+            }
+            LegacyCityTask::ShipConstruction {
+                order_slot,
+                remaining_attempts,
+                requested_amount,
+                already_queued,
+                requested_ship_type,
+                waiting_for_order_advance,
+            } => {
+                writer.write_u8(2);
+                writer.write_le_i16(*order_slot);
+                writer.write_le_i16(*remaining_attempts);
+                writer.write_le_i16(*requested_amount);
+                writer.write_le_i16(*already_queued);
+                writer.write_le_i16(*requested_ship_type);
+                writer.write_le_i16(*waiting_for_order_advance);
+            }
+        }
+    }
 }
 
 fn write_population(writer: &mut LegacyWriter, population: &LegacyPopulationState) {
