@@ -9,7 +9,9 @@
 #include "game/military/TCivUnit.h"
 #include "game/military/TMilitaryUnit.h"
 #include "game/military_domain_types.h"
+#include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
+#include "game/ui_core/CIterator.h"
 #include "game/unit_domain_types.h"
 
 namespace {
@@ -114,10 +116,21 @@ RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition) {
     return started;
   }
 
-  TGreatPower* ai = g_apNationStates[aiSlot];
+  TAutoGreatPower* ai = static_cast<TAutoGreatPower*>(g_apNationStates[aiSlot]);
   const unsigned char savedEligibility = ai->diplomacyEligibilityA0;
   ai->diplomacyEligibilityA0 = 0;
   g_pGlobalMapState->ChangeProvinceOwner(province, aiSlot);
   ai->diplomacyEligibilityA0 = savedEligibility;
-  return transition.Finish();
+
+  CIterator missionIter(ai->missionQueue);
+  for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
+       mission = static_cast<TMission*>(missionIter.Advance())) {
+    if (mission->Matches(kMissionTypeDefendProvince, province, 0)) {
+      // TMission's retail constructor leaves flag10 uninitialized. This case captures the
+      // newly-created mission before normal AI planning calls Hold, so choose the Rust default.
+      mission->Hold(0);
+      return transition.Finish();
+    }
+  }
+  return RuntimeActionResult::Failure("province ownership change created no defend mission");
 }
