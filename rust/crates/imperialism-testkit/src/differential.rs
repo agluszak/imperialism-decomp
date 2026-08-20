@@ -223,7 +223,7 @@ fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &G
         .as_object_mut()
         .expect("GameState serializes as an object");
     state.remove("object_ids");
-    discard_new_town_uninitialized_adjacent_city(state, game.turn().economic_turn);
+    discard_uncalculated_new_town_adjacent_city(state);
 
     // Retail saves these ordered lists but not their object pointers. Loader-assigned numeric
     // keys therefore depend on how many other pointer-like objects the capture contains; list
@@ -279,9 +279,8 @@ fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &G
     state.insert("missions".to_owned(), serde_json::Value::Array(missions));
 }
 
-fn discard_new_town_uninitialized_adjacent_city(
+fn discard_uncalculated_new_town_adjacent_city(
     state: &mut serde_json::Map<String, serde_json::Value>,
-    economic_turn: i32,
 ) {
     let Some(serde_json::Value::Object(majors)) = state
         .get_mut("nations")
@@ -301,14 +300,18 @@ fn discard_new_town_uninitialized_adjacent_city(
             let Some(town) = town.as_object_mut() else {
                 continue;
             };
-            if town
+            let constructed_after_start = town
                 .get("created_turn")
                 .and_then(serde_json::Value::as_i64)
-                .is_some_and(|created| created + 1 >= i64::from(economic_turn))
-            {
+                .is_some_and(|created| created > 0);
+            let resources_uncalculated = town
+                .get("resource_yield_by_type")
+                .and_then(serde_json::Value::as_object)
+                .is_some_and(|yields| yields.values().all(|amount| amount.as_i64() == Some(0)));
+            if constructed_after_start && resources_uncalculated {
                 // `TTown::ITown` does not initialize this byte. A town built during the
-                // current turn can be saved before `CalculateRawResources` or
-                // `CalculateResources` assigns it, so the native value is allocator noise.
+                // turn retains allocator noise until `CalculateRawResources` or
+                // `CalculateResources` populates its still-zero yield table and this flag.
                 town.remove("has_adjacent_city");
             }
         }

@@ -232,7 +232,7 @@ RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
   JsonArray stops;
   JsonArray rngStates;
   JsonArray economicTurns;
-  for (int turn = 0; turn < 8; ++turn) {
+  for (int turn = 0; turn < 12; ++turn) {
     int stepCount = 0;
     while (g_pSimMgr->turnStateCode != 0xe && stepCount < 32) {
       g_pSimMgr->AdvanceGlobalTurnStateMachine();

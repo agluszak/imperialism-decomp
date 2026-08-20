@@ -68,7 +68,7 @@ impl GameState {
         self.end_city_phase(nation);
         self.clear_ai_city_orders(nation);
         self.process_ai_pending_civilian_recruitment(nation);
-        self.process_ai_pending_ship(nation);
+        self.process_ai_ship_orders(nation);
         let (temporary_lumber, low_skill_shortfall) = self.rebalance_ai_labor(nation);
         self.choose_ai_expansion(nation, previous_allocation.as_ref());
         self.compute_ai_item_demands(nation);

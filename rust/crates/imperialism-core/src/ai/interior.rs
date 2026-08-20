@@ -246,7 +246,7 @@ impl GameState {
         self.set_city_order_quantity(nation, CityOrderId::PopulationGrowth, 0);
     }
 
-    pub(crate) fn process_ai_pending_ship(&mut self, nation: MajorNationId) {
+    pub(crate) fn process_ai_ship_orders(&mut self, nation: MajorNationId) {
         let reserved_arms = {
             let interior = self.nations.majors[&nation]
                 .economy
@@ -258,33 +258,69 @@ impl GameState {
             .city_mut(nation)
             .adjust_stock(ResourceKind::Arms, reserved_arms);
 
-        let Some(ship_type) = self.nations.majors[&nation].economy.pending_ship.take() else {
-            return;
-        };
-        let Some(slot) = (0..enum_map::enum_len::<ShipOrderSlot>())
-            .map(ShipOrderSlot::from_usize)
-            .find(|&slot| self.nations.city(nation).orders.ships[slot].ship_type == ship_type)
-        else {
-            return;
-        };
-        let costs = ship_order_costs(ship_type);
-        for (resource, amount) in costs.iter() {
-            if amount != 0 {
-                self.request_ai_resource(
-                    nation,
-                    resource,
-                    amount,
-                    AiResourcePolicy::FOR_PRODUCTION,
-                );
-            }
+        if self.turn.economic_turn == 0 {
+            self.nations.majors[&nation].economy.pending_ship = Some(ShipType::Indiaman);
         }
-        let maximum = self
-            .city_order_limit(nation, CityOrderId::Ship(slot))
-            .maximum;
-        assert_eq!(
-            self.set_city_order_quantity(nation, CityOrderId::Ship(slot), maximum.min(1)),
-            CityOrderUpdate::Applied
-        );
+        if let Some(ship_type) = self.nations.majors[&nation].economy.pending_ship
+            && let Some(slot) = (0..enum_map::enum_len::<ShipOrderSlot>())
+                .map(ShipOrderSlot::from_usize)
+                .find(|&slot| self.nations.city(nation).orders.ships[slot].ship_type == ship_type)
+        {
+            self.nations.majors[&nation]
+                .economy
+                .interior_civilian
+                .city_order_demand
+                .ships[slot] = 1;
+            self.nations.majors[&nation].economy.pending_ship = None;
+        }
+
+        for slot in (0..enum_map::enum_len::<ShipOrderSlot>()).map(ShipOrderSlot::from_usize) {
+            let requested = self.nations.majors[&nation]
+                .economy
+                .interior_civilian
+                .city_order_demand
+                .ships[slot];
+            if requested == 0 {
+                continue;
+            }
+            let ship_type = self.nations.city(nation).orders.ships[slot].ship_type;
+            let costs = ship_order_costs(ship_type);
+            for (resource, amount) in costs.iter() {
+                if amount != 0 {
+                    self.request_ai_resource(
+                        nation,
+                        resource,
+                        amount * requested,
+                        AiResourcePolicy::FOR_PRODUCTION,
+                    );
+                }
+            }
+            let accepted = requested.min(
+                self.city_order_limit(nation, CityOrderId::Ship(slot))
+                    .maximum,
+            );
+            if accepted < requested {
+                let reserved = costs
+                    .arms
+                    .min(self.nations.city(nation).stockpile[ResourceKind::Arms]);
+                self.nations
+                    .city_mut(nation)
+                    .adjust_stock(ResourceKind::Arms, -reserved);
+                self.nations.majors[&nation]
+                    .economy
+                    .interior_civilian
+                    .temporarily_reserved_ship_arms += reserved;
+            }
+            assert_eq!(
+                self.set_city_order_quantity(nation, CityOrderId::Ship(slot), accepted),
+                CityOrderUpdate::Applied
+            );
+            self.nations.majors[&nation]
+                .economy
+                .interior_civilian
+                .city_order_demand
+                .ships[slot] -= accepted;
+        }
     }
 
     pub(crate) fn process_ai_pending_civilian_recruitment(&mut self, nation: MajorNationId) {
