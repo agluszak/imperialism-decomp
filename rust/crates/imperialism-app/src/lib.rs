@@ -18,6 +18,7 @@ pub(crate) enum AppState {
     ScenarioSetup,
     LoadSave,
     CitySite,
+    TownNaming,
     StrategicMap,
     Trade,
     City,
@@ -106,6 +107,7 @@ fn add_game_plugins(app: &mut App) {
         ))
         .add_plugins((
             ui::ScenarioSetupPlugin,
+            ui::TownNamingPlugin,
             media::ImperialismMediaPlugin,
             ui::CursorPlugin,
             ui::TechnologyAdvancePlugin,

@@ -67,6 +67,7 @@ pub(crate) fn news_story_ids(assets: Option<&RetailAssetsResource>) -> &[i32] {
 pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppState>) {
     match stop {
         TurnStop::PlayerOrders | TurnStop::TurnAlerts => next_state.set(AppState::StrategicMap),
+        TurnStop::TownNaming => next_state.set(AppState::TownNaming),
         TurnStop::TradeOffer => next_state.set(AppState::OfferSheet),
         TurnStop::DealBook => next_state.set(AppState::DealBook),
         TurnStop::TechnologyAdvance => next_state.set(AppState::TechnologyAdvance),

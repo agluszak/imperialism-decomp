@@ -171,6 +171,7 @@ impl PhaseCode {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum TurnStop {
     PlayerOrders,
+    TownNaming,
     DiplomacyOffer,
     DiplomacyWarJoin,
     TradeOffer,
@@ -457,6 +458,9 @@ impl GameState {
 
     pub fn advance_turn(&mut self, story_ids: &[i32]) -> TurnStop {
         loop {
+            if self.pending_town_naming().is_some() {
+                return TurnStop::TownNaming;
+            }
             if let Some(stop) = self.continuation_stop() {
                 return stop;
             }

@@ -455,6 +455,7 @@ mod tests {
                 second,
                 TownState {
                     name: "Altown".to_owned(),
+                    needs_naming: false,
                     created_turn: 2,
                     owner_nation: nation.nation(),
                     resource_yield_by_type: ResourceTable::default(),
