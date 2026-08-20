@@ -1047,7 +1047,7 @@ fn city_window_layout_round_trips_without_entering_game_state() {
 fn battle_report_text_round_trips_outside_game_state() {
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
     save.army_reports = vec![LegacyBattleReport {
-        participant_index: BattleReportSideSlot::Left.retail(),
+        participant_index: u8::MAX,
         displayed_participant: BattleReportSideSlot::Right.retail(),
         kind: BattleReportKind::LandBattle.retail(),
         node_id: 0,
@@ -1068,6 +1068,7 @@ fn battle_report_text_round_trips_outside_game_state() {
     }];
     let game = save.game_state(game_context());
     let report_text = save.battle_report_text();
+    assert_eq!(game.battle_reports()[0].participant, None);
 
     let bytes = LegacySaveV62::from_game_state(
         &game,
@@ -1081,6 +1082,7 @@ fn battle_report_text_round_trips_outside_game_state() {
     let loaded = load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
 
     assert_eq!(loaded.game, game);
+    assert_eq!(loaded.game.battle_reports()[0].participant, None);
     assert_eq!(loaded.battle_report_text, report_text);
 }
 

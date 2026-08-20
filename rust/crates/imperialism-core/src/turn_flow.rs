@@ -904,7 +904,7 @@ mod tests {
         let mut state = game_state();
         seed_town_tiles(&mut state);
         state.append_battle_report(BattleReport {
-            participant: BattleReportSideSlot::Left,
+            participant: Some(BattleReportSideSlot::Left),
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
@@ -1056,7 +1056,7 @@ mod tests {
         let mut state = game_state();
         assert!(!state.battle_reports_pending());
         state.append_battle_report(BattleReport {
-            participant: BattleReportSideSlot::Left,
+            participant: Some(BattleReportSideSlot::Left),
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([

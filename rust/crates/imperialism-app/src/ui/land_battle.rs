@@ -2158,7 +2158,10 @@ fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option
     let Some(report) = game.battle_reports().last() else {
         return;
     };
-    let winner = report.sides[report.participant].nation;
+    let winner = report.sides[report
+        .participant
+        .expect("resolved land battle report has a winner")]
+    .nation;
     let cue = if winner == game.turn().active_nation {
         MusicTrack::BATTLE_VICTORY
     } else {

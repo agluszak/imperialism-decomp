@@ -69,9 +69,9 @@ pub use army_orders::{
     ArmyIdleOrderMode, ArmyMapClickOutcome, ArmyMapCursorState, ArmyOrderIssue, ArmyToolbarCounts,
 };
 pub use battle_report::{
-    BATTLE_REPORT_ARMY_IDENTITY, BattleReport, BattleReportKind, BattleReportLocation,
-    BattleReportSide, BattleReportSideSlot, BattleReportSideTable, BattleReportUnit,
-    BattleReportUnitKind,
+    BATTLE_REPORT_ARMY_IDENTITY, BATTLE_REPORT_NAVY_IDENTITY, BattleReport, BattleReportKind,
+    BattleReportLocation, BattleReportSide, BattleReportSideSlot, BattleReportSideTable,
+    BattleReportUnit, BattleReportUnitKind,
 };
 pub use calendar::TurnCalendar;
 pub use city::{

@@ -4531,7 +4531,10 @@ mod tests {
         );
         assert_eq!(state.battle_reports().len(), reports_before + 1);
         let report = state.battle_reports().last().expect("battle was committed");
-        assert_ne!(report.sides[report.participant].nation, active_nation);
+        assert_ne!(
+            report.sides[report.participant.expect("battle report has a winner")].nation,
+            active_nation
+        );
         assert_eq!(
             state.retreat_from_army_battle(&[]),
             Err(ArmyActionRejection::NoLiveBattle)

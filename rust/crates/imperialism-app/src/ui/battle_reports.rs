@@ -322,7 +322,7 @@ mod tests {
         let state = beginning_of_game();
         let nation = state.turn().active_nation;
         let report = BattleReport {
-            participant: BattleReportSideSlot::Left,
+            participant: Some(BattleReportSideSlot::Left),
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
