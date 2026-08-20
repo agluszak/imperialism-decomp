@@ -1312,16 +1312,6 @@ impl GameState {
     }
 
     #[cfg(feature = "oracle")]
-    pub(crate) fn prepare_pending_navy_battle(&mut self) {
-        let pending = self
-            .pending_naval_battle()
-            .cloned()
-            .expect("navy battle requires a pending encounter");
-        let battle = NavyBattle::new(self, &pending);
-        self.store_navy_battle(battle);
-    }
-
-    #[cfg(feature = "oracle")]
     pub(crate) fn navy_tactical_init_snapshot(
         &mut self,
         our: TaskForceId,

@@ -265,7 +265,7 @@ struct LandBattleAnimationQueue {
 }
 
 #[derive(Component)]
-struct LandBattleDeferredStop(TurnStop);
+struct LandBattleDeferredStop(Option<TurnStop>);
 
 /// Pixel↔hex for this screen (`TTacticalBattleView` 0x5a86d0 / 0x5a87d0).
 struct LandBattleHexMap {
@@ -1205,7 +1205,7 @@ fn animate_land_battle_actions(
         &mut LandBattlefield,
         &LandBattleVisuals,
         Option<&mut LandBattleAnimationQueue>,
-        Option<&LandBattleDeferredStop>,
+        Option<&mut LandBattleDeferredStop>,
     )>,
     mut next_state: ResMut<NextState<AppState>>,
     mut assets: RetailUiAssets,
@@ -1365,8 +1365,11 @@ fn animate_land_battle_actions(
             .remove::<LandBattleAnimationQueue>();
         return;
     }
-    if let Some(stop) = deferred {
-        apply_turn_stop(stop.0, &mut next_state);
+    if let Some(mut stop) = deferred {
+        apply_turn_stop(
+            stop.0.take().expect("deferred turn stop is consumed once"),
+            &mut next_state,
+        );
         commands
             .entity(field_entity)
             .remove::<LandBattleDeferredStop>();
@@ -1888,7 +1891,9 @@ fn queue_land_battle_progress(
     if let Some(stop) = progress.stop
         && stop != TurnStop::LandBattle
     {
-        commands.entity(field).insert(LandBattleDeferredStop(stop));
+        commands
+            .entity(field)
+            .insert(LandBattleDeferredStop(Some(stop)));
     }
 }
 
