@@ -204,6 +204,14 @@ struct TradeScreenVisual {
     rows: [(TradeCommodity, IVec2); TRADE_ROWS.len()],
 }
 
+// TTradeCluster::DoPostCreate gives each `Sell` TMyNumberText this Windows style.
+const TRADE_SELL_COUNTER_STYLE: RetailTextStylePreset = RetailTextStylePreset {
+    font_family: 2,
+    face_flags: 0,
+    point_size: 14,
+    alignment: -1,
+};
+
 pub(crate) struct TradePlugin;
 
 impl Plugin for TradePlugin {
@@ -285,6 +293,7 @@ fn bind_trade_screen(
             .picture(PictureId::new(2128))
             .expect("clothing trade offer picture"),
     };
+    bind_trade_sell_counters(&mut commands, &mut assets, *root, &tree);
     bind_trade_controls(
         &mut commands,
         *root,
@@ -407,6 +416,24 @@ fn bind_trade_controls(
                 RelativeCursorPosition::default(),
             ))
             .observe(on_trade_amount_bar_click);
+    }
+}
+
+fn bind_trade_sell_counters(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    root: Entity,
+    tree: &RetailTree,
+) {
+    let (font, layout, line_height, _) = assets
+        .text_style(TRADE_SELL_COUNTER_STYLE)
+        .expect("retail trade sell counter style");
+    for binding in TRADE_ROWS {
+        let row = tree.find(root, binding.tag);
+        let sell = tree.find(row, fourcc!("Sell"));
+        commands
+            .entity(sell)
+            .insert((font.clone(), layout, line_height));
     }
 }
 
@@ -974,6 +1001,13 @@ mod tests {
         app.world_mut().commands().trigger(Activate { entity });
         app.world_mut().flush();
         app.update();
+    }
+
+    #[test]
+    fn trade_sell_counter_uses_the_retail_post_create_style() {
+        let style = resolve_retail_text_style(TRADE_SELL_COUNTER_STYLE).unwrap();
+        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
+        assert_eq!(style.alignment, RetailTextAlignment::Right);
     }
 
     #[test]
