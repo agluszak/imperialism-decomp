@@ -35,6 +35,7 @@ mod market;
 mod military;
 mod military_cleanup;
 mod military_phase;
+mod military_reports;
 mod nation_economy;
 mod nations;
 mod navy_orders;
@@ -137,6 +138,11 @@ pub use military::{
     AdmiralState, ArmyMissionState, AttackMissionState, MissionData, MissionState, NavalAggression,
     NavyMissionSelection, NavyMissionState, ObjectIdAllocator, ShipSelection, ShipState,
     TaskForceOrder, TaskForceState, TaskForceTarget,
+};
+pub use military_reports::{
+    ArmyReportModel, ArmyRosterModel, ArmyRosterRow, EnemyFleetReport, FleetAuthority,
+    FleetReportKind, FleetReportModel, FriendlyFleetReport, GarrisonModel, GarrisonRow,
+    NavyRosterKind, NavyRosterModel, NavyRosterRow,
 };
 pub use nation_economy::{
     ForeignTradeBid, ForeignTradeState, GreatPowerState, MinorTradeState, MinorTradeThresholds,

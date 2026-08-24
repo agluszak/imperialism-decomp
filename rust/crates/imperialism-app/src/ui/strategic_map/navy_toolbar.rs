@@ -10,7 +10,7 @@ use crate::ui::GameSession;
 use bevy::prelude::*;
 use bevy::ui::{Checked, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_core::{NavalAggression, NavyToolbarClass};
+use imperialism_core::{NavalAggression, NavyRosterKind, NavyToolbarClass};
 use imperialism_formats::*;
 
 const PAGE_TAG: FourCc = fourcc!("unav");
@@ -273,6 +273,7 @@ fn spawn_count_label(commands: &mut Commands, parent: Entity, assets: &mut Retai
 fn on_navy_command(
     activate: On<Activate>,
     commands_query: Query<&NavyCommand>,
+    keys: Res<ButtonInput<KeyCode>>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
@@ -305,7 +306,15 @@ fn on_navy_command(
             cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         NavyCommand::Bomb => {
-            spawn_navy_roster(&mut commands);
+            let roster =
+                if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                    NavyRosterKind::Nation
+                } else if let Some(force) = interaction.navy.force {
+                    NavyRosterKind::TaskForce(force)
+                } else {
+                    return;
+                };
+            spawn_navy_roster(&mut commands, roster);
         }
     }
 }
