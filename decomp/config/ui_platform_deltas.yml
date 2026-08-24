@@ -1,7 +1,7 @@
 
-# Post-create text-style changes made by the recovered Windows controllers.
-# These patch semantic catalog properties only; resource geometry and hierarchy
-# remain owned by the Mac View IR.
+# Post-create presentation changes made by the recovered Windows controllers.
+# Text-style patches and controller-induced geometry deltas live here. Mac View
+# IR still owns resource hierarchy and the baseline rectangles.
 node_property_patches:
   - view: Startup.rsrc:1501
     node: 0x0247
@@ -332,6 +332,66 @@ node_property_patches:
   - {view: Univ.rsrc:9210, node: 0x134e, tag: numb, properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}, evidence: TUniversityView::DoStartup at 0x004cace0 installs the queue quantity style on each available native row}
   - {view: Univ.rsrc:9210, node: 0x168c, tag: numb, properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}, evidence: TUniversityView::DoStartup at 0x004cace0 installs the queue quantity style on each available native row}
   - {view: Univ.rsrc:9210, node: 0x18e4, tag: numb, properties: {text: {font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: 0xd2}}, evidence: TUniversityView::DoStartup at 0x004cace0 installs the queue quantity style on each available native row}
+
+  # TAmtBarCluster::DoPostCreate owns the move child's 10pt/alignment style.
+  - {view: Citydlog.rsrc:9200, node: 0x04d4, tag: move, properties: {text: &amt_bar_move_text {font_family: 3, face_flags: 0, point_size: 10, alignment: -2}}, evidence: &amt_bar_move_evidence "TAmtBarCluster::DoPostCreate at 0x00586d60 installs BuildUiTextStyleDescriptor(..., 0, 0xa, 0x2b67) and SetTextAlignmentAndMaybeRefresh(-2, 0) on the move TNumberText"}
+  - {view: Citydlog.rsrc:9201, node: 0x04d4, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9202, node: 0x04d4, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9203, node: 0x04d4, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9203, node: 0x06ed, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9204, node: 0x04d4, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9204, node: 0x06ed, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9205, node: 0x04d4, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9206, node: 0x04d4, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9209, node: 0x0429, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9209, node: 0x063a, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9211, node: 0x046a, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9212, node: 0x04d0, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9214, node: 0x04d0, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+  - {view: Citydlog.rsrc:9215, node: 0x0536, tag: move, properties: {text: *amt_bar_move_text}, evidence: *amt_bar_move_evidence}
+
+  # TTradeCluster::DoPostCreate owns Sell styling and CRect top -= 2.
+  - {view: Trade.rsrc:2009, node: 0x062f, tag: Sell, properties: {text: &trade_sell_text {font_family: 2, face_flags: 0, point_size: 14, alignment: -1}, geometry: &trade_sell_geometry {top: -2}}, evidence: &trade_sell_evidence "TTradeCluster::DoPostCreate at 0x00587130 installs InitializeUiTextStyleDescriptor(..., 0, 0xe, 0x2b68, 2), SetTextAlignmentAndMaybeRefresh(-1, 0), and QueryBounds/ApplyBounds with top -= 2 on the Sell TMyNumberText"}
+  - {view: Trade.rsrc:2009, node: 0x0a0e, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x0ded, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x11cc, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x15ab, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x198a, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x1d69, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x2148, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x2527, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x2906, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x2ce5, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x30c4, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x34a3, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x3882, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x3c61, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x4040, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2009, node: 0x441f, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x02b9, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x0698, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x0a77, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x0e56, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x1235, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x1614, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x19f3, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x1dd2, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x21b1, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x2590, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x296f, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x2d4e, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x312d, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x350c, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x38eb, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x3cca, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+  - {view: Trade.rsrc:2010, node: 0x40a9, tag: Sell, properties: {text: *trade_sell_text, geometry: *trade_sell_geometry}, evidence: *trade_sell_evidence}
+
+  # TNewspaperView::StuffValues installs the fixed date/spec title style on existing controls.
+  - {view: FlagView.rsrc:8451, node: 0x0274, tag: date, properties: {text: {font_family: 2, face_flags: 0, point_size: 12, alignment: -1}}, evidence: "TNewspaperView::StuffValues at 0x0055d200 installs InitializeUiTextStyleDescriptor(..., 0, 0xc, 0x2b67, 2) on date; Windows does not change Mac right alignment"}
+  - {view: FlagView.rsrc:8451, node: 0x02da, tag: spec, properties: {text: {font_family: 2, face_flags: 0, point_size: 12, alignment: -2}}, evidence: "TNewspaperView::StuffValues at 0x0055d200 installs the same 12-point family-2 title style on spec; Windows does not change Mac left alignment"}
+
+  # TDealBookPicture::Startup restyles rtil through ApplyUiTextStyleAndThemeFlags.
+  - {view: FlagView.rsrc:8800, node: 0x0610, tag: rtil, properties: {text: {font_family: 1, face_flags: 0, point_size: 18, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [-1, -1]}}, evidence: "TDealBookPicture::Startup at 0x005bac50 calls ApplyUiTextStyleAndThemeFlags(rtil, 0, 0x12, 0x2b6b, 0x2b6c); TDropShadowText::Draw offsets the shadow by (-1,-1); GetColor maps those themes to palettes 0xd2 and 0x28"}
 
 # Child controls created by recovered Windows post-create code after the Mac
 # resource tree is loaded. Each row is a complete semantic node patch; the

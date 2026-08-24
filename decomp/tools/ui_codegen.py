@@ -253,6 +253,7 @@ class UiTextPropertyPatch:
     resource_id: int | None = None
     resource_index: int | None = None
     resource_file: str | None = None
+    geometry_top_delta: int | None = None
 
 
 @dataclass(frozen=True)
@@ -557,8 +558,13 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
         node_id = f"0x{int(str(row['node']), 0):04x}"
         tag = _fourcc(row["tag"], f"{context}/tag")
         properties = _mapping(row["properties"], f"{context}/properties")
-        if set(properties) != {"text"}:
-            raise ValueError(f"{context}/properties: only generic text patches are supported")
+        allowed_properties = {"text", "geometry"}
+        extra_properties = set(properties) - allowed_properties
+        if extra_properties or "text" not in properties:
+            raise ValueError(
+                f"{context}/properties: expected text with optional geometry, "
+                f"not {sorted(properties)!r}"
+            )
         text = _mapping(properties["text"], f"{context}/properties/text")
         required = {"font_family", "face_flags", "point_size", "alignment"}
         optional = {
@@ -594,6 +600,14 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
             raise ValueError(
                 f"{context}/properties/text: resource_file requires resource_id"
             )
+        geometry_top_delta = None
+        if "geometry" in properties:
+            geometry = _mapping(properties["geometry"], f"{context}/properties/geometry")
+            if set(geometry) != {"top"}:
+                raise ValueError(
+                    f"{context}/properties/geometry: only a CRect top delta is supported"
+                )
+            geometry_top_delta = int(geometry["top"])
         evidence = str(row["evidence"]).strip()
         if not evidence:
             raise ValueError(f"{context}: evidence is required")
@@ -625,6 +639,7 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
                     int(text["resource_index"]) if "resource_index" in text else None
                 ),
                 resource_file=(str(text["resource_file"]) if "resource_file" in text else None),
+                geometry_top_delta=geometry_top_delta,
             )
         )
     return tuple(
@@ -1093,9 +1108,19 @@ def apply_windows_text_property_patches(
             ),
             source=patch.evidence if patch.resource_id is not None else original_text.source,
         )
+        geometry = node.geometry
+        if patch.geometry_top_delta is not None:
+            x, y, width, height = geometry
+            geometry = (
+                x,
+                y + patch.geometry_top_delta,
+                width,
+                height - patch.geometry_top_delta,
+            )
         nodes.append(
             replace(
                 node,
+                geometry=geometry,
                 family=replace(node.family, text=text),
                 source=f"{node.source}; Windows: {patch.evidence}",
             )
