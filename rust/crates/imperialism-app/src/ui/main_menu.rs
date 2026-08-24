@@ -19,6 +19,7 @@ pub(crate) enum MainMenuAction {
     RandomGame,
     Scenario,
     LoadGame,
+    HighScores,
     Preferences,
     Quit,
 }
@@ -55,6 +56,7 @@ fn bind_main_menu_actions(
         (fourcc!("rand"), MainMenuAction::RandomGame),
         (fourcc!("scen"), MainMenuAction::Scenario),
         (fourcc!("load"), MainMenuAction::LoadGame),
+        (fourcc!("high"), MainMenuAction::HighScores),
         (fourcc!("pref"), MainMenuAction::Preferences),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
@@ -122,6 +124,7 @@ fn on_main_menu_activate(
                 AppState::MainMenu,
             );
         }
+        MainMenuAction::HighScores => next_state.set(AppState::HighScore),
         MainMenuAction::Preferences => {
             commands.insert_resource(ReturnTo(AppState::MainMenu));
             next_state.set(AppState::Preferences);
