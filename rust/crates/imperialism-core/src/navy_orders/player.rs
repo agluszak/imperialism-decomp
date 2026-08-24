@@ -855,3 +855,75 @@ impl GameState {
         self.elect_task_force_flagship(force);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::test_support::game_state;
+    use indexmap::IndexMap;
+
+    fn two_selected_frigates() -> (GameState, TaskForceId, ShipId, ShipId) {
+        let mut state = game_state();
+        let first = state.object_ids.ship();
+        let second = state.object_ids.ship();
+        let force = state.object_ids.task_force();
+        let location = OceanZoneId::new(0);
+        let nation = NationId::new(0);
+        let ship = |name: &str| ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            aggression: NavalAggression::Balanced,
+            nation,
+            name: name.to_string(),
+            strength: 900,
+            experience: 0,
+            selection: ShipSelection::Available,
+        };
+        state.ships.insert(first, ship("Alpha"));
+        state.ships.insert(second, ship("Beta"));
+        state.task_forces.insert(
+            force,
+            TaskForceState::from_parts(
+                NavalAggression::Balanced,
+                TaskForceOrder::None,
+                TaskForceTarget::None,
+                location,
+                nation,
+                false,
+                -1,
+                [(first, true), (second, true)]
+                    .into_iter()
+                    .collect::<IndexMap<_, _>>(),
+            ),
+        );
+        (state, force, first, second)
+    }
+
+    #[test]
+    fn deselecting_a_ship_updates_toolbar_counts_without_submitting_an_order() {
+        let (mut state, force, first, second) = two_selected_frigates();
+        let before = state.navy_toolbar_counts(Some(force));
+        assert_eq!(before.available[NavyToolbarClass::Class1], 2);
+        assert_eq!(before.selected[NavyToolbarClass::Class1], 2);
+        let order = state.task_force(force).map(|entry| entry.order);
+        assert_eq!(order, Some(TaskForceOrder::None));
+
+        state.set_task_force_ship_selected(force, first, false);
+        let after = state.navy_toolbar_counts(Some(force));
+        assert_eq!(after.available[NavyToolbarClass::Class1], 2);
+        assert_eq!(after.selected[NavyToolbarClass::Class1], 1);
+        assert_eq!(
+            state.task_force(force).map(|entry| entry.order),
+            Some(TaskForceOrder::None)
+        );
+
+        state.set_task_force_ship_selected(force, first, true);
+        let restored = state.navy_toolbar_counts(Some(force));
+        assert_eq!(restored.selected[NavyToolbarClass::Class1], 2);
+        assert!(
+            state
+                .task_force(force)
+                .is_some_and(|entry| entry.ships().eq([(first, true), (second, true)]))
+        );
+    }
+}

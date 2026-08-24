@@ -487,7 +487,9 @@ fn apply_navy_selection(
             true
         }
         NavySelectionClick::Roster => {
-            spawn_navy_roster(commands);
+            if let Some(force) = interaction.navy.force {
+                spawn_navy_roster(commands, force);
+            }
             true
         }
     }
@@ -522,14 +524,20 @@ fn apply_navy_tile_click(
                 }
                 NavySelectionClick::Intelligence { .. } => spawn_fleet_report(commands, false),
                 NavySelectionClick::InspectForce(_) => spawn_fleet_report(commands, true),
-                NavySelectionClick::Roster => spawn_navy_roster(commands),
+                NavySelectionClick::Roster => {
+                    if let Some(force) = interaction.navy.force {
+                        spawn_navy_roster(commands, force);
+                    }
+                }
                 NavySelectionClick::Ignored => {}
             }
             false
         }
         NavyTileClick::Submitted => true,
         NavyTileClick::Roster => {
-            spawn_navy_roster(commands);
+            if let Some(force) = interaction.navy.force {
+                spawn_navy_roster(commands, force);
+            }
             true
         }
     }

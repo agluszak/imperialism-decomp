@@ -305,7 +305,9 @@ fn on_navy_command(
             cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
         }
         NavyCommand::Bomb => {
-            spawn_navy_roster(&mut commands);
+            if let Some(force) = interaction.navy.force {
+                spawn_navy_roster(&mut commands, force);
+            }
         }
     }
 }

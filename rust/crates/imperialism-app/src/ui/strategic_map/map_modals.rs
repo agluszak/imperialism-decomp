@@ -13,7 +13,7 @@ use crate::ui::retail::RetailTree;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::prelude::*;
-use bevy::ui::InteractionDisabled;
+use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
@@ -23,6 +23,17 @@ struct MapModal;
 
 const CIVILIANS_PER_COLUMN: usize = 4;
 const CIVILIAN_LEDGER_VISIBLE_COLUMNS: usize = 2;
+const SHIPS_PER_COLUMN: usize = 6;
+const NAVY_ROSTER_VISIBLE_COLUMNS: usize = 2;
+const SHIP_ROW_WIDTH: f32 = 229.0;
+const SHIP_ROW_HEIGHT: f32 = 49.0;
+const SHIP_CHECK_WIDTH: f32 = 80.0;
+const SHIP_CHECK_HEIGHT: f32 = 45.0;
+const SHIP_ROSTER_ATLAS: i16 = 0xdba;
+const SHIP_ROSTER_TRANSPARENT: u8 = 0x10;
+const SHIP_ROSTER_ATLAS_OFFSET: [i16; 14] =
+    [0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120];
+const SHIP_STATUS_STRING_INDEX: [i16; 14] = [-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7];
 
 #[derive(Component)]
 struct CivilianLedger {
@@ -41,6 +52,31 @@ enum CivilianLedgerAction {
     Previous,
     Next,
     Select(TileId),
+}
+
+#[derive(Component)]
+struct NavyRoster {
+    force: TaskForceId,
+    current_column: usize,
+    last_column: usize,
+}
+
+#[derive(Component)]
+struct NavyRosterRow {
+    column: usize,
+    row: usize,
+}
+
+#[derive(Clone, Copy, Component)]
+struct NavyRosterShip {
+    force: TaskForceId,
+    ship: ShipId,
+}
+
+#[derive(Clone, Copy, Component)]
+enum NavyRosterAction {
+    Previous,
+    Next,
 }
 
 #[derive(Component)]
@@ -68,8 +104,10 @@ pub(crate) fn register(app: &mut App) {
         (
             bind_added_map_modals,
             bind_added_civilian_ledgers,
+            bind_added_navy_rosters,
             bind_added_civilian_modals,
             project_civilian_ledger,
+            project_navy_roster,
         )
             .run_if(in_state(AppState::StrategicMap)),
     );
@@ -94,9 +132,14 @@ pub(crate) fn spawn_fleet_report(commands: &mut Commands, friendly: bool) {
     spawn_modal(commands, root);
 }
 
-pub(crate) fn spawn_navy_roster(commands: &mut Commands) {
+pub(crate) fn spawn_navy_roster(commands: &mut Commands, force: TaskForceId) {
     let root = commands.spawn_scene(generated::mapview_9478()).id();
     spawn_modal(commands, root);
+    commands.entity(root).insert(NavyRoster {
+        force,
+        current_column: 0,
+        last_column: 0,
+    });
 }
 
 pub(crate) fn spawn_army_roster(commands: &mut Commands) {
@@ -410,6 +453,264 @@ fn ancestor_with_component<T: Component>(
         entity = parents.get(entity).ok()?.parent();
     }
     None
+}
+
+fn bind_added_navy_rosters(
+    mut commands: Commands,
+    added: Query<(Entity, &NavyRoster), Added<NavyRoster>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+) {
+    for (root, roster) in &added {
+        let view = tree.view(root);
+        let page = view.find(fourcc!("page"));
+        let force = roster.force;
+        let ships = session
+            .game
+            .task_force(force)
+            .map(|entry| entry.ships().collect::<Vec<_>>())
+            .unwrap_or_default();
+        let last_column = ships.len().saturating_sub(1) / SHIPS_PER_COLUMN;
+        commands.entity(root).insert(NavyRoster {
+            force,
+            current_column: 0,
+            last_column,
+        });
+
+        let (font, layout, line_height, _) = assets
+            .text_style(RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 12,
+                alignment: -2,
+            })
+            .expect("retail navy-roster text style");
+        let atlas = assets
+            .transparent_picture(PictureId::new(SHIP_ROSTER_ATLAS), SHIP_ROSTER_TRANSPARENT)
+            .expect("retail navy roster atlas 3514 must load");
+
+        for (index, (ship, _)) in ships.into_iter().enumerate() {
+            let column = index / SHIPS_PER_COLUMN;
+            let row_in_column = index % SHIPS_PER_COLUMN;
+            let Some(state) = session.game.ship(ship) else {
+                continue;
+            };
+            let caption = ship_roster_caption(&assets, state);
+            let row = commands
+                .spawn((
+                    NavyRosterRow {
+                        column,
+                        row: row_in_column,
+                    },
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: Val::Px(column as f32 * SHIP_ROW_WIDTH),
+                        top: Val::Px(row_in_column as f32 * SHIP_ROW_HEIGHT),
+                        width: Val::Px(SHIP_ROW_WIDTH),
+                        height: Val::Px(SHIP_ROW_HEIGHT),
+                        overflow: Overflow::clip(),
+                        ..default()
+                    },
+                    if column < NAVY_ROSTER_VISIBLE_COLUMNS {
+                        Visibility::Inherited
+                    } else {
+                        Visibility::Hidden
+                    },
+                ))
+                .id();
+            let checkbox = commands
+                .spawn((
+                    NavyRosterShip { force, ship },
+                    Button,
+                    ActivateOnPress,
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: Val::Px(0.0),
+                        top: Val::Px(0.0),
+                        width: Val::Px(SHIP_CHECK_WIDTH),
+                        height: Val::Px(SHIP_CHECK_HEIGHT),
+                        ..default()
+                    },
+                    ImageNode {
+                        image: atlas.clone(),
+                        ..default()
+                    },
+                ))
+                .observe(on_navy_roster_toggle)
+                .id();
+            let name = commands
+                .spawn((
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: Val::Px(64.0),
+                        top: Val::Px(0.0),
+                        width: Val::Px(SHIP_ROW_WIDTH - 64.0),
+                        height: Val::Px(SHIP_ROW_HEIGHT),
+                        ..default()
+                    },
+                    Text::new(caption),
+                    font.clone(),
+                    layout,
+                    line_height,
+                    TextColor(Color::BLACK),
+                    Pickable::IGNORE,
+                ))
+                .id();
+            commands.entity(row).add_child(checkbox);
+            commands.entity(row).add_child(name);
+            commands.entity(page).add_child(row);
+        }
+        for (tag, action) in [
+            (fourcc!("lcor"), NavyRosterAction::Previous),
+            (fourcc!("rcor"), NavyRosterAction::Next),
+        ] {
+            commands
+                .entity(view.find(tag))
+                .insert((
+                    Button,
+                    ActivateOnPress,
+                    action,
+                    match action {
+                        NavyRosterAction::Previous => Visibility::Hidden,
+                        NavyRosterAction::Next if NAVY_ROSTER_VISIBLE_COLUMNS <= last_column => {
+                            Visibility::Inherited
+                        }
+                        NavyRosterAction::Next => Visibility::Hidden,
+                    },
+                ))
+                .observe(on_navy_roster_page);
+        }
+    }
+}
+
+#[allow(clippy::too_many_arguments, clippy::type_complexity)]
+fn project_navy_roster(
+    session: Res<GameSession>,
+    mut commands: Commands,
+    rosters: Query<&NavyRoster, Changed<NavyRoster>>,
+    mut rows: Query<(&NavyRosterRow, &mut Node, &mut Visibility)>,
+    mut arrows: Query<(&NavyRosterAction, &mut Visibility), Without<NavyRosterRow>>,
+    added_ships: Query<(), Added<NavyRosterShip>>,
+    mut ships: Query<(Entity, &NavyRosterShip, &mut ImageNode, Has<Checked>)>,
+) {
+    if let Ok(roster) = rosters.single() {
+        for (row, mut node, mut visibility) in &mut rows {
+            let visible = (roster.current_column
+                ..roster.current_column + NAVY_ROSTER_VISIBLE_COLUMNS)
+                .contains(&row.column);
+            *visibility = if visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            };
+            if visible {
+                node.left = Val::Px((row.column - roster.current_column) as f32 * SHIP_ROW_WIDTH);
+                node.top = Val::Px(row.row as f32 * SHIP_ROW_HEIGHT);
+            }
+        }
+        for (action, mut visibility) in &mut arrows {
+            let visible = match *action {
+                NavyRosterAction::Previous => roster.current_column > 0,
+                NavyRosterAction::Next => {
+                    roster.current_column + NAVY_ROSTER_VISIBLE_COLUMNS <= roster.last_column
+                }
+            };
+            *visibility = if visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            };
+        }
+    }
+
+    if crate::ui::projection_idle(&session, !added_ships.is_empty()) {
+        return;
+    }
+    for (entity, toggle, mut image, checked) in &mut ships {
+        let selected = ship_selected_in_force(&session.game, toggle.force, toggle.ship);
+        if selected != checked {
+            if selected {
+                commands.entity(entity).insert(Checked);
+            } else {
+                commands.entity(entity).remove::<Checked>();
+            }
+        }
+        let Some(ship) = session.game.ship(toggle.ship) else {
+            continue;
+        };
+        image.rect = Some(ship_check_rect(ship.ship_type, selected));
+    }
+}
+
+fn on_navy_roster_toggle(
+    activate: On<Activate>,
+    ships: Query<&NavyRosterShip>,
+    mut session: ResMut<GameSession>,
+) {
+    let Ok(toggle) = ships.get(activate.entity) else {
+        return;
+    };
+    let selected = ship_selected_in_force(&session.game, toggle.force, toggle.ship);
+    session
+        .game
+        .set_task_force_ship_selected(toggle.force, toggle.ship, !selected);
+}
+
+fn on_navy_roster_page(
+    activate: On<Activate>,
+    actions: Query<&NavyRosterAction>,
+    parents: Query<&ChildOf>,
+    roots: Query<(), With<NavyRoster>>,
+    mut rosters: Query<&mut NavyRoster>,
+) {
+    let Ok(action) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+        return;
+    };
+    let mut roster = rosters.get_mut(root).expect("navy roster page action root");
+    match action {
+        NavyRosterAction::Previous => {
+            roster.current_column = roster
+                .current_column
+                .saturating_sub(NAVY_ROSTER_VISIBLE_COLUMNS);
+        }
+        NavyRosterAction::Next => {
+            roster.current_column =
+                (roster.current_column + NAVY_ROSTER_VISIBLE_COLUMNS).min(roster.last_column);
+        }
+    }
+}
+
+fn ship_roster_caption(assets: &RetailUiAssets, ship: &ShipState) -> String {
+    let index = SHIP_STATUS_STRING_INDEX[usize::from(ship.ship_type.retail())];
+    if index < 0 {
+        ship.name.clone()
+    } else {
+        format!("{} {}", get_string(assets, 0x2760, index), ship.name)
+    }
+}
+
+fn ship_selected_in_force(game: &GameState, force: TaskForceId, ship: ShipId) -> bool {
+    game.task_force(force)
+        .and_then(|entry| {
+            entry
+                .ships()
+                .find(|(id, _)| *id == ship)
+                .map(|(_, selected)| selected)
+        })
+        .unwrap_or(false)
+}
+
+fn ship_check_rect(ship_type: ShipType, selected: bool) -> Rect {
+    let x = f32::from(SHIP_ROSTER_ATLAS_OFFSET[usize::from(ship_type.retail())])
+        + if selected { SHIP_CHECK_WIDTH } else { 0.0 };
+    Rect::from_corners(
+        Vec2::new(x, 0.0),
+        Vec2::new(x + SHIP_CHECK_WIDTH, SHIP_CHECK_HEIGHT),
+    )
 }
 
 fn bind_added_civilian_modals(
@@ -935,4 +1236,171 @@ fn spawn_notice(commands: &mut Commands, title: String, body: String) {
         CivilianModal::Notice { title, body },
         AppState::StrategicMap,
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::test_support::beginning_of_game_parts;
+    use crate::ui::window::UiWindowPlugin;
+    use bevy::state::app::StatesPlugin;
+    use indexmap::IndexMap;
+
+    fn two_frigate_force() -> (GameState, TaskForceId, ShipId, ShipId) {
+        let mut parts = beginning_of_game_parts();
+        let nation = parts.turn.active_nation;
+        let location = OceanZoneId::new(0);
+        let first = parts.object_ids.ship();
+        let second = parts.object_ids.ship();
+        let force = parts.object_ids.task_force();
+        let ship = |name: &str| ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            aggression: NavalAggression::Balanced,
+            nation,
+            name: name.to_string(),
+            strength: 900,
+            experience: 0,
+            selection: ShipSelection::Available,
+        };
+        parts.ships.insert(first, ship("Alpha"));
+        parts.ships.insert(second, ship("Beta"));
+        parts.task_forces.insert(
+            force,
+            TaskForceState::from_parts(
+                NavalAggression::Balanced,
+                TaskForceOrder::None,
+                TaskForceTarget::None,
+                location,
+                nation,
+                false,
+                -1,
+                [(first, true), (second, true)]
+                    .into_iter()
+                    .collect::<IndexMap<_, _>>(),
+            ),
+        );
+        (GameState::from_parts(parts), force, first, second)
+    }
+
+    #[test]
+    fn navy_roster_checkbox_toggles_core_selection_and_keeps_navy_mode() {
+        let (state, force, first, second) = two_frigate_force();
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(StatesPlugin)
+            .add_plugins(UiWindowPlugin)
+            .insert_state(AppState::StrategicMap)
+            .insert_resource(GameSession::new(state))
+            .add_systems(Update, project_navy_roster);
+
+        let mut interaction = StrategicInteraction {
+            mode: MapInteractionMode::Navy,
+            ..default()
+        };
+        interaction.navy.zone = Some(OceanZoneId::new(0));
+        interaction.navy.force = Some(force);
+        let interaction_entity = app.world_mut().spawn(interaction).id();
+
+        let root = app
+            .world_mut()
+            .spawn((
+                NavyRoster {
+                    force,
+                    current_column: 0,
+                    last_column: 0,
+                },
+                ModalWindow,
+            ))
+            .id();
+        let first_row = app
+            .world_mut()
+            .spawn((NavyRosterRow { column: 0, row: 0 }, ChildOf(root)))
+            .id();
+        let second_row = app
+            .world_mut()
+            .spawn((NavyRosterRow { column: 0, row: 1 }, ChildOf(root)))
+            .id();
+        let first_check = app
+            .world_mut()
+            .spawn((
+                NavyRosterShip { force, ship: first },
+                Button,
+                ImageNode::default(),
+                ChildOf(first_row),
+            ))
+            .observe(on_navy_roster_toggle)
+            .id();
+        let second_check = app
+            .world_mut()
+            .spawn((
+                NavyRosterShip {
+                    force,
+                    ship: second,
+                },
+                Button,
+                ImageNode::default(),
+                ChildOf(second_row),
+            ))
+            .observe(on_navy_roster_toggle)
+            .id();
+        let okay = app.world_mut().spawn((DismissWindow, ChildOf(root))).id();
+
+        app.update();
+
+        let row_count = app
+            .world_mut()
+            .query::<&NavyRosterRow>()
+            .iter(app.world())
+            .count();
+        assert_eq!(row_count, 2);
+        assert!(app.world().entity(first_check).contains::<Checked>());
+        assert!(app.world().entity(second_check).contains::<Checked>());
+        assert_eq!(
+            app.world()
+                .resource::<GameSession>()
+                .game
+                .navy_toolbar_counts(Some(force))
+                .selected[NavyToolbarClass::Class1],
+            2
+        );
+
+        app.world_mut().commands().trigger(Activate {
+            entity: first_check,
+        });
+        app.world_mut().flush();
+        app.update();
+
+        let session = app.world().resource::<GameSession>();
+        assert!(!ship_selected_in_force(&session.game, force, first));
+        assert!(ship_selected_in_force(&session.game, force, second));
+        assert_eq!(
+            session.game.navy_toolbar_counts(Some(force)).selected[NavyToolbarClass::Class1],
+            1
+        );
+        assert_eq!(
+            session.game.navy_toolbar_counts(Some(force)).available[NavyToolbarClass::Class1],
+            2
+        );
+        assert_eq!(
+            session.game.task_force(force).map(|entry| entry.order),
+            Some(TaskForceOrder::None)
+        );
+        assert!(!app.world().entity(first_check).contains::<Checked>());
+        assert!(app.world().entity(second_check).contains::<Checked>());
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: okay });
+        app.world_mut().flush();
+        app.update();
+
+        assert!(app.world().get_entity(root).is_err());
+        let interaction = app
+            .world()
+            .get::<StrategicInteraction>(interaction_entity)
+            .expect("navy selection survives roster close");
+        assert_eq!(interaction.mode, MapInteractionMode::Navy);
+        assert_eq!(interaction.navy.force, Some(force));
+    }
 }
