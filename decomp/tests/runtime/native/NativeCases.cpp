@@ -22,19 +22,43 @@ RuntimeActionResult RunMajorTradeSettlement(NativeTransition& transition);
 RuntimeActionResult RunPurchasedItemsPhase(NativeTransition& transition);
 RuntimeActionResult RunRecallTradeBids(NativeTransition& transition);
 RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition);
+RuntimeActionResult RunAiCapitalSelectionTradeBids(NativeTransition& transition);
 RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition);
 RuntimeActionResult RunTradeMarketPrice(NativeTransition& transition);
 RuntimeActionResult RunTradePolicySet(NativeTransition& transition);
 RuntimeActionResult RunTradePolicyStep(NativeTransition& transition);
 RuntimeActionResult RunTradePhase(NativeTransition& transition);
 RuntimeActionResult RunTradePhaseSellOnly(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnTradePhase(NativeTransition& transition);
 
 RuntimeActionResult RunAidAllocation(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyReset(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnDiplomacyPhase(NativeTransition& transition);
 RuntimeActionResult RunPlayerDiplomacyPolicyPostConsulate(NativeTransition& transition);
 RuntimeActionResult RunPlayerDiplomacyPolicyRejectConsulateOnMajor(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostJoinEmpire(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostAlliance(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyNeedsAllianceEntanglement(NativeTransition& transition);
+RuntimeActionResult
+RunPlayerDiplomacyPolicyConfirmsAllianceEntanglement(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostNonAggressionPact(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostPeaceTreaty(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostDeclareWar(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyPostEmbassy(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyRetractEmbassy(NativeTransition& transition);
+RuntimeActionResult
+RunPlayerDiplomacyPolicyCannotAffordCommittedConsulate(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicyRejectColony(NativeTransition& transition);
+RuntimeActionResult RunPlayerDiplomacyPolicySelectSelf(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyPostSubsidy(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyRetractSubsidy(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyBoycottClearsGrant(NativeTransition& transition);
+RuntimeActionResult RunPlayerTradePolicyRejectsAlliedBoycott(NativeTransition& transition);
+RuntimeActionResult RunPlayerColonyBoycottPostsAndPropagates(NativeTransition& transition);
+RuntimeActionResult RunPlayerColonyBoycottRetractsAndPropagates(NativeTransition& transition);
+RuntimeActionResult RunPlayerColonyBoycottOwnColonyNoOp(NativeTransition& transition);
 
 RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition);
 RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransition& transition);
@@ -43,6 +67,7 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
 RuntimeActionResult RunSpecialistRecruitment(NativeTransition& transition);
 RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhase(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnMilitaryPhase(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition);
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition);
@@ -59,7 +84,8 @@ RuntimeActionResult RunInteractiveArmyBattleRanged(NativeTransition& transition)
 RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transition);
 RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& transition);
-RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition);
+RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition);
 RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition);
 RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition);
 RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& transition);
@@ -71,21 +97,27 @@ RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition);
 RuntimeActionResult RunCityAndTransportPhase(NativeTransition& transition);
 RuntimeActionResult RunNavyGrowthPending(NativeTransition& transition);
 RuntimeActionResult RunCiviliansPhase(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnCiviliansPhase(NativeTransition& transition);
 RuntimeActionResult RunProvinceLossWithStationedUnit(NativeTransition& transition);
 RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition);
 
 RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition);
 RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& transition);
+RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transition);
+RuntimeActionResult RunTechnologyNavalCapabilitySequence(NativeTransition& transition);
 RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPage(NativeTransition& transition);
 RuntimeActionResult RunConstructNewspaperPageMiscEvent(NativeTransition& transition);
 RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition);
+RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition);
+RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition);
 RuntimeActionResult RunTradeTurnStop(NativeTransition& transition);
 
 RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition);
 RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition);
 RuntimeActionResult RunSeasonAdvanceClearsStatusFlags(NativeTransition& transition);
 RuntimeActionResult RunTurnAlertsSkipFirstEconomicTurn(NativeTransition& transition);
+RuntimeActionResult RunTurnAlertsLaterTurn(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
 RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
 RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
@@ -133,19 +165,45 @@ const NativeCase kCases[] = {
     {"purchased_items_phase", RunPurchasedItemsPhase},
     {"recall_trade_bids", RunRecallTradeBids},
     {"player_trade_phase_reset", RunPlayerTradePhaseReset},
+    {"ai_capital_selection_trade_bids", RunAiCapitalSelectionTradeBids},
     {"trade_capacity_refresh", RunTradeCapacityRefresh},
     {"trade_market_price", RunTradeMarketPrice},
     {"trade_policy_set", RunTradePolicySet},
     {"trade_policy_step", RunTradePolicyStep},
     {"trade_phase", RunTradePhase},
     {"trade_phase_sell_only", RunTradePhaseSellOnly},
+    {"second_turn_trade_phase", RunSecondTurnTradePhase},
     {"aid_allocation", RunAidAllocation},
     {"diplomacy_grant_entry_updates_treasury", RunDiplomacyGrantEntry},
     {"diplomacy_reset_preserves_recurring_grants", RunDiplomacyReset},
     {"diplomacy_phase_applies_grant_and_consulate", RunDiplomacyPhase},
+    {"second_turn_diplomacy_phase", RunSecondTurnDiplomacyPhase},
     {"player_diplomacy_policy_posts_consulate", RunPlayerDiplomacyPolicyPostConsulate},
     {"player_diplomacy_policy_rejects_consulate_on_major",
      RunPlayerDiplomacyPolicyRejectConsulateOnMajor},
+    {"player_diplomacy_policy_posts_join_empire", RunPlayerDiplomacyPolicyPostJoinEmpire},
+    {"player_diplomacy_policy_posts_alliance", RunPlayerDiplomacyPolicyPostAlliance},
+    {"player_diplomacy_policy_needs_alliance_entanglement",
+     RunPlayerDiplomacyPolicyNeedsAllianceEntanglement},
+    {"player_diplomacy_policy_confirms_alliance_entanglement",
+     RunPlayerDiplomacyPolicyConfirmsAllianceEntanglement},
+    {"player_diplomacy_policy_posts_non_aggression_pact",
+     RunPlayerDiplomacyPolicyPostNonAggressionPact},
+    {"player_diplomacy_policy_posts_peace_treaty", RunPlayerDiplomacyPolicyPostPeaceTreaty},
+    {"player_diplomacy_policy_posts_declare_war", RunPlayerDiplomacyPolicyPostDeclareWar},
+    {"player_diplomacy_policy_posts_embassy", RunPlayerDiplomacyPolicyPostEmbassy},
+    {"player_diplomacy_policy_retracts_embassy", RunPlayerDiplomacyPolicyRetractEmbassy},
+    {"player_diplomacy_policy_cannot_afford_committed_consulate",
+     RunPlayerDiplomacyPolicyCannotAffordCommittedConsulate},
+    {"player_diplomacy_policy_rejects_colony", RunPlayerDiplomacyPolicyRejectColony},
+    {"player_diplomacy_policy_selects_self", RunPlayerDiplomacyPolicySelectSelf},
+    {"player_trade_policy_posts_subsidy", RunPlayerTradePolicyPostSubsidy},
+    {"player_trade_policy_retracts_subsidy", RunPlayerTradePolicyRetractSubsidy},
+    {"player_trade_policy_boycott_clears_grant", RunPlayerTradePolicyBoycottClearsGrant},
+    {"player_trade_policy_rejects_allied_boycott", RunPlayerTradePolicyRejectsAlliedBoycott},
+    {"player_colony_boycott_posts_and_propagates", RunPlayerColonyBoycottPostsAndPropagates},
+    {"player_colony_boycott_retracts_and_propagates", RunPlayerColonyBoycottRetractsAndPropagates},
+    {"player_colony_boycott_own_colony_no_op", RunPlayerColonyBoycottOwnColonyNoOp},
     {"nation_resource_yield_rebuild", RunNationResourceYieldRebuild},
     {"ai_nation_resource_yield_rebuild_clamps_targets",
      RunAiNationResourceYieldRebuildClampsTargets},
@@ -153,6 +211,7 @@ const NativeCase kCases[] = {
     {"specialist_recruitment", RunSpecialistRecruitment},
     {"military_maintenance", RunMilitaryMaintenance},
     {"military_phase", RunMilitaryPhase},
+    {"second_turn_military_phase", RunSecondTurnMilitaryPhase},
     {"military_phase_ships_without_orders", RunMilitaryPhaseShipsWithoutOrders},
     {"military_phase_naval_encounter", RunMilitaryPhaseNavalEncounter},
     {"navy_battle_accepted_deploy_tiles", RunNavyBattleAcceptedDeployTiles},
@@ -169,7 +228,8 @@ const NativeCase kCases[] = {
     {"interactive_army_battle_retreat", RunInteractiveArmyBattleRetreat},
     {"combat_moves_resumes_after_battle", RunCombatMovesResumesAfterBattle},
     {"combat_moves_battle_then_later_movement", RunCombatMovesBattleThenLaterMovement},
-    {"military_cleanup_supported_subset", RunMilitaryCleanupSupportedSubset},
+    {"second_turn_military_cleanup", RunSecondTurnMilitaryCleanup},
+    {"ai_naval_industry_development", RunAiNavalIndustryDevelopment},
     {"reassess_control_sea_missions", RunReassessControlSeaMissions},
     {"reassess_control_sea_missions_damaged_ship", RunReassessControlSeaMissionsDamagedShip},
     {"recompute_nation_order_priority_metrics", RunRecomputeNationOrderPriorityMetrics},
@@ -180,19 +240,25 @@ const NativeCase kCases[] = {
     {"city_and_transport_phase", RunCityAndTransportPhase},
     {"navy_growth_pending", RunNavyGrowthPending},
     {"civilians_phase", RunCiviliansPhase},
+    {"second_turn_civilians_phase", RunSecondTurnCiviliansPhase},
     {"province_loss_with_stationed_unit", RunProvinceLossWithStationedUnit},
     {"province_owner_ocean_context", RunProvinceOwnerOceanContext},
     {"check_technology_advances", RunCheckTechnologyAdvances},
     {"check_technology_advances_ai_purchase", RunCheckTechnologyAdvancesAiPurchase},
+    {"technology_naval_capability_upgrade", RunTechnologyNavalCapabilityUpgrade},
+    {"technology_naval_capability_sequence", RunTechnologyNavalCapabilitySequence},
     {"turn_stop_technology", RunTechnologyTurnStop},
     {"construct_newspaper_page", RunConstructNewspaperPage},
     {"construct_newspaper_page_misc_event", RunConstructNewspaperPageMiscEvent},
     {"turn_stop_newspaper", RunNewspaperTurnStop},
+    {"second_turn_sequence", RunSecondTurnSequence},
+    {"consecutive_turn_sequence", RunConsecutiveTurnSequence},
     {"turn_stop_trade", RunTradeTurnStop},
     {"great_power_pressure_human_debt", RunGreatPowerPressureHumanDebt},
     {"great_power_pressure_ai_noop", RunGreatPowerPressureAiNoop},
     {"season_advance_clears_status_flags", RunSeasonAdvanceClearsStatusFlags},
     {"turn_alerts_skip_first_economic_turn", RunTurnAlertsSkipFirstEconomicTurn},
+    {"turn_alerts_later_turn", RunTurnAlertsLaterTurn},
     {"diplomacy_offer_gate", RunDiplomacyOfferGate},
     {"quarter_gate_off_decade", RunQuarterGateOffDecade},
     {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},

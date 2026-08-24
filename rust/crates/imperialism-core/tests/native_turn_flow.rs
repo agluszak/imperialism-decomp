@@ -12,6 +12,25 @@ struct NewspaperCase {
     story_ids: Vec<i32>,
 }
 
+#[derive(Debug, Deserialize)]
+struct SecondTurnSequenceCase {
+    story_ids: Vec<i32>,
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq)]
+struct SecondTurnSequenceResult {
+    stops: Vec<String>,
+    rng_states: Vec<u32>,
+    economic_turn: i32,
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq)]
+struct ConsecutiveTurnSequenceResult {
+    stops: Vec<String>,
+    rng_states: Vec<u32>,
+    economic_turns: Vec<i32>,
+}
+
 #[derive(Debug, Deserialize, Eq, PartialEq)]
 struct TradeBoundaryResult {
     stop: String,
@@ -58,6 +77,110 @@ fn newspaper_dispatch_precedes_return_to_map() {
         native.result
     );
     assert_game_state_eq(&expected, &actual).unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_sequence_returns_through_deal_book_and_newspaper() {
+    compare_native(
+        "second_turn_sequence",
+        |state, case: SecondTurnSequenceCase| {
+            let mut stops = Vec::new();
+            let mut rng_states = Vec::new();
+            let mut stop = state.finish_player_orders(false, &case.story_ids);
+            while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
+                stop = match stop {
+                    TurnStop::DiplomacyOffer => {
+                        state.answer_current_diplomacy_offer(false, &case.story_ids)
+                    }
+                    TurnStop::DiplomacyWarJoin => {
+                        state.answer_current_diplomacy_war_join(false, &case.story_ids)
+                    }
+                    _ => unreachable!(),
+                };
+            }
+            while stop == TurnStop::TradeOffer {
+                stop = state.answer_trade_offer(0, false, &case.story_ids);
+            }
+            assert_eq!(stop, TurnStop::DealBook);
+            stops.push("deal_book".to_owned());
+            rng_states.push(state.rng().crt_rand.state());
+
+            stop = state.close_turn_deal_book(&case.story_ids);
+            while stop == TurnStop::TechnologyAdvance {
+                stop = state.acknowledge_technology_report(&case.story_ids);
+            }
+            assert_eq!(stop, TurnStop::Newspaper);
+            stops.push("newspaper".to_owned());
+            rng_states.push(state.rng().crt_rand.state());
+
+            assert_eq!(state.close_newspaper(true), TurnStop::PlayerOrders);
+            stops.push("player_orders".to_owned());
+            rng_states.push(state.rng().crt_rand.state());
+            SecondTurnSequenceResult {
+                stops,
+                rng_states,
+                economic_turn: state.turn().economic_turn,
+            }
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
+    let native = run_native::<SecondTurnSequenceCase, ConsecutiveTurnSequenceResult>(
+        "consecutive_turn_sequence",
+    )
+    .unwrap();
+    let mut state = load_save_backed_state(native.before).unwrap();
+    let expected = load_save_backed_state(native.after).unwrap();
+    let mut stops = Vec::new();
+    let mut rng_states = Vec::new();
+    let mut economic_turns = Vec::new();
+    for _ in 0..12 {
+        let mut stop = state.finish_player_orders(false, &native.case.story_ids);
+        while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
+            stop = match stop {
+                TurnStop::DiplomacyOffer => {
+                    state.answer_current_diplomacy_offer(false, &native.case.story_ids)
+                }
+                TurnStop::DiplomacyWarJoin => {
+                    state.answer_current_diplomacy_war_join(false, &native.case.story_ids)
+                }
+                _ => unreachable!(),
+            };
+        }
+        while stop == TurnStop::TradeOffer {
+            stop = state.answer_trade_offer(0, false, &native.case.story_ids);
+        }
+        assert_eq!(stop, TurnStop::DealBook);
+        stops.push("deal_book".to_owned());
+        rng_states.push(state.rng().crt_rand.state());
+
+        stop = state.close_turn_deal_book(&native.case.story_ids);
+        while stop == TurnStop::TechnologyAdvance {
+            stop = state.acknowledge_technology_report(&native.case.story_ids);
+        }
+        assert_eq!(stop, TurnStop::Newspaper);
+        stops.push("newspaper".to_owned());
+        rng_states.push(state.rng().crt_rand.state());
+
+        assert_eq!(state.close_newspaper(true), TurnStop::PlayerOrders);
+        stops.push("player_orders".to_owned());
+        rng_states.push(state.rng().crt_rand.state());
+        economic_turns.push(state.turn().economic_turn);
+    }
+    let result = ConsecutiveTurnSequenceResult {
+        stops,
+        rng_states,
+        economic_turns,
+    };
+    if let Err(error) = assert_game_state_eq(&expected, &state) {
+        panic!("{error}; result C++ {:?}, Rust {result:?}", native.result);
+    }
+    assert_eq!(native.result, result);
 }
 
 #[test]

@@ -34,6 +34,8 @@ impl GameState {
                 continue;
             }
             self.fill_interior_minister_orders(nation);
+            self.process_city_tasks(nation);
+            self.process_city_transport_requests(nation);
             self.calculate_potentials(nation);
             self.execute_nation_pending_action_state_machine(nation);
             self.refresh_great_power_relation_panels_and_dispatch_delta_summary(nation);
@@ -53,6 +55,10 @@ impl GameState {
         if self.nations.major(nation).auto.is_none() {
             return;
         }
+        let previous_allocation = self.nations.majors[&nation]
+            .economy
+            .interior_civilian
+            .previous_item_allocation_by_facility;
         for resource in all_resources() {
             self.nations.majors[&nation]
                 .economy
@@ -61,16 +67,17 @@ impl GameState {
         self.rebalance_ai_transport(nation);
         self.end_city_phase(nation);
         self.clear_ai_city_orders(nation);
-        self.process_ai_pending_ship(nation);
-        let temporary_lumber = self.rebalance_ai_labor(nation);
-        self.choose_ai_expansion(nation);
+        self.process_ai_pending_civilian_recruitment(nation);
+        self.process_ai_ship_orders(nation);
+        let (temporary_lumber, low_skill_shortfall) = self.rebalance_ai_labor(nation);
+        self.choose_ai_expansion(nation, previous_allocation.as_ref());
         self.compute_ai_item_demands(nation);
         if temporary_lumber != 0 {
             self.nations
                 .city_mut(nation)
                 .adjust_stock(ResourceKind::Lumber, temporary_lumber);
         }
-        self.issue_ai_item_orders(nation);
+        self.issue_ai_item_orders(nation, low_skill_shortfall);
         self.fill_ai_transport_capacity(nation);
         self.rebuild_ai_allocation_average(nation);
         self.determine_ai_trade_bid(nation);
@@ -218,7 +225,7 @@ impl GameState {
         let home_tile = self.nations.major(nation).common.home_tile;
         let owned: Vec<ProvinceId> = self.nations.major(nation).common.owned_regions().to_vec();
         let economic_turn = self.turn.economic_turn;
-        let oil_drilling = self.technology.oil_drilling_available();
+        let advanced_production_unlocked = self.technology.advanced_production_unlocked();
         let clothing_limit = building_type_limit(
             self.nations.city(nation).production_orders[CityFacilitySlot::ClothingFactory],
         );
@@ -286,7 +293,7 @@ impl GameState {
                         development[ResourceKind::Steel] += 1;
                     }
                     if resource_sums[ResourceKind::Oil] != 0
-                        && oil_drilling
+                        && advanced_production_unlocked
                         && i32::from(development[ResourceKind::Fuel])
                             < resource_sums[ResourceKind::Oil] / 2
                     {

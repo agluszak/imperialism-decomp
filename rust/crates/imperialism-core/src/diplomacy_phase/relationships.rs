@@ -67,7 +67,7 @@ impl GameState {
         }
     }
 
-    pub(super) fn set_nation_pair_relationship(
+    pub(crate) fn set_nation_pair_relationship(
         &mut self,
         source: NationId,
         target: NationId,

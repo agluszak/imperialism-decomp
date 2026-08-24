@@ -9,6 +9,10 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TownState {
     pub name: String,
+    /// A newly completed human depot/port still needs the retail naming dialog.
+    /// This is view-lifecycle state, not a persisted `TTown` field.
+    #[serde(skip)]
+    pub needs_naming: bool,
     pub created_turn: i16,
     pub owner_nation: NationId,
     pub resource_yield_by_type: ResourceTable<i16>,
@@ -29,6 +33,7 @@ impl TownState {
     ) -> Self {
         Self {
             name: String::new(),
+            needs_naming: false,
             created_turn,
             owner_nation,
             resource_yield_by_type: ResourceTable::default(),
@@ -42,6 +47,7 @@ impl TownState {
     pub(crate) fn for_frog_city(_tile: TileId, owner_nation: NationId) -> Self {
         Self {
             name: "FrogCity".to_owned(),
+            needs_naming: false,
             created_turn: 0,
             owner_nation,
             resource_yield_by_type: ResourceTable::default(),

@@ -2,8 +2,8 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    DecadeTable, Difficulty, GameState, MajorNationId, NationId, NewsState, PendingWorkState,
-    PhaseCode, RngState, ScenarioMapId, Technology, TurnContinuation, TurnState, UnitIdAllocator,
+    Difficulty, GameState, MajorNationId, NationId, NewsState, PendingWorkState, PhaseCode,
+    RngState, ScenarioMapId, Technology, TurnContinuation, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::de::{DeserializeOwned, Error};
@@ -55,13 +55,16 @@ struct NativeTurnState {
 impl NativeTurnState {
     fn into_core(self) -> TurnState {
         let _ = self.selected_nation;
+        let mut phase_state_by_decade = [0; 12];
+        phase_state_by_decade[..10].copy_from_slice(&self.quarter_gate_by_decade);
         let mut turn = TurnState::new(
             self.scenario_map,
             self.economic_turn,
             self.diplomacy_year_term_raw,
+            0,
             self.phase,
             self.turn_flow_status_flags,
-            DecadeTable::from_array(self.quarter_gate_by_decade.map(|value| value != 0)),
+            phase_state_by_decade,
             self.difficulty,
             self.active_nation,
         );
@@ -220,6 +223,7 @@ fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &G
         .as_object_mut()
         .expect("GameState serializes as an object");
     state.remove("object_ids");
+    discard_uncalculated_new_town_adjacent_city(state);
 
     // Retail saves these ordered lists but not their object pointers. Loader-assigned numeric
     // keys therefore depend on how many other pointer-like objects the capture contains; list
@@ -273,6 +277,45 @@ fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &G
         })
         .collect();
     state.insert("missions".to_owned(), serde_json::Value::Array(missions));
+}
+
+fn discard_uncalculated_new_town_adjacent_city(
+    state: &mut serde_json::Map<String, serde_json::Value>,
+) {
+    let Some(serde_json::Value::Object(majors)) = state
+        .get_mut("nations")
+        .and_then(serde_json::Value::as_object_mut)
+        .and_then(|nations| nations.get_mut("majors"))
+    else {
+        return;
+    };
+    for major in majors.values_mut() {
+        let Some(towns) = major
+            .get_mut("towns")
+            .and_then(serde_json::Value::as_object_mut)
+        else {
+            continue;
+        };
+        for town in towns.values_mut() {
+            let Some(town) = town.as_object_mut() else {
+                continue;
+            };
+            let constructed_after_start = town
+                .get("created_turn")
+                .and_then(serde_json::Value::as_i64)
+                .is_some_and(|created| created > 0);
+            let resources_uncalculated = town
+                .get("resource_yield_by_type")
+                .and_then(serde_json::Value::as_object)
+                .is_some_and(|yields| yields.values().all(|amount| amount.as_i64() == Some(0)));
+            if constructed_after_start && resources_uncalculated {
+                // `TTown::ITown` does not initialize this byte. A town built during the
+                // turn retains allocator noise until `CalculateRawResources` or
+                // `CalculateResources` populates its still-zero yield table and this flag.
+                town.remove("has_adjacent_city");
+            }
+        }
+    }
 }
 
 fn serialized_id(id: impl Serialize, kind: &str) -> u64 {

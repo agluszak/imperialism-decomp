@@ -35,6 +35,7 @@ public:
   virtual bool RequiresFixture() const;
   virtual int DifficultyLevel() const;
   virtual const char* RandomSetupPlanetSeed() const;
+  virtual bool UsesLocalizedNames() const;
   virtual bool BeforeInitialNewspaperExit();
 
   virtual void OnManagersReady();

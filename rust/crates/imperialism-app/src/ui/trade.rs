@@ -227,8 +227,12 @@ impl Plugin for TradePlugin {
     }
 }
 
-fn enter_trade_screen(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::trade_2009()).id();
+fn enter_trade_screen(mut commands: Commands, session: Res<GameSession>) {
+    let root = if session.game.technology().advanced_production_unlocked() {
+        commands.spawn_scene(generated::trade_2010()).id()
+    } else {
+        commands.spawn_scene(generated::trade_2009()).id()
+    };
     commands
         .entity(root)
         .insert((TradeScreen, DespawnOnExit(AppState::Trade)));
@@ -286,7 +290,7 @@ fn bind_trade_screen(
         *root,
         &tree,
         pictures,
-        session.game.technology().oil_drilling_available(),
+        session.game.technology().advanced_production_unlocked(),
     );
     let palette = *assets.default_dib_palette();
     for binding in TRADE_ROWS {
@@ -664,7 +668,7 @@ fn sync_trade_presence(
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let capacity = major.economy.capacities.trade_offer;
-    let advanced_trade_unlocked = session.game.technology().oil_drilling_available();
+    let advanced_trade_unlocked = session.game.technology().advanced_production_unlocked();
     let bid_count = TRADE_ROWS
         .iter()
         .filter(|row| {
@@ -982,8 +986,10 @@ mod tests {
             .into_iter()
             .map(|binding| binding.commodity)
             .find(|commodity| {
-                trade_row_available(state.technology().oil_drilling_available(), *commodity)
-                    && major.city.stockpile[commodity.resource()].min(capacity) > 1
+                trade_row_available(
+                    state.technology().advanced_production_unlocked(),
+                    *commodity,
+                ) && major.city.stockpile[commodity.resource()].min(capacity) > 1
             })
             .expect("the beginning-of-game fixture has a multi-unit trade offer");
         let mut app = App::new();

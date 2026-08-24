@@ -15,6 +15,7 @@ pub(crate) fn repository_root() -> Result<&'static Path> {
 pub struct RuntimeRun {
     captures: serde_json::Value,
     capture_dir: PathBuf,
+    game_dir: PathBuf,
     _output_dir: tempfile::TempDir,
 }
 
@@ -30,6 +31,10 @@ impl RuntimeRun {
 
     pub fn save_backed_game_state(&self, name: &str) -> Result<imperialism_core::GameState> {
         crate::differential::load_save_backed_capture(&self.capture_dir, &self.captures, name)
+    }
+
+    pub fn game_dir(&self) -> &Path {
+        &self.game_dir
     }
 }
 
@@ -64,6 +69,12 @@ pub fn run_runtime(scenario: &str) -> Result<RuntimeRun> {
             status.unwrap_or("missing")
         );
     }
+    let game_dir = result_json
+        .get("host")
+        .and_then(|host| host.get("game_dir"))
+        .and_then(|value| value.as_str())
+        .map(PathBuf::from)
+        .context("native runtime result is missing host.game_dir")?;
 
     let captures_name = result_json
         .get("captures_path")
@@ -83,6 +94,7 @@ pub fn run_runtime(scenario: &str) -> Result<RuntimeRun> {
     Ok(RuntimeRun {
         captures,
         capture_dir,
+        game_dir,
         _output_dir: output_dir,
     })
 }

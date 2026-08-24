@@ -379,6 +379,121 @@ impl GameState {
         MajorNationId::from_nation(nation).is_none_or(|major| self.major_is_event_eligible(major))
     }
 
+    pub(crate) fn select_priority_nations_for_minor_relations(&mut self) {
+        for nation in MajorNationId::all() {
+            if self.nations.major_is_present(nation) {
+                self.pending.nations[nation].proposals.clear();
+            }
+        }
+
+        let mut offer_tied = true;
+        let mut relation_tied = true;
+        for minor in MinorNationId::all() {
+            let minor_nation = minor.nation();
+            let mut best_offer_score = 0x8b_i16;
+            let mut best_offer_nation = None;
+            let mut best_relation_score = 9000_i32;
+            let mut best_relation_nation = None;
+            let mut offer_seed = 0_u32;
+            let mut relation_seed = 0_u32;
+
+            for major in MajorNationId::all() {
+                let major_nation = major.nation();
+                if !self.event_eligible(major_nation) {
+                    continue;
+                }
+                let mission = self.diplomacy.mission_levels[major_nation][minor_nation];
+                let standing = self.diplomacy.standings[minor_nation][major_nation];
+                let colony_of_major =
+                    self.status_of(minor_nation) == CountryStatus::ColonyOf(major_nation);
+
+                if mission != DiplomaticMissionLevel::None {
+                    if best_offer_score < standing {
+                        offer_tied = false;
+                        best_offer_nation = Some(major);
+                        best_offer_score = standing;
+                    } else if standing == best_offer_score {
+                        offer_tied = true;
+                        if colony_of_major {
+                            best_offer_nation = Some(major);
+                            best_offer_score = standing;
+                        } else {
+                            let seed = (i32::from(standing)
+                                + 0x31
+                                + self.turn.economic_turn
+                                + i32::from(major.get()))
+                                as u32;
+                            let seed = if seed == 0 { offer_seed } else { seed };
+                            offer_seed = seed.wrapping_mul(0x015a_4e35).wrapping_add(1);
+                            if offer_seed >> 12 & 1 != 0 {
+                                best_offer_nation = Some(major);
+                                best_offer_score = standing;
+                            }
+                        }
+                    }
+                }
+
+                let score = if mission == DiplomaticMissionLevel::None {
+                    0
+                } else {
+                    (200 - i32::from(mission.retail())) * i32::from(standing)
+                };
+                if best_relation_score < score {
+                    relation_tied = false;
+                    best_relation_nation = Some(major);
+                    best_relation_score = score;
+                } else if score == best_relation_score {
+                    relation_tied = true;
+                    if colony_of_major {
+                        best_relation_nation = Some(major);
+                        best_relation_score = score;
+                    } else {
+                        let seed = (i32::from(standing)
+                            + 0x31
+                            + self.turn.economic_turn
+                            + i32::from(major.get())) as u32;
+                        let seed = if seed == 0 { relation_seed } else { seed };
+                        relation_seed = seed.wrapping_mul(0x015a_4e35).wrapping_add(1);
+                        if relation_seed >> 12 & 1 != 0 {
+                            // Retail writes the offer winner in this tie branch.
+                            best_offer_nation = Some(major);
+                            best_relation_score = score;
+                        }
+                    }
+                }
+            }
+
+            if let Some(best) = best_offer_nation {
+                let prior = self.diplomacy.special_relation_sources[minor];
+                if !offer_tied
+                    && prior != Some(best)
+                    && prior.is_some_and(|prior| {
+                        self.diplomacy.mission_levels[prior.nation()][minor_nation]
+                            != DiplomaticMissionLevel::None
+                            && self.event_eligible(prior.nation())
+                    })
+                {
+                    self.add_diplomacy_notice(prior.unwrap(), minor_nation, 0x13a);
+                }
+                self.diplomacy.special_relation_sources[minor] = Some(best);
+            }
+            if let Some(best) = best_relation_nation {
+                let prior = self.diplomacy.special_relation_targets[minor];
+                if !relation_tied
+                    && prior != Some(best)
+                    && prior.is_some_and(|prior| {
+                        self.diplomacy.mission_levels[prior.nation()][minor_nation]
+                            != DiplomaticMissionLevel::None
+                            && self.event_eligible(prior.nation())
+                    })
+                {
+                    self.add_diplomacy_notice(prior.unwrap(), minor_nation, 0x13b);
+                }
+                self.diplomacy.special_relation_targets[minor] = Some(best);
+            }
+        }
+    }
+
     pub(super) fn in_consortium_with(&self, minor: NationId, source: NationId) -> bool {
         self.nations
             .minors

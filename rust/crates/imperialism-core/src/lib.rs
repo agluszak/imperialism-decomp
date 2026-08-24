@@ -10,6 +10,7 @@ mod city;
 mod city_economy;
 mod city_industry;
 mod city_site;
+mod city_tasks;
 mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
@@ -48,6 +49,7 @@ mod random_setup_name;
 mod recruitment;
 mod resources;
 mod rng;
+mod scenario;
 mod tables;
 mod tactical_battle;
 mod tactical_tables;
@@ -69,9 +71,9 @@ pub use army_orders::{
     ArmyIdleOrderMode, ArmyMapClickOutcome, ArmyMapCursorState, ArmyOrderIssue, ArmyToolbarCounts,
 };
 pub use battle_report::{
-    BATTLE_REPORT_ARMY_IDENTITY, BattleReport, BattleReportKind, BattleReportLocation,
-    BattleReportSide, BattleReportSideSlot, BattleReportSideTable, BattleReportUnit,
-    BattleReportUnitKind,
+    BATTLE_REPORT_ARMY_IDENTITY, BATTLE_REPORT_NAVY_IDENTITY, BattleReport, BattleReportKind,
+    BattleReportLocation, BattleReportSide, BattleReportSideSlot, BattleReportSideTable,
+    BattleReportUnit, BattleReportUnitKind,
 };
 pub use calendar::TurnCalendar;
 pub use city::{
@@ -97,7 +99,9 @@ pub use civilian_work::{
     EngineerConstructionChoice, EngineerConstructionOption, RailOrderRejection, RailSegment,
 };
 pub use combat_moves::{CombatMovesContinuation, PendingLandBattle};
-pub use create_random_game::{RandomGameNames, capital_selection_view_origin, create_random_game};
+pub use create_random_game::{
+    RandomGameNames, capital_selection_view_origin, create_random_game, create_scenario_game,
+};
 pub use deal_book::{
     DealBookAidLine, DealBookBidRow, DealBookCategory, DealBookCategoryRow, DealBookDealLine,
     DealBookHistory, DealBookHistoryGroup, DealBookHistoryRow, DealBookOfferRow, DealBookTotals,
@@ -169,14 +173,16 @@ pub use random_setup_name::{COUNTRY_NAME_MAX_CHARS, generate_english_random_setu
 pub(crate) use resources::all_resources;
 pub use resources::{ResourceKind, ResourceTable};
 pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};
+pub use scenario::ScenarioInstruction;
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
 pub use tactical_battle::{
-    ArmyAction, ArmyActionRejection, ArmyBattle, ArmyBattleStage, ArmyUnitId, ArmyUnitView,
-    BattleSide, MoveResult, TacticalHex,
+    ArmyAction, ArmyActionRejection, ArmyBattle, ArmyBattleProgress, ArmyBattleStage,
+    ArmyPresentationEvent, ArmyTargetCycle, ArmyTileView, ArmyUnitId, ArmyUnitView, BattleSide,
+    MoveResult, TacticalHex,
 };
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,
@@ -192,7 +198,7 @@ pub use turn_flow::{
     CinematicKind, Decade, DecadeTable, PhaseCode, ScenarioMapId, TurnContinuation, TurnState,
     TurnStop,
 };
-pub use turn_tail::{EliminationOutcome, QuarterGateResult};
+pub use turn_tail::{EliminationOutcome, QuarterGateResult, TurnAlert};
 pub use units::{
     ArmyCategoryTable, ArmyUnitCategory, CivilianLocation, CivilianUnitKind, CivilianUnitState,
     CivilianUnitTable, MilitaryEra, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,

@@ -313,6 +313,8 @@ pub struct TechnologyState {
     pub completion_year_by_nation: MajorNationTable<TechnologyTable<i16>>,
     pub industry_enabled_by_slot: IndustryCapabilityTable<bool>,
     pub military_unit_ability_active_by_nation: MajorNationTable<MilitaryUnitTable<bool>>,
+    /// Retail `TTechMgr::capRowsB333`: enabled ship resource types by nation.
+    pub selected_ship_types_by_nation: MajorNationTable<ShipTypeTable<bool>>,
     /// Retail `TTechMgr::nationCapRows1e8`: the selected ability id in each
     /// tactical group. Generals are spawned by army-growth rewards.
     pub selected_capability_slots: MajorNationTable<ArmyCategoryTable<MilitaryUnitKind>>,
@@ -354,6 +356,12 @@ impl Default for TechnologyState {
                     true, true, true, true, true, true, true, true, false, false, false, false,
                     false, false, false, false, false, false, false, false, false, false, false,
                     false, true, false, false, true, false, false,
+                ])
+            }),
+            selected_ship_types_by_nation: MajorNationTable::from_fn(|_| {
+                ShipTypeTable::from_array([
+                    true, true, true, true, true, false, false, false, false, false, false, false,
+                    false, false,
                 ])
             }),
             selected_capability_slots: MajorNationTable::from_fn(|_| {
@@ -443,7 +451,7 @@ impl TechnologyState {
         state
     }
 
-    pub fn oil_drilling_available(&self) -> bool {
+    pub fn advanced_production_unlocked(&self) -> bool {
         self.global_unlocks_by_technology[Technology::OilDrilling]
     }
 
@@ -464,6 +472,21 @@ impl TechnologyState {
 }
 
 impl GameState {
+    pub(crate) fn apply_scenario_technology(
+        &mut self,
+        technology: Technology,
+        forced_nation: MajorNationId,
+    ) {
+        apply_city_order_capability_unlock(&mut self.technology, technology);
+        for nation in MajorNationId::all() {
+            if !self.nations.major(nation).economy.diplomacy_eligible || nation == forced_nation {
+                self.technology.completion_year_by_nation[nation][technology] =
+                    (self.turn.economic_turn / 4) as i16;
+                self.apply_ability_unlock(technology, nation);
+            }
+        }
+    }
+
     pub fn technology_purchase_cost(technology: Technology) -> i32 {
         TECH_ITEM_PURCHASE_COST[technology]
     }
@@ -636,9 +659,6 @@ impl GameState {
     }
 
     fn apply_ability_unlock(&mut self, tech_id: Technology, nation: MajorNationId) {
-        // FIXME: `HandleAbilityUnlock` also upgrades developed-tile civilian class,
-        // navy/score `UpdateSelectionAndRecalculateScores`, city TUnitOrder cost
-        // profiles, and `TMilitaryUnit::Upgrade()`.
         if self.technology.research_status_by_nation[nation][tech_id]
             == TechnologyResearchStatus::Researched
         {
@@ -646,8 +666,6 @@ impl GameState {
         }
         self.technology.research_status_by_nation[nation][tech_id] =
             TechnologyResearchStatus::Researched;
-        self.technology.completion_year_by_nation[nation][tech_id] =
-            (self.turn.economic_turn / 4) as i16;
 
         let difficulty = self.turn.difficulty.retail();
         let era_offset =
@@ -658,6 +676,9 @@ impl GameState {
             };
 
         match tech_id {
+            Technology::StreamlinedHulls => {
+                self.update_naval_capability(ShipType::Clipper, nation);
+            }
             Technology::CottonGin => self.set_requirement_level(
                 nation,
                 ResourceKind::Cotton,
@@ -735,6 +756,10 @@ impl GameState {
                     UniversityRequirementLevel::Two,
                 );
             }
+            Technology::Paddlewheels => {
+                self.update_naval_capability(ShipType::Raider, nation);
+                self.update_naval_capability(ShipType::Paddlewheeler, nation);
+            }
             Technology::CompoundSteamEngine => self.set_requirement_level(
                 nation,
                 ResourceKind::Timber,
@@ -761,6 +786,9 @@ impl GameState {
                 self.activate_military_ability(nation, MilitaryUnitKind::CombatEngineers);
                 self.activate_military_ability(nation, MilitaryUnitKind::GeneralEra2);
             }
+            Technology::AdvancedIronWorking => {
+                self.update_naval_capability(ShipType::Ironclad, nation);
+            }
             Technology::PowerLoom => {
                 self.set_requirement_level(
                     nation,
@@ -777,6 +805,9 @@ impl GameState {
                 self.activate_military_ability(nation, MilitaryUnitKind::FieldArtillery);
                 self.activate_military_ability(nation, MilitaryUnitKind::SiegeArtillery);
                 self.add_era_arms(nation, era_offset, 10);
+            }
+            Technology::SteelArmorPlate => {
+                self.update_naval_capability(ShipType::AdvancedIronclad, nation);
             }
             Technology::Dynamite => {
                 self.set_requirement_level(
@@ -838,6 +869,14 @@ impl GameState {
                 self.activate_military_ability(nation, MilitaryUnitKind::RailroadGuns);
                 self.add_era_arms(nation, era_offset, 20);
             }
+            Technology::MarineEngineering => {
+                self.update_naval_capability(ShipType::ArmoredCruiser, nation);
+                self.update_naval_capability(ShipType::Freighter, nation);
+            }
+            Technology::ImprovedRangeFinding => {
+                self.update_naval_capability(ShipType::Dreadnought, nation);
+                self.update_naval_capability(ShipType::Battlecruiser, nation);
+            }
             Technology::InternalCombustion => {
                 self.set_requirement_level(
                     nation,
@@ -859,6 +898,72 @@ impl GameState {
         }
         self.upgrade_owned_surface_development(nation);
         sync_city_capabilities_from_research(&mut self.technology, nation);
+    }
+
+    /// Retail `TTechMgr::UpdateSelectionAndRecalculateScores`.
+    fn update_naval_capability(&mut self, ship_type: ShipType, nation: MajorNationId) {
+        let group = crate::navy_orders::NAVY_DESCRIPTORS[ship_type].toolbar_class;
+        for candidate in (0..ShipType::LENGTH).map(ShipType::from_usize) {
+            if candidate != ship_type
+                && crate::navy_orders::NAVY_DESCRIPTORS[candidate].toolbar_class == group
+            {
+                self.technology.selected_ship_types_by_nation[nation][candidate] = false;
+            }
+        }
+        self.technology.selected_ship_types_by_nation[nation][ship_type] = true;
+
+        const ORDER_SLOT_BY_SHIP_TYPE: [usize; ShipType::LENGTH] =
+            [0, 0, 1, 4, 5, 2, 3, 6, 7, 7, 2, 6, 7, 6];
+        let slot = ORDER_SLOT_BY_SHIP_TYPE[usize::from(ship_type.retail())];
+        if slot >= 6 {
+            let advanced = ShipOrderSlot::from_usize(slot);
+            let advanced_type = self.nations.city(nation).orders.ships[advanced].ship_type;
+            if advanced_type != ShipType::NoShip {
+                let carried = ShipOrderSlot::from_usize(slot - 2);
+                let displaced = self.nations.city(nation).orders.ships[carried].ship_type;
+                self.technology.selected_ship_types_by_nation[nation][displaced] = false;
+                self.nations.city_mut(nation).orders.ships[carried].ship_type = advanced_type;
+            }
+        } else if ship_type == ShipType::Freighter {
+            let orders = &mut self.nations.city_mut(nation).orders.ships;
+            orders[ShipOrderSlot::MerchantEarlyPrimary].ship_type = ShipType::Paddlewheeler;
+            orders[ShipOrderSlot::MerchantEarlySecondary].ship_type = ShipType::Clipper;
+            orders[ShipOrderSlot::MerchantAdvancedSecondary].ship_type = ShipType::NoShip;
+        }
+        self.nations.city_mut(nation).orders.ships[ShipOrderSlot::from_usize(slot)].ship_type =
+            ship_type;
+
+        let owner = nation.nation();
+        let retired = self
+            .ships_in_retail_order()
+            .filter_map(|(id, ship)| {
+                (ship.nation == owner
+                    && !self.technology.selected_ship_types_by_nation[nation][ship.ship_type])
+                    .then_some((id, ship.experience / 100))
+            })
+            .collect::<Vec<_>>();
+        let score = retired
+            .iter()
+            .map(|(_, score)| i32::from(*score))
+            .sum::<i32>();
+        for (ship, _) in retired {
+            self.retire_ship_and_reassign_admiral(ship);
+        }
+
+        let survivors = self
+            .ships_in_retail_order()
+            .filter_map(|(id, ship)| (ship.nation == owner).then_some(id))
+            .collect::<Vec<_>>();
+        if !survivors.is_empty() {
+            let gain = (score / survivors.len() as i32) as i16;
+            for ship in survivors {
+                let experience = &mut self
+                    .ship_mut(ship)
+                    .expect("surviving ship exists")
+                    .experience;
+                *experience = experience.wrapping_add(gain).min(499);
+            }
+        }
     }
 
     fn upgrade_owned_surface_development(&mut self, nation: MajorNationId) {
@@ -1269,6 +1374,7 @@ mod tests {
         state.nations.major_mut(active).economy.diplomacy_eligible = false;
         state.technology.research_status_by_nation[active][Technology::CottonGin] =
             TechnologyResearchStatus::Pending;
+        state.technology.completion_year_by_nation[active][Technology::CottonGin] = 77;
 
         state.consume_non_interactive_technology_unlocks();
         assert_eq!(
@@ -1281,7 +1387,7 @@ mod tests {
         );
         assert_eq!(
             state.technology.completion_year_by_nation[active][Technology::CottonGin],
-            (state.turn.economic_turn / 4) as i16
+            77
         );
     }
 
@@ -1304,6 +1410,71 @@ mod tests {
         state.technology.scheduled_unlock_turn_by_technology[Technology::AdvancedIronWorking] = 1;
         state.check_technology_advances();
         assert_eq!(state.technology.navy_growth_ship_type, ShipType::Ironclad);
+    }
+
+    #[test]
+    fn naval_unlocks_replace_retail_shipyard_rows_and_selection_flags() {
+        let mut state = crate::test_support::game_state();
+        let nation = MajorNationId::new(0);
+        for technology in [
+            Technology::Paddlewheels,
+            Technology::AdvancedIronWorking,
+            Technology::SteelArmorPlate,
+            Technology::MarineEngineering,
+            Technology::ImprovedRangeFinding,
+        ] {
+            state.technology.research_status_by_nation[nation][technology] =
+                TechnologyResearchStatus::Pending;
+            assert_eq!(
+                state.acknowledge_technology_unlock(nation),
+                Some(technology)
+            );
+        }
+
+        let selected = &state.technology.selected_ship_types_by_nation[nation];
+        for ship_type in (0..ShipType::LENGTH).map(ShipType::from_usize) {
+            assert_eq!(
+                selected[ship_type],
+                matches!(
+                    ship_type,
+                    ShipType::AdvancedIronclad
+                        | ShipType::Freighter
+                        | ShipType::ArmoredCruiser
+                        | ShipType::Dreadnought
+                        | ShipType::Battlecruiser
+                ),
+                "unexpected final selection for {ship_type:?}"
+            );
+        }
+        let orders = &state.nations.city(nation).orders.ships;
+        assert_eq!(
+            orders[ShipOrderSlot::MerchantEarlyPrimary].ship_type,
+            ShipType::Paddlewheeler
+        );
+        assert_eq!(
+            orders[ShipOrderSlot::MerchantEarlySecondary].ship_type,
+            ShipType::Clipper
+        );
+        assert_eq!(
+            orders[ShipOrderSlot::MerchantAdvancedPrimary].ship_type,
+            ShipType::Freighter
+        );
+        assert_eq!(
+            orders[ShipOrderSlot::WarshipEarlyPrimary].ship_type,
+            ShipType::ArmoredCruiser
+        );
+        assert_eq!(
+            orders[ShipOrderSlot::WarshipEarlySecondary].ship_type,
+            ShipType::AdvancedIronclad
+        );
+        assert_eq!(
+            orders[ShipOrderSlot::WarshipAdvancedPrimary].ship_type,
+            ShipType::Battlecruiser
+        );
+        assert_eq!(
+            orders[ShipOrderSlot::WarshipAdvancedSecondary].ship_type,
+            ShipType::Dreadnought
+        );
     }
 
     #[test]

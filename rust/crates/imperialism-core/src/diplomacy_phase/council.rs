@@ -42,6 +42,16 @@ impl CouncilPower {
 }
 
 impl GameState {
+    /// Retail's normalized military-power figure shown in the newspaper.
+    pub fn newspaper_military_power(&self, nation: MajorNationId) -> i32 {
+        self.council_comparative_power()[nation].military
+    }
+
+    /// Retail's normalized commodity-power figure shown in the newspaper.
+    pub fn newspaper_commodity_power(&self, nation: MajorNationId) -> i32 {
+        self.council_comparative_power()[nation].commodity
+    }
+
     /// Retail's decade-boundary Council of Governors ballot rebuild.
     pub(crate) fn rebuild_council_ballot(&mut self, force_full_clear: bool) {
         if self.diplomacy.influence_thresholds.as_array()[0] == 0 {

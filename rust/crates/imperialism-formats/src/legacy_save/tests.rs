@@ -30,6 +30,8 @@ const TECH_ADVANCED_IRON_WORKING_OFFSET_V62: usize = 0x1a5;
 const TECH_MARINE_ENGINEERING_OFFSET_V62: usize = 0x1a8;
 const TECH_ORDER_CAP_ROWS_OFFSET_V62: usize = 0x262;
 const TECH_ORDER_CAP_ROW_SIZE: usize = 0x1d;
+const TECH_SELECTED_SHIP_TYPES_OFFSET_V62: usize = 0x32d;
+const TECH_SELECTED_SHIP_TYPES_ROW_SIZE: usize = 14;
 const TECH_ABILITY_ACTIVE_ROWS_OFFSET_V62: usize = 0x38f;
 const TECH_ABILITY_ACTIVE_ROW_SIZE: usize = 30;
 const TECH_ADVANCED_IRON_WORKING_ID: usize = 0x0f;
@@ -44,6 +46,18 @@ fn game_context() -> LegacyGameStateContext {
         crt_rand_state: 1,
         map_generation_lcg: 0,
         zone_status_lcg: 3_916_827_792,
+    }
+}
+
+#[test]
+fn retail_manual_and_autosave_phases_resume_on_the_strategic_map() {
+    for saved_phase in [PhaseCode::HOME_PLACEMENT, PhaseCode::RETURN_TO_MAP] {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
+        save.simulation.turn_state_code = saved_phase.retail() as i16;
+
+        let loaded = load_game_from_bytes(&save.to_bytes(), game_context()).unwrap();
+
+        assert_eq!(loaded.game.turn().phase(), PhaseCode::STRATEGIC_MAP);
     }
 }
 
@@ -81,6 +95,30 @@ fn retail_midgame_navy_round_trips_semantics_and_navy_records() {
     let loaded = load_game_from_bytes(&written.to_bytes(), game_context())
         .expect("a midgame navy save loads through the public boundary");
     assert_eq!(loaded.game, original);
+}
+
+#[test]
+fn turn_flow_status_flags_project_and_persist_through_v62() {
+    let mut retail = LegacySaveV62::parse(RETAIL_FIXTURE);
+    retail.simulation.turn_flow_status_flags = 0x1051;
+    let state = retail.game_state(game_context());
+    assert_eq!(state.turn().turn_flow_status_flags, 0x1051);
+
+    let written = LegacySaveV62::from_game_state(
+        &state,
+        retail.map_view_origin(),
+        &retail.city_window_layout(),
+        &retail.battle_report_text(),
+        &retail.header.save_label,
+        retail.header.saved_session_slot,
+    );
+    assert_eq!(written.simulation.turn_flow_status_flags, 0x1051);
+    assert_eq!(
+        LegacySaveV62::parse(&written.to_bytes())
+            .simulation
+            .turn_flow_status_flags,
+        0x1051
+    );
 }
 
 fn navy_missions(save: &LegacySaveV62) -> Vec<&LegacyNavyMission> {
@@ -349,6 +387,9 @@ fn technology_decoder_reads_retail_resource_type_fields() {
         + TECH_ADVANCED_IRON_WORKING_ID] = 2;
     bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + 3 * TECH_ORDER_CAP_ROW_SIZE + TECH_OIL_DRILLING_ID] = 2;
     bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + 4 * TECH_ORDER_CAP_ROW_SIZE + 4] = 1;
+    bytes[TECH_SELECTED_SHIP_TYPES_OFFSET_V62
+        + 2 * TECH_SELECTED_SHIP_TYPES_ROW_SIZE
+        + ShipType::ArmoredCruiser as usize] = 1;
     bytes[TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62
         + TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE
         + CivilianUnitKind::Driller as usize] = 1;
@@ -381,6 +422,10 @@ fn technology_decoder_reads_retail_resource_type_fields() {
     );
     assert_eq!(technology.research_status_by_nation[4][4], 1);
     assert_eq!(
+        technology.selected_resource_type_by_nation[2][ShipType::ArmoredCruiser as usize],
+        1
+    );
+    assert_eq!(
         technology.university_recruitment_availability[1][CivilianUnitKind::Driller as usize],
         1
     );
@@ -389,6 +434,19 @@ fn technology_decoder_reads_retail_resource_type_fields() {
         3
     );
     assert_eq!(stream.position(), TECH_SERIALIZED_SIZE_V62);
+}
+
+#[test]
+fn projects_advanced_production_unlock_from_the_exact_v62_flag() {
+    let mut bytes = RETAIL_FIXTURE.to_vec();
+    let offset = TECH_ABSOLUTE_OFFSET_V62 + TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62;
+    bytes[offset + TECH_OIL_DRILLING_ID] = 0;
+    let locked = LegacySaveV62::parse(&bytes).game_state(game_context());
+    assert!(!locked.technology().advanced_production_unlocked());
+
+    bytes[offset + TECH_OIL_DRILLING_ID] = 1;
+    let unlocked = LegacySaveV62::parse(&bytes).game_state(game_context());
+    assert!(unlocked.technology().advanced_production_unlocked());
 }
 
 #[test]
@@ -1010,7 +1068,7 @@ fn city_window_layout_round_trips_without_entering_game_state() {
 fn battle_report_text_round_trips_outside_game_state() {
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);
     save.army_reports = vec![LegacyBattleReport {
-        participant_index: BattleReportSideSlot::Left.retail(),
+        participant_index: u8::MAX,
         displayed_participant: BattleReportSideSlot::Right.retail(),
         kind: BattleReportKind::LandBattle.retail(),
         node_id: 0,
@@ -1031,6 +1089,7 @@ fn battle_report_text_round_trips_outside_game_state() {
     }];
     let game = save.game_state(game_context());
     let report_text = save.battle_report_text();
+    assert_eq!(game.battle_reports()[0].participant, None);
 
     let bytes = LegacySaveV62::from_game_state(
         &game,
@@ -1044,6 +1103,7 @@ fn battle_report_text_round_trips_outside_game_state() {
     let loaded = load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
 
     assert_eq!(loaded.game, game);
+    assert_eq!(loaded.game.battle_reports()[0].participant, None);
     assert_eq!(loaded.battle_report_text, report_text);
 }
 

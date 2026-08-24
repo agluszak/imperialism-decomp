@@ -155,24 +155,30 @@ pub enum DealBookCategoryRow {
     Bid(DealBookBidRow),
 }
 
-pub fn deal_book_tab_count(oil_drilling: bool) -> u8 {
-    if oil_drilling {
+pub fn deal_book_tab_count(advanced_production_unlocked: bool) -> u8 {
+    if advanced_production_unlocked {
         TABS_WITH_OIL.len() as u8
     } else {
         TABS_WITHOUT_OIL.len() as u8
     }
 }
 
-pub fn deal_book_tab_commodity(oil_drilling: bool, tab: u8) -> Option<TradeCommodity> {
-    if oil_drilling {
+pub fn deal_book_tab_commodity(
+    advanced_production_unlocked: bool,
+    tab: u8,
+) -> Option<TradeCommodity> {
+    if advanced_production_unlocked {
         TABS_WITH_OIL.get(usize::from(tab)).copied()
     } else {
         TABS_WITHOUT_OIL.get(usize::from(tab)).copied()
     }
 }
 
-pub fn deal_book_tab_index(oil_drilling: bool, commodity: TradeCommodity) -> Option<u8> {
-    let tabs = if oil_drilling {
+pub fn deal_book_tab_index(
+    advanced_production_unlocked: bool,
+    commodity: TradeCommodity,
+) -> Option<u8> {
+    let tabs = if advanced_production_unlocked {
         &TABS_WITH_OIL[..]
     } else {
         &TABS_WITHOUT_OIL[..]

@@ -88,6 +88,7 @@ impl GameState {
                 state.elect_task_force_flagship(force);
             }
         }
+        state.rebuild_civilian_tile_chains();
         state
     }
 

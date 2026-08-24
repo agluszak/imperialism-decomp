@@ -101,6 +101,18 @@ fn player_trade_phase_reset() {
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
+fn ai_capital_selection_trade_bids() {
+    compare_native(
+        "ai_capital_selection_trade_bids",
+        |state, case: NationCase| {
+            state.reset_diplomacy_need_slots_7012_if_mode_gate_matches(case.nation);
+        },
+    )
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
 fn trade_capacity_refresh() {
     compare_native("trade_capacity_refresh", |state, case: NationCase| {
         state.refresh_merchant_capacity(case.nation);
@@ -150,6 +162,15 @@ fn trade_phase() {
 #[ignore = "requires the native C++ oracle"]
 fn trade_phase_sell_only() {
     compare_native("trade_phase_sell_only", |state, (): ()| {
+        drain_ranked_deals_with_human_auto_accept(state);
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_trade_phase() {
+    compare_native("second_turn_trade_phase", |state, (): ()| {
         drain_ranked_deals_with_human_auto_accept(state);
     })
     .unwrap();

@@ -5,10 +5,7 @@
 //! `pay_for_military`, and `finish_player_orders` from production code.
 
 use crate::military_cleanup::NationOrderPriorityMetrics as Metrics;
-use crate::{
-    CombatMovesContinuation, GameState, MajorNationId, MilitaryUnitId, NavyOrdersContinuation,
-    TaskForceId,
-};
+use crate::{CombatMovesContinuation, GameState, MajorNationId, MilitaryUnitId, TaskForceId};
 use serde::{Deserialize, Serialize};
 
 pub use crate::random_map::{
@@ -25,10 +22,6 @@ pub fn select_and_queue_advisory_map_missions(state: &mut GameState) {
 
 pub fn do_army_movement(state: &mut GameState, nation: MajorNationId) {
     state.do_army_movement(nation);
-}
-
-pub fn do_military_with_tactical_battles(state: &mut GameState) -> Option<NavyOrdersContinuation> {
-    state.do_military_with_tactical_battles()
 }
 
 pub fn resume_combat_moves(
@@ -122,4 +115,24 @@ impl From<&Metrics> for NationOrderPriorityMetrics {
 
 pub fn recompute_nation_order_priority_metrics(state: &GameState) -> NationOrderPriorityMetrics {
     NationOrderPriorityMetrics::from(&state.recompute_nation_order_priority_metrics())
+}
+
+pub fn plan_ai_military_development(
+    state: &mut GameState,
+    nation: MajorNationId,
+    average_allocation: i32,
+) {
+    let previous = state.nations.majors[&nation]
+        .economy
+        .interior_civilian
+        .average_development_order_allocation;
+    state.nations.majors[&nation]
+        .economy
+        .interior_civilian
+        .average_development_order_allocation = average_allocation;
+    state.plan_ai_military_development(nation);
+    state.nations.majors[&nation]
+        .economy
+        .interior_civilian
+        .average_development_order_allocation = previous;
 }

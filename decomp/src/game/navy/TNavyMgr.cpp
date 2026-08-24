@@ -1739,6 +1739,9 @@ PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
 // FUNCTION: IMPERIALISM 0x0055a780
 void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry) {
   MapOrderBattleSnapshot snapshot;
+  snapshot.reportKind04 = kMapContextReportSeaBattle;
+  snapshot.targetObject08 = leftEntry->location;
+  snapshot.displayedParticipantIndex03 = 0;
   snapshot.childCount[0] = 0;
   snapshot.childCount[1] = 0;
   snapshot.childRecords[0] = 0;
@@ -1881,6 +1884,8 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
 
   bool leftEliminated = leftEntry->shipList == nullptr;
   bool rightEliminated = rightEntry->shipList == nullptr;
+  snapshot.reportParticipantIndex02 = static_cast<unsigned char>(
+      leftEliminated == rightEliminated ? -1 : (leftEliminated ? 1 : 0));
   if (!tierUnreachable && (leftEliminated != rightEliminated)) {
     TTaskForce* loser = leftEliminated ? leftEntry : rightEntry;
     TTaskForce* winner = leftEliminated ? rightEntry : leftEntry;

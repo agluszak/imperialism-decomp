@@ -55,19 +55,19 @@ pub struct TurnState {
     ///
     /// This is not the 1815-based display calendar.
     pub diplomacy_year_term_raw: i16,
+    /// Retail `TSimMgr::field6a`, selecting the scenario flag/language asset set.
+    pub selected_asset_set: i16,
     pub(crate) phase: PhaseCode,
     /// Persisted turn-flow status bits consumed by the alert and technology phases.
     pub turn_flow_status_flags: u32,
-    /// Retail's decade-boundary presentation state, keyed by `economic_turn / 40`.
-    pub quarter_gate_by_decade: DecadeTable<bool>,
+    /// Retail's twelve persisted decade/council state bytes.
+    /// Zero skips the council gate; scenario scripts also use the distinct state 2.
+    pub phase_state_by_decade: [u8; 12],
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     /// Process-local last tick that showed turn alerts. Not stored in `.imp`.
     #[serde(default)]
     pub last_turn_alert_tick: i32,
-    /// Process-local mask of turn alerts presented at the last stop. Not stored in `.imp`.
-    #[serde(default)]
-    pub(crate) turn_alert_mask: u8,
     /// Retail `g_nTurnCooldownDeferCounter006A43C4`. Not stored in `.imp`.
     #[serde(default)]
     pub turn_cooldown_defer_counter: i16,
@@ -79,9 +79,10 @@ impl TurnState {
         scenario_map: Option<ScenarioMapId>,
         economic_turn: i32,
         diplomacy_year_term_raw: i16,
+        selected_asset_set: i16,
         phase: PhaseCode,
         turn_flow_status_flags: u32,
-        quarter_gate_by_decade: DecadeTable<bool>,
+        phase_state_by_decade: [u8; 12],
         difficulty: Difficulty,
         active_nation: NationId,
     ) -> Self {
@@ -89,13 +90,13 @@ impl TurnState {
             scenario_map,
             economic_turn,
             diplomacy_year_term_raw,
+            selected_asset_set,
             phase,
             turn_flow_status_flags,
-            quarter_gate_by_decade,
+            phase_state_by_decade,
             difficulty,
             active_nation,
             last_turn_alert_tick: 0,
-            turn_alert_mask: 0,
             turn_cooldown_defer_counter: 0,
         }
     }
@@ -163,9 +164,10 @@ impl PhaseCode {
 }
 
 /// External interaction required before the core turn driver can continue.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum TurnStop {
     PlayerOrders,
+    TownNaming,
     DiplomacyOffer,
     DiplomacyWarJoin,
     TradeOffer,
@@ -174,7 +176,7 @@ pub enum TurnStop {
     DealBook,
     TechnologyAdvance,
     Newspaper,
-    TurnAlerts,
+    TurnAlerts(Vec<crate::TurnAlert>),
     /// Turn-machine case `0x0b` after `SorryYouLose`. Distinct from elimination loss.
     GreatPowerLoss,
     /// Turn-machine case `0x0d` / `kTurnEventDiplomacyOffer` (0x0547) battle-report overview.
@@ -236,6 +238,12 @@ impl TurnState {
 }
 
 impl GameState {
+    /// Retail `TSimMgr::ReadFrom` discards the serialized turn phase, enters phase 4,
+    /// and immediately advances to the strategic map.
+    pub fn resume_retail_save_on_strategic_map(&mut self) {
+        self.turn.phase = PhaseCode::STRATEGIC_MAP;
+    }
+
     /// Ends player orders on the strategic map and runs the turn until the next stop.
     pub fn finish_player_orders(
         &mut self,
@@ -243,29 +251,12 @@ impl GameState {
         story_ids: &[i32],
     ) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
-        if self.show_turn_alerts(turn_alerts_enabled) {
-            return TurnStop::TurnAlerts;
+        let alerts = self.show_turn_alerts(turn_alerts_enabled);
+        if !alerts.is_empty() {
+            return TurnStop::TurnAlerts(alerts);
         }
         self.turn.phase = PhaseCode::DIPLOMACY;
         self.advance_turn(story_ids)
-    }
-
-    /// Dismisses turn alerts and re-enters player-order finish on the same phase.
-    pub fn dismiss_turn_alerts(
-        &mut self,
-        turn_alerts_enabled: bool,
-        story_ids: &[i32],
-    ) -> TurnStop {
-        assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
-        self.turn.turn_alert_mask = 0;
-        self.finish_player_orders(turn_alerts_enabled, story_ids)
-    }
-
-    /// True while the driver is stopped on turn alerts that have not been dismissed.
-    pub fn turn_alerts_pending(&self) -> bool {
-        self.turn.phase() == PhaseCode::STRATEGIC_MAP
-            && self.turn.turn_alert_mask != 0
-            && self.turn.last_turn_alert_tick == self.turn.economic_turn
     }
 
     /// Accepts or rejects the diplomacy offer stored in the current continuation.
@@ -323,10 +314,17 @@ impl GameState {
         self.advance_turn(story_ids)
     }
 
-    /// Dismisses the newspaper and returns to player orders.
-    pub fn close_newspaper(&mut self) -> TurnStop {
+    /// Dismisses the newspaper and returns to player orders. Retail's map-entry
+    /// music selection consumes the process-global CRT stream when music is enabled.
+    pub fn close_newspaper(&mut self, music_enabled: bool) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::RETURN_TO_MAP);
         self.return_to_map();
+        if let Some((unit, _)) = self.first_idle_civilian(self.turn.active_nation) {
+            self.activate_civilian_selection(unit);
+        }
+        if music_enabled && self.turn.turn_cooldown_defer_counter < 1 {
+            self.rng.next_crt_rand();
+        }
         TurnStop::PlayerOrders
     }
 
@@ -452,6 +450,9 @@ impl GameState {
 
     pub fn advance_turn(&mut self, story_ids: &[i32]) -> TurnStop {
         loop {
+            if self.pending_town_naming().is_some() {
+                return TurnStop::TownNaming;
+            }
             if let Some(stop) = self.continuation_stop() {
                 return stop;
             }
@@ -756,7 +757,7 @@ mod tests {
         assert_eq!(stop, crate::TurnStop::Newspaper);
         assert_eq!(state.turn.phase(), crate::PhaseCode::RETURN_TO_MAP);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
-        assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
+        assert_eq!(state.close_newspaper(false), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
     }
 
@@ -925,7 +926,7 @@ mod tests {
         let mut state = game_state();
         seed_town_tiles(&mut state);
         state.append_battle_report(BattleReport {
-            participant: BattleReportSideSlot::Left,
+            participant: Some(BattleReportSideSlot::Left),
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
@@ -978,7 +979,7 @@ mod tests {
         let mut state = game_state();
         seed_town_tiles(&mut state);
         state.turn.economic_turn = 40;
-        state.turn.quarter_gate_by_decade[crate::Decade::Second] = true;
+        state.turn.phase_state_by_decade[crate::Decade::Second as usize] = 1;
         state.turn.phase = crate::PhaseCode::QUARTER_GATE;
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::DecadeCinematic);
         assert_eq!(state.turn.phase(), crate::PhaseCode::SEASON_ADVANCE);
@@ -997,9 +998,33 @@ mod tests {
             stop = state.acknowledge_technology_report(&[]);
         }
         assert_eq!(stop, crate::TurnStop::Newspaper);
-        assert_eq!(state.close_newspaper(), crate::TurnStop::PlayerOrders);
+        assert_eq!(state.close_newspaper(false), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
+    }
+
+    #[test]
+    fn turn_alert_outcome_requires_a_fresh_finish_player_orders() {
+        let mut state = game_state();
+        seed_town_tiles(&mut state);
+        state.turn.economic_turn = 3;
+        state.turn.turn_flow_status_flags = 0x1010;
+        state.diplomacy.last_diplomatic_effort_turn = 0;
+
+        assert_eq!(
+            state.finish_player_orders(true, &[]),
+            crate::TurnStop::TurnAlerts(vec![
+                crate::TurnAlert::Treasury { prompt_code: 0x25 },
+                crate::TurnAlert::Starvation,
+            ])
+        );
+        assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
+
+        assert!(!matches!(
+            state.finish_player_orders(true, &[]),
+            crate::TurnStop::TurnAlerts(_)
+        ));
+        assert_ne!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
     }
 
     #[test]
@@ -1053,7 +1078,7 @@ mod tests {
         let mut state = game_state();
         assert!(!state.battle_reports_pending());
         state.append_battle_report(BattleReport {
-            participant: BattleReportSideSlot::Left,
+            participant: Some(BattleReportSideSlot::Left),
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([

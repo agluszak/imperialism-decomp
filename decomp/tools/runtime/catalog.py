@@ -138,6 +138,15 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
+        "random_name_game_normal_start",
+        "RandomNameGameNormalStartTest",
+        ("pr", "full"),
+        "self_consistency",
+        required_oracles=(),
+        native_snapshots=("ui_tree", "random_game_setup"),
+        record_game_flow=True,
+    ),
+    RuntimeTestSpec(
         "random_game_introductory_exits_newspaper",
         "IntroductoryRandomGameTest",
         ("pr", "full"),

@@ -1,7 +1,9 @@
 use super::borders::{CITY_BORDER_PALETTE, compose_strategic_borders};
 use super::overlays::{
+    ACTIVITY_OVERLAY_DESTINATION, ACTIVITY_OVERLAY_HEIGHT, ACTIVITY_OVERLAY_WIDTH,
     IMPROVEMENT_PICTURE_IDS, RESOURCE_ICON_HEIGHT, RESOURCE_ICON_WIDTH, RESOURCE_OVERLAY_HEIGHT,
-    RESOURCE_OVERLAY_WIDTH, city_marker_offset, transport_marker_offset,
+    RESOURCE_OVERLAY_WIDTH, SURVEY_FEEDBACK_DESTINATION, SURVEY_FEEDBACK_SOURCE_X,
+    city_marker_offset, transport_marker_offset,
 };
 use super::terrain::{
     BASE_WATER_OFFSETS, coast_corner_variant, compose_strategic_base_tile, frame_for_offset,
@@ -70,10 +72,22 @@ fn synthetic_resource_overlays() -> IndexedPicture {
     }
 }
 
+fn synthetic_order_markers() -> IndexedPicture {
+    let width = 12 * TILE_SIZE as u32;
+    IndexedPicture {
+        width,
+        height: TILE_SIZE as u32,
+        pixels: (0..width as usize * TILE_SIZE as usize)
+            .map(|index| 0xc0 + (index % width as usize / TILE_SIZE as usize) as u8)
+            .collect(),
+    }
+}
+
 fn synthetic_sprites() -> (
     Vec<IndexedPicture>,
     Vec<IndexedPicture>,
     Vec<IndexedPicture>,
+    IndexedPicture,
     IndexedPicture,
     IndexedPicture,
 ) {
@@ -83,6 +97,7 @@ fn synthetic_sprites() -> (
         synthetic_improvement_pictures(),
         synthetic_resource_icons(),
         synthetic_resource_overlays(),
+        synthetic_order_markers(),
     )
 }
 
@@ -92,6 +107,7 @@ fn sprites_from<'a>(
     improvements: &'a [IndexedPicture],
     icons: &'a IndexedPicture,
     overlays: &'a IndexedPicture,
+    order_markers: &'a IndexedPicture,
 ) -> StrategicMapSprites<'a> {
     StrategicMapSprites {
         terrain,
@@ -99,6 +115,8 @@ fn sprites_from<'a>(
         improvements,
         resource_icons: icons,
         resource_overlays: overlays,
+        survey_feedback: overlays,
+        order_markers,
     }
 }
 
@@ -307,11 +325,19 @@ fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     });
     let state = fixture.state();
 
-    let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
     let mut surface = compose_strategic_map_picture(
         &state,
         origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
     );
     let before = surface.pixels.clone();
     draw_city_site_selection(&state, origin, nation, origin, &mut surface);
@@ -365,7 +391,7 @@ fn transport_marker_offsets_encode_port_depot_and_link_state() {
 
 #[test]
 fn completed_rails_use_the_later_mask_family_than_pending_rails() {
-    let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
     let mut fixture = MapFixture::new();
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
@@ -382,7 +408,15 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
         &fixture.state(),
         origin,
         origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
     );
     assert!(completed.pixels.contains(&(0x80 | 0x19)));
 
@@ -394,14 +428,22 @@ fn completed_rails_use_the_later_mask_family_than_pending_rails() {
         &fixture.state(),
         origin,
         origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
     );
     assert!(pending.pixels.contains(&(0x80 | 0x1f)));
 }
 
 #[test]
 fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
-    let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
     let mut fixture = MapFixture::new();
     let origin = fixture.origin;
     let nation = MajorNationId::from_nation(fixture.state().turn().active_nation).unwrap();
@@ -419,7 +461,15 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
         &fixture.state(),
         origin,
         origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
     );
     assert!(
         undeveloped
@@ -435,14 +485,22 @@ fn prospectable_resources_use_extractive_overlay_or_undeveloped_icon() {
         &fixture.state(),
         origin,
         origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
     );
     assert!(developed.pixels.contains(&0xb0));
 }
 
 #[test]
 fn city_tiles_blit_the_capital_improvement_ink() {
-    let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
     let mut fixture = MapFixture::new();
     let origin = fixture.origin;
     fixture.edit(|map, origin| {
@@ -457,7 +515,15 @@ fn city_tiles_blit_the_capital_improvement_ink() {
         &fixture.state(),
         origin,
         origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
     );
     assert!(pixels.pixels.contains(&0x90));
 }
@@ -494,11 +560,19 @@ fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
         .expect("opening save has an idle civilian");
     let view_origin = state.map().viewport_origin_centered_on(focus);
 
-    let (terrain, rivers, improvements, icons, overlays) = synthetic_sprites();
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
     let indices = compose_strategic_map_picture(
         &state,
         view_origin,
-        sprites_from(&terrain, &rivers, &improvements, &icons, &overlays),
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
     )
     .pixels;
     assert!(
@@ -520,4 +594,265 @@ fn beginning_of_game_viewport_paints_settlements_borders_and_resources() {
         indices.iter().any(|&pixel| (0xa0..0xb1).contains(&pixel)),
         "visible resource indicators should copy picture 750/751 ink"
     );
+}
+
+#[test]
+fn city_site_mode_suppresses_city_art_but_keeps_fortifications() {
+    let state = fixture_state();
+    let focus = state
+        .first_idle_civilian_tile(state.turn().active_nation)
+        .expect("opening save has an idle civilian");
+    let view_origin = state.map().viewport_origin_centered_on(focus);
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
+    let sprites = sprites_from(
+        &terrain,
+        &rivers,
+        &improvements,
+        &icons,
+        &overlays,
+        &order_markers,
+    );
+
+    let strategic =
+        compose_strategic_map_picture_with_city_overlay(&state, view_origin, None, true, sprites);
+    let city_site =
+        compose_strategic_map_picture_with_city_overlay(&state, view_origin, None, false, sprites);
+
+    assert!(
+        (0x90..=0x93)
+            .chain(0x9b..=0x9c)
+            .any(|ink| strategic.pixels.contains(&ink))
+    );
+    assert!(
+        !(0x90..=0x93)
+            .chain(0x9b..=0x9c)
+            .any(|ink| city_site.pixels.contains(&ink))
+    );
+    assert!(city_site.pixels.contains(&0x98));
+}
+
+#[test]
+fn strategic_activity_overlay_uses_the_secondary_owner_frame_on_minor_land() {
+    let (terrain, rivers, improvements, icons, _, order_markers) = synthetic_sprites();
+    let secondary = MajorNationId::new(2);
+    let source_x = (i32::from(secondary.get()) + 0x1b) * ACTIVITY_OVERLAY_WIDTH;
+    let mut overlays = indexed_picture(
+        source_x + ACTIVITY_OVERLAY_WIDTH,
+        ACTIVITY_OVERLAY_HEIGHT,
+        0x10,
+    );
+    overlays.fill_rect(
+        IRect::new(
+            source_x,
+            0,
+            source_x + ACTIVITY_OVERLAY_WIDTH,
+            ACTIVITY_OVERLAY_HEIGHT,
+        ),
+        0xd2,
+    );
+    let mut fixture = MapFixture::new();
+    let origin = fixture.origin;
+    fixture.edit(|map, origin| {
+        map[origin].terrain = TerrainKind::Plains;
+        map[origin].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(7)));
+        map[origin].secondary_owner_nation = Some(secondary);
+        map[origin].flags = TileFlags::empty();
+        map[origin].edge_resources = [None, None];
+    });
+
+    let picture = compose_strategic_tile(
+        &fixture.state(),
+        origin,
+        origin,
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
+    );
+    let activity = ACTIVITY_OVERLAY_DESTINATION;
+    assert_eq!(
+        picture.pixels[(activity.y * TILE_SIZE + activity.x) as usize],
+        0xd2
+    );
+
+    fixture.edit(|map, origin| {
+        map[origin].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+    });
+    let picture = compose_strategic_tile(
+        &fixture.state(),
+        origin,
+        origin,
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
+    );
+    assert_ne!(
+        picture.pixels[(activity.y * TILE_SIZE + activity.x) as usize],
+        0xd2,
+        "retail draws the occupation frame only when the primary owner is not a great power"
+    );
+
+    fixture.edit(|map, origin| {
+        map[origin].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(7)));
+        map[origin].flags = TileFlags::from_bits_retain(1);
+        map[origin].gate = 1;
+    });
+    let picture = compose_strategic_tile(
+        &fixture.state(),
+        origin,
+        origin,
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
+    );
+    assert_ne!(
+        picture.pixels[(activity.y * TILE_SIZE + activity.x) as usize],
+        0xd2,
+        "retail does not draw the occupation frame over a city"
+    );
+}
+
+#[test]
+fn per_tile_marker_precedes_the_pending_river_mouth_point() {
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
+    let mut fixture = MapFixture::new();
+    let origin = fixture.origin;
+    fixture.edit(|map, origin| {
+        map[origin].terrain = TerrainKind::Water;
+        map[origin].per_tile_visited = 2;
+        map.pending_river_mouth_tile = Some(origin);
+    });
+
+    let marked = compose_strategic_tile(
+        &fixture.state(),
+        origin,
+        origin,
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
+    );
+    let center = (TILE_SIZE / 2 * TILE_SIZE + TILE_SIZE / 2) as usize;
+    assert_eq!(marked.pixels[center], 0xc1);
+
+    fixture.edit(|map, origin| map[origin].per_tile_visited = 0);
+    let pending = compose_strategic_tile(
+        &fixture.state(),
+        origin,
+        origin,
+        None,
+        sprites_from(
+            &terrain,
+            &rivers,
+            &improvements,
+            &icons,
+            &overlays,
+            &order_markers,
+        ),
+    );
+    assert_eq!(pending.pixels[center], 3);
+}
+
+#[test]
+fn selected_survey_feedback_precedes_the_order_marker() {
+    let mut parts = fixture_parts();
+    let active = parts.turn.active_nation;
+    let view_origin = beginning_map_view_origin();
+    let tile = view_origin;
+    let surveyor = CivilianUnitId::from_serialized(9_998);
+    parts.map[tile].flags = TileFlags::empty();
+    parts.map[tile].edge_resources = [None, None];
+    let active_major = MajorNationId::from_nation(active).unwrap();
+    parts.map[tile].development.resource_visible_to_majors[active_major] = true;
+    parts.civilian_units.insert(
+        surveyor,
+        CivilianUnitState::new(
+            active,
+            CivilianUnitKind::Prospector,
+            CivilianLocation::OnMap(tile),
+            CivilianWorkOrder::Idle,
+            active,
+            0,
+            false,
+        )
+        .unwrap(),
+    );
+    let mut atlas = indexed_picture(SURVEY_FEEDBACK_SOURCE_X + 0x14, 0x14, 0x10);
+    atlas.fill_rect(
+        IRect::new(
+            SURVEY_FEEDBACK_SOURCE_X,
+            0,
+            SURVEY_FEEDBACK_SOURCE_X + 0x14,
+            0x14,
+        ),
+        0xe1,
+    );
+    let (terrain, rivers, improvements, icons, overlays, order_markers) = synthetic_sprites();
+    let mut sprites = sprites_from(
+        &terrain,
+        &rivers,
+        &improvements,
+        &icons,
+        &overlays,
+        &order_markers,
+    );
+    sprites.survey_feedback = &atlas;
+
+    let state = GameState::from_parts(parts.clone());
+    let surface = compose_strategic_tile(&state, view_origin, tile, Some(surveyor), sprites);
+    let feedback = SURVEY_FEEDBACK_DESTINATION;
+    assert_eq!(
+        surface.pixels[(feedback.y * TILE_SIZE + feedback.x) as usize],
+        0xe1
+    );
+
+    parts.map[tile].per_tile_visited = 2;
+    let marked = GameState::from_parts(parts);
+    let surface = compose_strategic_tile(&marked, view_origin, tile, Some(surveyor), sprites);
+    assert_eq!(
+        surface.pixels[(feedback.y * TILE_SIZE + feedback.x) as usize],
+        0xc1,
+        "retail blits perTileVisitedFlag0f after survey feedback"
+    );
+}
+
+#[test]
+fn strategic_compose_key_tracks_rendered_overlay_facts_not_recruitment_search_state() {
+    let mut fixture = MapFixture::new();
+    let origin = fixture.origin;
+    let initial = strategic_map_compose_key(&fixture.state(), origin, None, None);
+
+    fixture.edit(|map, origin| map[origin].recruit_search_visited = 1);
+    let recruitment = strategic_map_compose_key(&fixture.state(), origin, None, None);
+    assert_eq!(initial, recruitment);
+
+    fixture.edit(|map, origin| map[origin].per_tile_visited = 1);
+    let marker = strategic_map_compose_key(&fixture.state(), origin, None, None);
+    assert_ne!(recruitment, marker);
+
+    fixture.edit(|map, origin| map.pending_river_mouth_tile = Some(origin));
+    let river_mouth = strategic_map_compose_key(&fixture.state(), origin, None, None);
+    assert_ne!(marker, river_mouth);
 }

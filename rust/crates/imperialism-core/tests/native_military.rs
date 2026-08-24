@@ -13,6 +13,12 @@ struct NationCase {
 }
 
 #[derive(Debug, Deserialize)]
+struct AiDevelopmentCase {
+    nation: MajorNationId,
+    average_allocation: i32,
+}
+
+#[derive(Debug, Deserialize)]
 struct SpecialistRecruitmentCase {
     nation: MajorNationId,
     unit_kind: MilitaryUnitKind,
@@ -105,6 +111,15 @@ fn civilians_phase() {
     .unwrap();
 }
 
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_civilians_phase() {
+    compare_native("second_turn_civilians_phase", |state, (): ()| {
+        state.do_civilians();
+    })
+    .unwrap();
+}
+
 #[derive(Debug, Deserialize)]
 struct EmptyCase {}
 
@@ -123,16 +138,59 @@ struct InteractiveAttackResult {
     snapshots: Vec<differential::ArmyBattleSnapshot>,
 }
 
-#[derive(Debug, Deserialize, PartialEq)]
-struct NavalBattleResult {
-    attacker: usize,
-    defender: usize,
-}
-
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn military_phase() {
     compare_native("military_phase", |state, _: EmptyCase| state.do_military()).unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_military_phase() {
+    compare_native("second_turn_military_phase", |state, _: EmptyCase| {
+        state.do_military()
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn second_turn_military_cleanup() {
+    compare_native("second_turn_military_cleanup", |state, (): ()| {
+        state.do_military_cleanup();
+    })
+    .unwrap();
+}
+
+#[test]
+#[ignore = "requires the native C++ oracle"]
+fn ai_naval_industry_development() {
+    compare_native(
+        "ai_naval_industry_development",
+        |state, case: AiDevelopmentCase| {
+            let before = state
+                .nations()
+                .major(case.nation)
+                .economy
+                .interior_civilian
+                .pending_development_actions()
+                .len();
+            differential::plan_ai_military_development(state, case.nation, case.average_allocation);
+            let actions = state
+                .nations()
+                .major(case.nation)
+                .economy
+                .interior_civilian
+                .pending_development_actions();
+            assert!(actions.len() >= before + 2);
+            assert!(
+                actions[before..]
+                    .iter()
+                    .all(|action| matches!(action, PendingDevelopmentAction::Industry { .. }))
+            );
+        },
+    )
+    .unwrap();
 }
 
 #[test]
@@ -149,17 +207,13 @@ fn military_phase_ships_without_orders() {
 #[ignore = "requires the native C++ oracle"]
 fn military_phase_naval_encounter() {
     compare_native("military_phase_naval_encounter", |state, _: EmptyCase| {
-        differential::do_military_with_tactical_battles(state).map(|continuation| {
-            let attacker = state
-                .task_forces_in_retail_order()
-                .position(|(id, _)| id == continuation.battle.attacker)
-                .expect("attacking task force remains queued");
-            let defender = state
-                .task_forces_in_retail_order()
-                .position(|(id, _)| id == continuation.battle.defender)
-                .expect("defending task force remains queued");
-            NavalBattleResult { attacker, defender }
-        })
+        let continuation = state.do_military();
+        let [report] = state.battle_reports() else {
+            panic!("retail strategic naval encounter appends one battle report")
+        };
+        assert_eq!(report.kind, BattleReportKind::SeaBattle);
+        assert_eq!(report.participant, None);
+        continuation
     })
     .unwrap();
 }
@@ -244,7 +298,10 @@ fn interactive_army_battle_done() {
     state.enter_land_battle(continuation);
     differential::auto_deploy_army_battle(&mut state);
     let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
-    assert_eq!(state.finish_selected_army_unit_action(&[]), Ok(None));
+    assert_eq!(
+        state.finish_selected_army_unit_action(&[]).unwrap().stop,
+        None
+    );
     snapshots.push(differential::army_battle_snapshot(&state).unwrap());
     let _ = state.auto_resolve_land_battle(&[]);
 
@@ -300,7 +357,10 @@ fn compare_interactive_army_battle_attack(case_name: &str) {
         .zip(&native.result.actuals)
     {
         match kind {
-            0 => assert_eq!(state.finish_selected_army_unit_action(&[]), Ok(None)),
+            0 => assert_eq!(
+                state.finish_selected_army_unit_action(&[]).unwrap().stop,
+                None
+            ),
             1 => {
                 let target = TacticalHex::from_index(target).unwrap();
                 let (action, _) = state.army_action_at(target, &[]).unwrap();
@@ -357,7 +417,7 @@ fn interactive_army_battle_retreat() {
         differential::army_battle_snapshot(&state),
         Some(native.result)
     );
-    assert!(state.retreat_from_army_battle(&[]).unwrap().is_some());
+    assert!(state.retreat_from_army_battle(&[]).unwrap().stop.is_some());
     assert_game_state_eq(&expected, &state).unwrap();
 }
 

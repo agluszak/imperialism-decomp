@@ -653,7 +653,11 @@ impl GameState {
             }
             CivilianUnitKind::Miner | CivilianUnitKind::Driller => {
                 self.civilian_owned_by(nation, tile)
-                    && state.development.resource_visible_to_majors[nation]
+                    && state
+                        .development
+                        .resource_visible_to_majors
+                        .iter()
+                        .any(|&visible| visible)
                     && self.max_resource_capability_for_order(tile, kind, nation)
                         > i16::from(state.development.extractive.get())
             }
@@ -1314,7 +1318,7 @@ impl GameState {
             .order = CivilianWorkOrder::Idle;
     }
 
-    fn queue_depot_construction(&mut self, tile: TileId, nation: MajorNationId) {
+    pub(crate) fn queue_depot_construction(&mut self, tile: TileId, nation: MajorNationId) {
         if self.map[tile].flags.contains(TileFlags::PORT) {
             if let Some(town) = self.find_town_at_mut(nation, tile) {
                 town.active = true;
@@ -1329,7 +1333,7 @@ impl GameState {
         self.map[tile].flags.insert(TileFlags::DEPOT);
     }
 
-    fn queue_port_construction(&mut self, tile: TileId, nation: MajorNationId) {
+    pub(crate) fn queue_port_construction(&mut self, tile: TileId, nation: MajorNationId) {
         if self.map[tile].flags.contains(TileFlags::DEPOT) {
             if let Some(town) = self.find_town_at_mut(nation, tile) {
                 town.enabled = 1;
@@ -1346,15 +1350,121 @@ impl GameState {
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
-        self.nations.major_mut(nation).towns.insert(
+        let needs_naming = self.nations.major(nation).auto.is_none();
+        let mut town = TownState::constructed(
             tile,
-            TownState::constructed(
-                tile,
-                nation.nation(),
-                enabled,
-                self.turn.economic_turn as i16,
-            ),
+            nation.nation(),
+            enabled,
+            self.turn.economic_turn as i16,
         );
+        town.needs_naming = needs_naming;
+        self.nations.major_mut(nation).towns.insert(tile, town);
+    }
+
+    fn finish_new_town(&mut self, tile: TileId, nation: MajorNationId) {
+        let yields = self.new_town_raw_resources(tile, nation);
+        self.nations.majors[&nation].towns[&tile].resource_yield_by_type = yields;
+    }
+
+    /// Retail `TNewTownView::StuffValues` calls `TTown::CalculateRawResources`
+    /// before presenting the variable list of resource bars.
+    fn new_town_raw_resources(
+        &self,
+        town_tile: TileId,
+        nation: MajorNationId,
+    ) -> ResourceTable<i16> {
+        let town = &self.nations.majors[&nation].towns[&town_tile];
+        let town_region = self.map[town_tile].region;
+        let owner = Some(TileOwnerTag::from_nation(nation.nation()));
+        let mut yields = ResourceTable::default();
+        let mut tiles = self
+            .map
+            .geometry()
+            .neighbors(town_tile)
+            .into_iter()
+            .flatten()
+            .collect::<Vec<_>>();
+        tiles.push(town_tile);
+        for tile_id in tiles {
+            let tile = &self.map[tile_id];
+            if !((tile.owner_nation == owner && tile.region == town_region)
+                || tile.terrain == TerrainKind::Water)
+            {
+                continue;
+            }
+            for resource in tile.edge_resources.into_iter().flatten() {
+                if resource == ResourceKind::Fish && town.enabled == 0 {
+                    continue;
+                }
+                let development = if matches!(
+                    resource,
+                    ResourceKind::Coal
+                        | ResourceKind::Iron
+                        | ResourceKind::Oil
+                        | ResourceKind::Gems
+                        | ResourceKind::Gold
+                ) {
+                    tile.development.extractive.get()
+                } else {
+                    tile.development.surface.get()
+                };
+                yields[resource] += resource_development_yield(resource, development);
+            }
+            if tile.terrain == TerrainKind::Water && town.enabled != 0 {
+                yields[ResourceKind::Fish] += 1;
+            }
+            if tile.river().is_some() && town.enabled != 0 {
+                yields[ResourceKind::Fish] += 1;
+            }
+            if let Some(province) = tile.province
+                && self.map.provinces[province].city_tile() == Some(tile_id)
+            {
+                for resource in ResourceKind::CITY_PRODUCTION {
+                    yields[resource] +=
+                        self.map.provinces[province].resource_development_by_type()[resource];
+                }
+            }
+        }
+        yields
+    }
+
+    pub fn pending_town_naming(&self) -> Option<(MajorNationId, TileId)> {
+        MajorNationId::all().find_map(|nation| {
+            self.nations
+                .major(nation)
+                .towns
+                .iter()
+                .find_map(|(&tile, town)| town.needs_naming.then_some((nation, tile)))
+        })
+    }
+
+    /// Retail `TNewTownView::StuffValues` computes raw resources when the naming
+    /// view is actually presented, not when `TTown` is constructed.
+    pub fn prepare_pending_town_naming(&mut self) -> Option<(MajorNationId, TileId)> {
+        let (nation, tile) = self.pending_town_naming()?;
+        self.finish_new_town(tile, nation);
+        Some((nation, tile))
+    }
+
+    /// Retail `TTownNameDialog::DoPostCreate` selects one of eight STR# 7250 entries.
+    pub fn roll_pending_town_name_suggestion(&mut self) -> u8 {
+        assert!(self.pending_town_naming().is_some(), "a town needs naming");
+        (self.rng.next_crt_rand() % 8 + 1) as u8
+    }
+
+    pub fn name_pending_town(&mut self, name: String) -> bool {
+        let Some((nation, tile)) = self.pending_town_naming() else {
+            return false;
+        };
+        let town = self
+            .nations
+            .major_mut(nation)
+            .towns
+            .get_mut(&tile)
+            .expect("pending town remains present");
+        town.name = name;
+        town.needs_naming = false;
+        true
     }
 
     fn find_town_at_mut(&mut self, nation: MajorNationId, tile: TileId) -> Option<&mut TownState> {
@@ -1408,7 +1518,7 @@ impl GameState {
         self.prepend_civilian_to_tile_chain(id, tile);
     }
 
-    fn rebuild_civilian_tile_chains(&mut self) {
+    pub(crate) fn rebuild_civilian_tile_chains(&mut self) {
         for unit in self.civilian_units.values_mut() {
             unit.next_on_tile = None;
         }
@@ -1846,6 +1956,42 @@ mod tests {
     }
 
     #[test]
+    fn mining_targets_use_the_retail_nonzero_discovery_bitfield_gate() {
+        let mut state = crate::test_support::game_state();
+        let origin = state.map.geometry().tile(3, 9).unwrap();
+        let target = state.map.geometry().tile(3, 10).unwrap();
+        let nation = NationId::new(0);
+        let major = MajorNationId::new(0);
+        let miner = civilian_on(
+            &mut state,
+            2,
+            CivilianUnitKind::Miner,
+            origin,
+            CivilianWorkOrder::Idle,
+            nation,
+        );
+        state.map[target].owner_nation = Some(TileOwnerTag::from_nation(nation));
+        state.map[target].edge_resources = [Some(ResourceKind::Coal), None];
+        state.technology.city_capabilities_by_nation[major]
+            .university
+            .requirement_levels[ResourceKind::Coal] = UniversityRequirementLevel::One;
+        state.map[target].development.resource_visible_to_majors[MajorNationId::new(1)] = true;
+
+        state.activate_civilian_selection(miner);
+        assert_eq!(
+            state.civilian_tile_action(miner, target),
+            CivilianTileAction::DevelopResource
+        );
+
+        state.map[target].development.resource_visible_to_majors[MajorNationId::new(1)] = false;
+        state.activate_civilian_selection(miner);
+        assert_eq!(
+            state.civilian_tile_action(miner, target),
+            CivilianTileAction::Blocked
+        );
+    }
+
+    #[test]
     fn civilian_modal_orders_queue_and_rescind_with_retail_payloads_and_refunds() {
         let mut state = crate::test_support::game_state();
         let geometry = MapGeometry::new(MapTopology::Bounded);
@@ -2190,6 +2336,20 @@ mod tests {
                 .get(&port_tile)
                 .is_some_and(|town| town.enabled == 1 && !town.active)
         );
+        assert_eq!(
+            state.pending_town_naming(),
+            Some((MajorNationId::new(0), depot_tile))
+        );
+        assert!(state.name_pending_town("Depot Name".to_owned()));
+        assert_eq!(
+            state.nations.major(MajorNationId::new(0)).towns[&depot_tile].name,
+            "Depot Name"
+        );
+        assert_eq!(
+            state.pending_town_naming(),
+            Some((MajorNationId::new(0), port_tile))
+        );
+        assert_eq!(state.advance_turn(&[]), TurnStop::TownNaming);
         assert!(
             matches!(
                 &state.ocean.zones[..],

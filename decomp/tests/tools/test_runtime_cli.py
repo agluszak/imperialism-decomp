@@ -115,11 +115,13 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
 
             def fake_run(*_args: object, **_kwargs: object) -> SimpleNamespace:
+                captures_path = result_dir / f"{spec.name}.captures.json"
+                captures_path.write_text("{}\n", encoding="utf-8")
                 native = {
                     "name": spec.name,
                     "seed": 7,
                     "status": "passed",
-                    "captures": {},
+                    "captures_path": captures_path.name,
                 }
                 (result_dir / f"{spec.name}.native-result.json").write_text(
                     json.dumps(native), encoding="utf-8"
@@ -141,7 +143,11 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(
                 set(native),
-                {"name", "seed", "status", "captures"},
+                {"name", "seed", "status", "captures_path"},
+            )
+            self.assertEqual(
+                json.loads(Path(canonical["captures_path"]).read_text(encoding="utf-8")),
+                {},
             )
             self.assertIn("host", canonical)
             self.assertIn("summary", canonical)
@@ -284,7 +290,10 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertEqual(returncode, 1)
             self.assertEqual(result["status"], "failed")
             self.assertEqual(result["seed"], 1)
-            self.assertEqual(result["captures"], {})
+            self.assertEqual(
+                json.loads(Path(result["captures_path"]).read_text(encoding="utf-8")),
+                {},
+            )
 
     def test_seh_rerun_uses_an_isolated_artifact_directory(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -349,11 +358,12 @@ class RuntimeSuiteTests(unittest.TestCase):
                 run_dir = config.run_dir
                 calls.append(run_dir)
                 status = "failed" if len(calls) == 1 else "passed"
+                (run_dir / "captures.json").write_text("{}\n", encoding="utf-8")
                 native = {
                     "name": "boot_managers",
                     "seed": 1,
                     "status": status,
-                    "captures": {},
+                    "captures_path": "captures.json",
                 }
                 (run_dir / "result.json").write_text(json.dumps(native), encoding="utf-8")
                 return self._host(run_dir)
@@ -388,7 +398,7 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(
                 set(primary_native),
-                {"name", "seed", "status", "captures"},
+                {"name", "seed", "status", "captures_path"},
             )
 
     def test_oracle_errors_and_mismatches_coexist_with_native_result(self) -> None:

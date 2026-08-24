@@ -6,6 +6,7 @@
 
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
+#include "game/city_ui/TCityInteriorMinister.h"
 #include "game/city_ui/TCountry.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/globals/navy_globals.h"
@@ -640,6 +641,19 @@ RuntimeActionResult RunMilitaryPhase(NativeTransition& transition) {
   return transition.Finish();
 }
 
+RuntimeActionResult RunSecondTurnMilitaryPhase(NativeTransition& transition) {
+  g_pSimMgr->economicTurn = 2;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->DoMilitary();
+  return transition.Finish();
+}
+
 RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition) {
   g_pSimMgr->economicTurn = 6;
   TZone* zone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot());
@@ -719,10 +733,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
     return RuntimeActionResult::Failure("the naval encounter did not retain both task forces");
   }
 
-  JsonObject battle;
-  battle.Set("attacker", attackerIndex);
-  battle.Set("defender", defenderIndex);
-  return transition.Finish(battle.Release());
+  return transition.Finish();
 }
 
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition) {
@@ -1328,46 +1339,89 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
   return transition.Finish(result.Release());
 }
 
-// Selection-bit clear, heatmap, militia adoption, and AddPurchasedItems only.
-// Does not invoke navy straggler cleanup, mission prune, AI replan, or
-// power/order metrics.
-RuntimeActionResult RunMilitaryCleanupSupportedSubset(NativeTransition& transition) {
-  int slot;
-  if (g_pNavyPrimaryOrderListHead != 0) {
-    g_pNavyPrimaryOrderListHead->selection = 1;
+RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition) {
+  g_pSimMgr->economicTurn = 2;
+
+  RuntimeActionResult started = transition.Begin(JsonNullValue());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pNavyOrderManager->ClearAllTransientOrders();
+  if (g_pSimMgr->multiplayerSessionRole != 2) {
+    g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
+    RecomputeNationOrderPriorityMetrics();
+    for (int slot = 0; slot < 7; ++slot) {
+      TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+      TGreatPower* nation = g_apNationStates[slot];
+      if (country != 0 && nation != 0 &&
+          (country->encodedNationSlot < 100 || country->encodedNationSlot > 199)) {
+        nation->RefreshTrackedEntriesAndReplanAiDevelopment(0);
+      }
+    }
+  }
+  for (int slot = 0; slot < 7; ++slot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+    TGreatPower* nation = g_apNationStates[slot];
+    if (country != 0 && nation != 0 &&
+        (country->encodedNationSlot < 100 || country->encodedNationSlot > 199)) {
+      nation->AddPurchasedItems();
+    }
+  }
+  return transition.Finish();
+}
+
+RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) {
+  TAutoGreatPower* autoNation = 0;
+  short nationSlot = -1;
+  for (short slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation != 0 && nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0 &&
+        g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
+      autoNation = static_cast<TAutoGreatPower*>(nation);
+      nationSlot = slot;
+      break;
+    }
+  }
+  if (autoNation == 0 || g_pMapActionContextListHead == 0) {
+    return RuntimeActionResult::Failure("AI naval-development fixture has no eligible nation");
+  }
+
+  for (int index = 0; index < 16; ++index) {
+    autoNation->interiorMinister->orderShortTableBA[index] = 20;
+  }
+
+  CIterator iter(autoNation->missionQueue);
+  for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+       mission = static_cast<TMission*>(iter.Advance())) {
+    mission->flag10 = 1;
+  }
+  TControlSeaZoneMission* navyMission = new TControlSeaZoneMission(g_pMapActionContextListHead);
+  navyMission->InitializeMissionWithNationIdAndResetPathMarker(nationSlot);
+  navyMission->navyState28 = 2;
+  navyMission->requiredShipEquipageByCategory[0] = 0.0f;
+  navyMission->requiredShipEquipageByCategory[1] = 0.0f;
+  navyMission->requiredShipEquipageByCategory[2] = 0.0f;
+  navyMission->requiredShipEquipageByCategory[3] = 1000.0f;
+  navyMission->flag10 = 0;
+  autoNation->missionQueue->AddTail(navyMission);
+  if (g_pMapActionContextListHead->primaryNeighbors.GetSize() != 0) {
+    TShip* ship = new TShip();
+    ship->IShip(4, g_pMapActionContextListHead->primaryNeighbors.GetAt(0), nationSlot,
+                "naval-development-distance-weight");
+    ship->strength = ship->GetMaxStrength();
+    navyMission->AcceptReenforcement(ship, 0);
   }
 
   JsonObject args;
+  args.Set("nation", static_cast<int>(nationSlot));
+  args.Set("average_allocation", 16);
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
   }
 
-  if (g_pNavyPrimaryOrderListHead != 0) {
-    TShip* ship;
-    for (ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
-      if (ship->selection == 1) {
-        ship->selection = 0;
-      }
-    }
-  }
-  g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
-  for (slot = 0; slot < 7; ++slot) {
-    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    if (country == 0) {
-      continue;
-    }
-    if (country->encodedNationSlot >= 100 && country->encodedNationSlot < 200) {
-      continue;
-    }
-    if (g_apNationStates[slot] != 0) {
-      TGreatPower* nation = g_apNationStates[slot];
-      if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
-        static_cast<TAutoGreatPower*>(nation)->SeedTrackedEntryAssignmentsFromEligibleUnits();
-      }
-      nation->AddPurchasedItems();
-    }
-  }
+  autoNation->PlanAiDevelopmentActionsFromResourcePools(0);
   return transition.Finish();
 }
 

@@ -367,6 +367,7 @@ const PLAYER_TRADE_POLICY_SCORES: [TradePolicyScore; 7] = [
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PlayerDiplomacyOrderResult {
     Applied,
+    NotApplied,
     SelectedNation,
     Rejected(PlayerDiplomacyRejection),
     NeedsEntanglementConfirmation,
@@ -627,8 +628,11 @@ impl GameState {
             return PlayerDiplomacyOrderResult::NeedsEntanglementConfirmation;
         }
 
-        let _ = self.apply_player_diplomacy_policy(source, target, policy);
-        PlayerDiplomacyOrderResult::Applied
+        if self.apply_player_diplomacy_policy(source, target, policy) {
+            PlayerDiplomacyOrderResult::Applied
+        } else {
+            PlayerDiplomacyOrderResult::NotApplied
+        }
     }
 
     /// Toggles the colony-boycott flag for a foreign nation that the player does

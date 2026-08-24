@@ -27,16 +27,8 @@ impl GameState {
         // Windows retail reads preference slot 1 before a player-involved encounter,
         // and its settings initialization forcibly clears that slot. The live turn
         // path therefore always resolves naval combat strategically. Keep the recovered
-        // tactical branch isolated behind the oracle-only entry point below.
+        // tactical branch is entered only by the interactive navy-order path.
         self.carry_out_navy_orders_without_tactical_battles()
-    }
-
-    #[cfg(feature = "oracle")]
-    pub(crate) fn do_military_with_tactical_battles(&mut self) -> Option<NavyOrdersContinuation> {
-        self.apply_military_orders();
-        self.clean_up_army_stacks();
-        self.prepare_to_carry_out_navy_orders();
-        self.carry_out_navy_orders()
     }
 
     /// Semantic effects of `TArmyMgr::CleanUpStacks`. Core's battle reports are
@@ -209,13 +201,13 @@ impl GameState {
         }
         resource_weights[ResourceKind::Gems] = 500;
         resource_weights[ResourceKind::Gold] = 200;
-        let oil_drilling = self.technology.oil_drilling_available();
+        let advanced_production_unlocked = self.technology.advanced_production_unlocked();
 
         let mut region_scores = ProvinceTable::from_fn(|_| 200);
         for province in ProvinceId::all() {
             for &tile in &self.map.provinces[province].linked_tiles {
                 for resource in self.map[tile].edge_resources.iter().flatten() {
-                    if *resource == ResourceKind::Oil && !oil_drilling {
+                    if *resource == ResourceKind::Oil && !advanced_production_unlocked {
                         continue;
                     }
                     region_scores[province] += i32::from(heatmap_requirement_level(

@@ -15,8 +15,10 @@ pub(crate) enum AppState {
     #[default]
     MainMenu,
     RandomSetup,
+    ScenarioSetup,
     LoadSave,
     CitySite,
+    TownNaming,
     StrategicMap,
     Trade,
     City,
@@ -104,6 +106,8 @@ fn add_game_plugins(app: &mut App) {
             ui::DealBookPlugin,
         ))
         .add_plugins((
+            ui::ScenarioSetupPlugin,
+            ui::TownNamingPlugin,
             media::ImperialismMediaPlugin,
             ui::CursorPlugin,
             ui::TechnologyAdvancePlugin,

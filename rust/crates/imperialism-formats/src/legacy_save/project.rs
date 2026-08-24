@@ -653,7 +653,7 @@ impl LegacyCityTask {
 }
 
 impl LegacyTerrainTile {
-    fn tile_state(&self) -> TileState {
+    pub(super) fn tile_state(&self) -> TileState {
         let rendering = TileRendering::from_retail(
             self.sprite_variant,
             self.river_sprite,
@@ -884,6 +884,11 @@ fn technology_state(legacy: &LegacyTechnologyState) -> TechnologyState {
                 .ability_active_by_nation
                 .map(|row| MilitaryUnitTable::from_array(row.map(|value| value != 0))),
         ),
+        selected_ship_types_by_nation: MajorNationTable::from_array(
+            legacy
+                .selected_resource_type_by_nation
+                .map(|row| ShipTypeTable::from_array(row.map(|value| value != 0))),
+        ),
         selected_capability_slots: MajorNationTable::from_array(
             legacy
                 .nation_capability_slots
@@ -968,6 +973,7 @@ impl LegacySaveV62 {
                         tile,
                         TownState {
                             name: town.name.clone(),
+                            needs_naming: false,
                             created_turn: town.created_turn,
                             owner_nation: NationId::new(town.owner_nation as u8),
                             resource_yield_by_type: ResourceTable::from_array(
@@ -1063,11 +1069,10 @@ impl LegacySaveV62 {
                 }),
                 i32::from(self.simulation.economic_turn),
                 self.simulation.diplomacy_year_term_raw,
+                self.simulation.selected_asset_set,
                 PhaseCode::from_retail(i32::from(self.simulation.turn_state_code)),
                 self.simulation.turn_flow_status_flags,
-                DecadeTable::from_array(std::array::from_fn(|index| {
-                    self.simulation.phase_state_by_decade[index] != 0
-                })),
+                self.simulation.phase_state_by_decade,
                 Difficulty::try_from(self.simulation.difficulty).expect("retail difficulty"),
                 nation_id_from_retail_i16(self.simulation.active_nation),
             ),
@@ -1607,7 +1612,7 @@ fn owned_region_id_from_retail(value: i32) -> ProvinceId {
     ProvinceId::new(value as u16)
 }
 
-fn province_state(province: &LegacyProvince) -> ProvinceState {
+pub(super) fn province_state(province: &LegacyProvince) -> ProvinceState {
     let count = province.adjacent_region_count as usize;
     let adjacency = province.adjacent_region_ids[..count]
         .iter()
@@ -1715,7 +1720,7 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
             };
             let [left, right] = &report.sides;
             Some(BattleReport {
-                participant: BattleReportSideSlot::from_retail(report.participant_index)?,
+                participant: BattleReportSideSlot::from_retail(report.participant_index),
                 kind,
                 location,
                 sides: BattleReportSideTable::from_array([left, right].map(|side| {

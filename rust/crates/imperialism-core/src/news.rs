@@ -593,7 +593,7 @@ fn create_event_stories(
                 panic!("land battle report requires a province location");
             };
             (
-                i32::from(report.participant == BattleReportSideSlot::Right) - 0x1a,
+                i32::from(report.participant == Some(BattleReportSideSlot::Right)) - 0x1a,
                 NewsArgument::Province { province },
             )
         } else {
@@ -874,7 +874,7 @@ mod tests {
     fn newspaper_uses_battle_location_participants_and_report_variant() {
         let mut state = game_state();
         state.append_battle_report(BattleReport {
-            participant: BattleReportSideSlot::Right,
+            participant: Some(BattleReportSideSlot::Right),
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(4)),
             sides: BattleReportSideTable::from_array([

@@ -15,7 +15,7 @@ use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree};
 use crate::ui::strategic_map::{
     MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
-    StrategicInteraction, StrategicViewport, animate_civilian_selection, animate_civilian_work,
+    StrategicInteraction, StrategicViewport, animate_civilian_work, animate_strategic_selection,
     apply_map_transition, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
     bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
     register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
@@ -27,7 +27,9 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
+use imperialism_core::TurnAlert;
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
+use std::collections::VecDeque;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameStatusDisplay {
@@ -80,7 +82,7 @@ impl Plugin for GameShellPlugin {
                 sync_strategic_base_terrain,
                 sync_strategic_units,
                 sync_strategic_selection,
-                animate_civilian_selection,
+                animate_strategic_selection,
                 animate_civilian_work,
                 sync_minimap,
                 sync_zoom_control,
@@ -225,6 +227,7 @@ fn bind_pressed_overlay(
 
 fn on_end_turn(
     _activate: On<Activate>,
+    mut commands: Commands,
     mut session: ResMut<GameSession>,
     prefs: Res<super::preferences::GamePreferences>,
     assets: Res<RetailAssetsResource>,
@@ -233,7 +236,21 @@ fn on_end_turn(
     let stop = session
         .game
         .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
-    apply_turn_stop(stop, &mut next_state);
+    let stop = session.game.apply_land_battle_watch_policy(
+        stop,
+        prefs.tactical_battles_enabled(),
+        assets.news_story_ids(),
+    );
+    match stop {
+        imperialism_core::TurnStop::TurnAlerts(alerts) => {
+            commands.insert_resource(TurnAlertQueue(alerts.into()));
+            next_state.set(AppState::StrategicMap);
+        }
+        stop => {
+            commands.remove_resource::<TurnAlertQueue>();
+            apply_turn_stop(stop, &mut next_state);
+        }
+    }
 }
 
 fn bind_strategic_hover(
@@ -540,39 +557,59 @@ fn on_game_screen_activate(
 }
 
 #[derive(Component)]
-struct TurnAlertNotice;
+struct TurnAlertNotice(TurnAlert);
+
+#[derive(Resource)]
+struct TurnAlertQueue(VecDeque<TurnAlert>);
 
 #[derive(Component)]
 struct TurnSummaryNotice(String);
 
 fn spawn_turn_alerts_if_pending(
     mut commands: Commands,
-    session: Res<GameSession>,
+    queue: Option<Res<TurnAlertQueue>>,
     existing: Query<(), With<TurnAlertNotice>>,
 ) {
-    if !existing.is_empty() || !session.game.turn_alerts_pending() {
+    let Some(alert) = queue.as_deref().and_then(|queue| queue.0.front()).copied() else {
+        return;
+    };
+    if !existing.is_empty() {
         return;
     }
-    spawn_linger_dialog(&mut commands, TurnAlertNotice, AppState::StrategicMap);
+    spawn_linger_dialog(
+        &mut commands,
+        TurnAlertNotice(alert),
+        AppState::StrategicMap,
+    );
 }
 
 fn bind_turn_alert_notice(
     mut commands: Commands,
-    notice: Option<Single<Entity, Added<TurnAlertNotice>>>,
+    notice: Option<Single<(Entity, &TurnAlertNotice), Added<TurnAlertNotice>>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
     let Some(root) = notice else {
         return;
     };
-    let root = *root;
+    let (root, notice) = root.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
-    linger.set_title(&mut commands, &mut assets, "Report from your\nAdvisors\n\n");
-    linger.set_body(
-        &mut commands,
-        &mut assets,
-        "Your ministers have an urgent report.",
-    );
+    let (title_index, body_index) = match notice.0 {
+        TurnAlert::LandCapitolThreatened => (0x28, 0x29),
+        TurnAlert::NavalCapitolThreatened => (0x2a, 0x2b),
+        TurnAlert::Treasury { prompt_code } => (prompt_code - 1, prompt_code),
+        TurnAlert::CommodityShortage => (0x46, 0x47),
+        TurnAlert::TransportShortage => (0x22, 0x23),
+        TurnAlert::Starvation => (0x20, 0x21),
+    };
+    let title = assets
+        .string(0x2753, title_index)
+        .expect("retail turn-alert title must load");
+    let body = assets
+        .string(0x2753, body_index)
+        .expect("retail turn-alert body must load");
+    linger.set_title(&mut commands, &mut assets, title);
+    linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
         .insert(ActivateOnPress)
@@ -601,17 +638,11 @@ fn bind_turn_summary_notice(
     commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
-fn on_turn_alert_dismiss(
-    _activate: On<Activate>,
-    mut session: ResMut<GameSession>,
-    prefs: Res<super::preferences::GamePreferences>,
-    assets: Res<RetailAssetsResource>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    let stop = session
-        .game
-        .dismiss_turn_alerts(prefs.turn_alerts_enabled(), assets.news_story_ids());
-    apply_turn_stop(stop, &mut next_state);
+fn on_turn_alert_dismiss(_activate: On<Activate>, mut queue: ResMut<TurnAlertQueue>) {
+    queue
+        .0
+        .pop_front()
+        .expect("turn-alert dismissal requires a pending alert");
 }
 
 #[cfg(test)]

@@ -114,6 +114,12 @@ impl GameState {
 
         let resource = commodity.resource();
         let current = self.player_trade_order(nation, commodity);
+        if order != PlayerTradeOrder::None
+            && matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel)
+            && !self.technology.advanced_production_unlocked()
+        {
+            return current;
+        }
         let value = match order {
             PlayerTradeOrder::None => 0,
             PlayerTradeOrder::Buy => {
@@ -154,6 +160,11 @@ impl GameState {
             "player trade order requires a diplomacy-eligible major nation"
         );
 
+        if matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel)
+            && !self.technology.advanced_production_unlocked()
+        {
+            return self.player_trade_order(nation, commodity);
+        }
         let PlayerTradeOrder::Sell(quantity) = self.player_trade_order(nation, commodity) else {
             return self.player_trade_order(nation, commodity);
         };
@@ -434,13 +445,15 @@ impl GameState {
         self.recall_trade_bids(nation);
     }
 
-    /// Retail `TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`.
-    /// The AutoGreatPower override (`SetTradeBids` / subsidy) is not ported.
-    pub(crate) fn reset_diplomacy_need_slots_7012_if_mode_gate_matches(
-        &mut self,
-        nation: MajorNationId,
-    ) {
-        if self.is_auto(nation) || self.turn.difficulty != Difficulty::Introductory {
+    /// Retail `TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches`
+    /// and the `TAutoGreatPower` override.
+    pub fn reset_diplomacy_need_slots_7012_if_mode_gate_matches(&mut self, nation: MajorNationId) {
+        if self.is_auto(nation) {
+            self.set_ai_trade_bids(nation);
+            self.do_usual_subsidy_rule(nation);
+            return;
+        }
+        if self.turn.difficulty != Difficulty::Introductory {
             return;
         }
         for resource in [
@@ -678,15 +691,13 @@ mod tests {
                 scenario_map: None,
                 economic_turn: 1,
                 diplomacy_year_term_raw: 1914,
+                selected_asset_set: 0,
                 phase: crate::PhaseCode::STRATEGIC_MAP,
                 turn_flow_status_flags: 0,
-                quarter_gate_by_decade: DecadeTable::from_array([
-                    false, true, true, true, true, true, true, true, true, true,
-                ]),
+                phase_state_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                 difficulty: Difficulty::Easy,
                 active_nation: NationId::new(6),
                 last_turn_alert_tick: 0,
-                turn_alert_mask: 0,
                 turn_cooldown_defer_counter: 0,
             },
             unit_ids: crate::UnitIdAllocator::default(),
@@ -862,6 +873,33 @@ mod tests {
         assert_eq!(
             game.set_player_trade_order(nation, TradeCommodity::Iron, PlayerTradeOrder::Buy),
             PlayerTradeOrder::Buy
+        );
+    }
+
+    #[test]
+    fn player_trade_orders_reject_locked_advanced_production_rows() {
+        let nation = MajorNationId::new(6);
+        let mut game = state();
+        game.nations.city_mut(nation).stockpile[ResourceKind::Fuel] = 4;
+        game.nations.majors[&nation].economy.capacities.trade_offer = 4;
+
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Oil, PlayerTradeOrder::Buy),
+            PlayerTradeOrder::None
+        );
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Fuel, PlayerTradeOrder::Sell(4)),
+            PlayerTradeOrder::None
+        );
+
+        game.technology.global_unlocks_by_technology[Technology::OilDrilling] = true;
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Oil, PlayerTradeOrder::Buy),
+            PlayerTradeOrder::Buy
+        );
+        assert_eq!(
+            game.set_player_trade_order(nation, TradeCommodity::Fuel, PlayerTradeOrder::Sell(4)),
+            PlayerTradeOrder::Sell(4)
         );
     }
 

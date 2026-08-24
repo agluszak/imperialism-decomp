@@ -23,6 +23,25 @@ const COMMODITY_ALERT_ITEMS: [ManufacturedItem; 5] = [
     ManufacturedItem::Steel,
     ManufacturedItem::Fuel,
 ];
+const ALERT_LAND_CAPITOL: u8 = 1;
+const ALERT_NAVY_CAPITOL: u8 = 2;
+const ALERT_TREASURY: u8 = 4;
+const ALERT_COMMODITY: u8 = 8;
+const ALERT_TRANSPORT: u8 = 16;
+const ALERT_STARVATION: u8 = 32;
+
+/// One retail turn-alert modal, in the order posted by
+/// `ShowTurnAlertsForActiveNation`.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TurnAlert {
+    LandCapitolThreatened,
+    NavalCapitolThreatened,
+    Treasury { prompt_code: i16 },
+    CommodityShortage,
+    TransportShortage,
+    Starvation,
+}
 
 /// Outcome of turn-machine case `0x19`.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -208,7 +227,7 @@ impl GameState {
         let tick = self.turn.economic_turn;
         let decade = Decade::for_economic_turn(tick);
         if tick % 40 != 0
-            || !matches!(decade, Some(decade) if self.turn.quarter_gate_by_decade[decade])
+            || !matches!(decade, Some(decade) if self.turn.phase_state_by_decade[decade as usize] != 0)
         {
             QuarterGateResult::Continue
         } else {
@@ -237,29 +256,22 @@ impl GameState {
     }
 
     /// Retail `ShowTurnAlertsForActiveNation`.
-    pub fn show_turn_alerts(&mut self, turn_alerts_enabled: bool) -> bool {
+    pub fn show_turn_alerts(&mut self, turn_alerts_enabled: bool) -> Vec<TurnAlert> {
         if !turn_alerts_enabled {
-            return false;
+            return Vec::new();
         }
         if self.turn.turn_cooldown_defer_counter >= 1 {
-            return false;
+            return Vec::new();
         }
         self.turn.turn_cooldown_defer_counter = 0;
         let tick = self.turn.economic_turn;
         if tick == 1 || self.turn.last_turn_alert_tick == tick {
-            return false;
+            return Vec::new();
         }
         let Some(nation) = MajorNationId::from_nation(self.turn.active_nation) else {
             self.turn.last_turn_alert_tick = tick;
-            return false;
+            return Vec::new();
         };
-
-        const ALERT_LAND_CAPITOL: u8 = 1;
-        const ALERT_NAVY_CAPITOL: u8 = 2;
-        const ALERT_TREASURY: u8 = 4;
-        const ALERT_COMMODITY: u8 = 8;
-        const ALERT_TRANSPORT: u8 = 16;
-        const ALERT_STARVATION: u8 = 32;
 
         let mut mask = 0_u8;
         if self.land_capitol_threatened(nation) {
@@ -295,9 +307,29 @@ impl GameState {
             }
         }
 
-        self.turn.turn_alert_mask = mask;
         self.turn.last_turn_alert_tick = tick;
-        mask != 0
+        let mut alerts = Vec::new();
+        if mask & ALERT_LAND_CAPITOL != 0 {
+            alerts.push(TurnAlert::LandCapitolThreatened);
+        }
+        if mask & ALERT_NAVY_CAPITOL != 0 {
+            alerts.push(TurnAlert::NavalCapitolThreatened);
+        }
+        if mask & ALERT_TREASURY != 0 {
+            alerts.push(TurnAlert::Treasury {
+                prompt_code: self.treasury_status_prompt_code(nation),
+            });
+        }
+        if mask & ALERT_COMMODITY != 0 {
+            alerts.push(TurnAlert::CommodityShortage);
+        }
+        if mask & ALERT_TRANSPORT != 0 {
+            alerts.push(TurnAlert::TransportShortage);
+        }
+        if mask & ALERT_STARVATION != 0 {
+            alerts.push(TurnAlert::Starvation);
+        }
+        alerts
     }
 
     fn treasury_status_prompt_code(&self, nation: MajorNationId) -> i16 {
@@ -457,7 +489,7 @@ mod tests {
     fn first_tick_skips_turn_alerts() {
         let mut state = game_state();
         state.turn.economic_turn = 1;
-        assert!(!state.show_turn_alerts(true));
+        assert!(state.show_turn_alerts(true).is_empty());
         assert_eq!(state.turn.last_turn_alert_tick, 0);
     }
 
@@ -465,10 +497,17 @@ mod tests {
     fn turn_three_treasury_prompt_marks_alerts_shown() {
         let mut state = game_state();
         state.turn.economic_turn = 3;
+        state.turn.turn_flow_status_flags = 0x1010;
         state.diplomacy.last_diplomatic_effort_turn = 0;
-        assert!(state.show_turn_alerts(true));
+        assert_eq!(
+            state.show_turn_alerts(true),
+            vec![
+                TurnAlert::Treasury { prompt_code: 0x25 },
+                TurnAlert::Starvation,
+            ]
+        );
         assert_eq!(state.turn.last_turn_alert_tick, 3);
-        assert!(!state.show_turn_alerts(true));
+        assert!(state.show_turn_alerts(true).is_empty());
     }
 
     #[test]
@@ -476,11 +515,11 @@ mod tests {
         let mut state = game_state();
         state.turn.economic_turn = 3;
         state.diplomacy.last_diplomatic_effort_turn = 0;
-        assert!(!state.show_turn_alerts(false));
+        assert!(state.show_turn_alerts(false).is_empty());
         assert_eq!(state.turn.last_turn_alert_tick, 0);
 
         state.turn.turn_cooldown_defer_counter = 2;
-        assert!(!state.show_turn_alerts(true));
+        assert!(state.show_turn_alerts(true).is_empty());
         assert_eq!(state.turn.turn_cooldown_defer_counter, 2);
         assert_eq!(state.turn.last_turn_alert_tick, 0);
     }
@@ -519,10 +558,10 @@ mod tests {
         assert_eq!(state.turn.phase, PhaseCode::TOP_TEN_SCORES);
 
         state.turn.economic_turn = 40;
-        state.turn.quarter_gate_by_decade[Decade::Second] = true;
+        state.turn.phase_state_by_decade[Decade::Second as usize] = 1;
         assert_eq!(state.quarter_gate(), QuarterGateResult::DecadeCinematic);
 
-        state.turn.quarter_gate_by_decade[Decade::Second] = false;
+        state.turn.phase_state_by_decade[Decade::Second as usize] = 0;
         assert_eq!(state.quarter_gate(), QuarterGateResult::Continue);
     }
 

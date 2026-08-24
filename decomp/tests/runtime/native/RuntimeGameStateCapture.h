@@ -17,6 +17,9 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state);
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state);
 // Snapshot the live game into a named capture (for example "before" / "after").
 bool CaptureGameState(RuntimeRun& run, const char* name);
+// Immediate random-start snapshot: fresh TMission::flag10 and TTown::hasAdjacentCity bytes have
+// not acquired semantic values yet, so publish their Rust defaults without reading heap residue.
+bool CaptureFreshRandomGameState(RuntimeRun& run, const char* name);
 // Save-backed before/after transport: writes save/rt_native_<name>.imp and publishes
 // {save, ephemeral} where ephemeral holds non-persisted GameState fields.
 bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name);
