@@ -30,6 +30,7 @@ pub struct RetailPictureSwap {
 pub struct RetailPressedOverlay;
 
 pub fn retail_view(name: &'static str) -> impl Scene {
+    // TView clips each child's paint rectangle to its parent content bounds.
     bsn! {
         Node {
             position_type: PositionType::Absolute,
@@ -37,6 +38,7 @@ pub fn retail_view(name: &'static str) -> impl Scene {
             top: px(0),
             width: px(640),
             height: px(480),
+            overflow: Overflow::clip(),
         }
         Name(name)
         Pickable
@@ -51,6 +53,7 @@ pub fn retail_node(tag: FourCc, x: i32, y: i32, width: i32, height: i32) -> impl
             top: px(y),
             width: px(width),
             height: px(height),
+            overflow: Overflow::clip(),
         }
         template(move |_context| Ok(RetailTag(tag)))
     }

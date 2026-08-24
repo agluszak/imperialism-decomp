@@ -80,7 +80,7 @@ fn bind_newspaper_chrome(
 ) {
     let (font, _, line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 0,
+            font_family: 2,
             face_flags: 0,
             point_size: 12,
             alignment: 0,
@@ -187,7 +187,7 @@ fn fill_newspaper_stories(
     let main = tree.find(root, fourcc!("main"));
     let (feature_font, feature_layout, feature_line, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 0,
+            font_family: 2,
             face_flags: 0,
             point_size: 14,
             alignment: 2,
@@ -195,15 +195,15 @@ fn fill_newspaper_stories(
         .expect("newspaper feature headline style");
     let (event_font, event_layout, event_line, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
+            font_family: 2,
+            face_flags: 1,
             point_size: 14,
             alignment: 2,
         })
         .expect("newspaper event headline style");
     let (body_font, body_layout, body_line, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 0,
+            font_family: 2,
             face_flags: 0,
             point_size: 12,
             alignment: 2,

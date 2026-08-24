@@ -689,7 +689,15 @@ fn news_tex_slice(
             path: path.to_owned(),
             row,
         })?;
-    Ok(bytes.iter().map(|&byte| char::from(byte)).collect())
+    // NEWS.TEX records are C strings: retail copies the whole recorded span,
+    // then constructs a CString from it.  The length therefore includes the
+    // terminating NUL, which is not text to render.
+    Ok(bytes
+        .strip_suffix(&[0])
+        .unwrap_or(bytes)
+        .iter()
+        .map(|&byte| char::from(byte))
+        .collect())
 }
 
 fn read_font(root: &Path, relative: &str) -> Result<Vec<u8>, RetailAssetError> {
@@ -774,6 +782,15 @@ mod tests {
     const RESOURCE_OFFSET: usize = 0x200;
     const RESOURCE_RVA: u32 = 0x1000;
     const RESOURCE_SIZE: usize = 0x10000;
+
+    #[test]
+    fn news_text_discards_the_retail_c_string_terminator() {
+        let path = Path::new("news.tex");
+        assert_eq!(
+            news_tex_slice(path, 0, b"Headline\0", [0, 0, 0, 0, 0, 0, 0, 9]).unwrap(),
+            "Headline"
+        );
+    }
 
     #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
     enum TestName {
