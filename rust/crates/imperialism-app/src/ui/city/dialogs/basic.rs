@@ -140,9 +140,15 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     let (font, layout, line_height, _) = assets
         .text_style(AMOUNT_BAR_COUNTER_STYLE)
         .expect("retail amount-bar counter style");
-    commands
-        .entity(counter.quantity)
-        .insert((font, layout, line_height));
+    commands.entity(counter.quantity).insert((
+        font,
+        layout,
+        line_height,
+        RailBarCounter {
+            order: binding.order,
+        },
+    ));
+    bind_rail_amount_bar(commands, assets, counter.row, tree, binding.order, step);
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(

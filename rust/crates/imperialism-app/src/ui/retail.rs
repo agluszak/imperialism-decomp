@@ -296,8 +296,12 @@ pub fn apply_index_transparency(image: &mut Image, indexed: &IndexedPicture, ind
 }
 
 impl RetailUiAssets<'_> {
+    pub fn assets(&self) -> &RetailAssets {
+        self.retail_assets.assets()
+    }
+
     pub fn default_dib_palette(&self) -> &DibPalette {
-        self.retail_assets.assets().default_dib_palette()
+        self.assets().default_dib_palette()
     }
 
     pub fn add_image(&mut self, image: Image) -> Handle<Image> {

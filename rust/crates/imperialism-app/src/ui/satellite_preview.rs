@@ -33,13 +33,6 @@ impl SatellitePreview {
         Self::compose_with_fill(owner_at, nation_owner_palette)
     }
 
-    pub(crate) fn compose_diplomacy_approximation(
-        owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
-        fill: impl Fn(NationId) -> u8,
-    ) -> Self {
-        Self::compose_with_fill(owner_at, fill)
-    }
-
     fn compose_with_fill(
         owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
         fill: impl Fn(NationId) -> u8,
@@ -190,7 +183,7 @@ fn preview_palette(owner: PreviewOwner, fill: &impl Fn(NationId) -> u8) -> u8 {
     }
 }
 
-fn nation_owner_palette(nation: NationId) -> u8 {
+pub(crate) fn nation_owner_palette(nation: NationId) -> u8 {
     MajorNationId::from_nation(nation)
         .map(major_nation_palette)
         .unwrap_or_else(|| view_mgr_color(0x0b))
