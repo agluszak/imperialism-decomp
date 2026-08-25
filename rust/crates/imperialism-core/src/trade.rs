@@ -771,6 +771,7 @@ mod tests {
             pending: crate::PendingWorkState::default(),
             battle_reports: Vec::new(),
             stop: None,
+            pending_town_namings: Vec::new(),
         }
     }
 

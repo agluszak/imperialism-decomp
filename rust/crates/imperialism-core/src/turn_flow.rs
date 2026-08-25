@@ -166,13 +166,10 @@ impl PhaseCode {
 /// carrying everything needed to resume.
 ///
 /// [`GameState`] stores the active stop while blocked and every driver entry
-/// point returns it. A stop is stored exactly when answering it needs core-side
-/// resume state beyond [`PhaseCode`] (payload variants, plus cinematic/elimination
-/// outcomes whose follow-up the phase alone cannot identify). Ephemeral results —
-/// player orders, deal book, newspaper, alerts, high scores, session end — are
-/// pure return values, matching retail, which retains nothing extra for them.
-/// Stored stops join semantic `GameState` serialization; the `.imp` writer omits
-/// them because retail cannot save at these boundaries.
+/// point returns it; resume operations consume or replace the stored stop. The
+/// payload variants are the authoritative resume state of an interruptible
+/// phase. Stored stops join semantic `GameState` serialization; the `.imp`
+/// writer omits them because retail cannot save at these boundaries.
 #[allow(clippy::large_enum_variant)]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub enum TurnStop {
@@ -260,7 +257,7 @@ impl GameState {
         self.stop = None;
         let alerts = self.show_turn_alerts(turn_alerts_enabled);
         if !alerts.is_empty() {
-            return TurnStop::TurnAlerts(alerts);
+            return self.halt(TurnStop::TurnAlerts(alerts));
         }
         self.turn.phase = PhaseCode::DIPLOMACY;
         self.advance_turn(story_ids)
@@ -304,6 +301,11 @@ impl GameState {
     /// Closes the Deal Book opened by the turn driver and continues the turn.
     pub fn close_turn_deal_book(&mut self, story_ids: &[i32]) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::QUARTER_GATE);
+        assert!(
+            matches!(self.stop, Some(TurnStop::DealBook)),
+            "deal-book close requires an active deal-book stop"
+        );
+        self.stop = None;
         self.advance_turn(story_ids)
     }
 
@@ -324,6 +326,10 @@ impl GameState {
     /// music selection consumes the process-global CRT stream when music is enabled.
     pub fn close_newspaper(&mut self, music_enabled: bool) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::RETURN_TO_MAP);
+        assert!(
+            matches!(self.stop, Some(TurnStop::Newspaper)),
+            "newspaper close requires an active newspaper stop"
+        );
         self.return_to_map();
         if let Some((unit, _)) = self.first_idle_civilian(self.turn.active_nation) {
             self.activate_civilian_selection(unit);
@@ -331,7 +337,7 @@ impl GameState {
         if music_enabled && self.turn.turn_cooldown_defer_counter < 1 {
             self.rng.next_crt_rand();
         }
-        TurnStop::PlayerOrders
+        self.halt(TurnStop::PlayerOrders)
     }
 
     /// Movie clip for `kTurnEventOpeningCinematic`. Switches on the entered mode, not
@@ -402,14 +408,12 @@ impl GameState {
             matches!(self.stop, Some(TurnStop::GameScore)),
             "game-score resume requires a game-score stop"
         );
-        self.stop = None;
-        TurnStop::HighScores
+        self.halt(TurnStop::HighScores)
     }
 
     /// High-score table dismissed. Retail reinitializes to the main menu.
     pub fn close_high_scores(&mut self) -> TurnStop {
-        self.stop = None;
-        TurnStop::SessionEnded
+        self.halt(TurnStop::SessionEnded)
     }
 
     pub fn current_diplomacy_offer(&self) -> Option<DiplomacyOfferPrompt> {
@@ -450,7 +454,7 @@ impl GameState {
                 return self.halt(TurnStop::TownNaming { nation, tile });
             }
             match self.turn.phase() {
-                PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
+                PhaseCode::STRATEGIC_MAP => return self.halt(TurnStop::PlayerOrders),
                 PhaseCode::CAPITAL_SELECTION => {
                     for nation in MajorNationId::all() {
                         self.finalize_home_city_setup(nation);
@@ -501,7 +505,7 @@ impl GameState {
                 PhaseCode::DEAL_BOOK => {
                     self.turn.phase = PhaseCode::QUARTER_GATE;
                     if self.event_eligible(self.turn.active_nation) {
-                        return TurnStop::DealBook;
+                        return self.halt(TurnStop::DealBook);
                     }
                 }
                 PhaseCode::DIPLOMACY_OFFER => {
@@ -548,7 +552,7 @@ impl GameState {
                     self.turn.phase = PhaseCode::RETURN_TO_MAP;
                     self.construct_newspaper_pages(story_ids);
                     self.mark_all_pending_status_flags_handled();
-                    return TurnStop::Newspaper;
+                    return self.halt(TurnStop::Newspaper);
                 }
                 PhaseCode::RETURN_TO_MAP => {
                     self.return_to_map();

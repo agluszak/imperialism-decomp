@@ -1,6 +1,7 @@
 #include "NativeCases.h"
 #include "JsonArray.h"
 #include "JsonObject.h"
+#include "RuntimeRun.h"
 
 #include "game/city/TCity.h"
 #include "game/civilian_domain_types.h"
@@ -372,7 +373,19 @@ RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition) {
     return started;
   }
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
-  return transition.Finish(json_value_init_string("deal_book"));
+  RuntimeActionResult finished =
+      transition.Finish(json_value_init_string("deal_book"));
+  if (!finished.Succeeded()) {
+    return finished;
+  }
+
+  JsonObject continuation;
+  continuation.Set("DealBook", json_value_init_null());
+  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
+                               continuation.Release()) != JSONSuccess) {
+    return RuntimeActionResult::Failure("deal-book stop capture failed");
+  }
+  return finished;
 }
 
 RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition) {

@@ -2,6 +2,7 @@
 #include "JsonArray.h"
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
+#include "RuntimeRun.h"
 
 #include "game/assets/TAssetMgr.h"
 #include "game/globals/assets_globals.h"
@@ -137,7 +138,19 @@ RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition) {
     return started;
   }
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
-  return transition.Finish(json_value_init_string("newspaper"));
+  RuntimeActionResult finished =
+      transition.Finish(json_value_init_string("newspaper"));
+  if (!finished.Succeeded()) {
+    return finished;
+  }
+
+  JsonObject continuation;
+  continuation.Set("Newspaper", json_value_init_null());
+  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
+                               continuation.Release()) != JSONSuccess) {
+    return RuntimeActionResult::Failure("newspaper stop capture failed");
+  }
+  return finished;
 }
 
 RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
@@ -200,7 +213,18 @@ RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
   result.Set("stops", stops.Release());
   result.Set("rng_states", rngStates.Release());
   result.Set("economic_turn", g_pSimMgr->economicTurn);
-  return transition.Finish(result.Release());
+  RuntimeActionResult finished = transition.Finish(result.Release());
+  if (!finished.Succeeded()) {
+    return finished;
+  }
+
+  JsonObject continuation;
+  continuation.Set("PlayerOrders", json_value_init_null());
+  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
+                               continuation.Release()) != JSONSuccess) {
+    return RuntimeActionResult::Failure("player-orders stop capture failed");
+  }
+  return finished;
 }
 
 RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
@@ -267,5 +291,16 @@ RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
   result.Set("stops", stops.Release());
   result.Set("rng_states", rngStates.Release());
   result.Set("economic_turns", economicTurns.Release());
-  return transition.Finish(result.Release());
+  RuntimeActionResult finished = transition.Finish(result.Release());
+  if (!finished.Succeeded()) {
+    return finished;
+  }
+
+  JsonObject continuation;
+  continuation.Set("PlayerOrders", json_value_init_null());
+  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
+                               continuation.Release()) != JSONSuccess) {
+    return RuntimeActionResult::Failure("player-orders stop capture failed");
+  }
+  return finished;
 }

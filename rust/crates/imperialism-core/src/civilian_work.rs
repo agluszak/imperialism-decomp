@@ -1357,6 +1357,9 @@ impl GameState {
             self.turn.economic_turn as i16,
         );
         self.nations.major_mut(nation).towns.insert(tile, town);
+        if self.nations.major(nation).auto.is_none() {
+            self.pending_town_namings.push((nation, tile));
+        }
     }
 
     fn finish_new_town(&mut self, tile: TileId, nation: MajorNationId) {
@@ -1426,19 +1429,10 @@ impl GameState {
         yields
     }
 
-    /// A completed human depot/port whose name is still empty awaits the retail
-    /// `TNewTownView` naming interaction. AI-run nations name nothing here.
+    /// The next completed human depot/port awaiting the retail `TNewTownView`
+    /// naming interaction. AI-run nations enqueue nothing here.
     pub fn pending_town_naming(&self) -> Option<(MajorNationId, TileId)> {
-        MajorNationId::all().find_map(|nation| {
-            if self.nations.major(nation).auto.is_some() {
-                return None;
-            }
-            self.nations
-                .major(nation)
-                .towns
-                .iter()
-                .find_map(|(&tile, town)| town.name.is_empty().then_some((nation, tile)))
-        })
+        self.pending_town_namings.first().copied()
     }
 
     /// Retail `TNewTownView::StuffValues` computes raw resources when the naming
@@ -1458,8 +1452,11 @@ impl GameState {
         (self.rng.next_crt_rand() % 8 + 1) as u8
     }
 
+    /// Names the town of the active naming stop and consumes it. The stored
+    /// `{ nation, tile }` is authoritative; an empty name stays empty instead of
+    /// re-triggering the dialog.
     pub fn name_pending_town(&mut self, name: String) -> bool {
-        let Some((nation, tile)) = self.pending_town_naming() else {
+        let Some(crate::turn_flow::TurnStop::TownNaming { nation, tile }) = self.stop.take() else {
             return false;
         };
         let town = self
@@ -1467,14 +1464,19 @@ impl GameState {
             .major_mut(nation)
             .towns
             .get_mut(&tile)
-            .expect("pending town remains present");
+            .expect("naming stop retains its pending town");
         town.name = name;
-        if matches!(
-            self.stop,
-            Some(crate::turn_flow::TurnStop::TownNaming { .. })
-        ) {
-            self.stop = None;
-        }
+        let queued = self
+            .pending_town_namings
+            .first()
+            .copied()
+            .expect("naming stop retains its queued record");
+        assert_eq!(
+            queued,
+            (nation, tile),
+            "naming stop and naming queue disagree"
+        );
+        self.pending_town_namings.remove(0);
         true
     }
 
@@ -2351,6 +2353,11 @@ mod tests {
             state.pending_town_naming(),
             Some((MajorNationId::new(0), depot_tile))
         );
+        assert!(matches!(
+            state.advance_turn(&[]),
+            TurnStop::TownNaming { nation, tile }
+                if nation == MajorNationId::new(0) && tile == depot_tile
+        ));
         assert!(state.name_pending_town("Depot Name".to_owned()));
         assert_eq!(
             state.nations.major(MajorNationId::new(0)).towns[&depot_tile].name,
@@ -2362,7 +2369,8 @@ mod tests {
         );
         assert!(matches!(
             state.advance_turn(&[]),
-            TurnStop::TownNaming { .. }
+            TurnStop::TownNaming { nation, tile }
+                if nation == MajorNationId::new(0) && tile == port_tile
         ));
         assert!(
             matches!(

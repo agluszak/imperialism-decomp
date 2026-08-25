@@ -1,6 +1,7 @@
 #include "NativeCases.h"
 #include "JsonArray.h"
 #include "JsonObject.h"
+#include "RuntimeRun.h"
 #include "RuntimeGameStateCapture.h"
 #include "parson.h"
 
@@ -890,6 +891,22 @@ RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
   return transition.Finish(result);
 }
 
+// The Rust driver stores the stop it halted at; cases that end back on the
+// strategic map capture the matching player-orders interaction.
+RuntimeActionResult CapturePlayerOrdersStop(NativeTransition& transition,
+                                            RuntimeActionResult finished) {
+  if (!finished.Succeeded()) {
+    return finished;
+  }
+  JsonObject continuation;
+  continuation.Set("PlayerOrders", json_value_init_null());
+  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
+                               continuation.Release()) != JSONSuccess) {
+    return RuntimeActionResult::Failure("player-orders stop capture failed");
+  }
+  return finished;
+}
+
 RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
   TMilitaryUnit* unit = 0;
   short dest = -1;
@@ -931,7 +948,7 @@ RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
     battle->NextMove();
   }
   battle->NextMove();
-  return transition.Finish();
+  return CapturePlayerOrdersStop(transition, transition.Finish());
 }
 
 RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition) {
@@ -978,7 +995,7 @@ RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition) {
   if (!AutoArmyBattleToCommit(battle)) {
     return RuntimeActionResult::Failure("tactical auto did not terminate after Done");
   }
-  return transition.Finish(snapshots.Release());
+  return CapturePlayerOrdersStop(transition, transition.Finish(snapshots.Release()));
 }
 
 RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
@@ -1071,7 +1088,7 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
   if (!AutoArmyBattleToCommit(battle)) {
     return RuntimeActionResult::Failure("tactical auto did not terminate after Move");
   }
-  return transition.Finish(result.Release());
+  return CapturePlayerOrdersStop(transition, transition.Finish(result.Release()));
 }
 
 RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition, int hoverState,
@@ -1183,7 +1200,7 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
   if (!AutoArmyBattleToCommit(battle)) {
     return RuntimeActionResult::Failure("tactical auto did not terminate after Attack");
   }
-  return transition.Finish(result.Release());
+  return CapturePlayerOrdersStop(transition, transition.Finish(result.Release()));
 }
 
 RuntimeActionResult RunInteractiveArmyBattleMelee(NativeTransition& transition) {
@@ -1233,7 +1250,7 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
     JsonFreeValue(initial);
     return RuntimeActionResult::Failure("retreat did not terminate");
   }
-  return transition.Finish(initial);
+  return CapturePlayerOrdersStop(transition, transition.Finish(initial));
 }
 
 // FormStacks once, stop at the first tactical battle, then continue from the

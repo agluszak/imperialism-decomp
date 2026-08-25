@@ -187,6 +187,7 @@ pub(crate) fn game_state() -> GameState {
         pending: crate::PendingWorkState::default(),
         battle_reports: Vec::new(),
         stop: None,
+        pending_town_namings: Vec::new(),
     };
     // Town markers must sit on owned land. The turn loop reaches city/transport
     // on this fixture, and that phase rebuilds yields from those markers.

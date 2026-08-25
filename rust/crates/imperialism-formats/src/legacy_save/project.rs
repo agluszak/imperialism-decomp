@@ -1098,6 +1098,7 @@ impl LegacySaveV62 {
             pending,
             battle_reports: battle_reports(&self.army_reports),
             stop: None,
+            pending_town_namings: Vec::new(),
         }
     }
 
