@@ -6,7 +6,7 @@ use super::map_interaction::cycle_map_interaction_selection;
 use super::map_interaction::{MapInteractionMode, StrategicInteraction, StrategicViewport};
 use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
-use crate::ui::GameSession;
+use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -145,6 +145,7 @@ fn on_civilian_command(
     commands_query: Query<&CivilianCommand>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     keys: Res<ButtonInput<KeyCode>>,
 ) {
@@ -173,7 +174,7 @@ fn on_civilian_command(
     if let Some(mode) = mode
         && session.game.set_civilian_idle_order(unit, mode)
     {
-        cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+        cycle_map_interaction_selection(&mut session, &mut origin, &mut interaction, &mut viewport);
     }
 }
 

@@ -1,7 +1,7 @@
-use super::GameSession;
 use super::RetailUiAssets;
 use super::retail::RetailTree;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
+use super::session::{GameSession, MapViewOrigin};
 use crate::RetailAssetsResource;
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -103,9 +103,10 @@ pub(crate) fn bind_strategic_base_terrain(
     tree: &RetailTree,
     assets: &mut RetailUiAssets,
     session: &GameSession,
+    origin: TileId,
 ) -> Entity {
     let state = &session.game;
-    let view_origin = session.map_view_origin;
+    let view_origin = origin;
     let map = tree.find(root, MAP_TAG);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
@@ -211,6 +212,7 @@ impl StrategicBaseTerrainCanvas {
 
 pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(
@@ -221,18 +223,13 @@ pub(crate) fn sync_strategic_base_terrain(
 ) {
     for (mut canvas, image_node, interaction) in &mut maps {
         let selected_civilian = interaction.civilian;
-        let key = strategic_map_compose_key(
-            &session.game,
-            session.map_view_origin,
-            selected_civilian,
-            None,
-        );
+        let key = strategic_map_compose_key(&session.game, origin.0, selected_civilian, None);
         if canvas.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_map(
             &session.game,
-            session.map_view_origin,
+            origin.0,
             selected_civilian,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
@@ -247,6 +244,7 @@ pub(crate) fn sync_strategic_base_terrain(
 
 pub(crate) fn sync_strategic_selection(
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     maps: Query<(&StrategicInteraction, &RelativeCursorPosition)>,
@@ -256,20 +254,14 @@ pub(crate) fn sync_strategic_selection(
         let Ok((selected, cursor)) = maps.get(overlay.map) else {
             continue;
         };
-        let hovered =
-            strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor);
-        let key = strategic_map_compose_key(
-            &session.game,
-            session.map_view_origin,
-            selected.civilian,
-            hovered,
-        );
+        let hovered = strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor);
+        let key = strategic_map_compose_key(&session.game, origin.0, selected.civilian, hovered);
         if overlay.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_selection(
             &session.game,
-            session.map_view_origin,
+            origin.0,
             selected.civilian,
             hovered,
             retail_assets.assets().default_dib_palette(),

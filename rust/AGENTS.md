@@ -40,6 +40,10 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
   direct typed core operations and projects authoritative results.
 - Keep retail hierarchy, coordinates, tags, ordering, and presentation semantics when observable.
   Do not promote recovery-only offsets or symbolic node identifiers into runtime identity.
+- `GameSession` holds only `GameState`. Detailed-map camera origin, city-dialog positions, and
+  captured battle-report strings are separate resources (`MapViewOrigin`, `CityWindows`,
+  `BattleReportPresentation`) so scrolling or layout changes do not mark gameplay changed. Do not
+  split `GameState` itself into ECS components.
 
 Use `port-behavior` for the C++-to-Rust differential procedure and `ui-recovery` for the resource-to-
 Bevy generation procedure.

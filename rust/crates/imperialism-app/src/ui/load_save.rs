@@ -1,5 +1,4 @@
 use crate::RetailAssetsResource;
-use crate::ui::GameSession;
 use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
@@ -7,6 +6,10 @@ use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
+use crate::ui::{
+    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_loaded_game,
+    remove_game_session,
+};
 use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::input_focus::AutoFocus;
@@ -16,10 +19,11 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
-    FourCc, LegacyGameStateContext, LoadGameError, NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy,
-    PictureId, SAVE_LABEL_MAX_CHARS, SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot,
-    fourcc, list_save_slots, load_game_from_bytes, normalize_save_label, peek_save_header,
-    peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
+    BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
+    NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy, PictureId, SAVE_LABEL_MAX_CHARS,
+    SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, fourcc, list_save_slots,
+    load_game_from_bytes, normalize_save_label, peek_save_header, peek_save_preview_owners,
+    retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -220,6 +224,9 @@ pub(crate) fn save_current_game(
     directory: &Path,
     slot: SaveSlot,
     session: &GameSession,
+    origin: TileId,
+    city_windows: &CityWindowLayout,
+    captured_reports: &[BattleReportText],
     label: &str,
 ) -> Result<(), SaveFileError> {
     let label = normalize_save_label(label);
@@ -227,11 +234,11 @@ pub(crate) fn save_current_game(
         SaveSlot::Numbered(index) => i32::from(index),
         SaveSlot::Autosave => AUTOSAVE_SESSION_SLOT,
     };
-    let battle_report_text = battle_report_texts_for_save(session);
+    let battle_report_text = battle_report_texts_for_save(session, captured_reports);
     let bytes = write_game_state(
         &session.game,
-        session.map_view_origin,
-        &session.city_windows,
+        origin,
+        city_windows,
         &battle_report_text,
         &label,
         session_slot,
@@ -526,6 +533,9 @@ fn on_load_save_activate(
     save_dir: Option<Res<SaveDirectory>>,
     returning: Res<ReturnTo>,
     session: Option<Res<GameSession>>,
+    origin: Option<Res<MapViewOrigin>>,
+    city_windows: Option<Res<CityWindows>>,
+    battle_reports: Option<Res<BattleReportPresentation>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -562,6 +572,9 @@ fn on_load_save_activate(
                 presentation,
                 &save_dir.0,
                 session.as_deref(),
+                origin.as_deref(),
+                city_windows.as_deref(),
+                battle_reports.as_deref(),
                 returning.0,
                 &mut next_state,
             );
@@ -637,6 +650,9 @@ fn confirm_or_apply(
     presentation: Option<&LoadSavePresentation>,
     save_dir: &Path,
     session: Option<&GameSession>,
+    origin: Option<&MapViewOrigin>,
+    city_windows: Option<&CityWindows>,
+    battle_reports: Option<&BattleReportPresentation>,
     returning: AppState,
     next_state: &mut NextState<AppState>,
 ) {
@@ -678,7 +694,16 @@ fn confirm_or_apply(
                 typed
             };
             apply_save(
-                commands, save_dir, slot, session, &label, returning, next_state,
+                commands,
+                save_dir,
+                slot,
+                session,
+                origin,
+                city_windows,
+                battle_reports,
+                &label,
+                returning,
+                next_state,
             );
         }
     }
@@ -705,7 +730,7 @@ fn apply_load(
     match load {
         Ok(loaded) => {
             let destination = loaded_game_destination(&loaded.game);
-            commands.insert_resource(GameSession::from_loaded(loaded));
+            insert_loaded_game(commands, loaded);
             next_state.set(destination);
         }
         Err(error) => spawn_notice(
@@ -725,11 +750,28 @@ fn apply_save(
     save_dir: &Path,
     slot: SaveSlot,
     session: &GameSession,
+    origin: Option<&MapViewOrigin>,
+    city_windows: Option<&CityWindows>,
+    battle_reports: Option<&BattleReportPresentation>,
     label: &str,
     returning: AppState,
     next_state: &mut NextState<AppState>,
 ) {
-    match save_current_game(save_dir, slot, session, label) {
+    let origin = origin.expect("saving a game requires MapViewOrigin").0;
+    let city_windows = &city_windows.expect("saving a game requires CityWindows").0;
+    let captured = battle_reports
+        .expect("saving a game requires BattleReportPresentation")
+        .0
+        .as_slice();
+    match save_current_game(
+        save_dir,
+        slot,
+        session,
+        origin,
+        city_windows,
+        captured,
+        label,
+    ) {
         Ok(()) => next_state.set(returning),
         Err(error) => spawn_notice(commands, LoadSaveNotice::Error(error.to_string())),
     }
@@ -975,7 +1017,7 @@ fn on_flag_menu_prompt_activate(
     }
     match prompt.kind {
         FlagMenuPending::NewGame => {
-            commands.remove_resource::<GameSession>();
+            remove_game_session(&mut commands);
             next_state.set(AppState::MainMenu);
         }
         FlagMenuPending::Quit => {
@@ -987,12 +1029,26 @@ fn on_flag_menu_prompt_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
     use imperialism_formats::{DibPalette, load_game_from_path};
 
     fn fixture_state() -> GameState {
         beginning_of_game()
+    }
+
+    fn save_fixture(directory: &Path, slot: SaveSlot, session: &GameSession, label: &str) {
+        save_current_game(
+            directory,
+            slot,
+            session,
+            TileId::new(1),
+            &CityWindowLayout::default(),
+            &[],
+            label,
+        )
+        .unwrap();
     }
 
     fn test_app(initial: AppState) -> App {
@@ -1099,7 +1155,7 @@ mod tests {
     #[test]
     fn accepting_new_game_drops_the_session_and_returns_to_the_main_menu() {
         let mut app = test_app(AppState::StrategicMap);
-        app.insert_resource(GameSession::new(fixture_state()));
+        insert_game_session_world(app.world_mut(), fixture_state());
         app.add_systems(Startup, spawn_test_flag_menu);
         app.update();
         let (accept, _) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::NewGame);
@@ -1169,7 +1225,7 @@ mod tests {
         let original = fixture_state();
         let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(1), &session, "England").unwrap();
+        save_fixture(dir.path(), SaveSlot::Numbered(1), &session, "England");
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(1))).unwrap();
         let loaded =
             load_game_from_bytes(&bytes, runtime_context_for_load(Some(&original))).unwrap();
@@ -1185,8 +1241,8 @@ mod tests {
         let original = fixture_state();
         let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "First").unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "Second").unwrap();
+        save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "First");
+        save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "Second");
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
             runtime_context_for_load(Some(&original)),
@@ -1205,7 +1261,7 @@ mod tests {
         let original = fixture_state();
         let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "Preview").unwrap();
+        save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "Preview");
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
         let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
         for (index, owner) in owners.iter().enumerate() {
@@ -1237,7 +1293,7 @@ mod tests {
         let original = fixture_state();
         let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "England").unwrap();
+        save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "England");
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
             runtime_context_for_load(Some(&original)),
@@ -1251,7 +1307,7 @@ mod tests {
         let original = fixture_state();
         let session = GameSession::new(original.clone());
         let dir = tempfile::tempdir().unwrap();
-        save_current_game(dir.path(), SaveSlot::Numbered(0), &session, "England").unwrap();
+        save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "England");
         let loaded = load_game_from_path(
             retail_save_path(dir.path(), SaveSlot::Numbered(0)),
             runtime_context_for_load(None),

@@ -1,6 +1,6 @@
 //! `TMapUberPicture::SetMapInteractionMode` and selection cycling.
 
-use crate::ui::GameSession;
+use crate::ui::session::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use imperialism_core::*;
 use std::ops::{BitOr, BitOrAssign};
@@ -161,9 +161,9 @@ pub(crate) enum MapTransition {
     SetMode(MapInteractionMode),
 }
 
-pub(crate) fn detailed_center_tile(session: &GameSession) -> TileId {
+pub(crate) fn detailed_center_tile(session: &GameSession, origin: TileId) -> TileId {
     let geometry = session.game.map().geometry();
-    let (row, column) = geometry.row_column(session.map_view_origin);
+    let (row, column) = geometry.row_column(origin);
     geometry
         .tile(row + 4, (column + 4) % STRATEGIC_MAP_WIDTH)
         .expect("retail detailed-map center is inside the map")
@@ -172,6 +172,7 @@ pub(crate) fn detailed_center_tile(session: &GameSession) -> TileId {
 /// Applies the strategic map's semantic viewport operations in one place.
 pub(crate) fn apply_map_transition(
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
     transition: MapTransition,
@@ -182,25 +183,27 @@ pub(crate) fn apply_map_transition(
             MapProjection::Detailed => {
                 viewport
                     .ocean
-                    .center_on(detailed_center_tile(session), &geometry);
+                    .center_on(detailed_center_tile(session, origin.0), &geometry);
                 viewport.projection = MapProjection::Overview;
             }
             MapProjection::Overview => {
-                session.center_map_on(viewport.ocean.center_tile(&geometry));
+                origin.center_on(&session.game, viewport.ocean.center_tile(&geometry));
                 viewport.projection = MapProjection::Detailed;
             }
         },
         MapTransition::Center(tile) => match viewport.projection {
-            MapProjection::Detailed => session.center_map_on(tile),
+            MapProjection::Detailed => origin.center_on(&session.game, tile),
             MapProjection::Overview => viewport.ocean.center_on(tile, &geometry),
         },
-        MapTransition::SetUpperLeft(origin) => match viewport.projection {
-            MapProjection::Detailed => session.set_map_viewport_upper_left(origin.x, origin.y),
-            MapProjection::Overview => viewport.ocean.set_upper_left(origin, &geometry),
+        MapTransition::SetUpperLeft(upper_left) => match viewport.projection {
+            MapProjection::Detailed => {
+                origin.set_upper_left(&session.game, upper_left.x, upper_left.y)
+            }
+            MapProjection::Overview => viewport.ocean.set_upper_left(upper_left, &geometry),
         },
         MapTransition::Scroll(edges) => match viewport.projection {
             MapProjection::Detailed => {
-                session.scroll_map_viewport(edges.row_delta(), edges.column_delta());
+                origin.scroll(&session.game, edges.row_delta(), edges.column_delta());
             }
             MapProjection::Overview => viewport.ocean.nudge(edges, &geometry),
         },
@@ -217,7 +220,7 @@ pub(crate) fn apply_map_transition(
             if next == MapInteractionMode::Civilian
                 && viewport.projection == MapProjection::Overview
             {
-                session.center_map_on(viewport.ocean.center_tile(&geometry));
+                origin.center_on(&session.game, viewport.ocean.center_tile(&geometry));
                 viewport.projection = MapProjection::Detailed;
             }
         }
@@ -236,6 +239,7 @@ pub(crate) fn has_active_map_interaction_selection(interaction: &StrategicIntera
 /// `TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick` (0x00597a80).
 pub(crate) fn cycle_map_interaction_selection(
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
 ) {
@@ -267,6 +271,7 @@ pub(crate) fn cycle_map_interaction_selection(
                     let tile = unit.location().tile();
                     apply_map_transition(
                         session,
+                        origin,
                         interaction,
                         viewport,
                         MapTransition::SetMode(MapInteractionMode::Civilian),
@@ -276,6 +281,7 @@ pub(crate) fn cycle_map_interaction_selection(
                     if let Some(tile) = tile {
                         apply_map_transition(
                             session,
+                            origin,
                             interaction,
                             viewport,
                             MapTransition::Center(tile),
@@ -302,6 +308,7 @@ pub(crate) fn cycle_map_interaction_selection(
                 {
                     apply_map_transition(
                         session,
+                        origin,
                         interaction,
                         viewport,
                         MapTransition::SetMode(MapInteractionMode::Army),
@@ -311,6 +318,7 @@ pub(crate) fn cycle_map_interaction_selection(
                     if let Some(tile) = session.game.map().provinces[province].city_tile() {
                         apply_map_transition(
                             session,
+                            origin,
                             interaction,
                             viewport,
                             MapTransition::Center(tile),
@@ -330,7 +338,7 @@ pub(crate) fn cycle_map_interaction_selection(
                     .next_navy_order_zone(nation, interaction.navy.zone)
                 {
                     let force = session.game.demand_task_force_for_zone(zone, nation);
-                    activate_navy_selection(session, interaction, viewport, zone, force);
+                    activate_navy_selection(session, origin, interaction, viewport, zone, force);
                     return;
                 }
                 cursor = MapInteractionMode::Civilian;
@@ -350,7 +358,7 @@ pub(crate) fn cycle_map_interaction_selection(
         && let Some(zone) = session.game.next_navy_order_zone(nation, None)
     {
         let force = session.game.demand_task_force_for_zone(zone, nation);
-        activate_navy_selection(session, interaction, viewport, zone, force);
+        activate_navy_selection(session, origin, interaction, viewport, zone, force);
         return;
     }
 
@@ -360,6 +368,7 @@ pub(crate) fn cycle_map_interaction_selection(
             interaction.army = None;
             apply_map_transition(
                 session,
+                origin,
                 interaction,
                 viewport,
                 MapTransition::SetMode(MapInteractionMode::None),
@@ -370,6 +379,7 @@ pub(crate) fn cycle_map_interaction_selection(
             interaction.navy.force = None;
             apply_map_transition(
                 session,
+                origin,
                 interaction,
                 viewport,
                 MapTransition::SetMode(MapInteractionMode::None),
@@ -392,6 +402,7 @@ pub(crate) fn navy_zone_center_tile(state: &GameState, zone: OceanZoneId) -> Opt
 /// `TMapUberPicture::SetActiveMapOrderEntry` presentation: navy mode, zone/force, and center.
 pub(crate) fn activate_navy_selection(
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
     zone: OceanZoneId,
@@ -399,6 +410,7 @@ pub(crate) fn activate_navy_selection(
 ) {
     apply_map_transition(
         session,
+        origin,
         interaction,
         viewport,
         MapTransition::SetMode(MapInteractionMode::Navy),
@@ -406,7 +418,13 @@ pub(crate) fn activate_navy_selection(
     interaction.navy.zone = Some(zone);
     interaction.navy.force = force;
     if let Some(tile) = navy_zone_center_tile(&session.game, zone) {
-        apply_map_transition(session, interaction, viewport, MapTransition::Center(tile));
+        apply_map_transition(
+            session,
+            origin,
+            interaction,
+            viewport,
+            MapTransition::Center(tile),
+        );
     }
 }
 
@@ -422,13 +440,15 @@ mod tests {
     #[test]
     fn zoom_transfers_retail_dialog_centers_and_civilian_transition_only() {
         let mut session = session();
-        session.set_map_viewport_upper_left(10, 10);
+        let mut origin = MapViewOrigin(TileId::new(1));
+        origin.set_upper_left(&session.game, 10, 10);
         let mut interaction = StrategicInteraction::default();
         let mut viewport = StrategicViewport::default();
-        let detailed_center = detailed_center_tile(&session);
+        let detailed_center = detailed_center_tile(&session, origin.0);
 
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::ToggleZoom,
@@ -445,6 +465,7 @@ mod tests {
         let ocean_center = viewport.ocean.center_tile(&session.game.map().geometry());
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::ToggleZoom,
@@ -455,7 +476,7 @@ mod tests {
             .game
             .map()
             .geometry()
-            .row_column(detailed_center_tile(&session));
+            .row_column(detailed_center_tile(&session, origin.0));
         assert_eq!(detailed_column, ocean_column);
         assert_eq!(detailed_row, ocean_row + 1);
 
@@ -464,17 +485,25 @@ mod tests {
             MapTransition::ToggleZoom,
             MapTransition::SetMode(MapInteractionMode::Civilian),
         ] {
-            apply_map_transition(&mut session, &mut interaction, &mut viewport, transition);
+            apply_map_transition(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+                transition,
+            );
         }
         assert_eq!(viewport.projection, MapProjection::Detailed);
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::ToggleZoom,
         );
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::SetMode(MapInteractionMode::Civilian),
@@ -494,8 +523,9 @@ mod tests {
     #[test]
     fn activate_navy_selection_sets_mode_zone_force_and_centers() {
         let mut session = session();
-        session.set_map_viewport_upper_left(10, 10);
-        let origin_before = session.map_view_origin;
+        let mut origin = MapViewOrigin(TileId::new(1));
+        origin.set_upper_left(&session.game, 10, 10);
+        let origin_before = origin.0;
         let mut interaction = StrategicInteraction::default();
         let mut viewport = StrategicViewport::default();
         let zone = OceanZoneId::new(0);
@@ -503,6 +533,7 @@ mod tests {
 
         activate_navy_selection(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             zone,
@@ -514,9 +545,9 @@ mod tests {
         assert_eq!(interaction.navy.force, Some(force));
         let center = navy_zone_center_tile(&session.game, zone).expect("zone 0 has a center tile");
         assert_eq!(
-            session.map_view_origin,
+            origin.0,
             session.game.map().viewport_origin_centered_on(center)
         );
-        assert_ne!(session.map_view_origin, origin_before);
+        assert_ne!(origin.0, origin_before);
     }
 }

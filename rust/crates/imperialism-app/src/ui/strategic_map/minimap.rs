@@ -1,10 +1,10 @@
 //! In-game toolbar mini-map: `TMiniMapView::Draw` / `TrackMouse` plus the
 //! `TMacViewMgr` owner-color atlas.
 
-use super::super::GameSession;
 use super::super::RetailUiAssets;
 use super::super::retail::RetailTree;
 use super::super::retail_raster::{IndexedRasterExt, indexed_picture};
+use super::super::{GameSession, MapViewOrigin};
 use super::map_interaction::{
     MapProjection, MapTransition, StrategicInteraction, StrategicViewport, apply_map_transition,
 };
@@ -68,11 +68,12 @@ pub(crate) fn bind_minimap(
     tree: &RetailTree,
     assets: &mut RetailUiAssets,
     session: &GameSession,
+    origin: TileId,
 ) {
     let toolbar = tree.find(root, TOOL_TAG);
     let (image, window) = compose_minimap(
         &session.game,
-        session.map_view_origin,
+        origin,
         assets.default_dib_palette(),
         None,
         DETAILED_MARKER,
@@ -108,6 +109,7 @@ pub(crate) fn bind_minimap(
 
 pub(crate) fn sync_minimap(
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     viewports: Query<Ref<StrategicViewport>>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
@@ -116,10 +118,14 @@ pub(crate) fn sync_minimap(
     let Ok(viewport) = viewports.single() else {
         return;
     };
-    let (view_origin, marker) = active_minimap_view(&session, &viewport);
+    let (view_origin, marker) = active_minimap_view(&session, origin.0, &viewport);
     let palette = retail_assets.assets().default_dib_palette();
     for (mut minimap, image_node) in &mut minimaps {
-        if !session.is_changed() && !viewport.is_changed() && !minimap.is_added() {
+        if !session.is_changed()
+            && !origin.is_changed()
+            && !viewport.is_changed()
+            && !minimap.is_added()
+        {
             continue;
         }
         let drag_pixel = minimap.drag_pixel;
@@ -139,6 +145,7 @@ pub(crate) fn sync_minimap(
 fn on_minimap_press(
     press: On<Pointer<Press>>,
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     viewports: Query<&StrategicViewport>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
@@ -156,7 +163,7 @@ fn on_minimap_press(
     let Ok(viewport) = viewports.single() else {
         return;
     };
-    let (view_origin, marker) = active_minimap_view(&session, viewport);
+    let (view_origin, marker) = active_minimap_view(&session, origin.0, viewport);
     minimap.drag_pixel = Some(pixel);
     write_minimap(
         &mut minimap,
@@ -173,6 +180,7 @@ fn on_minimap_press(
 fn on_minimap_drag(
     drag: On<Pointer<Drag>>,
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     viewports: Query<&StrategicViewport>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
@@ -190,7 +198,7 @@ fn on_minimap_drag(
     let Ok(viewport) = viewports.single() else {
         return;
     };
-    let (view_origin, marker) = active_minimap_view(&session, viewport);
+    let (view_origin, marker) = active_minimap_view(&session, origin.0, viewport);
     minimap.drag_pixel = Some(pixel);
     write_minimap(
         &mut minimap,
@@ -207,6 +215,7 @@ fn on_minimap_drag(
 fn on_minimap_click(
     click: On<Pointer<Click>>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
@@ -226,6 +235,7 @@ fn on_minimap_click(
         &mut minimap,
         image_node,
         &mut session,
+        &mut origin,
         &mut interaction,
         &mut viewport,
         &mut images,
@@ -236,6 +246,7 @@ fn on_minimap_click(
 fn on_minimap_drag_end(
     drag_end: On<Pointer<DragEnd>>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
@@ -255,6 +266,7 @@ fn on_minimap_drag_end(
         &mut minimap,
         image_node,
         &mut session,
+        &mut origin,
         &mut interaction,
         &mut viewport,
         &mut images,
@@ -267,6 +279,7 @@ fn commit_minimap_track(
     minimap: &mut MiniMap,
     image_node: &ImageNode,
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
     images: &mut Assets<Image>,
@@ -281,12 +294,13 @@ fn commit_minimap_track(
         minimap_release_cell(pixel, minimap.scroll_column, minimap.scroll_row, marker);
     apply_map_transition(
         session,
+        origin,
         interaction,
         viewport,
         MapTransition::SetUpperLeft(IVec2::new(column, row)),
     );
     minimap.drag_pixel = None;
-    let (view_origin, marker) = active_minimap_view(session, viewport);
+    let (view_origin, marker) = active_minimap_view(session, origin.0, viewport);
     write_minimap(
         minimap,
         image_node,
@@ -328,11 +342,12 @@ fn marker_size(viewport: &StrategicViewport) -> ViewportMarker {
 
 fn active_minimap_view(
     session: &GameSession,
+    origin: TileId,
     viewport: &StrategicViewport,
 ) -> (TileId, ViewportMarker) {
     let marker = marker_size(viewport);
     if viewport.projection == MapProjection::Detailed {
-        return (session.map_view_origin, marker);
+        return (origin, marker);
     }
     let origin = session
         .game

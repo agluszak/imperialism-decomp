@@ -6,7 +6,7 @@ use super::map_interaction::{
 };
 use super::map_modals::{spawn_army_roster, spawn_garrison};
 use crate::AppState;
-use crate::ui::GameSession;
+use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -296,6 +296,7 @@ fn on_army_command(
     keys: Res<ButtonInput<KeyCode>>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
     let Ok(command) = command_query.get(activate.entity) else {
@@ -312,19 +313,34 @@ fn on_army_command(
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Sleep);
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
         ArmyCommand::Later => {
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Latr);
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
         ArmyCommand::Done => {
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Done);
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
         ArmyCommand::Garrison => {
             if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
