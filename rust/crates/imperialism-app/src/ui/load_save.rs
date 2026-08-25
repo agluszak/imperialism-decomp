@@ -7,8 +7,8 @@ use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
 use crate::ui::{
-    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_game_session_world,
-    insert_loaded_game, remove_game_session,
+    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_loaded_game,
+    remove_game_session,
 };
 use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
@@ -1029,6 +1029,7 @@ fn on_flag_menu_prompt_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
     use imperialism_formats::{DibPalette, load_game_from_path};

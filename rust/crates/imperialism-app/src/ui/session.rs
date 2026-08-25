@@ -79,6 +79,7 @@ pub(crate) fn insert_game_session(commands: &mut Commands, game: GameState) {
     insert_loaded_game(commands, loaded_from_game(game));
 }
 
+#[cfg(test)]
 pub(crate) fn insert_game_session_world(world: &mut World, game: GameState) {
     insert_loaded_game_world(world, loaded_from_game(game));
 }

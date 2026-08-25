@@ -7,9 +7,11 @@ use super::hover_help::{
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
 use super::session::{GameSession, apply_turn_stop};
+#[cfg(test)]
+use super::tactical_viewport::BATTLEFIELD_HEIGHT_PX;
 use super::tactical_viewport::{
-    BATTLEFIELD_HEIGHT_PX, BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX,
-    TACTICAL_TILE_WIDTH_PX, TacticalViewport, battlefield_cursor_pixel, rect_xywh,
+    BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX, TACTICAL_TILE_WIDTH_PX, TacticalViewport,
+    battlefield_cursor_pixel, rect_xywh,
 };
 use crate::AppState;
 use crate::media::MusicDirector;

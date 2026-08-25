@@ -2,9 +2,11 @@ use super::generated;
 use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use super::tactical_viewport::{
-    BATTLEFIELD_HEIGHT_PX, BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX,
-    TACTICAL_TILE_WIDTH_PX, TacticalViewport, battlefield_cursor_pixel, rect_xywh,
+    BATTLEFIELD_HEIGHT_PX, TACTICAL_TILE_ROW_HEIGHT_PX, TacticalViewport, battlefield_cursor_pixel,
+    rect_xywh,
 };
+#[cfg(test)]
+use super::tactical_viewport::{BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_WIDTH_PX};
 use crate::AppState;
 use crate::media::MusicDirector;
 use bevy::picking::events::{Click, Pointer};
