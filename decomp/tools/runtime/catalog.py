@@ -322,6 +322,13 @@ TESTS = (
         required_oracles=(),
     ),
     RuntimeTestSpec(
+        "navy_zone_opens_navy_menu",
+        "NavyMenuTest",
+        ("pr", "full"),
+        "internal_invariant",
+        required_oracles=(),
+    ),
+    RuntimeTestSpec(
         "serialization_roundtrip",
         "SerializationRoundtripTest",
         ("pr", "full"),
