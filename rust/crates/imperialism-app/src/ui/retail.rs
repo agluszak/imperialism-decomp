@@ -514,8 +514,9 @@ fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
     Color::srgb_u8(red, green, blue)
 }
 
-/// Hierarchy lookup for recovered View tags. The same FourCc can appear in
-/// different subtrees, so searches stay scoped to a root rather than a global index.
+/// Hierarchy lookup for recovered View tags in tests and genuinely dynamic recovery.
+/// Known generated screens bind named spawn identities instead of searching by FourCC.
+/// The same FourCc can appear in different subtrees, so searches stay scoped to a root.
 #[cfg(test)]
 #[derive(SystemParam)]
 pub struct RetailTree<'w, 's> {

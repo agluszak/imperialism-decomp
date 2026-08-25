@@ -39,10 +39,15 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
 
 - Recovered UI definitions come from committed recovery evidence and the existing generator. Change
   that evidence or generator and regenerate; do not maintain parallel handwritten screen trees.
-- Generated output is native Bevy/BSN hierarchy. Handwritten app code wires presentation behavior to
-  direct typed core operations and projects authoritative results.
+- Generated output is native Bevy/BSN per node, plus a `spawn_*` function that returns named
+  `Entity` identities for that screen. Handwritten app code inserts the struct on the root and binds
+  fields (`ui.rand`) to presentation behavior and direct typed core operations.
+- FourCC tags are codegen provenance (`RetailTag` and generated field names). Do not recover those
+  identities at runtime with `RetailTree` on a known generated screen. Keep `RetailTree` for tests
+  and genuinely dynamic or recovery-oriented lookups whose structure is not statically known.
 - Keep retail hierarchy, coordinates, tags, ordering, and presentation semantics when observable.
-  Do not promote recovery-only offsets or symbolic node identifiers into runtime identity.
+  Runtime identity is `Entity`. Do not promote recovery-only offsets into runtime identity, and do
+  not add a typed UI framework around spawn structs.
 - `GameSession` holds only `GameState`. Detailed-map camera origin, city-dialog positions, and
   captured battle-report strings are separate resources (`MapViewOrigin`, `CityWindows`,
   `BattleReportPresentation`) so scrolling or layout changes do not mark gameplay changed. Do not

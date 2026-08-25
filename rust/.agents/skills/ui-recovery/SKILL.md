@@ -23,8 +23,9 @@ Generator commands run from `decomp/`; Rust commands run from `rust/`.
 
    Use `just ui-codegen-explain FUNCTION EVENT [NODE]` and
    `just ui-codegen-triage FUNCTION` when tracing generated evidence.
-4. In `imperialism-app`, wire the generated native Bevy/BSN scene to its existing screen route,
-   presentation components, and direct typed core operation.
+4. In `imperialism-app`, spawn the generated screen, insert its identity struct on the root, and
+   bind named fields (`ui.okay`, `ui.page`) to the existing screen route, presentation components,
+   and direct typed core operation. Do not search the spawned tree by FourCC.
 5. Add the smallest focused generator or Bevy interaction check needed for the recovered behavior.
    Use a runtime/differential scenario for claims about live retail behavior.
 6. Run the three Rust verification commands from `rust/`; if decomp evidence or generation changed,

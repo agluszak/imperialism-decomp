@@ -53,9 +53,6 @@ struct CitySiteIntro;
 struct CitySiteNotice(String);
 
 /// Marks a spawned city-site scene whose retail controls have been stuffed.
-///
-/// `spawn_scene` can leave the root in the world before its children exist.
-/// Bind retries until the hierarchy is present instead of running once on `Added`.
 #[derive(Component)]
 struct CitySiteWired;
 

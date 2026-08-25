@@ -93,8 +93,9 @@ The existing UI generator emits deterministic native Bevy scenes into `imperiali
 ```
 
 The generated source is compiled from the committed Mac View IR plus declared Windows deltas. It
-describes `Node`, `Children`, native widget, text, and image components with code-defined BSN;
-handwritten retail scene helpers centralize repeated geometry and asset-backed templates. Callers
-spawn each concrete scene with `Commands::spawn_scene`. `RetailTag` is used only while binding
-recovered controls to typed screen behavior; `Entity` and `ChildOf` are the runtime identity and
-hierarchy. Do not add another generic UI representation, generated imperative spawner, or loader.
+describes `Node`, native widget, text, and image components with code-defined BSN. Each `spawn_*`
+function returns named `Entity` identities for the nodes it creates; callers bind those fields
+directly (`ui.rand`) or insert the struct on the root. FourCC remains provenance and codegen input
+(`RetailTag`, generated field names). `RetailTree` is for tests and genuinely dynamic recovery
+lookups, not for wiring known generated screens. Do not add another generic UI representation, typed
+UI framework, or loader.

@@ -2257,6 +2257,11 @@ def _render_spawn_view(
     key: UiResourceKey | None,
     semantic_view: UiSemanticView,
 ) -> list[str]:
+    """Emit a spawn function that returns named Entity identities for every node.
+
+    Nested BSN only yields the scene root, so each node is spawned, then parented
+    with add_child, then wrapped in retail_view as `root`.
+    """
     children_by_parent: dict[str | None, list[UiSemanticNode]] = {}
     for node in semantic_view.nodes:
         children_by_parent.setdefault(node.parent_id, []).append(node)
