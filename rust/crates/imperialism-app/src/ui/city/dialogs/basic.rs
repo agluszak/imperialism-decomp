@@ -62,7 +62,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
                 .insert(Visibility::Visible)
                 .remove::<InteractionDisabled>();
         } else {
-            control_commands.insert((Visibility::Hidden, InteractionDisabled));
+            control_commands.insert(Visibility::Hidden);
         }
     }
     if !advanced_production_unlocked {
@@ -136,10 +136,15 @@ pub(in crate::ui::city) fn bind_rail_dialog(
         step,
         None,
     );
-    commands.entity(counter.quantity).insert(RailBarCounter {
-        order: binding.order,
-    });
-    bind_rail_amount_bar(commands, assets, counter.row, tree, binding.order, step);
+    bind_rail_amount_bar(
+        commands,
+        assets,
+        counter.row,
+        tree,
+        binding.order,
+        step,
+        counter.quantity,
+    );
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(

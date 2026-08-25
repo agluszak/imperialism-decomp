@@ -11,15 +11,15 @@ use crate::ui::hover_help::{
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree};
+use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTree};
 use crate::ui::strategic_map::{
-    MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
-    StrategicInteraction, StrategicViewport, animate_civilian_work, animate_strategic_selection,
-    apply_map_transition, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
-    bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
-    register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
-    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
-    sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
+    MapEdges, MapInteractionMode, MapTransition, StrategicInteraction, StrategicViewport,
+    animate_civilian_work, animate_strategic_selection, apply_map_transition, bind_army_toolbar,
+    bind_civilian_toolbar, bind_minimap, bind_navy_toolbar, bind_ocean_view,
+    bind_strategic_base_terrain, on_strategic_map_click, register_army_toolbar,
+    register_civilian_toolbar, register_map_click, register_map_keys, register_map_modals,
+    register_navy_toolbar, register_ocean_view, sync_minimap, sync_strategic_base_terrain,
+    sync_strategic_selection, sync_strategic_units,
 };
 use crate::ui::window::no_modal;
 use crate::ui::{GameSession, MapViewOrigin};
@@ -85,7 +85,6 @@ impl Plugin for GameShellPlugin {
                 animate_strategic_selection,
                 animate_civilian_work,
                 sync_minimap,
-                sync_zoom_control,
                 spawn_turn_alerts_if_pending,
                 bind_turn_alert_notice,
                 bind_turn_summary_notice,
@@ -290,7 +289,6 @@ fn bind_strategic_hover(
     );
     commands
         .entity(tree.find(root, fourcc!("ZmOt")))
-        .insert(MapZoomControl)
         .insert(ActivateOnPress)
         .observe(on_ocean_toggle);
 }
@@ -328,20 +326,6 @@ fn on_ocean_toggle(
         &mut viewport,
         MapTransition::ToggleZoom,
     );
-}
-
-fn sync_zoom_control(
-    viewports: Query<&StrategicViewport>,
-    mut controls: Query<&mut RetailTag, With<MapZoomControl>>,
-) {
-    let (Ok(viewport), Ok(mut tag)) = (viewports.single(), controls.single_mut()) else {
-        return;
-    };
-    tag.0 = if viewport.projection == MapProjection::Overview {
-        fourcc!("ZmIn")
-    } else {
-        fourcc!("ZmOt")
-    };
 }
 
 fn bind_strategic_map_management_pictures(

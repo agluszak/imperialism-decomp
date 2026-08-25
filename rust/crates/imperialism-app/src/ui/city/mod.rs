@@ -45,7 +45,7 @@ impl Plugin for CityPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             OnEnter(AppState::City),
-            (enter_city_screen, bind_city_screen).chain(),
+            (enter_city_screen, bind_city_screen, restore_city_dialogs).chain(),
         )
         .add_systems(OnExit(AppState::City), leave_city_screen)
         .add_systems(
@@ -54,11 +54,7 @@ impl Plugin for CityPlugin {
         )
         .add_systems(
             Update,
-            (
-                restore_city_dialogs,
-                bind_building_change_dialogs,
-                bind_city_dialogs,
-            )
+            (bind_building_change_dialogs, bind_city_dialogs)
                 .chain()
                 .run_if(in_state(AppState::City)),
         )
@@ -70,9 +66,7 @@ impl Plugin for CityPlugin {
                 sync_city_buildings,
                 sync_city_building_action_visibility,
                 sync_city_order_quantities,
-                sync_industry_texts,
-                sync_industry_indicators,
-                sync_industry_bars,
+                sync_industry_dialog,
                 sync_rail_bars,
                 sync_warehouse_dialog,
                 sync_food_dialog,

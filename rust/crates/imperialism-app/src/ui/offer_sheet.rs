@@ -21,17 +21,23 @@ const OFFER_STRING_GROUP: i16 = 0x2740;
 #[derive(Component)]
 struct OfferSheetRoot;
 
+#[derive(Component, Clone, Copy)]
+struct OfferSheetView {
+    offer: Entity,
+    purchase_label: Entity,
+    unit_label: Entity,
+    no_offer_label: Entity,
+    merchant_capacity: Entity,
+    amount: Entity,
+    stop_buying: Entity,
+    icon: Entity,
+}
+
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum OfferSheetAction {
     Accept,
     Reject,
 }
-
-#[derive(Component)]
-struct PurchaseAmountField;
-
-#[derive(Component)]
-struct StopBuyingToggle;
 
 #[derive(Component)]
 struct OfferSheetNotice;
@@ -81,14 +87,11 @@ fn spawn_offer_sheet(mut commands: Commands) {
 
 fn bind_offer_sheet(
     mut commands: Commands,
-    root: Option<Single<Entity, Added<OfferSheetRoot>>>,
+    root: Single<Entity, Added<OfferSheetRoot>>,
     tree: RetailTree,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
-    let Some(root) = root else {
-        return;
-    };
     let root = *root;
     bind_offer_sheet_controls(&mut commands, root, &tree);
     bind_offer_sheet_text(&mut commands, &mut assets, root, &tree);
@@ -186,8 +189,8 @@ fn bind_offer_sheet_text(
 fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
     let accept = tree.find(root, fourcc!("acce"));
     let reject = tree.find(root, fourcc!("reje"));
-    let purc = tree.find(root, fourcc!("purc"));
-    let nomo = tree.find(root, fourcc!("nomo"));
+    let amount = tree.find(root, fourcc!("purc"));
+    let stop_buying = tree.find(root, fourcc!("nomo"));
     commands
         .entity(accept)
         .insert((OfferSheetAction::Accept, ActivateOnPress))
@@ -199,11 +202,9 @@ fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &Retai
         .remove::<InteractionDisabled>()
         .observe(on_offer_sheet_activate);
     commands
-        .entity(nomo)
-        .insert(StopBuyingToggle)
+        .entity(stop_buying)
         .remove::<(Checked, InteractionDisabled)>();
-    commands.entity(purc).insert((
-        PurchaseAmountField,
+    commands.entity(amount).insert((
         SelectAllOnFocus,
         AutoFocus,
         TextCursorStyle::default(),
@@ -214,19 +215,25 @@ fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &Retai
             ..EditableText::new(String::new())
         },
     ));
+    commands.entity(root).insert(OfferSheetView {
+        offer: tree.find(root, fourcc!("offe")),
+        purchase_label: tree.find(root, fourcc!("purT")),
+        unit_label: tree.find(root, fourcc!("unit")),
+        no_offer_label: tree.find(root, fourcc!("noof")),
+        merchant_capacity: tree.find(root, fourcc!("mCap")),
+        amount,
+        stop_buying,
+        icon: tree.find(root, fourcc!("icon")),
+    });
 }
 
 fn pose_offer_sheet(
     mut commands: Commands,
-    root: Option<Single<Entity, With<OfferSheetRoot>>>,
-    tree: RetailTree,
-    mut amounts: Query<&mut EditableText, With<PurchaseAmountField>>,
+    view: Single<&OfferSheetView>,
+    mut amounts: Query<&mut EditableText>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let Some(root) = root else {
-        return;
-    };
     let offer = session
         .game
         .pending_trade_offer()
@@ -234,21 +241,18 @@ fn pose_offer_sheet(
     apply_offer_sheet_pose(
         &mut commands,
         &mut assets,
-        *root,
-        &tree,
+        *view,
         &mut amounts,
         &session,
         offer,
     );
 }
 
-#[allow(clippy::too_many_arguments)]
 fn apply_offer_sheet_pose(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-    amounts: &mut Query<&mut EditableText, With<PurchaseAmountField>>,
+    view: &OfferSheetView,
+    amounts: &mut Query<&mut EditableText>,
     session: &GameSession,
     offer: PendingTradeOffer,
 ) {
@@ -265,34 +269,25 @@ fn apply_offer_sheet_pose(
     );
     let amount = offer.amount.to_string();
     let price = format_currency(i32::from(offer.price));
-    set_text(
-        commands,
-        tree.find(root, fourcc!("offe")),
-        fill_brackets(
-            &get_string(assets, OFFER_STRING_GROUP, 0xc),
-            &[&offering, &amount, &commodity, &price],
-        ),
-    );
-    set_text(
-        commands,
-        tree.find(root, fourcc!("purT")),
-        get_string(assets, OFFER_STRING_GROUP, 0xe),
-    );
-    set_text(
-        commands,
-        tree.find(root, fourcc!("unit")),
-        get_string(assets, OFFER_STRING_GROUP, 0xf),
-    );
-    set_text(
-        commands,
-        tree.find(root, fourcc!("noof")),
-        fill_brackets(&get_string(assets, OFFER_STRING_GROUP, 0xf), &[&commodity]),
-    );
+    commands.entity(view.offer).insert(Text::new(fill_brackets(
+        &get_string(assets, OFFER_STRING_GROUP, 0xc),
+        &[&offering, &amount, &commodity, &price],
+    )));
+    commands
+        .entity(view.purchase_label)
+        .insert(Text::new(get_string(assets, OFFER_STRING_GROUP, 0xe)));
+    commands
+        .entity(view.unit_label)
+        .insert(Text::new(get_string(assets, OFFER_STRING_GROUP, 0xf)));
+    commands
+        .entity(view.no_offer_label)
+        .insert(Text::new(fill_brackets(
+            &get_string(assets, OFFER_STRING_GROUP, 0xf),
+            &[&commodity],
+        )));
 
     let nation = session.active_major_nation();
-    set_text(
-        commands,
-        tree.find(root, fourcc!("mCap")),
+    commands.entity(view.merchant_capacity).insert(Text::new(
         session
             .game
             .nations()
@@ -301,40 +296,33 @@ fn apply_offer_sheet_pose(
             .capacities
             .available_merchant
             .to_string(),
-    );
+    ));
 
-    if let Ok(mut editable) = amounts.single_mut() {
-        *editable = EditableText {
-            max_characters: Some(6),
-            allow_newlines: false,
-            ..EditableText::new(offer.amount.to_string())
-        };
-    }
+    let mut editable = amounts
+        .get_mut(view.amount)
+        .expect("offer-sheet amount field stays bound");
+    *editable = EditableText {
+        max_characters: Some(6),
+        allow_newlines: false,
+        ..EditableText::new(offer.amount.to_string())
+    };
 
     if let Ok(icon) = assets.transparent_picture(
         PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
         0x10,
     ) {
-        commands
-            .entity(tree.find(root, fourcc!("icon")))
-            .insert(ImageNode::new(icon));
+        commands.entity(view.icon).insert(ImageNode::new(icon));
     }
 
-    commands
-        .entity(tree.find(root, fourcc!("nomo")))
-        .remove::<Checked>();
+    commands.entity(view.stop_buying).remove::<Checked>();
 }
 
-fn set_text(commands: &mut Commands, entity: Entity, value: String) {
-    commands.entity(entity).insert(Text::new(value));
-}
-
-#[allow(clippy::too_many_arguments)]
 fn on_offer_sheet_activate(
     activate: On<Activate>,
     actions: Query<&OfferSheetAction>,
-    amount: Option<Single<&EditableText, With<PurchaseAmountField>>>,
-    stop_buying: Option<Single<Has<Checked>, With<StopBuyingToggle>>>,
+    view: Single<&OfferSheetView>,
+    amounts: Query<&EditableText>,
+    stop_buying: Query<Has<Checked>>,
     notices: Query<(), With<OfferSheetNotice>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
@@ -352,13 +340,17 @@ fn on_offer_sheet_activate(
         .game
         .pending_trade_offer()
         .expect("OfferSheet requires pending trade offer");
-    let stop_buying = stop_buying.is_some_and(|flag| *flag);
+    let stop_buying = stop_buying
+        .get(view.stop_buying)
+        .expect("offer-sheet stop-buying toggle stays bound");
     let amount = match action {
         OfferSheetAction::Reject => 0,
         OfferSheetAction::Accept => {
-            let Some(amount) =
-                amount.and_then(|editable| editable.value().to_string().parse::<i16>().ok())
-            else {
+            let amount = amounts
+                .get(view.amount)
+                .ok()
+                .and_then(|editable| editable.value().to_string().parse::<i16>().ok());
+            let Some(amount) = amount else {
                 spawn_offer_quantity_error(
                     &mut commands,
                     get_string(&assets, OFFER_STRING_GROUP, 0x10),
@@ -467,20 +459,27 @@ mod tests {
                 DespawnOnExit(AppState::OfferSheet),
             ))
             .id();
-        commands.spawn((RetailTag(fourcc!("acce")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("reje")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("purc")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("nomo")), Node::default(), ChildOf(root)));
+        for tag in [
+            fourcc!("acce"),
+            fourcc!("reje"),
+            fourcc!("purc"),
+            fourcc!("nomo"),
+            fourcc!("offe"),
+            fourcc!("purT"),
+            fourcc!("unit"),
+            fourcc!("noof"),
+            fourcc!("mCap"),
+            fourcc!("icon"),
+        ] {
+            commands.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
+        }
     }
 
     fn bind_test_offer_sheet(
         mut commands: Commands,
-        root: Option<Single<Entity, Added<OfferSheetRoot>>>,
+        root: Single<Entity, Added<OfferSheetRoot>>,
         tree: RetailTree,
     ) {
-        let Some(root) = root else {
-            return;
-        };
         bind_offer_sheet_controls(&mut commands, *root, &tree);
     }
 

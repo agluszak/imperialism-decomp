@@ -107,14 +107,10 @@ pub(in crate::ui::city) fn bind_city_dialogs(
 }
 
 pub(in crate::ui::city) fn restore_city_dialogs(
-    roots: Query<(), Added<CityScreenRoot>>,
     session: Res<GameSession>,
     windows: Res<CityWindows>,
     mut commands: Commands,
 ) {
-    if roots.is_empty() {
-        return;
-    }
     let nation = session.active_major_nation();
     for slot in (0..enum_map::enum_len::<CityFacilitySlot>()).map(CityFacilitySlot::from_usize) {
         let state = windows.0[nation][slot];

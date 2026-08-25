@@ -1,3 +1,4 @@
+use bevy::ecs::query::QueryFilter;
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::tab_navigation::TabGroup;
@@ -35,8 +36,21 @@ pub struct CaptionedWindow;
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WindowPosition(pub IVec2);
 
-#[derive(Component, Debug, Default)]
-struct WindowTitleBar;
+#[derive(Component, Clone, Copy, Debug)]
+struct BoundWindow {
+    content: Entity,
+    caption: Entity,
+}
+
+#[derive(Component, Clone, Copy, Debug)]
+struct WindowTitleBar {
+    root: Entity,
+}
+
+#[derive(Component, Clone, Copy, Debug)]
+struct WindowClose {
+    root: Entity,
+}
 
 #[derive(Component, Debug, Default)]
 pub struct ModalDefault;
@@ -123,7 +137,10 @@ fn bind_recovered_window_hosts(
                 node.left = px(position.x);
                 node.top = px(position.y);
             });
-        spawn_caption(&mut commands, root, node.width, position);
+        let caption = spawn_caption(&mut commands, root, node.width, position);
+        commands
+            .entity(root)
+            .insert(BoundWindow { content, caption });
     }
 }
 
@@ -140,7 +157,7 @@ fn ancestor_window(
     }
 }
 
-fn spawn_caption(commands: &mut Commands, root: Entity, width: Val, position: IVec2) {
+fn spawn_caption(commands: &mut Commands, root: Entity, width: Val, position: IVec2) -> Entity {
     let caption = commands
         .spawn((
             Node {
@@ -152,7 +169,7 @@ fn spawn_caption(commands: &mut Commands, root: Entity, width: Val, position: IV
                 ..default()
             },
             BackgroundColor(Color::srgb_u8(0, 0, 128)),
-            WindowTitleBar,
+            WindowTitleBar { root },
             Pickable::default(),
             Name::new("retail-window-caption"),
             ChildOf(root),
@@ -175,6 +192,7 @@ fn spawn_caption(commands: &mut Commands, root: Entity, width: Val, position: IV
                 },
                 BackgroundColor(Color::srgb_u8(192, 192, 192)),
                 DismissWindow,
+                WindowClose { root },
                 ZIndex(1),
                 Name::new("retail-window-close"),
             ))
@@ -188,32 +206,26 @@ fn spawn_caption(commands: &mut Commands, root: Entity, width: Val, position: IV
                 Pickable::IGNORE,
             ));
     });
+    caption
 }
 
 fn sync_window_positions(
-    windows: Query<(Entity, &WindowPosition), Changed<WindowPosition>>,
-    parents: Query<&ChildOf>,
-    contents: Query<Entity, With<CaptionedWindow>>,
-    captions: Query<Entity, With<WindowTitleBar>>,
+    windows: Query<(&BoundWindow, &WindowPosition), Changed<WindowPosition>>,
     mut nodes: Query<&mut Node>,
 ) {
-    for (root, position) in &windows {
-        if let Some(content) = contents
-            .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents))
+    for (bound, position) in &windows {
         {
-            let mut node = nodes.get_mut(content).expect("window content has a Node");
-            node.left = px(position.0.x);
-            node.top = px(position.0.y);
+            let mut content = nodes
+                .get_mut(bound.content)
+                .expect("window content has a Node");
+            content.left = px(position.0.x);
+            content.top = px(position.0.y);
         }
-        if let Some(caption) = captions
-            .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents))
-        {
-            let mut node = nodes.get_mut(caption).expect("window caption has a Node");
-            node.left = px(position.0.x);
-            node.top = px(position.0.y as f32 - CAPTION_HEIGHT);
-        }
+        let mut caption = nodes
+            .get_mut(bound.caption)
+            .expect("window caption has a Node");
+        caption.left = px(position.0.x);
+        caption.top = px(position.0.y as f32 - CAPTION_HEIGHT);
     }
 }
 
@@ -251,18 +263,17 @@ fn on_window_pressed(
 
 fn on_window_dragged(
     drag: On<Pointer<Drag>>,
-    parents: Query<&ChildOf>,
-    windows: Query<(), With<FloatingWindow>>,
+    captions: Query<&WindowTitleBar>,
     mut positions: Query<&mut WindowPosition>,
 ) {
     if drag.event.button != PointerButton::Primary {
         return;
     }
-    let Some(root) = ancestor_with(drag.entity, &parents, &windows) else {
+    let Ok(caption) = captions.get(drag.entity) else {
         return;
     };
     let mut position = positions
-        .get_mut(root)
+        .get_mut(caption.root)
         .expect("movable window has a semantic position");
     position.0.x += drag.event.delta.x.round() as i32;
     position.0.y += drag.event.delta.y.round() as i32;
@@ -270,15 +281,18 @@ fn on_window_dragged(
 
 fn on_window_close(
     activate: On<Activate>,
-    close: Query<(), With<DismissWindow>>,
+    closes: Query<Option<&WindowClose>, With<DismissWindow>>,
     parents: Query<&ChildOf>,
     windows: Query<(), With<UiWindow>>,
     mut commands: Commands,
 ) {
-    if !close.contains(activate.entity) {
+    let Ok(bound) = closes.get(activate.entity) else {
         return;
-    }
-    if let Some(root) = ancestor_with(activate.entity, &parents, &windows) {
+    };
+    let root = bound
+        .map(|close| close.root)
+        .or_else(|| ancestor_with(activate.entity, &parents, &windows));
+    if let Some(root) = root {
         commands.entity(root).try_despawn();
     }
 }
@@ -286,6 +300,7 @@ fn on_window_close(
 fn modal_keyboard(
     mut input: On<FocusedInput<KeyboardInput>>,
     parents: Query<&ChildOf>,
+    children: Query<&Children>,
     modals: Query<(), With<ModalWindow>>,
     defaults: Query<Entity, (With<ModalDefault>, Without<InteractionDisabled>)>,
     cancels: Query<Entity, (With<ModalCancel>, Without<InteractionDisabled>)>,
@@ -298,12 +313,8 @@ fn modal_keyboard(
         return;
     };
     let control = match input.input.key_code {
-        KeyCode::Enter | KeyCode::NumpadEnter => defaults
-            .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents)),
-        KeyCode::Escape => cancels
-            .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents)),
+        KeyCode::Enter | KeyCode::NumpadEnter => first_descendant(root, &children, &defaults),
+        KeyCode::Escape => first_descendant(root, &children, &cancels),
         _ => return,
     };
     input.propagate(false);
@@ -312,16 +323,24 @@ fn modal_keyboard(
     }
 }
 
-fn ancestor_is(mut entity: Entity, ancestor: Entity, parents: &Query<&ChildOf>) -> bool {
-    loop {
-        if entity == ancestor {
-            return true;
+fn first_descendant(
+    root: Entity,
+    children: &Query<&Children>,
+    matches: &Query<Entity, impl QueryFilter>,
+) -> Option<Entity> {
+    let mut pending = children
+        .get(root)
+        .map(|children| children.iter().collect::<Vec<_>>())
+        .unwrap_or_default();
+    while let Some(entity) = pending.pop() {
+        if matches.contains(entity) {
+            return Some(entity);
         }
-        let Ok(parent) = parents.get(entity) else {
-            return false;
-        };
-        entity = parent.parent();
+        if let Ok(descendants) = children.get(entity) {
+            pending.extend(descendants.iter());
+        }
     }
+    None
 }
 
 #[cfg(test)]

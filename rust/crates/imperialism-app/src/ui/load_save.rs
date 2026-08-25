@@ -65,9 +65,6 @@ const FLAG_LABEL_TAGS: [FourCc; 8] = [
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct SaveDirectory(pub(crate) PathBuf);
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-struct OpenFlagMenu;
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum LoadSaveMode {
     Load,
@@ -391,11 +388,9 @@ fn populate_load_save_slots(
                     .remove::<InteractionDisabled>();
             }
             None if mode == LoadSaveMode::Load => {
-                commands.entity(entity).insert((
-                    Text::new(String::new()),
-                    Visibility::Hidden,
-                    InteractionDisabled,
-                ));
+                commands
+                    .entity(entity)
+                    .insert((Text::new(String::new()), Visibility::Hidden));
             }
             None => {
                 commands
@@ -851,7 +846,6 @@ fn on_confirm_load_notice(
 pub(crate) fn bind_open_flag_menu(commands: &mut Commands, flag: Entity) {
     commands
         .entity(flag)
-        .insert(OpenFlagMenu)
         .remove::<InteractionDisabled>()
         .observe(on_open_flag_menu);
 }

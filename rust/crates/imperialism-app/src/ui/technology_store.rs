@@ -21,9 +21,6 @@ const TECHNOLOGIES_PER_PAGE: usize = 6;
 #[derive(Component)]
 struct TechnologyStoreRoot;
 
-#[derive(Component)]
-struct OpenTechnologyStore;
-
 #[derive(Component, Clone, Copy)]
 struct TechnologyPurchase(Technology);
 
@@ -58,44 +55,37 @@ pub(crate) struct TechnologyStorePlugin;
 
 impl Plugin for TechnologyStorePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(AppState::TechnologyStore),
-            (
-                spawn_technology_store,
-                bind_technology_store,
-                bind_technology_row_actions,
+        app.add_observer(on_technology_history)
+            .add_observer(on_technology_purchase)
+            .add_systems(
+                OnEnter(AppState::TechnologyStore),
+                (spawn_technology_store, bind_technology_store).chain(),
             )
-                .chain(),
-        )
-        .add_systems(
-            Update,
-            (
-                bind_technology_modals,
-                project_technology_status,
-                project_technology_page,
-            )
-                .run_if(in_state(AppState::TechnologyStore)),
-        );
+            .add_systems(
+                Update,
+                (
+                    bind_technology_modals,
+                    project_technology_status,
+                    project_technology_page,
+                )
+                    .run_if(in_state(AppState::TechnologyStore)),
+            );
     }
 }
 
 pub(crate) fn bind_open_control(commands: &mut Commands, entity: Entity) {
     commands
         .entity(entity)
-        .insert((OpenTechnologyStore, ActivateOnPress))
+        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_open_technology_store);
 }
 
 fn on_open_technology_store(
-    activate: On<Activate>,
-    controls: Query<(), With<OpenTechnologyStore>>,
+    _activate: On<Activate>,
     session: Res<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if controls.get(activate.entity).is_err() {
-        return;
-    }
     let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) else {
         return;
     };
@@ -237,19 +227,6 @@ fn spawn_technology_row(
         .insert(ChildOf(page));
 }
 
-fn bind_technology_row_actions(
-    mut commands: Commands,
-    history: Query<Entity, Added<TechnologyHistory>>,
-    purchases: Query<Entity, Added<TechnologyPurchase>>,
-) {
-    for entity in &history {
-        commands.entity(entity).observe(on_technology_history);
-    }
-    for entity in &purchases {
-        commands.entity(entity).observe(on_technology_purchase);
-    }
-}
-
 #[allow(clippy::too_many_arguments)]
 fn technology_row_scene(
     y: f32,
@@ -380,13 +357,9 @@ fn on_technology_page(
 }
 
 fn project_technology_page(
-    mut commands: Commands,
     pages: Query<&TechnologyStorePage, Changed<TechnologyStorePage>>,
     mut rows: Query<(&TechnologyStoreRow, &mut Visibility), Without<TechnologyPageAction>>,
-    mut buttons: Query<
-        (Entity, &TechnologyPageAction, &mut Visibility),
-        Without<TechnologyStoreRow>,
-    >,
+    mut buttons: Query<(&TechnologyPageAction, &mut Visibility), Without<TechnologyStoreRow>>,
 ) {
     let Ok(page) = pages.single() else {
         return;
@@ -398,7 +371,7 @@ fn project_technology_page(
             Visibility::Hidden
         };
     }
-    for (entity, action, mut visibility) in &mut buttons {
+    for (action, mut visibility) in &mut buttons {
         let enabled = match action {
             TechnologyPageAction::Previous => page.current > 0,
             TechnologyPageAction::Next => page.current < page.last,
@@ -408,11 +381,6 @@ fn project_technology_page(
         } else {
             Visibility::Hidden
         };
-        if enabled {
-            commands.entity(entity).remove::<InteractionDisabled>();
-        } else {
-            commands.entity(entity).insert(InteractionDisabled);
-        }
     }
 }
 
@@ -630,8 +598,14 @@ mod tests {
             app.world().get::<Visibility>(second_page),
             Some(&Visibility::Hidden)
         );
-        assert!(app.world().get::<InteractionDisabled>(previous).is_some());
-        assert!(app.world().get::<InteractionDisabled>(next).is_none());
+        assert_eq!(
+            app.world().get::<Visibility>(previous),
+            Some(&Visibility::Hidden)
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(next),
+            Some(&Visibility::Inherited)
+        );
 
         app.world_mut()
             .commands()
@@ -647,8 +621,14 @@ mod tests {
             app.world().get::<Visibility>(second_page),
             Some(&Visibility::Inherited)
         );
-        assert!(app.world().get::<InteractionDisabled>(previous).is_none());
-        assert!(app.world().get::<InteractionDisabled>(next).is_some());
+        assert_eq!(
+            app.world().get::<Visibility>(previous),
+            Some(&Visibility::Inherited)
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(next),
+            Some(&Visibility::Hidden)
+        );
     }
 
     #[test]
@@ -660,7 +640,7 @@ mod tests {
             .insert_state(AppState::StrategicMap)
             .insert_resource(GameSession::new(game))
             .add_observer(on_open_technology_store);
-        let control = app.world_mut().spawn(OpenTechnologyStore).id();
+        let control = app.world_mut().spawn_empty().id();
 
         app.world_mut()
             .commands()

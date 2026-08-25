@@ -19,9 +19,6 @@ const QUERY_LABELS: [(FourCc, i16); 8] = [
 ];
 
 #[derive(Component)]
-struct OpenQueryFloater;
-
-#[derive(Component)]
 struct QueryFloaterRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -41,7 +38,7 @@ impl Plugin for QueryFloaterPlugin {
 pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, tree: &RetailTree) {
     commands
         .entity(tree.find(root, fourcc!("quer")))
-        .insert((OpenQueryFloater, ActivateOnPress))
+        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_open_query_floater);
 }

@@ -140,9 +140,6 @@ pub(crate) struct StrategicViewport {
     pub ocean: OceanViewport,
 }
 
-#[derive(Component)]
-pub(crate) struct MapZoomControl;
-
 #[derive(Component, Default)]
 pub(crate) struct StrategicInteraction {
     pub mode: MapInteractionMode,
