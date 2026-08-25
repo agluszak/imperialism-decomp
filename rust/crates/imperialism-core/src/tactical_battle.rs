@@ -4205,7 +4205,19 @@ mod tests {
 
     #[test]
     fn deploy_hover_classifies_deploy_invalid_undeploy_and_wait() {
-        let (mut state, _, _) = pending_regulars_vs_militia();
+        let mut state = game_state();
+        state.turn.economic_turn = 3;
+        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        seed_province(&mut state, 1, 0, &[2]);
+        seed_province(&mut state, 2, 1, &[1]);
+        push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
+        push_unit(&mut state, 1, 2, MilitaryUnitKind::Militia, None);
+        state.diplomacy.relationships[NationId::new(0)][NationId::new(1)] =
+            DiplomaticRelationship::War;
+        state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
+            DiplomaticRelationship::War;
+        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
         state.ensure_army_battle();
         let nation = state.turn.active_nation;
         let deploy = state
@@ -4230,6 +4242,7 @@ mod tests {
         }
         state.army_action_at(deploy, &[]).unwrap();
         let battle = state.army_battle().expect("battle remains after deploy");
+        assert_eq!(battle.stage(), ArmyBattleStage::Deploying);
         assert_eq!(battle.hover_action(deploy, nation), HoverAction::Undeploy);
     }
 
