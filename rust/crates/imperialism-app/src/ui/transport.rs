@@ -537,7 +537,6 @@ fn transport_hover_text(
 ) -> String {
     let major = state.nations().major(nation);
     let city = &major.city;
-    let economy = &major.economy;
     let (resource, _) = allocation.resources();
     let name = if allocation == TransportAllocation::COTTON_AND_WOOL {
         transport_string(assets, 2)
@@ -562,32 +561,7 @@ fn transport_hover_text(
     }
 
     let stock = allocation_amount(allocation, |resource| city.stockpile[resource]);
-    let building = |slot| city.building_type(slot, economy, major.common.owned_region_count());
-    let needed = if allocation == TransportAllocation::COTTON_AND_WOOL {
-        Some(building(CityFacilitySlot::TextileMill) * 2)
-    } else if allocation == TransportAllocation::TIMBER {
-        Some(building(CityFacilitySlot::LumberMill) * 2)
-    } else if allocation == TransportAllocation::COAL || allocation == TransportAllocation::IRON {
-        Some(building(CityFacilitySlot::SteelMill))
-    } else if allocation == TransportAllocation::OIL {
-        Some(building(CityFacilitySlot::OilRefinery) * 2)
-    } else if allocation == TransportAllocation::FABRIC {
-        Some(building(CityFacilitySlot::ClothingFactory) * 2)
-    } else if allocation == TransportAllocation::LUMBER {
-        Some(building(CityFacilitySlot::FurnitureFactory) * 2)
-    } else if allocation == TransportAllocation::STEEL {
-        Some(building(CityFacilitySlot::Metalworks) * 2)
-    } else if allocation == TransportAllocation::FUEL {
-        Some(building(CityFacilitySlot::PowerPlant) * 2)
-    } else if allocation == TransportAllocation::GRAIN {
-        Some(city.population.predicted_need(ResourceKind::Grain))
-    } else if allocation == TransportAllocation::FRUIT {
-        Some(city.population.predicted_need(ResourceKind::Fruit))
-    } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
-        Some(city.population.predicted_need(ResourceKind::Livestock))
-    } else {
-        None
-    };
+    let needed = state.transport_requirement(nation, allocation);
 
     if let Some(needed) = needed {
         fill_brackets(
