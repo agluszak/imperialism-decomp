@@ -1,16 +1,22 @@
 ---
 name: runtime
-description: Run and author focused retail/recomp runtime scenarios under Wine for the Imperialism C++ reconstruction.
+description: Run, compare, debug, and author focused Wine runtime scenarios for the Imperialism C++ reconstruction.
 ---
 
 # Work with the runtime
 
-Run from `decomp/`.
+Run from `decomp/` with `ORIGINAL_BINARY` configured.
 
-1. Reproduce one retail path with the existing runtime harness or a focused scenario.
-2. Use the actual fixture, resources, and event flow. Do not add test-only state, fallback behavior, or
-   a bypass when the scenario cannot reach the retail path; repair the missing model instead.
-3. Compare the native result against retail where the semantics matter, then keep the regression test
-   deterministic and narrow.
-4. Use the runtime/debug `just` targets for Wine, capture, and debugger sessions. A passing scenario
-   proves only the path it exercises; pair it with listing/source evidence for a faithfulness claim.
+- Launch retail with `just run-original` and the recomp with `just run`.
+- Run an existing scenario without rebuilding via `just runtime-run NAME`; rebuild and run it via
+  `just runtime-test NAME`. Use `just runtime-test-suite pr` or `full` for a catalog suite.
+- Inspect the last captured UI hierarchy with `just runtime-tree NAME`.
+- Compare a native recomp checkpoint with retail using `just diff-run SCENARIO`.
+- Run a model transition through the shared native oracle with `just native-oracle CASE`.
+- Debug the recomp with `just debug`, or use `just gdb-script ARGS` for a scripted session.
+- Scaffold a genuinely recurring new scenario with `just runtime-new NAME --base BASE`, then replace
+  the skeleton with the real fixture, event flow, semantic assertions, and catalog evidence kind.
+
+Reproduce the smallest real path, compare the observable checkpoint, and keep the regression scenario
+deterministic. A scenario proves only the path it executes; combine it with source/listing evidence for
+a retail-faithfulness claim.
