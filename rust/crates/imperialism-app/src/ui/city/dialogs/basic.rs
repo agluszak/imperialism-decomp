@@ -112,7 +112,6 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_rail_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
@@ -137,12 +136,10 @@ pub(in crate::ui::city) fn bind_rail_dialog(
         step,
         None,
     );
-    let (font, layout, line_height, _) = assets
-        .text_style(AMOUNT_BAR_COUNTER_STYLE)
-        .expect("retail amount-bar counter style");
-    commands
-        .entity(counter.quantity)
-        .insert((font, layout, line_height));
+    commands.entity(counter.quantity).insert(RailBarCounter {
+        order: binding.order,
+    });
+    bind_rail_amount_bar(commands, assets, counter.row, tree, binding.order, step);
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(

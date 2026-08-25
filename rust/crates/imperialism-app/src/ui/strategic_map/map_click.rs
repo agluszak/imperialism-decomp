@@ -463,18 +463,10 @@ fn apply_navy_selection(
             activate_navy_selection(session, interaction, viewport, zone, force);
             true
         }
-        NavySelectionClick::Intelligence { .. } => {
-            spawn_fleet_report(commands, false);
-            true
-        }
-        NavySelectionClick::InspectForce(_) => {
-            spawn_fleet_report(commands, true);
-            true
-        }
-        NavySelectionClick::Roster => {
-            if let Some(force) = interaction.navy.force {
-                spawn_navy_roster(commands, force);
-            }
+        click @ (NavySelectionClick::Intelligence { .. }
+        | NavySelectionClick::InspectForce(_)
+        | NavySelectionClick::Roster) => {
+            spawn_navy_selection_ui(commands, click, interaction.navy.force);
             true
         }
     }
@@ -500,12 +492,10 @@ fn apply_navy_tile_click(
                 NavySelectionClick::SelectZone { zone, force } => {
                     activate_navy_selection(session, interaction, viewport, zone, force);
                 }
-                NavySelectionClick::Intelligence { .. } => spawn_fleet_report(commands, false),
-                NavySelectionClick::InspectForce(_) => spawn_fleet_report(commands, true),
-                NavySelectionClick::Roster => {
-                    if let Some(force) = interaction.navy.force {
-                        spawn_navy_roster(commands, force);
-                    }
+                click @ (NavySelectionClick::Intelligence { .. }
+                | NavySelectionClick::InspectForce(_)
+                | NavySelectionClick::Roster) => {
+                    spawn_navy_selection_ui(commands, click, interaction.navy.force);
                 }
                 NavySelectionClick::Ignored => {}
             }
@@ -514,10 +504,34 @@ fn apply_navy_tile_click(
         NavyTileClick::Submitted => true,
         NavyTileClick::Roster => {
             if let Some(force) = interaction.navy.force {
-                spawn_navy_roster(commands, force);
+                spawn_navy_roster(commands, NavyRosterKind::TaskForce(force));
             }
             true
         }
+    }
+}
+
+fn spawn_navy_selection_ui(
+    commands: &mut Commands,
+    click: NavySelectionClick,
+    selected_force: Option<TaskForceId>,
+) {
+    match click {
+        NavySelectionClick::Intelligence { zone, code } => {
+            let Some(nation) = NationId::try_new(code.saturating_sub(2) as u8) else {
+                return;
+            };
+            spawn_fleet_report(commands, FleetReportKind::Intelligence { zone, nation });
+        }
+        NavySelectionClick::InspectForce(force) => {
+            spawn_fleet_report(commands, FleetReportKind::Friendly(force));
+        }
+        NavySelectionClick::Roster => {
+            if let Some(force) = selected_force {
+                spawn_navy_roster(commands, NavyRosterKind::TaskForce(force));
+            }
+        }
+        NavySelectionClick::Ignored | NavySelectionClick::SelectZone { .. } => {}
     }
 }
 

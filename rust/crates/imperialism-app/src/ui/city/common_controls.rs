@@ -1,19 +1,11 @@
 use super::*;
-use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
+use crate::ui::retail_amount_bar::{
+    AmountBarPixels, INDUSTRY_AMOUNT_BAR, INDUSTRY_BAR_FILL, industry_amount_bar_picture,
+};
+use crate::ui::retail_raster::IndexedRasterExt;
 
-pub(in crate::ui::city) const INDUSTRY_BAR_WIDTH: i16 = 150;
 pub(in crate::ui::city) const INDUSTRY_BAR_X: f32 = 62.0;
 pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
-
-// TAmtBarCluster::DoPostCreate applies this to every `move` TNumberText before
-// its derived city cluster positions it over the amount bar.
-pub(in crate::ui::city) const AMOUNT_BAR_COUNTER_STYLE: RetailTextStylePreset =
-    RetailTextStylePreset {
-        font_family: 3,
-        face_flags: 0,
-        point_size: 10,
-        alignment: -2,
-    };
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityOrderAdjust {
@@ -42,6 +34,17 @@ pub(in crate::ui::city) struct CityRowSelection {
 pub(in crate::ui::city) struct CityIndustryAmountBar {
     pub(in crate::ui::city) order: CityOrderId,
     pub(in crate::ui::city) slot: CityFacilitySlot,
+}
+
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) struct CityRailAmountBar {
+    pub(in crate::ui::city) order: CityOrderId,
+    pub(in crate::ui::city) step: i16,
+}
+
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) struct RailBarCounter {
+    pub(in crate::ui::city) order: CityOrderId,
 }
 
 #[derive(Component)]
@@ -182,9 +185,6 @@ fn bind_industry_amount_bars(
     tree: &RetailTree,
     page: IndustryPage,
 ) {
-    let (counter_font, counter_layout, counter_line_height, _) = assets
-        .text_style(AMOUNT_BAR_COUNTER_STYLE)
-        .expect("retail industry amount counter style");
     for binding in page.orders {
         let bound = bind_city_order_row(
             commands,
@@ -201,14 +201,15 @@ fn bind_industry_amount_bars(
             order: binding.order,
             slot: page.slot,
         };
-        commands.entity(bound.quantity).insert((
-            IndustryBar::Quantity(amount),
-            counter_font.clone(),
-            counter_layout,
-            counter_line_height,
-        ));
+        commands
+            .entity(bound.quantity)
+            .insert(IndustryBar::Quantity(amount));
         let bar = tree.find(bound.row, fourcc!("bar "));
-        let picture = indexed_picture(i32::from(INDUSTRY_BAR_WIDTH), 6, 0x10);
+        let picture = industry_amount_bar_picture(AmountBarPixels {
+            range: 0,
+            current: 0,
+            color: INDUSTRY_BAR_FILL,
+        });
         let palette = *assets.default_dib_palette();
         let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
         commands
@@ -423,19 +424,12 @@ pub(in crate::ui::city) fn sync_industry_bars(
     }
     let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
-    let scale = |value: i16, capacity: i16| {
-        if capacity > 0 {
-            (i32::from(value) * i32::from(INDUSTRY_BAR_WIDTH) / i32::from(capacity))
-                .clamp(0, i32::from(INDUSTRY_BAR_WIDTH)) as i16
-        } else {
-            0
-        }
-    };
     for (bar, mut node) in &mut quantities {
         let IndustryBar::Quantity(amount) = *bar;
         let capacity = city.production_orders[amount.slot];
         let quantity = session.game.city_order_quantity(nation, amount.order);
-        node.left = Val::Px(INDUSTRY_BAR_X + f32::from(scale(quantity, capacity)) - 2.0);
+        let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+        node.left = Val::Px(INDUSTRY_BAR_X + f32::from(geometry.span(quantity)) - 2.0);
         node.top = Val::Px(INDUSTRY_BAR_Y + 6.0);
     }
     for (bar, image_node) in &bars {
@@ -443,30 +437,107 @@ pub(in crate::ui::city) fn sync_industry_bars(
         let capacity = city.production_orders[amount.slot];
         let quantity = session.game.city_order_quantity(nation, amount.order);
         let maximum = session.game.city_order_limit(nation, amount.order).maximum;
-        let mut picture = indexed_picture(i32::from(INDUSTRY_BAR_WIDTH), 6, 0x10);
-        picture.fill_rect(
-            IRect::new(0, 1, i32::from(scale(quantity, capacity)), 5),
-            0x16,
-        );
-        let maximum = i32::from(scale(maximum, capacity));
-        picture.fill_rect(IRect::new(maximum, 0, maximum + 1, 5), 0);
+        let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+        let picture = industry_amount_bar_picture(AmountBarPixels {
+            range: geometry.span(maximum),
+            current: geometry.span(quantity),
+            color: INDUSTRY_BAR_FILL,
+        });
         if let Some(mut image) = images.get_mut(&image_node.image) {
             *image = picture.to_keyed_image(retail.assets().default_dib_palette(), 0x10);
         }
     }
 }
 
+pub(in crate::ui::city) fn bind_rail_amount_bar(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    row: Entity,
+    tree: &RetailTree,
+    order: CityOrderId,
+    step: i16,
+) {
+    let bar = tree.find(row, fourcc!("bar "));
+    let picture = industry_amount_bar_picture(AmountBarPixels {
+        range: 0,
+        current: 0,
+        color: INDUSTRY_BAR_FILL,
+    });
+    let palette = *assets.default_dib_palette();
+    let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
+    commands
+        .entity(bar)
+        .insert((
+            ImageNode::new(image),
+            RelativeCursorPosition::default(),
+            CityRailAmountBar { order, step },
+        ))
+        .observe(on_city_rail_amount_bar_click);
+}
+
+fn rail_bar_capacity(
+    city: &CityState,
+    order: CityOrderId,
+    nation: MajorNationId,
+    game: &GameState,
+) -> i16 {
+    match order {
+        CityOrderId::FoodProcessing | CityOrderId::TransportCapacity => {
+            let labor = city.population.production_labor();
+            ((labor.high * 2 + labor.medium) * 2 + city.population.extra() + labor.low) / 2
+        }
+        _ => game.city_order_limit(nation, order).maximum,
+    }
+}
+
+pub(in crate::ui::city) fn sync_rail_bars(
+    session: Res<GameSession>,
+    added: Query<(), Added<CityRailAmountBar>>,
+    retail: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
+    mut counters: Query<(&RailBarCounter, &mut Node)>,
+    bars: Query<(&CityRailAmountBar, &ImageNode, &Node), Without<RailBarCounter>>,
+) {
+    if city_projection_idle(&session, !added.is_empty()) {
+        return;
+    }
+    let nation = session.active_major_nation();
+    let city = &session.game.nations().major(nation).city;
+    let mut positions = Vec::new();
+    for (bar, image_node, node) in &bars {
+        let capacity = rail_bar_capacity(city, bar.order, nation, &session.game);
+        let quantity = session.game.city_order_quantity(nation, bar.order);
+        let maximum = session.game.city_order_limit(nation, bar.order).maximum;
+        let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+        let picture = industry_amount_bar_picture(AmountBarPixels {
+            range: geometry.span(maximum),
+            current: geometry.span(quantity),
+            color: INDUSTRY_BAR_FILL,
+        });
+        if let Some(mut image) = images.get_mut(&image_node.image) {
+            *image = picture.to_keyed_image(retail.assets().default_dib_palette(), 0x10);
+        }
+        let (Val::Px(bar_left), Val::Px(bar_top)) = (node.left, node.top) else {
+            continue;
+        };
+        positions.push((bar.order, bar_left, bar_top, geometry.span(quantity)));
+    }
+    for (counter, mut counter_node) in &mut counters {
+        let Some((_, bar_left, bar_top, span)) = positions
+            .iter()
+            .copied()
+            .find(|(order, _, _, _)| *order == counter.order)
+        else {
+            continue;
+        };
+        counter_node.left = Val::Px(bar_left + f32::from(span) - 2.0);
+        counter_node.top = Val::Px(bar_top + 6.0);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn industry_amount_counter_uses_the_retail_post_create_style() {
-        let style = resolve_retail_text_style(AMOUNT_BAR_COUNTER_STYLE).unwrap();
-        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
-        assert_eq!(style.logical_pixel_height, 14);
-        assert_eq!(style.alignment, RetailTextAlignment::Left);
-    }
 
     #[test]
     fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {

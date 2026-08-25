@@ -1,4 +1,8 @@
 use super::*;
+use crate::ui::retail_amount_bar::{
+    INDUSTRY_AMOUNT_BAR, amount_bar_click_value, amount_bar_x_from_normalized,
+    quantize_amount_bar_value,
+};
 
 pub(in crate::ui::city) fn on_city_amount_bar_click(
     mut click: On<Pointer<Click>>,
@@ -14,26 +18,47 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     click.propagate(false);
 
     let nation = session.active_major_nation();
-    let x = (((normalized.x + 0.5) * f32::from(INDUSTRY_BAR_WIDTH)).floor() as i16)
-        .clamp(0, INDUSTRY_BAR_WIDTH - 1);
     let city = &session.game.nations().major(nation).city;
     let capacity = city.production_orders[bar.slot];
     let previous = match bar.order {
         CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
         _ => unreachable!("industry amount bar has an item order"),
     };
-    let mut quantity = if capacity > 0
-        && i32::from(x) < i32::from(INDUSTRY_BAR_WIDTH) / (i32::from(capacity) * 2)
-    {
-        0
-    } else if capacity > 0 {
-        (i32::from(x) * i32::from(capacity) / i32::from(INDUSTRY_BAR_WIDTH) + 1) as i16
-    } else {
-        1
+    let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+    let x = amount_bar_x_from_normalized(geometry, normalized.x);
+    let quantity = amount_bar_click_value(geometry, x, previous);
+    session
+        .game
+        .set_city_order_quantity(nation, bar.order, quantity);
+}
+
+pub(in crate::ui::city) fn on_city_rail_amount_bar_click(
+    mut click: On<Pointer<Click>>,
+    bars: Query<(&RelativeCursorPosition, &CityRailAmountBar)>,
+    mut session: ResMut<GameSession>,
+) {
+    let Ok((cursor, bar)) = bars.get(click.entity) else {
+        return;
     };
-    if quantity == 0 && x != 0 && previous == 0 {
-        quantity = 1;
-    }
+    let Some(normalized) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
+        return;
+    };
+    click.propagate(false);
+
+    let nation = session.active_major_nation();
+    let city = &session.game.nations().major(nation).city;
+    let capacity = match bar.order {
+        CityOrderId::FoodProcessing | CityOrderId::TransportCapacity => {
+            let labor = city.population.production_labor();
+            ((labor.high * 2 + labor.medium) * 2 + city.population.extra() + labor.low) / 2
+        }
+        _ => session.game.city_order_limit(nation, bar.order).maximum,
+    };
+    let previous = session.game.city_order_quantity(nation, bar.order);
+    let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+    let x = amount_bar_x_from_normalized(geometry, normalized.x);
+    let quantity =
+        quantize_amount_bar_value(amount_bar_click_value(geometry, x, previous), bar.step);
     session
         .game
         .set_city_order_quantity(nation, bar.order, quantity);

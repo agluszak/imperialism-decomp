@@ -2,7 +2,7 @@
 
 use super::map_interaction::{
     MapInteractionMode, MapTransition, StrategicInteraction, StrategicViewport,
-    apply_map_transition, cycle_map_interaction_selection,
+    activate_navy_selection, apply_map_transition, cycle_map_interaction_selection,
 };
 use crate::AppState;
 use crate::media::RetailAudioAssets;
@@ -12,9 +12,12 @@ use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::RetailTree;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
+use bevy::ecs::system::EntityCommands;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled};
+use bevy::text::LineHeight;
+use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
@@ -23,17 +26,12 @@ struct MapModal;
 
 const CIVILIANS_PER_COLUMN: usize = 4;
 const CIVILIAN_LEDGER_VISIBLE_COLUMNS: usize = 2;
-const SHIPS_PER_COLUMN: usize = 6;
-const NAVY_ROSTER_VISIBLE_COLUMNS: usize = 2;
-const SHIP_ROW_WIDTH: f32 = 229.0;
-const SHIP_ROW_HEIGHT: f32 = 49.0;
-const SHIP_CHECK_WIDTH: f32 = 80.0;
-const SHIP_CHECK_HEIGHT: f32 = 45.0;
-const SHIP_ROSTER_ATLAS: i16 = 0xdba;
-const SHIP_ROSTER_TRANSPARENT: u8 = 0x10;
-const SHIP_ROSTER_ATLAS_OFFSET: [i16; 14] =
-    [0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120];
-const SHIP_STATUS_STRING_INDEX: [i16; 14] = [-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7];
+const ROSTER_VISIBLE_COLUMNS: usize = 2;
+const GARRISON_PER_COLUMN: usize = 6;
+const MINI_ROSTER_PER_COLUMN: usize = 8;
+const ROSTER_ROW_WIDTH: f32 = 229.0;
+const GARRISON_ROW_HEIGHT: f32 = 49.0;
+const MINI_ROSTER_ROW_HEIGHT: f32 = 36.0;
 
 #[derive(Component)]
 struct CivilianLedger {
@@ -55,31 +53,6 @@ enum CivilianLedgerAction {
 }
 
 #[derive(Component)]
-struct NavyRoster {
-    force: TaskForceId,
-    current_column: usize,
-    last_column: usize,
-}
-
-#[derive(Component)]
-struct NavyRosterRow {
-    column: usize,
-    row: usize,
-}
-
-#[derive(Clone, Copy, Component)]
-struct NavyRosterShip {
-    force: TaskForceId,
-    ship: ShipId,
-}
-
-#[derive(Clone, Copy, Component)]
-enum NavyRosterAction {
-    Previous,
-    Next,
-}
-
-#[derive(Component)]
 enum CivilianModal {
     Engineer(CivilianUnitId),
     Purchase(CivilianUnitId, TileId),
@@ -98,53 +71,118 @@ enum CivilianModalAction {
 #[derive(Clone, Copy, Component)]
 struct CancelCivilianOrder(CivilianUnitId);
 
+#[derive(Component)]
+struct ArmyReportDialog(ProvinceId);
+
+#[derive(Component)]
+struct GarrisonDialog(ProvinceId);
+
+#[derive(Component)]
+struct ArmyRosterDialog;
+
+#[derive(Component)]
+struct FleetReportDialog(FleetReportKind);
+
+#[derive(Clone, Copy, Component)]
+struct CancelFleetOrders(TaskForceId);
+
+#[derive(Component)]
+struct NavyRosterDialog(NavyRosterKind);
+
+#[derive(Component)]
+struct RosterPage {
+    current_column: usize,
+    last_column: usize,
+    row_height: f32,
+}
+
+#[derive(Clone, Copy, Component)]
+struct RosterRow {
+    column: usize,
+    row: usize,
+}
+
+#[derive(Clone, Copy, Component)]
+enum RosterPageAction {
+    Previous,
+    Next,
+}
+
+#[derive(Clone, Copy, Component)]
+enum GarrisonRowAction {
+    Toggle(MilitaryUnitId),
+}
+
+#[derive(Clone, Copy, Component)]
+enum ArmyRosterRowAction {
+    Select(ProvinceId),
+}
+
+#[derive(Clone, Copy, Component)]
+enum NavyRosterRowAction {
+    Select {
+        zone: OceanZoneId,
+        force: Option<TaskForceId>,
+    },
+    Toggle {
+        force: TaskForceId,
+        ship: ShipId,
+        selected: bool,
+    },
+}
+
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
         (
             bind_added_map_modals,
             bind_added_civilian_ledgers,
-            bind_added_navy_rosters,
             bind_added_civilian_modals,
+            bind_added_army_reports,
+            bind_added_garrisons,
+            bind_added_army_rosters,
+            bind_added_fleet_reports,
+            bind_added_navy_rosters,
             project_civilian_ledger,
-            project_navy_roster,
+            project_roster_pages,
         )
             .run_if(in_state(AppState::StrategicMap)),
     );
 }
 
-pub(crate) fn spawn_garrison(commands: &mut Commands, _province: ProvinceId) {
+pub(crate) fn spawn_garrison(commands: &mut Commands, province: ProvinceId) {
     let root = commands.spawn_scene(generated::mapview_3500()).id();
     spawn_modal(commands, root);
+    commands.entity(root).insert(GarrisonDialog(province));
 }
 
-pub(crate) fn spawn_army_report(commands: &mut Commands, _province: ProvinceId) {
+pub(crate) fn spawn_army_report(commands: &mut Commands, province: ProvinceId) {
     let root = commands.spawn_scene(generated::mapview_3100()).id();
     spawn_modal(commands, root);
+    commands.entity(root).insert(ArmyReportDialog(province));
 }
 
-pub(crate) fn spawn_fleet_report(commands: &mut Commands, friendly: bool) {
-    let root = if friendly {
-        commands.spawn_scene(generated::mapview_9474()).id()
-    } else {
-        commands.spawn_scene(generated::mapview_9475()).id()
+pub(crate) fn spawn_fleet_report(commands: &mut Commands, kind: FleetReportKind) {
+    let root = match kind {
+        FleetReportKind::Friendly(_) => commands.spawn_scene(generated::mapview_9474()).id(),
+        FleetReportKind::Intelligence { .. } => {
+            commands.spawn_scene(generated::mapview_9475()).id()
+        }
     };
     spawn_modal(commands, root);
+    commands.entity(root).insert(FleetReportDialog(kind));
 }
 
-pub(crate) fn spawn_navy_roster(commands: &mut Commands, force: TaskForceId) {
+pub(crate) fn spawn_navy_roster(commands: &mut Commands, kind: NavyRosterKind) {
     let root = commands.spawn_scene(generated::mapview_9478()).id();
     spawn_modal(commands, root);
-    commands.entity(root).insert(NavyRoster {
-        force,
-        current_column: 0,
-        last_column: 0,
-    });
+    commands.entity(root).insert(NavyRosterDialog(kind));
 }
 
 pub(crate) fn spawn_army_roster(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::mapview_9460()).id();
+    let root = commands.spawn_scene(generated::mapview_3500()).id();
     spawn_modal(commands, root);
+    commands.entity(root).insert(ArmyRosterDialog);
 }
 
 pub(crate) fn spawn_civilian_roster(commands: &mut Commands) {
@@ -453,264 +491,6 @@ fn ancestor_with_component<T: Component>(
         entity = parents.get(entity).ok()?.parent();
     }
     None
-}
-
-fn bind_added_navy_rosters(
-    mut commands: Commands,
-    added: Query<(Entity, &NavyRoster), Added<NavyRoster>>,
-    tree: RetailTree,
-    mut assets: RetailUiAssets,
-    session: Res<GameSession>,
-) {
-    for (root, roster) in &added {
-        let view = tree.view(root);
-        let page = view.find(fourcc!("page"));
-        let force = roster.force;
-        let ships = session
-            .game
-            .task_force(force)
-            .map(|entry| entry.ships().collect::<Vec<_>>())
-            .unwrap_or_default();
-        let last_column = ships.len().saturating_sub(1) / SHIPS_PER_COLUMN;
-        commands.entity(root).insert(NavyRoster {
-            force,
-            current_column: 0,
-            last_column,
-        });
-
-        let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset {
-                font_family: 3,
-                face_flags: 0,
-                point_size: 12,
-                alignment: -2,
-            })
-            .expect("retail navy-roster text style");
-        let atlas = assets
-            .transparent_picture(PictureId::new(SHIP_ROSTER_ATLAS), SHIP_ROSTER_TRANSPARENT)
-            .expect("retail navy roster atlas 3514 must load");
-
-        for (index, (ship, _)) in ships.into_iter().enumerate() {
-            let column = index / SHIPS_PER_COLUMN;
-            let row_in_column = index % SHIPS_PER_COLUMN;
-            let Some(state) = session.game.ship(ship) else {
-                continue;
-            };
-            let caption = ship_roster_caption(&assets, state);
-            let row = commands
-                .spawn((
-                    NavyRosterRow {
-                        column,
-                        row: row_in_column,
-                    },
-                    Node {
-                        position_type: PositionType::Absolute,
-                        left: Val::Px(column as f32 * SHIP_ROW_WIDTH),
-                        top: Val::Px(row_in_column as f32 * SHIP_ROW_HEIGHT),
-                        width: Val::Px(SHIP_ROW_WIDTH),
-                        height: Val::Px(SHIP_ROW_HEIGHT),
-                        overflow: Overflow::clip(),
-                        ..default()
-                    },
-                    if column < NAVY_ROSTER_VISIBLE_COLUMNS {
-                        Visibility::Inherited
-                    } else {
-                        Visibility::Hidden
-                    },
-                ))
-                .id();
-            let checkbox = commands
-                .spawn((
-                    NavyRosterShip { force, ship },
-                    Button,
-                    ActivateOnPress,
-                    Node {
-                        position_type: PositionType::Absolute,
-                        left: Val::Px(0.0),
-                        top: Val::Px(0.0),
-                        width: Val::Px(SHIP_CHECK_WIDTH),
-                        height: Val::Px(SHIP_CHECK_HEIGHT),
-                        ..default()
-                    },
-                    ImageNode {
-                        image: atlas.clone(),
-                        ..default()
-                    },
-                ))
-                .observe(on_navy_roster_toggle)
-                .id();
-            let name = commands
-                .spawn((
-                    Node {
-                        position_type: PositionType::Absolute,
-                        left: Val::Px(64.0),
-                        top: Val::Px(0.0),
-                        width: Val::Px(SHIP_ROW_WIDTH - 64.0),
-                        height: Val::Px(SHIP_ROW_HEIGHT),
-                        ..default()
-                    },
-                    Text::new(caption),
-                    font.clone(),
-                    layout,
-                    line_height,
-                    TextColor(Color::BLACK),
-                    Pickable::IGNORE,
-                ))
-                .id();
-            commands.entity(row).add_child(checkbox);
-            commands.entity(row).add_child(name);
-            commands.entity(page).add_child(row);
-        }
-        for (tag, action) in [
-            (fourcc!("lcor"), NavyRosterAction::Previous),
-            (fourcc!("rcor"), NavyRosterAction::Next),
-        ] {
-            commands
-                .entity(view.find(tag))
-                .insert((
-                    Button,
-                    ActivateOnPress,
-                    action,
-                    match action {
-                        NavyRosterAction::Previous => Visibility::Hidden,
-                        NavyRosterAction::Next if NAVY_ROSTER_VISIBLE_COLUMNS <= last_column => {
-                            Visibility::Inherited
-                        }
-                        NavyRosterAction::Next => Visibility::Hidden,
-                    },
-                ))
-                .observe(on_navy_roster_page);
-        }
-    }
-}
-
-#[allow(clippy::too_many_arguments, clippy::type_complexity)]
-fn project_navy_roster(
-    session: Res<GameSession>,
-    mut commands: Commands,
-    rosters: Query<&NavyRoster, Changed<NavyRoster>>,
-    mut rows: Query<(&NavyRosterRow, &mut Node, &mut Visibility)>,
-    mut arrows: Query<(&NavyRosterAction, &mut Visibility), Without<NavyRosterRow>>,
-    added_ships: Query<(), Added<NavyRosterShip>>,
-    mut ships: Query<(Entity, &NavyRosterShip, &mut ImageNode, Has<Checked>)>,
-) {
-    if let Ok(roster) = rosters.single() {
-        for (row, mut node, mut visibility) in &mut rows {
-            let visible = (roster.current_column
-                ..roster.current_column + NAVY_ROSTER_VISIBLE_COLUMNS)
-                .contains(&row.column);
-            *visibility = if visible {
-                Visibility::Inherited
-            } else {
-                Visibility::Hidden
-            };
-            if visible {
-                node.left = Val::Px((row.column - roster.current_column) as f32 * SHIP_ROW_WIDTH);
-                node.top = Val::Px(row.row as f32 * SHIP_ROW_HEIGHT);
-            }
-        }
-        for (action, mut visibility) in &mut arrows {
-            let visible = match *action {
-                NavyRosterAction::Previous => roster.current_column > 0,
-                NavyRosterAction::Next => {
-                    roster.current_column + NAVY_ROSTER_VISIBLE_COLUMNS <= roster.last_column
-                }
-            };
-            *visibility = if visible {
-                Visibility::Inherited
-            } else {
-                Visibility::Hidden
-            };
-        }
-    }
-
-    if crate::ui::projection_idle(&session, !added_ships.is_empty()) {
-        return;
-    }
-    for (entity, toggle, mut image, checked) in &mut ships {
-        let selected = ship_selected_in_force(&session.game, toggle.force, toggle.ship);
-        if selected != checked {
-            if selected {
-                commands.entity(entity).insert(Checked);
-            } else {
-                commands.entity(entity).remove::<Checked>();
-            }
-        }
-        let Some(ship) = session.game.ship(toggle.ship) else {
-            continue;
-        };
-        image.rect = Some(ship_check_rect(ship.ship_type, selected));
-    }
-}
-
-fn on_navy_roster_toggle(
-    activate: On<Activate>,
-    ships: Query<&NavyRosterShip>,
-    mut session: ResMut<GameSession>,
-) {
-    let Ok(toggle) = ships.get(activate.entity) else {
-        return;
-    };
-    let selected = ship_selected_in_force(&session.game, toggle.force, toggle.ship);
-    session
-        .game
-        .set_task_force_ship_selected(toggle.force, toggle.ship, !selected);
-}
-
-fn on_navy_roster_page(
-    activate: On<Activate>,
-    actions: Query<&NavyRosterAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<NavyRoster>>,
-    mut rosters: Query<&mut NavyRoster>,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
-        return;
-    };
-    let mut roster = rosters.get_mut(root).expect("navy roster page action root");
-    match action {
-        NavyRosterAction::Previous => {
-            roster.current_column = roster
-                .current_column
-                .saturating_sub(NAVY_ROSTER_VISIBLE_COLUMNS);
-        }
-        NavyRosterAction::Next => {
-            roster.current_column =
-                (roster.current_column + NAVY_ROSTER_VISIBLE_COLUMNS).min(roster.last_column);
-        }
-    }
-}
-
-fn ship_roster_caption(assets: &RetailUiAssets, ship: &ShipState) -> String {
-    let index = SHIP_STATUS_STRING_INDEX[usize::from(ship.ship_type.retail())];
-    if index < 0 {
-        ship.name.clone()
-    } else {
-        format!("{} {}", get_string(assets, 0x2760, index), ship.name)
-    }
-}
-
-fn ship_selected_in_force(game: &GameState, force: TaskForceId, ship: ShipId) -> bool {
-    game.task_force(force)
-        .and_then(|entry| {
-            entry
-                .ships()
-                .find(|(id, _)| *id == ship)
-                .map(|(_, selected)| selected)
-        })
-        .unwrap_or(false)
-}
-
-fn ship_check_rect(ship_type: ShipType, selected: bool) -> Rect {
-    let x = f32::from(SHIP_ROSTER_ATLAS_OFFSET[usize::from(ship_type.retail())])
-        + if selected { SHIP_CHECK_WIDTH } else { 0.0 };
-    Rect::from_corners(
-        Vec2::new(x, 0.0),
-        Vec2::new(x + SHIP_CHECK_WIDTH, SHIP_CHECK_HEIGHT),
-    )
 }
 
 fn bind_added_civilian_modals(
@@ -1238,169 +1018,807 @@ fn spawn_notice(commands: &mut Commands, title: String, body: String) {
     );
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::ui::test_support::beginning_of_game_parts;
-    use crate::ui::window::UiWindowPlugin;
-    use bevy::state::app::StatesPlugin;
-    use indexmap::IndexMap;
-
-    fn two_frigate_force() -> (GameState, TaskForceId, ShipId, ShipId) {
-        let mut parts = beginning_of_game_parts();
-        let nation = parts.turn.active_nation;
-        let location = OceanZoneId::new(0);
-        let first = parts.object_ids.ship();
-        let second = parts.object_ids.ship();
-        let force = parts.object_ids.task_force();
-        let ship = |name: &str| ShipState {
-            ship_type: ShipType::Frigate,
-            location,
-            aggression: NavalAggression::Balanced,
-            nation,
-            name: name.to_string(),
-            strength: 900,
-            experience: 0,
-            selection: ShipSelection::Available,
-        };
-        parts.ships.insert(first, ship("Alpha"));
-        parts.ships.insert(second, ship("Beta"));
-        parts.task_forces.insert(
-            force,
-            TaskForceState::from_parts(
-                NavalAggression::Balanced,
-                TaskForceOrder::None,
-                TaskForceTarget::None,
-                location,
-                nation,
-                false,
-                -1,
-                [(first, true), (second, true)]
-                    .into_iter()
-                    .collect::<IndexMap<_, _>>(),
-            ),
+fn bind_added_army_reports(
+    mut commands: Commands,
+    added: Query<(Entity, &ArmyReportDialog), Added<ArmyReportDialog>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+) {
+    for (root, ArmyReportDialog(province)) in &added {
+        let report = session.game.army_report_model(*province);
+        let view = tree.view(root);
+        let title = get_string(&assets, 0x2744, 0xb);
+        let lab2 = get_string(&assets, 0x2744, 0xc);
+        let lab3 = get_string(&assets, 0x2744, 0xd);
+        let composition = army_composition_text(&assets, &report.composition);
+        let order_template = get_string(
+            &assets,
+            0x2744,
+            if report.owned_by_viewer { 0xa } else { 0xe },
         );
-        (GameState::from_parts(parts), force, first, second)
+        let orders = fill_brackets(&order_template, &[&report.city_name]);
+        insert_styled_text(
+            &mut commands,
+            &mut assets,
+            view.find(fourcc!("titl")),
+            &title,
+            14,
+            1,
+        );
+        insert_styled_text(
+            &mut commands,
+            &mut assets,
+            view.find(fourcc!("lab2")),
+            &lab2,
+            12,
+            0,
+        );
+        insert_styled_text(
+            &mut commands,
+            &mut assets,
+            view.find(fourcc!("lab3")),
+            &lab3,
+            12,
+            0,
+        );
+        insert_styled_text(
+            &mut commands,
+            &mut assets,
+            view.find(fourcc!("whom")),
+            &composition,
+            10,
+            3,
+        );
+        insert_styled_text(
+            &mut commands,
+            &mut assets,
+            view.find(fourcc!("gene")),
+            "",
+            10,
+            3,
+        );
+        insert_styled_text(
+            &mut commands,
+            &mut assets,
+            view.find(fourcc!("ords")),
+            &orders,
+            10,
+            3,
+        );
+        commands.entity(view.find(fourcc!("canc"))).insert((
+            ActivateOnPress,
+            ModalCancel,
+            DismissWindow,
+        ));
     }
+}
 
-    #[test]
-    fn navy_roster_checkbox_toggles_core_selection_and_keeps_navy_mode() {
-        let (state, force, first, second) = two_frigate_force();
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(StatesPlugin)
-            .add_plugins(UiWindowPlugin)
-            .insert_state(AppState::StrategicMap)
-            .insert_resource(GameSession::new(state))
-            .add_systems(Update, project_navy_roster);
+fn bind_added_garrisons(
+    mut commands: Commands,
+    added: Query<(Entity, &GarrisonDialog), Added<GarrisonDialog>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+) {
+    for (root, GarrisonDialog(province)) in &added {
+        let model = session.game.garrison_model(*province);
+        bind_roster_page(
+            &mut commands,
+            root,
+            &tree,
+            &mut assets,
+            None,
+            model.units.len(),
+            GARRISON_PER_COLUMN,
+            GARRISON_ROW_HEIGHT,
+        );
+        let page = tree.find(root, fourcc!("page"));
+        let (font, layout, line_height) = roster_text_style(&mut assets, 12);
+        for (index, row) in model.units.iter().enumerate() {
+            let column = index / GARRISON_PER_COLUMN;
+            let row_in_column = index % GARRISON_PER_COLUMN;
+            let kind = garrison_order_text(&assets, row.order);
+            let mut entity = spawn_roster_row(
+                &mut commands,
+                page,
+                RosterRow {
+                    column,
+                    row: row_in_column,
+                },
+                column < ROSTER_VISIBLE_COLUMNS,
+                GARRISON_ROW_HEIGHT,
+                format!("{}\n{kind}", row.name),
+                font.clone(),
+                layout,
+                line_height,
+            );
+            if !row.militia {
+                entity
+                    .insert((Button, ActivateOnPress, GarrisonRowAction::Toggle(row.unit)))
+                    .observe(on_garrison_row_action);
+            }
+        }
+    }
+}
 
-        let mut interaction = StrategicInteraction {
-            mode: MapInteractionMode::Navy,
+fn bind_added_army_rosters(
+    mut commands: Commands,
+    added: Query<Entity, Added<ArmyRosterDialog>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+) {
+    for root in &added {
+        let model = session.game.army_roster_model();
+        bind_roster_page(
+            &mut commands,
+            root,
+            &tree,
+            &mut assets,
+            Some((0x2746, 0xb)),
+            model.units.len(),
+            MINI_ROSTER_PER_COLUMN,
+            MINI_ROSTER_ROW_HEIGHT,
+        );
+        let page = tree.find(root, fourcc!("page"));
+        let (font, layout, line_height) = roster_text_style(&mut assets, 12);
+        for (index, row) in model.units.iter().enumerate() {
+            let column = index / MINI_ROSTER_PER_COLUMN;
+            let row_in_column = index % MINI_ROSTER_PER_COLUMN;
+            spawn_roster_row(
+                &mut commands,
+                page,
+                RosterRow {
+                    column,
+                    row: row_in_column,
+                },
+                column < ROSTER_VISIBLE_COLUMNS,
+                MINI_ROSTER_ROW_HEIGHT,
+                format!("{}\n{}", row.name, row.city_name),
+                font.clone(),
+                layout,
+                line_height,
+            )
+            .insert((
+                Button,
+                ActivateOnPress,
+                ArmyRosterRowAction::Select(row.province),
+            ))
+            .observe(on_army_roster_row_action);
+        }
+    }
+}
+
+fn bind_added_fleet_reports(
+    mut commands: Commands,
+    added: Query<(Entity, &FleetReportDialog), Added<FleetReportDialog>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+) {
+    for (root, FleetReportDialog(kind)) in &added {
+        let Some(model) = session.game.fleet_report_model(*kind) else {
+            commands.entity(root).try_despawn();
+            continue;
+        };
+        match model {
+            FleetReportModel::Friendly(report) => {
+                bind_friendly_fleet_report(&mut commands, root, &tree, &mut assets, &report);
+            }
+            FleetReportModel::Intelligence(report) => {
+                bind_enemy_fleet_report(&mut commands, root, &tree, &mut assets, &report);
+            }
+        }
+    }
+}
+
+fn bind_friendly_fleet_report(
+    commands: &mut Commands,
+    root: Entity,
+    tree: &RetailTree,
+    assets: &mut RetailUiAssets,
+    report: &FriendlyFleetReport,
+) {
+    let view = tree.view(root);
+    let title = get_string(assets, 0x2762, 7);
+    let lab1 = get_string(assets, 0x2762, 8);
+    let lab2 = get_string(assets, 0x2762, 9);
+    let lab3 = get_string(assets, 0x2762, 0xa);
+    let composition = ship_composition_text(assets, &report.composition);
+    let orders = friendly_orders_text(assets, report);
+    let agro = get_string(assets, 0x2762, report.aggression.retail() as i16 + 4);
+    let authority = fill_brackets(
+        &get_string(assets, 0x2762, 0),
+        &[&fleet_authority_text(assets, &report.authority)],
+    );
+    insert_styled_text(commands, assets, view.find(fourcc!("titl")), &title, 14, 1);
+    insert_styled_text(commands, assets, view.find(fourcc!("lab1")), &lab1, 10, 3);
+    insert_styled_text(
+        commands,
+        assets,
+        view.find(fourcc!("zone")),
+        &report.zone_name,
+        12,
+        1,
+    );
+    insert_styled_text(commands, assets, view.find(fourcc!("lab2")), &lab2, 12, 0);
+    insert_styled_text(commands, assets, view.find(fourcc!("lab3")), &lab3, 12, 0);
+    insert_styled_text(
+        commands,
+        assets,
+        view.find(fourcc!("whom")),
+        &composition,
+        10,
+        3,
+    );
+    insert_styled_text(commands, assets, view.find(fourcc!("ords")), &orders, 10, 3);
+    insert_styled_text(commands, assets, view.find(fourcc!("agro")), &agro, 10, 0);
+    insert_styled_text(
+        commands,
+        assets,
+        view.find(fourcc!("adam")),
+        &authority,
+        10,
+        3,
+    );
+    commands
+        .entity(view.find(fourcc!("canc")))
+        .insert((
+            ActivateOnPress,
+            CancelFleetOrders(report.force),
+            ModalCancel,
+            DismissWindow,
+        ))
+        .observe(on_cancel_fleet_orders);
+}
+
+fn bind_enemy_fleet_report(
+    commands: &mut Commands,
+    root: Entity,
+    tree: &RetailTree,
+    assets: &mut RetailUiAssets,
+    report: &EnemyFleetReport,
+) {
+    let view = tree.view(root);
+    let mut string_index = 0x29;
+    let title = get_string(assets, 0x2762, string_index);
+    string_index += 1;
+    let lab1 = get_string(assets, 0x2762, string_index);
+    string_index += 1;
+    let lab2 = get_string(assets, 0x2762, string_index);
+    string_index += 1;
+    let lab3 = get_string(assets, 0x2762, string_index);
+    string_index += 1;
+    let lab4 = get_string(assets, 0x2762, string_index);
+    let composition = ship_composition_text(assets, &report.composition);
+    let source = intelligence_source_text(assets, &report.authority);
+    insert_styled_text(commands, assets, view.find(fourcc!("titl")), &title, 14, 1);
+    insert_styled_text(commands, assets, view.find(fourcc!("lab1")), &lab1, 10, 3);
+    insert_styled_text(commands, assets, view.find(fourcc!("lab2")), &lab2, 10, 3);
+    insert_styled_text(commands, assets, view.find(fourcc!("lab3")), &lab3, 12, 0);
+    insert_styled_text(commands, assets, view.find(fourcc!("lab4")), &lab4, 10, 3);
+    insert_styled_text(
+        commands,
+        assets,
+        view.find(fourcc!("gpee")),
+        &report.nation_name,
+        12,
+        1,
+    );
+    insert_styled_text(
+        commands,
+        assets,
+        view.find(fourcc!("zone")),
+        &report.zone_name,
+        12,
+        1,
+    );
+    insert_styled_text(
+        commands,
+        assets,
+        view.find(fourcc!("ship")),
+        &composition,
+        10,
+        3,
+    );
+    insert_styled_text(commands, assets, view.find(fourcc!("adam")), &source, 10, 3);
+}
+
+fn bind_added_navy_rosters(
+    mut commands: Commands,
+    added: Query<(Entity, &NavyRosterDialog), Added<NavyRosterDialog>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+) {
+    for (root, NavyRosterDialog(kind)) in &added {
+        let model = session.game.navy_roster_model(*kind);
+        let title = match kind {
+            NavyRosterKind::Nation => Some((0x2746, 0xc)),
+            NavyRosterKind::TaskForce(_) => None,
+        };
+        bind_roster_page(
+            &mut commands,
+            root,
+            &tree,
+            &mut assets,
+            title,
+            model.ships.len(),
+            MINI_ROSTER_PER_COLUMN,
+            MINI_ROSTER_ROW_HEIGHT,
+        );
+        let page = tree.find(root, fourcc!("page"));
+        let (font, layout, line_height) = roster_text_style(&mut assets, 12);
+        for (index, row) in model.ships.iter().enumerate() {
+            let column = index / MINI_ROSTER_PER_COLUMN;
+            let row_in_column = index % MINI_ROSTER_PER_COLUMN;
+            let kind_name = navy_roster_type_label(&assets, row.ship_type);
+            let selected = if row.selected { "* " } else { "" };
+            let mut entity = spawn_roster_row(
+                &mut commands,
+                page,
+                RosterRow {
+                    column,
+                    row: row_in_column,
+                },
+                column < ROSTER_VISIBLE_COLUMNS,
+                MINI_ROSTER_ROW_HEIGHT,
+                format!("{selected}{kind_name}{}\n{}", row.name, row.zone_name),
+                font.clone(),
+                layout,
+                line_height,
+            );
+            match kind {
+                NavyRosterKind::Nation => {
+                    entity.insert((
+                        Button,
+                        ActivateOnPress,
+                        NavyRosterRowAction::Select {
+                            zone: row.location,
+                            force: row.force,
+                        },
+                    ));
+                }
+                NavyRosterKind::TaskForce(force) => {
+                    entity.insert((
+                        Button,
+                        ActivateOnPress,
+                        NavyRosterRowAction::Toggle {
+                            force: *force,
+                            ship: row.ship,
+                            selected: row.selected,
+                        },
+                    ));
+                }
+            }
+            entity.observe(on_navy_roster_row_action);
+        }
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn bind_roster_page(
+    commands: &mut Commands,
+    root: Entity,
+    tree: &RetailTree,
+    assets: &mut RetailUiAssets,
+    title: Option<(i16, i16)>,
+    count: usize,
+    rows_per_column: usize,
+    row_height: f32,
+) {
+    let last_column = if count == 0 {
+        0
+    } else {
+        count.saturating_sub(1) / rows_per_column
+    };
+    commands.entity(root).insert(RosterPage {
+        current_column: 0,
+        last_column,
+        row_height,
+    });
+    if let Some((group, offset)) = title {
+        spawn_roster_title(
+            commands,
+            tree.view(root).find(fourcc!("DLOG")),
+            assets,
+            group,
+            offset,
+        );
+    }
+    let view = tree.view(root);
+    for (tag, action) in [
+        (fourcc!("lcor"), RosterPageAction::Previous),
+        (fourcc!("rcor"), RosterPageAction::Next),
+    ] {
+        commands
+            .entity(view.find(tag))
+            .insert((
+                Button,
+                ActivateOnPress,
+                action,
+                match action {
+                    RosterPageAction::Previous => Visibility::Hidden,
+                    RosterPageAction::Next if ROSTER_VISIBLE_COLUMNS <= last_column => {
+                        Visibility::Inherited
+                    }
+                    RosterPageAction::Next => Visibility::Hidden,
+                },
+            ))
+            .observe(on_roster_page_action);
+    }
+}
+
+fn spawn_roster_title(
+    commands: &mut Commands,
+    dialog: Entity,
+    assets: &mut RetailUiAssets,
+    group: i16,
+    offset: i16,
+) {
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size: 12,
+            alignment: -2,
+        })
+        .expect("retail roster title text style");
+    let title = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(77.0),
+                top: Val::Px(17.0),
+                width: Val::Px(128.0),
+                height: Val::Px(18.0),
+                ..default()
+            },
+            Text::new(get_string(assets, group, offset)),
+            font,
+            layout,
+            line_height,
+            TextColor(Color::BLACK),
+            Pickable::IGNORE,
+        ))
+        .id();
+    commands.entity(dialog).add_child(title);
+}
+
+#[allow(clippy::too_many_arguments)]
+fn spawn_roster_row<'a>(
+    commands: &'a mut Commands,
+    page: Entity,
+    row: RosterRow,
+    visible: bool,
+    height: f32,
+    text: String,
+    font: TextFont,
+    layout: TextLayout,
+    line_height: LineHeight,
+) -> EntityCommands<'a> {
+    let mut entity = commands.spawn((
+        row,
+        Node {
+            position_type: PositionType::Absolute,
+            left: Val::Px(row.column as f32 * ROSTER_ROW_WIDTH),
+            top: Val::Px(row.row as f32 * height),
+            width: Val::Px(ROSTER_ROW_WIDTH),
+            height: Val::Px(height),
+            padding: UiRect::all(Val::Px(2.0)),
             ..default()
+        },
+        Text::new(text),
+        font,
+        layout,
+        line_height,
+        TextColor(Color::BLACK),
+        if visible {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        },
+    ));
+    entity.insert(ChildOf(page));
+    entity
+}
+
+fn roster_text_style(
+    assets: &mut RetailUiAssets,
+    point_size: i32,
+) -> (TextFont, TextLayout, LineHeight) {
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size,
+            alignment: -2,
+        })
+        .expect("retail roster row text style");
+    (font, layout, line_height)
+}
+
+fn project_roster_pages(
+    pages: Query<&RosterPage, Changed<RosterPage>>,
+    mut rows: Query<(&RosterRow, &mut Node, &mut Visibility)>,
+    mut arrows: Query<(&RosterPageAction, &mut Visibility), Without<RosterRow>>,
+) {
+    let Ok(page) = pages.single() else {
+        return;
+    };
+    for (row, mut node, mut visibility) in &mut rows {
+        let visible = (page.current_column..page.current_column + ROSTER_VISIBLE_COLUMNS)
+            .contains(&row.column);
+        *visibility = if visible {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
         };
-        interaction.navy.zone = Some(OceanZoneId::new(0));
-        interaction.navy.force = Some(force);
-        let interaction_entity = app.world_mut().spawn(interaction).id();
-
-        let root = app
-            .world_mut()
-            .spawn((
-                NavyRoster {
-                    force,
-                    current_column: 0,
-                    last_column: 0,
-                },
-                ModalWindow,
-            ))
-            .id();
-        let first_row = app
-            .world_mut()
-            .spawn((NavyRosterRow { column: 0, row: 0 }, ChildOf(root)))
-            .id();
-        let second_row = app
-            .world_mut()
-            .spawn((NavyRosterRow { column: 0, row: 1 }, ChildOf(root)))
-            .id();
-        let first_check = app
-            .world_mut()
-            .spawn((
-                NavyRosterShip { force, ship: first },
-                Button,
-                ImageNode::default(),
-                ChildOf(first_row),
-            ))
-            .observe(on_navy_roster_toggle)
-            .id();
-        let second_check = app
-            .world_mut()
-            .spawn((
-                NavyRosterShip {
-                    force,
-                    ship: second,
-                },
-                Button,
-                ImageNode::default(),
-                ChildOf(second_row),
-            ))
-            .observe(on_navy_roster_toggle)
-            .id();
-        let okay = app.world_mut().spawn((DismissWindow, ChildOf(root))).id();
-
-        app.update();
-
-        let row_count = app
-            .world_mut()
-            .query::<&NavyRosterRow>()
-            .iter(app.world())
-            .count();
-        assert_eq!(row_count, 2);
-        assert!(app.world().entity(first_check).contains::<Checked>());
-        assert!(app.world().entity(second_check).contains::<Checked>());
-        assert_eq!(
-            app.world()
-                .resource::<GameSession>()
-                .game
-                .navy_toolbar_counts(Some(force))
-                .selected[NavyToolbarClass::Class1],
-            2
-        );
-
-        app.world_mut().commands().trigger(Activate {
-            entity: first_check,
-        });
-        app.world_mut().flush();
-        app.update();
-
-        let session = app.world().resource::<GameSession>();
-        assert!(!ship_selected_in_force(&session.game, force, first));
-        assert!(ship_selected_in_force(&session.game, force, second));
-        assert_eq!(
-            session.game.navy_toolbar_counts(Some(force)).selected[NavyToolbarClass::Class1],
-            1
-        );
-        assert_eq!(
-            session.game.navy_toolbar_counts(Some(force)).available[NavyToolbarClass::Class1],
-            2
-        );
-        assert_eq!(
-            session.game.task_force(force).map(|entry| entry.order),
-            Some(TaskForceOrder::None)
-        );
-        assert!(!app.world().entity(first_check).contains::<Checked>());
-        assert!(app.world().entity(second_check).contains::<Checked>());
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: okay });
-        app.world_mut().flush();
-        app.update();
-
-        assert!(app.world().get_entity(root).is_err());
-        let interaction = app
-            .world()
-            .get::<StrategicInteraction>(interaction_entity)
-            .expect("navy selection survives roster close");
-        assert_eq!(interaction.mode, MapInteractionMode::Navy);
-        assert_eq!(interaction.navy.force, Some(force));
+        if visible {
+            node.left = Val::Px((row.column - page.current_column) as f32 * ROSTER_ROW_WIDTH);
+            node.top = Val::Px(row.row as f32 * page.row_height);
+        }
     }
+    for (action, mut visibility) in &mut arrows {
+        let visible = match action {
+            RosterPageAction::Previous => page.current_column > 0,
+            RosterPageAction::Next => {
+                page.current_column + ROSTER_VISIBLE_COLUMNS <= page.last_column
+            }
+        };
+        *visibility = if visible {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
+    }
+}
+
+fn on_roster_page_action(
+    activate: On<Activate>,
+    actions: Query<&RosterPageAction>,
+    parents: Query<&ChildOf>,
+    roots: Query<(), With<RosterPage>>,
+    mut pages: Query<&mut RosterPage>,
+) {
+    let Ok(action) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+        return;
+    };
+    let mut page = pages.get_mut(root).expect("roster page action root");
+    match action {
+        RosterPageAction::Previous => {
+            page.current_column = page.current_column.saturating_sub(ROSTER_VISIBLE_COLUMNS);
+        }
+        RosterPageAction::Next => {
+            page.current_column =
+                (page.current_column + ROSTER_VISIBLE_COLUMNS).min(page.last_column);
+        }
+    }
+}
+
+fn on_garrison_row_action(
+    activate: On<Activate>,
+    actions: Query<&GarrisonRowAction>,
+    mut texts: Query<&mut Text>,
+    mut session: ResMut<GameSession>,
+    assets: RetailUiAssets,
+) {
+    let Ok(GarrisonRowAction::Toggle(unit)) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    session.game.toggle_garrison_unit_ready(unit);
+    let Some(state) = session.game.military_unit(unit) else {
+        return;
+    };
+    let kind = garrison_order_text(&assets, state.order().code());
+    if let Ok(mut text) = texts.get_mut(activate.entity) {
+        text.0 = format!("{}\n{kind}", state.name());
+    }
+}
+
+fn on_army_roster_row_action(
+    activate: On<Activate>,
+    actions: Query<&ArmyRosterRowAction>,
+    parents: Query<&ChildOf>,
+    roots: Query<(), With<ArmyRosterDialog>>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut session: ResMut<GameSession>,
+    mut commands: Commands,
+) {
+    let Ok(ArmyRosterRowAction::Select(province)) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+        return;
+    };
+    if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::SetMode(MapInteractionMode::Army),
+        );
+        interaction.army = Some(province);
+        session.game.apply_army_province_selection(Some(province));
+        if let Some(tile) = session.game.map().provinces[province].city_tile() {
+            apply_map_transition(
+                &mut session,
+                &mut interaction,
+                &mut viewport,
+                MapTransition::Center(tile),
+            );
+        }
+    }
+    commands.entity(root).try_despawn();
+}
+
+fn on_navy_roster_row_action(
+    activate: On<Activate>,
+    actions: Query<&NavyRosterRowAction>,
+    parents: Query<&ChildOf>,
+    roots: Query<(), With<NavyRosterDialog>>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut session: ResMut<GameSession>,
+    mut commands: Commands,
+) {
+    let Ok(action) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+        return;
+    };
+    match action {
+        NavyRosterRowAction::Select { zone, force } => {
+            if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
+                activate_navy_selection(&mut session, &mut interaction, &mut viewport, zone, force);
+            }
+            commands.entity(root).try_despawn();
+        }
+        NavyRosterRowAction::Toggle {
+            force,
+            ship,
+            selected,
+        } => {
+            session
+                .game
+                .set_task_force_ship_selected(force, ship, !selected);
+            commands.entity(root).try_despawn();
+            spawn_navy_roster(&mut commands, NavyRosterKind::TaskForce(force));
+        }
+    }
+}
+
+fn on_cancel_fleet_orders(
+    activate: On<Activate>,
+    actions: Query<&CancelFleetOrders>,
+    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut session: ResMut<GameSession>,
+) {
+    let Ok(CancelFleetOrders(force)) = actions.get(activate.entity).copied() else {
+        return;
+    };
+    let zone = session.game.task_force(force).map(|entry| entry.location);
+    session.game.cancel_task_force(force);
+    if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
+        apply_map_transition(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            MapTransition::SetMode(MapInteractionMode::Navy),
+        );
+        interaction.navy.force = None;
+        interaction.navy.zone = zone;
+    }
+}
+
+fn garrison_order_text(assets: &RetailUiAssets, order: MilitaryOrderCode) -> String {
+    get_string(assets, 0x272c, order.get() as i16)
+}
+
+fn navy_roster_type_label(assets: &RetailUiAssets, ship_type: ShipType) -> String {
+    const STATUS_INDEX: [i16; 14] = [-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7];
+    let index = STATUS_INDEX[usize::from(ship_type.retail())];
+    if index < 0 {
+        String::new()
+    } else {
+        format!("{} ", get_string(assets, 0x2760, index))
+    }
+}
+
+fn army_composition_text(
+    assets: &RetailUiAssets,
+    composition: &[(ArmyUnitCategory, i32)],
+) -> String {
+    join_counted_labels(composition.iter().map(|(category, count)| {
+        let name = get_string(assets, 0x2726, category.into_usize() as i16);
+        (*count, name)
+    }))
+}
+
+fn ship_composition_text(assets: &RetailUiAssets, composition: &[(ShipType, i32)]) -> String {
+    join_counted_labels(composition.iter().map(|(kind, count)| {
+        let group = if *count < 2 { 0x2716 } else { 0x271a };
+        let name = get_string(assets, group, i16::from(kind.retail()));
+        (*count, name)
+    }))
+}
+
+fn join_counted_labels(items: impl Iterator<Item = (i32, String)>) -> String {
+    let mut text = String::new();
+    for (count, name) in items {
+        if !text.is_empty() {
+            text.push_str(", ");
+        }
+        text.push_str(&count.to_string());
+        text.push(' ');
+        text.push_str(&name);
+    }
+    text
+}
+
+fn friendly_orders_text(assets: &RetailUiAssets, report: &FriendlyFleetReport) -> String {
+    match report.order {
+        TaskForceOrder::Sail => fill_brackets(
+            &get_string(assets, 0x2762, 0xb),
+            &[report.target_name.as_deref().unwrap_or("")],
+        ),
+        TaskForceOrder::Patrol => fill_brackets(
+            &get_string(assets, 0x2762, 1),
+            &[report.target_name.as_deref().unwrap_or(&report.zone_name)],
+        ),
+        TaskForceOrder::Marines => get_string(assets, 0x2762, 2),
+        TaskForceOrder::Blockade => fill_brackets(
+            &get_string(assets, 0x2762, 0x39),
+            &[report.target_name.as_deref().unwrap_or("")],
+        ),
+        _ => get_string(assets, 0x2762, 3),
+    }
+}
+
+fn fleet_authority_text(assets: &RetailUiAssets, authority: &FleetAuthority) -> String {
+    match (&authority.admiral, &authority.ship) {
+        (None, None) => get_string(assets, 0x2762, 0xd),
+        (Some(admiral), Some(ship)) => fill_brackets(
+            &get_string(assets, 0x2762, 0xe),
+            &[&format!("Adm. {admiral}"), ship],
+        ),
+        (None, Some(ship)) => fill_brackets(&get_string(assets, 0x2762, 0xf), &[ship]),
+        (Some(admiral), None) => format!("Adm. {admiral}"),
+    }
+}
+
+fn intelligence_source_text(assets: &RetailUiAssets, authority: &FleetAuthority) -> String {
+    match (&authority.admiral, &authority.ship) {
+        (None, None) => get_string(assets, 0x2762, 0x10),
+        _ => fleet_authority_text(assets, authority),
+    }
+}
+
+fn insert_styled_text(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    entity: Entity,
+    text: &str,
+    point_size: i32,
+    alignment: i32,
+) {
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size,
+            alignment,
+        })
+        .expect("retail army/navy report text style");
+    commands.entity(entity).insert((
+        Text::new(text.to_owned()),
+        font,
+        layout,
+        line_height,
+        TextColor(Color::BLACK),
+    ));
 }

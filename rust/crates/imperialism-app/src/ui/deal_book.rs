@@ -5,8 +5,9 @@ use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::RetailTree;
+use super::retail_raster::IndexedRasterExt;
 use super::session::{apply_turn_stop, clear_return_to};
-use crate::{AppState, ReturnTo};
+use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -59,7 +60,11 @@ enum DealBookTitle {
 struct DealBookTabs;
 
 #[derive(Component)]
-struct DealBookTabHighlight;
+struct DealBookTabVisual {
+    empty: IndexedPicture,
+    filled: IndexedPicture,
+    shown_row: Option<u8>,
+}
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum DealBookPageButton {
@@ -74,8 +79,6 @@ struct DealBookHistory;
 struct DealBookPictures {
     history: Handle<Image>,
     category: Handle<Image>,
-    tab_empty: Handle<Image>,
-    tab_filled: Handle<Image>,
     flags: Handle<Image>,
     commodities: ResourceTable<Handle<Image>>,
 }
@@ -143,6 +146,12 @@ fn bind_deal_book(
     } else {
         TAB_STRIP_BASE
     };
+    let empty_tabs = assets
+        .indexed_picture(PictureId::new(tab_base + 4))
+        .expect("retail deal-book empty tab strip must load");
+    let filled_tabs = assets
+        .indexed_picture(PictureId::new(tab_base))
+        .expect("retail deal-book filled tab strip must load");
     let pictures = DealBookPictures {
         history: assets
             .picture(PictureId::new(HISTORY_BACKGROUND))
@@ -150,12 +159,6 @@ fn bind_deal_book(
         category: assets
             .picture(PictureId::new(CATEGORY_BACKGROUND))
             .expect("retail deal-book category background must load"),
-        tab_empty: assets
-            .picture(PictureId::new(tab_base + 4))
-            .expect("retail deal-book empty tab strip must load"),
-        tab_filled: assets
-            .picture(PictureId::new(tab_base))
-            .expect("retail deal-book filled tab strip must load"),
         flags: assets
             .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
             .expect("retail deal-book flag atlas must load"),
@@ -191,6 +194,8 @@ fn bind_deal_book(
         heading_center: TextLayout::justify(Justify::Center),
         color: Color::BLACK,
     };
+    // Mac titL is family 0 / 18pt. The generator only emits shipped fonts (modes 1-3),
+    // and TDealBookPicture::Startup does not restyle titL on Windows.
     let (title_font, title_layout, title_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 0,
@@ -200,50 +205,29 @@ fn bind_deal_book(
         })
         .expect("retail deal-book title text style");
     commands.entity(tree.find(root, fourcc!("titL"))).insert((
-        title_font.clone(),
+        title_font,
         title_layout,
         title_line_height,
         TextColor(Color::BLACK),
     ));
-    commands.entity(tree.find(root, fourcc!("rtil"))).insert((
-        title_font,
-        title_layout,
-        title_line_height,
-        TextColor(assets.palette_color(0xd2)),
-        TextShadow {
-            offset: Vec2::new(1.0, 1.0),
-            color: assets.palette_color(0x28),
-        },
-    ));
 
     let tabs = tree.find(root, fourcc!("tabs"));
+    let palette = *assets.default_dib_palette();
+    let tab_image = assets
+        .add_image(paint_deal_tab_control(&empty_tabs, &filled_tabs, None).to_image(&palette));
     commands
         .entity(tabs)
         .insert((
             DealBookTabs,
-            ImageNode::new(pictures.tab_empty.clone()),
+            DealBookTabVisual {
+                empty: empty_tabs,
+                filled: filled_tabs,
+                shown_row: None,
+            },
+            ImageNode::new(tab_image),
             RelativeCursorPosition::default(),
         ))
         .observe(on_deal_book_tabs_click);
-    commands.spawn((
-        DealBookTabHighlight,
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(0.0),
-            top: Val::Px(0.0),
-            width: Val::Px(31.0),
-            height: Val::Px(TAB_ROW_HEIGHT),
-            ..default()
-        },
-        ImageNode {
-            image: pictures.tab_filled.clone(),
-            rect: Some(Rect::new(0.0, 0.0, 31.0, TAB_ROW_HEIGHT)),
-            ..default()
-        },
-        Visibility::Hidden,
-        Pickable::IGNORE,
-        ChildOf(tabs),
-    ));
     commands
         .entity(tree.find(root, fourcc!("end ")))
         .insert(ActivateOnPress)
@@ -386,34 +370,59 @@ fn on_deal_book_tabs_click(
     screen.page = 0;
 }
 
+fn paint_deal_tab_control(
+    empty: &IndexedPicture,
+    filled: &IndexedPicture,
+    selected_row: Option<u8>,
+) -> IndexedPicture {
+    let mut picture = empty.clone();
+    let Some(row) = selected_row else {
+        return picture;
+    };
+    let top = i32::from(row) * TAB_ROW_HEIGHT as i32;
+    let width = picture.width as i32;
+    let height = picture.height as i32;
+    if top >= height {
+        return picture;
+    }
+    let bottom = (top + TAB_ROW_HEIGHT as i32).min(height);
+    picture.copy_rect(
+        filled,
+        IRect::new(0, top, width, bottom),
+        IVec2::new(0, top),
+    );
+    picture
+}
+
 fn hover_deal_book_tabs(
+    retail: Res<RetailAssetsResource>,
+    mut images: ResMut<Assets<Image>>,
     screen: Option<Single<&DealBookScreen>>,
-    tabs: Option<Single<&RelativeCursorPosition, With<DealBookTabs>>>,
-    mut highlights: Query<(&mut Node, &mut ImageNode, &mut Visibility), With<DealBookTabHighlight>>,
+    mut tabs: Query<
+        (&RelativeCursorPosition, &mut DealBookTabVisual, &ImageNode),
+        With<DealBookTabs>,
+    >,
 ) {
     let Some(screen) = screen else {
         return;
     };
-    let Some(cursor) = tabs else {
+    let Ok((cursor, mut visual, image_node)) = tabs.single_mut() else {
         return;
     };
-    let Ok((mut node, mut image, mut visibility)) = highlights.single_mut() else {
+    let shown = tab_row(cursor, screen.advanced_production_unlocked)
+        .or(match screen.mode {
+            DealBookMode::History => None,
+            DealBookMode::Category(commodity) => Some(commodity),
+        })
+        .and_then(|commodity| deal_book_tab_index(screen.advanced_production_unlocked, commodity));
+    if visual.shown_row == shown {
         return;
-    };
-    let commodity = tab_row(*cursor, screen.advanced_production_unlocked).or(match screen.mode {
-        DealBookMode::History => None,
-        DealBookMode::Category(commodity) => Some(commodity),
-    });
-    let Some(commodity) = commodity else {
-        *visibility = Visibility::Hidden;
-        return;
-    };
-    let row = deal_book_tab_index(screen.advanced_production_unlocked, commodity)
-        .expect("displayed deal-book commodity has a visible tab");
-    let top = f32::from(row) * TAB_ROW_HEIGHT;
-    node.top = Val::Px(top);
-    image.rect = Some(Rect::new(0.0, top, 31.0, top + TAB_ROW_HEIGHT));
-    *visibility = Visibility::Visible;
+    }
+    visual.shown_row = shown;
+    if let Some(mut image) = images.get_mut(&image_node.image) {
+        *image = paint_deal_tab_control(&visual.empty, &visual.filled, shown)
+            .to_image(retail.assets().default_dib_palette());
+    }
 }
 
 fn tab_row(
@@ -1301,5 +1310,37 @@ fn clear_host(commands: &mut Commands, host: Entity, children: &Query<&Children>
     };
     for child in children.iter() {
         commands.entity(child).despawn();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::retail_raster::indexed_picture;
+
+    #[test]
+    fn deal_tab_control_draw_overlays_the_filled_band_at_the_selected_row() {
+        let empty = indexed_picture(31, 75, 1);
+        let filled = indexed_picture(31, 75, 2);
+        let none = paint_deal_tab_control(&empty, &filled, None);
+        assert_eq!(none.pixels, empty.pixels);
+        let selected = paint_deal_tab_control(&empty, &filled, Some(1));
+        let width = 31usize;
+        let row = TAB_ROW_HEIGHT as usize;
+        assert!(
+            selected.pixels[..width * row]
+                .iter()
+                .all(|&pixel| pixel == 1)
+        );
+        assert!(
+            selected.pixels[width * row..width * 2 * row]
+                .iter()
+                .all(|&pixel| pixel == 2)
+        );
+        assert!(
+            selected.pixels[width * 2 * row..]
+                .iter()
+                .all(|&pixel| pixel == 1)
+        );
     }
 }
