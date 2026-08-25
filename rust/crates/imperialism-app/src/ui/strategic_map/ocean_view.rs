@@ -9,7 +9,6 @@ use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH, viewport_point};
 use crate::AppState;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
-use crate::ui::retail::RetailTree;
 use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -62,11 +61,10 @@ pub(crate) fn register(app: &mut App) {
 pub(crate) fn bind_ocean_view(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    land: Entity,
+    ocean: Entity,
     session: &GameSession,
 ) -> Entity {
-    let land = tree.find(root, fourcc!("DLOG"));
     commands.entity(land).insert(LandMapFrame);
     let ocean_assets = OceanRenderAssets::load(|id| {
         assets
@@ -74,7 +72,6 @@ pub(crate) fn bind_ocean_view(
             .unwrap_or_else(|error| panic!("retail ocean picture {id} must load: {error}"))
     });
 
-    let ocean = tree.find(root, fourcc!("DOOG"));
     let palette = *assets.default_dib_palette();
     let image = assets.add_image(
         indexed_picture(VIEWPORT_WIDTH as i32, VIEWPORT_HEIGHT as i32, 0).to_image(&palette),

@@ -40,8 +40,7 @@ pub(in crate::ui::city) struct ShipyardDetailsVisual {
 pub(in crate::ui::city) fn configure_shipyard_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Shipyard9207,
     state: &GameState,
 ) {
     let nation = MajorNationId::from_nation(state.turn().active_nation)
@@ -52,14 +51,15 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             .indexed_picture(PictureId::new(700 + i16::from(resource.retail())))
             .expect("retail Shipyard material picture must load")
     });
-    let prepared_rows: [_; 8] = SHIPYARD_ROWS.map(|spec| {
-        let ship_type = city.orders.ships[spec.slot()].ship_type;
+    let prepared_rows: [_; 8] = SHIPYARD_SLOTS.map(|(slot, overlay_left)| {
+        let ship_type = city.orders.ships[slot].ship_type;
         if ship_type == ShipType::NoShip {
-            return (spec, None);
+            return (slot, overlay_left, None);
         }
         let costs = ship_order_costs(ship_type);
         (
-            spec,
+            slot,
+            overlay_left,
             Some(ShipyardRowData {
                 ship_type,
                 ship_name: assets
@@ -104,19 +104,29 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
-    for (spec, details) in prepared_rows {
-        let slot = spec.slot();
-        let button = tree.find(root, spec.button_tag);
+    let row_controls = [
+        (ui.clu0, ui.clu0_minu, ui.clu0_plus, ui.clu0_numb, ui.but0),
+        (ui.clu1, ui.clu1_minu, ui.clu1_plus, ui.clu1_numb, ui.but1),
+        (ui.clu2, ui.clu2_minu, ui.clu2_plus, ui.clu2_numb, ui.but2),
+        (ui.clu3, ui.clu3_minu, ui.clu3_plus, ui.clu3_numb, ui.but3),
+        (ui.clu4, ui.clu4_minu, ui.clu4_plus, ui.clu4_numb, ui.but4),
+        (ui.clu5, ui.clu5_minu, ui.clu5_plus, ui.clu5_numb, ui.but5),
+        (ui.clu6, ui.clu6_minu, ui.clu6_plus, ui.clu6_numb, ui.but6),
+        (ui.clu7, ui.clu7_minu, ui.clu7_plus, ui.clu7_numb, ui.but7),
+    ];
+    for ((slot, overlay_left, details), (row, decrease, increase, quantity, button)) in
+        prepared_rows.into_iter().zip(row_controls)
+    {
+        let order = CityOrderId::Ship(slot);
         let bound = bind_city_order_row(
             commands,
-            root,
-            tree,
-            spec.binding,
-            fourcc!("minu"),
-            fourcc!("plus"),
-            fourcc!("numb"),
+            order,
+            row,
+            decrease,
+            increase,
+            quantity,
             1,
-            Some(root),
+            Some(ui.root),
         );
         let available = details.is_some();
         bound.set_available(commands, available);
@@ -131,7 +141,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                 &queue_icons,
                 slot,
                 row_data.ship_type,
-                spec.overlay_left as i32,
+                overlay_left as i32,
             );
             commands.entity(button).insert((
                 RetailPictureSwap {
@@ -148,33 +158,29 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             .entity(button)
             .insert((
                 CityRowChoice {
-                    order: spec.binding.order,
-                    selection: root,
+                    order,
+                    selection: ui.root,
                 },
                 ShipyardRowAssets { details },
             ))
             .observe(on_city_row_selected);
         commands.entity(bound.quantity).insert(InteractionDisabled);
     }
-    let bind_text = |commands: &mut Commands, tag, display: ShipyardDisplay| {
-        let entity = tree.find(root, tag);
-        commands.entity(entity).insert(display);
-    };
-    bind_text(commands, fourcc!("snam"), ShipyardDisplay::ShipName);
-    bind_text(commands, fourcc!("desc"), ShipyardDisplay::Description);
-    let picture = tree.find(root, fourcc!("spic"));
-    commands.entity(picture).insert(ShipyardDisplay::Picture);
-    let dlog = tree.find(root, fourcc!("DLOG"));
+    commands.entity(ui.snam).insert(ShipyardDisplay::ShipName);
+    commands
+        .entity(ui.desc)
+        .insert(ShipyardDisplay::Description);
+    commands.entity(ui.spic).insert(ShipyardDisplay::Picture);
     let base = assets
         .indexed_picture(PictureId::new(9800))
         .expect("retail Shipyard dialog picture must load");
     let palette = *assets.default_dib_palette();
     let image = assets.add_image(base.to_image(&palette));
-    commands.entity(dlog).insert((
+    commands.entity(ui.dlog).insert((
         ImageNode::new(image),
         ShipyardDetailsVisual { base, stat_labels },
     ));
-    commands.entity(root).insert(CityRowSelection {
+    commands.entity(ui.root).insert(CityRowSelection {
         order: CityOrderId::Ship(ShipOrderSlot::MerchantEarlyPrimary),
         normal_color,
         warning_color,

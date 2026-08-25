@@ -63,54 +63,321 @@ pub(in crate::ui::city) fn open_city_dialog(
     ));
 }
 
+fn restore_city_dialog_window(
+    commands: &mut Commands,
+    window: Entity,
+    saved_position: Option<IVec2>,
+) {
+    if let Some(position) = saved_position {
+        commands
+            .entity(window)
+            .entry::<Node>()
+            .and_modify(move |mut node| set_window_position(&mut node, position));
+    }
+}
+
 pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
-    dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
-    windows: Query<(), With<CaptionedWindow>>,
-    tree: RetailTree,
+    dialogs: Query<(&CityBuildingDialog, EntityRef), Added<CityBuildingDialog>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, dialog) in &dialogs {
-        if let Some(position) = dialog.saved_position
-            && let Ok(children) = tree.children.get(root)
-            && let Some(window) = children.iter().find(|child| windows.contains(*child))
-        {
-            commands
-                .entity(window)
-                .entry::<Node>()
-                .and_modify(move |mut node| set_window_position(&mut node, position));
-        }
+    for (dialog, entity) in &dialogs {
         match city_dialog_kind(dialog.slot) {
-            CityDialogKind::Industry(page) => {
-                configure_industry_dialog(&mut commands, &mut assets, root, &tree, page);
+            CityDialogKind::Industry(CityFacilitySlot::TextileMill) => {
+                let ui = entity
+                    .get::<generated::Citydlog9200>()
+                    .expect("textile mill dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                let orders = [IndustryOrderControls {
+                    order: CityOrderId::Item(ManufacturedItem::Fabric),
+                    row: ui.fabr,
+                    decrease: ui.left,
+                    increase: ui.rght,
+                    quantity: ui.move_,
+                    bar: ui.bar,
+                }];
+                let stocks = [
+                    (ResourceKind::Cotton, ui.cott, 1),
+                    (ResourceKind::Wool, ui.wool, 1),
+                ];
+                configure_industry_dialog(
+                    &mut commands,
+                    &mut assets,
+                    IndustryDialogControls {
+                        slot: dialog.slot,
+                        name: ui.name,
+                        capacity: ui.capt,
+                        labor: ui.labv,
+                        expansion: ui.expa,
+                        flag: ui.flag,
+                        orders: &orders,
+                        stocks: &stocks,
+                    },
+                );
+            }
+            CityDialogKind::Industry(CityFacilitySlot::ClothingFactory) => {
+                let ui = entity
+                    .get::<generated::Citydlog9201>()
+                    .expect("clothing factory dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                let orders = [IndustryOrderControls {
+                    order: CityOrderId::Item(ManufacturedItem::Clothing),
+                    row: ui.clot,
+                    decrease: ui.left,
+                    increase: ui.rght,
+                    quantity: ui.move_,
+                    bar: ui.bar,
+                }];
+                let stocks = [(ResourceKind::Fabric, ui.fabr, 2)];
+                configure_industry_dialog(
+                    &mut commands,
+                    &mut assets,
+                    IndustryDialogControls {
+                        slot: dialog.slot,
+                        name: ui.name,
+                        capacity: ui.capt,
+                        labor: ui.labv,
+                        expansion: ui.expa,
+                        flag: ui.flag,
+                        orders: &orders,
+                        stocks: &stocks,
+                    },
+                );
+            }
+            CityDialogKind::Industry(CityFacilitySlot::SteelMill) => {
+                let ui = entity
+                    .get::<generated::Citydlog9202>()
+                    .expect("steel mill dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                let orders = [IndustryOrderControls {
+                    order: CityOrderId::Item(ManufacturedItem::Steel),
+                    row: ui.stee,
+                    decrease: ui.left,
+                    increase: ui.rght,
+                    quantity: ui.move_,
+                    bar: ui.bar,
+                }];
+                let stocks = [
+                    (ResourceKind::Coal, ui.coal, 1),
+                    (ResourceKind::Iron, ui.iron, 1),
+                ];
+                configure_industry_dialog(
+                    &mut commands,
+                    &mut assets,
+                    IndustryDialogControls {
+                        slot: dialog.slot,
+                        name: ui.name,
+                        capacity: ui.capt,
+                        labor: ui.labv,
+                        expansion: ui.expa,
+                        flag: ui.flag,
+                        orders: &orders,
+                        stocks: &stocks,
+                    },
+                );
+            }
+            CityDialogKind::Industry(CityFacilitySlot::Metalworks) => {
+                let ui = entity
+                    .get::<generated::Citydlog9203>()
+                    .expect("metalworks dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                let orders = [
+                    IndustryOrderControls {
+                        order: CityOrderId::Item(ManufacturedItem::Hardware),
+                        row: ui.hard,
+                        decrease: ui.hard_left,
+                        increase: ui.hard_rght,
+                        quantity: ui.hard_move_,
+                        bar: ui.hard_bar,
+                    },
+                    IndustryOrderControls {
+                        order: CityOrderId::Item(ManufacturedItem::Arms),
+                        row: ui.arma,
+                        decrease: ui.arma_left,
+                        increase: ui.arma_rght,
+                        quantity: ui.arma_move_,
+                        bar: ui.arma_bar,
+                    },
+                ];
+                let stocks = [(ResourceKind::Steel, ui.stee, 2)];
+                configure_industry_dialog(
+                    &mut commands,
+                    &mut assets,
+                    IndustryDialogControls {
+                        slot: dialog.slot,
+                        name: ui.name,
+                        capacity: ui.capt,
+                        labor: ui.labv,
+                        expansion: ui.expa,
+                        flag: ui.flag,
+                        orders: &orders,
+                        stocks: &stocks,
+                    },
+                );
+            }
+            CityDialogKind::Industry(CityFacilitySlot::LumberMill) => {
+                let ui = entity
+                    .get::<generated::Citydlog9204>()
+                    .expect("lumber mill dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                let orders = [
+                    IndustryOrderControls {
+                        order: CityOrderId::Item(ManufacturedItem::Lumber),
+                        row: ui.lumb,
+                        decrease: ui.lumb_left,
+                        increase: ui.lumb_rght,
+                        quantity: ui.lumb_move_,
+                        bar: ui.lumb_bar,
+                    },
+                    IndustryOrderControls {
+                        order: CityOrderId::Item(ManufacturedItem::Paper),
+                        row: ui.pape,
+                        decrease: ui.pape_left,
+                        increase: ui.pape_rght,
+                        quantity: ui.pape_move_,
+                        bar: ui.pape_bar,
+                    },
+                ];
+                let stocks = [(ResourceKind::Timber, ui.timb, 2)];
+                configure_industry_dialog(
+                    &mut commands,
+                    &mut assets,
+                    IndustryDialogControls {
+                        slot: dialog.slot,
+                        name: ui.name,
+                        capacity: ui.capt,
+                        labor: ui.labv,
+                        expansion: ui.expa,
+                        flag: ui.flag,
+                        orders: &orders,
+                        stocks: &stocks,
+                    },
+                );
+            }
+            CityDialogKind::Industry(CityFacilitySlot::FurnitureFactory) => {
+                let ui = entity
+                    .get::<generated::Citydlog9205>()
+                    .expect("furniture factory dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                let orders = [IndustryOrderControls {
+                    order: CityOrderId::Item(ManufacturedItem::Furniture),
+                    row: ui.furn,
+                    decrease: ui.left,
+                    increase: ui.rght,
+                    quantity: ui.move_,
+                    bar: ui.bar,
+                }];
+                let stocks = [(ResourceKind::Lumber, ui.lumb, 2)];
+                configure_industry_dialog(
+                    &mut commands,
+                    &mut assets,
+                    IndustryDialogControls {
+                        slot: dialog.slot,
+                        name: ui.name,
+                        capacity: ui.capt,
+                        labor: ui.labv,
+                        expansion: ui.expa,
+                        flag: ui.flag,
+                        orders: &orders,
+                        stocks: &stocks,
+                    },
+                );
+            }
+            CityDialogKind::Industry(CityFacilitySlot::OilRefinery) => {
+                let ui = entity
+                    .get::<generated::Citydlog9206>()
+                    .expect("oil refinery dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                let orders = [IndustryOrderControls {
+                    order: CityOrderId::Item(ManufacturedItem::Fuel),
+                    row: ui.fuel,
+                    decrease: ui.left,
+                    increase: ui.rght,
+                    quantity: ui.move_,
+                    bar: ui.bar,
+                }];
+                let stocks = [(ResourceKind::Oil, ui.oil, 2)];
+                configure_industry_dialog(
+                    &mut commands,
+                    &mut assets,
+                    IndustryDialogControls {
+                        slot: dialog.slot,
+                        name: ui.name,
+                        capacity: ui.capt,
+                        labor: ui.labv,
+                        expansion: ui.expa,
+                        flag: ui.flag,
+                        orders: &orders,
+                        stocks: &stocks,
+                    },
+                );
+            }
+            CityDialogKind::Industry(_) => {
+                unreachable!("industry dialog slots are enumerated above")
             }
             CityDialogKind::Training => {
-                configure_training_dialog(&mut commands, &assets, root, &tree)
+                let ui = entity
+                    .get::<generated::Citydlog9209>()
+                    .expect("training dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_training_dialog(&mut commands, &assets, ui);
             }
             CityDialogKind::Armory => {
-                configure_armory_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+                let ui = entity
+                    .get::<generated::Armory9208>()
+                    .expect("armory dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_armory_dialog(&mut commands, &mut assets, ui, &session.game);
             }
             CityDialogKind::University => {
-                configure_university_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+                let ui = entity
+                    .get::<generated::Univ9210>()
+                    .expect("university dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_university_dialog(&mut commands, &mut assets, ui, &session.game);
             }
             CityDialogKind::Shipyard => {
-                configure_shipyard_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+                let ui = entity
+                    .get::<generated::Shipyard9207>()
+                    .expect("shipyard dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_shipyard_dialog(&mut commands, &mut assets, ui, &session.game);
             }
             CityDialogKind::Warehouse => {
-                configure_warehouse_dialog(&mut commands, &mut assets, root, &tree, &session.game)
+                let ui = entity
+                    .get::<generated::Citydlog9213>()
+                    .expect("warehouse dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_warehouse_dialog(&mut commands, &mut assets, ui, &session.game);
             }
             CityDialogKind::FoodProcessing => {
-                configure_food_dialog(&mut commands, &mut assets, root, &tree)
+                let ui = entity
+                    .get::<generated::Citydlog9212>()
+                    .expect("food processing dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_food_dialog(&mut commands, &mut assets, ui);
             }
             CityDialogKind::PowerPlant => {
-                configure_power_dialog(&mut commands, &mut assets, root, &tree)
+                let ui = entity
+                    .get::<generated::Citydlog9211>()
+                    .expect("power plant dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_power_dialog(&mut commands, &mut assets, ui);
             }
             CityDialogKind::Transport => {
-                configure_transport_capacity_dialog(&mut commands, &mut assets, root, &tree)
+                let ui = entity
+                    .get::<generated::Citydlog9214>()
+                    .expect("transport dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_transport_capacity_dialog(&mut commands, &mut assets, ui);
             }
             CityDialogKind::Population => {
-                configure_population_dialog(&mut commands, &mut assets, root, &tree)
+                let ui = entity
+                    .get::<generated::Citydlog9215>()
+                    .expect("population dialog has generated identities");
+                restore_city_dialog_window(&mut commands, ui.wind, dialog.saved_position);
+                configure_population_dialog(&mut commands, &mut assets, ui);
             }
         }
     }

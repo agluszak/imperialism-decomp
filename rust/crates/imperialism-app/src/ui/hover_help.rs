@@ -1,7 +1,7 @@
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::RetailUiAssets;
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
-use imperialism_formats::{FourCc, RetailTextStylePreset};
+use imperialism_formats::RetailTextStylePreset;
 
 /// Hover-help string shown in the screen's info bar while this control is the cursor hit.
 ///
@@ -116,14 +116,10 @@ pub(crate) fn bind_hover_help_bar(
 
 pub(crate) fn bind_hover_help_texts(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    texts: impl IntoIterator<Item = (FourCc, String)>,
+    texts: impl IntoIterator<Item = (Entity, String)>,
 ) {
-    for (tag, text) in texts {
-        commands
-            .entity(tree.find(root, tag))
-            .insert(HoverHelpText(text));
+    for (entity, text) in texts {
+        commands.entity(entity).insert(HoverHelpText(text));
     }
 }
 

@@ -516,12 +516,14 @@ fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
 
 /// Hierarchy lookup for recovered View tags. The same FourCc can appear in
 /// different subtrees, so searches stay scoped to a root rather than a global index.
+#[cfg(test)]
 #[derive(SystemParam)]
 pub struct RetailTree<'w, 's> {
     pub children: Query<'w, 's, &'static Children>,
     tags: Query<'w, 's, &'static RetailTag>,
 }
 
+#[cfg(test)]
 impl<'w, 's> RetailTree<'w, 's> {
     pub fn view<'a>(&'a self, root: Entity) -> RetailView<'a, 'w, 's> {
         RetailView { tree: self, root }
@@ -562,11 +564,13 @@ impl<'w, 's> RetailTree<'w, 's> {
     }
 }
 
+#[cfg(test)]
 pub struct RetailView<'a, 'w, 's> {
     tree: &'a RetailTree<'w, 's>,
     root: Entity,
 }
 
+#[cfg(test)]
 impl RetailView<'_, '_, '_> {
     pub fn find(&self, tag: FourCc) -> Entity {
         self.tree.find(self.root, tag)

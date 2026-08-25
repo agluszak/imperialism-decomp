@@ -3,7 +3,7 @@ use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, ui_string,
 };
 use crate::ui::random_setup_map;
-use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
+use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{insert_game_session, insert_loaded_game};
@@ -17,7 +17,6 @@ use bevy::text::{EditableText, TextEditChange};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus, ValueChange};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const PLANET_SEED_MAX_CHARS: usize = 32;
@@ -164,41 +163,39 @@ fn drop_random_setup_draft(mut commands: Commands) {
 }
 
 fn enter_random_setup(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::startup_1501()).id();
+    let ui = generated::spawn_startup_1501(&mut commands);
     commands
-        .entity(root)
-        .insert((RandomSetupRoot, DespawnOnExit(AppState::RandomSetup)));
+        .entity(ui.root)
+        .insert((RandomSetupRoot, ui, DespawnOnExit(AppState::RandomSetup)));
 }
 
 fn bind_random_setup(
     mut commands: Commands,
-    root: Single<Entity, Added<RandomSetupRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Startup1501, Added<RandomSetupRoot>>,
     mut nodes: Query<&mut Node>,
     setup: Res<RandomGameSetup>,
     mut assets: RetailUiAssets,
 ) {
-    bind_random_setup_controls(&mut commands, *root, &tree, &setup);
-    bind_random_setup_labels(&mut commands, *root, &tree, &mut nodes, &mut assets);
-    random_setup_map::attach_random_setup_meanings(&mut commands, *root, &tree);
-    bind_random_setup_hover_help(&mut commands, *root, &tree, &mut nodes, &mut assets);
+    let ui = **ui;
+    bind_random_setup_controls(&mut commands, ui, &setup);
+    bind_random_setup_labels(&mut commands, ui, &mut nodes, &mut assets);
+    random_setup_map::attach_random_setup_meanings(&mut commands, ui.map, ui.coat, ui.flag);
+    bind_random_setup_hover_help(&mut commands, ui, &mut nodes, &mut assets);
 }
 
 /// Attach screen meanings only; Bevy widget semantics come from generated components.
 fn bind_random_setup_controls(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Startup1501,
     setup: &RandomGameSetup,
 ) {
-    for (tag, difficulty) in [
-        (fourcc!("dif0"), Difficulty::Introductory),
-        (fourcc!("dif1"), Difficulty::Easy),
-        (fourcc!("dif2"), Difficulty::Normal),
-        (fourcc!("dif3"), Difficulty::Hard),
-        (fourcc!("dif4"), Difficulty::NighOnImpossible),
+    for (entity, difficulty) in [
+        (ui.dif0, Difficulty::Introductory),
+        (ui.dif1, Difficulty::Easy),
+        (ui.dif2, Difficulty::Normal),
+        (ui.dif3, Difficulty::Hard),
+        (ui.dif4, Difficulty::NighOnImpossible),
     ] {
-        let entity = tree.find(root, tag);
         let mut entity_commands = commands.entity(entity);
         entity_commands
             .insert((DifficultyChoice(difficulty), Pickable::default()))
@@ -210,11 +207,10 @@ fn bind_random_setup_controls(
         }
     }
 
-    for (tag, localized) in [
-        (fourcc!("hist"), NationNameMode::Historical),
-        (fourcc!("rand"), NationNameMode::Random),
+    for (entity, localized) in [
+        (ui.hist, NationNameMode::Historical),
+        (ui.rand, NationNameMode::Random),
     ] {
-        let entity = tree.find(root, tag);
         let mut entity_commands = commands.entity(entity);
         entity_commands
             .insert((LocalizedNamesChoice(localized), Pickable::default()))
@@ -226,9 +222,8 @@ fn bind_random_setup_controls(
         }
     }
 
-    let country = tree.find(root, fourcc!("coun"));
     commands
-        .entity(country)
+        .entity(ui.coun)
         .insert((
             CountryNameField,
             SelectAllOnFocus,
@@ -248,53 +243,49 @@ fn bind_random_setup_controls(
         ))
         .observe(on_country_name_edited);
 
-    let okay = tree.find(root, OKAY);
     // Retail rebuilds this screen from the main menu and keeps the draft when
     // capital selection cancels back into setup.
     commands
-        .entity(okay)
+        .entity(ui.okay)
         .insert(RandomSetupAction::Accept)
         .remove::<InteractionDisabled>()
         .observe(on_random_setup_activate);
 
-    for (tag, action) in [
-        (fourcc!("cncl"), RandomSetupAction::Cancel),
-        (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
+    for (entity, action) in [
+        (ui.cncl, RandomSetupAction::Cancel),
+        (ui.key, RandomSetupAction::OpenPlanetSeed),
     ] {
-        let entity = tree.find(root, tag);
         commands
             .entity(entity)
             .insert((action, ActivateOnPress))
             .observe(on_random_setup_activate);
     }
     commands
-        .entity(tree.find(root, fourcc!("glob")))
+        .entity(ui.glob)
         .insert((RandomSetupGlobe, ActivateOnPress))
         .observe(on_random_setup_globe);
 }
 
 fn bind_random_setup_labels(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Startup1501,
     nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
     // TSetupRandomMapPicture::DoPostCreate overwrites Mac STR# captions from
     // the Windows string tables and frames the two TRadioTextCluster groups.
-    for (tag, group, index) in [
-        (fourcc!("tcou"), 0x2737, 0x1e),
-        (fourcc!("dift"), 0x2758, 2),
-        (fourcc!("tnam"), 0x2758, 3),
-        (fourcc!("hist"), 0x2758, 4),
-        (fourcc!("rand"), 0x2758, 5),
-        (fourcc!("dif0"), 0x2737, 0x0e),
-        (fourcc!("dif1"), 0x2737, 0x0f),
-        (fourcc!("dif2"), 0x2737, 0x10),
-        (fourcc!("dif3"), 0x2737, 0x11),
-        (fourcc!("dif4"), 0x2737, 0x12),
+    for (entity, group, index) in [
+        (ui.tcou, 0x2737, 0x1e),
+        (ui.dift, 0x2758, 2),
+        (ui.tnam, 0x2758, 3),
+        (ui.hist, 0x2758, 4),
+        (ui.rand, 0x2758, 5),
+        (ui.dif0, 0x2737, 0x0e),
+        (ui.dif1, 0x2737, 0x0f),
+        (ui.dif2, 0x2737, 0x10),
+        (ui.dif3, 0x2737, 0x11),
+        (ui.dif4, 0x2737, 0x12),
     ] {
-        let entity = tree.find(root, tag);
         commands
             .entity(entity)
             .insert((Text::new(ui_string(assets, group, index)), Label));
@@ -304,32 +295,23 @@ fn bind_random_setup_labels(
         offset: Vec2::new(-1.0, -1.0),
         color: assets.palette_color(0x28),
     };
-    for tag in [fourcc!("tcou"), fourcc!("dift"), fourcc!("tnam")] {
-        commands
-            .entity(tree.find(root, tag))
-            .insert((title_color, title_shadow));
+    for entity in [ui.tcou, ui.dift, ui.tnam] {
+        commands.entity(entity).insert((title_color, title_shadow));
     }
     let option_color = TextColor(assets.palette_color(0xd2));
     let option_shadow = TextShadow {
         offset: Vec2::new(-1.0, -1.0),
         color: assets.palette_color(0x28),
     };
-    for tag in [
-        fourcc!("hist"),
-        fourcc!("rand"),
-        fourcc!("dif0"),
-        fourcc!("dif1"),
-        fourcc!("dif2"),
-        fourcc!("dif3"),
-        fourcc!("dif4"),
+    for entity in [
+        ui.hist, ui.rand, ui.dif0, ui.dif1, ui.dif2, ui.dif3, ui.dif4,
     ] {
         commands
-            .entity(tree.find(root, tag))
+            .entity(entity)
             .insert((option_color, option_shadow));
     }
     let frame = BorderColor::all(assets.palette_color(RADIO_CLUSTER_FRAME_PALETTE));
-    for tag in [fourcc!("diff"), fourcc!("name")] {
-        let entity = tree.find(root, tag);
+    for entity in [ui.diff, ui.name] {
         nodes
             .get_mut(entity)
             .expect("random-setup radio cluster has Node")
@@ -340,40 +322,36 @@ fn bind_random_setup_labels(
 
 fn bind_random_setup_hover_help(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Startup1501,
     nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
-    let bar = tree.find(root, fourcc!("hot!"));
     bind_hover_help_bar(
         commands,
         assets,
-        bar,
+        ui.hot,
         &mut nodes
-            .get_mut(bar)
+            .get_mut(ui.hot)
             .expect("random-setup hover-help bar has Node"),
         HoverHelpBarStyle::RANDOM_SETUP,
     );
     let cancel = ui_string(assets, 0x2737, 0x14);
     bind_hover_help_texts(
         commands,
-        root,
-        tree,
         [
-            (fourcc!("main"), String::new()),
-            (fourcc!("key "), String::new()),
-            (fourcc!("stuf"), String::new()),
-            (fourcc!("name"), ui_string(assets, 0x2758, 0x1e)),
-            (fourcc!("glob"), ui_string(assets, 0x2737, 0x13)),
-            (fourcc!("canc"), cancel.clone()),
-            (fourcc!("cncl"), cancel),
-            (OKAY, ui_string(assets, 0x2737, 0x15)),
-            (fourcc!("map "), ui_string(assets, 0x2758, 0x13)),
-            (fourcc!("diff"), ui_string(assets, 0x2737, 0x17)),
-            (fourcc!("coun"), ui_string(assets, 0x2737, 0x1a)),
-            (fourcc!("flag"), ui_string(assets, 0x2737, 0x1b)),
-            (fourcc!("coat"), ui_string(assets, 0x2737, 0x1c)),
+            (ui.main, String::new()),
+            (ui.key, String::new()),
+            (ui.stuf, String::new()),
+            (ui.name, ui_string(assets, 0x2758, 0x1e)),
+            (ui.glob, ui_string(assets, 0x2737, 0x13)),
+            (ui.canc, cancel.clone()),
+            (ui.cncl, cancel),
+            (ui.okay, ui_string(assets, 0x2737, 0x15)),
+            (ui.map, ui_string(assets, 0x2758, 0x13)),
+            (ui.diff, ui_string(assets, 0x2737, 0x17)),
+            (ui.coun, ui_string(assets, 0x2737, 0x1a)),
+            (ui.flag, ui_string(assets, 0x2737, 0x1b)),
+            (ui.coat, ui_string(assets, 0x2737, 0x1c)),
         ],
     );
 }
@@ -578,9 +556,10 @@ fn regenerate_random_setup_planet(
 }
 
 fn open_planet_seed_dialog(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::linger_954()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_linger_954(commands);
+    commands.entity(ui.root).insert((
         PlanetSeedDialogRoot,
+        ui,
         ModalWindow,
         DespawnOnExit(AppState::RandomSetup),
     ));
@@ -588,12 +567,10 @@ fn open_planet_seed_dialog(commands: &mut Commands) {
 
 fn bind_planet_seed_dialog(
     mut commands: Commands,
-    root: Single<Entity, Added<PlanetSeedDialogRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Linger954, Added<PlanetSeedDialogRoot>>,
     setup: Res<RandomGameSetup>,
 ) {
-    let plan = tree.find(*root, fourcc!("plan"));
-    commands.entity(plan).insert((
+    commands.entity(ui.plan).insert((
         PlanetSeedField,
         SelectAllOnFocus,
         AutoFocus,
@@ -605,15 +582,12 @@ fn bind_planet_seed_dialog(
         },
     ));
 
-    let okay = tree.find(*root, OKAY);
     commands
-        .entity(okay)
+        .entity(ui.okay)
         .insert((PlanetSeedAccept, ModalDefault, DismissWindow, TabIndex(1)))
         .observe(on_planet_seed_accept);
     // Retail cancel control stays disabled; Escape does not dismiss.
-    commands
-        .entity(tree.find(*root, fourcc!("cncl")))
-        .insert(ModalCancel);
+    commands.entity(ui.canc).insert(ModalCancel);
 }
 
 #[derive(SystemParam)]
@@ -657,24 +631,46 @@ fn update_random_setup_preview(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::retail::RetailTag;
 
     fn spawn_binding_fixture(mut commands: Commands) {
         let root = commands.spawn((RandomSetupRoot, Node::default())).id();
-        for tag in ["dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"] {
-            commands.spawn((
-                RetailTag(imperialism_formats::FourCc::new(tag)),
-                bevy::ui_widgets::RadioButton,
-                ChildOf(root),
-            ));
-        }
-        for tag in ["coun", "okay", "cncl", "glob", "key "] {
-            commands.spawn((
-                RetailTag(imperialism_formats::FourCc::new(tag)),
-                Node::default(),
-                ChildOf(root),
-            ));
-        }
+        let radio = |commands: &mut Commands| {
+            commands
+                .spawn((bevy::ui_widgets::RadioButton, ChildOf(root)))
+                .id()
+        };
+        let control =
+            |commands: &mut Commands| commands.spawn((Node::default(), ChildOf(root))).id();
+        let ui = generated::Startup1501 {
+            root,
+            base: root,
+            main: root,
+            hot: root,
+            stuf: root,
+            map: root,
+            tcou: root,
+            flag: root,
+            coun: control(&mut commands),
+            okay: control(&mut commands),
+            diff: root,
+            dif0: radio(&mut commands),
+            dif1: radio(&mut commands),
+            dif2: radio(&mut commands),
+            dif3: radio(&mut commands),
+            dif4: radio(&mut commands),
+            dift: root,
+            tnam: root,
+            name: root,
+            hist: radio(&mut commands),
+            rand: radio(&mut commands),
+            key: control(&mut commands),
+            auto: root,
+            canc: root,
+            cncl: control(&mut commands),
+            coat: root,
+            glob: control(&mut commands),
+        };
+        commands.entity(root).insert(ui);
     }
 
     #[test]
@@ -694,10 +690,9 @@ mod tests {
             (
                 spawn_binding_fixture,
                 |mut commands: Commands,
-                 root: Single<Entity, Added<RandomSetupRoot>>,
-                 tree: RetailTree,
+                 ui: Single<&generated::Startup1501, Added<RandomSetupRoot>>,
                  setup: Res<RandomGameSetup>| {
-                    bind_random_setup_controls(&mut commands, *root, &tree, &setup);
+                    bind_random_setup_controls(&mut commands, **ui, &setup);
                 },
             )
                 .chain(),

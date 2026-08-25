@@ -5,7 +5,7 @@ use super::hover_help::{
     HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, ui_string,
 };
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{RetailPictureSwap, RetailTree};
+use super::retail::RetailPictureSwap;
 use super::session::{GameSession, apply_turn_stop};
 #[cfg(test)]
 use super::tactical_viewport::BATTLEFIELD_HEIGHT_PX;
@@ -23,7 +23,7 @@ use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::*;
-use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc};
+use imperialism_formats::{MusicTrack, PictureId, SoundId};
 
 const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
 const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
@@ -353,71 +353,61 @@ fn synchronize_interactive_army_battle(
 }
 
 fn spawn_land_battle(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::tactical_3800()).id();
+    let ui = generated::spawn_tactical_3800(&mut commands);
     commands
-        .entity(root)
-        .insert((LandBattleRoot, DespawnOnExit(AppState::LandBattle)));
+        .entity(ui.root)
+        .insert((LandBattleRoot, ui, DespawnOnExit(AppState::LandBattle)));
 }
 
 fn bind_land_battle(
     mut commands: Commands,
-    root: Single<Entity, Added<LandBattleRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Tactical3800, Added<LandBattleRoot>>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
-    bind_land_battle_controls(&mut commands, *root, &tree);
-    let curs = tree.find(*root, fourcc!("curs"));
+    let ui = **ui;
+    bind_land_battle_controls(&mut commands, ui);
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
-        curs,
+        ui.curs,
         &mut nodes
-            .get_mut(curs)
+            .get_mut(ui.curs)
             .expect("tactical hover-help bar has Node"),
         HoverHelpBarStyle::TACTICAL,
     );
     bind_hover_help_texts(
         &mut commands,
-        *root,
-        &tree,
         [
-            (fourcc!("help"), ui_string(&assets, 0x273d, 0x20)),
-            (fourcc!("targ"), ui_string(&assets, 0x273d, 0x21)),
-            (fourcc!("done"), ui_string(&assets, 0x273d, 0x22)),
-            (fourcc!("retr"), ui_string(&assets, 0x273d, 0x23)),
-            (fourcc!("auto"), ui_string(&assets, 0x273d, 0x24)),
-            (fourcc!("DLOG"), String::new()),
+            (ui.help, ui_string(&assets, 0x273d, 0x20)),
+            (ui.targ, ui_string(&assets, 0x273d, 0x21)),
+            (ui.done, ui_string(&assets, 0x273d, 0x22)),
+            (ui.retr, ui_string(&assets, 0x273d, 0x23)),
+            (ui.auto, ui_string(&assets, 0x273d, 0x24)),
+            (ui.dlog, String::new()),
         ],
     );
 }
 
-fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
-    for (tag, action) in [
-        (fourcc!("help"), LandBattleAction::Help),
-        (fourcc!("targ"), LandBattleAction::Target),
-        (fourcc!("done"), LandBattleAction::Done),
-        (fourcc!("auto"), LandBattleAction::Auto),
-        (fourcc!("retr"), LandBattleAction::Retreat),
+fn bind_land_battle_controls(commands: &mut Commands, ui: generated::Tactical3800) {
+    for (entity, action) in [
+        (ui.help, LandBattleAction::Help),
+        (ui.targ, LandBattleAction::Target),
+        (ui.done, LandBattleAction::Done),
+        (ui.auto, LandBattleAction::Auto),
+        (ui.retr, LandBattleAction::Retreat),
     ] {
         commands
-            .entity(tree.find(root, tag))
+            .entity(entity)
             .insert((action, ActivateOnPress))
             .observe(on_land_battle_activate)
             .remove::<InteractionDisabled>();
     }
+    commands.entity(ui.coat).insert(LandBattleCoat);
+    commands.entity(ui.curr).insert(LandBattlePortrait::Current);
+    commands.entity(ui.tpic).insert(LandBattlePortrait::Other);
     commands
-        .entity(tree.find(root, fourcc!("coat")))
-        .insert(LandBattleCoat);
-    commands
-        .entity(tree.find(root, fourcc!("curr")))
-        .insert(LandBattlePortrait::Current);
-    commands
-        .entity(tree.find(root, fourcc!("tpic")))
-        .insert(LandBattlePortrait::Other);
-    let field = tree.find(root, fourcc!("DLOG"));
-    commands
-        .entity(field)
+        .entity(ui.dlog)
         .insert((
             LandBattlefield {
                 battle: None,
@@ -431,29 +421,32 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
         ))
         .observe(on_battlefield_click);
     commands
-        .entity(field)
+        .entity(ui.dlog)
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
 }
 
 fn bind_land_battle_retreat_prompt(
     mut commands: Commands,
-    prompts: Query<Entity, Added<LandBattleRetreatPrompt>>,
-    tree: RetailTree,
+    prompt: Option<
+        Single<(&LandBattleRetreatPrompt, &generated::Linger2020), Added<LandBattleRetreatPrompt>>,
+    >,
     mut assets: RetailUiAssets,
 ) {
-    for root in &prompts {
-        let linger = bind_linger_dialog(&mut commands, root, &tree);
-        let body = ui_string(&assets, 0x273d, 0x32);
-        linger.set_body(&mut commands, &mut assets, body);
-        commands
-            .entity(linger.okay)
-            .remove::<InteractionDisabled>()
-            .observe(on_confirm_land_battle_retreat);
-        commands
-            .entity(linger.cancel)
-            .remove::<InteractionDisabled>();
-    }
+    let Some(prompt) = prompt else {
+        return;
+    };
+    let (_, ui) = prompt.into_inner();
+    let linger = bind_linger_dialog(&mut commands, *ui);
+    let body = ui_string(&assets, 0x273d, 0x32);
+    linger.set_body(&mut commands, &mut assets, body);
+    commands
+        .entity(linger.okay)
+        .remove::<InteractionDisabled>()
+        .observe(on_confirm_land_battle_retreat);
+    commands
+        .entity(linger.cancel)
+        .remove::<InteractionDisabled>();
 }
 
 fn on_confirm_land_battle_retreat(
@@ -2173,7 +2166,6 @@ fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
@@ -2379,36 +2371,46 @@ mod tests {
                 DespawnOnExit(AppState::LandBattle),
             ))
             .id();
-        commands.spawn((RetailTag(fourcc!("curs")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("help")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("targ")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("done")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("auto")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("retr")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("coat")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("curr")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("tpic")), Node::default(), ChildOf(root)));
-        commands.spawn((
-            RetailTag(fourcc!("DLOG")),
-            Node {
-                position_type: PositionType::Absolute,
-                width: px(BATTLEFIELD_WIDTH_PX),
-                height: px(BATTLEFIELD_HEIGHT_PX),
-                ..default()
-            },
-            ChildOf(root),
-        ));
+        let control =
+            |commands: &mut Commands| commands.spawn((Node::default(), ChildOf(root))).id();
+        let dlog = commands
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    width: px(BATTLEFIELD_WIDTH_PX),
+                    height: px(BATTLEFIELD_HEIGHT_PX),
+                    ..default()
+                },
+                ChildOf(root),
+            ))
+            .id();
+        let ui = generated::Tactical3800 {
+            root,
+            base: root,
+            main: root,
+            curs: control(&mut commands),
+            dlog,
+            tool: root,
+            help: control(&mut commands),
+            targ: control(&mut commands),
+            done: control(&mut commands),
+            retr: control(&mut commands),
+            coat: control(&mut commands),
+            curr: control(&mut commands),
+            auto: control(&mut commands),
+            tpic: control(&mut commands),
+        };
+        commands.entity(root).insert(ui);
     }
 
     fn bind_test_land_battle(
         mut commands: Commands,
-        root: Option<Single<Entity, Added<LandBattleRoot>>>,
-        tree: RetailTree,
+        ui: Option<Single<&generated::Tactical3800, Added<LandBattleRoot>>>,
     ) {
-        let Some(root) = root else {
+        let Some(ui) = ui else {
             return;
         };
-        bind_land_battle_controls(&mut commands, *root, &tree);
+        bind_land_battle_controls(&mut commands, **ui);
     }
 
     fn node_left_top(node: &Node) -> (i32, i32) {

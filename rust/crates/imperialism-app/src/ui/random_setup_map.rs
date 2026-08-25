@@ -1,6 +1,5 @@
 use super::RetailUiAssets;
 use super::random_setup::{RandomGameSetup, RandomSetupPreview};
-use super::retail::RetailTree;
 use super::satellite_preview::SatellitePreview;
 use crate::RetailAssetsResource;
 use bevy::log::warn;
@@ -9,11 +8,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::MajorNationId;
-use imperialism_formats::{FourCc, PictureId, fourcc};
-
-const MAP_TAG: FourCc = fourcc!("map ");
-const COAT_TAG: FourCc = fourcc!("coat");
-const FLAG_TAG: FourCc = fourcc!("flag");
+use imperialism_formats::PictureId;
 const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
 const FLAG_ATLAS_PICTURE: PictureId = PictureId::new(8699);
 const FLAG_WIDTH: usize = 32;
@@ -57,18 +52,16 @@ impl Plugin for MapPreviewPlugin {
 /// Attach map/coat/flag screen meanings once when random-setup is created.
 pub(crate) fn attach_random_setup_meanings(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    map: Entity,
+    coat: Entity,
+    flag: Entity,
 ) {
     // PointerCanvas behavior already adds RelativeCursorPosition for the map.
-    let map = tree.find(root, MAP_TAG);
     commands
         .entity(map)
         .insert(RandomSetupMapPreview::default())
         .observe(on_map_preview_click);
-    let coat = tree.find(root, COAT_TAG);
     commands.entity(coat).insert(RandomSetupCoat::default());
-    let flag = tree.find(root, FLAG_TAG);
     commands.entity(flag).insert(RandomSetupFlag::default());
 }
 

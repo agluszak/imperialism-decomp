@@ -8,7 +8,7 @@ use crate::AppState;
 use crate::media::RetailAudioAssets;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::{RetailTree, ancestor_with};
+use crate::ui::retail::ancestor_with;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{GameSession, MapViewOrigin};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
@@ -19,7 +19,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use enum_map::Enum;
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId};
 
 #[derive(Component)]
 struct MapModal;
@@ -135,7 +135,6 @@ pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
         (
-            bind_added_map_modals,
             bind_added_civilian_ledgers,
             bind_added_civilian_modals,
             bind_added_army_reports,
@@ -151,53 +150,79 @@ pub(crate) fn register(app: &mut App) {
 }
 
 pub(crate) fn spawn_garrison(commands: &mut Commands, province: ProvinceId) {
-    let root = commands.spawn_scene(generated::mapview_3500()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(GarrisonDialog(province));
+    let ui = generated::spawn_mapview_3500(commands);
+    spawn_modal(commands, ui.root);
+    bind_dismiss_okay(commands, ui.okay);
+    commands
+        .entity(ui.root)
+        .insert((GarrisonDialog(province), ui));
 }
 
 pub(crate) fn spawn_army_report(commands: &mut Commands, province: ProvinceId) {
-    let root = commands.spawn_scene(generated::mapview_3100()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(ArmyReportDialog(province));
+    let ui = generated::spawn_mapview_3100(commands);
+    spawn_modal(commands, ui.root);
+    bind_dismiss_okay(commands, ui.okay);
+    commands
+        .entity(ui.root)
+        .insert((ArmyReportDialog(province), ui));
 }
 
 pub(crate) fn spawn_fleet_report(commands: &mut Commands, kind: FleetReportKind) {
-    let root = match kind {
-        FleetReportKind::Friendly(_) => commands.spawn_scene(generated::mapview_9474()).id(),
-        FleetReportKind::Intelligence { .. } => {
-            commands.spawn_scene(generated::mapview_9475()).id()
+    match kind {
+        FleetReportKind::Friendly(_) => {
+            let ui = generated::spawn_mapview_9474(commands);
+            spawn_modal(commands, ui.root);
+            bind_dismiss_okay(commands, ui.okay);
+            commands
+                .entity(ui.root)
+                .insert((FleetReportDialog(kind), ui));
         }
-    };
-    spawn_modal(commands, root);
-    commands.entity(root).insert(FleetReportDialog(kind));
+        FleetReportKind::Intelligence { .. } => {
+            let ui = generated::spawn_mapview_9475(commands);
+            spawn_modal(commands, ui.root);
+            bind_dismiss_okay(commands, ui.okay);
+            commands
+                .entity(ui.root)
+                .insert((FleetReportDialog(kind), ui));
+        }
+    }
 }
 
 pub(crate) fn spawn_navy_roster(commands: &mut Commands, kind: NavyRosterKind) {
-    let root = commands.spawn_scene(generated::mapview_9478()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(NavyRosterDialog(kind));
+    let ui = generated::spawn_mapview_9478(commands);
+    spawn_modal(commands, ui.root);
+    bind_dismiss_okay(commands, ui.okay);
+    commands
+        .entity(ui.root)
+        .insert((NavyRosterDialog(kind), ui));
 }
 
 pub(crate) fn spawn_army_roster(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::mapview_3500()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(ArmyRosterDialog);
+    let ui = generated::spawn_mapview_3500(commands);
+    spawn_modal(commands, ui.root);
+    bind_dismiss_okay(commands, ui.okay);
+    commands.entity(ui.root).insert((ArmyRosterDialog, ui));
 }
 
 pub(crate) fn spawn_civilian_roster(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::mapview_3500()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(CivilianLedger {
-        current_column: 0,
-        last_column: 0,
-    });
+    let ui = generated::spawn_mapview_3500(commands);
+    spawn_modal(commands, ui.root);
+    bind_dismiss_okay(commands, ui.okay);
+    commands.entity(ui.root).insert((
+        CivilianLedger {
+            current_column: 0,
+            last_column: 0,
+        },
+        ui,
+    ));
 }
 
 pub(crate) fn spawn_engineer_construction(commands: &mut Commands, unit: CivilianUnitId) {
-    let root = commands.spawn_scene(generated::mapview_7200()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(CivilianModal::Engineer(unit));
+    let ui = generated::spawn_mapview_7200(commands);
+    spawn_modal(commands, ui.root);
+    commands
+        .entity(ui.root)
+        .insert((CivilianModal::Engineer(unit), ui));
 }
 
 pub(crate) fn spawn_developer_purchase(
@@ -213,9 +238,12 @@ pub(crate) fn spawn_developer_purchase(
 }
 
 pub(crate) fn spawn_civilian_report(commands: &mut Commands, unit: CivilianUnitId) {
-    let root = commands.spawn_scene(generated::mapview_3012()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(CivilianModal::Report(unit));
+    let ui = generated::spawn_mapview_3012(commands);
+    spawn_modal(commands, ui.root);
+    bind_dismiss_okay(commands, ui.okay);
+    commands
+        .entity(ui.root)
+        .insert((CivilianModal::Report(unit), ui));
 }
 
 pub(crate) fn spawn_civilian_disband(commands: &mut Commands, unit: CivilianUnitId) {
@@ -232,33 +260,20 @@ fn spawn_modal(commands: &mut Commands, root: Entity) {
         .insert((MapModal, ModalWindow, DespawnOnExit(AppState::StrategicMap)));
 }
 
-fn bind_added_map_modals(
-    mut commands: Commands,
-    added: Query<Entity, (Added<MapModal>, Without<CivilianModal>)>,
-    tree: RetailTree,
-) {
-    for root in &added {
-        for tag in [fourcc!("okay"), fourcc!("end ")] {
-            if let Some(entity) = tree.try_find(root, tag) {
-                commands
-                    .entity(entity)
-                    .insert((ActivateOnPress, ModalDefault, DismissWindow));
-                break;
-            }
-        }
-    }
+fn bind_dismiss_okay(commands: &mut Commands, okay: Entity) {
+    commands
+        .entity(okay)
+        .insert((ActivateOnPress, ModalDefault, DismissWindow));
 }
 
 fn bind_added_civilian_ledgers(
     mut commands: Commands,
-    added: Query<Entity, Added<CivilianLedger>>,
-    tree: RetailTree,
+    added: Query<(Entity, &generated::Mapview3500), Added<CivilianLedger>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for root in &added {
-        let view = tree.view(root);
-        let page = view.find(fourcc!("page"));
+    for (root, ui) in &added {
+        let page = ui.page;
         let active_nation = session.game.turn().active_nation;
         let civilians = session
             .game
@@ -302,7 +317,7 @@ fn bind_added_civilian_ledgers(
                 Pickable::IGNORE,
             ))
             .id();
-        commands.entity(view.find(fourcc!("DLOG"))).add_child(title);
+        commands.entity(ui.dlog).add_child(title);
 
         for (index, (kind, tile)) in civilians.into_iter().enumerate() {
             let column = index / CIVILIANS_PER_COLUMN;
@@ -344,12 +359,12 @@ fn bind_added_civilian_ledgers(
                 .id();
             commands.entity(page).add_child(row);
         }
-        for (tag, action) in [
-            (fourcc!("lcor"), CivilianLedgerAction::Previous),
-            (fourcc!("rcor"), CivilianLedgerAction::Next),
+        for (entity, action) in [
+            (ui.lcor, CivilianLedgerAction::Previous),
+            (ui.rcor, CivilianLedgerAction::Next),
         ] {
             commands
-                .entity(view.find(tag))
+                .entity(entity)
                 .insert((
                     Button,
                     ActivateOnPress,
@@ -484,40 +499,31 @@ fn on_civilian_ledger_action(
 
 fn bind_added_civilian_modals(
     mut commands: Commands,
-    added: Query<(Entity, &CivilianModal), Added<CivilianModal>>,
-    tree: RetailTree,
+    engineers: Query<(&CivilianModal, &generated::Mapview7200), Added<CivilianModal>>,
+    reports: Query<(&CivilianModal, &generated::Mapview3012), Added<CivilianModal>>,
+    lingers: Query<(&CivilianModal, &generated::Linger2020), Added<CivilianModal>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, modal) in &added {
+    for (modal, ui) in &engineers {
+        let CivilianModal::Engineer(unit) = *modal else {
+            continue;
+        };
+        bind_engineer_dialog(&mut commands, ui, unit, &mut assets, &session.game);
+    }
+    for (modal, ui) in &reports {
+        let CivilianModal::Report(unit) = *modal else {
+            continue;
+        };
+        bind_civilian_report(&mut commands, ui, unit, &mut assets, &session.game);
+    }
+    for (modal, ui) in &lingers {
         match modal {
-            CivilianModal::Engineer(unit) => bind_engineer_dialog(
-                &mut commands,
-                root,
-                *unit,
-                &tree,
-                &mut assets,
-                &session.game,
-            ),
-            CivilianModal::Purchase(unit, tile) => bind_purchase_dialog(
-                &mut commands,
-                root,
-                *unit,
-                *tile,
-                &tree,
-                &mut assets,
-                &session.game,
-            ),
-            CivilianModal::Report(unit) => bind_civilian_report(
-                &mut commands,
-                root,
-                *unit,
-                &tree,
-                &mut assets,
-                &session.game,
-            ),
+            CivilianModal::Purchase(unit, tile) => {
+                bind_purchase_dialog(&mut commands, *ui, *unit, *tile, &mut assets, &session.game)
+            }
             CivilianModal::Disband(unit) => {
-                let linger = bind_linger_dialog(&mut commands, root, &tree);
+                let linger = bind_linger_dialog(&mut commands, *ui);
                 let kind = session
                     .game
                     .civilian_unit(*unit)
@@ -549,26 +555,26 @@ fn bind_added_civilian_modals(
                     .remove::<InteractionDisabled>();
             }
             CivilianModal::Notice { title, body } => {
-                let linger = bind_linger_dialog(&mut commands, root, &tree);
+                let linger = bind_linger_dialog(&mut commands, *ui);
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
                 commands.entity(linger.okay).insert(ActivateOnPress);
                 commands.entity(linger.cancel).insert(Visibility::Hidden);
             }
+            CivilianModal::Engineer(_) | CivilianModal::Report(_) => {}
         }
     }
 }
 
 fn bind_engineer_dialog(
     commands: &mut Commands,
-    root: Entity,
+    ui: &generated::Mapview7200,
     unit: CivilianUnitId,
-    tree: &RetailTree,
     assets: &mut RetailUiAssets,
     state: &GameState,
 ) {
-    let dialog = tree.find(root, fourcc!("DLOG"));
-    let title = tree.find(root, fourcc!("titl"));
+    let dialog = ui.dlog;
+    let title = ui.titl;
     insert_retail_text(commands, assets, title, &get_string(assets, 0x1c20, 6), 14);
     let options = state.engineer_construction_options(unit);
     let tile = state
@@ -651,7 +657,7 @@ fn bind_engineer_dialog(
         ChildOf(dialog),
     ));
     let height = y + 30.0;
-    let window = tree.find(root, fourcc!("WIND"));
+    let window = ui.wind;
     commands.entity(window).insert(Node {
         position_type: PositionType::Absolute,
         left: px(94),
@@ -707,14 +713,13 @@ fn spawn_engineer_background(
 
 fn bind_purchase_dialog(
     commands: &mut Commands,
-    root: Entity,
+    ui: generated::Linger2020,
     unit: CivilianUnitId,
     tile: TileId,
-    tree: &RetailTree,
     assets: &mut RetailUiAssets,
     state: &GameState,
 ) {
-    let linger = bind_linger_dialog(commands, root, tree);
+    let linger = bind_linger_dialog(commands, ui);
     let title = get_string(assets, 0x274d, 0);
     let city = city_name(state, tile);
     let cost = format_currency(state.developer_tile_purchase_cost(tile));
@@ -743,21 +748,16 @@ fn bind_purchase_dialog(
 
 fn bind_civilian_report(
     commands: &mut Commands,
-    root: Entity,
+    ui: &generated::Mapview3012,
     unit: CivilianUnitId,
-    tree: &RetailTree,
     assets: &mut RetailUiAssets,
     state: &GameState,
 ) {
-    for (tag, offset, point_size) in [
-        (fourcc!("ttl0"), 12, 14),
-        (fourcc!("ttl1"), 13, 12),
-        (fourcc!("ttl2"), 14, 12),
-    ] {
+    for (entity, offset, point_size) in [(ui.ttl0, 12, 14), (ui.ttl1, 13, 12), (ui.ttl2, 14, 12)] {
         insert_retail_text(
             commands,
             assets,
-            tree.find(root, tag),
+            entity,
             &assets
                 .string(0x2724, offset)
                 .expect("retail civilian report title string"),
@@ -767,17 +767,15 @@ fn bind_civilian_report(
     insert_retail_text(
         commands,
         assets,
-        tree.find(root, fourcc!("info")),
+        ui.info,
         &civilian_report_text(assets, state, unit),
         12,
     );
-    commands.entity(tree.find(root, fourcc!("okay"))).insert((
-        ActivateOnPress,
-        ModalDefault,
-        DismissWindow,
-    ));
     commands
-        .entity(tree.find(root, fourcc!("canc")))
+        .entity(ui.okay)
+        .insert((ActivateOnPress, ModalDefault, DismissWindow));
+    commands
+        .entity(ui.canc)
         .insert((
             ActivateOnPress,
             CancelCivilianOrder(unit),
@@ -1012,14 +1010,12 @@ fn spawn_notice(commands: &mut Commands, title: String, body: String) {
 
 fn bind_added_army_reports(
     mut commands: Commands,
-    added: Query<(Entity, &ArmyReportDialog), Added<ArmyReportDialog>>,
-    tree: RetailTree,
+    added: Query<(&ArmyReportDialog, &generated::Mapview3100), Added<ArmyReportDialog>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, ArmyReportDialog(province)) in &added {
+    for (ArmyReportDialog(province), ui) in &added {
         let report = session.game.army_report_model(*province);
-        let view = tree.view(root);
         let title = get_string(&assets, 0x2744, 0xb);
         let lab2 = get_string(&assets, 0x2744, 0xc);
         let lab3 = get_string(&assets, 0x2744, 0xd);
@@ -1030,82 +1026,39 @@ fn bind_added_army_reports(
             if report.owned_by_viewer { 0xa } else { 0xe },
         );
         let orders = fill_brackets(&order_template, &[&report.city_name]);
-        insert_styled_text(
-            &mut commands,
-            &mut assets,
-            view.find(fourcc!("titl")),
-            &title,
-            14,
-            1,
-        );
-        insert_styled_text(
-            &mut commands,
-            &mut assets,
-            view.find(fourcc!("lab2")),
-            &lab2,
-            12,
-            0,
-        );
-        insert_styled_text(
-            &mut commands,
-            &mut assets,
-            view.find(fourcc!("lab3")),
-            &lab3,
-            12,
-            0,
-        );
-        insert_styled_text(
-            &mut commands,
-            &mut assets,
-            view.find(fourcc!("whom")),
-            &composition,
-            10,
-            3,
-        );
-        insert_styled_text(
-            &mut commands,
-            &mut assets,
-            view.find(fourcc!("gene")),
-            "",
-            10,
-            3,
-        );
-        insert_styled_text(
-            &mut commands,
-            &mut assets,
-            view.find(fourcc!("ords")),
-            &orders,
-            10,
-            3,
-        );
-        commands.entity(view.find(fourcc!("canc"))).insert((
-            ActivateOnPress,
-            ModalCancel,
-            DismissWindow,
-        ));
+        insert_styled_text(&mut commands, &mut assets, ui.titl, &title, 14, 1);
+        insert_styled_text(&mut commands, &mut assets, ui.lab2, &lab2, 12, 0);
+        insert_styled_text(&mut commands, &mut assets, ui.lab3, &lab3, 12, 0);
+        insert_styled_text(&mut commands, &mut assets, ui.whom, &composition, 10, 3);
+        insert_styled_text(&mut commands, &mut assets, ui.gene, "", 10, 3);
+        insert_styled_text(&mut commands, &mut assets, ui.ords, &orders, 10, 3);
+        commands
+            .entity(ui.canc)
+            .insert((ActivateOnPress, ModalCancel, DismissWindow));
     }
 }
 
 fn bind_added_garrisons(
     mut commands: Commands,
-    added: Query<(Entity, &GarrisonDialog), Added<GarrisonDialog>>,
-    tree: RetailTree,
+    added: Query<(Entity, &GarrisonDialog, &generated::Mapview3500), Added<GarrisonDialog>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, GarrisonDialog(province)) in &added {
+    for (root, GarrisonDialog(province), ui) in &added {
         let model = session.game.garrison_model(*province);
-        bind_roster_page(
+        let page = bind_roster_page(
             &mut commands,
             root,
-            &tree,
+            ui.page,
+            ui.dlog,
+            ui.lcor,
+            ui.rcor,
             &mut assets,
             None,
             model.units.len(),
             GARRISON_PER_COLUMN,
             GARRISON_ROW_HEIGHT,
         );
-        let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
         for (index, row) in model.units.iter().enumerate() {
             let column = index / GARRISON_PER_COLUMN;
@@ -1136,24 +1089,25 @@ fn bind_added_garrisons(
 
 fn bind_added_army_rosters(
     mut commands: Commands,
-    added: Query<Entity, Added<ArmyRosterDialog>>,
-    tree: RetailTree,
+    added: Query<(Entity, &generated::Mapview3500), Added<ArmyRosterDialog>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for root in &added {
+    for (root, ui) in &added {
         let model = session.game.army_roster_model();
-        bind_roster_page(
+        let page = bind_roster_page(
             &mut commands,
             root,
-            &tree,
+            ui.page,
+            ui.dlog,
+            ui.lcor,
+            ui.rcor,
             &mut assets,
             Some((0x2746, 0xb)),
             model.units.len(),
             MINI_ROSTER_PER_COLUMN,
             MINI_ROSTER_ROW_HEIGHT,
         );
-        let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
         for (index, row) in model.units.iter().enumerate() {
             let column = index / MINI_ROSTER_PER_COLUMN;
@@ -1184,35 +1138,42 @@ fn bind_added_army_rosters(
 
 fn bind_added_fleet_reports(
     mut commands: Commands,
-    added: Query<(Entity, &FleetReportDialog), Added<FleetReportDialog>>,
-    tree: RetailTree,
+    friendly: Query<
+        (Entity, &FleetReportDialog, &generated::Mapview9474),
+        Added<FleetReportDialog>,
+    >,
+    intel: Query<(Entity, &FleetReportDialog, &generated::Mapview9475), Added<FleetReportDialog>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, FleetReportDialog(kind)) in &added {
+    for (root, FleetReportDialog(kind), ui) in &friendly {
         let Some(model) = session.game.fleet_report_model(*kind) else {
             commands.entity(root).try_despawn();
             continue;
         };
-        match model {
-            FleetReportModel::Friendly(report) => {
-                bind_friendly_fleet_report(&mut commands, root, &tree, &mut assets, &report);
-            }
-            FleetReportModel::Intelligence(report) => {
-                bind_enemy_fleet_report(&mut commands, root, &tree, &mut assets, &report);
-            }
-        }
+        let FleetReportModel::Friendly(report) = model else {
+            continue;
+        };
+        bind_friendly_fleet_report(&mut commands, ui, &mut assets, &report);
+    }
+    for (root, FleetReportDialog(kind), ui) in &intel {
+        let Some(model) = session.game.fleet_report_model(*kind) else {
+            commands.entity(root).try_despawn();
+            continue;
+        };
+        let FleetReportModel::Intelligence(report) = model else {
+            continue;
+        };
+        bind_enemy_fleet_report(&mut commands, ui, &mut assets, &report);
     }
 }
 
 fn bind_friendly_fleet_report(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Mapview9474,
     assets: &mut RetailUiAssets,
     report: &FriendlyFleetReport,
 ) {
-    let view = tree.view(root);
     let title = get_string(assets, 0x2762, 7);
     let lab1 = get_string(assets, 0x2762, 8);
     let lab2 = get_string(assets, 0x2762, 9);
@@ -1224,38 +1185,17 @@ fn bind_friendly_fleet_report(
         &get_string(assets, 0x2762, 0),
         &[&fleet_authority_text(assets, &report.authority)],
     );
-    insert_styled_text(commands, assets, view.find(fourcc!("titl")), &title, 14, 1);
-    insert_styled_text(commands, assets, view.find(fourcc!("lab1")), &lab1, 10, 3);
-    insert_styled_text(
-        commands,
-        assets,
-        view.find(fourcc!("zone")),
-        &report.zone_name,
-        12,
-        1,
-    );
-    insert_styled_text(commands, assets, view.find(fourcc!("lab2")), &lab2, 12, 0);
-    insert_styled_text(commands, assets, view.find(fourcc!("lab3")), &lab3, 12, 0);
-    insert_styled_text(
-        commands,
-        assets,
-        view.find(fourcc!("whom")),
-        &composition,
-        10,
-        3,
-    );
-    insert_styled_text(commands, assets, view.find(fourcc!("ords")), &orders, 10, 3);
-    insert_styled_text(commands, assets, view.find(fourcc!("agro")), &agro, 10, 0);
-    insert_styled_text(
-        commands,
-        assets,
-        view.find(fourcc!("adam")),
-        &authority,
-        10,
-        3,
-    );
+    insert_styled_text(commands, assets, ui.titl, &title, 14, 1);
+    insert_styled_text(commands, assets, ui.lab1, &lab1, 10, 3);
+    insert_styled_text(commands, assets, ui.zone, &report.zone_name, 12, 1);
+    insert_styled_text(commands, assets, ui.lab2, &lab2, 12, 0);
+    insert_styled_text(commands, assets, ui.lab3, &lab3, 12, 0);
+    insert_styled_text(commands, assets, ui.whom, &composition, 10, 3);
+    insert_styled_text(commands, assets, ui.ords, &orders, 10, 3);
+    insert_styled_text(commands, assets, ui.agro, &agro, 10, 0);
+    insert_styled_text(commands, assets, ui.adam, &authority, 10, 3);
     commands
-        .entity(view.find(fourcc!("canc")))
+        .entity(ui.canc)
         .insert((
             ActivateOnPress,
             CancelFleetOrders(report.force),
@@ -1267,12 +1207,10 @@ fn bind_friendly_fleet_report(
 
 fn bind_enemy_fleet_report(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Mapview9475,
     assets: &mut RetailUiAssets,
     report: &EnemyFleetReport,
 ) {
-    let view = tree.view(root);
     let mut string_index = 0x29;
     let title = get_string(assets, 0x2762, string_index);
     string_index += 1;
@@ -1285,62 +1223,42 @@ fn bind_enemy_fleet_report(
     let lab4 = get_string(assets, 0x2762, string_index);
     let composition = ship_composition_text(assets, &report.composition);
     let source = intelligence_source_text(assets, &report.authority);
-    insert_styled_text(commands, assets, view.find(fourcc!("titl")), &title, 14, 1);
-    insert_styled_text(commands, assets, view.find(fourcc!("lab1")), &lab1, 10, 3);
-    insert_styled_text(commands, assets, view.find(fourcc!("lab2")), &lab2, 10, 3);
-    insert_styled_text(commands, assets, view.find(fourcc!("lab3")), &lab3, 12, 0);
-    insert_styled_text(commands, assets, view.find(fourcc!("lab4")), &lab4, 10, 3);
-    insert_styled_text(
-        commands,
-        assets,
-        view.find(fourcc!("gpee")),
-        &report.nation_name,
-        12,
-        1,
-    );
-    insert_styled_text(
-        commands,
-        assets,
-        view.find(fourcc!("zone")),
-        &report.zone_name,
-        12,
-        1,
-    );
-    insert_styled_text(
-        commands,
-        assets,
-        view.find(fourcc!("ship")),
-        &composition,
-        10,
-        3,
-    );
-    insert_styled_text(commands, assets, view.find(fourcc!("adam")), &source, 10, 3);
+    insert_styled_text(commands, assets, ui.titl, &title, 14, 1);
+    insert_styled_text(commands, assets, ui.lab1, &lab1, 10, 3);
+    insert_styled_text(commands, assets, ui.lab2, &lab2, 10, 3);
+    insert_styled_text(commands, assets, ui.lab3, &lab3, 12, 0);
+    insert_styled_text(commands, assets, ui.lab4, &lab4, 10, 3);
+    insert_styled_text(commands, assets, ui.gpee, &report.nation_name, 12, 1);
+    insert_styled_text(commands, assets, ui.zone, &report.zone_name, 12, 1);
+    insert_styled_text(commands, assets, ui.ship, &composition, 10, 3);
+    insert_styled_text(commands, assets, ui.adam, &source, 10, 3);
 }
 
 fn bind_added_navy_rosters(
     mut commands: Commands,
-    added: Query<(Entity, &NavyRosterDialog), Added<NavyRosterDialog>>,
-    tree: RetailTree,
+    added: Query<(Entity, &NavyRosterDialog, &generated::Mapview9478), Added<NavyRosterDialog>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    for (root, NavyRosterDialog(kind)) in &added {
+    for (root, NavyRosterDialog(kind), ui) in &added {
         let model = session.game.navy_roster_model(*kind);
         let title = match kind {
             NavyRosterKind::Nation => Some((0x2746, 0xc)),
             NavyRosterKind::TaskForce(_) => None,
         };
-        bind_roster_page(
+        let page = bind_roster_page(
             &mut commands,
             root,
-            &tree,
+            ui.page,
+            ui.dlog,
+            ui.lcor,
+            ui.rcor,
             &mut assets,
             title,
             model.ships.len(),
             MINI_ROSTER_PER_COLUMN,
             MINI_ROSTER_ROW_HEIGHT,
         );
-        let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
         for (index, row) in model.ships.iter().enumerate() {
             let column = index / MINI_ROSTER_PER_COLUMN;
@@ -1393,13 +1311,16 @@ fn bind_added_navy_rosters(
 fn bind_roster_page(
     commands: &mut Commands,
     root: Entity,
-    tree: &RetailTree,
+    page: Entity,
+    dlog: Entity,
+    lcor: Entity,
+    rcor: Entity,
     assets: &mut RetailUiAssets,
     title: Option<(i16, i16)>,
     count: usize,
     rows_per_column: usize,
     row_height: f32,
-) {
+) -> Entity {
     let last_column = if count == 0 {
         0
     } else {
@@ -1411,21 +1332,14 @@ fn bind_roster_page(
         row_height,
     });
     if let Some((group, offset)) = title {
-        spawn_roster_title(
-            commands,
-            tree.view(root).find(fourcc!("DLOG")),
-            assets,
-            group,
-            offset,
-        );
+        spawn_roster_title(commands, dlog, assets, group, offset);
     }
-    let view = tree.view(root);
-    for (tag, action) in [
-        (fourcc!("lcor"), RosterPageAction::Previous),
-        (fourcc!("rcor"), RosterPageAction::Next),
+    for (entity, action) in [
+        (lcor, RosterPageAction::Previous),
+        (rcor, RosterPageAction::Next),
     ] {
         commands
-            .entity(view.find(tag))
+            .entity(entity)
             .insert((
                 Button,
                 ActivateOnPress,
@@ -1440,6 +1354,7 @@ fn bind_roster_page(
             ))
             .observe(on_roster_page_action);
     }
+    page
 }
 
 fn spawn_roster_title(

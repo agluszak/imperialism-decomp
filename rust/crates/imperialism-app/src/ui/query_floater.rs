@@ -1,22 +1,10 @@
-use super::generated;
-use super::retail::{RetailTree, RetailUiAssets};
+use super::generated::{self, Linger4122};
+use super::retail::RetailUiAssets;
 use super::window::{DismissWindow, ModalCancel, ModalWindow};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_formats::{FourCc, fourcc};
-
-const QUERY_LABELS: [(FourCc, i16); 8] = [
-    (fourcc!("titl"), 1),
-    (fourcc!("tex0"), 2),
-    (fourcc!("tex1"), 3),
-    (fourcc!("tex2"), 4),
-    (fourcc!("tex3"), 5),
-    (fourcc!("tex4"), 6),
-    (fourcc!("tex5"), 7),
-    (fourcc!("tex6"), 8),
-];
 
 #[derive(Component)]
 struct OpenQueryFloater;
@@ -38,9 +26,9 @@ impl Plugin for QueryFloaterPlugin {
     }
 }
 
-pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+pub(crate) fn bind_query_floater_control(commands: &mut Commands, quer: Entity) {
     commands
-        .entity(tree.find(root, fourcc!("quer")))
+        .entity(quer)
         .insert((OpenQueryFloater, ActivateOnPress))
         .remove::<InteractionDisabled>()
         .observe(on_open_query_floater);
@@ -51,20 +39,21 @@ fn on_open_query_floater(
     state: Res<State<AppState>>,
     mut commands: Commands,
 ) {
-    let root = commands.spawn_scene(generated::linger_4122()).id();
-    commands
-        .entity(root)
-        .insert((QueryFloaterRoot, ModalWindow, DespawnOnExit(*state.get())));
+    let ui = generated::spawn_linger_4122(&mut commands);
+    commands.entity(ui.root).insert((
+        QueryFloaterRoot,
+        ui,
+        ModalWindow,
+        DespawnOnExit(*state.get()),
+    ));
 }
 
 fn bind_query_floaters(
     mut commands: Commands,
-    roots: Query<Entity, Added<QueryFloaterRoot>>,
-    tree: RetailTree,
+    added: Query<&Linger4122, Added<QueryFloaterRoot>>,
     mut assets: RetailUiAssets,
 ) {
-    for root in &roots {
-        let view = tree.view(root);
+    for ui in &added {
         let (font, layout, line_height, _) = assets
             .text_style(imperialism_formats::RetailTextStylePreset {
                 font_family: 1,
@@ -73,11 +62,20 @@ fn bind_query_floaters(
                 alignment: -2,
             })
             .expect("retail query-floater label style");
-        for (tag, index) in QUERY_LABELS {
+        for (entity, index) in [
+            (ui.titl, 1),
+            (ui.tex0, 2),
+            (ui.tex1, 3),
+            (ui.tex2, 4),
+            (ui.tex3, 5),
+            (ui.tex4, 6),
+            (ui.tex5, 7),
+            (ui.tex6, 8),
+        ] {
             let text = assets
                 .string(0x2757, index)
                 .expect("retail query-floater label must load");
-            commands.entity(view.find(tag)).insert((
+            commands.entity(entity).insert((
                 Text::new(text),
                 font.clone(),
                 layout,
@@ -86,26 +84,21 @@ fn bind_query_floaters(
             ));
         }
         commands
-            .entity(view.find(fourcc!("advi")))
+            .entity(ui.advi)
             .insert((QueryFloaterAction::Advice, ActivateOnPress, DismissWindow))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         commands
-            .entity(view.find(fourcc!("deal")))
+            .entity(ui.deal)
             .insert((QueryFloaterAction::DealBook, ActivateOnPress, DismissWindow))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         commands
-            .entity(view.find(fourcc!("cncl")))
+            .entity(ui.cncl)
             .insert((ActivateOnPress, ModalCancel, DismissWindow))
             .remove::<InteractionDisabled>();
-        for tag in [
-            fourcc!("oref"),
-            fourcc!("news"),
-            fourcc!("batt"),
-            fourcc!("char"),
-        ] {
-            commands.entity(view.find(tag)).insert(InteractionDisabled);
+        for entity in [ui.oref, ui.news, ui.batt, ui.char] {
+            commands.entity(entity).insert(InteractionDisabled);
         }
     }
 }
@@ -160,6 +153,5 @@ mod tests {
             &AppState::DealBook
         );
         assert_eq!(app.world().resource::<ReturnTo>().0, AppState::Trade);
-        assert!(app.world().get_entity(root).is_err());
     }
 }

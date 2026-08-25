@@ -1,11 +1,12 @@
 //! Right-hand army command page (`uarm` / `TArmyToolbar`).
 
-use super::super::retail::{RetailTree, RetailUiAssets};
+use super::super::retail::RetailUiAssets;
 use super::map_interaction::{
     MapInteractionMode, StrategicInteraction, StrategicViewport, cycle_map_interaction_selection,
 };
 use super::map_modals::{spawn_army_roster, spawn_garrison};
 use crate::AppState;
+use crate::ui::generated::Mapview2013;
 use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -13,7 +14,6 @@ use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::*;
 
-const PAGE_TAG: FourCc = fourcc!("uarm");
 const ARMY_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x92 as f32);
 const PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
 const ARROW_ATLAS: i16 = 804;
@@ -65,11 +65,9 @@ pub(crate) fn register(app: &mut App) {
 pub(crate) fn bind_army_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: Mapview2013,
 ) {
-    let page = tree.find(root, PAGE_TAG);
-    commands.entity(page).insert((
+    commands.entity(ui.uarm).insert((
         ArmyToolbarPage,
         Node {
             position_type: PositionType::Absolute,
@@ -83,11 +81,20 @@ pub(crate) fn bind_army_toolbar(
     let arrow_atlas = assets
         .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
-    for category in ArmyUnitCategory::all() {
-        let pic = tree.child(page, placard_tag(category));
+    for (category, pic, arrow) in [
+        (ArmyUnitCategory::Garrison, ui.pic0, ui.arr0),
+        (ArmyUnitCategory::LightInfantry, ui.pic1, ui.arr1),
+        (ArmyUnitCategory::LineInfantry, ui.pic2, ui.arr2),
+        (ArmyUnitCategory::EliteInfantry, ui.pic3, ui.arr3),
+        (ArmyUnitCategory::LightCavalry, ui.pic4, ui.arr4),
+        (ArmyUnitCategory::HeavyCavalry, ui.pic5, ui.arr5),
+        (ArmyUnitCategory::FieldArtillery, ui.pic6, ui.arr6),
+        (ArmyUnitCategory::SiegeArtillery, ui.pic7, ui.arr7),
+        (ArmyUnitCategory::Engineers, ui.pic8, ui.arr8),
+        (ArmyUnitCategory::Generals, ui.pic9, ui.arr9),
+    ] {
         commands.entity(pic).insert(ArmyPlacard(category));
         spawn_count_label(commands, pic, assets, true);
-        let arrow = tree.child(page, arrow_tag(category));
         commands
             .entity(arrow)
             .insert((
@@ -107,14 +114,14 @@ pub(crate) fn bind_army_toolbar(
             .observe(on_army_arrow);
         spawn_count_label(commands, arrow, assets, false);
     }
-    for (tag, command) in [
-        (fourcc!("dfnd"), ArmyCommand::Defend),
-        (fourcc!("latr"), ArmyCommand::Later),
-        (fourcc!("done"), ArmyCommand::Done),
-        (fourcc!("garr"), ArmyCommand::Garrison),
+    for (entity, command) in [
+        (ui.uarm_dfnd, ArmyCommand::Defend),
+        (ui.uarm_latr, ArmyCommand::Later),
+        (ui.uarm_done, ArmyCommand::Done),
+        (ui.uarm_garr, ArmyCommand::Garrison),
     ] {
         commands
-            .entity(tree.child(page, tag))
+            .entity(entity)
             .insert((command, ActivateOnPress))
             .observe(on_army_command);
     }
@@ -382,35 +389,5 @@ fn on_army_arrow(
         session
             .game
             .activate_first_idle_unit_by_category(province, arrow.0);
-    }
-}
-
-fn placard_tag(category: ArmyUnitCategory) -> FourCc {
-    match category {
-        ArmyUnitCategory::Garrison => fourcc!("pic0"),
-        ArmyUnitCategory::LightInfantry => fourcc!("pic1"),
-        ArmyUnitCategory::LineInfantry => fourcc!("pic2"),
-        ArmyUnitCategory::EliteInfantry => fourcc!("pic3"),
-        ArmyUnitCategory::LightCavalry => fourcc!("pic4"),
-        ArmyUnitCategory::HeavyCavalry => fourcc!("pic5"),
-        ArmyUnitCategory::FieldArtillery => fourcc!("pic6"),
-        ArmyUnitCategory::SiegeArtillery => fourcc!("pic7"),
-        ArmyUnitCategory::Engineers => fourcc!("pic8"),
-        ArmyUnitCategory::Generals => fourcc!("pic9"),
-    }
-}
-
-fn arrow_tag(category: ArmyUnitCategory) -> FourCc {
-    match category {
-        ArmyUnitCategory::Garrison => fourcc!("arr0"),
-        ArmyUnitCategory::LightInfantry => fourcc!("arr1"),
-        ArmyUnitCategory::LineInfantry => fourcc!("arr2"),
-        ArmyUnitCategory::EliteInfantry => fourcc!("arr3"),
-        ArmyUnitCategory::LightCavalry => fourcc!("arr4"),
-        ArmyUnitCategory::HeavyCavalry => fourcc!("arr5"),
-        ArmyUnitCategory::FieldArtillery => fourcc!("arr6"),
-        ArmyUnitCategory::SiegeArtillery => fourcc!("arr7"),
-        ArmyUnitCategory::Engineers => fourcc!("arr8"),
-        ArmyUnitCategory::Generals => fourcc!("arr9"),
     }
 }

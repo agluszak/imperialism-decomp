@@ -4,7 +4,6 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use crate::AppState;
 use crate::RetailAssetsResource;
@@ -17,85 +16,181 @@ use imperialism_core::*;
 use imperialism_formats::*;
 
 #[derive(Clone, Copy)]
-struct TransportRowBinding {
-    tag: FourCc,
+struct TransportRowControls {
     allocation: TransportAllocation,
+    row: Entity,
+    text: Entity,
+    left: Entity,
+    rght: Entity,
+    valu: Option<Entity>,
 }
 
-const TRANSPORT_ROWS: [TransportRowBinding; 18] = [
-    TransportRowBinding {
-        tag: fourcc!("fish"),
-        allocation: TransportAllocation::FISH_AND_LIVESTOCK,
-    },
-    TransportRowBinding {
-        tag: fourcc!("prod"),
-        allocation: TransportAllocation::FRUIT,
-    },
-    TransportRowBinding {
-        tag: fourcc!("grai"),
-        allocation: TransportAllocation::GRAIN,
-    },
-    TransportRowBinding {
-        tag: fourcc!("timb"),
-        allocation: TransportAllocation::TIMBER,
-    },
-    TransportRowBinding {
-        tag: fourcc!("lumb"),
-        allocation: TransportAllocation::LUMBER,
-    },
-    TransportRowBinding {
-        tag: fourcc!("furn"),
-        allocation: TransportAllocation::FURNITURE,
-    },
-    TransportRowBinding {
-        tag: fourcc!("coal"),
-        allocation: TransportAllocation::COAL,
-    },
-    TransportRowBinding {
-        tag: fourcc!("iron"),
-        allocation: TransportAllocation::IRON,
-    },
-    TransportRowBinding {
-        tag: fourcc!("stee"),
-        allocation: TransportAllocation::STEEL,
-    },
-    TransportRowBinding {
-        tag: fourcc!("hard"),
-        allocation: TransportAllocation::HARDWARE,
-    },
-    TransportRowBinding {
-        tag: fourcc!("cott"),
-        allocation: TransportAllocation::COTTON_AND_WOOL,
-    },
-    TransportRowBinding {
-        tag: fourcc!("fabr"),
-        allocation: TransportAllocation::FABRIC,
-    },
-    TransportRowBinding {
-        tag: fourcc!("clot"),
-        allocation: TransportAllocation::CLOTHING,
-    },
-    TransportRowBinding {
-        tag: fourcc!("oil "),
-        allocation: TransportAllocation::OIL,
-    },
-    TransportRowBinding {
-        tag: fourcc!("fuel"),
-        allocation: TransportAllocation::FUEL,
-    },
-    TransportRowBinding {
-        tag: fourcc!("hors"),
-        allocation: TransportAllocation::HORSES,
-    },
-    TransportRowBinding {
-        tag: fourcc!("gold"),
-        allocation: TransportAllocation::GOLD,
-    },
-    TransportRowBinding {
-        tag: fourcc!("gems"),
-        allocation: TransportAllocation::GEMS,
-    },
-];
+fn transport_row(
+    allocation: TransportAllocation,
+    row: Entity,
+    text: Entity,
+    left: Entity,
+    rght: Entity,
+    valu: Option<Entity>,
+) -> TransportRowControls {
+    TransportRowControls {
+        allocation,
+        row,
+        text,
+        left,
+        rght,
+        valu,
+    }
+}
+
+fn transport_2014_rows(ui: generated::Transport2014) -> [TransportRowControls; 18] {
+    [
+        transport_row(
+            TransportAllocation::FISH_AND_LIVESTOCK,
+            ui.fish,
+            ui.fish_text,
+            ui.fish_left,
+            ui.fish_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::FRUIT,
+            ui.prod,
+            ui.prod_text,
+            ui.prod_left,
+            ui.prod_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::GRAIN,
+            ui.grai,
+            ui.grai_text,
+            ui.grai_left,
+            ui.grai_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::TIMBER,
+            ui.timb,
+            ui.timb_text,
+            ui.timb_left,
+            ui.timb_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::LUMBER,
+            ui.lumb,
+            ui.lumb_text,
+            ui.lumb_left,
+            ui.lumb_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::FURNITURE,
+            ui.furn,
+            ui.furn_text,
+            ui.furn_left,
+            ui.furn_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::COAL,
+            ui.coal,
+            ui.coal_text,
+            ui.coal_left,
+            ui.coal_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::IRON,
+            ui.iron,
+            ui.iron_text,
+            ui.iron_left,
+            ui.iron_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::STEEL,
+            ui.stee,
+            ui.stee_text,
+            ui.stee_left,
+            ui.stee_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::HARDWARE,
+            ui.hard,
+            ui.hard_text,
+            ui.hard_left,
+            ui.hard_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::COTTON_AND_WOOL,
+            ui.cott,
+            ui.cott_text,
+            ui.cott_left,
+            ui.cott_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::FABRIC,
+            ui.fabr,
+            ui.fabr_text,
+            ui.fabr_left,
+            ui.fabr_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::CLOTHING,
+            ui.clot,
+            ui.clot_text,
+            ui.clot_left,
+            ui.clot_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::OIL,
+            ui.oil,
+            ui.oil_text,
+            ui.oil_left,
+            ui.oil_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::FUEL,
+            ui.fuel,
+            ui.fuel_text,
+            ui.fuel_left,
+            ui.fuel_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::HORSES,
+            ui.hors,
+            ui.hors_text,
+            ui.hors_left,
+            ui.hors_rght,
+            None,
+        ),
+        transport_row(
+            TransportAllocation::GOLD,
+            ui.gold,
+            ui.gold_text,
+            ui.gold_left,
+            ui.gold_rght,
+            Some(ui.gold_valu),
+        ),
+        transport_row(
+            TransportAllocation::GEMS,
+            ui.gems,
+            ui.gems_text,
+            ui.gems_left,
+            ui.gems_rght,
+            Some(ui.gems_valu),
+        ),
+    ]
+}
 
 const LEFT_TRANSPORT_ROW_COUNT: usize = 10;
 
@@ -168,31 +263,32 @@ impl Plugin for TransportPlugin {
 }
 
 fn enter_transport_screen(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::transport_2014()).id();
+    let ui = generated::spawn_transport_2014(&mut commands);
     commands
-        .entity(root)
-        .insert((TransportScreen, DespawnOnExit(AppState::Transport)));
+        .entity(ui.root)
+        .insert((TransportScreen, ui, DespawnOnExit(AppState::Transport)));
 }
 
 fn bind_transport_screen(
     mut commands: Commands,
-    root: Single<Entity, Added<TransportScreen>>,
-    tree: RetailTree,
+    ui: Single<&generated::Transport2014, Added<TransportScreen>>,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
+    let ui = **ui;
     bind_native_game_screen_nav(
         &mut commands,
-        *root,
-        &tree,
-        fourcc!("topB"),
-        Some(fourcc!("tool")),
-        true,
+        ui.trad,
+        ui.tran,
+        ui.city,
+        ui.dipl,
+        Some(ui.end),
+        Some(ui.quer),
     );
 
     let nation = session.active_major_nation();
     session.game.rebuild_nation_resource_yields(nation);
-    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
+    bind_game_status_display(&mut commands, &mut assets, ui.seas, ui.trea);
     let (cursor_font, cursor_layout, cursor_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -208,17 +304,24 @@ fn bind_transport_screen(
         assets.palette_color(0x28),
         assets.palette_color(0),
     );
-    bind_transport_controls(&mut commands, *root, &tree, cursor_style);
-    for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
-        let row = tree.find(*root, binding.tag);
+    let rows = transport_2014_rows(ui);
+    bind_transport_controls(
+        &mut commands,
+        ui.tran,
+        ui.tota_text,
+        ui.curs,
+        rows,
+        cursor_style,
+    );
+    for (index, row) in rows.into_iter().enumerate() {
         commands
-            .entity(row)
-            .insert(TransportHover(binding.allocation));
+            .entity(row.row)
+            .insert(TransportHover(row.allocation));
         install_transport_gauge(
             &mut commands,
             &mut assets,
-            row,
-            TransportGaugeKind::Allocation(binding.allocation),
+            row.row,
+            TransportGaugeKind::Allocation(row.allocation),
             if index < LEFT_TRANSPORT_ROW_COUNT {
                 0x61
             } else {
@@ -230,7 +333,7 @@ fn bind_transport_screen(
     install_transport_gauge(
         &mut commands,
         &mut assets,
-        tree.find(*root, fourcc!("tota")),
+        ui.tota,
         TransportGaugeKind::Capacity,
         0x5d,
         PictureId::new(4019),
@@ -239,63 +342,54 @@ fn bind_transport_screen(
 
 fn bind_transport_controls(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    tran: Entity,
+    tota_text: Entity,
+    curs: Entity,
+    rows: [TransportRowControls; 18],
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
 ) {
-    let selected = tree.find(root, fourcc!("tran"));
-    commands
-        .entity(selected)
-        .insert((Checked, InteractionDisabled));
-    for binding in TRANSPORT_ROWS {
-        let row = tree.find(root, binding.tag);
-        commands.entity(row).insert((
-            TransportDisplay::Row(binding.allocation),
-            Hovered::default(),
-        ));
-        let left = tree.find(row, fourcc!("left"));
-        let right = tree.find(row, fourcc!("rght"));
+    commands.entity(tran).insert((Checked, InteractionDisabled));
+    for row in rows {
         commands
-            .entity(left)
+            .entity(row.row)
+            .insert((TransportDisplay::Row(row.allocation), Hovered::default()));
+        commands
+            .entity(row.left)
             .insert(TransportAdjust {
-                allocation: binding.allocation,
+                allocation: row.allocation,
                 delta: -1,
             })
             .observe(on_transport_arrow_activate);
         commands
-            .entity(right)
+            .entity(row.rght)
             .insert(TransportAdjust {
-                allocation: binding.allocation,
+                allocation: row.allocation,
                 delta: 1,
             })
             .observe(on_transport_arrow_activate);
         commands
-            .entity(tree.find(row, fourcc!("text")))
-            .insert(TransportDisplay::RowCaption(binding.allocation));
-        if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
-            Some((ResourceKind::Gold, 200))
-        } else if binding.allocation == TransportAllocation::GEMS {
-            Some((ResourceKind::Gems, 500))
+            .entity(row.text)
+            .insert(TransportDisplay::RowCaption(row.allocation));
+        if let Some((resource, unit_value, valu)) = if row.allocation == TransportAllocation::GOLD {
+            row.valu.map(|valu| (ResourceKind::Gold, 200, valu))
+        } else if row.allocation == TransportAllocation::GEMS {
+            row.valu.map(|valu| (ResourceKind::Gems, 500, valu))
         } else {
             None
         } {
-            commands
-                .entity(tree.find(row, fourcc!("valu")))
-                .insert(TransportDisplay::Money {
-                    resource,
-                    unit_value,
-                });
+            commands.entity(valu).insert(TransportDisplay::Money {
+                resource,
+                unit_value,
+            });
         }
     }
 
-    let total = tree.find(root, fourcc!("tota"));
     commands
-        .entity(tree.find(total, fourcc!("text")))
+        .entity(tota_text)
         .insert(TransportDisplay::CapacityCaption);
-    let cursor = tree.find(root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, cursor_color, cursor_shadow) =
         cursor_style;
-    commands.entity(cursor).insert((
+    commands.entity(curs).insert((
         Text::new(""),
         cursor_font,
         cursor_layout,
@@ -608,7 +702,6 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
     use super::super::retail_raster::indexed_picture;
     use super::*;
     use bevy::asset::AssetPlugin;
@@ -616,6 +709,27 @@ mod tests {
 
     #[derive(Component)]
     struct TestTransportRoot;
+
+    const TEST_TRANSPORT_ALLOCATIONS: [TransportAllocation; 18] = [
+        TransportAllocation::FISH_AND_LIVESTOCK,
+        TransportAllocation::FRUIT,
+        TransportAllocation::GRAIN,
+        TransportAllocation::TIMBER,
+        TransportAllocation::LUMBER,
+        TransportAllocation::FURNITURE,
+        TransportAllocation::COAL,
+        TransportAllocation::IRON,
+        TransportAllocation::STEEL,
+        TransportAllocation::HARDWARE,
+        TransportAllocation::COTTON_AND_WOOL,
+        TransportAllocation::FABRIC,
+        TransportAllocation::CLOTHING,
+        TransportAllocation::OIL,
+        TransportAllocation::FUEL,
+        TransportAllocation::HORSES,
+        TransportAllocation::GOLD,
+        TransportAllocation::GEMS,
+    ];
 
     fn random_game_names() -> RandomGameNames {
         let mut localized_nation_names = NationTable::default();
@@ -662,57 +776,64 @@ mod tests {
         state
     }
 
+    fn spawn_child(world: &mut World, parent: Entity) -> Entity {
+        world.spawn((Node::default(), ChildOf(parent))).id()
+    }
+
+    fn spawn_text(world: &mut World, parent: Entity) -> Entity {
+        world
+            .spawn((Node::default(), Text::default(), ChildOf(parent)))
+            .id()
+    }
+
+    #[derive(Component)]
+    struct TestTransportBindings {
+        tran: Entity,
+        tota_text: Entity,
+        curs: Entity,
+        rows: [TransportRowControls; 18],
+    }
+
     fn spawn_transport_hierarchy(world: &mut World) {
         let root = world
             .spawn((TestTransportRoot, TransportScreen, Node::default()))
             .id();
-        for tag in [fourcc!("tran"), fourcc!("curs"), fourcc!("trea")] {
-            world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
-        }
-        let total = world
-            .spawn((RetailTag(fourcc!("tota")), Node::default(), ChildOf(root)))
-            .id();
-        world.spawn((
-            RetailTag(fourcc!("text")),
-            Node::default(),
-            Text::default(),
-            ChildOf(total),
-        ));
-        for binding in TRANSPORT_ROWS {
-            let row = world
-                .spawn((RetailTag(binding.tag), Node::default(), ChildOf(root)))
-                .id();
-            world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
-            world.spawn((
-                RetailTag(fourcc!("text")),
-                Node::default(),
-                Text::default(),
-                ChildOf(row),
-            ));
-            if matches!(
-                binding.allocation,
-                TransportAllocation::GOLD | TransportAllocation::GEMS
-            ) {
-                world.spawn((
-                    RetailTag(fourcc!("valu")),
-                    Node::default(),
-                    Text::default(),
-                    ChildOf(row),
-                ));
-            }
-        }
+        let tran = spawn_child(world, root);
+        let curs = spawn_text(world, root);
+        let tota_text = spawn_text(world, root);
+        let rows = TEST_TRANSPORT_ALLOCATIONS.map(|allocation| {
+            let row = spawn_child(world, root);
+            transport_row(
+                allocation,
+                row,
+                spawn_text(world, row),
+                spawn_child(world, row),
+                spawn_child(world, row),
+                matches!(
+                    allocation,
+                    TransportAllocation::GOLD | TransportAllocation::GEMS
+                )
+                .then(|| spawn_text(world, row)),
+            )
+        });
+        world.entity_mut(root).insert(TestTransportBindings {
+            tran,
+            tota_text,
+            curs,
+            rows,
+        });
     }
 
     fn bind_test_transport(
         mut commands: Commands,
-        root: Single<Entity, Added<TestTransportRoot>>,
-        tree: RetailTree,
+        root: Single<&TestTransportBindings, Added<TestTransportRoot>>,
     ) {
         bind_transport_controls(
             &mut commands,
-            *root,
-            &tree,
+            root.tran,
+            root.tota_text,
+            root.curs,
+            root.rows,
             (
                 TextFont::default(),
                 TextLayout::default(),
@@ -733,15 +854,11 @@ mod tests {
     fn activating_generated_arrows_updates_allocation_and_caption() {
         let state = fixture_state();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
-        let binding = TRANSPORT_ROWS
+        let allocation = TEST_TRANSPORT_ALLOCATIONS
             .into_iter()
-            .find(|binding| {
-                state
-                    .transport_row_status(nation, binding.allocation)
-                    .can_increase
-            })
+            .find(|&allocation| state.transport_row_status(nation, allocation).can_increase)
             .expect("retail beginning-of-game fixture has an adjustable transport row");
-        let before = state.transport_row_status(nation, binding.allocation);
+        let before = state.transport_row_status(nation, allocation);
 
         let mut app = App::new();
         app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
@@ -758,34 +875,28 @@ mod tests {
         spawn_transport_hierarchy(app.world_mut());
         app.update();
 
-        let row = app
+        let left = app
             .world_mut()
-            .query::<(Entity, &RetailTag)>()
+            .query::<(Entity, &TransportAdjust)>()
             .iter(app.world())
-            .find_map(|(entity, tag)| (tag.0 == binding.tag).then_some(entity))
+            .find_map(|(entity, action)| {
+                (action.allocation == allocation && action.delta == -1).then_some(entity)
+            })
             .unwrap();
-        let mut arrows = app
+        let right = app
             .world_mut()
-            .query::<(Entity, &RetailTag, &ChildOf)>()
+            .query::<(Entity, &TransportAdjust)>()
             .iter(app.world())
-            .filter_map(|(entity, tag, parent)| (parent.parent() == row).then_some((tag.0, entity)))
-            .collect::<Vec<_>>();
-        let left = arrows
-            .iter()
-            .find_map(|(tag, entity)| (*tag == fourcc!("left")).then_some(*entity))
+            .find_map(|(entity, action)| {
+                (action.allocation == allocation && action.delta == 1).then_some(entity)
+            })
             .unwrap();
-        let right = arrows
-            .drain(..)
-            .find_map(|(tag, entity)| (tag == fourcc!("rght")).then_some(entity))
-            .unwrap();
-        assert_eq!(app.world().get::<TransportAdjust>(left).unwrap().delta, -1);
-        assert_eq!(app.world().get::<TransportAdjust>(right).unwrap().delta, 1);
         assert_eq!(
             app.world_mut()
                 .query::<&TransportAdjust>()
                 .iter(app.world())
                 .count(),
-            TRANSPORT_ROWS.len() * 2
+            TEST_TRANSPORT_ALLOCATIONS.len() * 2
         );
 
         activate(&mut app, right);
@@ -794,14 +905,14 @@ mod tests {
             .world()
             .resource::<GameSession>()
             .game
-            .transport_row_status(nation, binding.allocation);
+            .transport_row_status(nation, allocation);
         assert_eq!(after.allocated, before.allocated + 1);
         let caption = app
             .world_mut()
             .query::<(&TransportDisplay, &Text)>()
             .iter(app.world())
             .find_map(|(display, text)| match display {
-                TransportDisplay::RowCaption(allocation) if *allocation == binding.allocation => {
+                TransportDisplay::RowCaption(candidate) if *candidate == allocation => {
                     Some(text.0.clone())
                 }
                 _ => None,
@@ -817,14 +928,14 @@ mod tests {
             .world()
             .resource::<GameSession>()
             .game
-            .transport_row_status(nation, binding.allocation);
+            .transport_row_status(nation, allocation);
         assert_eq!(restored.allocated, before.allocated);
         let caption = app
             .world_mut()
             .query::<(&TransportDisplay, &Text)>()
             .iter(app.world())
             .find_map(|(display, text)| match display {
-                TransportDisplay::RowCaption(allocation) if *allocation == binding.allocation => {
+                TransportDisplay::RowCaption(candidate) if *candidate == allocation => {
                     Some(text.0.clone())
                 }
                 _ => None,

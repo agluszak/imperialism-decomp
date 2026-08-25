@@ -85,30 +85,54 @@ class UiCodegenTests(unittest.TestCase):
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         self.assertIn("pub fn spawn_city_dialog(", rendered)
+        mill = rendered[
+            rendered.index("CityFacilitySlot::TextileMill => {") : rendered.index(
+                "CityFacilitySlot::ClothingFactory => {"
+            )
+        ]
+        self.assertIn("let ui = spawn_citydlog_9200(commands);", mill)
+        self.assertIn("commands.entity(ui.root).insert(ui);", mill)
+        university = rendered[
+            rendered.index("CityFacilitySlot::University => {") : rendered.index(
+                "CityFacilitySlot::PowerPlant => {"
+            )
+        ]
+        self.assertIn("let ui = spawn_univ_9210(commands);", university)
+        self.assertNotIn("pub const ARMORY_ROW_CONTROLS", rendered)
+        self.assertNotIn("pub const INDUSTRY_PAGE_CONTROLS", rendered)
+
+    def test_generated_spawn_returns_named_entity_identities(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertIn("pub struct Mapview3500 {", rendered)
         self.assertIn(
-            'CityFacilitySlot::TextileMill => commands.spawn_scene(citydlog_9200()).id()',
+            "pub fn spawn_mapview_3500(commands: &mut Commands) -> Mapview3500 {",
             rendered,
         )
-        self.assertIn(
-            'CityFacilitySlot::University => commands.spawn_scene(univ_9210()).id()',
-            rendered,
-        )
-        self.assertIn(
-            '(fourcc!("clu0"), fourcc!("civ0"))',
-            rendered[rendered.index("ARMORY_ROW_CONTROLS") :],
-        )
-        self.assertIn(
-            '(fourcc!("clu8"), fourcc!("civ8"))',
-            rendered[rendered.index("UNIVERSITY_ROW_CONTROLS") :],
-        )
+        self.assertIn("pub okay: Entity,", rendered)
+        self.assertIn("pub page: Entity,", rendered)
+        self.assertIn("pub lcor: Entity,", rendered)
+        self.assertIn("pub rcor: Entity,", rendered)
+        self.assertIn("pub struct Startup1500 {", rendered)
+        self.assertIn("pub rand: Entity,", rendered)
+        self.assertNotIn("pub fn mapview_3500() -> impl Scene", rendered)
+        self.assertNotIn("-> impl Scene {", rendered)
+        roster = rendered[
+            rendered.index("pub fn spawn_mapview_3500(") : rendered.index(
+                "pub fn spawn_mapview_3508("
+            )
+        ]
+        self.assertIn("commands.entity(dlog).add_child(page);", roster)
+        self.assertIn("commands.entity(root).add_child(wind);", roster)
 
     def test_armory_unit_name_uses_the_windows_runtime_style(self) -> None:
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         armory = rendered[
-            rendered.index("pub fn armory_9208()") : rendered.index(
-                "pub fn citydlog_9200()"
+            rendered.index("pub fn spawn_armory_9208(") : rendered.index(
+                "pub fn spawn_citydlog_9200("
             )
         ]
         unit = armory[
@@ -123,8 +147,8 @@ class UiCodegenTests(unittest.TestCase):
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         industry = rendered[
-            rendered.index("pub fn citydlog_9200()") : rendered.index(
-                "pub fn citydlog_9201()"
+            rendered.index("pub fn spawn_citydlog_9200(") : rendered.index(
+                "pub fn spawn_citydlog_9201("
             )
         ]
         move = industry[
@@ -135,8 +159,8 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("retail_text_style(3, 0, 10, -2)", move)
         self.assertNotIn("retail_text_style(3, 0, 9, -2)", move)
         metal = rendered[
-            rendered.index("pub fn citydlog_9203()") : rendered.index(
-                "pub fn citydlog_9204()"
+            rendered.index("pub fn spawn_citydlog_9203(") : rendered.index(
+                "pub fn spawn_citydlog_9204("
             )
         ]
         self.assertIn("retail_text_style(3, 0, 10, -2)", metal)
@@ -147,8 +171,8 @@ class UiCodegenTests(unittest.TestCase):
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         trade = rendered[
-            rendered.index("pub fn trade_2009()") : rendered.index(
-                "pub fn trade_2010()"
+            rendered.index("pub fn spawn_trade_2009(") : rendered.index(
+                "pub fn spawn_trade_2010("
             )
         ]
         sell = trade[
@@ -163,7 +187,7 @@ class UiCodegenTests(unittest.TestCase):
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
-        newspaper = rendered[rendered.index("pub fn flagview_8451()") :]
+        newspaper = rendered[rendered.index("pub fn spawn_flagview_8451(") :]
         date = newspaper[
             newspaper.index('retail_node(fourcc!("date")') : newspaper.index(
                 'retail_node(fourcc!("spec")'
@@ -181,7 +205,7 @@ class UiCodegenTests(unittest.TestCase):
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
-        deal_book = rendered[rendered.index("pub fn flagview_8800()") :]
+        deal_book = rendered[rendered.index("pub fn spawn_flagview_8800(") :]
         rtil = deal_book[
             deal_book.index('retail_node(fourcc!("rtil")') : deal_book.index(
                 'retail_node(fourcc!("mark")'
@@ -196,8 +220,8 @@ class UiCodegenTests(unittest.TestCase):
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         setup = rendered[
-            rendered.index("pub fn startup_1501()") : rendered.index(
-                "pub fn startup_1503()"
+            rendered.index("pub fn spawn_startup_1501(") : rendered.index(
+                "pub fn spawn_startup_1503("
             )
         ]
         stuf = setup[
@@ -263,8 +287,8 @@ class UiCodegenTests(unittest.TestCase):
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
         oil_dialog = rust_ui[
-            rust_ui.index("pub fn citydlog_9206()") : rust_ui.index(
-                "pub fn citydlog_9209()"
+            rust_ui.index("pub fn spawn_citydlog_9206(") : rust_ui.index(
+                "pub fn spawn_citydlog_9209("
             )
         ]
         self.assertIn("template(|_context| Ok(CaptionedWindow))", oil_dialog)

@@ -4,7 +4,7 @@ use super::hover_help::{
     ui_string,
 };
 use super::query_floater::bind_query_floater_control;
-use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
+use super::retail::{RetailPictureSwap, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
 use super::retail_raster_text::RetailRasterTextPainter;
 use crate::media::RetailAudioAssets;
@@ -17,31 +17,15 @@ use bevy::ui_widgets::{
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
-const PREFERENCE_ROWS: [(
-    PreferenceSlot,
-    imperialism_formats::FourCc,
-    imperialism_formats::FourCc,
-); 5] = [
-    (
-        PreferenceSlot::MusicVolume,
-        fourcc!("opta"),
-        fourcc!("txta"),
-    ),
-    (
-        PreferenceSlot::SoundVolume,
-        fourcc!("optb"),
-        fourcc!("txtb"),
-    ),
-    (PreferenceSlot::TurnAlerts, fourcc!("optc"), fourcc!("txtc")),
-    (PreferenceSlot::Unknown10, fourcc!("optd"), fourcc!("txtd")),
-    (
-        PreferenceSlot::TacticalBattle,
-        fourcc!("opte"),
-        fourcc!("txte"),
-    ),
+const PREFERENCE_ROW_SLOTS: [PreferenceSlot; 5] = [
+    PreferenceSlot::MusicVolume,
+    PreferenceSlot::SoundVolume,
+    PreferenceSlot::TurnAlerts,
+    PreferenceSlot::Unknown10,
+    PreferenceSlot::TacticalBattle,
 ];
 const SLIDER_SPLIT_PAD: i16 = 0x0c;
 const MUSIC_SLIDER_SCALE: i16 = 0xff;
@@ -127,6 +111,11 @@ struct PreferenceRow {
     slot: PreferenceSlot,
 }
 
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+struct PreferenceLabel {
+    ui_row: usize,
+}
+
 /// Preference slot Okay writes after the checkboxes.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct PreferenceSlider {
@@ -161,48 +150,52 @@ impl Plugin for PreferencesPlugin {
 }
 
 fn spawn_preferences(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::linger_4150()).id();
+    let ui = generated::spawn_linger_4150(&mut commands);
     commands
-        .entity(root)
-        .insert((PreferencesRoot, DespawnOnExit(AppState::Preferences)));
+        .entity(ui.root)
+        .insert((PreferencesRoot, ui, DespawnOnExit(AppState::Preferences)));
 }
 
 fn bind_preferences(
     mut commands: Commands,
-    root: Single<Entity, Added<PreferencesRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Linger4150, Added<PreferencesRoot>>,
     mut nodes: Query<&mut Node>,
     prefs: Res<GamePreferences>,
     mut assets: RetailUiAssets,
 ) {
-    let root = *root;
-    bind_query_floater_control(&mut commands, root, &tree);
-    let curs = tree.find(root, fourcc!("curs"));
+    let ui = **ui;
+    bind_query_floater_control(&mut commands, ui.quer);
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
-        curs,
-        &mut nodes.get_mut(curs).expect("preferences curs has Node"),
+        ui.curs,
+        &mut nodes.get_mut(ui.curs).expect("preferences curs has Node"),
         HoverHelpBarStyle::PREFERENCES,
     );
     bind_hover_help_texts(
         &mut commands,
-        root,
-        &tree,
         [
-            (fourcc!("okay"), ui_string(&assets, 0x2743, 0x25)),
-            (fourcc!("quer"), ui_string(&assets, 0x2730, 3)),
+            (ui.okay, ui_string(&assets, 0x2743, 0x25)),
+            (ui.quer, ui_string(&assets, 0x2730, 3)),
         ],
     );
 
-    for (row, &(slot, checkbox_tag, label_tag)) in PREFERENCE_ROWS.iter().enumerate() {
-        let checkbox = tree.try_find(root, checkbox_tag);
+    let rows = [
+        (PREFERENCE_ROW_SLOTS[0], None, ui.txta),
+        (PREFERENCE_ROW_SLOTS[1], None, ui.txtb),
+        (PREFERENCE_ROW_SLOTS[2], Some(ui.optc), ui.txtc),
+        (PREFERENCE_ROW_SLOTS[3], Some(ui.optd), ui.txtd),
+        (PREFERENCE_ROW_SLOTS[4], Some(ui.opte), ui.txte),
+    ];
+    for (row, (slot, checkbox, label)) in rows.into_iter().enumerate() {
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
         let caption = preference_caption(&assets, row, caption_on);
-        commands
-            .entity(tree.find(root, label_tag))
-            .insert((Text::new(caption.clone()), AccessibleLabel::new(caption)));
+        commands.entity(label).insert((
+            PreferenceLabel { ui_row: row },
+            Text::new(caption.clone()),
+            AccessibleLabel::new(caption),
+        ));
         let Some(checkbox) = checkbox else {
             continue;
         };
@@ -241,7 +234,7 @@ fn bind_preferences(
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        tree.find(root, fourcc!("musi")),
+        ui.musi,
         MUSIC_PICTURE_BASE,
         PreferenceSlot::MusicVolume,
         MUSIC_SLIDER_SCALE,
@@ -251,7 +244,7 @@ fn bind_preferences(
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        tree.find(root, fourcc!("soun")),
+        ui.soun,
         SOUND_PICTURE_BASE,
         PreferenceSlot::SoundVolume,
         SOUND_SLIDER_SCALE,
@@ -260,20 +253,14 @@ fn bind_preferences(
     );
 
     commands
-        .entity(tree.find(root, fourcc!("okay")))
+        .entity(ui.okay)
         .observe(on_preferences_activate)
         .remove::<InteractionDisabled>();
 
-    commands
-        .entity(tree.find(root, fourcc!("tpca")))
-        .remove::<InteractionDisabled>();
-    let yes = tree.find(root, fourcc!("yess"));
-    let no = tree.find(root, fourcc!("nooo"));
-    commands.entity(yes).insert(Checked);
-    commands.entity(no).remove::<Checked>();
-    commands
-        .entity(tree.find(root, fourcc!("opca")))
-        .remove::<InteractionDisabled>();
+    commands.entity(ui.tpca).remove::<InteractionDisabled>();
+    commands.entity(ui.yess).insert(Checked);
+    commands.entity(ui.nooo).remove::<Checked>();
+    commands.entity(ui.opca).remove::<InteractionDisabled>();
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -320,7 +307,7 @@ fn bind_volume_slider(
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
-    prefs.values[PREFERENCE_ROWS[row].0] != 0
+    prefs.values[PREFERENCE_ROW_SLOTS[row]] != 0
 }
 
 fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> String {
@@ -437,16 +424,13 @@ fn on_preference_checked<E: EntityEvent, C: Component>(
     mut commands: Commands,
     rows: Query<&PreferenceRow>,
     mut texts: Query<&mut Text>,
-    labels: Query<(Entity, &RetailTag)>,
+    labels: Query<(Entity, &PreferenceLabel)>,
     assets: RetailUiAssets,
 ) {
     let Ok(row) = rows.get(event.event_target()) else {
         return;
     };
-    let Some((label, _)) = labels
-        .iter()
-        .find(|(_, tag)| tag.0 == PREFERENCE_ROWS[row.ui_row].2)
-    else {
+    let Some((label, _)) = labels.iter().find(|(_, label)| label.ui_row == row.ui_row) else {
         return;
     };
     if let Ok(mut text) = texts.get_mut(label) {

@@ -3,7 +3,7 @@ use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
+use crate::ui::retail::{RetailPictureSwap, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
 use crate::ui::{
@@ -19,25 +19,15 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
-    BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
+    BattleReportText, CityWindowLayout, LegacyGameStateContext, LoadGameError,
     NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy, PictureId, SAVE_LABEL_MAX_CHARS,
-    SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, fourcc, list_save_slots,
+    SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, list_save_slots,
     load_game_from_bytes, normalize_save_label, peek_save_header, peek_save_preview_owners,
     retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-const SLOT_TAGS: [FourCc; NUMBERED_SAVE_SLOT_COUNT as usize] = [
-    fourcc!("slt0"),
-    fourcc!("slt1"),
-    fourcc!("slt2"),
-    fourcc!("slt3"),
-    fourcc!("slt4"),
-    fourcc!("slt5"),
-    fourcc!("slt6"),
-    fourcc!("slt7"),
-];
 const AUTOSAVE_SESSION_SLOT: i32 = 0xa1;
 const LOAD_OKAY_IDLE_PICTURE: i16 = 4524;
 const LOAD_OKAY_ACTIVE_PICTURE: i16 = 4525;
@@ -50,40 +40,12 @@ const CONFIRM_LOAD_STRING_INDEX: i16 = 0x33;
 const PICK_SLOT_STRING_GROUP: i16 = 0x2758;
 const PICK_SLOT_STRING_INDEX: i16 = 0x17;
 const FLAG_MENU_STRING_GROUP: i16 = 0x2743;
-const FLAG_MENU_ROWS: [(FourCc, Option<FourCc>, Option<FlagMenuAction>); 8] = [
-    (fourcc!("txt0"), None, None),
-    (
-        fourcc!("txt1"),
-        Some(fourcc!("save")),
-        Some(FlagMenuAction::Save),
-    ),
-    (
-        fourcc!("txt2"),
-        Some(fourcc!("load")),
-        Some(FlagMenuAction::Load),
-    ),
-    (
-        fourcc!("txt3"),
-        Some(fourcc!("newg")),
-        Some(FlagMenuAction::NewGame),
-    ),
-    (
-        fourcc!("txt4"),
-        Some(fourcc!("pref")),
-        Some(FlagMenuAction::Preferences),
-    ),
-    (
-        fourcc!("txt5"),
-        Some(fourcc!("cred")),
-        Some(FlagMenuAction::Credits),
-    ),
-    (
-        fourcc!("txt6"),
-        Some(fourcc!("quit")),
-        Some(FlagMenuAction::Quit),
-    ),
-    (fourcc!("txt7"), Some(fourcc!("cncl")), None),
-];
+
+fn load_save_slots(ui: generated::Linger1502) -> [Entity; NUMBERED_SAVE_SLOT_COUNT as usize] {
+    [
+        ui.slt0, ui.slt1, ui.slt2, ui.slt3, ui.slt4, ui.slt5, ui.slt6, ui.slt7,
+    ]
+}
 
 /// Directory that holds retail `slotN.imp` / `slotA.imp` files.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
@@ -285,77 +247,65 @@ fn loaded_game_destination(game: &GameState) -> AppState {
 }
 
 fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
-    let root = commands.spawn_scene(generated::linger_1502()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_linger_1502(&mut commands);
+    commands.entity(ui.root).insert((
         LoadSaveRoot {
             mode: request.0,
             selected: None,
             renaming: false,
         },
+        ui,
         DespawnOnExit(AppState::LoadSave),
     ));
 }
 
 fn bind_load_save(
     mut commands: Commands,
-    root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
-    tree: RetailTree,
+    root: Single<(&generated::Linger1502, &LoadSaveRoot), Added<LoadSaveRoot>>,
     mut assets: RetailUiAssets,
     save_dir: Res<SaveDirectory>,
 ) {
-    let (root_entity, screen) = root.into_inner();
+    let (ui, screen) = root.into_inner();
+    let ui = *ui;
     let mode = screen.mode;
-    bind_load_save_actions(&mut commands, root_entity, &tree, mode);
+    bind_load_save_actions(&mut commands, ui, mode);
     let listing = list_save_slots(&save_dir.0);
     let empty_label = assets
         .string(EMPTY_SLOT_STRING_GROUP, EMPTY_SLOT_STRING_INDEX)
         .unwrap_or_default();
     let presentation = presentation_from_listing(&listing, &empty_label, &assets);
-    populate_load_save_slots(&mut commands, root_entity, &tree, mode, &presentation);
+    populate_load_save_slots(&mut commands, ui, mode, &presentation);
     if mode == LoadSaveMode::Load {
-        apply_load_okay_pictures(&mut commands, &mut assets, root_entity, &tree);
-        commands
-            .entity(tree.find(root_entity, fourcc!("otto")))
-            .remove::<InteractionDisabled>();
+        apply_load_okay_pictures(&mut commands, &mut assets, ui.okay);
+        commands.entity(ui.otto).remove::<InteractionDisabled>();
     }
+    commands.entity(ui.info).insert(Text::new(String::new()));
     commands
-        .entity(tree.find(root_entity, fourcc!("info")))
-        .insert(Text::new(String::new()));
-    commands
-        .entity(tree.find(root_entity, fourcc!("map ")))
+        .entity(ui.map)
         .insert(LoadSaveMapPreview::default());
-    commands.entity(root_entity).insert(presentation);
+    commands.entity(ui.root).insert(presentation);
 }
 
-fn bind_load_save_actions(
-    commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    mode: LoadSaveMode,
-) {
-    for (index, tag) in SLOT_TAGS.iter().copied().enumerate() {
-        let entity = tree.find(root, tag);
+fn bind_load_save_actions(commands: &mut Commands, ui: generated::Linger1502, mode: LoadSaveMode) {
+    for (index, entity) in load_save_slots(ui).into_iter().enumerate() {
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
         commands
             .entity(entity)
             .insert((Button, LoadSaveAction::SelectSlot(slot)))
             .observe(on_load_save_activate);
     }
+    commands.entity(ui.info).insert(LoadSaveInfo);
     commands
-        .entity(tree.find(root, fourcc!("info")))
-        .insert(LoadSaveInfo);
-    commands
-        .entity(tree.find(root, fourcc!("okay")))
+        .entity(ui.okay)
         .insert(LoadSaveAction::Okay)
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
     commands
-        .entity(tree.find(root, fourcc!("cncl")))
+        .entity(ui.cncl)
         .insert(LoadSaveAction::Cancel)
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
-    let otto = tree.find(root, fourcc!("otto"));
-    let mut otto_commands = commands.entity(otto);
+    let mut otto_commands = commands.entity(ui.otto);
     otto_commands.insert(LoadSaveAction::SelectSlot(SaveSlot::Autosave));
     otto_commands.observe(on_load_save_activate);
     if mode == LoadSaveMode::Save {
@@ -400,13 +350,11 @@ fn slot_presentation(header: &SaveHeaderInfo, assets: &RetailUiAssets) -> SlotPr
 
 fn populate_load_save_slots(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Linger1502,
     mode: LoadSaveMode,
     presentation: &LoadSavePresentation,
 ) {
-    for (index, tag) in SLOT_TAGS.iter().copied().enumerate() {
-        let entity = tree.find(root, tag);
+    for (index, entity) in load_save_slots(ui).into_iter().enumerate() {
         match presentation.slots[index].as_ref() {
             Some(slot) => {
                 commands
@@ -434,13 +382,7 @@ fn populate_load_save_slots(
     }
 }
 
-fn apply_load_okay_pictures(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-) {
-    let okay = tree.find(root, fourcc!("okay"));
+fn apply_load_okay_pictures(commands: &mut Commands, assets: &mut RetailUiAssets, okay: Entity) {
     let idle = match assets.picture(PictureId::new(LOAD_OKAY_IDLE_PICTURE)) {
         Ok(handle) => handle,
         Err(error) => {
@@ -821,12 +763,11 @@ fn spawn_notice(commands: &mut Commands, notice: LoadSaveNotice) {
 
 fn bind_load_save_notice(
     mut commands: Commands,
-    notice: Single<(Entity, &LoadSaveNotice), Added<LoadSaveNotice>>,
-    tree: RetailTree,
+    notice: Single<(&LoadSaveNotice, &generated::Linger2020), Added<LoadSaveNotice>>,
     mut assets: RetailUiAssets,
 ) {
-    let (root, notice) = notice.into_inner();
-    let linger = bind_linger_dialog(&mut commands, root, &tree);
+    let (notice, ui) = notice.into_inner();
+    let linger = bind_linger_dialog(&mut commands, *ui);
     let body = match notice {
         LoadSaveNotice::PickSlot => assets
             .string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
@@ -886,9 +827,10 @@ pub(crate) fn bind_open_flag_menu(commands: &mut Commands, flag: Entity) {
 }
 
 fn on_open_flag_menu(_activate: On<Activate>, mut commands: Commands) {
-    let root = commands.spawn_scene(generated::linger_4140()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_linger_4140(&mut commands);
+    commands.entity(ui.root).insert((
         FlagMenuRoot,
+        ui,
         ModalWindow,
         DespawnOnExit(AppState::StrategicMap),
     ));
@@ -896,13 +838,21 @@ fn on_open_flag_menu(_activate: On<Activate>, mut commands: Commands) {
 
 fn bind_flag_menu(
     mut commands: Commands,
-    root: Single<Entity, Added<FlagMenuRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Linger4140, Added<FlagMenuRoot>>,
     mut assets: RetailUiAssets,
 ) {
-    let root = *root;
-    for (index, (label_tag, control, action)) in FLAG_MENU_ROWS.iter().copied().enumerate() {
-        let entity = tree.find(root, label_tag);
+    let ui = **ui;
+    let rows = [
+        (ui.txt0, None, None),
+        (ui.txt1, Some(ui.save), Some(FlagMenuAction::Save)),
+        (ui.txt2, Some(ui.load), Some(FlagMenuAction::Load)),
+        (ui.txt3, Some(ui.newg), Some(FlagMenuAction::NewGame)),
+        (ui.txt4, Some(ui.pref), Some(FlagMenuAction::Preferences)),
+        (ui.txt5, Some(ui.cred), Some(FlagMenuAction::Credits)),
+        (ui.txt6, Some(ui.quit), Some(FlagMenuAction::Quit)),
+        (ui.txt7, Some(ui.cncl), None),
+    ];
+    for (index, (label, control, action)) in rows.into_iter().enumerate() {
         let (font, layout, line_height, _) = assets
             .text_style(imperialism_formats::RetailTextStylePreset {
                 font_family: 1,
@@ -917,7 +867,7 @@ fn bind_flag_menu(
             (0x28, 0xd2)
         };
         let caption = get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16);
-        commands.entity(entity).insert((
+        commands.entity(label).insert((
             Text::new(caption.clone()),
             Label,
             font,
@@ -932,7 +882,7 @@ fn bind_flag_menu(
         let Some(control) = control else {
             continue;
         };
-        let mut control = commands.entity(tree.find(root, control));
+        let mut control = commands.entity(control);
         control
             .insert(AccessibleLabel::new(caption))
             .remove::<InteractionDisabled>();
@@ -1001,11 +951,10 @@ fn open_flag_menu_prompt(commands: &mut Commands, pending: FlagMenuPending) {
 
 fn bind_flag_menu_prompt(
     mut commands: Commands,
-    prompt: Single<(Entity, &FlagMenuPrompt), Added<FlagMenuPrompt>>,
-    tree: RetailTree,
+    prompt: Single<(&FlagMenuPrompt, &generated::Linger2020), Added<FlagMenuPrompt>>,
     mut assets: RetailUiAssets,
 ) {
-    let (root, prompt) = prompt.into_inner();
+    let (prompt, ui) = prompt.into_inner();
     // `TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted` for single-player.
     let index = match prompt.kind {
         FlagMenuPending::NewGame => 0x2b,
@@ -1014,7 +963,7 @@ fn bind_flag_menu_prompt(
     let body = assets
         .string(0x2737, index)
         .expect("retail flag-menu confirm string");
-    let linger = bind_linger_dialog(&mut commands, root, &tree);
+    let linger = bind_linger_dialog(&mut commands, *ui);
     linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
@@ -1054,7 +1003,6 @@ fn on_flag_menu_prompt_activate(
 mod tests {
     use super::*;
     use crate::ui::insert_game_session_world;
-    use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
     use imperialism_formats::{DibPalette, load_game_from_path};
 
@@ -1102,27 +1050,45 @@ mod tests {
                 DespawnOnExit(AppState::LoadSave),
             ))
             .id();
-        for tag in SLOT_TAGS {
-            commands.spawn((RetailTag(tag), Text::new(String::new()), ChildOf(root)));
-        }
-        commands.spawn((RetailTag(fourcc!("okay")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("cncl")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("otto")), Node::default(), ChildOf(root)));
-        commands.spawn((
-            RetailTag(fourcc!("info")),
-            LoadSaveInfo,
-            Text::new(String::new()),
-            ChildOf(root),
-        ));
+        let slot = |commands: &mut Commands| {
+            commands
+                .spawn((Text::new(String::new()), ChildOf(root)))
+                .id()
+        };
+        let control =
+            |commands: &mut Commands| commands.spawn((Node::default(), ChildOf(root))).id();
+        let info = commands
+            .spawn((LoadSaveInfo, Text::new(String::new()), ChildOf(root)))
+            .id();
+        let ui = generated::Linger1502 {
+            root,
+            base: root,
+            main: root,
+            slt0: slot(&mut commands),
+            slt1: slot(&mut commands),
+            slt3: slot(&mut commands),
+            slt2: slot(&mut commands),
+            slt7: slot(&mut commands),
+            slt6: slot(&mut commands),
+            slt5: slot(&mut commands),
+            slt4: slot(&mut commands),
+            cncl: control(&mut commands),
+            plat: root,
+            okay: control(&mut commands),
+            map: root,
+            info,
+            otto: control(&mut commands),
+            curs: root,
+        };
+        commands.entity(root).insert(ui);
     }
 
     fn bind_test_load_save(
         mut commands: Commands,
-        root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
-        tree: RetailTree,
+        root: Single<(&generated::Linger1502, &LoadSaveRoot), Added<LoadSaveRoot>>,
     ) {
-        let (entity, screen) = root.into_inner();
-        bind_load_save_actions(&mut commands, entity, &tree, screen.mode);
+        let (ui, screen) = root.into_inner();
+        bind_load_save_actions(&mut commands, *ui, screen.mode);
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {

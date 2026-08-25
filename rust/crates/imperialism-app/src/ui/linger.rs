@@ -1,9 +1,9 @@
-use super::generated;
-use super::retail::{RetailTree, RetailUiAssets};
+use super::generated::{self, Linger2020};
+use super::retail::RetailUiAssets;
 use super::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::AppState;
 use bevy::prelude::*;
-use imperialism_formats::{RetailTextStylePreset, fourcc};
+use imperialism_formats::RetailTextStylePreset;
 
 pub struct LingerControls {
     pub title: Entity,
@@ -17,25 +17,21 @@ pub fn spawn_linger_dialog(
     commands: &mut Commands,
     extra: impl Bundle,
     screen: AppState,
-) -> Entity {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
+) -> Linger2020 {
+    let ui = generated::spawn_linger_2020(commands);
     commands
-        .entity(root)
-        .insert((extra, ModalWindow, DespawnOnExit(screen)));
-    root
+        .entity(ui.root)
+        .insert((extra, ui, ModalWindow, DespawnOnExit(screen)));
+    ui
 }
 
-pub fn bind_linger_dialog(
-    commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-) -> LingerControls {
+pub fn bind_linger_dialog(commands: &mut Commands, ui: Linger2020) -> LingerControls {
     let controls = LingerControls {
-        title: tree.find(root, fourcc!("titl")),
-        body: tree.find(root, fourcc!("info")),
-        okay: tree.find(root, fourcc!("okay")),
-        cancel: tree.find(root, fourcc!("cncl")),
-        coat: tree.find(root, fourcc!("coat")),
+        title: ui.titl,
+        body: ui.info,
+        okay: ui.okay,
+        cancel: ui.cncl,
+        coat: ui.coat,
     };
     commands
         .entity(controls.okay)

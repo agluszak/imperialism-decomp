@@ -129,44 +129,43 @@ impl CityBuildingHitMask {
 }
 
 pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::citymain_2011()).id();
+    let ui = generated::spawn_citymain_2011(&mut commands);
     commands
-        .entity(root)
-        .insert((CitySceneRoot, DespawnOnExit(AppState::City)));
+        .entity(ui.root)
+        .insert((CitySceneRoot, ui, DespawnOnExit(AppState::City)));
 }
 
 pub(in crate::ui::city) fn bind_city_screen(
     mut commands: Commands,
-    root: Single<Entity, Added<CitySceneRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Citymain2011, Added<CitySceneRoot>>,
     nodes: Query<&Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     bind_native_game_screen_nav(
         &mut commands,
-        *root,
-        &tree,
-        fourcc!("topB"),
-        Some(fourcc!("tool")),
-        true,
+        ui.trad,
+        ui.tran,
+        ui.city,
+        ui.dipl,
+        Some(ui.end),
+        Some(ui.quer),
     );
 
     let nation = session.active_major_nation();
-    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    bind_city_summary_values(&mut commands, *root, &tree, &nodes, &mut assets);
-    bind_city_hover_title(&mut commands, *root, &tree, &mut assets);
+    bind_game_status_display(&mut commands, &mut assets, ui.seas, ui.trea);
+    bind_city_summary_values(&mut commands, **ui, &nodes, &mut assets);
+    bind_city_hover_title(&mut commands, ui.curs, &mut assets);
     spawn_city_buildings(
         &mut commands,
-        *root,
-        &tree,
+        ui.main,
         generated::CITY_BUILDINGS,
         generated::CITY_BUILDING_ACTIONS,
         &session.game,
         nation,
         &mut assets,
     );
-    commands.entity(*root).insert(CityScreenRoot);
+    commands.entity(ui.root).insert(CityScreenRoot);
 }
 
 /// `TPlacard::Draw` uses `BuildUiTextStyleDescriptor(0, 10, 0x2b6c)`: size 10
@@ -180,8 +179,7 @@ const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset = RetailTextStylePreset {
 
 fn bind_city_summary_values(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Citymain2011,
     nodes: &Query<&Node>,
     assets: &mut RetailUiAssets,
 ) {
@@ -196,8 +194,7 @@ fn bind_city_summary_values(
     };
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0);
-    let bind_text = |commands: &mut Commands, tag, marker| {
-        let entity = tree.find(root, tag);
+    let bind_text = |commands: &mut Commands, entity, marker| {
         let node = nodes
             .get(entity)
             .expect("retail city placard has a native node");
@@ -232,44 +229,25 @@ fn bind_city_summary_values(
             ChildOf(entity),
         ));
     };
-    bind_text(
-        commands,
-        fourcc!("untr"),
-        CitySummary::Labor(SkillBand::Low),
-    );
-    bind_text(
-        commands,
-        fourcc!("trai"),
-        CitySummary::Labor(SkillBand::Medium),
-    );
-    bind_text(
-        commands,
-        fourcc!("prof"),
-        CitySummary::Labor(SkillBand::High),
-    );
-    bind_text(commands, fourcc!("labP"), CitySummary::Population);
-    bind_text(commands, fourcc!("powe"), CitySummary::Power);
-    for (tag, resource) in [
-        (fourcc!("grai"), ResourceKind::Grain),
-        (fourcc!("prod"), ResourceKind::Fruit),
-        (fourcc!("meat"), ResourceKind::Livestock),
-        (fourcc!("hard"), ResourceKind::Hardware),
-        (fourcc!("clot"), ResourceKind::Clothing),
-        (fourcc!("furn"), ResourceKind::Furniture),
+    bind_text(commands, ui.untr, CitySummary::Labor(SkillBand::Low));
+    bind_text(commands, ui.trai, CitySummary::Labor(SkillBand::Medium));
+    bind_text(commands, ui.prof, CitySummary::Labor(SkillBand::High));
+    bind_text(commands, ui.labp, CitySummary::Population);
+    bind_text(commands, ui.powe, CitySummary::Power);
+    for (entity, resource) in [
+        (ui.grai, ResourceKind::Grain),
+        (ui.prod, ResourceKind::Fruit),
+        (ui.meat, ResourceKind::Livestock),
+        (ui.hard, ResourceKind::Hardware),
+        (ui.clot, ResourceKind::Clothing),
+        (ui.furn, ResourceKind::Furniture),
     ] {
-        bind_text(commands, tag, CitySummary::Need(resource));
+        bind_text(commands, entity, CitySummary::Need(resource));
     }
-    commands
-        .entity(tree.find(root, fourcc!("trea")))
-        .insert(CitySummary::Treasury);
+    commands.entity(ui.trea).insert(CitySummary::Treasury);
 }
 
-fn bind_city_hover_title(
-    commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    assets: &mut RetailUiAssets,
-) {
+fn bind_city_hover_title(commands: &mut Commands, curs: Entity, assets: &mut RetailUiAssets) {
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -278,7 +256,7 @@ fn bind_city_hover_title(
             alignment: 1,
         })
         .expect("retail city cursor-panel text style");
-    commands.entity(tree.find(root, fourcc!("curs"))).insert((
+    commands.entity(curs).insert((
         Text::new(""),
         font,
         layout,
@@ -295,15 +273,13 @@ fn bind_city_hover_title(
 #[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn spawn_city_buildings(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    main: Entity,
     visuals: &[CityBuildingVisual],
     actions: &[CityBuildingActionVisual],
     state: &GameState,
     nation: MajorNationId,
     assets: &mut RetailUiAssets,
 ) {
-    let main = tree.find(root, fourcc!("main"));
     let mut hit_regions = Vec::new();
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);

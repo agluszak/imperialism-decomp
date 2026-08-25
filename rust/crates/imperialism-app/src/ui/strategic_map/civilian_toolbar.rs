@@ -1,11 +1,12 @@
 //! Right-hand civilian command page (`uciv` / `TCivToolbar` + `TCivDescription`).
 
 use super::super::format_currency;
-use super::super::retail::{RetailTree, RetailUiAssets};
+use super::super::retail::RetailUiAssets;
 use super::map_interaction::cycle_map_interaction_selection;
 use super::map_interaction::{MapInteractionMode, StrategicInteraction, StrategicViewport};
 use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
+use crate::ui::generated::Mapview2013;
 use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -13,9 +14,6 @@ use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::*;
 
-const PAGE_TAG: FourCc = fourcc!("uciv");
-const PORTRAIT_TAG: FourCc = fourcc!("unit");
-const LEGEND_TAG: FourCc = fourcc!("back");
 const CIVILIAN_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x8f as f32);
 const CIVILIAN_PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
 const PORTRAIT_PICTURE_BASE: i16 = 0x438;
@@ -105,16 +103,14 @@ pub(crate) fn register_civilian_toolbar(app: &mut App) {
 pub(crate) fn bind_civilian_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: Mapview2013,
 ) {
-    let page = tree.find(root, PAGE_TAG);
-    locate_node(commands, page, CIVILIAN_PAGE_PARKED);
-    commands.entity(page).insert(CivilianToolbarPage);
+    locate_node(commands, ui.uciv, CIVILIAN_PAGE_PARKED);
+    commands.entity(ui.uciv).insert(CivilianToolbarPage);
     commands
-        .entity(tree.child(page, PORTRAIT_TAG))
+        .entity(ui.unit)
         .insert((CivilianPortrait, Visibility::Hidden));
-    commands.entity(tree.child(page, LEGEND_TAG)).insert((
+    commands.entity(ui.uciv_back).insert((
         CivilianLegend,
         LegendAtlases {
             resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
@@ -122,14 +118,14 @@ pub(crate) fn bind_civilian_toolbar(
             terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
         },
     ));
-    for (tag, command) in [
-        (fourcc!("dfnd"), CivilianCommand::Defend),
-        (fourcc!("latr"), CivilianCommand::Later),
-        (fourcc!("done"), CivilianCommand::Done),
-        (fourcc!("garr"), CivilianCommand::Disband),
+    for (entity, command) in [
+        (ui.uciv_dfnd, CivilianCommand::Defend),
+        (ui.uciv_latr, CivilianCommand::Later),
+        (ui.uciv_done, CivilianCommand::Done),
+        (ui.uciv_garr, CivilianCommand::Disband),
     ] {
         commands
-            .entity(tree.child(page, tag))
+            .entity(entity)
             .insert((
                 CivilianCommandButton,
                 command,

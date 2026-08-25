@@ -34,28 +34,44 @@ pub(in crate::ui::city) enum PopulationText {
 pub(in crate::ui::city) fn configure_warehouse_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Citydlog9213,
     state: &GameState,
 ) {
     let advanced_production_unlocked = state.technology().advanced_production_unlocked();
-
-    for &(resource, tag) in &WAREHOUSE_STOCKS {
-        let control = tree.find(root, tag);
+    let stocks = [
+        (ResourceKind::Cotton, ui.cott),
+        (ResourceKind::Wool, ui.wool),
+        (ResourceKind::Timber, ui.timb),
+        (ResourceKind::Coal, ui.coal),
+        (ResourceKind::Iron, ui.iron),
+        (ResourceKind::Horses, ui.hors),
+        (ResourceKind::Oil, ui.oil),
+        (ResourceKind::Food, ui.food),
+        (ResourceKind::Fabric, ui.fabr),
+        (ResourceKind::Lumber, ui.lumb),
+        (ResourceKind::Paper, ui.pape),
+        (ResourceKind::Steel, ui.stee),
+        (ResourceKind::Fuel, ui.fuel),
+        (ResourceKind::Clothing, ui.clot),
+        (ResourceKind::Furniture, ui.furn),
+        (ResourceKind::Hardware, ui.hard),
+        (ResourceKind::Arms, ui.arma),
+        (ResourceKind::Grain, ui.grai),
+        (ResourceKind::Fruit, ui.prod),
+        (ResourceKind::Livestock, ui.live),
+    ];
+    for (resource, control) in stocks {
         commands
             .entity(control)
             .insert((Text::new(""), WarehouseDisplay::Stock(resource)));
     }
-    let labor = tree.find(root, fourcc!("labo"));
-    let power = tree.find(root, fourcc!("powe"));
     commands
-        .entity(labor)
+        .entity(ui.labo)
         .insert((Text::new(""), WarehouseDisplay::Labor));
     commands
-        .entity(power)
+        .entity(ui.powe)
         .insert((Text::new(""), WarehouseDisplay::Power));
-    for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
-        let control = tree.find(root, tag);
+    for control in [ui.oil, ui.fuel, ui.powe] {
         let mut control_commands = commands.entity(control);
         if advanced_production_unlocked {
             control_commands
@@ -70,19 +86,17 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
     }
 
     let picture = PictureId::new(9215);
-    let dialog = tree.find(root, fourcc!("DLOG"));
     match assets.picture(picture) {
         Ok(handle) => {
-            commands.entity(dialog).insert(ImageNode::new(handle));
+            commands.entity(ui.dlog).insert(ImageNode::new(handle));
         }
         Err(error) => warn!("could not load Warehouse picture {picture}: {error}"),
     }
     commands
-        .entity(dialog)
+        .entity(ui.dlog)
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
-    for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
-        let entity = tree.find(root, tag);
+    for entity in [ui.wind, ui.dlog] {
         commands
             .entity(entity)
             .entry::<Node>()
@@ -91,15 +105,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
                 node.height = px(335);
             });
     }
-    for tag in [
-        fourcc!("hors"),
-        fourcc!("food"),
-        fourcc!("labo"),
-        fourcc!("grai"),
-        fourcc!("prod"),
-        fourcc!("live"),
-    ] {
-        let entity = tree.find(root, tag);
+    for entity in [ui.hors, ui.food, ui.labo, ui.grai, ui.prod, ui.live] {
         commands
             .entity(entity)
             .entry::<Node>()
@@ -115,108 +121,117 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
 pub(in crate::ui::city) fn bind_rail_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    name: Entity,
+    order: CityOrderId,
+    row: Entity,
+    decrease: Entity,
+    increase: Entity,
+    quantity: Entity,
+    bar: Entity,
     building_name: String,
-    binding: CityOrderBinding,
     step: i16,
 ) {
-    let name_control = tree.find(root, fourcc!("name"));
-    commands
-        .entity(name_control)
-        .insert(Text::new(building_name));
+    commands.entity(name).insert(Text::new(building_name));
     let counter = bind_city_order_row(
-        commands,
-        root,
-        tree,
-        binding,
-        fourcc!("left"),
-        fourcc!("rght"),
-        fourcc!("move"),
-        step,
-        None,
+        commands, order, row, decrease, increase, quantity, step, None,
     );
-    commands.entity(counter.quantity).insert(RailBarCounter {
-        order: binding.order,
-    });
-    bind_rail_amount_bar(commands, assets, counter.row, tree, binding.order, step);
+    commands
+        .entity(counter.quantity)
+        .insert(RailBarCounter { order });
+    bind_rail_amount_bar(commands, assets, bar, order, step);
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Citydlog9212,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::FoodProcessing);
-    bind_rail_dialog(commands, assets, root, tree, building_name, FOOD_ORDER, 2);
-    let labor = tree.find(root, fourcc!("labV"));
-    let grain = tree.find(root, fourcc!("grai"));
-    let fruit = tree.find(root, fourcc!("prod"));
-    let fish_and_livestock = tree.find(root, fourcc!("fish"));
+    bind_rail_dialog(
+        commands,
+        assets,
+        ui.name,
+        CityOrderId::FoodProcessing,
+        ui.food,
+        ui.left,
+        ui.rght,
+        ui.move_,
+        ui.bar,
+        building_name,
+        2,
+    );
     commands
-        .entity(labor)
+        .entity(ui.labv)
         .insert((Text::new("X"), FoodIndicator::Labor));
     commands
-        .entity(grain)
+        .entity(ui.grai)
         .insert((Text::new("X"), FoodIndicator::Grain));
     commands
-        .entity(fruit)
+        .entity(ui.prod)
         .insert((Text::new("X"), FoodIndicator::Fruit));
     commands
-        .entity(fish_and_livestock)
+        .entity(ui.fish)
         .insert((Text::new("X"), FoodIndicator::FishAndLivestock));
 }
 
 pub(in crate::ui::city) fn configure_power_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Citydlog9211,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::PowerPlant);
-    bind_rail_dialog(commands, assets, root, tree, building_name, POWER_ORDER, 6);
-    let fuel = tree.find(root, fourcc!("fuel"));
+    bind_rail_dialog(
+        commands,
+        assets,
+        ui.name,
+        CityOrderId::PowerPlant,
+        ui.powe,
+        ui.left,
+        ui.rght,
+        ui.move_,
+        ui.bar,
+        building_name,
+        6,
+    );
     commands
-        .entity(fuel)
+        .entity(ui.fuel)
         .insert((Text::new("X"), Visibility::Hidden));
 }
 
 pub(in crate::ui::city) fn configure_transport_capacity_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Citydlog9214,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::Transport);
     bind_rail_dialog(
         commands,
         assets,
-        root,
-        tree,
+        ui.name,
+        CityOrderId::TransportCapacity,
+        ui.rail,
+        ui.left,
+        ui.rght,
+        ui.move_,
+        ui.bar,
         building_name,
-        TRANSPORT_CAPACITY_ORDER,
         1,
     );
-    let labor = tree.find(root, fourcc!("labV"));
-    let lumber = tree.find(root, fourcc!("lumb"));
-    let steel = tree.find(root, fourcc!("stee"));
     commands
-        .entity(labor)
+        .entity(ui.labv)
         .insert((Text::new("X"), TransportCapacityIndicator::Labor));
     commands
-        .entity(lumber)
+        .entity(ui.lumb)
         .insert((Text::new("X"), TransportCapacityIndicator::Lumber));
     commands
-        .entity(steel)
+        .entity(ui.stee)
         .insert((Text::new("X"), TransportCapacityIndicator::Steel));
 }
 
 pub(in crate::ui::city) fn configure_population_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: &generated::Citydlog9215,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::RegionalPopulation);
     let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
@@ -224,31 +239,30 @@ pub(in crate::ui::city) fn configure_population_dialog(
     bind_rail_dialog(
         commands,
         assets,
-        root,
-        tree,
+        ui.name,
+        CityOrderId::PopulationGrowth,
+        ui.popu,
+        ui.left,
+        ui.rght,
+        ui.move_,
+        ui.bar,
         building_name,
-        POPULATION_ORDER,
         1,
     );
-    let food = tree.find(root, fourcc!("food"));
-    let clothing = tree.find(root, fourcc!("clot"));
-    let furniture = tree.find(root, fourcc!("furn"));
-    let capacity = tree.find(root, fourcc!("capT"));
-    let provinces = tree.find(root, fourcc!("prov"));
     commands
-        .entity(food)
+        .entity(ui.food)
         .insert((Text::new("X"), PopulationGood(ResourceKind::Food)));
     commands
-        .entity(clothing)
+        .entity(ui.clot)
         .insert((Text::new("X"), PopulationGood(ResourceKind::Clothing)));
     commands
-        .entity(furniture)
+        .entity(ui.furn)
         .insert((Text::new("X"), PopulationGood(ResourceKind::Furniture)));
     commands
-        .entity(capacity)
+        .entity(ui.capt)
         .insert((Text::new(""), PopulationText::Capacity(capacity_template)));
     commands
-        .entity(provinces)
+        .entity(ui.prov)
         .insert((Text::new(""), PopulationText::Provinces(province_template)));
 }
 

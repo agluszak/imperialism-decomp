@@ -84,24 +84,34 @@ pub(in crate::ui::city) fn city_building_name(
     city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail()))
 }
 
+pub(in crate::ui::city) struct IndustryOrderControls {
+    pub(in crate::ui::city) order: CityOrderId,
+    pub(in crate::ui::city) row: Entity,
+    pub(in crate::ui::city) decrease: Entity,
+    pub(in crate::ui::city) increase: Entity,
+    pub(in crate::ui::city) quantity: Entity,
+    pub(in crate::ui::city) bar: Entity,
+}
+
+pub(in crate::ui::city) struct IndustryDialogControls<'a> {
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+    pub(in crate::ui::city) name: Entity,
+    pub(in crate::ui::city) capacity: Entity,
+    pub(in crate::ui::city) labor: Entity,
+    pub(in crate::ui::city) expansion: Entity,
+    pub(in crate::ui::city) flag: Entity,
+    pub(in crate::ui::city) orders: &'a [IndustryOrderControls],
+    pub(in crate::ui::city) stocks: &'a [(ResourceKind, Entity, i16)],
+}
+
 pub(in crate::ui::city) fn configure_industry_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-    page: IndustryPage,
+    controls: IndustryDialogControls<'_>,
 ) {
-    let building_name = city_building_name(assets, page.slot);
+    let building_name = city_building_name(assets, controls.slot);
     let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
-    bind_industry_dialog(
-        commands,
-        assets,
-        root,
-        tree,
-        page,
-        building_name,
-        capacity_template,
-    );
+    bind_industry_dialog(commands, assets, controls, building_name, capacity_template);
 }
 
 pub(in crate::ui::city) struct CityOrderRow {
@@ -132,23 +142,18 @@ impl CityOrderRow {
 #[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_city_order_row(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    binding: CityOrderBinding,
-    decrease_tag: FourCc,
-    increase_tag: FourCc,
-    quantity_tag: FourCc,
+    order: CityOrderId,
+    row: Entity,
+    decrease: Entity,
+    increase: Entity,
+    quantity: Entity,
     step: i16,
     selection: Option<Entity>,
 ) -> CityOrderRow {
-    let row = tree.find(root, binding.tag);
-    let decrease = tree.find(row, decrease_tag);
-    let increase = tree.find(row, increase_tag);
-    let quantity = tree.find(row, quantity_tag);
     let mut decrease_commands = commands.entity(decrease);
     decrease_commands
         .insert(CityOrderAdjust {
-            order: binding.order,
+            order,
             delta: -step,
             selection,
         })
@@ -159,7 +164,7 @@ pub(in crate::ui::city) fn bind_city_order_row(
     let mut increase_commands = commands.entity(increase);
     increase_commands
         .insert(CityOrderAdjust {
-            order: binding.order,
+            order,
             delta: step,
             selection,
         })
@@ -169,7 +174,7 @@ pub(in crate::ui::city) fn bind_city_order_row(
     }
     commands
         .entity(quantity)
-        .insert((Text::new(""), CityOrderQuantity(binding.order)));
+        .insert((Text::new(""), CityOrderQuantity(order)));
     CityOrderRow {
         row,
         decrease,
@@ -181,30 +186,27 @@ pub(in crate::ui::city) fn bind_city_order_row(
 fn bind_industry_amount_bars(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-    page: IndustryPage,
+    slot: CityFacilitySlot,
+    orders: &[IndustryOrderControls],
 ) {
-    for binding in page.orders {
+    for order in orders {
         let bound = bind_city_order_row(
             commands,
-            root,
-            tree,
-            *binding,
-            fourcc!("left"),
-            fourcc!("rght"),
-            fourcc!("move"),
+            order.order,
+            order.row,
+            order.decrease,
+            order.increase,
+            order.quantity,
             1,
             None,
         );
         let amount = IndustryAmount {
-            order: binding.order,
-            slot: page.slot,
+            order: order.order,
+            slot,
         };
         commands
             .entity(bound.quantity)
             .insert(IndustryBar::Quantity(amount));
-        let bar = tree.find(bound.row, fourcc!("bar "));
         let picture = industry_amount_bar_picture(AmountBarPixels {
             range: 0,
             current: 0,
@@ -213,61 +215,56 @@ fn bind_industry_amount_bars(
         let palette = *assets.default_dib_palette();
         let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
         commands
-            .entity(bar)
+            .entity(order.bar)
             .insert((
                 ImageNode::new(image),
                 IndustryBarVisual(amount),
                 RelativeCursorPosition::default(),
                 CityIndustryAmountBar {
-                    order: binding.order,
-                    slot: page.slot,
+                    order: order.order,
+                    slot,
                 },
             ))
             .observe(on_city_amount_bar_click);
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 pub(in crate::ui::city) fn bind_industry_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-    page: IndustryPage,
+    controls: IndustryDialogControls<'_>,
     building_name: String,
     capacity_template: String,
 ) {
-    let name = tree.find(root, fourcc!("name"));
-    commands.entity(name).insert(Text::new(building_name));
-    let capacity = tree.find(root, fourcc!("capT"));
-    commands.entity(capacity).insert((
+    commands
+        .entity(controls.name)
+        .insert(Text::new(building_name));
+    commands.entity(controls.capacity).insert((
         Text::new(""),
         IndustryCapacity {
-            slot: page.slot,
+            slot: controls.slot,
             template: capacity_template,
         },
     ));
-    let labor = tree.find(root, fourcc!("labV"));
     commands
-        .entity(labor)
+        .entity(controls.labor)
         .insert((Text::new("X"), IndustryIndicator::Labor));
-    for &(resource, tag, minimum) in page.stocks {
-        let entity = tree.find(root, tag);
+    for &(resource, entity, minimum) in controls.stocks {
         commands.entity(entity).insert((
             Text::new("X"),
             IndustryIndicator::Stock { resource, minimum },
         ));
     }
-    bind_industry_amount_bars(commands, assets, root, tree, page);
-    let expansion_action = tree.find(root, fourcc!("expa"));
+    bind_industry_amount_bars(commands, assets, controls.slot, controls.orders);
     commands
-        .entity(expansion_action)
-        .insert(CityExpansionOpen { slot: page.slot })
+        .entity(controls.expansion)
+        .insert(CityExpansionOpen {
+            slot: controls.slot,
+        })
         .observe(on_city_expansion_open);
-    let expansion = tree.find(root, fourcc!("flag"));
     commands
-        .entity(expansion)
-        .insert(IndustryIndicator::Expansion(page.slot));
+        .entity(controls.flag)
+        .insert(IndustryIndicator::Expansion(controls.slot));
 }
 
 pub(in crate::ui::city) fn on_city_row_selected(
@@ -452,12 +449,10 @@ pub(in crate::ui::city) fn sync_industry_bars(
 pub(in crate::ui::city) fn bind_rail_amount_bar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    row: Entity,
-    tree: &RetailTree,
+    bar: Entity,
     order: CityOrderId,
     step: i16,
 ) {
-    let bar = tree.find(row, fourcc!("bar "));
     let picture = industry_amount_bar_picture(AmountBarPixels {
         range: 0,
         current: 0,

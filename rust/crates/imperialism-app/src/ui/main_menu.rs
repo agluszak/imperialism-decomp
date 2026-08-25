@@ -3,13 +3,12 @@ use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
 use crate::ui::load_save::{LoadSaveMode, open_load_save};
-use crate::ui::retail::{RetailTree, RetailUiAssets};
+use crate::ui::retail::RetailUiAssets;
 use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::fourcc;
 
 #[derive(Component)]
 struct MainMenuRoot;
@@ -41,26 +40,24 @@ impl Plugin for MainMenuPlugin {
 }
 
 fn enter_main_menu(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::startup_1500()).id();
+    let ui = generated::spawn_startup_1500(&mut commands);
     commands
-        .entity(root)
-        .insert((MainMenuRoot, DespawnOnExit(AppState::MainMenu)));
+        .entity(ui.root)
+        .insert((MainMenuRoot, ui, DespawnOnExit(AppState::MainMenu)));
 }
 
 fn bind_main_menu_actions(
     mut commands: Commands,
-    root: Single<Entity, Added<MainMenuRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Startup1500, Added<MainMenuRoot>>,
 ) {
-    for (tag, action) in [
-        (fourcc!("rand"), MainMenuAction::RandomGame),
-        (fourcc!("scen"), MainMenuAction::Scenario),
-        (fourcc!("load"), MainMenuAction::LoadGame),
-        (fourcc!("high"), MainMenuAction::HighScores),
-        (fourcc!("pref"), MainMenuAction::Preferences),
-        (fourcc!("quit"), MainMenuAction::Quit),
+    for (entity, action) in [
+        (ui.rand, MainMenuAction::RandomGame),
+        (ui.scen, MainMenuAction::Scenario),
+        (ui.load, MainMenuAction::LoadGame),
+        (ui.high, MainMenuAction::HighScores),
+        (ui.pref, MainMenuAction::Preferences),
+        (ui.quit, MainMenuAction::Quit),
     ] {
-        let entity = tree.find(*root, tag);
         commands
             .entity(entity)
             .insert(action)
@@ -71,34 +68,30 @@ fn bind_main_menu_actions(
 
 fn bind_main_menu_hover_help(
     mut commands: Commands,
-    root: Single<Entity, Added<MainMenuRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Startup1500, Added<MainMenuRoot>>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
-    let bar = tree.find(*root, fourcc!("curs"));
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
-        bar,
+        ui.curs,
         &mut nodes
-            .get_mut(bar)
+            .get_mut(ui.curs)
             .expect("main-menu hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
     bind_hover_help_texts(
         &mut commands,
-        *root,
-        &tree,
         [
-            (fourcc!("main"), String::new()),
-            (fourcc!("rand"), get_string(&assets, 0x2737, 0)),
-            (fourcc!("load"), get_string(&assets, 0x2737, 1)),
-            (fourcc!("mult"), get_string(&assets, 0x2737, 2)),
-            (fourcc!("high"), get_string(&assets, 0x2737, 3)),
-            (fourcc!("scen"), get_string(&assets, 0x2737, 4)),
-            (fourcc!("quit"), get_string(&assets, 0x2737, 9)),
-            (fourcc!("pref"), get_string(&assets, 0x2743, 8)),
+            (ui.main, String::new()),
+            (ui.rand, get_string(&assets, 0x2737, 0)),
+            (ui.load, get_string(&assets, 0x2737, 1)),
+            (ui.mult, get_string(&assets, 0x2737, 2)),
+            (ui.high, get_string(&assets, 0x2737, 3)),
+            (ui.scen, get_string(&assets, 0x2737, 4)),
+            (ui.quit, get_string(&assets, 0x2737, 9)),
+            (ui.pref, get_string(&assets, 0x2743, 8)),
         ],
     );
 }

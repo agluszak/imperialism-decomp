@@ -1,5 +1,4 @@
 use super::generated;
-use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
 use super::tactical_viewport::{
     BATTLEFIELD_HEIGHT_PX, TACTICAL_TILE_ROW_HEIGHT_PX, TacticalViewport, battlefield_cursor_pixel,
@@ -17,7 +16,7 @@ use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::*;
-use imperialism_formats::{MusicTrack, fourcc};
+use imperialism_formats::MusicTrack;
 
 #[derive(Component)]
 struct NavalBattleRoot;
@@ -114,46 +113,42 @@ fn synchronize_interactive_navy_battle(
 }
 
 fn spawn_naval_battle(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::tactical_3800()).id();
+    let ui = generated::spawn_tactical_3800(&mut commands);
     commands
-        .entity(root)
-        .insert((NavalBattleRoot, DespawnOnExit(AppState::NavalBattle)));
+        .entity(ui.root)
+        .insert((NavalBattleRoot, ui, DespawnOnExit(AppState::NavalBattle)));
 }
 
 fn bind_naval_battle(
     mut commands: Commands,
-    root: Single<Entity, Added<NavalBattleRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Tactical3800, Added<NavalBattleRoot>>,
 ) {
-    bind_naval_battle_controls(&mut commands, *root, &tree);
+    bind_naval_battle_controls(&mut commands, **ui);
 }
 
-fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
-    commands.entity(tree.find(root, fourcc!("curs"))).insert((
-        NavalBattleCaption,
-        Text::default(),
-        TextColor(Color::WHITE),
-    ));
+fn bind_naval_battle_controls(commands: &mut Commands, ui: generated::Tactical3800) {
     commands
-        .entity(tree.find(root, fourcc!("done")))
+        .entity(ui.curs)
+        .insert((NavalBattleCaption, Text::default(), TextColor(Color::WHITE)));
+    commands
+        .entity(ui.done)
         .insert((NavalBattleAction::Done, ActivateOnPress))
         .observe(on_naval_battle_activate)
         .remove::<InteractionDisabled>();
     commands
-        .entity(tree.find(root, fourcc!("auto")))
+        .entity(ui.auto)
         .insert((NavalBattleAction::Auto, ActivateOnPress))
         .observe(on_naval_battle_activate)
         .remove::<InteractionDisabled>();
     commands
-        .entity(tree.find(root, fourcc!("retr")))
+        .entity(ui.retr)
         .insert((NavalBattleAction::Retreat, ActivateOnPress))
         .observe(on_naval_battle_activate)
         .remove::<InteractionDisabled>();
     // Retail `targ` cycles reachable enemy units. Navy damage targeting instead comes
     // from separate `hull`/`crew`/`sail` controls which are absent from view 3800.
-    let field = tree.find(root, fourcc!("DLOG"));
     commands
-        .entity(field)
+        .entity(ui.dlog)
         .insert((
             NavalBattlefield {
                 battle: None,
@@ -165,7 +160,7 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
         ))
         .observe(on_battlefield_click);
     commands
-        .entity(field)
+        .entity(ui.dlog)
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
 }
@@ -404,7 +399,6 @@ fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
@@ -527,31 +521,46 @@ mod tests {
                 DespawnOnExit(AppState::NavalBattle),
             ))
             .id();
-        commands.spawn((RetailTag(fourcc!("curs")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("done")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("auto")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("retr")), Node::default(), ChildOf(root)));
-        commands.spawn((
-            RetailTag(fourcc!("DLOG")),
-            Node {
-                position_type: PositionType::Absolute,
-                width: px(BATTLEFIELD_WIDTH_PX),
-                height: px(BATTLEFIELD_HEIGHT_PX),
-                ..default()
-            },
-            ChildOf(root),
-        ));
+        let control =
+            |commands: &mut Commands| commands.spawn((Node::default(), ChildOf(root))).id();
+        let dlog = commands
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    width: px(BATTLEFIELD_WIDTH_PX),
+                    height: px(BATTLEFIELD_HEIGHT_PX),
+                    ..default()
+                },
+                ChildOf(root),
+            ))
+            .id();
+        let ui = generated::Tactical3800 {
+            root,
+            base: root,
+            main: root,
+            curs: control(&mut commands),
+            dlog,
+            tool: root,
+            help: root,
+            targ: root,
+            done: control(&mut commands),
+            retr: control(&mut commands),
+            coat: root,
+            curr: root,
+            auto: control(&mut commands),
+            tpic: root,
+        };
+        commands.entity(root).insert(ui);
     }
 
     fn bind_test_naval_battle(
         mut commands: Commands,
-        root: Option<Single<Entity, Added<NavalBattleRoot>>>,
-        tree: RetailTree,
+        ui: Option<Single<&generated::Tactical3800, Added<NavalBattleRoot>>>,
     ) {
-        let Some(root) = root else {
+        let Some(ui) = ui else {
             return;
         };
-        bind_naval_battle_controls(&mut commands, *root, &tree);
+        bind_naval_battle_controls(&mut commands, **ui);
     }
 
     fn action_entity(app: &mut App, action: NavalBattleAction) -> Entity {

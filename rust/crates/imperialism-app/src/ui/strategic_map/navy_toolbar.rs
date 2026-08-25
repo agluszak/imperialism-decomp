@@ -1,11 +1,12 @@
 //! Right-hand navy command page (`unav` / `TNavyToolbarCluster`).
 
-use super::super::retail::{RetailTree, RetailUiAssets};
+use super::super::retail::RetailUiAssets;
 use super::map_interaction::{
     MapInteractionMode, StrategicInteraction, StrategicViewport, cycle_map_interaction_selection,
 };
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
+use crate::ui::generated::Mapview2013;
 use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::{Checked, RelativeCursorPosition};
@@ -13,7 +14,6 @@ use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::{NavalAggression, NavyRosterKind, NavyToolbarClass};
 use imperialism_formats::*;
 
-const PAGE_TAG: FourCc = fourcc!("unav");
 const NAVY_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x90 as f32);
 const PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
 const ARROW_ATLAS: i16 = 804;
@@ -53,11 +53,9 @@ pub(crate) fn register(app: &mut App) {
 pub(crate) fn bind_navy_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: Mapview2013,
 ) {
-    let page = tree.find(root, PAGE_TAG);
-    commands.entity(page).insert((
+    commands.entity(ui.unav).insert((
         NavyToolbarPage,
         Node {
             position_type: PositionType::Absolute,
@@ -71,20 +69,36 @@ pub(crate) fn bind_navy_toolbar(
     let arrow_atlas = assets
         .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
-    const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
-        (NavyToolbarClass::Class0, fourcc!("cls0")),
-        (NavyToolbarClass::Class1, fourcc!("cls1")),
-        (NavyToolbarClass::Class2, fourcc!("cls2")),
-        (NavyToolbarClass::Class3, fourcc!("cls3")),
-    ];
-    for (class, tag) in CLASS_TAGS {
-        let cluster = tree.child(page, tag);
+    for (class, cluster, ship, arrow) in [
+        (
+            NavyToolbarClass::Class0,
+            ui.cls0,
+            ui.cls0_ship,
+            ui.cls0_arro,
+        ),
+        (
+            NavyToolbarClass::Class1,
+            ui.cls1,
+            ui.cls1_ship,
+            ui.cls1_arro,
+        ),
+        (
+            NavyToolbarClass::Class2,
+            ui.cls2,
+            ui.cls2_ship,
+            ui.cls2_arro,
+        ),
+        (
+            NavyToolbarClass::Class3,
+            ui.cls3,
+            ui.cls3_ship,
+            ui.cls3_arro,
+        ),
+    ] {
         commands.entity(cluster).insert(NavyClass(class));
-        let ship = tree.child(cluster, fourcc!("ship"));
         commands
             .entity(ship)
             .insert((NavyClassShip, Visibility::Hidden));
-        let arrow = tree.child(cluster, fourcc!("arro"));
         commands
             .entity(arrow)
             .insert((
@@ -104,26 +118,20 @@ pub(crate) fn bind_navy_toolbar(
             .observe(on_navy_class_arrow);
         spawn_count_label(commands, arrow, assets);
     }
-    for (tag, command) in [
-        (fourcc!("dfnd"), NavyCommand::Defend),
-        (fourcc!("done"), NavyCommand::Done),
-        (fourcc!("next"), NavyCommand::Next),
-        (fourcc!("bomb"), NavyCommand::Bomb),
+    for (entity, command) in [
+        (ui.unav_dfnd, NavyCommand::Defend),
+        (ui.unav_done, NavyCommand::Done),
+        (ui.next, NavyCommand::Next),
+        (ui.bomb, NavyCommand::Bomb),
+        (ui.agr0, NavyCommand::Aggression(NavalAggression::Cautious)),
+        (ui.agr1, NavyCommand::Aggression(NavalAggression::Balanced)),
         (
-            fourcc!("agr0"),
-            NavyCommand::Aggression(NavalAggression::Cautious),
-        ),
-        (
-            fourcc!("agr1"),
-            NavyCommand::Aggression(NavalAggression::Balanced),
-        ),
-        (
-            fourcc!("agr2"),
+            ui.agr2,
             NavyCommand::Aggression(NavalAggression::Aggressive),
         ),
     ] {
         commands
-            .entity(tree.child(page, tag))
+            .entity(entity)
             .insert((command, ActivateOnPress))
             .observe(on_navy_command);
     }

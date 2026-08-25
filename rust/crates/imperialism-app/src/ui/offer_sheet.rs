@@ -4,7 +4,7 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::RetailUiAssets;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
@@ -13,7 +13,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset};
 
 const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
@@ -73,53 +73,43 @@ fn enter_offer_sheet_phase(session: Res<GameSession>) {
 }
 
 fn spawn_offer_sheet(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::flagview_8500()).id();
+    let ui = generated::spawn_flagview_8500(&mut commands);
     commands
-        .entity(root)
-        .insert((OfferSheetRoot, DespawnOnExit(AppState::OfferSheet)));
+        .entity(ui.root)
+        .insert((OfferSheetRoot, ui, DespawnOnExit(AppState::OfferSheet)));
 }
 
 fn bind_offer_sheet(
     mut commands: Commands,
-    root: Option<Single<Entity, Added<OfferSheetRoot>>>,
-    tree: RetailTree,
+    ui: Option<Single<&generated::Flagview8500, Added<OfferSheetRoot>>>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
-    let Some(root) = root else {
+    let Some(ui) = ui else {
         return;
     };
-    let root = *root;
-    bind_offer_sheet_controls(&mut commands, root, &tree);
-    bind_offer_sheet_text(&mut commands, &mut assets, root, &tree);
-    for tag in [
-        fourcc!("ForM"),
-        fourcc!("tabs"),
-        fourcc!("quer"),
-        fourcc!("done"),
-    ] {
-        commands
-            .entity(tree.find(root, tag))
-            .insert(InteractionDisabled);
+    let ui = **ui;
+    bind_offer_sheet_controls(&mut commands, ui);
+    bind_offer_sheet_text(&mut commands, &mut assets, ui);
+    for entity in [ui.form, ui.tabs, ui.quer, ui.done] {
+        commands.entity(entity).insert(InteractionDisabled);
     }
-    let curs = tree.find(root, fourcc!("curs"));
     bind_hover_help_bar(
         &mut commands,
         &mut assets,
-        curs,
+        ui.curs,
         &mut nodes
-            .get_mut(curs)
+            .get_mut(ui.curs)
             .expect("offer-sheet hover-help bar has Node"),
         HoverHelpBarStyle::MAIN_MENU,
     );
-    bind_game_status_display(&mut commands, &mut assets, root, &tree);
+    bind_game_status_display(&mut commands, &mut assets, ui.seas, ui.trea);
 }
 
 fn bind_offer_sheet_text(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Flagview8500,
 ) {
     let text_style = |assets: &mut RetailUiAssets, alignment| {
         assets
@@ -132,22 +122,22 @@ fn bind_offer_sheet_text(
             .expect("retail offer-sheet text style")
     };
     let (body, center, body_height, _) = text_style(assets, 1);
-    commands.entity(tree.find(root, fourcc!("offe"))).insert((
+    commands.entity(ui.offe).insert((
         body.clone(),
         center,
         body_height,
         TextColor(assets.palette_color(0xd2)),
     ));
     let (body, right, body_height, _) = text_style(assets, -1);
-    commands.entity(tree.find(root, fourcc!("purT"))).insert((
+    commands.entity(ui.purt).insert((
         body.clone(),
         right,
         body_height,
         TextColor(assets.palette_color(0xd2)),
     ));
     let (body, left, body_height, _) = text_style(assets, -2);
-    for tag in [fourcc!("unit"), fourcc!("noof")] {
-        commands.entity(tree.find(root, tag)).insert((
+    for entity in [ui.unit, ui.noof] {
+        commands.entity(entity).insert((
             body.clone(),
             left,
             body_height,
@@ -162,15 +152,15 @@ fn bind_offer_sheet_text(
             alignment: 1,
         })
         .expect("retail offer-sheet number text style");
-    for tag in [fourcc!("purc"), fourcc!("mCap")] {
-        commands.entity(tree.find(root, tag)).insert((
+    for entity in [ui.purc, ui.mcap] {
+        commands.entity(entity).insert((
             number.clone(),
             center,
             number_height,
             TextColor(Color::BLACK),
         ));
     }
-    commands.entity(tree.find(root, fourcc!("info"))).insert((
+    commands.entity(ui.info).insert((
         Text::new(get_string(assets, OFFER_STRING_GROUP, 9)),
         body,
         TextLayout::justify(Justify::Center),
@@ -183,26 +173,22 @@ fn bind_offer_sheet_text(
     ));
 }
 
-fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
-    let accept = tree.find(root, fourcc!("acce"));
-    let reject = tree.find(root, fourcc!("reje"));
-    let purc = tree.find(root, fourcc!("purc"));
-    let nomo = tree.find(root, fourcc!("nomo"));
+fn bind_offer_sheet_controls(commands: &mut Commands, ui: generated::Flagview8500) {
     commands
-        .entity(accept)
+        .entity(ui.acce)
         .insert((OfferSheetAction::Accept, ActivateOnPress))
         .remove::<InteractionDisabled>()
         .observe(on_offer_sheet_activate);
     commands
-        .entity(reject)
+        .entity(ui.reje)
         .insert((OfferSheetAction::Reject, ActivateOnPress))
         .remove::<InteractionDisabled>()
         .observe(on_offer_sheet_activate);
     commands
-        .entity(nomo)
+        .entity(ui.nomo)
         .insert(StopBuyingToggle)
         .remove::<(Checked, InteractionDisabled)>();
-    commands.entity(purc).insert((
+    commands.entity(ui.purc).insert((
         PurchaseAmountField,
         SelectAllOnFocus,
         AutoFocus,
@@ -218,13 +204,12 @@ fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &Retai
 
 fn pose_offer_sheet(
     mut commands: Commands,
-    root: Option<Single<Entity, With<OfferSheetRoot>>>,
-    tree: RetailTree,
+    ui: Option<Single<&generated::Flagview8500, With<OfferSheetRoot>>>,
     mut amounts: Query<&mut EditableText, With<PurchaseAmountField>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let Some(root) = root else {
+    let Some(ui) = ui else {
         return;
     };
     let offer = session
@@ -234,8 +219,7 @@ fn pose_offer_sheet(
     apply_offer_sheet_pose(
         &mut commands,
         &mut assets,
-        *root,
-        &tree,
+        **ui,
         &mut amounts,
         &session,
         offer,
@@ -246,8 +230,7 @@ fn pose_offer_sheet(
 fn apply_offer_sheet_pose(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Flagview8500,
     amounts: &mut Query<&mut EditableText, With<PurchaseAmountField>>,
     session: &GameSession,
     offer: PendingTradeOffer,
@@ -267,7 +250,7 @@ fn apply_offer_sheet_pose(
     let price = format_currency(i32::from(offer.price));
     set_text(
         commands,
-        tree.find(root, fourcc!("offe")),
+        ui.offe,
         fill_brackets(
             &get_string(assets, OFFER_STRING_GROUP, 0xc),
             &[&offering, &amount, &commodity, &price],
@@ -275,24 +258,24 @@ fn apply_offer_sheet_pose(
     );
     set_text(
         commands,
-        tree.find(root, fourcc!("purT")),
+        ui.purt,
         get_string(assets, OFFER_STRING_GROUP, 0xe),
     );
     set_text(
         commands,
-        tree.find(root, fourcc!("unit")),
+        ui.unit,
         get_string(assets, OFFER_STRING_GROUP, 0xf),
     );
     set_text(
         commands,
-        tree.find(root, fourcc!("noof")),
+        ui.noof,
         fill_brackets(&get_string(assets, OFFER_STRING_GROUP, 0xf), &[&commodity]),
     );
 
     let nation = session.active_major_nation();
     set_text(
         commands,
-        tree.find(root, fourcc!("mCap")),
+        ui.mcap,
         session
             .game
             .nations()
@@ -315,14 +298,10 @@ fn apply_offer_sheet_pose(
         PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
         0x10,
     ) {
-        commands
-            .entity(tree.find(root, fourcc!("icon")))
-            .insert(ImageNode::new(icon));
+        commands.entity(ui.icon).insert(ImageNode::new(icon));
     }
 
-    commands
-        .entity(tree.find(root, fourcc!("nomo")))
-        .remove::<Checked>();
+    commands.entity(ui.nomo).remove::<Checked>();
 }
 
 fn set_text(commands: &mut Commands, entity: Entity, value: String) {
@@ -390,15 +369,16 @@ fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
 
 fn bind_offer_sheet_notice(
     mut commands: Commands,
-    notice: Option<Single<(Entity, &OfferSheetNoticeBody), Added<OfferSheetNotice>>>,
-    tree: RetailTree,
+    notice: Option<
+        Single<(&OfferSheetNoticeBody, &generated::Linger2020), Added<OfferSheetNotice>>,
+    >,
     mut assets: RetailUiAssets,
 ) {
     let Some(notice) = notice else {
         return;
     };
-    let (root, body) = notice.into_inner();
-    let linger = bind_linger_dialog(&mut commands, root, &tree);
+    let (body, ui) = notice.into_inner();
+    let linger = bind_linger_dialog(&mut commands, *ui);
     linger.set_body(&mut commands, &mut assets, &body.0);
     commands
         .entity(linger.okay)
@@ -408,7 +388,6 @@ fn bind_offer_sheet_notice(
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
     use bevy::state::app::StatesPlugin;
@@ -462,21 +441,58 @@ mod tests {
                 DespawnOnExit(AppState::OfferSheet),
             ))
             .id();
-        commands.spawn((RetailTag(fourcc!("acce")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("reje")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("purc")), Node::default(), ChildOf(root)));
-        commands.spawn((RetailTag(fourcc!("nomo")), Node::default(), ChildOf(root)));
+        let control =
+            |commands: &mut Commands| commands.spawn((Node::default(), ChildOf(root))).id();
+        let ui = generated::Flagview8500 {
+            root,
+            base: root,
+            main: root,
+            tool: root,
+            seas: root,
+            trea: root,
+            tabs: root,
+            shee: root,
+            mcap: root,
+            purc: control(&mut commands),
+            clus: root,
+            nomo: control(&mut commands),
+            reje: control(&mut commands),
+            acce: control(&mut commands),
+            offe: root,
+            purt: root,
+            noof: root,
+            unit: root,
+            icon: root,
+            mpic: root,
+            info: root,
+            wait: root,
+            text: root,
+            icow: root,
+            book: root,
+            titl: root,
+            rtil: root,
+            done: root,
+            lcor: root,
+            rcor: root,
+            tbou: root,
+            tsol: root,
+            list: root,
+            curs: root,
+            tbr2: root,
+            quer: root,
+            form: root,
+        };
+        commands.entity(root).insert(ui);
     }
 
     fn bind_test_offer_sheet(
         mut commands: Commands,
-        root: Option<Single<Entity, Added<OfferSheetRoot>>>,
-        tree: RetailTree,
+        ui: Option<Single<&generated::Flagview8500, Added<OfferSheetRoot>>>,
     ) {
-        let Some(root) = root else {
+        let Some(ui) = ui else {
             return;
         };
-        bind_offer_sheet_controls(&mut commands, *root, &tree);
+        bind_offer_sheet_controls(&mut commands, **ui);
     }
 
     #[test]

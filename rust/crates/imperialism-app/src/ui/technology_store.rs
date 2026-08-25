@@ -4,7 +4,7 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::map_help;
-use super::retail::{RetailPictureSwap, RetailTree, RetailUiAssets, retail_text_style};
+use super::retail::{RetailPictureSwap, RetailUiAssets, retail_text_style};
 use super::session::GameSession;
 use super::window::{DismissWindow, ModalDefault, ModalWindow};
 use crate::{AppState, RetailAssetsResource};
@@ -14,7 +14,7 @@ use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
 use imperialism_core::{
     CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
 };
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset};
 
 const TECHNOLOGIES_PER_PAGE: usize = 6;
 
@@ -109,45 +109,45 @@ fn on_open_technology_store(
 }
 
 fn spawn_technology_store(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::techstore_2300()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_techstore_2300(&mut commands);
+    commands.entity(ui.root).insert((
         TechnologyStoreRoot,
+        ui,
         DespawnOnExit(AppState::TechnologyStore),
     ));
 }
 
 fn bind_technology_store(
     mut commands: Commands,
-    root: Single<Entity, Added<TechnologyStoreRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Techstore2300, Added<TechnologyStoreRoot>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     mut nodes: Query<&mut Node>,
 ) {
-    let root = *root;
+    let ui = **ui;
     bind_native_game_screen_nav(
         &mut commands,
-        root,
-        &tree,
-        fourcc!("topB"),
-        Some(fourcc!("tool")),
-        false,
+        ui.trad,
+        ui.tran,
+        ui.city,
+        ui.dipl,
+        Some(ui.end),
+        None,
     );
-    bind_game_status_display(&mut commands, &mut assets, root, &tree);
+    bind_game_status_display(&mut commands, &mut assets, ui.seas, ui.trea);
     commands
-        .entity(tree.find(root, fourcc!("end ")))
+        .entity(ui.end)
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_leave_technology_store);
     commands
-        .entity(tree.find(root, fourcc!("quer")))
+        .entity(ui.quer)
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_technology_help);
 
-    let page = tree.find(root, fourcc!("page"));
     nodes
-        .get_mut(page)
+        .get_mut(ui.page)
         .expect("technology-store page node")
         .overflow = Overflow::clip();
     let nation = session.active_major_nation();
@@ -158,16 +158,16 @@ fn bind_technology_store(
                 && session.game.technology().global_unlocks_by_technology[technology]
         })
         .collect::<Vec<_>>();
-    commands.entity(root).insert(TechnologyStorePage {
+    commands.entity(ui.root).insert(TechnologyStorePage {
         current: 0,
         last: technologies.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE,
     });
-    for (tag, action) in [
-        (fourcc!("lcor"), TechnologyPageAction::Previous),
-        (fourcc!("rcor"), TechnologyPageAction::Next),
+    for (entity, action) in [
+        (ui.lcor, TechnologyPageAction::Previous),
+        (ui.rcor, TechnologyPageAction::Next),
     ] {
         commands
-            .entity(tree.find(root, tag))
+            .entity(entity)
             .insert((Button, ActivateOnPress, action))
             .observe(on_technology_page);
     }
@@ -175,7 +175,7 @@ fn bind_technology_store(
         spawn_technology_row(
             &mut commands,
             &mut assets,
-            page,
+            ui.page,
             row,
             nation,
             technology,
@@ -424,9 +424,10 @@ fn on_technology_history(
     let Ok(history) = histories.get(activate.entity).copied() else {
         return;
     };
-    let root = commands.spawn_scene(generated::techstore_2370()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_techstore_2370(&mut commands);
+    commands.entity(ui.root).insert((
         TechnologyHistoryRoot(history.0),
+        ui,
         ModalWindow,
         DespawnOnExit(AppState::TechnologyStore),
     ));
@@ -434,15 +435,17 @@ fn on_technology_history(
 
 fn bind_technology_modals(
     mut commands: Commands,
-    histories: Query<(Entity, &TechnologyHistoryRoot), Added<TechnologyHistoryRoot>>,
-    notices: Query<Entity, Added<TechnologyNoticeRoot>>,
-    tree: RetailTree,
+    histories: Query<
+        (&generated::Techstore2370, &TechnologyHistoryRoot),
+        Added<TechnologyHistoryRoot>,
+    >,
+    notices: Query<&generated::Linger2020, Added<TechnologyNoticeRoot>>,
     mut assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
     mut nodes: Query<&mut Node>,
 ) {
-    for (root, history) in &histories {
-        let view = tree.view(root);
+    for (ui, history) in &histories {
+        let ui = *ui;
         let technology = history.0;
         let (title_font, title_layout, title_line_height, _) = assets
             .text_style(RetailTextStylePreset {
@@ -452,7 +455,7 @@ fn bind_technology_modals(
                 alignment: 1,
             })
             .expect("retail technology-history title style");
-        commands.entity(view.find(fourcc!("titl"))).insert((
+        commands.entity(ui.titl).insert((
             Text::new(
                 assets
                     .string(0x2712, i16::from(technology.retail()) + 1)
@@ -466,17 +469,14 @@ fn bind_technology_modals(
         let picture = assets
             .picture(PictureId::new(0x0944 + i16::from(technology.retail())))
             .expect("retail technology-history picture");
-        commands
-            .entity(view.find(fourcc!("pict")))
-            .insert(ImageNode::new(picture));
+        commands.entity(ui.pict).insert(ImageNode::new(picture));
 
-        let scroll = view.find(fourcc!("scvw"));
         nodes
-            .get_mut(scroll)
+            .get_mut(ui.scvw)
             .expect("technology-history scroll view")
             .overflow = Overflow::scroll_y();
         commands
-            .entity(scroll)
+            .entity(ui.scvw)
             .insert((ScrollArea, Pickable::default()));
         let (body_font, body_layout, body_line_height, _) = assets
             .text_style(RetailTextStylePreset {
@@ -501,16 +501,14 @@ fn bind_technology_modals(
             body_line_height,
             TextColor(Color::BLACK),
             Pickable::IGNORE,
-            ChildOf(scroll),
+            ChildOf(ui.scvw),
         ));
-        commands.entity(view.find(fourcc!("okay"))).insert((
-            ActivateOnPress,
-            ModalDefault,
-            DismissWindow,
-        ));
+        commands
+            .entity(ui.okay)
+            .insert((ActivateOnPress, ModalDefault, DismissWindow));
     }
-    for root in &notices {
-        let linger = bind_linger_dialog(&mut commands, root, &tree);
+    for ui in &notices {
+        let linger = bind_linger_dialog(&mut commands, *ui);
         let body = assets
             .string(0x2745, 4)
             .expect("retail insufficient-funds message");

@@ -4,7 +4,6 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, RetailAssetsResource, ReturnTo};
@@ -126,20 +125,19 @@ impl Plugin for DealBookPlugin {
 }
 
 fn spawn_deal_book(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::flagview_8800()).id();
+    let ui = generated::spawn_flagview_8800(&mut commands);
     commands
-        .entity(root)
-        .insert((DealBookRoot, DespawnOnExit(AppState::DealBook)));
+        .entity(ui.root)
+        .insert((DealBookRoot, ui, DespawnOnExit(AppState::DealBook)));
 }
 
 fn bind_deal_book(
     mut commands: Commands,
-    root: Single<Entity, Added<DealBookRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Flagview8800, Added<DealBookRoot>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let root = *root;
+    let ui = **ui;
     let advanced_production_unlocked = session.game.technology().advanced_production_unlocked();
     let tab_base = if advanced_production_unlocked {
         TAB_STRIP_BASE + 1
@@ -204,19 +202,18 @@ fn bind_deal_book(
             alignment: 1,
         })
         .expect("retail deal-book title text style");
-    commands.entity(tree.find(root, fourcc!("titL"))).insert((
+    commands.entity(ui.titl).insert((
         title_font,
         title_layout,
         title_line_height,
         TextColor(Color::BLACK),
     ));
 
-    let tabs = tree.find(root, fourcc!("tabs"));
     let palette = *assets.default_dib_palette();
     let tab_image = assets
         .add_image(paint_deal_tab_control(&empty_tabs, &filled_tabs, None).to_image(&palette));
     commands
-        .entity(tabs)
+        .entity(ui.tabs)
         .insert((
             DealBookTabs,
             DealBookTabVisual {
@@ -229,20 +226,18 @@ fn bind_deal_book(
         ))
         .observe(on_deal_book_tabs_click);
     commands
-        .entity(tree.find(root, fourcc!("end ")))
+        .entity(ui.end)
         .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_deal_book_close);
+    commands.entity(ui.quer).insert(InteractionDisabled);
+    bind_game_status_display(&mut commands, &mut assets, ui.seas, ui.trea);
     commands
-        .entity(tree.find(root, fourcc!("quer")))
-        .insert(InteractionDisabled);
-    bind_game_status_display(&mut commands, &mut assets, root, &tree);
-    commands
-        .entity(tree.find(root, fourcc!("mark")))
+        .entity(ui.mark)
         .insert((DealBookHistory, ActivateOnPress))
         .observe(on_deal_book_history);
     commands
-        .entity(tree.find(root, fourcc!("lcor")))
+        .entity(ui.lcor)
         .insert((
             UiButton,
             DealBookPageButton::Previous,
@@ -252,7 +247,7 @@ fn bind_deal_book(
         ))
         .observe(on_deal_book_page);
     commands
-        .entity(tree.find(root, fourcc!("rcor")))
+        .entity(ui.rcor)
         .insert((
             UiButton,
             DealBookPageButton::Next,
@@ -261,29 +256,19 @@ fn bind_deal_book(
             InteractionDisabled,
         ))
         .observe(on_deal_book_page);
+    commands.entity(ui.main).insert(DealBookBackground);
+    commands.entity(ui.sold).insert(DealBookHost::Sold);
+    commands.entity(ui.boug).insert(DealBookHost::Bought);
     commands
-        .entity(tree.find(root, fourcc!("main")))
-        .insert(DealBookBackground);
-    commands
-        .entity(tree.find(root, fourcc!("sold")))
-        .insert(DealBookHost::Sold);
-    commands
-        .entity(tree.find(root, fourcc!("boug")))
-        .insert(DealBookHost::Bought);
-    commands
-        .entity(tree.find(root, fourcc!("tsol")))
+        .entity(ui.tsol)
         .insert(DealBookHost::SoldByCategory);
     commands
-        .entity(tree.find(root, fourcc!("tbou")))
+        .entity(ui.tbou)
         .insert(DealBookHost::BoughtByCategory);
-    commands
-        .entity(tree.find(root, fourcc!("titL")))
-        .insert(DealBookTitle::Left);
-    commands
-        .entity(tree.find(root, fourcc!("rtil")))
-        .insert(DealBookTitle::Right);
+    commands.entity(ui.titl).insert(DealBookTitle::Left);
+    commands.entity(ui.rtil).insert(DealBookTitle::Right);
 
-    commands.entity(root).insert(DealBookScreen {
+    commands.entity(ui.root).insert(DealBookScreen {
         mode: DealBookMode::History,
         page: 0,
         pictures,

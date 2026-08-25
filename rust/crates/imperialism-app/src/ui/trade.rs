@@ -3,7 +3,6 @@ use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::RetailTree;
 use super::retail_amount_bar::{
     AmountBarPixels, TRADE_AMOUNT_BAR, TRADE_BAR_FILL, amount_bar_x_from_normalized,
     trade_amount_bar_click_value, trade_amount_bar_picture,
@@ -20,80 +19,446 @@ use imperialism_formats::*;
 
 #[derive(Clone, Copy)]
 struct TradeRowBinding {
-    tag: FourCc,
     commodity: TradeCommodity,
 }
 
 const TRADE_ROWS: [TradeRowBinding; 17] = [
     TradeRowBinding {
-        tag: fourcc!("rs0 "),
         commodity: TradeCommodity::Cotton,
     },
     TradeRowBinding {
-        tag: fourcc!("rs1 "),
         commodity: TradeCommodity::Wool,
     },
     TradeRowBinding {
-        tag: fourcc!("rs2 "),
         commodity: TradeCommodity::Timber,
     },
     TradeRowBinding {
-        tag: fourcc!("rs3 "),
         commodity: TradeCommodity::Coal,
     },
     TradeRowBinding {
-        tag: fourcc!("rs4 "),
         commodity: TradeCommodity::Iron,
     },
     TradeRowBinding {
-        tag: fourcc!("rs5 "),
         commodity: TradeCommodity::Horses,
     },
     TradeRowBinding {
-        tag: fourcc!("rs6 "),
         commodity: TradeCommodity::Oil,
     },
     TradeRowBinding {
-        tag: fourcc!("ma0 "),
         commodity: TradeCommodity::Food,
     },
     TradeRowBinding {
-        tag: fourcc!("ma1 "),
         commodity: TradeCommodity::Fabric,
     },
     TradeRowBinding {
-        tag: fourcc!("ma2 "),
         commodity: TradeCommodity::Lumber,
     },
     TradeRowBinding {
-        tag: fourcc!("ma3 "),
         commodity: TradeCommodity::Paper,
     },
     TradeRowBinding {
-        tag: fourcc!("ma4 "),
         commodity: TradeCommodity::Steel,
     },
     TradeRowBinding {
-        tag: fourcc!("ma5 "),
         commodity: TradeCommodity::Fuel,
     },
     TradeRowBinding {
-        tag: fourcc!("gd0 "),
         commodity: TradeCommodity::Clothing,
     },
     TradeRowBinding {
-        tag: fourcc!("gd1 "),
         commodity: TradeCommodity::Furniture,
     },
     TradeRowBinding {
-        tag: fourcc!("gd2 "),
         commodity: TradeCommodity::Hardware,
     },
     TradeRowBinding {
-        tag: fourcc!("gd3 "),
         commodity: TradeCommodity::Arms,
     },
 ];
+
+#[derive(Clone, Copy)]
+struct TradeRowControls {
+    row: Entity,
+    sell: Entity,
+    card: Entity,
+    offr: Entity,
+    left: Entity,
+    rght: Entity,
+    gree: Entity,
+    bar: Entity,
+}
+
+fn trade_row(
+    row: Entity,
+    sell: Entity,
+    card: Entity,
+    offr: Entity,
+    left: Entity,
+    rght: Entity,
+    gree: Entity,
+    bar: Entity,
+) -> TradeRowControls {
+    TradeRowControls {
+        row,
+        sell,
+        card,
+        offr,
+        left,
+        rght,
+        gree,
+        bar,
+    }
+}
+
+fn trade_2009_rows(ui: generated::Trade2009) -> [TradeRowControls; 17] {
+    [
+        trade_row(
+            ui.rs0,
+            ui.rs0_sell,
+            ui.rs0_card,
+            ui.rs0_offr,
+            ui.rs0_left,
+            ui.rs0_rght,
+            ui.rs0_gree,
+            ui.rs0_bar,
+        ),
+        trade_row(
+            ui.rs1,
+            ui.rs1_sell,
+            ui.rs1_card,
+            ui.rs1_offr,
+            ui.rs1_left,
+            ui.rs1_rght,
+            ui.rs1_gree,
+            ui.rs1_bar,
+        ),
+        trade_row(
+            ui.rs2,
+            ui.rs2_sell,
+            ui.rs2_card,
+            ui.rs2_offr,
+            ui.rs2_left,
+            ui.rs2_rght,
+            ui.rs2_gree,
+            ui.rs2_bar,
+        ),
+        trade_row(
+            ui.rs3,
+            ui.rs3_sell,
+            ui.rs3_card,
+            ui.rs3_offr,
+            ui.rs3_left,
+            ui.rs3_rght,
+            ui.rs3_gree,
+            ui.rs3_bar,
+        ),
+        trade_row(
+            ui.rs4,
+            ui.rs4_sell,
+            ui.rs4_card,
+            ui.rs4_offr,
+            ui.rs4_left,
+            ui.rs4_rght,
+            ui.rs4_gree,
+            ui.rs4_bar,
+        ),
+        trade_row(
+            ui.rs5,
+            ui.rs5_sell,
+            ui.rs5_card,
+            ui.rs5_offr,
+            ui.rs5_left,
+            ui.rs5_rght,
+            ui.rs5_gree,
+            ui.rs5_bar,
+        ),
+        trade_row(
+            ui.rs6,
+            ui.rs6_sell,
+            ui.rs6_card,
+            ui.rs6_offr,
+            ui.rs6_left,
+            ui.rs6_rght,
+            ui.rs6_gree,
+            ui.rs6_bar,
+        ),
+        trade_row(
+            ui.ma0,
+            ui.ma0_sell,
+            ui.ma0_card,
+            ui.ma0_offr,
+            ui.ma0_left,
+            ui.ma0_rght,
+            ui.ma0_gree,
+            ui.ma0_bar,
+        ),
+        trade_row(
+            ui.ma1,
+            ui.ma1_sell,
+            ui.ma1_card,
+            ui.ma1_offr,
+            ui.ma1_left,
+            ui.ma1_rght,
+            ui.ma1_gree,
+            ui.ma1_bar,
+        ),
+        trade_row(
+            ui.ma2,
+            ui.ma2_sell,
+            ui.ma2_card,
+            ui.ma2_offr,
+            ui.ma2_left,
+            ui.ma2_rght,
+            ui.ma2_gree,
+            ui.ma2_bar,
+        ),
+        trade_row(
+            ui.ma3,
+            ui.ma3_sell,
+            ui.ma3_card,
+            ui.ma3_offr,
+            ui.ma3_left,
+            ui.ma3_rght,
+            ui.ma3_gree,
+            ui.ma3_bar,
+        ),
+        trade_row(
+            ui.ma4,
+            ui.ma4_sell,
+            ui.ma4_card,
+            ui.ma4_offr,
+            ui.ma4_left,
+            ui.ma4_rght,
+            ui.ma4_gree,
+            ui.ma4_bar,
+        ),
+        trade_row(
+            ui.ma5,
+            ui.ma5_sell,
+            ui.ma5_card,
+            ui.ma5_offr,
+            ui.ma5_left,
+            ui.ma5_rght,
+            ui.ma5_gree,
+            ui.ma5_bar,
+        ),
+        trade_row(
+            ui.gd0,
+            ui.gd0_sell,
+            ui.gd0_card,
+            ui.gd0_offr,
+            ui.gd0_left,
+            ui.gd0_rght,
+            ui.gd0_gree,
+            ui.gd0_bar,
+        ),
+        trade_row(
+            ui.gd1,
+            ui.gd1_sell,
+            ui.gd1_card,
+            ui.gd1_offr,
+            ui.gd1_left,
+            ui.gd1_rght,
+            ui.gd1_gree,
+            ui.gd1_bar,
+        ),
+        trade_row(
+            ui.gd2,
+            ui.gd2_sell,
+            ui.gd2_card,
+            ui.gd2_offr,
+            ui.gd2_left,
+            ui.gd2_rght,
+            ui.gd2_gree,
+            ui.gd2_bar,
+        ),
+        trade_row(
+            ui.gd3,
+            ui.gd3_sell,
+            ui.gd3_card,
+            ui.gd3_offr,
+            ui.gd3_left,
+            ui.gd3_rght,
+            ui.gd3_gree,
+            ui.gd3_bar,
+        ),
+    ]
+}
+
+fn trade_2010_rows(ui: generated::Trade2010) -> [TradeRowControls; 17] {
+    [
+        trade_row(
+            ui.rs0,
+            ui.rs0_sell,
+            ui.rs0_card,
+            ui.rs0_offr,
+            ui.rs0_left,
+            ui.rs0_rght,
+            ui.rs0_gree,
+            ui.rs0_bar,
+        ),
+        trade_row(
+            ui.rs1,
+            ui.rs1_sell,
+            ui.rs1_card,
+            ui.rs1_offr,
+            ui.rs1_left,
+            ui.rs1_rght,
+            ui.rs1_gree,
+            ui.rs1_bar,
+        ),
+        trade_row(
+            ui.rs2,
+            ui.rs2_sell,
+            ui.rs2_card,
+            ui.rs2_offr,
+            ui.rs2_left,
+            ui.rs2_rght,
+            ui.rs2_gree,
+            ui.rs2_bar,
+        ),
+        trade_row(
+            ui.rs3,
+            ui.rs3_sell,
+            ui.rs3_card,
+            ui.rs3_offr,
+            ui.rs3_left,
+            ui.rs3_rght,
+            ui.rs3_gree,
+            ui.rs3_bar,
+        ),
+        trade_row(
+            ui.rs4,
+            ui.rs4_sell,
+            ui.rs4_card,
+            ui.rs4_offr,
+            ui.rs4_left,
+            ui.rs4_rght,
+            ui.rs4_gree,
+            ui.rs4_bar,
+        ),
+        trade_row(
+            ui.rs5,
+            ui.rs5_sell,
+            ui.rs5_card,
+            ui.rs5_offr,
+            ui.rs5_left,
+            ui.rs5_rght,
+            ui.rs5_gree,
+            ui.rs5_bar,
+        ),
+        trade_row(
+            ui.rs6,
+            ui.rs6_sell,
+            ui.rs6_card,
+            ui.rs6_offr,
+            ui.rs6_left,
+            ui.rs6_rght,
+            ui.rs6_gree,
+            ui.rs6_bar,
+        ),
+        trade_row(
+            ui.ma0,
+            ui.ma0_sell,
+            ui.ma0_card,
+            ui.ma0_offr,
+            ui.ma0_left,
+            ui.ma0_rght,
+            ui.ma0_gree,
+            ui.ma0_bar,
+        ),
+        trade_row(
+            ui.ma1,
+            ui.ma1_sell,
+            ui.ma1_card,
+            ui.ma1_offr,
+            ui.ma1_left,
+            ui.ma1_rght,
+            ui.ma1_gree,
+            ui.ma1_bar,
+        ),
+        trade_row(
+            ui.ma2,
+            ui.ma2_sell,
+            ui.ma2_card,
+            ui.ma2_offr,
+            ui.ma2_left,
+            ui.ma2_rght,
+            ui.ma2_gree,
+            ui.ma2_bar,
+        ),
+        trade_row(
+            ui.ma3,
+            ui.ma3_sell,
+            ui.ma3_card,
+            ui.ma3_offr,
+            ui.ma3_left,
+            ui.ma3_rght,
+            ui.ma3_gree,
+            ui.ma3_bar,
+        ),
+        trade_row(
+            ui.ma4,
+            ui.ma4_sell,
+            ui.ma4_card,
+            ui.ma4_offr,
+            ui.ma4_left,
+            ui.ma4_rght,
+            ui.ma4_gree,
+            ui.ma4_bar,
+        ),
+        trade_row(
+            ui.ma5,
+            ui.ma5_sell,
+            ui.ma5_card,
+            ui.ma5_offr,
+            ui.ma5_left,
+            ui.ma5_rght,
+            ui.ma5_gree,
+            ui.ma5_bar,
+        ),
+        trade_row(
+            ui.gd0,
+            ui.gd0_sell,
+            ui.gd0_card,
+            ui.gd0_offr,
+            ui.gd0_left,
+            ui.gd0_rght,
+            ui.gd0_gree,
+            ui.gd0_bar,
+        ),
+        trade_row(
+            ui.gd1,
+            ui.gd1_sell,
+            ui.gd1_card,
+            ui.gd1_offr,
+            ui.gd1_left,
+            ui.gd1_rght,
+            ui.gd1_gree,
+            ui.gd1_bar,
+        ),
+        trade_row(
+            ui.gd2,
+            ui.gd2_sell,
+            ui.gd2_card,
+            ui.gd2_offr,
+            ui.gd2_left,
+            ui.gd2_rght,
+            ui.gd2_gree,
+            ui.gd2_bar,
+        ),
+        trade_row(
+            ui.gd3,
+            ui.gd3_sell,
+            ui.gd3_card,
+            ui.gd3_offr,
+            ui.gd3_left,
+            ui.gd3_rght,
+            ui.gd3_gree,
+            ui.gd3_bar,
+        ),
+    ]
+}
 
 #[derive(Clone, Copy)]
 enum TradeAdvisoryKind {
@@ -108,17 +473,17 @@ enum TradeAdvisoryKind {
     Steel,
 }
 
-const TRADE_ADVISORIES: [(FourCc, TradeAdvisoryKind); 10] = [
-    (fourcc!("food"), TradeAdvisoryKind::Food),
-    (fourcc!("cott"), TradeAdvisoryKind::Textile),
-    (fourcc!("wool"), TradeAdvisoryKind::Textile),
-    (fourcc!("timb"), TradeAdvisoryKind::Timber),
-    (fourcc!("coal"), TradeAdvisoryKind::Coal),
-    (fourcc!("iron"), TradeAdvisoryKind::Iron),
-    (fourcc!("oil "), TradeAdvisoryKind::Oil),
-    (fourcc!("fabr"), TradeAdvisoryKind::Fabric),
-    (fourcc!("lumb"), TradeAdvisoryKind::Lumber),
-    (fourcc!("stee"), TradeAdvisoryKind::Steel),
+const TRADE_ADVISORY_KINDS: [TradeAdvisoryKind; 10] = [
+    TradeAdvisoryKind::Food,
+    TradeAdvisoryKind::Textile,
+    TradeAdvisoryKind::Textile,
+    TradeAdvisoryKind::Timber,
+    TradeAdvisoryKind::Coal,
+    TradeAdvisoryKind::Iron,
+    TradeAdvisoryKind::Oil,
+    TradeAdvisoryKind::Fabric,
+    TradeAdvisoryKind::Lumber,
+    TradeAdvisoryKind::Steel,
 ];
 
 #[derive(Clone)]
@@ -233,36 +598,100 @@ impl Plugin for TradePlugin {
 }
 
 fn enter_trade_screen(mut commands: Commands, session: Res<GameSession>) {
-    let root = if session.game.technology().advanced_production_unlocked() {
-        commands.spawn_scene(generated::trade_2010()).id()
+    if session.game.technology().advanced_production_unlocked() {
+        let ui = generated::spawn_trade_2010(&mut commands);
+        commands
+            .entity(ui.root)
+            .insert((TradeScreen, ui, DespawnOnExit(AppState::Trade)));
     } else {
-        commands.spawn_scene(generated::trade_2009()).id()
-    };
-    commands
-        .entity(root)
-        .insert((TradeScreen, DespawnOnExit(AppState::Trade)));
+        let ui = generated::spawn_trade_2009(&mut commands);
+        commands
+            .entity(ui.root)
+            .insert((TradeScreen, ui, DespawnOnExit(AppState::Trade)));
+    }
 }
 
 fn bind_trade_screen(
     mut commands: Commands,
-    root: Single<Entity, Added<TradeScreen>>,
-    tree: RetailTree,
+    trade_2009: Option<Single<&generated::Trade2009, Added<TradeScreen>>>,
+    trade_2010: Option<Single<&generated::Trade2010, Added<TradeScreen>>>,
     nodes: Query<&Node>,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
-    bind_native_game_screen_nav(
-        &mut commands,
-        *root,
-        &tree,
-        fourcc!("topB"),
-        Some(fourcc!("tool")),
-        true,
-    );
+    if let Some(ui) = trade_2009 {
+        let ui = **ui;
+        bind_trade_screen_ui(
+            &mut commands,
+            &nodes,
+            &mut assets,
+            &mut session,
+            ui.main,
+            ui.trad,
+            ui.tran,
+            ui.city,
+            ui.dipl,
+            ui.end,
+            ui.quer,
+            ui.seas,
+            ui.trea,
+            ui.mcap,
+            [
+                ui.food, ui.cott, ui.wool, ui.timb, ui.coal, ui.iron, ui.oil, ui.fabr, ui.lumb,
+                ui.stee,
+            ],
+            trade_2009_rows(ui),
+        );
+    } else if let Some(ui) = trade_2010 {
+        let ui = **ui;
+        bind_trade_screen_ui(
+            &mut commands,
+            &nodes,
+            &mut assets,
+            &mut session,
+            ui.main,
+            ui.trad,
+            ui.tran,
+            ui.city,
+            ui.dipl,
+            ui.end,
+            ui.quer,
+            ui.seas,
+            ui.trea,
+            ui.mcap,
+            [
+                ui.food, ui.cott, ui.wool, ui.timb, ui.coal, ui.iron, ui.oil, ui.fabr, ui.lumb,
+                ui.stee,
+            ],
+            trade_2010_rows(ui),
+        );
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn bind_trade_screen_ui(
+    commands: &mut Commands,
+    nodes: &Query<&Node>,
+    assets: &mut RetailUiAssets,
+    session: &mut GameSession,
+    main: Entity,
+    trad: Entity,
+    tran: Entity,
+    city: Entity,
+    dipl: Entity,
+    end: Entity,
+    quer: Entity,
+    seas: Entity,
+    trea: Entity,
+    mcap: Entity,
+    advisories: [Entity; 10],
+    rows: [TradeRowControls; 17],
+) {
+    bind_native_game_screen_nav(commands, trad, tran, city, dipl, Some(end), Some(quer));
     let nation = session.active_major_nation();
     session.game.refresh_merchant_capacity(nation);
     session.game.recall_player_trade_orders(nation);
-    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
+    bind_game_status_display(commands, assets, seas, trea);
 
     let pictures = TradePictures {
         bid_active: assets
@@ -291,16 +720,16 @@ fn bind_trade_screen(
             .expect("clothing trade offer picture"),
     };
     bind_trade_controls(
-        &mut commands,
-        *root,
-        &tree,
+        commands,
+        trad,
+        mcap,
+        advisories,
+        rows,
         pictures,
         session.game.technology().advanced_production_unlocked(),
     );
     let palette = *assets.default_dib_palette();
-    for binding in TRADE_ROWS {
-        let row = tree.find(*root, binding.tag);
-        let bar = tree.find(row, fourcc!("bar "));
+    for (binding, row) in TRADE_ROWS.into_iter().zip(rows) {
         let picture = trade_amount_bar_picture(AmountBarPixels {
             range: 0,
             current: 0,
@@ -308,12 +737,12 @@ fn bind_trade_screen(
         });
         let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
         commands
-            .entity(bar)
+            .entity(row.bar)
             .insert((ImageNode::new(image), TradeGaugeVisual(binding.commodity)));
     }
-    let rows = TRADE_ROWS.map(|binding| {
+    let rows = core::array::from_fn(|index| {
         let node = nodes
-            .get(tree.find(*root, binding.tag))
+            .get(rows[index].row)
             .expect("generated trade row has layout");
         let Val::Px(left) = node.left else {
             panic!("generated trade row has a pixel left position");
@@ -321,71 +750,67 @@ fn bind_trade_screen(
         let Val::Px(top) = node.top else {
             panic!("generated trade row has a pixel top position");
         };
-        (binding.commodity, IVec2::new(left as i32, top as i32))
+        (
+            TRADE_ROWS[index].commodity,
+            IVec2::new(left as i32, top as i32),
+        )
     });
     let base = assets
         .indexed_picture(PictureId::new(2101))
         .expect("retail Trade screen picture must load");
     let image = assets.add_image(base.to_image(&palette));
     commands
-        .entity(tree.find(*root, fourcc!("main")))
+        .entity(main)
         .insert((ImageNode::new(image), TradeScreenVisual { base, rows }));
 }
 
 fn bind_trade_controls(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    trad: Entity,
+    mcap: Entity,
+    advisories: [Entity; 10],
+    rows: [TradeRowControls; 17],
     pictures: TradePictures,
     advanced_trade_unlocked: bool,
 ) {
-    let selected = tree.find(root, fourcc!("trad"));
+    commands.entity(trad).insert((Checked, InteractionDisabled));
     commands
-        .entity(selected)
-        .insert((Checked, InteractionDisabled));
-    let capacity = tree.find(root, fourcc!("mCap"));
-    commands
-        .entity(capacity)
+        .entity(mcap)
         .insert((TradeDisplay::Capacity, InteractionDisabled));
-    for (tag, kind) in TRADE_ADVISORIES {
-        let advisory = tree.find(root, tag);
+    for (advisory, kind) in advisories.into_iter().zip(TRADE_ADVISORY_KINDS) {
         commands
             .entity(advisory)
             .insert(TradeDisplay::Advisory(kind));
     }
 
-    for binding in TRADE_ROWS {
-        let row = tree.find(root, binding.tag);
+    for (binding, row) in TRADE_ROWS.into_iter().zip(rows) {
         commands
-            .entity(row)
+            .entity(row.row)
             .insert((TradeDisplay::Row(binding.commodity), Pickable::IGNORE));
         set_trade_row_visible(
             commands,
-            row,
+            row.row,
             trade_row_available(advanced_trade_unlocked, binding.commodity),
         );
 
-        let card = tree.find(row, fourcc!("card"));
         let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
-        let offer = tree.find(row, fourcc!("offr"));
         let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
         bind_trade_card(
             commands,
-            card,
+            row.card,
             binding.commodity,
             TradeCardKind::Bid,
             card_pictures,
         );
         bind_trade_card(
             commands,
-            offer,
+            row.offr,
             binding.commodity,
             TradeCardKind::Offer,
             offer_pictures,
         );
 
-        for (tag, delta) in [(fourcc!("left"), -1), (fourcc!("rght"), 1)] {
-            let step = tree.find(row, tag);
+        for (step, delta) in [(row.left, -1), (row.rght, 1)] {
             commands
                 .entity(step)
                 .insert((
@@ -399,17 +824,14 @@ fn bind_trade_controls(
                 .observe(on_trade_activate);
         }
 
-        let sell = tree.find(row, fourcc!("Sell"));
         commands
-            .entity(sell)
+            .entity(row.sell)
             .insert(TradeDisplay::Sell(binding.commodity));
-        let green = tree.find(row, fourcc!("gree"));
         commands
-            .entity(green)
+            .entity(row.gree)
             .insert(TradeDisplay::Offer(binding.commodity));
-        let bar = tree.find(row, fourcc!("bar "));
         commands
-            .entity(bar)
+            .entity(row.bar)
             .insert((
                 TradeAction::Amount(binding.commodity),
                 TradeDisplay::Offer(binding.commodity),
@@ -904,7 +1326,6 @@ const fn trade_offer_tab_visible(
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game;
     use bevy::asset::AssetPlugin;
@@ -922,43 +1343,69 @@ mod tests {
         state
     }
 
+    fn spawn_child(world: &mut World, parent: Entity) -> Entity {
+        world.spawn((Node::default(), ChildOf(parent))).id()
+    }
+
+    fn spawn_trade_row(world: &mut World, parent: Entity) -> TradeRowControls {
+        let row = spawn_child(world, parent);
+        TradeRowControls {
+            row,
+            sell: spawn_child(world, row),
+            card: spawn_child(world, row),
+            offr: world
+                .spawn((
+                    Node {
+                        left: Val::Px(163.0),
+                        width: Val::Px(17.0),
+                        height: Val::Px(20.0),
+                        ..default()
+                    },
+                    ChildOf(row),
+                ))
+                .id(),
+            left: spawn_child(world, row),
+            rght: spawn_child(world, row),
+            gree: world
+                .spawn((ImageNode::default(), Node::default(), ChildOf(row)))
+                .id(),
+            bar: spawn_child(world, row),
+        }
+    }
+
+    #[derive(Component)]
+    struct TestTradeBindings {
+        trad: Entity,
+        mcap: Entity,
+        advisories: [Entity; 10],
+        rows: [TradeRowControls; 17],
+    }
+
     fn spawn_trade_hierarchy(world: &mut World) {
         let root = world.spawn((TestTradeRoot, Node::default())).id();
-        for tag in [fourcc!("trad"), fourcc!("mCap"), fourcc!("trea")] {
-            world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
-        }
-        for (tag, _) in TRADE_ADVISORIES {
-            world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
-        }
-        for binding in TRADE_ROWS {
-            let row = world
-                .spawn((RetailTag(binding.tag), Node::default(), ChildOf(root)))
-                .id();
-            world.spawn((RetailTag(fourcc!("Sell")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("card")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("offr")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
-            world.spawn((
-                RetailTag(fourcc!("gree")),
-                ImageNode::default(),
-                Node::default(),
-                ChildOf(row),
-            ));
-            world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("bar ")), Node::default(), ChildOf(row)));
-        }
+        let trad = spawn_child(world, root);
+        let mcap = spawn_child(world, root);
+        let advisories = [(); 10].map(|_| spawn_child(world, root));
+        let rows = [(); 17].map(|_| spawn_trade_row(world, root));
+        world.entity_mut(root).insert(TestTradeBindings {
+            trad,
+            mcap,
+            advisories,
+            rows,
+        });
     }
 
     fn bind_test_trade(
         mut commands: Commands,
-        root: Single<Entity, Added<TestTradeRoot>>,
-        tree: RetailTree,
+        bindings: Single<&TestTradeBindings, Added<TestTradeRoot>>,
     ) {
         let image = Handle::<Image>::default();
         bind_trade_controls(
             &mut commands,
-            *root,
-            &tree,
+            bindings.trad,
+            bindings.mcap,
+            bindings.advisories,
+            bindings.rows,
             TradePictures {
                 bid_active: image.clone(),
                 bid_idle: image.clone(),
@@ -1076,22 +1523,50 @@ mod tests {
         assert_eq!(offer_node.width, Val::Px(17.0));
         assert_eq!(offer_node.height, Val::Px(20.0));
         let row = app.world().get::<ChildOf>(card).unwrap().parent();
-        for tag in [
-            fourcc!("card"),
-            fourcc!("offr"),
-            fourcc!("left"),
-            fourcc!("gree"),
-            fourcc!("rght"),
-            fourcc!("bar "),
-        ] {
-            assert!(
-                app.world_mut()
-                    .query::<(&RetailTag, &ChildOf)>()
-                    .iter(app.world())
-                    .any(|(candidate, parent)| candidate.0 == tag && parent.parent() == row),
-                "generated {tag:?} control was removed from its trade row"
-            );
-        }
+        assert!(
+            app.world()
+                .get::<TradeAction>(card)
+                .is_some_and(|action| matches!(
+                    action,
+                    TradeAction::Card {
+                        kind: TradeCardKind::Offer,
+                        ..
+                    }
+                )),
+            "generated offer card kept its TradeAction"
+        );
+        let mut has_step = |delta| {
+            app.world_mut()
+                .query::<(&TradeAction, &ChildOf)>()
+                .iter(app.world())
+                .any(|(action, parent)| {
+                    parent.parent() == row
+                        && matches!(
+                            action,
+                            TradeAction::Step {
+                                delta: candidate,
+                                ..
+                            } if *candidate == delta
+                        )
+                })
+        };
+        assert!(
+            has_step(-1),
+            "generated left control was removed from its trade row"
+        );
+        assert!(
+            has_step(1),
+            "generated right control was removed from its trade row"
+        );
+        assert!(
+            app.world_mut()
+                .query::<(&TradeDisplay, &ChildOf)>()
+                .iter(app.world())
+                .any(|(display, parent)| {
+                    parent.parent() == row && matches!(display, TradeDisplay::Offer(_))
+                }),
+            "generated offer display was removed from its trade row"
+        );
         assert_eq!(
             app.world_mut()
                 .query::<&TradeAction>()

@@ -1,11 +1,11 @@
 use super::generated;
 use super::hover_help::ui_string;
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::RetailUiAssets;
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_formats::{RetailTextStylePreset, fourcc};
+use imperialism_formats::RetailTextStylePreset;
 
 #[derive(Component)]
 struct CreditsRoot {
@@ -29,20 +29,17 @@ impl Plugin for CreditsPlugin {
 }
 
 fn spawn_credits(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::linger_4175()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_linger_4175(&mut commands);
+    commands.entity(ui.root).insert((
         CreditsRoot { second_page: false },
+        ui,
         DespawnOnExit(AppState::Credits),
     ));
 }
 
-fn bind_credits(
-    mut commands: Commands,
-    root: Single<Entity, Added<CreditsRoot>>,
-    tree: RetailTree,
-) {
+fn bind_credits(mut commands: Commands, ui: Single<&generated::Linger4175, Added<CreditsRoot>>) {
     commands
-        .entity(tree.find(*root, fourcc!("main")))
+        .entity(ui.main)
         .insert((Button, ActivateOnPress))
         .observe(on_credits_activate)
         .remove::<InteractionDisabled>();
@@ -50,20 +47,18 @@ fn bind_credits(
 
 fn sync_credits_page(
     mut commands: Commands,
-    roots: Query<(Entity, &CreditsRoot), Changed<CreditsRoot>>,
-    tree: RetailTree,
+    roots: Query<(&generated::Linger4175, &CreditsRoot), Changed<CreditsRoot>>,
     mut assets: RetailUiAssets,
 ) {
-    for (root, screen) in &roots {
-        fill_credits_page(&mut commands, &mut assets, root, &tree, screen.second_page);
+    for (ui, screen) in &roots {
+        fill_credits_page(&mut commands, &mut assets, *ui, screen.second_page);
     }
 }
 
 fn fill_credits_page(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Linger4175,
     second_page: bool,
 ) {
     // `TCreditsPicture::SetTextFromUiStringResourceId`: LoadStringA ids 0xfb0..0xfb3.
@@ -85,8 +80,8 @@ fn fill_credits_page(
         offset: Vec2::ONE,
         color: assets.palette_color(0xd2),
     });
-    for (tag, string_id) in [(fourcc!("cred"), left_id), (fourcc!("cre2"), right_id)] {
-        let mut entity = commands.entity(tree.find(root, tag));
+    for (entity, string_id) in [(ui.cred, left_id), (ui.cre2, right_id)] {
+        let mut entity = commands.entity(entity);
         entity.insert((
             Text::new(string_from_id(assets, string_id)),
             font.clone(),

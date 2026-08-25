@@ -1,14 +1,13 @@
 //! Post-combat `TBattleReportView` / `TBattleDetailBook`.
 
 use super::generated;
-use super::retail::RetailTree;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
 use super::window::{DismissWindow, ModalDefault, ModalWindow};
 use crate::AppState;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{BattleReportSideText, BattleReportText, fourcc};
+use imperialism_formats::{BattleReportSideText, BattleReportText};
 
 #[derive(Component)]
 struct BattleReportRoot {
@@ -51,43 +50,43 @@ impl Plugin for BattleReportPlugin {
 }
 
 fn spawn_battle_report(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::diplo_1351()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_diplo_1351(&mut commands);
+    commands.entity(ui.root).insert((
         BattleReportRoot { selected: 0 },
+        ui,
         DespawnOnExit(AppState::BattleReport),
     ));
 }
 
 fn bind_battle_report(
     mut commands: Commands,
-    root: Single<Entity, Added<BattleReportRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Diplo1351, Added<BattleReportRoot>>,
 ) {
     commands
-        .entity(tree.find(*root, fourcc!("okay")))
+        .entity(ui.okay)
         .insert((ActivateOnPress, ModalDefault, DismissWindow))
         .observe(on_battle_report_close);
     commands
-        .entity(tree.find(*root, fourcc!("info")))
+        .entity(ui.info)
         .insert(ActivateOnPress)
         .observe(on_battle_report_detail);
     commands
-        .entity(tree.find(*root, fourcc!("prev")))
+        .entity(ui.prev)
         .insert((BattleReportStep::Prev, ActivateOnPress))
         .observe(on_battle_report_step);
     commands
-        .entity(tree.find(*root, fourcc!("next")))
+        .entity(ui.next)
         .insert((BattleReportStep::Next, ActivateOnPress))
         .observe(on_battle_report_step);
-    for (tag, field) in [
-        (fourcc!("resu"), BattleReportField::Result),
-        (fourcc!("loca"), BattleReportField::Location),
-        (fourcc!("fadm"), BattleReportField::FriendlyAdmiral),
-        (fourcc!("eadm"), BattleReportField::EnemyAdmiral),
-        (fourcc!("fshp"), BattleReportField::FriendlyShips),
-        (fourcc!("eshp"), BattleReportField::EnemyShips),
+    for (entity, field) in [
+        (ui.resu, BattleReportField::Result),
+        (ui.loca, BattleReportField::Location),
+        (ui.fadm, BattleReportField::FriendlyAdmiral),
+        (ui.eadm, BattleReportField::EnemyAdmiral),
+        (ui.fshp, BattleReportField::FriendlyShips),
+        (ui.eshp, BattleReportField::EnemyShips),
     ] {
-        commands.entity(tree.find(*root, tag)).insert(field);
+        commands.entity(entity).insert(field);
     }
 }
 
@@ -189,20 +188,19 @@ fn on_battle_report_step(
 }
 
 fn spawn_detail(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::diplo_1352()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_diplo_1352(commands);
+    commands.entity(ui.root).insert((
         DetailRoot,
+        ui,
         ModalWindow,
         DespawnOnExit(AppState::BattleReport),
     ));
 }
 
-fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
-    commands.entity(tree.find(*root, fourcc!("okay"))).insert((
-        ActivateOnPress,
-        ModalDefault,
-        DismissWindow,
-    ));
+fn bind_detail(mut commands: Commands, ui: Single<&generated::Diplo1352, Added<DetailRoot>>) {
+    commands
+        .entity(ui.okay)
+        .insert((ActivateOnPress, ModalDefault, DismissWindow));
 }
 
 fn project_detail(
@@ -210,26 +208,23 @@ fn project_detail(
     reports: Res<BattleReportPresentation>,
     selected: Single<&BattleReportRoot>,
     added: Query<(), Added<DetailRoot>>,
-    tree: RetailTree,
-    root: Query<Entity, With<DetailRoot>>,
+    ui: Query<&generated::Diplo1352, With<DetailRoot>>,
     mut texts: Query<&mut Text>,
 ) {
     if added.is_empty() {
         return;
     }
-    let Ok(root) = root.single() else {
+    let Ok(ui) = ui.single() else {
         return;
     };
     let Some(_) = session.game.battle_reports().get(selected.selected) else {
         return;
     };
     let report_text = battle_report_text(&session, &reports.0, selected.selected);
-    let left = tree.find(root, fourcc!("natL"));
-    let right = tree.find(root, fourcc!("natR"));
-    if let Ok(mut text) = texts.get_mut(left) {
+    if let Ok(mut text) = texts.get_mut(ui.natl) {
         text.0 = report_text[BattleReportSideSlot::Left].name.clone();
     }
-    if let Ok(mut text) = texts.get_mut(right) {
+    if let Ok(mut text) = texts.get_mut(ui.natr) {
         text.0 = report_text[BattleReportSideSlot::Right].name.clone();
     }
 }

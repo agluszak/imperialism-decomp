@@ -2,14 +2,14 @@ use super::GamePreferences;
 use super::fill_brackets;
 use super::generated;
 use super::hover_help::get_string;
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::RetailUiAssets;
 use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
+use imperialism_formats::{NewsTable, RetailTextStylePreset};
 
 const COLUMN_X: [f32; 3] = [24.0, 226.0, 428.0];
 const COLUMN_WIDTH: f32 = 188.0;
@@ -42,43 +42,37 @@ impl Plugin for NewspaperPlugin {
 }
 
 fn spawn_newspaper(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::flagview_8451()).id();
+    let ui = generated::spawn_flagview_8451(&mut commands);
     commands
-        .entity(root)
-        .insert((NewspaperRoot, DespawnOnExit(AppState::Newspaper)));
+        .entity(ui.root)
+        .insert((NewspaperRoot, ui, DespawnOnExit(AppState::Newspaper)));
 }
 
 fn bind_newspaper(
     mut commands: Commands,
-    root: Single<Entity, Added<NewspaperRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Flagview8451, Added<NewspaperRoot>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
 ) {
-    let root = *root;
-    bind_newspaper_chrome(&mut commands, root, &tree);
+    let ui = **ui;
+    bind_newspaper_chrome(&mut commands, ui);
     fill_newspaper_stories(
         &mut commands,
         &mut assets,
-        root,
-        &tree,
+        ui.main,
         &session.game,
         retail.assets().news_table(),
     );
     commands
-        .entity(tree.find(root, fourcc!("end ")))
+        .entity(ui.end)
         .insert(ActivateOnPress)
         .observe(on_newspaper_activate);
 }
 
-fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {
-    commands
-        .entity(tree.find(root, fourcc!("date")))
-        .insert(NewspaperDisplay::Date);
-    commands
-        .entity(tree.find(root, fourcc!("spec")))
-        .insert(NewspaperDisplay::Spec);
+fn bind_newspaper_chrome(commands: &mut Commands, ui: generated::Flagview8451) {
+    commands.entity(ui.date).insert(NewspaperDisplay::Date);
+    commands.entity(ui.spec).insert(NewspaperDisplay::Spec);
 }
 
 fn project_newspaper_chrome(
@@ -153,8 +147,7 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
 fn fill_newspaper_stories(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
+    main: Entity,
     state: &GameState,
     news: &NewsTable,
 ) {
@@ -163,7 +156,6 @@ fn fill_newspaper_stories(
     let Some(page) = state.news().pages[nation].as_ref() else {
         return;
     };
-    let main = tree.find(root, fourcc!("main"));
     let (feature_font, feature_layout, feature_line, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 2,

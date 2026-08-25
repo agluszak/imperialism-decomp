@@ -1,5 +1,5 @@
 use crate::ui::generated;
-use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
+use crate::ui::retail::{retail_text_color, retail_text_style};
 use crate::ui::session::apply_turn_stop;
 use crate::ui::window::{ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{GameSession, RetailUiAssets};
@@ -9,7 +9,7 @@ use bevy::prelude::*;
 use bevy::text::EditableText;
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::ResourceTable;
-use imperialism_formats::{PictureId, fourcc};
+use imperialism_formats::PictureId;
 
 const ROW_HEIGHT: i32 = 0x20;
 const ICON_PICTURE_BASE: i16 = 700;
@@ -36,9 +36,10 @@ impl Plugin for TownNamingPlugin {
 }
 
 fn spawn_town_naming(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::mapview_3508()).id();
-    commands.entity(root).insert((
+    let ui = generated::spawn_mapview_3508(&mut commands);
+    commands.entity(ui.root).insert((
         TownNamingRoot,
+        ui,
         ModalWindow,
         DespawnOnExit(AppState::TownNaming),
     ));
@@ -46,23 +47,15 @@ fn spawn_town_naming(mut commands: Commands) {
 
 fn bind_town_naming(
     mut commands: Commands,
-    roots: Query<Entity, (With<TownNamingRoot>, Without<TownNamingWired>)>,
-    tree: RetailTree,
-    children: Query<&Children>,
+    ui: Query<&generated::Mapview3508, (With<TownNamingRoot>, Without<TownNamingWired>)>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     retail_assets: Res<RetailAssetsResource>,
     mut session: ResMut<GameSession>,
 ) {
-    let Ok(root) = roots.single() else {
+    let Ok(ui) = ui.single() else {
         return;
     };
-    if !children
-        .get(root)
-        .is_ok_and(|children| !children.is_empty())
-    {
-        return;
-    }
     let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
         return;
     };
@@ -75,16 +68,13 @@ fn bind_town_naming(
     let yields = session.game.nations().major(nation).towns[&tile].resource_yield_by_type;
     let visible = yields.values().filter(|&&amount| amount != 0).count() as i32;
     let extra_height = visible * ROW_HEIGHT;
-    for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
-        let mut node = nodes
-            .get_mut(tree.find(root, tag))
-            .expect("town-name chrome has Node");
+    for entity in [ui.wind, ui.dlog] {
+        let mut node = nodes.get_mut(entity).expect("town-name chrome has Node");
         if let Val::Px(height) = node.height {
             node.height = px(height + extra_height as f32);
         }
     }
-    for tag in [fourcc!("okay"), fourcc!("cncl")] {
-        let entity = tree.find(root, tag);
+    for entity in [ui.okay, ui.cncl] {
         let mut node = nodes.get_mut(entity).expect("town-name button has Node");
         if let Val::Px(top) = node.top {
             node.top = px(top + extra_height as f32);
@@ -94,15 +84,10 @@ fn bind_town_naming(
             .insert((ActivateOnPress, TownNamingWired))
             .observe(commit_town_name);
     }
-    commands
-        .entity(tree.find(root, fourcc!("okay")))
-        .insert(ModalDefault);
-    commands
-        .entity(tree.find(root, fourcc!("cncl")))
-        .insert(ModalCancel);
+    commands.entity(ui.okay).insert(ModalDefault);
+    commands.entity(ui.cncl).insert(ModalCancel);
 
-    let name = tree.find(root, fourcc!("name"));
-    commands.entity(name).insert((
+    commands.entity(ui.name).insert((
         TownNameField,
         AutoFocus,
         SelectAllOnFocus,
@@ -112,13 +97,8 @@ fn bind_town_naming(
             ..EditableText::new(suggestion)
         },
     ));
-    spawn_resource_rows(
-        &mut commands,
-        &mut assets,
-        tree.find(root, fourcc!("DLOG")),
-        yields,
-    );
-    commands.entity(root).insert(TownNamingWired);
+    spawn_resource_rows(&mut commands, &mut assets, ui.dlog, yields);
+    commands.entity(ui.root).insert(TownNamingWired);
 }
 
 fn spawn_resource_rows(

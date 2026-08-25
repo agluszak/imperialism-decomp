@@ -2,7 +2,6 @@
 //! `TMacViewMgr` owner-color atlas.
 
 use super::super::RetailUiAssets;
-use super::super::retail::RetailTree;
 use super::super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::super::{GameSession, MapViewOrigin};
 use super::map_interaction::{
@@ -16,7 +15,6 @@ use bevy::ui::RelativeCursorPosition;
 use imperialism_core::*;
 use imperialism_formats::*;
 
-const TOOL_TAG: FourCc = fourcc!("tool");
 const FRAME_X: i32 = 4;
 const FRAME_Y: i32 = 0x31;
 pub(super) const FRAME_WIDTH: i32 = 0x71;
@@ -64,13 +62,11 @@ pub(super) struct MiniMapWindow {
 
 pub(crate) fn bind_minimap(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    toolbar: Entity,
     assets: &mut RetailUiAssets,
     session: &GameSession,
     origin: TileId,
 ) {
-    let toolbar = tree.find(root, TOOL_TAG);
     let (image, window) = compose_minimap(
         &session.game,
         origin,

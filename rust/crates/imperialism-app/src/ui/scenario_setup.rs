@@ -1,5 +1,5 @@
 use super::generated;
-use super::retail::{RetailTree, retail_text_style};
+use super::retail::retail_text_style;
 use super::satellite_preview::SatellitePreview;
 use super::session::{apply_turn_stop, insert_game_session};
 use crate::{AppState, RetailAssetsResource};
@@ -11,7 +11,7 @@ use imperialism_core::{
     MajorNationId, MapMgr, ScenarioInstruction, create_scenario_game,
     enter_strategic_map_without_capital_selection,
 };
-use imperialism_formats::{ScenarioInfo, fourcc};
+use imperialism_formats::ScenarioInfo;
 
 #[derive(Component)]
 struct ScenarioSetupRoot;
@@ -92,46 +92,45 @@ fn load_scenarios(world: &mut World) {
 }
 
 fn enter_scenario_setup(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::startup_1503()).id();
-    commands
-        .entity(root)
-        .insert((ScenarioSetupRoot, DespawnOnExit(AppState::ScenarioSetup)));
+    let ui = generated::spawn_startup_1503(&mut commands);
+    commands.entity(ui.root).insert((
+        ScenarioSetupRoot,
+        ui,
+        DespawnOnExit(AppState::ScenarioSetup),
+    ));
 }
 
 fn bind_scenario_setup(
     mut commands: Commands,
-    root: Single<Entity, Added<ScenarioSetupRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Startup1503, Added<ScenarioSetupRoot>>,
     setup: Res<ScenarioSetup>,
 ) {
-    let root = *root;
-    let list = tree.find(root, fourcc!("list"));
     for (index, choice) in setup.choices.iter().enumerate() {
         let row = commands
             .spawn_scene(scenario_row(choice.info.title.clone(), index))
             .id();
         commands.entity(row).observe(on_select_scenario);
-        commands.entity(list).add_child(row);
+        commands.entity(ui.list).add_child(row);
     }
 
     commands
-        .entity(tree.find(root, fourcc!("sdes")))
+        .entity(ui.sdes)
         .insert((Text::default(), ScenarioDescription));
     commands
-        .entity(tree.find(root, fourcc!("cdes")))
+        .entity(ui.cdes)
         .insert((Text::default(), NationDescription));
     commands
-        .entity(tree.find(root, fourcc!("pmap")))
+        .entity(ui.pmap)
         .insert(ScenarioMapPreview::default())
         .remove::<InteractionDisabled>()
         .observe(on_map_click);
     commands
-        .entity(tree.find(root, fourcc!("star")))
+        .entity(ui.star)
         .insert((StartScenario, ActivateOnPress))
         .remove::<InteractionDisabled>()
         .observe(on_start_scenario);
     commands
-        .entity(tree.find(root, fourcc!("exit")))
+        .entity(ui.exit)
         .insert(ActivateOnPress)
         .observe(on_exit_scenario_setup);
 }

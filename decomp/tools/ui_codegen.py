@@ -1974,6 +1974,150 @@ def _rust_enum_variant(value: str) -> str:
     return "".join(part.capitalize() for part in value.split("_"))
 
 
+_RUST_KEYWORDS = frozenset(
+    {
+        "as",
+        "break",
+        "const",
+        "continue",
+        "crate",
+        "else",
+        "enum",
+        "extern",
+        "false",
+        "fn",
+        "for",
+        "if",
+        "impl",
+        "in",
+        "let",
+        "loop",
+        "match",
+        "mod",
+        "move",
+        "mut",
+        "pub",
+        "ref",
+        "return",
+        "self",
+        "Self",
+        "static",
+        "struct",
+        "super",
+        "trait",
+        "true",
+        "type",
+        "unsafe",
+        "use",
+        "where",
+        "while",
+        "async",
+        "await",
+        "dyn",
+        "abstract",
+        "become",
+        "box",
+        "do",
+        "final",
+        "macro",
+        "override",
+        "priv",
+        "typeof",
+        "unsized",
+        "virtual",
+        "yield",
+        "try",
+        "gen",
+    }
+)
+
+
+def _rust_struct_name(function: str) -> str:
+    return "".join(
+        part.upper() if part.isdigit() else part[:1].upper() + part[1:]
+        for part in function.split("_")
+        if part
+    )
+
+
+def _rust_ident_from_tag(tag: str) -> str:
+    chars: list[str] = []
+    for ch in tag:
+        if ch.isalnum():
+            chars.append(ch.lower())
+        elif chars and chars[-1] != "_":
+            chars.append("_")
+    name = "".join(chars).strip("_") or "tag"
+    if name[0].isdigit():
+        name = f"n{name}"
+    if name in _RUST_KEYWORDS:
+        name = f"{name}_"
+    return name
+
+
+def _assign_node_field_names(nodes: tuple[UiSemanticNode, ...]) -> dict[str, str]:
+    parent_by_id = {node.node_id: node for node in nodes}
+    by_tag: dict[str, list[UiSemanticNode]] = {}
+    for node in nodes:
+        by_tag.setdefault(node.tag, []).append(node)
+
+    names: dict[str, str] = {}
+    used = {"root"}
+
+    def take(candidate: str) -> str:
+        name = candidate
+        suffix = 2
+        while name in used:
+            name = f"{candidate}_{suffix}"
+            suffix += 1
+        used.add(name)
+        return name
+
+    for node in nodes:
+        if len(by_tag[node.tag]) == 1:
+            names[node.node_id] = take(_rust_ident_from_tag(node.tag))
+            continue
+        parts = [_rust_ident_from_tag(node.tag)]
+        current = node
+        while current.parent_id is not None:
+            parent = parent_by_id[current.parent_id]
+            parts.insert(0, _rust_ident_from_tag(parent.tag))
+            prefix = "_".join(parts)
+            collisions = [
+                other
+                for other in by_tag[node.tag]
+                if other.node_id != node.node_id
+                and _node_ancestor_ident(other, parent_by_id, len(parts)) == prefix
+            ]
+            if not collisions:
+                break
+            current = parent
+        names[node.node_id] = take("_".join(parts))
+    return names
+
+
+def _node_ancestor_ident(
+    node: UiSemanticNode,
+    parent_by_id: dict[str, UiSemanticNode],
+    length: int,
+) -> str:
+    tags = [_rust_ident_from_tag(node.tag)]
+    current = node
+    while current.parent_id is not None and len(tags) < length:
+        current = parent_by_id[current.parent_id]
+        tags.insert(0, _rust_ident_from_tag(current.tag))
+    return "_".join(tags)
+
+
+def _walk_pre_order(
+    node: UiSemanticNode,
+    children_by_parent: dict[str | None, list[UiSemanticNode]],
+) -> Iterable[UiSemanticNode]:
+    yield node
+    for child in children_by_parent.get(node.node_id, []):
+        yield from _walk_pre_order(child, children_by_parent)
+
+
 def _rust_has_shipped_font(text: UiTextPayload) -> bool:
     return text.mode in (1, 2, 3)
 
@@ -2010,52 +2154,50 @@ def _indent(lines: Iterable[str], spaces: int) -> list[str]:
     return [prefix + line if line else "" for line in lines]
 
 
-def _render_bsn_node(
+def _render_bsn_components(
     key: UiResourceKey | None,
     node: UiSemanticNode,
-    children_by_parent: dict[str | None, list[UiSemanticNode]],
 ) -> list[str]:
     x, y, width, height = node.geometry
     insets = node.family.content_insets or (0, 0, 0, 0)
     text = node.family.text
     render_text_style = text is not None and _rust_has_shipped_font(text)
     lines = [
-        "(",
         (
-            f"    retail_node(fourcc!({_rust_string(node.tag)}), "
+            f"retail_node(fourcc!({_rust_string(node.tag)}), "
             f"{x}, {y}, {width}, {height})"
         ),
     ]
     if _rust_window_is_captioned(node):
-        lines.append("    template(|_context| Ok(CaptionedWindow))")
+        lines.append("template(|_context| Ok(CaptionedWindow))")
     if any(int(value) for value in insets):
         lines.extend(
             [
-                "    Node {",
-                "        padding: UiRect {",
-                f"            left: px({int(insets[0])}),",
-                f"            top: px({int(insets[1])}),",
-                f"            right: px({int(insets[2])}),",
-                f"            bottom: px({int(insets[3])}),",
-                "        },",
-                "    }",
+                "Node {",
+                "    padding: UiRect {",
+                f"        left: px({int(insets[0])}),",
+                f"        top: px({int(insets[1])}),",
+                f"        right: px({int(insets[2])}),",
+                f"        bottom: px({int(insets[3])}),",
+                "    },",
+                "}",
             ]
         )
     behavior = _rust_widget_behavior(key, node)
     lines.extend(
         {
-            "activate": ["    Button"],
-            "checkbox": ["    Checkbox"],
-            "toggle": ["    Checkbox"],
-            "radio_group": ["    RadioGroup"],
-            "radio_button": ["    RadioButton"],
-            "pointer_canvas": ["    RelativeCursorPosition"],
+            "activate": ["Button"],
+            "checkbox": ["Checkbox"],
+            "toggle": ["Checkbox"],
+            "radio_group": ["RadioGroup"],
+            "radio_button": ["RadioButton"],
+            "pointer_canvas": ["RelativeCursorPosition"],
         }.get(str(behavior), [])
     )
     if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
-        lines.append("    Checked")
+        lines.append("Checked")
     if behavior != "passive" and (not node.enabled or not node.input_gate):
-        lines.append("    InteractionDisabled")
+        lines.append("InteractionDisabled")
 
     if text is not None:
         value = _rust_string(text.value or "")
@@ -2064,27 +2206,27 @@ def _render_bsn_node(
             if max_chars is not None and max_chars < 0:
                 max_chars = None
             max_expr = "None" if max_chars is None else f"Some({max_chars})"
-            lines.append("    retail_edit_field()")
-            lines.append(f"    retail_editable_text({value}, {max_expr})")
+            lines.append("retail_edit_field()")
+            lines.append(f"retail_editable_text({value}, {max_expr})")
         else:
-            lines.append(f"    Text({value})")
+            lines.append(f"Text({value})")
         if render_text_style:
             lines.append(
-                "    retail_text_style("
+                "retail_text_style("
                 f"{text.mode}, {text.flags}, {text.point_size}, {text.theme})"
             )
         if text.color_index is None:
-            lines.append("    TextColor(Color::BLACK)")
+            lines.append("TextColor(Color::BLACK)")
         else:
-            lines.append(f"    retail_text_color({text.color_index})")
+            lines.append(f"retail_text_color({text.color_index})")
         if text.shadow_color_index is not None:
             lines.append(
-                f"    retail_text_shadow({text.shadow_color_index}, "
+                f"retail_text_shadow({text.shadow_color_index}, "
                 f"{text.shadow_offset[0]}, {text.shadow_offset[1]})"
             )
         if render_text_style and text.center_vertically:
             lines.append(
-                "    retail_centered_text_padding("
+                "retail_centered_text_padding("
                 f"{text.mode}, {text.flags}, {text.point_size}, "
                 f"{height}, {insets[1]})"
             )
@@ -2100,22 +2242,62 @@ def _render_bsn_node(
             idle_id &= ~1
             active_id = int(picture_id) | 1
         if visual == "static":
-            lines.append(f"    retail_picture({idle_id})")
+            lines.append(f"retail_picture({idle_id})")
         else:
-            lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+            lines.append(f"retail_picture_swap({idle_id}, {active_id})")
     elif behavior == "radio_button":
         # TRadioText has no picture; Draw fills the selected/pressed option.
-        lines.append("    retail_radio_text_fill()")
+        lines.append("retail_radio_text_fill()")
+    return lines
 
-    children = children_by_parent.get(node.node_id, [])
-    if children:
-        lines.append("    Children [")
+
+def _render_spawn_view(
+    function: str,
+    view_name: str,
+    key: UiResourceKey | None,
+    semantic_view: UiSemanticView,
+) -> list[str]:
+    children_by_parent: dict[str | None, list[UiSemanticNode]] = {}
+    for node in semantic_view.nodes:
+        children_by_parent.setdefault(node.parent_id, []).append(node)
+    roots = children_by_parent.get(None, [])
+    if len(roots) != 1:
+        raise ValueError(f"{semantic_view.view_id}: expected one semantic root")
+    names = _assign_node_field_names(semantic_view.nodes)
+    struct_name = _rust_struct_name(function)
+    fields = ["root"] + [names[node.node_id] for node in semantic_view.nodes]
+    lines = [
+        "#[derive(Clone, Copy, Debug, Component)]",
+        f"pub struct {struct_name} {{",
+    ]
+    lines.extend(f"    pub {field}: Entity," for field in fields)
+    lines.extend(
+        [
+            "}",
+            "",
+            "#[rustfmt::skip]",
+            f"pub fn spawn_{function}(commands: &mut Commands) -> {struct_name} {{",
+        ]
+    )
+    for node in _walk_pre_order(roots[0], children_by_parent):
+        field = names[node.node_id]
+        lines.append(f"    let {field} = commands.spawn_scene(bsn! {{")
+        lines.extend(_indent(_render_bsn_components(key, node), 8))
+        lines.append("    }).id();")
+    lines.append("    let root = commands.spawn_scene(bsn! {")
+    lines.append(f"        retail_view({view_name})")
+    lines.append("    }).id();")
+    for node in _walk_pre_order(roots[0], children_by_parent):
+        children = children_by_parent.get(node.node_id, [])
+        parent_field = names[node.node_id]
         for child in children:
-            rendered = _render_bsn_node(key, child, children_by_parent)
-            rendered[-1] += ","
-            lines.extend(_indent(rendered, 8))
-        lines.append("    ]")
-    lines.append(")")
+            lines.append(
+                f"    commands.entity({parent_field}).add_child({names[child.node_id]});"
+            )
+    lines.append(f"    commands.entity(root).add_child({names[roots[0].node_id]});")
+    lines.append(f"    {struct_name} {{")
+    lines.extend(f"        {field}," for field in fields)
+    lines.extend(["    }", "}", ""])
     return lines
 
 
@@ -2123,84 +2305,27 @@ def _render_city_dialog_controls(
     city_buildings: CityBuildingVisuals,
     controls: CityDialogControls,
 ) -> list[str]:
-    def row_array(name: str, rows: tuple[CityRowControls, ...]) -> list[str]:
-        lines = [f"pub const {name}: [(FourCc, FourCc); {len(rows)}] = ["]
-        for row in rows:
-            lines.append(
-                f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}),"
-            )
-        lines.extend(["];", ""])
-        return lines
-
-    lines: list[str] = []
-    lines.extend(row_array("ARMORY_ROW_CONTROLS", controls.armory_rows))
-    lines.extend(row_array("UNIVERSITY_ROW_CONTROLS", controls.university_rows))
-    lines.append(
-        f"pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, f32); {len(controls.shipyard_rows)}] = ["
-    )
-    for row in controls.shipyard_rows:
-        lines.append(
-            f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}, {row.overlay_left}.0),"
-        )
-    lines.extend(["];", ""])
-    lines.append(
+    lines = [
         f"pub const SHIPYARD_STAT_ORIGINS: [(f32, f32); {len(controls.shipyard_stat_origins)}] = ["
-    )
+    ]
     for left, top in controls.shipyard_stat_origins:
         lines.append(f"    ({left}.0, {top}.0),")
     lines.extend(["];", ""])
-    training = ", ".join(_rust_fourcc(tag) for tag in controls.training_orders)
-    lines.append(f"pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [{training}];")
-    lines.append(f"pub const FOOD_ORDER_TAG: FourCc = {_rust_fourcc(controls.food_order)};")
-    lines.append(f"pub const POWER_ORDER_TAG: FourCc = {_rust_fourcc(controls.power_order)};")
     lines.append(
-        f"pub const TRANSPORT_ORDER_TAG: FourCc = {_rust_fourcc(controls.transport_order)};"
+        "pub fn spawn_city_dialog(commands: &mut Commands, slot: CityFacilitySlot) -> Entity {"
     )
-    lines.append(
-        f"pub const POPULATION_ORDER_TAG: FourCc = {_rust_fourcc(controls.population_order)};"
-    )
-    lines.extend(
-        [
-            "pub const WAREHOUSE_STOCK_TAGS: [FourCc; 20] = [",
-        ]
-    )
-    for tag in controls.warehouse_stocks:
-        lines.append(f"    {_rust_fourcc(tag)},")
-    lines.extend(
-        [
-            "];",
-            "",
-            "pub struct IndustryPageControls {",
-            "    pub slot: CityFacilitySlot,",
-            "    pub order_tags: &'static [FourCc],",
-            "    pub stocks: &'static [(FourCc, i16)],",
-            "}",
-            "",
-            "pub const INDUSTRY_PAGE_CONTROLS: [IndustryPageControls; 7] = [",
-        ]
-    )
-    for page in controls.industry:
-        order_tags = ", ".join(_rust_fourcc(tag) for tag in page.order_tags)
-        stocks = ", ".join(
-            f"({_rust_fourcc(tag)}, {columns})" for tag, columns in page.stocks
-        )
-        lines.extend(
-            [
-                "    IndustryPageControls {",
-                f"        slot: CityFacilitySlot::{_rust_enum_variant(page.slot)},",
-                f"        order_tags: &[{order_tags}],",
-                f"        stocks: &[{stocks}],",
-                "    },",
-            ]
-        )
-    lines.extend(["];", ""])
-    lines.append("pub fn spawn_city_dialog(commands: &mut Commands, slot: CityFacilitySlot) -> Entity {")
     lines.append("    match slot {")
     for visual in city_buildings.visuals:
         function = _rust_function_name(visual.dialog.resource_file, visual.dialog.view_id)
         variant = _rust_enum_variant(visual.slot)
-        lines.append(
-            f"        CityFacilitySlot::{variant} => commands.spawn_scene({function}()).id(),"
+        lines.extend(
+            [
+                f"        CityFacilitySlot::{variant} => {{",
+                f"            let ui = spawn_{function}(commands);",
+                "            commands.entity(ui.root).insert(ui);",
+                "            ui.root",
+                "        }",
+            ]
         )
     lines.extend(["    }", "}"])
     return lines
@@ -2227,7 +2352,7 @@ def render_rust_ui(
         "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
         "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
         "use imperialism_core::CityFacilitySlot;",
-        "use imperialism_formats::{FourCc, PictureId, fourcc};",
+        "use imperialism_formats::{PictureId, fourcc};",
         "",
         "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
         "",
@@ -2269,26 +2394,7 @@ def render_rust_ui(
             function = view_id
             view_name = _rust_string(function)
             key = None
-        children_by_parent: dict[str | None, list[UiSemanticNode]] = {}
-        for node in semantic_view.nodes:
-            children_by_parent.setdefault(node.parent_id, []).append(node)
-        roots = children_by_parent.get(None, [])
-        if len(roots) != 1:
-            raise ValueError(f"{semantic_view.view_id}: expected one semantic root")
-        lines.extend(
-            [
-                "#[rustfmt::skip]",
-                f"pub fn {function}() -> impl Scene {{",
-                "    bsn! {",
-                f"        retail_view({view_name})",
-                "        Children [",
-            ]
-        )
-        for node in roots:
-            rendered = _render_bsn_node(key, node, children_by_parent)
-            rendered[-1] += ","
-            lines.extend(_indent(rendered, 12))
-        lines.extend(["        ]", "    }", "}", ""])
+        lines.extend(_render_spawn_view(function, view_name, key, semantic_view))
     return "\n".join(lines)
 
 
@@ -2804,7 +2910,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--write-rust-ui",
         action="store_true",
-        help=f"write native Bevy UI scenes to {RUST_UI_PATH}",
+        help=f"write native Bevy UI spawn identities to {RUST_UI_PATH}",
     )
     parser.add_argument(
         "--report-unsupported-roles",
@@ -2932,7 +3038,7 @@ def main() -> int:
         path = write_rust_ui(
             repo_root, recipes, views, text_resources
         )
-        print(f"Wrote native Bevy UI scenes to {path}")
+        print(f"Wrote native Bevy UI spawn identities to {path}")
         return 0
     if args.report_unsupported_roles:
         for line in report_unsupported_ui_roles(

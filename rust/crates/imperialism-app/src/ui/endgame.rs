@@ -1,7 +1,6 @@
 //! Retail cinematics, Council of Governors, Game Score, and high-score screens.
 
 use super::generated;
-use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop, remove_game_session};
 use crate::media::{MovieBackend, MusicDirector, rgba_frame_to_image};
 use crate::ui::load_save::SaveDirectory;
@@ -202,31 +201,25 @@ fn finish_opening_cinematic(
 }
 
 fn spawn_council(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::diplo_2016()).id();
+    let ui = generated::spawn_diplo_2016(&mut commands);
     commands
-        .entity(root)
-        .insert((CouncilRoot, DespawnOnExit(AppState::CouncilOfGovernors)));
+        .entity(ui.root)
+        .insert((CouncilRoot, ui, DespawnOnExit(AppState::CouncilOfGovernors)));
 }
 
-fn bind_council(
-    mut commands: Commands,
-    root: Single<Entity, Added<CouncilRoot>>,
-    tree: RetailTree,
-) {
+fn bind_council(mut commands: Commands, ui: Single<&generated::Diplo2016, Added<CouncilRoot>>) {
     commands
-        .entity(tree.find(*root, fourcc!("end ")))
+        .entity(ui.end)
         .insert(ActivateOnPress)
         .observe(on_council_close);
-    for tag in [
-        fourcc!("can0"),
-        fourcc!("can1"),
-        fourcc!("num0"),
-        fourcc!("num1"),
-        fourcc!("num2"),
+    for (entity, tag) in [
+        (ui.can0, fourcc!("can0")),
+        (ui.can1, fourcc!("can1")),
+        (ui.num0, fourcc!("num0")),
+        (ui.num1, fourcc!("num1")),
+        (ui.num2, fourcc!("num2")),
     ] {
-        commands
-            .entity(tree.find(*root, tag))
-            .insert(CouncilText(tag));
+        commands.entity(entity).insert(CouncilText(tag));
     }
 }
 
@@ -273,45 +266,33 @@ fn on_council_close(
 }
 
 fn spawn_game_score(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::startup_1515()).id();
+    let ui = generated::spawn_startup_1515(&mut commands);
     commands
-        .entity(root)
-        .insert((GameScoreRoot, DespawnOnExit(AppState::GameScore)));
+        .entity(ui.root)
+        .insert((GameScoreRoot, ui, DespawnOnExit(AppState::GameScore)));
 }
 
 fn bind_game_score(
     mut commands: Commands,
-    root: Single<Entity, Added<GameScoreRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Startup1515, Added<GameScoreRoot>>,
 ) {
     commands
-        .entity(tree.find(*root, fourcc!("done")))
+        .entity(ui.done)
         .insert(ActivateOnPress)
         .observe(on_game_score_close);
-    for (index, tag) in NUMS.iter().enumerate() {
-        commands
-            .entity(tree.find(*root, *tag))
-            .insert(GameScoreValue(index));
+    for (index, entity) in [
+        ui.numa, ui.numb, ui.numc, ui.numd, ui.nume, ui.numf, ui.numg, ui.numh, ui.numi, ui.numj,
+        ui.numk, ui.numl,
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        commands.entity(entity).insert(GameScoreValue(index));
     }
 }
 
 #[derive(Component)]
 struct GameScoreValue(usize);
-
-const NUMS: [imperialism_formats::FourCc; 12] = [
-    fourcc!("numa"),
-    fourcc!("numb"),
-    fourcc!("numc"),
-    fourcc!("numd"),
-    fourcc!("nume"),
-    fourcc!("numf"),
-    fourcc!("numg"),
-    fourcc!("numh"),
-    fourcc!("numi"),
-    fourcc!("numj"),
-    fourcc!("numk"),
-    fourcc!("numl"),
-];
 
 fn project_game_score(
     session: Res<GameSession>,
@@ -354,19 +335,18 @@ fn persist_high_score(state: &GameState, nation: MajorNationId, directory: &std:
 }
 
 fn spawn_high_score(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::startup_1504()).id();
+    let ui = generated::spawn_startup_1504(&mut commands);
     commands
-        .entity(root)
-        .insert((HighScoreRoot, DespawnOnExit(AppState::HighScore)));
+        .entity(ui.root)
+        .insert((HighScoreRoot, ui, DespawnOnExit(AppState::HighScore)));
 }
 
 fn bind_high_score(
     mut commands: Commands,
-    root: Single<Entity, Added<HighScoreRoot>>,
-    tree: RetailTree,
+    ui: Single<&generated::Startup1504, Added<HighScoreRoot>>,
 ) {
     commands
-        .entity(tree.find(*root, fourcc!("labl")))
+        .entity(ui.labl)
         .insert(ActivateOnPress)
         .observe(on_high_score_close);
 }
@@ -374,17 +354,16 @@ fn bind_high_score(
 fn project_high_score(
     save_dir: Option<Res<SaveDirectory>>,
     added: Query<(), Added<HighScoreRoot>>,
-    tree: RetailTree,
-    root: Query<Entity, With<HighScoreRoot>>,
+    ui: Query<&generated::Startup1504, With<HighScoreRoot>>,
     mut labels: Query<&mut Text>,
 ) {
     if added.is_empty() {
         return;
     }
-    let Ok(root) = root.single() else {
+    let Ok(ui) = ui.single() else {
         return;
     };
-    let label = tree.find(root, fourcc!("labl"));
+    let label = ui.labl;
     let table = save_dir
         .and_then(|dir| std::fs::read(dir.0.join("scores.dat")).ok())
         .map(|bytes| read_scores_dat(&bytes))

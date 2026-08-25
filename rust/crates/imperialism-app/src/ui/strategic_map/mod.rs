@@ -1,5 +1,4 @@
 use super::RetailUiAssets;
-use super::retail::RetailTree;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::session::{GameSession, MapViewOrigin};
 use crate::RetailAssetsResource;
@@ -45,7 +44,6 @@ use overlays::{
 use terrain::{compose_strategic_base_tile, uses_bounded_seam_frame};
 pub(crate) use units::{animate_civilian_work, animate_strategic_selection, sync_strategic_units};
 
-const MAP_TAG: FourCc = fourcc!("DLOG");
 pub(super) const VIEWPORT_WIDTH: usize = 512;
 pub(super) const VIEWPORT_HEIGHT: usize = 448;
 pub(super) const TILE_SIZE: i32 = 64;
@@ -99,15 +97,13 @@ pub(super) struct StrategicMapSprites<'a> {
 
 pub(crate) fn bind_strategic_base_terrain(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    map: Entity,
     assets: &mut RetailUiAssets,
     session: &GameSession,
     origin: TileId,
 ) -> Entity {
     let state = &session.game;
     let view_origin = origin;
-    let map = tree.find(root, MAP_TAG);
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
     let improvement_pictures = load_strategic_improvement_pictures(assets);

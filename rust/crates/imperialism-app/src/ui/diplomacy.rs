@@ -11,7 +11,7 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{RetailTree, ancestor_with};
+use super::retail::ancestor_with;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::retail_raster_text::RetailRasterTextPainter;
 use super::satellite_preview::nation_owner_palette;
@@ -123,16 +123,6 @@ impl DiplomacyRelationshipNotch {
         }
     }
 }
-
-const DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS: [FourCc; 7] = [
-    fourcc!("nam0"),
-    fourcc!("nam1"),
-    fourcc!("nam2"),
-    fourcc!("nam3"),
-    fourcc!("nam4"),
-    fourcc!("nam5"),
-    fourcc!("nam6"),
-];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum DiplomacyTopic {
@@ -409,7 +399,7 @@ impl Plugin for DiplomacyPlugin {
 }
 
 fn enter_diplomacy_screen(mut commands: Commands, session: Res<GameSession>) {
-    let root = commands.spawn_scene(generated::diplo_2008()).id();
+    let ui = generated::spawn_diplo_2008(&mut commands);
     let source = session.active_major_nation();
     let mut screen = DiplomacyScreen {
         framed_nation: source.nation(),
@@ -421,18 +411,18 @@ fn enter_diplomacy_screen(mut commands: Commands, session: Res<GameSession>) {
         pose_diplomacy_war_join(&mut screen, prompt);
     }
     commands
-        .entity(root)
-        .insert((screen, DespawnOnExit(AppState::Diplomacy)));
+        .entity(ui.root)
+        .insert((screen, ui, DespawnOnExit(AppState::Diplomacy)));
 }
 
 fn bind_diplomacy_screen(
     mut commands: Commands,
-    root: Single<Entity, Added<DiplomacyScreen>>,
-    tree: RetailTree,
+    ui: Single<&generated::Diplo2008, Added<DiplomacyScreen>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
+    let ui = **ui;
+    bind_game_status_display(&mut commands, &mut assets, ui.seas, ui.trea);
     let pictures = DiplomacyBracketPictures {
         information: assets
             .picture(PictureId::new(5001))
@@ -471,8 +461,7 @@ fn bind_diplomacy_screen(
         .expect("retail diplomacy icon atlas transparency must apply");
     bind_diplomacy_controls(
         &mut commands,
-        *root,
-        &tree,
+        ui,
         pictures,
         styles,
         icon_atlas,
@@ -481,11 +470,9 @@ fn bind_diplomacy_screen(
     );
 }
 
-#[allow(clippy::too_many_arguments)]
 fn bind_diplomacy_controls(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
+    ui: generated::Diplo2008,
     pictures: DiplomacyBracketPictures,
     styles: DiplomacyTextStyles,
     icon_atlas: Handle<Image>,
@@ -497,45 +484,26 @@ fn bind_diplomacy_controls(
     if !posing {
         bind_native_game_screen_nav(
             commands,
-            root,
-            tree,
-            fourcc!("topB"),
-            Some(fourcc!("too3")),
-            true,
+            ui.topb_trad,
+            ui.tran,
+            ui.city,
+            ui.dipl,
+            Some(ui.end),
+            Some(ui.quer),
         );
     }
-    let top = tree.find(root, fourcc!("topB"));
-    let selected = tree.find(top, fourcc!("dipl"));
     commands
-        .entity(selected)
+        .entity(ui.dipl)
         .insert((Checked, InteractionDisabled));
 
-    let main = tree.find(root, fourcc!("main"));
-    let view = tree.view(main);
-    let information = view.child(fourcc!("info"));
-    let treaties = view.child(fourcc!("trty"));
-    let grants = view.child(fourcc!("gran"));
-    let trade = view.child(fourcc!("trad"));
-    let council = view.child(fourcc!("coun"));
-    let offers = view.child(fourcc!("offr"));
-    let trade_cluster = tree.find(trade, fourcc!("clus"));
-
-    for topic in [
-        DiplomacyTopic::Information,
-        DiplomacyTopic::Treaties,
-        DiplomacyTopic::Grants,
-        DiplomacyTopic::Trade,
-        DiplomacyTopic::Council,
-        DiplomacyTopic::Offers,
+    for (panel, topic) in [
+        (ui.info, DiplomacyTopic::Information),
+        (ui.trty, DiplomacyTopic::Treaties),
+        (ui.gran, DiplomacyTopic::Grants),
+        (ui.main_trad, DiplomacyTopic::Trade),
+        (ui.coun, DiplomacyTopic::Council),
+        (ui.offr, DiplomacyTopic::Offers),
     ] {
-        let panel = match topic {
-            DiplomacyTopic::Information => information,
-            DiplomacyTopic::Treaties => treaties,
-            DiplomacyTopic::Grants => grants,
-            DiplomacyTopic::Trade => trade,
-            DiplomacyTopic::Council => council,
-            DiplomacyTopic::Offers => offers,
-        };
         commands.entity(panel).insert(DiplomacyPanel(topic));
         if topic != DiplomacyTopic::Offers {
             let picture = indexed_picture(518, 122, 0x10);
@@ -545,14 +513,13 @@ fn bind_diplomacy_controls(
         }
     }
 
-    for (tag, topic) in [
-        (fourcc!("inft"), DiplomacyTopic::Information),
-        (fourcc!("trtt"), DiplomacyTopic::Treaties),
-        (fourcc!("grat"), DiplomacyTopic::Grants),
-        (fourcc!("trat"), DiplomacyTopic::Trade),
-        (fourcc!("cout"), DiplomacyTopic::Council),
+    for (control, topic) in [
+        (ui.inft, DiplomacyTopic::Information),
+        (ui.trtt, DiplomacyTopic::Treaties),
+        (ui.grat, DiplomacyTopic::Grants),
+        (ui.trat, DiplomacyTopic::Trade),
+        (ui.cout, DiplomacyTopic::Council),
     ] {
-        let control = tree.find(root, tag);
         let mut entity = commands.entity(control);
         entity
             .insert(DiplomacyAction::Topic(topic))
@@ -564,15 +531,8 @@ fn bind_diplomacy_controls(
         }
     }
     let start_radio = DiplomacyMode::from_topic(DiplomacyTopic::Information).selected_radio();
-    for (index, tag) in [
-        fourcc!("doc0"),
-        fourcc!("doc1"),
-        fourcc!("doc2"),
-        fourcc!("doc3"),
-        fourcc!("doc4"),
-        fourcc!("doc5"),
-        fourcc!("doc6"),
-        fourcc!("doc7"),
+    for (index, control) in [
+        ui.doc0, ui.doc1, ui.doc2, ui.doc3, ui.doc4, ui.doc5, ui.doc6, ui.doc7,
     ]
     .into_iter()
     .enumerate()
@@ -581,7 +541,6 @@ fn bind_diplomacy_controls(
             amount: GRANT_AMOUNTS[index / 2],
             recurring: index % 2 != 0,
         };
-        let control = tree.find(root, tag);
         let mut entity = commands.entity(control);
         entity.insert(action).observe(on_diplomacy_radio_selected);
         if start_radio == Some(action) {
@@ -590,17 +549,16 @@ fn bind_diplomacy_controls(
             entity.remove::<Checked>();
         }
     }
-    for (score, tag) in TRADE_POLICY_SCORES.into_iter().zip([
-        fourcc!("traa"),
-        fourcc!("trab"),
-        fourcc!("trac"),
-        fourcc!("trad"),
-        fourcc!("trae"),
-        fourcc!("traf"),
-        fourcc!("trag"),
+    for (score, control) in TRADE_POLICY_SCORES.into_iter().zip([
+        ui.traa,
+        ui.trab,
+        ui.trac,
+        ui.clus_trad,
+        ui.trae,
+        ui.traf,
+        ui.trag,
     ]) {
         let action = DiplomacyAction::Trade(TradePolicyChoice::Policy(score));
-        let control = tree.find(trade_cluster, tag);
         let mut entity = commands.entity(control);
         entity.insert(action).observe(on_diplomacy_radio_selected);
         if start_radio == Some(action) {
@@ -609,20 +567,13 @@ fn bind_diplomacy_controls(
             entity.remove::<Checked>();
         }
     }
-    for (overlay, tag) in [
-        (DiplomacyInformationOverlay::Owner, fourcc!("ovr0")),
-        (
-            DiplomacyInformationOverlay::RelationshipNotch,
-            fourcc!("ovr1"),
-        ),
-        (DiplomacyInformationOverlay::Trade, fourcc!("ovr2")),
-        (
-            DiplomacyInformationOverlay::RelationshipType,
-            fourcc!("ovr4"),
-        ),
+    for (overlay, control) in [
+        (DiplomacyInformationOverlay::Owner, ui.ovr0),
+        (DiplomacyInformationOverlay::RelationshipNotch, ui.ovr1),
+        (DiplomacyInformationOverlay::Trade, ui.ovr2),
+        (DiplomacyInformationOverlay::RelationshipType, ui.ovr4),
     ] {
         let action = DiplomacyAction::Overlay(overlay);
-        let control = tree.find(root, tag);
         let mut entity = commands.entity(control);
         entity
             .insert(action)
@@ -634,17 +585,10 @@ fn bind_diplomacy_controls(
             entity.remove::<Checked>();
         }
     }
-    for (policy, tag) in TREATY_POLICIES.into_iter().zip([
-        fourcc!("scr0"),
-        fourcc!("scr1"),
-        fourcc!("scr2"),
-        fourcc!("scr3"),
-        fourcc!("scr4"),
-        fourcc!("scr5"),
-        fourcc!("scr6"),
+    for (policy, control) in TREATY_POLICIES.into_iter().zip([
+        ui.scr0, ui.scr1, ui.scr2, ui.scr3, ui.scr4, ui.scr5, ui.scr6,
     ]) {
         let action = DiplomacyAction::Treaty(policy);
-        let control = tree.find(root, tag);
         let mut entity = commands.entity(control);
         entity
             .insert(action)
@@ -657,16 +601,15 @@ fn bind_diplomacy_controls(
         }
     }
     commands
-        .entity(tree.find(trade_cluster, fourcc!("link")))
+        .entity(ui.link)
         .insert(DiplomacyAction::Trade(TradePolicyChoice::ColonyBoycott))
         .remove::<InteractionDisabled>()
         .remove::<Checked>()
         .observe(on_diplomacy_radio_selected);
-    for (tag, action) in [
-        (fourcc!("acce"), DiplomacyAction::AcceptOffer),
-        (fourcc!("reje"), DiplomacyAction::RejectOffer),
+    for (control, action) in [
+        (ui.acce, DiplomacyAction::AcceptOffer),
+        (ui.reje, DiplomacyAction::RejectOffer),
     ] {
-        let control = tree.find(root, tag);
         commands
             .entity(control)
             .insert((action, ActivateOnPress))
@@ -690,29 +633,23 @@ fn bind_diplomacy_controls(
             DiplomacyMapPicture,
             DiplomacyMapGeometry::default(),
             ZIndex(1),
-            ChildOf(main),
+            ChildOf(ui.main),
         ))
         .observe(on_diplomacy_map_click)
         .id();
     spawn_diplomacy_map_labels(commands, map, &styles, icon_atlas);
-    bind_diplomacy_map_key(commands, root, tree, information, assets);
+    bind_diplomacy_map_key(commands, ui, assets);
 
-    let shee = tree.find(root, fourcc!("shee"));
-    let wait = tree.find(root, fourcc!("wait"));
-    let prop = tree.find(root, fourcc!("prop"));
-    commands.entity(shee).insert(DiplomacyOfferSheet);
-    commands.entity(wait).insert(DiplomacyOfferWait);
-    commands.entity(prop).insert(DiplomacyText::Offer);
+    commands.entity(ui.shee).insert(DiplomacyOfferSheet);
+    commands.entity(ui.wait).insert(DiplomacyOfferWait);
+    commands.entity(ui.prop).insert(DiplomacyText::Offer);
 
-    let treasury = tree.find(root, fourcc!("trea"));
-    commands.entity(treasury).insert(DiplomacyText::Treasury);
-    let left = tree.find(root, fourcc!("ltab"));
-    commands.entity(left).insert(DiplomacyTopicBracket {
+    commands.entity(ui.trea).insert(DiplomacyText::Treasury);
+    commands.entity(ui.ltab).insert(DiplomacyTopicBracket {
         left: true,
         pictures: pictures.clone(),
     });
-    let right = tree.find(root, fourcc!("rtab"));
-    commands.entity(right).insert(DiplomacyTopicBracket {
+    commands.entity(ui.rtab).insert(DiplomacyTopicBracket {
         left: false,
         pictures,
     });
@@ -766,13 +703,10 @@ fn spawn_diplomacy_map_labels(
 
 fn bind_diplomacy_map_key(
     commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    information: Entity,
+    ui: generated::Diplo2008,
     assets: &mut RetailUiAssets,
 ) {
-    let map_key = tree.find(information, fourcc!("mkey"));
-    commands.entity(map_key).insert(DiplomacyMapKey {
+    commands.entity(ui.mkey).insert(DiplomacyMapKey {
         owner: assets
             .picture(PictureId::new(0x1393))
             .expect("retail diplomacy owner map key must load"),
@@ -786,9 +720,11 @@ fn bind_diplomacy_map_key(
             .picture(PictureId::new(0x1397))
             .expect("retail diplomacy trade map key must load"),
     });
-    for (major, tag) in MajorNationId::all().zip(DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS) {
+    for (major, entity) in MajorNationId::all().zip([
+        ui.nam0, ui.nam1, ui.nam2, ui.nam3, ui.nam4, ui.nam5, ui.nam6,
+    ]) {
         commands
-            .entity(tree.find(root, tag))
+            .entity(entity)
             .insert((DiplomacyText::MapKeyMajorName(major), Visibility::Inherited));
     }
 }
@@ -1099,14 +1035,13 @@ fn open_diplomacy_rejection_notice(
 
 fn bind_diplomacy_notice(
     mut commands: Commands,
-    notice: Single<(Entity, &DiplomacyNotice), Added<DiplomacyNotice>>,
-    tree: RetailTree,
+    notice: Single<(&DiplomacyNotice, &generated::Linger2020), Added<DiplomacyNotice>>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let (root, notice) = *notice;
+    let (notice, ui) = *notice;
     let body = get_string(&assets, 0x2754, notice.0.proposal_mode() - 1);
-    let linger = bind_linger_dialog(&mut commands, root, &tree);
+    let linger = bind_linger_dialog(&mut commands, *ui);
     linger.set_title(
         &mut commands,
         &mut assets,
@@ -1138,15 +1073,17 @@ fn open_diplomacy_entanglement_notice(
 
 fn bind_diplomacy_entanglement_notice(
     mut commands: Commands,
-    notice: Single<(Entity, &DiplomacyEntanglementNotice), Added<DiplomacyEntanglementNotice>>,
-    tree: RetailTree,
+    notice: Single<
+        (&DiplomacyEntanglementNotice, &generated::Linger2020),
+        Added<DiplomacyEntanglementNotice>,
+    >,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
-    let (root, notice) = *notice;
+    let (notice, ui) = *notice;
     let title = get_string(&assets, 0x275d, 5);
     let body = diplomacy_entanglement_body(&session.game, &assets, notice.target, notice.policy);
-    let linger = bind_linger_dialog(&mut commands, root, &tree);
+    let linger = bind_linger_dialog(&mut commands, *ui);
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
