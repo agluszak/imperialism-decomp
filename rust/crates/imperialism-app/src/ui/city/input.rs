@@ -67,17 +67,22 @@ pub(in crate::ui::city) fn on_city_rail_amount_bar_click(
 pub(in crate::ui::city) fn on_city_order_adjust(
     activate: On<Activate>,
     actions: Query<&CityOrderAdjust>,
-    mut views: Query<&mut CityRowSelection>,
+    mut armories: Query<&mut ArmoryView>,
+    mut universities: Query<&mut UniversityView>,
+    mut shipyards: Query<&mut ShipyardView>,
     mut session: ResMut<GameSession>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    if let Some(selection_entity) = action.selection
-        && let Ok(mut selection) = views.get_mut(selection_entity)
-        && recruitment_kind_matches(selection.order, action.order)
-    {
-        selection.order = action.order;
+    if let Some(selection) = action.selection {
+        set_recruitment_selection(
+            selection,
+            action.order,
+            &mut armories,
+            &mut universities,
+            &mut shipyards,
+        );
     }
     let nation = session.active_major_nation();
     session

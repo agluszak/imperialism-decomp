@@ -1,34 +1,39 @@
 use super::*;
 use crate::ui::retail::RetailPictureSwap;
 
-#[derive(Component, Clone, Copy)]
-pub(in crate::ui::city) enum TrainingIndicator {
-    Paper { minimum: i16 },
-    Money { minimum: i32 },
-    UntrainedAvailable,
-    TrainedAvailable,
-}
-
-#[derive(Component, Clone, Copy)]
-pub(in crate::ui::city) enum ArmoryDetail {
-    UnitName,
-    WorkforceCost,
-    PrimaryCost,
-    SecondaryCost,
-    CashCost,
-    WorkforceAvailable,
-    PrimaryAvailable,
-    SecondaryAvailable,
-    Treasury,
-    Firepower,
-    ActionPoints,
-    Range,
-    Static,
-    Description,
+#[derive(Component)]
+pub(in crate::ui::city) struct TrainingView {
+    rows: Vec<(CityOrderId, CityOrderRow)>,
+    paper_one: Entity,
+    paper_two: Entity,
+    money_one: Entity,
+    money_two: Entity,
+    untrained_available: Entity,
+    trained_available: Entity,
 }
 
 #[derive(Component)]
-pub(in crate::ui::city) struct ArmoryPlacard;
+pub(in crate::ui::city) struct ArmoryView {
+    pub(in crate::ui::city) selected: CityOrderId,
+    normal_color: Color,
+    warning_color: Color,
+    rows: Vec<(CityOrderId, CityOrderRow)>,
+    unit_name: Entity,
+    workforce_cost: Entity,
+    primary_cost: Entity,
+    secondary_cost: Entity,
+    cash_cost: Entity,
+    workforce_available: Entity,
+    primary_available: Entity,
+    secondary_available: Entity,
+    treasury: Entity,
+    firepower: Entity,
+    action_points: Entity,
+    range: Entity,
+    static_text: Entity,
+    description: Entity,
+    placard: Entity,
+}
 
 const ARMORY_FIREPOWER: [i16; 30] = [
     5, 5, 10, 12, 7, 15, 10, 16, 7, 10, 15, 17, 10, 20, 17, 30, 10, 15, 22, 25, 22, 45, 25, 50, 0,
@@ -101,18 +106,22 @@ pub(in crate::ui::city) fn bind_training_dialog(
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
+    let mut rows = Vec::new();
     for binding in TRAINING_ORDERS {
-        bind_city_order_row(
-            commands,
-            root,
-            tree,
-            binding,
-            fourcc!("left"),
-            fourcc!("rght"),
-            fourcc!("move"),
-            1,
-            None,
-        );
+        rows.push((
+            binding.order,
+            bind_city_order_row(
+                commands,
+                root,
+                tree,
+                binding,
+                fourcc!("left"),
+                fourcc!("rght"),
+                fourcc!("move"),
+                1,
+                None,
+            ),
+        ));
     }
     let paper_one = tree.find(root, fourcc!("pap1"));
     let paper_two = tree.find(root, fourcc!("pap2"));
@@ -120,24 +129,25 @@ pub(in crate::ui::city) fn bind_training_dialog(
     let money_two = tree.find(root, fourcc!("mon2"));
     let untrained_available = tree.find(root, fourcc!("untV"));
     let trained_available = tree.find(root, fourcc!("traV"));
-    commands
-        .entity(paper_one)
-        .insert((Text::new("X"), TrainingIndicator::Paper { minimum: 1 }));
-    commands
-        .entity(paper_two)
-        .insert((Text::new("X"), TrainingIndicator::Paper { minimum: 2 }));
-    commands
-        .entity(money_one)
-        .insert((Text::new("X"), TrainingIndicator::Money { minimum: 100 }));
-    commands
-        .entity(money_two)
-        .insert((Text::new("X"), TrainingIndicator::Money { minimum: 1_000 }));
-    commands
-        .entity(untrained_available)
-        .insert((Text::new("X"), TrainingIndicator::UntrainedAvailable));
-    commands
-        .entity(trained_available)
-        .insert((Text::new("X"), TrainingIndicator::TrainedAvailable));
+    for entity in [
+        paper_one,
+        paper_two,
+        money_one,
+        money_two,
+        untrained_available,
+        trained_available,
+    ] {
+        commands.entity(entity).insert(Text::new("X"));
+    }
+    commands.entity(root).insert(TrainingView {
+        rows,
+        paper_one,
+        paper_two,
+        money_one,
+        money_two,
+        untrained_available,
+        trained_available,
+    });
 }
 
 pub(in crate::ui::city) fn configure_armory_dialog(
@@ -171,6 +181,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         title_line_height,
         TextColor(normal_color),
     ));
+    let mut rows = Vec::new();
     for row in ARMORY_ROWS {
         let bound = bind_city_order_row(
             commands,
@@ -203,37 +214,94 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         ));
         button.observe(on_city_row_selected);
         commands.entity(bound.quantity).insert(InteractionDisabled);
+        rows.push((row.binding.order, bound));
     }
-    for (tag, detail) in [
-        (fourcc!("unit"), ArmoryDetail::UnitName),
-        (fourcc!("cos0"), ArmoryDetail::WorkforceCost),
-        (fourcc!("cos1"), ArmoryDetail::PrimaryCost),
-        (fourcc!("cos2"), ArmoryDetail::SecondaryCost),
-        (fourcc!("cos3"), ArmoryDetail::CashCost),
-        (fourcc!("ava0"), ArmoryDetail::WorkforceAvailable),
-        (fourcc!("ava1"), ArmoryDetail::PrimaryAvailable),
-        (fourcc!("ava2"), ArmoryDetail::SecondaryAvailable),
-        (fourcc!("ava3"), ArmoryDetail::Treasury),
-        (fourcc!("sta0"), ArmoryDetail::Firepower),
-        (fourcc!("sta1"), ArmoryDetail::ActionPoints),
-        (fourcc!("sta2"), ArmoryDetail::Range),
-        (fourcc!("sta3"), ArmoryDetail::Static),
-        (fourcc!("desc"), ArmoryDetail::Description),
-    ] {
+    let bind_detail = |commands: &mut Commands, tag, font: TextFont, line_height| {
         let entity = tree.find(root, tag);
-        let (font, line_height) = if tag == fourcc!("unit") {
-            (unit_font.clone(), unit_line_height)
-        } else {
-            (detail_font.clone(), detail_line_height)
-        };
-        commands.entity(entity).insert((
-            Text::new(""),
-            font,
-            line_height,
-            TextColor(normal_color),
-            detail,
-        ));
-    }
+        commands
+            .entity(entity)
+            .insert((Text::new(""), font, line_height, TextColor(normal_color)));
+        entity
+    };
+    let unit_name = bind_detail(commands, fourcc!("unit"), unit_font, unit_line_height);
+    let workforce_cost = bind_detail(
+        commands,
+        fourcc!("cos0"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let primary_cost = bind_detail(
+        commands,
+        fourcc!("cos1"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let secondary_cost = bind_detail(
+        commands,
+        fourcc!("cos2"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let cash_cost = bind_detail(
+        commands,
+        fourcc!("cos3"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let workforce_available = bind_detail(
+        commands,
+        fourcc!("ava0"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let primary_available = bind_detail(
+        commands,
+        fourcc!("ava1"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let secondary_available = bind_detail(
+        commands,
+        fourcc!("ava2"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let treasury = bind_detail(
+        commands,
+        fourcc!("ava3"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let firepower = bind_detail(
+        commands,
+        fourcc!("sta0"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let action_points = bind_detail(
+        commands,
+        fourcc!("sta1"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let range = bind_detail(
+        commands,
+        fourcc!("sta2"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let static_text = bind_detail(
+        commands,
+        fourcc!("sta3"),
+        detail_font.clone(),
+        detail_line_height,
+    );
+    let description = bind_detail(
+        commands,
+        fourcc!("desc"),
+        detail_font.clone(),
+        detail_line_height,
+    );
     for (tag, string_index) in [
         (fourcc!("cost"), 0x1e),
         (fourcc!("avai"), 0x1f),
@@ -255,18 +323,35 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         ));
     }
     let placard = tree.find(root, fourcc!("plaq"));
-    commands.entity(placard).insert(ArmoryPlacard);
-    commands.entity(root).insert(CityRowSelection {
-        order: CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry),
+    commands.entity(root).insert(ArmoryView {
+        selected: CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry),
         normal_color,
         warning_color,
+        rows,
+        unit_name,
+        workforce_cost,
+        primary_cost,
+        secondary_cost,
+        cash_cost,
+        workforce_available,
+        primary_available,
+        secondary_available,
+        treasury,
+        firepower,
+        action_points,
+        range,
+        static_text,
+        description,
+        placard,
     });
 }
 
 pub(in crate::ui::city) fn sync_training_dialog(
     session: Res<GameSession>,
-    added: Query<(), Added<TrainingIndicator>>,
-    mut indicators: Query<(&TrainingIndicator, &mut Visibility)>,
+    added: Query<(), Added<TrainingView>>,
+    views: Query<&TrainingView>,
+    mut texts: Query<&mut Text>,
+    mut visibilities: Query<&mut Visibility>,
 ) {
     if city_projection_idle(&session, !added.is_empty()) {
         return;
@@ -279,130 +364,245 @@ pub(in crate::ui::city) fn sync_training_dialog(
     let budget = major
         .economy
         .available_diplomacy_budget(major.common.treasury);
-    for (indicator, mut visibility) in &mut indicators {
-        let visible = match *indicator {
-            TrainingIndicator::Paper { minimum } => city.stockpile[ResourceKind::Paper] >= minimum,
-            TrainingIndicator::Money { minimum } => budget >= minimum,
-            TrainingIndicator::UntrainedAvailable => production.low.min(strength) != 0,
-            TrainingIndicator::TrainedAvailable => production.medium.min(strength / 2) != 0,
-        };
-        *visibility = if visible {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+    for view in &views {
+        project_city_order_rows(
+            &session,
+            &mut texts,
+            &view.rows,
+            "training order quantity remains bound",
+        );
+        set_bound_visible(
+            &mut visibilities,
+            view.paper_one,
+            city.stockpile[ResourceKind::Paper] >= 1,
+            "training paper warning remains bound",
+        );
+        set_bound_visible(
+            &mut visibilities,
+            view.paper_two,
+            city.stockpile[ResourceKind::Paper] >= 2,
+            "training paper warning remains bound",
+        );
+        set_bound_visible(
+            &mut visibilities,
+            view.money_one,
+            budget >= 100,
+            "training money warning remains bound",
+        );
+        set_bound_visible(
+            &mut visibilities,
+            view.money_two,
+            budget >= 1_000,
+            "training money warning remains bound",
+        );
+        set_bound_visible(
+            &mut visibilities,
+            view.untrained_available,
+            production.low.min(strength) != 0,
+            "training untrained warning remains bound",
+        );
+        set_bound_visible(
+            &mut visibilities,
+            view.trained_available,
+            production.medium.min(strength / 2) != 0,
+            "training trained warning remains bound",
+        );
     }
 }
 
 pub(in crate::ui::city) fn sync_armory_details(
     session: Res<GameSession>,
-    selections: Query<Ref<CityRowSelection>>,
+    views: Query<Ref<ArmoryView>>,
     mut assets: RetailUiAssets,
-    mut texts: Query<(&ArmoryDetail, &mut Text, &mut TextColor)>,
-    mut visibilities: Query<(&ArmoryDetail, &mut Visibility)>,
-    mut placards: Query<&mut ImageNode, With<ArmoryPlacard>>,
+    mut texts: Query<&mut Text>,
+    mut colors: Query<&mut TextColor>,
+    mut visibilities: Query<&mut Visibility>,
+    mut pictures: Query<&mut ImageNode>,
 ) {
-    let Some(selection) = selections
-        .iter()
-        .find(|selection| matches!(selection.order, CityOrderId::MilitaryRecruit(_)))
-    else {
-        return;
-    };
-    let CityOrderId::MilitaryRecruit(category) = selection.order else {
-        return;
-    };
-    if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
-        return;
-    }
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
-    let city = &major.city;
-    let order = &city.orders.military_recruitment[category];
-    let spec = military_recruitment_spec(order.unit_kind)
-        .expect("Armory row has a recruitable retail unit recipe");
-    let production = city.population.production_labor();
-    let strength = city.population.strength();
-    let (workforce, strength_divisor) = match spec.workforce {
-        SkillBand::Low => (production.low, 1),
-        SkillBand::Medium => (production.medium, 2),
-        SkillBand::High => (production.high, 4),
-    };
-    let secondary = spec.secondary;
-    let unit_index = usize::from(order.unit_kind.retail());
-    let unit_name = assets
-        .string(0x2717, i16::from(order.unit_kind.retail()) + 1)
-        .expect("retail military unit name");
-    let description = assets
-        .string(0x2750, i16::from(order.unit_kind.retail()) + 1)
-        .expect("retail military unit description");
-    let static_text = assets
-        .string(
-            0x271c,
-            if ARMORY_STATIC[unit_index] {
-                0x22
-            } else {
-                0x21
-            },
-        )
-        .expect("retail Armory yes/no string");
-    let workforce_available = workforce.min(strength / strength_divisor);
-    let primary_available = city.stockpile[spec.primary.resource];
-    let secondary_available = secondary.map(|item| city.stockpile[item.resource]);
-    for (detail, mut text, mut color) in &mut texts {
-        text.0 = match detail {
-            ArmoryDetail::UnitName => unit_name.clone(),
-            ArmoryDetail::WorkforceCost => 1.to_string(),
-            ArmoryDetail::PrimaryCost => spec.primary.per_unit().to_string(),
-            ArmoryDetail::SecondaryCost => secondary
+    for view in &views {
+        if !session.is_changed() && !view.is_changed() && !view.is_added() {
+            continue;
+        }
+        let CityOrderId::MilitaryRecruit(category) = view.selected else {
+            continue;
+        };
+        let nation = session.active_major_nation();
+        let major = session.game.nations().major(nation);
+        let city = &major.city;
+        let order = &city.orders.military_recruitment[category];
+        let spec = military_recruitment_spec(order.unit_kind)
+            .expect("Armory row has a recruitable retail unit recipe");
+        let production = city.population.production_labor();
+        let strength = city.population.strength();
+        let (workforce, strength_divisor) = match spec.workforce {
+            SkillBand::Low => (production.low, 1),
+            SkillBand::Medium => (production.medium, 2),
+            SkillBand::High => (production.high, 4),
+        };
+        let secondary = spec.secondary;
+        let unit_index = usize::from(order.unit_kind.retail());
+        let unit_name = assets
+            .string(0x2717, i16::from(order.unit_kind.retail()) + 1)
+            .expect("retail military unit name");
+        let description = assets
+            .string(0x2750, i16::from(order.unit_kind.retail()) + 1)
+            .expect("retail military unit description");
+        let static_text = assets
+            .string(
+                0x271c,
+                if ARMORY_STATIC[unit_index] {
+                    0x22
+                } else {
+                    0x21
+                },
+            )
+            .expect("retail Armory yes/no string");
+        let workforce_available = workforce.min(strength / strength_divisor);
+        let primary_available = city.stockpile[spec.primary.resource];
+        let secondary_available = secondary.map(|item| city.stockpile[item.resource]);
+        project_city_order_rows(
+            &session,
+            &mut texts,
+            &view.rows,
+            "armory order quantity remains bound",
+        );
+        let color = |warning| city_stock_color(warning, view.warning_color, view.normal_color);
+        set_bound_text(
+            &mut texts,
+            view.unit_name,
+            unit_name,
+            "armory unit name remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.workforce_cost,
+            1.to_string(),
+            "armory workforce cost remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.primary_cost,
+            spec.primary.per_unit().to_string(),
+            "armory primary cost remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.secondary_cost,
+            secondary
                 .map(|item| item.per_unit().to_string())
                 .unwrap_or_default(),
-            ArmoryDetail::CashCost => format_currency(i32::from(spec.cash_per_unit)),
-            ArmoryDetail::WorkforceAvailable => workforce_available.to_string(),
-            ArmoryDetail::PrimaryAvailable => primary_available.to_string(),
-            ArmoryDetail::SecondaryAvailable => secondary
+            "armory secondary cost remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.cash_cost,
+            format_currency(i32::from(spec.cash_per_unit)),
+            "armory cash cost remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.workforce_available,
+            workforce_available.to_string(),
+            "armory workforce available remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.primary_available,
+            primary_available.to_string(),
+            "armory primary available remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.secondary_available,
+            secondary
                 .map(|_| {
                     secondary_available
                         .expect("secondary item has availability")
                         .to_string()
                 })
                 .unwrap_or_default(),
-            ArmoryDetail::Treasury => format_currency(major.common.treasury),
-            ArmoryDetail::Firepower => ARMORY_FIREPOWER[unit_index].to_string(),
-            ArmoryDetail::ActionPoints => ARMORY_ACTION_POINTS[unit_index].to_string(),
-            ArmoryDetail::Range => ARMORY_RANGE[unit_index].to_string(),
-            ArmoryDetail::Static => static_text.clone(),
-            ArmoryDetail::Description => description.clone(),
-        };
-        let warning = match detail {
-            ArmoryDetail::WorkforceAvailable => workforce_available == 0,
-            ArmoryDetail::PrimaryAvailable => primary_available < spec.primary.per_unit(),
-            // Retail compares both material columns against the primary input amount.
-            ArmoryDetail::SecondaryAvailable => {
-                secondary_available.is_some_and(|available| available < spec.primary.per_unit())
-            }
-            ArmoryDetail::Treasury => major.common.treasury < i32::from(spec.cash_per_unit),
-            _ => false,
-        };
-        color.0 = city_stock_color(warning, &selection);
-    }
-    placards
-        .single_mut()
-        .expect("Armory dialog has one unit placard")
-        .image = assets
-        .picture(PictureId::new(0x1d9c + i16::from(order.unit_kind.retail())))
-        .expect("retail Armory unit placard");
-    let secondary_visible = if secondary.is_some() {
-        Visibility::Visible
-    } else {
-        Visibility::Hidden
-    };
-    for (detail, mut visibility) in &mut visibilities {
-        if matches!(
-            detail,
-            ArmoryDetail::SecondaryCost | ArmoryDetail::SecondaryAvailable
-        ) {
-            *visibility = secondary_visible;
-        }
+            "armory secondary available remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.treasury,
+            format_currency(major.common.treasury),
+            "armory treasury remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.firepower,
+            ARMORY_FIREPOWER[unit_index].to_string(),
+            "armory firepower remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.action_points,
+            ARMORY_ACTION_POINTS[unit_index].to_string(),
+            "armory action points remain bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.range,
+            ARMORY_RANGE[unit_index].to_string(),
+            "armory range remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.static_text,
+            static_text,
+            "armory static flag remains bound",
+        );
+        set_bound_text(
+            &mut texts,
+            view.description,
+            description,
+            "armory description remains bound",
+        );
+        set_bound_text_color(
+            &mut colors,
+            view.workforce_available,
+            color(workforce_available == 0),
+            "armory workforce available remains bound",
+        );
+        set_bound_text_color(
+            &mut colors,
+            view.primary_available,
+            color(primary_available < spec.primary.per_unit()),
+            "armory primary available remains bound",
+        );
+        // Retail compares both material columns against the primary input amount.
+        set_bound_text_color(
+            &mut colors,
+            view.secondary_available,
+            color(secondary_available.is_some_and(|available| available < spec.primary.per_unit())),
+            "armory secondary available remains bound",
+        );
+        set_bound_text_color(
+            &mut colors,
+            view.treasury,
+            color(major.common.treasury < i32::from(spec.cash_per_unit)),
+            "armory treasury remains bound",
+        );
+        pictures
+            .get_mut(view.placard)
+            .expect("armory placard remains bound")
+            .image = assets
+            .picture(PictureId::new(0x1d9c + i16::from(order.unit_kind.retail())))
+            .expect("retail Armory unit placard");
+        let secondary_visible = secondary.is_some();
+        set_bound_visible(
+            &mut visibilities,
+            view.secondary_cost,
+            secondary_visible,
+            "armory secondary cost remains bound",
+        );
+        set_bound_visible(
+            &mut visibilities,
+            view.secondary_available,
+            secondary_visible,
+            "armory secondary available remains bound",
+        );
     }
 }
 

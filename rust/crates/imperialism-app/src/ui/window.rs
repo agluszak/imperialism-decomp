@@ -1,4 +1,3 @@
-use bevy::ecs::query::QueryFilter;
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::tab_navigation::TabGroup;
@@ -27,8 +26,14 @@ pub struct FloatingWindow;
 ///
 /// The root's absolute 640x480 pickable node is the pointer barrier. Custom
 /// modals without that generated root must provide equivalent geometry.
-#[require(UiWindow, TabGroup = TabGroup::modal(), Pickable, AutoFocus)]
+#[require(UiWindow, TabGroup = TabGroup::modal(), Pickable, AutoFocus, ModalControls)]
 pub struct ModalWindow;
+
+#[derive(Component, Clone, Copy, Debug, Default)]
+struct ModalControls {
+    default: Option<Entity>,
+    cancel: Option<Entity>,
+}
 
 #[derive(Component, Debug, Default)]
 pub struct CaptionedWindow;
@@ -67,9 +72,12 @@ impl Plugin for UiWindowPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<InputFocus>()
             .add_observer(on_window_added)
+            .add_observer(on_floating_window_added)
             .add_observer(on_modal_removed)
-            .add_observer(on_window_pressed)
             .add_observer(on_window_close)
+            .add_observer(on_modal_default_added)
+            .add_observer(on_modal_cancel_added)
+            .add_observer(on_dismiss_added)
             .add_observer(modal_keyboard)
             .add_systems(Update, (bind_recovered_window_hosts, sync_window_positions));
     }
@@ -98,6 +106,22 @@ fn on_modal_removed(
     {
         focus.set(entity, FocusCause::Navigated);
     }
+}
+
+fn on_floating_window_added(added: On<Add, FloatingWindow>, mut commands: Commands) {
+    commands
+        .entity(added.entity)
+        .observe(on_floating_window_pressed);
+}
+
+fn on_floating_window_pressed(
+    press: On<Pointer<Press>>,
+    mut windows: Query<(Entity, &mut GlobalZIndex), With<UiWindow>>,
+) {
+    if press.event.button != PointerButton::Primary {
+        return;
+    }
+    raise_window(press.observer(), &mut windows);
 }
 
 fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex), With<UiWindow>>) {
@@ -229,6 +253,52 @@ fn sync_window_positions(
     }
 }
 
+fn on_modal_default_added(
+    added: On<Add, ModalDefault>,
+    parents: Query<&ChildOf>,
+    modals: Query<(), With<ModalWindow>>,
+    mut controls: Query<&mut ModalControls>,
+) {
+    let Some(root) = ancestor_with(added.entity, &parents, &modals) else {
+        return;
+    };
+    controls
+        .get_mut(root)
+        .expect("modal keeps ModalControls")
+        .default = Some(added.entity);
+}
+
+fn on_modal_cancel_added(
+    added: On<Add, ModalCancel>,
+    parents: Query<&ChildOf>,
+    modals: Query<(), With<ModalWindow>>,
+    mut controls: Query<&mut ModalControls>,
+) {
+    let Some(root) = ancestor_with(added.entity, &parents, &modals) else {
+        return;
+    };
+    controls
+        .get_mut(root)
+        .expect("modal keeps ModalControls")
+        .cancel = Some(added.entity);
+}
+
+fn on_dismiss_added(
+    added: On<Add, DismissWindow>,
+    closes: Query<(), With<WindowClose>>,
+    parents: Query<&ChildOf>,
+    windows: Query<(), With<UiWindow>>,
+    mut commands: Commands,
+) {
+    if closes.contains(added.entity) {
+        return;
+    }
+    let Some(root) = ancestor_with(added.entity, &parents, &windows) else {
+        return;
+    };
+    commands.entity(added.entity).insert(WindowClose { root });
+}
+
 fn node_position(node: &Node) -> IVec2 {
     let Val::Px(left) = node.left else {
         panic!("generated window has a non-pixel left position");
@@ -237,28 +307,6 @@ fn node_position(node: &Node) -> IVec2 {
         panic!("generated window has a non-pixel top position");
     };
     IVec2::new(left.round() as i32, top.round() as i32)
-}
-
-#[allow(clippy::type_complexity)]
-fn on_window_pressed(
-    press: On<Pointer<Press>>,
-    parents: Query<&ChildOf>,
-    mut windows: ParamSet<(
-        Query<(), With<FloatingWindow>>,
-        Query<(Entity, &mut GlobalZIndex), With<UiWindow>>,
-    )>,
-) {
-    if press.event.button != PointerButton::Primary {
-        return;
-    }
-    let root = {
-        let floating = windows.p0();
-        ancestor_with(press.original_event_target(), &parents, &floating)
-    };
-    let Some(root) = root else {
-        return;
-    };
-    raise_window(root, &mut windows.p1());
 }
 
 fn on_window_dragged(
@@ -279,31 +327,18 @@ fn on_window_dragged(
     position.0.y += drag.event.delta.y.round() as i32;
 }
 
-fn on_window_close(
-    activate: On<Activate>,
-    closes: Query<Option<&WindowClose>, With<DismissWindow>>,
-    parents: Query<&ChildOf>,
-    windows: Query<(), With<UiWindow>>,
-    mut commands: Commands,
-) {
-    let Ok(bound) = closes.get(activate.entity) else {
+fn on_window_close(activate: On<Activate>, closes: Query<&WindowClose>, mut commands: Commands) {
+    let Ok(close) = closes.get(activate.entity) else {
         return;
     };
-    let root = bound
-        .map(|close| close.root)
-        .or_else(|| ancestor_with(activate.entity, &parents, &windows));
-    if let Some(root) = root {
-        commands.entity(root).try_despawn();
-    }
+    commands.entity(close.root).try_despawn();
 }
 
 fn modal_keyboard(
     mut input: On<FocusedInput<KeyboardInput>>,
     parents: Query<&ChildOf>,
-    children: Query<&Children>,
-    modals: Query<(), With<ModalWindow>>,
-    defaults: Query<Entity, (With<ModalDefault>, Without<InteractionDisabled>)>,
-    cancels: Query<Entity, (With<ModalCancel>, Without<InteractionDisabled>)>,
+    modals: Query<&ModalControls, With<ModalWindow>>,
+    enabled: Query<(), Without<InteractionDisabled>>,
     mut commands: Commands,
 ) {
     if input.input.state != ButtonState::Pressed || input.input.repeat {
@@ -312,35 +347,16 @@ fn modal_keyboard(
     let Some(root) = ancestor_with(input.focused_entity, &parents, &modals) else {
         return;
     };
+    let controls = modals.get(root).expect("focused modal keeps ModalControls");
     let control = match input.input.key_code {
-        KeyCode::Enter | KeyCode::NumpadEnter => first_descendant(root, &children, &defaults),
-        KeyCode::Escape => first_descendant(root, &children, &cancels),
+        KeyCode::Enter | KeyCode::NumpadEnter => controls.default,
+        KeyCode::Escape => controls.cancel,
         _ => return,
     };
     input.propagate(false);
-    if let Some(control) = control {
+    if let Some(control) = control.filter(|&entity| enabled.contains(entity)) {
         commands.trigger(Activate { entity: control });
     }
-}
-
-fn first_descendant(
-    root: Entity,
-    children: &Query<&Children>,
-    matches: &Query<Entity, impl QueryFilter>,
-) -> Option<Entity> {
-    let mut pending = children
-        .get(root)
-        .map(|children| children.iter().collect::<Vec<_>>())
-        .unwrap_or_default();
-    while let Some(entity) = pending.pop() {
-        if matches.contains(entity) {
-            return Some(entity);
-        }
-        if let Ok(descendants) = children.get(entity) {
-            pending.extend(descendants.iter());
-        }
-    }
-    None
 }
 
 #[cfg(test)]

@@ -18,10 +18,10 @@ const ABILITY_STATUS_PICTURE_INDEX: TechnologyTable<i16> = TechnologyTable::from
 #[derive(Component)]
 struct TechnologyAdvanceRoot;
 
-#[derive(Component, Clone, Copy)]
-enum TechnologyAdvanceDisplay {
-    Picture,
-    Text,
+#[derive(Component)]
+struct TechnologyAdvanceView {
+    picture: Entity,
+    text: Entity,
 }
 
 pub(crate) struct TechnologyAdvancePlugin;
@@ -57,12 +57,12 @@ fn bind_technology_advance(
 ) {
     let root = *root;
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
+    let picture = tree.find(root, fourcc!("main"));
+    let text = tree.find(root, fourcc!("text"));
+    commands.entity(text).insert(Text::default());
     commands
-        .entity(tree.find(root, fourcc!("main")))
-        .insert(TechnologyAdvanceDisplay::Picture);
-    commands
-        .entity(tree.find(root, fourcc!("text")))
-        .insert((TechnologyAdvanceDisplay::Text, Text::default()));
+        .entity(root)
+        .insert(TechnologyAdvanceView { picture, text });
     commands
         .entity(tree.find(root, fourcc!("end ")))
         .insert(ActivateOnPress)
@@ -72,10 +72,11 @@ fn bind_technology_advance(
 
 fn project_technology_advance(
     session: Res<GameSession>,
-    added: Query<(), Added<TechnologyAdvanceDisplay>>,
+    added: Query<(), Added<TechnologyAdvanceView>>,
+    view: Single<&TechnologyAdvanceView>,
     mut assets: RetailUiAssets,
-    mut pictures: Query<(&TechnologyAdvanceDisplay, &mut ImageNode)>,
-    mut texts: Query<(&TechnologyAdvanceDisplay, &mut Text), Without<ImageNode>>,
+    mut pictures: Query<&mut ImageNode>,
+    mut texts: Query<&mut Text>,
 ) {
     if super::projection_idle(&session, !added.is_empty()) {
         return;
@@ -90,16 +91,14 @@ fn project_technology_advance(
     let status = get_string(&assets, 0x2712, i16::from(tech.retail()));
     let prefix = get_string(&assets, 0x274e, i16::from(tech.retail()) - 1);
     let body = format!("{status}\n\n{prefix}");
-    for (display, mut image) in &mut pictures {
-        if matches!(*display, TechnologyAdvanceDisplay::Picture) {
-            image.image = picture.clone();
-        }
-    }
-    for (display, mut text) in &mut texts {
-        if matches!(*display, TechnologyAdvanceDisplay::Text) {
-            text.0.clone_from(&body);
-        }
-    }
+    pictures
+        .get_mut(view.picture)
+        .expect("technology advance picture remains bound")
+        .image = picture;
+    texts
+        .get_mut(view.text)
+        .expect("technology advance text remains bound")
+        .0 = body;
 }
 
 fn on_technology_advance_activate(
