@@ -25,9 +25,10 @@ pub struct GameState {
     /// `TArmyMgr::mapContextActionRecordList04`. Marker fields are omitted from `.imp`.
     #[serde(default)]
     pub(crate) battle_reports: Vec<crate::BattleReport>,
-    /// Live interruptible-phase resume state. Not written to `.imp`.
+    /// Blocking external interaction (`Some`) or a running turn driver (`None`).
+    /// Included in semantic `GameState` serialization; not written to `.imp`.
     #[serde(default)]
-    pub(crate) continuation: crate::turn_flow::TurnContinuation,
+    pub(crate) stop: Option<crate::turn_flow::TurnStop>,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -55,7 +56,7 @@ pub struct GameStateParts {
     pub news: NewsState,
     pub pending: PendingWorkState,
     pub battle_reports: Vec<crate::BattleReport>,
-    pub continuation: crate::turn_flow::TurnContinuation,
+    pub stop: Option<crate::turn_flow::TurnStop>,
 }
 
 impl GameState {
@@ -81,7 +82,7 @@ impl GameState {
             news: parts.news,
             pending: parts.pending,
             battle_reports: parts.battle_reports,
-            continuation: parts.continuation,
+            stop: parts.stop,
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
             if state.task_forces[&force].flagship.is_none() {

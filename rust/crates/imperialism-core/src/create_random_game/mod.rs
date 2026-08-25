@@ -298,7 +298,7 @@ pub fn create_random_game(
         news: NewsState::default(),
         pending,
         battle_reports: Vec::new(),
-        continuation: crate::turn_flow::TurnContinuation::None,
+        stop: None,
     }
 }
 
@@ -447,7 +447,7 @@ pub fn create_scenario_game(
         news: NewsState::default(),
         pending: PendingWorkState::default(),
         battle_reports: Vec::new(),
-        continuation: TurnContinuation::None,
+        stop: None,
     };
     // Nation reconstruction creates each fixed-map home port context before the scenario
     // script runs: primary slots 6..0, then secondary slots 7..22.

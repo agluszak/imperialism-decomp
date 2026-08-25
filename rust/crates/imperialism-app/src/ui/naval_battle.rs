@@ -110,7 +110,7 @@ fn synchronize_interactive_navy_battle(
         && let Some(stop) = session
             .game
             .synchronize_navy_battle(super::session::news_story_ids(assets.as_deref()))
-        && stop != TurnStop::NavalBattle
+        && !matches!(stop, TurnStop::NavalBattle(_))
     {
         apply_turn_stop(stop, &mut next_state);
     }
@@ -337,7 +337,7 @@ fn on_battlefield_click(
         view.view_origin_x,
         view.view_origin_y,
         super::session::news_story_ids(assets.as_deref()),
-    ) && stop != TurnStop::NavalBattle
+    ) && !matches!(stop, TurnStop::NavalBattle(_))
     {
         apply_turn_stop(stop, &mut next_state);
     }
@@ -373,7 +373,7 @@ fn on_naval_battle_activate(
             if let Ok(Some(stop)) = session
                 .game
                 .finish_selected_navy_unit_action(super::session::news_story_ids(assets.as_deref()))
-                && stop != TurnStop::NavalBattle
+                && !matches!(stop, TurnStop::NavalBattle(_))
             {
                 apply_turn_stop(stop, &mut next_state);
             }
@@ -382,14 +382,14 @@ fn on_naval_battle_activate(
             .game
             .auto_resolve_navy_battle(super::session::news_story_ids(assets.as_deref()))
         {
-            TurnStop::NavalBattle => {}
+            TurnStop::NavalBattle(_) => {}
             stop => apply_turn_stop(stop, &mut next_state),
         },
         NavalBattleAction::Retreat => {
             if let Ok(Some(stop)) = session
                 .game
                 .retreat_from_navy_battle(super::session::news_story_ids(assets.as_deref()))
-                && stop != TurnStop::NavalBattle
+                && !matches!(stop, TurnStop::NavalBattle(_))
             {
                 apply_turn_stop(stop, &mut next_state);
             }
@@ -509,9 +509,9 @@ mod tests {
             parts.turn.difficulty,
             player,
         );
-        parts.continuation = TurnContinuation::NavalBattle(
+        parts.stop = Some(TurnStop::NavalBattle(
             NavyOrdersContinuation::player_encounter(attacker_force, defender_force),
-        );
+        ));
 
         GameState::from_parts(parts)
     }

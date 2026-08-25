@@ -88,18 +88,21 @@ fn second_turn_sequence_returns_through_deal_book_and_newspaper() {
             let mut stops = Vec::new();
             let mut rng_states = Vec::new();
             let mut stop = state.finish_player_orders(false, &case.story_ids);
-            while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
+            while matches!(
+                stop,
+                TurnStop::DiplomacyOffer { .. } | TurnStop::DiplomacyWarJoin(_)
+            ) {
                 stop = match stop {
-                    TurnStop::DiplomacyOffer => {
+                    TurnStop::DiplomacyOffer { .. } => {
                         state.answer_current_diplomacy_offer(false, &case.story_ids)
                     }
-                    TurnStop::DiplomacyWarJoin => {
+                    TurnStop::DiplomacyWarJoin(_) => {
                         state.answer_current_diplomacy_war_join(false, &case.story_ids)
                     }
                     _ => unreachable!(),
                 };
             }
-            while stop == TurnStop::TradeOffer {
+            while matches!(stop, TurnStop::Trade(_)) {
                 stop = state.answer_trade_offer(0, false, &case.story_ids);
             }
             assert_eq!(stop, TurnStop::DealBook);
@@ -107,7 +110,7 @@ fn second_turn_sequence_returns_through_deal_book_and_newspaper() {
             rng_states.push(state.rng().crt_rand.state());
 
             stop = state.close_turn_deal_book(&case.story_ids);
-            while stop == TurnStop::TechnologyAdvance {
+            while matches!(stop, TurnStop::TechnologyReport(_)) {
                 stop = state.acknowledge_technology_report(&case.story_ids);
             }
             assert_eq!(stop, TurnStop::Newspaper);
@@ -141,18 +144,21 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
     let mut economic_turns = Vec::new();
     for _ in 0..12 {
         let mut stop = state.finish_player_orders(false, &native.case.story_ids);
-        while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
+        while matches!(
+            stop,
+            TurnStop::DiplomacyOffer { .. } | TurnStop::DiplomacyWarJoin(_)
+        ) {
             stop = match stop {
-                TurnStop::DiplomacyOffer => {
+                TurnStop::DiplomacyOffer { .. } => {
                     state.answer_current_diplomacy_offer(false, &native.case.story_ids)
                 }
-                TurnStop::DiplomacyWarJoin => {
+                TurnStop::DiplomacyWarJoin(_) => {
                     state.answer_current_diplomacy_war_join(false, &native.case.story_ids)
                 }
                 _ => unreachable!(),
             };
         }
-        while stop == TurnStop::TradeOffer {
+        while matches!(stop, TurnStop::Trade(_)) {
             stop = state.answer_trade_offer(0, false, &native.case.story_ids);
         }
         assert_eq!(stop, TurnStop::DealBook);
@@ -160,7 +166,7 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
         rng_states.push(state.rng().crt_rand.state());
 
         stop = state.close_turn_deal_book(&native.case.story_ids);
-        while stop == TurnStop::TechnologyAdvance {
+        while matches!(stop, TurnStop::TechnologyReport(_)) {
             stop = state.acknowledge_technology_report(&native.case.story_ids);
         }
         assert_eq!(stop, TurnStop::Newspaper);
@@ -199,7 +205,7 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
     let mut actual = load_save_backed_state(native.before).unwrap();
     let expected = load_save_backed_state(native.after).unwrap();
 
-    assert_eq!(actual.advance_turn(&[]), TurnStop::TradeOffer);
+    assert!(matches!(actual.advance_turn(&[]), TurnStop::Trade(_)));
     let pending = actual
         .pending_trade_offer()
         .expect("trade stop requires a pending offer");
@@ -224,8 +230,8 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
 fn assert_state_except_continuation(expected: &GameState, actual: &GameState) {
     let mut expected = serde_json::to_value(expected).unwrap();
     let mut actual = serde_json::to_value(actual).unwrap();
-    expected.as_object_mut().unwrap().remove("continuation");
-    actual.as_object_mut().unwrap().remove("continuation");
+    expected.as_object_mut().unwrap().remove("stop");
+    actual.as_object_mut().unwrap().remove("stop");
     assert_eq!(
         first_serialized_difference(&expected, &actual).unwrap(),
         None
@@ -236,7 +242,7 @@ fn stop_name(stop: TurnStop) -> String {
     match stop {
         TurnStop::Newspaper => "newspaper",
         TurnStop::DealBook => "deal_book",
-        TurnStop::TechnologyAdvance => "technology_advance",
+        TurnStop::TechnologyReport(_) => "technology_advance",
         _ => panic!("unexpected turn stop {stop:?}"),
     }
     .to_owned()

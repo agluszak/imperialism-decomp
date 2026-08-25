@@ -380,7 +380,7 @@ fn on_offer_sheet_activate(
         stop_buying,
         super::session::news_story_ids(news.as_deref()),
     ) {
-        TurnStop::TradeOffer => {}
+        TurnStop::Trade(_) => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }
 }

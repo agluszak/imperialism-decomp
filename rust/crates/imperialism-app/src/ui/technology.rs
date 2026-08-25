@@ -112,7 +112,7 @@ fn on_technology_advance_activate(
         .game
         .acknowledge_technology_report(assets.news_story_ids())
     {
-        TurnStop::TechnologyAdvance => {}
+        TurnStop::TechnologyReport(_) => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }
 }

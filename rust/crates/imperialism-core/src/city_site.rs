@@ -517,7 +517,7 @@ mod tests {
         assert!(matches!(
             (stop, state.turn.phase),
             (
-                crate::TurnStop::TechnologyAdvance,
+                crate::TurnStop::TechnologyReport(_),
                 crate::PhaseCode::NEWSPAPER
             ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
@@ -623,7 +623,7 @@ mod tests {
         assert!(matches!(
             (stop, state.turn.phase),
             (
-                crate::TurnStop::TechnologyAdvance,
+                crate::TurnStop::TechnologyReport(_),
                 crate::PhaseCode::NEWSPAPER
             ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));

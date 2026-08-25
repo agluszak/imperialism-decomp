@@ -153,7 +153,7 @@ pub enum ArmyBattleEvent {
     Rally,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ArmyBattleProgress {
     pub stop: Option<TurnStop>,
     pub events: Vec<ArmyBattleEvent>,
@@ -1016,16 +1016,15 @@ impl GameState {
     /// Unwatched battles run headlessly until the next observable turn stop.
     pub fn apply_land_battle_watch_policy(
         &mut self,
-        mut stop: TurnStop,
         tactical_battles_enabled: bool,
         story_ids: &[i32],
     ) -> TurnStop {
-        while stop == TurnStop::LandBattle
+        while matches!(self.stop, Some(TurnStop::LandBattle(_)))
             && !self.pending_land_battle_is_watched(tactical_battles_enabled)
         {
-            stop = self.auto_resolve_land_battle(story_ids);
+            self.auto_resolve_land_battle(story_ids);
         }
-        stop
+        self.current_stop()
     }
 
     fn pending_land_battle_is_watched(&self, tactical_battles_enabled: bool) -> bool {
@@ -1044,7 +1043,7 @@ impl GameState {
     /// Headless retail Auto: TArmyPlayer auto-deploy + Auto turn pump + ApplyChanges
     /// + ApplyPostBattleStackOutcomeAndGrowUnitMeters, then remaining combat-moves.
     pub fn auto_resolve_land_battle(&mut self, story_ids: &[i32]) -> TurnStop {
-        let crate::turn_flow::TurnContinuation::LandBattle(_) = &self.continuation else {
+        let Some(crate::turn_flow::TurnStop::LandBattle(_)) = &self.stop else {
             panic!("land-battle auto-resolve requires a combat-moves continuation");
         };
         let mut battle = match self.take_army_battle() {
@@ -1081,8 +1080,8 @@ impl GameState {
     }
 
     pub fn army_battle(&self) -> Option<&ArmyBattle> {
-        match &self.continuation {
-            crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
+        match &self.stop {
+            Some(crate::turn_flow::TurnStop::LandBattle(continuation)) => {
                 continuation.army_battle.as_deref()
             }
             _ => None,
@@ -1091,8 +1090,8 @@ impl GameState {
 
     #[cfg(test)]
     fn army_battle_mut(&mut self) -> Option<&mut ArmyBattle> {
-        match &mut self.continuation {
-            crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
+        match &mut self.stop {
+            Some(crate::turn_flow::TurnStop::LandBattle(continuation)) => {
                 continuation.army_battle.as_deref_mut()
             }
             _ => None,
@@ -1120,7 +1119,7 @@ impl GameState {
         if self.army_battle().is_some() {
             return None;
         }
-        let crate::turn_flow::TurnContinuation::LandBattle(_) = &self.continuation else {
+        let Some(crate::turn_flow::TurnStop::LandBattle(_)) = &self.stop else {
             return None;
         };
         let mut inner = Battle::init(self);
@@ -1316,8 +1315,8 @@ impl GameState {
     }
 
     fn take_army_battle(&mut self) -> Option<ArmyBattle> {
-        match &mut self.continuation {
-            crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
+        match &mut self.stop {
+            Some(crate::turn_flow::TurnStop::LandBattle(continuation)) => {
                 continuation.army_battle.take().map(|battle| *battle)
             }
             _ => None,
@@ -1325,8 +1324,7 @@ impl GameState {
     }
 
     fn store_army_battle(&mut self, battle: ArmyBattle) {
-        let crate::turn_flow::TurnContinuation::LandBattle(continuation) = &mut self.continuation
-        else {
+        let Some(crate::turn_flow::TurnStop::LandBattle(continuation)) = &mut self.stop else {
             panic!("interactive army battle requires a combat-moves continuation");
         };
         continuation.army_battle = Some(Box::new(battle));
@@ -4199,7 +4197,10 @@ mod tests {
             DiplomaticRelationship::War;
         state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
             DiplomaticRelationship::War;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        assert!(matches!(
+            state.advance_turn(&[]),
+            crate::TurnStop::LandBattle(_)
+        ));
         (state, attacker, defender)
     }
 
@@ -4217,7 +4218,10 @@ mod tests {
             DiplomaticRelationship::War;
         state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
             DiplomaticRelationship::War;
-        assert_eq!(state.advance_turn(&[]), crate::TurnStop::LandBattle);
+        assert!(matches!(
+            state.advance_turn(&[]),
+            crate::TurnStop::LandBattle(_)
+        ));
         state.ensure_army_battle();
         let nation = state.turn.active_nation;
         let deploy = state

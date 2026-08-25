@@ -240,11 +240,14 @@ fn on_end_turn(
     let stop = session
         .game
         .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
-    let stop = session.game.apply_land_battle_watch_policy(
-        stop,
-        prefs.tactical_battles_enabled(),
-        assets.news_story_ids(),
-    );
+    let stop = if matches!(stop, imperialism_core::TurnStop::LandBattle(_)) {
+        session.game.apply_land_battle_watch_policy(
+            prefs.tactical_battles_enabled(),
+            assets.news_story_ids(),
+        )
+    } else {
+        stop
+    };
     match stop {
         imperialism_core::TurnStop::TurnAlerts(alerts) => {
             commands.insert_resource(TurnAlertQueue(alerts.into()));

@@ -1,7 +1,6 @@
 use crate::{
-    Difficulty, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyWarJoinPrompt,
-    EliminationOutcome, GameState, MajorNationId, NationId, QuarterGateResult, Technology,
-    TradeProgress,
+    Difficulty, DiplomacyOfferPrompt, DiplomacyWarJoinPrompt, EliminationOutcome, GameState,
+    MajorNationId, NationId, QuarterGateResult, Technology, TradeProgress,
 };
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
@@ -163,18 +162,38 @@ impl PhaseCode {
     }
 }
 
-/// External interaction required before the core turn driver can continue.
-#[derive(Clone, Debug, Eq, PartialEq)]
+/// One concept: the simulation is blocked waiting for an external interaction,
+/// carrying everything needed to resume.
+///
+/// [`GameState`] stores the active stop while blocked and every driver entry
+/// point returns it. A stop is stored exactly when answering it needs core-side
+/// resume state beyond [`PhaseCode`] (payload variants, plus cinematic/elimination
+/// outcomes whose follow-up the phase alone cannot identify). Ephemeral results —
+/// player orders, deal book, newspaper, alerts, high scores, session end — are
+/// pure return values, matching retail, which retains nothing extra for them.
+/// Stored stops join semantic `GameState` serialization; the `.imp` writer omits
+/// them because retail cannot save at these boundaries.
+#[allow(clippy::large_enum_variant)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub enum TurnStop {
+    /// Strategic map: the pending interaction is player orders.
+    #[default]
     PlayerOrders,
-    TownNaming,
-    DiplomacyOffer,
-    DiplomacyWarJoin,
-    TradeOffer,
-    LandBattle,
-    NavalBattle,
+    /// A newly completed human depot/port awaits retail `TNewTownView` naming.
+    TownNaming {
+        nation: MajorNationId,
+        tile: crate::TileId,
+    },
+    DiplomacyOffer {
+        nation: MajorNationId,
+        index: u8,
+    },
+    DiplomacyWarJoin(DiplomacyWarJoinPrompt),
+    Trade(crate::TradeSession),
+    LandBattle(crate::CombatMovesContinuation),
+    NavalBattle(crate::NavyOrdersContinuation),
+    TechnologyReport(Technology),
     DealBook,
-    TechnologyAdvance,
     Newspaper,
     TurnAlerts(Vec<crate::TurnAlert>),
     /// Turn-machine case `0x0b` after `SorryYouLose`. Distinct from elimination loss.
@@ -197,33 +216,6 @@ pub enum TurnStop {
     SessionEnded,
 }
 
-/// Authoritative runtime resume state for an interruptible phase.
-///
-/// Included in semantic `GameState` serialization. The `.imp` writer omits it
-/// because retail cannot save at these transient boundaries.
-#[allow(clippy::large_enum_variant)]
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
-pub enum TurnContinuation {
-    #[default]
-    None,
-    DiplomacyOffer {
-        nation: MajorNationId,
-        index: u8,
-    },
-    DiplomacyWarJoin(DiplomacyWarJoinPrompt),
-    Trade(crate::TradeSession),
-    LandBattle(crate::CombatMovesContinuation),
-    NavalBattle(crate::NavyOrdersContinuation),
-    TechnologyReport(Technology),
-    GreatPowerLoss,
-    PostCombatReports,
-    DecadeCinematic,
-    CouncilOfGovernors,
-    PlayerEliminated,
-    Victory,
-    GameScore,
-}
-
 impl TurnState {
     /// Mirrors `TSimMgr::AdvanceSeason`.
     pub fn advance_season(&mut self) {
@@ -238,6 +230,20 @@ impl TurnState {
 }
 
 impl GameState {
+    /// Stores `stop` as the blocking interaction and returns it.
+    pub(crate) fn halt(&mut self, stop: TurnStop) -> TurnStop {
+        self.stop = Some(stop.clone());
+        stop
+    }
+
+    /// The stored blocking interaction. Driver arms use this after a phase body
+    /// has already halted (trade offers).
+    pub(crate) fn current_stop(&self) -> TurnStop {
+        self.stop
+            .clone()
+            .expect("driver halt requires a stored turn stop")
+    }
+
     /// Retail `TSimMgr::ReadFrom` discards the serialized turn phase, enters phase 4,
     /// and immediately advances to the strategic map.
     pub fn resume_retail_save_on_strategic_map(&mut self) {
@@ -251,6 +257,7 @@ impl GameState {
         story_ids: &[i32],
     ) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
+        self.stop = None;
         let alerts = self.show_turn_alerts(turn_alerts_enabled);
         if !alerts.is_empty() {
             return TurnStop::TurnAlerts(alerts);
@@ -259,26 +266,26 @@ impl GameState {
         self.advance_turn(story_ids)
     }
 
-    /// Accepts or rejects the diplomacy offer stored in the current continuation.
+    /// Accepts or rejects the diplomacy offer stored in the current stop.
     pub fn answer_current_diplomacy_offer(&mut self, accept: bool, story_ids: &[i32]) -> TurnStop {
-        let result = self.resolve_diplomacy_offer(accept);
-        if let Some(stop) = self.stop_from_diplomacy(result) {
-            return stop;
+        self.resolve_diplomacy_offer(accept);
+        match self.stop.clone() {
+            Some(stop) => stop,
+            None => self.advance_turn(story_ids),
         }
-        self.advance_turn(story_ids)
     }
 
-    /// Accepts or rejects the war-join dialog stored in the current continuation.
+    /// Accepts or rejects the war-join dialog stored in the current stop.
     pub fn answer_current_diplomacy_war_join(
         &mut self,
         accept: bool,
         story_ids: &[i32],
     ) -> TurnStop {
-        let result = self.resolve_diplomacy_war_join(accept);
-        if let Some(stop) = self.stop_from_diplomacy(result) {
-            return stop;
+        self.resolve_diplomacy_war_join(accept);
+        match self.stop.clone() {
+            Some(stop) => stop,
+            None => self.advance_turn(story_ids),
         }
-        self.advance_turn(story_ids)
     }
 
     /// Applies the Offer Sheet decision and resumes ranked trade deals.
@@ -289,7 +296,7 @@ impl GameState {
         story_ids: &[i32],
     ) -> TurnStop {
         match self.reply_to_trade_offer(quantity, stop_buying) {
-            TradeProgress::Offer(_) => TurnStop::TradeOffer,
+            TradeProgress::Offer(_) => self.current_stop(),
             TradeProgress::Complete => self.advance_turn(story_ids),
         }
     }
@@ -303,13 +310,12 @@ impl GameState {
     /// Dismisses the technology report and continues the turn.
     pub fn acknowledge_technology_report(&mut self, story_ids: &[i32]) -> TurnStop {
         assert!(
-            matches!(self.continuation, TurnContinuation::TechnologyReport(_)),
-            "technology report answer requires an active technology continuation"
+            matches!(self.stop, Some(TurnStop::TechnologyReport(_))),
+            "technology report answer requires an active technology stop"
         );
-        self.continuation = TurnContinuation::None;
+        self.stop = None;
         if let Some(tech_id) = self.consume_interactive_technology_unlock() {
-            self.continuation = TurnContinuation::TechnologyReport(tech_id);
-            return TurnStop::TechnologyAdvance;
+            return self.halt(TurnStop::TechnologyReport(tech_id));
         }
         self.advance_turn(story_ids)
     }
@@ -331,12 +337,10 @@ impl GameState {
     /// Movie clip for `kTurnEventOpeningCinematic`. Switches on the entered mode, not
     /// the already-updated `turnStateCode` (`HandleTurnEventDialogFactorySlotF4`).
     pub fn opening_cinematic_movie(&self) -> CinematicKind {
-        match self.continuation {
-            TurnContinuation::DecadeCinematic => CinematicKind::Vote,
-            TurnContinuation::Victory => CinematicKind::Win,
-            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => {
-                CinematicKind::Lose
-            }
+        match self.stop {
+            Some(TurnStop::DecadeCinematic) => CinematicKind::Vote,
+            Some(TurnStop::Victory) => CinematicKind::Win,
+            Some(TurnStop::PlayerEliminated | TurnStop::GreatPowerLoss) => CinematicKind::Lose,
             _ => CinematicKind::Lose,
         }
     }
@@ -344,83 +348,72 @@ impl GameState {
     /// Pressure-loss movie finished. Retail reinitializes; it does not continue to Deal Book.
     pub fn acknowledge_great_power_loss(&mut self) {
         assert!(
-            matches!(self.continuation, TurnContinuation::GreatPowerLoss),
-            "great-power loss resume requires a great-power-loss continuation"
+            matches!(self.stop, Some(TurnStop::GreatPowerLoss)),
+            "great-power loss resume requires a great-power-loss stop"
         );
-        self.continuation = TurnContinuation::None;
+        self.stop = None;
     }
 
     /// Closes `TBattleReportView`. Reports stay until the next military phase's
     /// `CleanUpStacks`; phase is already `ELIMINATION`.
     pub fn close_post_combat_reports(&mut self, story_ids: &[i32]) -> TurnStop {
         assert!(
-            matches!(self.continuation, TurnContinuation::PostCombatReports),
-            "post-combat report resume requires a post-combat continuation"
+            matches!(self.stop, Some(TurnStop::PostCombatReports)),
+            "post-combat report resume requires a post-combat stop"
         );
-        self.continuation = TurnContinuation::None;
+        self.stop = None;
         self.advance_turn(story_ids)
     }
 
     /// After the opening cinematic: vote/win/lose from 0x0e/0x16/0x17 go to council;
     /// elimination win goes to Game Score; elimination/pressure loss ends the session.
     pub fn close_opening_cinematic(&mut self) -> TurnStop {
-        match &self.continuation {
-            TurnContinuation::DecadeCinematic => {
-                self.continuation = TurnContinuation::CouncilOfGovernors;
-                TurnStop::CouncilOfGovernors
+        match self.stop.take() {
+            Some(TurnStop::DecadeCinematic) => self.halt(TurnStop::CouncilOfGovernors),
+            Some(TurnStop::Victory) if self.turn.phase() == PhaseCode::TOP_TEN_SCORES => {
+                self.halt(TurnStop::CouncilOfGovernors)
             }
-            TurnContinuation::Victory if self.turn.phase() == PhaseCode::TOP_TEN_SCORES => {
-                self.continuation = TurnContinuation::CouncilOfGovernors;
-                TurnStop::CouncilOfGovernors
-            }
-            TurnContinuation::Victory => {
-                self.continuation = TurnContinuation::GameScore;
-                TurnStop::GameScore
-            }
-            TurnContinuation::PlayerEliminated
+            Some(TurnStop::Victory) => self.halt(TurnStop::GameScore),
+            Some(TurnStop::PlayerEliminated)
                 if self.turn.phase() == PhaseCode::OPENING_CINEMATIC =>
             {
-                self.continuation = TurnContinuation::CouncilOfGovernors;
-                TurnStop::CouncilOfGovernors
+                self.halt(TurnStop::CouncilOfGovernors)
             }
-            TurnContinuation::PlayerEliminated | TurnContinuation::GreatPowerLoss => {
-                self.continuation = TurnContinuation::None;
-                TurnStop::SessionEnded
+            Some(TurnStop::PlayerEliminated | TurnStop::GreatPowerLoss) => {
+                self.halt(TurnStop::SessionEnded)
             }
-            other => {
-                panic!("opening cinematic resume requires a cinematic continuation, got {other:?}")
-            }
+            other => panic!("opening cinematic resume requires a cinematic stop, got {other:?}"),
         }
     }
 
     /// Council of Governors closed. `StartNextPhase` uses the already-updated phase.
     pub fn close_council_of_governors(&mut self, story_ids: &[i32]) -> TurnStop {
         assert!(
-            matches!(self.continuation, TurnContinuation::CouncilOfGovernors),
-            "council resume requires a council continuation"
+            matches!(self.stop, Some(TurnStop::CouncilOfGovernors)),
+            "council resume requires a council stop"
         );
-        self.continuation = TurnContinuation::None;
+        self.stop = None;
         self.advance_turn(story_ids)
     }
 
     /// Game Score `done` posts `kTurnEventHighScores` after reinitialize.
     pub fn close_game_score(&mut self) -> TurnStop {
         assert!(
-            matches!(self.continuation, TurnContinuation::GameScore),
-            "game-score resume requires a game-score continuation"
+            matches!(self.stop, Some(TurnStop::GameScore)),
+            "game-score resume requires a game-score stop"
         );
-        self.continuation = TurnContinuation::None;
+        self.stop = None;
         TurnStop::HighScores
     }
 
     /// High-score table dismissed. Retail reinitializes to the main menu.
     pub fn close_high_scores(&mut self) -> TurnStop {
-        self.continuation = TurnContinuation::None;
+        self.stop = None;
         TurnStop::SessionEnded
     }
 
     pub fn current_diplomacy_offer(&self) -> Option<DiplomacyOfferPrompt> {
-        let TurnContinuation::DiplomacyOffer { nation, index } = self.continuation else {
+        let Some(TurnStop::DiplomacyOffer { nation, index }) = self.stop else {
             return None;
         };
         let proposal = self.pending.nations[nation]
@@ -435,26 +428,26 @@ impl GameState {
     }
 
     pub fn current_diplomacy_war_join(&self) -> Option<DiplomacyWarJoinPrompt> {
-        match self.continuation {
-            TurnContinuation::DiplomacyWarJoin(prompt) => Some(prompt),
+        match self.stop {
+            Some(TurnStop::DiplomacyWarJoin(prompt)) => Some(prompt),
             _ => None,
         }
     }
 
     pub fn current_technology_report(&self) -> Option<Technology> {
-        match self.continuation {
-            TurnContinuation::TechnologyReport(tech_id) => Some(tech_id),
+        match self.stop {
+            Some(TurnStop::TechnologyReport(tech_id)) => Some(tech_id),
             _ => None,
         }
     }
 
     pub fn advance_turn(&mut self, story_ids: &[i32]) -> TurnStop {
         loop {
-            if self.pending_town_naming().is_some() {
-                return TurnStop::TownNaming;
-            }
-            if let Some(stop) = self.continuation_stop() {
+            if let Some(stop) = self.stop.clone() {
                 return stop;
+            }
+            if let Some((nation, tile)) = self.pending_town_naming() {
+                return self.halt(TurnStop::TownNaming { nation, tile });
             }
             match self.turn.phase() {
                 PhaseCode::STRATEGIC_MAP => return TurnStop::PlayerOrders,
@@ -470,17 +463,11 @@ impl GameState {
                 }
                 PhaseCode::DIPLOMACY => {
                     self.turn.phase = PhaseCode::TRADE;
-                    let result = self.do_diplomacy();
-                    if let Some(stop) = self.stop_from_diplomacy(result) {
-                        return stop;
-                    }
+                    self.do_diplomacy();
                 }
                 PhaseCode::TRADE => {
                     self.turn.phase = PhaseCode::CIVILIANS;
-                    match self.begin_trade_phase() {
-                        TradeProgress::Offer(_) => return TurnStop::TradeOffer,
-                        TradeProgress::Complete => {}
-                    }
+                    self.begin_trade_phase();
                 }
                 PhaseCode::CIVILIANS => {
                     self.turn.phase = PhaseCode::MILITARY;
@@ -489,15 +476,13 @@ impl GameState {
                 PhaseCode::MILITARY => {
                     self.turn.phase = PhaseCode::COMBAT_MOVES;
                     if let Some(continuation) = self.do_military() {
-                        self.continuation = TurnContinuation::NavalBattle(continuation);
-                        return TurnStop::NavalBattle;
+                        return self.halt(TurnStop::NavalBattle(continuation));
                     }
                 }
                 PhaseCode::COMBAT_MOVES => {
                     self.turn.phase = PhaseCode::MILITARY_CLEANUP;
                     if let Some(continuation) = self.do_combat_moves() {
-                        self.continuation = TurnContinuation::LandBattle(continuation);
-                        return TurnStop::LandBattle;
+                        return self.halt(TurnStop::LandBattle(continuation));
                     }
                 }
                 PhaseCode::MILITARY_CLEANUP => {
@@ -510,8 +495,7 @@ impl GameState {
                     if self.do_great_power_pressure_phase() {
                         // `mode` is still `0x0b`; movie factory default is `"lose"`, then
                         // `ReinitializeGameFlow` — not the council path.
-                        self.continuation = TurnContinuation::GreatPowerLoss;
-                        return TurnStop::GreatPowerLoss;
+                        return self.halt(TurnStop::GreatPowerLoss);
                     }
                 }
                 PhaseCode::DEAL_BOOK => {
@@ -523,8 +507,7 @@ impl GameState {
                 PhaseCode::DIPLOMACY_OFFER => {
                     self.turn.phase = PhaseCode::ELIMINATION;
                     if self.diplomacy_offer_gate() {
-                        self.continuation = TurnContinuation::PostCombatReports;
-                        return TurnStop::PostCombatReports;
+                        return self.halt(TurnStop::PostCombatReports);
                     }
                 }
                 PhaseCode::ELIMINATION => {
@@ -532,30 +515,25 @@ impl GameState {
                     match self.do_elimination_phase() {
                         EliminationOutcome::Continue => {}
                         EliminationOutcome::PlayerEliminated => {
-                            self.continuation = TurnContinuation::PlayerEliminated;
-                            return TurnStop::PlayerEliminated;
+                            return self.halt(TurnStop::PlayerEliminated);
                         }
                         EliminationOutcome::Victory => {
-                            self.continuation = TurnContinuation::Victory;
-                            return TurnStop::Victory;
+                            return self.halt(TurnStop::Victory);
                         }
                     }
                 }
                 PhaseCode::QUARTER_GATE => {
                     if self.quarter_gate() == QuarterGateResult::DecadeCinematic {
-                        self.continuation = TurnContinuation::DecadeCinematic;
-                        return TurnStop::DecadeCinematic;
+                        return self.halt(TurnStop::DecadeCinematic);
                     }
                 }
                 PhaseCode::TOP_TEN_SCORES => {
                     // Case `0x16`: scores then `"win"` movie; follow-up is council.
-                    self.continuation = TurnContinuation::Victory;
-                    return TurnStop::Victory;
+                    return self.halt(TurnStop::Victory);
                 }
                 PhaseCode::OPENING_CINEMATIC => {
                     // Case `0x17`: `"lose"` movie; follow-up is council.
-                    self.continuation = TurnContinuation::PlayerEliminated;
-                    return TurnStop::PlayerEliminated;
+                    return self.halt(TurnStop::PlayerEliminated);
                 }
                 PhaseCode::SEASON_ADVANCE => {
                     self.advance_season_phase();
@@ -563,7 +541,7 @@ impl GameState {
                 PhaseCode::TECHNOLOGY_ADVANCES => {
                     self.turn.phase = PhaseCode::NEWSPAPER;
                     if let Some(stop) = self.run_technology_advances() {
-                        return stop;
+                        return self.halt(stop);
                     }
                 }
                 PhaseCode::NEWSPAPER => {
@@ -580,38 +558,10 @@ impl GameState {
         }
     }
 
-    fn continuation_stop(&self) -> Option<TurnStop> {
-        match self.continuation {
-            TurnContinuation::None => None,
-            TurnContinuation::DiplomacyOffer { .. } => Some(TurnStop::DiplomacyOffer),
-            TurnContinuation::DiplomacyWarJoin(_) => Some(TurnStop::DiplomacyWarJoin),
-            TurnContinuation::Trade(_) => Some(TurnStop::TradeOffer),
-            TurnContinuation::LandBattle(_) => Some(TurnStop::LandBattle),
-            TurnContinuation::NavalBattle(_) => Some(TurnStop::NavalBattle),
-            TurnContinuation::TechnologyReport(_) => Some(TurnStop::TechnologyAdvance),
-            TurnContinuation::GreatPowerLoss => Some(TurnStop::GreatPowerLoss),
-            TurnContinuation::PostCombatReports => Some(TurnStop::PostCombatReports),
-            TurnContinuation::DecadeCinematic => Some(TurnStop::DecadeCinematic),
-            TurnContinuation::CouncilOfGovernors => Some(TurnStop::CouncilOfGovernors),
-            TurnContinuation::PlayerEliminated => Some(TurnStop::PlayerEliminated),
-            TurnContinuation::Victory => Some(TurnStop::Victory),
-            TurnContinuation::GameScore => Some(TurnStop::GameScore),
-        }
-    }
-
-    fn stop_from_diplomacy(&self, result: DiplomacyPhaseResult) -> Option<TurnStop> {
-        match result {
-            DiplomacyPhaseResult::Resolved => None,
-            DiplomacyPhaseResult::Offer(_) => Some(TurnStop::DiplomacyOffer),
-            DiplomacyPhaseResult::WarJoin(_) => Some(TurnStop::DiplomacyWarJoin),
-        }
-    }
-
     fn run_technology_advances(&mut self) -> Option<TurnStop> {
         self.apply_technology_advances_phase();
         let tech_id = self.consume_interactive_technology_unlock()?;
-        self.continuation = TurnContinuation::TechnologyReport(tech_id);
-        Some(TurnStop::TechnologyAdvance)
+        Some(TurnStop::TechnologyReport(tech_id))
     }
 
     /// Retail case 8 body: write the resume phase, then `DoCityAndTransport`.
@@ -733,7 +683,7 @@ mod tests {
         assert!(
             matches!(
                 stop,
-                crate::TurnStop::TechnologyAdvance | crate::TurnStop::Newspaper
+                crate::TurnStop::TechnologyReport(_) | crate::TurnStop::Newspaper
             ),
             "unexpected stop {stop:?}"
         );
@@ -751,7 +701,7 @@ mod tests {
         assert_eq!(state.advance_turn(&[]), crate::TurnStop::DealBook);
         let start_turn = state.turn.economic_turn;
         let mut stop = state.close_turn_deal_book(&[]);
-        while let crate::TurnStop::TechnologyAdvance = stop {
+        while let crate::TurnStop::TechnologyReport(_) = stop {
             stop = state.acknowledge_technology_report(&[]);
         }
         assert_eq!(stop, crate::TurnStop::Newspaper);
@@ -762,26 +712,23 @@ mod tests {
     }
 
     #[test]
-    fn answering_a_diplomacy_offer_uses_core_continuation_not_the_prompt() {
+    fn answering_a_diplomacy_offer_uses_the_core_stop_not_the_prompt() {
         let mut state = game_state();
         seed_town_tiles(&mut state);
         pose_alliance_offer(&mut state);
 
-        let crate::TurnStop::DiplomacyOffer = state.finish_player_orders(true, &[]) else {
+        let crate::TurnStop::DiplomacyOffer { .. } = state.finish_player_orders(true, &[]) else {
             panic!("expected a diplomacy offer stop");
         };
         let prompt = state
             .current_diplomacy_offer()
-            .expect("diplomacy offer continuation");
+            .expect("diplomacy offer stop");
         assert_eq!(state.turn.phase(), crate::PhaseCode::TRADE);
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
         let stop = state.answer_current_diplomacy_offer(true, &[]);
         assert!(state.current_diplomacy_offer().is_none());
         assert!(
-            matches!(
-                stop,
-                crate::TurnStop::TradeOffer | crate::TurnStop::DealBook
-            ),
+            matches!(stop, crate::TurnStop::Trade(_) | crate::TurnStop::DealBook),
             "unexpected stop {stop:?}"
         );
         assert_eq!(
@@ -796,19 +743,19 @@ mod tests {
         seed_town_tiles(&mut state);
         pose_alliance_offer(&mut state);
 
-        let crate::TurnStop::DiplomacyOffer = state.finish_player_orders(true, &[]) else {
+        let crate::TurnStop::DiplomacyOffer { .. } = state.finish_player_orders(true, &[]) else {
             panic!("expected a diplomacy offer stop");
         };
         let prompt = state
             .current_diplomacy_offer()
-            .expect("diplomacy offer continuation");
+            .expect("diplomacy offer stop");
         assert_eq!(state.turn.phase(), crate::PhaseCode::TRADE);
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
 
         let mut stop = state.answer_current_diplomacy_offer(true, &[]);
-        if let crate::TurnStop::TradeOffer = stop {
+        if let crate::TurnStop::Trade(_) = stop {
             assert_eq!(state.turn.phase(), crate::PhaseCode::CIVILIANS);
-            while let crate::TurnStop::TradeOffer = stop {
+            while let crate::TurnStop::Trade(_) = stop {
                 stop = state.answer_trade_offer(0, false, &[]);
             }
         }
@@ -824,7 +771,7 @@ mod tests {
         seed_town_tiles(&mut state);
         state.turn.phase = crate::PhaseCode::TRADE;
         let mut stop = state.advance_turn(&[]);
-        while let crate::TurnStop::TradeOffer = stop {
+        while let crate::TurnStop::Trade(_) = stop {
             stop = state.answer_trade_offer(0, false, &[]);
         }
         assert!(state.pending_trade_offer().is_none());
@@ -833,7 +780,7 @@ mod tests {
     }
 
     #[test]
-    fn semantic_state_round_trips_a_trade_continuation() {
+    fn semantic_state_round_trips_a_trade_stop() {
         let mut state = game_state();
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
@@ -872,7 +819,7 @@ mod tests {
         assert!(
             matches!(
                 stop,
-                crate::TurnStop::TechnologyAdvance | crate::TurnStop::Newspaper
+                crate::TurnStop::TechnologyReport(_) | crate::TurnStop::Newspaper
             ),
             "unexpected stop {stop:?}"
         );
@@ -994,7 +941,7 @@ mod tests {
         assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
         let start_turn = state.turn.economic_turn;
         let mut stop = state.close_turn_deal_book(&[]);
-        while let crate::TurnStop::TechnologyAdvance = stop {
+        while let crate::TurnStop::TechnologyReport(_) = stop {
             stop = state.acknowledge_technology_report(&[]);
         }
         assert_eq!(stop, crate::TurnStop::Newspaper);
@@ -1030,34 +977,34 @@ mod tests {
     #[test]
     fn opening_cinematic_movie_follows_entered_mode() {
         let mut state = game_state();
-        state.continuation = crate::TurnContinuation::DecadeCinematic;
+        state.stop = Some(crate::TurnStop::DecadeCinematic);
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Vote);
-        state.continuation = crate::TurnContinuation::Victory;
+        state.stop = Some(crate::TurnStop::Victory);
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Win);
-        state.continuation = crate::TurnContinuation::PlayerEliminated;
+        state.stop = Some(crate::TurnStop::PlayerEliminated);
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
-        state.continuation = crate::TurnContinuation::GreatPowerLoss;
+        state.stop = Some(crate::TurnStop::GreatPowerLoss);
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
     }
 
     #[test]
     fn decade_cinematic_close_enters_council() {
         let mut state = game_state();
-        state.continuation = crate::TurnContinuation::DecadeCinematic;
+        state.stop = Some(crate::TurnStop::DecadeCinematic);
         assert_eq!(
             state.close_opening_cinematic(),
             crate::TurnStop::CouncilOfGovernors
         );
         assert!(matches!(
-            state.continuation,
-            crate::TurnContinuation::CouncilOfGovernors
+            state.stop,
+            Some(crate::TurnStop::CouncilOfGovernors)
         ));
     }
 
     #[test]
     fn elimination_win_close_enters_game_score() {
         let mut state = game_state();
-        state.continuation = crate::TurnContinuation::Victory;
+        state.stop = Some(crate::TurnStop::Victory);
         assert_eq!(state.close_opening_cinematic(), crate::TurnStop::GameScore);
         assert_eq!(state.close_game_score(), crate::TurnStop::HighScores);
         assert_eq!(state.close_high_scores(), crate::TurnStop::SessionEnded);
@@ -1066,7 +1013,7 @@ mod tests {
     #[test]
     fn pressure_loss_close_ends_the_session() {
         let mut state = game_state();
-        state.continuation = crate::TurnContinuation::GreatPowerLoss;
+        state.stop = Some(crate::TurnStop::GreatPowerLoss);
         assert_eq!(
             state.close_opening_cinematic(),
             crate::TurnStop::SessionEnded

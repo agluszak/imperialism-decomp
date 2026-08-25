@@ -1350,14 +1350,12 @@ impl GameState {
     }
 
     fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
-        let needs_naming = self.nations.major(nation).auto.is_none();
-        let mut town = TownState::constructed(
+        let town = TownState::constructed(
             tile,
             nation.nation(),
             enabled,
             self.turn.economic_turn as i16,
         );
-        town.needs_naming = needs_naming;
         self.nations.major_mut(nation).towns.insert(tile, town);
     }
 
@@ -1428,20 +1426,28 @@ impl GameState {
         yields
     }
 
+    /// A completed human depot/port whose name is still empty awaits the retail
+    /// `TNewTownView` naming interaction. AI-run nations name nothing here.
     pub fn pending_town_naming(&self) -> Option<(MajorNationId, TileId)> {
         MajorNationId::all().find_map(|nation| {
+            if self.nations.major(nation).auto.is_some() {
+                return None;
+            }
             self.nations
                 .major(nation)
                 .towns
                 .iter()
-                .find_map(|(&tile, town)| town.needs_naming.then_some((nation, tile)))
+                .find_map(|(&tile, town)| town.name.is_empty().then_some((nation, tile)))
         })
     }
 
     /// Retail `TNewTownView::StuffValues` computes raw resources when the naming
     /// view is actually presented, not when `TTown` is constructed.
     pub fn prepare_pending_town_naming(&mut self) -> Option<(MajorNationId, TileId)> {
-        let (nation, tile) = self.pending_town_naming()?;
+        let (nation, tile) = match self.stop {
+            Some(crate::turn_flow::TurnStop::TownNaming { nation, tile }) => (nation, tile),
+            _ => self.pending_town_naming()?,
+        };
         self.finish_new_town(tile, nation);
         Some((nation, tile))
     }
@@ -1463,7 +1469,12 @@ impl GameState {
             .get_mut(&tile)
             .expect("pending town remains present");
         town.name = name;
-        town.needs_naming = false;
+        if matches!(
+            self.stop,
+            Some(crate::turn_flow::TurnStop::TownNaming { .. })
+        ) {
+            self.stop = None;
+        }
         true
     }
 
@@ -2349,7 +2360,10 @@ mod tests {
             state.pending_town_naming(),
             Some((MajorNationId::new(0), port_tile))
         );
-        assert_eq!(state.advance_turn(&[]), TurnStop::TownNaming);
+        assert!(matches!(
+            state.advance_turn(&[]),
+            TurnStop::TownNaming { .. }
+        ));
         assert!(
             matches!(
                 &state.ocean.zones[..],

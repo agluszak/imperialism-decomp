@@ -1865,13 +1865,13 @@ fn queue_land_battle_progress(
     tactical_battles_enabled: bool,
     story_ids: &[i32],
 ) {
-    if let Some(stop) = progress.stop.take() {
+    if progress.stop.is_some() {
         progress.stop =
-            Some(game.apply_land_battle_watch_policy(stop, tactical_battles_enabled, story_ids));
+            Some(game.apply_land_battle_watch_policy(tactical_battles_enabled, story_ids));
     }
     if progress.events.is_empty() {
         if let Some(stop) = progress.stop
-            && stop != TurnStop::LandBattle
+            && !matches!(stop, TurnStop::LandBattle(_))
         {
             apply_turn_stop(stop, next_state);
         }
@@ -1883,7 +1883,7 @@ fn queue_land_battle_progress(
         next: 0,
     });
     if let Some(stop) = progress.stop
-        && stop != TurnStop::LandBattle
+        && !matches!(stop, TurnStop::LandBattle(_))
     {
         commands
             .entity(field)
@@ -2373,7 +2373,7 @@ mod tests {
         );
 
         let mut state = GameState::from_parts(parts);
-        assert_eq!(state.advance_turn(&[]), TurnStop::LandBattle);
+        assert!(matches!(state.advance_turn(&[]), TurnStop::LandBattle(_)));
         assert!(state.pending_land_battle().is_some());
         state
     }

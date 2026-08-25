@@ -167,7 +167,7 @@ impl GameState {
         session.skip_empty_categories();
         let progress = self.continue_trade_deals(&mut session);
         if matches!(progress, TradeProgress::Offer(_)) {
-            self.continuation = crate::turn_flow::TurnContinuation::Trade(session);
+            self.stop = Some(crate::turn_flow::TurnStop::Trade(session));
         }
         progress
     }
@@ -177,11 +177,11 @@ impl GameState {
     /// `amount` is the purchased quantity (`0` rejects). `stop_buying` is the `nomo`
     /// checkbox and becomes `SetDealResults` shortfall.
     pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) -> TradeProgress {
-        let mut session = match std::mem::take(&mut self.continuation) {
-            crate::turn_flow::TurnContinuation::Trade(session) => session,
+        let mut session = match std::mem::take(&mut self.stop) {
+            Some(crate::turn_flow::TurnStop::Trade(session)) => session,
             other => {
-                self.continuation = other;
-                panic!("Offer Sheet reply requires an active trade session");
+                self.stop = other;
+                panic!("Offer Sheet reply requires an active trade stop");
             }
         };
         let pending = session
@@ -199,20 +199,20 @@ impl GameState {
         );
         let progress = self.continue_trade_deals(&mut session);
         if matches!(progress, TradeProgress::Offer(_)) {
-            self.continuation = crate::turn_flow::TurnContinuation::Trade(session);
+            self.stop = Some(crate::turn_flow::TurnStop::Trade(session));
         }
         progress
     }
 
     pub fn pending_trade_offer(&self) -> Option<PendingTradeOffer> {
-        match &self.continuation {
-            crate::turn_flow::TurnContinuation::Trade(session) => session.pending,
+        match &self.stop {
+            Some(crate::turn_flow::TurnStop::Trade(session)) => session.pending,
             _ => None,
         }
     }
 
     pub fn pending_trade_offer_cursor(&self) -> Option<(usize, usize)> {
-        let crate::turn_flow::TurnContinuation::Trade(session) = &self.continuation else {
+        let Some(crate::turn_flow::TurnStop::Trade(session)) = &self.stop else {
             return None;
         };
         let category = session.category?;
@@ -673,8 +673,8 @@ mod tests {
         );
         assert_eq!(state.pending_trade_offer(), None);
         assert!(!matches!(
-            state.continuation,
-            crate::turn_flow::TurnContinuation::Trade(_)
+            state.stop,
+            Some(crate::turn_flow::TurnStop::Trade(_))
         ));
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]

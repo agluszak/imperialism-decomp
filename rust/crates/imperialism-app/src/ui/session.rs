@@ -110,15 +110,16 @@ pub(crate) fn news_story_ids(assets: Option<&RetailAssetsResource>) -> &[i32] {
 pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppState>) {
     match stop {
         TurnStop::PlayerOrders | TurnStop::TurnAlerts(_) => next_state.set(AppState::StrategicMap),
-        TurnStop::TownNaming => next_state.set(AppState::TownNaming),
-        TurnStop::TradeOffer => next_state.set(AppState::OfferSheet),
+        TurnStop::TownNaming { .. } => next_state.set(AppState::TownNaming),
+        TurnStop::Trade(_) => next_state.set(AppState::OfferSheet),
         TurnStop::DealBook => next_state.set(AppState::DealBook),
-        TurnStop::TechnologyAdvance => next_state.set(AppState::TechnologyAdvance),
+        TurnStop::TechnologyReport(_) => next_state.set(AppState::TechnologyAdvance),
         TurnStop::Newspaper => next_state.set(AppState::Newspaper),
-        TurnStop::DiplomacyOffer => next_state.set(AppState::Diplomacy),
-        TurnStop::DiplomacyWarJoin => next_state.set(AppState::Diplomacy),
-        TurnStop::LandBattle => next_state.set(AppState::LandBattle),
-        TurnStop::NavalBattle => next_state.set(AppState::NavalBattle),
+        TurnStop::DiplomacyOffer { .. } | TurnStop::DiplomacyWarJoin(_) => {
+            next_state.set(AppState::Diplomacy)
+        }
+        TurnStop::LandBattle(_) => next_state.set(AppState::LandBattle),
+        TurnStop::NavalBattle(_) => next_state.set(AppState::NavalBattle),
         TurnStop::GreatPowerLoss
         | TurnStop::PlayerEliminated
         | TurnStop::Victory
