@@ -1046,13 +1046,11 @@ mod tests {
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
-        commands.spawn((FlagMenuRoot, ModalWindow, Node::default()));
+        commands.spawn((FlagMenuRoot, ModalWindow));
     }
 
     fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
-        let root = world
-            .spawn((FlagMenuPrompt { kind }, ModalWindow, Node::default()))
-            .id();
+        let root = world.spawn((FlagMenuPrompt { kind }, ModalWindow)).id();
         let accept = world
             .spawn((DismissWindow, ChildOf(root)))
             .observe(on_flag_menu_prompt_activate)

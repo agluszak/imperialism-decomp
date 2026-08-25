@@ -5,7 +5,8 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
 use super::window::{
-    DismissWindow, FloatingWindow, ModalCancel, ModalDefault, ModalWindow, WindowPosition,
+    CaptionedWindow, DismissWindow, ModalCancel, ModalDefault, ModalWindow, set_window_position,
+    window_position,
 };
 use crate::{AppState, RetailAssetsResource};
 use bevy::log::warn;
