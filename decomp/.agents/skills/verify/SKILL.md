@@ -1,18 +1,22 @@
 ---
 name: verify
-description: Build, compare, triage, and verify Imperialism decomp changes under decomp/.
+description: Select and run the repository checks for C++ reconstruction and decomp tooling changes.
 ---
 
 # Verify decomp changes
 
 Run from `decomp/`.
 
-1. While iterating, use the narrowest real check: `just build`, `just triage 0xADDR`, `just vtable`,
-   `just datacmp`, `just stackcmp`, or `just serde-audit`.
-2. Format manually edited files with `just format-check <paths>`.
-3. Run `just precommit` before committing. It covers the build, hard source gates, tooling tests,
-   generated-input integrity, and the runtime suite.
+1. Build with `just build`.
+2. Compare every touched retail function with `just triage 0xADDR` or `just triage --file path`.
+   `mismatch` is actionable; `effective` is proved harmless; `inconclusive` requires evidence,
+   metadata, pairing, or comparator diagnosis.
+3. Run the relevant specialized check when the change affects its domain:
+   `just vtable ClassName`, `just datacmp`, `just stackcmp`, or `just serde-audit`.
+4. Format manual files with `just format <paths>` and verify them with
+   `just format-check <paths>`.
+5. Run `just gates` for source-policy work and `just precommit` for a completed change. `precommit`
+   covers builds, gates, tooling tests, generated integrity, and the PR runtime suite.
 
-Use reccmp's structured result: `mismatch` is actionable; `effective` is already proved safe;
-`inconclusive` needs comparator, metadata, pairing, or evidence work. Do not decide safety from a
-rendered assembly diff and do not regress a real C++ model merely to clear a check.
+Report any residual mismatch or inconclusive result explicitly; do not convert it into a passing
+claim.

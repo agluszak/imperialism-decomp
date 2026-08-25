@@ -4,7 +4,7 @@
 //! action frames into the tile cache. This module keeps those sprites as disposable
 //! Bevy entities over the composed terrain bitmap.
 
-use super::super::GameSession;
+use super::super::{GameSession, MapViewOrigin};
 use super::RetailUiAssets;
 use super::map_projection::DetailedMapProjection;
 use super::{MapInteractionMode, StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
@@ -225,6 +225,7 @@ pub(super) fn bind_strategic_units(
 pub(crate) fn sync_strategic_units(
     mut commands: Commands,
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     mut assets: RetailUiAssets,
     interactions: Query<Ref<StrategicInteraction>>,
     mut layers: Query<(
@@ -254,7 +255,7 @@ pub(crate) fn sync_strategic_units(
         }
         let key = strategic_unit_project_key(
             state,
-            session.map_view_origin,
+            origin.0,
             selected_civilian,
             selected_army,
             selected_navy,
@@ -269,7 +270,7 @@ pub(crate) fn sync_strategic_units(
             &mut sprites,
             &mut assets,
             state,
-            session.map_view_origin,
+            origin.0,
             selected_civilian,
             selected_army,
             selected_navy,

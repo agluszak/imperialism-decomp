@@ -11,8 +11,8 @@ uses csv.DictReader, which trusts line 1 to be the header):
 
 Also checks that no two `type=="function"` rows claim overlapping `[address,
 address+size)` byte ranges — two independent functions never share .text bytes, so
-an overlap proves one row's boundary is wrong (the "degenerate size clamps the
-compare window" failure class in the sync-evidence skill's junk taxonomy; see
+an overlap proves one row's boundary is wrong (including a degenerate size that clamps the
+compare window; see
 `config/function_overlap_allowlist.txt` for pre-existing, tracked instances).
 
 Deliberately NOT checked: global address sort order — the canonical writer

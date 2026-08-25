@@ -1,7 +1,7 @@
 use super::generated;
 use super::retail::{RetailTree, retail_text_style};
 use super::satellite_preview::SatellitePreview;
-use super::session::{GameSession, apply_turn_stop};
+use super::session::{apply_turn_stop, insert_game_session};
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -234,21 +234,21 @@ fn on_start_scenario(
     let choice = &setup.choices[setup.selected];
     let difficulty = choice.info.difficulty_by_nation[setup.nation]
         .expect("scenario chooser only permits available nations");
-    let mut session = GameSession::new(create_scenario_game(
+    let mut game = create_scenario_game(
         choice.map.clone(),
         choice.info.scenario,
         &choice.instructions,
         setup.nation,
         difficulty,
         1,
-    ));
+    );
     let stop = enter_strategic_map_without_capital_selection(
-        &mut session.game,
+        &mut game,
         setup.nation,
         retail.news_story_ids(),
     );
     apply_turn_stop(stop, &mut next_state);
-    commands.insert_resource(session);
+    insert_game_session(&mut commands, game);
 }
 
 fn on_exit_scenario_setup(_activate: On<Activate>, mut next_state: ResMut<NextState<AppState>>) {

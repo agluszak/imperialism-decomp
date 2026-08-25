@@ -2,7 +2,7 @@
 
 use super::generated;
 use super::retail::RetailTree;
-use super::session::{GameSession, apply_turn_stop};
+use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
 use super::window::{DismissWindow, ModalDefault, ModalWindow};
 use crate::AppState;
 use bevy::prelude::*;
@@ -93,6 +93,7 @@ fn bind_battle_report(
 
 fn project_battle_report(
     session: Res<GameSession>,
+    reports: Res<BattleReportPresentation>,
     roots: Query<Ref<BattleReportRoot>>,
     added: Query<(), Added<BattleReportField>>,
     mut fields: Query<(&BattleReportField, &mut Text)>,
@@ -100,17 +101,20 @@ fn project_battle_report(
     let Ok(root) = roots.single() else {
         return;
     };
-    if super::projection_idle(&session, !added.is_empty()) && !root.is_changed() {
+    if super::projection_idle(&session, !added.is_empty())
+        && !root.is_changed()
+        && !reports.is_changed()
+    {
         return;
     }
-    let reports = session.game.battle_reports();
-    let Some(report) = reports.get(root.selected) else {
+    let reports_game = session.game.battle_reports();
+    let Some(report) = reports_game.get(root.selected) else {
         for (_, mut text) in &mut fields {
             text.0.clear();
         }
         return;
     };
-    let report_text = battle_report_text(&session, root.selected);
+    let report_text = battle_report_text(&session, &reports.0, root.selected);
     let location = match report.location {
         BattleReportLocation::Province(id) => session.game.map().provinces[id].name.clone(),
         BattleReportLocation::Zone(id) => format!("zone {}", id.get()),
@@ -144,10 +148,11 @@ fn project_battle_report(
 fn on_battle_report_close(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
+    mut reports: ResMut<BattleReportPresentation>,
     mut next_state: ResMut<NextState<AppState>>,
     assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
-    session.battle_report_text.clear();
+    reports.0.clear();
     apply_turn_stop(
         session
             .game
@@ -208,6 +213,7 @@ fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, 
 
 fn project_detail(
     session: Res<GameSession>,
+    reports: Res<BattleReportPresentation>,
     selected: Single<&BattleReportRoot>,
     added: Query<(), Added<DetailRoot>>,
     tree: RetailTree,
@@ -223,7 +229,7 @@ fn project_detail(
     let Some(_) = session.game.battle_reports().get(selected.selected) else {
         return;
     };
-    let report_text = battle_report_text(&session, selected.selected);
+    let report_text = battle_report_text(&session, &reports.0, selected.selected);
     let left = tree.find(root, fourcc!("natL"));
     let right = tree.find(root, fourcc!("natR"));
     if let Ok(mut text) = texts.get_mut(left) {
@@ -234,18 +240,25 @@ fn project_detail(
     }
 }
 
-pub(crate) fn battle_report_texts_for_save(session: &GameSession) -> Vec<BattleReportText> {
+pub(crate) fn battle_report_texts_for_save(
+    session: &GameSession,
+    captured: &[BattleReportText],
+) -> Vec<BattleReportText> {
     session
         .game
         .battle_reports()
         .iter()
         .enumerate()
-        .map(|(index, _)| battle_report_text(session, index))
+        .map(|(index, _)| battle_report_text(session, captured, index))
         .collect()
 }
 
-fn battle_report_text(session: &GameSession, index: usize) -> BattleReportText {
-    if let Some(text) = session.battle_report_text.get(index) {
+fn battle_report_text(
+    session: &GameSession,
+    captured: &[BattleReportText],
+    index: usize,
+) -> BattleReportText {
+    if let Some(text) = captured.get(index) {
         return text.clone();
     }
     let report = &session.game.battle_reports()[index];

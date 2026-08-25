@@ -485,16 +485,23 @@ impl DiplomacyMapAction {
 }
 
 impl DiplomacyPolicy {
-    const fn player_action(self) -> Option<PlayerDiplomacyAction> {
+    pub const fn map_action(self) -> Option<DiplomacyMapAction> {
         match self {
-            Self::JoinEmpire => Some(PlayerDiplomacyAction::JoinEmpire),
-            Self::Alliance => Some(PlayerDiplomacyAction::Alliance),
-            Self::NonAggressionPact => Some(PlayerDiplomacyAction::NonAggressionPact),
-            Self::PeaceTreaty => Some(PlayerDiplomacyAction::PeaceTreaty),
-            Self::DeclareWar => Some(PlayerDiplomacyAction::DeclareWar),
-            Self::BuildConsulate => Some(PlayerDiplomacyAction::BuildConsulate),
-            Self::BuildEmbassy => Some(PlayerDiplomacyAction::BuildEmbassy),
+            Self::JoinEmpire => Some(DiplomacyMapAction::JoinEmpire),
+            Self::Alliance => Some(DiplomacyMapAction::Alliance),
+            Self::NonAggressionPact => Some(DiplomacyMapAction::NonAggressionPact),
+            Self::PeaceTreaty => Some(DiplomacyMapAction::PeaceTreaty),
+            Self::DeclareWar => Some(DiplomacyMapAction::DeclareWar),
+            Self::BuildConsulate => Some(DiplomacyMapAction::BuildConsulate),
+            Self::BuildEmbassy => Some(DiplomacyMapAction::BuildEmbassy),
             Self::JoinEmpireWithWarEntanglements => None,
+        }
+    }
+
+    const fn player_action(self) -> Option<PlayerDiplomacyAction> {
+        match self.map_action() {
+            Some(action) => action.player_action(),
+            None => None,
         }
     }
 

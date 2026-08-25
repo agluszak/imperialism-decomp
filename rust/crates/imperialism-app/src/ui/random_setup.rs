@@ -1,4 +1,3 @@
-use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, ui_string,
@@ -7,6 +6,7 @@ use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::{insert_game_session, insert_loaded_game};
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
 use bevy::input_focus::AutoFocus;
@@ -529,7 +529,7 @@ fn accept_random_setup(
     next_state: &mut NextState<AppState>,
 ) {
     // Live play still uses a fixed Accept CRT seed until wall-clock CRT wiring lands.
-    let mut session = GameSession::new(create_random_game(
+    let mut game = create_random_game(
         &preview.0,
         setup.nation,
         setup.difficulty,
@@ -537,19 +537,27 @@ fn accept_random_setup(
         setup.name_mode == NationNameMode::Historical,
         1,
         names,
-    ));
+    );
     if requires_capital_site_selection(setup.difficulty) {
-        session.map_view_origin = capital_selection_view_origin(session.game.map(), setup.nation);
-        commands.insert_resource(session);
+        let map_view_origin = capital_selection_view_origin(game.map(), setup.nation);
+        insert_loaded_game(
+            commands,
+            imperialism_formats::LoadedGame {
+                game,
+                map_view_origin,
+                city_windows: imperialism_formats::CityWindowLayout::default(),
+                battle_report_text: Vec::new(),
+            },
+        );
         next_state.set(AppState::CitySite);
     } else {
         let stop = enter_strategic_map_without_capital_selection(
-            &mut session.game,
+            &mut game,
             setup.nation,
             assets.news_table().story_ids(),
         );
         apply_turn_stop(stop, next_state);
-        commands.insert_resource(session);
+        insert_game_session(commands, game);
     }
 }
 

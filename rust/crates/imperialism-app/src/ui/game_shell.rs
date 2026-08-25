@@ -2,7 +2,6 @@ use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
-use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
@@ -23,6 +22,7 @@ use crate::ui::strategic_map::{
     sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
 };
 use crate::ui::window::no_modal;
+use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -101,6 +101,7 @@ fn scroll_strategic_map(
     mut last_scroll_tick: Local<Option<u128>>,
     window: Single<&Window, With<PrimaryWindow>>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
     let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
@@ -120,6 +121,7 @@ fn scroll_strategic_map(
     *last_scroll_tick = Some(tick16);
     apply_map_transition(
         &mut session,
+        &mut origin,
         &mut interaction,
         &mut viewport,
         MapTransition::Scroll(edges),
@@ -155,12 +157,12 @@ fn spawn_strategic_map(mut commands: Commands) {
         .insert((StrategicMapRoot, DespawnOnExit(AppState::StrategicMap)));
 }
 
-fn enter_strategic_map_view(mut session: ResMut<GameSession>) {
+fn enter_strategic_map_view(session: Res<GameSession>, mut origin: ResMut<MapViewOrigin>) {
     if let Some(tile) = session
         .game
         .first_idle_civilian_tile(session.game.turn().active_nation)
     {
-        session.center_map_on(tile);
+        origin.center_on(&session.game, tile);
     }
 }
 
@@ -172,6 +174,7 @@ fn bind_strategic_map(
     mut pictures: Query<&mut ImageNode>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
 ) {
     bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
@@ -197,11 +200,12 @@ fn bind_strategic_map(
     commands
         .entity(tree.find(*root, fourcc!("send")))
         .insert(Visibility::Hidden);
-    let land = bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session);
+    let land =
+        bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session, origin.0);
     commands.entity(land).observe(on_strategic_map_click);
     let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree, &session);
     commands.entity(ocean).observe(on_strategic_map_click);
-    bind_minimap(&mut commands, *root, &tree, &mut assets, &session);
+    bind_minimap(&mut commands, *root, &tree, &mut assets, &session, origin.0);
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_army_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
@@ -297,6 +301,7 @@ fn on_ocean_toggle(
     mut commands: Commands,
     assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
     let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
@@ -318,6 +323,7 @@ fn on_ocean_toggle(
     }
     apply_map_transition(
         &mut session,
+        &mut origin,
         &mut interaction,
         &mut viewport,
         MapTransition::ToggleZoom,

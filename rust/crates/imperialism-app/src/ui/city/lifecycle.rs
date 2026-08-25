@@ -119,6 +119,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
 pub(in crate::ui::city) fn restore_city_dialogs(
     roots: Query<(), Added<CityScreenRoot>>,
     session: Res<GameSession>,
+    windows: Res<CityWindows>,
     mut commands: Commands,
 ) {
     if roots.is_empty() {
@@ -126,7 +127,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     }
     let nation = session.active_major_nation();
     for slot in (0..enum_map::enum_len::<CityFacilitySlot>()).map(CityFacilitySlot::from_usize) {
-        let state = session.city_windows[nation][slot];
+        let state = windows.0[nation][slot];
         let Some(position) = state else {
             continue;
         };
@@ -142,16 +143,17 @@ pub(in crate::ui::city) fn restore_city_dialogs(
 }
 
 pub(in crate::ui::city) fn leave_city_screen(
-    mut session: ResMut<GameSession>,
+    session: Res<GameSession>,
+    mut windows: ResMut<CityWindows>,
     dialogs: Query<(&CityBuildingDialog, &Children)>,
-    windows: Query<&Node, With<CaptionedWindow>>,
+    nodes: Query<&Node, With<CaptionedWindow>>,
 ) {
     let nation = session.active_major_nation();
     let mut positions = ProductionTable::default();
     for (dialog, children) in &dialogs {
         let node = children
             .iter()
-            .find_map(|child| windows.get(child).ok())
+            .find_map(|child| nodes.get(child).ok())
             .expect("city building dialog has a captioned window");
         let position = window_position(node);
         positions[dialog.slot] = Some(CityWindowPosition {
@@ -161,5 +163,5 @@ pub(in crate::ui::city) fn leave_city_screen(
                 .expect("City window coordinate fits retail short storage"),
         });
     }
-    session.city_windows[nation] = positions;
+    windows.0[nation] = positions;
 }

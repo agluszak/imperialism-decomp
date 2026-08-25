@@ -2,7 +2,7 @@
 
 use super::generated;
 use super::retail::RetailTree;
-use super::session::{GameSession, apply_turn_stop};
+use super::session::{GameSession, apply_turn_stop, remove_game_session};
 use crate::media::{MovieBackend, MusicDirector, rgba_frame_to_image};
 use crate::ui::load_save::SaveDirectory;
 use crate::{AppState, RetailAssetsResource};
@@ -194,7 +194,7 @@ fn finish_opening_cinematic(
     };
     let stop = session.game.close_opening_cinematic();
     if stop == TurnStop::SessionEnded {
-        commands.remove_resource::<GameSession>();
+        remove_game_session(commands);
         next_state.set(AppState::MainMenu);
     } else {
         apply_turn_stop(stop, next_state);
@@ -421,6 +421,6 @@ fn on_high_score_close(
     if let Some(session) = session.as_mut() {
         let _ = session.game.close_high_scores();
     }
-    commands.remove_resource::<GameSession>();
+    remove_game_session(&mut commands);
     next_state.set(AppState::MainMenu);
 }
