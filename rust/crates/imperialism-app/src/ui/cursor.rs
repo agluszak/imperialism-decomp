@@ -86,7 +86,7 @@ fn cursor_icon(images: &mut Assets<Image>, cursor: &RetailCursor) -> CursorIcon 
 fn apply_requested_cursor(
     mut commands: Commands,
     requested: Res<RequestedCursor>,
-    cursors: Option<Res<TurnEventCursors>>,
+    cursors: Res<TurnEventCursors>,
     window: Single<Entity, With<PrimaryWindow>>,
 ) {
     if !requested.is_changed() {
@@ -95,9 +95,6 @@ fn apply_requested_cursor(
     let icon = match *requested {
         RequestedCursor::Arrow => CursorIcon::System(SystemCursorIcon::Default),
         RequestedCursor::TurnEvent(resource_id) => {
-            let Some(cursors) = cursors.as_deref() else {
-                return;
-            };
             let index = usize::from(
                 resource_id
                     .checked_sub(RetailAssets::TURN_EVENT_CURSOR_BASE)
