@@ -7,16 +7,6 @@ use crate::ui::retail_raster::IndexedRasterExt;
 pub(in crate::ui::city) const INDUSTRY_BAR_X: f32 = 62.0;
 pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
 
-// TAmtBarCluster::DoPostCreate applies this to every `move` TNumberText before
-// its derived city cluster positions it over the amount bar.
-pub(in crate::ui::city) const AMOUNT_BAR_COUNTER_STYLE: RetailTextStylePreset =
-    RetailTextStylePreset {
-        font_family: 3,
-        face_flags: 0,
-        point_size: 10,
-        alignment: -2,
-    };
-
 #[derive(Component)]
 pub(in crate::ui::city) struct CityOrderAdjust {
     pub(in crate::ui::city) order: CityOrderId,
@@ -195,9 +185,6 @@ fn bind_industry_amount_bars(
     tree: &RetailTree,
     page: IndustryPage,
 ) {
-    let (counter_font, counter_layout, counter_line_height, _) = assets
-        .text_style(AMOUNT_BAR_COUNTER_STYLE)
-        .expect("retail industry amount counter style");
     for binding in page.orders {
         let bound = bind_city_order_row(
             commands,
@@ -214,12 +201,9 @@ fn bind_industry_amount_bars(
             order: binding.order,
             slot: page.slot,
         };
-        commands.entity(bound.quantity).insert((
-            IndustryBar::Quantity(amount),
-            counter_font.clone(),
-            counter_layout,
-            counter_line_height,
-        ));
+        commands
+            .entity(bound.quantity)
+            .insert(IndustryBar::Quantity(amount));
         let bar = tree.find(bound.row, fourcc!("bar "));
         let picture = industry_amount_bar_picture(AmountBarPixels {
             range: 0,
@@ -554,14 +538,6 @@ pub(in crate::ui::city) fn sync_rail_bars(
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn industry_amount_counter_uses_the_retail_post_create_style() {
-        let style = resolve_retail_text_style(AMOUNT_BAR_COUNTER_STYLE).unwrap();
-        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
-        assert_eq!(style.logical_pixel_height, 14);
-        assert_eq!(style.alignment, RetailTextAlignment::Left);
-    }
 
     #[test]
     fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {

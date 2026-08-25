@@ -57,7 +57,7 @@ fn bind_newspaper(
     retail: Res<RetailAssetsResource>,
 ) {
     let root = *root;
-    bind_newspaper_chrome(&mut commands, &mut assets, root, &tree);
+    bind_newspaper_chrome(&mut commands, root, &tree);
     fill_newspaper_stories(
         &mut commands,
         &mut assets,
@@ -72,34 +72,13 @@ fn bind_newspaper(
         .observe(on_newspaper_activate);
 }
 
-fn bind_newspaper_chrome(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-) {
-    let (font, _, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
-        .expect("retail newspaper chrome text style");
-    commands.entity(tree.find(root, fourcc!("date"))).insert((
-        NewspaperDisplay::Date,
-        Text::default(),
-        font.clone(),
-        TextLayout::justify(Justify::Right),
-        line_height,
-    ));
-    commands.entity(tree.find(root, fourcc!("spec"))).insert((
-        NewspaperDisplay::Spec,
-        Text::default(),
-        font,
-        TextLayout::justify(Justify::Left),
-        line_height,
-    ));
+fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    commands
+        .entity(tree.find(root, fourcc!("date")))
+        .insert(NewspaperDisplay::Date);
+    commands
+        .entity(tree.find(root, fourcc!("spec")))
+        .insert(NewspaperDisplay::Spec);
 }
 
 fn project_newspaper_chrome(

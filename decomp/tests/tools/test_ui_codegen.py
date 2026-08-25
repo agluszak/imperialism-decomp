@@ -118,6 +118,79 @@ class UiCodegenTests(unittest.TestCase):
         ]
         self.assertIn("retail_text_style(1, 0, 12, 1)", unit)
 
+    def test_amount_bar_move_uses_windows_post_create_style(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        industry = rendered[
+            rendered.index("pub fn citydlog_9200()") : rendered.index(
+                "pub fn citydlog_9201()"
+            )
+        ]
+        move = industry[
+            industry.index('retail_node(fourcc!("move")') : industry.index(
+                'retail_node(fourcc!("bar ")'
+            )
+        ]
+        self.assertIn("retail_text_style(3, 0, 10, -2)", move)
+        self.assertNotIn("retail_text_style(3, 0, 9, -2)", move)
+        metal = rendered[
+            rendered.index("pub fn citydlog_9203()") : rendered.index(
+                "pub fn citydlog_9204()"
+            )
+        ]
+        self.assertIn("retail_text_style(3, 0, 10, -2)", metal)
+        self.assertNotIn("retail_text_style(3, 0, 9, 1)", metal)
+
+    def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        trade = rendered[
+            rendered.index("pub fn trade_2009()") : rendered.index(
+                "pub fn trade_2010()"
+            )
+        ]
+        sell = trade[
+            trade.index('retail_node(fourcc!("Sell")') : trade.index(
+                'retail_node(fourcc!("card")'
+            )
+        ]
+        self.assertIn("retail_node(fourcc!(\"Sell\"), 342, 1, 33, 17)", trade)
+        self.assertIn("retail_text_style(2, 0, 14, -1)", sell)
+
+    def test_newspaper_date_uses_windows_title_style(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        newspaper = rendered[rendered.index("pub fn flagview_8451()") :]
+        date = newspaper[
+            newspaper.index('retail_node(fourcc!("date")') : newspaper.index(
+                'retail_node(fourcc!("spec")'
+            )
+        ]
+        spec = newspaper[
+            newspaper.index('retail_node(fourcc!("spec")') : newspaper.index(
+                'retail_node(fourcc!("over")'
+            )
+        ]
+        self.assertIn("retail_text_style(2, 0, 12, -1)", date)
+        self.assertIn("retail_text_style(2, 0, 12, -2)", spec)
+
+    def test_deal_book_right_title_uses_windows_drop_shadow_style(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        deal_book = rendered[rendered.index("pub fn flagview_8800()") :]
+        rtil = deal_book[
+            deal_book.index('retail_node(fourcc!("rtil")') : deal_book.index(
+                'retail_node(fourcc!("mark")'
+            )
+        ]
+        self.assertIn("retail_text_style(1, 0, 18, 1)", rtil)
+        self.assertIn("retail_text_color(40)", rtil)
+        self.assertIn("retail_text_shadow(210, -1, -1)", rtil)
+
     def test_random_setup_emits_windows_option_controls(self) -> None:
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources

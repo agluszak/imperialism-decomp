@@ -1134,7 +1134,7 @@ pub fn citydlog_9200() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
-                                        retail_text_style(3, 0, 9, -2)
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1224,6 +1224,7 @@ pub fn citydlog_9201() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1303,6 +1304,7 @@ pub fn citydlog_9202() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1387,7 +1389,7 @@ pub fn citydlog_9203() -> impl Scene {
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
-                                        retail_text_style(3, 0, 9, 1)
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1412,6 +1414,7 @@ pub fn citydlog_9203() -> impl Scene {
                                         retail_node(fourcc!("move"), 59, 17, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1496,6 +1499,7 @@ pub fn citydlog_9204() -> impl Scene {
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1520,6 +1524,7 @@ pub fn citydlog_9204() -> impl Scene {
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1604,6 +1609,7 @@ pub fn citydlog_9205() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1683,6 +1689,7 @@ pub fn citydlog_9206() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1754,6 +1761,7 @@ pub fn citydlog_9209() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1778,6 +1786,7 @@ pub fn citydlog_9209() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1887,7 +1896,7 @@ pub fn citydlog_9211() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
                                         Text("")
-                                        retail_text_style(3, 0, 9, -2)
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1952,6 +1961,7 @@ pub fn citydlog_9212() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2391,6 +2401,7 @@ pub fn citydlog_9214() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2466,6 +2477,7 @@ pub fn citydlog_9215() -> impl Scene {
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
+                                        retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3624,11 +3636,13 @@ pub fn flagview_8451() -> impl Scene {
                             (
                                 retail_node(fourcc!("date"), 500, 54, 116, 16)
                                 Text("Winter, 1994")
+                                retail_text_style(2, 0, 12, -1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("spec"), 20, 54, 116, 16)
                                 Text("Winter, 1994")
+                                retail_text_style(2, 0, 12, -2)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -3928,7 +3942,9 @@ pub fn flagview_8800() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rtil"), 329, 54, 199, 22)
                                                 Text("Winter 1820")
-                                                TextColor(Color::BLACK)
+                                                retail_text_style(1, 0, 18, 1)
+                                                retail_text_color(40)
+                                                retail_text_shadow(210, -1, -1)
                                             ),
                                             (
                                                 retail_node(fourcc!("mark"), 8, 136, 40, 53)
@@ -9100,7 +9116,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 342, 3, 33, 15)
+                                        retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9112,6 +9128,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9153,7 +9170,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                        retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9165,6 +9182,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9206,7 +9224,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 344, 3, 31, 15)
+                                        retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9218,6 +9236,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9259,7 +9278,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                        retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9271,6 +9290,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9312,7 +9332,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 344, 3, 31, 15)
+                                        retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9324,6 +9344,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9365,7 +9386,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                        retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9377,6 +9398,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9418,7 +9440,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                        retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9430,6 +9452,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9471,7 +9494,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                        retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9483,6 +9506,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9524,7 +9548,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9536,6 +9560,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9577,7 +9602,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9589,6 +9614,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9630,7 +9656,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9642,6 +9668,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9683,7 +9710,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9695,6 +9722,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9736,7 +9764,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9748,6 +9776,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9789,7 +9818,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9801,6 +9830,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9842,7 +9872,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9854,6 +9884,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9895,7 +9926,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9907,6 +9938,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9948,7 +9980,7 @@ pub fn trade_2009() -> impl Scene {
                                 }
                                 Children [
                                     (
-                                        retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                        retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
                                                 left: px(1),
@@ -9960,6 +9992,7 @@ pub fn trade_2009() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         Text("0")
+                                        retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -10128,7 +10161,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 342, 3, 33, 15)
+                                                retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10140,6 +10173,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10181,7 +10215,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                                retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10193,6 +10227,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10234,7 +10269,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 344, 3, 31, 15)
+                                                retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10246,6 +10281,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10287,7 +10323,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                                retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10299,6 +10335,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10340,7 +10377,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 344, 3, 31, 15)
+                                                retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10352,6 +10389,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10393,7 +10431,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                                retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10405,6 +10443,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10446,7 +10485,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                                retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10458,6 +10497,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10499,7 +10539,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 343, 3, 32, 15)
+                                                retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10511,6 +10551,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10552,7 +10593,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10564,6 +10605,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10605,7 +10647,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10617,6 +10659,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10658,7 +10701,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10670,6 +10713,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10711,7 +10755,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10723,6 +10767,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10764,7 +10809,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10776,6 +10821,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10817,7 +10863,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10829,6 +10875,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10870,7 +10917,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10882,6 +10929,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10923,7 +10971,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10935,6 +10983,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -10976,7 +11025,7 @@ pub fn trade_2010() -> impl Scene {
                                         }
                                         Children [
                                             (
-                                                retail_node(fourcc!("Sell"), 334, 3, 41, 15)
+                                                retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
                                                         left: px(1),
@@ -10988,6 +11037,7 @@ pub fn trade_2010() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 Text("0")
+                                                retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
