@@ -14,6 +14,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     mut session: ResMut<GameSession>,
     mut commands: Commands,
     mut assets: RetailUiAssets,
+    roots: Query<Entity, With<CityScreenRoot>>,
 ) {
     let Ok((cursor, canvas)) = canvases.get(click.entity) else {
         return;
@@ -40,6 +41,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     match city_building_click(&session.game, nation, building.slot) {
         Some(CityBuildingClick::Construction) => {
             open_city_construction_dialog(&mut commands, &mut assets, &mut session, building.slot);
+            mark_city_ui_dirty(&mut commands, &roots);
         }
         Some(CityBuildingClick::Production) => {
             open_city_dialog(&mut commands, building.slot, None);
@@ -70,7 +72,11 @@ pub(in crate::ui::city) fn bind_city_dialogs(
     tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
+    roots: Query<Entity, With<CityScreenRoot>>,
 ) {
+    if dialogs.is_empty() {
+        return;
+    }
     for (root, dialog) in &dialogs {
         if let Some(position) = dialog.saved_position
             && let Ok(children) = tree.children.get(root)
@@ -114,6 +120,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
             }
         }
     }
+    mark_city_ui_dirty(&mut commands, &roots);
 }
 
 pub(in crate::ui::city) fn restore_city_dialogs(

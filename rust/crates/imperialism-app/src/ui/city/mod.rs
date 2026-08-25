@@ -26,6 +26,7 @@ mod common_controls;
 mod dialogs;
 mod input;
 mod lifecycle;
+mod refresh;
 
 pub(super) use building_visuals::{CityBuildingActionVisual, CityBuildingVisual};
 
@@ -35,10 +36,7 @@ use common_controls::*;
 use dialogs::*;
 use input::*;
 use lifecycle::*;
-
-pub(in crate::ui::city) fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    super::projection_idle(session, added)
-}
+use refresh::*;
 
 pub(crate) struct CityPlugin;
 
@@ -59,33 +57,14 @@ impl Plugin for CityPlugin {
                 restore_city_dialogs,
                 bind_building_change_dialogs,
                 bind_city_dialogs,
+                refresh_city_ui,
             )
                 .chain()
                 .run_if(in_state(AppState::City)),
         )
         .add_systems(
             Update,
-            (
-                sync_city_summary,
-                sync_city_hover_title,
-                sync_city_buildings,
-                sync_city_building_action_visibility,
-                sync_city_order_quantities,
-                sync_industry_texts,
-                sync_industry_indicators,
-                sync_industry_bars,
-                sync_rail_bars,
-                sync_warehouse_dialog,
-                sync_food_dialog,
-                sync_transport_capacity_dialog,
-                sync_population_dialog,
-                sync_training_dialog,
-                sync_city_row_selection,
-                sync_armory_details,
-                sync_university_details,
-                sync_shipyard_details,
-            )
-                .run_if(in_state(AppState::City)),
+            sync_city_hover_title.run_if(in_state(AppState::City)),
         );
     }
 }

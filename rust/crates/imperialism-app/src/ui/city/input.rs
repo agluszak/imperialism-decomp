@@ -8,6 +8,8 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     mut click: On<Pointer<Click>>,
     bars: Query<(&RelativeCursorPosition, &CityIndustryAmountBar)>,
     mut session: ResMut<GameSession>,
+    roots: Query<Entity, With<CityScreenRoot>>,
+    mut commands: Commands,
 ) {
     let Ok((cursor, bar)) = bars.get(click.entity) else {
         return;
@@ -30,12 +32,15 @@ pub(in crate::ui::city) fn on_city_amount_bar_click(
     session
         .game
         .set_city_order_quantity(nation, bar.order, quantity);
+    mark_city_ui_dirty(&mut commands, &roots);
 }
 
 pub(in crate::ui::city) fn on_city_rail_amount_bar_click(
     mut click: On<Pointer<Click>>,
     bars: Query<(&RelativeCursorPosition, &CityRailAmountBar)>,
     mut session: ResMut<GameSession>,
+    roots: Query<Entity, With<CityScreenRoot>>,
+    mut commands: Commands,
 ) {
     let Ok((cursor, bar)) = bars.get(click.entity) else {
         return;
@@ -62,12 +67,15 @@ pub(in crate::ui::city) fn on_city_rail_amount_bar_click(
     session
         .game
         .set_city_order_quantity(nation, bar.order, quantity);
+    mark_city_ui_dirty(&mut commands, &roots);
 }
 
 pub(in crate::ui::city) fn on_city_order_adjust(
     activate: On<Activate>,
     actions: Query<&CityOrderAdjust>,
     mut session: ResMut<GameSession>,
+    roots: Query<Entity, With<CityScreenRoot>>,
+    mut commands: Commands,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -76,4 +84,5 @@ pub(in crate::ui::city) fn on_city_order_adjust(
     session
         .game
         .adjust_city_order(nation, action.order, action.delta);
+    mark_city_ui_dirty(&mut commands, &roots);
 }

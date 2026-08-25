@@ -10,8 +10,7 @@ pub(crate) struct GameSession {
     pub(crate) game: GameState,
 }
 
-/// Detailed-map camera origin. Separate from [`GameSession`] so scrolling does not
-/// mark gameplay state changed.
+/// Detailed-map camera origin. Presentation only; not gameplay.
 #[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct MapViewOrigin(pub TileId);
 

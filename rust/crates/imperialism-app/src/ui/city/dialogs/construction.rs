@@ -363,6 +363,8 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
     activate: On<Activate>,
     choices: Query<&CityBuildingChangeChoice>,
     mut session: ResMut<GameSession>,
+    roots: Query<Entity, With<CityScreenRoot>>,
+    mut commands: Commands,
 ) {
     let Ok(choice) = choices.get(activate.entity) else {
         return;
@@ -391,4 +393,5 @@ pub(in crate::ui::city) fn on_city_building_change_choice(
             .game
             .set_city_order_quantity(nation, order, quantity);
     }
+    mark_city_ui_dirty(&mut commands, &roots);
 }

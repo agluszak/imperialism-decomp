@@ -43,13 +43,11 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
   direct typed core operations and projects authoritative results.
 - Keep retail hierarchy, coordinates, tags, ordering, and presentation semantics when observable.
   Do not promote recovery-only offsets or symbolic node identifiers into runtime identity.
-- `GameSession` holds only `GameState`. Detailed-map camera origin, city-dialog positions, and
-  captured battle-report strings are separate resources (`MapViewOrigin`, `CityWindows`,
-  `BattleReportPresentation`) so scrolling or layout changes do not mark gameplay changed. Do not
-  split `GameState` itself into ECS components.
-- Immutable retail catalogs used by simulation (`GameData`, currently the news story-id table) are
-  loaded once onto `GameState` and are not persisted. Do not thread them through gameplay
-  operations.
+- `GameSession` holds only `GameState`. Presentation-only values stay in separate resources
+  (`MapViewOrigin`, `CityWindows`, `BattleReportPresentation`). Do not split `GameState` itself
+  into Bevy resources or ECS components, and do not use `GameSession` change detection as a UI
+  binding signal. City binds entity references once and refreshes from `GameState` when the
+  screen is entered or when a city action marks `CityUiDirty`.
 - Immutable retail catalogs used by simulation (`GameData`, currently the news story-id table) are
   loaded once onto `GameState` and are not persisted. Do not thread them through gameplay
   operations.
