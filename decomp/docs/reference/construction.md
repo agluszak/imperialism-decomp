@@ -1,7 +1,7 @@
 # Real C++ construction and inheritance — full detail
 
-The crisp principles live in `AGENTS.md` ("Hard rules: real C++ construction and
-inheritance"). This file holds the long-form rules, examples, and rationale. The
+The durable principles live in the `AGENTS.md` source and ABI model. This file holds the
+long-form rules, examples, and rationale. The
 mechanically-checkable parts are enforced by `just antipattern-gate` (manual vptr
 writes, `new (this)`, `operator new`/`__cdecl` factories, `__thiscall`
 reinterpret_cast) and `just marker-gate`.
@@ -348,7 +348,7 @@ marker plus an exact backtick name in `config/original_entities.csv` so reccmp p
    sibling empty dtors and triggers reccmp "Debug data out of sync", collaterally dropping
    the adjacent ctor.
 4. `just build` → `just compare`. `just build` regenerates the build inputs (source
-   index + stubs) from the current markers on its own (Hard Rule 5), so there is no
+   index + stubs) from the current markers on its own, so there is no
    separate ownership or stub-regeneration step to run first. `just library-identity-gate`
    checks that named `LIBRARY` / `SYNTHETIC` identity claims project into the generated
    symbols table (via `tools.source_model`).

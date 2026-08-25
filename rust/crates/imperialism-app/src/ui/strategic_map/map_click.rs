@@ -2,8 +2,8 @@
 
 use super::map_interaction::{
     MapInteractionMode, MapProjection, MapTransition, StrategicInteraction, StrategicViewport,
-    apply_map_transition, cycle_map_interaction_selection, has_active_map_interaction_selection,
-    navy_zone_center_tile,
+    activate_navy_selection, apply_map_transition, cycle_map_interaction_selection,
+    has_active_map_interaction_selection,
 };
 use super::map_modals::{
     spawn_army_report, spawn_civilian_report, spawn_developer_purchase,
@@ -13,8 +13,8 @@ use super::ocean_view::{OceanMapCanvas, ocean_tile_at_cursor};
 use super::{StrategicBaseTerrainCanvas, strategic_base_terrain_tile_at_cursor};
 use crate::AppState;
 use crate::media::RetailAudioAssets;
-use crate::ui::GameSession;
 use crate::ui::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
+use crate::ui::{GameSession, MapViewOrigin};
 use bevy::picking::events::{Click, Pointer};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
@@ -118,13 +118,14 @@ pub(crate) fn on_strategic_map_click(
     >,
     ocean_maps: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut audio: RetailAudioAssets,
 ) {
     if click.event.button != PointerButton::Primary {
         return;
     }
     let tile = if let Ok((cursor, _, _)) = land.get(click.entity) {
-        strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
+        strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor)
     } else if let Ok(cursor) = ocean_maps.get(click.entity) {
         let Ok((_, _, viewport)) = land.single() else {
             return;
@@ -142,6 +143,7 @@ pub(crate) fn on_strategic_map_click(
     handle_map_click_by_interaction_mode(
         &mut commands,
         &mut session,
+        &mut origin,
         &mut interaction,
         &mut viewport,
         &mut audio,
@@ -153,6 +155,7 @@ pub(crate) fn on_strategic_map_click(
 fn handle_map_click_by_interaction_mode(
     commands: &mut Commands,
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
     audio: &mut RetailAudioAssets,
@@ -170,8 +173,15 @@ fn handle_map_click_by_interaction_mode(
                 tile,
                 input_flags,
                 has_selection,
-            ) || apply_navy_selection(commands, session, interaction, viewport, tile, nation)
-            {
+            ) || apply_navy_selection(
+                commands,
+                session,
+                origin,
+                interaction,
+                viewport,
+                tile,
+                nation,
+            ) {
                 return;
             }
             if apply_civilian_tile_order(
@@ -182,7 +192,7 @@ fn handle_map_click_by_interaction_mode(
                 tile,
                 nation,
             ) {
-                cycle_map_interaction_selection(session, interaction, viewport);
+                cycle_map_interaction_selection(session, origin, interaction, viewport);
             }
         }
         MapInteractionMode::Army => {
@@ -196,14 +206,22 @@ fn handle_map_click_by_interaction_mode(
             ) || apply_civilian_selection_or_report(
                 commands,
                 session,
+                origin,
                 interaction,
                 viewport,
                 audio,
                 tile,
                 nation,
                 input_flags,
-            ) || apply_navy_selection(commands, session, interaction, viewport, tile, nation)
-            {
+            ) || apply_navy_selection(
+                commands,
+                session,
+                origin,
+                interaction,
+                viewport,
+                tile,
+                nation,
+            ) {
                 return;
             }
             if let Some(pending) = interaction.army
@@ -216,7 +234,7 @@ fn handle_map_click_by_interaction_mode(
                     tile,
                 )
             {
-                cycle_map_interaction_selection(session, interaction, viewport);
+                cycle_map_interaction_selection(session, origin, interaction, viewport);
             }
         }
         MapInteractionMode::Navy => {
@@ -230,6 +248,7 @@ fn handle_map_click_by_interaction_mode(
             ) || apply_civilian_selection_or_report(
                 commands,
                 session,
+                origin,
                 interaction,
                 viewport,
                 audio,
@@ -239,8 +258,16 @@ fn handle_map_click_by_interaction_mode(
             ) {
                 return;
             }
-            if apply_navy_tile_click(commands, session, interaction, viewport, tile, nation) {
-                cycle_map_interaction_selection(session, interaction, viewport);
+            if apply_navy_tile_click(
+                commands,
+                session,
+                origin,
+                interaction,
+                viewport,
+                tile,
+                nation,
+            ) {
+                cycle_map_interaction_selection(session, origin, interaction, viewport);
             }
         }
         MapInteractionMode::None => {
@@ -254,6 +281,7 @@ fn handle_map_click_by_interaction_mode(
             ) || apply_civilian_selection_or_report(
                 commands,
                 session,
+                origin,
                 interaction,
                 viewport,
                 audio,
@@ -263,7 +291,15 @@ fn handle_map_click_by_interaction_mode(
             ) {
                 return;
             }
-            apply_navy_selection(commands, session, interaction, viewport, tile, nation);
+            apply_navy_selection(
+                commands,
+                session,
+                origin,
+                interaction,
+                viewport,
+                tile,
+                nation,
+            );
         }
     }
 }
@@ -324,6 +360,7 @@ fn apply_army_selected(
 fn apply_civilian_selection_or_report(
     commands: &mut Commands,
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
     audio: &mut RetailAudioAssets,
@@ -345,6 +382,7 @@ fn apply_civilian_selection_or_report(
         if input_flags == 2 || !city {
             apply_map_transition(
                 session,
+                origin,
                 interaction,
                 viewport,
                 MapTransition::SetMode(MapInteractionMode::Civilian),
@@ -449,6 +487,7 @@ const fn civilian_order_sound(
 fn apply_navy_selection(
     commands: &mut Commands,
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
     tile: TileId,
@@ -460,22 +499,7 @@ fn apply_navy_selection(
     {
         NavySelectionClick::Ignored => false,
         NavySelectionClick::SelectZone { zone, force } => {
-            apply_map_transition(
-                session,
-                interaction,
-                viewport,
-                MapTransition::SetMode(MapInteractionMode::Navy),
-            );
-            interaction.navy.zone = Some(zone);
-            interaction.navy.force = force;
-            if let Some(center) = navy_zone_center_tile(&session.game, zone) {
-                apply_map_transition(
-                    session,
-                    interaction,
-                    viewport,
-                    MapTransition::Center(center),
-                );
-            }
+            activate_navy_selection(session, origin, interaction, viewport, zone, force);
             true
         }
         click @ (NavySelectionClick::Intelligence { .. }
@@ -490,6 +514,7 @@ fn apply_navy_selection(
 fn apply_navy_tile_click(
     commands: &mut Commands,
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     interaction: &mut StrategicInteraction,
     viewport: &mut StrategicViewport,
     tile: TileId,
@@ -505,14 +530,7 @@ fn apply_navy_tile_click(
         NavyTileClick::Selection(selection) => {
             match selection {
                 NavySelectionClick::SelectZone { zone, force } => {
-                    apply_map_transition(
-                        session,
-                        interaction,
-                        viewport,
-                        MapTransition::SetMode(MapInteractionMode::Navy),
-                    );
-                    interaction.navy.zone = Some(zone);
-                    interaction.navy.force = force;
+                    activate_navy_selection(session, origin, interaction, viewport, zone, force);
                 }
                 click @ (NavySelectionClick::Intelligence { .. }
                 | NavySelectionClick::InspectForce(_)
@@ -559,6 +577,7 @@ fn spawn_navy_selection_ui(
 
 fn sync_strategic_map_cursor(
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     maps: Query<(Ref<StrategicInteraction>, &StrategicViewport)>,
     land: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     ocean: Query<&RelativeCursorPosition, With<OceanMapCanvas>>,
@@ -573,7 +592,7 @@ fn sync_strategic_map_cursor(
             .find_map(|cursor| ocean_tile_at_cursor(&session.game, cursor, &viewport.ocean))
     } else {
         land.iter().find_map(|cursor| {
-            strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
+            strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor)
         })
     };
     let Some(tile) = tile else {
@@ -693,6 +712,143 @@ mod tests {
                 Some(CivilianUnitKind::Driller),
             ),
             Some(SoundId::new(0x2339))
+        );
+    }
+
+    fn two_frigates_in_player_port() -> (GameState, OceanZoneId, TaskForceId, ShipId) {
+        let mut parts = crate::ui::test_support::beginning_of_game_parts();
+        let nation = parts.turn.active_nation;
+        let location = parts
+            .ocean
+            .zones
+            .iter()
+            .enumerate()
+            .rev()
+            .find_map(|(index, kind)| {
+                let ZoneKind::PortZone(port) = kind else {
+                    return None;
+                };
+                (parts.map[port.port_tile]
+                    .former_owner_nation
+                    .and_then(TileOwnerTag::nation)
+                    == Some(nation))
+                .then_some(OceanZoneId::new(index as u16))
+            })
+            .expect("active nation has a port zone");
+        let first = parts.object_ids.ship();
+        let second = parts.object_ids.ship();
+        let force = parts.object_ids.task_force();
+        let ship = |name: &str| ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            aggression: NavalAggression::Balanced,
+            nation,
+            name: name.to_string(),
+            strength: 900,
+            experience: 0,
+            selection: ShipSelection::Available,
+        };
+        parts.ships.insert(first, ship("Alpha"));
+        parts.ships.insert(second, ship("Beta"));
+        parts.task_forces.insert(
+            force,
+            TaskForceState::from_parts(
+                NavalAggression::Balanced,
+                TaskForceOrder::None,
+                TaskForceTarget::None,
+                location,
+                nation,
+                false,
+                -1,
+                [(first, true), (second, true)]
+                    .into_iter()
+                    .collect::<indexmap::IndexMap<_, _>>(),
+            ),
+        );
+        (GameState::from_parts(parts), location, force, first)
+    }
+
+    fn first_navy_mission_tile(
+        state: &GameState,
+        force: TaskForceId,
+        zone: OceanZoneId,
+    ) -> Option<(TileId, i32)> {
+        let geometry = state.map().geometry();
+        for row in 0..STRATEGIC_MAP_HEIGHT {
+            for column in 0..STRATEGIC_MAP_WIDTH {
+                let Some(tile) = geometry.tile(row, column) else {
+                    continue;
+                };
+                if state.navy_map_action_code(tile, Some(zone)) != 0 {
+                    continue;
+                }
+                let command = state.navy_command_for_tile(force, tile);
+                if (0x0c..=0x10).contains(&command) {
+                    return Some((tile, command));
+                }
+            }
+        }
+        None
+    }
+
+    #[test]
+    fn navy_mission_flow_selects_a_map_target_without_mission_buttons() {
+        let (state, zone, force, first) = two_frigates_in_player_port();
+        let nation = state.turn().active_nation;
+        let mut session = GameSession::new(state);
+        let mut interaction = StrategicInteraction::default();
+        let mut viewport = StrategicViewport::default();
+
+        let mut origin = MapViewOrigin(TileId::new(1));
+        activate_navy_selection(
+            &mut session,
+            &mut origin,
+            &mut interaction,
+            &mut viewport,
+            zone,
+            Some(force),
+        );
+        assert_eq!(interaction.mode, MapInteractionMode::Navy);
+        assert_eq!(interaction.navy.force, Some(force));
+
+        session
+            .game
+            .set_task_force_ship_selected(force, first, false);
+        assert_eq!(
+            session.game.navy_toolbar_counts(Some(force)).selected[NavyToolbarClass::Class1],
+            1
+        );
+
+        session
+            .game
+            .set_task_force_aggression(force, NavalAggression::Aggressive);
+        assert_eq!(
+            session.game.task_force(force).map(|entry| entry.aggression),
+            Some(NavalAggression::Aggressive)
+        );
+
+        let (tile, command) = first_navy_mission_tile(&session.game, force, zone)
+            .expect("selected frigates can reach a map target");
+        let token = navy_cursor_token(command);
+        assert_ne!(token, 0);
+        assert_eq!(
+            navy_selection_cursor_token(&session.game, tile, Some(force), Some(zone)),
+            token
+        );
+
+        assert_eq!(
+            session
+                .game
+                .navy_do_tile_click(tile, Some(force), Some(zone), nation),
+            NavyTileClick::Submitted
+        );
+        let order = session.game.task_force(force).map(|entry| entry.order);
+        assert_ne!(order, Some(TaskForceOrder::None));
+
+        cycle_map_interaction_selection(&mut session, &mut origin, &mut interaction, &mut viewport);
+        assert_ne!(
+            session.game.task_force(force).map(|entry| entry.order),
+            Some(TaskForceOrder::None)
         );
     }
 }

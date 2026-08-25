@@ -1,4 +1,3 @@
-use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::fill_brackets;
 use crate::ui::generated;
@@ -14,6 +13,7 @@ use crate::ui::strategic_map::{
     compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow, no_modal};
+use crate::ui::{GameSession, MapViewOrigin};
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -93,6 +93,7 @@ fn bind_city_site(
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
 ) {
     let Ok(root) = roots.single() else {
         return;
@@ -101,8 +102,9 @@ fn bind_city_site(
         return;
     }
     bind_city_site_controls(&mut commands, root, &tree, &mut nodes, &mut assets);
-    let map = bind_strategic_base_terrain(&mut commands, root, &tree, &mut assets, &session);
-    bind_minimap(&mut commands, root, &tree, &mut assets, &session);
+    let map =
+        bind_strategic_base_terrain(&mut commands, root, &tree, &mut assets, &session, origin.0);
+    bind_minimap(&mut commands, root, &tree, &mut assets, &session, origin.0);
     commands
         .entity(map)
         .insert(CitySiteHover::default())
@@ -194,6 +196,7 @@ fn bind_city_site_intro(
 
 fn sync_city_site_hover(
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(
@@ -205,9 +208,8 @@ fn sync_city_site_hover(
 ) {
     let nation = session.active_major_nation();
     for (canvas, cursor, image_node, mut hover) in &mut maps {
-        let tile =
-            strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor);
-        if hover.0 == tile && !session.is_changed() {
+        let tile = strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor);
+        if hover.0 == tile && !session.is_changed() && !origin.is_changed() {
             continue;
         }
         hover.0 = tile;
@@ -215,7 +217,7 @@ fn sync_city_site_hover(
             tile.filter(|&tile| highlights_city_site_candidate(&session.game, nation, tile));
         let image = compose_city_site_terrain(
             &session.game,
-            session.map_view_origin,
+            origin.0,
             canvas,
             nation,
             highlighted,
@@ -254,6 +256,7 @@ fn on_city_site_activate(
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
     session: Res<GameSession>,
+    origin: Res<MapViewOrigin>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut commands: Commands,
     assets: RetailUiAssets,
@@ -261,9 +264,7 @@ fn on_city_site_map_click(
     let cursor = maps
         .get(click.entity)
         .expect("city-site map click is bound on the strategic canvas");
-    let Some(tile) =
-        strategic_base_terrain_tile_at_cursor(&session.game, session.map_view_origin, cursor)
-    else {
+    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor) else {
         return;
     };
     let nation = session.active_major_nation();
