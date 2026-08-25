@@ -142,7 +142,7 @@ pub fn layout_diplomacy_map_labels(
 
 pub fn draw_diplomacy_map_labels(
     picture: &mut IndexedPicture,
-    painter: &mut RetailRasterTextPainter,
+    painter: &mut RetailRasterTextPainter<'_>,
     seeds: &[Option<DiplomacyLabelSeed<'_>>],
     labels: &[(usize, IRect)],
 ) {

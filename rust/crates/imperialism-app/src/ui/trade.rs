@@ -10,7 +10,7 @@ use super::retail_amount_bar::{
 };
 use super::retail_raster::IndexedRasterExt;
 use super::retail_raster_text::RetailRasterTextPainter;
-use crate::{AppState, RetailAssetsResource};
+use crate::{AppState, RetailAssetsResource, RetailFonts};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
@@ -544,6 +544,8 @@ fn sync_trade_text(
 fn sync_trade_screen_picture(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut images: ResMut<Assets<Image>>,
     roots: Query<(), Added<TradeScreen>>,
     screens: Query<(&TradeScreenVisual, &ImageNode)>,
@@ -554,7 +556,8 @@ fn sync_trade_screen_picture(
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let mut text = RetailRasterTextPainter::from_preset(
-        retail.assets(),
+        &fonts,
+        &font_assets,
         RetailTextStylePreset {
             font_family: 2,
             face_flags: 0,

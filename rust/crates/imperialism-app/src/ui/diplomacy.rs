@@ -17,7 +17,7 @@ use super::retail_raster_text::RetailRasterTextPainter;
 use super::satellite_preview::nation_owner_palette;
 use super::session::apply_turn_stop;
 use crate::AppState;
-use crate::RetailAssetsResource;
+use crate::{RetailAssetsResource, RetailFonts};
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -1335,7 +1335,7 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
 
 fn draw_diplomacy_text(
     picture: &mut IndexedPicture,
-    painter: &mut RetailRasterTextPainter,
+    painter: &mut RetailRasterTextPainter<'_>,
     origin: IVec2,
     text: &str,
 ) {
@@ -1345,7 +1345,7 @@ fn draw_diplomacy_text(
 
 fn draw_diplomacy_text_right(
     picture: &mut IndexedPicture,
-    painter: &mut RetailRasterTextPainter,
+    painter: &mut RetailRasterTextPainter<'_>,
     right: i32,
     baseline: i32,
     text: &str,
@@ -1356,7 +1356,7 @@ fn draw_diplomacy_text_right(
 
 fn draw_diplomacy_text_center(
     picture: &mut IndexedPicture,
-    painter: &mut RetailRasterTextPainter,
+    painter: &mut RetailRasterTextPainter<'_>,
     center: i32,
     baseline: i32,
     text: &str,
@@ -1366,11 +1366,13 @@ fn draw_diplomacy_text_center(
 }
 
 fn diplomacy_text_painter<'a>(
-    assets: &'a RetailAssets,
+    fonts: &RetailFonts,
+    font_assets: &'a Assets<Font>,
     point_size: i32,
 ) -> RetailRasterTextPainter<'a> {
     RetailRasterTextPainter::from_preset(
-        assets,
+        fonts,
+        font_assets,
         RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -1385,6 +1387,8 @@ fn render_diplomacy_panels(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
     retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut images: ResMut<Assets<Image>>,
     panels: Query<(&DiplomacyPanel, &ImageNode)>,
 ) {
@@ -1398,10 +1402,10 @@ fn render_diplomacy_panels(
     let source = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let major = state.nations().major(source);
-    let mut title = diplomacy_text_painter(retail.assets(), 14);
-    let mut row = diplomacy_text_painter(retail.assets(), 12);
-    let mut small = diplomacy_text_painter(retail.assets(), 10);
-    let mut council_paint = diplomacy_text_painter(retail.assets(), 18);
+    let mut title = diplomacy_text_painter(&fonts, &font_assets, 14);
+    let mut row = diplomacy_text_painter(&fonts, &font_assets, 12);
+    let mut small = diplomacy_text_painter(&fonts, &font_assets, 10);
+    let mut council_paint = diplomacy_text_painter(&fonts, &font_assets, 18);
     let strings = |index| retail.get_string(0x2733, index);
     let (name, labels, values) = diplomacy_information(state, screen.framed_nation);
     let council = council_panel_text(state, &retail);
@@ -1874,6 +1878,7 @@ fn render_diplomacy_map(
     mut commands: Commands,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
+    font_assets: Res<Assets<Font>>,
     screen: Single<Ref<DiplomacyScreen>>,
     map: Single<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
 ) {
@@ -1904,7 +1909,8 @@ fn render_diplomacy_map(
     };
     let (mut picture, geometry) = compose_diplomacy_map(owner_at, fill, Some(framed));
     let mut painter = RetailRasterTextPainter::from_preset(
-        assets.assets(),
+        assets.fonts(),
+        &font_assets,
         RetailTextStylePreset {
             font_family: 0,
             face_flags: 0,
