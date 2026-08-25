@@ -22,7 +22,10 @@ GHIDRA_VERSION="12.1.2"
 GHIDRA_TAG="Ghidra_${GHIDRA_VERSION}_build"
 # Extract directly under /opt so the install dir is /opt/ghidra_<ver>_PUBLIC
 # (the zip's own top-level dir); this reuses an existing install if present.
-GHIDRA_PARENT_DIR="/opt"
+GHIDRA_PARENT_DIR="${GHIDRA_PARENT_DIR:-/opt}"
+BOOTSTRAP_TMP="$(mktemp -d)"
+cleanup_bootstrap_tmp() { rm -rf "$BOOTSTRAP_TMP"; }
+trap cleanup_bootstrap_tmp EXIT
 
 # Google Drive file ID for Imperialism.exe.
 # Original URL:
@@ -81,11 +84,10 @@ if ! command -v just >/dev/null 2>&1; then
     curl -sSf https://api.github.com/repos/casey/just/releases/latest \
       | jq -r .tag_name | sed 's/^v//'
   )"
-  curl -Lo /tmp/just.tar.gz \
+  curl -Lo "$BOOTSTRAP_TMP/just.tar.gz" \
     "https://github.com/casey/just/releases/download/${JUST_VERSION}/just-${JUST_VERSION}-x86_64-unknown-linux-musl.tar.gz"
-  $SUDO tar -xzf /tmp/just.tar.gz -C /usr/local/bin just
+  $SUDO tar -xzf "$BOOTSTRAP_TMP/just.tar.gz" -C /usr/local/bin just
   $SUDO chmod +x /usr/local/bin/just
-  rm -f /tmp/just.tar.gz
 fi
 
 # ---------------------------------------------------------------------------
@@ -169,9 +171,8 @@ if [ -z "$(find "$GHIDRA_PARENT_DIR" -maxdepth 1 -iname "ghidra_${GHIDRA_VERSION
     echo "ERROR: could not resolve Ghidra release asset for tag ${GHIDRA_TAG}" >&2
     exit 1
   fi
-  curl -Lo /tmp/ghidra.zip "$ASSET_URL"
-  $SUDO unzip -q /tmp/ghidra.zip -d "$GHIDRA_PARENT_DIR"
-  rm -f /tmp/ghidra.zip
+  curl -Lo "$BOOTSTRAP_TMP/ghidra.zip" "$ASSET_URL"
+  $SUDO unzip -q "$BOOTSTRAP_TMP/ghidra.zip" -d "$GHIDRA_PARENT_DIR"
 fi
 
 GHIDRA_INSTALL_DIR="$(find "$GHIDRA_PARENT_DIR" -maxdepth 1 -iname "ghidra_${GHIDRA_VERSION}_PUBLIC" | head -n1)"

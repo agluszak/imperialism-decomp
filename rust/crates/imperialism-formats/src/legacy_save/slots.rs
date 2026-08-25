@@ -285,18 +285,18 @@ mod tests {
 
     #[test]
     fn numbered_slot_paths_use_the_retail_single_player_names() {
-        let dir = Path::new("/tmp/saves");
+        let dir = Path::new("saves");
         assert_eq!(
             retail_save_path(dir, SaveSlot::numbered(0).unwrap()),
-            PathBuf::from("/tmp/saves/slot0.imp")
+            PathBuf::from("saves/slot0.imp")
         );
         assert_eq!(
             retail_save_path(dir, SaveSlot::numbered(7).unwrap()),
-            PathBuf::from("/tmp/saves/slot7.imp")
+            PathBuf::from("saves/slot7.imp")
         );
         assert_eq!(
             retail_save_path(dir, SaveSlot::Autosave),
-            PathBuf::from("/tmp/saves/slotA.imp")
+            PathBuf::from("saves/slotA.imp")
         );
         assert!(SaveSlot::numbered(8).is_none());
     }
