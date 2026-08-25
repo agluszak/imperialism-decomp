@@ -204,7 +204,7 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
 
   JsonObject continuation;
   continuation.Set("TechnologyReport", technologyId);
-  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
+  if (json_object_dotset_value(transition.Run().Captures(), "after.continuation",
                                continuation.Release()) != JSONSuccess) {
     return RuntimeActionResult::Failure("technology continuation capture failed");
   }

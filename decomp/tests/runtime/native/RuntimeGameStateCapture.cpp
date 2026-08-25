@@ -67,9 +67,13 @@
 #include "game/navy/TShip.h"
 #include "game/navy/TTaskForce.h"
 #include "game/globals/navy_globals.h"
+#include "game/tactical_ui/TCityTask.h"
+#include "game/tactical_ui/TShipBuildingTask.h"
+#include "game/tactical_ui/TTaskList.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_core/TLanguageMgr.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/ui_core/TSortedPtrList.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_screens/TPortZone.h"
@@ -1124,6 +1128,7 @@ JSON_Value* CaptureTurn(const RuntimeRun& run) {
   object.Set("diplomacy_year_term_raw", static_cast<int>(g_pSimMgr->field6c));
   object.Set("phase", g_pSimMgr->turnStateCode);
   object.Set("turn_flow_status_flags", g_pSimMgr->turnFlowStatusFlags);
+  object.Set("selected_asset_set", static_cast<int>(g_pSimMgr->field6a));
   JsonArray quarterGateByDecade;
   for (int decade = 0; decade < 10; ++decade) {
     quarterGateByDecade.Add(static_cast<int>(g_pSimMgr->phaseStateByDecade[decade]));
@@ -1794,6 +1799,10 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("army_movement_budget", nation->field900);
   object.Set("aid_allocation_total", nation->aidAllocationTotal);
   object.Set("military_expenses", nation->militaryExpenses960);
+  object.Set("candidate_nation_flags",
+             CaptureUnsignedByteArray(nation->candidateNationFlags, kNationSlotCount));
+  object.Set("colony_boycott_flags",
+             CaptureUnsignedByteArray(nation->colonyBoycottFlags, kNationSlotCount));
   return object.Release();
 }
 
@@ -1840,6 +1849,13 @@ JSON_Value* CaptureNationCommon(TCountry* country) {
   common.SetOptional("home_tile", country->homeTileIndex);
   common.Set("trade_policy_by_nation",
              CaptureShortArray(country->needLevelByNation, kNationSlotCount));
+  JsonObject unitNameOrdinals;
+  for (int kind = 0; kind < kMilitaryUnitKindCount; ++kind) {
+    unitNameOrdinals.Set(MilitaryUnitKindName(kind),
+                         static_cast<int>(country->unitNameOrdinalByType[kind]));
+  }
+  common.Set("unit_name_ordinal_by_type", unitNameOrdinals.Release());
+  common.Set("unit_name_counter", static_cast<int>(country->unitNameCounter84));
   return common.Release();
 }
 
@@ -1869,18 +1885,22 @@ JSON_Value* CaptureTowns(TGreatPower* nation, bool freshRandomStart) {
       FailSemanticCapture("major nation town owner is outside the nation range");
     }
     unsigned char transportLinked = 0;
-    unsigned char hasAdjacentCity = 0;
     unsigned char active = 0;
     memcpy(&transportLinked, &town->transportLinked, 1);
-    // ITown leaves this byte untouched. It first becomes semantic when resource calculation
-    // writes it, so do not publish allocator residue at the immediate fresh-game boundary.
-    if (!freshRandomStart) {
-      memcpy(&hasAdjacentCity, &town->hasAdjacentCity, 1);
-    }
     memcpy(&active, &town->activeFlag, 1);
     if (transportLinked > 1 || active > 1) {
       FailSemanticCapture("major nation town boolean state is not canonical");
     }
+
+    bool resourcesUncalculated = true;
+    for (int resource = 0; resource < kResourceKindCount; ++resource) {
+      if (town->resourceYieldByType[resource] != 0) {
+        resourcesUncalculated = false;
+        break;
+      }
+    }
+    // ITown leaves this byte untouched until resource calculation writes it.
+    const bool omitAdjacentCity = town->createdTurnTick > 0 && resourcesUncalculated;
 
     JsonObject object;
     object.Set("name", town->name);
@@ -1890,7 +1910,15 @@ JSON_Value* CaptureTowns(TGreatPower* nation, bool freshRandomStart) {
     object.Set("resource_yield_by_type", CaptureResourceTable(town->resourceYieldByType));
     object.Set("transport_linked", transportLinked != 0);
     object.Set("enabled", static_cast<unsigned int>(static_cast<unsigned char>(town->enabledFlag)));
-    object.Set("has_adjacent_city", static_cast<unsigned int>(hasAdjacentCity));
+    if (!omitAdjacentCity) {
+      unsigned int hasAdjacentCity = 0;
+      if (!freshRandomStart) {
+        unsigned char value = 0;
+        memcpy(&value, &town->hasAdjacentCity, 1);
+        hasAdjacentCity = value;
+      }
+      object.Set("has_adjacent_city", hasAdjacentCity);
+    }
     object.Set("active", active != 0);
     towns.Add(object.Release());
   }
@@ -2325,12 +2353,67 @@ JSON_Value* CaptureCityBuildingWindows(TCity* city) {
   return windows.Release();
 }
 
+JSON_Value* CaptureCityTasks(TCity* city) {
+  JsonArray tasks;
+  const int count =
+      city->trackedOrderList270 != 0 ? city->trackedOrderList270->GetCount() : 0;
+  for (int ordinal = 1; ordinal <= count; ++ordinal) {
+    TCityTask* task =
+        static_cast<TCityTask*>(city->trackedOrderList270->GetEntryByOrdinal(ordinal));
+    if (task == 0) {
+      FailSemanticCapture("city task list contains a null entry");
+    }
+    JsonObject object;
+    object.Set("order_slot", static_cast<int>(task->citySlotIndex));
+    object.Set("remaining_attempts", static_cast<int>(task->remainingAttempts));
+    object.Set("requested_amount", static_cast<int>(task->requestedAmount));
+    object.Set("already_queued", task->alreadyQueuedFlag != 0);
+    if (task->serializedTaskKind == 2) {
+      TShipBuildingTask* shipTask = static_cast<TShipBuildingTask*>(task);
+      JsonObject operation;
+      operation.Set("ship_type", ShipTypeName(static_cast<int>(shipTask->requestedShipType14)));
+      operation.Set("waiting_for_order_advance", shipTask->waitingForShipOrderAdvance16 != 0);
+      JsonObject tagged;
+      tagged.Set("ShipConstruction", operation.Release());
+      object.Set("operation", tagged.Release());
+    } else if (task->serializedTaskKind == 1) {
+      object.Set("operation", "ProductionOrder");
+    } else {
+      FailSemanticCapture("city task has an unsupported serialized kind");
+    }
+    tasks.Add(object.Release());
+  }
+  return tasks.Release();
+}
+
+JSON_Value* CaptureCityTransportRequests(TCity* city) {
+  JsonArray requests;
+  const int count = city->eventQueue274 != 0 ? city->eventQueue274->GetSize() : 0;
+  for (int ordinal = 1; ordinal <= count; ++ordinal) {
+    TCityTransportRequest* request = static_cast<TCityTransportRequest*>(
+        city->eventQueue274->GetPtrListEntryByOneBasedIndex(ordinal));
+    if (request == 0) {
+      FailSemanticCapture("city transport-request list contains a null record");
+    }
+    if (request->resourceType < 0 || request->resourceType >= kResourceKindCount) {
+      FailSemanticCapture("city transport request resource is outside the resource table");
+    }
+    JsonObject object;
+    object.Set("resource", kResourceNames[request->resourceType]);
+    object.Set("requested_amount", static_cast<int>(request->requestedAmount));
+    requests.Add(object.Release());
+  }
+  return requests.Release();
+}
+
 JSON_Value* CaptureCity(TCity* city) {
   if (city == 0) {
     return JsonNullValue();
   }
   JsonObject object;
   object.Set("orders", CaptureCityOrders(city));
+  object.Set("tasks", CaptureCityTasks(city));
+  object.Set("transport_requests", CaptureCityTransportRequests(city));
   object.Set("power_plant_upgrade_queued", city->powerPlantUpgradeQueuedFlag04 != 0 ? true : false);
   object.Set("food_substitution_count", static_cast<int>(city->foodSubstitutionCount06));
   object.Set("starvation_population_loss", static_cast<int>(city->starvationPopulationLoss08));
@@ -2512,7 +2595,7 @@ JSON_Value* CaptureCivilianWorkOrder(const TCivUnit* unit) {
   JsonObject data;
   if (unit->unitOrder == kUnitOrderRedeploy) {
     ASSERT(unit->orderTargetIndex0C >= 0);
-    data.Set("destination", static_cast<int>(unit->orderTargetIndex0C));
+    data.Set("source", static_cast<int>(unit->orderTargetIndex0C));
   } else if (unit->unitOrder == kUnitOrderLayRail) {
     JsonObject segment;
     const int direction = RailDirection(unit->orderTargetIndex0C, unit->tileIndex06);
@@ -2524,6 +2607,8 @@ JSON_Value* CaptureCivilianWorkOrder(const TCivUnit* unit) {
     ASSERT(unit->unitOrder == kUnitOrderBuildDepot || unit->unitOrder == kUnitOrderBuildPort ||
            unit->unitOrder == kUnitOrderProspect || unit->unitOrder == kUnitOrderDevelopResource ||
            unit->unitOrder == kUnitOrderBuildFort || unit->unitOrder == kUnitOrderPurchaseLand);
+    ASSERT(unit->orderTargetIndex0C >= 0);
+    data.Set("source", static_cast<int>(unit->orderTargetIndex0C));
   }
   data.Set("turns", static_cast<int>(unit->remainingTurns24));
   order.Set(CivilianWorkOrderName(unit->unitOrder), data.Release());

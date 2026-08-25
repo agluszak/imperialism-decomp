@@ -2,9 +2,7 @@
 
 use imperialism_core::differential;
 use imperialism_core::*;
-use imperialism_testkit::{
-    assert_game_state_eq, compare_native, load_save_backed_state, run_native,
-};
+use imperialism_testkit::{assert_snapshot_eq, compare_native, run_native};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -290,8 +288,8 @@ fn interactive_army_battle_done() {
         "interactive_army_battle_done",
     )
     .unwrap();
-    let mut state = load_save_backed_state(native.before).unwrap();
-    let expected = load_save_backed_state(native.after).unwrap();
+    let mut state = native.before.into_game_state();
+    let expected = &native.after;
     let continuation = state
         .do_combat_moves()
         .expect("hostile stack creates a battle");
@@ -306,7 +304,7 @@ fn interactive_army_battle_done() {
     let _ = state.auto_resolve_land_battle(&[]);
 
     assert_eq!(snapshots, native.result);
-    assert_game_state_eq(&expected, &state).unwrap();
+    assert_snapshot_eq(expected, &state.comparison_snapshot()).unwrap();
 }
 
 #[test]
@@ -314,8 +312,8 @@ fn interactive_army_battle_done() {
 fn interactive_army_battle_move() {
     let native =
         run_native::<EmptyCase, InteractiveMoveResult>("interactive_army_battle_move").unwrap();
-    let mut state = load_save_backed_state(native.before).unwrap();
-    let expected = load_save_backed_state(native.after).unwrap();
+    let mut state = native.before.into_game_state();
+    let expected = &native.after;
     let continuation = state
         .do_combat_moves()
         .expect("hostile stack creates a battle");
@@ -336,13 +334,13 @@ fn interactive_army_battle_move() {
     let _ = state.auto_resolve_land_battle(&[]);
 
     assert_eq!(snapshots, native.result.snapshots);
-    assert_game_state_eq(&expected, &state).unwrap();
+    assert_snapshot_eq(expected, &state.comparison_snapshot()).unwrap();
 }
 
 fn compare_interactive_army_battle_attack(case_name: &str) {
     let native = run_native::<EmptyCase, InteractiveAttackResult>(case_name).unwrap();
-    let mut state = load_save_backed_state(native.before).unwrap();
-    let expected = load_save_backed_state(native.after).unwrap();
+    let mut state = native.before.into_game_state();
+    let expected = &native.after;
     let continuation = state
         .do_combat_moves()
         .expect("hostile stack creates a battle");
@@ -384,7 +382,7 @@ fn compare_interactive_army_battle_attack(case_name: &str) {
         let _ = state.auto_resolve_land_battle(&[]);
     }
     assert_eq!(snapshots, native.result.snapshots);
-    assert_game_state_eq(&expected, &state).unwrap();
+    assert_snapshot_eq(expected, &state.comparison_snapshot()).unwrap();
 }
 
 #[test]
@@ -406,8 +404,8 @@ fn interactive_army_battle_retreat() {
         "interactive_army_battle_retreat",
     )
     .unwrap();
-    let mut state = load_save_backed_state(native.before).unwrap();
-    let expected = load_save_backed_state(native.after).unwrap();
+    let mut state = native.before.into_game_state();
+    let expected = &native.after;
     let continuation = state
         .do_combat_moves()
         .expect("hostile stack creates a battle");
@@ -418,7 +416,7 @@ fn interactive_army_battle_retreat() {
         Some(native.result)
     );
     assert!(state.retreat_from_army_battle(&[]).unwrap().stop.is_some());
-    assert_game_state_eq(&expected, &state).unwrap();
+    assert_snapshot_eq(expected, &state.comparison_snapshot()).unwrap();
 }
 
 #[derive(Debug, Deserialize, PartialEq)]

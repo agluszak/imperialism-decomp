@@ -3,7 +3,9 @@
 mod differential;
 mod runtime_capture;
 
-pub use differential::{assert_game_state_eq, compare_native, load_save_backed_state, run_native};
+pub use differential::{
+    assert_game_state_eq, assert_snapshot_eq, compare_native, load_save_backed_state, run_native,
+};
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, ProvinceId, RetailCrtRng, RetailLcg, ZoneKind,
     create_random_game,

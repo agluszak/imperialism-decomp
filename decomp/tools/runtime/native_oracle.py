@@ -2,7 +2,8 @@
 
 `compare_native` and `just native-oracle` use this instead of RuntimeRunner.
 It keeps session.execute_run() for sandbox, Xvfb, and process control, then
-reads the native result.json / captures.json and copies before/after .imp files.
+reads the native result.json / captures.json. Save-backed `.imp` copies are
+optional and only published when a capture still uses that transport.
 """
 
 from __future__ import annotations
@@ -39,7 +40,7 @@ def runtime_result_dir() -> Path:
 
 
 def copy_save_backed_captures(run_dir: Path, captures: JsonObject) -> None:
-    """Copy native save-backed before/after .imp files next to result.json."""
+    """Copy save-backed before/after .imp files next to result.json when present."""
     game_dir = run_dir / "game"
     for capture_name, payload in captures.items():
         if not isinstance(payload, dict):
@@ -53,9 +54,7 @@ def copy_save_backed_captures(run_dir: Path, captures: JsonObject) -> None:
         )
         source = next((path for path in candidates if path.is_file()), None)
         if source is None:
-            raise FileNotFoundError(
-                f"native save for {capture_name!r} was not written under {game_dir / 'Save'}"
-            )
+            continue
         (run_dir / save_name).write_bytes(source.read_bytes())
 
 

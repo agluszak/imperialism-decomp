@@ -14,12 +14,13 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 - `imperialism-testkit` reads named semantic captures and runs process-isolated differential
   checks.
 
-Native semantic transitions capture save-backed `before`/`after` (`.imp` plus ephemeral session
-fields), with JSON `case`/`result`, through the C++ `native_transition_oracle` scenario. Domain
-integration tests call `compare_native(case, apply)`, which launches `just native-oracle` into a
-unique output directory and compares against that run's native `result.json` / `captures.json`.
-Retail fixtures live in `../fixtures/retail/`. The Rust game state does not depend on C++ layouts or
-Bevy ECS entities.
+Native semantic transitions capture `ComparisonSnapshot` JSON `before`/`after` (observable
+semantic state with retail ship/task-force ordinals), with JSON `case`/`result`, through the C++
+`native_transition_oracle` scenario. Domain integration tests call `compare_native(case, apply)`,
+which launches `just native-oracle` into a unique output directory and compares against that run's
+native `result.json` / `captures.json`. The retail save loader has its own differential tests and is
+not re-run for each game-rule oracle case. Retail fixtures live in `../fixtures/retail/`. The Rust
+game state does not depend on C++ layouts or Bevy ECS entities.
 
 Evidence classifications are retained: `retail_fixture_oracle` means Rust agrees with the current C++
 reconstruction from a retail-derived fixture; it is not direct original-executable equivalence.

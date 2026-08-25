@@ -1,10 +1,7 @@
 //! Native interruption-boundary differentials for the outer turn state machine.
 
-use imperialism_core::{GameState, TurnStop};
-use imperialism_testkit::{
-    assert_game_state_eq, compare_native, first_serialized_difference, load_save_backed_state,
-    run_native,
-};
+use imperialism_core::{ComparisonSnapshot, GameState, TurnContinuation, TurnStop};
+use imperialism_testkit::{assert_snapshot_eq, compare_native, run_native};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -70,13 +67,12 @@ fn city_and_transport_writes_the_resume_phase_before_the_body() {
 #[ignore = "requires the native C++ oracle"]
 fn newspaper_dispatch_precedes_return_to_map() {
     let native = run_native::<NewspaperCase, String>("turn_stop_newspaper").unwrap();
-    let mut actual = load_save_backed_state(native.before).unwrap();
-    let expected = load_save_backed_state(native.after).unwrap();
+    let mut actual = native.before.into_game_state();
     assert_eq!(
         stop_name(actual.advance_turn(&native.case.story_ids)),
         native.result
     );
-    assert_game_state_eq(&expected, &actual).unwrap();
+    assert_snapshot_eq(&native.after, &actual.comparison_snapshot()).unwrap();
 }
 
 #[test]
@@ -134,8 +130,7 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
         "consecutive_turn_sequence",
     )
     .unwrap();
-    let mut state = load_save_backed_state(native.before).unwrap();
-    let expected = load_save_backed_state(native.after).unwrap();
+    let mut state = native.before.into_game_state();
     let mut stops = Vec::new();
     let mut rng_states = Vec::new();
     let mut economic_turns = Vec::new();
@@ -177,7 +172,7 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
         rng_states,
         economic_turns,
     };
-    if let Err(error) = assert_game_state_eq(&expected, &state) {
+    if let Err(error) = assert_snapshot_eq(&native.after, &state.comparison_snapshot()) {
         panic!("{error}; result C++ {:?}, Rust {result:?}", native.result);
     }
     assert_eq!(native.result, result);
@@ -196,8 +191,7 @@ fn technology_report_dispatch_precedes_newspaper() {
 #[ignore = "requires the native C++ oracle"]
 fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
     let native = run_native::<(), TradeBoundaryResult>("turn_stop_trade").unwrap();
-    let mut actual = load_save_backed_state(native.before).unwrap();
-    let expected = load_save_backed_state(native.after).unwrap();
+    let mut actual = native.before.into_game_state();
 
     assert_eq!(actual.advance_turn(&[]), TurnStop::TradeOffer);
     let pending = actual
@@ -218,18 +212,15 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
         commodity: pending.commodity.resource() as i16,
     };
     assert_eq!(result, native.result);
-    assert_state_except_continuation(&expected, &actual);
+    assert_state_except_continuation(&native.after, &actual);
 }
 
-fn assert_state_except_continuation(expected: &GameState, actual: &GameState) {
-    let mut expected = serde_json::to_value(expected).unwrap();
-    let mut actual = serde_json::to_value(actual).unwrap();
-    expected.as_object_mut().unwrap().remove("continuation");
-    actual.as_object_mut().unwrap().remove("continuation");
-    assert_eq!(
-        first_serialized_difference(&expected, &actual).unwrap(),
-        None
-    );
+fn assert_state_except_continuation(expected: &ComparisonSnapshot, actual: &GameState) {
+    let mut expected = expected.clone();
+    let mut actual = actual.comparison_snapshot();
+    expected.continuation = TurnContinuation::None;
+    actual.continuation = TurnContinuation::None;
+    assert_snapshot_eq(&expected, &actual).unwrap();
 }
 
 fn stop_name(stop: TurnStop) -> String {

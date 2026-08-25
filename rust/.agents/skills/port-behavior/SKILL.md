@@ -14,8 +14,9 @@ Run from `rust/`.
    and consumer together.
 3. Implement one direct typed operation in `imperialism-core` and connect it to its production caller.
 4. Add representative native transition cases and `compare_native` coverage beside the domain. Compare
-   complete relevant state, the semantic result, ordered effects, and RNG state. Use deliberately
-   constructed cases for rules and a small stable seed corpus for RNG-heavy behavior.
+   complete relevant state through `ComparisonSnapshot`, the semantic result, ordered effects, and RNG
+   state. Use deliberately constructed cases for rules and a small stable seed corpus for RNG-heavy
+   behavior. Save-format differentials belong with the retail save loader, not every game-rule case.
 5. Keep the evidence label accurate: reconstruction initialized from a retail-derived fixture is
    `retail_fixture_oracle`, not a direct retail differential.
 6. Run:

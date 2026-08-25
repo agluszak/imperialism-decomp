@@ -44,14 +44,10 @@ def host_result(run_dir: Path, classification: str | None = None, exit_code: int
 
 class NativeOracleTests(unittest.TestCase):
     def write_native_bundle(self, run_dir: Path, *, status: str = "passed") -> None:
-        save_dir = run_dir / "game" / "Save"
-        save_dir.mkdir(parents=True)
-        (save_dir / "rt_native_before.imp").write_bytes(b"before-bytes")
-        (save_dir / "rt_native_after.imp").write_bytes(b"after-bytes")
         captures = {
-            "before": {"save": "before.imp", "ephemeral": {"turn": 1}},
+            "before": {"turn": {"economic_turn": 1}},
             "case": {"nation": 6},
-            "after": {"save": "after.imp", "ephemeral": {"turn": 1}},
+            "after": {"turn": {"economic_turn": 1}},
             "result": True,
         }
         (run_dir / "captures.json").write_text(
@@ -70,7 +66,34 @@ class NativeOracleTests(unittest.TestCase):
             encoding="utf-8",
         )
 
-    def test_copies_saves_and_leaves_the_native_result_unenriched(self) -> None:
+    def write_save_backed_bundle(self, run_dir: Path) -> None:
+        save_dir = run_dir / "game" / "Save"
+        save_dir.mkdir(parents=True)
+        (save_dir / "rt_native_before.imp").write_bytes(b"before-bytes")
+        (save_dir / "rt_native_after.imp").write_bytes(b"after-bytes")
+        captures = {
+            "before": {"save": "before.imp", "ephemeral": {"turn": 1}},
+            "case": {"nation": 6},
+            "after": {"save": "after.imp", "ephemeral": {"turn": 1}},
+            "result": True,
+        }
+        (run_dir / "captures.json").write_text(
+            json.dumps(captures) + "\n", encoding="utf-8"
+        )
+        (run_dir / "result.json").write_text(
+            json.dumps(
+                {
+                    "name": "native_transition_oracle",
+                    "seed": 1,
+                    "status": "passed",
+                    "captures_path": "captures.json",
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+    def test_snapshot_captures_do_not_require_save_copies(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             run_dir = root / "run"
@@ -110,6 +133,29 @@ class NativeOracleTests(unittest.TestCase):
             )
             self.assertNotIn("evidence_kind", result)
             self.assertNotIn("summary", result)
+            self.assertFalse((run_dir / "before.imp").exists())
+            self.assertFalse((run_dir / "after.imp").exists())
+
+    def test_copies_save_backed_captures_when_present(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            run_dir = root / "run"
+            fixture_dir = root / "fixtures"
+            fixture_dir.mkdir()
+            (fixture_dir / "beginning_of_game.imp").write_bytes(b"fixture")
+
+            def fake_execute(config: RunConfig) -> HostResult:
+                self.write_save_backed_bundle(config.run_dir)
+                return host_result(config.run_dir)
+
+            code = run_native_transition(
+                "city_item_order_increase",
+                result_dir=run_dir,
+                execute=fake_execute,
+                fixture_dir=fixture_dir,
+            )
+
+            self.assertEqual(code, 0)
             self.assertEqual((run_dir / "before.imp").read_bytes(), b"before-bytes")
             self.assertEqual((run_dir / "after.imp").read_bytes(), b"after-bytes")
 

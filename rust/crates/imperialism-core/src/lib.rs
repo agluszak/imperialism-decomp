@@ -15,6 +15,7 @@ mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
 mod combat_moves;
+mod comparison;
 mod create_random_game;
 mod deal_book;
 /// Retail-substep entry points and map-generation traces for C++ integration
@@ -100,6 +101,9 @@ pub use civilian_work::{
     EngineerConstructionChoice, EngineerConstructionOption, RailOrderRejection, RailSegment,
 };
 pub use combat_moves::{CombatMovesContinuation, PendingLandBattle};
+pub use comparison::{
+    ComparisonSnapshot, SelectedShip, ShipOrdinal, TaskForceOrdinal, TownSnapshot,
+};
 pub use create_random_game::{
     RandomGameNames, capital_selection_view_origin, create_random_game, create_scenario_game,
 };
