@@ -592,27 +592,16 @@ impl<'w, 's> RetailTree<'w, 's> {
     }
 
     pub fn try_find(&self, root: Entity, tag: FourCc) -> Option<Entity> {
-        let mut pending = self
+        let mut matches = self
             .children
-            .get(root)
-            .map(|children| children.iter().collect::<Vec<_>>())
-            .unwrap_or_default();
-        let mut found = None;
-        while let Some(entity) = pending.pop() {
-            if self
-                .tags
-                .get(entity)
-                .is_ok_and(|candidate| candidate.0 == tag)
-            {
-                assert!(
-                    found.replace(entity).is_none(),
-                    "retail tag {tag:?} is ambiguous"
-                );
-            }
-            if let Ok(descendants) = self.children.get(entity) {
-                pending.extend(descendants.iter());
-            }
-        }
+            .iter_descendants_depth_first(root)
+            .filter(|&entity| {
+                self.tags
+                    .get(entity)
+                    .is_ok_and(|candidate| candidate.0 == tag)
+            });
+        let found = matches.next();
+        assert!(matches.next().is_none(), "retail tag {tag:?} is ambiguous");
         found
     }
 
@@ -653,16 +642,13 @@ impl RetailView<'_, '_, '_> {
 }
 
 pub fn ancestor_with<D: QueryData, F: QueryFilter>(
-    mut entity: Entity,
+    entity: Entity,
     parents: &Query<&ChildOf>,
     query: &Query<D, F>,
 ) -> Option<Entity> {
-    loop {
-        if query.contains(entity) {
-            return Some(entity);
-        }
-        entity = parents.get(entity).ok()?.parent();
-    }
+    std::iter::once(entity)
+        .chain(parents.iter_ancestors(entity))
+        .find(|&entity| query.contains(entity))
 }
 
 #[cfg(test)]

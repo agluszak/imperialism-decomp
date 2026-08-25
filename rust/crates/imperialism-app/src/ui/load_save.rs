@@ -46,15 +46,39 @@ const CONFIRM_LOAD_STRING_INDEX: i16 = 0x33;
 const PICK_SLOT_STRING_GROUP: i16 = 0x2758;
 const PICK_SLOT_STRING_INDEX: i16 = 0x17;
 const FLAG_MENU_STRING_GROUP: i16 = 0x2743;
-const FLAG_LABEL_TAGS: [FourCc; 8] = [
-    fourcc!("txt0"),
-    fourcc!("txt1"),
-    fourcc!("txt2"),
-    fourcc!("txt3"),
-    fourcc!("txt4"),
-    fourcc!("txt5"),
-    fourcc!("txt6"),
-    fourcc!("txt7"),
+const FLAG_MENU_ROWS: [(FourCc, Option<FourCc>, Option<FlagMenuAction>); 8] = [
+    (fourcc!("txt0"), None, None),
+    (
+        fourcc!("txt1"),
+        Some(fourcc!("save")),
+        Some(FlagMenuAction::Save),
+    ),
+    (
+        fourcc!("txt2"),
+        Some(fourcc!("load")),
+        Some(FlagMenuAction::Load),
+    ),
+    (
+        fourcc!("txt3"),
+        Some(fourcc!("newg")),
+        Some(FlagMenuAction::NewGame),
+    ),
+    (
+        fourcc!("txt4"),
+        Some(fourcc!("pref")),
+        Some(FlagMenuAction::Preferences),
+    ),
+    (
+        fourcc!("txt5"),
+        Some(fourcc!("cred")),
+        Some(FlagMenuAction::Credits),
+    ),
+    (
+        fourcc!("txt6"),
+        Some(fourcc!("quit")),
+        Some(FlagMenuAction::Quit),
+    ),
+    (fourcc!("txt7"), Some(fourcc!("cncl")), None),
 ];
 
 /// Directory that holds retail `slotN.imp` / `slotA.imp` files.
@@ -830,8 +854,8 @@ fn bind_flag_menu(
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
-    for (index, tag) in FLAG_LABEL_TAGS.iter().copied().enumerate() {
-        let entity = tree.find(root, tag);
+    for (index, (label_tag, control, action)) in FLAG_MENU_ROWS.iter().copied().enumerate() {
+        let entity = tree.find(root, label_tag);
         let (font, layout, line_height, _) = assets
             .text_style(imperialism_formats::RetailTextStylePreset {
                 font_family: 1,
@@ -845,8 +869,10 @@ fn bind_flag_menu(
         } else {
             (0x28, 0xd2)
         };
+        let caption = get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16);
         commands.entity(entity).insert((
-            Text::new(get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16)),
+            Text::new(caption.clone()),
+            Label,
             font,
             layout,
             line_height,
@@ -856,26 +882,19 @@ fn bind_flag_menu(
                 color: assets.palette_color(shadow_palette),
             },
         ));
+        let Some(control) = control else {
+            continue;
+        };
+        let mut control = commands.entity(tree.find(root, control));
+        control
+            .insert(AccessibleLabel::new(caption))
+            .remove::<InteractionDisabled>();
+        if let Some(action) = action {
+            control.insert(action).observe(on_flag_menu_activate);
+        } else {
+            control.insert((ModalCancel, DismissWindow));
+        }
     }
-    for (tag, action) in [
-        (fourcc!("save"), FlagMenuAction::Save),
-        (fourcc!("load"), FlagMenuAction::Load),
-        (fourcc!("newg"), FlagMenuAction::NewGame),
-        (fourcc!("pref"), FlagMenuAction::Preferences),
-        (fourcc!("cred"), FlagMenuAction::Credits),
-        (fourcc!("quit"), FlagMenuAction::Quit),
-    ] {
-        let control = tree.find(root, tag);
-        commands
-            .entity(control)
-            .insert(action)
-            .remove::<InteractionDisabled>()
-            .observe(on_flag_menu_activate);
-    }
-    commands
-        .entity(tree.find(root, fourcc!("cncl")))
-        .insert((ModalCancel, DismissWindow))
-        .remove::<InteractionDisabled>();
 }
 
 fn on_flag_menu_activate(

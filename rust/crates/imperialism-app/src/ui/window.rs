@@ -102,7 +102,7 @@ fn bind_recovered_window_hosts(
     windows: Query<(Entity, Option<&WindowPosition>), With<UiWindow>>,
 ) {
     for (content, node) in &contents {
-        let Some(root) = ancestor_window(content, &parents, &windows) else {
+        let Some(root) = ancestor_with(content, &parents, &windows) else {
             continue;
         };
         commands.entity(content).insert(Pickable::default());
@@ -124,19 +124,6 @@ fn bind_recovered_window_hosts(
                 node.top = px(position.y);
             });
         spawn_caption(&mut commands, root, node.width, position);
-    }
-}
-
-fn ancestor_window(
-    mut entity: Entity,
-    parents: &Query<&ChildOf>,
-    windows: &Query<(Entity, Option<&WindowPosition>), With<UiWindow>>,
-) -> Option<Entity> {
-    loop {
-        if windows.contains(entity) {
-            return Some(entity);
-        }
-        entity = parents.get(entity).ok()?.parent();
     }
 }
 
@@ -200,7 +187,7 @@ fn sync_window_positions(
     for (root, position) in &windows {
         if let Some(content) = contents
             .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents))
+            .find(|&entity| ancestor_with(entity, &parents, &windows) == Some(root))
         {
             let mut node = nodes.get_mut(content).expect("window content has a Node");
             node.left = px(position.0.x);
@@ -208,7 +195,7 @@ fn sync_window_positions(
         }
         if let Some(caption) = captions
             .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents))
+            .find(|&entity| ancestor_with(entity, &parents, &windows) == Some(root))
         {
             let mut node = nodes.get_mut(caption).expect("window caption has a Node");
             node.left = px(position.0.x);
@@ -300,27 +287,15 @@ fn modal_keyboard(
     let control = match input.input.key_code {
         KeyCode::Enter | KeyCode::NumpadEnter => defaults
             .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents)),
+            .find(|&entity| ancestor_with(entity, &parents, &modals) == Some(root)),
         KeyCode::Escape => cancels
             .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents)),
+            .find(|&entity| ancestor_with(entity, &parents, &modals) == Some(root)),
         _ => return,
     };
     input.propagate(false);
     if let Some(control) = control {
         commands.trigger(Activate { entity: control });
-    }
-}
-
-fn ancestor_is(mut entity: Entity, ancestor: Entity, parents: &Query<&ChildOf>) -> bool {
-    loop {
-        if entity == ancestor {
-            return true;
-        }
-        let Ok(parent) = parents.get(entity) else {
-            return false;
-        };
-        entity = parent.parent();
     }
 }
 

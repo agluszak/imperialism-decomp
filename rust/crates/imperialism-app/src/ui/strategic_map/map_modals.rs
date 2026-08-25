@@ -9,7 +9,7 @@ use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::RetailTree;
+use crate::ui::retail::{RetailTree, ancestor_with};
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::ecs::system::EntityCommands;
@@ -424,7 +424,7 @@ fn on_civilian_ledger_action(
     let Ok(action) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     match action {
@@ -477,20 +477,6 @@ fn on_civilian_ledger_action(
             commands.entity(root).try_despawn();
         }
     }
-}
-
-fn ancestor_with_component<T: Component>(
-    mut entity: Entity,
-    parents: &Query<&ChildOf>,
-    components: &Query<(), With<T>>,
-) -> Option<Entity> {
-    for _ in 0..10 {
-        if components.contains(entity) {
-            return Some(entity);
-        }
-        entity = parents.get(entity).ok()?.parent();
-    }
-    None
 }
 
 fn bind_added_civilian_modals(
@@ -1585,7 +1571,7 @@ fn on_roster_page_action(
     let Ok(action) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     let mut page = pages.get_mut(root).expect("roster page action root");
@@ -1632,7 +1618,7 @@ fn on_army_roster_row_action(
     let Ok(ArmyRosterRowAction::Select(province)) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
@@ -1668,7 +1654,7 @@ fn on_navy_roster_row_action(
     let Ok(action) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     match action {

@@ -83,6 +83,7 @@ fn insert_linger_text(
         .expect("retail linger dialog text style");
     commands.entity(entity).insert((
         Text::new(text.to_owned()),
+        Label,
         font,
         layout,
         line_height,

@@ -8,15 +8,12 @@ use imperialism_formats::{FourCc, RetailTextStylePreset};
 /// Retail stores this on `TView::hoverHelpText58` after `SetHoverHelpText`. `TView::DoSetCursor`
 /// then forwards it to `g_pCursorControlPanel` (`TInfoBarText::SetTextAndLayoutRect`).
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
+#[require(DirectlyHovered)]
 pub(crate) struct HoverHelpText(pub String);
 
 /// The retail `curs` / `hot!` info-bar control that displays hover-help text.
 #[derive(Component)]
 pub(crate) struct HoverHelpBar;
-
-/// Last control whose hover-help was applied, matching `TInfoBarText::layoutRectA4`.
-#[derive(Component, Default)]
-struct HoverHelpSource(Option<Entity>);
 
 #[derive(Clone, Copy)]
 pub(crate) struct HoverHelpBarStyle {
@@ -77,7 +74,10 @@ impl HoverHelpBarStyle {
 }
 
 pub(crate) fn register_hover_help(app: &mut App) {
-    app.add_systems(Update, sync_hover_help_bar);
+    app.add_systems(
+        Update,
+        (sync_hover_help_bar, sync_hover_help_accessible_labels),
+    );
 }
 
 pub(crate) fn bind_hover_help_bar(
@@ -99,7 +99,6 @@ pub(crate) fn bind_hover_help_bar(
     let shadow_color = assets.palette_color(style.shadow_palette);
     commands.entity(bar).insert((
         HoverHelpBar,
-        HoverHelpSource::default(),
         Text::new(""),
         font,
         layout,
@@ -124,7 +123,7 @@ pub(crate) fn bind_hover_help_texts(
     for (tag, text) in texts {
         commands
             .entity(tree.find(root, tag))
-            .insert((HoverHelpText(text), DirectlyHovered::default()));
+            .insert(HoverHelpText(text));
     }
 }
 
@@ -144,7 +143,7 @@ pub(crate) fn ui_string(assets: &RetailUiAssets, group: i16, index: i16) -> Stri
 
 #[allow(clippy::type_complexity)]
 fn sync_hover_help_bar(
-    sources: Query<(Entity, &HoverHelpText, &DirectlyHovered)>,
+    sources: Query<(&HoverHelpText, &DirectlyHovered)>,
     changed: Query<
         (),
         (
@@ -152,24 +151,34 @@ fn sync_hover_help_bar(
             Or<(Changed<DirectlyHovered>, Changed<HoverHelpText>)>,
         ),
     >,
-    mut bars: Query<(&mut Text, &mut HoverHelpSource), With<HoverHelpBar>>,
+    mut bars: Query<&mut Text, With<HoverHelpBar>>,
 ) {
     if changed.is_empty() {
         return;
     }
-    let Some((entity, help)) = sources
+    let Some(help) = sources
         .iter()
-        .find(|(_, _, hovered)| hovered.get())
-        .map(|(entity, help, _)| (entity, help.0.as_str()))
+        .find_map(|(help, hovered)| hovered.get().then_some(help.0.as_str()))
     else {
         return;
     };
-    for (mut text, mut source) in &mut bars {
-        if source.0 == Some(entity) {
-            continue;
-        }
-        source.0 = Some(entity);
+    for mut text in &mut bars {
         text.0 = help.to_owned();
+    }
+}
+
+fn sync_hover_help_accessible_labels(
+    mut commands: Commands,
+    sources: Query<(Entity, &HoverHelpText), Changed<HoverHelpText>>,
+) {
+    for (entity, help) in &sources {
+        if help.0.is_empty() {
+            commands.entity(entity).remove::<AccessibleLabel>();
+        } else {
+            commands
+                .entity(entity)
+                .insert(AccessibleLabel::new(help.0.clone()));
+        }
     }
 }
 
@@ -186,12 +195,9 @@ mod tests {
     fn spawn_bar_and_source(app: &mut App, text: &str) -> (Entity, Entity) {
         let bar = app
             .world_mut()
-            .spawn((HoverHelpBar, HoverHelpSource::default(), Text::new("stale")))
+            .spawn((HoverHelpBar, Text::new("stale")))
             .id();
-        let source = app
-            .world_mut()
-            .spawn((HoverHelpText(text.to_owned()), DirectlyHovered(false)))
-            .id();
+        let source = app.world_mut().spawn(HoverHelpText(text.to_owned())).id();
         (bar, source)
     }
 
@@ -210,10 +216,7 @@ mod tests {
     fn a_new_directly_hovered_control_replaces_the_info_bar_text() {
         let mut app = app();
         let (bar, first) = spawn_bar_and_source(&mut app, "Random");
-        let second = app
-            .world_mut()
-            .spawn((HoverHelpText("Quit".to_owned()), DirectlyHovered(false)))
-            .id();
+        let second = app.world_mut().spawn(HoverHelpText("Quit".to_owned())).id();
         app.world_mut()
             .entity_mut(first)
             .insert(DirectlyHovered(true));
@@ -242,5 +245,21 @@ mod tests {
             .insert(DirectlyHovered(false));
         app.update();
         assert_eq!(app.world().get::<Text>(bar).unwrap().0, "Quit");
+    }
+
+    #[test]
+    fn changing_help_on_the_same_hovered_control_updates_the_bar() {
+        let mut app = app();
+        let (bar, source) = spawn_bar_and_source(&mut app, "civilian date");
+        app.world_mut()
+            .entity_mut(source)
+            .insert(DirectlyHovered(true));
+        app.update();
+        assert_eq!(app.world().get::<Text>(bar).unwrap().0, "civilian date");
+        app.world_mut()
+            .entity_mut(source)
+            .insert(HoverHelpText("army date".to_owned()));
+        app.update();
+        assert_eq!(app.world().get::<Text>(bar).unwrap().0, "army date");
     }
 }
