@@ -1,8 +1,6 @@
 //! Bevy projection for the retail `DOOG` alternate strategic view.
 
-use super::map_interaction::{
-    MapProjection, OceanViewport, StrategicInteraction, StrategicViewport,
-};
+use super::map_interaction::{OceanViewport, StrategicMapSession, StrategicSelection};
 use super::map_projection::OceanProjection;
 use super::ocean_raster::{OceanRenderAssets, compose_ocean_raster};
 use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH, viewport_point};
@@ -31,8 +29,7 @@ pub(crate) struct OceanMapCanvas {
 struct OceanComposeKey {
     origin: IVec2,
     hovered: Option<TileId>,
-    mode: super::map_interaction::MapInteractionMode,
-    civilian: Option<CivilianUnitId>,
+    selection: StrategicSelection,
 }
 
 #[derive(Component)]
@@ -101,16 +98,14 @@ pub(crate) fn bind_ocean_view(
 }
 
 fn sync_ocean_view_frames(
-    viewports: Query<&StrategicViewport>,
+    map: Res<StrategicMapSession>,
     mut land: Query<&mut Visibility, (With<LandMapFrame>, Without<OceanMapCanvas>)>,
     mut sea: Query<&mut Visibility, (With<OceanMapCanvas>, Without<LandMapFrame>)>,
 ) {
-    let Ok(viewport) = viewports.single() else {
-        return;
-    };
-    let (land_visibility, sea_visibility) = match viewport.projection {
-        MapProjection::Detailed => (Visibility::Visible, Visibility::Hidden),
-        MapProjection::Overview => (Visibility::Hidden, Visibility::Visible),
+    let (land_visibility, sea_visibility) = if map.view.is_overview() {
+        (Visibility::Hidden, Visibility::Visible)
+    } else {
+        (Visibility::Visible, Visibility::Hidden)
     };
     if let Ok(mut visibility) = land.single_mut() {
         *visibility = land_visibility;
@@ -122,36 +117,29 @@ fn sync_ocean_view_frames(
 
 fn sync_ocean_canvas(
     session: Res<GameSession>,
-    maps: Query<(Ref<StrategicInteraction>, Ref<StrategicViewport>)>,
+    map: Res<StrategicMapSession>,
     retail: Res<crate::RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut canvases: Query<(&mut OceanMapCanvas, &ImageNode, &RelativeCursorPosition)>,
 ) {
-    let Ok((interaction, viewport)) = maps.single() else {
-        return;
-    };
-    if viewport.projection != MapProjection::Overview {
+    if !map.view.is_overview() {
         return;
     }
+    let ocean = map.view.ocean();
     for (mut canvas, node, cursor) in &mut canvases {
-        let hovered = ocean_tile_at_cursor(&session.game, cursor, &viewport.ocean);
+        let hovered = ocean_tile_at_cursor(&session.game, cursor, &ocean);
         let key = OceanComposeKey {
-            origin: viewport.ocean.origin,
+            origin: ocean.origin,
             hovered,
-            mode: interaction.mode,
-            civilian: interaction.civilian,
+            selection: map.selection,
         };
-        if canvas.composed == Some(key)
-            && !session.is_changed()
-            && !interaction.is_changed()
-            && !viewport.is_changed()
-        {
+        if canvas.composed == Some(key) && !session.is_changed() && !map.is_changed() {
             continue;
         }
         let picture = compose_ocean_raster(
             &session.game,
-            &viewport.ocean,
-            &interaction,
+            &ocean,
+            map.selection,
             hovered,
             &canvas.assets,
         );
@@ -268,7 +256,7 @@ fn spawn_ocean_label<M: Component>(
 
 fn sync_ocean_labels(
     session: Res<GameSession>,
-    viewports: Query<Ref<StrategicViewport>>,
+    map: Res<StrategicMapSession>,
     mut zones: Query<
         (
             &OceanZoneLabel,
@@ -288,19 +276,17 @@ fn sync_ocean_labels(
         Without<OceanZoneLabel>,
     >,
 ) {
-    let Ok(viewport) = viewports.single() else {
-        return;
-    };
-    if !viewport.is_changed() && !session.is_changed() {
+    if !map.is_changed() && !session.is_changed() {
         return;
     }
-    let projection = OceanProjection::new(session.game.map().geometry(), &viewport.ocean);
+    let ocean = map.view.ocean();
+    let projection = OceanProjection::new(session.game.map().geometry(), &ocean);
     for (zone, anchor, mut node, mut visibility) in &mut zones {
         project_ocean_label(
             &projection,
             Some(zone.tile),
             anchor.offset,
-            &viewport,
+            map.view.is_overview(),
             &mut node,
             &mut visibility,
         );
@@ -311,7 +297,7 @@ fn sync_ocean_labels(
             &projection,
             nation_tiles[usize::from(label.nation.get())],
             anchor.offset,
-            &viewport,
+            map.view.is_overview(),
             &mut node,
             &mut visibility,
         );
@@ -338,11 +324,11 @@ fn project_ocean_label(
     projection: &OceanProjection,
     tile: Option<TileId>,
     offset: Vec2,
-    viewport: &StrategicViewport,
+    overview: bool,
     node: &mut Node,
     visibility: &mut Visibility,
 ) {
-    let position = (viewport.projection == MapProjection::Overview)
+    let position = overview
         .then(|| tile.and_then(|tile| projection.tile_center(tile)))
         .flatten();
     let Some(position) = position else {
@@ -374,6 +360,7 @@ pub(crate) fn ocean_tile_at_cursor(
 
 #[cfg(test)]
 mod tests {
+    use super::super::map_interaction::StrategicView;
     use super::*;
     use crate::ui::test_support::{
         beginning_of_game_parts_with, beginning_of_game_with, strategic_map_beginning_context,
@@ -382,14 +369,11 @@ mod tests {
     #[test]
     fn alternate_map_visibility_follows_projection() {
         let mut app = App::new();
+        app.insert_resource(StrategicMapSession::default());
         app.add_systems(Update, sync_ocean_view_frames);
         let land = app
             .world_mut()
-            .spawn((
-                LandMapFrame,
-                Visibility::Visible,
-                StrategicViewport::default(),
-            ))
+            .spawn((LandMapFrame, Visibility::Visible))
             .id();
         let sea = app
             .world_mut()
@@ -406,10 +390,9 @@ mod tests {
             Some(&Visibility::Hidden)
         );
 
-        app.world_mut()
-            .get_mut::<StrategicViewport>(land)
-            .unwrap()
-            .projection = MapProjection::Overview;
+        app.world_mut().resource_mut::<StrategicMapSession>().view = StrategicView::Overview {
+            origin: IVec2::ZERO,
+        };
         app.update();
         assert_eq!(
             app.world().get::<Visibility>(land),
@@ -448,14 +431,13 @@ mod tests {
         let tile = session.game.map().geometry().tile(10, 10).unwrap();
         let mut app = App::new();
         app.insert_resource(session);
+        app.insert_resource(StrategicMapSession {
+            selection: StrategicSelection::default(),
+            view: StrategicView::Overview {
+                origin: IVec2::ZERO,
+            },
+        });
         app.add_systems(Update, sync_ocean_labels);
-        let viewport = app
-            .world_mut()
-            .spawn(StrategicViewport {
-                projection: MapProjection::Overview,
-                ..default()
-            })
-            .id();
         let label = app
             .world_mut()
             .spawn((
@@ -468,12 +450,9 @@ mod tests {
 
         app.update();
         let first_left = app.world().get::<Node>(label).unwrap().left;
-        app.world_mut()
-            .get_mut::<StrategicViewport>(viewport)
-            .unwrap()
-            .ocean
-            .origin
-            .x = 4;
+        app.world_mut().resource_mut::<StrategicMapSession>().view = StrategicView::Overview {
+            origin: IVec2::new(4, 0),
+        };
         app.update();
 
         assert!(app.world().get_entity(label).is_ok());
@@ -523,11 +502,13 @@ mod tests {
 
         let mut app = App::new();
         app.insert_resource(first);
-        app.add_systems(Update, sync_ocean_labels);
-        app.world_mut().spawn(StrategicViewport {
-            projection: MapProjection::Overview,
-            ocean,
+        app.insert_resource(StrategicMapSession {
+            selection: StrategicSelection::default(),
+            view: StrategicView::Overview {
+                origin: ocean.origin,
+            },
         });
+        app.add_systems(Update, sync_ocean_labels);
         let label = app
             .world_mut()
             .spawn((

@@ -7,7 +7,7 @@ use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
 use crate::ui::{
-    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_loaded_game,
+    BattleReportPresentation, CityWindows, GameSession, StrategicMapSession, insert_loaded_game,
     remove_game_session,
 };
 use crate::{AppState, ReturnTo};
@@ -557,7 +557,7 @@ fn on_load_save_activate(
     save_dir: Option<Res<SaveDirectory>>,
     returning: Res<ReturnTo>,
     session: Option<Res<GameSession>>,
-    origin: Option<Res<MapViewOrigin>>,
+    map: Option<Res<StrategicMapSession>>,
     city_windows: Option<Res<CityWindows>>,
     battle_reports: Option<Res<BattleReportPresentation>>,
     mut next_state: ResMut<NextState<AppState>>,
@@ -596,7 +596,7 @@ fn on_load_save_activate(
                 presentation,
                 &save_dir.0,
                 session.as_deref(),
-                origin.as_deref(),
+                map.as_deref(),
                 city_windows.as_deref(),
                 battle_reports.as_deref(),
                 returning.0,
@@ -674,7 +674,7 @@ fn confirm_or_apply(
     presentation: Option<&LoadSavePresentation>,
     save_dir: &Path,
     session: Option<&GameSession>,
-    origin: Option<&MapViewOrigin>,
+    map: Option<&StrategicMapSession>,
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
     returning: AppState,
@@ -722,7 +722,7 @@ fn confirm_or_apply(
                 save_dir,
                 slot,
                 session,
-                origin,
+                map,
                 city_windows,
                 battle_reports,
                 &label,
@@ -779,14 +779,17 @@ fn apply_save(
     save_dir: &Path,
     slot: SaveSlot,
     session: &GameSession,
-    origin: Option<&MapViewOrigin>,
+    map: Option<&StrategicMapSession>,
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
     label: &str,
     returning: AppState,
     next_state: &mut NextState<AppState>,
 ) {
-    let origin = origin.expect("saving a game requires MapViewOrigin").0;
+    let origin = map
+        .expect("saving a game requires StrategicMapSession")
+        .view
+        .detailed_origin(&session.game);
     let city_windows = &city_windows.expect("saving a game requires CityWindows").0;
     let captured = battle_reports
         .expect("saving a game requires BattleReportPresentation")
