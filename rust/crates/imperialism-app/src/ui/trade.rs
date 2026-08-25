@@ -4,7 +4,12 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::RetailTree;
-use super::retail_raster::{IndexedRasterExt, indexed_picture};
+use super::retail_amount_bar::{
+    AmountBarPixels, TRADE_AMOUNT_BAR, TRADE_BAR_FILL, amount_bar_x_from_normalized,
+    trade_amount_bar_click_value, trade_amount_bar_picture,
+};
+use super::retail_raster::IndexedRasterExt;
+use super::retail_raster_text::RetailRasterTextPainter;
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -296,7 +301,11 @@ fn bind_trade_screen(
     for binding in TRADE_ROWS {
         let row = tree.find(*root, binding.tag);
         let bar = tree.find(row, fourcc!("bar "));
-        let picture = indexed_picture(100, 7, 0x10);
+        let picture = trade_amount_bar_picture(AmountBarPixels {
+            range: 0,
+            current: 0,
+            color: TRADE_BAR_FILL,
+        });
         let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
         commands
             .entity(bar)
@@ -493,17 +502,18 @@ fn on_trade_amount_bar_click(
     if capacity <= 0 {
         return;
     }
-    let x = (((normalized.x + 0.5) * 100.0).floor() as i16).clamp(0, 99);
-    if x == 0 {
+    let geometry = TRADE_AMOUNT_BAR.with_segments(capacity);
+    let x = amount_bar_x_from_normalized(geometry, normalized.x);
+    let quantity = trade_amount_bar_click_value(geometry, x);
+    if quantity == 0 {
         session
             .game
             .set_player_trade_order(nation, commodity, PlayerTradeOrder::None);
         return;
     }
-    let quantity = i32::from(x) * i32::from(capacity) / 100 + 1;
     session
         .game
-        .set_player_trade_order(nation, commodity, PlayerTradeOrder::Sell(quantity as i16));
+        .set_player_trade_order(nation, commodity, PlayerTradeOrder::Sell(quantity));
 }
 
 fn sync_trade_text(
@@ -543,19 +553,16 @@ fn sync_trade_screen_picture(
     }
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
-    let font = retail
-        .assets()
-        .font_bytes(RetailFontFace::BookAntiquaRegular);
-    let style = resolve_retail_text_style(RetailTextStylePreset {
-        font_family: 2,
-        face_flags: 0,
-        point_size: 14,
-        alignment: -1,
-    })
+    let mut text = RetailRasterTextPainter::from_preset(
+        retail.assets(),
+        RetailTextStylePreset {
+            font_family: 2,
+            face_flags: 0,
+            point_size: 14,
+            alignment: -1,
+        },
+    )
     .expect("retail Trade custom-drawing text style");
-    let font_size = decode_retail_font_cell_metrics(style.face, font)
-        .expect("retail Trade font metrics")
-        .em_pixel_size(style.logical_pixel_height) as f32;
     for (screen, image_node) in &screens {
         let mut picture = screen.base.clone();
         for &(commodity, origin) in &screen.rows {
@@ -563,15 +570,14 @@ fn sync_trade_screen_picture(
                 0 => "--".to_owned(),
                 stock => stock.to_string(),
             };
-            picture.draw_text_right(
-                font,
-                font_size,
+            text.draw_right(
+                &mut picture,
                 origin.x + 238,
                 origin.y + 12,
                 &format_currency(session.game.market().rows[commodity].price),
                 0x13,
             );
-            picture.draw_text_right(font, font_size, origin.x + 300, origin.y + 12, &stock, 0x13);
+            text.draw_right(&mut picture, origin.x + 300, origin.y + 12, &stock, 0x13);
         }
         if let Some(mut image) = images.get_mut(&image_node.image) {
             *image = picture.to_image(retail.assets().default_dib_palette());
@@ -644,11 +650,12 @@ fn sync_trade_gauges(
             PlayerTradeOrder::Sell(quantity) => quantity,
             _ => 0,
         };
-        let mut picture = indexed_picture(100, 7, 0x10);
-        picture.fill_rect(
-            IRect::new(0, 0, trade_gauge_width(quantity, capacity) as i32, 7),
-            0x37,
-        );
+        let geometry = TRADE_AMOUNT_BAR.with_segments(capacity);
+        let picture = trade_amount_bar_picture(AmountBarPixels {
+            range: geometry.span(quantity),
+            current: geometry.span(quantity),
+            color: TRADE_BAR_FILL,
+        });
         if let Some(mut image) = images.get_mut(&image_node.image) {
             *image = picture.to_keyed_image(retail.assets().default_dib_palette(), 0x10);
         }
@@ -889,14 +896,6 @@ const fn trade_offer_tab_visible(
     stockpile: i16,
 ) -> bool {
     row_available && (capacity == 0 || active || stockpile > 0)
-}
-
-fn trade_gauge_width(quantity: i16, capacity: i16) -> f32 {
-    if quantity <= 0 || capacity <= 0 {
-        0.0
-    } else {
-        f32::from((i32::from(quantity) * 100 / i32::from(capacity)).clamp(0, 100) as i16)
-    }
 }
 
 #[cfg(test)]

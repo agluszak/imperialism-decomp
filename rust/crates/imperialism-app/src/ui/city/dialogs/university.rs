@@ -1,5 +1,6 @@
 use super::*;
 use crate::ui::retail_raster::IndexedRasterExt;
+use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct UniversityRowAssets {
@@ -284,19 +285,16 @@ pub(in crate::ui::city) fn sync_university_details(
             _ => continue,
         };
     }
-    let font = retail
-        .assets()
-        .font_bytes(RetailFontFace::BookAntiquaRegular);
-    let style = resolve_retail_text_style(RetailTextStylePreset {
-        font_family: 3,
-        face_flags: 0,
-        point_size: 10,
-        alignment: -2,
-    })
+    let mut text = RetailRasterTextPainter::from_preset(
+        retail.assets(),
+        RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size: 10,
+            alignment: -2,
+        },
+    )
     .expect("retail University custom-drawing text style");
-    let font_size = decode_retail_font_cell_metrics(style.face, font)
-        .expect("retail University font metrics")
-        .em_pixel_size(style.logical_pixel_height) as f32;
     for (visual, image_node) in &details {
         let mut picture = visual.base.clone();
         picture.blit_keyed_at(&row.preview, IVec2::new(0x7c, 0x5c), 0x10);
@@ -314,9 +312,8 @@ pub(in crate::ui::city) fn sync_university_details(
             );
             running_max = running_max.max(levels[resource]);
             for level in 1..=running_max.retail() {
-                picture.draw_text(
-                    font,
-                    font_size,
+                text.draw(
+                    &mut picture,
                     IVec2::new(i32::from(level) * 40 + 39, row_index as i32 * 25 + 289),
                     &resource_development_yield(resource, level).to_string(),
                     0xd2,

@@ -1,6 +1,10 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
+use super::diplomacy_map::{
+    DiplomacyLabelSeed, DiplomacyMapGeometry, compose_diplomacy_map, draw_diplomacy_map_labels,
+    layout_diplomacy_map_labels,
+};
 use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
@@ -9,7 +13,8 @@ use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, ancestor_with};
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
-use super::satellite_preview::SatellitePreview;
+use super::retail_raster_text::RetailRasterTextPainter;
+use super::satellite_preview::nation_owner_palette;
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
@@ -32,8 +37,6 @@ const MAP_LEFT: f32 = 49.0;
 const MAP_TOP: f32 = 45.0;
 const MAP_WIDTH: f32 = 540.0;
 const MAP_HEIGHT: f32 = 300.0;
-const MAP_TILE_SCALE: u16 = 5;
-const MAP_ODD_ROW_OFFSET: u16 = 2;
 const DIPLOMACY_IDLE_CURSOR: u16 = 0x41b;
 const DIPLOMACY_CURSOR_BY_ACTION: EnumMap<DiplomacyMapAction, u16> = EnumMap::from_array([
     0x41b, 0x41b, 0x408, 0x407, 0x406, 0x404, 0x405, 0x411, 0x415, 0x409, 0x41b, 0x40f, 0x410,
@@ -300,7 +303,7 @@ struct DiplomacyNationIcon {
 enum DiplomacyText {
     Treasury,
     Offer,
-    NationName(NationId),
+    NationName,
     MapKeyMajorName(MajorNationId),
 }
 
@@ -671,6 +674,7 @@ fn bind_diplomacy_controls(
             UiButton,
             RelativeCursorPosition::default(),
             DiplomacyMapPicture,
+            DiplomacyMapGeometry::default(),
             ZIndex(1),
             ChildOf(main),
         ))
@@ -723,7 +727,7 @@ fn spawn_diplomacy_map_labels(
         );
         commands
             .entity(entity)
-            .insert((DiplomacyText::NationName(nation), Visibility::Hidden));
+            .insert((DiplomacyText::NationName, Visibility::Hidden));
         for kind in [
             DiplomacyNationIconKind::Compatibility,
             DiplomacyNationIconKind::Order,
@@ -955,27 +959,21 @@ fn on_diplomacy_offer_activate(
 
 fn on_diplomacy_map_click(
     click: On<Pointer<Click>>,
-    maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
+    maps: Query<(&RelativeCursorPosition, &DiplomacyMapGeometry), With<DiplomacyMapPicture>>,
     mut screens: Query<&mut DiplomacyScreen>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
-    let Ok(cursor) = maps.get(click.entity) else {
+    let Ok((cursor, geometry)) = maps.get(click.entity) else {
         return;
     };
     if !cursor.cursor_over() {
         return;
-    }
+    };
     let Some(normalized) = cursor.normalized else {
         return;
     };
-    let Some(tile) = tile_at_diplomacy_position(normalized) else {
-        return;
-    };
-    let Some(target) = session.game.map()[tile]
-        .owner_nation
-        .and_then(TileOwnerTag::nation)
-    else {
+    let Some(target) = geometry.nation_at_normalized(normalized) else {
         return;
     };
     let mut screen = screens
@@ -1049,20 +1047,8 @@ fn player_diplomacy_rejection(
     }
 }
 
-fn tile_at_diplomacy_position(normalized: Vec2) -> Option<TileId> {
-    let column_pixel = ((normalized.x + 0.5) * MAP_WIDTH).floor();
-    let row_pixel = ((normalized.y + 0.5) * MAP_HEIGHT).floor();
-    if !(0.0..MAP_WIDTH).contains(&column_pixel) || !(0.0..MAP_HEIGHT).contains(&row_pixel) {
-        return None;
-    }
-    let row = row_pixel as u16 / MAP_TILE_SCALE;
-    let odd_offset = MAP_ODD_ROW_OFFSET * (row & 1);
-    let column = (column_pixel as u16).checked_sub(odd_offset)? / MAP_TILE_SCALE;
-    MapGeometry::new(MapTopology::Bounded).tile(row, column)
-}
-
 fn sync_diplomacy_map_cursor(
-    maps: Query<&RelativeCursorPosition, With<DiplomacyMapPicture>>,
+    maps: Query<(&RelativeCursorPosition, &DiplomacyMapGeometry), With<DiplomacyMapPicture>>,
     screens: Query<&DiplomacyScreen>,
     session: Res<GameSession>,
     mut requested: ResMut<RequestedCursor>,
@@ -1071,7 +1057,7 @@ fn sync_diplomacy_map_cursor(
         request_arrow_cursor(&mut requested);
         return;
     };
-    let Ok(cursor) = maps.single() else {
+    let Ok((cursor, geometry)) = maps.single() else {
         request_arrow_cursor(&mut requested);
         return;
     };
@@ -1084,11 +1070,7 @@ fn sync_diplomacy_map_cursor(
         return;
     };
     let source = session.active_major_nation();
-    let Some(target) = tile_at_diplomacy_position(normalized).and_then(|tile| {
-        session.game.map()[tile]
-            .owner_nation
-            .and_then(TileOwnerTag::nation)
-    }) else {
+    let Some(target) = geometry.nation_at_normalized(normalized) else {
         request_turn_event_cursor(&mut requested, DIPLOMACY_IDLE_CURSOR);
         return;
     };
@@ -1374,50 +1356,50 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
 
 fn draw_diplomacy_text(
     picture: &mut IndexedPicture,
-    font: &[u8],
-    size: f32,
+    painter: &mut RetailRasterTextPainter,
     origin: IVec2,
     text: &str,
 ) {
-    picture.draw_text(font, size, origin, text, 0xd2);
-    picture.draw_text(font, size, origin + IVec2::ONE, text, 0x13);
+    painter.draw(picture, origin, text, 0xd2);
+    painter.draw(picture, origin + IVec2::ONE, text, 0x13);
 }
 
 fn draw_diplomacy_text_right(
     picture: &mut IndexedPicture,
-    font: &[u8],
-    size: f32,
+    painter: &mut RetailRasterTextPainter,
     right: i32,
     baseline: i32,
     text: &str,
 ) {
-    picture.draw_text_right(font, size, right, baseline, text, 0xd2);
-    picture.draw_text_right(font, size, right + 1, baseline + 1, text, 0x13);
+    painter.draw_right(picture, right, baseline, text, 0xd2);
+    painter.draw_right(picture, right + 1, baseline + 1, text, 0x13);
 }
 
 fn draw_diplomacy_text_center(
     picture: &mut IndexedPicture,
-    font: &[u8],
-    size: f32,
+    painter: &mut RetailRasterTextPainter,
     center: i32,
     baseline: i32,
     text: &str,
 ) {
-    picture.draw_text_center(font, size, center, baseline, text, 0xd2);
-    picture.draw_text_center(font, size, center + 1, baseline + 1, text, 0x13);
+    painter.draw_center(picture, center, baseline, text, 0xd2);
+    painter.draw_center(picture, center + 1, baseline + 1, text, 0x13);
 }
 
-fn diplomacy_font_size(font: &[u8], point_size: i32) -> f32 {
-    let style = resolve_retail_text_style(RetailTextStylePreset {
-        font_family: 1,
-        face_flags: 0,
-        point_size,
-        alignment: 0,
-    })
-    .expect("retail Diplomacy custom-drawing text style");
-    decode_retail_font_cell_metrics(style.face, font)
-        .expect("retail Diplomacy font metrics")
-        .em_pixel_size(style.logical_pixel_height) as f32
+fn diplomacy_text_painter<'a>(
+    assets: &'a RetailAssets,
+    point_size: i32,
+) -> RetailRasterTextPainter<'a> {
+    RetailRasterTextPainter::from_preset(
+        assets,
+        RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size,
+            alignment: 0,
+        },
+    )
+    .expect("retail Diplomacy custom-drawing text style")
 }
 
 fn render_diplomacy_panels(
@@ -1437,11 +1419,10 @@ fn render_diplomacy_panels(
     let source = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let major = state.nations().major(source);
-    let font = retail.assets().font_bytes(RetailFontFace::BelweBold);
-    let title_size = diplomacy_font_size(font, 14);
-    let row_size = diplomacy_font_size(font, 12);
-    let small_size = diplomacy_font_size(font, 10);
-    let council_size = diplomacy_font_size(font, 18);
+    let mut title = diplomacy_text_painter(retail.assets(), 14);
+    let mut row = diplomacy_text_painter(retail.assets(), 12);
+    let mut small = diplomacy_text_painter(retail.assets(), 10);
+    let mut council_paint = diplomacy_text_painter(retail.assets(), 18);
     let strings = |index| retail.get_string(0x2733, index);
     let (name, labels, values) = diplomacy_information(state, screen.framed_nation);
     let council = council_panel_text(state, &retail);
@@ -1450,44 +1431,29 @@ fn render_diplomacy_panels(
         let mut picture = indexed_picture(518, 122, 0x10);
         match panel.0 {
             DiplomacyTopic::Information => {
-                draw_diplomacy_text(
-                    &mut picture,
-                    font,
-                    title_size,
-                    IVec2::new(15, 13),
-                    &strings(0),
-                );
-                draw_diplomacy_text(&mut picture, font, title_size, IVec2::new(110, 13), &name);
-                for (row, baseline) in [54, 71, 88].into_iter().enumerate() {
+                draw_diplomacy_text(&mut picture, &mut title, IVec2::new(15, 13), &strings(0));
+                draw_diplomacy_text(&mut picture, &mut title, IVec2::new(110, 13), &name);
+                for (index, baseline) in [54, 71, 88].into_iter().enumerate() {
                     draw_diplomacy_text(
                         &mut picture,
-                        font,
-                        row_size,
+                        &mut row,
                         IVec2::new(15, baseline),
-                        &labels[row],
+                        &labels[index],
                     );
                     draw_diplomacy_text(
                         &mut picture,
-                        font,
-                        row_size,
+                        &mut row,
                         IVec2::new(110, baseline),
-                        &values[row],
+                        &values[index],
                     );
                 }
             }
             DiplomacyTopic::Treaties => {
-                draw_diplomacy_text(
-                    &mut picture,
-                    font,
-                    title_size,
-                    IVec2::new(15, 13),
-                    &strings(0x20),
-                );
+                draw_diplomacy_text(&mut picture, &mut title, IVec2::new(15, 13), &strings(0x20));
                 for (index, (center, baseline)) in TREATY_LABEL_CENTERS.into_iter().enumerate() {
                     draw_diplomacy_text_center(
                         &mut picture,
-                        font,
-                        small_size,
+                        &mut small,
                         center as i32,
                         baseline as i32,
                         &strings(index as i16 + 6),
@@ -1495,7 +1461,7 @@ fn render_diplomacy_panels(
                 }
             }
             DiplomacyTopic::Grants => {
-                for (text, origin, title) in [
+                for (text, origin, is_title) in [
                     (strings(0x21), IVec2::new(15, 13), true),
                     (strings(0x22), IVec2::new(174, 13), false),
                     (strings(0x23), IVec2::new(276, 30), false),
@@ -1505,18 +1471,15 @@ fn render_diplomacy_panels(
                     (strings(0x28), IVec2::new(314, 115), false),
                     (strings(0x29), IVec2::new(446, 115), false),
                 ] {
-                    draw_diplomacy_text(
-                        &mut picture,
-                        font,
-                        if title { title_size } else { row_size },
-                        origin,
-                        &text,
-                    );
+                    if is_title {
+                        draw_diplomacy_text(&mut picture, &mut title, origin, &text);
+                    } else {
+                        draw_diplomacy_text(&mut picture, &mut row, origin, &text);
+                    }
                 }
                 draw_diplomacy_text(
                     &mut picture,
-                    font,
-                    row_size,
+                    &mut row,
                     IVec2::new(15, 37),
                     &format!(
                         "{} {}",
@@ -1526,13 +1489,7 @@ fn render_diplomacy_panels(
                 );
             }
             DiplomacyTopic::Trade => {
-                draw_diplomacy_text(
-                    &mut picture,
-                    font,
-                    title_size,
-                    IVec2::new(15, 13),
-                    &strings(0x2a),
-                );
+                draw_diplomacy_text(&mut picture, &mut title, IVec2::new(15, 13), &strings(0x2a));
                 for (index, origin) in [
                     IVec2::new(25, 85),
                     IVec2::new(74, 34),
@@ -1546,8 +1503,7 @@ fn render_diplomacy_panels(
                 {
                     draw_diplomacy_text(
                         &mut picture,
-                        font,
-                        row_size,
+                        &mut row,
                         origin,
                         &strings(index as i16 + 0x2b),
                     );
@@ -1555,8 +1511,7 @@ fn render_diplomacy_panels(
                 for (index, center) in [156, 380, 473].into_iter().enumerate() {
                     draw_diplomacy_text_center(
                         &mut picture,
-                        font,
-                        row_size,
+                        &mut row,
                         center,
                         108,
                         &strings(index as i16 + 0x31),
@@ -1566,8 +1521,7 @@ fn render_diplomacy_panels(
             DiplomacyTopic::Council => {
                 draw_diplomacy_text_center(
                     &mut picture,
-                    font,
-                    council_size,
+                    &mut council_paint,
                     259,
                     36,
                     &council.title,
@@ -1575,18 +1529,10 @@ fn render_diplomacy_panels(
                 if let Some(rows) = &council.rows {
                     for (row, (label, value)) in rows.iter().enumerate() {
                         let baseline = 60 + row as i32 * 16;
-                        draw_diplomacy_text_right(
-                            &mut picture,
-                            font,
-                            title_size,
-                            259,
-                            baseline,
-                            label,
-                        );
+                        draw_diplomacy_text_right(&mut picture, &mut title, 259, baseline, label);
                         draw_diplomacy_text(
                             &mut picture,
-                            font,
-                            title_size,
+                            &mut title,
                             IVec2::new(263, baseline),
                             value,
                         );
@@ -1756,12 +1702,7 @@ fn project_diplomacy_text(
     screens: Query<Ref<DiplomacyScreen>>,
     assets: Res<RetailAssetsResource>,
     mut texts: Query<
-        (
-            &DiplomacyText,
-            &mut Text,
-            Option<&mut Node>,
-            Option<&mut Visibility>,
-        ),
+        (&DiplomacyText, &mut Text, Option<&mut Visibility>),
         Without<DiplomacyNationIcon>,
     >,
 ) {
@@ -1781,7 +1722,7 @@ fn project_diplomacy_text(
         DiplomacyMode::Information { overlay } => overlay == 0,
         _ => true,
     };
-    for (kind, mut text, mut node, mut visibility) in &mut texts {
+    for (kind, mut text, mut visibility) in &mut texts {
         match *kind {
             DiplomacyText::Treasury => text.0 = format_currency(major.common.treasury),
             DiplomacyText::Offer => {
@@ -1801,31 +1742,10 @@ fn project_diplomacy_text(
                     };
                 }
             }
-            DiplomacyText::NationName(nation) => {
-                let Some(visibility) = visibility.as_mut() else {
-                    continue;
-                };
-                let Some(anchor) = representative_tile_for_nation(state, nation) else {
+            DiplomacyText::NationName => {
+                if let Some(visibility) = visibility.as_mut() {
                     **visibility = Visibility::Hidden;
-                    continue;
-                };
-                let Some(display_name) = state.nations().display_name(nation) else {
-                    **visibility = Visibility::Hidden;
-                    continue;
-                };
-                if display_name.is_empty() {
-                    **visibility = Visibility::Hidden;
-                    continue;
                 }
-                if let Some(node) = node.as_mut() {
-                    let (row, column) = state.map().geometry().row_column(anchor);
-                    let offset = f32::from(MajorNationId::from_nation(nation).is_none());
-                    node.left = Val::Px(f32::from(column) * 5.0 - 45.0 + offset);
-                    node.top = Val::Px(f32::from(row) * 5.0 - 6.0 + offset);
-                }
-                text.0.clear();
-                text.0.push_str(display_name);
-                **visibility = Visibility::Visible;
             }
         }
     }
@@ -1983,29 +1903,52 @@ fn render_diplomacy_map(
     let (entity, image_node) = map.into_inner();
     let state = &session.game;
     let framed = screen.framed_nation;
-    // Fidelity debt predating the raster extraction: retail TDiplomacyMapView has
-    // its own 540x300 region renderer. Keep the existing approximation explicit.
-    let mut preview = match screen.interaction_mode() {
-        1 => SatellitePreview::compose_diplomacy_approximation(
-            |tile| state.map()[tile].owner_nation,
-            |nation| {
-                DiplomacyRelationshipNotch::from_standing(state.diplomacy_standing(framed, nation))
-                    .palette()
-            },
-        ),
-        4 => SatellitePreview::compose_diplomacy_approximation(
-            |tile| state.map()[tile].owner_nation,
-            |nation| diplomacy_relationship_fill(state, framed, nation),
-        ),
-        _ => SatellitePreview::compose(|tile| state.map()[tile].owner_nation),
+    let owner_at = |tile: TileId| {
+        state.map()[tile]
+            .owner_nation
+            .and_then(TileOwnerTag::nation)
     };
-    preview.enhance(framed);
-    let image = preview.to_image(assets.default_dib_palette());
+    let fill = |nation: NationId| match screen.interaction_mode() {
+        1 => DiplomacyRelationshipNotch::from_standing(state.diplomacy_standing(framed, nation))
+            .palette(),
+        4 => diplomacy_relationship_fill(state, framed, nation),
+        _ => nation_owner_palette(nation),
+    };
+    let (mut picture, geometry) = compose_diplomacy_map(owner_at, fill, Some(framed));
+    let mut painter = RetailRasterTextPainter::from_preset(
+        assets.assets(),
+        RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 10,
+            alignment: 1,
+        },
+    )
+    .expect("retail Diplomacy map label style");
+    let mut seeds = [None; NationId::COUNT as usize];
+    for nation in NationId::all() {
+        let Some(name) = state.nations().display_name(nation) else {
+            continue;
+        };
+        if name.is_empty() {
+            continue;
+        }
+        let Some(anchor) = state.ocean_overlay_anchor_for_nation(nation) else {
+            continue;
+        };
+        let (row, column) = state.map().geometry().row_column(anchor);
+        seeds[usize::from(nation.get())] = Some(DiplomacyLabelSeed { name, column, row });
+    }
+    let labels = layout_diplomacy_map_labels(&seeds, |name| painter.measure(name));
+    draw_diplomacy_map_labels(&mut picture, &mut painter, &seeds, &labels);
+    let image = picture.to_keyed_image(assets.default_dib_palette(), 0x10);
+    let mut entity_commands = commands.entity(entity);
+    entity_commands.insert(geometry);
     if let Some(image_node) = image_node {
         assets.replace_image(&image_node.image, image);
     } else {
         let handle = assets.add_image(image);
-        commands.entity(entity).insert(ImageNode::new(handle));
+        entity_commands.insert(ImageNode::new(handle));
     }
 }
 

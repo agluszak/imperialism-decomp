@@ -114,6 +114,7 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
 
 pub(in crate::ui::city) fn bind_rail_dialog(
     commands: &mut Commands,
+    assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
     building_name: String,
@@ -124,7 +125,7 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     commands
         .entity(name_control)
         .insert(Text::new(building_name));
-    bind_city_order_row(
+    let counter = bind_city_order_row(
         commands,
         root,
         tree,
@@ -135,6 +136,10 @@ pub(in crate::ui::city) fn bind_rail_dialog(
         step,
         None,
     );
+    commands.entity(counter.quantity).insert(RailBarCounter {
+        order: binding.order,
+    });
+    bind_rail_amount_bar(commands, assets, counter.row, tree, binding.order, step);
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(
@@ -144,7 +149,7 @@ pub(in crate::ui::city) fn configure_food_dialog(
     tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::FoodProcessing);
-    bind_rail_dialog(commands, root, tree, building_name, FOOD_ORDER, 2);
+    bind_rail_dialog(commands, assets, root, tree, building_name, FOOD_ORDER, 2);
     let labor = tree.find(root, fourcc!("labV"));
     let grain = tree.find(root, fourcc!("grai"));
     let fruit = tree.find(root, fourcc!("prod"));
@@ -170,7 +175,7 @@ pub(in crate::ui::city) fn configure_power_dialog(
     tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::PowerPlant);
-    bind_rail_dialog(commands, root, tree, building_name, POWER_ORDER, 6);
+    bind_rail_dialog(commands, assets, root, tree, building_name, POWER_ORDER, 6);
     let fuel = tree.find(root, fourcc!("fuel"));
     commands
         .entity(fuel)
@@ -186,6 +191,7 @@ pub(in crate::ui::city) fn configure_transport_capacity_dialog(
     let building_name = city_building_name(assets, CityFacilitySlot::Transport);
     bind_rail_dialog(
         commands,
+        assets,
         root,
         tree,
         building_name,
@@ -215,7 +221,15 @@ pub(in crate::ui::city) fn configure_population_dialog(
     let building_name = city_building_name(assets, CityFacilitySlot::RegionalPopulation);
     let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
     let province_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x1d);
-    bind_rail_dialog(commands, root, tree, building_name, POPULATION_ORDER, 1);
+    bind_rail_dialog(
+        commands,
+        assets,
+        root,
+        tree,
+        building_name,
+        POPULATION_ORDER,
+        1,
+    );
     let food = tree.find(root, fourcc!("food"));
     let clothing = tree.find(root, fourcc!("clot"));
     let furniture = tree.find(root, fourcc!("furn"));
