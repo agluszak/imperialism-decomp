@@ -728,7 +728,8 @@ pub(in crate::ui::city) fn refresh_city_buildings(
 ) {
     let city = &game.nations().major(nation).city;
     for &entity in &ui.buildings {
-        let shown = refresh_city_building_sprite(game, nation, city, entity, assets, sprites, images);
+        let shown =
+            refresh_city_building_sprite(game, nation, city, entity, assets, sprites, images);
         set_visible(visibilities, entity, shown);
     }
 }
