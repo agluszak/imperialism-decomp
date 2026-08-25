@@ -1,4 +1,5 @@
-//! Headless retail `TArmyBattle`: Auto plus the narrow interactive seams the land UI uses.
+//! Retail `TArmyBattle` simulation. Hover classification returns [`HoverAction`];
+//! combat records [`ArmyBattleEvent`]s as ordered observable effects.
 
 #![allow(clippy::if_same_then_else)] // retail cursor-mode branches keep identical arms
 #![allow(clippy::needless_range_loop)] // parallel C++ index walks
@@ -133,8 +134,9 @@ pub enum ArmyAction {
     Done,
 }
 
+/// Ordered observable combat effect from one army-battle mutation.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum ArmyPresentationEvent {
+pub enum ArmyBattleEvent {
     Move {
         unit: ArmyUnitId,
         from: TacticalHex,
@@ -154,7 +156,27 @@ pub enum ArmyPresentationEvent {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ArmyBattleProgress {
     pub stop: Option<TurnStop>,
-    pub events: Vec<ArmyPresentationEvent>,
+    pub events: Vec<ArmyBattleEvent>,
+}
+
+/// Semantic hover result for a tactical hex (`ComputeTacticalHoverCursorStateIndex`
+/// plus the reachability refinement in `ResolveTacticalHoverCursorResourceId`).
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum HoverAction {
+    None,
+    Wait,
+    Invalid,
+    Deploy,
+    Move,
+    Attack,
+    Done,
+    Dig,
+    Rally,
+    Mine,
+    Melee,
+    Undeploy,
+    CanAttack,
+    Unreachable,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -244,121 +266,115 @@ impl ArmyBattle {
             .and_then(|idx| self.unit(ArmyUnitId(self.inner.units[idx].source)))
     }
 
-    /// Retail `ResolveTacticalHoverCursorResourceId` (turn-event cursor ids 1000..=1053).
-    pub fn hover_cursor_resource_id(
-        &self,
-        hex: TacticalHex,
-        active_nation: NationId,
-    ) -> Option<u16> {
+    /// Retail hover classifier for `hex` relative to the current side and selection.
+    pub fn hover_action(&self, hex: TacticalHex, active_nation: NationId) -> HoverAction {
         let battle = &self.inner;
         let side = battle.current_side;
         if battle.sides[side].nation != active_nation || battle.sides[side].auto_play {
-            return Some(0x402);
+            return HoverAction::Wait;
         }
         let tile_index = hex.index;
         let tile = battle.tiles[tile_index as usize];
-        let hover_state = if !battle.live {
-            if tile
+        if !battle.live {
+            return if tile
                 .occupant
                 .is_some_and(|idx| battle.units[idx].side == side)
             {
-                0xc
+                HoverAction::Undeploy
             } else if battle.deploy_guard(tile_index) != 0 {
-                3
+                HoverAction::Deploy
             } else {
-                2
+                HoverAction::Invalid
+            };
+        }
+        let Some(selected) = battle.selected else {
+            return HoverAction::None;
+        };
+        let unit = &battle.units[selected];
+        let category = unit.unit_type.tactical_category();
+        let adjacent = battle
+            .neighbors(unit.tile)
+            .values()
+            .any(|&neighbor| neighbor == tile_index);
+        let intact_fort = tile.deploy_mark.is_fort_wall()
+            && battle.fort_strength[(tile_index / TACTICAL_STRIDE / 2) as usize] > 0;
+        let mut action = HoverAction::None;
+        if category == ArmyUnitCategory::Engineers && adjacent {
+            if intact_fort {
+                action = HoverAction::Mine;
+            } else if unit.action_points >= unit.base_action_points() / 2
+                && tile.trench_mask & 0x40 == 0
+                && battle.tiles[unit.tile as usize].trench_mask & 0x40 == 0
+                && tile.trench_mask & 0x80 == 0
+                && tile.occupant.is_none()
+                && tile.terrain != TacticalTerrain::Impassable
+            {
+                action = HoverAction::Dig;
             }
-        } else {
-            let selected = battle.selected?;
-            let unit = &battle.units[selected];
-            let category = unit.unit_type.tactical_category();
-            let adjacent = battle
-                .neighbors(unit.tile)
-                .values()
-                .any(|&neighbor| neighbor == tile_index);
-            let intact_fort = tile.deploy_mark.is_fort_wall()
-                && battle.fort_strength[(tile_index / TACTICAL_STRIDE / 2) as usize] > 0;
-            let mut state = 0;
-            if category == ArmyUnitCategory::Engineers && adjacent {
-                if intact_fort {
-                    state = 9;
-                } else if unit.action_points >= unit.base_action_points() / 2
-                    && tile.trench_mask & 0x40 == 0
-                    && battle.tiles[unit.tile as usize].trench_mask & 0x40 == 0
-                    && tile.trench_mask & 0x80 == 0
-                    && tile.occupant.is_none()
-                    && tile.terrain != TacticalTerrain::Impassable
+        } else if category == ArmyUnitCategory::Generals
+            && adjacent
+            && tile
+                .occupant
+                .is_some_and(|idx| battle.units[idx].side == unit.side)
+        {
+            action = HoverAction::Rally;
+        }
+        if action == HoverAction::None {
+            if intact_fort {
+                if !direct_fire(category)
+                    && unit.selected
+                    && battle.reachable_for_action(
+                        unit.tile,
+                        tile_index,
+                        false,
+                        battle.unit_range(selected),
+                    )
                 {
-                    state = 7;
-                }
-            } else if category == ArmyUnitCategory::Generals
-                && adjacent
-                && tile
-                    .occupant
-                    .is_some_and(|idx| battle.units[idx].side == unit.side)
-            {
-                state = 8;
-            }
-            if state == 0 {
-                if intact_fort {
-                    if !direct_fire(category)
-                        && unit.selected
-                        && battle.reachable_for_action(
-                            unit.tile,
-                            tile_index,
-                            false,
-                            battle.unit_range(selected),
-                        )
-                    {
-                        state = 5;
-                    } else if battle.cost(tile_index) > 0 && tile.occupant.is_none() {
-                        state = 4;
-                    }
+                    action = HoverAction::Attack;
                 } else if battle.cost(tile_index) > 0 && tile.occupant.is_none() {
-                    state = 4;
-                } else if let Some(occupant) = tile.occupant {
-                    if battle.units[occupant].side != side
-                        && category != ArmyUnitCategory::Engineers
-                        && unit.selected
-                        && battle.reachable_for_action(
-                            unit.tile,
-                            tile_index,
-                            direct_fire(category),
-                            battle.unit_range(selected),
-                        )
-                    {
-                        state = if adjacent { 0xa } else { 5 };
-                    } else if occupant == selected {
-                        state = 6;
-                    }
+                    action = HoverAction::Move;
                 }
-            }
-            if state == 0
-                && (tile
-                    .occupant
-                    .is_some_and(|occupant| battle.units[occupant].side != side)
-                    || (!direct_fire(category) && intact_fort && unit.side == BattleSide::Attacker))
-            {
-                return Some(
-                    if battle.reachable_for_action(
+            } else if battle.cost(tile_index) > 0 && tile.occupant.is_none() {
+                action = HoverAction::Move;
+            } else if let Some(occupant) = tile.occupant {
+                if battle.units[occupant].side != side
+                    && category != ArmyUnitCategory::Engineers
+                    && unit.selected
+                    && battle.reachable_for_action(
                         unit.tile,
                         tile_index,
                         direct_fire(category),
                         battle.unit_range(selected),
-                    ) {
-                        0x403
+                    )
+                {
+                    action = if adjacent {
+                        HoverAction::Melee
                     } else {
-                        0x400
-                    },
-                );
+                        HoverAction::Attack
+                    };
+                } else if occupant == selected {
+                    action = HoverAction::Done;
+                }
             }
-            state
-        };
-        const CURSORS: [u16; 13] = [
-            0, 0x402, 0x3f0, 0x3ec, 0x3ed, 0x3fc, 0x3f0, 0x3ff, 0x41d, 0x3fe, 0x3fd, 0x403, 0x41c,
-        ];
-        let resource = CURSORS[hover_state];
-        (resource != 0).then_some(resource)
+        }
+        if action == HoverAction::None
+            && (tile
+                .occupant
+                .is_some_and(|occupant| battle.units[occupant].side != side)
+                || (!direct_fire(category) && intact_fort && unit.side == BattleSide::Attacker))
+        {
+            return if battle.reachable_for_action(
+                unit.tile,
+                tile_index,
+                direct_fire(category),
+                battle.unit_range(selected),
+            ) {
+                HoverAction::CanAttack
+            } else {
+                HoverAction::Unreachable
+            };
+        }
+        action
     }
 
     fn selected_unit(&self) -> Option<ArmyUnitId> {
@@ -790,7 +806,7 @@ struct Battle {
     composition_class: i32,
     live: bool,
     #[serde(skip)]
-    presentation: Vec<ArmyPresentationEvent>,
+    events: Vec<ArmyBattleEvent>,
 }
 
 const fn empty_move_costs() -> [i16; TACTICAL_TILE_COUNT + 1] {
@@ -1110,13 +1126,13 @@ impl GameState {
         let mut inner = Battle::init(self);
         inner.start(self);
         if inner.live && inner.pump_until_active_input(self) {
-            let events = std::mem::take(&mut inner.presentation);
+            let events = std::mem::take(&mut inner.events);
             return Some(ArmyBattleProgress {
                 stop: Some(self.resume_after_land_battle(story_ids)),
                 events,
             });
         }
-        let events = std::mem::take(&mut inner.presentation);
+        let events = std::mem::take(&mut inner.events);
         self.store_army_battle(ArmyBattle { inner });
         Some(ArmyBattleProgress { stop: None, events })
     }
@@ -1155,7 +1171,7 @@ impl GameState {
                 battle.inner.handover_deployment(self);
             }
             if !battle.inner.live {
-                let events = std::mem::take(&mut battle.inner.presentation);
+                let events = std::mem::take(&mut battle.inner.events);
                 self.store_army_battle(battle);
                 return Ok((result, ArmyBattleProgress { stop: None, events }));
             }
@@ -1180,7 +1196,7 @@ impl GameState {
             let side = battle.inner.current_side;
             battle.inner.selected = battle.inner.select_next_undeployed(side);
             battle.inner.clear_move_costs();
-            let events = std::mem::take(&mut battle.inner.presentation);
+            let events = std::mem::take(&mut battle.inner.events);
             self.store_army_battle(battle);
             return Ok(ArmyBattleProgress { stop: None, events });
         }
@@ -1216,7 +1232,7 @@ impl GameState {
             battle.inner.auto_deploy(self, side);
             battle.inner.handover_deployment(self);
             if !battle.inner.live {
-                let events = std::mem::take(&mut battle.inner.presentation);
+                let events = std::mem::take(&mut battle.inner.events);
                 self.store_army_battle(battle);
                 return Ok(ArmyBattleProgress { stop: None, events });
             }
@@ -1244,7 +1260,7 @@ impl GameState {
         };
         if battle.inner.units[selected].unit_type.tactical_category() == ArmyUnitCategory::Engineers
         {
-            let events = std::mem::take(&mut battle.inner.presentation);
+            let events = std::mem::take(&mut battle.inner.events);
             self.store_army_battle(battle);
             return Ok(ArmyBattleProgress { stop: None, events });
         }
@@ -1268,7 +1284,7 @@ impl GameState {
         if !battle.inner.live {
             battle.inner.handover_deployment(self);
             if !battle.inner.live {
-                let events = std::mem::take(&mut battle.inner.presentation);
+                let events = std::mem::take(&mut battle.inner.events);
                 self.store_army_battle(battle);
                 return Ok(ArmyBattleProgress { stop: None, events });
             }
@@ -1289,7 +1305,7 @@ impl GameState {
         story_ids: &[i32],
     ) -> ArmyBattleProgress {
         let ended = battle.inner.pump_until_active_input(self);
-        let events = std::mem::take(&mut battle.inner.presentation);
+        let events = std::mem::take(&mut battle.inner.events);
         let stop = if ended {
             Some(self.resume_after_land_battle(story_ids))
         } else {
@@ -1378,7 +1394,7 @@ impl Battle {
             round: 0,
             composition_class: composition,
             live: false,
-            presentation: Vec::new(),
+            events: Vec::new(),
         };
 
         for &id in &battle.attacker_units {
@@ -3713,7 +3729,7 @@ impl Battle {
     fn move_between(&mut self, unit: usize, from: i32, to: i32) {
         if let (Some(from), Some(to)) = (TacticalHex::from_index(from), TacticalHex::from_index(to))
         {
-            self.presentation.push(ArmyPresentationEvent::Move {
+            self.events.push(ArmyBattleEvent::Move {
                 unit: ArmyUnitId(self.units[unit].source),
                 from,
                 to,
@@ -3758,7 +3774,7 @@ impl Battle {
             && self.fort_strength[(target / TACTICAL_STRIDE / 2) as usize] > 0
             && defender.is_none();
         if let Some(target) = TacticalHex::from_index(target) {
-            self.presentation.push(ArmyPresentationEvent::Attack {
+            self.events.push(ArmyBattleEvent::Attack {
                 attacker: ArmyUnitId(self.units[attacker].source),
                 target,
                 fort_target: fort_wall_targeted,
@@ -3942,8 +3958,7 @@ impl Battle {
 
     fn mine(&mut self, state: &mut GameState, unit: usize, tile: i32) {
         if let Some(target) = TacticalHex::from_index(tile) {
-            self.presentation
-                .push(ArmyPresentationEvent::Mine { target });
+            self.events.push(ArmyBattleEvent::Mine { target });
         }
         let amount =
             state.rng.next_crt_rand() % 400 + self.units[unit].unit_type as i32 * 250 - 5600;
@@ -3986,7 +4001,7 @@ impl Battle {
     }
 
     fn rally(&mut self, state: &mut GameState, rallier: usize, target: usize) {
-        self.presentation.push(ArmyPresentationEvent::Rally);
+        self.events.push(ArmyBattleEvent::Rally);
         let mut new_state = self.units[target].state;
         let mut new_morale = self.units[target].morale;
         if new_state == TacticalUnitState::Ready {
@@ -4083,7 +4098,7 @@ mod tests {
             round: 0,
             composition_class: 0,
             live: false,
-            presentation: Vec::new(),
+            events: Vec::new(),
         }
     }
 
@@ -4188,6 +4203,36 @@ mod tests {
         (state, attacker, defender)
     }
 
+    #[test]
+    fn deploy_hover_classifies_deploy_invalid_undeploy_and_wait() {
+        let (mut state, _, _) = pending_regulars_vs_militia();
+        state.ensure_army_battle();
+        let nation = state.turn.active_nation;
+        let deploy = state
+            .selected_army_unit_reachable_hexes()
+            .into_iter()
+            .next()
+            .expect("deployment hex");
+        {
+            let battle = state.army_battle().expect("interactive battle");
+            assert_eq!(battle.hover_action(deploy, nation), HoverAction::Deploy);
+            let blocked = (0..TACTICAL_TILE_COUNT as i32)
+                .filter_map(TacticalHex::from_index)
+                .find(|&hex| battle.hover_action(hex, nation) == HoverAction::Invalid)
+                .expect("blocked hex");
+            assert_eq!(battle.hover_action(blocked, nation), HoverAction::Invalid);
+            let other = if battle.nation(battle.active_side()) == NationId::new(0) {
+                NationId::new(1)
+            } else {
+                NationId::new(0)
+            };
+            assert_eq!(battle.hover_action(deploy, other), HoverAction::Wait);
+        }
+        state.army_action_at(deploy, &[]).unwrap();
+        let battle = state.army_battle().expect("battle remains after deploy");
+        assert_eq!(battle.hover_action(deploy, nation), HoverAction::Undeploy);
+    }
+
     fn deploy_local_side(state: &mut GameState) {
         state.ensure_army_battle();
         while state.army_battle().unwrap().stage() == ArmyBattleStage::Deploying {
@@ -4198,6 +4243,21 @@ mod tests {
                 .expect("local unit has a deployment tile");
             state.army_action_at(target, &[]).unwrap();
         }
+    }
+
+    #[test]
+    fn live_hover_classifies_move_on_a_reachable_empty_hex() {
+        let (mut state, _, _) = pending_regulars_vs_militia();
+        deploy_local_side(&mut state);
+        let nation = state.turn.active_nation;
+        let hex = state
+            .selected_army_unit_reachable_hexes()
+            .into_iter()
+            .next()
+            .expect("live unit has a reachable hex");
+        let battle = state.army_battle().expect("live battle");
+        assert_eq!(battle.stage(), ArmyBattleStage::Live);
+        assert_eq!(battle.hover_action(hex, nation), HoverAction::Move);
     }
 
     #[test]

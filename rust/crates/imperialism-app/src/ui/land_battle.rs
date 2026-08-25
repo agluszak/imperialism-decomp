@@ -260,7 +260,7 @@ struct LandBattleGlide {
 
 #[derive(Component)]
 struct LandBattleAnimationQueue {
-    events: Vec<ArmyPresentationEvent>,
+    events: Vec<ArmyBattleEvent>,
     next: usize,
 }
 
@@ -622,6 +622,25 @@ fn insert_land_battle_visuals(
     commands.entity(field).insert(visuals);
 }
 
+/// Retail `cursorsByHoverState` plus the 0x400/0x403 reachability refinement.
+const fn land_battle_cursor_resource_id(action: HoverAction) -> Option<u16> {
+    Some(match action {
+        HoverAction::None => return None,
+        HoverAction::Wait => 0x402,
+        HoverAction::Invalid | HoverAction::Done => 0x3f0,
+        HoverAction::Deploy => 0x3ec,
+        HoverAction::Move => 0x3ed,
+        HoverAction::Attack => 0x3fc,
+        HoverAction::Dig => 0x3ff,
+        HoverAction::Rally => 0x41d,
+        HoverAction::Mine => 0x3fe,
+        HoverAction::Melee => 0x3fd,
+        HoverAction::CanAttack => 0x403,
+        HoverAction::Unreachable => 0x400,
+        HoverAction::Undeploy => 0x41c,
+    })
+}
+
 fn track_land_battle_hover(
     session: Res<GameSession>,
     mut fields: Query<(&RelativeCursorPosition, &mut LandBattlefield)>,
@@ -640,7 +659,8 @@ fn track_land_battle_hover(
             view.hovered_hex = hovered;
         }
         if let Some(resource) = hovered
-            .and_then(|hex| battle.hover_cursor_resource_id(hex, session.game.turn().active_nation))
+            .map(|hex| battle.hover_action(hex, session.game.turn().active_nation))
+            .and_then(land_battle_cursor_resource_id)
         {
             request_turn_event_cursor(&mut requested, resource);
             cursor_set = true;
@@ -1299,7 +1319,7 @@ fn animate_land_battle_actions(
         while let Some(event) = queue.events.get(queue.next).copied() {
             queue.next += 1;
             match event {
-                ArmyPresentationEvent::Move { unit, from, to } => {
+                ArmyBattleEvent::Move { unit, from, to } => {
                     if !preferences.tactical_movement_animations_enabled() {
                         continue;
                     }
@@ -1327,7 +1347,7 @@ fn animate_land_battle_actions(
                     );
                     return;
                 }
-                ArmyPresentationEvent::Attack {
+                ArmyBattleEvent::Attack {
                     attacker,
                     target,
                     fort_target,
@@ -1360,7 +1380,7 @@ fn animate_land_battle_actions(
                     );
                     return;
                 }
-                ArmyPresentationEvent::Mine { target } => {
+                ArmyBattleEvent::Mine { target } => {
                     audio.play(&mut commands, SoundId::new(0x3a9d));
                     spawn_tactical_effect(
                         &mut commands,
@@ -1375,7 +1395,7 @@ fn animate_land_battle_actions(
                     );
                     return;
                 }
-                ArmyPresentationEvent::Rally => {
+                ArmyBattleEvent::Rally => {
                     audio.play(&mut commands, SoundId::new(0x3aae));
                 }
             }
@@ -2518,6 +2538,33 @@ mod tests {
         assert_eq!(trench_sprite_cell(1), Some(0x19));
         assert_eq!(trench_sprite_cell(1 | 4), Some(0x0a));
         assert_eq!(trench_sprite_cell(0x80 | 8), Some(4));
+    }
+
+    #[test]
+    fn hover_actions_map_to_retail_turn_event_cursor_ids() {
+        let cases = [
+            (HoverAction::None, None),
+            (HoverAction::Wait, Some(0x402)),
+            (HoverAction::Invalid, Some(0x3f0)),
+            (HoverAction::Done, Some(0x3f0)),
+            (HoverAction::Deploy, Some(0x3ec)),
+            (HoverAction::Move, Some(0x3ed)),
+            (HoverAction::Attack, Some(0x3fc)),
+            (HoverAction::Dig, Some(0x3ff)),
+            (HoverAction::Rally, Some(0x41d)),
+            (HoverAction::Mine, Some(0x3fe)),
+            (HoverAction::Melee, Some(0x3fd)),
+            (HoverAction::CanAttack, Some(0x403)),
+            (HoverAction::Unreachable, Some(0x400)),
+            (HoverAction::Undeploy, Some(0x41c)),
+        ];
+        for (action, resource) in cases {
+            assert_eq!(
+                land_battle_cursor_resource_id(action),
+                resource,
+                "{action:?}"
+            );
+        }
     }
 
     #[test]

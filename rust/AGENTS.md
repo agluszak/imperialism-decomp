@@ -8,8 +8,12 @@ Rust-specific invariants.
 - `imperialism-core` owns deterministic gameplay state and rules. No Bevy.
   The `oracle` feature exposes substep facades and map-generation traces for C++
   integration tests; production gameplay must not enable it or call those APIs.
+  Answer hover and action questions with semantic types (`HoverAction`,
+  `CivilianTileAction`, `ArmyMapCursorState`, `DiplomacyMapAction`). Do not
+  store retail cursor, picture, or sound resource IDs in core.
 - `imperialism-formats` owns retail file decoding and representation quirks.
 - `imperialism-app` is Bevy presentation, input, audio, movies, chrome, and lifecycle.
+  Map core semantic answers to retail cursor, picture, and sound resource IDs here.
 - `imperialism-testkit` is process-isolated C++ oracle and semantic comparison support.
 
 Do not split the core into subsystem crates or introduce another authoritative state model
