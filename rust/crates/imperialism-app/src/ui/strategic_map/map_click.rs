@@ -2,8 +2,8 @@
 
 use super::map_interaction::{
     MapInteractionMode, MapProjection, MapTransition, StrategicInteraction, StrategicViewport,
-    apply_map_transition, cycle_map_interaction_selection, has_active_map_interaction_selection,
-    navy_zone_center_tile,
+    activate_navy_selection, apply_map_transition, cycle_map_interaction_selection,
+    has_active_map_interaction_selection,
 };
 use super::map_modals::{
     spawn_army_report, spawn_civilian_report, spawn_developer_purchase,
@@ -460,22 +460,7 @@ fn apply_navy_selection(
     {
         NavySelectionClick::Ignored => false,
         NavySelectionClick::SelectZone { zone, force } => {
-            apply_map_transition(
-                session,
-                interaction,
-                viewport,
-                MapTransition::SetMode(MapInteractionMode::Navy),
-            );
-            interaction.navy.zone = Some(zone);
-            interaction.navy.force = force;
-            if let Some(center) = navy_zone_center_tile(&session.game, zone) {
-                apply_map_transition(
-                    session,
-                    interaction,
-                    viewport,
-                    MapTransition::Center(center),
-                );
-            }
+            activate_navy_selection(session, interaction, viewport, zone, force);
             true
         }
         NavySelectionClick::Intelligence { .. } => {
@@ -513,14 +498,7 @@ fn apply_navy_tile_click(
         NavyTileClick::Selection(selection) => {
             match selection {
                 NavySelectionClick::SelectZone { zone, force } => {
-                    apply_map_transition(
-                        session,
-                        interaction,
-                        viewport,
-                        MapTransition::SetMode(MapInteractionMode::Navy),
-                    );
-                    interaction.navy.zone = Some(zone);
-                    interaction.navy.force = force;
+                    activate_navy_selection(session, interaction, viewport, zone, force);
                 }
                 NavySelectionClick::Intelligence { .. } => spawn_fleet_report(commands, false),
                 NavySelectionClick::InspectForce(_) => spawn_fleet_report(commands, true),
@@ -679,6 +657,141 @@ mod tests {
                 Some(CivilianUnitKind::Driller),
             ),
             Some(SoundId::new(0x2339))
+        );
+    }
+
+    fn two_frigates_in_player_port() -> (GameState, OceanZoneId, TaskForceId, ShipId) {
+        let mut parts = crate::ui::test_support::beginning_of_game_parts();
+        let nation = parts.turn.active_nation;
+        let location = parts
+            .ocean
+            .zones
+            .iter()
+            .enumerate()
+            .rev()
+            .find_map(|(index, kind)| {
+                let ZoneKind::PortZone(port) = kind else {
+                    return None;
+                };
+                (parts.map[port.port_tile]
+                    .former_owner_nation
+                    .and_then(TileOwnerTag::nation)
+                    == Some(nation))
+                .then_some(OceanZoneId::new(index as u16))
+            })
+            .expect("active nation has a port zone");
+        let first = parts.object_ids.ship();
+        let second = parts.object_ids.ship();
+        let force = parts.object_ids.task_force();
+        let ship = |name: &str| ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            aggression: NavalAggression::Balanced,
+            nation,
+            name: name.to_string(),
+            strength: 900,
+            experience: 0,
+            selection: ShipSelection::Available,
+        };
+        parts.ships.insert(first, ship("Alpha"));
+        parts.ships.insert(second, ship("Beta"));
+        parts.task_forces.insert(
+            force,
+            TaskForceState::from_parts(
+                NavalAggression::Balanced,
+                TaskForceOrder::None,
+                TaskForceTarget::None,
+                location,
+                nation,
+                false,
+                -1,
+                [(first, true), (second, true)]
+                    .into_iter()
+                    .collect::<indexmap::IndexMap<_, _>>(),
+            ),
+        );
+        (GameState::from_parts(parts), location, force, first)
+    }
+
+    fn first_navy_mission_tile(
+        state: &GameState,
+        force: TaskForceId,
+        zone: OceanZoneId,
+    ) -> Option<(TileId, i32)> {
+        let geometry = state.map().geometry();
+        for row in 0..STRATEGIC_MAP_HEIGHT {
+            for column in 0..STRATEGIC_MAP_WIDTH {
+                let Some(tile) = geometry.tile(row, column) else {
+                    continue;
+                };
+                if state.navy_map_action_code(tile, Some(zone)) != 0 {
+                    continue;
+                }
+                let command = state.navy_command_for_tile(force, tile);
+                if matches!(command, 0x0c | 0x0d | 0x0e | 0x0f | 0x10) {
+                    return Some((tile, command));
+                }
+            }
+        }
+        None
+    }
+
+    #[test]
+    fn navy_mission_flow_selects_a_map_target_without_mission_buttons() {
+        let (state, zone, force, first) = two_frigates_in_player_port();
+        let nation = state.turn().active_nation;
+        let mut session = GameSession::new(state);
+        let mut interaction = StrategicInteraction::default();
+        let mut viewport = StrategicViewport::default();
+
+        activate_navy_selection(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            zone,
+            Some(force),
+        );
+        assert_eq!(interaction.mode, MapInteractionMode::Navy);
+        assert_eq!(interaction.navy.force, Some(force));
+
+        session
+            .game
+            .set_task_force_ship_selected(force, first, false);
+        assert_eq!(
+            session.game.navy_toolbar_counts(Some(force)).selected[NavyToolbarClass::Class1],
+            1
+        );
+
+        session
+            .game
+            .set_task_force_aggression(force, NavalAggression::Aggressive);
+        assert_eq!(
+            session.game.task_force(force).map(|entry| entry.aggression),
+            Some(NavalAggression::Aggressive)
+        );
+
+        let (tile, command) = first_navy_mission_tile(&session.game, force, zone)
+            .expect("selected frigates can reach a map target");
+        let token = navy_cursor_token(command);
+        assert_ne!(token, 0);
+        assert_eq!(
+            navy_selection_cursor_token(&session.game, tile, Some(force), Some(zone)),
+            token
+        );
+
+        assert_eq!(
+            session
+                .game
+                .navy_do_tile_click(tile, Some(force), Some(zone), nation),
+            NavyTileClick::Submitted
+        );
+        let order = session.game.task_force(force).map(|entry| entry.order);
+        assert_ne!(order, Some(TaskForceOrder::None));
+
+        cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+        assert_ne!(
+            session.game.task_force(force).map(|entry| entry.order),
+            Some(TaskForceOrder::None)
         );
     }
 }
