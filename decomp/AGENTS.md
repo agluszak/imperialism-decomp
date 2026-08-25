@@ -1,147 +1,63 @@
-# Imperialism C++ reconstruction guide
+# Imperialism C++ reconstruction
 
-This directory reconstructs the Windows retail executable of **Imperialism (1997)** as byte-faithful,
-period-correct C++ built with MSVC 5.0. Follow the shared rules in `../AGENTS.md` plus this guide.
+This directory reconstructs the Windows retail executable as period-correct C++ built with Visual
+C++ 5.0. Follow `../AGENTS.md` plus these reconstruction invariants.
 
-The retail binary, resources, control flow, and live behavior are ground truth. A recomp-only bug is
-evidence of unfaithful source, data, layout, ownership, resources, or control flow. Restore retail
-semantics; never suppress a symptom with a new guard, guessed value, special case, alternate path,
-test-only bypass, or incomplete fixture.
+## Retail evidence
 
-## Required workflow
+- The retail binary, instructions, resources, control flow, and live behavior win. Decompiler output,
+  existing source, names, signatures, and comparison scores are hypotheses when they disagree.
+- A recomp-only bug indicates unfaithful source, data, layout, ownership, resources, or control flow.
+  Restore the retail model instead of suppressing the symptom.
+- Resolve import lookup table thunks to their targets. ILT thunks are linker output, not source
+  functions.
+- Mac CodeWarrior evidence may establish source-era names and signatures. It does not establish
+  Windows addresses, calling conventions, vtables, inheritance, or implementation behavior.
+- MFC and other Windows-library code is not gameplay source. Identify it as library code and use the
+  vendored MSVC 5 headers for its real interface.
+- Preserve source that expresses the evidenced retail model even when raw matching is inconclusive.
+  Investigate pairing, metadata, unsupported control flow, alignment, and code generation rather than
+  distorting the model for a score.
+- No function is too large or complex to recover. Use focused evidence rather than leaving a stub,
+  approximation, or test-only bypass.
 
-Run commands from `decomp/`. Claim the Bead, then use the smallest direct workflow that proves the
-current change:
+Use a task-specific skill when its procedure is needed. Skills own function recovery, class recovery,
+Ghidra operations, verification, and runtime investigation; this file does not duplicate their
+runbooks.
 
-```sh
-bd update <issue> --claim
-just ghidra portprep 0xADDR
-# edit
-just triage 0xADDR
-just precommit
-```
+## Source and ABI model
 
-For a file with several owned functions, use `just triage --file src/game/...`. Use
-`docs/workflows.md` and `just --list` when the correct direct command is unclear. Beads owns
-claiming and handoff; Git owns branch identity and commit history.
+- Use only Visual C++ 5.0-compatible syntax. Do not use modern C++ or inline assembly.
+- Preserve retail field order, widths, padding, construction and destruction order, serialization,
+  calling conventions, virtual slot order, and other observable ABI behavior.
+- Verify receiver registers, argument passing, return convention, and stack cleanup from instructions
+  and callers. Model a thiscall as a member and vtable dispatch as a virtual call on its owning class.
+- Recover real classes, inheritance, fields, member objects, constructors, destructors, and virtual
+  methods. Evidence for inheritance comes from construction/destruction sequencing, vtables, prefix
+  layout, or Mac symbols, not a suggestive name alone.
+- Promote stable repeated offset access to typed fields or typed views. Keep genuinely unresolved
+  attribution opaque and record conflicting evidence; do not make a raw offset or "dual use" the
+  final model.
+- Use the actual type, including MFC types. Update base and override signatures together.
+- Express normal construction and destruction in normal C++. Do not retain recovery scaffolding such
+  as manual vptr writes, raw vtable calls, `VCall_*` facades, placement construction of bases, raw
+  member storage, or free-function class factories. Compiler-emitted helpers are not source APIs.
+- Every global definition has one declaration in the appropriate globals header. Consumers include
+  that header rather than declaring local `extern`s.
 
-Before porting or diagnosing a function, load every applicable scoped skill:
+## Ownership and generated material
 
-- `decompile-function`: listing-first function recovery, calling conventions, strings, EH,
-  floating-point, codegen shape, data modeling, MFC collections, and large bodies.
-- `recover-class`: class/inheritance/layout recovery and vtable matching.
-- `ghidra`: read-only binary inspection and deliberate Ghidra DB documentation/mutation workflows.
-- `verify`: builds, reccmp triage, gates, pairing diagnosis, formatting, and precommit checks.
-- `runtime`: Wine execution, debugging, native runtime scenarios, screens, flows, and fixtures.
-- `sync-evidence`: entity inventory, source ownership, generated inputs, and evidence resynchronization.
-
-Skills are repeatable procedures. This file owns standing invariants.
-
-## Evidence rules
-
-- Run `just ghidra listing 0xADDR` before porting. The decompile and Ghidra names/signatures are
-  hypotheses; instructions, stack cleanup, receiver setup, data, strings, and call sites decide.
-- Resolve ILT thunks to their targets and ignore the thunk. Never model or call an ILT thunk.
-- Use Mac CodeWarrior evidence only as a name/signature oracle. It cannot assign Windows addresses,
-  calling conventions, vtables, or inheritance.
-- MFC and other Windows-library code is not gameplay source. Use `// LIBRARY` annotations and inspect
-  `vendor/msvc500/headers/` rather than guessing signatures.
-- `just triage` statuses are authoritative: `exact` and `effective` are complete proofs; `mismatch`
-  identifies an actionable divergence; `inconclusive` is not evidence that source is wrong.
-- Do not contort correct typed source around raw score wobble, unsupported control flow, alignment
-  failure, or register scheduling. Investigate metadata/pairing and preserve the source model.
-- No body is too complex to port. Size, strings, EH, and floating-point density call for focused
-  evidence, not a stub, TODO, or approximation.
-
-## Source ownership and markers
-
-- Every file under `include/game/` and `src/game/` is manually owned source.
-- Class-owned functions live in `src/game/<subsystem>/<ClassName>.cpp`.
-- Only files with an `AUTO-GENERATED by tools/...` banner are tool-owned.
-- A `// FUNCTION: IMPERIALISM 0x...` marker must immediately precede its declaration, with no blank
-  line or comment between them.
-- Keep exactly one manual implementation per address. Use `// SYNTHETIC` for compiler-emitted
-  entities where required by the entity inventory.
-- Keep ownership markers and concise `ABI:`, `MATCH:`, `ORACLE:`, or `LAYOUT:` comments explaining
-  current non-obvious contracts. Investigation history belongs in Ghidra, focused evidence docs,
-  Beads, and Git—not production source.
-- After marker/ownership edits, run `just build`; it regenerates source indexes and stubs. Never hand
-  edit generated build inputs.
-
-## C++ and ABI invariants
-
-- Use only syntax supported by Visual C++ 5.0. No modern C++ features and no inline assembly.
-- Preserve retail field order, widths, padding, construction order, serialization, calling
-  conventions, and virtual slot order.
-- Promote stable repeated offset access to typed fields or typed view structs. Do not leave raw
-  offset casts as the final model.
-- Use the real type, including real MFC types (`CString`, MFC collections, `CPoint`, `CRect`,
-  `CArchive`, and related types). Do not borrow a neighboring signature's type.
-- A pointer-bearing field is a typed pointer when its owner is known. Keep genuinely unresolved
-  attribution opaque and mark the conflicting evidence; “dual use” is not a final explanation.
-- Update base and override signatures together so an override does not silently stop overriding.
-- Every global definition in `global_data_tables.cpp` has exactly one declaration in the appropriate
-  `include/game/globals/*.h`; consumers include that header and never add local `extern` declarations.
-
-### Calling conventions
-
-- Verify who loads ECX/EDX, who pushes arguments, and who cleans the stack. Ghidra frequently labels
-  real `__thiscall` methods as `__cdecl` or `__fastcall`.
-- Model a thiscall as a real member method and a vtable dispatch as a real virtual call on the owning
-  class. Never fake conventions with `reinterpret_cast` or a dummy EDX argument.
-- A truly same-convention free-function return/argument correction is allowed. Before retaining any
-  bridge, ask whether the owning class should be recovered instead.
-
-### Construction, destruction, and inheritance
-
-- Prefer real inheritance, natural base/member construction, and declaration-order member layout.
-- Use member initializer lists when retail initializes scalars before later non-POD members.
-- Use real member objects, not raw storage plus initialization helpers.
-- Never write a vptr manually, index a raw vtable, create `VCall_*` facades, use placement-new for
-  base construction, or add operator-new/free-function class factories as a recovery technique.
-- Compiler construction/destruction helpers and scalar deleting destructors are compiler output, not
-  source APIs. Express ordinary C++, annotate synthetic entities, and let MSVC emit them.
-- Evidence for inheritance must come from constructor/destructor sequencing, vtable layout,
-  prefix-layout, or Mac symbols—not names alone.
-- Promotion is one-way. Retire temporary construction/call bridges as the class model becomes known;
-  never restore a worse bridge or stub to make a gate green.
-
-## Verification
-
-Use `just` targets rather than raw Docker or raw reccmp commands when a target exists.
-
-- `just build` regenerates inputs and builds with MSVC 5.0.
-- `just triage 0xADDR` or `just triage --file ...` is the first comparison interface.
-- `just vtable Class`, `just datacmp`, `just stackcmp`, and `just serde-audit` cover specialized
-  evidence. Run `serde-audit` for serializer changes before interpreting comparison results.
-- `just format-check <touched paths>` checks manually edited source.
-- `just gates` enforces source policy. Baseline-free bans are source defects and cannot be blessed.
-- `just precommit` runs the build, gates, tooling tests, and the runtime PR suite.
-
-If correct architecture exposes a build/gate/vtable problem, fix ownership, layout, declarations, or
-source forward. If that cannot be done without architectural regression, stop and report the exact
-blocker.
-
-## Environment and derived evidence
-
-- Python tooling runs through `uv`; prefer `just` or `uv run python -m tools...`, never bare Python.
-- `.env` contains only machine-specific paths. Bootstrap a fresh checkout per `docs/workflows.md`.
-- The vendored Ghidra project under `vendor/ghidra/` is authoritative. Use `just restore-project` in a
-  fresh subproject checkout.
-- Generated source indexes/stubs and Ghidra exports live under build directories. Do not add generated
-  declaration blocks to manual headers.
-- Keep `reccmp-project.yml` changes deliberate and evidence-backed. Do not add ignore entries to
-  hide a mismatch.
-
-## Completion
-
-Before committing C++ or tooling changes:
-
-1. Run `just precommit`.
-2. Review structured triage for touched addresses.
-3. Close or update the Beads you touched and create Beads for remaining work.
-4. Stage only this task and write a commit message covering changes, verification, and residual
-   risks.
-
-Do not create worklogs, porting queues, or checked-in agent plans. Durable active work belongs in
-Beads; execution history belongs in commits.
+- Files under `include/game/` and `src/game/` are manually owned. Only files with an
+  `AUTO-GENERATED by tools/...` banner are tool-owned.
+- Class-owned definitions live with their class subsystem. Keep exactly one manual implementation per
+  retail address.
+- A `// FUNCTION: IMPERIALISM 0x...` marker immediately precedes its declaration. Mark required
+  compiler-emitted inventory entries `// SYNTHETIC`.
+- Generated indexes, stubs, exports, and build inputs are outputs. Change their source model or
+  generator, not the generated files.
+- Keep concise `ABI:`, `MATCH:`, `ORACLE:`, and `LAYOUT:` comments for non-obvious current contracts.
+  Investigation history belongs in focused evidence docs, Ghidra, Beads, and Git.
+- The vendored Ghidra project is authoritative for confirmed database knowledge. Keep manual source
+  and committed database evidence synchronized through their existing generators and exports.
+- Do not hide a mismatch with reccmp ignores, allowlists, generated-file exceptions, fake bridges, or
+  a less faithful source shape.

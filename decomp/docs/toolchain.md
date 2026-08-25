@@ -237,7 +237,7 @@ whose every call site was inlined, so no linker setting can bring 0x4be1d0 back
 function", i.e. absent from the PDB, not discarded at link time).
 
 Reproducing it would take `/Ob2` on a TU holding both classes — a toolchain
-axis change plus a merge that Hard Rule 7 forbids. Treat this shape as
+axis change plus a source-model merge that would distort class ownership. Treat this shape as
 recognised-and-accepted: keep the `// FUNCTION:` marker on the in-class
 definition so the address stays owned, and expect it to stay unpaired.
 

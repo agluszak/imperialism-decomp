@@ -1,35 +1,34 @@
 ---
 name: ui-recovery
-description: Carry recovered Imperialism UI evidence through the Mac View IR and declared Windows deltas into generated native Bevy hierarchies without duplicating screen definitions.
+description: Carry retail UI evidence through the committed Mac View IR or Windows delta, generator, BSN output, and Bevy wiring.
 ---
 
 # Recover UI into Bevy
 
-Run Rust work from `rust/` and generator work from `../decomp/`.
+Generator commands run from `decomp/`; Rust commands run from `rust/`.
 
-1. Identify the retail screen, resource file/view ID, hierarchy, rectangles, tags, state, text/style
-   bindings, and platform-specific evidence.
-2. Change the committed Mac View IR or a narrowly declared Windows delta in `../decomp/`; do not
-   hand-author a parallel Bevy screen description.
-3. Run the decomp UI generator check and regenerate the checked-in native Rust source through its
-   explicit sibling output path.
-4. Emit code-defined BSN containing native Bevy components and `Children` in `imperialism-app`.
-   Reuse the small handwritten retail scene functions/templates for geometry, pictures, and fonts;
-   do not generate commands, asset-cache access, resource-node locals, or a generic scene component.
-   Spawn the concrete generated function with `Commands::spawn_scene`; invoke one direct typed core
-   operation rather than mutating
-   authoritative state in ECS. Do not invent a universal `GameCommand` layer for UI wiring. Project
-   returned state, results, and required non-state effects.
-5. Preserve the fixed logical canvas, retail hierarchy and coordinates, deterministic tag/event
-   mapping, and nearest-neighbor presentation rules. Resource offsets and symbolic node IDs remain
-   recovery evidence used to reconstruct the tree; do not emit them as runtime identity.
-6. Add focused generator and Bevy behavior tests. Use a runtime/differential check when
-   asserting live retail behavior rather than static resource structure.
+1. Identify the retail resource file and View ID plus the evidenced hierarchy, rectangles, tags,
+   state, text/style bindings, and Windows-specific differences.
+2. Update the committed Mac View IR source or the narrow semantic Windows input in
+   `decomp/config/ui_factory_windows_views.yml` / `ui_platform_deltas.yml`. Do not edit generated
+   Rust or C++ output.
+3. From `decomp/`, inspect and regenerate with:
 
-Every screen-local top-level scene must be state-scoped with `DespawnOnExit`; descendants inherit
-lifetime through `ChildOf`. Do not repeat `DespawnOnExit` on children. Explicit close may despawn
-early but must not be the sole cleanup path. `ModalDialog` is only a marker and does not clean
-anything up.
+   ```sh
+   just ui-resource-show FILE:VIEW_ID
+   just ui-codegen --write-rust-ui
+   just ui-codegen-check
+   just build
+   ```
 
-If source evidence is incomplete, keep the gap explicit. Do not guess geometry, hierarchy, state, or
-event semantics to make the UI look plausible.
+   Use `just ui-codegen-explain FUNCTION EVENT [NODE]` and
+   `just ui-codegen-triage FUNCTION` when tracing generated evidence.
+4. In `imperialism-app`, wire the generated native Bevy/BSN scene to its existing screen route,
+   presentation components, and direct typed core operation.
+5. Add the smallest focused generator or Bevy interaction check needed for the recovered behavior.
+   Use a runtime/differential scenario for claims about live retail behavior.
+6. Run the three Rust verification commands from `rust/`; if decomp evidence or generation changed,
+   run the decomp `verify` procedure too.
+
+If evidence is incomplete, leave the gap explicit rather than guessing geometry, hierarchy, state, or
+event semantics.
