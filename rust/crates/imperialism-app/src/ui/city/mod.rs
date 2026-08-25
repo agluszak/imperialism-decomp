@@ -73,6 +73,7 @@ impl Plugin for CityPlugin {
                 sync_industry_texts,
                 sync_industry_indicators,
                 sync_industry_bars,
+                sync_rail_bars,
                 sync_warehouse_dialog,
                 sync_food_dialog,
                 sync_transport_capacity_dialog,

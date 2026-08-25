@@ -6,6 +6,7 @@ use super::hover_help::{
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
+use super::retail_raster_text::RetailRasterTextPainter;
 use crate::media::RetailAudioAssets;
 use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::picking::hover::DirectlyHovered;
@@ -17,10 +18,7 @@ use bevy::ui_widgets::{
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
-use imperialism_formats::{
-    PictureId, RetailFontFace, RetailTextStylePreset, SoundId, decode_retail_font_cell_metrics,
-    fourcc, resolve_retail_text_style,
-};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
@@ -399,17 +397,16 @@ fn sync_preference_slider_visuals(
         (With<PreferenceSlider>, Changed<SliderValue>),
     >,
 ) {
-    let font = retail.assets().font_bytes(RetailFontFace::BelweBold);
-    let style = resolve_retail_text_style(RetailTextStylePreset {
-        font_family: 1,
-        face_flags: 0,
-        point_size: 14,
-        alignment: 1,
-    })
+    let mut text = RetailRasterTextPainter::from_preset(
+        retail.assets(),
+        RetailTextStylePreset {
+            font_family: 1,
+            face_flags: 0,
+            point_size: 14,
+            alignment: 1,
+        },
+    )
     .expect("retail preference slider text style");
-    let font_size = decode_retail_font_cell_metrics(style.face, font)
-        .expect("retail preference slider font metrics")
-        .em_pixel_size(style.logical_pixel_height) as f32;
     for (value, range, visual, image_node, node) in &sliders {
         let height = match node.height {
             Val::Px(height) => height as i16,
@@ -427,8 +424,8 @@ fn sync_preference_slider_visuals(
         if split < SLIDER_SPLIT_PAD {
             let center = visual.upper.width as i32 / 2;
             let baseline = i32::from(height / 2 + 4);
-            picture.draw_text_center(font, font_size, center, baseline, &visual.off, 0x28);
-            picture.draw_text_center(font, font_size, center + 1, baseline + 1, &visual.off, 0);
+            text.draw_center(&mut picture, center, baseline, &visual.off, 0x28);
+            text.draw_center(&mut picture, center + 1, baseline + 1, &visual.off, 0);
         }
         if let Some(mut image) = image_assets.get_mut(&image_node.image) {
             *image = picture.to_image(retail.assets().default_dib_palette());

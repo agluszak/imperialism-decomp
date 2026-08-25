@@ -1,6 +1,7 @@
 use super::*;
 use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
+use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct ShipyardRowAssets {
@@ -202,8 +203,7 @@ fn shipyard_queue_pictures(
 
 fn draw_shipyard_details(
     picture: &mut IndexedPicture,
-    font: &[u8],
-    font_size: f32,
+    text: &mut RetailRasterTextPainter,
     stat_labels: &[String; 6],
     row: &ShipyardRowData,
     city: &CityState,
@@ -212,17 +212,15 @@ fn draw_shipyard_details(
         let text_x = 0x3a + index as i32 * 0x28;
         picture.blit_keyed_at(&material.picture, IVec2::new(text_x - 0x20, 0x98), 0x10);
         picture.blit_keyed_at(&material.picture, IVec2::new(text_x - 0x20, 0xcc), 0x10);
-        picture.draw_text(
-            font,
-            font_size,
+        text.draw(
+            picture,
             IVec2::new(text_x, 0xb2),
             &material.required.to_string(),
             0xd2,
         );
         let available = city.stockpile[material.resource];
-        picture.draw_text(
-            font,
-            font_size,
+        text.draw(
+            picture,
             IVec2::new(text_x, 0xe6),
             &available.to_string(),
             if available < material.required {
@@ -234,10 +232,9 @@ fn draw_shipyard_details(
     }
     for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
         let origin = IVec2::new(left as i32, baseline as i32);
-        picture.draw_text(font, font_size, origin, &stat_labels[index], 0xd2);
-        picture.draw_text(
-            font,
-            font_size,
+        text.draw(picture, origin, &stat_labels[index], 0xd2);
+        text.draw(
+            picture,
             origin + IVec2::new(0x3c, 0),
             &row.stats[index].to_string(),
             0xd2,
@@ -283,29 +280,19 @@ pub(in crate::ui::city) fn sync_shipyard_details(
             image.image.clone_from(&row.picture);
         }
     }
-    let font = retail
-        .assets()
-        .font_bytes(RetailFontFace::BookAntiquaRegular);
-    let style = resolve_retail_text_style(RetailTextStylePreset {
-        font_family: 3,
-        face_flags: 0,
-        point_size: 10,
-        alignment: -2,
-    })
+    let mut text = RetailRasterTextPainter::from_preset(
+        retail.assets(),
+        RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size: 10,
+            alignment: -2,
+        },
+    )
     .expect("retail Shipyard custom-drawing text style");
-    let font_size = decode_retail_font_cell_metrics(style.face, font)
-        .expect("retail Shipyard font metrics")
-        .em_pixel_size(style.logical_pixel_height) as f32;
     for (visual, image_node) in &details {
         let mut picture = visual.base.clone();
-        draw_shipyard_details(
-            &mut picture,
-            font,
-            font_size,
-            &visual.stat_labels,
-            row,
-            city,
-        );
+        draw_shipyard_details(&mut picture, &mut text, &visual.stat_labels, row, city);
         if let Some(mut image) = image_assets.get_mut(&image_node.image) {
             *image = picture.to_image(retail.assets().default_dib_palette());
         }
