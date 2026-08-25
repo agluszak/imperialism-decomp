@@ -898,7 +898,6 @@ fn on_diplomacy_offer_activate(
     mut screens: Query<&mut DiplomacyScreen>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Option<Res<RetailAssetsResource>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -913,15 +912,10 @@ fn on_diplomacy_offer_activate(
     {
         return;
     }
-    let story_ids = super::session::news_story_ids(assets.as_deref());
     let stop = if session.game.current_diplomacy_offer().is_some() {
-        session
-            .game
-            .answer_current_diplomacy_offer(accept, story_ids)
+        session.game.answer_current_diplomacy_offer(accept)
     } else {
-        session
-            .game
-            .answer_current_diplomacy_war_join(accept, story_ids)
+        session.game.answer_current_diplomacy_war_join(accept)
     };
     match stop {
         TurnStop::DiplomacyOffer => {
@@ -2301,7 +2295,7 @@ mod tests {
                 Some(DiplomacyPolicy::Alliance);
         });
         let mut state = GameState::from_parts(parts);
-        let TurnStop::DiplomacyOffer = state.finish_player_orders(true, &[]) else {
+        let TurnStop::DiplomacyOffer = state.finish_player_orders(true) else {
             panic!("alliance offer must stop for the diplomacy-offer dialog");
         };
         state
@@ -2333,7 +2327,7 @@ mod tests {
         }
         let mut state = GameState::from_parts(parts);
         state.set_country_status(minor, CountryStatus::Independent);
-        let TurnStop::DiplomacyWarJoin = state.finish_player_orders(true, &[]) else {
+        let TurnStop::DiplomacyWarJoin = state.finish_player_orders(true) else {
             panic!("declare-war on the favorite's minor must stop for the war-join dialog");
         };
         state

@@ -7,7 +7,7 @@ mod ui;
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
-use imperialism_core::RandomGameNames;
+use imperialism_core::{GameData, RandomGameNames};
 use imperialism_formats::{LoadedGame, RetailAssets};
 use std::path::PathBuf;
 
@@ -80,10 +80,6 @@ impl RetailAssetsResource {
         self.string(group, offset + 1)
             .expect("retail hover-help string")
     }
-
-    pub(crate) fn news_story_ids(&self) -> &[i32] {
-        self.0.news_table().story_ids()
-    }
 }
 
 #[derive(Resource)]
@@ -147,12 +143,15 @@ pub fn run(
                 ..default()
             }),
     );
-    if let Some(loaded) = initial_game {
+    if let Some(mut loaded) = initial_game {
         assert_eq!(
             loaded.game.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
+        loaded.game.set_game_data(GameData::from_news_story_ids(
+            retail_assets.news_table().story_ids().to_vec(),
+        ));
         ui::insert_loaded_game_world(app.world_mut(), loaded);
         app.insert_state(AppState::StrategicMap);
     } else {

@@ -1,6 +1,6 @@
 //! Native transition differentials for technology advances.
 
-use imperialism_core::MajorNationId;
+use imperialism_core::{GameData, MajorNationId};
 use imperialism_testkit::compare_native;
 use serde::Deserialize;
 
@@ -60,7 +60,8 @@ struct NewspaperCase {
 #[ignore = "requires the native C++ oracle"]
 fn construct_newspaper_page() {
     compare_native("construct_newspaper_page", |state, case: NewspaperCase| {
-        state.construct_newspaper_pages(&case.story_ids);
+        state.set_game_data(GameData::from_news_story_ids(case.story_ids));
+        state.construct_newspaper_pages();
     })
     .unwrap();
 }
@@ -71,7 +72,8 @@ fn construct_newspaper_page_misc_event() {
     compare_native(
         "construct_newspaper_page_misc_event",
         |state, case: NewspaperCase| {
-            state.construct_newspaper_pages(&case.story_ids);
+            state.set_game_data(GameData::from_news_story_ids(case.story_ids));
+            state.construct_newspaper_pages();
         },
     )
     .unwrap();

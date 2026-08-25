@@ -963,7 +963,7 @@ impl GameState {
     }
 
     pub fn ensure_navy_battle(&mut self) -> &NavyBattle {
-        let stop = self.synchronize_navy_battle(&[]);
+        let stop = self.synchronize_navy_battle();
         assert!(
             stop.is_none(),
             "interactive navy battle ended before reaching local input"
@@ -972,7 +972,7 @@ impl GameState {
             .expect("interactive navy battle was just stored")
     }
 
-    pub fn synchronize_navy_battle(&mut self, story_ids: &[i32]) -> Option<crate::TurnStop> {
+    pub fn synchronize_navy_battle(&mut self) -> Option<crate::TurnStop> {
         if self
             .navy_battle()
             .is_some_and(|battle| battle.tactical_initialized)
@@ -993,7 +993,7 @@ impl GameState {
         };
         battle.start(self);
         if battle.live && battle.pump_until_active_input(self) {
-            return Some(self.resume_after_naval_battle(story_ids));
+            return Some(self.resume_after_naval_battle());
         }
         self.store_navy_battle(battle);
         None
@@ -1005,11 +1005,7 @@ impl GameState {
         Some(battle.units[idx].view())
     }
 
-    pub fn deploy_navy_unit(
-        &mut self,
-        tile: i32,
-        story_ids: &[i32],
-    ) -> Result<bool, NavyActionRejection> {
+    pub fn deploy_navy_unit(&mut self, tile: i32) -> Result<bool, NavyActionRejection> {
         let active_nation = self.turn.active_nation;
         let mut battle = self
             .take_navy_battle()
@@ -1027,14 +1023,13 @@ impl GameState {
             self.store_navy_battle(battle);
             return Ok(deployed);
         }
-        let stop = self.finish_interactive_navy_action(battle, story_ids);
+        let stop = self.finish_interactive_navy_action(battle);
         Ok(deployed || stop.is_some())
     }
 
     pub fn move_navy_unit(
         &mut self,
         tile: i32,
-        story_ids: &[i32],
     ) -> Result<(NavyMoveResult, Option<crate::TurnStop>), NavyActionRejection> {
         let active_nation = self.turn.active_nation;
         let mut battle = self
@@ -1067,14 +1062,13 @@ impl GameState {
         let from = battle.units[idx].tile;
         battle.move_and_maybe_finish(self, idx, tile);
         let to = battle.units[idx].tile;
-        let stop = self.finish_interactive_navy_action(battle, story_ids);
+        let stop = self.finish_interactive_navy_action(battle);
         Ok((NavyMoveResult { from, to }, stop))
     }
 
     pub fn fire_navy_unit(
         &mut self,
         tile: i32,
-        story_ids: &[i32],
     ) -> Result<Option<crate::TurnStop>, NavyActionRejection> {
         let active_nation = self.turn.active_nation;
         let mut battle = self
@@ -1100,12 +1094,11 @@ impl GameState {
             return Err(NavyActionRejection::InvalidTarget);
         }
         battle.fire_and_maybe_finish(self, idx, tile);
-        Ok(self.finish_interactive_navy_action(battle, story_ids))
+        Ok(self.finish_interactive_navy_action(battle))
     }
 
     pub fn finish_selected_navy_unit_action(
         &mut self,
-        story_ids: &[i32],
     ) -> Result<Option<crate::TurnStop>, NavyActionRejection> {
         let active_nation = self.turn.active_nation;
         let mut battle = self
@@ -1122,12 +1115,11 @@ impl GameState {
             return Ok(None);
         }
         battle.finish_action();
-        Ok(self.finish_interactive_navy_action(battle, story_ids))
+        Ok(self.finish_interactive_navy_action(battle))
     }
 
     pub fn retreat_from_navy_battle(
         &mut self,
-        story_ids: &[i32],
     ) -> Result<Option<crate::TurnStop>, NavyActionRejection> {
         let active_nation = self.turn.active_nation;
         let mut battle = self
@@ -1143,14 +1135,14 @@ impl GameState {
                 self.store_navy_battle(battle);
                 return Ok(None);
             }
-            return Ok(self.finish_interactive_navy_action(battle, story_ids));
+            return Ok(self.finish_interactive_navy_action(battle));
         }
         let slot = side_index(battle.current_side);
         battle.sides[slot].auto_play = true;
         if let Some(selected) = battle.selected {
             battle.advance_auto_pulse(self, selected);
         }
-        Ok(self.finish_interactive_navy_action(battle, story_ids))
+        Ok(self.finish_interactive_navy_action(battle))
     }
 
     pub fn navy_unit_reachable_costs(&mut self) -> Vec<i16> {
@@ -1174,14 +1166,14 @@ impl GameState {
         }
     }
 
-    pub fn commit_finished_navy_battle(&mut self, story_ids: &[i32]) -> Option<crate::TurnStop> {
+    pub fn commit_finished_navy_battle(&mut self) -> Option<crate::TurnStop> {
         let mut battle = self.take_navy_battle()?;
         if battle.outcome.is_none() {
             self.store_navy_battle(battle);
             return None;
         }
         battle.commit_outcome(self);
-        Some(self.resume_after_naval_battle(story_ids))
+        Some(self.resume_after_naval_battle())
     }
 
     pub fn selected_navy_unit_reachable_tiles(&self) -> Vec<i32> {
@@ -1194,7 +1186,6 @@ impl GameState {
     pub fn navy_action_at(
         &mut self,
         tile: i32,
-        story_ids: &[i32],
     ) -> Result<Option<crate::TurnStop>, NavyActionRejection> {
         let active_nation = self.turn.active_nation;
         let mut battle = self
@@ -1213,7 +1204,7 @@ impl GameState {
                 self.store_navy_battle(battle);
                 return Ok(None);
             }
-            return Ok(self.finish_interactive_navy_action(battle, story_ids));
+            return Ok(self.finish_interactive_navy_action(battle));
         }
         if battle.units[idx].tile < 0 {
             self.store_navy_battle(battle);
@@ -1221,7 +1212,7 @@ impl GameState {
         }
         if battle.can_fire_on(idx, tile) {
             battle.fire_and_maybe_finish(self, idx, tile);
-            return Ok(self.finish_interactive_navy_action(battle, story_ids));
+            return Ok(self.finish_interactive_navy_action(battle));
         }
         if !(0..TILE_COUNT as i32).contains(&tile) {
             self.store_navy_battle(battle);
@@ -1233,12 +1224,12 @@ impl GameState {
             return Err(NavyActionRejection::InvalidTarget);
         }
         battle.move_and_maybe_finish(self, idx, tile);
-        Ok(self.finish_interactive_navy_action(battle, story_ids))
+        Ok(self.finish_interactive_navy_action(battle))
     }
 
     /// Headless Auto: auto-deploy the current side if needed, then pump both
     /// sides until the battle commits and navy orders resume.
-    pub fn auto_resolve_navy_battle(&mut self, story_ids: &[i32]) -> crate::TurnStop {
+    pub fn auto_resolve_navy_battle(&mut self) -> crate::TurnStop {
         let crate::turn_flow::TurnContinuation::NavalBattle(_) = &self.continuation else {
             panic!("navy-battle auto-resolve requires a navy-orders continuation");
         };
@@ -1276,7 +1267,7 @@ impl GameState {
             }
         };
         if battle.pump_until_active_input(self) {
-            return self.resume_after_naval_battle(story_ids);
+            return self.resume_after_naval_battle();
         }
         self.store_navy_battle(battle);
         crate::TurnStop::NavalBattle
@@ -1285,10 +1276,9 @@ impl GameState {
     fn finish_interactive_navy_action(
         &mut self,
         mut battle: NavyBattle,
-        story_ids: &[i32],
     ) -> Option<crate::TurnStop> {
         if battle.pump_until_active_input(self) {
-            return Some(self.resume_after_naval_battle(story_ids));
+            return Some(self.resume_after_naval_battle());
         }
         self.store_navy_battle(battle);
         None
@@ -1703,9 +1693,9 @@ mod tests {
         battle.units[0].quality = 20;
         battle.compute_reachable(0);
         attach_live_battle(&mut state, battle);
-        assert_eq!(state.fire_navy_unit(8, &[]), Ok(None));
+        assert_eq!(state.fire_navy_unit(8), Ok(None));
         assert_eq!(
-            state.fire_navy_unit(8, &[]),
+            state.fire_navy_unit(8),
             Err(NavyActionRejection::InvalidTarget)
         );
     }
@@ -1720,7 +1710,7 @@ mod tests {
         attach_live_battle(&mut state, battle);
         let before = state.rng;
         assert_eq!(
-            state.fire_navy_unit(6 * DEPLOY_ROW_WIDTH, &[]),
+            state.fire_navy_unit(6 * DEPLOY_ROW_WIDTH),
             Err(NavyActionRejection::InvalidTarget)
         );
         assert_eq!(state.rng, before);
@@ -1734,11 +1724,11 @@ mod tests {
             battle(vec![unit(1, BattleSide::Attacker, 7, 0)]),
         );
         assert_eq!(
-            state.move_navy_unit(TILE_COUNT as i32, &[]),
+            state.move_navy_unit(TILE_COUNT as i32),
             Err(NavyActionRejection::InvalidTarget)
         );
         assert_eq!(
-            state.move_navy_unit(10_000, &[]),
+            state.move_navy_unit(10_000),
             Err(NavyActionRejection::InvalidTarget)
         );
     }
@@ -1830,9 +1820,7 @@ mod tests {
                 .contains(&deploy_tile)
         );
         assert_eq!(
-            state
-                .navy_action_at(deploy_tile, &[])
-                .expect("deploy click"),
+            state.navy_action_at(deploy_tile).expect("deploy click"),
             None
         );
         let battle = state.navy_battle().expect("live battle remains");

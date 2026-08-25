@@ -106,12 +106,8 @@ fn on_technology_advance_activate(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Res<crate::RetailAssetsResource>,
 ) {
-    match session
-        .game
-        .acknowledge_technology_report(assets.news_story_ids())
-    {
+    match session.game.acknowledge_technology_report() {
         TurnStop::TechnologyAdvance => {}
         stop => apply_turn_stop(stop, &mut next_state),
     }

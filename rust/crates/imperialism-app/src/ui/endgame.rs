@@ -268,14 +268,8 @@ fn on_council_close(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Option<Res<RetailAssetsResource>>,
 ) {
-    apply_turn_stop(
-        session
-            .game
-            .close_council_of_governors(super::session::news_story_ids(assets.as_deref())),
-        &mut next_state,
-    );
+    apply_turn_stop(session.game.close_council_of_governors(), &mut next_state);
 }
 
 fn spawn_game_score(mut commands: Commands) {

@@ -297,13 +297,12 @@ fn on_deal_book_close(
     return_state: Option<Res<ReturnTo>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Res<crate::RetailAssetsResource>,
 ) {
     if let Some(return_state) = return_state.as_deref() {
         next_state.set(return_state.0);
         return;
     }
-    let stop = session.game.close_turn_deal_book(assets.news_story_ids());
+    let stop = session.game.close_turn_deal_book();
     apply_turn_stop(stop, &mut next_state);
 }
 

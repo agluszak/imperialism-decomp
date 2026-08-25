@@ -2349,7 +2349,7 @@ mod tests {
             state.pending_town_naming(),
             Some((MajorNationId::new(0), port_tile))
         );
-        assert_eq!(state.advance_turn(&[]), TurnStop::TownNaming);
+        assert_eq!(state.advance_turn(), TurnStop::TownNaming);
         assert!(
             matches!(
                 &state.ocean.zones[..],
