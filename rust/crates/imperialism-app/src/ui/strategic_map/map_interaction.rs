@@ -329,22 +329,8 @@ pub(crate) fn cycle_map_interaction_selection(
                     .game
                     .next_navy_order_zone(nation, interaction.navy.zone)
                 {
-                    apply_map_transition(
-                        session,
-                        interaction,
-                        viewport,
-                        MapTransition::SetMode(MapInteractionMode::Navy),
-                    );
-                    interaction.navy.zone = Some(zone);
-                    interaction.navy.force = session.game.demand_task_force_for_zone(zone, nation);
-                    if let Some(tile) = navy_zone_center_tile(&session.game, zone) {
-                        apply_map_transition(
-                            session,
-                            interaction,
-                            viewport,
-                            MapTransition::Center(tile),
-                        );
-                    }
+                    let force = session.game.demand_task_force_for_zone(zone, nation);
+                    activate_navy_selection(session, interaction, viewport, zone, force);
                     return;
                 }
                 cursor = MapInteractionMode::Civilian;
@@ -363,14 +349,8 @@ pub(crate) fn cycle_map_interaction_selection(
     if visited == 7
         && let Some(zone) = session.game.next_navy_order_zone(nation, None)
     {
-        apply_map_transition(
-            session,
-            interaction,
-            viewport,
-            MapTransition::SetMode(MapInteractionMode::Navy),
-        );
-        interaction.navy.zone = Some(zone);
-        interaction.navy.force = session.game.demand_task_force_for_zone(zone, nation);
+        let force = session.game.demand_task_force_for_zone(zone, nation);
+        activate_navy_selection(session, interaction, viewport, zone, force);
         return;
     }
 
@@ -406,6 +386,27 @@ pub(crate) fn navy_zone_center_tile(state: &GameState, zone: OceanZoneId) -> Opt
             port.zone.target_tile.or(Some(port.port_tile))
         }
         imperialism_core::ZoneKind::Zone(zone) => zone.target_tile.or(zone.active_tile),
+    }
+}
+
+/// `TMapUberPicture::SetActiveMapOrderEntry` presentation: navy mode, zone/force, and center.
+pub(crate) fn activate_navy_selection(
+    session: &mut GameSession,
+    interaction: &mut StrategicInteraction,
+    viewport: &mut StrategicViewport,
+    zone: OceanZoneId,
+    force: Option<TaskForceId>,
+) {
+    apply_map_transition(
+        session,
+        interaction,
+        viewport,
+        MapTransition::SetMode(MapInteractionMode::Navy),
+    );
+    interaction.navy.zone = Some(zone);
+    interaction.navy.force = force;
+    if let Some(tile) = navy_zone_center_tile(&session.game, zone) {
+        apply_map_transition(session, interaction, viewport, MapTransition::Center(tile));
     }
 }
 
@@ -488,5 +489,34 @@ mod tests {
         assert_eq!(ocean.origin, IVec2::new(104, 0));
         ocean.set_upper_left(IVec2::new(100, 60), &MapGeometry::new(MapTopology::Bounded));
         assert_eq!(ocean.origin, IVec2::new(0x4c, 0x20));
+    }
+
+    #[test]
+    fn activate_navy_selection_sets_mode_zone_force_and_centers() {
+        let mut session = session();
+        session.set_map_viewport_upper_left(10, 10);
+        let origin_before = session.map_view_origin;
+        let mut interaction = StrategicInteraction::default();
+        let mut viewport = StrategicViewport::default();
+        let zone = OceanZoneId::new(0);
+        let force = TaskForceId::new(1);
+
+        activate_navy_selection(
+            &mut session,
+            &mut interaction,
+            &mut viewport,
+            zone,
+            Some(force),
+        );
+
+        assert_eq!(interaction.mode, MapInteractionMode::Navy);
+        assert_eq!(interaction.navy.zone, Some(zone));
+        assert_eq!(interaction.navy.force, Some(force));
+        let center = navy_zone_center_tile(&session.game, zone).expect("zone 0 has a center tile");
+        assert_eq!(
+            session.map_view_origin,
+            session.game.map().viewport_origin_centered_on(center)
+        );
+        assert_ne!(session.map_view_origin, origin_before);
     }
 }
