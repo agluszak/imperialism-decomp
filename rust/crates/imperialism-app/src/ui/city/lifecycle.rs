@@ -109,6 +109,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
 pub(in crate::ui::city) fn restore_city_dialogs(
     roots: Query<(), Added<CityScreenRoot>>,
     session: Res<GameSession>,
+    windows: Res<CityWindows>,
     mut commands: Commands,
 ) {
     if roots.is_empty() {
@@ -116,7 +117,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     }
     let nation = session.active_major_nation();
     for slot in (0..enum_map::enum_len::<CityFacilitySlot>()).map(CityFacilitySlot::from_usize) {
-        let state = session.city_windows[nation][slot];
+        let state = windows.0[nation][slot];
         let Some(position) = state else {
             continue;
         };
@@ -132,12 +133,13 @@ pub(in crate::ui::city) fn restore_city_dialogs(
 }
 
 pub(in crate::ui::city) fn leave_city_screen(
-    mut session: ResMut<GameSession>,
-    windows: Query<(&CityBuildingDialog, &WindowPosition)>,
+    session: Res<GameSession>,
+    mut windows: ResMut<CityWindows>,
+    dialogs: Query<(&CityBuildingDialog, &WindowPosition)>,
 ) {
     let nation = session.active_major_nation();
     let mut positions = ProductionTable::default();
-    for (window, position) in &windows {
+    for (window, position) in &dialogs {
         positions[window.slot] = Some(CityWindowPosition {
             left: i16::try_from(position.0.x)
                 .expect("City window coordinate fits retail short storage"),
@@ -145,5 +147,5 @@ pub(in crate::ui::city) fn leave_city_screen(
                 .expect("City window coordinate fits retail short storage"),
         });
     }
-    session.city_windows[nation] = positions;
+    windows.0[nation] = positions;
 }

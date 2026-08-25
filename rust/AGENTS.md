@@ -96,11 +96,16 @@ Screen-owned presentation lives on the screen entity; application-level facts su
 `SaveDirectory` stay resources. `DespawnOnExit` belongs on state-scope roots and independently
 spawned top-level windows/modals; children inherit lifetime from their parent.
 
+`GameSession` holds only `GameState`. Detailed-map camera origin, city-dialog positions, and
+captured battle-report strings are separate resources (`MapViewOrigin`, `CityWindows`,
+`BattleReportPresentation`) so scrolling or layout changes do not mark gameplay changed.
+Do not split `GameState` itself into ECS components.
+
 Binders attach semantic identity, static style, and interaction. Observers mutate game or screen
 state. Projectors are the only code that derive dynamic presentation from that state, including
 the first frame. Do not compute the same display value while binding and again while projecting.
 
-Wire known UI controls with entity-local observers when binding them. Application state stays in
+Wire known UI controls with entity-local observers when binding them. Application gameplay stays in
 `GameSession`, while widget components such as `Checked` are projected onto the entities. Keep an
 app-global observer only for genuinely cross-cutting component behavior or application events,
 such as City raising a window from an event target and its ancestors, retail picture swaps, or

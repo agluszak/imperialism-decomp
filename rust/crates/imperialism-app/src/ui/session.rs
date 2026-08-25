@@ -1,4 +1,5 @@
 use crate::{AppState, RetailAssetsResource, ReturnTo};
+use bevy::ecs::world::World;
 use bevy::prelude::*;
 use imperialism_core::{GameState, MajorNationId, TileId, TurnStop};
 use imperialism_formats::{BattleReportText, CityWindowLayout, LoadedGame};
@@ -7,53 +8,94 @@ use imperialism_formats::{BattleReportText, CityWindowLayout, LoadedGame};
 #[derive(Resource, Debug, PartialEq)]
 pub(crate) struct GameSession {
     pub(crate) game: GameState,
-    pub(crate) map_view_origin: TileId,
-    pub(crate) city_windows: CityWindowLayout,
-    pub(crate) battle_report_text: Vec<BattleReportText>,
 }
 
-impl GameSession {
-    pub(crate) fn new(game: GameState) -> Self {
-        Self {
-            game,
-            map_view_origin: TileId::new(1),
-            city_windows: CityWindowLayout::default(),
-            battle_report_text: Vec::new(),
-        }
-    }
+/// Detailed-map camera origin. Separate from [`GameSession`] so scrolling does not
+/// mark gameplay state changed.
+#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct MapViewOrigin(pub TileId);
 
-    pub(crate) fn from_loaded(loaded: LoadedGame) -> Self {
-        Self {
-            game: loaded.game,
-            map_view_origin: loaded.map_view_origin,
-            city_windows: loaded.city_windows,
-            battle_report_text: loaded.battle_report_text,
-        }
+impl Default for MapViewOrigin {
+    fn default() -> Self {
+        Self(TileId::new(1))
     }
+}
 
-    pub(crate) fn scroll_map_viewport(&mut self, row_delta: i32, column_delta: i32) -> bool {
-        let next =
-            self.game
-                .map()
-                .scrolled_viewport_origin(self.map_view_origin, row_delta, column_delta);
-        if next == self.map_view_origin {
+impl MapViewOrigin {
+    pub(crate) fn scroll(&mut self, game: &GameState, row_delta: i32, column_delta: i32) -> bool {
+        let next = game
+            .map()
+            .scrolled_viewport_origin(self.0, row_delta, column_delta);
+        if next == self.0 {
             return false;
         }
-        self.map_view_origin = next;
+        self.0 = next;
         true
     }
 
-    pub(crate) fn set_map_viewport_upper_left(&mut self, column: i32, row: i32) {
-        self.map_view_origin = self.game.map().viewport_origin_from_upper_left(column, row);
+    pub(crate) fn set_upper_left(&mut self, game: &GameState, column: i32, row: i32) {
+        self.0 = game.map().viewport_origin_from_upper_left(column, row);
     }
 
-    pub(crate) fn center_map_on(&mut self, tile: TileId) {
-        self.map_view_origin = self.game.map().viewport_origin_centered_on(tile);
+    pub(crate) fn center_on(&mut self, game: &GameState, tile: TileId) {
+        self.0 = game.map().viewport_origin_centered_on(tile);
+    }
+}
+
+/// Saved city-dialog positions. Presentation only; not gameplay.
+#[derive(Resource, Debug, Default, PartialEq)]
+pub(crate) struct CityWindows(pub CityWindowLayout);
+
+/// Captured battle-report strings for the current post-combat book.
+#[derive(Resource, Debug, Default, PartialEq)]
+pub(crate) struct BattleReportPresentation(pub Vec<BattleReportText>);
+
+impl GameSession {
+    pub(crate) fn new(game: GameState) -> Self {
+        Self { game }
     }
 
     pub(crate) fn active_major_nation(&self) -> MajorNationId {
         MajorNationId::from_nation(self.game.turn().active_nation)
             .expect("interactive screens require an active major nation")
+    }
+}
+
+pub(crate) fn insert_loaded_game(commands: &mut Commands, loaded: LoadedGame) {
+    commands.insert_resource(GameSession::new(loaded.game));
+    commands.insert_resource(MapViewOrigin(loaded.map_view_origin));
+    commands.insert_resource(CityWindows(loaded.city_windows));
+    commands.insert_resource(BattleReportPresentation(loaded.battle_report_text));
+}
+
+pub(crate) fn insert_loaded_game_world(world: &mut World, loaded: LoadedGame) {
+    world.insert_resource(GameSession::new(loaded.game));
+    world.insert_resource(MapViewOrigin(loaded.map_view_origin));
+    world.insert_resource(CityWindows(loaded.city_windows));
+    world.insert_resource(BattleReportPresentation(loaded.battle_report_text));
+}
+
+pub(crate) fn insert_game_session(commands: &mut Commands, game: GameState) {
+    insert_loaded_game(commands, loaded_from_game(game));
+}
+
+pub(crate) fn insert_game_session_world(world: &mut World, game: GameState) {
+    insert_loaded_game_world(world, loaded_from_game(game));
+}
+
+pub(crate) fn remove_game_session(commands: &mut Commands) {
+    commands.remove_resource::<GameSession>();
+    commands.remove_resource::<MapViewOrigin>();
+    commands.remove_resource::<CityWindows>();
+    commands.remove_resource::<BattleReportPresentation>();
+}
+
+fn loaded_from_game(game: GameState) -> LoadedGame {
+    LoadedGame {
+        game,
+        map_view_origin: TileId::new(1),
+        city_windows: CityWindowLayout::default(),
+        battle_report_text: Vec::new(),
     }
 }
 

@@ -6,7 +6,7 @@ use super::map_interaction::{
 };
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
-use crate::ui::GameSession;
+use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::{Checked, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -276,6 +276,7 @@ fn on_navy_command(
     keys: Res<ButtonInput<KeyCode>>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
     let Ok(command) = commands_query.get(activate.entity) else {
@@ -294,16 +295,31 @@ fn on_navy_command(
             if let Some(force) = interaction.navy.force {
                 session.game.drop_task_force_ships(force, false);
             }
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
         NavyCommand::Done => {
             if let Some(force) = interaction.navy.force {
                 session.game.drop_task_force_ships(force, true);
             }
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
         NavyCommand::Next => {
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
         NavyCommand::Bomb => {
             let roster =

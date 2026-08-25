@@ -63,7 +63,10 @@ pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;
 pub(crate) use retail::{RetailUiAssets, RetailUiPlugin};
 pub(crate) use scenario_setup::ScenarioSetupPlugin;
-pub(crate) use session::GameSession;
+pub(crate) use session::{
+    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_game_session,
+    insert_game_session_world, insert_loaded_game, insert_loaded_game_world, remove_game_session,
+};
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use technology_store::TechnologyStorePlugin;
 pub(crate) use town_naming::TownNamingPlugin;
