@@ -12,7 +12,7 @@ use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
     compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow, no_modal};
+use crate::ui::window::{ModalWindow, bind_modal_controls, bind_window_close, no_modal};
 use crate::ui::{GameSession, MapViewOrigin};
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
@@ -319,15 +319,20 @@ fn bind_new_city_dialog(
         &mut assets,
         &report,
     );
+    let okay = tree.find(root, OKAY);
+    let cancel = tree.find(root, fourcc!("cncl"));
     commands
-        .entity(tree.find(root, OKAY))
-        .insert((ActivateOnPress, ModalDefault, DismissWindow))
+        .entity(okay)
+        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>()
         .observe(on_new_city_activate);
     commands
-        .entity(tree.find(root, fourcc!("cncl")))
-        .insert((ActivateOnPress, ModalCancel, DismissWindow))
+        .entity(cancel)
+        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>();
+    bind_modal_controls(&mut commands, root, Some(okay), Some(cancel));
+    bind_window_close(&mut commands, okay, root);
+    bind_window_close(&mut commands, cancel, root);
     commands.entity(root).insert(CitySiteWired);
 }
 

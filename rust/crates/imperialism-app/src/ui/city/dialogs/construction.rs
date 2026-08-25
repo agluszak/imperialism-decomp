@@ -132,11 +132,7 @@ fn bind_building_change_common(
     ));
     let okay = tree.find(root, fourcc!("okay"));
     let mut okay_commands = commands.entity(okay);
-    okay_commands.insert((
-        CityBuildingChangeChoice { slot, accept: true },
-        ModalDefault,
-        DismissWindow,
-    ));
+    okay_commands.insert(CityBuildingChangeChoice { slot, accept: true });
     okay_commands.observe(on_city_building_change_choice);
     if !can_reserve {
         okay_commands.insert((InteractionDisabled, Visibility::Hidden));
@@ -144,15 +140,14 @@ fn bind_building_change_common(
     let cancel = tree.find(root, fourcc!("cncl"));
     commands
         .entity(cancel)
-        .insert((
-            CityBuildingChangeChoice {
-                slot,
-                accept: false,
-            },
-            ModalCancel,
-            DismissWindow,
-        ))
+        .insert(CityBuildingChangeChoice {
+            slot,
+            accept: false,
+        })
         .observe(on_city_building_change_choice);
+    bind_modal_controls(commands, root, Some(okay), Some(cancel));
+    bind_window_close(commands, okay, root);
+    bind_window_close(commands, cancel, root);
 }
 
 #[allow(clippy::too_many_arguments)]

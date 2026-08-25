@@ -5,7 +5,7 @@ use crate::ui::hover_help::{
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::window::{ModalWindow, bind_modal_controls, bind_window_close};
 use crate::ui::{insert_game_session, insert_loaded_game};
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
@@ -297,7 +297,7 @@ fn bind_random_setup_labels(
         let entity = tree.find(root, tag);
         commands
             .entity(entity)
-            .insert(Text::new(ui_string(assets, group, index)));
+            .insert((Text::new(ui_string(assets, group, index)), Label));
     }
     let title_color = TextColor(assets.palette_color(0x5c));
     let title_shadow = TextShadow {
@@ -607,14 +607,14 @@ fn bind_planet_seed_dialog(
     ));
 
     let okay = tree.find(*root, OKAY);
+    let cancel = tree.find(*root, fourcc!("cncl"));
     commands
         .entity(okay)
-        .insert((PlanetSeedAccept, ModalDefault, DismissWindow, TabIndex(1)))
+        .insert((PlanetSeedAccept, TabIndex(1)))
         .observe(on_planet_seed_accept);
     // Retail cancel control stays disabled; Escape does not dismiss.
-    commands
-        .entity(tree.find(*root, fourcc!("cncl")))
-        .insert(ModalCancel);
+    bind_modal_controls(&mut commands, *root, Some(okay), Some(cancel));
+    bind_window_close(&mut commands, okay, *root);
 }
 
 #[derive(SystemParam)]

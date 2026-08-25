@@ -8,8 +8,7 @@ use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
 use super::retail_raster_text::RetailRasterTextPainter;
 use crate::media::RetailAudioAssets;
-use crate::{AppState, RetailAssetsResource, ReturnTo};
-use bevy::picking::hover::DirectlyHovered;
+use crate::{AppState, RetailAssetsResource, RetailFonts, ReturnTo};
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::ui::{Checked, InteractionDisabled};
@@ -200,19 +199,17 @@ fn bind_preferences(
         let checkbox = tree.try_find(root, checkbox_tag);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
+        let caption = preference_caption(&assets, row, caption_on);
         commands
             .entity(tree.find(root, label_tag))
-            .insert(Text::new(preference_caption(&assets, row, caption_on)));
+            .insert((Text::new(caption.clone()), AccessibleLabel::new(caption)));
         let Some(checkbox) = checkbox else {
             continue;
         };
+        let hover = ui_string(&assets, 0x2743, row as i16 + 0x26);
         let mut entity = commands.entity(checkbox);
         entity
-            .insert((
-                PreferenceRow { ui_row: row, slot },
-                HoverHelpText(ui_string(&assets, 0x2743, row as i16 + 0x26)),
-                DirectlyHovered::default(),
-            ))
+            .insert((PreferenceRow { ui_row: row, slot }, HoverHelpText(hover)))
             .observe(on_preference_checked::<Add, Checked>)
             .observe(on_preference_checked::<Remove, Checked>)
             .remove::<InteractionDisabled>();
@@ -309,7 +306,6 @@ fn bind_volume_slider(
             SliderPrecision(0),
             PreferenceSlider { slot },
             HoverHelpText(hover),
-            DirectlyHovered::default(),
             ImageNode::new(image),
             PreferenceSliderVisual {
                 upper,
@@ -385,6 +381,8 @@ fn on_sound_slider_released(
 #[allow(clippy::type_complexity)]
 fn sync_preference_slider_visuals(
     retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
     sliders: Query<
         (
@@ -398,7 +396,8 @@ fn sync_preference_slider_visuals(
     >,
 ) {
     let mut text = RetailRasterTextPainter::from_preset(
-        retail.assets(),
+        &fonts,
+        &font_assets,
         RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -435,6 +434,7 @@ fn sync_preference_slider_visuals(
 
 fn on_preference_checked<E: EntityEvent, C: Component>(
     event: On<E, C>,
+    mut commands: Commands,
     rows: Query<&PreferenceRow>,
     mut texts: Query<&mut Text>,
     labels: Query<(Entity, &RetailTag)>,
@@ -450,7 +450,9 @@ fn on_preference_checked<E: EntityEvent, C: Component>(
         return;
     };
     if let Ok(mut text) = texts.get_mut(label) {
-        text.0 = preference_caption(&assets, row.ui_row, E::is::<Add>());
+        let caption = preference_caption(&assets, row.ui_row, E::is::<Add>());
+        text.0.clone_from(&caption);
+        commands.entity(label).insert(AccessibleLabel::new(caption));
     }
 }
 

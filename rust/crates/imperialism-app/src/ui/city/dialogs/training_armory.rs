@@ -14,7 +14,6 @@ pub(in crate::ui::city) struct TrainingView {
 
 #[derive(Component)]
 pub(in crate::ui::city) struct ArmoryView {
-    pub(in crate::ui::city) selected: CityOrderId,
     normal_color: Color,
     warning_color: Color,
     rows: Vec<(CityOrderId, CityOrderRow)>,
@@ -110,17 +109,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
     for binding in TRAINING_ORDERS {
         rows.push((
             binding.order,
-            bind_city_order_row(
-                commands,
-                root,
-                tree,
-                binding,
-                fourcc!("left"),
-                fourcc!("rght"),
-                fourcc!("move"),
-                1,
-                None,
-            ),
+            bind_industry_order_row(commands, root, tree, binding, 1),
         ));
     }
     let paper_one = tree.find(root, fourcc!("pap1"));
@@ -183,17 +172,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     ));
     let mut rows = Vec::new();
     for row in ARMORY_ROWS {
-        let bound = bind_city_order_row(
-            commands,
-            root,
-            tree,
-            row.binding,
-            fourcc!("minu"),
-            fourcc!("plus"),
-            fourcc!("numb"),
-            1,
-            Some(root),
-        );
+        let bound = bind_recruitment_order_row(commands, root, tree, row.binding, root);
         let button = tree.find(root, row.button_tag);
         let category = row.military_category();
         let unit = city.orders.military_recruitment[category].unit_kind;
@@ -323,27 +302,31 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         ));
     }
     let placard = tree.find(root, fourcc!("plaq"));
-    commands.entity(root).insert(ArmoryView {
-        selected: CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry),
-        normal_color,
-        warning_color,
-        rows,
-        unit_name,
-        workforce_cost,
-        primary_cost,
-        secondary_cost,
-        cash_cost,
-        workforce_available,
-        primary_available,
-        secondary_available,
-        treasury,
-        firepower,
-        action_points,
-        range,
-        static_text,
-        description,
-        placard,
-    });
+    commands.entity(root).insert((
+        ArmoryView {
+            normal_color,
+            warning_color,
+            rows,
+            unit_name,
+            workforce_cost,
+            primary_cost,
+            secondary_cost,
+            cash_cost,
+            workforce_available,
+            primary_available,
+            secondary_available,
+            treasury,
+            firepower,
+            action_points,
+            range,
+            static_text,
+            description,
+            placard,
+        },
+        CityOrderSelection(CityOrderId::MilitaryRecruit(
+            MilitaryRecruitmentCategory::LightInfantry,
+        )),
+    ));
 }
 
 pub(in crate::ui::city) fn sync_training_dialog(
@@ -412,18 +395,18 @@ pub(in crate::ui::city) fn sync_training_dialog(
 
 pub(in crate::ui::city) fn sync_armory_details(
     session: Res<GameSession>,
-    views: Query<Ref<ArmoryView>>,
+    views: Query<(&ArmoryView, Ref<CityOrderSelection>)>,
     mut assets: RetailUiAssets,
     mut texts: Query<&mut Text>,
     mut colors: Query<&mut TextColor>,
     mut visibilities: Query<&mut Visibility>,
     mut pictures: Query<&mut ImageNode>,
 ) {
-    for view in &views {
-        if !session.is_changed() && !view.is_changed() && !view.is_added() {
+    for (view, selection) in &views {
+        if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
             continue;
         }
-        let CityOrderId::MilitaryRecruit(category) = view.selected else {
+        let CityOrderId::MilitaryRecruit(category) = selection.0 else {
             continue;
         };
         let nation = session.active_major_nation();

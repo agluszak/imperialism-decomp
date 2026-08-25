@@ -3,6 +3,7 @@ use super::*;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
     pub(in crate::ui::city) slot: CityFacilitySlot,
+    saved_position: Option<IVec2>,
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -54,23 +55,32 @@ pub(in crate::ui::city) fn open_city_dialog(
 ) {
     let root = generated::spawn_city_dialog(commands, slot);
     commands.entity(root).insert((
-        CityBuildingDialog { slot },
-        FloatingWindow,
+        CityBuildingDialog {
+            slot,
+            saved_position,
+        },
         DespawnOnExit(AppState::City),
     ));
-    if let Some(position) = saved_position {
-        commands.entity(root).insert(WindowPosition(position));
-    }
 }
 
 pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
+    windows: Query<(), With<CaptionedWindow>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     for (root, dialog) in &dialogs {
+        if let Some(position) = dialog.saved_position
+            && let Ok(children) = tree.children.get(root)
+            && let Some(window) = children.iter().find(|child| windows.contains(*child))
+        {
+            commands
+                .entity(window)
+                .entry::<Node>()
+                .and_modify(move |mut node| set_window_position(&mut node, position));
+        }
         match city_dialog_kind(dialog.slot) {
             CityDialogKind::Industry(page) => {
                 configure_industry_dialog(&mut commands, &mut assets, root, &tree, page);
@@ -131,15 +141,21 @@ pub(in crate::ui::city) fn restore_city_dialogs(
 pub(in crate::ui::city) fn leave_city_screen(
     session: Res<GameSession>,
     mut windows: ResMut<CityWindows>,
-    dialogs: Query<(&CityBuildingDialog, &WindowPosition)>,
+    dialogs: Query<(&CityBuildingDialog, &Children)>,
+    nodes: Query<&Node, With<CaptionedWindow>>,
 ) {
     let nation = session.active_major_nation();
     let mut positions = ProductionTable::default();
-    for (window, position) in &dialogs {
-        positions[window.slot] = Some(CityWindowPosition {
-            left: i16::try_from(position.0.x)
+    for (dialog, children) in &dialogs {
+        let node = children
+            .iter()
+            .find_map(|child| nodes.get(child).ok())
+            .expect("city building dialog has a captioned window");
+        let position = window_position(node);
+        positions[dialog.slot] = Some(CityWindowPosition {
+            left: i16::try_from(position.x)
                 .expect("City window coordinate fits retail short storage"),
-            top: i16::try_from(position.0.y)
+            top: i16::try_from(position.y)
                 .expect("City window coordinate fits retail short storage"),
         });
     }

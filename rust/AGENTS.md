@@ -5,11 +5,14 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
 ## Architecture
 
 - `imperialism-core` owns authoritative deterministic gameplay state, rules, sequencing, and
-  mutation. It has no Bevy dependency.
+  mutation. It has no Bevy dependency. Answer hover and action questions with semantic types
+  (`HoverAction`, `CivilianTileAction`, `ArmyMapCursorState`, `DiplomacyMapAction`); do not store
+  retail cursor, picture, or sound resource IDs.
 - `imperialism-formats` owns retail file decoding and representation quirks. Opaque persisted values
   stay there until their gameplay meaning is recovered.
 - `imperialism-app` owns Bevy presentation, input, media, screen routing, and lifecycle. ECS projects
-  core state; it is not a second gameplay database or turn sequencer.
+  core state; it is not a second gameplay database or turn sequencer. Map core semantic answers to
+  retail cursor, picture, and sound resource IDs here.
 - `imperialism-testkit` owns process-isolated access to the C++ oracle and semantic comparison.
 - Keep one authoritative representation for each semantic fact and derive projections. Do not add a
   parallel snapshot, sidecar order, ECS authority, or duplicated rule state.

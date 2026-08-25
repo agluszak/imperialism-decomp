@@ -5,7 +5,7 @@ use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
+use crate::ui::window::{ModalWindow, bind_modal_controls, bind_window_close};
 use crate::ui::{
     BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_loaded_game,
     remove_game_session,
@@ -50,15 +50,39 @@ const CONFIRM_LOAD_STRING_INDEX: i16 = 0x33;
 const PICK_SLOT_STRING_GROUP: i16 = 0x2758;
 const PICK_SLOT_STRING_INDEX: i16 = 0x17;
 const FLAG_MENU_STRING_GROUP: i16 = 0x2743;
-const FLAG_LABEL_TAGS: [FourCc; 8] = [
-    fourcc!("txt0"),
-    fourcc!("txt1"),
-    fourcc!("txt2"),
-    fourcc!("txt3"),
-    fourcc!("txt4"),
-    fourcc!("txt5"),
-    fourcc!("txt6"),
-    fourcc!("txt7"),
+const FLAG_MENU_ROWS: [(FourCc, Option<FourCc>, Option<FlagMenuAction>); 8] = [
+    (fourcc!("txt0"), None, None),
+    (
+        fourcc!("txt1"),
+        Some(fourcc!("save")),
+        Some(FlagMenuAction::Save),
+    ),
+    (
+        fourcc!("txt2"),
+        Some(fourcc!("load")),
+        Some(FlagMenuAction::Load),
+    ),
+    (
+        fourcc!("txt3"),
+        Some(fourcc!("newg")),
+        Some(FlagMenuAction::NewGame),
+    ),
+    (
+        fourcc!("txt4"),
+        Some(fourcc!("pref")),
+        Some(FlagMenuAction::Preferences),
+    ),
+    (
+        fourcc!("txt5"),
+        Some(fourcc!("cred")),
+        Some(FlagMenuAction::Credits),
+    ),
+    (
+        fourcc!("txt6"),
+        Some(fourcc!("quit")),
+        Some(FlagMenuAction::Quit),
+    ),
+    (fourcc!("txt7"), Some(fourcc!("cncl")), None),
 ];
 
 /// Directory that holds retail `slotN.imp` / `slotA.imp` files.
@@ -866,8 +890,8 @@ fn bind_flag_menu(
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
-    for (index, tag) in FLAG_LABEL_TAGS.iter().copied().enumerate() {
-        let entity = tree.find(root, tag);
+    for (index, (label_tag, control, action)) in FLAG_MENU_ROWS.iter().copied().enumerate() {
+        let entity = tree.find(root, label_tag);
         let (font, layout, line_height, _) = assets
             .text_style(imperialism_formats::RetailTextStylePreset {
                 font_family: 1,
@@ -881,8 +905,10 @@ fn bind_flag_menu(
         } else {
             (0x28, 0xd2)
         };
+        let caption = get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16);
         commands.entity(entity).insert((
-            Text::new(get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16)),
+            Text::new(caption.clone()),
+            Label,
             font,
             layout,
             line_height,
@@ -892,26 +918,24 @@ fn bind_flag_menu(
                 color: assets.palette_color(shadow_palette),
             },
         ));
-    }
-    for (tag, action) in [
-        (fourcc!("save"), FlagMenuAction::Save),
-        (fourcc!("load"), FlagMenuAction::Load),
-        (fourcc!("newg"), FlagMenuAction::NewGame),
-        (fourcc!("pref"), FlagMenuAction::Preferences),
-        (fourcc!("cred"), FlagMenuAction::Credits),
-        (fourcc!("quit"), FlagMenuAction::Quit),
-    ] {
-        let control = tree.find(root, tag);
+        let Some(control) = control else {
+            continue;
+        };
+        let control = tree.find(root, control);
         commands
             .entity(control)
-            .insert(action)
-            .remove::<InteractionDisabled>()
-            .observe(on_flag_menu_activate);
+            .insert(AccessibleLabel::new(caption))
+            .remove::<InteractionDisabled>();
+        if let Some(action) = action {
+            commands
+                .entity(control)
+                .insert(action)
+                .observe(on_flag_menu_activate);
+        } else {
+            bind_modal_controls(&mut commands, root, None, Some(control));
+            bind_window_close(&mut commands, control, root);
+        }
     }
-    commands
-        .entity(tree.find(root, fourcc!("cncl")))
-        .insert((ModalCancel, DismissWindow))
-        .remove::<InteractionDisabled>();
 }
 
 fn on_flag_menu_activate(
@@ -1096,20 +1120,21 @@ mod tests {
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
-        commands.spawn((FlagMenuRoot, ModalWindow, Node::default()));
+        commands.spawn((FlagMenuRoot, ModalWindow));
     }
 
     fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
-        let root = world
-            .spawn((FlagMenuPrompt { kind }, ModalWindow, Node::default()))
-            .id();
+        let root = world.spawn((FlagMenuPrompt { kind }, ModalWindow)).id();
         let accept = world
-            .spawn((DismissWindow, ChildOf(root)))
+            .spawn(ChildOf(root))
             .observe(on_flag_menu_prompt_activate)
             .id();
-        let dismiss = world
-            .spawn((ModalCancel, DismissWindow, ChildOf(root)))
-            .id();
+        let dismiss = world.spawn(ChildOf(root)).id();
+        let mut commands = world.commands();
+        bind_modal_controls(&mut commands, root, Some(accept), Some(dismiss));
+        bind_window_close(&mut commands, accept, root);
+        bind_window_close(&mut commands, dismiss, root);
+        world.flush();
         (accept, dismiss)
     }
 

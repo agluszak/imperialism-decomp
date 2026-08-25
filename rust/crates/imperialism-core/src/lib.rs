@@ -186,9 +186,9 @@ pub use tables::{
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
 pub use tactical_battle::{
-    ArmyAction, ArmyActionRejection, ArmyBattle, ArmyBattleProgress, ArmyBattleStage,
-    ArmyPresentationEvent, ArmyTargetCycle, ArmyTileView, ArmyUnitId, ArmyUnitView, BattleSide,
-    MoveResult, TacticalHex,
+    ArmyAction, ArmyActionRejection, ArmyBattle, ArmyBattleEvent, ArmyBattleProgress,
+    ArmyBattleStage, ArmyTargetCycle, ArmyTileView, ArmyUnitId, ArmyUnitView, BattleSide,
+    HoverAction, MoveResult, TacticalHex,
 };
 pub use technology::{
     CityTechnologyCapabilities, CivilianTerrainAccess, FortLevelCap, Technology,

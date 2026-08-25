@@ -1,7 +1,7 @@
 use crate::ui::generated;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
 use crate::ui::session::{apply_turn_stop, news_story_ids};
-use crate::ui::window::{ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::window::{ModalWindow, bind_modal_controls};
 use crate::ui::{GameSession, RetailUiAssets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::AutoFocus;
@@ -94,12 +94,12 @@ fn bind_town_naming(
             .insert((ActivateOnPress, TownNamingWired))
             .observe(commit_town_name);
     }
-    commands
-        .entity(tree.find(root, fourcc!("okay")))
-        .insert(ModalDefault);
-    commands
-        .entity(tree.find(root, fourcc!("cncl")))
-        .insert(ModalCancel);
+    bind_modal_controls(
+        &mut commands,
+        root,
+        Some(tree.find(root, fourcc!("okay"))),
+        Some(tree.find(root, fourcc!("cncl"))),
+    );
 
     let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert((

@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod fonts;
 mod media;
 mod ui;
 
@@ -9,6 +10,8 @@ use bevy::window::WindowPlugin;
 use imperialism_core::RandomGameNames;
 use imperialism_formats::{LoadedGame, RetailAssets};
 use std::path::PathBuf;
+
+pub(crate) use fonts::{RetailFont, RetailFonts};
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq, States)]
 pub(crate) enum AppState {
@@ -159,6 +162,15 @@ pub fn run(
         .insert_resource(RandomGameNamesResource(random_game_names))
         .insert_resource(ui::SaveDirectory(save_directory));
     add_game_plugins(&mut app);
+    let retail_fonts =
+        app.world_mut()
+            .resource_scope(|world, mut font_assets: Mut<Assets<Font>>| {
+                RetailFonts::load(
+                    world.resource::<RetailAssetsResource>().assets(),
+                    &mut font_assets,
+                )
+            })?;
+    app.insert_resource(retail_fonts);
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
     app.run();

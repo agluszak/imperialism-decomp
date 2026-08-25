@@ -1,46 +1,55 @@
 //! Compatibility painter for retail GDI text rasterized into an indexed picture.
 //!
 //! Swash alpha-thresholding at 0x80 is an approximation of retail GDI, not a pixel
-//! match. Keeping font resolution, metrics, and `ScaleContext` here makes an
-//! oracle-driven replacement a single-object swap later.
+//! match. The painter owns a transient `FontRef` over the Bevy `Font` asset bytes.
 
 use super::retail_raster::IndexedRasterExt;
+use crate::RetailFonts;
 use bevy::prelude::*;
 use imperialism_formats::{
-    IndexedPicture, RetailAssets, RetailTextStyleError, RetailTextStylePreset,
-    decode_retail_font_cell_metrics, resolve_retail_text_style,
+    IndexedPicture, RetailFontFace, RetailTextStyleError, RetailTextStylePreset,
+    resolve_retail_text_style,
 };
-use swash::{
-    FontRef,
-    scale::{Render, ScaleContext, Source},
-    zeno::Format,
-};
+use swash::FontRef;
+use swash::scale::{Render, ScaleContext, Source, StrikeWith};
+use swash::zeno::Format;
+
+const SYSTEM_SOURCES: &[Source] = &[Source::Bitmap(StrikeWith::BestFit), Source::Outline];
+const OUTLINE_SOURCES: &[Source] = &[Source::Outline];
 
 pub struct RetailRasterTextPainter<'a> {
     font: FontRef<'a>,
     size: f32,
+    sources: &'static [Source],
     scale_context: ScaleContext,
 }
 
 impl<'a> RetailRasterTextPainter<'a> {
-    pub fn new(font_data: &'a [u8], size: f32) -> Self {
+    pub fn new(font: &'a Font, size: f32, face: RetailFontFace) -> Self {
+        let font = FontRef::from_index(font.data.as_ref(), 0).expect("retail font bytes are valid");
         Self {
-            font: FontRef::from_index(font_data, 0).expect("retail font bytes are valid"),
+            font,
             size,
+            sources: match face {
+                RetailFontFace::System => SYSTEM_SOURCES,
+                _ => OUTLINE_SOURCES,
+            },
             scale_context: ScaleContext::new(),
         }
     }
 
     pub fn from_preset(
-        assets: &'a RetailAssets,
+        fonts: &RetailFonts,
+        font_assets: &'a Assets<Font>,
         preset: RetailTextStylePreset,
     ) -> Result<Self, RetailTextStyleError> {
         let style = resolve_retail_text_style(preset)?;
-        let font_data = assets.font_bytes(style.face);
-        let size = decode_retail_font_cell_metrics(style.face, font_data)
-            .expect("retail font metrics")
-            .em_pixel_size(style.logical_pixel_height) as f32;
-        Ok(Self::new(font_data, size))
+        let retail = fonts.get(style.face);
+        let size = retail.size_for_cell_height(style.logical_pixel_height) as f32;
+        let font = font_assets
+            .get(retail.handle())
+            .expect("registered retail font remains loaded");
+        Ok(Self::new(font, size, style.face))
     }
 
     pub fn measure(&self, text: &str) -> i32 {
@@ -64,7 +73,7 @@ impl<'a> RetailRasterTextPainter<'a> {
         let mut x = baseline.x as f32;
         for character in text.chars() {
             let glyph = charmap.map(character);
-            if let Some(image) = Render::new(&[Source::Outline])
+            if let Some(image) = Render::new(self.sources)
                 .format(Format::Alpha)
                 .render(&mut scaler, glyph)
             {
@@ -117,21 +126,29 @@ impl<'a> RetailRasterTextPainter<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::fonts::load_test_fonts;
     use crate::ui::retail_raster::indexed_picture;
-    use std::fs;
+    use imperialism_formats::decode_retail_font_cell_metrics;
 
-    fn test_font() -> Vec<u8> {
-        const CANDIDATES: &[&str] = &[
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-            "/usr/share/wine/fonts/courier.ttf",
-            "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
-        ];
-        for path in CANDIDATES {
-            if let Ok(bytes) = fs::read(path) {
-                return bytes;
-            }
-        }
-        panic!("raster text tests require a TrueType font");
+    const OUTLINE_FONT: &[u8] = include_bytes!("../fonts/test_outline.ttf");
+    const EBDT_FONT: &[u8] = include_bytes!("../fonts/test_ebdt.ttf");
+
+    fn register(data: &[u8]) -> (Assets<Font>, Handle<Font>) {
+        let mut fonts = Assets::<Font>::default();
+        let handle = fonts.add(Font::from_bytes(data.to_vec()));
+        (fonts, handle)
+    }
+
+    fn outline_painter<'a>(
+        fonts: &'a Assets<Font>,
+        handle: &Handle<Font>,
+        size: f32,
+    ) -> RetailRasterTextPainter<'a> {
+        RetailRasterTextPainter::new(
+            fonts.get(handle).expect("test font is registered"),
+            size,
+            RetailFontFace::BookAntiquaRegular,
+        )
     }
 
     fn ink_bounds(picture: &IndexedPicture) -> Option<IRect> {
@@ -152,8 +169,8 @@ mod tests {
 
     #[test]
     fn measured_width_matches_rendered_advancement() {
-        let font = test_font();
-        let mut painter = RetailRasterTextPainter::new(&font, 16.0);
+        let (fonts, handle) = register(OUTLINE_FONT);
+        let mut painter = outline_painter(&fonts, &handle, 16.0);
         let text = "1848";
         let width = painter.measure(text);
         let mut picture = indexed_picture(80, 24, 0);
@@ -174,8 +191,8 @@ mod tests {
 
     #[test]
     fn left_right_and_center_share_one_measured_width() {
-        let font = test_font();
-        let mut painter = RetailRasterTextPainter::new(&font, 16.0);
+        let (fonts, handle) = register(OUTLINE_FONT);
+        let mut painter = outline_painter(&fonts, &handle, 16.0);
         let text = "Agp";
         let width = painter.measure(text);
 
@@ -207,8 +224,8 @@ mod tests {
 
     #[test]
     fn negative_side_bearings_may_ink_left_of_the_pen() {
-        let font = test_font();
-        let mut painter = RetailRasterTextPainter::new(&font, 24.0);
+        let (fonts, handle) = register(OUTLINE_FONT);
+        let mut painter = outline_painter(&fonts, &handle, 24.0);
         let mut picture = indexed_picture(48, 32, 0);
         painter.draw(&mut picture, IVec2::new(8, 22), "j", 7);
         let bounds = ink_bounds(&picture).expect("j inks pixels");
@@ -222,13 +239,77 @@ mod tests {
 
     #[test]
     fn same_string_is_stable_across_painter_reuse() {
-        let font = test_font();
-        let mut painter = RetailRasterTextPainter::new(&font, 14.0);
+        let (fonts, handle) = register(OUTLINE_FONT);
+        let mut painter = outline_painter(&fonts, &handle, 14.0);
         let mut first = indexed_picture(64, 20, 0);
         painter.draw(&mut first, IVec2::new(2, 14), "100", 3);
         let mut second = indexed_picture(64, 20, 0);
         painter.draw(&mut second, IVec2::new(2, 14), "100", 3);
         assert_eq!(first.pixels, second.pixels);
         assert!(first.pixels.contains(&3));
+    }
+
+    #[test]
+    fn system_family_map_labels_ink_an_ebdt_bitmap_strike() {
+        let style = resolve_retail_text_style(RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 10,
+            alignment: 1,
+        })
+        .expect("retail System family must resolve");
+        assert_eq!(style.face, RetailFontFace::System);
+        let metrics = decode_retail_font_cell_metrics(RetailFontFace::System, EBDT_FONT)
+            .expect("synthetic System metrics");
+        let size = metrics.em_pixel_size(style.logical_pixel_height) as f32;
+        let (fonts, handle) = register(EBDT_FONT);
+        let mut painter = RetailRasterTextPainter::new(
+            fonts.get(&handle).expect("test font is registered"),
+            size,
+            RetailFontFace::System,
+        );
+        assert!(painter.measure("France") > 0);
+        let mut picture = indexed_picture(120, 24, 0);
+        painter.draw(&mut picture, IVec2::new(4, 16), "France", 7);
+        assert!(
+            picture.pixels.contains(&7),
+            "System-family diplomacy map labels must ink EBDT pixels"
+        );
+    }
+
+    #[test]
+    fn non_system_faces_ignore_embedded_bitmap_strikes() {
+        let (fonts, handle) = register(EBDT_FONT);
+        let mut painter = outline_painter(&fonts, &handle, 12.0);
+        let mut picture = indexed_picture(120, 24, 0);
+        painter.draw(&mut picture, IVec2::new(4, 16), "France", 7);
+        assert!(
+            !picture.pixels.contains(&7),
+            "Belwe/Book Antiqua rasterization must not prefer EBDT strikes"
+        );
+    }
+
+    #[test]
+    fn retail_fonts_family_zero_paints_a_diplomacy_map_label() {
+        let mut font_assets = Assets::<Font>::default();
+        let fonts = load_test_fonts(&mut font_assets);
+        let mut painter = RetailRasterTextPainter::from_preset(
+            &fonts,
+            &font_assets,
+            RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 10,
+                alignment: 1,
+            },
+        )
+        .expect("Diplomacy map labels resolve through RetailFonts family 0");
+        assert!(painter.measure("France") > 0);
+        let mut picture = indexed_picture(120, 24, 0);
+        painter.draw(&mut picture, IVec2::new(4, 16), "France", 7);
+        assert!(
+            picture.pixels.contains(&7),
+            "bootstrap System face must ink Diplomacy map labels"
+        );
     }
 }

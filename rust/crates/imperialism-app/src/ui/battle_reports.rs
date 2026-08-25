@@ -3,7 +3,7 @@
 use super::generated;
 use super::retail::RetailTree;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
-use super::window::{DismissWindow, ModalDefault, ModalWindow};
+use super::window::{ModalWindow, bind_modal_controls, bind_window_close};
 use crate::AppState;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -63,10 +63,13 @@ fn bind_battle_report(
     root: Single<Entity, Added<BattleReportRoot>>,
     tree: RetailTree,
 ) {
+    let okay = tree.find(*root, fourcc!("okay"));
     commands
-        .entity(tree.find(*root, fourcc!("okay")))
-        .insert((ActivateOnPress, ModalDefault, DismissWindow))
+        .entity(okay)
+        .insert(ActivateOnPress)
         .observe(on_battle_report_close);
+    bind_modal_controls(&mut commands, *root, Some(okay), None);
+    bind_window_close(&mut commands, okay, *root);
     commands
         .entity(tree.find(*root, fourcc!("info")))
         .insert(ActivateOnPress)
@@ -204,11 +207,10 @@ fn spawn_detail(commands: &mut Commands) {
 }
 
 fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
-    commands.entity(tree.find(*root, fourcc!("okay"))).insert((
-        ActivateOnPress,
-        ModalDefault,
-        DismissWindow,
-    ));
+    let okay = tree.find(*root, fourcc!("okay"));
+    commands.entity(okay).insert(ActivateOnPress);
+    bind_modal_controls(&mut commands, *root, Some(okay), None);
+    bind_window_close(&mut commands, okay, *root);
 }
 
 fn project_detail(

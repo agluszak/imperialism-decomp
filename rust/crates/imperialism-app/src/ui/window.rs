@@ -18,15 +18,19 @@ const CLOSE_SIZE: f32 = 14.0;
 struct UiWindow;
 
 #[derive(Component, Debug, Default)]
-#[require(UiWindow, Pickable = Pickable::IGNORE)]
+#[require(UiWindow)]
 pub struct FloatingWindow;
 
+/// Full-viewport pointer barrier, modal tab group, and restore-on-dismiss focus.
 #[derive(Component, Debug, Default)]
-/// Modal interaction rooted at a generated full-viewport `retail_view` entity.
-///
-/// The root's absolute 640x480 pickable node is the pointer barrier. Custom
-/// modals without that generated root must provide equivalent geometry.
-#[require(UiWindow, TabGroup = TabGroup::modal(), Pickable, AutoFocus, ModalControls)]
+#[require(
+    UiWindow,
+    TabGroup = TabGroup::modal(),
+    Pickable,
+    AutoFocus,
+    Node = modal_barrier_node(),
+    ModalControls
+)]
 pub struct ModalWindow;
 
 #[derive(Component, Clone, Copy, Debug, Default)]
@@ -36,35 +40,18 @@ struct ModalControls {
 }
 
 #[derive(Component, Debug, Default)]
+#[require(FloatingWindow, Pickable)]
 pub struct CaptionedWindow;
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub struct WindowPosition(pub IVec2);
-
-#[derive(Component, Clone, Copy, Debug)]
-struct BoundWindow {
-    content: Entity,
-    caption: Entity,
-}
 
 #[derive(Component, Clone, Copy, Debug)]
 struct WindowTitleBar {
-    root: Entity,
+    window: Entity,
 }
 
 #[derive(Component, Clone, Copy, Debug)]
 struct WindowClose {
     root: Entity,
 }
-
-#[derive(Component, Debug, Default)]
-pub struct ModalDefault;
-
-#[derive(Component, Debug, Default)]
-pub struct ModalCancel;
-
-#[derive(Component, Debug, Default)]
-pub struct DismissWindow;
 
 pub struct UiWindowPlugin;
 
@@ -75,16 +62,49 @@ impl Plugin for UiWindowPlugin {
             .add_observer(on_floating_window_added)
             .add_observer(on_modal_removed)
             .add_observer(on_window_close)
-            .add_observer(on_modal_default_added)
-            .add_observer(on_modal_cancel_added)
-            .add_observer(on_dismiss_added)
             .add_observer(modal_keyboard)
-            .add_systems(Update, (bind_recovered_window_hosts, sync_window_positions));
+            .add_systems(Update, bind_recovered_window_hosts);
     }
 }
 
 pub fn no_modal(modals: Query<(), With<ModalWindow>>) -> bool {
     modals.is_empty()
+}
+
+pub fn window_position(node: &Node) -> IVec2 {
+    IVec2::new(px_coord(node.left), px_coord(node.top))
+}
+
+pub fn set_window_position(node: &mut Node, position: IVec2) {
+    node.left = px(position.x);
+    node.top = px(position.y);
+}
+
+pub fn bind_modal_controls(
+    commands: &mut Commands,
+    root: Entity,
+    default: Option<Entity>,
+    cancel: Option<Entity>,
+) {
+    commands
+        .entity(root)
+        .insert(ModalControls { default, cancel });
+}
+
+pub fn bind_window_close(commands: &mut Commands, control: Entity, root: Entity) {
+    commands.entity(control).insert(WindowClose { root });
+}
+
+fn modal_barrier_node() -> Node {
+    Node {
+        position_type: PositionType::Absolute,
+        left: px(0),
+        top: px(0),
+        width: px(640),
+        height: px(480),
+        overflow: Overflow::clip(),
+        ..default()
+    }
 }
 
 fn on_window_added(
@@ -135,184 +155,88 @@ fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex),
 
 fn bind_recovered_window_hosts(
     mut commands: Commands,
-    contents: Query<(Entity, &Node), Added<CaptionedWindow>>,
-    parents: Query<&ChildOf>,
-    windows: Query<(Entity, Option<&WindowPosition>), With<UiWindow>>,
+    contents: Query<(Entity, &Node, Option<&ChildOf>), Added<CaptionedWindow>>,
+    windows: Query<(), With<UiWindow>>,
 ) {
-    for (content, node) in &contents {
-        let Some(root) = ancestor_window(content, &parents, &windows) else {
-            continue;
-        };
-        commands.entity(content).insert(Pickable::default());
-        let generated_position = node_position(node);
-        let saved_position = windows
-            .get(root)
-            .expect("window root remained present")
-            .1
-            .map(|position| position.0);
-        let position = saved_position.unwrap_or(generated_position);
-        if saved_position.is_none() {
-            commands.entity(root).insert(WindowPosition(position));
-        }
+    for (window, node, parent) in &contents {
         commands
-            .entity(content)
+            .entity(window)
             .entry::<Node>()
-            .and_modify(move |mut node| {
-                node.left = px(position.x);
-                node.top = px(position.y);
+            .and_modify(|mut node| {
+                node.overflow = Overflow::visible();
             });
-        let caption = spawn_caption(&mut commands, root, node.width, position);
-        commands
-            .entity(root)
-            .insert(BoundWindow { content, caption });
-    }
-}
-
-fn ancestor_window(
-    mut entity: Entity,
-    parents: &Query<&ChildOf>,
-    windows: &Query<(Entity, Option<&WindowPosition>), With<UiWindow>>,
-) -> Option<Entity> {
-    loop {
-        if windows.contains(entity) {
-            return Some(entity);
+        let host = parent
+            .map(ChildOf::parent)
+            .filter(|parent| !windows.contains(*parent))
+            .unwrap_or(window);
+        if let Some(parent) = parent {
+            commands.entity(parent.parent()).insert(Pickable::IGNORE);
         }
-        entity = parents.get(entity).ok()?.parent();
+        spawn_caption(&mut commands, window, host, node.width);
     }
 }
 
-fn spawn_caption(commands: &mut Commands, root: Entity, width: Val, position: IVec2) -> Entity {
+fn spawn_caption(commands: &mut Commands, window: Entity, close_root: Entity, width: Val) {
     let caption = commands
         .spawn((
             Node {
                 position_type: PositionType::Absolute,
-                left: px(position.x),
-                top: px(position.y as f32 - CAPTION_HEIGHT),
+                left: px(0),
+                top: px(-CAPTION_HEIGHT),
                 width,
                 height: px(CAPTION_HEIGHT),
                 ..default()
             },
             BackgroundColor(Color::srgb_u8(0, 0, 128)),
-            WindowTitleBar { root },
+            WindowTitleBar { window },
             Pickable::default(),
             Name::new("retail-window-caption"),
-            ChildOf(root),
+            ChildOf(window),
         ))
         .observe(on_window_dragged)
         .id();
-    commands.entity(caption).with_children(|parent| {
-        parent
-            .spawn((
-                Button,
-                Node {
-                    position_type: PositionType::Absolute,
-                    right: px(2),
-                    top: px(2),
-                    width: px(CLOSE_SIZE),
-                    height: px(CLOSE_SIZE),
-                    align_items: AlignItems::Center,
-                    justify_content: JustifyContent::Center,
-                    ..default()
-                },
-                BackgroundColor(Color::srgb_u8(192, 192, 192)),
-                DismissWindow,
-                WindowClose { root },
-                ZIndex(1),
-                Name::new("retail-window-close"),
-            ))
-            .with_child((
-                Text::new("×"),
-                TextFont {
-                    font_size: FontSize::Px(12.0),
-                    ..default()
-                },
-                TextColor(Color::BLACK),
-                Pickable::IGNORE,
-            ));
-    });
-    caption
+    let close = commands
+        .spawn((
+            Button,
+            Node {
+                position_type: PositionType::Absolute,
+                right: px(2),
+                top: px(2),
+                width: px(CLOSE_SIZE),
+                height: px(CLOSE_SIZE),
+                align_items: AlignItems::Center,
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(Color::srgb_u8(192, 192, 192)),
+            ZIndex(1),
+            Name::new("retail-window-close"),
+            ChildOf(caption),
+        ))
+        .with_child((
+            Text::new("×"),
+            TextFont {
+                font_size: FontSize::Px(12.0),
+                ..default()
+            },
+            TextColor(Color::BLACK),
+            Pickable::IGNORE,
+        ))
+        .id();
+    bind_window_close(commands, close, close_root);
 }
 
-fn sync_window_positions(
-    windows: Query<(&BoundWindow, &WindowPosition), Changed<WindowPosition>>,
-    mut nodes: Query<&mut Node>,
-) {
-    for (bound, position) in &windows {
-        {
-            let mut content = nodes
-                .get_mut(bound.content)
-                .expect("window content has a Node");
-            content.left = px(position.0.x);
-            content.top = px(position.0.y);
-        }
-        let mut caption = nodes
-            .get_mut(bound.caption)
-            .expect("window caption has a Node");
-        caption.left = px(position.0.x);
-        caption.top = px(position.0.y as f32 - CAPTION_HEIGHT);
-    }
-}
-
-fn on_modal_default_added(
-    added: On<Add, ModalDefault>,
-    parents: Query<&ChildOf>,
-    modals: Query<(), With<ModalWindow>>,
-    mut controls: Query<&mut ModalControls>,
-) {
-    let Some(root) = ancestor_with(added.entity, &parents, &modals) else {
-        return;
+fn px_coord(value: Val) -> i32 {
+    let Val::Px(pixels) = value else {
+        panic!("window has a non-pixel position");
     };
-    controls
-        .get_mut(root)
-        .expect("modal keeps ModalControls")
-        .default = Some(added.entity);
-}
-
-fn on_modal_cancel_added(
-    added: On<Add, ModalCancel>,
-    parents: Query<&ChildOf>,
-    modals: Query<(), With<ModalWindow>>,
-    mut controls: Query<&mut ModalControls>,
-) {
-    let Some(root) = ancestor_with(added.entity, &parents, &modals) else {
-        return;
-    };
-    controls
-        .get_mut(root)
-        .expect("modal keeps ModalControls")
-        .cancel = Some(added.entity);
-}
-
-fn on_dismiss_added(
-    added: On<Add, DismissWindow>,
-    closes: Query<(), With<WindowClose>>,
-    parents: Query<&ChildOf>,
-    windows: Query<(), With<UiWindow>>,
-    mut commands: Commands,
-) {
-    if closes.contains(added.entity) {
-        return;
-    }
-    let Some(root) = ancestor_with(added.entity, &parents, &windows) else {
-        return;
-    };
-    commands.entity(added.entity).insert(WindowClose { root });
-}
-
-fn node_position(node: &Node) -> IVec2 {
-    let Val::Px(left) = node.left else {
-        panic!("generated window has a non-pixel left position");
-    };
-    let Val::Px(top) = node.top else {
-        panic!("generated window has a non-pixel top position");
-    };
-    IVec2::new(left.round() as i32, top.round() as i32)
+    pixels.round() as i32
 }
 
 fn on_window_dragged(
     drag: On<Pointer<Drag>>,
     captions: Query<&WindowTitleBar>,
-    mut positions: Query<&mut WindowPosition>,
+    mut windows: Query<&mut Node, With<FloatingWindow>>,
 ) {
     if drag.event.button != PointerButton::Primary {
         return;
@@ -320,11 +244,15 @@ fn on_window_dragged(
     let Ok(caption) = captions.get(drag.entity) else {
         return;
     };
-    let mut position = positions
-        .get_mut(caption.root)
-        .expect("movable window has a semantic position");
-    position.0.x += drag.event.delta.x.round() as i32;
-    position.0.y += drag.event.delta.y.round() as i32;
+    let mut node = windows
+        .get_mut(caption.window)
+        .expect("movable window has a Node");
+    let position = window_position(&node)
+        + IVec2::new(
+            drag.event.delta.x.round() as i32,
+            drag.event.delta.y.round() as i32,
+        );
+    set_window_position(&mut node, position);
 }
 
 fn on_window_close(activate: On<Activate>, closes: Query<&WindowClose>, mut commands: Commands) {
@@ -395,6 +323,12 @@ mod tests {
         }
     }
 
+    fn bind_controls(app: &mut App, root: Entity, default: Option<Entity>, cancel: Option<Entity>) {
+        app.world_mut()
+            .entity_mut(root)
+            .insert(ModalControls { default, cancel });
+    }
+
     #[test]
     fn windows_derive_structure_order_and_modal_focus_from_components() {
         let mut app = test_app();
@@ -403,14 +337,12 @@ mod tests {
         let second = app.world_mut().spawn(ModalWindow).id();
 
         assert!(app.world().get::<UiWindow>(floating).is_some());
-        assert_eq!(
-            app.world().get::<Pickable>(floating),
-            Some(&Pickable::IGNORE)
-        );
         assert!(app.world().get::<UiWindow>(first).is_some());
         assert!(app.world().get::<TabGroup>(first).unwrap().modal);
         assert!(app.world().get::<Pickable>(first).is_some());
         assert!(app.world().get::<AutoFocus>(first).is_some());
+        assert_eq!(app.world().get::<Node>(first).unwrap().width, px(640));
+        assert_eq!(app.world().get::<Node>(first).unwrap().height, px(480));
         assert!(
             app.world().get::<GlobalZIndex>(floating).unwrap().0
                 < app.world().get::<GlobalZIndex>(first).unwrap().0
@@ -426,11 +358,14 @@ mod tests {
     fn dismissing_nested_modal_restores_keyboard_to_modal_below() {
         let mut app = test_app();
         let first = app.world_mut().spawn(ModalWindow).id();
-        app.world_mut()
-            .spawn((ModalCancel, ChildOf(first)))
+        let cancel = app
+            .world_mut()
+            .spawn(ChildOf(first))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.cancel += 1;
-            });
+            })
+            .id();
+        bind_controls(&mut app, first, None, Some(cancel));
         let second = app.world_mut().spawn(ModalWindow).id();
         assert_eq!(app.world().resource::<InputFocus>().get(), Some(second));
 
@@ -448,18 +383,19 @@ mod tests {
         let root = app.world_mut().spawn(ModalWindow).id();
         let okay = app
             .world_mut()
-            .spawn((ModalDefault, ChildOf(root)))
+            .spawn(ChildOf(root))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.default += 1;
             })
             .id();
         let cancel = app
             .world_mut()
-            .spawn((ModalCancel, InteractionDisabled, ChildOf(root)))
+            .spawn((InteractionDisabled, ChildOf(root)))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.cancel += 1;
             })
             .id();
+        bind_controls(&mut app, root, Some(okay), Some(cancel));
 
         app.world_mut().write_message(keyboard(KeyCode::Enter));
         app.world_mut().write_message(keyboard(KeyCode::Escape));
@@ -483,11 +419,14 @@ mod tests {
         assert_eq!(app.world().resource::<InputFocus>().get(), Some(root));
 
         let field = app.world_mut().spawn((AutoFocus, ChildOf(root))).id();
-        app.world_mut()
-            .spawn((ModalDefault, ChildOf(root)))
+        let okay = app
+            .world_mut()
+            .spawn(ChildOf(root))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.default += 1;
-            });
+            })
+            .id();
+        bind_controls(&mut app, root, Some(okay), None);
         assert_eq!(app.world().resource::<InputFocus>().get(), Some(field));
 
         app.world_mut().write_message(keyboard(KeyCode::Enter));
@@ -497,53 +436,95 @@ mod tests {
     }
 
     #[test]
-    fn recovered_caption_host_projects_semantic_position() {
+    fn recovered_caption_is_a_child_of_the_positioned_window() {
         let mut app = test_app();
-        let root = app
+        let canvas = app
             .world_mut()
-            .spawn((FloatingWindow, WindowPosition(IVec2::new(12, 34))))
+            .spawn(Node {
+                position_type: PositionType::Absolute,
+                width: px(640),
+                height: px(480),
+                ..default()
+            })
             .id();
-        let content = app
+        let window = app
             .world_mut()
             .spawn((
                 Node {
                     position_type: PositionType::Absolute,
-                    left: px(1),
-                    top: px(2),
+                    left: px(12),
+                    top: px(34),
+                    width: px(100),
                     ..default()
                 },
                 CaptionedWindow,
-                ChildOf(root),
+                ChildOf(canvas),
             ))
             .id();
 
         app.update();
-        app.update();
 
-        let node = app.world().get::<Node>(content).unwrap();
-        assert_eq!(node.left, px(12));
-        assert_eq!(node.top, px(34));
-        let captions = {
-            let world = app.world_mut();
-            let mut query = world.query_filtered::<Entity, With<WindowTitleBar>>();
-            query.iter(world).count()
-        };
-        let closes = {
-            let world = app.world_mut();
-            let mut query = world.query_filtered::<Entity, With<DismissWindow>>();
-            query.iter(world).count()
-        };
-        assert_eq!(captions, 1);
-        assert_eq!(closes, 1);
+        assert!(app.world().get::<FloatingWindow>(window).is_some());
+        assert_eq!(app.world().get::<Pickable>(canvas), Some(&Pickable::IGNORE));
+        let node = app.world().get::<Node>(window).unwrap();
+        assert_eq!(window_position(node), IVec2::new(12, 34));
         let caption = {
             let world = app.world_mut();
             let mut query = world.query_filtered::<Entity, With<WindowTitleBar>>();
             query.single(world).unwrap()
         };
-        assert_eq!(app.world().get::<ChildOf>(caption).unwrap().parent(), root);
-        assert_eq!(app.world().get::<ChildOf>(content).unwrap().parent(), root);
+        assert_eq!(
+            app.world().get::<ChildOf>(caption).unwrap().parent(),
+            window
+        );
         let caption_node = app.world().get::<Node>(caption).unwrap();
-        assert_eq!(caption_node.left, px(12));
-        assert_eq!(caption_node.top, px(34.0 - CAPTION_HEIGHT));
+        assert_eq!(caption_node.left, px(0));
+        assert_eq!(caption_node.top, px(-CAPTION_HEIGHT));
+
+        {
+            let mut node = app
+                .world_mut()
+                .get_mut::<Node>(window)
+                .expect("window keeps its Node");
+            set_window_position(&mut node, IVec2::new(40, 50));
+        }
+        let caption_node = app.world().get::<Node>(caption).unwrap();
+        assert_eq!(caption_node.left, px(0));
+        assert_eq!(caption_node.top, px(-CAPTION_HEIGHT));
+        assert_eq!(
+            window_position(app.world().get::<Node>(window).unwrap()),
+            IVec2::new(40, 50)
+        );
+    }
+
+    #[test]
+    fn dismissing_captioned_window_despawns_the_generated_host() {
+        let mut app = test_app();
+        let canvas = app.world_mut().spawn(Name::new("canvas")).id();
+        app.world_mut().spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(8),
+                top: px(16),
+                width: px(64),
+                ..default()
+            },
+            CaptionedWindow,
+            ChildOf(canvas),
+        ));
+        app.update();
+
+        let close = {
+            let world = app.world_mut();
+            let mut query = world.query_filtered::<Entity, With<WindowClose>>();
+            query.single(world).unwrap()
+        };
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: close });
+        app.world_mut().flush();
+        app.update();
+
+        assert!(app.world().get_entity(canvas).is_err());
     }
 }

@@ -8,8 +8,8 @@ use crate::AppState;
 use crate::media::RetailAudioAssets;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::RetailTree;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::retail::{RetailTree, ancestor_with};
+use crate::ui::window::{ModalWindow, bind_modal_controls, bind_window_close};
 use crate::ui::{GameSession, MapViewOrigin};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::ecs::system::EntityCommands;
@@ -240,9 +240,9 @@ fn bind_added_map_modals(
     for root in &added {
         for tag in [fourcc!("okay"), fourcc!("end ")] {
             if let Some(entity) = tree.try_find(root, tag) {
-                commands
-                    .entity(entity)
-                    .insert((ActivateOnPress, ModalDefault, DismissWindow));
+                commands.entity(entity).insert(ActivateOnPress);
+                bind_modal_controls(&mut commands, root, Some(entity), None);
+                bind_window_close(&mut commands, entity, root);
                 break;
             }
         }
@@ -425,7 +425,7 @@ fn on_civilian_ledger_action(
     let Ok(action) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     match action {
@@ -480,20 +480,6 @@ fn on_civilian_ledger_action(
             commands.entity(root).try_despawn();
         }
     }
-}
-
-fn ancestor_with_component<T: Component>(
-    mut entity: Entity,
-    parents: &Query<&ChildOf>,
-    components: &Query<(), With<T>>,
-) -> Option<Entity> {
-    for _ in 0..10 {
-        if components.contains(entity) {
-            return Some(entity);
-        }
-        entity = parents.get(entity).ok()?.parent();
-    }
-    None
 }
 
 fn bind_added_civilian_modals(
@@ -551,11 +537,7 @@ fn bind_added_civilian_modals(
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
                     .entity(linger.okay)
-                    .insert((
-                        ActivateOnPress,
-                        CivilianModalAction::ConfirmDisband(*unit),
-                        DismissWindow,
-                    ))
+                    .insert((ActivateOnPress, CivilianModalAction::ConfirmDisband(*unit)))
                     .observe(on_civilian_modal_action);
                 commands
                     .entity(linger.cancel)
@@ -600,7 +582,7 @@ fn bind_engineer_dialog(
             EngineerConstructionChoice::Rail => (0x1c2c, 1),
             EngineerConstructionChoice::Port => (0x1c2e, 2),
         };
-        commands
+        let option = commands
             .spawn((
                 Node {
                     position_type: PositionType::Absolute,
@@ -618,10 +600,11 @@ fn bind_engineer_dialog(
                 ),
                 ActivateOnPress,
                 CivilianModalAction::Engineer(unit, option.choice),
-                DismissWindow,
                 ChildOf(dialog),
             ))
-            .observe(on_civilian_modal_action);
+            .observe(on_civilian_modal_action)
+            .id();
+        bind_window_close(commands, option, root);
         let label = commands
             .spawn((
                 Node {
@@ -644,26 +627,28 @@ fn bind_engineer_dialog(
         );
         y += 42.0;
     }
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(17),
-            top: px(y - 2.0),
-            width: px(61),
-            height: px(24),
-            ..default()
-        },
-        Button,
-        ImageNode::new(
-            assets
-                .picture(PictureId::new(0x24c4))
-                .expect("retail cancel picture"),
-        ),
-        ActivateOnPress,
-        ModalCancel,
-        DismissWindow,
-        ChildOf(dialog),
-    ));
+    let cancel = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(17),
+                top: px(y - 2.0),
+                width: px(61),
+                height: px(24),
+                ..default()
+            },
+            Button,
+            ImageNode::new(
+                assets
+                    .picture(PictureId::new(0x24c4))
+                    .expect("retail cancel picture"),
+            ),
+            ActivateOnPress,
+            ChildOf(dialog),
+        ))
+        .id();
+    bind_modal_controls(commands, root, None, Some(cancel));
+    bind_window_close(commands, cancel, root);
     let height = y + 30.0;
     let window = tree.find(root, fourcc!("WIND"));
     commands.entity(window).insert(Node {
@@ -739,9 +724,7 @@ fn bind_purchase_dialog(
     );
     linger.set_title(commands, assets, title);
     linger.set_body(commands, assets, body);
-    commands
-        .entity(linger.okay)
-        .insert((ActivateOnPress, DismissWindow));
+    commands.entity(linger.okay).insert(ActivateOnPress);
     if affordable {
         commands
             .entity(linger.okay)
@@ -785,20 +768,16 @@ fn bind_civilian_report(
         &civilian_report_text(assets, state, unit),
         12,
     );
-    commands.entity(tree.find(root, fourcc!("okay"))).insert((
-        ActivateOnPress,
-        ModalDefault,
-        DismissWindow,
-    ));
+    let okay = tree.find(root, fourcc!("okay"));
+    let cancel = tree.find(root, fourcc!("canc"));
+    commands.entity(okay).insert(ActivateOnPress);
     commands
-        .entity(tree.find(root, fourcc!("canc")))
-        .insert((
-            ActivateOnPress,
-            CancelCivilianOrder(unit),
-            ModalCancel,
-            DismissWindow,
-        ))
+        .entity(cancel)
+        .insert((ActivateOnPress, CancelCivilianOrder(unit)))
         .observe(on_cancel_civilian_order);
+    bind_modal_controls(commands, root, Some(okay), Some(cancel));
+    bind_window_close(commands, okay, root);
+    bind_window_close(commands, cancel, root);
 }
 
 fn civilian_report_text(
@@ -1092,11 +1071,10 @@ fn bind_added_army_reports(
             10,
             3,
         );
-        commands.entity(view.find(fourcc!("canc"))).insert((
-            ActivateOnPress,
-            ModalCancel,
-            DismissWindow,
-        ));
+        let cancel = view.find(fourcc!("canc"));
+        commands.entity(cancel).insert(ActivateOnPress);
+        bind_modal_controls(&mut commands, root, None, Some(cancel));
+        bind_window_close(&mut commands, cancel, root);
     }
 }
 
@@ -1268,15 +1246,13 @@ fn bind_friendly_fleet_report(
         10,
         3,
     );
+    let cancel = view.find(fourcc!("canc"));
     commands
-        .entity(view.find(fourcc!("canc")))
-        .insert((
-            ActivateOnPress,
-            CancelFleetOrders(report.force),
-            ModalCancel,
-            DismissWindow,
-        ))
+        .entity(cancel)
+        .insert((ActivateOnPress, CancelFleetOrders(report.force)))
         .observe(on_cancel_fleet_orders);
+    bind_modal_controls(commands, root, None, Some(cancel));
+    bind_window_close(commands, cancel, root);
 }
 
 fn bind_enemy_fleet_report(
@@ -1591,7 +1567,7 @@ fn on_roster_page_action(
     let Ok(action) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     let mut page = pages.get_mut(root).expect("roster page action root");
@@ -1639,7 +1615,7 @@ fn on_army_roster_row_action(
     let Ok(ArmyRosterRowAction::Select(province)) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
@@ -1678,7 +1654,7 @@ fn on_navy_roster_row_action(
     let Ok(action) = actions.get(activate.entity).copied() else {
         return;
     };
-    let Some(root) = ancestor_with_component(activate.entity, &parents, &roots) else {
+    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
         return;
     };
     match action {
