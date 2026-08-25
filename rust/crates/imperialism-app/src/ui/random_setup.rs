@@ -297,7 +297,7 @@ fn bind_random_setup_labels(
         let entity = tree.find(root, tag);
         commands
             .entity(entity)
-            .insert(Text::new(ui_string(assets, group, index)));
+            .insert((Text::new(ui_string(assets, group, index)), Label));
     }
     let title_color = TextColor(assets.palette_color(0x5c));
     let title_shadow = TextShadow {
