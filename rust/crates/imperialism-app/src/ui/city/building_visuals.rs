@@ -67,42 +67,27 @@ pub(in crate::ui::city) const CITY_HEIGHT: f32 = 480.0;
 pub(in crate::ui::city) struct CityBuildingHitMask {
     pub(in crate::ui::city) width: i32,
     pub(in crate::ui::city) height: i32,
-    pub(in crate::ui::city) polygon: Vec<IVec2>,
+    pixels: Vec<u8>,
+    transparent: u8,
 }
 
 impl CityBuildingHitMask {
-    pub(in crate::ui::city) fn from_indexed_picture(image: &IndexedPicture) -> Option<Self> {
+    pub(in crate::ui::city) fn from_indexed_picture(image: IndexedPicture) -> Option<Self> {
         let width = image.width as usize;
         let height = image.height as usize;
         if width == 0 || height == 0 || image.pixels.len() != width * height {
             return None;
         }
+        // Color-key is the bottom-left index, matching CDib's 0xffffffff 8-bpp path.
         let transparent = image.pixels[(height - 1) * width];
-
-        let mut edges = Vec::new();
-        for y in (0..height).rev().step_by(2) {
-            let row = &image.pixels[y * width..(y + 1) * width];
-            let left = row.iter().position(|&pixel| pixel != transparent);
-            let right = row.iter().rposition(|&pixel| pixel != transparent);
-            if let (Some(left), Some(right)) = (left, right) {
-                edges.push((y as i32, left as i32, right as i32));
-            }
-        }
-        if edges.is_empty() {
+        if image.pixels.iter().all(|&pixel| pixel == transparent) {
             return None;
         }
-        let mut polygon = Vec::with_capacity(edges.len() * 2);
-        polygon.extend(edges.iter().map(|&(y, left, _)| IVec2::new(left, y)));
-        polygon.extend(
-            edges
-                .iter()
-                .rev()
-                .map(|&(y, _, right)| IVec2::new(right, y)),
-        );
         Some(Self {
             width: width as i32,
             height: height as i32,
-            polygon,
+            pixels: image.pixels,
+            transparent,
         })
     }
 
@@ -110,21 +95,8 @@ impl CityBuildingHitMask {
         if point.x < 0 || point.y < 0 || point.x >= self.width || point.y >= self.height {
             return false;
         }
-        let mut winding = 0_i32;
-        let mut previous = self.polygon[self.polygon.len() - 1];
-        for &current in &self.polygon {
-            let side = i64::from(current.x - previous.x) * i64::from(point.y - previous.y)
-                - i64::from(point.x - previous.x) * i64::from(current.y - previous.y);
-            if previous.y <= point.y {
-                if current.y > point.y && side > 0 {
-                    winding += 1;
-                }
-            } else if current.y <= point.y && side < 0 {
-                winding -= 1;
-            }
-            previous = current;
-        }
-        winding != 0
+        let index = point.y as usize * self.width as usize + point.x as usize;
+        self.pixels[index] != self.transparent
     }
 }
 
@@ -310,7 +282,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
         let offset = i16::from(visual.slot as u8);
         let mask_picture = PictureId::new(7100 + level * 16 + offset);
         let mask = match assets.indexed_picture(mask_picture) {
-            Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(&indexed) {
+            Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(indexed) {
                 Some(mask) => mask,
                 None => {
                     warn!("city building mask {mask_picture} has no usable silhouette");
@@ -713,6 +685,28 @@ mod tests {
             alpha,
             [0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff]
         );
+    }
+
+    #[test]
+    fn city_building_hit_mask_tests_indexed_pixels() {
+        let mask = CityBuildingHitMask::from_indexed_picture(IndexedPicture {
+            width: 4,
+            height: 5,
+            pixels: vec![
+                1, 0, 1, 1, //
+                1, 0, 1, 1, //
+                1, 0, 1, 1, //
+                1, 0, 1, 1, //
+                0, 0, 0, 0,
+            ],
+        })
+        .unwrap();
+        assert!(mask.contains(IVec2::new(0, 1)));
+        assert!(mask.contains(IVec2::new(2, 0)));
+        assert!(!mask.contains(IVec2::new(1, 1)));
+        assert!(!mask.contains(IVec2::new(0, 4)));
+        assert!(!mask.contains(IVec2::new(-1, 0)));
+        assert!(!mask.contains(IVec2::new(0, 5)));
     }
 
     #[test]
