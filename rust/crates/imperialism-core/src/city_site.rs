@@ -99,29 +99,6 @@ pub const fn supports_city_site_terrain(terrain: TerrainKind) -> bool {
     )
 }
 
-impl MapMgr {
-    /// Retail `TMapMgr::SeedValidCitySiteCandidateTilesForNation`.
-    pub(crate) fn seed_valid_city_site_candidate_tiles_for_nation(
-        &mut self,
-        nation: MajorNationId,
-    ) {
-        let owner = TileOwnerTag::from_nation(nation.nation());
-        self.recruit_search_active = true;
-        for tile in TileId::all() {
-            let is_candidate = {
-                let state = &self[tile];
-                state.owner_nation == Some(owner)
-                    && !matches!(
-                        state.terrain,
-                        TerrainKind::Hills | TerrainKind::Mountain | TerrainKind::Swamp
-                    )
-                    && is_valid_secondary_nation_home_tile_candidate(self, tile)
-            };
-            self[tile].recruit_search_visited = u8::from(!is_candidate);
-        }
-    }
-}
-
 /// Sea-neighbor / river-flow check from `TMapMgr::IsValidSecondaryNationHomeTileCandidate`.
 pub fn is_valid_secondary_nation_home_tile_candidate(world: &MapMgr, tile: TileId) -> bool {
     let geometry = world.geometry();

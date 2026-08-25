@@ -15,16 +15,15 @@ impl GameState {
     ) -> Option<TileId> {
         let owner = self.map[start].owner_nation;
         let geometry = self.map.geometry();
-        for tile in TileId::all() {
-            self.map[tile].recruit_search_visited = 0;
-        }
+        let mut visited = vec![false; crate::STRATEGIC_TILE_COUNT];
         let mut pending = vec![start];
 
         while let Some(tile_id) = pending.pop() {
-            if self.map[tile_id].recruit_search_visited != 0 {
+            let idx = usize::from(tile_id.get());
+            if visited[idx] {
                 continue;
             }
-            self.map[tile_id].recruit_search_visited = 1;
+            visited[idx] = true;
             if self.map[tile_id].owner_nation != owner {
                 continue;
             }
@@ -167,9 +166,8 @@ impl GameState {
             owner_nation: nation_id,
             roster_id: 0,
             registered: false,
-            next_on_tile: None,
         };
-        self.civilian_units.insert(id, unit);
+        self.insert_civilian_unit(id, unit);
     }
 
     /// `TCountry::InitialMilitia`.
@@ -514,7 +512,6 @@ mod tests {
             water_adjacency_mask: 0,
             province: None,
             gate: 0,
-            recruit_search_visited: 0,
             per_tile_visited: 0,
             tile_action_ordinal: -1,
             development: Default::default(),
@@ -536,7 +533,6 @@ mod tests {
             owner_nation: NationId::new(nation),
             roster_id: 0,
             registered: false,
-            next_on_tile: None,
         }
     }
 

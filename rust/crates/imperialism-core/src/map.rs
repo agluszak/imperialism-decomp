@@ -18,7 +18,6 @@ pub(crate) enum BorderInfluenceMode {
 pub struct MapMgr {
     pub topology: MapTopology,
     pub map_data_ready: bool,
-    pub recruit_search_active: bool,
     pub city_score_total: i32,
     pub scenario_tag: String,
     #[serde(
@@ -100,7 +99,6 @@ impl MapMgr {
         Self {
             topology,
             map_data_ready: false,
-            recruit_search_active: false,
             city_score_total: 0,
             scenario_tag: String::new(),
             tiles,
@@ -513,8 +511,6 @@ pub struct TileState {
     pub province: Option<ProvinceId>,
     /// Retail `TTerrainStateRecord::gateFlag`.
     pub gate: i8,
-    /// Retail `TTerrainStateRecord::recruitSearchVisited0e`.
-    pub recruit_search_visited: u8,
     /// Retail `TTerrainStateRecord::perTileVisitedFlag0f`.
     pub per_tile_visited: i8,
     /// Retail `TTerrainStateRecord::tileActionOrdinal1a`.
@@ -899,7 +895,6 @@ impl Default for TileState {
             water_adjacency_mask: 0,
             province: None,
             gate: 0,
-            recruit_search_visited: 0,
             per_tile_visited: 0,
             tile_action_ordinal: -1,
             development: TileDevelopment::default(),

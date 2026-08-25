@@ -170,16 +170,13 @@ impl GameState {
                 continue;
             }
             let Some(home) = self.nations.majors[&owner].common.home_tile else {
-                self.civilian_units.shift_remove(&id);
+                self.remove_civilian_unit(id);
                 continue;
             };
             if let Some(destination) = self.find_reachable_recruit_spawn_tile(home, false) {
-                self.civilian_units
-                    .get_mut(&id)
-                    .expect("civilian remains present")
-                    .location = CivilianLocation::OnMap(destination);
+                self.move_civilian_to(id, destination);
             } else {
-                self.civilian_units.shift_remove(&id);
+                self.remove_civilian_unit(id);
             }
         }
     }
