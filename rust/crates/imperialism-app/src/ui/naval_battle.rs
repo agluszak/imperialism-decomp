@@ -1,6 +1,10 @@
 use super::generated;
 use super::retail::RetailTree;
 use super::session::{GameSession, apply_turn_stop};
+use super::tactical_viewport::{
+    BATTLEFIELD_HEIGHT_PX, BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX,
+    TACTICAL_TILE_WIDTH_PX, TacticalViewport, battlefield_cursor_pixel, rect_xywh,
+};
 use crate::AppState;
 use crate::media::MusicDirector;
 use bevy::picking::events::{Click, Pointer};
@@ -12,14 +16,6 @@ use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, fourcc};
-
-/// Retail setters 0x5a6830 / 0x5a6860. Navy uses the same tile pixel size as land.
-const TACTICAL_TILE_WIDTH_PX: i32 = 0x32;
-const TACTICAL_TILE_ROW_HEIGHT_PX: i32 = 0x1e;
-/// `TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset` grows the tile up by 0x14.
-const UNIT_SPRITE_LIFT_PX: i32 = 0x14;
-const BATTLEFIELD_WIDTH_PX: i32 = 575;
-const BATTLEFIELD_HEIGHT_PX: i32 = 450;
 
 #[derive(Component)]
 struct NavalBattleRoot;
@@ -50,73 +46,35 @@ struct NavalBattleUnit(ShipId);
 #[allow(dead_code)]
 struct NavalBattleReachable(i32);
 
-/// Pixel↔tile for navy (`TNavyBattle` stride 6, same 50×30 stagger as land).
-struct NavalBattleTileMap {
-    view_origin_x: i32,
-    view_origin_y: i32,
+fn navy_viewport(origin_x: i32, origin_y: i32) -> TacticalViewport {
+    TacticalViewport::navy(IVec2::new(origin_x, origin_y))
 }
 
-impl NavalBattleTileMap {
-    fn new(view_origin_x: i32, view_origin_y: i32) -> Self {
-        Self {
-            view_origin_x,
-            view_origin_y,
-        }
-    }
-
-    fn tile_rect(&self, tile: i32) -> (i32, i32, i32, i32) {
-        let stride = NavyBattle::tile_stride();
-        let row = tile / stride;
-        let column = tile % stride;
-        let mut x = column * TACTICAL_TILE_WIDTH_PX - self.view_origin_x;
-        if row & 1 != 0 {
-            x += TACTICAL_TILE_WIDTH_PX / 2;
-        }
-        let y = row * TACTICAL_TILE_ROW_HEIGHT_PX - self.view_origin_y;
-        (x, y, TACTICAL_TILE_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX)
-    }
-
-    fn unit_anchor(&self, tile: i32) -> (i32, i32, i32, i32) {
-        let (x, y, width, height) = self.tile_rect(tile);
-        (
-            x,
-            y - UNIT_SPRITE_LIFT_PX,
-            width,
-            height + UNIT_SPRITE_LIFT_PX,
-        )
-    }
-
-    fn tile_at_pixel(&self, x: i32, y: i32) -> Option<i32> {
-        let stride = NavyBattle::tile_stride();
-        let rows = NavyBattle::tile_count() / stride;
-        let mut row = (y + self.view_origin_y) / TACTICAL_TILE_ROW_HEIGHT_PX;
-        if row < 0 {
-            row = 0;
-        }
-        if row >= rows {
-            row = rows - 1;
-        }
-        let mut col = self.view_origin_x + x;
-        if row & 1 != 0 {
-            col -= TACTICAL_TILE_WIDTH_PX / 2;
-        }
-        col /= TACTICAL_TILE_WIDTH_PX;
-        if col < 0 {
-            col = 0;
-        }
-        if col >= stride {
-            col = stride - 1;
-        }
-        Some(row * stride + col)
-    }
+fn navy_row_column(tile: i32) -> (i32, i32) {
+    let stride = NavyBattle::tile_stride();
+    (tile / stride, tile % stride)
 }
 
-fn battlefield_cursor_pixel(cursor: &RelativeCursorPosition) -> Option<(i32, i32)> {
-    let position = cursor.normalized.filter(|_| cursor.cursor_over())?;
-    Some((
-        ((position.x + 0.5) * BATTLEFIELD_WIDTH_PX as f32).floor() as i32,
-        ((position.y + 0.5) * BATTLEFIELD_HEIGHT_PX as f32).floor() as i32,
-    ))
+fn navy_tile_xywh(viewport: &TacticalViewport, tile: i32) -> (i32, i32, i32, i32) {
+    let (row, column) = navy_row_column(tile);
+    rect_xywh(viewport.cell_rect(row, column))
+}
+
+fn navy_unit_xywh(viewport: &TacticalViewport, tile: i32) -> (i32, i32, i32, i32) {
+    let (row, column) = navy_row_column(tile);
+    rect_xywh(viewport.unit_rect(row, column))
+}
+
+fn navy_tile_at_pixel(viewport: &TacticalViewport, x: i32, y: i32) -> Option<i32> {
+    viewport
+        .cell_at(IVec2::new(x, y))
+        .map(|(row, column)| row * viewport.columns + column)
+}
+
+fn center_navy_origin_y(current: i32, selected_row: i32) -> i32 {
+    let mut viewport = navy_viewport(0, current);
+    viewport.center_on(selected_row, 0);
+    viewport.origin.y
 }
 
 pub(crate) struct NavalBattlePlugin;
@@ -248,14 +206,12 @@ fn project_naval_battle(
             if let Some(unit) = session.game.selected_navy_unit()
                 && unit.tile >= 0
             {
-                view.view_origin_y = centered_view_origin_y(
-                    view.view_origin_y,
-                    unit.tile / NavyBattle::tile_stride(),
-                );
+                view.view_origin_y =
+                    center_navy_origin_y(view.view_origin_y, unit.tile / NavyBattle::tile_stride());
             }
             view.centered_ship = selected;
         }
-        let tile_map = NavalBattleTileMap::new(view.view_origin_x, view.view_origin_y);
+        let tile_map = navy_viewport(view.view_origin_x, view.view_origin_y);
         if let Some(children) = children {
             for child in children.iter() {
                 if projected.contains(child) {
@@ -264,7 +220,7 @@ fn project_naval_battle(
             }
         }
         for tile in &reachable {
-            let (x, y, width, height) = tile_map.tile_rect(*tile);
+            let (x, y, width, height) = navy_tile_xywh(&tile_map, *tile);
             commands.spawn((
                 NavalBattleReachable(*tile),
                 ChildOf(field),
@@ -283,7 +239,7 @@ fn project_naval_battle(
             if unit.destroyed || unit.tile < 0 {
                 continue;
             }
-            let (x, y, width, height) = tile_map.unit_anchor(unit.tile);
+            let (x, y, width, height) = navy_unit_xywh(&tile_map, unit.tile);
             let color = match unit.side {
                 BattleSide::Attacker => Color::srgb(0.75, 0.2, 0.15),
                 BattleSide::Defender => Color::srgb(0.15, 0.3, 0.75),
@@ -307,20 +263,6 @@ fn project_naval_battle(
             ));
         }
     }
-}
-
-fn centered_view_origin_y(current: i32, selected_row: i32) -> i32 {
-    let first_visible = current / TACTICAL_TILE_ROW_HEIGHT_PX;
-    let visible_rows = BATTLEFIELD_HEIGHT_PX / TACTICAL_TILE_ROW_HEIGHT_PX;
-    let last_visible = first_visible + visible_rows;
-    if selected_row >= first_visible + 2 && selected_row <= last_visible - 2 {
-        return current;
-    }
-    let rows = NavyBattle::tile_count() / NavyBattle::tile_stride();
-    let max_origin = (rows * TACTICAL_TILE_ROW_HEIGHT_PX - BATTLEFIELD_HEIGHT_PX).max(0);
-    let centered = (selected_row * TACTICAL_TILE_ROW_HEIGHT_PX - BATTLEFIELD_HEIGHT_PX / 2)
-        .clamp(0, max_origin);
-    centered / TACTICAL_TILE_ROW_HEIGHT_PX * TACTICAL_TILE_ROW_HEIGHT_PX
 }
 
 fn scroll_naval_battle(
@@ -407,8 +349,8 @@ fn apply_battlefield_click(
     view_origin_y: i32,
     story_ids: &[i32],
 ) -> Option<TurnStop> {
-    let tile_map = NavalBattleTileMap::new(view_origin_x, view_origin_y);
-    let tile = tile_map.tile_at_pixel(x, y)?;
+    let tile_map = navy_viewport(view_origin_x, view_origin_y);
+    let tile = navy_tile_at_pixel(&tile_map, x, y)?;
     session.game.navy_action_at(tile, story_ids).ok().flatten()
 }
 
@@ -657,24 +599,27 @@ mod tests {
 
     #[test]
     fn tile_pixel_round_trip_uses_retail_stagger() {
-        let map = NavalBattleTileMap::new(0, 60);
+        let map = navy_viewport(0, 60);
         let tile = 2 * NavyBattle::tile_stride() + 4;
-        let (x, y, width, height) = map.tile_rect(tile);
+        let (x, y, width, height) = navy_tile_xywh(&map, tile);
         let center = (x + width / 2, y + height / 2);
-        assert_eq!(map.tile_at_pixel(center.0, center.1), Some(tile));
+        assert_eq!(navy_tile_at_pixel(&map, center.0, center.1), Some(tile));
         let odd = 3 * NavyBattle::tile_stride() + 4;
-        let (ox, oy, ow, oh) = map.tile_rect(odd);
+        let (ox, oy, ow, oh) = navy_tile_xywh(&map, odd);
         assert_eq!(ox, 4 * TACTICAL_TILE_WIDTH_PX + TACTICAL_TILE_WIDTH_PX / 2);
         assert_eq!(oy, 3 * TACTICAL_TILE_ROW_HEIGHT_PX - 60);
-        assert_eq!(map.tile_at_pixel(ox + ow / 2, oy + oh / 2), Some(odd));
+        assert_eq!(
+            navy_tile_at_pixel(&map, ox + ow / 2, oy + oh / 2),
+            Some(odd)
+        );
     }
 
     #[test]
     fn center_selected_snaps_and_clamps_the_view_origin() {
-        let origin = centered_view_origin_y(0, 20);
+        let origin = center_navy_origin_y(0, 20);
         assert_eq!(origin % TACTICAL_TILE_ROW_HEIGHT_PX, 0);
         assert_eq!(origin, 360);
-        assert_eq!(centered_view_origin_y(origin, 16), origin);
+        assert_eq!(center_navy_origin_y(origin, 16), origin);
     }
 
     #[test]
@@ -690,7 +635,7 @@ mod tests {
                 if unit.tile < 0 {
                     return None;
                 }
-                let (x, y, _, _) = NavalBattleTileMap::new(0, 0).unit_anchor(unit.tile);
+                let (x, y, _, _) = navy_unit_xywh(&navy_viewport(0, 0), unit.tile);
                 Some((unit.ship, x, y))
             })
             .collect();
@@ -764,7 +709,7 @@ mod tests {
                     .expect("defender has a deployment tile")
             });
         let dest_pixel = {
-            let (x, y, w, h) = NavalBattleTileMap::new(0, 0).tile_rect(destination);
+            let (x, y, w, h) = navy_tile_xywh(&navy_viewport(0, 0), destination);
             (x + w / 2, y + h / 2)
         };
 

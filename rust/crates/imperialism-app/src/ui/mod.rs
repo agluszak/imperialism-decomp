@@ -31,6 +31,7 @@ mod satellite_preview;
 mod scenario_setup;
 mod session;
 mod strategic_map;
+mod tactical_viewport;
 mod technology;
 mod technology_store;
 #[cfg(test)]

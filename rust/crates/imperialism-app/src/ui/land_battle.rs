@@ -7,6 +7,10 @@ use super::hover_help::{
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
 use super::session::{GameSession, apply_turn_stop};
+use super::tactical_viewport::{
+    BATTLEFIELD_HEIGHT_PX, BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX,
+    TACTICAL_TILE_WIDTH_PX, TacticalViewport, battlefield_cursor_pixel, rect_xywh,
+};
 use crate::AppState;
 use crate::media::MusicDirector;
 use bevy::picking::events::{Click, Pointer};
@@ -19,16 +23,9 @@ use bevy::window::PrimaryWindow;
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc};
 
-/// Retail setters 0x5a6830, 0x5a6860 and 0x5a6890.
-const TACTICAL_TILE_WIDTH_PX: i32 = 0x32;
-const TACTICAL_TILE_ROW_HEIGHT_PX: i32 = 0x1e;
 const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
 const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
 const TACTICAL_UNIT_CELL_PX: i32 = 0x32;
-/// `TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset` grows the tile up by 0x14.
-const UNIT_SPRITE_LIFT_PX: i32 = 0x14;
-const BATTLEFIELD_WIDTH_PX: i32 = 575;
-const BATTLEFIELD_HEIGHT_PX: i32 = 450;
 const FORT_STRIP_WIDTH_PX: i32 = 0x11e;
 const TACTICAL_COMPOSITION_PICTURE_BASE: i16 = 0xf0a;
 const TACTICAL_FORT_STRIP_PICTURE: i16 = 0xf0e;
@@ -267,70 +264,28 @@ struct LandBattleAnimationQueue {
 #[derive(Component)]
 struct LandBattleDeferredStop(Option<TurnStop>);
 
-/// Pixel↔hex for this screen (`TTacticalBattleView` 0x5a86d0 / 0x5a87d0).
-struct LandBattleHexMap {
-    column_count: i32,
-    view_origin_x: i32,
+fn land_viewport(column_count: i32, origin_x: i32) -> TacticalViewport {
+    TacticalViewport::land(column_count, origin_x)
 }
 
-impl LandBattleHexMap {
-    fn new(column_count: i32, view_origin_x: i32) -> Self {
-        Self {
-            column_count,
-            view_origin_x,
-        }
-    }
-
-    fn tile_rect(&self, hex: TacticalHex) -> (i32, i32, i32, i32) {
-        let row = hex.row();
-        let mut x = hex.column() * TACTICAL_TILE_WIDTH_PX - self.view_origin_x;
-        if row & 1 != 0 {
-            x += TACTICAL_TILE_WIDTH_PX / 2;
-        }
-        let y = row * TACTICAL_TILE_ROW_HEIGHT_PX;
-        (x, y, TACTICAL_TILE_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX)
-    }
-
-    fn unit_anchor(&self, hex: TacticalHex) -> (i32, i32, i32, i32) {
-        let (x, y, width, height) = self.tile_rect(hex);
-        (
-            x,
-            y - UNIT_SPRITE_LIFT_PX,
-            width,
-            height + UNIT_SPRITE_LIFT_PX,
-        )
-    }
-
-    fn hex_at_pixel(&self, x: i32, y: i32) -> Option<TacticalHex> {
-        let mut row = y / TACTICAL_TILE_ROW_HEIGHT_PX;
-        if row < 0 {
-            row = 0;
-        }
-        let max_row = BATTLEFIELD_HEIGHT_PX / TACTICAL_TILE_ROW_HEIGHT_PX - 1;
-        if row >= max_row {
-            row = max_row;
-        }
-        let mut col = self.view_origin_x + x;
-        if row & 1 != 0 {
-            col -= TACTICAL_TILE_WIDTH_PX / 2;
-        }
-        col /= TACTICAL_TILE_WIDTH_PX;
-        if col < 0 {
-            col = 0;
-        }
-        if col >= self.column_count {
-            col = self.column_count - 1;
-        }
-        TacticalHex::from_row_column(row, col)
-    }
+fn hex_cell_xywh(viewport: &TacticalViewport, hex: TacticalHex) -> (i32, i32, i32, i32) {
+    rect_xywh(viewport.cell_rect(hex.row(), hex.column()))
 }
 
-fn battlefield_cursor_pixel(cursor: &RelativeCursorPosition) -> Option<(i32, i32)> {
-    let position = cursor.normalized.filter(|_| cursor.cursor_over())?;
-    Some((
-        ((position.x + 0.5) * BATTLEFIELD_WIDTH_PX as f32).floor() as i32,
-        ((position.y + 0.5) * BATTLEFIELD_HEIGHT_PX as f32).floor() as i32,
-    ))
+fn hex_unit_xywh(viewport: &TacticalViewport, hex: TacticalHex) -> (i32, i32, i32, i32) {
+    rect_xywh(viewport.unit_rect(hex.row(), hex.column()))
+}
+
+fn hex_at_pixel(viewport: &TacticalViewport, x: i32, y: i32) -> Option<TacticalHex> {
+    viewport
+        .cell_at(IVec2::new(x, y))
+        .and_then(|(row, column)| TacticalHex::from_row_column(row, column))
+}
+
+fn center_land_origin(current: i32, column_count: i32, selected: TacticalHex) -> i32 {
+    let mut viewport = land_viewport(column_count, current);
+    viewport.center_on(selected.row(), selected.column());
+    viewport.origin.x
 }
 
 pub(crate) struct LandBattlePlugin;
@@ -634,7 +589,11 @@ fn track_land_battle_hover(
     let mut cursor_set = false;
     for (cursor, mut view) in &mut fields {
         let hovered = battlefield_cursor_pixel(cursor).and_then(|(x, y)| {
-            LandBattleHexMap::new(battle.column_count(), view.view_origin_x).hex_at_pixel(x, y)
+            hex_at_pixel(
+                &land_viewport(battle.column_count(), view.view_origin_x),
+                x,
+                y,
+            )
         });
         if view.hovered_hex != hovered {
             view.hovered_hex = hovered;
@@ -698,7 +657,7 @@ fn project_land_battle(
                 && let Some(hex) = unit.hex
             {
                 view.view_origin_x =
-                    centered_view_origin(view.view_origin_x, battle.column_count(), hex);
+                    center_land_origin(view.view_origin_x, battle.column_count(), hex);
             }
             view.centered_unit = selected;
         }
@@ -710,7 +669,7 @@ fn project_land_battle(
         }
         view.projected_origin_x = view.view_origin_x;
         view.projected_hover = view.hovered_hex;
-        let hex_map = LandBattleHexMap::new(battle.column_count(), view.view_origin_x);
+        let hex_map = land_viewport(battle.column_count(), view.view_origin_x);
         if let Some(children) = children {
             for child in children.iter() {
                 if projected.contains(child) {
@@ -808,7 +767,7 @@ fn project_land_battle(
             let Some(hex) = unit.hex else {
                 continue;
             };
-            let (mut x, mut y, width, height) = hex_map.unit_anchor(hex);
+            let (mut x, mut y, width, height) = hex_unit_xywh(&hex_map, hex);
             let selected = selected == Some(unit.id);
             if selected {
                 spawn_hex_outline(
@@ -975,13 +934,13 @@ fn tactical_neighbors(tile: i32) -> [i32; 6] {
 fn spawn_hex_outline<M: Component + Copy>(
     commands: &mut Commands,
     field: Entity,
-    map: &LandBattleHexMap,
+    map: &TacticalViewport,
     hex: TacticalHex,
     marker: M,
     color: Color,
     inset: i32,
 ) {
-    let (x, y, width, height) = map.tile_rect(hex);
+    let (x, y, width, height) = hex_cell_xywh(map, hex);
     let left = x + inset;
     let top = y + inset;
     let right = x + width - inset - 1;
@@ -1036,11 +995,11 @@ fn animate_land_battle_selection(
 fn spawn_deployment_guide(
     commands: &mut Commands,
     field: Entity,
-    map: &LandBattleHexMap,
+    map: &TacticalViewport,
     hex: TacticalHex,
     colors: [Color; 2],
 ) {
-    let (x, y, width, height) = map.tile_rect(hex);
+    let (x, y, width, height) = hex_cell_xywh(map, hex);
     let center_x = x + width / 2;
     let center_y = y + height / 2;
     for (left, top, width, color) in [
@@ -1070,14 +1029,14 @@ fn spawn_deployment_guide(
 fn spawn_move_guide(
     commands: &mut Commands,
     field: Entity,
-    map: &LandBattleHexMap,
+    map: &TacticalViewport,
     hex: TacticalHex,
     side: BattleSide,
     column_count: i32,
     threatened: bool,
     colors: [Color; 4],
 ) {
-    let (x, y, width, height) = map.tile_rect(hex);
+    let (x, y, width, height) = hex_cell_xywh(map, hex);
     let center_x = x + width / 2;
     let center_y = y + height / 2;
     let accent = if (hex.row() < 2 && side == BattleSide::Attacker)
@@ -1117,7 +1076,7 @@ fn spawn_tactical_effect(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     field: Entity,
-    map: &LandBattleHexMap,
+    map: &TacticalViewport,
     target: TacticalHex,
     base_picture: i16,
     frame_count: u8,
@@ -1125,9 +1084,9 @@ fn spawn_tactical_effect(
     unit_sized: bool,
 ) {
     let (x, y, width, height) = if unit_sized {
-        map.unit_anchor(target)
+        hex_unit_xywh(map, target)
     } else {
-        map.tile_rect(target)
+        hex_cell_xywh(map, target)
     };
     let image = assets
         .transparent_picture(PictureId::new(base_picture), TACTICAL_TRANSPARENT_INDEX)
@@ -1157,7 +1116,7 @@ fn spawn_tactical_effect(
 fn spawn_tactical_glide(
     commands: &mut Commands,
     field: Entity,
-    map: &LandBattleHexMap,
+    map: &TacticalViewport,
     visuals: &LandBattleVisuals,
     moved: &MoveResult,
     unit_type: MilitaryUnitKind,
@@ -1166,7 +1125,7 @@ fn spawn_tactical_glide(
     if moved.path.len() < 2 {
         return false;
     }
-    let (x, y, width, height) = map.unit_anchor(moved.path[0]);
+    let (x, y, width, height) = hex_unit_xywh(map, moved.path[0]);
     let moving_right = tactical_half_column(moved.path[0]) < tactical_half_column(moved.path[1]);
     let source = Vec2::new(
         f32::from(unit_type.retail()) * TACTICAL_UNIT_CELL_PX as f32,
@@ -1258,7 +1217,7 @@ fn animate_land_battle_actions(
         .game
         .army_battle()
         .map_or(TacticalHex::COLUMNS, ArmyBattle::column_count);
-    let map = LandBattleHexMap::new(column_count, field.view_origin_x);
+    let map = land_viewport(column_count, field.view_origin_x);
     for (entity, mut glide, mut node, mut image) in &mut glides {
         if now < glide.next_tick {
             continue;
@@ -1286,8 +1245,8 @@ fn animate_land_battle_actions(
                 rect.max.y = top + TACTICAL_UNIT_CELL_PX as f32;
             }
         }
-        let (from_x, from_y, _, _) = map.unit_anchor(glide.path[glide.segment]);
-        let (to_x, to_y, _, _) = map.unit_anchor(glide.path[glide.segment + 1]);
+        let (from_x, from_y, _, _) = hex_unit_xywh(&map, glide.path[glide.segment]);
+        let (to_x, to_y, _, _) = hex_unit_xywh(&map, glide.path[glide.segment + 1]);
         let frame = f32::from(glide.frame) / 3.0;
         node.left = px(from_x as f32 + (to_x - from_x) as f32 * frame);
         node.top = px(from_y as f32 + (to_y - from_y) as f32 * frame - 4.0);
@@ -1399,14 +1358,14 @@ fn animate_land_battle_actions(
 fn spawn_unit_stat_bars(
     commands: &mut Commands,
     field: Entity,
-    map: &LandBattleHexMap,
+    map: &TacticalViewport,
     unit: ArmyUnitView,
     colors: [Color; 3],
 ) {
     let Some(hex) = unit.hex else {
         return;
     };
-    let (x, y, width, _) = map.tile_rect(hex);
+    let (x, y, width, _) = hex_cell_xywh(map, hex);
     let left = x + width / 2 - 10;
     let bar = |commands: &mut Commands, width: i32, color: Color, z: i32| {
         commands.spawn((
@@ -1433,14 +1392,14 @@ fn spawn_unit_stat_bars(
 fn spawn_unit_status_flag(
     commands: &mut Commands,
     field: Entity,
-    map: &LandBattleHexMap,
+    map: &TacticalViewport,
     unit: ArmyUnitView,
     visuals: &LandBattleVisuals,
 ) {
     let Some(hex) = unit.hex else {
         return;
     };
-    let (x, y, width, _) = map.tile_rect(hex);
+    let (x, y, width, _) = hex_cell_xywh(map, hex);
     let bar_left = x + width / 2 - 10;
     // 0x005aba77..0x005abb3f places the 9x6 destination left of the stat bar
     // and transposes the 6x9 tier-zero source cell.
@@ -1659,7 +1618,7 @@ fn project_tile_atlases(
     commands: &mut Commands,
     field: Entity,
     battle: &ArmyBattle,
-    hex_map: &LandBattleHexMap,
+    hex_map: &TacticalViewport,
     visuals: &LandBattleVisuals,
 ) {
     let tiles: Vec<_> = battle.tiles().collect();
@@ -1814,13 +1773,13 @@ fn project_tile_atlases(
 fn spawn_tile_atlas_cell(
     commands: &mut Commands,
     field: Entity,
-    hex_map: &LandBattleHexMap,
+    hex_map: &TacticalViewport,
     hex: TacticalHex,
     atlas: &Handle<Image>,
     cell: i32,
     layer: i32,
 ) {
-    let (x, y, width, height) = hex_map.tile_rect(hex);
+    let (x, y, width, height) = hex_cell_xywh(hex_map, hex);
     let source = Vec2::new((cell * TACTICAL_TILE_WIDTH_PX) as f32, 0.0);
     commands.spawn((
         LandBattleTileOverlay,
@@ -1872,20 +1831,6 @@ fn fort_gun_slot(column_count: i32, tile: i32) -> bool {
     let row = tile / TacticalHex::COLUMNS;
     let doubled = (row & 1) + (tile % TacticalHex::COLUMNS) * 2;
     (row == 5 || row == 7 || row == 9) && doubled / 2 == column_count - 6
-}
-
-fn centered_view_origin(current: i32, column_count: i32, selected: TacticalHex) -> i32 {
-    let first_visible = current / TACTICAL_TILE_WIDTH_PX;
-    let visible_columns = BATTLEFIELD_WIDTH_PX / TACTICAL_TILE_WIDTH_PX;
-    let last_visible = first_visible + visible_columns;
-    let column = selected.column();
-    if column >= first_visible + 2 && column <= last_visible - 2 {
-        return current;
-    }
-    let max_origin = ((column_count + 1) * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX).max(0);
-    let centered =
-        (column * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX / 2).clamp(0, max_origin);
-    centered / TACTICAL_TILE_WIDTH_PX * TACTICAL_TILE_WIDTH_PX
 }
 
 fn queue_land_battle_progress(
@@ -2006,8 +1951,8 @@ fn on_battlefield_click(
     let Some(battle) = session.game.army_battle() else {
         return;
     };
-    let map = LandBattleHexMap::new(battle.column_count(), view.view_origin_x);
-    let Some(target) = map.hex_at_pixel(x, y) else {
+    let map = land_viewport(battle.column_count(), view.view_origin_x);
+    let Some(target) = hex_at_pixel(&map, x, y) else {
         return;
     };
     let Ok((_action, progress)) = session
@@ -2037,8 +1982,8 @@ fn apply_battlefield_click(
     story_ids: &[i32],
 ) -> Option<TurnStop> {
     let column_count = session.game.army_battle().map(ArmyBattle::column_count)?;
-    let hex_map = LandBattleHexMap::new(column_count, view_origin_x);
-    let hex = hex_map.hex_at_pixel(x, y)?;
+    let hex_map = land_viewport(column_count, view_origin_x);
+    let hex = hex_at_pixel(&hex_map, x, y)?;
     session
         .game
         .army_action_at(hex, story_ids)
@@ -2086,7 +2031,7 @@ fn on_land_battle_activate(
                 {
                     for (_, mut view) in &mut fields {
                         view.view_origin_x =
-                            centered_view_origin(view.view_origin_x, battle.column_count(), center);
+                            center_land_origin(view.view_origin_x, battle.column_count(), center);
                         view.centered_unit = session.game.selected_army_unit().map(|unit| unit.id);
                     }
                 }
@@ -2487,28 +2432,28 @@ mod tests {
 
     #[test]
     fn hex_pixel_round_trip_uses_retail_stagger() {
-        let map = LandBattleHexMap::new(16, 100);
+        let map = land_viewport(16, 100);
         let hex = TacticalHex::from_row_column(2, 4).unwrap();
-        let (x, y, width, height) = map.tile_rect(hex);
+        let (x, y, width, height) = hex_cell_xywh(&map, hex);
         let center = (x + width / 2, y + height / 2);
-        assert_eq!(map.hex_at_pixel(center.0, center.1), Some(hex));
+        assert_eq!(hex_at_pixel(&map, center.0, center.1), Some(hex));
         let odd = TacticalHex::from_row_column(3, 4).unwrap();
-        let (ox, oy, ow, oh) = map.tile_rect(odd);
+        let (ox, oy, ow, oh) = hex_cell_xywh(&map, odd);
         assert_eq!(
             ox,
             4 * TACTICAL_TILE_WIDTH_PX + TACTICAL_TILE_WIDTH_PX / 2 - 100
         );
-        assert_eq!(map.hex_at_pixel(ox + ow / 2, oy + oh / 2), Some(odd));
+        assert_eq!(hex_at_pixel(&map, ox + ow / 2, oy + oh / 2), Some(odd));
     }
 
     #[test]
     fn center_selected_snaps_and_clamps_the_retail_view_origin() {
         let selected = TacticalHex::from_row_column(4, 14).unwrap();
-        let origin = centered_view_origin(0, 20, selected);
+        let origin = center_land_origin(0, 20, selected);
         assert_eq!(origin % TACTICAL_TILE_WIDTH_PX, 0);
         assert_eq!(origin, 400);
         assert_eq!(
-            centered_view_origin(origin, 20, TacticalHex::from_row_column(4, 10).unwrap()),
+            center_land_origin(origin, 20, TacticalHex::from_row_column(4, 10).unwrap()),
             origin
         );
     }
@@ -2531,9 +2476,10 @@ mod tests {
             .units()
             .filter_map(|unit| {
                 let hex = unit.hex?;
-                let (x, y, _, _) =
-                    LandBattleHexMap::new(probe.army_battle().unwrap().column_count(), 0)
-                        .unit_anchor(hex);
+                let (x, y, _, _) = hex_unit_xywh(
+                    &land_viewport(probe.army_battle().unwrap().column_count(), 0),
+                    hex,
+                );
                 Some((unit.id, x, y))
             })
             .collect();
@@ -2589,7 +2535,7 @@ mod tests {
             });
         let dest_pixel = {
             let session = app.world().resource::<GameSession>();
-            let map = LandBattleHexMap::new(
+            let map = land_viewport(
                 session
                     .game
                     .army_battle()
@@ -2597,7 +2543,7 @@ mod tests {
                     .column_count(),
                 0,
             );
-            let (x, y, w, h) = map.tile_rect(destination);
+            let (x, y, w, h) = hex_cell_xywh(&map, destination);
             (x + w / 2, y + h / 2)
         };
 
