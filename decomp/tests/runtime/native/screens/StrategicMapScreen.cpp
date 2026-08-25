@@ -33,6 +33,12 @@
 #include "game/ui_widgets/TCivDescription.h"
 #include "game/ui_widgets/TCivToolbar.h"
 #include "game/ui_widgets/TWorldView.h"
+#include "game/navy_ui/TNavyToolbarCluster.h"
+#include "game/navy_ui/TShipFractionCluster.h"
+#include "game/navy/TOcean.h"
+#include "game/navy/TTaskForce.h"
+#include "game/map/TZone.h"
+#include "game/ui_tags_military.h"
 
 MainViewScreenIdentity StrategicMapScreen::Identity() {
   return MainViewScreenIdentity(RUNTIME_CLASS(TMapUberPicture), kTurnEventStrategicMap,
@@ -172,9 +178,11 @@ namespace {
 // TMapUberPicture::categoryPages index for the army page. 0 is civilian, 1 army, 2 navy.
 const int kCivilianCategoryPage = 0;
 const int kArmyCategoryPage = 1;
+const int kNavyCategoryPage = 2;
 // SetMapInteractionMode argument that puts the map into army-selection mode.
 const int kCivilianInteractionMode = 0;
 const int kArmyInteractionMode = 1;
+const int kNavyInteractionMode = 2;
 
 // Where the map places the civilian toolbar page once its category is selected.
 const int kCivilianToolbarX = 0;
@@ -187,6 +195,14 @@ RuntimeActionResult StrategicMapScreen::ShowArmyToolbar() {
     return InvalidScreen("show the army toolbar");
   }
   mapView->SetMapInteractionMode(kArmyInteractionMode);
+  return RuntimeActionResult::Success();
+}
+
+RuntimeActionResult StrategicMapScreen::ShowNavyToolbar() {
+  if (mapView == 0) {
+    return InvalidScreen("show the navy toolbar");
+  }
+  mapView->SetMapInteractionMode(kNavyInteractionMode);
   return RuntimeActionResult::Success();
 }
 
@@ -375,6 +391,114 @@ RuntimeActionResult StrategicMapScreen::MoveOneIdleUnitOut(short category) {
 
 RuntimeActionResult StrategicMapScreen::ReturnOneUnit(short category) {
   return ClickArrowUpperHalf(ArmyRatioArrow(category));
+}
+
+TNavyToolbarCluster* StrategicMapScreen::NavyToolbar() const {
+  if (mapView == 0) {
+    return 0;
+  }
+  TView* page = mapView->categoryPages[kNavyCategoryPage];
+  return page != 0 && page->IsKindOf(RUNTIME_CLASS(TNavyToolbarCluster)) != 0
+             ? static_cast<TNavyToolbarCluster*>(page)
+             : 0;
+}
+
+TShipFractionCluster* StrategicMapScreen::NavyClassCluster(short navyClass) const {
+  if (navyClass < 0 || navyClass >= kNavyClassCount) {
+    return 0;
+  }
+  TNavyToolbarCluster* toolbar = NavyToolbar();
+  TView* cluster =
+      toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagCls0 + navyClass) : 0;
+  return cluster != 0 && cluster->IsKindOf(RUNTIME_CLASS(TShipFractionCluster)) != 0
+             ? static_cast<TShipFractionCluster*>(cluster)
+             : 0;
+}
+
+TNumberedArrowButton* StrategicMapScreen::NavyClassArrow(short navyClass) const {
+  TShipFractionCluster* cluster = NavyClassCluster(navyClass);
+  if (cluster == 0) {
+    return 0;
+  }
+  TNumberedArrowButton* arrow = cluster->shipCountButton90;
+  return arrow != 0 && arrow->IsKindOf(RUNTIME_CLASS(TNumberedArrowButton)) != 0 ? arrow : 0;
+}
+
+RuntimeActionResult StrategicMapScreen::SelectNavyZone(TZone* zone) {
+  if (mapView == 0) {
+    return InvalidScreen("select a navy zone");
+  }
+  if (zone == 0) {
+    return ScreenFailure("select a navy zone", CString("no ocean zone"));
+  }
+  // Zone selection is a model call, not a control activation: the map's own click path
+  // resolves a tile to this zone and then does exactly this.
+  mapView->SetActiveMapOrderEntry(zone);
+  return RuntimeActionResult::Success();
+}
+
+bool StrategicMapScreen::NavyMenuIsActiveForZone(TZone* zone) const {
+  return mapView != 0 && mapView->activeUnitCategoryIndex96 == kNavyInteractionMode &&
+         mapView->orderEntryContext98 == zone && g_pActiveMapOrderContext != 0 &&
+         g_pActiveMapOrderContext->selectedTaskForce14 != 0 &&
+         g_pActiveMapOrderContext->selectedTaskForce14->location == zone;
+}
+
+bool StrategicMapScreen::NavyMenuIsActiveForForce(TTaskForce* force) const {
+  return mapView != 0 && mapView->activeUnitCategoryIndex96 == kNavyInteractionMode &&
+         g_pActiveMapOrderContext != 0 &&
+         g_pActiveMapOrderContext->selectedTaskForce14 == force;
+}
+
+short StrategicMapScreen::NavyClassAvailableCount(short navyClass) const {
+  const TShipFractionCluster* cluster = NavyClassCluster(navyClass);
+  return cluster != 0 ? cluster->availableShipCount88 : -1;
+}
+
+short StrategicMapScreen::NavyClassSelectedCount(short navyClass) const {
+  const TShipFractionCluster* cluster = NavyClassCluster(navyClass);
+  return cluster != 0 ? cluster->selectedShipCount94 : -1;
+}
+
+short StrategicMapScreen::NavySelectedAggression() const {
+  TNavyToolbarCluster* toolbar = NavyToolbar();
+  if (toolbar == 0) {
+    return -1;
+  }
+  const int tag = toolbar->GetSelectedChildTag();
+  if (tag < kControlTagAgr0 || tag > kControlTagAgr2) {
+    return -1;
+  }
+  return static_cast<short>(tag - kControlTagAgr0);
+}
+
+RuntimeActionResult StrategicMapScreen::SetNavyAggression(short aggression) {
+  if (aggression < 0 || aggression > 2) {
+    return ScreenFailure("set navy aggression", CString("aggression is not 0..2"));
+  }
+  return Activate(kControlTagUnav, kControlTagAgr0 + aggression, "set navy aggression");
+}
+
+RuntimeActionResult StrategicMapScreen::SelectOneNavyClassShip(short navyClass) {
+  return ClickArrowUpperHalf(NavyClassArrow(navyClass));
+}
+
+RuntimeActionResult StrategicMapScreen::DeselectOneNavyClassShip(short navyClass) {
+  return ClickArrowLowerHalf(NavyClassArrow(navyClass));
+}
+
+RuntimeActionResult StrategicMapScreen::OpenNavyRoster() {
+  if (mapView == 0) {
+    return InvalidScreen("open the navy roster");
+  }
+  if (g_pActiveMapOrderContext == 0 || g_pActiveMapOrderContext->selectedTaskForce14 == 0) {
+    return ScreenFailure("open the navy roster", CString("no selected task force"));
+  }
+  RuntimeActionResult armed = ModalScreen::PreArmDismiss(RuntimeControlSelector(kControlTagOkay));
+  if (!armed.Succeeded()) {
+    return armed;
+  }
+  return Activate(kControlTagUnav, kControlTagBomb, "open the navy roster");
 }
 
 TMapUberPicture* StrategicMapScreen::View() const {

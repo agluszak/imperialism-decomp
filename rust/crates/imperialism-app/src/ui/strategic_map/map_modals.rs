@@ -2,7 +2,7 @@
 
 use super::map_interaction::{
     MapInteractionMode, MapTransition, StrategicInteraction, StrategicViewport,
-    apply_map_transition, cycle_map_interaction_selection, navy_zone_center_tile,
+    activate_navy_selection, apply_map_transition, cycle_map_interaction_selection,
 };
 use crate::AppState;
 use crate::media::RetailAudioAssets;
@@ -1684,24 +1684,14 @@ fn on_navy_roster_row_action(
     match action {
         NavyRosterRowAction::Select { zone, force } => {
             if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
-                apply_map_transition(
+                activate_navy_selection(
                     &mut session,
                     &mut origin,
                     &mut interaction,
                     &mut viewport,
-                    MapTransition::SetMode(MapInteractionMode::Navy),
+                    zone,
+                    force,
                 );
-                interaction.navy.zone = Some(zone);
-                interaction.navy.force = force;
-                if let Some(tile) = navy_zone_center_tile(&session.game, zone) {
-                    apply_map_transition(
-                        &mut session,
-                        &mut origin,
-                        &mut interaction,
-                        &mut viewport,
-                        MapTransition::Center(tile),
-                    );
-                }
             }
             commands.entity(root).try_despawn();
         }

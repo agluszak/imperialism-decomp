@@ -46,7 +46,7 @@ struct NavyCountLabel;
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
         Update,
-        sync_navy_toolbar.run_if(in_state(AppState::StrategicMap)),
+        (sync_navy_toolbar, sync_navy_aggression).run_if(in_state(AppState::StrategicMap)),
     );
 }
 
@@ -159,8 +159,6 @@ fn sync_navy_toolbar(
     >,
     mut counts: Query<(&ChildOf, &mut Text, &NavyCountLabel)>,
     classes: Query<(Entity, &NavyClass)>,
-    mut radios: Query<(&NavyCommand, Entity)>,
-    mut commands: Commands,
 ) {
     let Ok(interaction) = interactions.single() else {
         return;
@@ -214,8 +212,26 @@ fn sync_navy_toolbar(
             }
         }
     }
+}
+
+fn sync_navy_aggression(
+    session: Res<GameSession>,
+    interactions: Query<Ref<StrategicInteraction>>,
+    radios: Query<(&NavyCommand, Entity)>,
+    mut commands: Commands,
+) {
+    let Ok(interaction) = interactions.single() else {
+        return;
+    };
+    if !session.is_changed() && !interaction.is_changed() {
+        return;
+    }
+    let force = interaction
+        .navy
+        .force
+        .filter(|_| interaction.mode == MapInteractionMode::Navy);
     let aggression = force.and_then(|id| session.game.task_force(id).map(|f| f.aggression));
-    for (command, entity) in &mut radios {
+    for (command, entity) in &radios {
         if let NavyCommand::Aggression(level) = *command {
             if aggression == Some(level) {
                 commands.entity(entity).insert(Checked);
@@ -360,4 +376,117 @@ fn on_navy_class_arrow(
     session
         .game
         .select_task_force_toolbar_class(force, arrow.0, normalized.y < 0.0);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::test_support::beginning_of_game_parts;
+    use bevy::state::app::StatesPlugin;
+    use imperialism_core::*;
+    use indexmap::IndexMap;
+
+    fn two_forces() -> (GameState, TaskForceId, TaskForceId) {
+        let mut parts = beginning_of_game_parts();
+        let nation = parts.turn.active_nation;
+        let location = OceanZoneId::new(0);
+        let ship = |name: &str, aggression: NavalAggression| ShipState {
+            ship_type: ShipType::Frigate,
+            location,
+            aggression,
+            nation,
+            name: name.to_string(),
+            strength: 900,
+            experience: 0,
+            selection: ShipSelection::Available,
+        };
+        let cautious_ship = parts.object_ids.ship();
+        let aggressive_ship = parts.object_ids.ship();
+        let cautious = parts.object_ids.task_force();
+        let aggressive = parts.object_ids.task_force();
+        parts
+            .ships
+            .insert(cautious_ship, ship("Cautious", NavalAggression::Cautious));
+        parts.ships.insert(
+            aggressive_ship,
+            ship("Aggressive", NavalAggression::Aggressive),
+        );
+        parts.task_forces.insert(
+            cautious,
+            TaskForceState::from_parts(
+                NavalAggression::Cautious,
+                TaskForceOrder::None,
+                TaskForceTarget::None,
+                location,
+                nation,
+                false,
+                -1,
+                [(cautious_ship, true)]
+                    .into_iter()
+                    .collect::<IndexMap<_, _>>(),
+            ),
+        );
+        parts.task_forces.insert(
+            aggressive,
+            TaskForceState::from_parts(
+                NavalAggression::Aggressive,
+                TaskForceOrder::None,
+                TaskForceTarget::None,
+                location,
+                nation,
+                false,
+                -1,
+                [(aggressive_ship, true)]
+                    .into_iter()
+                    .collect::<IndexMap<_, _>>(),
+            ),
+        );
+        (GameState::from_parts(parts), cautious, aggressive)
+    }
+
+    #[test]
+    fn aggression_radios_follow_selected_force_on_interaction_change() {
+        let (state, cautious, aggressive) = two_forces();
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(StatesPlugin)
+            .insert_state(AppState::StrategicMap)
+            .insert_resource(GameSession::new(state))
+            .add_systems(Update, sync_navy_aggression);
+
+        let agr0 = app
+            .world_mut()
+            .spawn(NavyCommand::Aggression(NavalAggression::Cautious))
+            .id();
+        let agr1 = app
+            .world_mut()
+            .spawn(NavyCommand::Aggression(NavalAggression::Balanced))
+            .id();
+        let agr2 = app
+            .world_mut()
+            .spawn(NavyCommand::Aggression(NavalAggression::Aggressive))
+            .id();
+        let mut interaction = StrategicInteraction {
+            mode: MapInteractionMode::Navy,
+            ..default()
+        };
+        interaction.navy.force = Some(cautious);
+        let interaction_entity = app.world_mut().spawn(interaction).id();
+
+        app.update();
+        assert!(app.world().entity(agr0).contains::<Checked>());
+        assert!(!app.world().entity(agr1).contains::<Checked>());
+        assert!(!app.world().entity(agr2).contains::<Checked>());
+
+        app.world_mut()
+            .entity_mut(interaction_entity)
+            .get_mut::<StrategicInteraction>()
+            .expect("navy interaction")
+            .navy
+            .force = Some(aggressive);
+        app.update();
+        assert!(!app.world().entity(agr0).contains::<Checked>());
+        assert!(!app.world().entity(agr1).contains::<Checked>());
+        assert!(app.world().entity(agr2).contains::<Checked>());
+    }
 }

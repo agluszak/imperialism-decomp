@@ -14,9 +14,13 @@ class TArmyToolbar;
 class TCivDescription;
 class TCivToolbar;
 class TMapUberPicture;
+class TNavyToolbarCluster;
 class TNumberedArrowButton;
 class TMapDialog;
+class TShipFractionCluster;
+class TTaskForce;
 class TView;
+class TZone;
 
 // The strategic map, as a script sees it.
 //
@@ -67,6 +71,7 @@ public:
   RuntimeActionResult SetOceanViewportCellForTopology(short cellX, short cellY, bool wraps);
   RuntimeActionResult CenterOceanOn(int tile);
   RuntimeActionResult ShowArmyToolbar();
+  RuntimeActionResult ShowNavyToolbar();
 
   // The civilian category page of the map toolbar. Showing it is a mode change on the map, not a
   // control activation: the page is already built and the mode decides which one is placed.
@@ -108,6 +113,23 @@ public:
   RuntimeActionResult MoveOneIdleUnitOut(short category);
   RuntimeActionResult ReturnOneUnit(short category);
 
+  // The navy category page of the map toolbar. Same shape as the army page: a child of the
+  // map view, not a screen of its own. Class counts come from the four ship-fraction clusters;
+  // aggression is the selected agr0..agr2 child on the navy toolbar itself.
+  enum { kNavyClassCount = 4 };
+
+  RuntimeActionResult SelectNavyZone(TZone* zone);
+  bool NavyMenuIsActiveForZone(TZone* zone) const;
+  bool NavyMenuIsActiveForForce(TTaskForce* force) const;
+  short NavyClassAvailableCount(short navyClass) const;
+  short NavyClassSelectedCount(short navyClass) const;
+  short NavySelectedAggression() const;
+  RuntimeActionResult SetNavyAggression(short aggression);
+  RuntimeActionResult SelectOneNavyClassShip(short navyClass);
+  RuntimeActionResult DeselectOneNavyClassShip(short navyClass);
+  // PoseModally blocks until the roster is dismissed; this queues the okay click first.
+  RuntimeActionResult OpenNavyRoster();
+
   // Queries.
   TMapUberPicture* View() const;
   TMapDialog* Dialog() const;
@@ -140,6 +162,9 @@ private:
   TNumberedArrowButton* ArmyRatioArrow(int category) const;
   RuntimeActionResult ClickArrowLowerHalf(TNumberedArrowButton* arrow);
   RuntimeActionResult ClickArrowUpperHalf(TNumberedArrowButton* arrow);
+  TNavyToolbarCluster* NavyToolbar() const;
+  TShipFractionCluster* NavyClassCluster(short navyClass) const;
+  TNumberedArrowButton* NavyClassArrow(short navyClass) const;
 
   TMapUberPicture* mapView;
 };

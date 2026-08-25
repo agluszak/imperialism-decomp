@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gate raw vtable patterns in gameplay code (Hard Rule 13).
+"""Gate raw vtable patterns in gameplay code.
 
 Baseline-free HARD BAN: any raw-vtable pattern (raw vftable indexing, Fn-typedef
 reinterpret_cast, VCall_ facade) in manual source fails the gate. The debt was
@@ -58,8 +58,8 @@ def collect_files(repo_root: Path, roots: list[str]) -> list[Path]:
                 continue
             # ghidra_autogen is regenerated reference output (never compiled,
             # hand-editing forbidden): its raw-vtable pattern counts change with
-            # every DB resync and are not a source-policy signal (Hard Rule 13
-            # targets manual source).
+            # every DB resync and are not a source-policy signal; the invariant
+            # targets manual source.
             if "/ghidra_autogen/" in path.as_posix():
                 continue
             files.append(path)
@@ -93,7 +93,7 @@ def main() -> int:
         for rel in sorted(current):
             present = ", ".join(k for k in KEYS if current[rel].get(k, 0))
             print(f"  - {rel}: raw-vtable pattern(s) [{present}]")
-        print("See AGENTS.md Hard Rule 13 / construction Hard Rule 9: use real virtual methods.")
+        print("See AGENTS.md 'Source and ABI model': use real virtual methods.")
         print("This is a hard ban with no baseline: fix the source, do not bless it.")
         return 1
 
