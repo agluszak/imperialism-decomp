@@ -1,10 +1,11 @@
+use crate::AppState;
 use crate::ui::generated;
 use crate::ui::hover_help::{
     HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
 };
 use crate::ui::load_save::{LoadSaveMode, open_load_save};
+use crate::ui::preferences::open_preferences;
 use crate::ui::retail::{RetailTree, RetailUiAssets};
-use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -117,17 +118,11 @@ fn on_main_menu_activate(
         MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
         MainMenuAction::Scenario => next_state.set(AppState::ScenarioSetup),
         MainMenuAction::LoadGame => {
-            open_load_save(
-                &mut commands,
-                &mut next_state,
-                LoadSaveMode::Load,
-                AppState::MainMenu,
-            );
+            open_load_save(&mut commands, LoadSaveMode::Load, AppState::MainMenu);
         }
         MainMenuAction::HighScores => next_state.set(AppState::HighScore),
         MainMenuAction::Preferences => {
-            commands.insert_resource(ReturnTo(AppState::MainMenu));
-            next_state.set(AppState::Preferences);
+            open_preferences(&mut commands, AppState::MainMenu);
         }
         MainMenuAction::Quit => {
             exit.write(AppExit::Success);

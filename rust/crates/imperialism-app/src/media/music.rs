@@ -185,10 +185,36 @@ fn presentation_rand(state: &mut u32) -> u32 {
     *state >> 16
 }
 
-fn start_main_menu_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
-    let now = time.as_ref().map_or(0, |time| tick16(time));
-    music.set_pool(&[MusicTrack::MAIN_MENU]);
+pub(crate) fn play_load_save_music(music: &mut MusicDirector, time: Option<&Time>) {
+    let now = time.map_or(0, tick16);
+    music.set_pool(&[MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3]);
     music.schedule_random(now);
+}
+
+pub(crate) fn play_credits_music(music: &mut MusicDirector, time: Option<&Time>) {
+    let now = time.map_or(0, tick16);
+    music.set_pool(&[MusicTrack::CREDITS]);
+    music.schedule_random(now);
+}
+
+pub(crate) fn play_host_screen_music(
+    music: &mut MusicDirector,
+    state: AppState,
+    time: Option<&Time>,
+) {
+    let now = time.map_or(0, tick16);
+    match state {
+        AppState::MainMenu => {
+            music.set_pool(&[MusicTrack::MAIN_MENU]);
+            music.schedule_random(now);
+        }
+        AppState::StrategicMap => music.start_turn_flow_pool(now),
+        _ => {}
+    }
+}
+
+fn start_main_menu_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
+    play_host_screen_music(&mut music, AppState::MainMenu, time.as_deref());
 }
 
 fn start_diplomacy_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
@@ -201,15 +227,8 @@ fn start_offer_sheet_music(mut music: ResMut<MusicDirector>, time: Option<Res<Ti
     music.request_preset(MusicTrack::DIPLOMACY, true, now);
 }
 
-fn start_load_save_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
-    let now = time.as_ref().map_or(0, |time| tick16(time));
-    music.set_pool(&[MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3]);
-    music.schedule_random(now);
-}
-
 fn start_turn_flow_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
-    let now = time.as_ref().map_or(0, |time| tick16(time));
-    music.start_turn_flow_pool(now);
+    play_host_screen_music(&mut music, AppState::StrategicMap, time.as_deref());
 }
 
 fn start_battle_report_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
@@ -224,12 +243,6 @@ fn start_score_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) 
     music.schedule_random(now);
 }
 
-fn start_credits_music(mut music: ResMut<MusicDirector>, time: Option<Res<Time>>) {
-    let now = time.as_ref().map_or(0, |time| tick16(time));
-    music.set_pool(&[MusicTrack::CREDITS]);
-    music.schedule_random(now);
-}
-
 pub(crate) fn register(app: &mut App) {
     app.init_resource::<MusicDirector>()
         .init_resource::<MusicTrackHandles>()
@@ -237,12 +250,10 @@ pub(crate) fn register(app: &mut App) {
         .add_systems(OnEnter(AppState::Diplomacy), start_diplomacy_music)
         .add_systems(OnEnter(AppState::DealBook), start_diplomacy_music)
         .add_systems(OnEnter(AppState::OfferSheet), start_offer_sheet_music)
-        .add_systems(OnEnter(AppState::LoadSave), start_load_save_music)
         .add_systems(OnEnter(AppState::StrategicMap), start_turn_flow_music)
         .add_systems(OnEnter(AppState::BattleReport), start_battle_report_music)
         .add_systems(OnEnter(AppState::GameScore), start_score_music)
         .add_systems(OnEnter(AppState::HighScore), start_score_music)
-        .add_systems(OnEnter(AppState::Credits), start_credits_music)
         .add_systems(Update, (sync_music, apply_music_volume).chain());
 }
 

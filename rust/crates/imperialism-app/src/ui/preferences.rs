@@ -7,8 +7,9 @@ use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
 use super::retail_raster_text::RetailRasterTextPainter;
+use super::window::ModalWindow;
 use crate::media::RetailAudioAssets;
-use crate::{AppState, RetailAssetsResource, RetailFonts, ReturnTo};
+use crate::{AppState, RetailAssetsResource, RetailFonts};
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::ui::{Checked, InteractionDisabled};
@@ -145,26 +146,19 @@ pub(crate) struct PreferencesPlugin;
 impl Plugin for PreferencesPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<GamePreferences>()
-            .add_systems(
-                OnEnter(AppState::Preferences),
-                (spawn_preferences, bind_preferences).chain(),
-            )
+            .add_systems(Update, bind_preferences)
             .add_systems(
                 Update,
-                sync_preference_slider_visuals.run_if(in_state(AppState::Preferences)),
-            )
-            .add_systems(
-                OnExit(AppState::Preferences),
-                super::session::clear_return_to,
+                sync_preference_slider_visuals.run_if(any_with_component::<PreferencesRoot>),
             );
     }
 }
 
-fn spawn_preferences(mut commands: Commands) {
+pub(crate) fn open_preferences(commands: &mut Commands, host: AppState) {
     let root = commands.spawn_scene(generated::linger_4150()).id();
     commands
         .entity(root)
-        .insert((PreferencesRoot, DespawnOnExit(AppState::Preferences)));
+        .insert((PreferencesRoot, ModalWindow, DespawnOnExit(host)));
 }
 
 fn bind_preferences(
@@ -460,9 +454,9 @@ fn on_preferences_activate(
     _activate: On<Activate>,
     rows: Query<(&PreferenceRow, Has<Checked>)>,
     sliders: Query<(&PreferenceSlider, &SliderValue)>,
+    roots: Query<Entity, With<PreferencesRoot>>,
     mut prefs: ResMut<GamePreferences>,
-    returning: Res<ReturnTo>,
-    mut next_state: ResMut<NextState<AppState>>,
+    mut commands: Commands,
 ) {
     // `TGamePreferencesPicture::DoEvent` writes `preferenceValues[row] = IsOn`
     // for each present opta+row checkbox, then overwrites [3]/[2] from the sliders.
@@ -472,7 +466,9 @@ fn on_preferences_activate(
     for (slider, value) in &sliders {
         prefs.values[slider.slot] = value.0 as i16;
     }
-    next_state.set(returning.0);
+    for entity in &roots {
+        commands.entity(entity).try_despawn();
+    }
 }
 
 #[cfg(test)]
@@ -523,5 +519,28 @@ mod tests {
                 .sound_volume_percent(),
             40
         );
+    }
+
+    #[test]
+    fn okay_despawns_the_overlay_and_keeps_the_host_screen() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(bevy::state::app::StatesPlugin)
+            .init_resource::<GamePreferences>()
+            .insert_state(AppState::MainMenu)
+            .add_observer(on_preferences_activate);
+        let root = app.world_mut().spawn(PreferencesRoot).id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: root });
+        app.world_mut().flush();
+        app.update();
+
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::MainMenu
+        );
+        assert!(app.world().get_entity(root).is_err());
     }
 }

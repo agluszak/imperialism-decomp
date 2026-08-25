@@ -38,7 +38,7 @@ enum GameStatusDisplay {
 }
 
 #[derive(Component)]
-struct StrategicMapRoot;
+pub(crate) struct StrategicMapRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum GameScreenNavAction {
@@ -63,12 +63,11 @@ impl Plugin for GameShellPlugin {
         map_help::register(app);
         app.add_systems(
             OnEnter(AppState::StrategicMap),
-            (
-                enter_strategic_map_view,
-                spawn_strategic_map,
-                bind_strategic_map,
-            )
-                .chain(),
+            spawn_strategic_map_on_enter,
+        )
+        .add_systems(
+            Update,
+            (enter_strategic_map_view, bind_strategic_map).chain(),
         )
         .add_systems(
             Update,
@@ -150,14 +149,45 @@ fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
     edges
 }
 
-fn spawn_strategic_map(mut commands: Commands) {
+pub(crate) fn rebuild_strategic_map(
+    commands: &mut Commands,
+    roots: impl IntoIterator<Item = Entity>,
+) {
+    let mut found = false;
+    for entity in roots {
+        commands.entity(entity).try_despawn();
+        found = true;
+    }
+    if found {
+        spawn_strategic_map(commands);
+    }
+}
+
+fn spawn_strategic_map_on_enter(mut commands: Commands) {
+    spawn_strategic_map(&mut commands);
+}
+
+fn spawn_strategic_map(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::mapview_2013()).id();
     commands
         .entity(root)
         .insert((StrategicMapRoot, DespawnOnExit(AppState::StrategicMap)));
 }
 
-fn enter_strategic_map_view(session: Res<GameSession>, mut origin: ResMut<MapViewOrigin>) {
+fn enter_strategic_map_view(
+    added: Query<(), Added<StrategicMapRoot>>,
+    session: Option<Res<GameSession>>,
+    origin: Option<ResMut<MapViewOrigin>>,
+) {
+    if added.is_empty() {
+        return;
+    }
+    let Some(session) = session else {
+        return;
+    };
+    let Some(mut origin) = origin else {
+        return;
+    };
     if let Some(tile) = session
         .game
         .first_idle_civilian_tile(session.game.turn().active_nation)

@@ -19,7 +19,6 @@ pub(crate) enum AppState {
     MainMenu,
     RandomSetup,
     ScenarioSetup,
-    LoadSave,
     CitySite,
     TownNaming,
     StrategicMap,
@@ -39,12 +38,9 @@ pub(crate) enum AppState {
     BattleReport,
     GameScore,
     HighScore,
-    Credits,
-    Preferences,
 }
 
-/// Screen restored when leaving an overlay such as Credits, Preferences,
-/// Load/Save, or Deal Book.
+/// Screen restored when closing Deal Book opened from another game screen.
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub(crate) struct ReturnTo(pub(crate) AppState);
 

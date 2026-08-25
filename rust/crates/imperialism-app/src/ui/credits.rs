@@ -1,7 +1,9 @@
 use super::generated;
 use super::hover_help::ui_string;
 use super::retail::{RetailTree, RetailUiAssets};
-use crate::{AppState, ReturnTo};
+use super::window::ModalWindow;
+use crate::AppState;
+use crate::media::{MusicDirector, play_credits_music, play_host_screen_music};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -16,23 +18,22 @@ pub(crate) struct CreditsPlugin;
 
 impl Plugin for CreditsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(AppState::Credits),
-            (spawn_credits, bind_credits).chain(),
-        )
-        .add_systems(
-            Update,
-            sync_credits_page.run_if(in_state(AppState::Credits)),
-        )
-        .add_systems(OnExit(AppState::Credits), super::session::clear_return_to);
+        app.add_systems(Update, bind_credits)
+            .add_systems(
+                Update,
+                sync_credits_page.run_if(any_with_component::<CreditsRoot>),
+            )
+            .add_observer(on_credits_spawned)
+            .add_observer(on_credits_despawned);
     }
 }
 
-fn spawn_credits(mut commands: Commands) {
+pub(crate) fn open_credits(commands: &mut Commands, host: AppState) {
     let root = commands.spawn_scene(generated::linger_4175()).id();
     commands.entity(root).insert((
         CreditsRoot { second_page: false },
-        DespawnOnExit(AppState::Credits),
+        ModalWindow,
+        DespawnOnExit(host),
     ));
 }
 
@@ -109,16 +110,68 @@ fn string_from_id(assets: &RetailUiAssets, string_id: i16) -> String {
 
 fn on_credits_activate(
     _activate: On<Activate>,
-    mut roots: Query<&mut CreditsRoot>,
-    returning: Res<ReturnTo>,
-    mut next_state: ResMut<NextState<AppState>>,
+    mut roots: Query<(Entity, &mut CreditsRoot)>,
+    mut commands: Commands,
 ) {
-    let Ok(mut root) = roots.single_mut() else {
+    let Ok((entity, mut root)) = roots.single_mut() else {
         return;
     };
     if root.second_page {
-        next_state.set(returning.0);
+        commands.entity(entity).try_despawn();
         return;
     }
     root.second_page = true;
+}
+
+fn on_credits_spawned(
+    _added: On<Add, CreditsRoot>,
+    music: Option<ResMut<MusicDirector>>,
+    time: Option<Res<Time>>,
+) {
+    let Some(mut music) = music else {
+        return;
+    };
+    play_credits_music(&mut music, time.as_deref());
+}
+
+fn on_credits_despawned(
+    _removed: On<Remove, CreditsRoot>,
+    state: Res<State<AppState>>,
+    music: Option<ResMut<MusicDirector>>,
+    time: Option<Res<Time>>,
+) {
+    let Some(mut music) = music else {
+        return;
+    };
+    play_host_screen_music(&mut music, *state.get(), time.as_deref());
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn closing_credits_despawns_the_overlay_and_keeps_the_host_screen() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(bevy::state::app::StatesPlugin)
+            .insert_state(AppState::StrategicMap)
+            .add_observer(on_credits_activate);
+        let root = app
+            .world_mut()
+            .spawn(CreditsRoot { second_page: true })
+            .id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: root });
+        app.world_mut().flush();
+        app.update();
+
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::StrategicMap
+        );
+        assert!(app.world().get_entity(root).is_err());
+    }
 }

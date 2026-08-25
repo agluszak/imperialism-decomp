@@ -1,16 +1,20 @@
+use crate::AppState;
 use crate::RetailAssetsResource;
+use crate::media::{MusicDirector, play_host_screen_music, play_load_save_music};
 use crate::ui::battle_reports::battle_report_texts_for_save;
+use crate::ui::credits::open_credits;
+use crate::ui::game_shell::{StrategicMapRoot, rebuild_strategic_map};
 use crate::ui::generated;
 use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
+use crate::ui::preferences::open_preferences;
+use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets, ancestor_with};
 use crate::ui::satellite_preview::SatellitePreview;
 use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
 use crate::ui::{
     BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_loaded_game,
     remove_game_session,
 };
-use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
 use bevy::input_focus::AutoFocus;
 use bevy::prelude::*;
@@ -98,26 +102,12 @@ pub(crate) enum LoadSaveMode {
     Save,
 }
 
-/// Mode to use when entering `AppState::LoadSave`.
-#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
-struct LoadSaveRequest(LoadSaveMode);
-
-pub(crate) fn open_load_save(
-    commands: &mut Commands,
-    next_state: &mut NextState<AppState>,
-    mode: LoadSaveMode,
-    return_to: AppState,
-) {
-    commands.insert_resource(LoadSaveRequest(mode));
-    commands.insert_resource(ReturnTo(return_to));
-    next_state.set(AppState::LoadSave);
-}
-
 #[derive(Component)]
 struct LoadSaveRoot {
     mode: LoadSaveMode,
     selected: Option<SaveSlot>,
     renaming: bool,
+    host: AppState,
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -193,23 +183,33 @@ pub(crate) struct LoadSavePlugin;
 
 impl Plugin for LoadSavePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(AppState::LoadSave),
-            (enter_load_save, bind_load_save).chain(),
-        )
-        .add_systems(
-            Update,
-            (bind_load_save_notice, sync_load_save_preview).run_if(in_state(AppState::LoadSave)),
-        )
-        .add_systems(
-            Update,
-            (bind_flag_menu, bind_flag_menu_prompt).run_if(in_state(AppState::StrategicMap)),
-        )
-        .add_systems(
-            OnExit(AppState::LoadSave),
-            crate::ui::session::clear_return_to,
-        );
+        app.add_systems(Update, bind_load_save)
+            .add_systems(
+                Update,
+                (bind_load_save_notice, sync_load_save_preview)
+                    .run_if(any_with_component::<LoadSaveRoot>),
+            )
+            .add_systems(
+                Update,
+                (bind_flag_menu, bind_flag_menu_prompt).run_if(in_state(AppState::StrategicMap)),
+            )
+            .add_observer(on_load_save_spawned)
+            .add_observer(on_load_save_despawned);
     }
+}
+
+pub(crate) fn open_load_save(commands: &mut Commands, mode: LoadSaveMode, host: AppState) {
+    let root = commands.spawn_scene(generated::linger_1502()).id();
+    commands.entity(root).insert((
+        LoadSaveRoot {
+            mode,
+            selected: None,
+            renaming: false,
+            host,
+        },
+        ModalWindow,
+        DespawnOnExit(host),
+    ));
 }
 
 /// Retail `DoRead` never stores or reseeds these streams. CRT `rand()` is a process
@@ -282,18 +282,6 @@ fn loaded_game_destination(game: &GameState) -> AppState {
             panic!("load_game_from_bytes must reject phase {phase:?} before replacing the session")
         }
     }
-}
-
-fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
-    let root = commands.spawn_scene(generated::linger_1502()).id();
-    commands.entity(root).insert((
-        LoadSaveRoot {
-            mode: request.0,
-            selected: None,
-            renaming: false,
-        },
-        DespawnOnExit(AppState::LoadSave),
-    ));
 }
 
 fn bind_load_save(
@@ -549,17 +537,18 @@ fn sync_load_save_preview(
 fn on_load_save_activate(
     activate: On<Activate>,
     actions: Query<&LoadSaveAction>,
-    notices: Query<(), With<LoadSaveNotice>>,
-    mut roots: Query<(&mut LoadSaveRoot, Option<&LoadSavePresentation>)>,
+    notices: Query<Entity, With<LoadSaveNotice>>,
+    mut roots: Query<(Entity, &mut LoadSaveRoot, Option<&LoadSavePresentation>)>,
     names: Query<&EditableText, With<SaveNameField>>,
     mut texts: Query<&mut Text>,
     info: Query<Entity, With<LoadSaveInfo>>,
     save_dir: Option<Res<SaveDirectory>>,
-    returning: Res<ReturnTo>,
     session: Option<Res<GameSession>>,
     origin: Option<Res<MapViewOrigin>>,
     city_windows: Option<Res<CityWindows>>,
     battle_reports: Option<Res<BattleReportPresentation>>,
+    state: Res<State<AppState>>,
+    map_roots: Query<Entity, With<StrategicMapRoot>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -569,12 +558,12 @@ fn on_load_save_activate(
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let Ok((mut root, presentation)) = roots.single_mut() else {
+    let Ok((root_entity, mut root, presentation)) = roots.single_mut() else {
         return;
     };
     match *action {
         LoadSaveAction::Cancel => {
-            next_state.set(returning.0);
+            despawn_load_save_windows(&mut commands, root_entity, notices.iter());
         }
         LoadSaveAction::SelectSlot(slot) => select_slot(
             &mut commands,
@@ -591,6 +580,7 @@ fn on_load_save_activate(
             };
             confirm_or_apply(
                 &mut commands,
+                root_entity,
                 &root,
                 &names,
                 presentation,
@@ -599,10 +589,45 @@ fn on_load_save_activate(
                 origin.as_deref(),
                 city_windows.as_deref(),
                 battle_reports.as_deref(),
-                returning.0,
+                *state.get(),
+                &map_roots,
                 &mut next_state,
             );
         }
+    }
+}
+
+fn on_load_save_spawned(
+    _added: On<Add, LoadSaveRoot>,
+    music: Option<ResMut<MusicDirector>>,
+    time: Option<Res<Time>>,
+) {
+    let Some(mut music) = music else {
+        return;
+    };
+    play_load_save_music(&mut music, time.as_deref());
+}
+
+fn on_load_save_despawned(
+    _removed: On<Remove, LoadSaveRoot>,
+    state: Res<State<AppState>>,
+    music: Option<ResMut<MusicDirector>>,
+    time: Option<Res<Time>>,
+) {
+    let Some(mut music) = music else {
+        return;
+    };
+    play_host_screen_music(&mut music, *state.get(), time.as_deref());
+}
+
+fn despawn_load_save_windows(
+    commands: &mut Commands,
+    overlay: Entity,
+    notices: impl IntoIterator<Item = Entity>,
+) {
+    commands.entity(overlay).try_despawn();
+    for entity in notices {
+        commands.entity(entity).try_despawn();
     }
 }
 
@@ -669,6 +694,7 @@ fn slot_info(presentation: &LoadSavePresentation, slot: SaveSlot) -> Option<&str
 #[allow(clippy::too_many_arguments)]
 fn confirm_or_apply(
     commands: &mut Commands,
+    overlay: Entity,
     root: &LoadSaveRoot,
     names: &Query<&EditableText, With<SaveNameField>>,
     presentation: Option<&LoadSavePresentation>,
@@ -677,28 +703,33 @@ fn confirm_or_apply(
     origin: Option<&MapViewOrigin>,
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
-    returning: AppState,
+    current: AppState,
+    map_roots: &Query<Entity, With<StrategicMapRoot>>,
     next_state: &mut NextState<AppState>,
 ) {
     let Some(slot) = root.selected else {
         if root.mode == LoadSaveMode::Save {
-            spawn_notice(commands, LoadSaveNotice::PickSlot);
+            spawn_notice(commands, LoadSaveNotice::PickSlot, root.host);
         }
         return;
     };
     match root.mode {
         LoadSaveMode::Load => {
-            if returning != AppState::MainMenu {
-                spawn_notice(commands, LoadSaveNotice::ConfirmLoad);
+            if root.host != AppState::MainMenu {
+                spawn_notice(commands, LoadSaveNotice::ConfirmLoad, root.host);
                 return;
             }
             apply_load(
                 commands,
+                overlay,
                 save_dir,
                 slot,
                 session.map(|session| &session.game),
+                current,
+                map_roots,
                 next_state,
                 None,
+                root.host,
             );
         }
         LoadSaveMode::Save => {
@@ -719,6 +750,7 @@ fn confirm_or_apply(
             };
             apply_save(
                 commands,
+                overlay,
                 save_dir,
                 slot,
                 session,
@@ -726,8 +758,7 @@ fn confirm_or_apply(
                 city_windows,
                 battle_reports,
                 &label,
-                returning,
-                next_state,
+                root.host,
             );
         }
     }
@@ -736,11 +767,15 @@ fn confirm_or_apply(
 #[allow(clippy::too_many_arguments)]
 fn apply_load(
     commands: &mut Commands,
+    overlay: Entity,
     save_dir: &Path,
     slot: SaveSlot,
     existing: Option<&GameState>,
+    current: AppState,
+    map_roots: &Query<Entity, With<StrategicMapRoot>>,
     next_state: &mut NextState<AppState>,
     assets: Option<&RetailAssetsResource>,
+    host: AppState,
 ) {
     let path = retail_save_path(save_dir, slot);
     if !path.is_file() {
@@ -760,6 +795,10 @@ fn apply_load(
             }
             let destination = loaded_game_destination(&loaded.game);
             insert_loaded_game(commands, loaded);
+            despawn_load_save_windows(commands, overlay, core::iter::empty());
+            if current == destination && destination == AppState::StrategicMap {
+                rebuild_strategic_map(commands, map_roots.iter());
+            }
             next_state.set(destination);
         }
         Err(error) => spawn_notice(
@@ -769,6 +808,7 @@ fn apply_load(
                     .map(|assets| load_error_text(assets, &error))
                     .unwrap_or_else(|| error.to_string()),
             ),
+            host,
         ),
     }
 }
@@ -776,6 +816,7 @@ fn apply_load(
 #[allow(clippy::too_many_arguments)]
 fn apply_save(
     commands: &mut Commands,
+    overlay: Entity,
     save_dir: &Path,
     slot: SaveSlot,
     session: &GameSession,
@@ -783,8 +824,7 @@ fn apply_save(
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
     label: &str,
-    returning: AppState,
-    next_state: &mut NextState<AppState>,
+    host: AppState,
 ) {
     let origin = origin.expect("saving a game requires MapViewOrigin").0;
     let city_windows = &city_windows.expect("saving a game requires CityWindows").0;
@@ -801,8 +841,8 @@ fn apply_save(
         captured,
         label,
     ) {
-        Ok(()) => next_state.set(returning),
-        Err(error) => spawn_notice(commands, LoadSaveNotice::Error(error.to_string())),
+        Ok(()) => despawn_load_save_windows(commands, overlay, core::iter::empty()),
+        Err(error) => spawn_notice(commands, LoadSaveNotice::Error(error.to_string()), host),
     }
 }
 
@@ -815,8 +855,8 @@ fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> Stri
     retail.unwrap_or_else(|| error.to_string())
 }
 
-fn spawn_notice(commands: &mut Commands, notice: LoadSaveNotice) {
-    spawn_linger_dialog(commands, notice, AppState::LoadSave);
+fn spawn_notice(commands: &mut Commands, notice: LoadSaveNotice, host: AppState) {
+    spawn_linger_dialog(commands, notice, host);
 }
 
 fn bind_load_save_notice(
@@ -854,27 +894,38 @@ fn bind_load_save_notice(
 #[allow(clippy::too_many_arguments)]
 fn on_confirm_load_notice(
     _activate: On<Activate>,
-    roots: Query<&LoadSaveRoot>,
+    roots: Query<(Entity, &LoadSaveRoot)>,
+    notices: Query<Entity, With<LoadSaveNotice>>,
     save_dir: Res<SaveDirectory>,
     session: Option<Res<GameSession>>,
+    state: Res<State<AppState>>,
+    map_roots: Query<Entity, With<StrategicMapRoot>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
     assets: Res<RetailAssetsResource>,
 ) {
-    let Ok(root) = roots.single() else {
+    let Ok((overlay, root)) = roots.single() else {
         return;
     };
     let Some(slot) = root.selected else {
         return;
     };
+    let host = root.host;
     apply_load(
         &mut commands,
+        overlay,
         &save_dir.0,
         slot,
         session.as_deref().map(|session| &session.game),
+        *state.get(),
+        &map_roots,
         &mut next_state,
         Some(&*assets),
+        host,
     );
+    for entity in &notices {
+        commands.entity(entity).try_despawn();
+    }
 }
 
 pub(crate) fn bind_open_flag_menu(commands: &mut Commands, flag: Entity) {
@@ -944,11 +995,23 @@ fn bind_flag_menu(
     }
 }
 
+fn dismiss_flag_menu(
+    commands: &mut Commands,
+    control: Entity,
+    parents: &Query<&ChildOf>,
+    menus: &Query<Entity, With<FlagMenuRoot>>,
+) {
+    if let Some(menu) = ancestor_with(control, parents, menus) {
+        commands.entity(menu).try_despawn();
+    }
+}
+
 fn on_flag_menu_activate(
     activate: On<Activate>,
     actions: Query<&FlagMenuAction>,
     prompts: Query<(), With<FlagMenuPrompt>>,
-    mut next_state: ResMut<NextState<AppState>>,
+    menus: Query<Entity, With<FlagMenuRoot>>,
+    parents: Query<&ChildOf>,
     mut commands: Commands,
 ) {
     if !prompts.is_empty() {
@@ -959,28 +1022,20 @@ fn on_flag_menu_activate(
     };
     match *action {
         FlagMenuAction::Save => {
-            open_load_save(
-                &mut commands,
-                &mut next_state,
-                LoadSaveMode::Save,
-                AppState::StrategicMap,
-            );
+            dismiss_flag_menu(&mut commands, activate.entity, &parents, &menus);
+            open_load_save(&mut commands, LoadSaveMode::Save, AppState::StrategicMap);
         }
         FlagMenuAction::Load => {
-            open_load_save(
-                &mut commands,
-                &mut next_state,
-                LoadSaveMode::Load,
-                AppState::StrategicMap,
-            );
+            dismiss_flag_menu(&mut commands, activate.entity, &parents, &menus);
+            open_load_save(&mut commands, LoadSaveMode::Load, AppState::StrategicMap);
         }
         FlagMenuAction::Preferences => {
-            commands.insert_resource(ReturnTo(AppState::StrategicMap));
-            next_state.set(AppState::Preferences);
+            dismiss_flag_menu(&mut commands, activate.entity, &parents, &menus);
+            open_preferences(&mut commands, AppState::StrategicMap);
         }
         FlagMenuAction::Credits => {
-            commands.insert_resource(ReturnTo(AppState::StrategicMap));
-            next_state.set(AppState::Credits);
+            dismiss_flag_menu(&mut commands, activate.entity, &parents, &menus);
+            open_credits(&mut commands, AppState::StrategicMap);
         }
         FlagMenuAction::NewGame => {
             open_flag_menu_prompt(&mut commands, FlagMenuPending::NewGame);
@@ -1081,25 +1136,23 @@ mod tests {
             .add_plugins(bevy::state::app::StatesPlugin)
             .add_plugins(crate::ui::UiWindowPlugin)
             .add_message::<AppExit>()
-            .insert_state(initial)
-            .insert_resource(ReturnTo(AppState::MainMenu));
-        app.add_systems(
-            OnEnter(AppState::LoadSave),
-            (spawn_test_load_save, bind_test_load_save).chain(),
-        );
+            .insert_state(initial);
+        app.add_systems(Update, bind_test_load_save);
         app
     }
 
-    fn spawn_test_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
+    fn spawn_test_load_save(commands: &mut Commands, mode: LoadSaveMode, host: AppState) {
         let root = commands
             .spawn((
                 LoadSaveRoot {
-                    mode: request.0,
+                    mode,
                     selected: None,
                     renaming: false,
+                    host,
                 },
                 Node::default(),
-                DespawnOnExit(AppState::LoadSave),
+                ModalWindow,
+                DespawnOnExit(host),
             ))
             .id();
         for tag in SLOT_TAGS {
@@ -1142,17 +1195,22 @@ mod tests {
     }
 
     #[test]
-    fn cancel_restores_the_previous_application_state() {
+    fn cancel_despawns_the_overlay_and_keeps_the_host_screen() {
         let mut app = test_app(AppState::MainMenu);
-        app.insert_resource(ReturnTo(AppState::MainMenu));
-        app.insert_resource(LoadSaveRequest(LoadSaveMode::Load));
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::LoadSave);
+        app.add_systems(Startup, |mut commands: Commands| {
+            spawn_test_load_save(&mut commands, LoadSaveMode::Load, AppState::MainMenu);
+        });
         app.update();
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
-            &AppState::LoadSave
+            &AppState::MainMenu
+        );
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<LoadSaveRoot>>()
+                .iter(app.world())
+                .next()
+                .is_some()
         );
 
         let cancel = app
@@ -1171,6 +1229,13 @@ mod tests {
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::MainMenu
+        );
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<LoadSaveRoot>>()
+                .iter(app.world())
+                .next()
+                .is_none()
         );
     }
 
