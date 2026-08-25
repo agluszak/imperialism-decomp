@@ -1,46 +1,32 @@
-//! One owner for every retail face: TTF bytes, GDI cell metrics, and the Bevy handle.
+//! Application font registration for retail faces.
 //!
-//! `RetailAssets` only knows the retail directory. System bytes are injected at
-//! application bootstrap; UI code asks for a `RetailFont` and never opens a font file.
+//! `RetailAssets` owns the shipped `Data/*.ttf` files. This module registers those
+//! bytes, plus the vendored Windows System compatibility face, as Bevy `Font`
+//! assets and keeps only handles and GDI cell metrics.
 
 use bevy::prelude::*;
 use imperialism_formats::{
-    RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError, decode_retail_font_cell_metrics,
+    RetailAssets, RetailFontCellMetrics, RetailFontFace, RetailFontMetricsError,
+    decode_retail_font_cell_metrics,
 };
-use std::fs;
-use std::path::{Path, PathBuf};
-use swash::FontRef;
 
-#[derive(Debug, thiserror::Error)]
-pub enum RetailFontError {
-    #[error("{}: {source}", path.display())]
-    Io {
-        path: PathBuf,
-        #[source]
-        source: std::io::Error,
-    },
-    #[error(transparent)]
-    Metrics(#[from] RetailFontMetricsError),
-}
+const SYSTEM_FONT: &[u8] = include_bytes!("system.ttf");
 
 pub struct RetailFont {
-    data: Vec<u8>,
+    handle: Handle<Font>,
     metrics: RetailFontCellMetrics,
-    bevy: Handle<Font>,
 }
 
 impl RetailFont {
-    fn from_bytes(
+    fn register(
         face: RetailFontFace,
         data: Vec<u8>,
         fonts: &mut Assets<Font>,
     ) -> Result<Self, RetailFontMetricsError> {
         let metrics = decode_retail_font_cell_metrics(face, &data)?;
-        let bevy = fonts.add(Font::from_bytes(data.clone()));
         Ok(Self {
-            data,
+            handle: fonts.add(Font::from_bytes(data)),
             metrics,
-            bevy,
         })
     }
 
@@ -49,23 +35,7 @@ impl RetailFont {
     }
 
     pub fn handle(&self) -> Handle<Font> {
-        self.bevy.clone()
-    }
-
-    pub fn swash(&self) -> FontRef<'_> {
-        FontRef::from_index(&self.data, 0).expect("retail font bytes are valid")
-    }
-}
-
-#[cfg(test)]
-impl RetailFont {
-    pub(crate) fn from_test_bytes(face: RetailFontFace, data: &'static [u8]) -> Self {
-        let metrics = decode_retail_font_cell_metrics(face, data).expect("test font metrics");
-        Self {
-            data: data.to_vec(),
-            metrics,
-            bevy: Handle::default(),
-        }
+        self.handle.clone()
     }
 }
 
@@ -79,15 +49,40 @@ pub struct RetailFonts {
 
 impl RetailFonts {
     pub fn load(
-        retail_root: &Path,
-        system: Vec<u8>,
+        assets: &RetailAssets,
         fonts: &mut Assets<Font>,
-    ) -> Result<Self, RetailFontError> {
+    ) -> Result<Self, RetailFontMetricsError> {
+        Self::from_shipped_bytes(
+            assets.font_bytes(RetailFontFace::BelweBold),
+            assets.font_bytes(RetailFontFace::BookAntiquaRegular),
+            assets.font_bytes(RetailFontFace::BookAntiquaBold),
+            fonts,
+        )
+    }
+
+    fn from_shipped_bytes(
+        belwe_bold: &[u8],
+        book_antiqua: &[u8],
+        book_antiqua_bold: &[u8],
+        fonts: &mut Assets<Font>,
+    ) -> Result<Self, RetailFontMetricsError> {
         Ok(Self {
-            system: RetailFont::from_bytes(RetailFontFace::System, system, fonts)?,
-            belwe_bold: load_shipped(RetailFontFace::BelweBold, retail_root, fonts)?,
-            book_antiqua: load_shipped(RetailFontFace::BookAntiquaRegular, retail_root, fonts)?,
-            book_antiqua_bold: load_shipped(RetailFontFace::BookAntiquaBold, retail_root, fonts)?,
+            system: RetailFont::register(RetailFontFace::System, SYSTEM_FONT.to_vec(), fonts)?,
+            belwe_bold: RetailFont::register(
+                RetailFontFace::BelweBold,
+                belwe_bold.to_vec(),
+                fonts,
+            )?,
+            book_antiqua: RetailFont::register(
+                RetailFontFace::BookAntiquaRegular,
+                book_antiqua.to_vec(),
+                fonts,
+            )?,
+            book_antiqua_bold: RetailFont::register(
+                RetailFontFace::BookAntiquaBold,
+                book_antiqua_bold.to_vec(),
+                fonts,
+            )?,
         })
     }
 
@@ -101,18 +96,8 @@ impl RetailFonts {
     }
 }
 
-fn load_shipped(
-    face: RetailFontFace,
-    retail_root: &Path,
-    fonts: &mut Assets<Font>,
-) -> Result<RetailFont, RetailFontError> {
-    let Some(relative) = face.shipped_relative_path() else {
-        unreachable!("System is injected at load, not read from Data/");
-    };
-    let path = retail_root.join(relative);
-    let data = fs::read(&path).map_err(|source| RetailFontError::Io {
-        path: path.clone(),
-        source,
-    })?;
-    Ok(RetailFont::from_bytes(face, data, fonts)?)
+#[cfg(test)]
+pub(crate) fn load_test_fonts(fonts: &mut Assets<Font>) -> RetailFonts {
+    const OUTLINE: &[u8] = include_bytes!("test_outline.ttf");
+    RetailFonts::from_shipped_bytes(OUTLINE, OUTLINE, OUTLINE, fonts).expect("test font metrics")
 }

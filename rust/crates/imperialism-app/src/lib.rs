@@ -128,7 +128,6 @@ fn add_game_plugins(app: &mut App) {
 
 pub fn run(
     retail_assets: RetailAssets,
-    system_font: Vec<u8>,
     initial_game: Option<LoadedGame>,
     save_directory: PathBuf,
 ) -> anyhow::Result<()> {
@@ -163,16 +162,14 @@ pub fn run(
         .insert_resource(RandomGameNamesResource(random_game_names))
         .insert_resource(ui::SaveDirectory(save_directory));
     add_game_plugins(&mut app);
-    let retail_root = app
-        .world()
-        .resource::<RetailAssetsResource>()
-        .assets()
-        .root()
-        .to_path_buf();
-    let retail_fonts = {
-        let mut font_assets = app.world_mut().resource_mut::<Assets<Font>>();
-        RetailFonts::load(&retail_root, system_font, &mut font_assets)?
-    };
+    let retail_fonts =
+        app.world_mut()
+            .resource_scope(|world, mut font_assets: Mut<Assets<Font>>| {
+                RetailFonts::load(
+                    world.resource::<RetailAssetsResource>().assets(),
+                    &mut font_assets,
+                )
+            })?;
     app.insert_resource(retail_fonts);
     app.world_mut()
         .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));

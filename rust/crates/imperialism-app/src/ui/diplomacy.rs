@@ -1386,9 +1386,14 @@ fn draw_diplomacy_text_center(
     painter.draw_center(picture, center + 1, baseline + 1, text, 0x13);
 }
 
-fn diplomacy_text_painter(fonts: &RetailFonts, point_size: i32) -> RetailRasterTextPainter<'_> {
+fn diplomacy_text_painter<'a>(
+    fonts: &RetailFonts,
+    font_assets: &'a Assets<Font>,
+    point_size: i32,
+) -> RetailRasterTextPainter<'a> {
     RetailRasterTextPainter::from_preset(
         fonts,
+        font_assets,
         RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
@@ -1404,6 +1409,7 @@ fn render_diplomacy_panels(
     screens: Query<Ref<DiplomacyScreen>>,
     retail: Res<RetailAssetsResource>,
     fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut images: ResMut<Assets<Image>>,
     panels: Query<(&DiplomacyPanel, &ImageNode)>,
 ) {
@@ -1417,10 +1423,10 @@ fn render_diplomacy_panels(
     let source = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let major = state.nations().major(source);
-    let mut title = diplomacy_text_painter(&fonts, 14);
-    let mut row = diplomacy_text_painter(&fonts, 12);
-    let mut small = diplomacy_text_painter(&fonts, 10);
-    let mut council_paint = diplomacy_text_painter(&fonts, 18);
+    let mut title = diplomacy_text_painter(&fonts, &font_assets, 14);
+    let mut row = diplomacy_text_painter(&fonts, &font_assets, 12);
+    let mut small = diplomacy_text_painter(&fonts, &font_assets, 10);
+    let mut council_paint = diplomacy_text_painter(&fonts, &font_assets, 18);
     let strings = |index| retail.get_string(0x2733, index);
     let (name, labels, values) = diplomacy_information(state, screen.framed_nation);
     let council = council_panel_text(state, &retail);
@@ -1913,16 +1919,14 @@ fn render_diplomacy_map(
         _ => nation_owner_palette(nation),
     };
     let (mut picture, geometry) = compose_diplomacy_map(owner_at, fill, Some(framed));
-    let mut painter = RetailRasterTextPainter::from_preset(
-        assets.fonts(),
-        RetailTextStylePreset {
+    let mut painter = assets
+        .raster_painter(RetailTextStylePreset {
             font_family: 0,
             face_flags: 0,
             point_size: 10,
             alignment: 1,
-        },
-    )
-    .expect("retail Diplomacy map label style");
+        })
+        .expect("retail Diplomacy map label style");
     let mut seeds = [None; NationId::COUNT as usize];
     for nation in NationId::all() {
         let Some(name) = state.nations().display_name(nation) else {

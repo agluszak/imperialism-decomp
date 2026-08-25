@@ -1,3 +1,4 @@
+use super::retail_raster_text::RetailRasterTextPainter;
 use crate::{RetailAssetsResource, RetailFont, RetailFonts};
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::query::{QueryData, QueryFilter};
@@ -224,12 +225,6 @@ pub fn retail_centered_text_padding(
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum RetailTextError {
-    #[error(transparent)]
-    Style(#[from] RetailTextStyleError),
-}
-
-#[derive(Debug, thiserror::Error)]
 pub enum RetailPictureError {
     #[error(transparent)]
     Assets(#[from] RetailAssetError),
@@ -250,6 +245,7 @@ pub struct RetailUiAssets<'w> {
     images: ResMut<'w, Assets<Image>>,
     handles: ResMut<'w, RetailPictureHandles>,
     retail_fonts: Res<'w, RetailFonts>,
+    font_assets: Res<'w, Assets<Font>>,
 }
 
 pub fn apply_index_transparency(image: &mut Image, indexed: &IndexedPicture, index: u8) -> bool {
@@ -346,14 +342,17 @@ impl RetailUiAssets<'_> {
         self.retail_assets.assets().indexed_picture(picture_id)
     }
 
-    pub fn fonts(&self) -> &RetailFonts {
-        &self.retail_fonts
+    pub fn raster_painter(
+        &self,
+        preset: RetailTextStylePreset,
+    ) -> Result<RetailRasterTextPainter<'_>, RetailTextStyleError> {
+        RetailRasterTextPainter::from_preset(&self.retail_fonts, &self.font_assets, preset)
     }
 
     pub fn text_style(
         &mut self,
         preset: RetailTextStylePreset,
-    ) -> Result<(TextFont, TextLayout, LineHeight, bool), RetailTextError> {
+    ) -> Result<(TextFont, TextLayout, LineHeight, bool), RetailTextStyleError> {
         let style = resolve_retail_text_style(preset)?;
         Ok(retail_text_components(
             style,

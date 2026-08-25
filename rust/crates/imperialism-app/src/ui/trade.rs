@@ -545,6 +545,7 @@ fn sync_trade_screen_picture(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
     fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut images: ResMut<Assets<Image>>,
     roots: Query<(), Added<TradeScreen>>,
     screens: Query<(&TradeScreenVisual, &ImageNode)>,
@@ -556,6 +557,7 @@ fn sync_trade_screen_picture(
     let major = session.game.nations().major(nation);
     let mut text = RetailRasterTextPainter::from_preset(
         &fonts,
+        &font_assets,
         RetailTextStylePreset {
             font_family: 2,
             face_flags: 0,

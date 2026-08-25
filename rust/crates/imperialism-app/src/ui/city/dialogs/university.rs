@@ -207,6 +207,7 @@ pub(in crate::ui::city) fn sync_university_details(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
     fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
     selections: Query<Ref<CityRowSelection>>,
     rows: Query<(&CityRowChoice, &UniversityRowAssets)>,
@@ -289,6 +290,7 @@ pub(in crate::ui::city) fn sync_university_details(
     }
     let mut text = RetailRasterTextPainter::from_preset(
         &fonts,
+        &font_assets,
         RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,

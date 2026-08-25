@@ -386,6 +386,7 @@ fn on_sound_slider_released(
 fn sync_preference_slider_visuals(
     retail: Res<RetailAssetsResource>,
     fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
     sliders: Query<
         (
@@ -400,6 +401,7 @@ fn sync_preference_slider_visuals(
 ) {
     let mut text = RetailRasterTextPainter::from_preset(
         &fonts,
+        &font_assets,
         RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,
