@@ -231,7 +231,7 @@ fn on_window_dragged(
             drag.event.delta.x.round() as i32,
             drag.event.delta.y.round() as i32,
         );
-    set_window_position(&mut *node, position);
+    set_window_position(&mut node, position);
 }
 
 fn on_window_close(
@@ -478,12 +478,13 @@ mod tests {
         assert_eq!(caption_node.left, px(0));
         assert_eq!(caption_node.top, px(-CAPTION_HEIGHT));
 
-        let mut node = app
-            .world_mut()
-            .get_mut::<Node>(window)
-            .expect("window keeps its Node");
-        set_window_position(&mut *node, IVec2::new(40, 50));
-        drop(node);
+        {
+            let mut node = app
+                .world_mut()
+                .get_mut::<Node>(window)
+                .expect("window keeps its Node");
+            set_window_position(&mut node, IVec2::new(40, 50));
+        }
         let caption_node = app.world().get::<Node>(caption).unwrap();
         assert_eq!(caption_node.left, px(0));
         assert_eq!(caption_node.top, px(-CAPTION_HEIGHT));

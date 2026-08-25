@@ -79,7 +79,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
             commands
                 .entity(window)
                 .entry::<Node>()
-                .and_modify(move |mut node| set_window_position(&mut *node, position));
+                .and_modify(move |mut node| set_window_position(&mut node, position));
         }
         match city_dialog_kind(dialog.slot) {
             CityDialogKind::Industry(page) => {
