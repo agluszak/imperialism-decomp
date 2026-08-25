@@ -1,7 +1,7 @@
 use crate::color::DibPalette;
 use crate::media::{MovieId, MusicTrack, SoundId};
 use crate::retail_resources::*;
-use crate::{PictureId, RetailCursor, RetailFontFace, ScenarioInfo};
+use crate::{PictureId, RetailCursor, ScenarioInfo};
 use imperialism_core::{
     MajorNationId, MapMgr, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
     ScenarioInstruction, ScenarioMapId,
@@ -42,7 +42,7 @@ const NEWS_ROW_BYTES: usize = 24;
 
 /// Direct access to the retail files needed by the current application.
 ///
-/// The object owns raw archive/font/exe bytes and indexes English PE resource ranges during opening.
+/// The object owns raw archive/exe bytes and indexes English PE resource ranges during opening.
 /// It deliberately retains no borrowed PE views.
 #[derive(Debug)]
 pub struct RetailAssets {
@@ -51,7 +51,6 @@ pub struct RetailAssets {
     strings: ResourceArchive,
     exe: ResourceArchive,
     waves: Option<ResourceArchive>,
-    fonts: RetailFonts,
     default_dib_palette: DibPalette,
     news: NewsTable,
 }
@@ -107,7 +106,6 @@ impl RetailAssets {
         let strings = ResourceArchive::read(&root, STRINGS_ARCHIVE_PATH)?;
         let exe = ResourceArchive::read(&root, EXE_PATH)?;
         let waves = optional_archive(&root, WAVE_ARCHIVE_PATH)?;
-        let fonts = RetailFonts::read(&root)?;
         let news = load_news_table(&root)?;
 
         Ok(Self {
@@ -116,7 +114,6 @@ impl RetailAssets {
             strings,
             exe,
             waves,
-            fonts,
             default_dib_palette,
             news,
         })
@@ -339,11 +336,6 @@ impl RetailAssets {
             .unwrap_or_else(|_| unreachable!("turn-event cursor table is a fixed 54-entry array")))
     }
 
-    /// Returns the font bytes consumed by the UI.
-    pub fn font_bytes(&self, face: RetailFontFace) -> &[u8] {
-        self.fonts.bytes(face)
-    }
-
     /// `Movies/<stem>.avi`. Missing files are a caller-side continue, matching
     /// `PlayMovieClipAndDispatchTurnStateFollowup`.
     pub fn movie_path(&self, movie: MovieId) -> PathBuf {
@@ -414,37 +406,6 @@ impl RetailAssets {
             )
             .ok_or(RetailAssetError::ChromeBackdropNotFound)?;
         bitmap_resource_to_bmp(dib).map_err(|error| resource_error(&self.exe.path, error))
-    }
-}
-
-#[derive(Debug)]
-struct RetailFonts {
-    belwe_bold: Vec<u8>,
-    book_antiqua_regular: Vec<u8>,
-    book_antiqua_bold: Vec<u8>,
-}
-
-impl RetailFonts {
-    fn read(root: &Path) -> Result<Self, RetailAssetError> {
-        Ok(Self {
-            belwe_bold: read_font(root, RetailFontFace::BelweBold.relative_path())?,
-            book_antiqua_regular: read_font(
-                root,
-                RetailFontFace::BookAntiquaRegular.relative_path(),
-            )?,
-            book_antiqua_bold: read_font(root, RetailFontFace::BookAntiquaBold.relative_path())?,
-        })
-    }
-
-    fn bytes(&self, face: RetailFontFace) -> &[u8] {
-        match face {
-            RetailFontFace::System => {
-                unreachable!("the Windows System font is supplied by the platform")
-            }
-            RetailFontFace::BelweBold => &self.belwe_bold,
-            RetailFontFace::BookAntiquaRegular => &self.book_antiqua_regular,
-            RetailFontFace::BookAntiquaBold => &self.book_antiqua_bold,
-        }
     }
 }
 
@@ -700,10 +661,6 @@ fn news_tex_slice(
         .collect())
 }
 
-fn read_font(root: &Path, relative: &str) -> Result<Vec<u8>, RetailAssetError> {
-    read_file(&root.join(relative))
-}
-
 fn read_file(path: &Path) -> Result<Vec<u8>, RetailAssetError> {
     fs::read(path).map_err(|source| RetailAssetError::Io {
         path: path.to_owned(),
@@ -843,7 +800,6 @@ mod tests {
         }
         let assets = RetailAssets::open(root.path()).unwrap();
 
-        assert_eq!(assets.font_bytes(RetailFontFace::BelweBold), b"not a font");
         assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
         assert_eq!(assets.news_table().story_ids()[0], 42);
         assert_eq!(assets.news_table().headline(0), "Title");
@@ -1087,9 +1043,6 @@ mod tests {
             )]),
         );
 
-        for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
-            write_retail_file(root.path(), relative, b"not a font");
-        }
         let mut news_tab = vec![0; NEWS_TEMPLATE_COUNT * NEWS_ROW_BYTES];
         news_tab[0..4].copy_from_slice(&42_i32.to_be_bytes());
         news_tab[8..12].copy_from_slice(&5_i32.to_be_bytes());

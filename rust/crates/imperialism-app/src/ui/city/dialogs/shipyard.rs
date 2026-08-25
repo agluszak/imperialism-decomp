@@ -1,4 +1,5 @@
 use super::*;
+use crate::RetailFonts;
 use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
 use crate::ui::retail_raster_text::RetailRasterTextPainter;
@@ -203,7 +204,7 @@ fn shipyard_queue_pictures(
 
 fn draw_shipyard_details(
     picture: &mut IndexedPicture,
-    text: &mut RetailRasterTextPainter,
+    text: &mut RetailRasterTextPainter<'_>,
     stat_labels: &[String; 6],
     row: &ShipyardRowData,
     city: &CityState,
@@ -245,6 +246,7 @@ fn draw_shipyard_details(
 pub(in crate::ui::city) fn sync_shipyard_details(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
     mut image_assets: ResMut<Assets<Image>>,
     selections: Query<Ref<CityRowSelection>>,
     rows: Query<(&CityRowChoice, &ShipyardRowAssets)>,
@@ -281,7 +283,7 @@ pub(in crate::ui::city) fn sync_shipyard_details(
         }
     }
     let mut text = RetailRasterTextPainter::from_preset(
-        retail.assets(),
+        &fonts,
         RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,

@@ -1,4 +1,5 @@
 use super::*;
+use crate::RetailFonts;
 use crate::ui::retail_raster::IndexedRasterExt;
 use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
@@ -205,6 +206,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
 pub(in crate::ui::city) fn sync_university_details(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
     mut image_assets: ResMut<Assets<Image>>,
     selections: Query<Ref<CityRowSelection>>,
     rows: Query<(&CityRowChoice, &UniversityRowAssets)>,
@@ -286,7 +288,7 @@ pub(in crate::ui::city) fn sync_university_details(
         };
     }
     let mut text = RetailRasterTextPainter::from_preset(
-        retail.assets(),
+        &fonts,
         RetailTextStylePreset {
             font_family: 3,
             face_flags: 0,

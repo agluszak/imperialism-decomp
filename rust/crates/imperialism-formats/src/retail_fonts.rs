@@ -11,12 +11,15 @@ pub enum RetailFontFace {
 }
 
 impl RetailFontFace {
-    pub(crate) fn relative_path(self) -> &'static str {
+    /// Path under the retail root for faces shipped as `Data/*.ttf`.
+    ///
+    /// `System` has no retail file; the application injects those bytes at bootstrap.
+    pub fn shipped_relative_path(self) -> Option<&'static str> {
         match self {
-            Self::System => unreachable!("the Windows System font is supplied by the platform"),
-            Self::BelweBold => "Data/WeBeBd__.ttf",
-            Self::BookAntiquaRegular => "Data/Antqua.ttf",
-            Self::BookAntiquaBold => "Data/Antquab.ttf",
+            Self::System => None,
+            Self::BelweBold => Some("Data/WeBeBd__.ttf"),
+            Self::BookAntiquaRegular => Some("Data/Antqua.ttf"),
+            Self::BookAntiquaBold => Some("Data/Antquab.ttf"),
         }
     }
 }
