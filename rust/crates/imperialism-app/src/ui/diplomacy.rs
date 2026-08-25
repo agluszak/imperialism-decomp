@@ -1898,6 +1898,7 @@ fn render_diplomacy_map(
     mut commands: Commands,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
+    font_assets: Res<Assets<Font>>,
     screen: Single<Ref<DiplomacyScreen>>,
     map: Single<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
 ) {
@@ -1919,14 +1920,17 @@ fn render_diplomacy_map(
         _ => nation_owner_palette(nation),
     };
     let (mut picture, geometry) = compose_diplomacy_map(owner_at, fill, Some(framed));
-    let mut painter = assets
-        .raster_painter(RetailTextStylePreset {
+    let mut painter = RetailRasterTextPainter::from_preset(
+        assets.fonts(),
+        &font_assets,
+        RetailTextStylePreset {
             font_family: 0,
             face_flags: 0,
             point_size: 10,
             alignment: 1,
-        })
-        .expect("retail Diplomacy map label style");
+        },
+    )
+    .expect("retail Diplomacy map label style");
     let mut seeds = [None; NationId::COUNT as usize];
     for nation in NationId::all() {
         let Some(name) = state.nations().display_name(nation) else {

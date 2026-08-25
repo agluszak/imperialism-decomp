@@ -45,9 +45,9 @@ impl<'a> RetailRasterTextPainter<'a> {
     ) -> Result<Self, RetailTextStyleError> {
         let style = resolve_retail_text_style(preset)?;
         let retail = fonts.get(style.face);
-        let size = retail.metrics().em_pixel_size(style.logical_pixel_height) as f32;
+        let size = retail.size_for_cell_height(style.logical_pixel_height) as f32;
         let font = font_assets
-            .get(&retail.handle())
+            .get(retail.handle())
             .expect("registered retail font remains loaded");
         Ok(Self::new(font, size, style.face))
     }

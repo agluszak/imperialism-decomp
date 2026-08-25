@@ -1,4 +1,3 @@
-use super::retail_raster_text::RetailRasterTextPainter;
 use crate::{RetailAssetsResource, RetailFont, RetailFonts};
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::query::{QueryData, QueryFilter};
@@ -245,7 +244,6 @@ pub struct RetailUiAssets<'w> {
     images: ResMut<'w, Assets<Image>>,
     handles: ResMut<'w, RetailPictureHandles>,
     retail_fonts: Res<'w, RetailFonts>,
-    font_assets: Res<'w, Assets<Font>>,
 }
 
 pub fn apply_index_transparency(image: &mut Image, indexed: &IndexedPicture, index: u8) -> bool {
@@ -342,11 +340,8 @@ impl RetailUiAssets<'_> {
         self.retail_assets.assets().indexed_picture(picture_id)
     }
 
-    pub fn raster_painter(
-        &self,
-        preset: RetailTextStylePreset,
-    ) -> Result<RetailRasterTextPainter<'_>, RetailTextStyleError> {
-        RetailRasterTextPainter::from_preset(&self.retail_fonts, &self.font_assets, preset)
+    pub fn fonts(&self) -> &RetailFonts {
+        &self.retail_fonts
     }
 
     pub fn text_style(
@@ -488,8 +483,8 @@ fn retail_text_components(
     font: &RetailFont,
 ) -> (TextFont, TextLayout, LineHeight, bool) {
     let mut text_font =
-        TextFont::from_font_size(font.metrics().em_pixel_size(style.logical_pixel_height) as f32)
-            .with_font(font.handle())
+        TextFont::from_font_size(font.size_for_cell_height(style.logical_pixel_height) as f32)
+            .with_font(font.handle().clone())
             .with_font_smoothing(match style.face {
                 RetailFontFace::System => FontSmoothing::None,
                 _ => FontSmoothing::AntiAliased,
@@ -611,6 +606,7 @@ mod tests {
     use super::*;
     use bevy::ecs::system::SystemState;
     use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+    use bevy::text::{FontSize, FontSource};
 
     #[test]
     fn index_transparency_does_not_key_an_equal_rgb_entry() {
@@ -761,5 +757,41 @@ mod tests {
         assert_eq!(tree.child(parent, fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).child(fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).find(fourcc!("clus")), container);
+    }
+
+    #[test]
+    fn family_zero_bevy_text_uses_the_registered_system_font() {
+        let mut font_assets = Assets::<Font>::default();
+        let fonts = crate::fonts::load_test_fonts(&mut font_assets);
+        let style = resolve_retail_text_style(RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 1,
+        })
+        .expect("family 0 resolves to System");
+        assert_eq!(style.face, RetailFontFace::System);
+
+        let system = fonts.get(RetailFontFace::System);
+        let registered = font_assets
+            .get(system.handle())
+            .expect("System is registered as a Bevy Font");
+        assert_eq!(
+            registered.data.as_ref(),
+            include_bytes!("../fonts/system.ttf").as_slice()
+        );
+
+        let (text_font, _, line_height, underline) = retail_text_components(style, system);
+        assert_eq!(text_font.font, FontSource::from(system.handle().clone()));
+        assert_eq!(text_font.font_smoothing, FontSmoothing::None);
+        assert_eq!(
+            text_font.font_size,
+            FontSize::Px(system.size_for_cell_height(style.logical_pixel_height) as f32)
+        );
+        assert_eq!(
+            line_height,
+            LineHeight::Px(style.logical_pixel_height as f32)
+        );
+        assert!(!underline);
     }
 }

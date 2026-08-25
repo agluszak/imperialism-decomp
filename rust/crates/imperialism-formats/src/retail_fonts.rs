@@ -10,17 +10,6 @@ pub enum RetailFontFace {
     BookAntiquaBold,
 }
 
-impl RetailFontFace {
-    pub(crate) fn relative_path(self) -> &'static str {
-        match self {
-            Self::System => unreachable!("the Windows System font is supplied by the application"),
-            Self::BelweBold => "Data/WeBeBd__.ttf",
-            Self::BookAntiquaRegular => "Data/Antqua.ttf",
-            Self::BookAntiquaBold => "Data/Antquab.ttf",
-        }
-    }
-}
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RetailTextAlignment {
     Left,
