@@ -330,6 +330,18 @@ impl GameState {
         }
     }
 
+    /// Units of this transport row a nation's production currently consumes.
+    ///
+    /// Facility rows use building capacity (×2 except coal/iron). Food rows use
+    /// predicted population need. Precious metals and finished goods have none.
+    pub fn transport_requirement(
+        &self,
+        nation: MajorNationId,
+        allocation: TransportAllocation,
+    ) -> Option<i16> {
+        nation_transport_requirement(self.nations.major(nation), allocation)
+    }
+
     /// Spends one lumber and one steel to add one transport-capacity unit.
     ///
     pub fn increase_rolling_stock(&mut self, nation: MajorNationId) -> bool {
@@ -570,42 +582,71 @@ fn transport_allocation_total(
     amounts[primary] + secondary.map_or(0, |resource| amounts[resource])
 }
 
-fn transport_row_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
+fn nation_transport_requirement(
+    major: &MajorNation,
+    allocation: TransportAllocation,
+) -> Option<i16> {
     let city = &major.city;
     let building =
         |slot| city.building_type(slot, &major.economy, major.common.owned_region_count());
-    let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {
-        building(CityFacilitySlot::TextileMill) * 2
-            - city.stockpile[ResourceKind::Cotton]
-            - city.stockpile[ResourceKind::Wool]
-    } else if allocation == TransportAllocation::TIMBER {
-        building(CityFacilitySlot::LumberMill) * 2 - city.stockpile[ResourceKind::Timber]
-    } else if allocation == TransportAllocation::COAL {
-        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Coal]
-    } else if allocation == TransportAllocation::IRON {
-        building(CityFacilitySlot::SteelMill) - city.stockpile[ResourceKind::Iron]
-    } else if allocation == TransportAllocation::OIL {
-        building(CityFacilitySlot::OilRefinery) * 2 - city.stockpile[ResourceKind::Oil]
-    } else if allocation == TransportAllocation::FABRIC {
-        building(CityFacilitySlot::ClothingFactory) * 2 - city.stockpile[ResourceKind::Fabric]
-    } else if allocation == TransportAllocation::LUMBER {
-        building(CityFacilitySlot::FurnitureFactory) * 2 - city.stockpile[ResourceKind::Lumber]
-    } else if allocation == TransportAllocation::STEEL {
-        building(CityFacilitySlot::Metalworks) * 2 - city.stockpile[ResourceKind::Steel]
-    } else if allocation == TransportAllocation::FUEL {
-        building(CityFacilitySlot::PowerPlant) * 2 - city.stockpile[ResourceKind::Fuel]
-    } else if allocation == TransportAllocation::GRAIN {
-        city.population.predicted_need(ResourceKind::Grain) - city.stockpile[ResourceKind::Grain]
-    } else if allocation == TransportAllocation::FRUIT {
-        city.population.predicted_need(ResourceKind::Fruit) - city.stockpile[ResourceKind::Fruit]
-    } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
-        city.population.predicted_need(ResourceKind::Livestock)
-            - city.stockpile[ResourceKind::Fish]
-            - city.stockpile[ResourceKind::Livestock]
-    } else {
-        return None;
-    };
-    Some(deficit.max(0))
+    Some(match allocation {
+        TransportAllocation::COTTON_AND_WOOL => building(CityFacilitySlot::TextileMill) * 2,
+        TransportAllocation::TIMBER => building(CityFacilitySlot::LumberMill) * 2,
+        TransportAllocation::COAL | TransportAllocation::IRON => {
+            building(CityFacilitySlot::SteelMill)
+        }
+        TransportAllocation::OIL => building(CityFacilitySlot::OilRefinery) * 2,
+        TransportAllocation::FABRIC => building(CityFacilitySlot::ClothingFactory) * 2,
+        TransportAllocation::LUMBER => building(CityFacilitySlot::FurnitureFactory) * 2,
+        TransportAllocation::STEEL => building(CityFacilitySlot::Metalworks) * 2,
+        TransportAllocation::FUEL => building(CityFacilitySlot::PowerPlant) * 2,
+        TransportAllocation::GRAIN => city.population.predicted_need(ResourceKind::Grain),
+        TransportAllocation::FRUIT => city.population.predicted_need(ResourceKind::Fruit),
+        TransportAllocation::FISH_AND_LIVESTOCK => {
+            city.population.predicted_need(ResourceKind::Livestock)
+        }
+        TransportAllocation::HORSES
+        | TransportAllocation::CLOTHING
+        | TransportAllocation::FURNITURE
+        | TransportAllocation::HARDWARE
+        | TransportAllocation::GEMS
+        | TransportAllocation::GOLD => return None,
+    })
+}
+
+fn transport_row_consumed_stock(city: &CityState, allocation: TransportAllocation) -> i16 {
+    match allocation {
+        TransportAllocation::COTTON_AND_WOOL => {
+            city.stockpile[ResourceKind::Cotton] + city.stockpile[ResourceKind::Wool]
+        }
+        TransportAllocation::FISH_AND_LIVESTOCK => {
+            city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock]
+        }
+        TransportAllocation::TIMBER
+        | TransportAllocation::COAL
+        | TransportAllocation::IRON
+        | TransportAllocation::OIL
+        | TransportAllocation::FABRIC
+        | TransportAllocation::LUMBER
+        | TransportAllocation::STEEL
+        | TransportAllocation::FUEL
+        | TransportAllocation::GRAIN
+        | TransportAllocation::FRUIT => city.stockpile[allocation.resources().0],
+        TransportAllocation::HORSES
+        | TransportAllocation::CLOTHING
+        | TransportAllocation::FURNITURE
+        | TransportAllocation::HARDWARE
+        | TransportAllocation::GEMS
+        | TransportAllocation::GOLD => 0,
+    }
+}
+
+fn transport_row_limit(major: &MajorNation, allocation: TransportAllocation) -> Option<i16> {
+    Some(
+        (nation_transport_requirement(major, allocation)?
+            - transport_row_consumed_stock(&major.city, allocation))
+        .max(0),
+    )
 }
 
 fn split_transport_allocation(
@@ -1014,5 +1055,38 @@ mod tests {
                 TradePolicyScore::new(expected)
             );
         }
+    }
+
+    #[test]
+    fn transport_requirement_follows_facility_capacity_and_population_need() {
+        let nation = MajorNationId::new(6);
+        let mut game = state();
+        game.nations.city_mut(nation).production_orders[CityFacilitySlot::TextileMill] = 3;
+        game.nations.city_mut(nation).production_orders[CityFacilitySlot::SteelMill] = 5;
+        game.nations
+            .city_mut(nation)
+            .population
+            .predicted_need_by_resource[ResourceKind::Grain] = 4;
+
+        assert_eq!(
+            game.transport_requirement(nation, TransportAllocation::COTTON_AND_WOOL),
+            Some(6)
+        );
+        assert_eq!(
+            game.transport_requirement(nation, TransportAllocation::COAL),
+            Some(5)
+        );
+        assert_eq!(
+            game.transport_requirement(nation, TransportAllocation::IRON),
+            Some(5)
+        );
+        assert_eq!(
+            game.transport_requirement(nation, TransportAllocation::GRAIN),
+            Some(4)
+        );
+        assert_eq!(
+            game.transport_requirement(nation, TransportAllocation::GOLD),
+            None
+        );
     }
 }

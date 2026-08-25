@@ -1,6 +1,5 @@
 use super::generated;
 use super::retail::{RetailTree, ancestor_with};
-use super::window::FloatingWindow;
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -134,7 +133,6 @@ fn spawn_for_context(commands: &mut Commands, context: HelpContext) {
             set: 0,
             topic: None,
         },
-        FloatingWindow,
         DespawnOnExit(context.app_state()),
     ));
 }

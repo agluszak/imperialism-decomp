@@ -1,4 +1,4 @@
-use crate::RetailAssetsResource;
+use crate::{RetailAssetsResource, RetailFont, RetailFonts};
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::query::{QueryData, QueryFilter};
 use bevy::ecs::system::SystemParam;
@@ -10,9 +10,6 @@ use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
 use bevy::ui::{Checked, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
-use std::fs;
-
-const WINE_SYSTEM_FONT_PATH: &str = "/usr/share/wine/fonts/system.ttf";
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -107,10 +104,9 @@ pub fn retail_text_style(
     let line_height = LineHeight::Px(style.logical_pixel_height as f32);
     bsn! {
         template(move |context| {
-            Ok(retail_text_components(
-                style,
-                load_template_font(context, style.face),
-            ).0)
+            Ok(context.entity.world_scope(|world| {
+                retail_text_components(style, world.resource::<RetailFonts>().get(style.face)).0
+            }))
         })
         template(move |_context| Ok(line_height))
         TextLayout::justify(match style.alignment {
@@ -228,18 +224,6 @@ pub fn retail_centered_text_padding(
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum RetailTextError {
-    #[error(transparent)]
-    Style(#[from] RetailTextStyleError),
-    #[error(transparent)]
-    Metrics(#[from] RetailFontMetricsError),
-    #[error(transparent)]
-    Assets(#[from] RetailAssetError),
-    #[error("Windows System font is unavailable at {WINE_SYSTEM_FONT_PATH}: {0}")]
-    SystemFont(#[source] std::io::Error),
-}
-
-#[derive(Debug, thiserror::Error)]
 pub enum RetailPictureError {
     #[error(transparent)]
     Assets(#[from] RetailAssetError),
@@ -254,22 +238,12 @@ pub enum RetailPictureError {
 #[derive(Resource, Default)]
 struct RetailPictureHandles(HashMap<PictureId, Handle<Image>>);
 
-#[derive(Clone)]
-struct CachedRetailFont {
-    handle: Handle<Font>,
-    metrics: RetailFontCellMetrics,
-}
-
-#[derive(Resource, Default)]
-struct RetailFontHandles(HashMap<RetailFontFace, CachedRetailFont>);
-
 #[derive(SystemParam)]
 pub struct RetailUiAssets<'w> {
     retail_assets: Res<'w, RetailAssetsResource>,
     images: ResMut<'w, Assets<Image>>,
     handles: ResMut<'w, RetailPictureHandles>,
-    fonts: ResMut<'w, Assets<Font>>,
-    font_handles: ResMut<'w, RetailFontHandles>,
+    retail_fonts: Res<'w, RetailFonts>,
 }
 
 pub fn apply_index_transparency(image: &mut Image, indexed: &IndexedPicture, index: u8) -> bool {
@@ -366,18 +340,19 @@ impl RetailUiAssets<'_> {
         self.retail_assets.assets().indexed_picture(picture_id)
     }
 
+    pub fn fonts(&self) -> &RetailFonts {
+        &self.retail_fonts
+    }
+
     pub fn text_style(
         &mut self,
         preset: RetailTextStylePreset,
-    ) -> Result<(TextFont, TextLayout, LineHeight, bool), RetailTextError> {
+    ) -> Result<(TextFont, TextLayout, LineHeight, bool), RetailTextStyleError> {
         let style = resolve_retail_text_style(preset)?;
-        let font = load_retail_font(
-            style.face,
-            &self.retail_assets,
-            &mut self.fonts,
-            &mut self.font_handles,
-        )?;
-        Ok(retail_text_components(style, font))
+        Ok(retail_text_components(
+            style,
+            self.retail_fonts.get(style.face),
+        ))
     }
 }
 
@@ -386,7 +361,6 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
-            .init_resource::<RetailFontHandles>()
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
@@ -504,51 +478,13 @@ fn load_template_picture(
     })?)
 }
 
-fn load_template_font(context: &mut TemplateContext, face: RetailFontFace) -> CachedRetailFont {
-    context.entity.world_scope(|world| {
-        world.resource_scope(|world, mut handles: Mut<RetailFontHandles>| {
-            world.resource_scope(|world, mut fonts: Mut<Assets<Font>>| {
-                load_retail_font(
-                    face,
-                    world.resource::<RetailAssetsResource>(),
-                    &mut fonts,
-                    &mut handles,
-                )
-                .expect("retail font metrics must decode")
-            })
-        })
-    })
-}
-
-fn load_retail_font(
-    face: RetailFontFace,
-    retail_assets: &RetailAssetsResource,
-    fonts: &mut Assets<Font>,
-    font_handles: &mut RetailFontHandles,
-) -> Result<CachedRetailFont, RetailTextError> {
-    if let Some(cached) = font_handles.0.get(&face) {
-        return Ok(cached.clone());
-    }
-    let bytes = match face {
-        RetailFontFace::System => {
-            fs::read(WINE_SYSTEM_FONT_PATH).map_err(RetailTextError::SystemFont)?
-        }
-        _ => retail_assets.assets().font_bytes(face).to_vec(),
-    };
-    let metrics = decode_retail_font_cell_metrics(face, &bytes)?;
-    let handle = fonts.add(Font::from_bytes(bytes));
-    let cached = CachedRetailFont { handle, metrics };
-    font_handles.0.insert(face, cached.clone());
-    Ok(cached)
-}
-
 fn retail_text_components(
     style: ResolvedRetailTextStyle,
-    font: CachedRetailFont,
+    font: &RetailFont,
 ) -> (TextFont, TextLayout, LineHeight, bool) {
     let mut text_font =
-        TextFont::from_font_size(font.metrics.em_pixel_size(style.logical_pixel_height) as f32)
-            .with_font(font.handle)
+        TextFont::from_font_size(font.size_for_cell_height(style.logical_pixel_height) as f32)
+            .with_font(font.handle().clone())
             .with_font_smoothing(match style.face {
                 RetailFontFace::System => FontSmoothing::None,
                 _ => FontSmoothing::AntiAliased,
@@ -656,6 +592,7 @@ mod tests {
     use super::*;
     use bevy::ecs::system::SystemState;
     use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+    use bevy::text::{FontSize, FontSource};
 
     #[test]
     fn index_transparency_does_not_key_an_equal_rgb_entry() {
@@ -806,5 +743,41 @@ mod tests {
         assert_eq!(tree.child(parent, fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).child(fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).find(fourcc!("clus")), container);
+    }
+
+    #[test]
+    fn family_zero_bevy_text_uses_the_registered_system_font() {
+        let mut font_assets = Assets::<Font>::default();
+        let fonts = crate::fonts::load_test_fonts(&mut font_assets);
+        let style = resolve_retail_text_style(RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 12,
+            alignment: 1,
+        })
+        .expect("family 0 resolves to System");
+        assert_eq!(style.face, RetailFontFace::System);
+
+        let system = fonts.get(RetailFontFace::System);
+        let registered = font_assets
+            .get(system.handle())
+            .expect("System is registered as a Bevy Font");
+        assert_eq!(
+            registered.data.as_ref(),
+            include_bytes!("../fonts/system.ttf").as_slice()
+        );
+
+        let (text_font, _, line_height, underline) = retail_text_components(style, system);
+        assert_eq!(text_font.font, FontSource::from(system.handle().clone()));
+        assert_eq!(text_font.font_smoothing, FontSmoothing::None);
+        assert_eq!(
+            text_font.font_size,
+            FontSize::Px(system.size_for_cell_height(style.logical_pixel_height) as f32)
+        );
+        assert_eq!(
+            line_height,
+            LineHeight::Px(style.logical_pixel_height as f32)
+        );
+        assert!(!underline);
     }
 }

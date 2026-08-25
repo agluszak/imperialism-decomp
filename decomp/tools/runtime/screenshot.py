@@ -21,6 +21,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 
 # Matches xwininfo -tree rows like:
 #   0x4a00001 (has no name): ("imperialism.exe" "imperialism.exe")  2560x1440+0+0  +0+0
@@ -111,7 +112,7 @@ def capture(win_id: int, out_path: str) -> tuple[int, int]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("out", nargs="?", default="/tmp/imperialism.png")
+    ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--win", help="explicit window ID (hex), skips discovery")
     ap.add_argument("--match", default="imperialism", help="window-class substring")
     ap.add_argument("--pid", type=int, help="require the X11 window to belong to this PID")
@@ -129,8 +130,9 @@ def main() -> int:
         win_id, w, h = found
         print(f"window 0x{win_id:x} ({w}x{h})")
 
-    width, height = capture(win_id, args.out)
-    print(f"saved {args.out} ({width}x{height})")
+    out_path = args.out or str(Path(tempfile.gettempdir()) / "imperialism.png")
+    width, height = capture(win_id, out_path)
+    print(f"saved {out_path} ({width}x{height})")
     return 0
 
 

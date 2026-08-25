@@ -31,6 +31,7 @@ mod satellite_preview;
 mod scenario_setup;
 mod session;
 mod strategic_map;
+mod tactical_viewport;
 mod technology;
 mod technology_store;
 #[cfg(test)]
@@ -62,7 +63,12 @@ pub(crate) use random_setup::RandomSetupPlugin;
 pub(crate) use random_setup_map::MapPreviewPlugin;
 pub(crate) use retail::{RetailUiAssets, RetailUiPlugin};
 pub(crate) use scenario_setup::ScenarioSetupPlugin;
-pub(crate) use session::GameSession;
+#[cfg(test)]
+pub(crate) use session::insert_game_session_world;
+pub(crate) use session::{
+    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_game_session,
+    insert_loaded_game, insert_loaded_game_world, remove_game_session,
+};
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use technology_store::TechnologyStorePlugin;
 pub(crate) use town_naming::TownNamingPlugin;

@@ -6,8 +6,8 @@ use super::map_interaction::{
     navy_zone_center_tile,
 };
 use crate::AppState;
-use crate::ui::GameSession;
 use crate::ui::window::no_modal;
+use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use imperialism_core::*;
 
@@ -21,6 +21,7 @@ pub(crate) fn register(app: &mut App) {
 fn map_hotkeys(
     keys: Res<ButtonInput<KeyCode>>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
 ) {
     let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
@@ -30,18 +31,29 @@ fn map_hotkeys(
     if keys.just_pressed(KeyCode::KeyN) {
         session.game.clear_nation_army_action_modes(nation);
         if !has_active_map_interaction_selection(&interaction) {
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
     }
     if keys.just_pressed(KeyCode::KeyW) {
         session.game.clear_nation_civilian_action_modes(nation);
         if !has_active_map_interaction_selection(&interaction) {
-            cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+            cycle_map_interaction_selection(
+                &mut session,
+                &mut origin,
+                &mut interaction,
+                &mut viewport,
+            );
         }
     }
     if keys.just_pressed(KeyCode::KeyC) {
         center_current_selection(
             &mut session,
+            &mut origin,
             interaction.mode,
             interaction.civilian,
             interaction.army,
@@ -55,6 +67,7 @@ fn map_hotkeys(
     {
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::Center(tile),
@@ -67,6 +80,7 @@ fn map_hotkeys(
     if keys.just_pressed(KeyCode::KeyZ) {
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::ToggleZoom,
@@ -76,6 +90,7 @@ fn map_hotkeys(
 
 fn center_current_selection(
     session: &mut GameSession,
+    origin: &mut MapViewOrigin,
     mode: MapInteractionMode,
     civilian: Option<CivilianUnitId>,
     army: Option<ProvinceId>,
@@ -98,6 +113,12 @@ fn center_current_selection(
             .representative_tile_for_nation(session.game.turn().active_nation),
     };
     if let Some(tile) = tile {
-        apply_map_transition(session, interaction, viewport, MapTransition::Center(tile));
+        apply_map_transition(
+            session,
+            origin,
+            interaction,
+            viewport,
+            MapTransition::Center(tile),
+        );
     }
 }

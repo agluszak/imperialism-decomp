@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Gate reccmp marker hygiene (AGENTS.md Hard Rules 3 and 4).
+"""Gate the marker ownership invariants in AGENTS.md.
 
-Rule 3: a `// FUNCTION: <MODULE> 0x...` marker must be immediately followed by the
+A `// FUNCTION: <MODULE> 0x...` marker must be immediately followed by the
         function declaration -- no blank line and no comment line in between.
-Rule 4: each address may own at most one `// FUNCTION` marker across the whole tree
+Each address may own at most one `// FUNCTION` marker across the whole tree
         (manual source and generated stubs combined). The same uniqueness holds for
         `// GLOBAL` markers: two definitions carrying one original address means one
         original object modeled twice (reccmp silently drops one and the recomp emits
@@ -41,7 +41,7 @@ def normalize_offset(raw: str) -> str:
     Leading zeros are stripped as well as case folded, so `0x4dfd30` and `0x004dfd30`
     are one key. Every marker in the tree is currently written zero-padded to eight
     digits, so this changes nothing today -- but without it a duplicate implementation
-    spelled with a different width would slip past Hard Rule 4 unreported, which is the
+    spelled with a different width would slip past the uniqueness check, which is the
     one thing this gate exists to prevent (bd imperialism-decomp-x1cl).
     """
     digits = raw.lower().removeprefix("0x").lstrip("0")
@@ -52,7 +52,7 @@ def is_declaration_line(line: str) -> bool:
     stripped = line.strip()
     if not stripped:
         return False
-    # Hard Rule 3 forbids ANY comment between the marker and the declaration, so a block
+    # The adjacency invariant forbids any comment between the marker and declaration, so a block
     # comment has to disqualify the line the same way a line comment does. Only `//` was
     # rejected before, which let `/* ... */` sit in the gap unreported.
     if stripped.startswith("//") or stripped.startswith("/*"):

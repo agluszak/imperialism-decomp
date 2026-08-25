@@ -6,11 +6,11 @@ use super::map_interaction::{
 };
 use crate::AppState;
 use crate::media::RetailAudioAssets;
-use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailTree, ancestor_with};
 use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::{GameSession, MapViewOrigin};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::ecs::system::EntityCommands;
 use bevy::prelude::*;
@@ -418,6 +418,7 @@ fn on_civilian_ledger_action(
     mut ledgers: Query<&mut CivilianLedger>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut commands: Commands,
     mut audio: RetailAudioAssets,
 ) {
@@ -443,6 +444,7 @@ fn on_civilian_ledger_action(
             if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
                 apply_map_transition(
                     &mut session,
+                    &mut origin,
                     &mut interaction,
                     &mut viewport,
                     MapTransition::Center(tile),
@@ -466,6 +468,7 @@ fn on_civilian_ledger_action(
             {
                 apply_map_transition(
                     &mut session,
+                    &mut origin,
                     &mut interaction,
                     &mut viewport,
                     MapTransition::SetMode(MapInteractionMode::Civilian),
@@ -919,6 +922,7 @@ fn on_civilian_modal_action(
     actions: Query<&CivilianModalAction>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut commands: Commands,
     assets: RetailUiAssets,
     mut audio: RetailAudioAssets,
@@ -970,7 +974,7 @@ fn on_civilian_modal_action(
         }
     }
     if completed && let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
-        cycle_map_interaction_selection(&mut session, &mut interaction, &mut viewport);
+        cycle_map_interaction_selection(&mut session, &mut origin, &mut interaction, &mut viewport);
     }
 }
 
@@ -979,6 +983,7 @@ fn on_cancel_civilian_order(
     actions: Query<&CancelCivilianOrder>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
 ) {
     let Ok(CancelCivilianOrder(unit)) = actions.get(activate.entity) else {
         return;
@@ -988,6 +993,7 @@ fn on_cancel_civilian_order(
     {
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::SetMode(MapInteractionMode::Civilian),
@@ -1613,6 +1619,7 @@ fn on_army_roster_row_action(
     roots: Query<(), With<ArmyRosterDialog>>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut commands: Commands,
 ) {
     let Ok(ArmyRosterRowAction::Select(province)) = actions.get(activate.entity).copied() else {
@@ -1624,6 +1631,7 @@ fn on_army_roster_row_action(
     if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::SetMode(MapInteractionMode::Army),
@@ -1633,6 +1641,7 @@ fn on_army_roster_row_action(
         if let Some(tile) = session.game.map().provinces[province].city_tile() {
             apply_map_transition(
                 &mut session,
+                &mut origin,
                 &mut interaction,
                 &mut viewport,
                 MapTransition::Center(tile),
@@ -1649,6 +1658,7 @@ fn on_navy_roster_row_action(
     roots: Query<(), With<NavyRosterDialog>>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
     mut commands: Commands,
 ) {
     let Ok(action) = actions.get(activate.entity).copied() else {
@@ -1660,7 +1670,14 @@ fn on_navy_roster_row_action(
     match action {
         NavyRosterRowAction::Select { zone, force } => {
             if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
-                activate_navy_selection(&mut session, &mut interaction, &mut viewport, zone, force);
+                activate_navy_selection(
+                    &mut session,
+                    &mut origin,
+                    &mut interaction,
+                    &mut viewport,
+                    zone,
+                    force,
+                );
             }
             commands.entity(root).try_despawn();
         }
@@ -1683,6 +1700,7 @@ fn on_cancel_fleet_orders(
     actions: Query<&CancelFleetOrders>,
     mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
     mut session: ResMut<GameSession>,
+    mut origin: ResMut<MapViewOrigin>,
 ) {
     let Ok(CancelFleetOrders(force)) = actions.get(activate.entity).copied() else {
         return;
@@ -1692,6 +1710,7 @@ fn on_cancel_fleet_orders(
     if let Ok((mut interaction, mut viewport)) = interactions.single_mut() {
         apply_map_transition(
             &mut session,
+            &mut origin,
             &mut interaction,
             &mut viewport,
             MapTransition::SetMode(MapInteractionMode::Navy),

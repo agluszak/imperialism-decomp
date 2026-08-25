@@ -1,12 +1,13 @@
-use super::GameSession;
 use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
 use super::window::{
-    DismissWindow, FloatingWindow, ModalCancel, ModalDefault, ModalWindow, WindowPosition,
+    CaptionedWindow, DismissWindow, ModalCancel, ModalDefault, ModalWindow, set_window_position,
+    window_position,
 };
+use super::{CityWindows, GameSession};
 use crate::{AppState, RetailAssetsResource};
 use bevy::log::warn;
 use bevy::picking::events::{Click, Pointer};

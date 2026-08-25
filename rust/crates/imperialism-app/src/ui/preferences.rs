@@ -8,7 +8,7 @@ use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
 use super::retail_raster_text::RetailRasterTextPainter;
 use crate::media::RetailAudioAssets;
-use crate::{AppState, RetailAssetsResource, ReturnTo};
+use crate::{AppState, RetailAssetsResource, RetailFonts, ReturnTo};
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::ui::{Checked, InteractionDisabled};
@@ -381,6 +381,8 @@ fn on_sound_slider_released(
 #[allow(clippy::type_complexity)]
 fn sync_preference_slider_visuals(
     retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
     sliders: Query<
         (
@@ -394,7 +396,8 @@ fn sync_preference_slider_visuals(
     >,
 ) {
     let mut text = RetailRasterTextPainter::from_preset(
-        retail.assets(),
+        &fonts,
+        &font_assets,
         RetailTextStylePreset {
             font_family: 1,
             face_flags: 0,

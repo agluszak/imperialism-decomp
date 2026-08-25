@@ -10,7 +10,7 @@ use super::retail_amount_bar::{
 };
 use super::retail_raster::IndexedRasterExt;
 use super::retail_raster_text::RetailRasterTextPainter;
-use crate::{AppState, RetailAssetsResource};
+use crate::{AppState, RetailAssetsResource, RetailFonts};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
@@ -544,6 +544,8 @@ fn sync_trade_text(
 fn sync_trade_screen_picture(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     mut images: ResMut<Assets<Image>>,
     roots: Query<(), Added<TradeScreen>>,
     screens: Query<(&TradeScreenVisual, &ImageNode)>,
@@ -554,7 +556,8 @@ fn sync_trade_screen_picture(
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let mut text = RetailRasterTextPainter::from_preset(
-        retail.assets(),
+        &fonts,
+        &font_assets,
         RetailTextStylePreset {
             font_family: 2,
             face_flags: 0,
@@ -758,7 +761,7 @@ fn sync_trade_presence(
         let TradeDisplay::Advisory(kind) = *display else {
             continue;
         };
-        *visibility = if trade_advisory_needed(major, kind) {
+        *visibility = if trade_advisory_needed(&session.game, nation, kind) {
             Visibility::Visible
         } else {
             Visibility::Hidden
@@ -766,14 +769,14 @@ fn sync_trade_presence(
     }
 }
 
-fn trade_advisory_needed(major: &MajorNation, kind: TradeAdvisoryKind) -> bool {
+fn trade_advisory_needed(
+    state: &GameState,
+    nation: MajorNationId,
+    kind: TradeAdvisoryKind,
+) -> bool {
+    let major = state.nations().major(nation);
     let city = &major.city;
     let economy = &major.economy;
-    let building =
-        |slot| i32::from(city.building_type(slot, economy, major.common.owned_region_count()));
-    let stock_and_target = |resource| {
-        i32::from(city.stockpile[resource]) + i32::from(economy.need_target_by_type[resource])
-    };
     match kind {
         TradeAdvisoryKind::Food => {
             let on_hand = i32::from(city.stockpile[ResourceKind::Food])
@@ -790,32 +793,33 @@ fn trade_advisory_needed(major: &MajorNation, kind: TradeAdvisoryKind) -> bool {
             on_hand < required
         }
         TradeAdvisoryKind::Textile => {
-            stock_and_target(ResourceKind::Cotton) + stock_and_target(ResourceKind::Wool)
-                < building(CityFacilitySlot::TextileMill) * 2
+            trade_input_short(state, nation, TransportAllocation::COTTON_AND_WOOL)
         }
-        TradeAdvisoryKind::Timber => {
-            stock_and_target(ResourceKind::Timber) < building(CityFacilitySlot::LumberMill) * 2
-        }
-        TradeAdvisoryKind::Coal => {
-            stock_and_target(ResourceKind::Coal) < building(CityFacilitySlot::SteelMill)
-        }
-        TradeAdvisoryKind::Iron => {
-            stock_and_target(ResourceKind::Iron) < building(CityFacilitySlot::SteelMill)
-        }
-        TradeAdvisoryKind::Oil => {
-            stock_and_target(ResourceKind::Oil) < building(CityFacilitySlot::OilRefinery) * 2
-        }
-        TradeAdvisoryKind::Fabric => {
-            stock_and_target(ResourceKind::Fabric) < building(CityFacilitySlot::ClothingFactory) * 2
-        }
-        TradeAdvisoryKind::Lumber => {
-            stock_and_target(ResourceKind::Lumber)
-                < building(CityFacilitySlot::FurnitureFactory) * 2
-        }
-        TradeAdvisoryKind::Steel => {
-            stock_and_target(ResourceKind::Steel) < building(CityFacilitySlot::Metalworks) * 2
-        }
+        TradeAdvisoryKind::Timber => trade_input_short(state, nation, TransportAllocation::TIMBER),
+        TradeAdvisoryKind::Coal => trade_input_short(state, nation, TransportAllocation::COAL),
+        TradeAdvisoryKind::Iron => trade_input_short(state, nation, TransportAllocation::IRON),
+        TradeAdvisoryKind::Oil => trade_input_short(state, nation, TransportAllocation::OIL),
+        TradeAdvisoryKind::Fabric => trade_input_short(state, nation, TransportAllocation::FABRIC),
+        TradeAdvisoryKind::Lumber => trade_input_short(state, nation, TransportAllocation::LUMBER),
+        TradeAdvisoryKind::Steel => trade_input_short(state, nation, TransportAllocation::STEEL),
     }
+}
+
+fn trade_input_short(
+    state: &GameState,
+    nation: MajorNationId,
+    allocation: TransportAllocation,
+) -> bool {
+    let Some(required) = state.transport_requirement(nation, allocation) else {
+        return false;
+    };
+    let major = state.nations().major(nation);
+    let (primary, secondary) = allocation.resources();
+    let on_hand = |resource| {
+        i32::from(major.city.stockpile[resource])
+            + i32::from(major.economy.need_target_by_type[resource])
+    };
+    on_hand(primary) + secondary.map_or(0, on_hand) < i32::from(required)
 }
 
 fn set_trade_control(commands: &mut Commands, entity: Entity, visible: bool) {

@@ -305,7 +305,8 @@ mod tests {
 
     #[test]
     fn missing_movie_is_unplayable_without_stranding() {
-        match MovieBackend::open(Path::new("/tmp/imperialism-missing-open.avi")) {
+        let dir = TempDir::new().unwrap();
+        match MovieBackend::open(dir.path().join("missing.avi")) {
             Err(error) => assert!(matches!(error, MovieError::Missing { .. })),
             Ok(_) => panic!("missing AVI must not open"),
         }
