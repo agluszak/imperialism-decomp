@@ -520,6 +520,20 @@ fn load_template_font(context: &mut TemplateContext, face: RetailFontFace) -> Ca
     })
 }
 
+pub(crate) fn platform_system_font_bytes() -> Result<Vec<u8>, RetailTextError> {
+    fs::read(WINE_SYSTEM_FONT_PATH).map_err(RetailTextError::SystemFont)
+}
+
+pub(crate) fn retail_font_bytes(
+    face: RetailFontFace,
+    assets: &RetailAssets,
+) -> Result<Vec<u8>, RetailTextError> {
+    match face {
+        RetailFontFace::System => platform_system_font_bytes(),
+        _ => Ok(assets.font_bytes(face).to_vec()),
+    }
+}
+
 fn load_retail_font(
     face: RetailFontFace,
     retail_assets: &RetailAssetsResource,
@@ -529,12 +543,7 @@ fn load_retail_font(
     if let Some(cached) = font_handles.0.get(&face) {
         return Ok(cached.clone());
     }
-    let bytes = match face {
-        RetailFontFace::System => {
-            fs::read(WINE_SYSTEM_FONT_PATH).map_err(RetailTextError::SystemFont)?
-        }
-        _ => retail_assets.assets().font_bytes(face).to_vec(),
-    };
+    let bytes = retail_font_bytes(face, retail_assets.assets())?;
     let metrics = decode_retail_font_cell_metrics(face, &bytes)?;
     let handle = fonts.add(Font::from_bytes(bytes));
     let cached = CachedRetailFont { handle, metrics };

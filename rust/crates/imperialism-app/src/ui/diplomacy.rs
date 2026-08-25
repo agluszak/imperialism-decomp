@@ -1386,10 +1386,7 @@ fn draw_diplomacy_text_center(
     painter.draw_center(picture, center + 1, baseline + 1, text, 0x13);
 }
 
-fn diplomacy_text_painter<'a>(
-    assets: &'a RetailAssets,
-    point_size: i32,
-) -> RetailRasterTextPainter<'a> {
+fn diplomacy_text_painter(assets: &RetailAssets, point_size: i32) -> RetailRasterTextPainter {
     RetailRasterTextPainter::from_preset(
         assets,
         RetailTextStylePreset {
