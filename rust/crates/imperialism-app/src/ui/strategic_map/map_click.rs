@@ -728,7 +728,7 @@ mod tests {
                     continue;
                 }
                 let command = state.navy_command_for_tile(force, tile);
-                if matches!(command, 0x0c | 0x0d | 0x0e | 0x0f | 0x10) {
+                if (0x0c..=0x10).contains(&command) {
                     return Some((tile, command));
                 }
             }
