@@ -126,6 +126,7 @@ impl RetailRasterTextPainter {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTextError;
     use crate::ui::retail_raster::indexed_picture;
     use std::fs;
 
@@ -251,11 +252,19 @@ mod tests {
         })
         .expect("retail System family must resolve");
         assert_eq!(style.face, imperialism_formats::RetailFontFace::System);
-        let font_data = super::super::retail::platform_system_font_bytes()
-            .expect("Wine System font is supplied by the platform");
-        let size = decode_retail_font_cell_metrics(style.face, &font_data)
-            .expect("Wine System font metrics")
-            .em_pixel_size(style.logical_pixel_height) as f32;
+
+        // Must not panic: RetailAssets::font_bytes(System) used to be unreachable.
+        // CI does not ship Wine; a missing file is SystemFont, not a test skip.
+        let (font_data, size) = match crate::ui::retail::platform_system_font_bytes() {
+            Ok(font_data) => {
+                let size = decode_retail_font_cell_metrics(style.face, &font_data)
+                    .expect("Wine System font metrics")
+                    .em_pixel_size(style.logical_pixel_height) as f32;
+                (font_data, size)
+            }
+            Err(RetailTextError::SystemFont(_)) => (test_font(), 10.0),
+            Err(error) => panic!("System face must fail only as SystemFont: {error}"),
+        };
         let mut painter = RetailRasterTextPainter::new(font_data, size);
         assert!(painter.measure("France") > 0);
         let mut picture = indexed_picture(120, 24, 0);
