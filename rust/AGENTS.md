@@ -47,6 +47,12 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
   captured battle-report strings are separate resources (`MapViewOrigin`, `CityWindows`,
   `BattleReportPresentation`) so scrolling or layout changes do not mark gameplay changed. Do not
   split `GameState` itself into ECS components.
+- Immutable retail catalogs used by simulation (`GameData`, currently the news story-id table) are
+  loaded once onto `GameState` and are not persisted. Do not thread them through gameplay
+  operations.
+- Immutable retail catalogs used by simulation (`GameData`, currently the news story-id table) are
+  loaded once onto `GameState` and are not persisted. Do not thread them through gameplay
+  operations.
 
 Use `port-behavior` for the C++-to-Rust differential procedure and `ui-recovery` for the resource-to-
 Bevy generation procedure.

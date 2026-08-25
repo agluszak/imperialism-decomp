@@ -278,7 +278,7 @@ fn auto_resolve_land_battle() {
             .do_combat_moves()
             .expect("hostile stack creates a battle");
         state.enter_land_battle(continuation);
-        let _ = state.auto_resolve_land_battle(&[]);
+        let _ = state.auto_resolve_land_battle();
     })
     .unwrap();
 }
@@ -298,12 +298,9 @@ fn interactive_army_battle_done() {
     state.enter_land_battle(continuation);
     differential::auto_deploy_army_battle(&mut state);
     let mut snapshots = vec![differential::army_battle_snapshot(&state).unwrap()];
-    assert_eq!(
-        state.finish_selected_army_unit_action(&[]).unwrap().stop,
-        None
-    );
+    assert_eq!(state.finish_selected_army_unit_action().unwrap().stop, None);
     snapshots.push(differential::army_battle_snapshot(&state).unwrap());
-    let _ = state.auto_resolve_land_battle(&[]);
+    let _ = state.auto_resolve_land_battle();
 
     assert_eq!(snapshots, native.result);
     assert_game_state_eq(&expected, &state).unwrap();
@@ -325,7 +322,7 @@ fn interactive_army_battle_move() {
     assert_eq!(native.result.targets.len(), native.result.actuals.len());
     for (&target, &actual) in native.result.targets.iter().zip(&native.result.actuals) {
         let target = TacticalHex::from_index(target).unwrap();
-        let (action, _) = state.army_action_at(target, &[]).unwrap();
+        let (action, _) = state.army_action_at(target).unwrap();
         let ArmyAction::Move(moved) = action else {
             panic!("native move target must classify as Move");
         };
@@ -333,7 +330,7 @@ fn interactive_army_battle_move() {
         snapshots.push(differential::army_battle_snapshot(&state).unwrap());
     }
     assert_ne!(native.result.targets.last(), native.result.actuals.last());
-    let _ = state.auto_resolve_land_battle(&[]);
+    let _ = state.auto_resolve_land_battle();
 
     assert_eq!(snapshots, native.result.snapshots);
     assert_game_state_eq(&expected, &state).unwrap();
@@ -357,13 +354,10 @@ fn compare_interactive_army_battle_attack(case_name: &str) {
         .zip(&native.result.actuals)
     {
         match kind {
-            0 => assert_eq!(
-                state.finish_selected_army_unit_action(&[]).unwrap().stop,
-                None
-            ),
+            0 => assert_eq!(state.finish_selected_army_unit_action().unwrap().stop, None),
             1 => {
                 let target = TacticalHex::from_index(target).unwrap();
-                let (action, _) = state.army_action_at(target, &[]).unwrap();
+                let (action, _) = state.army_action_at(target).unwrap();
                 let ArmyAction::Move(moved) = action else {
                     panic!("native move target must classify as Move");
                 };
@@ -371,7 +365,7 @@ fn compare_interactive_army_battle_attack(case_name: &str) {
             }
             2 => {
                 let target = TacticalHex::from_index(target).unwrap();
-                let (action, _) = state.army_action_at(target, &[]).unwrap();
+                let (action, _) = state.army_action_at(target).unwrap();
                 assert!(matches!(action, ArmyAction::Attack { .. }));
             }
             _ => panic!("unknown native tactical input kind {kind}"),
@@ -381,7 +375,7 @@ fn compare_interactive_army_battle_attack(case_name: &str) {
         }
     }
     if state.pending_land_battle().is_some() {
-        let _ = state.auto_resolve_land_battle(&[]);
+        let _ = state.auto_resolve_land_battle();
     }
     assert_eq!(snapshots, native.result.snapshots);
     assert_game_state_eq(&expected, &state).unwrap();
@@ -417,7 +411,7 @@ fn interactive_army_battle_retreat() {
         differential::army_battle_snapshot(&state),
         Some(native.result)
     );
-    assert!(state.retreat_from_army_battle(&[]).unwrap().stop.is_some());
+    assert!(state.retreat_from_army_battle().unwrap().stop.is_some());
     assert_game_state_eq(&expected, &state).unwrap();
 }
 

@@ -150,15 +150,9 @@ fn on_battle_report_close(
     mut session: ResMut<GameSession>,
     mut reports: ResMut<BattleReportPresentation>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     reports.0.clear();
-    apply_turn_stop(
-        session
-            .game
-            .close_post_combat_reports(super::session::news_story_ids(assets.as_deref())),
-        &mut next_state,
-    );
+    apply_turn_stop(session.game.close_post_combat_reports(), &mut next_state);
 }
 
 fn on_battle_report_detail(

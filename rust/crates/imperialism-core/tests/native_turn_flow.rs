@@ -1,6 +1,6 @@
 //! Native interruption-boundary differentials for the outer turn state machine.
 
-use imperialism_core::{GameState, TurnStop};
+use imperialism_core::{GameData, GameState, TurnStop};
 use imperialism_testkit::{
     assert_game_state_eq, compare_native, first_serialized_difference, load_save_backed_state,
     run_native,
@@ -48,7 +48,7 @@ struct TradeBoundaryResult {
 #[ignore = "requires the native C++ oracle"]
 fn deal_book_dispatch_precedes_the_quarter_gate() {
     compare_native("turn_stop_deal_book", |state, (): ()| {
-        stop_name(state.advance_turn(&[]))
+        stop_name(state.advance_turn())
     })
     .unwrap();
 }
@@ -72,10 +72,8 @@ fn newspaper_dispatch_precedes_return_to_map() {
     let native = run_native::<NewspaperCase, String>("turn_stop_newspaper").unwrap();
     let mut actual = load_save_backed_state(native.before).unwrap();
     let expected = load_save_backed_state(native.after).unwrap();
-    assert_eq!(
-        stop_name(actual.advance_turn(&native.case.story_ids)),
-        native.result
-    );
+    actual.set_game_data(GameData::from_news_story_ids(native.case.story_ids));
+    assert_eq!(stop_name(actual.advance_turn()), native.result);
     assert_game_state_eq(&expected, &actual).unwrap();
 }
 
@@ -85,30 +83,27 @@ fn second_turn_sequence_returns_through_deal_book_and_newspaper() {
     compare_native(
         "second_turn_sequence",
         |state, case: SecondTurnSequenceCase| {
+            state.set_game_data(GameData::from_news_story_ids(case.story_ids));
             let mut stops = Vec::new();
             let mut rng_states = Vec::new();
-            let mut stop = state.finish_player_orders(false, &case.story_ids);
+            let mut stop = state.finish_player_orders(false);
             while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
                 stop = match stop {
-                    TurnStop::DiplomacyOffer => {
-                        state.answer_current_diplomacy_offer(false, &case.story_ids)
-                    }
-                    TurnStop::DiplomacyWarJoin => {
-                        state.answer_current_diplomacy_war_join(false, &case.story_ids)
-                    }
+                    TurnStop::DiplomacyOffer => state.answer_current_diplomacy_offer(false),
+                    TurnStop::DiplomacyWarJoin => state.answer_current_diplomacy_war_join(false),
                     _ => unreachable!(),
                 };
             }
             while stop == TurnStop::TradeOffer {
-                stop = state.answer_trade_offer(0, false, &case.story_ids);
+                stop = state.answer_trade_offer(0, false);
             }
             assert_eq!(stop, TurnStop::DealBook);
             stops.push("deal_book".to_owned());
             rng_states.push(state.rng().crt_rand.state());
 
-            stop = state.close_turn_deal_book(&case.story_ids);
+            stop = state.close_turn_deal_book();
             while stop == TurnStop::TechnologyAdvance {
-                stop = state.acknowledge_technology_report(&case.story_ids);
+                stop = state.acknowledge_technology_report();
             }
             assert_eq!(stop, TurnStop::Newspaper);
             stops.push("newspaper".to_owned());
@@ -136,32 +131,29 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
     .unwrap();
     let mut state = load_save_backed_state(native.before).unwrap();
     let expected = load_save_backed_state(native.after).unwrap();
+    state.set_game_data(GameData::from_news_story_ids(native.case.story_ids));
     let mut stops = Vec::new();
     let mut rng_states = Vec::new();
     let mut economic_turns = Vec::new();
     for _ in 0..12 {
-        let mut stop = state.finish_player_orders(false, &native.case.story_ids);
+        let mut stop = state.finish_player_orders(false);
         while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
             stop = match stop {
-                TurnStop::DiplomacyOffer => {
-                    state.answer_current_diplomacy_offer(false, &native.case.story_ids)
-                }
-                TurnStop::DiplomacyWarJoin => {
-                    state.answer_current_diplomacy_war_join(false, &native.case.story_ids)
-                }
+                TurnStop::DiplomacyOffer => state.answer_current_diplomacy_offer(false),
+                TurnStop::DiplomacyWarJoin => state.answer_current_diplomacy_war_join(false),
                 _ => unreachable!(),
             };
         }
         while stop == TurnStop::TradeOffer {
-            stop = state.answer_trade_offer(0, false, &native.case.story_ids);
+            stop = state.answer_trade_offer(0, false);
         }
         assert_eq!(stop, TurnStop::DealBook);
         stops.push("deal_book".to_owned());
         rng_states.push(state.rng().crt_rand.state());
 
-        stop = state.close_turn_deal_book(&native.case.story_ids);
+        stop = state.close_turn_deal_book();
         while stop == TurnStop::TechnologyAdvance {
-            stop = state.acknowledge_technology_report(&native.case.story_ids);
+            stop = state.acknowledge_technology_report();
         }
         assert_eq!(stop, TurnStop::Newspaper);
         stops.push("newspaper".to_owned());
@@ -187,7 +179,7 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
 #[ignore = "requires the native C++ oracle"]
 fn technology_report_dispatch_precedes_newspaper() {
     compare_native("turn_stop_technology", |state, (): ()| {
-        stop_name(state.advance_turn(&[]))
+        stop_name(state.advance_turn())
     })
     .unwrap();
 }
@@ -199,7 +191,7 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
     let mut actual = load_save_backed_state(native.before).unwrap();
     let expected = load_save_backed_state(native.after).unwrap();
 
-    assert_eq!(actual.advance_turn(&[]), TurnStop::TradeOffer);
+    assert_eq!(actual.advance_turn(), TurnStop::TradeOffer);
     let pending = actual
         .pending_trade_offer()
         .expect("trade stop requires a pending offer");

@@ -242,11 +242,8 @@ fn on_start_scenario(
         difficulty,
         1,
     );
-    let stop = enter_strategic_map_without_capital_selection(
-        &mut game,
-        setup.nation,
-        retail.news_story_ids(),
-    );
+    game.set_game_data(super::session::retail_game_data(&retail));
+    let stop = enter_strategic_map_without_capital_selection(&mut game, setup.nation);
     apply_turn_stop(stop, &mut next_state);
     insert_game_session(&mut commands, game);
 }

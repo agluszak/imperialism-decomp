@@ -103,13 +103,10 @@ impl Plugin for NavalBattlePlugin {
 fn synchronize_interactive_navy_battle(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     if session.game.pending_naval_battle().is_some()
         && session.game.navy_battle().is_none()
-        && let Some(stop) = session
-            .game
-            .synchronize_navy_battle(super::session::news_story_ids(assets.as_deref()))
+        && let Some(stop) = session.game.synchronize_navy_battle()
         && stop != TurnStop::NavalBattle
     {
         apply_turn_stop(stop, &mut next_state);
@@ -319,7 +316,6 @@ fn on_battlefield_click(
     fields: Query<(&RelativeCursorPosition, &NavalBattlefield)>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     if click.event.button != PointerButton::Primary {
         return;
@@ -330,14 +326,9 @@ fn on_battlefield_click(
     let Some((x, y)) = battlefield_cursor_pixel(cursor) else {
         return;
     };
-    if let Some(stop) = apply_battlefield_click(
-        &mut session,
-        x,
-        y,
-        view.view_origin_x,
-        view.view_origin_y,
-        super::session::news_story_ids(assets.as_deref()),
-    ) && stop != TurnStop::NavalBattle
+    if let Some(stop) =
+        apply_battlefield_click(&mut session, x, y, view.view_origin_x, view.view_origin_y)
+        && stop != TurnStop::NavalBattle
     {
         apply_turn_stop(stop, &mut next_state);
     }
@@ -349,11 +340,10 @@ fn apply_battlefield_click(
     y: i32,
     view_origin_x: i32,
     view_origin_y: i32,
-    story_ids: &[i32],
 ) -> Option<TurnStop> {
     let tile_map = navy_viewport(view_origin_x, view_origin_y);
     let tile = navy_tile_at_pixel(&tile_map, x, y)?;
-    session.game.navy_action_at(tile, story_ids).ok().flatten()
+    session.game.navy_action_at(tile).ok().flatten()
 }
 
 fn on_naval_battle_activate(
@@ -363,32 +353,24 @@ fn on_naval_battle_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut music: Option<ResMut<MusicDirector>>,
     time: Option<Res<Time>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
     match *action {
         NavalBattleAction::Done => {
-            if let Ok(Some(stop)) = session
-                .game
-                .finish_selected_navy_unit_action(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(Some(stop)) = session.game.finish_selected_navy_unit_action()
                 && stop != TurnStop::NavalBattle
             {
                 apply_turn_stop(stop, &mut next_state);
             }
         }
-        NavalBattleAction::Auto => match session
-            .game
-            .auto_resolve_navy_battle(super::session::news_story_ids(assets.as_deref()))
-        {
+        NavalBattleAction::Auto => match session.game.auto_resolve_navy_battle() {
             TurnStop::NavalBattle => {}
             stop => apply_turn_stop(stop, &mut next_state),
         },
         NavalBattleAction::Retreat => {
-            if let Ok(Some(stop)) = session
-                .game
-                .retreat_from_navy_battle(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(Some(stop)) = session.game.retreat_from_navy_battle()
                 && stop != TurnStop::NavalBattle
             {
                 apply_turn_stop(stop, &mut next_state);
@@ -718,7 +700,7 @@ mod tests {
         app.world_mut()
             .resource_scope(|_, mut session: Mut<GameSession>| {
                 assert_eq!(
-                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0, 0, &[]),
+                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0, 0),
                     None
                 );
             });

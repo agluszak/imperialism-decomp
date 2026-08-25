@@ -234,17 +234,14 @@ fn on_end_turn(
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Res<RetailAssetsResource>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let stop = session
         .game
-        .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
-    let stop = session.game.apply_land_battle_watch_policy(
-        stop,
-        prefs.tactical_battles_enabled(),
-        assets.news_story_ids(),
-    );
+        .finish_player_orders(prefs.turn_alerts_enabled());
+    let stop = session
+        .game
+        .apply_land_battle_watch_policy(stop, prefs.tactical_battles_enabled());
     match stop {
         imperialism_core::TurnStop::TurnAlerts(alerts) => {
             commands.insert_resource(TurnAlertQueue(alerts.into()));

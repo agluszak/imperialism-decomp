@@ -538,6 +538,9 @@ fn accept_random_setup(
         1,
         names,
     );
+    game.set_game_data(GameData::from_news_story_ids(
+        assets.news_table().story_ids().to_vec(),
+    ));
     if requires_capital_site_selection(setup.difficulty) {
         let map_view_origin = capital_selection_view_origin(game.map(), setup.nation);
         insert_loaded_game(
@@ -551,11 +554,7 @@ fn accept_random_setup(
         );
         next_state.set(AppState::CitySite);
     } else {
-        let stop = enter_strategic_map_without_capital_selection(
-            &mut game,
-            setup.nation,
-            assets.news_table().story_ids(),
-        );
+        let stop = enter_strategic_map_without_capital_selection(&mut game, setup.nation);
         apply_turn_stop(stop, next_state);
         insert_game_session(commands, game);
     }

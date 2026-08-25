@@ -115,7 +115,7 @@ pub use diplomacy::{
     DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
     PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
 };
-pub use game::{GameState, GameStateParts};
+pub use game::{GameData, GameState, GameStateParts};
 pub use game_score::GameScore;
 pub use ids::{
     AdmiralId, CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, MissionId, NationId,

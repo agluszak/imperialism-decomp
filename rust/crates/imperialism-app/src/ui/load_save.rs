@@ -752,7 +752,12 @@ fn apply_load(
         load_game_from_bytes(&bytes, context)
     })();
     match load {
-        Ok(loaded) => {
+        Ok(mut loaded) => {
+            if let Some(assets) = assets {
+                loaded
+                    .game
+                    .set_game_data(crate::ui::retail_game_data(assets));
+            }
             let destination = loaded_game_destination(&loaded.game);
             insert_loaded_game(commands, loaded);
             next_state.set(destination);

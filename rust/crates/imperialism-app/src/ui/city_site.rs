@@ -505,9 +505,8 @@ fn on_new_city_activate(
     dialog: Single<&NewCityDialogRoot>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Res<RetailAssetsResource>,
 ) {
-    let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
+    let stop = confirm_capital_site(&mut session.game, dialog.0);
     apply_turn_stop(stop, &mut next_state);
 }
 

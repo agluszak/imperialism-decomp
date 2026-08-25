@@ -365,13 +365,13 @@ pub struct LandSale {
 
 impl GameState {
     /// Mirrors `TNewsMgr::StartNewsPhase` page construction without loading `news.tab`.
-    pub fn construct_newspaper_pages(&mut self, story_ids: &[i32]) {
+    pub fn construct_newspaper_pages(&mut self) {
         self.news.pages = MajorNationTable::default();
         let active = MajorNationId::from_nation(self.turn.active_nation);
         for nation in MajorNationId::all() {
             let eligible = self.nations.major(nation).economy.diplomacy_eligible;
             if eligible || active == Some(nation) {
-                let page = self.create_newspaper(nation, story_ids);
+                let page = self.create_newspaper(nation);
                 if page.stories.iter().flatten().any(Option::is_some) {
                     self.news.pages[nation] = Some(page);
                 }
@@ -380,10 +380,11 @@ impl GameState {
         self.pending.newspaper_events.clear();
     }
 
-    fn create_newspaper(&mut self, nation: MajorNationId, story_ids: &[i32]) -> NewsPage {
+    fn create_newspaper(&mut self, nation: MajorNationId) -> NewsPage {
         let mut page = NewsPage::default();
         let mut column = 0;
         let mut row = 0;
+        let story_ids = self.data.news_story_ids();
         create_event_stories(
             &self.pending.newspaper_events,
             &self.battle_reports,
@@ -812,10 +813,10 @@ mod tests {
         }
     }
 
-    fn filler_table() -> Vec<i32> {
+    fn filler_catalog() -> GameData {
         let mut ids = vec![1; NEWS_TEMPLATE_COUNT];
         ids[0] = -1003;
-        ids
+        GameData::from_news_story_ids(ids)
     }
 
     #[test]
@@ -840,7 +841,8 @@ mod tests {
                 audience: None,
                 story_code: 3,
             });
-        state.construct_newspaper_pages(&filler_table());
+        state.set_game_data(filler_catalog());
+        state.construct_newspaper_pages();
 
         let page = state.news.pages[MajorNationId::new(0)]
             .as_ref()
@@ -864,7 +866,8 @@ mod tests {
                 audience: None,
                 story_code: 3,
             });
-        state.construct_newspaper_pages(&filler_table());
+        state.set_game_data(filler_catalog());
+        state.construct_newspaper_pages();
         assert_eq!(state.turn.phase, PhaseCode::RETURN_TO_MAP);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
@@ -888,10 +891,12 @@ mod tests {
                 },
             ]),
         });
-        let mut templates = filler_table();
-        templates[1] = -0x19;
+        let mut ids = vec![1; NEWS_TEMPLATE_COUNT];
+        ids[0] = -1003;
+        ids[1] = -0x19;
+        state.set_game_data(GameData::from_news_story_ids(ids));
 
-        state.construct_newspaper_pages(&templates);
+        state.construct_newspaper_pages();
 
         let story = state.news.pages[MajorNationId::new(0)]
             .as_ref()

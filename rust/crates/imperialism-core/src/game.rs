@@ -2,6 +2,25 @@ use crate::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
+/// Immutable retail catalogs used by simulation.
+///
+/// Loaded once for a session and owned beside the mutable [`GameState`]. Not
+/// written to `.imp` saves; restore from retail data after load.
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct GameData {
+    news_story_ids: Vec<i32>,
+}
+
+impl GameData {
+    pub fn from_news_story_ids(news_story_ids: Vec<i32>) -> Self {
+        Self { news_story_ids }
+    }
+
+    pub fn news_story_ids(&self) -> &[i32] {
+        &self.news_story_ids
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct GameState {
     pub(crate) turn: TurnState,
@@ -28,6 +47,9 @@ pub struct GameState {
     /// Live interruptible-phase resume state. Not written to `.imp`.
     #[serde(default)]
     pub(crate) continuation: crate::turn_flow::TurnContinuation,
+    /// Immutable catalogs for this session. Restored from retail data on load.
+    #[serde(skip)]
+    pub(crate) data: GameData,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -82,6 +104,7 @@ impl GameState {
             pending: parts.pending,
             battle_reports: parts.battle_reports,
             continuation: parts.continuation,
+            data: GameData::default(),
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
             if state.task_forces[&force].flagship.is_none() {
@@ -90,6 +113,14 @@ impl GameState {
         }
         state.rebuild_civilian_tile_chains();
         state
+    }
+
+    pub const fn game_data(&self) -> &GameData {
+        &self.data
+    }
+
+    pub fn set_game_data(&mut self, data: GameData) {
+        self.data = data;
     }
 
     pub const fn turn(&self) -> &TurnState {

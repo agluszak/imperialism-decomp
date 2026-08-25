@@ -1,6 +1,6 @@
 use crate::ui::generated;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
-use crate::ui::session::{apply_turn_stop, news_story_ids};
+use crate::ui::session::apply_turn_stop;
 use crate::ui::window::{ModalCancel, ModalDefault, ModalWindow};
 use crate::ui::{GameSession, RetailUiAssets};
 use crate::{AppState, RetailAssetsResource};
@@ -179,10 +179,9 @@ fn commit_town_name(
     _activate: On<Activate>,
     field: Single<&EditableText, With<TownNameField>>,
     mut session: ResMut<GameSession>,
-    assets: Option<Res<RetailAssetsResource>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     session.game.name_pending_town(field.value().to_string());
-    let stop = session.game.advance_turn(news_story_ids(assets.as_deref()));
+    let stop = session.game.advance_turn();
     apply_turn_stop(stop, &mut next_state);
 }

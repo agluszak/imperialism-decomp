@@ -332,15 +332,12 @@ fn synchronize_interactive_army_battle(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     mut commands: Commands,
 ) {
     if session.game.pending_land_battle().is_some()
         && session.game.army_battle().is_none()
-        && let Some(progress) = session
-            .game
-            .synchronize_army_battle(super::session::news_story_ids(assets.as_deref()))
+        && let Some(progress) = session.game.synchronize_army_battle()
         && let Ok((field, mut view)) = fields.single_mut()
     {
         queue_land_battle_progress(
@@ -351,7 +348,6 @@ fn synchronize_interactive_army_battle(
             &mut next_state,
             &mut session.game,
             prefs.tactical_battles_enabled(),
-            super::session::news_story_ids(assets.as_deref()),
         );
     }
 }
@@ -465,14 +461,10 @@ fn on_confirm_land_battle_retreat(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     mut commands: Commands,
 ) {
-    let Ok(progress) = session
-        .game
-        .retreat_from_army_battle(super::session::news_story_ids(assets.as_deref()))
-    else {
+    let Ok(progress) = session.game.retreat_from_army_battle() else {
         return;
     };
     if let Ok((field, mut view)) = fields.single_mut() {
@@ -484,7 +476,6 @@ fn on_confirm_land_battle_retreat(
             &mut next_state,
             &mut session.game,
             prefs.tactical_battles_enabled(),
-            super::session::news_story_ids(assets.as_deref()),
         );
     }
 }
@@ -1863,11 +1854,9 @@ fn queue_land_battle_progress(
     next_state: &mut NextState<AppState>,
     game: &mut GameState,
     tactical_battles_enabled: bool,
-    story_ids: &[i32],
 ) {
     if let Some(stop) = progress.stop.take() {
-        progress.stop =
-            Some(game.apply_land_battle_watch_policy(stop, tactical_battles_enabled, story_ids));
+        progress.stop = Some(game.apply_land_battle_watch_policy(stop, tactical_battles_enabled));
     }
     if progress.events.is_empty() {
         if let Some(stop) = progress.stop
@@ -1958,7 +1947,6 @@ fn on_battlefield_click(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     mut commands: Commands,
 ) {
     if click.event.button != PointerButton::Primary || !animations.is_empty() {
@@ -1977,10 +1965,7 @@ fn on_battlefield_click(
     let Some(target) = hex_at_pixel(&map, x, y) else {
         return;
     };
-    let Ok((_action, progress)) = session
-        .game
-        .army_action_at(target, super::session::news_story_ids(assets.as_deref()))
-    else {
+    let Ok((_action, progress)) = session.game.army_action_at(target) else {
         return;
     };
     queue_land_battle_progress(
@@ -1991,7 +1976,6 @@ fn on_battlefield_click(
         &mut next_state,
         &mut session.game,
         prefs.tactical_battles_enabled(),
-        super::session::news_story_ids(assets.as_deref()),
     );
 }
 
@@ -2001,14 +1985,13 @@ fn apply_battlefield_click(
     x: i32,
     y: i32,
     view_origin_x: i32,
-    story_ids: &[i32],
 ) -> Option<TurnStop> {
     let column_count = session.game.army_battle().map(ArmyBattle::column_count)?;
     let hex_map = land_viewport(column_count, view_origin_x);
     let hex = hex_at_pixel(&hex_map, x, y)?;
     session
         .game
-        .army_action_at(hex, story_ids)
+        .army_action_at(hex)
         .ok()
         .and_then(|(_, progress)| progress.stop)
 }
@@ -2021,7 +2004,6 @@ fn on_land_battle_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut music: Option<ResMut<MusicDirector>>,
     time: Option<Res<Time>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     prefs: Res<super::preferences::GamePreferences>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     animations: Query<
@@ -2060,9 +2042,7 @@ fn on_land_battle_activate(
             }
         }
         LandBattleAction::Done => {
-            if let Ok(progress) = session
-                .game
-                .finish_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(progress) = session.game.finish_selected_army_unit_action()
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
@@ -2073,14 +2053,11 @@ fn on_land_battle_activate(
                     &mut next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
-                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
         LandBattleAction::Auto => {
-            if let Ok(progress) = session
-                .game
-                .auto_play_army_battle_side(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(progress) = session.game.auto_play_army_battle_side()
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
@@ -2091,7 +2068,6 @@ fn on_land_battle_activate(
                     &mut next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
-                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
@@ -2104,9 +2080,7 @@ fn on_land_battle_activate(
                 spawn_linger_dialog(&mut commands, LandBattleRetreatPrompt, AppState::LandBattle);
                 return;
             }
-            if let Ok(progress) = session
-                .game
-                .retreat_from_army_battle(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(progress) = session.game.retreat_from_army_battle()
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
@@ -2117,7 +2091,6 @@ fn on_land_battle_activate(
                     &mut next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
-                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
@@ -2134,7 +2107,6 @@ fn land_battle_keyboard(
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     prefs: Res<super::preferences::GamePreferences>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     animations: Query<
@@ -2164,9 +2136,7 @@ fn land_battle_keyboard(
         commands.trigger(Activate { entity });
     }
     if keys.just_pressed(KeyCode::KeyS)
-        && let Ok(progress) = session
-            .game
-            .skip_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
+        && let Ok(progress) = session.game.skip_selected_army_unit_action()
         && let Ok((field, mut view)) = fields.single_mut()
     {
         queue_land_battle_progress(
@@ -2177,7 +2147,6 @@ fn land_battle_keyboard(
             &mut next_state,
             &mut session.game,
             prefs.tactical_battles_enabled(),
-            super::session::news_story_ids(assets.as_deref()),
         );
     }
 }
@@ -2373,7 +2342,7 @@ mod tests {
         );
 
         let mut state = GameState::from_parts(parts);
-        assert_eq!(state.advance_turn(&[]), TurnStop::LandBattle);
+        assert_eq!(state.advance_turn(), TurnStop::LandBattle);
         assert!(state.pending_land_battle().is_some());
         state
     }
@@ -2599,7 +2568,7 @@ mod tests {
         app.world_mut()
             .resource_scope(|_, mut session: Mut<GameSession>| {
                 assert_eq!(
-                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0, &[]),
+                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0),
                     None
                 );
             });

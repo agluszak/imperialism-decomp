@@ -1,7 +1,7 @@
 use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::ecs::world::World;
 use bevy::prelude::*;
-use imperialism_core::{GameState, MajorNationId, TileId, TurnStop};
+use imperialism_core::{GameData, GameState, MajorNationId, TileId, TurnStop};
 use imperialism_formats::{BattleReportText, CityWindowLayout, LoadedGame};
 
 /// Authoritative in-memory game owned by the running Bevy app.
@@ -100,10 +100,8 @@ fn loaded_from_game(game: GameState) -> LoadedGame {
     }
 }
 
-pub(crate) fn news_story_ids(assets: Option<&RetailAssetsResource>) -> &[i32] {
-    assets
-        .map(RetailAssetsResource::news_story_ids)
-        .unwrap_or(&[])
+pub(crate) fn retail_game_data(assets: &RetailAssetsResource) -> GameData {
+    GameData::from_news_story_ids(assets.assets().news_table().story_ids().to_vec())
 }
 
 /// Maps one core turn stop onto the matching Bevy screen.
