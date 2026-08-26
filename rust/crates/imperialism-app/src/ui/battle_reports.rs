@@ -12,7 +12,7 @@ use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{
-    BattleReportSideText, BattleReportText, RetailTextStylePreset, fourcc,
+    BattleReportSideText, BattleReportText, PictureId, RetailTextStylePreset, fourcc,
 };
 
 const MAP_LEFT: f32 = 49.0;
@@ -242,27 +242,24 @@ fn render_battle_report(
         .get_mut(view.friendly_ships)
         .expect("bound battle-report text")
         .0 = report.sides[BattleReportSideSlot::Left]
-            .children
-            .iter()
-            .map(|row| row.name.as_str())
-            .collect::<Vec<_>>()
-            .join("\n");
+        .children
+        .iter()
+        .map(|row| row.name.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
     texts
         .get_mut(view.enemy_ships)
         .expect("bound battle-report text")
         .0 = report.sides[BattleReportSideSlot::Right]
-            .children
-            .iter()
-            .map(|row| row.name.as_str())
-            .collect::<Vec<_>>()
-            .join("\n");
+        .children
+        .iter()
+        .map(|row| row.name.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
     let participant = report.participant.unwrap_or(BattleReportSideSlot::Left);
     let other = other_side(participant);
     for (flag, side) in [(view.friendly_flag, participant), (view.enemy_flag, other)] {
-        flags
-            .get_mut(flag)
-            .expect("bound battle-report flag")
-            .image = assets
+        flags.get_mut(flag).expect("bound battle-report flag").image = assets
             .picture(PictureId::new(
                 0x1130 + i16::from(report.sides[side].nation.get()),
             ))
