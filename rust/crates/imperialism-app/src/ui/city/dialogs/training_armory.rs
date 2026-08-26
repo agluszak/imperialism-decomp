@@ -72,8 +72,11 @@ const fn armory_picture_variant(unit: MilitaryUnitKind) -> i16 {
     }
 }
 
-const fn armory_row_picture(unit: MilitaryUnitKind) -> PictureId {
-    PictureId::new(0x1d60 + 2 * armory_picture_variant(unit))
+/// The idle and selected (checked) pictures for one Armory row. Retail stores
+/// the two states as the immediately following pair of resources.
+const fn armory_row_pictures(unit: MilitaryUnitKind) -> [PictureId; 2] {
+    let base = 0x1d60 + 2 * armory_picture_variant(unit);
+    [PictureId::new(base), PictureId::new(base + 1)]
 }
 
 pub(in crate::ui::city) fn configure_training_dialog(
@@ -180,15 +183,17 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             }
             let button = tree.find(root, button_tag);
             let unit = city.orders.military_recruitment[category].unit_kind;
-            let idle = assets
-                .picture(armory_row_picture(unit))
-                .expect("retail Armory row picture");
-            let active = assets
-                .picture(PictureId::new(armory_row_picture(unit).get() + 1))
+            let [idle_id, selected_id] = armory_row_pictures(unit);
+            let idle = assets.picture(idle_id).expect("retail Armory row picture");
+            let selected = assets
+                .picture(selected_id)
                 .expect("retail Armory selected row picture");
             commands.entity(button).insert((
                 ImageNode::new(idle.clone()),
-                RetailPictureSwap { idle, active },
+                RetailPictureSwap {
+                    idle,
+                    active: selected,
+                },
             ));
             commands.entity(button).observe(
                 move |change: On<ValueChange<bool>>, mut views: Query<&mut ArmoryView>| {
@@ -497,15 +502,18 @@ mod tests {
         let pictures: Vec<_> = (0..enum_map::enum_len::<MilitaryRecruitmentCategory>())
             .map(MilitaryRecruitmentCategory::from_usize)
             .map(|category| {
-                armory_row_picture(city.orders.military_recruitment[category].unit_kind).get()
+                armory_row_pictures(city.orders.military_recruitment[category].unit_kind)[0].get()
             })
             .collect();
 
         assert_eq!(pictures, [7522, 7524, 7526, 7528, 7530, 7532, 7534, 7536]);
         assert_eq!(
-            armory_row_picture(MilitaryUnitKind::CombatEngineers).get(),
+            armory_row_pictures(MilitaryUnitKind::CombatEngineers)[0].get(),
             7552
         );
-        assert_eq!(armory_row_picture(MilitaryUnitKind::Saboteurs).get(), 7568);
+        assert_eq!(
+            armory_row_pictures(MilitaryUnitKind::Saboteurs)[0].get(),
+            7568
+        );
     }
 }

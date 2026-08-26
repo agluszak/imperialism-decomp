@@ -64,7 +64,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         });
         if available {
             let (idle, active) =
-                shipyard_queue_pictures(assets, &queue_icons, slot, ship_type, overlay_left as i32);
+                shipyard_queue_pictures(assets, &queue_icons, slot, ship_type, overlay_left);
             commands.entity(button).insert((
                 RetailPictureSwap {
                     idle: idle.clone(),
@@ -243,7 +243,7 @@ pub(in crate::ui::city) fn render_shipyard_dialog(
             capabilities.resource_weight,
         ];
         for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
-            let origin = IVec2::new(left as i32, baseline as i32);
+            let origin = IVec2::new(left, baseline);
             let label = city_string(&assets, 0x2736, 0x10 + index as i16);
             text.draw(&mut picture, origin, &label, 0xd2);
             text.draw(

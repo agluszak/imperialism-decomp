@@ -595,8 +595,45 @@ mod tests {
     use super::*;
 
     use bevy::ecs::system::SystemState;
+    use bevy::ecs::template::FromTemplate;
     use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+    use bevy::scene::WorldSceneExt;
     use bevy::text::{FontSize, FontSource};
+
+    #[derive(Component, FromTemplate)]
+    struct TestSpawnBindings {
+        child: Entity,
+    }
+
+    #[test]
+    fn bsn_entity_references_resolve_into_spawn_time_components() {
+        // BSN `#Name` refs resolve only as scalar `Entity` fields. A `Vec<T>`
+        // field of nested `#ref` structs does not compile: the `vec!` literal is
+        // an opaque expression, so `#Row0` inside it never resolves. Repeated
+        // fixed controls therefore keep their compact FourCC binding tables
+        // rather than being wired through BSN references.
+        let mut app = App::new();
+        app.add_plugins((
+            bevy::asset::AssetPlugin::default(),
+            bevy::scene::ScenePlugin,
+        ));
+        let root = app
+            .world_mut()
+            .spawn_scene(bsn! {
+                TestSpawnBindings { child: #Child }
+                Children [
+                    (#Child  Node::default()),
+                ]
+            })
+            .expect("bsn entity references resolve")
+            .id();
+        let child = app
+            .world()
+            .get::<TestSpawnBindings>(root)
+            .expect("bindings resolve on the root")
+            .child;
+        assert!(app.world().get::<ChildOf>(child).is_some());
+    }
 
     #[test]
     fn index_transparency_does_not_key_an_equal_rgb_entry() {
