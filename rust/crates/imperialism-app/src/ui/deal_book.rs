@@ -4,7 +4,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::retail::RetailTree;
+use super::retail::{RetailPressedOverlay, RetailTree};
 use super::retail_raster::IndexedRasterExt;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, RetailAssetsResource, ReturnTo};
@@ -92,7 +92,8 @@ struct DealBookFonts {
     heading_layout: TextLayout,
     heading_line_height: LineHeight,
     heading_center: TextLayout,
-    color: Color,
+    body_color: Color,
+    heading_color: Color,
 }
 
 #[derive(Component)]
@@ -138,6 +139,7 @@ fn bind_deal_book(
     tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
+    mut images: Query<&mut ImageNode>,
 ) {
     let root = *root;
     let advanced_production_unlocked = session.game.technology().advanced_production_unlocked();
@@ -170,7 +172,7 @@ fn bind_deal_book(
     };
     let (body, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 3,
+            font_family: 0,
             face_flags: 0,
             point_size: 10,
             alignment: -1,
@@ -178,7 +180,7 @@ fn bind_deal_book(
         .expect("retail deal-book body text style");
     let (heading, heading_layout, heading_line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 3,
+            font_family: 0,
             face_flags: 0,
             point_size: 14,
             alignment: -1,
@@ -192,7 +194,10 @@ fn bind_deal_book(
         heading_layout,
         heading_line_height,
         heading_center: TextLayout::justify(Justify::Center),
-        color: Color::BLACK,
+        // TDealLine uses theme 0x2b6a (palette 0x5c); TCommodityLine and
+        // the category headings use 0x2b67 (black).
+        body_color: assets.palette_color(0x5c),
+        heading_color: Color::BLACK,
     };
     // Mac titL is family 0 / 18pt. The generator only emits shipped fonts (modes 1-3),
     // and TDealBookPicture::Startup does not restyle titL on Windows.
@@ -237,10 +242,19 @@ fn bind_deal_book(
         .entity(tree.find(root, fourcc!("quer")))
         .insert(InteractionDisabled);
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
+    let mark = tree.find(root, fourcc!("mark"));
     commands
-        .entity(tree.find(root, fourcc!("mark")))
-        .insert((DealBookHistory, ActivateOnPress))
+        .entity(mark)
+        .insert((DealBookHistory, ActivateOnPress, RetailPressedOverlay))
         .observe(on_deal_book_history);
+    // `mark` is a TPictureButton: picture 8812 is its hilite bitmap, not an
+    // always-visible icon. TDealBookPicture enables its input only in category
+    // mode; RetailPressedOverlay supplies TPictureButton::HiliteState's paint.
+    images
+        .get_mut(mark)
+        .expect("retail deal-book mark picture must load")
+        .color
+        .set_alpha(0.0);
     commands
         .entity(tree.find(root, fourcc!("lcor")))
         .insert((
@@ -1166,7 +1180,11 @@ fn spawn_text_at(
         font,
         layout,
         line_height,
-        TextColor(screen.fonts.color),
+        TextColor(if heading {
+            screen.fonts.heading_color
+        } else {
+            screen.fonts.body_color
+        }),
         Pickable::IGNORE,
         ChildOf(host),
     ));

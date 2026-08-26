@@ -172,7 +172,7 @@ enum LandBattleAction {
 struct LandBattlefield {
     battle: Option<PendingLandBattle>,
     view_origin_x: i32,
-    centered_unit: Option<ArmyUnitId>,
+    centered_selection: Option<(ArmyUnitId, Option<TacticalHex>)>,
     hovered_hex: Option<TacticalHex>,
     projected_origin_x: i32,
     projected_hover: Option<TacticalHex>,
@@ -422,12 +422,13 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
             LandBattlefield {
                 battle: None,
                 view_origin_x: 0,
-                centered_unit: None,
+                centered_selection: None,
                 hovered_hex: None,
                 projected_origin_x: -1,
                 projected_hover: None,
             },
             RelativeCursorPosition::default(),
+            Pickable::default(),
         ))
         .observe(on_battlefield_click);
     commands
@@ -652,7 +653,10 @@ fn project_land_battle(
     let Some(pending) = session.game.pending_land_battle() else {
         return;
     };
-    let selected = session.game.selected_army_unit().map(|unit| unit.id);
+    let selected = session
+        .game
+        .selected_army_unit()
+        .map(|unit| (unit.id, unit.hex));
     let reachable_hexes = session.game.selected_army_unit_reachable_hexes();
     let Some(battle) = session.game.army_battle() else {
         return;
@@ -661,18 +665,16 @@ fn project_land_battle(
         if view.battle.as_ref() != Some(pending) {
             view.battle = Some(pending.clone());
             view.view_origin_x = 0;
-            view.centered_unit = None;
+            view.centered_selection = None;
             view.projected_origin_x = -1;
             view.projected_hover = None;
         }
-        if view.centered_unit != selected {
-            if let Some(unit) = selected.and_then(|id| battle.unit(id))
-                && let Some(hex) = unit.hex
-            {
+        if view.centered_selection != selected {
+            if let Some((_, Some(hex))) = selected {
                 view.view_origin_x =
                     center_land_origin(view.view_origin_x, battle.column_count(), hex);
             }
-            view.centered_unit = selected;
+            view.centered_selection = selected;
         }
         if !session.is_changed()
             && view.projected_origin_x == view.view_origin_x
@@ -781,7 +783,7 @@ fn project_land_battle(
                 continue;
             };
             let (mut x, mut y, width, height) = hex_unit_xywh(&hex_map, hex);
-            let selected = selected == Some(unit.id);
+            let selected = selected.is_some_and(|(id, _)| id == unit.id);
             if selected {
                 spawn_hex_outline(
                     &mut commands,
@@ -1929,7 +1931,6 @@ fn scroll_land_battle(
     } else if view.view_origin_x < max_origin - TACTICAL_TILE_WIDTH_PX {
         view.view_origin_x += TACTICAL_TILE_WIDTH_PX;
     }
-    view.centered_unit = session.game.selected_army_unit().map(|unit| unit.id);
 }
 
 #[allow(clippy::type_complexity)]
@@ -1979,23 +1980,6 @@ fn on_battlefield_click(
     );
 }
 
-#[cfg(test)]
-fn apply_battlefield_click(
-    session: &mut GameSession,
-    x: i32,
-    y: i32,
-    view_origin_x: i32,
-) -> Option<TurnStop> {
-    let column_count = session.game.army_battle().map(ArmyBattle::column_count)?;
-    let hex_map = land_viewport(column_count, view_origin_x);
-    let hex = hex_at_pixel(&hex_map, x, y)?;
-    session
-        .game
-        .army_action_at(hex)
-        .ok()
-        .and_then(|(_, progress)| progress.stop)
-}
-
 #[allow(clippy::type_complexity)]
 fn on_land_battle_activate(
     activate: On<Activate>,
@@ -2036,7 +2020,6 @@ fn on_land_battle_activate(
                     for (_, mut view) in &mut fields {
                         view.view_origin_x =
                             center_land_origin(view.view_origin_x, battle.column_count(), center);
-                        view.centered_unit = session.game.selected_army_unit().map(|unit| unit.id);
                     }
                 }
             }
@@ -2176,7 +2159,11 @@ mod tests {
     use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
+    use bevy::camera::NormalizedRenderTarget;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::pointer::{Location, PointerId};
     use bevy::state::app::StatesPlugin;
+    use std::time::Duration;
 
     fn fixture_parts() -> GameStateParts {
         beginning_of_game_parts()
@@ -2526,7 +2513,7 @@ mod tests {
     }
 
     #[test]
-    fn clicking_a_deployment_hex_places_the_core_selected_unit() {
+    fn battlefield_pointer_click_places_the_core_selected_unit() {
         let mut app = test_app(two_land_battles_state());
         app.update();
         app.update();
@@ -2565,14 +2552,46 @@ mod tests {
             (x + w / 2, y + h / 2)
         };
 
-        app.world_mut()
-            .resource_scope(|_, mut session: Mut<GameSession>| {
-                assert_eq!(
-                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0),
-                    None
-                );
-            });
-        app.update();
+        let field = app
+            .world_mut()
+            .query::<(Entity, &RetailTag)>()
+            .iter(app.world())
+            .find_map(|(entity, tag)| (tag.0 == fourcc!("DLOG")).then_some(entity))
+            .expect("recovered DLOG battlefield control");
+        {
+            let mut cursor = app
+                .world_mut()
+                .get_mut::<RelativeCursorPosition>(field)
+                .expect("battlefield receives relative pointer positions");
+            cursor.cursor_over = true;
+            cursor.normalized = Some(Vec2::new(
+                dest_pixel.0 as f32 / BATTLEFIELD_WIDTH_PX as f32 - 0.5,
+                dest_pixel.1 as f32 / BATTLEFIELD_HEIGHT_PX as f32 - 0.5,
+            ));
+        }
+        app.world_mut().trigger(Pointer::new_without_propagate(
+            PointerId::Mouse,
+            Location {
+                target: NormalizedRenderTarget::None {
+                    width: BATTLEFIELD_WIDTH_PX as u32,
+                    height: BATTLEFIELD_HEIGHT_PX as u32,
+                },
+                position: Vec2::new(dest_pixel.0 as f32, dest_pixel.1 as f32),
+            },
+            Click {
+                button: PointerButton::Primary,
+                hit: HitData {
+                    camera: Entity::PLACEHOLDER,
+                    depth: 0.0,
+                    position: None,
+                    normal: None,
+                    extra: None,
+                },
+                duration: Duration::ZERO,
+                count: 1,
+            },
+            field,
+        ));
         let after = app
             .world()
             .resource::<GameSession>()
