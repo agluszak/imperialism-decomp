@@ -181,7 +181,7 @@ fn project_battle_report(
     roots: Query<Ref<BattleReportRoot>>,
     added: Query<(), Added<BattleReportField>>,
     mut fields: Query<(&BattleReportField, &mut Text)>,
-    mut flags: Query<(&BattleReportFlag, &mut ImageNode)>,
+    mut flags: Query<(&BattleReportFlag, &mut ImageNode), Without<BattleReportMap>>,
     map: Single<(Entity, Option<&ImageNode>, &BattleReportMap)>,
     markers: Query<Entity, With<BattleReportMarker>>,
     mut assets: super::RetailUiAssets,
