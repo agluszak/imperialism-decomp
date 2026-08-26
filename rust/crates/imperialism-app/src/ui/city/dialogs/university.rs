@@ -1,4 +1,7 @@
 use super::*;
+use crate::RetailFonts;
+use crate::ui::retail_raster::IndexedRasterExt;
+use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
 /// One University row's button and quantity marker.
 struct UniversityRowView {
@@ -6,7 +9,8 @@ struct UniversityRowView {
     quantity: Entity,
 }
 
-/// Root view of the University dialog.
+/// Root view of the University dialog. The detail pane is one retail picture
+/// redrawn from the selected kind.
 #[derive(Component)]
 pub(in crate::ui::city) struct UniversityView {
     selected: CivilianUnitKind,
@@ -16,9 +20,7 @@ pub(in crate::ui::city) struct UniversityView {
     costs: [Entity; 3],
     available: [Entity; 3],
     tier_labels: [Entity; 3],
-    preview: Entity,
-    icons: [Entity; 4],
-    yields: [[Entity; 3]; 4],
+    details: Entity,
 }
 
 pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
@@ -35,32 +37,6 @@ pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKi
     }
 }
 
-fn spawn_detail_child(
-    commands: &mut Commands,
-    parent: Entity,
-    left: f32,
-    top: f32,
-    width: f32,
-    height: f32,
-    bundle: impl Bundle,
-) -> Entity {
-    commands
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(left),
-                top: px(top),
-                width: px(width),
-                height: px(height),
-                ..default()
-            },
-            bundle,
-            Pickable::IGNORE,
-            ChildOf(parent),
-        ))
-        .id()
-}
-
 pub(in crate::ui::city) fn configure_university_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
@@ -75,16 +51,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
         .available;
     let rows = UNIVERSITY_ROWS.map(|row| {
         let kind = row.civilian_kind();
-        let bound = bind_city_order_row(
-            commands,
-            root,
-            tree,
-            row.binding,
-            fourcc!("minu"),
-            fourcc!("plus"),
-            fourcc!("numb"),
-            1,
-        );
+        let bound = bind_recruitment_order_row(commands, root, tree, row.binding);
         for tag in [fourcc!("minu"), fourcc!("plus")] {
             commands.entity(tree.find(bound.row, tag)).observe(
                 move |_: On<Activate>, mut views: Query<&mut UniversityView>| {
@@ -124,75 +91,11 @@ pub(in crate::ui::city) fn configure_university_dialog(
         }
     });
     let dlog = tree.find(root, fourcc!("DLOG"));
-    commands.entity(dlog).insert(ImageNode::new(
-        assets
-            .picture(PictureId::new(9900))
-            .expect("retail University dialog picture must load"),
-    ));
-    let resource_icons = assets
-        .picture(PictureId::new(750))
-        .expect("retail University resource icons must load");
-    let (yield_font, yield_layout, yield_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        })
-        .expect("retail University yield text style");
-    let yield_cell = match yield_line_height {
-        bevy::text::LineHeight::Px(pixels) => pixels,
-        _ => 10.0,
-    };
-    let preview = spawn_detail_child(
-        commands,
-        dlog,
-        0x7c as f32,
-        0x5c as f32,
-        0.0,
-        0.0,
-        ImageNode::new(
-            assets
-                .picture(PictureId::new(university_preview_picture(
-                    CivilianUnitKind::Miner,
-                )))
-                .expect("retail University preview picture must load"),
-        ),
-    );
-    let icons = std::array::from_fn(|row_index| {
-        let icon = spawn_detail_child(
-            commands,
-            dlog,
-            25.0,
-            274.0 + row_index as f32 * 25.0,
-            20.0,
-            24.0,
-            ImageNode::new(resource_icons.clone()),
-        );
-        commands.entity(icon).insert(Visibility::Hidden);
-        icon
-    });
-    let yields = std::array::from_fn(|row_index| {
-        std::array::from_fn(|level| {
-            let slot = spawn_detail_child(
-                commands,
-                dlog,
-                level as f32 * 40.0 + 39.0,
-                289.0 + row_index as f32 * 25.0 - yield_cell,
-                40.0,
-                yield_cell,
-                (
-                    Text::new(""),
-                    yield_font.clone(),
-                    yield_layout,
-                    yield_line_height,
-                    TextColor(assets.palette_color(0xd2)),
-                ),
-            );
-            commands.entity(slot).insert(Visibility::Hidden);
-            slot
-        })
-    });
+    let details_base = assets
+        .indexed_picture(PictureId::new(9900))
+        .expect("retail University dialog picture must load");
+    let details_image = assets.add_image(details_base.to_image(assets.default_dib_palette()));
+    commands.entity(dlog).insert(ImageNode::new(details_image));
     let mut bind_text = |tag| {
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(""));
@@ -226,15 +129,15 @@ pub(in crate::ui::city) fn configure_university_dialog(
         costs,
         available,
         tier_labels,
-        preview,
-        icons,
-        yields,
+        details: dlog,
     });
 }
 
 pub(in crate::ui::city) fn render_university_dialog(
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
     views: Query<Ref<UniversityView>>,
     mut commands: Commands,
     mut texts: Query<&mut Text>,
@@ -337,52 +240,52 @@ pub(in crate::ui::city) fn render_university_dialog(
                 Visibility::Hidden
             };
         }
-        images
-            .get_mut(view.preview)
-            .expect("bound University preview")
-            .image = assets
-            .picture(PictureId::new(university_preview_picture(kind)))
+        let mut picture = assets
+            .indexed_picture(PictureId::new(9900))
+            .expect("retail University dialog picture must load");
+        let preview = assets
+            .indexed_picture(PictureId::new(university_preview_picture(kind)))
             .expect("retail University preview picture must load");
+        picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
+        let icons = assets
+            .indexed_picture(PictureId::new(750))
+            .expect("retail University resource icons must load");
+        let mut text = RetailRasterTextPainter::from_preset(
+            &fonts,
+            &font_assets,
+            RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 10,
+                alignment: -2,
+            },
+        )
+        .expect("retail University custom-drawing text style");
         let mut running_max = UniversityRequirementLevel::None;
         for (row_index, resource) in specialties.into_iter().enumerate() {
             let Some(resource) = resource else {
-                *visibilities
-                    .get_mut(view.icons[row_index])
-                    .expect("bound University specialty icon") = Visibility::Hidden;
-                for level in 0..3 {
-                    *visibilities
-                        .get_mut(view.yields[row_index][level])
-                        .expect("bound University yield") = Visibility::Hidden;
-                }
                 continue;
             };
             let source_left = i32::from(resource.retail()) * 20;
-            images
-                .get_mut(view.icons[row_index])
-                .expect("bound University specialty icon")
-                .rect = Some(Rect::new(
-                source_left as f32,
-                0.0,
-                (source_left + 20) as f32,
-                24.0,
-            ));
-            *visibilities
-                .get_mut(view.icons[row_index])
-                .expect("bound University specialty icon") = Visibility::Visible;
+            picture.blit_keyed(
+                &icons,
+                IRect::new(source_left, 0, source_left + 20, 24),
+                IVec2::new(25, 274 + row_index as i32 * 25),
+                0x10,
+            );
             running_max = running_max.max(levels[resource]);
-            let shown = running_max.retail();
-            for level in 0..3 {
-                let slot = view.yields[row_index][level];
-                if (level as u8) < shown {
-                    *visibilities.get_mut(slot).expect("bound University yield") =
-                        Visibility::Visible;
-                    texts.get_mut(slot).expect("bound University yield").0 =
-                        resource_development_yield(resource, level as u8 + 1).to_string();
-                } else {
-                    *visibilities.get_mut(slot).expect("bound University yield") =
-                        Visibility::Hidden;
-                }
+            for level in 1..=running_max.retail() {
+                text.draw(
+                    &mut picture,
+                    IVec2::new(i32::from(level) * 40 + 39, row_index as i32 * 25 + 289),
+                    &resource_development_yield(resource, level).to_string(),
+                    0xd2,
+                );
             }
         }
+        let image = images
+            .get_mut(view.details)
+            .expect("bound University details picture");
+        assets.replace_image(&image.image, picture.to_image(assets.default_dib_palette()));
     }
 }

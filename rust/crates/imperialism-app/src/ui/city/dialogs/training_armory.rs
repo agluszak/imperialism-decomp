@@ -98,19 +98,8 @@ pub(in crate::ui::city) fn bind_training_dialog(
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    let quantities = TRAINING_ORDERS.map(|binding| {
-        bind_city_order_row(
-            commands,
-            root,
-            tree,
-            binding,
-            fourcc!("left"),
-            fourcc!("rght"),
-            fourcc!("move"),
-            1,
-        )
-        .quantity
-    });
+    let quantities = TRAINING_ORDERS
+        .map(|binding| bind_industry_order_row(commands, root, tree, binding, 1).quantity);
     let paper_one = tree.find(root, fourcc!("pap1"));
     let paper_two = tree.find(root, fourcc!("pap2"));
     let money_one = tree.find(root, fourcc!("mon1"));
@@ -160,16 +149,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     ));
     let rows_and_quantities: [(Entity, Entity); ARMORY_ROWS.len()] = std::array::from_fn(|index| {
         let row = ARMORY_ROWS[index];
-        let bound = bind_city_order_row(
-            commands,
-            root,
-            tree,
-            row.binding,
-            fourcc!("minu"),
-            fourcc!("plus"),
-            fourcc!("numb"),
-            1,
-        );
+        let bound = bind_recruitment_order_row(commands, root, tree, row.binding);
         let category = row.military_category();
         for tag in [fourcc!("minu"), fourcc!("plus")] {
             commands.entity(tree.find(bound.row, tag)).observe(
