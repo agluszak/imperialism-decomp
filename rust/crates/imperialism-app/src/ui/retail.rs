@@ -605,13 +605,21 @@ mod tests {
         child: Entity,
     }
 
+    #[derive(Component, FromTemplate)]
+    struct TestRowComponentBindings {
+        button: Entity,
+        decrease: Entity,
+    }
+
     #[test]
     fn bsn_entity_references_resolve_into_spawn_time_components() {
-        // BSN `#Name` refs resolve only as scalar `Entity` fields. A `Vec<T>`
-        // field of nested `#ref` structs does not compile: the `vec!` literal is
-        // an opaque expression, so `#Row0` inside it never resolves. Repeated
-        // fixed controls therefore keep their compact FourCC binding tables
-        // rather than being wired through BSN references.
+        // BSN `#Name` refs resolve only as scalar `Entity` fields. Collections
+        // do not work: `Vec<T>` with `#[template(built_in)]` cannot collect
+        // refs because `vec![...]` is an opaque expression, and a tuple field
+        // of nested ref structs fails both at the value grammar and at the
+        // FromTemplate derive. Repeated fixed controls therefore keep their
+        // compact FourCC binding tables; `bsn_scalar_refs_resolve_onto_each_node`
+        // shows the per-node scalar-component alternative that BSN does support.
         let mut app = App::new();
         app.add_plugins((
             bevy::asset::AssetPlugin::default(),
@@ -633,6 +641,58 @@ mod tests {
             .expect("bindings resolve on the root")
             .child;
         assert!(app.world().get::<ChildOf>(child).is_some());
+    }
+
+    #[test]
+    fn bsn_scalar_refs_resolve_onto_each_node() {
+        // A per-node component with scalar Entity fields is the one clean way to
+        // express repeated rows through BSN references.
+        let mut app = App::new();
+        app.add_plugins((
+            bevy::asset::AssetPlugin::default(),
+            bevy::scene::ScenePlugin,
+        ));
+        app.world_mut()
+            .spawn_scene(bsn! {
+                Children [
+                    (
+                        #Row0
+                        Node::default()
+                        TestRowComponentBindings {
+                            button: #Button0,
+                            decrease: #Decrease0,
+                        }
+                        Children [
+                            (#Button0  Node::default()),
+                            (#Decrease0  Node::default()),
+                        ]
+                    ),
+                    (
+                        #Row1
+                        Node::default()
+                        TestRowComponentBindings {
+                            button: #Button1,
+                            decrease: #Decrease1,
+                        }
+                        Children [
+                            (#Button1  Node::default()),
+                            (#Decrease1  Node::default()),
+                        ]
+                    ),
+                ]
+            })
+            .expect("scalar refs resolve onto each row node");
+        let rows: Vec<(Entity, Entity)> = app
+            .world_mut()
+            .query::<&TestRowComponentBindings>()
+            .iter(app.world())
+            .map(|row| (row.button, row.decrease))
+            .collect();
+        assert_eq!(rows.len(), 2);
+        for (button, decrease) in rows {
+            assert!(app.world().get::<ChildOf>(button).is_some());
+            assert!(app.world().get::<ChildOf>(decrease).is_some());
+        }
     }
 
     #[test]
