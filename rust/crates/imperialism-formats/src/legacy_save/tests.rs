@@ -1116,6 +1116,30 @@ fn battle_report_text_round_trips_outside_game_state() {
 }
 
 #[test]
+fn cached_overlay_anchor_round_trips_through_save_and_load() {
+    let save = LegacySaveV62::parse(RETAIL_FIXTURE);
+    let mut game = save.game_state(game_context());
+    let nation = NationId::new(0);
+    let anchor = game
+        .overlay_anchor_for_nation(nation)
+        .expect("the active nation has an overlay anchor");
+    let bytes = LegacySaveV62::from_game_state(
+        &game,
+        TileId::new(1),
+        &CityWindowLayout::default(),
+        &save.battle_report_text(),
+        "- Autosave -",
+        0,
+    )
+    .to_bytes();
+    let loaded = load_game_from_bytes(&bytes, game_context()).expect("rust-written save loads");
+    assert_eq!(
+        loaded.game.nations().overlay_anchor_tile(nation),
+        Some(anchor)
+    );
+}
+
+#[test]
 fn eliminated_major_slot_stays_absent_through_save_and_load() {
     let eliminated = MajorNationId::new(0);
     let mut save = LegacySaveV62::parse(RETAIL_FIXTURE);

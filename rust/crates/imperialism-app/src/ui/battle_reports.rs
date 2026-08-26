@@ -75,7 +75,7 @@ impl Plugin for BattleReportPlugin {
             Update,
             (
                 project_battle_report,
-                super::diplomacy_map::layout_diplomacy_map_label_entities,
+                super::diplomacy_map::layout_diplomacy_nation_label_entities,
                 blink_selected_battle_report_marker,
                 bind_detail,
                 project_detail,
@@ -98,7 +98,7 @@ fn bind_battle_report(
     root: Single<Entity, Added<BattleReportRoot>>,
     tree: RetailTree,
     mut assets: super::RetailUiAssets,
-    session: Res<GameSession>,
+    mut session: ResMut<GameSession>,
 ) {
     let main = tree.find(*root, fourcc!("main"));
     let marker_atlas = assets
@@ -122,23 +122,25 @@ fn bind_battle_report(
         ))
         .observe(on_battle_report_map_click)
         .id();
-    let mut seeds = [None; NationId::COUNT as usize];
-    for nation in NationId::all() {
-        let Some(name) = session.game.nations().display_name(nation) else {
-            continue;
-        };
-        let Some(anchor) = session.game.ocean_overlay_anchor_for_nation(nation) else {
-            continue;
-        };
-        let (row, column) = session.game.map().geometry().row_column(anchor);
-        seeds[usize::from(nation.get())] =
-            Some(super::diplomacy_map::DiplomacyLabelSeed { name, column, row });
+    let countries = session
+        .game
+        .nations()
+        .common_states()
+        .map(|(nation, common)| (nation, common.display_name.clone()))
+        .filter(|(_, name)| !name.is_empty())
+        .collect::<Vec<_>>();
+    let mut labels = Vec::new();
+    let session = &mut *session;
+    for (nation, name) in countries {
+        if let Some(anchor) = session.game.overlay_anchor_for_nation(nation) {
+            labels.push((nation, name, anchor));
+        }
     }
-    super::diplomacy_map::spawn_diplomacy_map_labels(
+    super::diplomacy_map::spawn_diplomacy_nation_labels(
         &mut commands,
         &mut assets,
         map_entity,
-        &seeds,
+        labels,
     );
     commands
         .entity(tree.find(*root, fourcc!("okay")))

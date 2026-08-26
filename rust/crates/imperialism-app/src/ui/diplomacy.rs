@@ -1,7 +1,7 @@
 use super::GameSession;
 use super::RetailUiAssets;
 use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
-use super::diplomacy_map::{DiplomacyLabelSeed, DiplomacyMapGeometry, compose_diplomacy_map};
+use super::diplomacy_map::{DiplomacyMapGeometry, compose_diplomacy_map};
 use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
@@ -393,7 +393,7 @@ impl Plugin for DiplomacyPlugin {
                 render_diplomacy_panels,
                 sync_diplomacy_information,
                 render_diplomacy_map,
-                super::diplomacy_map::layout_diplomacy_map_label_entities,
+                super::diplomacy_map::layout_diplomacy_nation_label_entities,
                 sync_diplomacy_map_cursor,
             )
                 .chain()
@@ -427,7 +427,7 @@ fn bind_diplomacy_screen(
     root: Single<Entity, Added<DiplomacyScreen>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
-    session: Res<GameSession>,
+    mut session: ResMut<GameSession>,
 ) {
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     let pictures = DiplomacyBracketPictures {
@@ -469,7 +469,7 @@ fn bind_diplomacy_screen(
         styles,
         icon_atlas,
         &mut assets,
-        &session,
+        &mut session,
     );
 }
 
@@ -482,7 +482,7 @@ fn bind_diplomacy_controls(
     styles: DiplomacyTextStyles,
     icon_atlas: Handle<Image>,
     assets: &mut RetailUiAssets,
-    session: &GameSession,
+    session: &mut GameSession,
 ) -> Entity {
     let posing = session.game.current_diplomacy_offer().is_some()
         || session.game.current_diplomacy_war_join().is_some();
@@ -686,21 +686,20 @@ fn bind_diplomacy_controls(
         ))
         .observe(on_diplomacy_map_click)
         .id();
-    let mut seeds = [None; NationId::COUNT as usize];
-    for nation in NationId::all() {
-        let Some(name) = session.game.nations().display_name(nation) else {
-            continue;
-        };
-        if name.is_empty() {
-            continue;
+    let countries = session
+        .game
+        .nations()
+        .common_states()
+        .map(|(nation, common)| (nation, common.display_name.clone()))
+        .filter(|(_, name)| !name.is_empty())
+        .collect::<Vec<_>>();
+    let mut labels = Vec::new();
+    for (nation, name) in countries {
+        if let Some(anchor) = session.game.overlay_anchor_for_nation(nation) {
+            labels.push((nation, name, anchor));
         }
-        let Some(anchor) = session.game.ocean_overlay_anchor_for_nation(nation) else {
-            continue;
-        };
-        let (row, column) = session.game.map().geometry().row_column(anchor);
-        seeds[usize::from(nation.get())] = Some(DiplomacyLabelSeed { name, column, row });
     }
-    super::diplomacy_map::spawn_diplomacy_map_labels(commands, assets, map, &seeds);
+    super::diplomacy_map::spawn_diplomacy_nation_labels(commands, assets, map, labels);
     spawn_diplomacy_map_labels(commands, map, &styles, icon_atlas);
     bind_diplomacy_map_key(commands, root, tree, information, assets);
 

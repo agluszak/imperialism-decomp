@@ -1702,6 +1702,7 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
                 .map(|score| TradePolicyScore::new(i32::from(score))),
         ),
     );
+    common.overlay_anchor_tile = optional_tile_id(country.overlay_anchor_tile);
     common.unit_name_ordinal_by_type =
         MilitaryUnitTable::from_array(country.unit_name_ordinal_by_type);
     common.unit_name_counter = country.unit_name_counter;

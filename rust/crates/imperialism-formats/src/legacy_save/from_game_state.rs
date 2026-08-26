@@ -264,7 +264,7 @@ fn country_dto(
         unit_name_counter: common.unit_name_counter,
         treasury: common.treasury,
         home_tile: option_i32(common.home_tile.map(TileId::get)),
-        overlay_anchor_tile: -1,
+        overlay_anchor_tile: option_i32(common.overlay_anchor_tile.map(TileId::get)),
         need_level_by_nation: nation_i16_table(&common.trade_policy_by_nation, |score| {
             score.get() as i16
         }),

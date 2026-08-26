@@ -180,33 +180,23 @@ fn spawn_ocean_labels(
                 &zone.zone().display_name,
                 Vec2::new(0.0, 2.0),
                 color,
+                Color::NONE,
                 &zone_font,
                 &zone_layout,
                 zone_line_height,
             );
         }
 
-        for slot in 0..NationId::COUNT {
-            let nation = NationId::new(slot);
-            let Some(name) = session.game.nations().display_name(nation) else {
-                continue;
-            };
+        // Retail draws the nation name once in the main color with a +1,+1
+        // shadow copy; model it as a single Text + TextShadow entity.
+        for (nation, common) in session.game.nations().common_states() {
             spawn_ocean_label(
                 parent,
                 OceanNationLabel { nation },
-                name,
-                Vec2::new(1.0, -13.0),
-                palette_color(&palette, 0x13),
-                &nation_font,
-                &nation_layout,
-                nation_line_height,
-            );
-            spawn_ocean_label(
-                parent,
-                OceanNationLabel { nation },
-                name,
+                &common.display_name,
                 Vec2::new(0.0, -14.0),
                 palette_color(&palette, 0),
+                palette_color(&palette, 0x13),
                 &nation_font,
                 &nation_layout,
                 nation_line_height,
@@ -222,6 +212,7 @@ fn spawn_ocean_label<M: Component>(
     text: &str,
     offset: Vec2,
     color: Color,
+    shadow_color: Color,
     font: &TextFont,
     layout: &TextLayout,
     line_height: LineHeight,
@@ -236,6 +227,10 @@ fn spawn_ocean_label<M: Component>(
         *layout,
         line_height,
         TextColor(color),
+        TextShadow {
+            offset: Vec2::ONE,
+            color: shadow_color,
+        },
         Node {
             position_type: PositionType::Absolute,
             width: Val::Px(300.0),
@@ -245,7 +240,7 @@ fn spawn_ocean_label<M: Component>(
 }
 
 fn sync_ocean_labels(
-    session: Res<GameSession>,
+    mut session: ResMut<GameSession>,
     map: Res<StrategicMapSession>,
     mut zones: Query<
         (
@@ -281,33 +276,16 @@ fn sync_ocean_labels(
             &mut visibility,
         );
     }
-    let nation_tiles = ocean_nation_overlay_tiles(&session.game);
     for (label, anchor, mut node, mut visibility) in &mut nations {
         project_ocean_label(
             &projection,
-            nation_tiles[usize::from(label.nation.get())],
+            session.game.overlay_anchor_for_nation(label.nation),
             anchor.offset,
             map.view.is_overview(),
             &mut node,
             &mut visibility,
         );
     }
-}
-
-fn ocean_nation_overlay_tiles(game: &GameState) -> [Option<TileId>; NationId::COUNT as usize] {
-    let mut tiles = [None; NationId::COUNT as usize];
-    for slot in 0..NationId::COUNT {
-        let nation = NationId::new(slot);
-        if game.nations().display_name(nation).is_none() {
-            continue;
-        }
-        // Retail stops the nation loop on the first missing computed anchor.
-        let Some(tile) = game.ocean_overlay_anchor_for_nation(nation) else {
-            break;
-        };
-        tiles[usize::from(slot)] = Some(tile);
-    }
-    tiles
 }
 
 fn project_ocean_label(
@@ -476,17 +454,17 @@ mod tests {
             .expect("nation 0 owns another tile in the same ocean view");
 
         keep_only_owned_tile(&mut first_parts.map, owner, first_tile);
-        let first = GameSession::new(GameState::from_parts(first_parts));
+        let mut first = GameSession::new(GameState::from_parts(first_parts));
         assert_eq!(
-            first.game.ocean_overlay_anchor_for_nation(nation),
+            first.game.overlay_anchor_for_nation(nation),
             Some(first_tile)
         );
 
         let mut second_parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         keep_only_owned_tile(&mut second_parts.map, owner, second_tile);
-        let second = GameSession::new(GameState::from_parts(second_parts));
+        let mut second = GameSession::new(GameState::from_parts(second_parts));
         assert_eq!(
-            second.game.ocean_overlay_anchor_for_nation(nation),
+            second.game.overlay_anchor_for_nation(nation),
             Some(second_tile)
         );
 
