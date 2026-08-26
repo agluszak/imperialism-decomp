@@ -1,3 +1,4 @@
+use super::retail_raster::IndexedRasterExt;
 use crate::{RetailAssetsResource, RetailFont, RetailFonts};
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::query::{QueryData, QueryFilter};
@@ -328,9 +329,11 @@ impl RetailUiAssets<'_> {
         palette_index: u8,
     ) -> Result<Handle<Image>, RetailPictureError> {
         let indexed = self.indexed_picture(picture_id)?;
-        self.transformed_picture(picture_id, move |image| {
-            apply_index_transparency(image, &indexed, palette_index);
-        })
+        // Decode the indexed DIB once into the UI image instead of applying an
+        // alpha mask to Bevy's BMP decoder output. The latter has a distinct
+        // scanline layout for some retail DIBs, so its index rows can diverge
+        // from the visible RGBA rows (notably atlas 0xee2).
+        Ok(self.add_image(indexed.to_keyed_image(self.default_dib_palette(), palette_index)))
     }
 
     pub fn indexed_picture(

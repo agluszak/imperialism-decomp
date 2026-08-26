@@ -194,9 +194,9 @@ fn bind_deal_book(
         heading_layout,
         heading_line_height,
         heading_center: TextLayout::justify(Justify::Center),
-        // TDealLine uses theme 0x2b6a (palette 0x5c); TCommodityLine and
-        // the category headings use 0x2b67 (black).
-        body_color: assets.palette_color(0x5c),
+        // TDealLine initializes the QuickDraw fill color to palette 0 after
+        // installing its descriptor; its visible glyphs are black.
+        body_color: Color::BLACK,
         heading_color: Color::BLACK,
     };
     // Mac titL is family 0 / 18pt. The generator only emits shipped fonts (modes 1-3),

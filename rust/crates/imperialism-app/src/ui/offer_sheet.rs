@@ -136,14 +136,14 @@ fn bind_offer_sheet_text(
         body.clone(),
         center,
         body_height,
-        TextColor(assets.palette_color(0xd2)),
+        TextColor(Color::BLACK),
     ));
     let (body, right, body_height, _) = text_style(assets, -1);
     commands.entity(tree.find(root, fourcc!("purT"))).insert((
         body.clone(),
         right,
         body_height,
-        TextColor(assets.palette_color(0xd2)),
+        TextColor(Color::BLACK),
     ));
     let (body, left, body_height, _) = text_style(assets, -2);
     for tag in [fourcc!("unit"), fourcc!("noof")] {
@@ -151,7 +151,7 @@ fn bind_offer_sheet_text(
             body.clone(),
             left,
             body_height,
-            TextColor(assets.palette_color(0xd2)),
+            TextColor(Color::BLACK),
         ));
     }
     let (number, center, number_height, _) = assets
