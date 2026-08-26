@@ -320,18 +320,30 @@ fn bind_strategic_map_management_pictures(
     tree: &RetailTree,
 ) {
     let toolbar = tree.find(root, fourcc!("tool"));
-    for (tag, idle_id) in [
-        (fourcc!("dipl"), 0x24d9),
-        (fourcc!("trad"), 0x24db),
-        (fourcc!("city"), 0x24dd),
-        (fourcc!("tran"), 0x24df),
+    for (tag, [idle_id, active_id]) in [
+        (
+            fourcc!("dipl"),
+            [PictureId::new(0x24d9), PictureId::new(0x24da)],
+        ),
+        (
+            fourcc!("trad"),
+            [PictureId::new(0x24db), PictureId::new(0x24dc)],
+        ),
+        (
+            fourcc!("city"),
+            [PictureId::new(0x24dd), PictureId::new(0x24de)],
+        ),
+        (
+            fourcc!("tran"),
+            [PictureId::new(0x24df), PictureId::new(0x24e0)],
+        ),
     ] {
         let entity = tree.find(toolbar, tag);
         let idle = assets
-            .picture(PictureId::new(idle_id))
+            .picture(idle_id)
             .expect("retail strategic management button must load");
         let active = assets
-            .picture(PictureId::new(idle_id + 1))
+            .picture(active_id)
             .expect("retail strategic management pressed button must load");
         commands.entity(entity).insert((
             ImageNode::new(idle.clone()),

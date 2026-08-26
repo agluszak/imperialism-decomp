@@ -60,11 +60,13 @@ pub(crate) fn attach_random_setup_meanings(
     root: Entity,
     tree: &RetailTree,
 ) {
-    // PointerCanvas behavior already adds RelativeCursorPosition for the map.
     let map = tree.find(root, MAP_TAG);
     commands
         .entity(map)
-        .insert(RandomSetupMapPreview::default())
+        .insert((
+            RandomSetupMapPreview::default(),
+            RelativeCursorPosition::default(),
+        ))
         .observe(on_map_preview_click);
     let coat = tree.find(root, COAT_TAG);
     commands.entity(coat).insert(RandomSetupCoat::default());

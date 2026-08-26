@@ -18,6 +18,14 @@ use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
 
 const TECHNOLOGIES_PER_PAGE: usize = 6;
 
+const fn technology_row_pictures(technology: Technology) -> [PictureId; 2] {
+    let offset = technology.retail() as i16 * 2;
+    [
+        PictureId::new(0x08ff + offset),
+        PictureId::new(0x0900 + offset),
+    ]
+}
+
 #[derive(Component)]
 struct TechnologyStoreRoot;
 
@@ -195,11 +203,12 @@ fn spawn_technology_row(
     game: &imperialism_core::GameState,
 ) {
     let y = (row % TECHNOLOGIES_PER_PAGE) as f32 * 63.0;
+    let [idle_id, active_id] = technology_row_pictures(technology);
     let picture = assets
-        .picture(PictureId::new(0x08ff + i16::from(technology.retail()) * 2))
+        .picture(idle_id)
         .expect("retail technology illustration");
     let active_picture = assets
-        .picture(PictureId::new(0x0900 + i16::from(technology.retail()) * 2))
+        .picture(active_id)
         .unwrap_or_else(|_| picture.clone());
     let name = assets
         .string(0x2712, i16::from(technology.retail()) + 1)

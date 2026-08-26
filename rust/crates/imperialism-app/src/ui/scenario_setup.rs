@@ -122,7 +122,10 @@ fn bind_scenario_setup(
         .insert((Text::default(), NationDescription));
     commands
         .entity(tree.find(root, fourcc!("pmap")))
-        .insert(ScenarioMapPreview::default())
+        .insert((
+            ScenarioMapPreview::default(),
+            RelativeCursorPosition::default(),
+        ))
         .remove::<InteractionDisabled>()
         .observe(on_map_click);
     commands

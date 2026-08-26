@@ -5,8 +5,8 @@ use super::city::{CityBuildingActionVisual, CityBuildingVisual};
 use super::retail::*;
 use super::window::CaptionedWindow;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};
+use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui_widgets::{ActivateOnPress, Button, Checkbox, RadioButton, RadioGroup};
 use imperialism_core::CityFacilitySlot;
 use imperialism_formats::{FourCc, PictureId, fourcc};
 
@@ -568,6 +568,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -577,11 +578,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -610,6 +613,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -619,11 +623,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -652,6 +658,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -661,11 +668,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -694,6 +703,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -703,11 +713,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -736,6 +748,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -745,11 +758,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -778,6 +793,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -787,11 +803,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -820,6 +838,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -829,11 +848,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -862,6 +883,7 @@ pub fn armory_9208() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -871,11 +893,13 @@ pub fn armory_9208() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7503, 7504)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(7505, 7506)
                                             ),
                                         ]
@@ -903,6 +927,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -918,6 +943,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -933,6 +959,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -948,6 +975,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -963,6 +991,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -978,6 +1007,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -1003,6 +1033,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -1036,6 +1067,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -1051,6 +1083,7 @@ pub fn armory_9208() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 12, -1)
                                         TextColor(Color::BLACK)
@@ -1123,16 +1156,19 @@ pub fn citydlog_9200() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1145,6 +1181,7 @@ pub fn citydlog_9200() -> impl Scene {
                             (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9244, 9245)
                             ),
                             (
@@ -1213,16 +1250,19 @@ pub fn citydlog_9201() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 3, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1235,6 +1275,7 @@ pub fn citydlog_9201() -> impl Scene {
                             (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9244, 9245)
                             ),
                             (
@@ -1293,16 +1334,19 @@ pub fn citydlog_9202() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1315,6 +1359,7 @@ pub fn citydlog_9202() -> impl Scene {
                             (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9244, 9245)
                             ),
                             (
@@ -1378,16 +1423,19 @@ pub fn citydlog_9203() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1403,16 +1451,19 @@ pub fn citydlog_9203() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 59, 17, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1425,6 +1476,7 @@ pub fn citydlog_9203() -> impl Scene {
                             (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9244, 9245)
                             ),
                             (
@@ -1488,16 +1540,19 @@ pub fn citydlog_9204() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1513,16 +1568,19 @@ pub fn citydlog_9204() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1535,6 +1593,7 @@ pub fn citydlog_9204() -> impl Scene {
                             (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9244, 9245)
                             ),
                             (
@@ -1598,16 +1657,19 @@ pub fn citydlog_9205() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1620,6 +1682,7 @@ pub fn citydlog_9205() -> impl Scene {
                             (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9244, 9245)
                             ),
                             (
@@ -1678,16 +1741,19 @@ pub fn citydlog_9206() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1700,6 +1766,7 @@ pub fn citydlog_9206() -> impl Scene {
                             (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9244, 9245)
                             ),
                             (
@@ -1750,16 +1817,19 @@ pub fn citydlog_9209() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1775,16 +1845,19 @@ pub fn citydlog_9209() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1885,16 +1958,19 @@ pub fn citydlog_9211() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -1950,16 +2026,19 @@ pub fn citydlog_9212() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -2027,6 +2106,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2042,6 +2122,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2057,6 +2138,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2072,6 +2154,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2087,6 +2170,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2102,6 +2186,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2117,6 +2202,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2132,6 +2218,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2147,6 +2234,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2162,6 +2250,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2177,6 +2266,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2192,6 +2282,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2207,6 +2298,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2222,6 +2314,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2237,6 +2330,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2252,6 +2346,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
@@ -2268,6 +2363,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
@@ -2290,6 +2386,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2305,6 +2402,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
@@ -2321,6 +2419,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2336,6 +2435,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2351,6 +2451,7 @@ pub fn citydlog_9213() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, 1)
                                 retail_text_color(0)
@@ -2390,16 +2491,19 @@ pub fn citydlog_9214() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -2466,16 +2570,19 @@ pub fn citydlog_9215() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         retail_text_style(3, 0, 10, -2)
                                         TextColor(Color::BLACK)
@@ -2530,11 +2637,13 @@ pub fn citydlog_9220() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 246, 289, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 13, 289, 61, 23)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
@@ -2600,11 +2709,13 @@ pub fn citydlog_9221() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 243, 194, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 18, 194, 61, 23)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
@@ -2657,7 +2768,6 @@ pub fn citymain_2011() -> impl Scene {
                                 bottom: px(0),
                             },
                         }
-                        RelativeCursorPosition
                         retail_picture(6000)
                         Children [
                             (
@@ -2718,6 +2828,7 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(6021)
                                     ),
                                     (
@@ -2740,21 +2851,25 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9449, 9450)
                                     ),
                                 ]
@@ -2765,6 +2880,7 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(6020)
                                     ),
                                 ]
@@ -2809,21 +2925,25 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("prev"), 294, 381, 22, 22)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4101, 4102)
                                     ),
                                     (
                                         retail_node(fourcc!("next"), 325, 381, 22, 22)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4103, 4104)
                                     ),
                                     (
                                         retail_node(fourcc!("okay"), 8, 38, 31, 51)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4106)
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 294, 412, 53, 57)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4108, 4109)
                                     ),
                                     (
@@ -2870,6 +2990,7 @@ pub fn diplo_1351() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture(4107)
                                             ),
                                         ]
@@ -2907,6 +3028,7 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 27, 9, 33, 32)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4070)
                             ),
                             (
@@ -3241,11 +3363,13 @@ pub fn diplo_2008() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("reje"), 12, 26, 75, 70)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(8408, 8409)
                                             ),
                                             (
                                                 retail_node(fourcc!("acce"), 423, 26, 75, 70)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(8406, 8407)
                                             ),
                                         ]
@@ -3266,6 +3390,7 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(5052)
                                     ),
                                 ]
@@ -3289,6 +3414,7 @@ pub fn diplo_2008() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -3302,6 +3428,7 @@ pub fn diplo_2008() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -3315,6 +3442,7 @@ pub fn diplo_2008() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -3328,6 +3456,7 @@ pub fn diplo_2008() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -3341,6 +3470,7 @@ pub fn diplo_2008() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -3352,6 +3482,7 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(5051)
                                     ),
                                 ]
@@ -3362,21 +3493,25 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9449, 9450)
                                     ),
                                 ]
@@ -3435,6 +3570,7 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4140)
                                     ),
                                 ]
@@ -3445,6 +3581,7 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4141)
                                     ),
                                 ]
@@ -3619,6 +3756,7 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(8454)
                                     ),
                                 ]
@@ -3629,6 +3767,7 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(8456)
                                     ),
                                 ]
@@ -3697,6 +3836,7 @@ pub fn flagview_8500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                             ),
                             (
                                 retail_node(fourcc!("shee"), 45, 128, 510, 313)
@@ -3704,6 +3844,7 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("mCap"), 411, 284, 37, 15)
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         TextColor(Color::BLACK)
                                     ),
@@ -3718,6 +3859,7 @@ pub fn flagview_8500() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("")
                                         TextColor(Color::BLACK)
                                     ),
@@ -3736,11 +3878,13 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(8533)
                                     ),
                                     (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(8532)
                                     ),
                                     (
@@ -3816,6 +3960,7 @@ pub fn flagview_8500() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                     ),
                                     (
                                         retail_node(fourcc!("lcor"), -1, 392, 38, 34)
@@ -3845,6 +3990,7 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(8404)
                                     ),
                                 ]
@@ -3852,6 +3998,7 @@ pub fn flagview_8500() -> impl Scene {
                             (
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
                                 Button
+                                ActivateOnPress
                                 retail_picture(8825)
                             ),
                         ]
@@ -3886,6 +4033,7 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
                                                         Button
+                                                        ActivateOnPress
                                                         retail_picture(8814)
                                                     ),
                                                     (
@@ -3932,6 +4080,7 @@ pub fn flagview_8800() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("tsol"), 1000, 90, 240, 340)
@@ -3949,6 +4098,7 @@ pub fn flagview_8800() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("mark"), 8, 136, 40, 53)
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 retail_picture(8812)
                                             ),
@@ -3958,6 +4108,7 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
                                                         Button
+                                                        ActivateOnPress
                                                         retail_picture(8816)
                                                     ),
                                                 ]
@@ -4053,11 +4204,13 @@ pub fn linger_954() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 158, 138, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 33, 138, 61, 24)
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 retail_picture_swap(9412, 9413)
                             ),
@@ -4144,6 +4297,7 @@ pub fn linger_1502() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -4153,11 +4307,11 @@ pub fn linger_1502() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 233, 205, 96, 30)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4522, 4523)
                                     ),
                                     (
                                         retail_node(fourcc!("map "), 12, 13, 324, 180)
-                                        RelativeCursorPosition
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 20, 197, 205, 43)
@@ -4177,6 +4331,7 @@ pub fn linger_1502() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -4235,11 +4390,13 @@ pub fn linger_2020() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 310, 248, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 17, 248, 61, 24)
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 retail_picture_swap(9412, 9413)
                             ),
@@ -4477,36 +4634,43 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("advi"), 113, 65, 97, 37)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4123)
                             ),
                             (
                                 retail_node(fourcc!("oref"), 11, 150, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4124)
                             ),
                             (
                                 retail_node(fourcc!("news"), 11, 187, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4125)
                             ),
                             (
                                 retail_node(fourcc!("deal"), 11, 224, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4126)
                             ),
                             (
                                 retail_node(fourcc!("batt"), 11, 261, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4127)
                             ),
                             (
                                 retail_node(fourcc!("char"), 12, 298, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4128)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 10, 335, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4129)
                             ),
                             (
@@ -4607,36 +4771,43 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("save"), 112, 65, 97, 37)
                                 Button
+                                ActivateOnPress
                                 retail_picture(1331)
                             ),
                             (
                                 retail_node(fourcc!("newg"), 10, 149, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(1332)
                             ),
                             (
                                 retail_node(fourcc!("load"), 10, 186, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(1333)
                             ),
                             (
                                 retail_node(fourcc!("pref"), 10, 223, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(1334)
                             ),
                             (
                                 retail_node(fourcc!("cred"), 10, 260, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(1335)
                             ),
                             (
                                 retail_node(fourcc!("quit"), 10, 297, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(1336)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 11, 335, 65, 27)
                                 Button
+                                ActivateOnPress
                                 retail_picture(1337)
                             ),
                             (
@@ -4679,6 +4850,7 @@ pub fn linger_4150() -> impl Scene {
                             (
                                 retail_node(fourcc!("opte"), 390, 156, 160, 160)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4158)
                             ),
                             (
@@ -4692,6 +4864,7 @@ pub fn linger_4150() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                             ),
                             (
                                 retail_node(fourcc!("musi"), 194, 92, 102, 91)
@@ -4704,6 +4877,7 @@ pub fn linger_4150() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
@@ -4711,6 +4885,7 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4145)
                                     ),
                                 ]
@@ -4785,6 +4960,7 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4146)
                                     ),
                                 ]
@@ -4844,6 +5020,7 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4325)
                                     ),
                                 ]
@@ -4897,6 +5074,7 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4145)
                                     ),
                                 ]
@@ -4968,11 +5146,13 @@ pub fn mapview_1350() -> impl Scene {
                             (
                                 retail_node(fourcc!("next"), 157, 335, 69, 19)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(3506, 3507)
                             ),
                             (
                                 retail_node(fourcc!("end "), 3, 336, 69, 19)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(3506, 3507)
                             ),
                             (
@@ -5057,38 +5237,45 @@ pub fn mapview_2013() -> impl Scene {
                                     (
                                         retail_node(fourcc!("Flag"), 62, 8, 25, 35)
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         retail_picture(1300)
                                     ),
                                     (
                                         retail_node(fourcc!("mmap"), 33, 8, 25, 35)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(1049, 1050)
                                     ),
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 25, 35)
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         retail_picture(1307)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(1109, 1110)
                                     ),
                                     (
                                         retail_node(fourcc!("tran"), 4, 119, 25, 25)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(1111, 1112)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 33, 119, 25, 25)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(1110, 1111)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 91, 119, 25, 25)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(1108, 1109)
                                     ),
                                     (
@@ -5101,21 +5288,25 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 9, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1201, 1202)
                                             ),
                                             (
                                                 retail_node(fourcc!("done"), 62, 9, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1203, 1204)
                                             ),
                                             (
                                                 retail_node(fourcc!("bomb"), 4, 9, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1205, 1206)
                                             ),
                                             (
                                                 retail_node(fourcc!("next"), 33, 9, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1199, 1200)
                                             ),
                                             (
@@ -5136,6 +5327,7 @@ pub fn mapview_2013() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                     ),
                                                 ]
                                             ),
@@ -5157,6 +5349,7 @@ pub fn mapview_2013() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                     ),
                                                 ]
                                             ),
@@ -5178,6 +5371,7 @@ pub fn mapview_2013() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                     ),
                                                 ]
                                             ),
@@ -5199,6 +5393,7 @@ pub fn mapview_2013() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                     ),
                                                 ]
                                             ),
@@ -5236,6 +5431,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr1"), 46, 89, 11, 41)
@@ -5248,6 +5444,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr2"), 46, 142, 11, 41)
@@ -5260,6 +5457,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr3"), 46, 195, 11, 41)
@@ -5272,6 +5470,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr4"), 104, 36, 11, 41)
@@ -5284,6 +5483,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr5"), 104, 89, 11, 41)
@@ -5296,6 +5496,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr6"), 104, 142, 11, 41)
@@ -5308,6 +5509,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr7"), 104, 195, 11, 41)
@@ -5320,6 +5522,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr8"), 46, 248, 11, 41)
@@ -5332,6 +5535,7 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("arr9"), 104, 248, 11, 41)
@@ -5344,25 +5548,30 @@ pub fn mapview_2013() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                             ),
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 7, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1201, 1202)
                                             ),
                                             (
                                                 retail_node(fourcc!("done"), 62, 7, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1203, 1204)
                                             ),
                                             (
                                                 retail_node(fourcc!("garr"), 4, 7, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1205, 1206)
                                             ),
                                             (
                                                 retail_node(fourcc!("latr"), 33, 7, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1199, 1200)
                                             ),
                                             (
@@ -5410,6 +5619,7 @@ pub fn mapview_2013() -> impl Scene {
                                     (
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(1011)
                                     ),
                                     (
@@ -5425,21 +5635,25 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 10, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1211, 1212)
                                             ),
                                             (
                                                 retail_node(fourcc!("done"), 62, 10, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1203, 1204)
                                             ),
                                             (
                                                 retail_node(fourcc!("garr"), 4, 10, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1209, 1210)
                                             ),
                                             (
                                                 retail_node(fourcc!("latr"), 33, 10, 25, 25)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(1199, 1200)
                                             ),
                                         ]
@@ -5450,6 +5664,7 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture(1113)
                                             ),
                                         ]
@@ -5479,6 +5694,7 @@ pub fn mapview_2013() -> impl Scene {
                             (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 retail_picture_swap(9457, 9458)
                             ),
@@ -5511,11 +5727,13 @@ pub fn mapview_3012() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
                                 Button
+                                ActivateOnPress
                                 retail_picture(3014)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
                                 Button
+                                ActivateOnPress
                                 retail_picture(3013)
                             ),
                             (
@@ -5578,11 +5796,13 @@ pub fn mapview_3100() -> impl Scene {
                             (
                                 retail_node(fourcc!("canc"), 187, 213, 61, 23)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 268, 213, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -5631,6 +5851,7 @@ pub fn mapview_3500() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
                                 Button
+                                ActivateOnPress
                                 retail_picture(3507)
                             ),
                         ]
@@ -5656,11 +5877,13 @@ pub fn mapview_3508() -> impl Scene {
                             (
                                 retail_node(fourcc!("cncl"), 16, 68, 61, 23)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 185, 67, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -5738,6 +5961,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5762,6 +5986,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5781,6 +6006,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5795,6 +6021,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5819,6 +6046,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5833,6 +6061,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5857,6 +6086,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5871,6 +6101,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5895,6 +6126,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5909,6 +6141,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5933,6 +6166,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5947,6 +6181,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5971,6 +6206,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -5985,6 +6221,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6009,6 +6246,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6023,6 +6261,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6047,6 +6286,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6061,6 +6301,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6085,6 +6326,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6099,6 +6341,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6123,6 +6366,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6137,6 +6381,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6161,6 +6406,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6175,6 +6421,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6186,6 +6433,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("    "), 450, 239, 61, 24)
                         Button
+                        ActivateOnPress
                         retail_picture_swap(9410, 9411)
                     ),
                     (
@@ -6199,6 +6447,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6223,6 +6472,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6242,6 +6492,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6261,6 +6512,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6280,6 +6532,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6299,6 +6552,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6318,6 +6572,7 @@ pub fn mapview_9460() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6350,6 +6605,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6374,6 +6630,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6393,6 +6650,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6407,6 +6665,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6431,6 +6690,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6450,6 +6710,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6464,6 +6725,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6475,6 +6737,7 @@ pub fn mapview_9462() -> impl Scene {
                     (
                         retail_node(fourcc!("    "), 287, 240, 61, 24)
                         Button
+                        ActivateOnPress
                         retail_picture_swap(9410, 9411)
                     ),
                     (
@@ -6488,6 +6751,7 @@ pub fn mapview_9462() -> impl Scene {
                             },
                         }
                         Button
+                        ActivateOnPress
                         Text("")
                         TextColor(Color::BLACK)
                     ),
@@ -6512,6 +6776,7 @@ pub fn mapview_9465() -> impl Scene {
                             (
                                 retail_node(fourcc!("    "), 198, 221, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                         ]
@@ -6573,11 +6838,13 @@ pub fn mapview_9474() -> impl Scene {
                             (
                                 retail_node(fourcc!("canc"), 187, 213, 61, 23)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 268, 213, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -6639,6 +6906,7 @@ pub fn mapview_9475() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 275, 216, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -6718,6 +6986,7 @@ pub fn mapview_9477() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 275, 240, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -6827,6 +7096,7 @@ pub fn mapview_9478() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
                                 Button
+                                ActivateOnPress
                                 retail_picture(3507)
                             ),
                             (
@@ -6863,6 +7133,7 @@ pub fn minister_9480() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 310, 248, 61, 23)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -6928,11 +7199,13 @@ pub fn multiplayer_1507() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 210, 287, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 36, 287, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                         ]
@@ -6966,6 +7239,7 @@ pub fn multiplayer_1508() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 323, 415, 213, 36)
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 retail_picture_swap(4604, 4605)
                             ),
@@ -7072,7 +7346,6 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("map "), 302, 14, 324, 180)
-                                RelativeCursorPosition
                             ),
                             (
                                 retail_node(fourcc!("send"), 230, 204, 55, 60)
@@ -7085,6 +7358,7 @@ pub fn multiplayer_1508() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7102,6 +7376,7 @@ pub fn multiplayer_1508() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7115,6 +7390,7 @@ pub fn multiplayer_1508() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7128,6 +7404,7 @@ pub fn multiplayer_1508() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7156,11 +7433,13 @@ pub fn multiplayer_1510() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 249, 89, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 26, 90, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
@@ -7180,36 +7459,43 @@ pub fn multiplayer_1510() -> impl Scene {
                             (
                                 retail_node(fourcc!("box0"), 29, 62, 29, 22)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4651)
                             ),
                             (
                                 retail_node(fourcc!("box1"), 70, 62, 29, 22)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4656)
                             ),
                             (
                                 retail_node(fourcc!("box2"), 111, 62, 29, 22)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4661)
                             ),
                             (
                                 retail_node(fourcc!("box3"), 152, 62, 29, 22)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4666)
                             ),
                             (
                                 retail_node(fourcc!("box4"), 193, 62, 29, 22)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4671)
                             ),
                             (
                                 retail_node(fourcc!("box5"), 234, 62, 29, 22)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4676)
                             ),
                             (
                                 retail_node(fourcc!("box6"), 275, 62, 29, 22)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4681)
                             ),
                         ]
@@ -7256,6 +7542,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7263,11 +7550,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7292,6 +7581,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7299,11 +7589,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7328,6 +7620,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7335,11 +7628,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7364,6 +7659,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7371,11 +7667,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7400,6 +7698,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7407,11 +7706,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7436,6 +7737,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7443,11 +7745,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7472,6 +7776,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7479,11 +7784,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7508,6 +7815,7 @@ pub fn shipyard_9207() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 Text("")
                                                 retail_text_style(3, 0, 10, 1)
                                                 retail_text_color(210)
@@ -7515,11 +7823,13 @@ pub fn shipyard_9207() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9802, 9803)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9804, 9805)
                                             ),
                                         ]
@@ -7594,22 +7904,24 @@ pub fn startup_952() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(1017)
                                     ),
                                     (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(1018)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("DLOG"), 5, 27, 512, 448)
-                                RelativeCursorPosition
                             ),
                             (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                                 retail_picture_swap(9457, 9458)
                             ),
@@ -7645,11 +7957,13 @@ pub fn startup_953() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 255, 142, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 13, 142, 61, 23)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
@@ -7697,6 +8011,7 @@ pub fn startup_966() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 255, 139, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                         ]
@@ -7738,6 +8053,7 @@ pub fn startup_1500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7751,6 +8067,7 @@ pub fn startup_1500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7764,6 +8081,7 @@ pub fn startup_1500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7777,6 +8095,7 @@ pub fn startup_1500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7790,6 +8109,7 @@ pub fn startup_1500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7806,6 +8126,7 @@ pub fn startup_1500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -7819,6 +8140,7 @@ pub fn startup_1500() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                         ]
@@ -7857,7 +8179,6 @@ pub fn startup_1501() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("map "), 14, 10, 324, 180)
-                                        RelativeCursorPosition
                                     ),
                                     (
                                         retail_node(fourcc!("tcou"), 66, 230, 144, 16)
@@ -7887,6 +8208,7 @@ pub fn startup_1501() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 128, 418, 96, 30)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4512, 4513)
                                     ),
                                     (
@@ -7998,6 +8320,7 @@ pub fn startup_1501() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8016,6 +8339,7 @@ pub fn startup_1501() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8029,6 +8353,7 @@ pub fn startup_1501() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8038,6 +8363,7 @@ pub fn startup_1501() -> impl Scene {
                             (
                                 retail_node(fourcc!("glob"), 147, 134, 128, 128)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4560)
                             ),
                         ]
@@ -8073,12 +8399,12 @@ pub fn startup_1503() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("pmap"), 302, 14, 324, 180)
-                                        RelativeCursorPosition
                                         InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("star"), 416, 422, 96, 30)
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         retail_picture_swap(4512, 4513)
                                     ),
@@ -8104,6 +8430,7 @@ pub fn startup_1503() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                     ),
                                     (
                                         retail_node(fourcc!("curs"), 50, 17, 214, 30)
@@ -8184,11 +8511,13 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4510)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
                                 Button
+                                ActivateOnPress
                                 retail_picture(4511)
                             ),
                             (
@@ -8243,21 +8572,25 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("set0"), 413, 170, 30, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("set1"), 412, 201, 30, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("set2"), 414, 234, 30, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("set3"), 412, 265, 30, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
@@ -8321,6 +8654,7 @@ pub fn startup_1509() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8334,6 +8668,7 @@ pub fn startup_1509() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8347,6 +8682,7 @@ pub fn startup_1509() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8360,6 +8696,7 @@ pub fn startup_1509() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8385,6 +8722,7 @@ pub fn startup_1509() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                             (
@@ -8398,6 +8736,7 @@ pub fn startup_1509() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 InteractionDisabled
                             ),
                         ]
@@ -8564,6 +8903,7 @@ pub fn startup_1515() -> impl Scene {
                                     (
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4596)
                                     ),
                                 ]
@@ -8605,11 +8945,13 @@ pub fn startup_20000() -> impl Scene {
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(20001)
                                     ),
                                     (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(20002)
                                     ),
                                     (
@@ -8671,21 +9013,25 @@ pub fn tactical_3800() -> impl Scene {
                                     (
                                         retail_node(fourcc!("help"), 9, 8, 35, 44)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(3786, 3787)
                                     ),
                                     (
                                         retail_node(fourcc!("targ"), 9, 151, 35, 34)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(3788, 3789)
                                     ),
                                     (
                                         retail_node(fourcc!("done"), 9, 186, 35, 34)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(3790, 3791)
                                     ),
                                     (
                                         retail_node(fourcc!("retr"), 9, 221, 35, 34)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(3792, 3793)
                                     ),
                                     (
@@ -8699,6 +9045,7 @@ pub fn tactical_3800() -> impl Scene {
                                     (
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(3798)
                                     ),
                                     (
@@ -8730,6 +9077,7 @@ pub fn tactical_3821() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 87, 314, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -8767,11 +9115,11 @@ pub fn tactical_3865() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("pmap"), 59, 5, 324, 180)
-                                RelativeCursorPosition
                             ),
                             (
                                 retail_node(fourcc!("okay"), 369, 261, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
@@ -8790,6 +9138,7 @@ pub fn tactical_3865() -> impl Scene {
                             (
                                 retail_node(fourcc!("cncl"), 12, 261, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
@@ -8832,6 +9181,7 @@ pub fn tech_2200() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         retail_picture(2228)
                                     ),
@@ -8890,6 +9240,7 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(2301)
                                     ),
                                     (
@@ -8912,21 +9263,25 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9449, 9450)
                                     ),
                                 ]
@@ -8937,6 +9292,7 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(2302)
                                     ),
                                 ]
@@ -9011,6 +9367,7 @@ pub fn techstore_2370() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 281, 260, 61, 24)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9410, 9411)
                                     ),
                                 ]
@@ -9049,6 +9406,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(6020)
                                     ),
                                 ]
@@ -9074,6 +9432,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(6021)
                                     ),
                                     (
@@ -9101,6 +9460,7 @@ pub fn trade_2009() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("185")
                                 TextColor(Color::BLACK)
                             ),
@@ -9126,6 +9486,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9142,11 +9503,13 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9180,6 +9543,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9200,11 +9564,13 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9234,6 +9600,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9254,11 +9621,13 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9288,6 +9657,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9308,11 +9678,13 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9342,6 +9714,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9358,6 +9731,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9367,6 +9741,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9396,6 +9771,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9412,6 +9788,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9421,6 +9798,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9450,6 +9828,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9466,6 +9845,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9475,6 +9855,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9504,6 +9885,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9520,6 +9902,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9529,6 +9912,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9558,6 +9942,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9574,6 +9959,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9583,6 +9969,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9612,6 +9999,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9628,6 +10016,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9637,6 +10026,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9666,6 +10056,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9682,6 +10073,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9691,6 +10083,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9720,6 +10113,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9736,6 +10130,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9745,6 +10140,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9774,6 +10170,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9790,6 +10187,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9799,6 +10197,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9828,6 +10227,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9844,6 +10244,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9853,6 +10254,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9882,6 +10284,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9898,6 +10301,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9907,6 +10311,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9936,6 +10341,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -9952,6 +10358,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9961,6 +10368,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9990,6 +10398,7 @@ pub fn trade_2009() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         InteractionDisabled
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
@@ -10006,6 +10415,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10015,6 +10425,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10058,21 +10469,25 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9449, 9450)
                                     ),
                                 ]
@@ -10145,6 +10560,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture(6020)
                                             ),
                                         ]
@@ -10171,6 +10587,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10187,11 +10604,13 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10225,6 +10644,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10245,11 +10665,13 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10279,6 +10701,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10299,11 +10722,13 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10333,6 +10758,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10353,11 +10779,13 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10387,6 +10815,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10403,6 +10832,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10412,6 +10842,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10441,6 +10872,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10457,6 +10889,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10466,6 +10899,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10495,6 +10929,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10511,6 +10946,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10520,6 +10956,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10549,6 +10986,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10565,6 +11003,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10574,6 +11013,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10603,6 +11043,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10619,6 +11060,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10628,6 +11070,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10657,6 +11100,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10673,6 +11117,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10682,6 +11127,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10711,6 +11157,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10727,6 +11174,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10736,6 +11184,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10765,6 +11214,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10781,6 +11231,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10790,6 +11241,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10819,6 +11271,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10835,6 +11288,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10844,6 +11298,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10873,6 +11328,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10889,6 +11345,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10898,6 +11355,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10927,6 +11385,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10943,6 +11402,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10952,6 +11412,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10981,6 +11442,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -10997,6 +11459,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11006,6 +11469,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11035,6 +11499,7 @@ pub fn trade_2010() -> impl Scene {
                                                     },
                                                 }
                                                 Button
+                                                ActivateOnPress
                                                 InteractionDisabled
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
@@ -11051,6 +11516,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11060,6 +11526,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11103,6 +11570,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture(6021)
                                             ),
                                             (
@@ -11133,6 +11601,7 @@ pub fn trade_2010() -> impl Scene {
                                             },
                                         }
                                         Button
+                                        ActivateOnPress
                                         Text("185")
                                         TextColor(Color::BLACK)
                                     ),
@@ -11184,21 +11653,25 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9449, 9450)
                                     ),
                                 ]
@@ -11232,21 +11705,25 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(9449, 9450)
                                     ),
                                 ]
@@ -11257,6 +11734,7 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4025)
                                     ),
                                 ]
@@ -11267,6 +11745,7 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
+                                        ActivateOnPress
                                         retail_picture(4024)
                                     ),
                                     (
@@ -11308,11 +11787,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11330,11 +11811,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11352,11 +11835,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11374,11 +11859,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11396,11 +11883,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11418,11 +11907,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11440,11 +11931,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11462,11 +11955,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11484,11 +11979,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11506,11 +12003,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11528,11 +12027,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11550,11 +12051,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11572,11 +12075,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11594,11 +12099,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11616,11 +12123,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11638,11 +12147,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11666,11 +12177,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11694,11 +12207,13 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         Button
+                                        ActivateOnPress
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -11752,6 +12267,7 @@ pub fn univ_9210() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, -2)
                                 retail_text_color(210)
@@ -11767,6 +12283,7 @@ pub fn univ_9210() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, -2)
                                 retail_text_color(210)
@@ -11840,6 +12357,7 @@ pub fn univ_9210() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 10, -2)
                                                         retail_text_color(210)
@@ -11849,11 +12367,13 @@ pub fn univ_9210() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9901, 9902)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9903, 9904)
                                             ),
                                         ]
@@ -11888,6 +12408,7 @@ pub fn univ_9210() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 10, -2)
                                                         retail_text_color(210)
@@ -11897,11 +12418,13 @@ pub fn univ_9210() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9901, 9902)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9903, 9904)
                                             ),
                                         ]
@@ -11930,6 +12453,7 @@ pub fn univ_9210() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 10, -2)
                                                         retail_text_color(210)
@@ -11939,11 +12463,13 @@ pub fn univ_9210() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9901, 9902)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9903, 9904)
                                             ),
                                         ]
@@ -11972,6 +12498,7 @@ pub fn univ_9210() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 10, -2)
                                                         retail_text_color(210)
@@ -11981,11 +12508,13 @@ pub fn univ_9210() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9901, 9902)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9903, 9904)
                                             ),
                                         ]
@@ -12008,6 +12537,7 @@ pub fn univ_9210() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 10, -2)
                                                         retail_text_color(210)
@@ -12017,11 +12547,13 @@ pub fn univ_9210() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9901, 9902)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9903, 9904)
                                             ),
                                         ]
@@ -12056,6 +12588,7 @@ pub fn univ_9210() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 10, -2)
                                                         retail_text_color(210)
@@ -12065,11 +12598,13 @@ pub fn univ_9210() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9901, 9902)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9903, 9904)
                                             ),
                                         ]
@@ -12092,6 +12627,7 @@ pub fn univ_9210() -> impl Scene {
                                                             },
                                                         }
                                                         Button
+                                                        ActivateOnPress
                                                         Text("")
                                                         retail_text_style(3, 0, 10, -2)
                                                         retail_text_color(210)
@@ -12101,11 +12637,13 @@ pub fn univ_9210() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9901, 9902)
                                             ),
                                             (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
                                                 Button
+                                                ActivateOnPress
                                                 retail_picture_swap(9903, 9904)
                                             ),
                                         ]
@@ -12129,6 +12667,7 @@ pub fn univ_9210() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, -2)
                                 retail_text_color(210)
@@ -12144,6 +12683,7 @@ pub fn univ_9210() -> impl Scene {
                                     },
                                 }
                                 Button
+                                ActivateOnPress
                                 Text("")
                                 retail_text_style(3, 0, 10, -2)
                                 retail_text_color(210)
@@ -12183,11 +12723,13 @@ pub fn join_selector_message() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 249, 89, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 26, 90, 61, 24)
                                 Button
+                                ActivateOnPress
                                 retail_picture_swap(9412, 9413)
                             ),
                             (

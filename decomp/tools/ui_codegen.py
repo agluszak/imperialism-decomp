@@ -334,6 +334,13 @@ class CityDialogControls:
     industry: tuple[CityIndustryPageControls, ...]
 
 
+@dataclass(frozen=True)
+class CityDialogControlEvidence:
+    shipyard_overlay_left: tuple[int, ...]
+    shipyard_stat_origins: tuple[tuple[int, int], ...]
+    warehouse_stocks: tuple[str, ...]
+
+
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
 
 
@@ -887,65 +894,30 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
     )
 
 
-def _load_row_controls(
-    rows: object, length: int, context: str
-) -> tuple[CityRowControls, ...]:
-    loaded: list[CityRowControls] = []
-    for index, raw_row in enumerate(_sequence(rows, length, context)):
-        row_context = f"{context}[{index}]"
-        row = _mapping(raw_row, row_context)
-        if set(row) != {"cluster", "button"}:
-            raise ValueError(f"{row_context}: expected cluster and button")
-        loaded.append(
-            CityRowControls(
-                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
-                button=_fourcc(row["button"], f"{row_context}/button"),
-            )
-        )
-    return tuple(loaded)
-
-
-def load_city_dialog_controls(repo_root: Path) -> CityDialogControls:
+def load_city_dialog_controls(repo_root: Path) -> CityDialogControlEvidence:
     data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
     context = f"{WINDOWS_DELTA_PATH}: city_dialog_controls"
     section = _mapping(data.get("city_dialog_controls"), context)
     expected = {
         "evidence",
-        "armory_rows",
-        "university_rows",
-        "shipyard_rows",
+        "shipyard_overlay_left",
         "shipyard_stat_origins",
-        "training_orders",
-        "food_order",
-        "power_order",
-        "transport_order",
-        "population_order",
         "warehouse_stocks",
-        "industry",
     }
     if set(section) != expected:
         raise ValueError(f"{context}: unexpected keys")
     if not str(section["evidence"]).strip():
         raise ValueError(f"{context}: evidence is required")
 
-    shipyard_rows: list[CityShipyardRowControls] = []
-    for index, raw_row in enumerate(
-        _sequence(section["shipyard_rows"], 8, f"{context}/shipyard_rows")
+    overlay_left: list[int] = []
+    for index, raw_left in enumerate(
+        _sequence(section["shipyard_overlay_left"], 8, f"{context}/shipyard_overlay_left")
     ):
-        row_context = f"{context}/shipyard_rows[{index}]"
-        row = _mapping(raw_row, row_context)
-        if set(row) != {"cluster", "button", "overlay_left"}:
-            raise ValueError(f"{row_context}: malformed shipyard row")
-        overlay_left = int(row["overlay_left"])
-        if overlay_left < 0:
+        row_context = f"{context}/shipyard_overlay_left[{index}]"
+        overlay = int(raw_left)
+        if overlay < 0:
             raise ValueError(f"{row_context}: overlay_left must be non-negative")
-        shipyard_rows.append(
-            CityShipyardRowControls(
-                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
-                button=_fourcc(row["button"], f"{row_context}/button"),
-                overlay_left=overlay_left,
-            )
-        )
+        overlay_left.append(overlay)
 
     origins: list[tuple[int, int]] = []
     for index, raw_origin in enumerate(
@@ -954,77 +926,16 @@ def load_city_dialog_controls(repo_root: Path) -> CityDialogControls:
         origin = _sequence(raw_origin, 2, f"{context}/shipyard_stat_origins[{index}]")
         origins.append((int(origin[0]), int(origin[1])))
 
-    industry_slots = (
-        "textile_mill",
-        "clothing_factory",
-        "steel_mill",
-        "metalworks",
-        "lumber_mill",
-        "furniture_factory",
-        "oil_refinery",
-    )
-    industry: list[CityIndustryPageControls] = []
-    for index, raw_page in enumerate(
-        _sequence(section["industry"], 7, f"{context}/industry")
-    ):
-        page_context = f"{context}/industry[{index}]"
-        page = _mapping(raw_page, page_context)
-        if set(page) != {"slot", "orders", "stocks"}:
-            raise ValueError(f"{page_context}: malformed industry page")
-        slot = str(page["slot"])
-        if slot != industry_slots[index]:
-            raise ValueError(f"{page_context}: expected slot {industry_slots[index]}")
-        orders = tuple(
-            _fourcc(tag, f"{page_context}/orders[{order_index}]")
-            for order_index, tag in enumerate(page["orders"])
-        )
-        if not orders:
-            raise ValueError(f"{page_context}: orders must not be empty")
-        stocks: list[tuple[str, int]] = []
-        raw_stocks = page["stocks"]
-        if not isinstance(raw_stocks, list) or not raw_stocks:
-            raise ValueError(f"{page_context}/stocks: expected a non-empty list")
-        for stock_index, raw_stock in enumerate(raw_stocks):
-            stock_context = f"{page_context}/stocks[{stock_index}]"
-            stock = _mapping(raw_stock, stock_context)
-            if set(stock) != {"tag", "columns"}:
-                raise ValueError(f"{stock_context}: expected tag and columns")
-            columns = int(stock["columns"])
-            if columns not in (1, 2):
-                raise ValueError(f"{stock_context}: columns must be 1 or 2")
-            stocks.append((_fourcc(stock["tag"], f"{stock_context}/tag"), columns))
-        industry.append(
-            CityIndustryPageControls(slot, orders, tuple(stocks))
-        )
-
     warehouse = tuple(
         _fourcc(tag, f"{context}/warehouse_stocks[{index}]")
         for index, tag in enumerate(
             _sequence(section["warehouse_stocks"], 20, f"{context}/warehouse_stocks")
         )
     )
-    training = tuple(
-        _fourcc(tag, f"{context}/training_orders[{index}]")
-        for index, tag in enumerate(
-            _sequence(section["training_orders"], 2, f"{context}/training_orders")
-        )
-    )
-    return CityDialogControls(
-        armory_rows=_load_row_controls(section["armory_rows"], 8, f"{context}/armory_rows"),
-        university_rows=_load_row_controls(
-            section["university_rows"], 7, f"{context}/university_rows"
-        ),
-        shipyard_rows=tuple(shipyard_rows),
+    return CityDialogControlEvidence(
+        shipyard_overlay_left=tuple(overlay_left),
         shipyard_stat_origins=tuple(origins),
-        training_orders=training,
-        food_order=_fourcc(section["food_order"], f"{context}/food_order"),
-        power_order=_fourcc(section["power_order"], f"{context}/power_order"),
-        transport_order=_fourcc(section["transport_order"], f"{context}/transport_order"),
-        population_order=_fourcc(
-            section["population_order"], f"{context}/population_order"
-        ),
         warehouse_stocks=warehouse,
-        industry=tuple(industry),
     )
 
 
@@ -2044,12 +1955,11 @@ def _render_bsn_node(
     behavior = _rust_widget_behavior(key, node)
     lines.extend(
         {
-            "activate": ["    Button"],
+            "activate": ["    Button", "    ActivateOnPress"],
             "checkbox": ["    Checkbox"],
             "toggle": ["    Checkbox"],
             "radio_group": ["    RadioGroup"],
             "radio_button": ["    RadioButton"],
-            "pointer_canvas": ["    RelativeCursorPosition"],
         }.get(str(behavior), [])
     )
     if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
@@ -2206,6 +2116,139 @@ def _render_city_dialog_controls(
     return lines
 
 
+def _city_view(
+    scene_views: Iterable[tuple[UiResourceKey | str, UiSemanticView]], view_id: int
+) -> UiSemanticView:
+    matches = [view for key, view in scene_views if isinstance(key, UiResourceKey) and key.view_id == view_id]
+    if len(matches) != 1:
+        raise ValueError(f"city dialog {view_id}: expected one canonical resource view")
+    return matches[0]
+
+
+def _city_node(view: UiSemanticView, tag: str, context: str) -> UiSemanticNode:
+    matches = [node for node in view.nodes if node.tag == tag]
+    if len(matches) != 1:
+        raise ValueError(f"{context}: expected one {tag!r} node, found {len(matches)}")
+    return matches[0]
+
+
+def _city_descendants(view: UiSemanticView, node: UiSemanticNode) -> tuple[UiSemanticNode, ...]:
+    children: dict[str, list[UiSemanticNode]] = {}
+    for candidate in view.nodes:
+        if candidate.parent_id is not None:
+            children.setdefault(candidate.parent_id, []).append(candidate)
+    result: list[UiSemanticNode] = []
+    pending = list(children.get(node.node_id, ()))
+    while pending:
+        child = pending.pop()
+        result.append(child)
+        pending.extend(children.get(child.node_id, ()))
+    return tuple(result)
+
+
+def _city_numbered_rows(
+    view: UiSemanticView, button_prefix: str, expected_count: int, context: str
+) -> tuple[CityRowControls, ...]:
+    rows: list[tuple[int, CityRowControls]] = []
+    for cluster in view.nodes:
+        match = re.fullmatch(r"clu(\d+)", cluster.tag)
+        if match is None or cluster.type_code != "clus":
+            continue
+        index = int(match.group(1))
+        descendants = _city_descendants(view, cluster)
+        if {node.tag for node in descendants} < {"minu", "plus", "numb"}:
+            raise ValueError(f"{context}: {cluster.tag} is not a recovered quantity row")
+        button = _city_node(view, f"{button_prefix}{index}", context)
+        if button.parent_id != cluster.parent_id:
+            raise ValueError(f"{context}: {button.tag} is not paired with {cluster.tag}")
+        rows.append((index, CityRowControls(cluster.tag, button.tag)))
+    rows.sort(key=lambda item: item[0])
+    if len(rows) != expected_count:
+        raise ValueError(f"{context}: expected {expected_count} rows, found {len(rows)}")
+    return tuple(row for _, row in rows)
+
+
+def _city_rail_tags(view: UiSemanticView, expected_count: int, context: str) -> tuple[str, ...]:
+    rows = [node for node in view.nodes if node.class_name == "TRailCluster"]
+    rows.sort(key=lambda node: (node.geometry[1], node.geometry[0]))
+    if len(rows) != expected_count:
+        raise ValueError(f"{context}: expected {expected_count} rail rows, found {len(rows)}")
+    for row in rows:
+        if {node.tag for node in _city_descendants(view, row)} != {"left", "rght", "move", "bar "}:
+            raise ValueError(f"{context}: {row.tag} is not a recovered rail row")
+    return tuple(row.tag for row in rows)
+
+
+def _derive_city_dialog_controls(
+    scene_views: Iterable[tuple[UiResourceKey | str, UiSemanticView]],
+    city_buildings: CityBuildingVisuals,
+    evidence: CityDialogControlEvidence,
+) -> CityDialogControls:
+    scenes = tuple(scene_views)
+    armory_rows = _city_numbered_rows(_city_view(scenes, 9208), "civ", 8, "Armory")
+    university_rows = _city_numbered_rows(_city_view(scenes, 9210), "civ", 7, "University")
+    shipyard_pairs = _city_numbered_rows(_city_view(scenes, 9207), "but", 8, "Shipyard")
+    shipyard_rows = tuple(
+        CityShipyardRowControls(row.cluster, row.button, overlay_left)
+        for row, overlay_left in zip(shipyard_pairs, evidence.shipyard_overlay_left, strict=True)
+    )
+    training_orders = _city_rail_tags(_city_view(scenes, 9209), 2, "Trade school")
+    food_order, = _city_rail_tags(_city_view(scenes, 9212), 1, "Food processing")
+    power_order, = _city_rail_tags(_city_view(scenes, 9211), 1, "Power plant")
+    transport_order, = _city_rail_tags(_city_view(scenes, 9214), 1, "Transport")
+    population_order, = _city_rail_tags(_city_view(scenes, 9215), 1, "Population")
+
+    industry: list[CityIndustryPageControls] = []
+    labels = {"labV", "name", "capT", "or  "}
+    visuals = sorted(
+        (visual for visual in city_buildings.visuals if 9200 <= visual.dialog.view_id <= 9206),
+        key=lambda visual: visual.dialog.view_id,
+    )
+    if len(visuals) != 7:
+        raise ValueError("city industry: expected seven recovered industry dialogs")
+    for visual in visuals:
+        view = _city_view(scenes, visual.dialog.view_id)
+        orders = tuple(node.tag for node in view.nodes if node.class_name == "TIndustryCluster")
+        if not orders:
+            raise ValueError(f"{view.view_id}: missing recovered industry rows")
+        for tag in orders:
+            row = _city_node(view, tag, str(view.view_id))
+            if {node.tag for node in _city_descendants(view, row)} != {"left", "rght", "move", "bar "}:
+                raise ValueError(f"{view.view_id}:{tag} is not a recovered industry row")
+        stock_tags = tuple(
+            node.tag
+            for node in view.nodes
+            if node.type_code == "stat" and node.tag not in labels
+        )
+        if not stock_tags:
+            raise ValueError(f"{view.view_id}: missing recovered industry stock labels")
+        columns = 2 if len(stock_tags) == 1 else 1
+        industry.append(
+            CityIndustryPageControls(
+                visual.slot, orders, tuple((tag, columns) for tag in stock_tags)
+            )
+        )
+
+    warehouse = _city_view(scenes, 9213)
+    for tag in evidence.warehouse_stocks:
+        node = _city_node(warehouse, tag, "Warehouse")
+        if node.class_name != "TPictureNumberText":
+            raise ValueError(f"Warehouse: {tag} is not a stock number")
+    return CityDialogControls(
+        armory_rows=armory_rows,
+        university_rows=university_rows,
+        shipyard_rows=shipyard_rows,
+        shipyard_stat_origins=evidence.shipyard_stat_origins,
+        training_orders=training_orders,
+        food_order=food_order,
+        power_order=power_order,
+        transport_order=transport_order,
+        population_order=population_order,
+        warehouse_stocks=evidence.warehouse_stocks,
+        industry=tuple(industry),
+    )
+
+
 def render_rust_ui(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -2215,7 +2258,9 @@ def render_rust_ui(
     scene_views, city_buildings, city_building_actions = _rust_ui_semantic_views(
         repo_root, recipes, views, text_resources
     )
-    dialog_controls = load_city_dialog_controls(repo_root)
+    dialog_controls = _derive_city_dialog_controls(
+        scene_views, city_buildings, load_city_dialog_controls(repo_root)
+    )
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
         "#![allow(dead_code, clippy::identity_op)]",
@@ -2224,8 +2269,8 @@ def render_rust_ui(
         "use super::retail::*;",
         "use super::window::CaptionedWindow;",
         "use bevy::prelude::*;",
-        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
-        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
+        "use bevy::ui::{Checked, InteractionDisabled};",
+        "use bevy::ui_widgets::{ActivateOnPress, Button, Checkbox, RadioButton, RadioGroup};",
         "use imperialism_core::CityFacilitySlot;",
         "use imperialism_formats::{FourCc, PictureId, fourcc};",
         "",
