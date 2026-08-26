@@ -57,7 +57,6 @@ struct TechnologyAdvanceView {
 struct TradeView {
     capacity: Entity,
     rows: TradeCommodityTable<TradeRowView>,
-    pictures: TradePictures,
 }
 
 struct TradeRowView {
@@ -122,10 +121,14 @@ Application data flow is always:
 widget event -> typed state mutation -> render authoritative state -> Bevy presentation
 ```
 
-An interactive leaf component is useful when it describes behavior, for example
-`TradeAction::Step { commodity, delta }` or `CityOrderAdjust { order, delta }`. A display marker whose
-only meaning is "write this field here later" is not useful; its destination belongs in the owning
-view.
+An interactive leaf component is useful when it describes behavior on a dynamically created or
+independently queried control. A display marker whose only meaning is "write this field here later"
+is not useful; its destination belongs in the owning view.
+
+Bind-time constants needed only by an event handler belong in that observer's closure, not in ECS.
+If a fixed control's semantic argument is known at binding and only its handler needs that argument,
+capture it (for example a trade card captures its `TradeCommodity` and `TradeCardKind`). Store it as
+a component only when other independent systems need to query it.
 
 Reusable autonomous presentation components such as `RetailPictureSwap` remain appropriate. The
 criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket
@@ -150,17 +153,13 @@ introducing a generic dependency, projection, observer, lens, or binding framewo
 
 `ChildOf` remains the source of truth for hierarchy and descendant lifetime. Use event propagation
 through that hierarchy when the event is designed to propagate. When a child needs direct access to
-an invariant owner and propagation does not apply, store the owner explicitly, for example:
+an invariant owner and propagation does not apply, store the owner explicitly. Do not repeatedly walk
+ancestors to rediscover an ownership relation established when the child was created.
 
-```rust,ignore
-#[derive(Component)]
-struct WindowTitleBar {
-    window: Entity,
-}
-```
-
-Do not repeatedly walk ancestors to rediscover an ownership relation established when the child was
-created. Modal roots likewise retain direct handles to their default and cancel controls.
+A window caption knows the window it drags, its close button knows the host it dismisses, and a modal
+root knows its default and cancel controls. Each is established once at binding: pointer, drag,
+keyboard, and activation events propagate to those observers, whose closures capture the invariant
+targets.
 
 Generated BSN remains the structure mechanism for recovered screens. `SceneComponent` may be used
 for a genuinely reusable semantic widget authored by this project, but recovered screens do not get
@@ -199,10 +198,9 @@ UI changes must preserve these rules:
    in one semantic view. It does not cache presentation facts already owned by addressed entities or
    identities already expressed by typed table keys. Nested row and control structures are normally
    plain Rust structs.
-7. Leaf components represent semantic actions, reusable autonomous widget behavior, or genuinely
-   first-class relationships, not display destinations. A leaf action component earns its existence
-   only when it is the authoritative semantic association; do not add one that re-encodes an
-   association the owning semantic view already holds.
+7. Bind-time constants needed only by an event handler are captured in that observer's closure, not
+   stored as components. Store a leaf component only when other independent systems need to query
+   it, or it describes genuinely first-class behavior or relationship.
 8. Renderers are coarse by default and split only for a concrete independent lifecycle, cadence, or
    expensive surface. There is no generic reactive or binding framework.
 9. Generated variants with the same semantics share handwritten binding through compact recovered-
@@ -210,40 +208,3 @@ UI changes must preserve these rules:
 10. Change this contract explicitly before introducing a selector registry, generated typed screen
     API, `Binding<T>`, lenses, a generic ownership graph, or equivalent infrastructure. Such an
     architectural change must not arrive incidentally inside a screen refactor.
-
-## Reference implementations
-
-Technology Advance is the reference for a simple recovered screen: a spawn marker identifies the
-unbound scene, binding stores the few output entities in `TechnologyAdvanceView`, actions stay on
-their controls, and one renderer writes authoritative state directly to the view.
-
-Trade is the reference for fixed recovered rows and native presentation. `TradeView` keys its plain
-row values by `TradeCommodity`, retains shared card pictures once, and stores only the control
-entities needed after binding. Input observers resolve the activated control against that view
-instead of re-encoding a commodity/action index on each control. Price and stock labels are ordinary
-Bevy text, and the amount bar is a native fill node; retail geometry and click semantics remain
-without carrying the original temporary bitmap implementation into the app.
-
-Transport validates the same pattern on a second live fixed screen and adds one nuance: its cursor
-text reacts to hover, which changes independently of game state, so the coarse session renderer and
-the cursor renderer keep separate cadences. Its amount gauges are native overlay nodes above the
-static recovered background rather than re-rasterized pictures.
-
-These examples freeze the ownership and data-flow pattern, not a reusable Rust API. Subsequent
-screens should define their own small semantic view and binder; do not extract a shared view trait,
-generic binder, or generated typed screen layer from their resemblance.
-
-## Migration order
-
-Technology Advance and Trade establish the reference pattern. Migrate the remaining UI in bounded
-proofs:
-
-1. One City industry dialog: retain its existing row entity handles inside one aggregate view and
-   remove the redundant quantity, capacity, indicator, bar, and visual destination components.
-2. Windows: replace repeated invariant owner discovery with event propagation or direct owner
-   handles.
-3. Apply the demonstrated pattern mechanically to simpler screens only after these proofs remain
-   small and direct.
-
-Each migration deletes the replaced representation and updates its producers, consumers, fixtures,
-and tests together. Do not add compatibility modes or migrate every screen in one broad refactor.

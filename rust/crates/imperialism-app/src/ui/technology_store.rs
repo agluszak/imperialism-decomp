@@ -6,7 +6,7 @@ use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::map_help;
 use super::retail::{RetailPictureSwap, RetailTree, RetailUiAssets, retail_text_style};
 use super::session::GameSession;
-use super::window::{ModalControls, ModalWindow, WindowClose};
+use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -504,13 +504,9 @@ fn bind_technology_modals(
             ChildOf(scroll),
         ));
         let okay = view.find(fourcc!("okay"));
-        commands
-            .entity(okay)
-            .insert((ActivateOnPress, WindowClose { root }));
-        commands.entity(root).insert(ModalControls {
-            default: Some(okay),
-            cancel: None,
-        });
+        commands.entity(okay).insert(ActivateOnPress);
+        dismiss_on_activate(&mut commands, okay, root);
+        bind_modal_keys(&mut commands, root, Some(okay), None);
     }
     for root in &notices {
         let linger = bind_linger_dialog(&mut commands, root, &tree);

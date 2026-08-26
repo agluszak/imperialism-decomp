@@ -73,17 +73,3 @@ pub(in crate::ui::city) fn on_city_rail_amount_bar_click(
         return;
     }
 }
-
-pub(in crate::ui::city) fn on_city_order_adjust(
-    activate: On<Activate>,
-    actions: Query<&CityOrderAdjust>,
-    mut session: ResMut<GameSession>,
-) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    let nation = session.active_major_nation();
-    session
-        .game
-        .adjust_city_order(nation, action.order, action.delta);
-}

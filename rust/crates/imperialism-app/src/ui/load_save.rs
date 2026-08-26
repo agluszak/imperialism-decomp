@@ -5,7 +5,7 @@ use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
-use crate::ui::window::{ModalWindow, WindowClose, set_modal_cancel};
+use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{
     BattleReportPresentation, CityWindows, GameSession, StrategicMapSession, insert_loaded_game,
     remove_game_session,
@@ -943,8 +943,8 @@ fn bind_flag_menu(
         if let Some(action) = action {
             control.insert(action).observe(on_flag_menu_activate);
         } else {
-            control.insert(WindowClose { root });
-            set_modal_cancel(&mut commands, root, control_entity);
+            dismiss_on_activate(&mut commands, control_entity, root);
+            bind_modal_keys(&mut commands, root, None, Some(control_entity));
         }
     }
 }
@@ -1137,10 +1137,12 @@ mod tests {
     fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
         let root = world.spawn((FlagMenuPrompt { kind }, ModalWindow)).id();
         let accept = world
-            .spawn((WindowClose { root }, ChildOf(root)))
+            .spawn(ChildOf(root))
             .observe(on_flag_menu_prompt_activate)
             .id();
-        let dismiss = world.spawn((WindowClose { root }, ChildOf(root))).id();
+        let dismiss = world.spawn(ChildOf(root)).id();
+        dismiss_on_activate(&mut world.commands(), accept, root);
+        dismiss_on_activate(&mut world.commands(), dismiss, root);
         (accept, dismiss)
     }
 

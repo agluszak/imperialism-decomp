@@ -6,13 +6,6 @@ pub(in crate::ui::city) const INDUSTRY_BAR_X: f32 = 62.0;
 pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
 
 #[derive(Component)]
-pub(in crate::ui::city) struct CityOrderAdjust {
-    pub(in crate::ui::city) order: CityOrderId,
-    pub(in crate::ui::city) delta: i16,
-    pub(in crate::ui::city) selection: Option<Entity>,
-}
-
-#[derive(Component)]
 pub(in crate::ui::city) struct CityOrderQuantity(pub(in crate::ui::city) CityOrderId);
 
 #[derive(Component, Clone, Copy, Eq, PartialEq)]
@@ -118,28 +111,25 @@ pub(in crate::ui::city) fn bind_city_order_row(
     let decrease = tree.find(row, decrease_tag);
     let increase = tree.find(row, increase_tag);
     let quantity = tree.find(row, quantity_tag);
-    let mut decrease_commands = commands.entity(decrease);
-    decrease_commands
-        .insert(CityOrderAdjust {
-            order: binding.order,
-            delta: -step,
-            selection,
-        })
-        .observe(on_city_order_adjust);
-    if selection.is_some() {
-        decrease_commands.observe(on_city_recruitment_order_selected);
-    }
-    let mut increase_commands = commands.entity(increase);
-    increase_commands
-        .insert(CityOrderAdjust {
-            order: binding.order,
-            delta: step,
-            selection,
-        })
-        .observe(on_city_order_adjust);
-    if selection.is_some() {
-        increase_commands.observe(on_city_recruitment_order_selected);
-    }
+    let order = binding.order;
+    let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
+        commands.entity(entity).observe(
+            move |_: On<Activate>,
+                  mut selections: Query<&mut CityRowSelection>,
+                  mut session: ResMut<GameSession>| {
+                if let Some(selection_entity) = selection
+                    && let Ok(mut selection) = selections.get_mut(selection_entity)
+                    && recruitment_kind_matches(selection.order, order)
+                {
+                    selection.order = order;
+                }
+                let nation = session.active_major_nation();
+                session.game.adjust_city_order(nation, order, delta);
+            },
+        );
+    };
+    bind_step(commands, decrease, -step);
+    bind_step(commands, increase, step);
     if record_quantity {
         commands
             .entity(quantity)
@@ -176,36 +166,51 @@ fn bind_industry_orders(
                 false,
             );
             let bar = tree.find(bound.row, fourcc!("bar "));
-            let mut spawn_child = |left, top, width, height, color| {
-                commands
-                    .spawn((
-                        Node {
-                            position_type: PositionType::Absolute,
-                            left: px(left),
-                            top: px(top),
-                            width: px(width),
-                            height: px(height),
-                            ..default()
-                        },
-                        BackgroundColor(color),
-                        Pickable::IGNORE,
-                        ChildOf(bar),
-                    ))
-                    .id()
-            };
-            let fill_color = assets.palette_color(INDUSTRY_BAR_FILL);
-            let tick_color = assets.palette_color(0);
-            let fill = spawn_child(0.0, 1.0, 0.0, 4.0, fill_color);
-            let tick = spawn_child(0.0, 0.0, 1.0, 5.0, tick_color);
+            let visual = bind_amount_bar_visual(commands, assets, bar);
             commands.entity(bar).observe(on_city_amount_bar_click);
             IndustryOrderView {
                 quantity: bound.quantity,
                 bar,
-                fill,
-                tick,
+                fill: visual.fill,
+                tick: visual.tick,
             }
         })
         .collect()
+}
+
+/// Native fill/range nodes over a recovered amount-bar track.
+#[derive(Clone, Copy)]
+struct AmountBarView {
+    fill: Entity,
+    tick: Entity,
+}
+
+/// Overlays an amount bar's fill and range tick as children of `parent`.
+fn bind_amount_bar_visual(
+    commands: &mut Commands,
+    assets: &RetailUiAssets,
+    parent: Entity,
+) -> AmountBarView {
+    let mut spawn_child = |left, top, width, height, color| {
+        commands
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(left),
+                    top: px(top),
+                    width: px(width),
+                    height: px(height),
+                    ..default()
+                },
+                BackgroundColor(color),
+                Pickable::IGNORE,
+                ChildOf(parent),
+            ))
+            .id()
+    };
+    let fill = spawn_child(0.0, 1.0, 0.0, 4.0, assets.palette_color(INDUSTRY_BAR_FILL));
+    let tick = spawn_child(0.0, 0.0, 1.0, 5.0, assets.palette_color(0));
+    AmountBarView { fill, tick }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -338,25 +343,6 @@ pub(in crate::ui::city) fn on_city_row_selected(
     }
 }
 
-pub(in crate::ui::city) fn on_city_recruitment_order_selected(
-    activate: On<Activate>,
-    actions: Query<&CityOrderAdjust>,
-    mut views: Query<&mut CityRowSelection>,
-) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    let Some(selection_entity) = action.selection else {
-        return;
-    };
-    let Ok(mut selection) = views.get_mut(selection_entity) else {
-        return;
-    };
-    if recruitment_kind_matches(selection.order, action.order) {
-        selection.order = action.order;
-    }
-}
-
 const fn recruitment_kind_matches(selected: CityOrderId, candidate: CityOrderId) -> bool {
     matches!(
         (selected, candidate),
@@ -430,27 +416,9 @@ pub(in crate::ui::city) fn bind_rail_amount_bar(
     tree: &RetailTree,
 ) -> (Entity, Entity, Entity) {
     let bar = tree.find(row, fourcc!("bar "));
-    let mut spawn_child = |left, top, width, height, color| {
-        commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(left),
-                    top: px(top),
-                    width: px(width),
-                    height: px(height),
-                    ..default()
-                },
-                BackgroundColor(color),
-                Pickable::IGNORE,
-                ChildOf(bar),
-            ))
-            .id()
-    };
-    let fill = spawn_child(0.0, 1.0, 0.0, 4.0, assets.palette_color(INDUSTRY_BAR_FILL));
-    let tick = spawn_child(0.0, 0.0, 1.0, 5.0, assets.palette_color(0));
+    let visual = bind_amount_bar_visual(commands, assets, bar);
     commands.entity(bar).observe(on_city_rail_amount_bar_click);
-    (bar, fill, tick)
+    (bar, visual.fill, visual.tick)
 }
 
 fn rail_bar_capacity(

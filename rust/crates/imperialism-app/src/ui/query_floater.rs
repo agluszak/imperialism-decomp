@@ -1,6 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
-use super::window::{ModalWindow, WindowClose, set_modal_cancel};
+use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -85,30 +85,27 @@ fn bind_query_floaters(
                 TextColor(Color::WHITE),
             ));
         }
+        let advice = view.find(fourcc!("advi"));
         commands
-            .entity(view.find(fourcc!("advi")))
-            .insert((
-                QueryFloaterAction::Advice,
-                ActivateOnPress,
-                WindowClose { root },
-            ))
+            .entity(advice)
+            .insert((QueryFloaterAction::Advice, ActivateOnPress))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
+        let deal = view.find(fourcc!("deal"));
         commands
-            .entity(view.find(fourcc!("deal")))
-            .insert((
-                QueryFloaterAction::DealBook,
-                ActivateOnPress,
-                WindowClose { root },
-            ))
+            .entity(deal)
+            .insert((QueryFloaterAction::DealBook, ActivateOnPress))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         let cancel = view.find(fourcc!("cncl"));
         commands
             .entity(cancel)
-            .insert((ActivateOnPress, WindowClose { root }))
+            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>();
-        set_modal_cancel(&mut commands, root, cancel);
+        for button in [advice, deal, cancel] {
+            dismiss_on_activate(&mut commands, button, root);
+        }
+        bind_modal_keys(&mut commands, root, None, Some(cancel));
         for tag in [
             fourcc!("oref"),
             fourcc!("news"),
@@ -156,12 +153,10 @@ mod tests {
         let root = app.world_mut().spawn((QueryFloaterRoot, ModalWindow)).id();
         let action = app
             .world_mut()
-            .spawn((
-                QueryFloaterAction::DealBook,
-                WindowClose { root },
-                ChildOf(root),
-            ))
+            .spawn((QueryFloaterAction::DealBook, ChildOf(root)))
             .id();
+        dismiss_on_activate(&mut app.world_mut().commands(), action, root);
+        app.world_mut().flush();
 
         app.world_mut()
             .commands()

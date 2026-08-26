@@ -291,9 +291,6 @@ impl StrategicView {
     }
 }
 
-#[derive(Component)]
-pub(crate) struct MapZoomControl;
-
 /// Presentation selection and camera for the strategic map. Separate from
 /// [`crate::ui::GameSession`] so scrolling and mode changes do not mark gameplay changed.
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]

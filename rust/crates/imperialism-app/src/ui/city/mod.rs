@@ -4,7 +4,8 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
 use super::window::{
-    CaptionedWindow, ModalControls, ModalWindow, WindowClose, set_window_position, window_position,
+    CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
+    window_position,
 };
 use super::{CityWindows, GameSession};
 use crate::{AppState, RetailAssetsResource};

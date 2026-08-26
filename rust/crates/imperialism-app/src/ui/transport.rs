@@ -238,12 +238,32 @@ fn bind_transport_view(
         commands.entity(row).insert(Hovered::default());
         let decrease = tree.find(row, fourcc!("left"));
         let increase = tree.find(row, fourcc!("rght"));
-        commands
-            .entity(decrease)
-            .observe(on_transport_arrow_activate);
-        commands
-            .entity(increase)
-            .observe(on_transport_arrow_activate);
+        commands.entity(decrease).observe(
+            move |activate: On<Activate>,
+                  disabled: Query<Has<InteractionDisabled>>,
+                  mut session: ResMut<GameSession>| {
+                if disabled.get(activate.entity).unwrap_or(false) {
+                    return;
+                }
+                let nation = session.active_major_nation();
+                session
+                    .game
+                    .step_transport_allocation(nation, binding.allocation, -1);
+            },
+        );
+        commands.entity(increase).observe(
+            move |activate: On<Activate>,
+                  disabled: Query<Has<InteractionDisabled>>,
+                  mut session: ResMut<GameSession>| {
+                if disabled.get(activate.entity).unwrap_or(false) {
+                    return;
+                }
+                let nation = session.active_major_nation();
+                session
+                    .game
+                    .step_transport_allocation(nation, binding.allocation, 1);
+            },
+        );
         let caption = tree.find(row, fourcc!("text"));
         let money = match binding.allocation {
             TransportAllocation::GOLD | TransportAllocation::GEMS => {
@@ -328,34 +348,6 @@ fn install_transport_gauge(
         )
     });
     TransportGaugeView { fill, limit }
-}
-
-fn on_transport_arrow_activate(
-    activate: On<Activate>,
-    views: Query<&TransportView>,
-    disabled: Query<Has<InteractionDisabled>>,
-    mut session: ResMut<GameSession>,
-) {
-    if disabled.get(activate.entity).unwrap_or(false) {
-        return;
-    }
-    let nation = session.active_major_nation();
-    for view in &views {
-        for (binding, row) in TRANSPORT_ROWS.iter().zip(&view.rows) {
-            if activate.entity == row.decrease {
-                session
-                    .game
-                    .step_transport_allocation(nation, binding.allocation, -1);
-                return;
-            }
-            if activate.entity == row.increase {
-                session
-                    .game
-                    .step_transport_allocation(nation, binding.allocation, 1);
-                return;
-            }
-        }
-    }
 }
 
 fn render_transport(

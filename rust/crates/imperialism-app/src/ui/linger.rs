@@ -1,6 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
-use super::window::{ModalControls, ModalWindow, WindowClose};
+use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::AppState;
 use bevy::prelude::*;
 use imperialism_formats::{RetailTextStylePreset, fourcc};
@@ -37,14 +37,9 @@ pub fn bind_linger_dialog(
         cancel: tree.find(root, fourcc!("cncl")),
         coat: tree.find(root, fourcc!("coat")),
     };
-    commands.entity(controls.okay).insert(WindowClose { root });
-    commands
-        .entity(controls.cancel)
-        .insert(WindowClose { root });
-    commands.entity(root).insert(ModalControls {
-        default: Some(controls.okay),
-        cancel: Some(controls.cancel),
-    });
+    dismiss_on_activate(commands, controls.okay, root);
+    dismiss_on_activate(commands, controls.cancel, root);
+    bind_modal_keys(commands, root, Some(controls.okay), Some(controls.cancel));
     controls
 }
 
