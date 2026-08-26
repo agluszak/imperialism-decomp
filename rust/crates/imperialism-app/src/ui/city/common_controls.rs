@@ -62,19 +62,11 @@ pub(in crate::ui::city) struct CityOrderRow {
 
 impl CityOrderRow {
     pub(in crate::ui::city) fn set_available(&self, commands: &mut Commands, available: bool) {
-        let visibility = if available {
+        commands.entity(self.row).insert(if available {
             Visibility::Visible
         } else {
             Visibility::Hidden
-        };
-        commands.entity(self.row).insert(visibility);
-        for control in [self.decrease, self.increase] {
-            if available {
-                commands.entity(control).remove::<InteractionDisabled>();
-            } else {
-                commands.entity(control).insert(InteractionDisabled);
-            }
-        }
+        });
     }
 }
 
