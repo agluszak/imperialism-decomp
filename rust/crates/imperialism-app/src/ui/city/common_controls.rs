@@ -8,19 +8,6 @@ pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
 #[derive(Component)]
 pub(in crate::ui::city) struct CityOrderQuantity(pub(in crate::ui::city) CityOrderId);
 
-#[derive(Component, Clone, Copy, Eq, PartialEq)]
-pub(in crate::ui::city) struct CityRowChoice {
-    pub(in crate::ui::city) order: CityOrderId,
-    pub(in crate::ui::city) selection: Entity,
-}
-
-#[derive(Component)]
-pub(in crate::ui::city) struct CityRowSelection {
-    pub(in crate::ui::city) order: CityOrderId,
-    pub(in crate::ui::city) normal_color: Color,
-    pub(in crate::ui::city) warning_color: Color,
-}
-
 #[derive(Component)]
 pub(in crate::ui::city) struct RailView {
     pub(in crate::ui::city) order: CityOrderId,
@@ -104,7 +91,6 @@ pub(in crate::ui::city) fn bind_city_order_row(
     increase_tag: FourCc,
     quantity_tag: FourCc,
     step: i16,
-    selection: Option<Entity>,
     record_quantity: bool,
 ) -> CityOrderRow {
     let row = tree.find(root, binding.tag);
@@ -114,15 +100,7 @@ pub(in crate::ui::city) fn bind_city_order_row(
     let order = binding.order;
     let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
         commands.entity(entity).observe(
-            move |_: On<Activate>,
-                  mut selections: Query<&mut CityRowSelection>,
-                  mut session: ResMut<GameSession>| {
-                if let Some(selection_entity) = selection
-                    && let Ok(mut selection) = selections.get_mut(selection_entity)
-                    && recruitment_kind_matches(selection.order, order)
-                {
-                    selection.order = order;
-                }
+            move |_: On<Activate>, mut session: ResMut<GameSession>| {
                 let nation = session.active_major_nation();
                 session.game.adjust_city_order(nation, order, delta);
             },
@@ -162,7 +140,6 @@ fn bind_industry_orders(
                 fourcc!("rght"),
                 fourcc!("move"),
                 1,
-                None,
                 false,
             );
             let bar = tree.find(bound.row, fourcc!("bar "));
@@ -320,75 +297,6 @@ pub(in crate::ui::city) fn render_industry_dialog(
                 .get_mut(order.tick)
                 .expect("bound industry amount-bar range must exist")
                 .left = px(f32::from(geometry.span(maximum)));
-        }
-    }
-}
-
-pub(in crate::ui::city) fn on_city_row_selected(
-    change: On<ValueChange<bool>>,
-    rows: Query<&CityRowChoice>,
-    mut views: Query<&mut CityRowSelection>,
-) {
-    if !change.value {
-        return;
-    }
-    let Ok(row) = rows.get(change.source) else {
-        return;
-    };
-    let Ok(mut selection) = views.get_mut(row.selection) else {
-        return;
-    };
-    if recruitment_kind_matches(selection.order, row.order) {
-        selection.order = row.order;
-    }
-}
-
-const fn recruitment_kind_matches(selected: CityOrderId, candidate: CityOrderId) -> bool {
-    matches!(
-        (selected, candidate),
-        (
-            CityOrderId::MilitaryRecruit(_),
-            CityOrderId::MilitaryRecruit(_)
-        ) | (
-            CityOrderId::CivilianRecruit(_),
-            CityOrderId::CivilianRecruit(_)
-        ) | (CityOrderId::Ship(_), CityOrderId::Ship(_))
-    )
-}
-
-pub(in crate::ui::city) fn city_stock_color(short: bool, selection: &CityRowSelection) -> Color {
-    if short {
-        selection.warning_color
-    } else {
-        selection.normal_color
-    }
-}
-
-pub(in crate::ui::city) fn sync_city_row_selection(
-    mut commands: Commands,
-    session: Res<GameSession>,
-    selections: Query<(Entity, Ref<CityRowSelection>)>,
-    rows: Query<(Entity, &CityRowChoice, Has<Checked>)>,
-) {
-    if selections.is_empty() {
-        return;
-    }
-    if !session.is_changed()
-        && selections
-            .iter()
-            .all(|(_, selection)| !selection.is_changed() && !selection.is_added())
-    {
-        return;
-    }
-    for (entity, row, checked) in &rows {
-        let Ok((_, selection)) = selections.get(row.selection) else {
-            continue;
-        };
-        let should_check = row.order == selection.order;
-        if should_check && !checked {
-            commands.entity(entity).insert(Checked);
-        } else if !should_check && checked {
-            commands.entity(entity).remove::<Checked>();
         }
     }
 }

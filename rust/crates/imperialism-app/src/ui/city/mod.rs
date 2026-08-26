@@ -78,10 +78,9 @@ impl Plugin for CityPlugin {
                 render_transport_capacity_dialog,
                 render_population_dialog,
                 render_training_dialog,
-                sync_city_row_selection,
-                sync_armory_details,
-                sync_university_details,
-                sync_shipyard_details,
+                render_armory_dialog,
+                render_university_dialog,
+                render_shipyard_dialog,
             )
                 .run_if(in_state(AppState::City)),
         );

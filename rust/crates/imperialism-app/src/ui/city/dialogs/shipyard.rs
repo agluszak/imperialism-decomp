@@ -4,11 +4,6 @@ use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
 use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
-#[derive(Component)]
-pub(in crate::ui::city) struct ShipyardRowAssets {
-    details: Option<ShipyardRowData>,
-}
-
 struct ShipyardRowData {
     ship_type: ShipType,
     ship_name: String,
@@ -24,11 +19,21 @@ struct ShipyardMaterialData {
     picture: IndexedPicture,
 }
 
-#[derive(Component, Clone, Copy)]
-pub(in crate::ui::city) enum ShipyardDisplay {
-    ShipName,
-    Description,
-    Picture,
+/// One Shipyard row's button and the retail ship facts it selects.
+struct ShipyardRowView {
+    button: Entity,
+    details: Option<ShipyardRowData>,
+}
+
+/// Root view of the Shipyard dialog.
+#[derive(Component)]
+pub(in crate::ui::city) struct ShipyardView {
+    selected: ShipOrderSlot,
+    rows: [ShipyardRowView; SHIPYARD_ROWS.len()],
+    ship_name: Entity,
+    description: Entity,
+    picture: Entity,
+    details: Entity,
 }
 
 #[derive(Component)]
@@ -52,14 +57,18 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             .indexed_picture(PictureId::new(700 + i16::from(resource.retail())))
             .expect("retail Shipyard material picture must load")
     });
-    let prepared_rows: [_; 8] = SHIPYARD_ROWS.map(|spec| {
-        let ship_type = city.orders.ships[spec.slot()].ship_type;
-        if ship_type == ShipType::NoShip {
-            return (spec, None);
-        }
-        let costs = ship_order_costs(ship_type);
-        (
-            spec,
+    let queue_icons = assets
+        .indexed_picture(PictureId::new(9807))
+        .expect("retail Shipyard queue icons must load");
+    let stat_labels: [String; 6] =
+        std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
+    let rows = SHIPYARD_ROWS.map(|spec| {
+        let slot = spec.slot();
+        let ship_type = city.orders.ships[slot].ship_type;
+        let details = if ship_type == ShipType::NoShip {
+            None
+        } else {
+            let costs = ship_order_costs(ship_type);
             Some(ShipyardRowData {
                 ship_type,
                 ship_name: assets
@@ -94,19 +103,8 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
                         capabilities.resource_weight,
                     ]
                 },
-            }),
-        )
-    });
-    let queue_icons = assets
-        .indexed_picture(PictureId::new(9807))
-        .expect("retail Shipyard queue icons must load");
-    let stat_labels: [String; 6] =
-        std::array::from_fn(|index| city_string(assets, 0x2736, 0x10 + index as i16));
-    let normal_color = assets.palette_color(0xd2);
-    let warning_color = assets.palette_color(0xcb);
-    for (spec, details) in prepared_rows {
-        let slot = spec.slot();
-        let button = tree.find(root, spec.button_tag);
+            })
+        };
         let bound = bind_city_order_row(
             commands,
             root,
@@ -116,9 +114,18 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             fourcc!("plus"),
             fourcc!("numb"),
             1,
-            Some(root),
             true,
         );
+        for arrow in [bound.decrease, bound.increase] {
+            commands.entity(arrow).observe(
+                move |_: On<Activate>, mut views: Query<&mut ShipyardView>| {
+                    if let Ok(mut view) = views.get_mut(root) {
+                        view.selected = slot;
+                    }
+                },
+            );
+        }
+        let button = tree.find(root, spec.button_tag);
         let available = details.is_some();
         bound.set_available(commands, available);
         commands.entity(button).insert(if available {
@@ -145,26 +152,26 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         } else {
             commands.entity(button).insert(InteractionDisabled);
         }
-        commands
-            .entity(button)
-            .insert((
-                CityRowChoice {
-                    order: spec.binding.order,
-                    selection: root,
-                },
-                ShipyardRowAssets { details },
-            ))
-            .observe(on_city_row_selected);
+        commands.entity(button).observe(
+            move |change: On<ValueChange<bool>>, mut views: Query<&mut ShipyardView>| {
+                if change.value
+                    && let Ok(mut view) = views.get_mut(root)
+                {
+                    view.selected = slot;
+                }
+            },
+        );
         commands.entity(bound.quantity).insert(InteractionDisabled);
-    }
-    let bind_text = |commands: &mut Commands, tag, display: ShipyardDisplay| {
+        ShipyardRowView { button, details }
+    });
+    let mut bind_text = |tag| {
         let entity = tree.find(root, tag);
-        commands.entity(entity).insert(display);
+        commands.entity(entity).insert(Text::new(""));
+        entity
     };
-    bind_text(commands, fourcc!("snam"), ShipyardDisplay::ShipName);
-    bind_text(commands, fourcc!("desc"), ShipyardDisplay::Description);
+    let ship_name = bind_text(fourcc!("snam"));
+    let description = bind_text(fourcc!("desc"));
     let picture = tree.find(root, fourcc!("spic"));
-    commands.entity(picture).insert(ShipyardDisplay::Picture);
     let dlog = tree.find(root, fourcc!("DLOG"));
     let base = assets
         .indexed_picture(PictureId::new(9800))
@@ -175,10 +182,13 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         ImageNode::new(image),
         ShipyardDetailsVisual { base, stat_labels },
     ));
-    commands.entity(root).insert(CityRowSelection {
-        order: CityOrderId::Ship(ShipOrderSlot::MerchantEarlyPrimary),
-        normal_color,
-        warning_color,
+    commands.entity(root).insert(ShipyardView {
+        selected: ShipOrderSlot::MerchantEarlyPrimary,
+        rows,
+        ship_name,
+        description,
+        picture,
+        details: dlog,
     });
 }
 
@@ -244,58 +254,69 @@ fn draw_shipyard_details(
     }
 }
 
-pub(in crate::ui::city) fn sync_shipyard_details(
+pub(in crate::ui::city) fn render_shipyard_dialog(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
     fonts: Res<RetailFonts>,
     font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
-    selections: Query<Ref<CityRowSelection>>,
-    rows: Query<(&CityRowChoice, &ShipyardRowAssets)>,
-    mut texts: Query<(&ShipyardDisplay, &mut Text), Without<ImageNode>>,
-    mut images: Query<(&ShipyardDisplay, &mut ImageNode), Without<ShipyardDetailsVisual>>,
+    views: Query<Ref<ShipyardView>>,
+    mut commands: Commands,
+    mut texts: Query<&mut Text>,
+    mut images: Query<&mut ImageNode>,
     details: Query<(&ShipyardDetailsVisual, &ImageNode)>,
+    checked: Query<Has<Checked>>,
 ) {
-    let Some(selection) = selections
-        .iter()
-        .find(|selection| matches!(selection.order, CityOrderId::Ship(_)))
-    else {
-        return;
-    };
-    if !session.is_changed() && !selection.is_changed() && !selection.is_added() {
-        return;
-    }
-    let nation = session.active_major_nation();
-    let city = &session.game.nations().major(nation).city;
-    let row = rows
-        .iter()
-        .find(|(choice, _)| choice.order == selection.order)
-        .and_then(|(_, assets)| assets.details.as_ref())
-        .expect("Shipyard selection has a bound retail row");
-    for (display, mut text) in &mut texts {
-        match *display {
-            ShipyardDisplay::ShipName => text.0.clone_from(&row.ship_name),
-            ShipyardDisplay::Description => text.0.clone_from(&row.description),
-            _ => {}
+    for view in &views {
+        if !session.is_changed() && !view.is_added() && !view.is_changed() {
+            continue;
         }
-    }
-    for (display, mut image) in &mut images {
-        if matches!(*display, ShipyardDisplay::Picture) {
-            image.image.clone_from(&row.picture);
+        for (spec, row) in SHIPYARD_ROWS.iter().zip(&view.rows) {
+            let selected = spec.slot() == view.selected;
+            let checked = checked.get(row.button).unwrap_or(false);
+            if selected && !checked {
+                commands.entity(row.button).insert(Checked);
+            } else if !selected && checked {
+                commands.entity(row.button).remove::<Checked>();
+            }
         }
-    }
-    let mut text = RetailRasterTextPainter::from_preset(
-        &fonts,
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        },
-    )
-    .expect("retail Shipyard custom-drawing text style");
-    for (visual, image_node) in &details {
+        let row = SHIPYARD_ROWS
+            .iter()
+            .zip(&view.rows)
+            .find(|(spec, _)| spec.slot() == view.selected)
+            .and_then(|(_, row)| row.details.as_ref())
+            .expect("Shipyard selection has a bound retail row");
+        texts
+            .get_mut(view.ship_name)
+            .expect("bound Shipyard ship name")
+            .0
+            .clone_from(&row.ship_name);
+        texts
+            .get_mut(view.description)
+            .expect("bound Shipyard description")
+            .0
+            .clone_from(&row.description);
+        images
+            .get_mut(view.picture)
+            .expect("bound Shipyard picture")
+            .image
+            .clone_from(&row.picture);
+        let nation = session.active_major_nation();
+        let city = &session.game.nations().major(nation).city;
+        let mut text = RetailRasterTextPainter::from_preset(
+            &fonts,
+            &font_assets,
+            RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 10,
+                alignment: -2,
+            },
+        )
+        .expect("retail Shipyard custom-drawing text style");
+        let Ok((visual, image_node)) = details.get(view.details) else {
+            continue;
+        };
         let mut picture = visual.base.clone();
         draw_shipyard_details(&mut picture, &mut text, &visual.stat_labels, row, city);
         if let Some(mut image) = image_assets.get_mut(&image_node.image) {

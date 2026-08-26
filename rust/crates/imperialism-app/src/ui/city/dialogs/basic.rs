@@ -131,7 +131,6 @@ pub(in crate::ui::city) fn bind_rail_dialog(
         fourcc!("rght"),
         fourcc!("move"),
         step,
-        None,
         false,
     );
     let (bar, fill, tick) = bind_rail_amount_bar(commands, assets, counter.row, tree);
