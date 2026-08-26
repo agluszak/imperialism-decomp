@@ -23,7 +23,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton, ValueChange};
+use bevy::ui_widgets::{Activate, Button as UiButton, ValueChange};
 use enum_map::EnumMap;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -669,7 +669,7 @@ fn bind_diplomacy_controls(
         let control = tree.find(root, tag);
         commands
             .entity(control)
-            .insert((action, ActivateOnPress))
+            .insert(action)
             .remove::<InteractionDisabled>()
             .observe(on_diplomacy_offer_activate);
     }

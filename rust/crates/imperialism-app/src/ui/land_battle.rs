@@ -21,7 +21,7 @@ use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc};
 
@@ -411,7 +411,7 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
     ] {
         commands
             .entity(tree.find(root, tag))
-            .insert((action, ActivateOnPress))
+            .insert(action)
             .observe(on_land_battle_activate)
             .remove::<InteractionDisabled>();
     }

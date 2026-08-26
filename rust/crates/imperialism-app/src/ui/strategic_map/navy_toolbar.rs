@@ -122,7 +122,7 @@ pub(crate) fn bind_navy_toolbar(
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert((command, ActivateOnPress))
+            .insert(command)
             .observe(on_navy_command);
     }
 }

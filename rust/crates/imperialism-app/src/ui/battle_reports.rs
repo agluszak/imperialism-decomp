@@ -9,7 +9,7 @@ use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{
     BattleReportSideText, BattleReportText, PictureId, RetailTextStylePreset, fourcc,
@@ -133,38 +133,31 @@ fn bind_battle_report(
             .insert((font, layout, line_height));
     }
     let okay = tree.find(root, fourcc!("okay"));
-    commands
-        .entity(okay)
-        .insert(ActivateOnPress)
-        .observe(on_battle_report_close);
+    commands.entity(okay).observe(on_battle_report_close);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
     commands
         .entity(tree.find(root, fourcc!("info")))
-        .insert(ActivateOnPress)
         .observe(on_battle_report_detail);
     for (tag, previous) in [(fourcc!("prev"), true), (fourcc!("next"), false)] {
-        commands
-            .entity(tree.find(root, tag))
-            .insert(ActivateOnPress)
-            .observe(
-                move |_: On<Activate>,
-                      mut views: Query<&mut BattleReportView>,
-                      session: Res<GameSession>| {
-                    let count = session.game.battle_reports().len();
-                    if count == 0 {
-                        return;
-                    }
-                    let Ok(mut view) = views.single_mut() else {
-                        return;
-                    };
-                    view.selected = if previous {
-                        (view.selected + count - 1) % count
-                    } else {
-                        (view.selected + 1) % count
-                    };
-                },
-            );
+        commands.entity(tree.find(root, tag)).observe(
+            move |_: On<Activate>,
+                  mut views: Query<&mut BattleReportView>,
+                  session: Res<GameSession>| {
+                let count = session.game.battle_reports().len();
+                if count == 0 {
+                    return;
+                }
+                let Ok(mut view) = views.single_mut() else {
+                    return;
+                };
+                view.selected = if previous {
+                    (view.selected + count - 1) % count
+                } else {
+                    (view.selected + 1) % count
+                };
+            },
+        );
     }
     commands.entity(root).insert(BattleReportView {
         selected: 0,
@@ -460,7 +453,6 @@ fn bind_detail(
 ) {
     let root = *root;
     let okay = tree.find(root, fourcc!("okay"));
-    commands.entity(okay).insert(ActivateOnPress);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
     let Ok(view) = views.single() else {

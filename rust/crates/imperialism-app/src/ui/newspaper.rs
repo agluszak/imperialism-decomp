@@ -7,7 +7,7 @@ use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
 
@@ -65,7 +65,6 @@ fn bind_newspaper(
     );
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .observe(on_newspaper_activate);
 }
 

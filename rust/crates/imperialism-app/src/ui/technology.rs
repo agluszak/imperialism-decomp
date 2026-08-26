@@ -6,7 +6,7 @@ use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{PictureId, fourcc};
 
@@ -63,7 +63,6 @@ fn bind_technology_advance(
     });
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_technology_advance_activate);
 }

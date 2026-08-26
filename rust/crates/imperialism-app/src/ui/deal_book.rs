@@ -12,7 +12,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
+use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -235,7 +235,6 @@ fn bind_deal_book(
         .observe(on_deal_book_tabs_click);
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_deal_book_close);
     commands
@@ -245,7 +244,7 @@ fn bind_deal_book(
     let mark = tree.find(root, fourcc!("mark"));
     commands
         .entity(mark)
-        .insert((DealBookHistory, ActivateOnPress, RetailPressedOverlay))
+        .insert((DealBookHistory, RetailPressedOverlay))
         .observe(on_deal_book_history);
     // `mark` is a TPictureButton: picture 8812 is its hilite bitmap, not an
     // always-visible icon. TDealBookPicture enables its input only in category
@@ -260,7 +259,6 @@ fn bind_deal_book(
         .insert((
             UiButton,
             DealBookPageButton::Previous,
-            ActivateOnPress,
             Visibility::Hidden,
             InteractionDisabled,
         ))
@@ -270,7 +268,6 @@ fn bind_deal_book(
         .insert((
             UiButton,
             DealBookPageButton::Next,
-            ActivateOnPress,
             Visibility::Hidden,
             InteractionDisabled,
         ))

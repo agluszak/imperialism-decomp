@@ -90,7 +90,7 @@ impl Plugin for TechnologyStorePlugin {
 pub(crate) fn bind_open_control(commands: &mut Commands, entity: Entity) {
     commands
         .entity(entity)
-        .insert((OpenTechnologyStore, ActivateOnPress))
+        .insert(OpenTechnologyStore)
         .remove::<InteractionDisabled>()
         .observe(on_open_technology_store);
 }
@@ -144,12 +144,10 @@ fn bind_technology_store(
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_leave_technology_store);
     commands
         .entity(tree.find(root, fourcc!("quer")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_technology_help);
 
@@ -176,7 +174,7 @@ fn bind_technology_store(
     ] {
         commands
             .entity(tree.find(root, tag))
-            .insert((Button, ActivateOnPress, action))
+            .insert((Button, action))
             .observe(on_technology_page);
     }
     for (row, technology) in technologies.into_iter().enumerate() {
@@ -513,7 +511,6 @@ fn bind_technology_modals(
             ChildOf(scroll),
         ));
         let okay = view.find(fourcc!("okay"));
-        commands.entity(okay).insert(ActivateOnPress);
         dismiss_on_activate(&mut commands, okay, root);
         bind_modal_keys(&mut commands, root, Some(okay), None);
     }
@@ -524,7 +521,6 @@ fn bind_technology_modals(
             .expect("retail insufficient-funds message");
         linger.set_title(&mut commands, &mut assets, "");
         linger.set_body(&mut commands, &mut assets, body);
-        commands.entity(linger.okay).insert(ActivateOnPress);
         commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
 }

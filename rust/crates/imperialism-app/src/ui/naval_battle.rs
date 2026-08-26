@@ -14,7 +14,7 @@ use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use bevy::window::PrimaryWindow;
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, fourcc};
@@ -136,17 +136,17 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
     ));
     commands
         .entity(tree.find(root, fourcc!("done")))
-        .insert((NavalBattleAction::Done, ActivateOnPress))
+        .insert(NavalBattleAction::Done)
         .observe(on_naval_battle_activate)
         .remove::<InteractionDisabled>();
     commands
         .entity(tree.find(root, fourcc!("auto")))
-        .insert((NavalBattleAction::Auto, ActivateOnPress))
+        .insert(NavalBattleAction::Auto)
         .observe(on_naval_battle_activate)
         .remove::<InteractionDisabled>();
     commands
         .entity(tree.find(root, fourcc!("retr")))
-        .insert((NavalBattleAction::Retreat, ActivateOnPress))
+        .insert(NavalBattleAction::Retreat)
         .observe(on_naval_battle_activate)
         .remove::<InteractionDisabled>();
     // Retail `targ` cycles reachable enemy units. Navy damage targeting instead comes

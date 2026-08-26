@@ -130,12 +130,11 @@ fn bind_scenario_setup(
         .observe(on_map_click);
     commands
         .entity(tree.find(root, fourcc!("star")))
-        .insert((StartScenario, ActivateOnPress))
+        .insert(StartScenario)
         .remove::<InteractionDisabled>()
         .observe(on_start_scenario);
     commands
         .entity(tree.find(root, fourcc!("exit")))
-        .insert(ActivateOnPress)
         .observe(on_exit_scenario_setup);
 }
 

@@ -113,7 +113,7 @@ pub(crate) fn bind_army_toolbar(
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert((command, ActivateOnPress))
+            .insert(command)
             .observe(on_army_command);
     }
 }

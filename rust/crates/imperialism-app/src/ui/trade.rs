@@ -232,7 +232,7 @@ fn bind_trade_row(
 
     let [decrease, increase] = [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
         let step = tree.find(row, tag);
-        commands.entity(step).insert(ActivateOnPress).observe(
+        commands.entity(step).observe(
             move |activate: On<Activate>,
                   disabled: Query<Has<InteractionDisabled>>,
                   mut session: ResMut<GameSession>| {

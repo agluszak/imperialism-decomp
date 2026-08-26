@@ -237,7 +237,6 @@ fn bind_added_map_modals(
     for root in &added {
         for tag in [fourcc!("okay"), fourcc!("end ")] {
             if let Some(entity) = tree.try_find(root, tag) {
-                commands.entity(entity).insert(ActivateOnPress);
                 dismiss_on_activate(&mut commands, entity, root);
                 bind_modal_keys(&mut commands, root, Some(entity), None);
                 break;
@@ -519,18 +518,16 @@ fn bind_added_civilian_modals(
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
                     .entity(linger.okay)
-                    .insert((ActivateOnPress, CivilianModalAction::ConfirmDisband(*unit)))
+                    .insert(CivilianModalAction::ConfirmDisband(*unit))
                     .observe(on_civilian_modal_action);
                 commands
                     .entity(linger.cancel)
-                    .insert(ActivateOnPress)
                     .remove::<InteractionDisabled>();
             }
             CivilianModal::Notice { title, body } => {
                 let linger = bind_linger_dialog(&mut commands, root, &tree);
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
-                commands.entity(linger.okay).insert(ActivateOnPress);
                 commands.entity(linger.cancel).insert(Visibility::Hidden);
             }
         }
@@ -706,7 +703,6 @@ fn bind_purchase_dialog(
     );
     linger.set_title(commands, assets, title);
     linger.set_body(commands, assets, body);
-    commands.entity(linger.okay).insert(ActivateOnPress);
     if affordable {
         commands
             .entity(linger.okay)
@@ -714,7 +710,6 @@ fn bind_purchase_dialog(
             .observe(on_civilian_modal_action);
     }
     if affordable {
-        commands.entity(linger.cancel).insert(ActivateOnPress);
     } else {
         commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
@@ -751,12 +746,11 @@ fn bind_civilian_report(
         12,
     );
     let okay = tree.find(root, fourcc!("okay"));
-    commands.entity(okay).insert(ActivateOnPress);
     dismiss_on_activate(commands, okay, root);
     let cancel = tree.find(root, fourcc!("canc"));
     commands
         .entity(cancel)
-        .insert((ActivateOnPress, CancelCivilianOrder(unit)))
+        .insert(CancelCivilianOrder(unit))
         .observe(on_cancel_civilian_order);
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, Some(okay), Some(cancel));
@@ -1046,7 +1040,6 @@ fn bind_added_army_reports(
             3,
         );
         let cancel = view.find(fourcc!("canc"));
-        commands.entity(cancel).insert(ActivateOnPress);
         dismiss_on_activate(&mut commands, cancel, root);
         bind_modal_keys(&mut commands, root, None, Some(cancel));
     }
@@ -1223,7 +1216,7 @@ fn bind_friendly_fleet_report(
     let cancel = view.find(fourcc!("canc"));
     commands
         .entity(cancel)
-        .insert((ActivateOnPress, CancelFleetOrders(report.force)))
+        .insert(CancelFleetOrders(report.force))
         .observe(on_cancel_fleet_orders);
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, None, Some(cancel));
