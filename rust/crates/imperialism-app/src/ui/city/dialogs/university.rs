@@ -14,7 +14,7 @@ struct UniversityRowView {
 #[derive(Component)]
 pub(in crate::ui::city) struct UniversityView {
     selected: CivilianUnitKind,
-    rows: [UniversityRowView; UNIVERSITY_ROWS.len()],
+    rows: [UniversityRowView; UNIVERSITY_CONTROLS.len()],
     unit: Entity,
     description: Entity,
     costs: [Entity; 3],
@@ -49,9 +49,17 @@ pub(in crate::ui::city) fn configure_university_dialog(
     let available = state.technology().city_capabilities_by_nation[nation]
         .university
         .available;
-    let rows = UNIVERSITY_ROWS.map(|row| {
-        let kind = row.civilian_kind();
-        let bound = bind_recruitment_order_row(commands, root, tree, row.binding);
+    let rows = std::array::from_fn(|index| {
+        let (kind, order_tag, button_tag) = UNIVERSITY_CONTROLS[index];
+        let bound = bind_recruitment_order_row(
+            commands,
+            root,
+            tree,
+            CityOrderBinding {
+                order: CityOrderId::CivilianRecruit(kind),
+                tag: order_tag,
+            },
+        );
         for tag in [fourcc!("minu"), fourcc!("plus")] {
             commands.entity(tree.find(bound.row, tag)).observe(
                 move |_: On<Activate>, mut views: Query<&mut UniversityView>| {
@@ -61,7 +69,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
                 },
             );
         }
-        let button = tree.find(root, row.button_tag);
+        let button = tree.find(root, button_tag);
         let row_available = available[kind];
         bound.set_available(commands, row_available);
         let mut button_commands = commands.entity(button);
@@ -153,21 +161,19 @@ pub(in crate::ui::city) fn render_university_dialog(
             continue;
         }
         let nation = session.active_major_nation();
-        for (row, view_row) in UNIVERSITY_ROWS.iter().zip(&view.rows) {
-            let selected = row.civilian_kind() == view.selected;
-            let is_checked = checked.get(view_row.button).unwrap_or(false);
-            if selected && !is_checked {
-                commands.entity(view_row.button).insert(Checked);
-            } else if !selected && is_checked {
-                commands.entity(view_row.button).remove::<Checked>();
-            }
-            texts
-                .get_mut(view_row.quantity)
-                .expect("bound University order quantity")
-                .0 = session
-                .game
-                .city_order_quantity(nation, row.binding.order)
-                .to_string();
+        for ((kind, _, _), view_row) in UNIVERSITY_CONTROLS.iter().zip(&view.rows) {
+            sync_recruitment_row(
+                &mut commands,
+                &checked,
+                &mut texts,
+                view_row.button,
+                *kind == view.selected,
+                view_row.quantity,
+                session
+                    .game
+                    .city_order_quantity(nation, CityOrderId::CivilianRecruit(*kind))
+                    .to_string(),
+            );
         }
         let kind = view.selected;
         let major = session.game.nations().major(nation);

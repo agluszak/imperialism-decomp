@@ -31,8 +31,6 @@ struct OfferSheetView {
     amount: Entity,
     icon: Entity,
     stop_buying: Entity,
-    accept: Entity,
-    reject: Entity,
 }
 
 #[derive(Component)]
@@ -191,13 +189,13 @@ fn bind_offer_sheet_controls(
     commands
         .entity(accept)
         .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_offer_sheet_activate);
+        .remove::<InteractionDisabled>();
     commands
         .entity(reject)
         .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_offer_sheet_activate);
+        .remove::<InteractionDisabled>();
+    bind_offer_answer(commands, accept, true);
+    bind_offer_answer(commands, reject, false);
     commands
         .entity(nomo)
         .remove::<(Checked, InteractionDisabled)>();
@@ -221,8 +219,6 @@ fn bind_offer_sheet_controls(
         amount: purc,
         icon: tree.find(root, fourcc!("icon")),
         stop_buying: nomo,
-        accept,
-        reject,
     }
 }
 
@@ -302,58 +298,57 @@ fn render_offer_sheet(
 }
 
 #[allow(clippy::too_many_arguments)]
-fn on_offer_sheet_activate(
-    activate: On<Activate>,
-    views: Query<&OfferSheetView>,
-    amounts: Query<&EditableText>,
-    stop_buying: Query<Has<Checked>>,
-    notices: Query<(), With<OfferSheetNotice>>,
-    mut session: ResMut<GameSession>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut commands: Commands,
-    assets: RetailUiAssets,
-) {
-    if !notices.is_empty() {
-        return;
-    }
-    let Ok(view) = views.single() else {
-        return;
-    };
-    if activate.entity != view.accept && activate.entity != view.reject {
-        return;
-    }
-    let offer = session
-        .game
-        .pending_trade_offer()
-        .expect("OfferSheet requires pending trade offer");
-    let stop_buying = stop_buying.get(view.stop_buying).unwrap_or(false);
-    let amount = if activate.entity == view.accept {
-        let Some(amount) = amounts
-            .get(view.amount)
-            .ok()
-            .and_then(|editable| editable.value().to_string().parse::<i16>().ok())
-        else {
-            spawn_offer_quantity_error(
-                &mut commands,
-                get_string(&assets, OFFER_STRING_GROUP, 0x10),
-            );
-            return;
-        };
-        if amount < 0 || amount > offer.amount {
-            spawn_offer_quantity_error(
-                &mut commands,
-                get_string(&assets, OFFER_STRING_GROUP, 0x10),
-            );
-            return;
-        }
-        amount
-    } else {
-        0
-    };
-    match session.game.answer_trade_offer(amount, stop_buying) {
-        TurnStop::TradeOffer => {}
-        stop => apply_turn_stop(stop, &mut next_state),
-    }
+fn bind_offer_answer(commands: &mut Commands, button: Entity, accept: bool) {
+    commands.entity(button).observe(
+        move |_: On<Activate>,
+              views: Query<&OfferSheetView>,
+              amounts: Query<&EditableText>,
+              stop_buying: Query<Has<Checked>>,
+              notices: Query<(), With<OfferSheetNotice>>,
+              mut session: ResMut<GameSession>,
+              mut next_state: ResMut<NextState<AppState>>,
+              mut commands: Commands,
+              assets: RetailUiAssets| {
+            if !notices.is_empty() {
+                return;
+            }
+            let Ok(view) = views.single() else {
+                return;
+            };
+            let offer = session
+                .game
+                .pending_trade_offer()
+                .expect("OfferSheet requires pending trade offer");
+            let stop_buying = stop_buying.get(view.stop_buying).unwrap_or(false);
+            let amount = if accept {
+                let Some(amount) = amounts
+                    .get(view.amount)
+                    .ok()
+                    .and_then(|editable| editable.value().to_string().parse::<i16>().ok())
+                else {
+                    spawn_offer_quantity_error(
+                        &mut commands,
+                        get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                    );
+                    return;
+                };
+                if amount < 0 || amount > offer.amount {
+                    spawn_offer_quantity_error(
+                        &mut commands,
+                        get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                    );
+                    return;
+                }
+                amount
+            } else {
+                0
+            };
+            match session.game.answer_trade_offer(amount, stop_buying) {
+                TurnStop::TradeOffer => {}
+                stop => apply_turn_stop(stop, &mut next_state),
+            }
+        },
+    );
 }
 
 fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
@@ -487,7 +482,6 @@ mod tests {
             .iter(app.world())
             .next()
             .expect("offer sheet binds a semantic view");
-        assert_ne!(view.accept, view.reject);
         assert_ne!(view.amount, view.stop_buying);
     }
 }
