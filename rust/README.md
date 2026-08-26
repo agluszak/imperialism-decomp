@@ -98,3 +98,5 @@ handwritten retail scene helpers centralize repeated geometry and asset-backed t
 spawn each concrete scene with `Commands::spawn_scene`. `RetailTag` is used only while binding
 recovered controls to typed screen behavior; `Entity` and `ChildOf` are the runtime identity and
 hierarchy. Do not add another generic UI representation, generated imperative spawner, or loader.
+The [recovered UI architecture](docs/ui-architecture.md) defines the binding, semantic ownership,
+input, rendering, and migration boundaries for handwritten UI code.

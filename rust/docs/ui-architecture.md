@@ -1,0 +1,212 @@
+# Recovered UI architecture
+
+Imperialism's recovered UI has one directional pipeline:
+
+```text
+retail evidence -> generated Bevy scene -> bind once -> semantic view
+                                                       |           ^
+                                                       v           |
+                                                    input       render
+                                                       |           |
+                                                       v           |
+                                                authoritative state
+```
+
+Recovered resource identities describe how to find controls while binding a generated scene. After
+binding, application code uses typed domain identifiers for meaning and Bevy `Entity` values for
+runtime addresses. Input mutates authoritative state, and render systems project that state into
+Bevy presentation components.
+
+This is external state management, not a data-binding graph. ECS does not mirror gameplay state and
+does not serve as a database for rediscovering which entity displays each field.
+
+## Identity and ownership
+
+The UI uses three kinds of identity:
+
+| Identity | Meaning | Use |
+| --- | --- | --- |
+| `FourCc` plus a scoped recovered hierarchy | A selector or provenance value in a retail resource | Recovery and one-time binding |
+| Typed IDs such as `TradeCommodity`, `CityOrderId`, or `CityFacilitySlot` | What a control means to the game | Application and gameplay logic |
+| Bevy `Entity` | Where one runtime object lives | Runtime UI addressing |
+
+A FourCC is not globally unique. Binders resolve it under the narrowest known recovered parent. A
+generator node ID, generated Rust field name, `Name`, string path, or similar value must not become
+another identity namespace used by handwritten application code.
+
+`RetailTag` is immutable recovered provenance. Runtime presentation state, such as which zoom image
+is active, belongs in widget or screen state and must not rewrite the tag.
+
+Each independently lived screen or dialog owns one semantic view component on its root. That view
+retains direct `Entity` handles to important controls and typed domain IDs where needed. Repeated
+rows and other subordinate structures are normally plain Rust values inside the root view, not leaf
+components added so another system can query the display destination.
+
+For example, the intended shape is:
+
+```rust,ignore
+#[derive(Component)]
+struct TechnologyAdvanceView {
+    picture: Entity,
+    text: Entity,
+}
+
+#[derive(Component)]
+struct TradeView {
+    main: Entity,
+    capacity: Entity,
+    rows: Vec<TradeRowView>,
+}
+
+struct TradeRowView {
+    commodity: TradeCommodity,
+    decrease: Entity,
+    increase: Entity,
+    quantity: Entity,
+    gauge: Entity,
+}
+```
+
+Only the aggregate root views are components here. A direct `Entity` field is sufficient for a
+relation known when the scene is constructed. Define a custom Bevy relationship only when the
+relationship is itself a first-class concept queried by multiple independent systems.
+
+## Generated and handwritten code
+
+Generated code owns facts obtained mechanically from retail evidence: hierarchy, layout, ordering,
+tags, styles, static pictures, initial widget types and states, and recovered tables whose contents
+are themselves evidence.
+
+Handwritten code owns semantic interpretation, behavior, and policy. It may use a compact table that
+maps scoped recovered tags to domain values, such as a trade-row FourCC to `TradeCommodity`. That is
+the translation boundary, not a duplicate screen tree.
+
+Generated code must not wire game semantics such as a Cotton row to a gameplay operation or expose
+one public Rust `Entity` field per recovered node for handwritten code to address. Handwritten code
+must not recreate the generated hierarchy. Generated variants with the same semantics share a
+handwritten binder through compact recovered-tag tables.
+
+`RetailTree` is the production bind-time mechanism. A binder runs when a newly spawned generated
+scene arrives, resolves required controls under the scene root or a local parent, attaches semantic
+actions to interactive entities, and stores the resulting semantic view on the root. Normal input
+and rendering do not search tags or walk the tree to rediscover those controls.
+
+## State and data flow
+
+State has one owner:
+
+- Authoritative gameplay state remains in `GameState` through `GameSession`. It is not mirrored into
+  ECS components.
+- Screen-local semantic state has one explicit screen component or resource owner. Selection before
+  confirmation, camera position, armory selection, and window position belong here.
+- Widget-local ephemeral state such as press, focus, hover, and cursor position belongs to Bevy
+  widgets and reusable presentation behavior.
+
+Application data flow is always:
+
+```text
+widget event -> typed state mutation -> render authoritative state -> Bevy presentation
+```
+
+An interactive leaf component is useful when it describes behavior, for example
+`TradeAction::Step { commodity, delta }` or `CityOrderAdjust { order, delta }`. A display marker whose
+only meaning is "write this field here later" is not useful; its destination belongs in the owning
+view.
+
+Reusable autonomous presentation components such as `RetailPictureSwap` remain appropriate. The
+criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket
+ban on leaf components.
+
+## Rendering
+
+Prefer one deliberately coarse renderer per screen or independently lived dialog family. It reads
+authoritative gameplay or screen state and writes `Text`, `Visibility`, `ImageNode`, `Node`, and
+other Bevy presentation components through the entities retained by the semantic view.
+
+Standard Bevy change detection is enough to decide when to render. A renderer may use a resource's
+`is_changed()` state and `Ref<T>::is_added()` for a newly bound view. A gameplay mutation marking the
+whole `GameSession` changed is an acceptable correctness-first invalidation boundary; do not split
+`GameState` into ECS components to obtain finer invalidation.
+
+Split a renderer only for a concrete independent lifecycle or update cadence, or for demonstrated
+expensive work such as regenerating a raster surface. Optimize that surface directly rather than
+introducing a generic dependency, projection, observer, lens, or binding framework.
+
+## Hierarchy and windows
+
+`ChildOf` remains the source of truth for hierarchy and descendant lifetime. Use event propagation
+through that hierarchy when the event is designed to propagate. When a child needs direct access to
+an invariant owner and propagation does not apply, store the owner explicitly, for example:
+
+```rust,ignore
+#[derive(Component)]
+struct WindowTitleBar {
+    window: Entity,
+}
+```
+
+Do not repeatedly walk ancestors to rediscover an ownership relation established when the child was
+created. Modal roots likewise retain direct handles to their default and cancel controls.
+
+Generated BSN remains the structure mechanism for recovered screens. `SceneComponent` may be used
+for a genuinely reusable semantic widget authored by this project, but recovered screens do not get
+a second handcrafted scene merely to wrap their generated hierarchy.
+
+## Tests
+
+Tests follow the same boundaries:
+
+- Generator tests prove hierarchy, tags, layout, ordering, and presentation facts came from recovery
+  evidence.
+- Binding tests prove every required semantic slot resolves exactly once to the expected structural
+  control.
+- Input tests deliver real widget events and assert the authoritative gameplay or screen-state
+  mutation.
+- Render tests seed authoritative state and assert actual Bevy presentation components.
+
+Do not test an intermediate display or projection identity whose only purpose is implementation
+plumbing.
+
+## Contract
+
+UI changes must preserve these rules:
+
+1. Gameplay and screen-local semantic facts each have one authoritative owner; Bevy widget state is
+   presentation state.
+2. Data flows one way: input event, typed state mutation, render, Bevy presentation. There is no
+   two-way binding.
+3. Generated code owns evidence-derived structure and presentation facts; handwritten code owns
+   semantic interpretation and behavior and does not recreate generated trees.
+4. Scoped FourCC selectors are for recovery and binding, typed domain IDs express meaning, and
+   `Entity` is the runtime address. There is no additional application UI identity namespace.
+5. FourCC lookup and recovered-tree traversal stop after binding a newly spawned scene. Normal
+   behavior and rendering do not rediscover static controls.
+6. A screen or dialog root retains important control entities in one semantic view. Nested row and
+   control structures are normally plain Rust structs.
+7. Leaf components represent semantic actions, reusable autonomous widget behavior, or genuinely
+   first-class relationships, not display destinations.
+8. Renderers are coarse by default and split only for a concrete independent lifecycle, cadence, or
+   expensive surface. There is no generic reactive or binding framework.
+9. Generated variants with the same semantics share handwritten binding through compact recovered-
+   tag tables. Generated per-node fields are not a public application API.
+10. Change this contract explicitly before introducing a selector registry, generated typed screen
+    API, `Binding<T>`, lenses, a generic ownership graph, or equivalent infrastructure. Such an
+    architectural change must not arrive incidentally inside a screen refactor.
+
+## Migration order
+
+Existing UI code does not yet uniformly satisfy this contract. Migrate it in bounded proofs:
+
+1. Technology Advance: introduce its root semantic view, remove its display marker, and replace its
+   projector with one renderer.
+2. Trade: retain the recovered row-to-commodity table and semantic action components, bind one
+   aggregate view, and remove display-address components and synchronization systems.
+3. One City industry dialog: retain its existing row entity handles inside one aggregate view and
+   remove the redundant quantity, capacity, indicator, bar, and visual destination components.
+4. Windows: replace repeated invariant owner discovery with event propagation or direct owner
+   handles.
+5. Apply the demonstrated pattern mechanically to simpler screens only after these proofs remain
+   small and direct.
+
+Each migration deletes the replaced representation and updates its producers, consumers, fixtures,
+and tests together. Do not add compatibility modes or migrate every screen in one broad refactor.
