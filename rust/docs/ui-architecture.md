@@ -72,6 +72,19 @@ Only the aggregate root views are components here. A direct `Entity` field is su
 relation known when the scene is constructed. Define a custom Bevy relationship only when the
 relationship is itself a first-class concept queried by multiple independent systems.
 
+Do not apply "make a `FooView`" mechanically to every screen. The pattern is not universal, and
+forcing a root address table onto genuinely dynamic content is the next cargo-cult abstraction.
+Decide by what can change while the screen stays alive:
+
+- **Snapshot screens** (newspaper, council, game score, high score): resolve controls and populate
+  them once during binding; retain nothing unnecessary and register no `Update` system.
+- **Live fixed screens** (Trade, Transport, Offer Sheet, industry dialogs): bind the minimum
+  addresses once into one semantic view and let a coarse renderer project authoritative state on
+  change. Do not also annotate those addresses with a reverse action/display index.
+- **Dynamic collections and world objects** (technology store rows, diplomacy panels, strategic-map
+  units): ordinary ECS leaf components and actions remain appropriate; there is no fixed row set to
+  index.
+
 ## Generated and handwritten code
 
 Generated code owns facts obtained mechanically from retail evidence: hierarchy, layout, ordering,

@@ -5,9 +5,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::RetailTree;
-use super::retail_raster::IndexedRasterExt;
 use crate::AppState;
-use crate::RetailAssetsResource;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -102,48 +100,46 @@ const LEFT_TRANSPORT_ROW_COUNT: usize = 10;
 #[derive(Component)]
 struct TransportScreen;
 
-#[derive(Component, Clone, Copy)]
-struct TransportAdjust {
-    allocation: TransportAllocation,
-    delta: i16,
+#[derive(Clone, Copy)]
+struct TransportRowView {
+    row: Entity,
+    caption: Entity,
+    decrease: Entity,
+    increase: Entity,
+    gauge: TransportGaugeView,
+    money: Option<Entity>,
 }
 
-#[derive(Component, Clone, Copy)]
-struct TransportHover(TransportAllocation);
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum TransportGaugeKind {
-    Allocation(TransportAllocation),
-    Capacity,
+#[derive(Clone, Copy)]
+struct TransportGaugeView {
+    fill: Entity,
+    limit: Option<Entity>,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-struct TransportGaugeKey {
-    value: i16,
-    total: i16,
-    limit: Option<i16>,
+/// Palette colors resolved once during binding for the recovered gauge states.
+#[derive(Clone, Copy)]
+struct TransportGaugeColors {
+    allocation: Color,
+    remainder: Color,
+    partial: Color,
+    full: Color,
+}
+
+/// The gauge colors that change while the screen lives: capacity fill and
+/// row limit strips alternate between `partial` and `full`.
+#[derive(Clone, Copy)]
+struct TransportGaugeStates {
+    partial: Color,
+    full: Color,
 }
 
 #[derive(Component)]
-struct TransportGaugeVisual {
-    kind: TransportGaugeKind,
-    track_left: i32,
-    base: IndexedPicture,
-    rendered: Option<TransportGaugeKey>,
-}
-
-#[derive(Component)]
-struct TransportCursor;
-
-#[derive(Component, Clone, Copy)]
-enum TransportDisplay {
-    Row(TransportAllocation),
-    RowCaption(TransportAllocation),
-    CapacityCaption,
-    Money {
-        resource: ResourceKind,
-        unit_value: i32,
-    },
+struct TransportView {
+    cursor: Entity,
+    capacity: TransportGaugeView,
+    capacity_caption: Entity,
+    gauge_states: TransportGaugeStates,
+    rows: [TransportRowView; TRANSPORT_ROWS.len()],
 }
 
 pub(crate) struct TransportPlugin;
@@ -156,13 +152,7 @@ impl Plugin for TransportPlugin {
         )
         .add_systems(
             Update,
-            (
-                sync_transport_text,
-                sync_transport_gauges,
-                sync_transport_presence,
-                sync_transport_cursor,
-            )
-                .run_if(in_state(AppState::Transport)),
+            (render_transport, sync_transport_cursor).run_if(in_state(AppState::Transport)),
         );
     }
 }
@@ -208,93 +198,30 @@ fn bind_transport_screen(
         assets.palette_color(0x28),
         assets.palette_color(0),
     );
-    bind_transport_controls(&mut commands, *root, &tree, cursor_style);
-    for (index, binding) in TRANSPORT_ROWS.into_iter().enumerate() {
-        let row = tree.find(*root, binding.tag);
-        commands
-            .entity(row)
-            .insert(TransportHover(binding.allocation));
-        install_transport_gauge(
-            &mut commands,
-            &mut assets,
-            row,
-            TransportGaugeKind::Allocation(binding.allocation),
-            if index < LEFT_TRANSPORT_ROW_COUNT {
-                0x61
-            } else {
-                0x5d
-            },
-            PictureId::new(4001 + index as i16),
-        );
-    }
-    install_transport_gauge(
-        &mut commands,
-        &mut assets,
-        tree.find(*root, fourcc!("tota")),
-        TransportGaugeKind::Capacity,
-        0x5d,
-        PictureId::new(4019),
-    );
+    let gauge_colors = TransportGaugeColors {
+        allocation: assets.palette_color(0x3a),
+        remainder: assets.palette_color(0x3b),
+        partial: assets.palette_color(0x33),
+        full: assets.palette_color(0x34),
+    };
+    let view = bind_transport_view(&mut commands, *root, &tree, cursor_style, gauge_colors);
+    commands.entity(*root).insert(view);
 }
 
-fn bind_transport_controls(
+fn bind_transport_view(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
-) {
+    gauge_colors: TransportGaugeColors,
+) -> TransportView {
     let selected = tree.find(root, fourcc!("tran"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    for binding in TRANSPORT_ROWS {
-        let row = tree.find(root, binding.tag);
-        commands.entity(row).insert((
-            TransportDisplay::Row(binding.allocation),
-            Hovered::default(),
-        ));
-        let left = tree.find(row, fourcc!("left"));
-        let right = tree.find(row, fourcc!("rght"));
-        commands
-            .entity(left)
-            .insert(TransportAdjust {
-                allocation: binding.allocation,
-                delta: -1,
-            })
-            .observe(on_transport_arrow_activate);
-        commands
-            .entity(right)
-            .insert(TransportAdjust {
-                allocation: binding.allocation,
-                delta: 1,
-            })
-            .observe(on_transport_arrow_activate);
-        commands
-            .entity(tree.find(row, fourcc!("text")))
-            .insert(TransportDisplay::RowCaption(binding.allocation));
-        if let Some((resource, unit_value)) = if binding.allocation == TransportAllocation::GOLD {
-            Some((ResourceKind::Gold, 200))
-        } else if binding.allocation == TransportAllocation::GEMS {
-            Some((ResourceKind::Gems, 500))
-        } else {
-            None
-        } {
-            commands
-                .entity(tree.find(row, fourcc!("valu")))
-                .insert(TransportDisplay::Money {
-                    resource,
-                    unit_value,
-                });
-        }
-    }
-
-    let total = tree.find(root, fourcc!("tota"));
-    commands
-        .entity(tree.find(total, fourcc!("text")))
-        .insert(TransportDisplay::CapacityCaption);
-    let cursor = tree.find(root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, cursor_color, cursor_shadow) =
         cursor_style;
+    let cursor = tree.find(root, fourcc!("curs"));
     commands.entity(cursor).insert((
         Text::new(""),
         cursor_font,
@@ -305,228 +232,289 @@ fn bind_transport_controls(
             offset: Vec2::ONE,
             color: cursor_shadow,
         },
-        TransportCursor,
     ));
+    let capacity = tree.find(root, fourcc!("tota"));
+    let capacity_caption = tree.find(capacity, fourcc!("text"));
+    let capacity = install_transport_gauge(
+        commands,
+        capacity,
+        0x5d,
+        false,
+        gauge_colors.partial,
+        gauge_colors,
+    );
+    let rows = std::array::from_fn(|index| {
+        let binding = TRANSPORT_ROWS[index];
+        let row = tree.find(root, binding.tag);
+        commands.entity(row).insert(Hovered::default());
+        let decrease = tree.find(row, fourcc!("left"));
+        let increase = tree.find(row, fourcc!("rght"));
+        commands
+            .entity(decrease)
+            .observe(on_transport_arrow_activate);
+        commands
+            .entity(increase)
+            .observe(on_transport_arrow_activate);
+        let caption = tree.find(row, fourcc!("text"));
+        let money = match binding.allocation {
+            TransportAllocation::GOLD | TransportAllocation::GEMS => {
+                Some(tree.find(row, fourcc!("valu")))
+            }
+            _ => None,
+        };
+        let track_left = if index < LEFT_TRANSPORT_ROW_COUNT {
+            0x61
+        } else {
+            0x5d
+        };
+        let gauge = install_transport_gauge(
+            commands,
+            row,
+            track_left,
+            true,
+            gauge_colors.allocation,
+            gauge_colors,
+        );
+        TransportRowView {
+            row,
+            caption,
+            decrease,
+            increase,
+            gauge,
+            money,
+        }
+    });
+    TransportView {
+        cursor,
+        capacity,
+        capacity_caption,
+        gauge_states: TransportGaugeStates {
+            partial: gauge_colors.partial,
+            full: gauge_colors.full,
+        },
+        rows,
+    }
 }
 
+/// Overlays the recovered gauge fill, remainder, and optional limit strip as
+/// native nodes above the static gauge background. `track_left` locates the
+/// 113-pixel track; the remainder fills the whole track and the fill node
+/// covers its left portion, so rendering only updates the fill width.
 fn install_transport_gauge(
     commands: &mut Commands,
-    assets: &mut RetailUiAssets,
     entity: Entity,
-    kind: TransportGaugeKind,
     track_left: i32,
-    picture_id: PictureId,
-) {
-    let base = assets
-        .indexed_picture(picture_id)
-        .expect("retail Transport picture must load");
-    let palette = *assets.default_dib_palette();
-    let image = assets.add_image(base.to_image(&palette));
-    commands.entity(entity).insert((
-        ImageNode::new(image),
-        TransportGaugeVisual {
-            kind,
-            track_left,
-            base,
-            rendered: None,
-        },
-    ));
-}
-
-fn draw_transport_gauge(
-    picture: &mut IndexedPicture,
-    kind: TransportGaugeKind,
-    track_left: i32,
-    key: TransportGaugeKey,
-) {
-    let marker = track_left + transport_gauge_width(key.value, key.total) as i32;
-    picture.fill_rect(IRect::new(marker, 0x0d, track_left + 0x71, 0x11), 0x3b);
-    let fill = match kind {
-        TransportGaugeKind::Allocation(_) => 0x3a,
-        TransportGaugeKind::Capacity if key.value == key.total => 0x34,
-        TransportGaugeKind::Capacity => 0x33,
+    limit_strip: bool,
+    fill_color: Color,
+    gauge_colors: TransportGaugeColors,
+) -> TransportGaugeView {
+    let mut node = |left: i32, top: i32, width: f32, height: f32, color: Color| {
+        commands
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(left as f32),
+                    top: px(top as f32),
+                    width: px(width),
+                    height: px(height),
+                    ..default()
+                },
+                BackgroundColor(color),
+                Pickable::IGNORE,
+                ChildOf(entity),
+            ))
+            .id()
     };
-    picture.fill_rect(IRect::new(track_left, 0x0d, marker, 0x11), fill);
-    if let Some(limit) = key.limit {
-        picture.fill_rect(
-            IRect::new(track_left - 1, 0x12, track_left + 0x72, 0x14),
-            if key.value < limit { 0x33 } else { 0x34 },
-        );
-    }
+    let _remainder = node(
+        track_left,
+        0x0d,
+        0x71 as f32,
+        0x04 as f32,
+        gauge_colors.remainder,
+    );
+    let fill = node(track_left, 0x0d, 0.0, 0x04 as f32, fill_color);
+    let limit = limit_strip.then(|| {
+        node(
+            track_left - 1,
+            0x12,
+            0x73 as f32,
+            0x02 as f32,
+            gauge_colors.partial,
+        )
+    });
+    TransportGaugeView { fill, limit }
 }
 
 fn on_transport_arrow_activate(
     activate: On<Activate>,
-    actions: Query<&TransportAdjust, Without<InteractionDisabled>>,
+    views: Query<&TransportView>,
+    disabled: Query<Has<InteractionDisabled>>,
     mut session: ResMut<GameSession>,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
+    if disabled.get(activate.entity).unwrap_or(false) {
         return;
-    };
+    }
     let nation = session.active_major_nation();
-    session
-        .game
-        .step_transport_allocation(nation, action.allocation, action.delta);
+    for view in &views {
+        for (binding, row) in TRANSPORT_ROWS.iter().zip(&view.rows) {
+            if activate.entity == row.decrease {
+                session
+                    .game
+                    .step_transport_allocation(nation, binding.allocation, -1);
+                return;
+            }
+            if activate.entity == row.increase {
+                session
+                    .game
+                    .step_transport_allocation(nation, binding.allocation, 1);
+                return;
+            }
+        }
+    }
 }
 
-fn sync_transport_text(
+fn render_transport(
     session: Res<GameSession>,
-    screens: Query<(), Added<TransportScreen>>,
-    mut texts: Query<(&TransportDisplay, &mut Text)>,
+    view: Single<Ref<TransportView>>,
+    mut commands: Commands,
+    mut texts: Query<&mut Text>,
+    mut nodes: Query<&mut Node>,
+    mut backgrounds: Query<&mut BackgroundColor>,
 ) {
-    if !session.is_changed() && screens.is_empty() {
+    if !session.is_changed() && !view.is_added() {
         return;
     }
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let economy = &major.economy;
-    for (display, mut text) in &mut texts {
-        match *display {
-            TransportDisplay::RowCaption(allocation) => {
-                let status = session.game.transport_row_status(nation, allocation);
-                text.0 = format!("{}  /  {}", status.allocated, status.available);
-            }
-            TransportDisplay::CapacityCaption => {
-                let capacities = economy.capacities;
-                text.0 = format!(
-                    "{}  /  {}",
-                    capacities.reserved_transport, capacities.transport
-                );
-            }
-            TransportDisplay::Money {
-                resource,
-                unit_value,
-            } => {
-                let target = economy.need_target_by_type[resource];
-                text.0 = format_currency(i32::from(target) * unit_value);
-            }
-            _ => {}
+    for (binding, row) in TRANSPORT_ROWS.iter().zip(&view.rows) {
+        let status = session
+            .game
+            .transport_row_status(nation, binding.allocation);
+        texts
+            .get_mut(row.caption)
+            .expect("bound transport caption must exist")
+            .0 = format!("{}  /  {}", status.allocated, status.available);
+        if let Some(money) = row.money {
+            let (resource, unit_value) = match binding.allocation {
+                TransportAllocation::GOLD => (ResourceKind::Gold, 200),
+                TransportAllocation::GEMS => (ResourceKind::Gems, 500),
+                _ => unreachable!("only gold and gems have transport money captions"),
+            };
+            let target = economy.need_target_by_type[resource];
+            texts
+                .get_mut(money)
+                .expect("bound transport money text must exist")
+                .0 = format_currency(i32::from(target) * unit_value);
         }
-    }
-}
-
-fn sync_transport_gauges(
-    session: Res<GameSession>,
-    retail: Res<RetailAssetsResource>,
-    mut images: ResMut<Assets<Image>>,
-    screens: Query<(), Added<TransportScreen>>,
-    mut gauges: Query<(&mut TransportGaugeVisual, &ImageNode)>,
-) {
-    if !session.is_changed() && screens.is_empty() {
-        return;
-    }
-    let nation = session.active_major_nation();
-    let economy = &session.game.nations().major(nation).economy;
-    for (mut gauge, image_node) in &mut gauges {
-        let key = match gauge.kind {
-            TransportGaugeKind::Allocation(allocation) => {
-                let status = session.game.transport_row_status(nation, allocation);
-                TransportGaugeKey {
-                    value: status.allocated,
-                    total: status.available,
-                    limit: status.limit,
+        set_transport_visibility(&mut commands, row.row, status.adjustable);
+        set_transport_enabled(&mut commands, row.decrease, status.can_decrease);
+        set_transport_enabled(&mut commands, row.increase, status.can_increase);
+        nodes
+            .get_mut(row.gauge.fill)
+            .expect("bound transport gauge fill must exist")
+            .width = px(transport_gauge_width(status.allocated, status.available));
+        if let Some(limit) = row.gauge.limit {
+            match status.limit {
+                Some(limit_value) => {
+                    commands.entity(limit).insert(Visibility::Visible);
+                    backgrounds
+                        .get_mut(limit)
+                        .expect("bound transport gauge limit must exist")
+                        .0 = if status.allocated < limit_value {
+                        view.gauge_states.partial
+                    } else {
+                        view.gauge_states.full
+                    };
+                }
+                None => {
+                    commands.entity(limit).insert(Visibility::Hidden);
                 }
             }
-            TransportGaugeKind::Capacity => TransportGaugeKey {
-                value: economy.capacities.reserved_transport,
-                total: economy.capacities.transport,
-                limit: None,
-            },
-        };
-        if gauge.rendered == Some(key) {
-            continue;
-        }
-        let mut picture = gauge.base.clone();
-        draw_transport_gauge(&mut picture, gauge.kind, gauge.track_left, key);
-        if let Some(mut image) = images.get_mut(&image_node.image) {
-            *image = picture.to_image(retail.assets().default_dib_palette());
-            gauge.rendered = Some(key);
         }
     }
+    let capacities = economy.capacities;
+    texts
+        .get_mut(view.capacity_caption)
+        .expect("bound transport capacity caption must exist")
+        .0 = format!(
+        "{}  /  {}",
+        capacities.reserved_transport, capacities.transport
+    );
+    nodes
+        .get_mut(view.capacity.fill)
+        .expect("bound transport capacity gauge must exist")
+        .width = px(transport_gauge_width(
+        capacities.reserved_transport,
+        capacities.transport,
+    ));
+    backgrounds
+        .get_mut(view.capacity.fill)
+        .expect("bound transport capacity gauge must exist")
+        .0 = if capacities.reserved_transport == capacities.transport {
+        view.gauge_states.full
+    } else {
+        view.gauge_states.partial
+    };
 }
 
-fn sync_transport_presence(
-    mut commands: Commands,
-    session: Res<GameSession>,
-    screens: Query<(), Added<TransportScreen>>,
-    mut rows: Query<(
-        Entity,
-        &TransportDisplay,
-        &mut Visibility,
-        Has<InteractionDisabled>,
-    )>,
-    actions: Query<(Entity, &TransportAdjust, Has<InteractionDisabled>)>,
-) {
-    if !session.is_changed() && screens.is_empty() {
-        return;
-    }
-    let nation = session.active_major_nation();
-    for (entity, display, mut visibility, disabled) in &mut rows {
-        let allocation = match *display {
-            TransportDisplay::Row(allocation) | TransportDisplay::RowCaption(allocation) => {
-                allocation
-            }
-            TransportDisplay::Money { resource, .. } => match resource {
-                ResourceKind::Gold => TransportAllocation::GOLD,
-                ResourceKind::Gems => TransportAllocation::GEMS,
-                _ => unreachable!("only gold and gems have transport money captions"),
-            },
-            _ => continue,
-        };
-        let status = session.game.transport_row_status(nation, allocation);
-        *visibility = if status.adjustable {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
-        if status.adjustable == disabled {
-            if status.adjustable {
-                commands.entity(entity).remove::<InteractionDisabled>();
-            } else {
-                commands.entity(entity).insert(InteractionDisabled);
-            }
-        }
-    }
-    for (entity, action, disabled) in &actions {
-        let status = session.game.transport_row_status(nation, action.allocation);
-        let enabled = if action.delta < 0 {
-            status.can_decrease
-        } else {
-            status.can_increase
-        };
-        if enabled == disabled {
-            if enabled {
-                commands.entity(entity).remove::<InteractionDisabled>();
-            } else {
-                commands.entity(entity).insert(InteractionDisabled);
-            }
-        }
+fn set_transport_visibility(commands: &mut Commands, entity: Entity, visible: bool) {
+    commands.entity(entity).insert(if visible {
+        Visibility::Visible
+    } else {
+        Visibility::Hidden
+    });
+}
+
+fn set_transport_enabled(commands: &mut Commands, entity: Entity, enabled: bool) {
+    if enabled {
+        commands.entity(entity).remove::<InteractionDisabled>();
+    } else {
+        commands.entity(entity).insert(InteractionDisabled);
     }
 }
 
 fn sync_transport_cursor(
     session: Res<GameSession>,
-    screens: Query<(), Added<TransportScreen>>,
-    changed_rows: Query<(), (With<TransportDisplay>, Changed<Hovered>)>,
-    rows: Query<(&TransportHover, &Hovered)>,
+    views: Query<Ref<TransportView>>,
+    hovered: Query<Ref<Hovered>>,
     assets: RetailUiAssets,
-    mut cursor: Query<&mut Text, With<TransportCursor>>,
+    mut cursor: Query<&mut Text>,
 ) {
-    if !session.is_changed() && screens.is_empty() && changed_rows.is_empty() {
-        return;
-    }
-    let Ok(mut text) = cursor.single_mut() else {
+    let Ok(view) = views.single() else {
         return;
     };
-    let nation = session.active_major_nation();
-    text.0 = rows
-        .iter()
-        .find_map(|(hover, hovered)| {
+    if !session.is_changed()
+        && !view.is_added()
+        && !view.rows.iter().any(|row| {
             hovered
-                .get()
-                .then(|| transport_hover_text(&assets, &session.game, nation, hover.0))
+                .get(row.row)
+                .is_ok_and(|hovered| hovered.is_changed())
         })
-        .unwrap_or_default();
+    {
+        return;
+    }
+    let nation = session.active_major_nation();
+    let Some(allocation) = TRANSPORT_ROWS
+        .iter()
+        .zip(&view.rows)
+        .find_map(|(binding, row)| {
+            hovered
+                .get(row.row)
+                .is_ok_and(|hovered| hovered.get())
+                .then_some(binding.allocation)
+        })
+    else {
+        cursor
+            .get_mut(view.cursor)
+            .expect("bound transport cursor text must exist")
+            .0 = String::new();
+        return;
+    };
+    cursor
+        .get_mut(view.cursor)
+        .expect("bound transport cursor text must exist")
+        .0 = transport_hover_text(&assets, &session.game, nation, allocation);
 }
 
 fn transport_hover_text(
@@ -609,7 +597,6 @@ fn transport_gauge_width(value: i16, total: i16) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::super::retail::RetailTag;
-    use super::super::retail_raster::indexed_picture;
     use super::*;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
@@ -662,7 +649,7 @@ mod tests {
         state
     }
 
-    fn spawn_transport_hierarchy(world: &mut World) {
+    fn spawn_transport_hierarchy(world: &mut World) -> Entity {
         let root = world
             .spawn((TestTransportRoot, TransportScreen, Node::default()))
             .id();
@@ -702,6 +689,7 @@ mod tests {
                 ));
             }
         }
+        root
     }
 
     fn bind_test_transport(
@@ -709,7 +697,13 @@ mod tests {
         root: Single<Entity, Added<TestTransportRoot>>,
         tree: RetailTree,
     ) {
-        bind_transport_controls(
+        let gauge_colors = TransportGaugeColors {
+            allocation: Color::srgb_u8(0, 0, 255),
+            remainder: Color::srgb_u8(128, 128, 128),
+            partial: Color::WHITE,
+            full: Color::BLACK,
+        };
+        let view = bind_transport_view(
             &mut commands,
             *root,
             &tree,
@@ -720,7 +714,9 @@ mod tests {
                 Color::WHITE,
                 Color::BLACK,
             ),
+            gauge_colors,
         );
+        commands.entity(*root).insert(view);
     }
 
     fn activate(app: &mut App, entity: Entity) {
@@ -730,7 +726,7 @@ mod tests {
     }
 
     #[test]
-    fn activating_generated_arrows_updates_allocation_and_caption() {
+    fn transport_arrows_update_allocation_caption_and_gauge() {
         let state = fixture_state();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         let binding = TRANSPORT_ROWS
@@ -746,127 +742,38 @@ mod tests {
         let mut app = App::new();
         app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
             .insert_resource(GameSession::new(state))
-            .add_systems(
-                Update,
-                (
-                    bind_test_transport,
-                    sync_transport_text,
-                    sync_transport_presence,
-                )
-                    .chain(),
-            );
-        spawn_transport_hierarchy(app.world_mut());
+            .add_systems(Update, (bind_test_transport, render_transport).chain());
+        let root = spawn_transport_hierarchy(app.world_mut());
         app.update();
 
-        let row = app
-            .world_mut()
-            .query::<(Entity, &RetailTag)>()
-            .iter(app.world())
-            .find_map(|(entity, tag)| (tag.0 == binding.tag).then_some(entity))
-            .unwrap();
-        let mut arrows = app
-            .world_mut()
-            .query::<(Entity, &RetailTag, &ChildOf)>()
-            .iter(app.world())
-            .filter_map(|(entity, tag, parent)| (parent.parent() == row).then_some((tag.0, entity)))
-            .collect::<Vec<_>>();
-        let left = arrows
+        let row = TRANSPORT_ROWS
             .iter()
-            .find_map(|(tag, entity)| (*tag == fourcc!("left")).then_some(*entity))
+            .zip(&app.world().get::<TransportView>(root).unwrap().rows)
+            .find_map(|(candidate, row)| (candidate.tag == binding.tag).then_some(*row))
             .unwrap();
-        let right = arrows
-            .drain(..)
-            .find_map(|(tag, entity)| (tag == fourcc!("rght")).then_some(entity))
-            .unwrap();
-        assert_eq!(app.world().get::<TransportAdjust>(left).unwrap().delta, -1);
-        assert_eq!(app.world().get::<TransportAdjust>(right).unwrap().delta, 1);
-        assert_eq!(
-            app.world_mut()
-                .query::<&TransportAdjust>()
-                .iter(app.world())
-                .count(),
-            TRANSPORT_ROWS.len() * 2
-        );
 
-        activate(&mut app, right);
-
+        activate(&mut app, row.increase);
         let after = app
             .world()
             .resource::<GameSession>()
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(after.allocated, before.allocated + 1);
-        let caption = app
-            .world_mut()
-            .query::<(&TransportDisplay, &Text)>()
-            .iter(app.world())
-            .find_map(|(display, text)| match display {
-                TransportDisplay::RowCaption(allocation) if *allocation == binding.allocation => {
-                    Some(text.0.clone())
-                }
-                _ => None,
-            })
-            .unwrap();
         assert_eq!(
-            caption,
+            app.world().get::<Text>(row.caption).unwrap().0,
             format!("{}  /  {}", after.allocated, after.available)
         );
+        assert_eq!(
+            app.world().get::<Node>(row.gauge.fill).unwrap().width,
+            px(transport_gauge_width(after.allocated, after.available))
+        );
 
-        activate(&mut app, left);
+        activate(&mut app, row.decrease);
         let restored = app
             .world()
             .resource::<GameSession>()
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
-        let caption = app
-            .world_mut()
-            .query::<(&TransportDisplay, &Text)>()
-            .iter(app.world())
-            .find_map(|(display, text)| match display {
-                TransportDisplay::RowCaption(allocation) if *allocation == binding.allocation => {
-                    Some(text.0.clone())
-                }
-                _ => None,
-            })
-            .unwrap();
-        assert_eq!(
-            caption,
-            format!("{}  /  {}", restored.allocated, restored.available)
-        );
-    }
-
-    #[test]
-    fn transport_picture_draws_gauge_and_limit_into_its_own_raster() {
-        let mut picture = indexed_picture(224, 30, 0);
-        draw_transport_gauge(
-            &mut picture,
-            TransportGaugeKind::Allocation(TransportAllocation::GRAIN),
-            0x61,
-            TransportGaugeKey {
-                value: 2,
-                total: 4,
-                limit: Some(3),
-            },
-        );
-
-        let width = picture.width as usize;
-        assert_eq!(picture.pixels[0x0d * width + 0x61], 0x3a);
-        assert_eq!(picture.pixels[0x0d * width + 0x61 + 55], 0x3a);
-        assert_eq!(picture.pixels[0x0d * width + 0x61 + 56], 0x3b);
-        assert_eq!(picture.pixels[0x12 * width + 0x60], 0x33);
-
-        draw_transport_gauge(
-            &mut picture,
-            TransportGaugeKind::Capacity,
-            0x5d,
-            TransportGaugeKey {
-                value: 4,
-                total: 4,
-                limit: None,
-            },
-        );
-        assert_eq!(picture.pixels[0x0d * width + 0x5d], 0x34);
-        assert_eq!(picture.pixels[0x0d * width + 0x5d + 112], 0x34);
     }
 }
