@@ -114,6 +114,8 @@ pub type BattleReportSideTable<T> = EnumMap<BattleReportSideSlot, T>;
 pub struct BattleReport {
     /// Winning side, or `None` when retail records no decisive participant (`-1`).
     pub participant: Option<BattleReportSideSlot>,
+    /// Side presented in the report's friendly/left half, independently of the winner.
+    pub displayed_side: BattleReportSideSlot,
     pub kind: BattleReportKind,
     pub location: BattleReportLocation,
     pub sides: BattleReportSideTable<BattleReportSide>,
@@ -156,6 +158,7 @@ impl GameState {
             } else {
                 BattleReportSideSlot::Right
             }),
+            displayed_side: BattleReportSideSlot::Left,
             kind,
             location: BattleReportLocation::Province(province),
             sides: BattleReportSideTable::from_array([attacker_side, defender_side]),

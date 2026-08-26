@@ -237,7 +237,10 @@ pub enum RetailPictureError {
 }
 
 #[derive(Resource, Default)]
-struct RetailPictureHandles(HashMap<PictureId, Handle<Image>>);
+struct RetailPictureHandles {
+    opaque: HashMap<PictureId, Handle<Image>>,
+    keyed: HashMap<(PictureId, u8), Handle<Image>>,
+}
 
 #[derive(SystemParam)]
 pub struct RetailUiAssets<'w> {
@@ -323,17 +326,30 @@ impl RetailUiAssets<'_> {
         Ok(self.images.add(image))
     }
 
-    pub fn transparent_picture(
+    pub fn keyed_picture(
         &mut self,
         picture_id: PictureId,
-        palette_index: u8,
+        transparent_palette_index: u8,
     ) -> Result<Handle<Image>, RetailPictureError> {
+        if let Some(handle) = self
+            .handles
+            .keyed
+            .get(&(picture_id, transparent_palette_index))
+        {
+            return Ok(handle.clone());
+        }
         let indexed = self.indexed_picture(picture_id)?;
         // Decode the indexed DIB once into the UI image instead of applying an
         // alpha mask to Bevy's BMP decoder output. The latter has a distinct
         // scanline layout for some retail DIBs, so its index rows can diverge
         // from the visible RGBA rows (notably atlas 0xee2).
-        Ok(self.add_image(indexed.to_keyed_image(self.default_dib_palette(), palette_index)))
+        let handle = self.add_image(
+            indexed.to_keyed_image(self.default_dib_palette(), transparent_palette_index),
+        );
+        self.handles
+            .keyed
+            .insert((picture_id, transparent_palette_index), handle.clone());
+        Ok(handle)
     }
 
     pub fn indexed_picture(
@@ -364,6 +380,10 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
+            .add_systems(
+                Update,
+                super::retail_raster_text::rasterize_retail_static_text,
+            )
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
@@ -441,13 +461,13 @@ fn load_retail_picture(
     images: &mut Assets<Image>,
     picture_handles: &mut RetailPictureHandles,
 ) -> Result<Handle<Image>, RetailPictureError> {
-    if let Some(handle) = picture_handles.0.get(&picture_id) {
+    if let Some(handle) = picture_handles.opaque.get(&picture_id) {
         return Ok(handle.clone());
     }
     let bytes = retail_assets.assets().picture(picture_id)?;
     let image = decode_retail_picture(picture_id, &bytes)?;
     let handle = images.add(image);
-    picture_handles.0.insert(picture_id, handle.clone());
+    picture_handles.opaque.insert(picture_id, handle.clone());
     Ok(handle)
 }
 

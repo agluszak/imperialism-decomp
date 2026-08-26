@@ -1,12 +1,14 @@
 //! Post-combat `TBattleReportView` / `TBattleDetailBook`.
 
 use super::generated;
+use super::hover_help::get_string;
 use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
+use super::retail_raster_text::RetailRasterTextPainter;
 use super::satellite_preview::nation_owner_palette;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
 use super::window::{DismissWindow, ModalDefault, ModalWindow};
-use crate::AppState;
+use crate::{AppState, RetailFonts};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -101,7 +103,7 @@ fn bind_battle_report(
 ) {
     let main = tree.find(*root, fourcc!("main"));
     let marker_atlas = assets
-        .transparent_picture(PictureId::new(MARKER_ATLAS), 0x24)
+        .keyed_picture(PictureId::new(MARKER_ATLAS), 0x10)
         .expect("retail battle-report marker atlas must load");
     commands
         .spawn((
@@ -185,6 +187,8 @@ fn project_battle_report(
     map: Single<(Entity, Option<&ImageNode>, &BattleReportMap)>,
     markers: Query<Entity, With<BattleReportMarker>>,
     mut assets: super::RetailUiAssets,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
 ) {
     let Ok(root) = roots.single() else {
         return;
@@ -203,8 +207,34 @@ fn project_battle_report(
             .owner_nation
             .and_then(TileOwnerTag::nation)
     };
-    let (picture, _) =
+    let (mut picture, _) =
         super::diplomacy_map::compose_diplomacy_map(owner_at, nation_owner_palette, None);
+    let mut painter = RetailRasterTextPainter::from_preset(
+        &fonts,
+        &font_assets,
+        RetailTextStylePreset {
+            font_family: 0,
+            face_flags: 0,
+            point_size: 10,
+            alignment: 1,
+        },
+    )
+    .expect("retail battle-report diplomacy label style");
+    let mut seeds = [None; NationId::COUNT as usize];
+    for nation in NationId::all() {
+        let Some(name) = state.nations().display_name(nation) else {
+            continue;
+        };
+        let Some(anchor) = state.ocean_overlay_anchor_for_nation(nation) else {
+            continue;
+        };
+        let (row, column) = state.map().geometry().row_column(anchor);
+        seeds[usize::from(nation.get())] =
+            Some(super::diplomacy_map::DiplomacyLabelSeed { name, column, row });
+    }
+    let labels =
+        super::diplomacy_map::layout_diplomacy_map_labels(&seeds, |name| painter.measure(name));
+    super::diplomacy_map::draw_diplomacy_map_labels(&mut picture, &mut painter, &seeds, &labels);
     let image = picture.to_keyed_image(assets.default_dib_palette(), 0x10);
     if let Some(image_node) = map_image {
         assets.replace_image(&image_node.image, image);
@@ -216,10 +246,13 @@ fn project_battle_report(
     for marker in &markers {
         commands.entity(marker).despawn();
     }
+    let mut crowd = vec![0u8; STRATEGIC_TILE_COUNT];
+    let geometry = state.map().geometry();
     for (index, report) in reports_game.iter().enumerate() {
         let Some(tile) = battle_report_tile(state, report) else {
             continue;
         };
+        let tile = battle_report_marker_tile(geometry, tile, &mut crowd);
         let (row, column) = state.map().geometry().row_column(tile);
         let point = super::diplomacy_map::diplomacy_tile_pixel(row, column) - IVec2::splat(9);
         commands.spawn((
@@ -251,7 +284,7 @@ fn project_battle_report(
         return;
     };
     let report_text = battle_report_text(&session, &reports.0, root.selected);
-    let participant = report.participant.unwrap_or(BattleReportSideSlot::Left);
+    let participant = report.displayed_side;
     let other = other_side(participant);
     let location = match report.location {
         BattleReportLocation::Province(id) => session.game.map().provinces[id].name.clone(),
@@ -259,26 +292,12 @@ fn project_battle_report(
     };
     for (field, mut text) in &mut fields {
         text.0 = match field {
-            BattleReportField::Result => report_text[BattleReportSideSlot::Left].overlay.clone(),
+            BattleReportField::Result => battle_report_result_text(&assets, state, report),
             BattleReportField::Location => location.clone(),
-            BattleReportField::FriendlyAdmiral => {
-                report_text[BattleReportSideSlot::Left].name.clone()
-            }
-            BattleReportField::EnemyAdmiral => {
-                report_text[BattleReportSideSlot::Right].name.clone()
-            }
-            BattleReportField::FriendlyShips => report.sides[BattleReportSideSlot::Left]
-                .children
-                .iter()
-                .map(|row| row.name.as_str())
-                .collect::<Vec<_>>()
-                .join("\n"),
-            BattleReportField::EnemyShips => report.sides[BattleReportSideSlot::Right]
-                .children
-                .iter()
-                .map(|row| row.name.as_str())
-                .collect::<Vec<_>>()
-                .join("\n"),
+            BattleReportField::FriendlyAdmiral => report_text[participant].name.clone(),
+            BattleReportField::EnemyAdmiral => report_text[other].name.clone(),
+            BattleReportField::FriendlyShips => report_text[participant].overlay.clone(),
+            BattleReportField::EnemyShips => report_text[other].overlay.clone(),
         };
     }
     for (flag, mut image) in &mut flags {
@@ -291,6 +310,171 @@ fn project_battle_report(
                 0x1130 + i16::from(report.sides[side].nation.get()),
             ))
             .expect("retail battle-report flag picture must load");
+    }
+}
+
+/// `TBattleReportView::DoPostCreate` marker placement: spiral outward from the
+/// report's map cell on a 60×108 crowding grid until a free hex is found, then
+/// mark a radius-3 neighborhood around it as crowded. The steps replicate retail
+/// `TMapMgr::StepHexRowColByDirectionWithWrapRules`, which wraps columns around
+/// the map edges when the map is bounded.
+fn battle_report_marker_tile(geometry: MapGeometry, origin: TileId, crowd: &mut [u8]) -> TileId {
+    let cell = i32::from(origin.get());
+    let (mut row, mut column) = (cell / 108, cell % 108);
+    let mut ring_leg = 1;
+    let mut leg_step = 0;
+    let mut radius = 0;
+    let mut found_cell = cell;
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, ring_leg);
+    while radius < 10 {
+        if let Some(probe) = crowd_probe(row, column)
+            && crowd[probe as usize] == 0
+        {
+            found_cell = probe;
+            break;
+        }
+        leg_step += 1;
+        if leg_step >= radius {
+            leg_step = 0;
+            ring_leg += 1;
+            if ring_leg >= 6 {
+                ring_leg = 0;
+                radius += 1;
+                step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+            }
+        }
+        step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, ring_leg);
+    }
+    (row, column) = (found_cell / 108, found_cell % 108);
+    let mut ring = 0;
+    let mut mark_leg = 1;
+    let mut mark_step = 0;
+    let mut mark_leg_len = found_cell % 108;
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, mark_leg);
+    while ring < 3 {
+        if let Some(probe) = crowd_probe(row, column) {
+            crowd[probe as usize] += 1;
+        }
+        mark_step += 1;
+        if mark_step >= mark_leg_len {
+            mark_step = 0;
+            mark_leg += 1;
+            if mark_leg >= 6 {
+                mark_leg = 0;
+                mark_leg_len += 1;
+                ring += 1;
+                step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+            }
+        }
+        step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, mark_leg);
+    }
+    crowd[found_cell as usize] += 1;
+    TileId::new(u16::try_from(found_cell).expect("battle-report marker tile fits the map"))
+}
+
+fn crowd_probe(row: i32, column: i32) -> Option<i32> {
+    ((0..STRATEGIC_MAP_HEIGHT as i32).contains(&row)
+        && (0..STRATEGIC_MAP_WIDTH as i32).contains(&column))
+    .then_some(row * STRATEGIC_MAP_WIDTH as i32 + column)
+}
+
+/// Retail `TMapMgr::StepHexRowColByDirectionWithWrapRules` integer row/column
+/// stepping, including its out-of-bounds column wrap quirk.
+fn step_hex_row_col_by_wrap_rules(
+    geometry: MapGeometry,
+    row: &mut i32,
+    column: &mut i32,
+    direction: i32,
+) {
+    if direction == 4 || (direction > 2 && *row & 1 == 0) {
+        let next = *column - 1;
+        *column = next;
+        if next < 0 && !geometry.wraps_horizontally() {
+            *column = STRATEGIC_MAP_WIDTH as i32 - 1;
+        }
+    } else if direction == 1 || (direction < 3 && *row & 1 != 0) {
+        let next = *column + 1;
+        *column = next;
+        if next >= STRATEGIC_MAP_WIDTH as i32 && !geometry.wraps_horizontally() {
+            *column = 0;
+        }
+    }
+    if direction == 5 || direction == 0 {
+        *row -= 1;
+    } else if direction == 3 || direction == 2 {
+        *row += 1;
+    }
+}
+
+fn battle_report_result_text(
+    assets: &super::RetailUiAssets,
+    state: &GameState,
+    report: &BattleReport,
+) -> String {
+    let (group, index) = battle_report_result_string_index(state, report);
+    get_string(assets, group, index)
+}
+
+/// `RefreshMapContextSelectionPanelAndInfoLabels`: the `resu` string group and
+/// (0-based, pre-`GetString` increment) index recovered from the report kind,
+/// the winner/active-nation relation, and land-battle site ownership.
+fn battle_report_result_string_index(state: &GameState, report: &BattleReport) -> (i16, i16) {
+    let active = state.turn().active_nation;
+    let winner = report.participant.unwrap_or(report.displayed_side);
+    let relation = if report.sides[winner].nation == active {
+        1
+    } else if report.sides[other_side(winner)].nation == active {
+        -1
+    } else {
+        0
+    };
+    match report.kind {
+        BattleReportKind::MerchantInterception => (0x273c, relation + 4),
+        BattleReportKind::SeaBattle => (0x273c, relation + 7),
+        BattleReportKind::PreemptedLandBattle => (0x273d, relation + 39),
+        BattleReportKind::UncontestedTakeover => (0x273d, relation + 42),
+        BattleReportKind::LandBattle => {
+            let report_sides_are_same = report.displayed_side == winner;
+            let report_participant_is_active = report.sides[winner].nation == active;
+            let active_nation_is_other_report_side = relation != 0 && !report_participant_is_active;
+            let displayed_participant_is_active =
+                report.sides[report.displayed_side].nation == active;
+            let mut other_nation = report.sides[BattleReportSideSlot::Left].nation;
+            if other_nation == active {
+                other_nation = report.sides[BattleReportSideSlot::Right].nation;
+            }
+            let BattleReportLocation::Province(province) = report.location else {
+                unreachable!("land battle reports store a province");
+            };
+            let active_nation_owns_battle_site = state.capitol_province(active) == Some(province);
+            let other_nation_owns_battle_site =
+                state.capitol_province(other_nation) == Some(province);
+            let index = if active_nation_owns_battle_site && displayed_participant_is_active {
+                47
+            } else if active_nation_owns_battle_site && active_nation_is_other_report_side {
+                48
+            } else if report_participant_is_active
+                && report_sides_are_same
+                && other_nation_owns_battle_site
+            {
+                47
+            } else if report_participant_is_active && report_sides_are_same {
+                3
+            } else if report_participant_is_active {
+                6
+            } else if active_nation_is_other_report_side && report_sides_are_same {
+                4
+            } else if active_nation_is_other_report_side {
+                1
+            } else if report_sides_are_same {
+                2
+            } else {
+                5
+            };
+            (0x273d, index)
+        }
     }
 }
 
@@ -564,11 +748,108 @@ mod tests {
     use crate::ui::test_support::beginning_of_game;
 
     #[test]
+    fn battle_report_marker_spiral_matches_retail_placement_order() {
+        let geometry = MapGeometry::new(MapTopology::Bounded);
+        let mut crowd = vec![0u8; STRATEGIC_TILE_COUNT];
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1000), &mut crowd),
+            TileId::new(1000)
+        );
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1000), &mut crowd),
+            TileId::new(1109)
+        );
+        let mut crowd = vec![0u8; STRATEGIC_TILE_COUNT];
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1000), &mut crowd),
+            TileId::new(1000)
+        );
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1001), &mut crowd),
+            TileId::new(1110)
+        );
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(999), &mut crowd),
+            TileId::new(996)
+        );
+    }
+
+    #[test]
+    fn battle_report_result_string_index_follows_retail_decision_tree() {
+        let state = beginning_of_game();
+        let active = state.turn().active_nation;
+        let report = BattleReport {
+            participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(21)),
+            sides: BattleReportSideTable::from_array([
+                BattleReportSide {
+                    nation: active,
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: NationId::new(0),
+                    children: Vec::new(),
+                },
+            ]),
+        };
+        assert_eq!(
+            battle_report_result_string_index(&state, &report),
+            (0x273d, 47)
+        );
+        // The enemy's capitol, won by that enemy while the active nation is the
+        // displayed other side.
+        let report = BattleReport {
+            participant: Some(BattleReportSideSlot::Right),
+            displayed_side: BattleReportSideSlot::Left,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(80)),
+            sides: BattleReportSideTable::from_array([
+                BattleReportSide {
+                    nation: active,
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: NationId::new(0),
+                    children: Vec::new(),
+                },
+            ]),
+        };
+        assert_eq!(
+            battle_report_result_string_index(&state, &report),
+            (0x273d, 1)
+        );
+        // Sea-battle strings key off the winner/active relation alone.
+        let report = BattleReport {
+            participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
+            kind: BattleReportKind::SeaBattle,
+            location: BattleReportLocation::Zone(OceanZoneId::new(0)),
+            sides: BattleReportSideTable::from_array([
+                BattleReportSide {
+                    nation: active,
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: NationId::new(0),
+                    children: Vec::new(),
+                },
+            ]),
+        };
+        assert_eq!(
+            battle_report_result_string_index(&state, &report),
+            (0x273c, 8)
+        );
+    }
+
+    #[test]
     fn generated_land_report_text_preserves_retail_caption_and_summary_order() {
         let state = beginning_of_game();
         let nation = state.turn().active_nation;
         let report = BattleReport {
             participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([

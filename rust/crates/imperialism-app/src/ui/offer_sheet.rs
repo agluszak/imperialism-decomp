@@ -5,6 +5,7 @@ use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, RetailUiAssets};
+use super::retail_raster_text::RetailRasterText;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
@@ -181,6 +182,84 @@ fn bind_offer_sheet_text(
             color: assets.palette_color(0xd2),
         },
     ));
+    // Family 0 is the bitmap System face; paint it through the indexed-raster path.
+    for (tag, preset, width, height) in [
+        (
+            fourcc!("offe"),
+            RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 12,
+                alignment: 1,
+            },
+            181,
+            69,
+        ),
+        (
+            fourcc!("purT"),
+            RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 12,
+                alignment: -1,
+            },
+            100,
+            19,
+        ),
+        (
+            fourcc!("unit"),
+            RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 12,
+                alignment: -2,
+            },
+            58,
+            20,
+        ),
+        (
+            fourcc!("noof"),
+            RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 12,
+                alignment: -2,
+            },
+            145,
+            14,
+        ),
+        (
+            fourcc!("mCap"),
+            RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 14,
+                alignment: 1,
+            },
+            37,
+            15,
+        ),
+        (
+            fourcc!("info"),
+            RetailTextStylePreset {
+                font_family: 0,
+                face_flags: 0,
+                point_size: 12,
+                alignment: 1,
+            },
+            153,
+            249,
+        ),
+    ] {
+        commands
+            .entity(tree.find(root, tag))
+            .insert(RetailRasterText {
+                preset,
+                width,
+                height,
+                color: if tag == fourcc!("info") { 0x28 } else { 0 },
+            });
+    }
 }
 
 fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
@@ -310,7 +389,7 @@ fn apply_offer_sheet_pose(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    if let Ok(icon) = assets.transparent_picture(
+    if let Ok(icon) = assets.keyed_picture(
         PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
         0x10,
     ) {

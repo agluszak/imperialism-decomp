@@ -79,7 +79,7 @@ pub(crate) fn bind_army_toolbar(
         },
     ));
     let arrow_atlas = assets
-        .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
+        .keyed_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
     for category in ArmyUnitCategory::all() {
         let pic = tree.child(page, placard_tag(category));

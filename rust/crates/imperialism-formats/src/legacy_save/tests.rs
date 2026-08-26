@@ -1090,6 +1090,10 @@ fn battle_report_text_round_trips_outside_game_state() {
     let game = save.game_state(game_context());
     let report_text = save.battle_report_text();
     assert_eq!(game.battle_reports()[0].participant, None);
+    assert_eq!(
+        game.battle_reports()[0].displayed_side,
+        BattleReportSideSlot::Right
+    );
 
     let bytes = LegacySaveV62::from_game_state(
         &game,
@@ -1104,6 +1108,10 @@ fn battle_report_text_round_trips_outside_game_state() {
 
     assert_eq!(loaded.game, game);
     assert_eq!(loaded.game.battle_reports()[0].participant, None);
+    assert_eq!(
+        loaded.game.battle_reports()[0].displayed_side,
+        BattleReportSideSlot::Right
+    );
     assert_eq!(loaded.battle_report_text, report_text);
 }
 

@@ -1342,7 +1342,7 @@ fn army_reports_from_state(
                 .participant
                 .map(BattleReportSideSlot::retail)
                 .unwrap_or(u8::MAX),
-            displayed_participant: BattleReportSideSlot::Left.retail(),
+            displayed_participant: report.displayed_side.retail(),
             kind: report.kind.retail(),
             node_id: match report.location {
                 BattleReportLocation::Province(province) => province.get() as i16,

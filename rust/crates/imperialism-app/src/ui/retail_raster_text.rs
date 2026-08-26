@@ -4,11 +4,11 @@
 //! match. The painter owns a transient `FontRef` over the Bevy `Font` asset bytes.
 
 use super::retail_raster::IndexedRasterExt;
-use crate::RetailFonts;
+use crate::{RetailAssetsResource, RetailFonts};
 use bevy::prelude::*;
 use imperialism_formats::{
-    IndexedPicture, RetailFontFace, RetailTextStyleError, RetailTextStylePreset,
-    resolve_retail_text_style,
+    IndexedPicture, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
+    RetailTextStylePreset, resolve_retail_text_style,
 };
 use swash::FontRef;
 use swash::scale::{Render, ScaleContext, Source, StrikeWith};
@@ -16,6 +16,60 @@ use swash::zeno::Format;
 
 const SYSTEM_SOURCES: &[Source] = &[Source::Bitmap(StrikeWith::BestFit), Source::Outline];
 const OUTLINE_SOURCES: &[Source] = &[Source::Outline];
+
+/// Display-only retail text painted through the indexed-raster path. Family 0
+/// is the bitmap Windows System face; Bevy's outline text pipeline only
+/// produces empty 0×0 glyphs for it (it never requests `Source::Bitmap`), so
+/// these nodes rasterize their GDI glyphs into a keyed image instead.
+#[derive(Component, Clone, Copy)]
+pub struct RetailRasterText {
+    pub preset: RetailTextStylePreset,
+    pub width: i32,
+    pub height: i32,
+    /// Palette index painted for the glyph ink.
+    pub color: u8,
+}
+
+pub fn rasterize_retail_static_text(
+    mut commands: Commands,
+    retail: Res<RetailAssetsResource>,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
+    mut images: ResMut<Assets<Image>>,
+    labels: Query<(Entity, Ref<Text>, &RetailRasterText, Option<&ImageNode>)>,
+) {
+    for (entity, text, label, image_node) in &labels {
+        if !text.is_changed() && image_node.is_some() {
+            continue;
+        }
+        let style = resolve_retail_text_style(label.preset).expect("retail static-text style");
+        let mut painter = RetailRasterTextPainter::from_preset(&fonts, &font_assets, label.preset)
+            .expect("retail static-text style");
+        let mut picture = super::retail_raster::indexed_picture(label.width, label.height, 0x10);
+        let measured = painter.measure(&text.0);
+        let left = match style.alignment {
+            RetailTextAlignment::Left => 0,
+            RetailTextAlignment::Center => (label.width - measured) / 2,
+            RetailTextAlignment::Right => label.width - measured,
+        };
+        painter.draw(
+            &mut picture,
+            IVec2::new(left, painter.baseline_y(label.height)),
+            &text.0,
+            label.color,
+        );
+        let image = picture.to_keyed_image(retail.assets().default_dib_palette(), 0x10);
+        if let Some(image_node) = image_node {
+            *images
+                .get_mut(&image_node.image)
+                .expect("application-owned retail text image remains loaded") = image;
+        } else {
+            commands
+                .entity(entity)
+                .insert(ImageNode::new(images.add(image)));
+        }
+    }
+}
 
 pub struct RetailRasterTextPainter<'a> {
     font: FontRef<'a>,
@@ -59,6 +113,12 @@ impl<'a> RetailRasterTextPainter<'a> {
             .map(|character| metrics.advance_width(charmap.map(character)))
             .sum::<f32>()
             .round() as i32
+    }
+
+    /// Baseline that vertically centers the font's ascent/descent box in the box.
+    pub fn baseline_y(&self, height: i32) -> i32 {
+        let metrics = self.font.metrics(&[]).scale(self.size);
+        ((height as f32 + metrics.ascent - metrics.descent) / 2.0).round() as i32
     }
 
     pub fn draw(&mut self, picture: &mut IndexedPicture, baseline: IVec2, text: &str, color: u8) {

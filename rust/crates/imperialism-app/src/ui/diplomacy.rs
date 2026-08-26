@@ -467,7 +467,7 @@ fn bind_diplomacy_screen(
     };
     let icon_picture = PictureId::new(802);
     let icon_atlas = assets
-        .transparent_picture(icon_picture, 0x10)
+        .keyed_picture(icon_picture, 0x10)
         .expect("retail diplomacy icon atlas transparency must apply");
     bind_diplomacy_controls(
         &mut commands,

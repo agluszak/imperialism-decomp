@@ -67,7 +67,7 @@ pub(crate) fn bind_navy_toolbar(
         },
     ));
     let arrow_atlas = assets
-        .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
+        .keyed_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
     const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
         (NavyToolbarClass::Class0, fourcc!("cls0")),

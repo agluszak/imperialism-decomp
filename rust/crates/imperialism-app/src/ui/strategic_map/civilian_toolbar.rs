@@ -762,7 +762,7 @@ fn spawn_atlas_icon(
 
 fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: i16) -> Handle<Image> {
     assets
-        .transparent_picture(PictureId::new(picture_id), TRANSPARENT_INDEX)
+        .keyed_picture(PictureId::new(picture_id), TRANSPARENT_INDEX)
         .expect("retail civilian legend atlas must load")
 }
 

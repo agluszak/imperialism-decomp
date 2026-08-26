@@ -1721,6 +1721,8 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
             let [left, right] = &report.sides;
             Some(BattleReport {
                 participant: BattleReportSideSlot::from_retail(report.participant_index),
+                displayed_side: BattleReportSideSlot::from_retail(report.displayed_participant)
+                    .unwrap_or(BattleReportSideSlot::Left),
                 kind,
                 location,
                 sides: BattleReportSideTable::from_array([left, right].map(|side| {

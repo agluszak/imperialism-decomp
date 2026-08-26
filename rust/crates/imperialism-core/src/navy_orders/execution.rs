@@ -679,6 +679,7 @@ impl GameState {
         let right_report_ships = right.ships.keys().copied().collect::<Vec<_>>();
         let mut report = BattleReport {
             participant: None,
+            displayed_side: BattleReportSideSlot::Left,
             kind: BattleReportKind::SeaBattle,
             location: BattleReportLocation::Zone(location),
             sides: BattleReportSideTable::from_array([
