@@ -1,7 +1,7 @@
 use super::RetailUiAssets;
 use super::retail::RetailTree;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
-use super::session::{GameSession, MapViewOrigin};
+use super::session::GameSession;
 use crate::RetailAssetsResource;
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
@@ -29,8 +29,7 @@ use borders::compose_strategic_borders;
 pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
 pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
 pub(crate) use map_interaction::{
-    MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
-    StrategicInteraction, StrategicViewport, apply_map_transition,
+    MapAction, MapEdges, MapZoomControl, StrategicMapSession, StrategicSelection, StrategicView,
 };
 pub(crate) use map_keys::register as register_map_keys;
 pub(crate) use map_modals::register as register_map_modals;
@@ -145,11 +144,6 @@ pub(crate) fn bind_strategic_base_terrain(
         ImageNode::new(image),
         RelativeCursorPosition::default(),
         canvas,
-        StrategicInteraction {
-            civilian: selected_civilian,
-            ..default()
-        },
-        StrategicViewport::default(),
     ));
     units::bind_strategic_units(commands, map, assets, state, view_origin);
     bind_strategic_selection(commands, map, assets, state, view_origin, selected_civilian);
@@ -212,24 +206,21 @@ impl StrategicBaseTerrainCanvas {
 
 pub(crate) fn sync_strategic_base_terrain(
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
+    map: Res<StrategicMapSession>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(
-        &mut StrategicBaseTerrainCanvas,
-        &ImageNode,
-        &StrategicInteraction,
-    )>,
+    mut maps: Query<(&mut StrategicBaseTerrainCanvas, &ImageNode)>,
 ) {
-    for (mut canvas, image_node, interaction) in &mut maps {
-        let selected_civilian = interaction.civilian;
-        let key = strategic_map_compose_key(&session.game, origin.0, selected_civilian, None);
+    for (mut canvas, image_node) in &mut maps {
+        let selected_civilian = map.selection.civilian();
+        let origin = map.view.detailed_origin(&session.game);
+        let key = strategic_map_compose_key(&session.game, origin, selected_civilian, None);
         if canvas.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_map(
             &session.game,
-            origin.0,
+            origin,
             selected_civilian,
             canvas.sprites(),
             retail_assets.assets().default_dib_palette(),
@@ -244,25 +235,27 @@ pub(crate) fn sync_strategic_base_terrain(
 
 pub(crate) fn sync_strategic_selection(
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
+    map: Res<StrategicMapSession>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    maps: Query<(&StrategicInteraction, &RelativeCursorPosition)>,
+    maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut overlays: Query<(&mut StrategicSelectionCanvas, &ImageNode)>,
 ) {
     for (mut overlay, image_node) in &mut overlays {
-        let Ok((selected, cursor)) = maps.get(overlay.map) else {
+        let Ok(cursor) = maps.get(overlay.map) else {
             continue;
         };
-        let hovered = strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor);
-        let key = strategic_map_compose_key(&session.game, origin.0, selected.civilian, hovered);
+        let origin = map.view.detailed_origin(&session.game);
+        let hovered = strategic_base_terrain_tile_at_cursor(&session.game, origin, cursor);
+        let key =
+            strategic_map_compose_key(&session.game, origin, map.selection.civilian(), hovered);
         if overlay.composed == Some(key) {
             continue;
         }
         let image = compose_strategic_selection(
             &session.game,
-            origin.0,
-            selected.civilian,
+            origin,
+            map.selection.civilian(),
             hovered,
             retail_assets.assets().default_dib_palette(),
         );

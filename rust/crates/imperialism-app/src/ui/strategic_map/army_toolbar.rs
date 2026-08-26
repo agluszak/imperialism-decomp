@@ -1,12 +1,10 @@
 //! Right-hand army command page (`uarm` / `TArmyToolbar`).
 
 use super::super::retail::{RetailTree, RetailUiAssets};
-use super::map_interaction::{
-    MapInteractionMode, StrategicInteraction, StrategicViewport, cycle_map_interaction_selection,
-};
+use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::{spawn_army_roster, spawn_garrison};
 use crate::AppState;
-use crate::ui::{GameSession, MapViewOrigin};
+use crate::ui::GameSession;
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -120,8 +118,8 @@ pub(crate) fn bind_army_toolbar(
     }
 }
 
-pub(crate) fn army_page_position(mode: MapInteractionMode) -> Vec2 {
-    if mode == MapInteractionMode::Army {
+pub(crate) fn army_page_position(selection: StrategicSelection) -> Vec2 {
+    if matches!(selection, StrategicSelection::Army(_)) {
         ARMY_PAGE_VISIBLE
     } else {
         PAGE_PARKED
@@ -131,7 +129,7 @@ pub(crate) fn army_page_position(mode: MapInteractionMode) -> Vec2 {
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn sync_army_toolbar(
     session: Res<GameSession>,
-    interactions: Query<Ref<StrategicInteraction>>,
+    map: Res<StrategicMapSession>,
     mut assets: RetailUiAssets,
     mut pages: Query<&mut Node, With<ArmyToolbarPage>>,
     mut placards: Query<(Entity, &ArmyPlacard, &mut ImageNode), Without<ArmyArrow>>,
@@ -145,22 +143,16 @@ fn sync_army_toolbar(
         (With<ArmyCommand>, Without<ArmyPlacard>, Without<ArmyArrow>),
     >,
 ) {
-    let Ok(interaction) = interactions.single() else {
-        return;
-    };
-    if !session.is_changed() && !interaction.is_changed() {
+    if !session.is_changed() && !map.is_changed() {
         return;
     }
     let Ok(mut page) = pages.single_mut() else {
         return;
     };
-    let position = army_page_position(interaction.mode);
+    let position = army_page_position(map.selection);
     page.left = Val::Px(position.x);
     page.top = Val::Px(position.y);
-    let Some(province) = interaction
-        .army
-        .filter(|_| interaction.mode == MapInteractionMode::Army)
-    else {
+    let Some(province) = map.selection.army() else {
         hide_empty_toolbar(
             &mut assets,
             &session.game,
@@ -296,16 +288,12 @@ fn on_army_command(
     keys: Res<ButtonInput<KeyCode>>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
-    mut origin: ResMut<MapViewOrigin>,
-    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut map: ResMut<StrategicMapSession>,
 ) {
     let Ok(command) = command_query.get(activate.entity) else {
         return;
     };
-    let Ok((mut interaction, mut viewport)) = interactions.single_mut() else {
-        return;
-    };
-    let Some(province) = interaction.army else {
+    let Some(province) = map.selection.army() else {
         return;
     };
     match *command {
@@ -313,34 +301,19 @@ fn on_army_command(
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Sleep);
-            cycle_map_interaction_selection(
-                &mut session,
-                &mut origin,
-                &mut interaction,
-                &mut viewport,
-            );
+            map.cycle_selection(&mut session.game);
         }
         ArmyCommand::Later => {
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Latr);
-            cycle_map_interaction_selection(
-                &mut session,
-                &mut origin,
-                &mut interaction,
-                &mut viewport,
-            );
+            map.cycle_selection(&mut session.game);
         }
         ArmyCommand::Done => {
             session
                 .game
                 .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Done);
-            cycle_map_interaction_selection(
-                &mut session,
-                &mut origin,
-                &mut interaction,
-                &mut viewport,
-            );
+            map.cycle_selection(&mut session.game);
         }
         ArmyCommand::Garrison => {
             if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
@@ -356,15 +329,12 @@ fn on_army_arrow(
     activate: On<Activate>,
     arrows: Query<(&ArmyArrow, &RelativeCursorPosition)>,
     mut session: ResMut<GameSession>,
-    interactions: Query<&StrategicInteraction>,
+    map: Res<StrategicMapSession>,
 ) {
     let Ok((arrow, cursor)) = arrows.get(activate.entity) else {
         return;
     };
-    let Ok(interaction) = interactions.single() else {
-        return;
-    };
-    let Some(province) = interaction.army else {
+    let Some(province) = map.selection.army() else {
         return;
     };
     let Some(normalized) = cursor.normalized else {

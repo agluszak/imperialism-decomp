@@ -4,10 +4,11 @@
 //! action frames into the tile cache. This module keeps those sprites as disposable
 //! Bevy entities over the composed terrain bitmap.
 
-use super::super::{GameSession, MapViewOrigin};
+use super::super::GameSession;
 use super::RetailUiAssets;
+use super::StrategicMapSession;
 use super::map_projection::DetailedMapProjection;
-use super::{MapInteractionMode, StrategicInteraction, TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
+use super::{TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 use bevy::prelude::*;
 use enum_map::Enum;
@@ -110,7 +111,6 @@ struct StrategicUnitProjectKey {
 
 #[derive(Component)]
 pub(crate) struct StrategicUnitLayer {
-    map: Entity,
     projected: Option<StrategicUnitProjectKey>,
 }
 
@@ -209,7 +209,6 @@ pub(super) fn bind_strategic_units(
     );
     commands.entity(layer).insert((
         StrategicUnitLayer {
-            map,
             projected: Some(strategic_unit_project_key(
                 state,
                 view_origin,
@@ -225,9 +224,8 @@ pub(super) fn bind_strategic_units(
 pub(crate) fn sync_strategic_units(
     mut commands: Commands,
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
+    map: Res<StrategicMapSession>,
     mut assets: RetailUiAssets,
-    interactions: Query<Ref<StrategicInteraction>>,
     mut layers: Query<(
         Entity,
         &mut StrategicUnitLayer,
@@ -237,16 +235,11 @@ pub(crate) fn sync_strategic_units(
     units: Query<Entity, With<StrategicMapUnit>>,
 ) {
     let state = &session.game;
+    let origin = map.view.detailed_origin(state);
     for (layer, mut projection, mut sprites, children) in &mut layers {
-        let Ok(interaction) = interactions.get(projection.map) else {
-            continue;
-        };
-        let selected_civilian = interaction.civilian;
-        let selected_army = interaction.army;
-        let selected_navy = interaction
-            .navy
-            .zone
-            .filter(|_| interaction.mode == MapInteractionMode::Navy);
+        let selected_civilian = map.selection.civilian();
+        let selected_army = map.selection.army();
+        let selected_navy = map.selection.navy_zone();
         let fleet_id = fleet_atlas_picture_id(state).get();
         if sprites.fleet_atlas_id != fleet_id {
             sprites.fleet_frames = load_fleet_frames(&assets, state);
@@ -255,7 +248,7 @@ pub(crate) fn sync_strategic_units(
         }
         let key = strategic_unit_project_key(
             state,
-            origin.0,
+            origin,
             selected_civilian,
             selected_army,
             selected_navy,
@@ -270,7 +263,7 @@ pub(crate) fn sync_strategic_units(
             &mut sprites,
             &mut assets,
             state,
-            origin.0,
+            origin,
             selected_civilian,
             selected_army,
             selected_navy,

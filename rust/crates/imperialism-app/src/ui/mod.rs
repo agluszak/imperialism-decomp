@@ -66,9 +66,10 @@ pub(crate) use scenario_setup::ScenarioSetupPlugin;
 #[cfg(test)]
 pub(crate) use session::insert_game_session_world;
 pub(crate) use session::{
-    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_game_session,
-    insert_loaded_game, insert_loaded_game_world, remove_game_session, retail_game_data,
+    BattleReportPresentation, CityWindows, GameSession, insert_game_session, insert_loaded_game,
+    insert_loaded_game_world, remove_game_session, retail_game_data,
 };
+pub(crate) use strategic_map::StrategicMapSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use technology_store::TechnologyStorePlugin;
 pub(crate) use town_naming::TownNamingPlugin;

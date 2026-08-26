@@ -1,6 +1,6 @@
 //! Retail `TOceanDialog::Draw` indexed-pixel compositor.
 
-use super::map_interaction::{MapInteractionMode, OceanViewport, StrategicInteraction};
+use super::map_interaction::{OceanViewport, StrategicSelection};
 use super::map_projection::{OCEAN_CELL_SIZE, OceanCell, OceanProjection, ProjectedTile};
 use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use bevy::prelude::{IRect, IVec2};
@@ -55,7 +55,7 @@ impl OceanRenderAssets {
 pub(super) fn compose_ocean_raster(
     state: &GameState,
     ocean: &OceanViewport,
-    interaction: &StrategicInteraction,
+    selection: StrategicSelection,
     hovered: Option<TileId>,
     assets: &OceanRenderAssets,
 ) -> IndexedPicture {
@@ -65,7 +65,7 @@ pub(super) fn compose_ocean_raster(
     draw_improvements(&mut picture, state, &cells, assets);
     draw_unit_overlays(&mut picture, state, &projection, assets);
     draw_routes(&mut picture, state, &projection);
-    draw_selection(&mut picture, state, &projection, interaction, hovered);
+    draw_selection(&mut picture, state, &projection, selection, hovered);
     picture
 }
 
@@ -267,13 +267,13 @@ fn draw_selection(
     picture: &mut IndexedPicture,
     state: &GameState,
     projection: &OceanProjection,
-    interaction: &StrategicInteraction,
+    selection: StrategicSelection,
     hovered: Option<TileId>,
 ) {
-    if interaction.mode != MapInteractionMode::Civilian {
+    let StrategicSelection::Civilian(Some(unit)) = selection else {
         return;
-    }
-    let (Some(unit), Some(hovered)) = (interaction.civilian, hovered) else {
+    };
+    let Some(hovered) = hovered else {
         return;
     };
     let Some(civilian) = state.civilian_unit(unit) else {
