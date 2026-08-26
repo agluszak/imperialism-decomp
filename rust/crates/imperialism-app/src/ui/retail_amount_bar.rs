@@ -3,7 +3,7 @@
 //! Screen/domain code supplies the values. This module owns retail bar geometry,
 //! the `TAmtBar::DoMouseCommand` click calculation, and the specialized fills.
 
-use super::retail_raster::{IndexedRasterExt, indexed_picture};
+use super::retail_raster::IndexedRasterExt;
 use bevy::prelude::*;
 use imperialism_formats::IndexedPicture;
 
@@ -23,7 +23,6 @@ pub const INDUSTRY_BAR_FILL: u8 = 0x16;
 // `TTraderAmtBar` calls `ApplyLegendSplitSlot34(0x37)`, which resolves through
 // `TViewMgr::GetColor` to palette 0xbd rather than using 0x37 as a DIB index.
 pub const TRADE_BAR_FILL: u8 = 0xbd;
-const KEY_INDEX: u8 = 0x10;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct AmountBarGeometry {
@@ -103,19 +102,6 @@ pub fn quantize_amount_bar_value(value: i16, step: i16) -> i16 {
     }
 }
 
-pub fn draw_industry_amount_bar(
-    picture: &mut IndexedPicture,
-    pixels: AmountBarPixels,
-    geometry: AmountBarGeometry,
-) {
-    picture.fill_rect(
-        IRect::new(0, 1, i32::from(pixels.current).min(geometry.width), 5),
-        pixels.color,
-    );
-    let tick = i32::from(pixels.range).clamp(0, geometry.width);
-    picture.fill_rect(IRect::new(tick, 0, tick + 1, 5), 0);
-}
-
 #[allow(dead_code)] // recovered TAmtBar::Draw overlay; no unspecialized bar is bound yet
 pub fn draw_base_amount_bar(
     picture: &mut IndexedPicture,
@@ -131,20 +117,13 @@ pub fn draw_base_amount_bar(
     }
 }
 
-pub fn industry_amount_bar_picture(pixels: AmountBarPixels) -> IndexedPicture {
-    let mut picture = indexed_picture(
-        INDUSTRY_AMOUNT_BAR.width,
-        INDUSTRY_AMOUNT_BAR.height,
-        KEY_INDEX,
-    );
-    draw_industry_amount_bar(&mut picture, pixels, INDUSTRY_AMOUNT_BAR);
-    picture
-}
-
 #[cfg(test)]
 #[allow(clippy::identity_op)]
 mod tests {
+    use super::super::retail_raster::indexed_picture;
     use super::*;
+
+    const KEY_INDEX: u8 = 0x10;
 
     #[test]
     fn click_uses_a_leading_half_segment_dead_zone() {
@@ -187,20 +166,6 @@ mod tests {
         assert_eq!(quantize_amount_bar_value(3, 6), 6);
         assert_eq!(quantize_amount_bar_value(2, 6), 0);
         assert_eq!(quantize_amount_bar_value(5, 1), 5);
-    }
-
-    #[test]
-    fn industry_bar_fills_current_and_ticks_the_range() {
-        let picture = industry_amount_bar_picture(AmountBarPixels {
-            range: 100,
-            current: 40,
-            color: INDUSTRY_BAR_FILL,
-        });
-        assert_eq!(picture.pixels[1 * 150 + 0], INDUSTRY_BAR_FILL);
-        assert_eq!(picture.pixels[1 * 150 + 39], INDUSTRY_BAR_FILL);
-        assert_eq!(picture.pixels[1 * 150 + 40], KEY_INDEX);
-        assert_eq!(picture.pixels[100], 0);
-        assert_eq!(picture.pixels[0], KEY_INDEX);
     }
 
     #[test]

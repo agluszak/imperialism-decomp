@@ -1,12 +1,14 @@
 use super::*;
 use crate::ui::retail::RetailPictureSwap;
 
-#[derive(Component, Clone, Copy)]
-pub(in crate::ui::city) enum TrainingIndicator {
-    Paper { minimum: i16 },
-    Money { minimum: i32 },
-    UntrainedAvailable,
-    TrainedAvailable,
+#[derive(Component)]
+pub(in crate::ui::city) struct TrainingView {
+    paper_one: Entity,
+    paper_two: Entity,
+    money_one: Entity,
+    money_two: Entity,
+    untrained_available: Entity,
+    trained_available: Entity,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -112,6 +114,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
             fourcc!("move"),
             1,
             None,
+            true,
         );
     }
     let paper_one = tree.find(root, fourcc!("pap1"));
@@ -120,24 +123,14 @@ pub(in crate::ui::city) fn bind_training_dialog(
     let money_two = tree.find(root, fourcc!("mon2"));
     let untrained_available = tree.find(root, fourcc!("untV"));
     let trained_available = tree.find(root, fourcc!("traV"));
-    commands
-        .entity(paper_one)
-        .insert((Text::new("X"), TrainingIndicator::Paper { minimum: 1 }));
-    commands
-        .entity(paper_two)
-        .insert((Text::new("X"), TrainingIndicator::Paper { minimum: 2 }));
-    commands
-        .entity(money_one)
-        .insert((Text::new("X"), TrainingIndicator::Money { minimum: 100 }));
-    commands
-        .entity(money_two)
-        .insert((Text::new("X"), TrainingIndicator::Money { minimum: 1_000 }));
-    commands
-        .entity(untrained_available)
-        .insert((Text::new("X"), TrainingIndicator::UntrainedAvailable));
-    commands
-        .entity(trained_available)
-        .insert((Text::new("X"), TrainingIndicator::TrainedAvailable));
+    commands.entity(root).insert(TrainingView {
+        paper_one,
+        paper_two,
+        money_one,
+        money_two,
+        untrained_available,
+        trained_available,
+    });
 }
 
 pub(in crate::ui::city) fn configure_armory_dialog(
@@ -182,6 +175,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             fourcc!("numb"),
             1,
             Some(root),
+            true,
         );
         let button = tree.find(root, row.button_tag);
         let category = row.military_category();
@@ -263,14 +257,11 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     });
 }
 
-pub(in crate::ui::city) fn sync_training_dialog(
+pub(in crate::ui::city) fn render_training_dialog(
     session: Res<GameSession>,
-    added: Query<(), Added<TrainingIndicator>>,
-    mut indicators: Query<(&TrainingIndicator, &mut Visibility)>,
+    views: Query<Ref<TrainingView>>,
+    mut commands: Commands,
 ) {
-    if city_projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
@@ -279,18 +270,26 @@ pub(in crate::ui::city) fn sync_training_dialog(
     let budget = major
         .economy
         .available_diplomacy_budget(major.common.treasury);
-    for (indicator, mut visibility) in &mut indicators {
-        let visible = match *indicator {
-            TrainingIndicator::Paper { minimum } => city.stockpile[ResourceKind::Paper] >= minimum,
-            TrainingIndicator::Money { minimum } => budget >= minimum,
-            TrainingIndicator::UntrainedAvailable => production.low.min(strength) != 0,
-            TrainingIndicator::TrainedAvailable => production.medium.min(strength / 2) != 0,
+    for view in &views {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let mut set = |entity, visible| {
+            commands.entity(entity).insert(if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            });
         };
-        *visibility = if visible {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+        set(view.paper_one, city.stockpile[ResourceKind::Paper] >= 1);
+        set(view.paper_two, city.stockpile[ResourceKind::Paper] >= 2);
+        set(view.money_one, budget >= 100);
+        set(view.money_two, budget >= 1_000);
+        set(view.untrained_available, production.low.min(strength) != 0);
+        set(
+            view.trained_available,
+            production.medium.min(strength / 2) != 0,
+        );
     }
 }
 

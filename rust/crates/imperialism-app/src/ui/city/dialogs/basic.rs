@@ -1,34 +1,34 @@
 use super::*;
 
 #[derive(Component)]
-pub(in crate::ui::city) enum WarehouseDisplay {
-    Stock(ResourceKind),
-    Labor,
-    Power,
-}
-
-#[derive(Component, Clone, Copy)]
-pub(in crate::ui::city) enum FoodIndicator {
-    Labor,
-    Grain,
-    Fruit,
-    FishAndLivestock,
-}
-
-#[derive(Component, Clone, Copy)]
-pub(in crate::ui::city) enum TransportCapacityIndicator {
-    Labor,
-    Lumber,
-    Steel,
+pub(in crate::ui::city) struct WarehouseView {
+    stocks: Vec<(Entity, ResourceKind)>,
+    labor: Entity,
+    power: Entity,
 }
 
 #[derive(Component)]
-pub(in crate::ui::city) struct PopulationGood(ResourceKind);
+pub(in crate::ui::city) struct FoodView {
+    labor: Entity,
+    grain: Entity,
+    fruit: Entity,
+    fish_and_livestock: Entity,
+}
 
 #[derive(Component)]
-pub(in crate::ui::city) enum PopulationText {
-    Capacity(String),
-    Provinces(String),
+pub(in crate::ui::city) struct TransportCapacityView {
+    labor: Entity,
+    lumber: Entity,
+    steel: Entity,
+}
+
+#[derive(Component)]
+pub(in crate::ui::city) struct PopulationView {
+    food: Entity,
+    clothing: Entity,
+    furniture: Entity,
+    capacity: Entity,
+    provinces: Entity,
 }
 
 pub(in crate::ui::city) fn configure_warehouse_dialog(
@@ -40,20 +40,12 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
 ) {
     let advanced_production_unlocked = state.technology().advanced_production_unlocked();
 
-    for &(resource, tag) in &WAREHOUSE_STOCKS {
-        let control = tree.find(root, tag);
-        commands
-            .entity(control)
-            .insert((Text::new(""), WarehouseDisplay::Stock(resource)));
-    }
+    let stocks = WAREHOUSE_STOCKS
+        .iter()
+        .map(|&(resource, tag)| (tree.find(root, tag), resource))
+        .collect();
     let labor = tree.find(root, fourcc!("labo"));
     let power = tree.find(root, fourcc!("powe"));
-    commands
-        .entity(labor)
-        .insert((Text::new(""), WarehouseDisplay::Labor));
-    commands
-        .entity(power)
-        .insert((Text::new(""), WarehouseDisplay::Power));
     for tag in [fourcc!("oil "), fourcc!("fuel"), fourcc!("powe")] {
         let control = tree.find(root, tag);
         let mut control_commands = commands.entity(control);
@@ -110,6 +102,11 @@ pub(in crate::ui::city) fn configure_warehouse_dialog(
                 node.top = px(top + 176.0);
             });
     }
+    commands.entity(root).insert(WarehouseView {
+        stocks,
+        labor,
+        power,
+    });
 }
 
 pub(in crate::ui::city) fn bind_rail_dialog(
@@ -135,11 +132,17 @@ pub(in crate::ui::city) fn bind_rail_dialog(
         fourcc!("move"),
         step,
         None,
+        false,
     );
-    commands.entity(counter.quantity).insert(RailBarCounter {
+    let (bar, fill, tick) = bind_rail_amount_bar(commands, assets, counter.row, tree);
+    commands.entity(root).insert(RailView {
         order: binding.order,
+        step,
+        quantity: counter.quantity,
+        bar,
+        fill,
+        tick,
     });
-    bind_rail_amount_bar(commands, assets, counter.row, tree, binding.order, step);
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(
@@ -150,22 +153,12 @@ pub(in crate::ui::city) fn configure_food_dialog(
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::FoodProcessing);
     bind_rail_dialog(commands, assets, root, tree, building_name, FOOD_ORDER, 2);
-    let labor = tree.find(root, fourcc!("labV"));
-    let grain = tree.find(root, fourcc!("grai"));
-    let fruit = tree.find(root, fourcc!("prod"));
-    let fish_and_livestock = tree.find(root, fourcc!("fish"));
-    commands
-        .entity(labor)
-        .insert((Text::new("X"), FoodIndicator::Labor));
-    commands
-        .entity(grain)
-        .insert((Text::new("X"), FoodIndicator::Grain));
-    commands
-        .entity(fruit)
-        .insert((Text::new("X"), FoodIndicator::Fruit));
-    commands
-        .entity(fish_and_livestock)
-        .insert((Text::new("X"), FoodIndicator::FishAndLivestock));
+    commands.entity(root).insert(FoodView {
+        labor: tree.find(root, fourcc!("labV")),
+        grain: tree.find(root, fourcc!("grai")),
+        fruit: tree.find(root, fourcc!("prod")),
+        fish_and_livestock: tree.find(root, fourcc!("fish")),
+    });
 }
 
 pub(in crate::ui::city) fn configure_power_dialog(
@@ -198,18 +191,11 @@ pub(in crate::ui::city) fn configure_transport_capacity_dialog(
         TRANSPORT_CAPACITY_ORDER,
         1,
     );
-    let labor = tree.find(root, fourcc!("labV"));
-    let lumber = tree.find(root, fourcc!("lumb"));
-    let steel = tree.find(root, fourcc!("stee"));
-    commands
-        .entity(labor)
-        .insert((Text::new("X"), TransportCapacityIndicator::Labor));
-    commands
-        .entity(lumber)
-        .insert((Text::new("X"), TransportCapacityIndicator::Lumber));
-    commands
-        .entity(steel)
-        .insert((Text::new("X"), TransportCapacityIndicator::Steel));
+    commands.entity(root).insert(TransportCapacityView {
+        labor: tree.find(root, fourcc!("labV")),
+        lumber: tree.find(root, fourcc!("lumb")),
+        steel: tree.find(root, fourcc!("stee")),
+    });
 }
 
 pub(in crate::ui::city) fn configure_population_dialog(
@@ -219,8 +205,6 @@ pub(in crate::ui::city) fn configure_population_dialog(
     tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::RegionalPopulation);
-    let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
-    let province_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x1d);
     bind_rail_dialog(
         commands,
         assets,
@@ -230,145 +214,148 @@ pub(in crate::ui::city) fn configure_population_dialog(
         POPULATION_ORDER,
         1,
     );
-    let food = tree.find(root, fourcc!("food"));
-    let clothing = tree.find(root, fourcc!("clot"));
-    let furniture = tree.find(root, fourcc!("furn"));
-    let capacity = tree.find(root, fourcc!("capT"));
-    let provinces = tree.find(root, fourcc!("prov"));
-    commands
-        .entity(food)
-        .insert((Text::new("X"), PopulationGood(ResourceKind::Food)));
-    commands
-        .entity(clothing)
-        .insert((Text::new("X"), PopulationGood(ResourceKind::Clothing)));
-    commands
-        .entity(furniture)
-        .insert((Text::new("X"), PopulationGood(ResourceKind::Furniture)));
-    commands
-        .entity(capacity)
-        .insert((Text::new(""), PopulationText::Capacity(capacity_template)));
-    commands
-        .entity(provinces)
-        .insert((Text::new(""), PopulationText::Provinces(province_template)));
+    commands.entity(root).insert(PopulationView {
+        food: tree.find(root, fourcc!("food")),
+        clothing: tree.find(root, fourcc!("clot")),
+        furniture: tree.find(root, fourcc!("furn")),
+        capacity: tree.find(root, fourcc!("capT")),
+        provinces: tree.find(root, fourcc!("prov")),
+    });
 }
 
-pub(in crate::ui::city) fn sync_warehouse_dialog(
+pub(in crate::ui::city) fn render_warehouse_dialog(
     session: Res<GameSession>,
-    added: Query<(), Added<WarehouseDisplay>>,
-    mut displays: Query<(&WarehouseDisplay, &mut Text)>,
+    views: Query<Ref<WarehouseView>>,
+    mut texts: Query<&mut Text>,
 ) {
-    if city_projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let city = &session
         .game
         .nations()
         .major(session.active_major_nation())
         .city;
-    for (display, mut text) in &mut displays {
-        text.0 = match *display {
-            WarehouseDisplay::Stock(resource) => {
-                let value = if resource == ResourceKind::Livestock {
-                    city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock]
-                } else {
-                    city.stockpile[resource]
-                };
-                value.to_string()
-            }
-            WarehouseDisplay::Labor => city.population.strength().to_string(),
-            WarehouseDisplay::Power => city.power_available.to_string(),
-        };
+    for view in &views {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        for &(entity, resource) in &view.stocks {
+            let value = if resource == ResourceKind::Livestock {
+                city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock]
+            } else {
+                city.stockpile[resource]
+            };
+            texts
+                .get_mut(entity)
+                .expect("bound warehouse stock text must exist")
+                .0 = value.to_string();
+        }
+        texts
+            .get_mut(view.labor)
+            .expect("bound warehouse labor text must exist")
+            .0 = city.population.strength().to_string();
+        texts
+            .get_mut(view.power)
+            .expect("bound warehouse power text must exist")
+            .0 = city.power_available.to_string();
     }
 }
 
-pub(in crate::ui::city) fn sync_food_dialog(
+pub(in crate::ui::city) fn render_food_dialog(
     session: Res<GameSession>,
-    added: Query<(), Added<FoodIndicator>>,
-    mut indicators: Query<(&FoodIndicator, &mut Visibility)>,
+    views: Query<Ref<FoodView>>,
+    mut commands: Commands,
 ) {
-    if city_projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let city = &session
         .game
         .nations()
         .major(session.active_major_nation())
         .city;
-    for (indicator, mut visibility) in &mut indicators {
-        let visible = match indicator {
-            FoodIndicator::Labor => city.population.strength() >= 2,
-            FoodIndicator::Grain => city.stockpile[ResourceKind::Grain] >= 2,
-            FoodIndicator::Fruit => city.stockpile[ResourceKind::Fruit] >= 1,
-            FoodIndicator::FishAndLivestock => {
-                city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock] >= 1
-            }
+    for view in &views {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let mut set = |entity, visible| {
+            commands.entity(entity).insert(if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            });
         };
-        *visibility = if visible {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+        set(view.labor, city.population.strength() >= 2);
+        set(view.grain, city.stockpile[ResourceKind::Grain] >= 2);
+        set(view.fruit, city.stockpile[ResourceKind::Fruit] >= 1);
+        set(
+            view.fish_and_livestock,
+            city.stockpile[ResourceKind::Fish] + city.stockpile[ResourceKind::Livestock] >= 1,
+        );
     }
 }
 
-pub(in crate::ui::city) fn sync_transport_capacity_dialog(
+pub(in crate::ui::city) fn render_transport_capacity_dialog(
     session: Res<GameSession>,
-    added: Query<(), Added<TransportCapacityIndicator>>,
-    mut indicators: Query<(&TransportCapacityIndicator, &mut Visibility)>,
+    views: Query<Ref<TransportCapacityView>>,
+    mut commands: Commands,
 ) {
-    if city_projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let city = &session
         .game
         .nations()
         .major(session.active_major_nation())
         .city;
-    for (indicator, mut visibility) in &mut indicators {
-        let visible = match indicator {
-            TransportCapacityIndicator::Labor => city.population.strength() >= 2,
-            TransportCapacityIndicator::Lumber => city.stockpile[ResourceKind::Lumber] < 1,
-            TransportCapacityIndicator::Steel => city.stockpile[ResourceKind::Steel] < 1,
+    for view in &views {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let mut set = |entity, visible| {
+            commands.entity(entity).insert(if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            });
         };
-        *visibility = if visible {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+        set(view.labor, city.population.strength() >= 2);
+        set(view.lumber, city.stockpile[ResourceKind::Lumber] < 1);
+        set(view.steel, city.stockpile[ResourceKind::Steel] < 1);
     }
 }
 
-pub(in crate::ui::city) fn sync_population_dialog(
+pub(in crate::ui::city) fn render_population_dialog(
     session: Res<GameSession>,
-    added: Query<(), Added<PopulationGood>>,
-    mut goods: Query<(&PopulationGood, &mut Visibility)>,
-    mut texts: Query<(&PopulationText, &mut Text)>,
+    views: Query<Ref<PopulationView>>,
+    assets: RetailUiAssets,
+    mut commands: Commands,
+    mut texts: Query<&mut Text>,
 ) {
-    if city_projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let city = &major.city;
-    for (PopulationGood(resource), mut visibility) in &mut goods {
-        *visibility = if city.stockpile[*resource] >= 1 {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
+    let capacity_template = city_string(&assets, CITY_TEXT_STRING_GROUP, 0x10);
+    let province_template = city_string(&assets, CITY_TEXT_STRING_GROUP, 0x1d);
+    for view in &views {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        let mut set = |entity, visible| {
+            commands.entity(entity).insert(if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            });
         };
-    }
-    let owned_regions = major.common.owned_region_count();
-    let building = city.building_type(
-        CityFacilitySlot::RegionalPopulation,
-        &major.economy,
-        owned_regions,
-    );
-    for (text_kind, mut text) in &mut texts {
-        text.0 = match text_kind {
-            PopulationText::Capacity(template) => format_retail_number(template, building),
-            PopulationText::Provinces(template) => {
-                format_retail_number(template, owned_regions as i16)
-            }
-        };
+        set(view.food, city.stockpile[ResourceKind::Food] >= 1);
+        set(view.clothing, city.stockpile[ResourceKind::Clothing] >= 1);
+        set(view.furniture, city.stockpile[ResourceKind::Furniture] >= 1);
+        let owned_regions = major.common.owned_region_count();
+        let building = city.building_type(
+            CityFacilitySlot::RegionalPopulation,
+            &major.economy,
+            owned_regions,
+        );
+        texts
+            .get_mut(view.capacity)
+            .expect("bound population capacity text must exist")
+            .0 = format_retail_number(&capacity_template, building);
+        texts
+            .get_mut(view.provinces)
+            .expect("bound population provinces text must exist")
+            .0 = format_retail_number(&province_template, owned_regions as i16);
     }
 }

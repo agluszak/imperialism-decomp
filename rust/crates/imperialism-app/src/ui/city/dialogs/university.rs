@@ -132,6 +132,7 @@ pub(in crate::ui::city) fn bind_university_dialog(
             fourcc!("numb"),
             1,
             Some(root),
+            true,
         );
         let row_available = available[kind];
         bound.set_available(commands, row_available);

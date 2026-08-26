@@ -117,6 +117,7 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             fourcc!("numb"),
             1,
             Some(root),
+            true,
         );
         let available = details.is_some();
         bound.set_available(commands, available);

@@ -218,7 +218,7 @@ pub(in crate::ui::city) const SHIPYARD_ROWS: [ShipyardRow; 8] = [
         generated::SHIPYARD_ROW_CONTROLS[7],
     ),
 ];
-const INDUSTRY_PAGES: [IndustryPage; 7] = [
+pub(in crate::ui::city) const INDUSTRY_PAGES: [IndustryPage; 7] = [
     IndustryPage {
         slot: CityFacilitySlot::TextileMill,
         orders: &[item_binding(ManufacturedItem::Fabric, 0, 0)],

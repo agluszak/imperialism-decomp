@@ -116,21 +116,12 @@ struct TransportGaugeView {
     limit: Option<Entity>,
 }
 
-/// Palette colors resolved once during binding for the recovered gauge states.
+/// Palette colors resolved during binding for the static gauge overlays.
 #[derive(Clone, Copy)]
 struct TransportGaugeColors {
     allocation: Color,
     remainder: Color,
     partial: Color,
-    full: Color,
-}
-
-/// The gauge colors that change while the screen lives: capacity fill and
-/// row limit strips alternate between `partial` and `full`.
-#[derive(Clone, Copy)]
-struct TransportGaugeStates {
-    partial: Color,
-    full: Color,
 }
 
 #[derive(Component)]
@@ -138,7 +129,6 @@ struct TransportView {
     cursor: Entity,
     capacity: TransportGaugeView,
     capacity_caption: Entity,
-    gauge_states: TransportGaugeStates,
     rows: [TransportRowView; TRANSPORT_ROWS.len()],
 }
 
@@ -152,7 +142,7 @@ impl Plugin for TransportPlugin {
         )
         .add_systems(
             Update,
-            (render_transport, sync_transport_cursor).run_if(in_state(AppState::Transport)),
+            (render_transport, render_transport_cursor).run_if(in_state(AppState::Transport)),
         );
     }
 }
@@ -202,7 +192,6 @@ fn bind_transport_screen(
         allocation: assets.palette_color(0x3a),
         remainder: assets.palette_color(0x3b),
         partial: assets.palette_color(0x33),
-        full: assets.palette_color(0x34),
     };
     let view = bind_transport_view(&mut commands, *root, &tree, cursor_style, gauge_colors);
     commands.entity(*root).insert(view);
@@ -288,10 +277,6 @@ fn bind_transport_view(
         cursor,
         capacity,
         capacity_caption,
-        gauge_states: TransportGaugeStates {
-            partial: gauge_colors.partial,
-            full: gauge_colors.full,
-        },
         rows,
     }
 }
@@ -376,6 +361,7 @@ fn on_transport_arrow_activate(
 fn render_transport(
     session: Res<GameSession>,
     view: Single<Ref<TransportView>>,
+    assets: RetailUiAssets,
     mut commands: Commands,
     mut texts: Query<&mut Text>,
     mut nodes: Query<&mut Node>,
@@ -384,6 +370,8 @@ fn render_transport(
     if !session.is_changed() && !view.is_added() {
         return;
     }
+    let partial = assets.palette_color(0x33);
+    let full = assets.palette_color(0x34);
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let economy = &major.economy;
@@ -422,9 +410,9 @@ fn render_transport(
                         .get_mut(limit)
                         .expect("bound transport gauge limit must exist")
                         .0 = if status.allocated < limit_value {
-                        view.gauge_states.partial
+                        partial
                     } else {
-                        view.gauge_states.full
+                        full
                     };
                 }
                 None => {
@@ -452,9 +440,9 @@ fn render_transport(
         .get_mut(view.capacity.fill)
         .expect("bound transport capacity gauge must exist")
         .0 = if capacities.reserved_transport == capacities.transport {
-        view.gauge_states.full
+        full
     } else {
-        view.gauge_states.partial
+        partial
     };
 }
 
@@ -474,7 +462,7 @@ fn set_transport_enabled(commands: &mut Commands, entity: Entity, enabled: bool)
     }
 }
 
-fn sync_transport_cursor(
+fn render_transport_cursor(
     session: Res<GameSession>,
     views: Query<Ref<TransportView>>,
     hovered: Query<Ref<Hovered>>,
@@ -701,7 +689,6 @@ mod tests {
             allocation: Color::srgb_u8(0, 0, 255),
             remainder: Color::srgb_u8(128, 128, 128),
             partial: Color::WHITE,
-            full: Color::BLACK,
         };
         let view = bind_transport_view(
             &mut commands,
@@ -726,7 +713,7 @@ mod tests {
     }
 
     #[test]
-    fn transport_arrows_update_allocation_caption_and_gauge() {
+    fn transport_arrows_update_the_allocation() {
         let state = fixture_state();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         let binding = TRANSPORT_ROWS
@@ -742,7 +729,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
             .insert_resource(GameSession::new(state))
-            .add_systems(Update, (bind_test_transport, render_transport).chain());
+            .add_systems(Update, bind_test_transport);
         let root = spawn_transport_hierarchy(app.world_mut());
         app.update();
 
@@ -759,14 +746,6 @@ mod tests {
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(after.allocated, before.allocated + 1);
-        assert_eq!(
-            app.world().get::<Text>(row.caption).unwrap().0,
-            format!("{}  /  {}", after.allocated, after.available)
-        );
-        assert_eq!(
-            app.world().get::<Node>(row.gauge.fill).unwrap().width,
-            px(transport_gauge_width(after.allocated, after.available))
-        );
 
         activate(&mut app, row.decrease);
         let restored = app

@@ -224,6 +224,11 @@ instead of re-encoding a commodity/action index on each control. Price and stock
 Bevy text, and the amount bar is a native fill node; retail geometry and click semantics remain
 without carrying the original temporary bitmap implementation into the app.
 
+Transport validates the same pattern on a second live fixed screen and adds one nuance: its cursor
+text reacts to hover, which changes independently of game state, so the coarse session renderer and
+the cursor renderer keep separate cadences. Its amount gauges are native overlay nodes above the
+static recovered background rather than re-rasterized pictures.
+
 These examples freeze the ownership and data-flow pattern, not a reusable Rust API. Subsequent
 screens should define their own small semantic view and binder; do not extract a shared view trait,
 generic binder, or generated typed screen layer from their resemblance.
