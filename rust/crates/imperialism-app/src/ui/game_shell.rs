@@ -24,7 +24,7 @@ use crate::ui::strategic_map::{
 use crate::ui::window::no_modal;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use bevy::window::PrimaryWindow;
 use imperialism_core::TurnAlert;
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
@@ -164,7 +164,6 @@ fn bind_strategic_map(
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
     commands
         .entity(tree.find(*root, fourcc!("DONE")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_end_turn);
     let flag = tree.find(*root, fourcc!("Flag"));
@@ -284,7 +283,6 @@ fn bind_strategic_hover(
     );
     commands
         .entity(tree.find(root, fourcc!("ZmOt")))
-        .insert(ActivateOnPress)
         .observe(on_ocean_toggle);
 }
 
@@ -514,7 +512,6 @@ pub(crate) fn bind_native_game_screen_nav(
     ] {
         commands
             .entity(entity)
-            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
             .observe(
                 move |_: On<Activate>,
@@ -531,7 +528,6 @@ pub(crate) fn bind_native_game_screen_nav(
         let leave = tree.find(toolbar, fourcc!("end "));
         commands
             .entity(leave)
-            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
             .observe(
                 move |_: On<Activate>,
@@ -601,7 +597,6 @@ fn bind_turn_alert_notice(
     linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
     commands.entity(linger.cancel).insert(Visibility::Hidden);
@@ -620,10 +615,7 @@ fn bind_turn_summary_notice(
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, "Imperialism");
     linger.set_body(&mut commands, &mut assets, &notice.0);
-    commands
-        .entity(linger.okay)
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>();
+    commands.entity(linger.okay).remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
