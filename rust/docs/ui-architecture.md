@@ -187,7 +187,9 @@ UI changes must preserve these rules:
    identities already expressed by typed table keys. Nested row and control structures are normally
    plain Rust structs.
 7. Leaf components represent semantic actions, reusable autonomous widget behavior, or genuinely
-   first-class relationships, not display destinations.
+   first-class relationships, not display destinations. A leaf action component earns its existence
+   only when it is the authoritative semantic association; do not add one that re-encodes an
+   association the owning semantic view already holds.
 8. Renderers are coarse by default and split only for a concrete independent lifecycle, cadence, or
    expensive surface. There is no generic reactive or binding framework.
 9. Generated variants with the same semantics share handwritten binding through compact recovered-
@@ -204,9 +206,10 @@ their controls, and one renderer writes authoritative state directly to the view
 
 Trade is the reference for fixed recovered rows and native presentation. `TradeView` keys its plain
 row values by `TradeCommodity`, retains shared card pictures once, and stores only the control
-entities needed after binding. `TradeAction` remains on the interactive entities. Price and stock
-labels are ordinary Bevy text, and the amount bar is a native fill node; retail geometry and click
-semantics remain without carrying the original temporary bitmap implementation into the app.
+entities needed after binding. Input observers resolve the activated control against that view
+instead of re-encoding a commodity/action index on each control. Price and stock labels are ordinary
+Bevy text, and the amount bar is a native fill node; retail geometry and click semantics remain
+without carrying the original temporary bitmap implementation into the app.
 
 These examples freeze the ownership and data-flow pattern, not a reusable Rust API. Subsequent
 screens should define their own small semantic view and binder; do not extract a shared view trait,
