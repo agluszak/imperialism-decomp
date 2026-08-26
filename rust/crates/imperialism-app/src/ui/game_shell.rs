@@ -12,9 +12,9 @@ use crate::ui::hover_help::{
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree};
+use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTree};
 use crate::ui::strategic_map::{
-    MapAction, MapEdges, MapZoomControl, StrategicMapSession, StrategicSelection, StrategicView,
+    MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
     animate_civilian_work, animate_strategic_selection, bind_army_toolbar, bind_civilian_toolbar,
     bind_minimap, bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain,
     on_strategic_map_click, register_army_toolbar, register_civilian_toolbar, register_map_click,
@@ -30,22 +30,13 @@ use imperialism_core::TurnAlert;
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 use std::collections::VecDeque;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum GameStatusDisplay {
-    Date,
-    Treasury,
-}
-
 #[derive(Component)]
 struct StrategicMapRoot;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum GameScreenNavAction {
-    StrategicMap,
-    Trade,
-    Transport,
-    City,
-    Diplomacy,
+#[derive(Component)]
+pub(crate) struct GameStatusView {
+    date: Entity,
+    treasury: Entity,
 }
 
 pub(crate) struct GameShellPlugin;
@@ -71,7 +62,7 @@ impl Plugin for GameShellPlugin {
         )
         .add_systems(
             Update,
-            project_game_status_display.run_if(resource_exists::<GameSession>),
+            render_game_status.run_if(resource_exists::<GameSession>),
         )
         .add_systems(
             Update,
@@ -84,7 +75,6 @@ impl Plugin for GameShellPlugin {
                 animate_strategic_selection,
                 animate_civilian_work,
                 sync_minimap,
-                sync_zoom_control,
                 spawn_turn_alerts_if_pending,
                 bind_turn_alert_notice,
                 bind_turn_summary_notice,
@@ -294,7 +284,6 @@ fn bind_strategic_hover(
     );
     commands
         .entity(tree.find(root, fourcc!("ZmOt")))
-        .insert(MapZoomControl)
         .insert(ActivateOnPress)
         .observe(on_ocean_toggle);
 }
@@ -322,20 +311,6 @@ fn on_ocean_toggle(
         return;
     }
     map.apply(&mut session.game, MapAction::ToggleZoom);
-}
-
-fn sync_zoom_control(
-    map: Res<StrategicMapSession>,
-    mut controls: Query<&mut RetailTag, With<MapZoomControl>>,
-) {
-    let Ok(mut tag) = controls.single_mut() else {
-        return;
-    };
-    tag.0 = if map.view.is_overview() {
-        fourcc!("ZmIn")
-    } else {
-        fourcc!("ZmOt")
-    };
 }
 
 fn bind_strategic_map_management_pictures(
@@ -391,37 +366,39 @@ pub(crate) fn bind_game_status_display(
     // Bevy draws shadows behind text, so use the retail shadow as the visible face.
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0);
-    bind_status_text(
+    let date = bind_status_text(
         commands,
         root,
         tree,
         fourcc!("seas"),
-        GameStatusDisplay::Date,
         season_font,
         season_layout,
         season_line_height,
         text_color,
         shadow_color,
     );
-    bind_status_text(
+    let treasury = bind_status_text(
         commands,
         root,
         tree,
         fourcc!("trea"),
-        GameStatusDisplay::Treasury,
         treasury_font,
         treasury_layout,
         treasury_line_height,
         text_color,
         shadow_color,
     );
+    commands
+        .entity(root)
+        .insert(GameStatusView { date, treasury });
 }
 
-fn project_game_status_display(
+fn render_game_status(
     session: Res<GameSession>,
-    added: Query<(), Added<GameStatusDisplay>>,
+    added: Query<(), Added<GameStatusView>>,
     retail: Res<RetailAssetsResource>,
-    mut displays: Query<(&GameStatusDisplay, &mut Text)>,
+    views: Query<&GameStatusView>,
+    mut texts: Query<&mut Text>,
 ) {
     if super::projection_idle(&session, !added.is_empty()) {
         return;
@@ -434,11 +411,16 @@ fn project_game_status_display(
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
     let treasury = format_currency(session.game.nations().major(nation).common.treasury);
-    for (kind, mut text) in &mut displays {
-        text.0 = match kind {
-            GameStatusDisplay::Date => date.clone(),
-            GameStatusDisplay::Treasury => treasury.clone(),
-        };
+    for view in &views {
+        texts
+            .get_mut(view.date)
+            .expect("bound status date text")
+            .0
+            .clone_from(&date);
+        texts
+            .get_mut(view.treasury)
+            .expect("bound status treasury text")
+            .0 = treasury.clone();
     }
 }
 
@@ -448,15 +430,14 @@ fn bind_status_text(
     root: Entity,
     tree: &RetailTree,
     tag: FourCc,
-    kind: GameStatusDisplay,
     font: TextFont,
     layout: TextLayout,
     line_height: bevy::text::LineHeight,
     text_color: Color,
     shadow_color: Color,
-) {
-    commands.entity(tree.find(root, tag)).insert((
-        kind,
+) -> Entity {
+    let entity = tree.find(root, tag);
+    commands.entity(entity).insert((
         Text::default(),
         font,
         layout,
@@ -467,12 +448,14 @@ fn bind_status_text(
             color: shadow_color,
         },
     ));
+    entity
 }
 
 fn sync_status_date_hover(
     map: Res<StrategicMapSession>,
     assets: RetailUiAssets,
-    mut texts: Query<(&GameStatusDisplay, &mut HoverHelpText)>,
+    mut views: Query<&GameStatusView>,
+    mut texts: Query<&mut HoverHelpText>,
 ) {
     if !map.is_changed() {
         return;
@@ -486,10 +469,12 @@ fn sync_status_date_hover(
             get_string(&assets, 0x2730, 8)
         )
     };
-    for (kind, mut text) in &mut texts {
-        if *kind == GameStatusDisplay::Date {
-            text.0.clone_from(&help);
-        }
+    for view in &mut views {
+        texts
+            .get_mut(view.date)
+            .expect("bound status date text")
+            .0
+            .clone_from(&help);
     }
 }
 
@@ -509,47 +494,42 @@ pub(crate) fn bind_native_game_screen_nav(
     let transport = tree.find(toolbar, fourcc!("tran"));
     let city = tree.find(toolbar, fourcc!("city"));
     let diplomacy = tree.find(toolbar, fourcc!("dipl"));
-    for (entity, action) in [
-        (trade, GameScreenNavAction::Trade),
-        (transport, GameScreenNavAction::Transport),
-        (city, GameScreenNavAction::City),
-        (diplomacy, GameScreenNavAction::Diplomacy),
+    for (entity, destination) in [
+        (trade, AppState::Trade),
+        (transport, AppState::Transport),
+        (city, AppState::City),
+        (diplomacy, AppState::Diplomacy),
     ] {
         commands
             .entity(entity)
-            .insert((action, ActivateOnPress))
+            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
-            .observe(on_game_screen_activate);
+            .observe(
+                move |_: On<Activate>,
+                      state: Res<State<AppState>>,
+                      mut next_state: ResMut<NextState<AppState>>| {
+                    if destination != *state.get() {
+                        next_state.set(destination);
+                    }
+                },
+            );
     }
     if let Some(leave_toolbar_tag) = leave_toolbar_tag {
         let toolbar = tree.find(root, leave_toolbar_tag);
         let leave = tree.find(toolbar, fourcc!("end "));
         commands
             .entity(leave)
-            .insert((GameScreenNavAction::StrategicMap, ActivateOnPress))
+            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
-            .observe(on_game_screen_activate);
-    }
-}
-
-fn on_game_screen_activate(
-    activate: On<Activate>,
-    actions: Query<&GameScreenNavAction>,
-    state: Res<State<AppState>>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    let action = actions
-        .get(activate.entity)
-        .expect("game-screen Activate is bound on a GameScreenNavAction control");
-    let destination = match *action {
-        GameScreenNavAction::StrategicMap => AppState::StrategicMap,
-        GameScreenNavAction::Trade => AppState::Trade,
-        GameScreenNavAction::Transport => AppState::Transport,
-        GameScreenNavAction::City => AppState::City,
-        GameScreenNavAction::Diplomacy => AppState::Diplomacy,
-    };
-    if destination != *state.get() {
-        next_state.set(destination);
+            .observe(
+                move |_: On<Activate>,
+                      state: Res<State<AppState>>,
+                      mut next_state: ResMut<NextState<AppState>>| {
+                    if AppState::StrategicMap != *state.get() {
+                        next_state.set(AppState::StrategicMap);
+                    }
+                },
+            );
     }
 }
 

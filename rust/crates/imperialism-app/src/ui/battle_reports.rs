@@ -5,11 +5,10 @@ use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::satellite_preview::nation_owner_palette;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
-use super::window::{DismissWindow, ModalDefault, ModalWindow};
+use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{
@@ -24,41 +23,35 @@ const MARKER_ATLAS: i16 = 803;
 const MARKER_CELL: f32 = 18.0;
 
 #[derive(Component)]
-struct BattleReportRoot {
-    selected: usize,
-}
+struct BattleReportScreen;
 
+/// The fixed diplomacy-map destination behind the reports. The map base and
+/// marker set recompose only when the report collection changes; the map
+/// surface is independent of which report is selected.
 #[derive(Component)]
 struct BattleReportMap {
     marker_atlas: Handle<Image>,
 }
 
+/// One dynamic map marker. A report's location is world-ish state, so the
+/// marker is an entity that owns its position, sprite, and blink.
 #[derive(Component)]
 struct BattleReportMarker {
     report: usize,
     sprite: i32,
 }
 
-#[derive(Component, Clone, Copy)]
-enum BattleReportFlag {
-    Friendly,
-    Enemy,
-}
-
-#[derive(Component, Clone, Copy)]
-enum BattleReportStep {
-    Prev,
-    Next,
-}
-
 #[derive(Component)]
-enum BattleReportField {
-    Result,
-    Location,
-    FriendlyAdmiral,
-    EnemyAdmiral,
-    FriendlyShips,
-    EnemyShips,
+struct BattleReportView {
+    selected: usize,
+    result: Entity,
+    location: Entity,
+    friendly_admiral: Entity,
+    enemy_admiral: Entity,
+    friendly_ships: Entity,
+    enemy_ships: Entity,
+    friendly_flag: Entity,
+    enemy_flag: Entity,
 }
 
 #[derive(Component)]
@@ -75,10 +68,10 @@ impl Plugin for BattleReportPlugin {
         .add_systems(
             Update,
             (
-                project_battle_report,
+                render_battle_report,
+                render_battle_report_map,
                 blink_selected_battle_report_marker,
                 bind_detail,
-                project_detail,
             )
                 .run_if(in_state(AppState::BattleReport).and_then(resource_exists::<GameSession>)),
         );
@@ -87,19 +80,19 @@ impl Plugin for BattleReportPlugin {
 
 fn spawn_battle_report(mut commands: Commands) {
     let root = commands.spawn_scene(generated::diplo_1351()).id();
-    commands.entity(root).insert((
-        BattleReportRoot { selected: 0 },
-        DespawnOnExit(AppState::BattleReport),
-    ));
+    commands
+        .entity(root)
+        .insert((BattleReportScreen, DespawnOnExit(AppState::BattleReport)));
 }
 
 fn bind_battle_report(
     mut commands: Commands,
-    root: Single<Entity, Added<BattleReportRoot>>,
+    root: Single<Entity, Added<BattleReportScreen>>,
     tree: RetailTree,
     mut assets: super::RetailUiAssets,
 ) {
-    let main = tree.find(*root, fourcc!("main"));
+    let root = *root;
+    let main = tree.find(root, fourcc!("main"));
     let marker_atlas = assets
         .transparent_picture(PictureId::new(MARKER_ATLAS), 0x24)
         .expect("retail battle-report marker atlas must load");
@@ -115,7 +108,6 @@ fn bind_battle_report(
                 ..default()
             },
             ImageNode::default(),
-            RelativeCursorPosition::default(),
             BattleReportMap { marker_atlas },
             ChildOf(main),
         ))
@@ -137,66 +129,162 @@ fn bind_battle_report(
             })
             .expect("retail battle-report text style");
         commands
-            .entity(tree.find(*root, tag))
+            .entity(tree.find(root, tag))
             .insert((font, layout, line_height));
     }
+    let okay = tree.find(root, fourcc!("okay"));
     commands
-        .entity(tree.find(*root, fourcc!("okay")))
-        .insert((ActivateOnPress, ModalDefault, DismissWindow))
+        .entity(okay)
+        .insert(ActivateOnPress)
         .observe(on_battle_report_close);
+    dismiss_on_activate(&mut commands, okay, root);
+    bind_modal_keys(&mut commands, root, Some(okay), None);
     commands
-        .entity(tree.find(*root, fourcc!("info")))
+        .entity(tree.find(root, fourcc!("info")))
         .insert(ActivateOnPress)
         .observe(on_battle_report_detail);
-    commands
-        .entity(tree.find(*root, fourcc!("prev")))
-        .insert((BattleReportStep::Prev, ActivateOnPress))
-        .observe(on_battle_report_step);
-    commands
-        .entity(tree.find(*root, fourcc!("next")))
-        .insert((BattleReportStep::Next, ActivateOnPress))
-        .observe(on_battle_report_step);
-    for (tag, field) in [
-        (fourcc!("resu"), BattleReportField::Result),
-        (fourcc!("loca"), BattleReportField::Location),
-        (fourcc!("fadm"), BattleReportField::FriendlyAdmiral),
-        (fourcc!("eadm"), BattleReportField::EnemyAdmiral),
-        (fourcc!("fshp"), BattleReportField::FriendlyShips),
-        (fourcc!("eshp"), BattleReportField::EnemyShips),
-    ] {
-        commands.entity(tree.find(*root, tag)).insert(field);
+    for (tag, previous) in [(fourcc!("prev"), true), (fourcc!("next"), false)] {
+        commands
+            .entity(tree.find(root, tag))
+            .insert(ActivateOnPress)
+            .observe(
+                move |_: On<Activate>,
+                      mut views: Query<&mut BattleReportView>,
+                      session: Res<GameSession>| {
+                    let count = session.game.battle_reports().len();
+                    if count == 0 {
+                        return;
+                    }
+                    let Ok(mut view) = views.single_mut() else {
+                        return;
+                    };
+                    view.selected = if previous {
+                        (view.selected + count - 1) % count
+                    } else {
+                        (view.selected + 1) % count
+                    };
+                },
+            );
     }
-    commands
-        .entity(tree.find(*root, fourcc!("fflg")))
-        .insert(BattleReportFlag::Friendly);
-    commands
-        .entity(tree.find(*root, fourcc!("eflg")))
-        .insert(BattleReportFlag::Enemy);
+    commands.entity(root).insert(BattleReportView {
+        selected: 0,
+        result: tree.find(root, fourcc!("resu")),
+        location: tree.find(root, fourcc!("loca")),
+        friendly_admiral: tree.find(root, fourcc!("fadm")),
+        enemy_admiral: tree.find(root, fourcc!("eadm")),
+        friendly_ships: tree.find(root, fourcc!("fshp")),
+        enemy_ships: tree.find(root, fourcc!("eshp")),
+        friendly_flag: tree.find(root, fourcc!("fflg")),
+        enemy_flag: tree.find(root, fourcc!("eflg")),
+    });
 }
 
-fn project_battle_report(
-    mut commands: Commands,
+/// Projects the selected report's text and the two fixed flag destinations.
+/// Runs on selection, bind, and report-collection changes; the map surface is
+/// owned by `render_battle_report_map` and does not rebuild on Prev/Next.
+fn render_battle_report(
     session: Res<GameSession>,
     reports: Res<BattleReportPresentation>,
-    roots: Query<Ref<BattleReportRoot>>,
-    added: Query<(), Added<BattleReportField>>,
-    mut fields: Query<(&BattleReportField, &mut Text)>,
-    mut flags: Query<(&BattleReportFlag, &mut ImageNode), Without<BattleReportMap>>,
-    map: Single<(Entity, Option<&ImageNode>, &BattleReportMap)>,
-    markers: Query<Entity, With<BattleReportMarker>>,
+    views: Query<Ref<BattleReportView>>,
     mut assets: super::RetailUiAssets,
+    mut texts: Query<&mut Text>,
+    mut flags: Query<&mut ImageNode>,
 ) {
-    let Ok(root) = roots.single() else {
+    let Ok(view) = views.single() else {
         return;
     };
-    if super::projection_idle(&session, !added.is_empty())
-        && !root.is_changed()
+    if super::projection_idle(&session, !view.is_added())
+        && !view.is_changed()
         && !reports.is_changed()
     {
         return;
     }
     let reports_game = session.game.battle_reports();
-    let (map_entity, map_image, map_data) = map.into_inner();
+    let Some(report) = reports_game.get(view.selected) else {
+        for entity in [
+            view.result,
+            view.location,
+            view.friendly_admiral,
+            view.enemy_admiral,
+            view.friendly_ships,
+            view.enemy_ships,
+        ] {
+            texts
+                .get_mut(entity)
+                .expect("bound battle-report text")
+                .0
+                .clear();
+        }
+        return;
+    };
+    let report_text = battle_report_text(&session, &reports.0, view.selected);
+    let location = match report.location {
+        BattleReportLocation::Province(id) => session.game.map().provinces[id].name.clone(),
+        BattleReportLocation::Zone(id) => format!("zone {}", id.get()),
+    };
+    texts
+        .get_mut(view.result)
+        .expect("bound battle-report text")
+        .0 = report_text[BattleReportSideSlot::Left].overlay.clone();
+    texts
+        .get_mut(view.location)
+        .expect("bound battle-report text")
+        .0 = location;
+    texts
+        .get_mut(view.friendly_admiral)
+        .expect("bound battle-report text")
+        .0 = report_text[BattleReportSideSlot::Left].name.clone();
+    texts
+        .get_mut(view.enemy_admiral)
+        .expect("bound battle-report text")
+        .0 = report_text[BattleReportSideSlot::Right].name.clone();
+    texts
+        .get_mut(view.friendly_ships)
+        .expect("bound battle-report text")
+        .0 = report.sides[BattleReportSideSlot::Left]
+        .children
+        .iter()
+        .map(|row| row.name.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+    texts
+        .get_mut(view.enemy_ships)
+        .expect("bound battle-report text")
+        .0 = report.sides[BattleReportSideSlot::Right]
+        .children
+        .iter()
+        .map(|row| row.name.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+    let participant = report.participant.unwrap_or(BattleReportSideSlot::Left);
+    let other = other_side(participant);
+    for (flag, side) in [(view.friendly_flag, participant), (view.enemy_flag, other)] {
+        flags.get_mut(flag).expect("bound battle-report flag").image = assets
+            .picture(PictureId::new(
+                0x1130 + i16::from(report.sides[side].nation.get()),
+            ))
+            .expect("retail battle-report flag picture must load");
+    }
+}
+
+/// Recomposes the diplomacy map and rebuilds the marker set when the game or
+/// report collection changes. Selection only blinks an existing marker, so
+/// Prev/Next does not touch the expensive map surface.
+fn render_battle_report_map(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    reports: Res<BattleReportPresentation>,
+    map: Query<(Entity, Option<&ImageNode>, Ref<BattleReportMap>)>,
+    markers: Query<Entity, With<BattleReportMarker>>,
+    mut assets: super::RetailUiAssets,
+) {
+    let Ok((map_entity, map_image, map_data)) = map.single() else {
+        return;
+    };
+    if !session.is_changed() && !reports.is_changed() && !map_data.is_added() {
+        return;
+    }
+    let reports_game = session.game.battle_reports();
     let state = &session.game;
     let owner_at = |tile: TileId| {
         state.map()[tile]
@@ -244,70 +332,52 @@ fn project_battle_report(
             ZIndex(1),
         ));
     }
-    let Some(report) = reports_game.get(root.selected) else {
-        for (_, mut text) in &mut fields {
-            text.0.clear();
-        }
-        return;
-    };
-    let report_text = battle_report_text(&session, &reports.0, root.selected);
-    let participant = report.participant.unwrap_or(BattleReportSideSlot::Left);
-    let other = other_side(participant);
-    let location = match report.location {
-        BattleReportLocation::Province(id) => session.game.map().provinces[id].name.clone(),
-        BattleReportLocation::Zone(id) => format!("zone {}", id.get()),
-    };
-    for (field, mut text) in &mut fields {
-        text.0 = match field {
-            BattleReportField::Result => report_text[BattleReportSideSlot::Left].overlay.clone(),
-            BattleReportField::Location => location.clone(),
-            BattleReportField::FriendlyAdmiral => {
-                report_text[BattleReportSideSlot::Left].name.clone()
-            }
-            BattleReportField::EnemyAdmiral => {
-                report_text[BattleReportSideSlot::Right].name.clone()
-            }
-            BattleReportField::FriendlyShips => report.sides[BattleReportSideSlot::Left]
-                .children
-                .iter()
-                .map(|row| row.name.as_str())
-                .collect::<Vec<_>>()
-                .join("\n"),
-            BattleReportField::EnemyShips => report.sides[BattleReportSideSlot::Right]
-                .children
-                .iter()
-                .map(|row| row.name.as_str())
-                .collect::<Vec<_>>()
-                .join("\n"),
-        };
-    }
-    for (flag, mut image) in &mut flags {
-        let side = match flag {
-            BattleReportFlag::Friendly => participant,
-            BattleReportFlag::Enemy => other,
-        };
-        image.image = assets
-            .picture(PictureId::new(
-                0x1130 + i16::from(report.sides[side].nation.get()),
-            ))
-            .expect("retail battle-report flag picture must load");
-    }
 }
 
 fn blink_selected_battle_report_marker(
     time: Res<Time>,
-    roots: Query<&BattleReportRoot>,
+    views: Query<&BattleReportView>,
     mut markers: Query<(&BattleReportMarker, &mut ImageNode)>,
 ) {
-    let Ok(root) = roots.single() else {
+    let Ok(view) = views.single() else {
         return;
     };
     // TBattleReportView flips the selected sprite column every 15 idle ticks.
     let phase = i32::from((time.elapsed().as_millis() / 250) & 1 == 0);
     for (marker, mut image) in &mut markers {
         image.rect = Some(marker_rect(
-            marker.sprite + i32::from(marker.report == root.selected) * phase,
+            marker.sprite + i32::from(marker.report == view.selected) * phase,
         ));
+    }
+}
+
+fn on_battle_report_map_click(
+    click: On<Pointer<Click>>,
+    markers: Query<(&BattleReportMarker, &Node)>,
+    mut views: Query<&mut BattleReportView>,
+) {
+    if click.event.button != PointerButton::Primary {
+        return;
+    }
+    let Some(point) = click.hit.position else {
+        return;
+    };
+    let point = point.truncate();
+    let Some(report) = markers.iter().find_map(|(marker, node)| {
+        let (Val::Px(left), Val::Px(top)) = (node.left, node.top) else {
+            return None;
+        };
+        Rect::from_corners(
+            Vec2::new(left, top),
+            Vec2::new(left + MARKER_CELL, top + MARKER_CELL),
+        )
+        .contains(point)
+        .then_some(marker.report)
+    }) else {
+        return;
+    };
+    if let Ok(mut view) = views.single_mut() {
+        view.selected = report;
     }
 }
 
@@ -350,40 +420,6 @@ fn marker_rect(sprite: i32) -> Rect {
     )
 }
 
-fn on_battle_report_map_click(
-    click: On<Pointer<Click>>,
-    maps: Query<&RelativeCursorPosition, With<BattleReportMap>>,
-    markers: Query<(&BattleReportMarker, &Node)>,
-    mut roots: Query<&mut BattleReportRoot>,
-) {
-    if click.event.button != PointerButton::Primary {
-        return;
-    }
-    let Ok(cursor) = maps.get(click.entity) else {
-        return;
-    };
-    let Some(point) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
-        return;
-    };
-    let point = Vec2::new((point.x + 0.5) * MAP_WIDTH, (point.y + 0.5) * MAP_HEIGHT);
-    let Some(report) = markers.iter().find_map(|(marker, node)| {
-        let (Val::Px(left), Val::Px(top)) = (node.left, node.top) else {
-            return None;
-        };
-        Rect::from_corners(
-            Vec2::new(left, top),
-            Vec2::new(left + MARKER_CELL, top + MARKER_CELL),
-        )
-        .contains(point)
-        .then_some(marker.report)
-    }) else {
-        return;
-    };
-    if let Ok(mut root) = roots.single_mut() {
-        root.selected = report;
-    }
-}
-
 fn on_battle_report_close(
     _activate: On<Activate>,
     mut session: ResMut<GameSession>,
@@ -405,28 +441,6 @@ fn on_battle_report_detail(
     }
 }
 
-fn on_battle_report_step(
-    activate: On<Activate>,
-    step: Query<&BattleReportStep>,
-    session: Res<GameSession>,
-    mut roots: Query<&mut BattleReportRoot>,
-) {
-    let Ok(step) = step.get(activate.entity) else {
-        return;
-    };
-    let count = session.game.battle_reports().len();
-    if count == 0 {
-        return;
-    }
-    let Ok(mut root) = roots.single_mut() else {
-        return;
-    };
-    root.selected = match *step {
-        BattleReportStep::Prev => (root.selected + count - 1) % count,
-        BattleReportStep::Next => (root.selected + 1) % count,
-    };
-}
-
 fn spawn_detail(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::diplo_1352()).id();
     commands.entity(root).insert((
@@ -436,41 +450,36 @@ fn spawn_detail(commands: &mut Commands) {
     ));
 }
 
-fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
-    commands.entity(tree.find(*root, fourcc!("okay"))).insert((
-        ActivateOnPress,
-        ModalDefault,
-        DismissWindow,
-    ));
-}
-
-fn project_detail(
+fn bind_detail(
+    mut commands: Commands,
+    root: Single<Entity, Added<DetailRoot>>,
+    tree: RetailTree,
     session: Res<GameSession>,
     reports: Res<BattleReportPresentation>,
-    selected: Single<&BattleReportRoot>,
-    added: Query<(), Added<DetailRoot>>,
-    tree: RetailTree,
-    root: Query<Entity, With<DetailRoot>>,
-    mut texts: Query<&mut Text>,
+    views: Query<&BattleReportView>,
 ) {
-    if added.is_empty() {
-        return;
-    }
-    let Ok(root) = root.single() else {
+    let root = *root;
+    let okay = tree.find(root, fourcc!("okay"));
+    commands.entity(okay).insert(ActivateOnPress);
+    dismiss_on_activate(&mut commands, okay, root);
+    bind_modal_keys(&mut commands, root, Some(okay), None);
+    let Ok(view) = views.single() else {
         return;
     };
-    let Some(_) = session.game.battle_reports().get(selected.selected) else {
+    let Some(_) = session.game.battle_reports().get(view.selected) else {
         return;
     };
-    let report_text = battle_report_text(&session, &reports.0, selected.selected);
-    let left = tree.find(root, fourcc!("natL"));
-    let right = tree.find(root, fourcc!("natR"));
-    if let Ok(mut text) = texts.get_mut(left) {
-        text.0 = report_text[BattleReportSideSlot::Left].name.clone();
-    }
-    if let Ok(mut text) = texts.get_mut(right) {
-        text.0 = report_text[BattleReportSideSlot::Right].name.clone();
-    }
+    let report_text = battle_report_text(&session, &reports.0, view.selected);
+    commands
+        .entity(tree.find(root, fourcc!("natL")))
+        .insert(Text::new(
+            report_text[BattleReportSideSlot::Left].name.clone(),
+        ));
+    commands
+        .entity(tree.find(root, fourcc!("natR")))
+        .insert(Text::new(
+            report_text[BattleReportSideSlot::Right].name.clone(),
+        ));
 }
 
 pub(crate) fn battle_report_texts_for_save(

@@ -29,7 +29,7 @@ use borders::compose_strategic_borders;
 pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
 pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
 pub(crate) use map_interaction::{
-    MapAction, MapEdges, MapZoomControl, StrategicMapSession, StrategicSelection, StrategicView,
+    MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
 };
 pub(crate) use map_keys::register as register_map_keys;
 pub(crate) use map_modals::register as register_map_modals;
