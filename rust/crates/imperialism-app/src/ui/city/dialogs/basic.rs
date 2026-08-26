@@ -9,6 +9,7 @@ pub(in crate::ui::city) struct WarehouseView {
 
 #[derive(Component)]
 pub(in crate::ui::city) struct FoodView {
+    rail: RailControls,
     labor: Entity,
     grain: Entity,
     fruit: Entity,
@@ -16,7 +17,13 @@ pub(in crate::ui::city) struct FoodView {
 }
 
 #[derive(Component)]
+pub(in crate::ui::city) struct PowerView {
+    rail: RailControls,
+}
+
+#[derive(Component)]
 pub(in crate::ui::city) struct TransportCapacityView {
+    rail: RailControls,
     labor: Entity,
     lumber: Entity,
     steel: Entity,
@@ -24,6 +31,7 @@ pub(in crate::ui::city) struct TransportCapacityView {
 
 #[derive(Component)]
 pub(in crate::ui::city) struct PopulationView {
+    rail: RailControls,
     food: Entity,
     clothing: Entity,
     furniture: Entity,
@@ -117,7 +125,7 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     building_name: String,
     binding: CityOrderBinding,
     step: i16,
-) {
+) -> RailControls {
     let name_control = tree.find(root, fourcc!("name"));
     commands
         .entity(name_control)
@@ -125,13 +133,12 @@ pub(in crate::ui::city) fn bind_rail_dialog(
     let counter = bind_industry_order_row(commands, root, tree, binding, step);
     let (bar, fill, tick) = bind_rail_amount_bar(commands, assets, counter.row, tree);
     bind_rail_bar_click(commands, bar, binding.order, step);
-    commands.entity(root).insert(CityAmountControl {
-        order: binding.order,
-        quantity: counter.quantity,
+    RailControls {
         bar,
+        quantity: counter.quantity,
         fill,
         tick,
-    });
+    }
 }
 
 pub(in crate::ui::city) fn configure_food_dialog(
@@ -141,8 +148,9 @@ pub(in crate::ui::city) fn configure_food_dialog(
     tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::FoodProcessing);
-    bind_rail_dialog(commands, assets, root, tree, building_name, FOOD_ORDER, 2);
+    let rail = bind_rail_dialog(commands, assets, root, tree, building_name, FOOD_ORDER, 2);
     commands.entity(root).insert(FoodView {
+        rail,
         labor: tree.find(root, fourcc!("labV")),
         grain: tree.find(root, fourcc!("grai")),
         fruit: tree.find(root, fourcc!("prod")),
@@ -157,11 +165,12 @@ pub(in crate::ui::city) fn configure_power_dialog(
     tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::PowerPlant);
-    bind_rail_dialog(commands, assets, root, tree, building_name, POWER_ORDER, 6);
+    let rail = bind_rail_dialog(commands, assets, root, tree, building_name, POWER_ORDER, 6);
     let fuel = tree.find(root, fourcc!("fuel"));
     commands
         .entity(fuel)
         .insert((Text::new("X"), Visibility::Hidden));
+    commands.entity(root).insert(PowerView { rail });
 }
 
 pub(in crate::ui::city) fn configure_transport_capacity_dialog(
@@ -171,7 +180,7 @@ pub(in crate::ui::city) fn configure_transport_capacity_dialog(
     tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::Transport);
-    bind_rail_dialog(
+    let rail = bind_rail_dialog(
         commands,
         assets,
         root,
@@ -181,6 +190,7 @@ pub(in crate::ui::city) fn configure_transport_capacity_dialog(
         1,
     );
     commands.entity(root).insert(TransportCapacityView {
+        rail,
         labor: tree.find(root, fourcc!("labV")),
         lumber: tree.find(root, fourcc!("lumb")),
         steel: tree.find(root, fourcc!("stee")),
@@ -194,7 +204,7 @@ pub(in crate::ui::city) fn configure_population_dialog(
     tree: &RetailTree,
 ) {
     let building_name = city_building_name(assets, CityFacilitySlot::RegionalPopulation);
-    bind_rail_dialog(
+    let rail = bind_rail_dialog(
         commands,
         assets,
         root,
@@ -204,6 +214,7 @@ pub(in crate::ui::city) fn configure_population_dialog(
         1,
     );
     commands.entity(root).insert(PopulationView {
+        rail,
         food: tree.find(root, fourcc!("food")),
         clothing: tree.find(root, fourcc!("clot")),
         furniture: tree.find(root, fourcc!("furn")),
@@ -252,16 +263,23 @@ pub(in crate::ui::city) fn render_food_dialog(
     session: Res<GameSession>,
     views: Query<Ref<FoodView>>,
     mut commands: Commands,
+    mut texts: Query<&mut Text>,
+    mut nodes: Query<&mut Node>,
 ) {
-    let city = &session
-        .game
-        .nations()
-        .major(session.active_major_nation())
-        .city;
+    let nation = session.active_major_nation();
+    let city = &session.game.nations().major(nation).city;
     for view in &views {
         if !session.is_changed() && !view.is_added() {
             continue;
         }
+        render_rail(
+            &session,
+            nation,
+            &view.rail,
+            FOOD_ORDER.order,
+            &mut texts,
+            &mut nodes,
+        );
         let mut set = |entity, visible| {
             commands.entity(entity).insert(if visible {
                 Visibility::Visible
@@ -279,20 +297,49 @@ pub(in crate::ui::city) fn render_food_dialog(
     }
 }
 
-pub(in crate::ui::city) fn render_transport_capacity_dialog(
+pub(in crate::ui::city) fn render_power_dialog(
     session: Res<GameSession>,
-    views: Query<Ref<TransportCapacityView>>,
-    mut commands: Commands,
+    views: Query<Ref<PowerView>>,
+    mut texts: Query<&mut Text>,
+    mut nodes: Query<&mut Node>,
 ) {
-    let city = &session
-        .game
-        .nations()
-        .major(session.active_major_nation())
-        .city;
+    let nation = session.active_major_nation();
     for view in &views {
         if !session.is_changed() && !view.is_added() {
             continue;
         }
+        render_rail(
+            &session,
+            nation,
+            &view.rail,
+            POWER_ORDER.order,
+            &mut texts,
+            &mut nodes,
+        );
+    }
+}
+
+pub(in crate::ui::city) fn render_transport_capacity_dialog(
+    session: Res<GameSession>,
+    views: Query<Ref<TransportCapacityView>>,
+    mut commands: Commands,
+    mut texts: Query<&mut Text>,
+    mut nodes: Query<&mut Node>,
+) {
+    let nation = session.active_major_nation();
+    let city = &session.game.nations().major(nation).city;
+    for view in &views {
+        if !session.is_changed() && !view.is_added() {
+            continue;
+        }
+        render_rail(
+            &session,
+            nation,
+            &view.rail,
+            TRANSPORT_CAPACITY_ORDER.order,
+            &mut texts,
+            &mut nodes,
+        );
         let mut set = |entity, visible| {
             commands.entity(entity).insert(if visible {
                 Visibility::Visible
@@ -312,6 +359,7 @@ pub(in crate::ui::city) fn render_population_dialog(
     assets: RetailUiAssets,
     mut commands: Commands,
     mut texts: Query<&mut Text>,
+    mut nodes: Query<&mut Node>,
 ) {
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
@@ -322,6 +370,14 @@ pub(in crate::ui::city) fn render_population_dialog(
         if !session.is_changed() && !view.is_added() {
             continue;
         }
+        render_rail(
+            &session,
+            nation,
+            &view.rail,
+            POPULATION_ORDER.order,
+            &mut texts,
+            &mut nodes,
+        );
         let mut set = |entity, visible| {
             commands.entity(entity).insert(if visible {
                 Visibility::Visible

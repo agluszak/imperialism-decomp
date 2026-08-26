@@ -149,6 +149,12 @@ Split a renderer only for a concrete independent lifecycle or update cadence, or
 expensive work such as regenerating a raster surface. Optimize that surface directly rather than
 introducing a generic dependency, projection, observer, lens, or binding framework.
 
+Use ECS entities for independently behaving or independently addressable UI elements. Do not
+decompose a custom-drawn visual region into entities merely to avoid drawing it as a composite.
+A recovered dialog's genuinely interactive controls are entities; a preview sprite, an icon grid,
+or a row of small stat numbers that nothing clicks, focuses, queries, or lays out independently is
+one visual surface and stays a single image rendered from authoritative state.
+
 ## Hierarchy and windows
 
 `ChildOf` remains the source of truth for hierarchy and descendant lifetime. Use event propagation

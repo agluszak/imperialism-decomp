@@ -7,13 +7,35 @@ use crate::ui::retail_amount_bar::{
 pub(in crate::ui::city) const INDUSTRY_BAR_X: f32 = 62.0;
 pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
 
-/// The reusable rail-style order counter and native amount bar shared by the
-/// Food, Power, Transport, and Population dialogs.
-#[derive(Component)]
-pub(in crate::ui::city) struct CityAmountControl {
-    pub(in crate::ui::city) order: CityOrderId,
-    pub(in crate::ui::city) quantity: Entity,
+/// Syncs one recruitment row's checked button and quantity marker. The checked
+/// guard writes only on change so the radio button does not re-emit
+/// `ValueChange` every render.
+pub(in crate::ui::city) fn sync_recruitment_row(
+    commands: &mut Commands,
+    checked: &Query<Has<Checked>>,
+    texts: &mut Query<&mut Text>,
+    button: Entity,
+    selected: bool,
+    quantity: Entity,
+    quantity_text: String,
+) {
+    let is_checked = checked.get(button).unwrap_or(false);
+    if selected && !is_checked {
+        commands.entity(button).insert(Checked);
+    } else if !selected && is_checked {
+        commands.entity(button).remove::<Checked>();
+    }
+    texts
+        .get_mut(quantity)
+        .expect("bound recruitment order quantity")
+        .0 = quantity_text;
+}
+
+/// The rail-style order counter and native amount bar owned by one rail dialog.
+#[derive(Clone, Copy)]
+pub(in crate::ui::city) struct RailControls {
     pub(in crate::ui::city) bar: Entity,
+    pub(in crate::ui::city) quantity: Entity,
     pub(in crate::ui::city) fill: Entity,
     pub(in crate::ui::city) tick: Entity,
 }
@@ -357,48 +379,44 @@ pub(in crate::ui::city) fn rail_bar_capacity(
     }
 }
 
-/// Writes every rail-style amount control's counter and native bar.
-pub(in crate::ui::city) fn render_city_amount_controls(
-    session: Res<GameSession>,
-    controls: Query<Ref<CityAmountControl>>,
-    mut nodes: Query<&mut Node>,
-    mut texts: Query<&mut Text>,
+/// Writes one rail dialog's counter and native amount bar from authoritative state.
+pub(in crate::ui::city) fn render_rail(
+    session: &GameSession,
+    nation: MajorNationId,
+    rail: &RailControls,
+    order: CityOrderId,
+    texts: &mut Query<&mut Text>,
+    nodes: &mut Query<&mut Node>,
 ) {
-    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
-    for control in &controls {
-        if !session.is_changed() && !control.is_added() {
-            continue;
-        }
-        let quantity = session.game.city_order_quantity(nation, control.order);
-        texts
-            .get_mut(control.quantity)
-            .expect("bound rail counter text must exist")
-            .0 = quantity.to_string();
-        let capacity = rail_bar_capacity(city, control.order, nation, &session.game);
-        let maximum = session.game.city_order_limit(nation, control.order).maximum;
-        let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
-        let span = geometry.span(quantity);
-        nodes
-            .get_mut(control.fill)
-            .expect("bound rail amount bar must exist")
-            .width = px(f32::from(span));
-        nodes
-            .get_mut(control.tick)
-            .expect("bound rail amount-bar range must exist")
-            .left = px(f32::from(geometry.span(maximum)));
-        let bar_node = nodes
-            .get(control.bar)
-            .expect("bound rail amount bar must exist");
-        let (Val::Px(bar_left), Val::Px(bar_top)) = (bar_node.left, bar_node.top) else {
-            continue;
-        };
-        let mut counter = nodes
-            .get_mut(control.quantity)
-            .expect("bound rail counter must exist");
-        counter.left = px(bar_left + f32::from(span) - 2.0);
-        counter.top = px(bar_top + 6.0);
-    }
+    let quantity = session.game.city_order_quantity(nation, order);
+    texts
+        .get_mut(rail.quantity)
+        .expect("bound rail counter text must exist")
+        .0 = quantity.to_string();
+    let capacity = rail_bar_capacity(city, order, nation, &session.game);
+    let maximum = session.game.city_order_limit(nation, order).maximum;
+    let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+    let span = geometry.span(quantity);
+    nodes
+        .get_mut(rail.fill)
+        .expect("bound rail amount bar must exist")
+        .width = px(f32::from(span));
+    nodes
+        .get_mut(rail.tick)
+        .expect("bound rail amount-bar range must exist")
+        .left = px(f32::from(geometry.span(maximum)));
+    let bar_node = nodes
+        .get(rail.bar)
+        .expect("bound rail amount bar must exist");
+    let (Val::Px(bar_left), Val::Px(bar_top)) = (bar_node.left, bar_node.top) else {
+        return;
+    };
+    let mut counter = nodes
+        .get_mut(rail.quantity)
+        .expect("bound rail counter must exist");
+    counter.left = px(bar_left + f32::from(span) - 2.0);
+    counter.top = px(bar_top + 6.0);
 }
 
 /// Attaches the recovered rail amount-bar click behavior, capturing the order

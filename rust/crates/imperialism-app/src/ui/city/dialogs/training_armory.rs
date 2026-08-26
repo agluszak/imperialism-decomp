@@ -315,20 +315,18 @@ pub(in crate::ui::city) fn render_armory_dialog(
         }
         let nation = session.active_major_nation();
         for ((row, button), quantity) in ARMORY_ROWS.iter().zip(&view.rows).zip(&view.quantities) {
-            let selected = row.military_category() == view.selected;
-            let checked = checked.get(*button).unwrap_or(false);
-            if selected && !checked {
-                commands.entity(*button).insert(Checked);
-            } else if !selected && checked {
-                commands.entity(*button).remove::<Checked>();
-            }
-            texts
-                .get_mut(*quantity)
-                .expect("bound Armory order quantity")
-                .0 = session
-                .game
-                .city_order_quantity(nation, row.binding.order)
-                .to_string();
+            sync_recruitment_row(
+                &mut commands,
+                &checked,
+                &mut texts,
+                *button,
+                row.military_category() == view.selected,
+                *quantity,
+                session
+                    .game
+                    .city_order_quantity(nation, row.binding.order)
+                    .to_string(),
+            );
         }
         let major = session.game.nations().major(nation);
         let city = &major.city;
