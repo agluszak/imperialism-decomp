@@ -193,19 +193,32 @@ UI changes must preserve these rules:
     API, `Binding<T>`, lenses, a generic ownership graph, or equivalent infrastructure. Such an
     architectural change must not arrive incidentally inside a screen refactor.
 
+## Reference implementations
+
+Technology Advance is the reference for a simple recovered screen: a spawn marker identifies the
+unbound scene, binding stores the few output entities in `TechnologyAdvanceView`, actions stay on
+their controls, and one renderer writes authoritative state directly to the view.
+
+Trade is the reference for fixed recovered rows and mixed presentation mechanisms. `TradeView`
+retains fixed arrays of plain semantic row and advisory values, while `TradeAction` remains on the
+interactive entities. Its ordinary renderer and custom raster renderer share the same authoritative
+state and bound view but remain separate because they update meaningfully different presentation
+surfaces.
+
+These examples freeze the ownership and data-flow pattern, not a reusable Rust API. Subsequent
+screens should define their own small semantic view and binder; do not extract a shared view trait,
+generic binder, or generated typed screen layer from their resemblance.
+
 ## Migration order
 
-Existing UI code does not yet uniformly satisfy this contract. Migrate it in bounded proofs:
+Technology Advance and Trade establish the reference pattern. Migrate the remaining UI in bounded
+proofs:
 
-1. Technology Advance: introduce its root semantic view, remove its display marker, and replace its
-   projector with one renderer.
-2. Trade: retain the recovered row-to-commodity table and semantic action components, bind one
-   aggregate view, and remove display-address components and synchronization systems.
-3. One City industry dialog: retain its existing row entity handles inside one aggregate view and
+1. One City industry dialog: retain its existing row entity handles inside one aggregate view and
    remove the redundant quantity, capacity, indicator, bar, and visual destination components.
-4. Windows: replace repeated invariant owner discovery with event propagation or direct owner
+2. Windows: replace repeated invariant owner discovery with event propagation or direct owner
    handles.
-5. Apply the demonstrated pattern mechanically to simpler screens only after these proofs remain
+3. Apply the demonstrated pattern mechanically to simpler screens only after these proofs remain
    small and direct.
 
 Each migration deletes the replaced representation and updates its producers, consumers, fixtures,
