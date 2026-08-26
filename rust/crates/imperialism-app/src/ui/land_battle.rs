@@ -6,6 +6,7 @@ use super::hover_help::{
 };
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
+use super::retail_palette::view_mgr_color;
 use super::session::{GameSession, apply_turn_stop};
 #[cfg(test)]
 use super::tactical_viewport::BATTLEFIELD_HEIGHT_PX;
@@ -21,7 +22,6 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use bevy::window::PrimaryWindow;
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc};
 
@@ -161,6 +161,9 @@ const TACTICAL_UNIT_FACING_OFFSETS: [[[(i32, i32); 2]; 7]; 12] = [
 
 #[derive(Component)]
 struct LandBattleRoot;
+
+#[derive(Component)]
+struct LandBattleEdgeScroll;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum LandBattleAction {
@@ -396,6 +399,9 @@ fn bind_land_battle(
 }
 
 fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    commands
+        .entity(tree.try_find(root, fourcc!("main")).unwrap_or(root))
+        .insert((RelativeCursorPosition::default(), LandBattleEdgeScroll));
     for (tag, action) in [
         (fourcc!("help"), LandBattleAction::Help),
         (fourcc!("targ"), LandBattleAction::Target),
@@ -565,11 +571,11 @@ fn insert_land_battle_visuals(
             .expect("retail tactical unit-status atlas must load"),
         selection_color: assets.palette_color(0x13),
         inset_color: assets.palette_color(0),
-        stat_background: assets.palette_color(0x33),
-        strength_color: assets.palette_color(6),
-        morale_color: assets.palette_color(0x34),
-        guide_primary: assets.palette_color(0x35),
-        guide_secondary: assets.palette_color(0x34),
+        stat_background: assets.palette_color(view_mgr_color(0x33)),
+        strength_color: assets.palette_color(view_mgr_color(6)),
+        morale_color: assets.palette_color(view_mgr_color(0x34)),
+        guide_primary: assets.palette_color(view_mgr_color(0x35)),
+        guide_secondary: assets.palette_color(view_mgr_color(0x34)),
     };
     commands.entity(field).insert(visuals);
 }
@@ -651,7 +657,7 @@ fn project_land_battle(
             With<LandBattleGuide>,
         )>,
     >,
-    glides: Query<&LandBattleGlide>,
+    glides: Query<Ref<LandBattleGlide>>,
 ) {
     let Some(pending) = session.game.pending_land_battle() else {
         return;
@@ -680,6 +686,7 @@ fn project_land_battle(
             view.centered_selection = selected;
         }
         if !session.is_changed()
+            && !glides.iter().any(|glide| glide.is_added())
             && view.projected_origin_x == view.view_origin_x
             && view.projected_hover == view.hovered_hex
         {
@@ -1889,7 +1896,7 @@ fn queue_land_battle_progress(
 fn scroll_land_battle(
     time: Res<Time>,
     mut last_scroll_tick: Local<Option<u128>>,
-    window: Single<&Window, With<PrimaryWindow>>,
+    dialogs: Query<&RelativeCursorPosition, With<LandBattleEdgeScroll>>,
     mut fields: Query<&mut LandBattlefield>,
     session: Res<GameSession>,
     animations: Query<
@@ -1907,14 +1914,10 @@ fn scroll_land_battle(
     let Ok(mut view) = fields.single_mut() else {
         return;
     };
-    let Some(cursor) = window.cursor_position() else {
+    let Ok(cursor) = dialogs.single() else {
         return;
     };
-    let direction = if cursor.x <= 4.0 {
-        -1
-    } else if cursor.x >= window.width() - 4.0 {
-        1
-    } else {
+    let Some(direction) = tactical_edge_scroll_direction(cursor) else {
         return;
     };
     let tick16 = time.elapsed().as_millis() / 16;
@@ -1925,14 +1928,37 @@ fn scroll_land_battle(
     let Some(battle) = session.game.army_battle() else {
         return;
     };
-    let max_origin =
-        ((battle.column_count() + 1) * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX).max(0);
-    if direction < 0 {
-        if view.view_origin_x > 0 {
-            view.view_origin_x -= TACTICAL_TILE_WIDTH_PX;
-        }
-    } else if view.view_origin_x < max_origin - TACTICAL_TILE_WIDTH_PX {
-        view.view_origin_x += TACTICAL_TILE_WIDTH_PX;
+    view.view_origin_x =
+        tactical_scroll_origin(view.view_origin_x, battle.column_count(), direction);
+}
+
+/// `TAmbitApplication::HandleCursor` checks the centered active 640x480 dialog,
+/// not the maximized host window. `TTacticalBattleView::Scroll` accepts only a
+/// pure left or right edge mask; corners include a vertical bit and therefore do
+/// not pan the horizontal tactical viewport.
+fn tactical_edge_scroll_direction(cursor: &RelativeCursorPosition) -> Option<i32> {
+    if !cursor.cursor_over() {
+        return None;
+    }
+    let point = cursor.normalized?;
+    let horizontal = if point.x <= -0.5 + 4.0 / 640.0 {
+        -1
+    } else if point.x >= 0.5 - 4.0 / 640.0 {
+        1
+    } else {
+        return None;
+    };
+    (point.y > -0.5 + 4.0 / 480.0 && point.y < 0.5 - 4.0 / 480.0).then_some(horizontal)
+}
+
+fn tactical_scroll_origin(origin: i32, column_count: i32, direction: i32) -> i32 {
+    let maximum = ((column_count + 1) * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX).max(0);
+    if direction < 0 && origin > 0 {
+        origin - TACTICAL_TILE_WIDTH_PX
+    } else if direction > 0 && origin < maximum - TACTICAL_TILE_WIDTH_PX {
+        origin + TACTICAL_TILE_WIDTH_PX
+    } else {
+        origin
     }
 }
 
@@ -2436,6 +2462,67 @@ mod tests {
         assert_eq!(
             center_land_origin(origin, 20, TacticalHex::from_row_column(4, 10).unwrap()),
             origin
+        );
+    }
+
+    #[test]
+    fn edge_scroll_uses_the_centered_retail_dialog_and_tactical_bounds() {
+        let mut cursor = RelativeCursorPosition {
+            cursor_over: true,
+            normalized: Some(Vec2::new(-0.5 + 3.0 / 640.0, 0.0)),
+        };
+        assert_eq!(tactical_edge_scroll_direction(&cursor), Some(-1));
+        cursor.normalized = Some(Vec2::new(0.5 - 3.0 / 640.0, 0.0));
+        assert_eq!(tactical_edge_scroll_direction(&cursor), Some(1));
+        cursor.normalized = Some(Vec2::new(-0.5, -0.5));
+        assert_eq!(tactical_edge_scroll_direction(&cursor), None);
+        assert_eq!(tactical_scroll_origin(50, 20, -1), 0);
+        assert_eq!(tactical_scroll_origin(0, 20, -1), 0);
+        assert_eq!(tactical_scroll_origin(0, 20, 1), 50);
+        assert_eq!(tactical_scroll_origin(400, 20, 1), 450);
+        assert_eq!(tactical_scroll_origin(450, 20, 1), 450);
+    }
+
+    #[test]
+    fn new_glide_reprojects_without_the_static_copy_of_its_unit() {
+        let mut app = test_app(two_land_battles_state());
+        app.update();
+        app.update();
+        let (unit, hex) = app
+            .world_mut()
+            .resource_scope(|_, mut session: Mut<GameSession>| {
+                let unit = session
+                    .game
+                    .selected_army_unit()
+                    .expect("core selected unit")
+                    .id;
+                let hex = session
+                    .game
+                    .selected_army_unit_reachable_hexes()
+                    .into_iter()
+                    .next()
+                    .expect("attacker has a deployment hex");
+                session
+                    .game
+                    .army_action_at(hex)
+                    .expect("deploy action succeeds");
+                (unit, hex)
+            });
+        app.update();
+        app.update();
+        app.world_mut().spawn(LandBattleGlide {
+            unit,
+            path: vec![hex, hex],
+            segment: 0,
+            frame: 0,
+            next_tick: 0,
+        });
+        app.update();
+        assert!(
+            app.world_mut()
+                .query::<&LandBattleUnit>()
+                .iter(app.world())
+                .all(|projected| projected.0 != unit)
         );
     }
 

@@ -20,7 +20,9 @@ pub const TRADE_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
 };
 
 pub const INDUSTRY_BAR_FILL: u8 = 0x16;
-pub const TRADE_BAR_FILL: u8 = 0x37;
+// `TTraderAmtBar` calls `ApplyLegendSplitSlot34(0x37)`, which resolves through
+// `TViewMgr::GetColor` to palette 0xbd rather than using 0x37 as a DIB index.
+pub const TRADE_BAR_FILL: u8 = 0xbd;
 const KEY_INDEX: u8 = 0x10;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -233,6 +235,11 @@ mod tests {
         assert_eq!(picture.pixels[0], TRADE_BAR_FILL);
         assert_eq!(picture.pixels[6 * 100 + 24], TRADE_BAR_FILL);
         assert_eq!(picture.pixels[25], KEY_INDEX);
+    }
+
+    #[test]
+    fn trader_bar_uses_the_view_manager_resolved_palette_index() {
+        assert_eq!(TRADE_BAR_FILL, 0xbd);
     }
 
     #[test]
