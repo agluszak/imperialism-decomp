@@ -415,24 +415,24 @@ pub const UNIVERSITY_ROW_CONTROLS: [(FourCc, FourCc); 7] = [
     (fourcc!("clu8"), fourcc!("civ8")),
 ];
 
-pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, f32); 8] = [
-    (fourcc!("clu0"), fourcc!("but0"), 4.0),
-    (fourcc!("clu1"), fourcc!("but1"), 4.0),
-    (fourcc!("clu2"), fourcc!("but2"), 3.0),
-    (fourcc!("clu3"), fourcc!("but3"), 2.0),
-    (fourcc!("clu4"), fourcc!("but4"), 4.0),
-    (fourcc!("clu5"), fourcc!("but5"), 4.0),
-    (fourcc!("clu6"), fourcc!("but6"), 3.0),
-    (fourcc!("clu7"), fourcc!("but7"), 2.0),
+pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); 8] = [
+    (fourcc!("clu0"), fourcc!("but0"), 4),
+    (fourcc!("clu1"), fourcc!("but1"), 4),
+    (fourcc!("clu2"), fourcc!("but2"), 3),
+    (fourcc!("clu3"), fourcc!("but3"), 2),
+    (fourcc!("clu4"), fourcc!("but4"), 4),
+    (fourcc!("clu5"), fourcc!("but5"), 4),
+    (fourcc!("clu6"), fourcc!("but6"), 3),
+    (fourcc!("clu7"), fourcc!("but7"), 2),
 ];
 
-pub const SHIPYARD_STAT_ORIGINS: [(f32, f32); 6] = [
-    (28.0, 86.0),
-    (28.0, 102.0),
-    (28.0, 118.0),
-    (120.0, 86.0),
-    (120.0, 102.0),
-    (120.0, 118.0),
+pub const SHIPYARD_STAT_ORIGINS: [(i32, i32); 6] = [
+    (28, 86),
+    (28, 102),
+    (28, 118),
+    (120, 86),
+    (120, 102),
+    (120, 118),
 ];
 
 pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [fourcc!("trai"), fourcc!("prof")];

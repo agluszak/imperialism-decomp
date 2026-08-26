@@ -25,7 +25,7 @@ pub(in crate::ui::city) const ARMORY_CONTROLS: MilitaryRecruitOrderTable<(FourCc
     MilitaryRecruitOrderTable::from_array(generated::ARMORY_ROW_CONTROLS);
 
 /// The eight shipyard rows keyed by order slot.
-pub(in crate::ui::city) const SHIPYARD_CONTROLS: ShipOrderTable<(FourCc, FourCc, f32)> =
+pub(in crate::ui::city) const SHIPYARD_CONTROLS: ShipOrderTable<(FourCc, FourCc, i32)> =
     ShipOrderTable::from_array(generated::SHIPYARD_ROW_CONTROLS);
 
 /// The seven university rows retail exposes, each carrying its civilian kind.
