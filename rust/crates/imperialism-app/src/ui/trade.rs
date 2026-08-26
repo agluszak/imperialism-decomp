@@ -5,95 +5,36 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::RetailTree;
 use super::retail_amount_bar::{
-    AmountBarPixels, TRADE_AMOUNT_BAR, TRADE_BAR_FILL, amount_bar_x_from_normalized,
-    trade_amount_bar_click_value, trade_amount_bar_picture,
+    TRADE_AMOUNT_BAR, TRADE_BAR_FILL, amount_bar_x_from_normalized, trade_amount_bar_click_value,
 };
-use super::retail_raster::IndexedRasterExt;
-use super::retail_raster_text::RetailRasterTextPainter;
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
-#[derive(Clone, Copy)]
-struct TradeRowBinding {
-    tag: FourCc,
-    commodity: TradeCommodity,
-}
-
-const TRADE_ROWS: [TradeRowBinding; 17] = [
-    TradeRowBinding {
-        tag: fourcc!("rs0 "),
-        commodity: TradeCommodity::Cotton,
-    },
-    TradeRowBinding {
-        tag: fourcc!("rs1 "),
-        commodity: TradeCommodity::Wool,
-    },
-    TradeRowBinding {
-        tag: fourcc!("rs2 "),
-        commodity: TradeCommodity::Timber,
-    },
-    TradeRowBinding {
-        tag: fourcc!("rs3 "),
-        commodity: TradeCommodity::Coal,
-    },
-    TradeRowBinding {
-        tag: fourcc!("rs4 "),
-        commodity: TradeCommodity::Iron,
-    },
-    TradeRowBinding {
-        tag: fourcc!("rs5 "),
-        commodity: TradeCommodity::Horses,
-    },
-    TradeRowBinding {
-        tag: fourcc!("rs6 "),
-        commodity: TradeCommodity::Oil,
-    },
-    TradeRowBinding {
-        tag: fourcc!("ma0 "),
-        commodity: TradeCommodity::Food,
-    },
-    TradeRowBinding {
-        tag: fourcc!("ma1 "),
-        commodity: TradeCommodity::Fabric,
-    },
-    TradeRowBinding {
-        tag: fourcc!("ma2 "),
-        commodity: TradeCommodity::Lumber,
-    },
-    TradeRowBinding {
-        tag: fourcc!("ma3 "),
-        commodity: TradeCommodity::Paper,
-    },
-    TradeRowBinding {
-        tag: fourcc!("ma4 "),
-        commodity: TradeCommodity::Steel,
-    },
-    TradeRowBinding {
-        tag: fourcc!("ma5 "),
-        commodity: TradeCommodity::Fuel,
-    },
-    TradeRowBinding {
-        tag: fourcc!("gd0 "),
-        commodity: TradeCommodity::Clothing,
-    },
-    TradeRowBinding {
-        tag: fourcc!("gd1 "),
-        commodity: TradeCommodity::Furniture,
-    },
-    TradeRowBinding {
-        tag: fourcc!("gd2 "),
-        commodity: TradeCommodity::Hardware,
-    },
-    TradeRowBinding {
-        tag: fourcc!("gd3 "),
-        commodity: TradeCommodity::Arms,
-    },
-];
+const TRADE_ROW_TAGS: TradeCommodityTable<FourCc> = TradeCommodityTable::from_array([
+    fourcc!("rs0 "),
+    fourcc!("rs1 "),
+    fourcc!("rs2 "),
+    fourcc!("rs3 "),
+    fourcc!("rs4 "),
+    fourcc!("rs5 "),
+    fourcc!("rs6 "),
+    fourcc!("ma0 "),
+    fourcc!("ma1 "),
+    fourcc!("ma2 "),
+    fourcc!("ma3 "),
+    fourcc!("ma4 "),
+    fourcc!("ma5 "),
+    fourcc!("gd0 "),
+    fourcc!("gd1 "),
+    fourcc!("gd2 "),
+    fourcc!("gd3 "),
+]);
 
 #[derive(Clone, Copy)]
 enum TradeAdvisoryKind {
@@ -134,25 +75,22 @@ struct TradePictures {
 }
 
 impl TradePictures {
-    fn for_button(&self, commodity: TradeCommodity, kind: TradeCardKind) -> TradeCardPictures {
+    fn for_button(
+        &self,
+        commodity: TradeCommodity,
+        kind: TradeCardKind,
+        active: bool,
+    ) -> &Handle<Image> {
         let clothing = commodity == TradeCommodity::Clothing;
-        match (kind, clothing) {
-            (TradeCardKind::Bid, false) => TradeCardPictures {
-                active: self.bid_active.clone(),
-                idle: self.bid_idle.clone(),
-            },
-            (TradeCardKind::Offer, false) => TradeCardPictures {
-                active: self.offer_active.clone(),
-                idle: self.offer_idle.clone(),
-            },
-            (TradeCardKind::Bid, true) => TradeCardPictures {
-                active: self.clothing_bid_active.clone(),
-                idle: self.clothing_bid_idle.clone(),
-            },
-            (TradeCardKind::Offer, true) => TradeCardPictures {
-                active: self.clothing_offer_active.clone(),
-                idle: self.clothing_offer_idle.clone(),
-            },
+        match (kind, clothing, active) {
+            (TradeCardKind::Bid, false, true) => &self.bid_active,
+            (TradeCardKind::Bid, false, false) => &self.bid_idle,
+            (TradeCardKind::Offer, false, true) => &self.offer_active,
+            (TradeCardKind::Offer, false, false) => &self.offer_idle,
+            (TradeCardKind::Bid, true, true) => &self.clothing_bid_active,
+            (TradeCardKind::Bid, true, false) => &self.clothing_bid_idle,
+            (TradeCardKind::Offer, true, true) => &self.clothing_offer_active,
+            (TradeCardKind::Offer, true, false) => &self.clothing_offer_idle,
         }
     }
 }
@@ -162,46 +100,30 @@ struct TradeScreen;
 
 #[derive(Component)]
 struct TradeView {
-    main: Entity,
     capacity: Entity,
-    advisories: [TradeAdvisoryView; TRADE_ADVISORIES.len()],
-    rows: [TradeRowView; TRADE_ROWS.len()],
-    base: IndexedPicture,
-}
-
-struct TradeAdvisoryView {
-    kind: TradeAdvisoryKind,
-    entity: Entity,
+    advisories: [(TradeAdvisoryKind, Entity); TRADE_ADVISORIES.len()],
+    rows: TradeCommodityTable<TradeRowView>,
+    pictures: TradePictures,
 }
 
 struct TradeRowView {
-    commodity: TradeCommodity,
     row: Entity,
-    bid: TradeCardView,
-    offer: TradeCardView,
+    bid: Entity,
+    offer: Entity,
     decrease: Entity,
     increase: Entity,
     quantity: Entity,
     offer_indicator: Entity,
     gauge: Entity,
-    origin: IVec2,
-}
-
-struct TradeCardView {
-    entity: Entity,
-    pictures: TradeCardPictures,
+    gauge_fill: Entity,
+    price: Entity,
+    stock: Entity,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum TradeCardKind {
     Bid,
     Offer,
-}
-
-#[derive(Clone)]
-struct TradeCardPictures {
-    active: Handle<Image>,
-    idle: Handle<Image>,
 }
 
 #[derive(Component, Clone, Copy, Debug)]
@@ -226,10 +148,7 @@ impl Plugin for TradePlugin {
             (enter_trade_screen, bind_trade_screen).chain(),
         )
         .add_systems(OnExit(AppState::Trade), remember_trade_orders)
-        .add_systems(
-            Update,
-            (render_trade, render_trade_rasters).run_if(in_state(AppState::Trade)),
-        );
+        .add_systems(Update, render_trade.run_if(in_state(AppState::Trade)));
     }
 }
 
@@ -251,7 +170,7 @@ fn bind_trade_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TradeScreen>>,
     tree: RetailTree,
-    nodes: Query<&Node>,
+    session: Res<GameSession>,
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
@@ -297,78 +216,81 @@ fn bind_trade_screen(
         .insert((Checked, InteractionDisabled));
     let capacity = tree.find(root, fourcc!("mCap"));
     commands.entity(capacity).insert(InteractionDisabled);
-    let advisories = TRADE_ADVISORIES.map(|(tag, kind)| TradeAdvisoryView {
-        kind,
-        entity: tree.find(root, tag),
+    let advisories = TRADE_ADVISORIES.map(|(tag, kind)| (kind, tree.find(root, tag)));
+    let advanced = session.game.technology().advanced_production_unlocked();
+    let text_style = assets
+        .text_style(RetailTextStylePreset {
+            font_family: 2,
+            face_flags: 0,
+            point_size: 14,
+            alignment: -1,
+        })
+        .expect("retail Trade row text style");
+    let text_color = assets.palette_color(0x13);
+    let gauge_color = assets.palette_color(TRADE_BAR_FILL);
+    let rows = TRADE_ROW_TAGS.map(|commodity, tag| {
+        let row = bind_trade_row(
+            &mut commands,
+            &tree,
+            root,
+            commodity,
+            tag,
+            &pictures,
+            &text_style,
+            text_color,
+            gauge_color,
+        );
+        set_trade_row_visible(
+            &mut commands,
+            row.row,
+            trade_row_available(advanced, commodity),
+        );
+        row
     });
-    let rows = TRADE_ROWS
-        .map(|binding| bind_trade_row(&mut commands, &tree, &nodes, root, binding, &pictures));
-    let palette = *assets.default_dib_palette();
-    for row in &rows {
-        let picture = trade_amount_bar_picture(AmountBarPixels {
-            range: 0,
-            current: 0,
-            color: TRADE_BAR_FILL,
-        });
-        let image = assets.add_image(picture.to_keyed_image(&palette, 0x10));
-        commands.entity(row.gauge).insert(ImageNode::new(image));
-    }
-    let base = assets
-        .indexed_picture(PictureId::new(2101))
-        .expect("retail Trade screen picture must load");
-    let image = assets.add_image(base.to_image(&palette));
-    let main = tree.find(root, fourcc!("main"));
-    commands.entity(main).insert(ImageNode::new(image));
     commands.entity(root).insert(TradeView {
-        main,
         capacity,
         advisories,
         rows,
-        base,
+        pictures,
     });
 }
 
 fn bind_trade_row(
     commands: &mut Commands,
     tree: &RetailTree,
-    nodes: &Query<&Node>,
     root: Entity,
-    binding: TradeRowBinding,
+    commodity: TradeCommodity,
+    tag: FourCc,
     pictures: &TradePictures,
+    text_style: &(TextFont, TextLayout, LineHeight, bool),
+    text_color: Color,
+    gauge_color: Color,
 ) -> TradeRowView {
-    let row = tree.find(root, binding.tag);
+    let row = tree.find(root, tag);
     commands.entity(row).insert(Pickable::IGNORE);
 
     let card = tree.find(row, fourcc!("card"));
-    let card_pictures = pictures.for_button(binding.commodity, TradeCardKind::Bid);
     let offer = tree.find(row, fourcc!("offr"));
-    let offer_pictures = pictures.for_button(binding.commodity, TradeCardKind::Offer);
     let bid = bind_trade_card(
         commands,
         card,
-        binding.commodity,
+        commodity,
         TradeCardKind::Bid,
-        card_pictures,
+        pictures.for_button(commodity, TradeCardKind::Bid, false),
     );
     let offer = bind_trade_card(
         commands,
         offer,
-        binding.commodity,
+        commodity,
         TradeCardKind::Offer,
-        offer_pictures,
+        pictures.for_button(commodity, TradeCardKind::Offer, false),
     );
 
     let [decrease, increase] = [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
         let step = tree.find(row, tag);
         commands
             .entity(step)
-            .insert((
-                ActivateOnPress,
-                TradeAction::Step {
-                    commodity: binding.commodity,
-                    delta,
-                },
-            ))
+            .insert((ActivateOnPress, TradeAction::Step { commodity, delta }))
             .observe(on_trade_activate);
         step
     });
@@ -379,19 +301,28 @@ fn bind_trade_row(
     commands
         .entity(gauge)
         .insert((
-            TradeAction::Amount(binding.commodity),
+            TradeAction::Amount(commodity),
             RelativeCursorPosition::default(),
         ))
         .observe(on_trade_amount_bar_click);
-    let node = nodes.get(row).expect("generated trade row has layout");
-    let Val::Px(left) = node.left else {
-        panic!("generated trade row has a pixel left position");
-    };
-    let Val::Px(top) = node.top else {
-        panic!("generated trade row has a pixel top position");
-    };
+    let gauge_fill = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0),
+                top: px(0),
+                width: px(0),
+                height: percent(100),
+                ..default()
+            },
+            BackgroundColor(gauge_color),
+            Pickable::IGNORE,
+            ChildOf(gauge),
+        ))
+        .id();
+    let price = spawn_trade_row_text(commands, row, 180.0, 58.0, text_style, text_color);
+    let stock = spawn_trade_row_text(commands, row, 238.0, 62.0, text_style, text_color);
     TradeRowView {
-        commodity: binding.commodity,
         row,
         bid,
         offer,
@@ -400,8 +331,42 @@ fn bind_trade_row(
         quantity,
         offer_indicator,
         gauge,
-        origin: IVec2::new(left as i32, top as i32),
+        gauge_fill,
+        price,
+        stock,
     }
+}
+
+fn spawn_trade_row_text(
+    commands: &mut Commands,
+    row: Entity,
+    left: f32,
+    width: f32,
+    text_style: &(TextFont, TextLayout, LineHeight, bool),
+    color: Color,
+) -> Entity {
+    let (font, layout, line_height, underline) = text_style;
+    assert!(!underline, "retail Trade row text is not underlined");
+    commands
+        .spawn((
+            Text::default(),
+            font.clone(),
+            *layout,
+            *line_height,
+            TextColor(color),
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(left),
+                top: px(0),
+                width: px(width),
+                height: px(14),
+                ..default()
+            },
+            Pickable::IGNORE,
+            ZIndex(1),
+            ChildOf(row),
+        ))
+        .id()
 }
 
 fn remember_trade_orders(mut session: ResMut<GameSession>) {
@@ -519,48 +484,44 @@ fn render_trade(
         .get_mut(view.capacity)
         .expect("bound trade capacity text must exist")
         .0 = capacity.to_string();
-    let advanced_trade_unlocked = session.game.technology().advanced_production_unlocked();
     let bid_count = view
         .rows
         .iter()
-        .filter(|row| {
-            session.game.player_trade_order(nation, row.commodity) == PlayerTradeOrder::Buy
+        .filter(|(commodity, _)| {
+            session.game.player_trade_order(nation, *commodity) == PlayerTradeOrder::Buy
         })
         .count();
 
-    for row in &view.rows {
-        let available = trade_row_available(advanced_trade_unlocked, row.commodity);
-        set_trade_row_visible(&mut commands, row.row, available);
-        let order = session.game.player_trade_order(nation, row.commodity);
+    for (commodity, row) in &view.rows {
+        let order = session.game.player_trade_order(nation, commodity);
         let bid_active = order == PlayerTradeOrder::Buy;
         let offer_active = matches!(order, PlayerTradeOrder::Sell(_));
         render_trade_card(
-            &row.bid,
+            row.bid,
+            view.pictures
+                .for_button(commodity, TradeCardKind::Bid, bid_active),
             TradeCardKind::Bid,
             bid_active,
             &mut images,
             &mut nodes,
         );
         render_trade_card(
-            &row.offer,
+            row.offer,
+            view.pictures
+                .for_button(commodity, TradeCardKind::Offer, offer_active),
             TradeCardKind::Offer,
             offer_active,
             &mut images,
             &mut nodes,
         );
-        set_trade_interaction(
-            &mut commands,
-            row.bid.entity,
-            available && (bid_active || bid_count < 4),
-        );
+        set_trade_interaction(&mut commands, row.bid, bid_active || bid_count < 4);
         set_trade_control(
             &mut commands,
-            row.offer.entity,
+            row.offer,
             trade_offer_tab_visible(
-                available,
                 capacity,
                 offer_active,
-                major.city.stockpile[row.commodity.resource()],
+                major.city.stockpile[commodity.resource()],
             ),
         );
         let quantity = match order {
@@ -575,117 +536,56 @@ fn render_trade(
         } else {
             String::new()
         };
-        let step_visible = available && quantity > 0 && capacity > 0;
+        let step_visible = quantity > 0 && capacity > 0;
         set_trade_control(&mut commands, row.decrease, step_visible);
         set_trade_control(&mut commands, row.increase, step_visible);
-        let offer_visible = capacity > 0 && available && quantity > 0;
+        let offer_visible = capacity > 0 && quantity > 0;
         set_trade_visibility(&mut commands, row.quantity, offer_visible);
         set_trade_visibility(&mut commands, row.offer_indicator, offer_visible);
         set_trade_visibility(&mut commands, row.gauge, offer_visible);
+        nodes
+            .get_mut(row.gauge_fill)
+            .expect("bound trade gauge fill must exist")
+            .width = px(TRADE_AMOUNT_BAR.with_segments(capacity).span(quantity));
+        texts
+            .get_mut(row.price)
+            .expect("bound trade price text must exist")
+            .0 = format_currency(session.game.market().rows[commodity].price);
+        texts
+            .get_mut(row.stock)
+            .expect("bound trade stock text must exist")
+            .0 = match major.city.stockpile[commodity.resource()] {
+            0 => "--".to_owned(),
+            stock => stock.to_string(),
+        };
     }
-    for advisory in &view.advisories {
+    for &(kind, entity) in &view.advisories {
         set_trade_visibility(
             &mut commands,
-            advisory.entity,
-            trade_advisory_needed(&session.game, nation, advisory.kind),
+            entity,
+            trade_advisory_needed(&session.game, nation, kind),
         );
     }
 }
 
 fn render_trade_card(
-    card: &TradeCardView,
+    entity: Entity,
+    picture: &Handle<Image>,
     kind: TradeCardKind,
     active: bool,
     images: &mut Query<&mut ImageNode>,
     nodes: &mut Query<&mut Node>,
 ) {
     let mut image = images
-        .get_mut(card.entity)
+        .get_mut(entity)
         .expect("bound trade card image must exist");
-    image.image = if active {
-        card.pictures.active.clone()
-    } else {
-        card.pictures.idle.clone()
-    };
-    let (left, width) = match (kind, active) {
-        (TradeCardKind::Bid, false) => (82.0, 17.0),
-        (TradeCardKind::Bid, true) => (82.0, 65.0),
-        (TradeCardKind::Offer, false) => (163.0, 17.0),
-        (TradeCardKind::Offer, true) => (115.0, 65.0),
-    };
+    image.image = picture.clone();
     let mut node = nodes
-        .get_mut(card.entity)
+        .get_mut(entity)
         .expect("bound trade card node must exist");
-    node.left = Val::Px(left);
-    node.width = Val::Px(width);
-}
-
-fn render_trade_rasters(
-    session: Res<GameSession>,
-    view: Single<Ref<TradeView>>,
-    mut assets: RetailUiAssets,
-    font_assets: Res<Assets<Font>>,
-    image_nodes: Query<&ImageNode>,
-) {
-    if !session.is_changed() && !view.is_added() {
-        return;
-    }
-    let nation = session.active_major_nation();
-    let major = session.game.nations().major(nation);
-    let mut text = RetailRasterTextPainter::from_preset(
-        assets.fonts(),
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 14,
-            alignment: -1,
-        },
-    )
-    .expect("retail Trade custom-drawing text style");
-    let mut picture = view.base.clone();
-    for row in &view.rows {
-        let stock = match major.city.stockpile[row.commodity.resource()] {
-            0 => "--".to_owned(),
-            stock => stock.to_string(),
-        };
-        text.draw_right(
-            &mut picture,
-            row.origin.x + 238,
-            row.origin.y + 12,
-            &format_currency(session.game.market().rows[row.commodity].price),
-            0x13,
-        );
-        text.draw_right(
-            &mut picture,
-            row.origin.x + 300,
-            row.origin.y + 12,
-            &stock,
-            0x13,
-        );
-    }
-    let main = image_nodes
-        .get(view.main)
-        .expect("bound trade screen image must exist");
-    let palette = *assets.default_dib_palette();
-    assets.replace_image(&main.image, picture.to_image(&palette));
-
-    let capacity = major.economy.capacities.trade_offer;
-    let geometry = TRADE_AMOUNT_BAR.with_segments(capacity);
-    for row in &view.rows {
-        let quantity = match session.game.player_trade_order(nation, row.commodity) {
-            PlayerTradeOrder::Sell(quantity) => quantity,
-            _ => 0,
-        };
-        let picture = trade_amount_bar_picture(AmountBarPixels {
-            range: geometry.span(quantity),
-            current: geometry.span(quantity),
-            color: TRADE_BAR_FILL,
-        });
-        let gauge = image_nodes
-            .get(row.gauge)
-            .expect("bound trade gauge image must exist");
-        assets.replace_image(&gauge.image, picture.to_keyed_image(&palette, 0x10));
+    node.width = px(if active { 65 } else { 17 });
+    if kind == TradeCardKind::Offer {
+        node.left = px(if active { 115 } else { 163 });
     }
 }
 
@@ -794,12 +694,19 @@ fn bind_trade_card(
     entity: Entity,
     commodity: TradeCommodity,
     kind: TradeCardKind,
-    pictures: TradeCardPictures,
-) -> TradeCardView {
+    idle_picture: &Handle<Image>,
+) -> Entity {
     commands
         .entity(entity)
         .entry::<Node>()
-        .and_modify(|mut node| node.height = Val::Px(20.0));
+        .and_modify(move |mut node| {
+            node.left = px(match kind {
+                TradeCardKind::Bid => 82,
+                TradeCardKind::Offer => 163,
+            });
+            node.width = px(17);
+            node.height = px(20);
+        });
     commands
         .entity(entity)
         .insert((
@@ -807,23 +714,18 @@ fn bind_trade_card(
             ActivateOnPress,
             Pickable::default(),
             ZIndex(1),
-            trade_card_image(pictures.idle.clone()),
+            trade_card_image(idle_picture.clone()),
             TradeAction::Card { commodity, kind },
         ))
         .observe(on_trade_activate);
-    TradeCardView { entity, pictures }
+    entity
 }
 
 /// Idle `offr` tabs stay shown when merchant capacity is 0: C++ skips
 /// `SetTradeOfferSecondaryBitmap` and leaves the DoPostCreate-enabled control.
 /// With capacity, C++ hides the tab unless the row is selling or has stockpile.
-const fn trade_offer_tab_visible(
-    row_available: bool,
-    capacity: i16,
-    active: bool,
-    stockpile: i16,
-) -> bool {
-    row_available && (capacity == 0 || active || stockpile > 0)
+const fn trade_offer_tab_visible(capacity: i16, active: bool, stockpile: i16) -> bool {
+    capacity == 0 || active || stockpile > 0
 }
 
 #[cfg(test)]
@@ -854,10 +756,10 @@ mod tests {
         for (tag, _) in TRADE_ADVISORIES {
             world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
         }
-        for binding in TRADE_ROWS {
+        for (_, tag) in &TRADE_ROW_TAGS {
             let row = world
                 .spawn((
-                    RetailTag(binding.tag),
+                    RetailTag(*tag),
                     Node {
                         left: Val::Px(0.0),
                         top: Val::Px(0.0),
@@ -886,7 +788,7 @@ mod tests {
         mut commands: Commands,
         root: Single<Entity, Added<TestTradeRoot>>,
         tree: RetailTree,
-        nodes: Query<&Node>,
+        session: Res<GameSession>,
     ) {
         let image = Handle::<Image>::default();
         let pictures = TradePictures {
@@ -900,22 +802,38 @@ mod tests {
             clothing_offer_idle: image,
         };
         let capacity = tree.find(*root, fourcc!("mCap"));
-        let advisories = TRADE_ADVISORIES.map(|(tag, kind)| TradeAdvisoryView {
-            kind,
-            entity: tree.find(*root, tag),
+        let advisories = TRADE_ADVISORIES.map(|(tag, kind)| (kind, tree.find(*root, tag)));
+        let text_style = (
+            TextFont::default(),
+            TextLayout::justify(Justify::Right),
+            LineHeight::Px(14.0),
+            false,
+        );
+        let advanced = session.game.technology().advanced_production_unlocked();
+        let rows = TRADE_ROW_TAGS.map(|commodity, tag| {
+            let row = bind_trade_row(
+                &mut commands,
+                &tree,
+                *root,
+                commodity,
+                tag,
+                &pictures,
+                &text_style,
+                Color::BLACK,
+                Color::WHITE,
+            );
+            set_trade_row_visible(
+                &mut commands,
+                row.row,
+                trade_row_available(advanced, commodity),
+            );
+            row
         });
-        let rows = TRADE_ROWS
-            .map(|binding| bind_trade_row(&mut commands, &tree, &nodes, *root, binding, &pictures));
         commands.entity(*root).insert(TradeView {
-            main: *root,
             capacity,
             advisories,
             rows,
-            base: IndexedPicture {
-                width: 0,
-                height: 0,
-                pixels: Vec::new(),
-            },
+            pictures,
         });
     }
 
@@ -931,9 +849,9 @@ mod tests {
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
         let major = state.nations().major(nation);
         let capacity = major.economy.capacities.trade_offer;
-        let commodity = TRADE_ROWS
-            .into_iter()
-            .map(|binding| binding.commodity)
+        let commodity = TRADE_ROW_TAGS
+            .iter()
+            .map(|(commodity, _)| commodity)
             .find(|commodity| {
                 trade_row_available(
                     state.technology().advanced_production_unlocked(),
@@ -955,27 +873,45 @@ mod tests {
         app.update();
 
         for commodity in [TradeCommodity::Oil, TradeCommodity::Fuel] {
-            let row = app
+            let row_entity = app
                 .world()
                 .get::<TradeView>(root)
                 .expect("trade root has a semantic view")
-                .rows
-                .iter()
-                .find(|row| row.commodity == commodity)
-                .map(|row| (row.row, app.world().get::<Node>(row.row).unwrap().display))
-                .expect("advanced commodity has a generated trade row");
-            assert_eq!(row.1, Display::None);
-            assert!(
-                app.world_mut()
-                    .query::<(&TradeAction, &ChildOf, Has<InteractionDisabled>)>()
-                    .iter(app.world())
-                    .filter(|(action, parent, _)| {
-                        parent.parent() == row.0 && matches!(action, TradeAction::Card { .. })
-                    })
-                    .all(|(_, _, disabled)| disabled),
-                "an undiscovered commodity must not retain an actionable card"
+                .rows[commodity]
+                .row;
+            assert_eq!(
+                app.world().get::<Node>(row_entity).unwrap().display,
+                Display::None
             );
         }
+
+        let bound_row = &app
+            .world()
+            .get::<TradeView>(root)
+            .expect("trade root has a semantic view")
+            .rows[commodity];
+        assert_eq!(
+            app.world().get::<Text>(bound_row.price).unwrap().0,
+            format_currency(
+                app.world().resource::<GameSession>().game.market().rows[commodity].price
+            )
+        );
+        assert_eq!(
+            app.world().get::<Text>(bound_row.stock).unwrap().0,
+            app.world()
+                .resource::<GameSession>()
+                .game
+                .nations()
+                .major(nation)
+                .city
+                .stockpile[commodity.resource()]
+            .to_string()
+        );
+        assert!(app.world().get::<ImageNode>(bound_row.gauge).is_none());
+        assert_eq!(
+            app.world().get::<Node>(bound_row.gauge_fill).unwrap().width,
+            px(0)
+        );
 
         let bid_card = app
             .world_mut()
@@ -1041,7 +977,7 @@ mod tests {
                 .iter(app.world())
                 .filter(|action| matches!(action, TradeAction::Card { .. }))
                 .count(),
-            TRADE_ROWS.len() * 2
+            TradeCommodity::LENGTH * 2
         );
 
         activate(&mut app, card);
@@ -1054,6 +990,11 @@ mod tests {
             panic!("activating the offer card must create a sell order");
         };
         assert!(quantity > 1);
+        let gauge_fill = app.world().get::<TradeView>(root).unwrap().rows[commodity].gauge_fill;
+        assert_eq!(
+            app.world().get::<Node>(gauge_fill).unwrap().width,
+            px(TRADE_AMOUNT_BAR.with_segments(capacity).span(quantity))
+        );
 
         let left = app
             .world_mut()
@@ -1079,10 +1020,9 @@ mod tests {
 
     #[test]
     fn idle_offer_tabs_follow_retail_capacity_and_stockpile_gates() {
-        assert!(trade_offer_tab_visible(true, 0, false, 0));
-        assert!(!trade_offer_tab_visible(true, 4, false, 0));
-        assert!(trade_offer_tab_visible(true, 4, false, 2));
-        assert!(trade_offer_tab_visible(true, 4, true, 0));
-        assert!(!trade_offer_tab_visible(false, 4, false, 2));
+        assert!(trade_offer_tab_visible(0, false, 0));
+        assert!(!trade_offer_tab_visible(4, false, 0));
+        assert!(trade_offer_tab_visible(4, false, 2));
+        assert!(trade_offer_tab_visible(4, true, 0));
     }
 }

@@ -116,22 +116,6 @@ pub fn draw_industry_amount_bar(
     picture.fill_rect(IRect::new(tick, 0, tick + 1, 5), 0);
 }
 
-pub fn draw_trade_amount_bar(
-    picture: &mut IndexedPicture,
-    pixels: AmountBarPixels,
-    geometry: AmountBarGeometry,
-) {
-    picture.fill_rect(
-        IRect::new(
-            0,
-            0,
-            i32::from(pixels.current).clamp(0, geometry.width),
-            geometry.height,
-        ),
-        pixels.color,
-    );
-}
-
 #[allow(dead_code)] // recovered TAmtBar::Draw overlay; no unspecialized bar is bound yet
 pub fn draw_base_amount_bar(
     picture: &mut IndexedPicture,
@@ -154,12 +138,6 @@ pub fn industry_amount_bar_picture(pixels: AmountBarPixels) -> IndexedPicture {
         KEY_INDEX,
     );
     draw_industry_amount_bar(&mut picture, pixels, INDUSTRY_AMOUNT_BAR);
-    picture
-}
-
-pub fn trade_amount_bar_picture(pixels: AmountBarPixels) -> IndexedPicture {
-    let mut picture = indexed_picture(TRADE_AMOUNT_BAR.width, TRADE_AMOUNT_BAR.height, KEY_INDEX);
-    draw_trade_amount_bar(&mut picture, pixels, TRADE_AMOUNT_BAR);
     picture
 }
 
@@ -223,18 +201,6 @@ mod tests {
         assert_eq!(picture.pixels[1 * 150 + 40], KEY_INDEX);
         assert_eq!(picture.pixels[100], 0);
         assert_eq!(picture.pixels[0], KEY_INDEX);
-    }
-
-    #[test]
-    fn trade_bar_fills_the_full_height() {
-        let picture = trade_amount_bar_picture(AmountBarPixels {
-            range: 100,
-            current: 25,
-            color: TRADE_BAR_FILL,
-        });
-        assert_eq!(picture.pixels[0], TRADE_BAR_FILL);
-        assert_eq!(picture.pixels[6 * 100 + 24], TRADE_BAR_FILL);
-        assert_eq!(picture.pixels[25], KEY_INDEX);
     }
 
     #[test]

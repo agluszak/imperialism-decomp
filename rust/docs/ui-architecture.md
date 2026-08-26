@@ -38,9 +38,11 @@ another identity namespace used by handwritten application code.
 is active, belongs in widget or screen state and must not rewrite the tag.
 
 Each independently lived screen or dialog owns one semantic view component on its root. That view
-retains direct `Entity` handles to important controls and typed domain IDs where needed. Repeated
-rows and other subordinate structures are normally plain Rust values inside the root view, not leaf
-components added so another system can query the display destination.
+retains the minimum direct `Entity` handles and semantic state that must survive binding. It is not
+a cached description of the generated scene: do not copy addressed `Node` geometry, shared assets,
+presentation properties, dynamic gameplay state, or an identity already expressed by a typed table
+key into it. Repeated rows and other subordinate structures are normally plain Rust values inside
+the root view, not leaf components added so another system can query the display destination.
 
 For example, the intended shape is:
 
@@ -53,17 +55,16 @@ struct TechnologyAdvanceView {
 
 #[derive(Component)]
 struct TradeView {
-    main: Entity,
     capacity: Entity,
-    rows: Vec<TradeRowView>,
+    rows: TradeCommodityTable<TradeRowView>,
+    pictures: TradePictures,
 }
 
 struct TradeRowView {
-    commodity: TradeCommodity,
     decrease: Entity,
     increase: Entity,
     quantity: Entity,
-    gauge: Entity,
+    gauge_fill: Entity,
 }
 ```
 
@@ -181,8 +182,10 @@ UI changes must preserve these rules:
    `Entity` is the runtime address. There is no additional application UI identity namespace.
 5. FourCC lookup and recovered-tree traversal stop after binding a newly spawned scene. Normal
    behavior and rendering do not rediscover static controls.
-6. A screen or dialog root retains important control entities in one semantic view. Nested row and
-   control structures are normally plain Rust structs.
+6. A screen or dialog root retains only the addresses and semantic state that must survive binding
+   in one semantic view. It does not cache presentation facts already owned by addressed entities or
+   identities already expressed by typed table keys. Nested row and control structures are normally
+   plain Rust structs.
 7. Leaf components represent semantic actions, reusable autonomous widget behavior, or genuinely
    first-class relationships, not display destinations.
 8. Renderers are coarse by default and split only for a concrete independent lifecycle, cadence, or
@@ -199,11 +202,11 @@ Technology Advance is the reference for a simple recovered screen: a spawn marke
 unbound scene, binding stores the few output entities in `TechnologyAdvanceView`, actions stay on
 their controls, and one renderer writes authoritative state directly to the view.
 
-Trade is the reference for fixed recovered rows and mixed presentation mechanisms. `TradeView`
-retains fixed arrays of plain semantic row and advisory values, while `TradeAction` remains on the
-interactive entities. Its ordinary renderer and custom raster renderer share the same authoritative
-state and bound view but remain separate because they update meaningfully different presentation
-surfaces.
+Trade is the reference for fixed recovered rows and native presentation. `TradeView` keys its plain
+row values by `TradeCommodity`, retains shared card pictures once, and stores only the control
+entities needed after binding. `TradeAction` remains on the interactive entities. Price and stock
+labels are ordinary Bevy text, and the amount bar is a native fill node; retail geometry and click
+semantics remain without carrying the original temporary bitmap implementation into the app.
 
 These examples freeze the ownership and data-flow pattern, not a reusable Rust API. Subsequent
 screens should define their own small semantic view and binder; do not extract a shared view trait,
