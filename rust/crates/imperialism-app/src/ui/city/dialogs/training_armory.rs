@@ -44,18 +44,6 @@ const ARMORY_STATIC: [bool; 30] = [
     false, false,
 ];
 
-const ARMORY_TITLE_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
-    font_family: 1,
-    face_flags: 0,
-    point_size: 24,
-    alignment: 1,
-};
-const ARMORY_UNIT_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
-    font_family: 1,
-    face_flags: 0,
-    point_size: 12,
-    alignment: 1,
-};
 const ARMORY_DETAIL_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
     font_family: 3,
     face_flags: 0,
@@ -141,13 +129,6 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     let nation = MajorNationId::from_nation(state.turn().active_nation)
         .expect("City active nation is a major nation");
     let city = &state.nations().major(nation).city;
-    let normal_color = assets.palette_color(0xd2);
-    let (title_font, _, title_line_height, _) = assets
-        .text_style(ARMORY_TITLE_TEXT_STYLE)
-        .expect("retail Armory title text style");
-    let (unit_font, _, unit_line_height, _) = assets
-        .text_style(ARMORY_UNIT_TEXT_STYLE)
-        .expect("retail Armory unit text style");
     let (detail_font, _, detail_line_height, _) = assets
         .text_style(ARMORY_DETAIL_TEXT_STYLE)
         .expect("retail Armory detail text style");
@@ -155,12 +136,9 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         .string(0x271c, 0x20)
         .expect("retail English Armory title");
     let title_control = tree.find(root, fourcc!("titl"));
-    commands.entity(title_control).insert((
-        Text::new(title),
-        title_font,
-        title_line_height,
-        TextColor(normal_color),
-    ));
+    // The generated scene owns the title's recovered style; only the localized
+    // string is dynamic here.
+    commands.entity(title_control).insert(Text::new(title));
     let rows_and_quantities: MilitaryRecruitOrderTable<(Entity, Entity)> =
         ARMORY_CONTROLS.map(|category, (order_tag, button_tag)| {
             let bound = bind_recruitment_order_row(
@@ -209,36 +187,38 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         });
     let rows = rows_and_quantities.map(|_, (button, _)| button);
     let quantities = rows_and_quantities.map(|_, (_, quantity)| quantity);
-    let mut bind_detail = |tag, font, line_height| {
-        let entity = tree.find(root, tag);
-        commands
-            .entity(entity)
-            .insert((Text::new(""), font, line_height, TextColor(normal_color)));
+    let mut bind_text = |entity| {
+        commands.entity(entity).insert(Text::new(""));
         entity
     };
-    let unit = bind_detail(fourcc!("unit"), unit_font, unit_line_height);
+    let unit = bind_text(tree.find(root, fourcc!("unit")));
     let costs = [
         fourcc!("cos0"),
         fourcc!("cos1"),
         fourcc!("cos2"),
         fourcc!("cos3"),
     ]
-    .map(|tag| bind_detail(tag, detail_font.clone(), detail_line_height));
+    .map(|tag| bind_text(tree.find(root, tag)));
     let available = [
         fourcc!("ava0"),
         fourcc!("ava1"),
         fourcc!("ava2"),
         fourcc!("ava3"),
     ]
-    .map(|tag| bind_detail(tag, detail_font.clone(), detail_line_height));
+    .map(|tag| bind_text(tree.find(root, tag)));
     let stats = [
         fourcc!("sta0"),
         fourcc!("sta1"),
         fourcc!("sta2"),
         fourcc!("sta3"),
     ]
-    .map(|tag| bind_detail(tag, detail_font.clone(), detail_line_height));
-    let description = bind_detail(fourcc!("desc"), detail_font.clone(), detail_line_height);
+    .map(|tag| bind_text(tree.find(root, tag)));
+    // The description is a System-font (family 0) control the generator does
+    // not style yet, so its recovered detail face is bound here.
+    let description = tree.find(root, fourcc!("desc"));
+    commands
+        .entity(description)
+        .insert((Text::new(""), detail_font.clone(), detail_line_height));
     let placard = tree.find(root, fourcc!("plaq"));
     for (tag, string_index) in [
         (fourcc!("cost"), 0x1e),
@@ -257,7 +237,6 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             ),
             detail_font.clone(),
             detail_line_height,
-            TextColor(normal_color),
         ));
     }
     commands.entity(root).insert(ArmoryView {
@@ -471,28 +450,6 @@ pub(in crate::ui::city) fn render_armory_dialog(
 mod tests {
     use super::*;
     use crate::ui::test_support::beginning_of_game;
-
-    #[test]
-    fn armory_uses_the_recovered_windows_font_families() {
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_TITLE_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_UNIT_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_DETAIL_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BookAntiquaRegular
-        );
-    }
 
     #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
