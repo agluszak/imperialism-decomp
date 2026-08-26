@@ -171,8 +171,8 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             1,
         );
         let category = row.military_category();
-        for arrow in [bound.decrease, bound.increase] {
-            commands.entity(arrow).observe(
+        for tag in [fourcc!("minu"), fourcc!("plus")] {
+            commands.entity(tree.find(bound.row, tag)).observe(
                 move |_: On<Activate>, mut views: Query<&mut ArmoryView>| {
                     if let Ok(mut view) = views.get_mut(root) {
                         view.selected = category;

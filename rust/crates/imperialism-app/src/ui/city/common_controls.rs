@@ -55,8 +55,6 @@ pub(in crate::ui::city) fn configure_industry_dialog(
 
 pub(in crate::ui::city) struct CityOrderRow {
     pub(in crate::ui::city) row: Entity,
-    pub(in crate::ui::city) decrease: Entity,
-    pub(in crate::ui::city) increase: Entity,
     pub(in crate::ui::city) quantity: Entity,
 }
 
@@ -96,12 +94,7 @@ pub(in crate::ui::city) fn bind_city_order_row(
     };
     bind_step(commands, decrease, -step);
     bind_step(commands, increase, step);
-    CityOrderRow {
-        row,
-        decrease,
-        increase,
-        quantity,
-    }
+    CityOrderRow { row, quantity }
 }
 
 fn bind_industry_orders(
