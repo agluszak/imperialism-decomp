@@ -4,7 +4,7 @@
 //! match. The painter owns a transient `FontRef` over the Bevy `Font` asset bytes.
 
 use super::retail_raster::IndexedRasterExt;
-use crate::{RetailAssetsResource, RetailFonts};
+use crate::RetailFonts;
 use bevy::prelude::*;
 use imperialism_formats::{
     IndexedPicture, RetailFontFace, RetailTextStyleError, RetailTextStylePreset,
@@ -16,55 +16,6 @@ use swash::zeno::Format;
 
 const SYSTEM_SOURCES: &[Source] = &[Source::Bitmap(StrikeWith::BestFit), Source::Outline];
 const OUTLINE_SOURCES: &[Source] = &[Source::Outline];
-
-#[derive(Component, Clone, Copy)]
-pub struct RetailRasterText {
-    pub preset: RetailTextStylePreset,
-    pub width: i32,
-    pub height: i32,
-    pub color: u8,
-}
-
-pub fn rasterize_retail_static_text(
-    mut commands: Commands,
-    retail: Res<RetailAssetsResource>,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
-    mut images: ResMut<Assets<Image>>,
-    labels: Query<(Entity, Ref<Text>, &RetailRasterText, Option<&ImageNode>)>,
-) {
-    for (entity, text, label, image_node) in &labels {
-        if !text.is_changed() && image_node.is_some() {
-            continue;
-        }
-        let style = resolve_retail_text_style(label.preset).expect("retail static-text style");
-        let mut painter = RetailRasterTextPainter::from_preset(&fonts, &font_assets, label.preset)
-            .expect("retail static-text style");
-        let mut picture = super::retail_raster::indexed_picture(label.width, label.height, 0x10);
-        let measured = painter.measure(&text.0);
-        let left = match style.alignment {
-            imperialism_formats::RetailTextAlignment::Left => 0,
-            imperialism_formats::RetailTextAlignment::Center => (label.width - measured) / 2,
-            imperialism_formats::RetailTextAlignment::Right => label.width - measured,
-        };
-        painter.draw(
-            &mut picture,
-            IVec2::new(left, (label.height + style.logical_pixel_height) / 2),
-            &text.0,
-            label.color,
-        );
-        let image = picture.to_keyed_image(retail.assets().default_dib_palette(), 0x10);
-        if let Some(image_node) = image_node {
-            *images
-                .get_mut(&image_node.image)
-                .expect("application-owned retail text image remains loaded") = image;
-        } else {
-            commands
-                .entity(entity)
-                .insert(ImageNode::new(images.add(image)));
-        }
-    }
-}
 
 pub struct RetailRasterTextPainter<'a> {
     font: FontRef<'a>,

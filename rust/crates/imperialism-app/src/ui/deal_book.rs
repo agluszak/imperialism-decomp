@@ -6,7 +6,6 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailPressedOverlay, RetailTree};
 use super::retail_raster::IndexedRasterExt;
-use super::retail_raster_text::RetailRasterText;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::picking::events::{Click, Pointer};
@@ -173,7 +172,7 @@ fn bind_deal_book(
     };
     let (body, body_layout, body_line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 0,
+            font_family: 3,
             face_flags: 0,
             point_size: 10,
             alignment: -1,
@@ -181,7 +180,7 @@ fn bind_deal_book(
         .expect("retail deal-book body text style");
     let (heading, heading_layout, heading_line_height, _) = assets
         .text_style(RetailTextStylePreset {
-            font_family: 0,
+            font_family: 3,
             face_flags: 0,
             point_size: 14,
             alignment: -1,
@@ -215,31 +214,7 @@ fn bind_deal_book(
         title_layout,
         title_line_height,
         TextColor(Color::BLACK),
-        RetailRasterText {
-            preset: RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 18,
-                alignment: 1,
-            },
-            width: 157,
-            height: 21,
-            color: 0,
-        },
     ));
-    commands
-        .entity(tree.find(root, fourcc!("rtil")))
-        .insert(RetailRasterText {
-            preset: RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 18,
-                alignment: 1,
-            },
-            width: 199,
-            height: 20,
-            color: 0,
-        });
 
     let tabs = tree.find(root, fourcc!("tabs"));
     let palette = *assets.default_dib_palette();
@@ -1210,21 +1185,6 @@ fn spawn_text_at(
         } else {
             screen.fonts.body_color
         }),
-        RetailRasterText {
-            preset: RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: if heading { 14 } else { 10 },
-                alignment: if heading && left == 0.0 && width == PAGE_WIDTH {
-                    1
-                } else {
-                    -1
-                },
-            },
-            width: width as i32,
-            height: LINE_HEIGHT as i32,
-            color: 0,
-        },
         Pickable::IGNORE,
         ChildOf(host),
     ));
