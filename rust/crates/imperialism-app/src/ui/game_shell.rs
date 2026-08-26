@@ -372,20 +372,14 @@ pub(crate) fn bind_game_status_display(
     tree: &RetailTree,
 ) {
     let (season_font, season_layout, season_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: -2,
-        })
+        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+            1, 0, 12, -2,
+        ))
         .expect("retail season status text style");
     let (treasury_font, treasury_layout, treasury_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+            1, 0, 12, 1,
+        ))
         .expect("retail treasury status text style");
     // Retail draws the nominal text first, then its offset "shadow" copy over it.
     // Bevy draws shadows behind text, so use the retail shadow as the visible face.

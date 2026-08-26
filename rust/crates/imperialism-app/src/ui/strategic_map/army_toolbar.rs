@@ -249,12 +249,10 @@ fn spawn_count_label(
     placard: bool,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 10,
-            alignment: if placard { -1 } else { 1 },
-        })
+        .text_style(RetailTextStylePreset::built(
+            10,
+            if placard { -1 } else { 1 },
+        ))
         .expect("retail army count text style");
     commands.spawn((
         Node {

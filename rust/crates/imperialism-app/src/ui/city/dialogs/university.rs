@@ -1,7 +1,6 @@
 use super::*;
-use crate::RetailFonts;
 use crate::ui::retail_raster::IndexedRasterExt;
-use crate::ui::retail_raster_text::RetailRasterTextPainter;
+use imperialism_formats::RetailTextStylePreset;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct UniversityRowAssets {
@@ -43,6 +42,14 @@ pub(in crate::ui::city) struct UniversityDialogData {
 pub(in crate::ui::city) struct UniversityDetailsVisual {
     base: IndexedPicture,
     resource_icons: IndexedPicture,
+}
+
+/// Development-yield number of one specialty/tier cell, drawn as a Bevy text
+/// child over DLOG. The grid is at most 4 specialties × 3 levels.
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) struct UniversityYieldText {
+    row_index: usize,
+    level: i32,
 }
 
 pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
@@ -101,11 +108,12 @@ pub(in crate::ui::city) fn configure_university_dialog(
         normal_color: assets.palette_color(0xd2),
         warning_color: assets.palette_color(0xcb),
     };
-    bind_university_dialog(commands, root, tree, data);
+    bind_university_dialog(commands, assets, root, tree, data);
 }
 
 pub(in crate::ui::city) fn bind_university_dialog(
     commands: &mut Commands,
+    assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
     data: UniversityDialogData,
@@ -170,6 +178,35 @@ pub(in crate::ui::city) fn bind_university_dialog(
             resource_icons,
         },
     ));
+    // `TUniversityView::DoStartup` installs its 10-point (Book Antiqua) style on
+    // the yield numbers; raster compositing is kept only for the preview picture
+    // and resource icons.
+    let (yield_font, yield_layout, yield_line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(10, -2))
+        .expect("retail University yield text style");
+    for row_index in 0..4 {
+        for level in 1..=3 {
+            commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px((level * 40 + 39) as f32),
+                    top: px((row_index as i32 * 25 + 289 - 11) as f32),
+                    width: px(36.0),
+                    height: px(14.0),
+                    ..default()
+                },
+                Text::new(""),
+                yield_font.clone(),
+                yield_layout,
+                yield_line_height,
+                TextColor(normal_color),
+                UniversityYieldText { row_index, level },
+                Visibility::Hidden,
+                Pickable::IGNORE,
+                ChildOf(dlog),
+            ));
+        }
+    }
     let tier_labels = [
         tree.find(root, fourcc!("fix2")),
         tree.find(root, fourcc!("fix3")),
@@ -206,8 +243,6 @@ pub(in crate::ui::city) fn bind_university_dialog(
 pub(in crate::ui::city) fn sync_university_details(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
     selections: Query<Ref<CityRowSelection>>,
     rows: Query<(&CityRowChoice, &UniversityRowAssets)>,
@@ -215,6 +250,7 @@ pub(in crate::ui::city) fn sync_university_details(
     mut text_colors: Query<(&UniversityDisplay, &mut TextColor), Without<ImageNode>>,
     mut visibilities: Query<(&UniversityDisplay, &mut Visibility)>,
     details: Query<(&UniversityDetailsVisual, &ImageNode)>,
+    mut yields: Query<(&UniversityYieldText, &mut Text, &mut Visibility), Without<ImageNode>>,
 ) {
     let Some(selection) = selections
         .iter()
@@ -288,21 +324,9 @@ pub(in crate::ui::city) fn sync_university_details(
             _ => continue,
         };
     }
-    let mut text = RetailRasterTextPainter::from_preset(
-        &fonts,
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        },
-    )
-    .expect("retail University custom-drawing text style");
     for (visual, image_node) in &details {
         let mut picture = visual.base.clone();
         picture.blit_keyed_at(&row.preview, IVec2::new(0x7c, 0x5c), 0x10);
-        let mut running_max = UniversityRequirementLevel::None;
         for (row_index, resource) in specialties.into_iter().enumerate() {
             let Some(resource) = resource else {
                 continue;
@@ -314,18 +338,25 @@ pub(in crate::ui::city) fn sync_university_details(
                 IVec2::new(25, 274 + row_index as i32 * 25),
                 0x10,
             );
-            running_max = running_max.max(levels[resource]);
-            for level in 1..=running_max.retail() {
-                text.draw(
-                    &mut picture,
-                    IVec2::new(i32::from(level) * 40 + 39, row_index as i32 * 25 + 289),
-                    &resource_development_yield(resource, level).to_string(),
-                    0xd2,
-                );
-            }
         }
         if let Some(mut image) = image_assets.get_mut(&image_node.image) {
             *image = picture.to_image(retail.assets().default_dib_palette());
         }
+    }
+    for (yield_text, mut text, mut visibility) in &mut yields {
+        let Some(resource) = specialties.get(yield_text.row_index).copied().flatten() else {
+            *visibility = Visibility::Hidden;
+            continue;
+        };
+        if i32::from(levels[resource].retail()) < yield_text.level {
+            *visibility = Visibility::Hidden;
+            continue;
+        }
+        *visibility = Visibility::Inherited;
+        text.0 = resource_development_yield(
+            resource,
+            u8::try_from(yield_text.level).expect("university tier level fits in u8"),
+        )
+        .to_string();
     }
 }

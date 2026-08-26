@@ -194,12 +194,7 @@ fn bind_transport_screen(
     session.game.rebuild_nation_resource_yields(nation);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     let (cursor_font, cursor_layout, cursor_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 0, 12, 1))
         .expect("retail transport cursor text style");
     let cursor_style = (
         cursor_font,

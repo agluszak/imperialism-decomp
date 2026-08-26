@@ -66,12 +66,9 @@ fn bind_query_floaters(
     for root in &roots {
         let view = tree.view(root);
         let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset {
-                font_family: 1,
-                face_flags: 0,
-                point_size: 12,
-                alignment: -2,
-            })
+            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+                1, 0, 12, -2,
+            ))
             .expect("retail query-floater label style");
         for (tag, index) in QUERY_LABELS {
             let text = assets

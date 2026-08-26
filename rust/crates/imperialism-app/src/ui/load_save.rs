@@ -907,12 +907,12 @@ fn bind_flag_menu(
     for (index, (label_tag, control, action)) in FLAG_MENU_ROWS.iter().copied().enumerate() {
         let entity = tree.find(root, label_tag);
         let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset {
-                font_family: 1,
-                face_flags: 0,
-                point_size: if index == 0 { 12 } else { 14 },
-                alignment: if index > 1 { -2 } else { 1 },
-            })
+            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+                1,
+                0,
+                if index == 0 { 12 } else { 14 },
+                if index > 1 { -2 } else { 1 },
+            ))
             .expect("retail flag-menu label style");
         let (text_palette, shadow_palette) = if index == 0 {
             (0x5c, 0x28)

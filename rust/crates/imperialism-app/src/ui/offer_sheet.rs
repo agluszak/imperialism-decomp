@@ -5,7 +5,6 @@ use super::generated;
 use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, RetailUiAssets};
-use super::retail_raster_text::RetailRasterText;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
@@ -14,7 +13,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, fourcc};
 
 const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
@@ -122,144 +121,9 @@ fn bind_offer_sheet_text(
     root: Entity,
     tree: &RetailTree,
 ) {
-    let text_style = |assets: &mut RetailUiAssets, alignment| {
-        assets
-            .text_style(RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment,
-            })
-            .expect("retail offer-sheet text style")
-    };
-    let (body, center, body_height, _) = text_style(assets, 1);
-    commands.entity(tree.find(root, fourcc!("offe"))).insert((
-        body.clone(),
-        center,
-        body_height,
-        TextColor(Color::BLACK),
-    ));
-    let (body, right, body_height, _) = text_style(assets, -1);
-    commands.entity(tree.find(root, fourcc!("purT"))).insert((
-        body.clone(),
-        right,
-        body_height,
-        TextColor(Color::BLACK),
-    ));
-    let (body, left, body_height, _) = text_style(assets, -2);
-    for tag in [fourcc!("unit"), fourcc!("noof")] {
-        commands.entity(tree.find(root, tag)).insert((
-            body.clone(),
-            left,
-            body_height,
-            TextColor(Color::BLACK),
-        ));
-    }
-    let (number, center, number_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 1,
-        })
-        .expect("retail offer-sheet number text style");
-    for tag in [fourcc!("purc"), fourcc!("mCap")] {
-        commands.entity(tree.find(root, tag)).insert((
-            number.clone(),
-            center,
-            number_height,
-            TextColor(Color::BLACK),
-        ));
-    }
-    commands.entity(tree.find(root, fourcc!("info"))).insert((
-        Text::new(get_string(assets, OFFER_STRING_GROUP, 9)),
-        body,
-        TextLayout::justify(Justify::Center),
-        body_height,
-        TextColor(assets.palette_color(0x28)),
-        TextShadow {
-            offset: Vec2::new(1.0, 1.0),
-            color: assets.palette_color(0xd2),
-        },
-    ));
-    // Family 0 is the bitmap System face; paint it through the indexed-raster path.
-    for (tag, preset, width, height) in [
-        (
-            fourcc!("offe"),
-            RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment: 1,
-            },
-            181,
-            69,
-        ),
-        (
-            fourcc!("purT"),
-            RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment: -1,
-            },
-            100,
-            19,
-        ),
-        (
-            fourcc!("unit"),
-            RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment: -2,
-            },
-            58,
-            20,
-        ),
-        (
-            fourcc!("noof"),
-            RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment: -2,
-            },
-            145,
-            14,
-        ),
-        (
-            fourcc!("mCap"),
-            RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 14,
-                alignment: 1,
-            },
-            37,
-            15,
-        ),
-        (
-            fourcc!("info"),
-            RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment: 1,
-            },
-            153,
-            249,
-        ),
-    ] {
-        commands
-            .entity(tree.find(root, tag))
-            .insert(RetailRasterText {
-                preset,
-                width,
-                height,
-                color: if tag == fourcc!("info") { 0x28 } else { 0 },
-            });
-    }
+    commands
+        .entity(tree.find(root, fourcc!("info")))
+        .insert(Text::new(get_string(assets, OFFER_STRING_GROUP, 9)));
 }
 
 fn bind_offer_sheet_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {

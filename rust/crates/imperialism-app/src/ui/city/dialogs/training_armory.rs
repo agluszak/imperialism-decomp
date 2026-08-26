@@ -47,24 +47,9 @@ const ARMORY_STATIC: [bool; 30] = [
     false, false,
 ];
 
-const ARMORY_TITLE_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
-    font_family: 1,
-    face_flags: 0,
-    point_size: 24,
-    alignment: 1,
-};
-const ARMORY_UNIT_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
-    font_family: 1,
-    face_flags: 0,
-    point_size: 12,
-    alignment: 1,
-};
-const ARMORY_DETAIL_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
-    font_family: 3,
-    face_flags: 0,
-    point_size: 10,
-    alignment: 0,
-};
+const ARMORY_TITLE_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset::built(24, 1);
+const ARMORY_UNIT_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset::built(12, 1);
+const ARMORY_DETAIL_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset::built(10, 0);
 
 const fn armory_picture_variant(unit: MilitaryUnitKind) -> i16 {
     match unit {

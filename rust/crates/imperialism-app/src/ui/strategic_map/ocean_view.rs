@@ -157,20 +157,10 @@ fn spawn_ocean_labels(
     session: &GameSession,
 ) {
     let (zone_font, zone_layout, zone_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 2,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 2, 12, 1))
         .expect("retail ocean-zone text style");
     let (nation_font, nation_layout, nation_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 1,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 1, 12, 1))
         .expect("retail ocean-nation text style");
     let palette = *assets.default_dib_palette();
 

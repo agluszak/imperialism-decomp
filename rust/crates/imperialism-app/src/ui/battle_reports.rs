@@ -4,19 +4,16 @@ use super::generated;
 use super::hover_help::get_string;
 use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
-use super::retail_raster_text::RetailRasterTextPainter;
 use super::satellite_preview::nation_owner_palette;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
 use super::window::{DismissWindow, ModalDefault, ModalWindow};
-use crate::{AppState, RetailFonts};
+use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{
-    BattleReportSideText, BattleReportText, PictureId, RetailTextStylePreset, fourcc,
-};
+use imperialism_formats::{BattleReportSideText, BattleReportText, PictureId, fourcc};
 
 const MAP_LEFT: f32 = 49.0;
 const MAP_TOP: f32 = 45.0;
@@ -78,6 +75,7 @@ impl Plugin for BattleReportPlugin {
             Update,
             (
                 project_battle_report,
+                super::diplomacy_map::layout_diplomacy_map_label_entities,
                 blink_selected_battle_report_marker,
                 bind_detail,
                 project_detail,
@@ -100,12 +98,13 @@ fn bind_battle_report(
     root: Single<Entity, Added<BattleReportRoot>>,
     tree: RetailTree,
     mut assets: super::RetailUiAssets,
+    session: Res<GameSession>,
 ) {
     let main = tree.find(*root, fourcc!("main"));
     let marker_atlas = assets
         .keyed_picture(PictureId::new(MARKER_ATLAS), 0x10)
         .expect("retail battle-report marker atlas must load");
-    commands
+    let map_entity = commands
         .spawn((
             Node {
                 position_type: PositionType::Absolute,
@@ -121,27 +120,26 @@ fn bind_battle_report(
             BattleReportMap { marker_atlas },
             ChildOf(main),
         ))
-        .observe(on_battle_report_map_click);
-    for (tag, preset) in [
-        (fourcc!("resu"), (0, 14)),
-        (fourcc!("loca"), (2, 14)),
-        (fourcc!("fadm"), (0, 12)),
-        (fourcc!("eadm"), (0, 12)),
-        (fourcc!("fshp"), (0, 10)),
-        (fourcc!("eshp"), (0, 10)),
-    ] {
-        let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset {
-                font_family: preset.0,
-                face_flags: 0,
-                point_size: preset.1,
-                alignment: -1,
-            })
-            .expect("retail battle-report text style");
-        commands
-            .entity(tree.find(*root, tag))
-            .insert((font, layout, line_height));
+        .observe(on_battle_report_map_click)
+        .id();
+    let mut seeds = [None; NationId::COUNT as usize];
+    for nation in NationId::all() {
+        let Some(name) = session.game.nations().display_name(nation) else {
+            continue;
+        };
+        let Some(anchor) = session.game.ocean_overlay_anchor_for_nation(nation) else {
+            continue;
+        };
+        let (row, column) = session.game.map().geometry().row_column(anchor);
+        seeds[usize::from(nation.get())] =
+            Some(super::diplomacy_map::DiplomacyLabelSeed { name, column, row });
     }
+    super::diplomacy_map::spawn_diplomacy_map_labels(
+        &mut commands,
+        &mut assets,
+        map_entity,
+        &seeds,
+    );
     commands
         .entity(tree.find(*root, fourcc!("okay")))
         .insert((ActivateOnPress, ModalDefault, DismissWindow))
@@ -187,8 +185,6 @@ fn project_battle_report(
     map: Single<(Entity, Option<&ImageNode>, &BattleReportMap)>,
     markers: Query<Entity, With<BattleReportMarker>>,
     mut assets: super::RetailUiAssets,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
 ) {
     let Ok(root) = roots.single() else {
         return;
@@ -207,34 +203,8 @@ fn project_battle_report(
             .owner_nation
             .and_then(TileOwnerTag::nation)
     };
-    let (mut picture, _) =
+    let (picture, _) =
         super::diplomacy_map::compose_diplomacy_map(owner_at, nation_owner_palette, None);
-    let mut painter = RetailRasterTextPainter::from_preset(
-        &fonts,
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 10,
-            alignment: 1,
-        },
-    )
-    .expect("retail battle-report diplomacy label style");
-    let mut seeds = [None; NationId::COUNT as usize];
-    for nation in NationId::all() {
-        let Some(name) = state.nations().display_name(nation) else {
-            continue;
-        };
-        let Some(anchor) = state.ocean_overlay_anchor_for_nation(nation) else {
-            continue;
-        };
-        let (row, column) = state.map().geometry().row_column(anchor);
-        seeds[usize::from(nation.get())] =
-            Some(super::diplomacy_map::DiplomacyLabelSeed { name, column, row });
-    }
-    let labels =
-        super::diplomacy_map::layout_diplomacy_map_labels(&seeds, |name| painter.measure(name));
-    super::diplomacy_map::draw_diplomacy_map_labels(&mut picture, &mut painter, &seeds, &labels);
     let image = picture.to_keyed_image(assets.default_dib_palette(), 0x10);
     if let Some(image_node) = map_image {
         assets.replace_image(&image_node.image, image);

@@ -270,12 +270,7 @@ fn bind_added_civilian_ledgers(
         });
 
         let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset {
-                font_family: 3,
-                face_flags: 0,
-                point_size: 12,
-                alignment: -2,
-            })
+            .text_style(RetailTextStylePreset::explicit(3, 0, 12, -2))
             .expect("retail civilian-ledger text style");
         let title = commands
             .spawn((
@@ -882,12 +877,7 @@ fn insert_retail_text(
     point_size: i32,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, 1))
         .expect("retail civilian modal text style");
     commands.entity(entity).insert((
         Text::new(text.to_owned()),
@@ -1424,12 +1414,7 @@ fn spawn_roster_title(
     offset: i16,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 12,
-            alignment: -2,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 0, 12, -2))
         .expect("retail roster title text style");
     let title = commands
         .spawn((
@@ -1495,12 +1480,7 @@ fn roster_text_style(
     point_size: i32,
 ) -> (TextFont, TextLayout, LineHeight) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size,
-            alignment: -2,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, -2))
         .expect("retail roster row text style");
     (font, layout, line_height)
 }
@@ -1755,12 +1735,7 @@ fn insert_styled_text(
     alignment: i32,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size,
-            alignment,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, alignment))
         .expect("retail army/navy report text style");
     commands.entity(entity).insert((
         Text::new(text.to_owned()),

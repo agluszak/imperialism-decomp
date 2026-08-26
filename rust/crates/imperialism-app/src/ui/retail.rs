@@ -94,12 +94,12 @@ pub fn retail_text_style(
     point_size: i32,
     alignment: i32,
 ) -> impl Scene {
-    let style = resolve_retail_text_style(RetailTextStylePreset {
+    let style = resolve_retail_text_style(RetailTextStylePreset::explicit(
         font_family,
         face_flags,
         point_size,
         alignment,
-    })
+    ))
     .expect("generated retail text style must resolve");
     let underline = style.underline.then(|| bsn! { Underline });
     let line_height = LineHeight::Px(style.logical_pixel_height as f32);
@@ -207,12 +207,12 @@ pub fn retail_centered_text_padding(
     height: i32,
     top: i32,
 ) -> impl Scene {
-    let text_height = resolve_retail_text_style(RetailTextStylePreset {
+    let text_height = resolve_retail_text_style(RetailTextStylePreset::explicit(
         font_family,
         face_flags,
         point_size,
-        alignment: 0,
-    })
+        0,
+    ))
     .expect("generated retail text style must resolve")
     .logical_pixel_height;
     bsn! {
@@ -359,10 +359,6 @@ impl RetailUiAssets<'_> {
         self.retail_assets.assets().indexed_picture(picture_id)
     }
 
-    pub fn fonts(&self) -> &RetailFonts {
-        &self.retail_fonts
-    }
-
     pub fn text_style(
         &mut self,
         preset: RetailTextStylePreset,
@@ -380,10 +376,6 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
-            .add_systems(
-                Update,
-                super::retail_raster_text::rasterize_retail_static_text,
-            )
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
@@ -773,13 +765,8 @@ mod tests {
     fn family_zero_bevy_text_uses_the_registered_system_font() {
         let mut font_assets = Assets::<Font>::default();
         let fonts = crate::fonts::load_test_fonts(&mut font_assets);
-        let style = resolve_retail_text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("family 0 resolves to System");
+        let style = resolve_retail_text_style(RetailTextStylePreset::explicit(0, 0, 12, 1))
+            .expect("family 0 resolves to System");
         assert_eq!(style.face, RetailFontFace::System);
 
         let system = fonts.get(RetailFontFace::System);
@@ -803,5 +790,55 @@ mod tests {
             LineHeight::Px(style.logical_pixel_height as f32)
         );
         assert!(!underline);
+    }
+
+    /// Source-level guardrail: text is never rasterized by hand. The custom
+    /// indexed-raster text renderer and its Swash backing are banned, and
+    /// `RetailTextStylePreset` must be built through the semantic `built`/`explicit`
+    /// constructors rather than raw family literals.
+    #[test]
+    fn custom_text_rasterization_and_raw_style_literals_are_banned() {
+        fn rust_files(dir: &std::path::Path, out: &mut Vec<std::path::PathBuf>) {
+            for entry in std::fs::read_dir(dir).expect("app ui source directory") {
+                let entry = entry.expect("readable ui source entry");
+                let path = entry.path();
+                if path.is_dir() {
+                    rust_files(&path, out);
+                } else if path.extension().is_some_and(|ext| ext == "rs") {
+                    out.push(path);
+                }
+            }
+        }
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut files = Vec::new();
+        rust_files(&root, &mut files);
+        let sources = files
+            .into_iter()
+            .map(|path| {
+                (
+                    path.clone(),
+                    std::fs::read_to_string(&path).expect("readable source"),
+                )
+            })
+            .collect::<Vec<_>>();
+        // Split the banned symbols so the guardrail does not trip over itself.
+        let painter = format!("RetailRaster{}", "TextPainter");
+        let module = format!("retail_{}", "raster_text");
+        let wash_impl = format!("s{}", "wash");
+        for (path, source) in &sources {
+            for forbidden in [painter.as_str(), module.as_str(), wash_impl.as_str()] {
+                assert!(
+                    !source.contains(forbidden),
+                    "{} must not reference banned custom text renderer symbol {forbidden:?}",
+                    path.display()
+                );
+            }
+            let literal = format!("RetailTextStylePreset{}", " {");
+            assert!(
+                !source.contains(&literal),
+                "{} must construct RetailTextStylePreset via built()/explicit(), not a struct literal",
+                path.display()
+            );
+        }
     }
 }

@@ -1,8 +1,7 @@
 use super::*;
-use crate::RetailFonts;
 use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
-use crate::ui::retail_raster_text::RetailRasterTextPainter;
+use imperialism_formats::RetailTextStylePreset;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct ShipyardRowAssets {
@@ -31,10 +30,22 @@ pub(in crate::ui::city) enum ShipyardDisplay {
     Picture,
 }
 
+/// Material required/available quantity drawn as a Bevy text child over DLOG.
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) struct ShipyardMaterialText {
+    index: usize,
+    available: bool,
+}
+
+/// One of the six stat values drawn as a Bevy text child over DLOG.
+#[derive(Component, Clone, Copy)]
+pub(in crate::ui::city) struct ShipyardStatValue {
+    index: usize,
+}
+
 #[derive(Component)]
 pub(in crate::ui::city) struct ShipyardDetailsVisual {
     base: IndexedPicture,
-    stat_labels: [String; 6],
 }
 
 pub(in crate::ui::city) fn configure_shipyard_dialog(
@@ -170,10 +181,76 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
         .expect("retail Shipyard dialog picture must load");
     let palette = *assets.default_dib_palette();
     let image = assets.add_image(base.to_image(&palette));
-    commands.entity(dlog).insert((
-        ImageNode::new(image),
-        ShipyardDetailsVisual { base, stat_labels },
-    ));
+    commands
+        .entity(dlog)
+        .insert((ImageNode::new(image), ShipyardDetailsVisual { base }));
+    // `TShipyardView::DoStartup` installs its 10-point (Book Antiqua) style on
+    // the material quantities and stat labels/values; raster compositing is kept
+    // only for the material icons and background art.
+    let (text_font, text_layout, text_line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(10, -2))
+        .expect("retail Shipyard detail text style");
+    for index in 0..6 {
+        for (available, baseline) in [(false, 0xb2), (true, 0xe6)] {
+            let x = 0x3a + index * 0x28;
+            commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(x as f32),
+                    top: px((baseline - 11) as f32),
+                    width: px(0x24 as f32),
+                    height: px(14.0),
+                    ..default()
+                },
+                Text::new(""),
+                text_font.clone(),
+                text_layout,
+                text_line_height,
+                TextColor(normal_color),
+                ShipyardMaterialText { index, available },
+                Visibility::Hidden,
+                Pickable::IGNORE,
+                ChildOf(dlog),
+            ));
+        }
+    }
+    for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(left),
+                top: px(baseline - 11.0),
+                width: px(0x3c as f32),
+                height: px(14.0),
+                ..default()
+            },
+            Text::new(stat_labels[index].clone()),
+            text_font.clone(),
+            text_layout,
+            text_line_height,
+            TextColor(normal_color),
+            Pickable::IGNORE,
+            ChildOf(dlog),
+        ));
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(left + 0x3c as f32),
+                top: px(baseline - 11.0),
+                width: px(0x24 as f32),
+                height: px(14.0),
+                ..default()
+            },
+            Text::new(""),
+            text_font.clone(),
+            text_layout,
+            text_line_height,
+            TextColor(normal_color),
+            ShipyardStatValue { index },
+            Pickable::IGNORE,
+            ChildOf(dlog),
+        ));
+    }
     commands.entity(root).insert(CityRowSelection {
         order: CityOrderId::Ship(ShipOrderSlot::MerchantEarlyPrimary),
         normal_color,
@@ -202,58 +279,33 @@ fn shipyard_queue_pictures(
     (compose(idle_id), compose(idle_id + 1))
 }
 
-fn draw_shipyard_details(
-    picture: &mut IndexedPicture,
-    text: &mut RetailRasterTextPainter<'_>,
-    stat_labels: &[String; 6],
-    row: &ShipyardRowData,
-    city: &CityState,
-) {
+fn compose_shipyard_material_icons(picture: &mut IndexedPicture, row: &ShipyardRowData) {
     for (index, material) in row.materials.iter().enumerate() {
         let text_x = 0x3a + index as i32 * 0x28;
         picture.blit_keyed_at(&material.picture, IVec2::new(text_x - 0x20, 0x98), 0x10);
         picture.blit_keyed_at(&material.picture, IVec2::new(text_x - 0x20, 0xcc), 0x10);
-        text.draw(
-            picture,
-            IVec2::new(text_x, 0xb2),
-            &material.required.to_string(),
-            0xd2,
-        );
-        let available = city.stockpile[material.resource];
-        text.draw(
-            picture,
-            IVec2::new(text_x, 0xe6),
-            &available.to_string(),
-            if available < material.required {
-                0xcb
-            } else {
-                0xd2
-            },
-        );
-    }
-    for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
-        let origin = IVec2::new(left as i32, baseline as i32);
-        text.draw(picture, origin, &stat_labels[index], 0xd2);
-        text.draw(
-            picture,
-            origin + IVec2::new(0x3c, 0),
-            &row.stats[index].to_string(),
-            0xd2,
-        );
     }
 }
 
 pub(in crate::ui::city) fn sync_shipyard_details(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
     selections: Query<Ref<CityRowSelection>>,
     rows: Query<(&CityRowChoice, &ShipyardRowAssets)>,
     mut texts: Query<(&ShipyardDisplay, &mut Text), Without<ImageNode>>,
     mut images: Query<(&ShipyardDisplay, &mut ImageNode), Without<ShipyardDetailsVisual>>,
     details: Query<(&ShipyardDetailsVisual, &ImageNode)>,
+    mut material_texts: Query<
+        (
+            &ShipyardMaterialText,
+            &mut Text,
+            &mut TextColor,
+            &mut Visibility,
+        ),
+        Without<ShipyardStatValue>,
+    >,
+    mut stat_values: Query<(&ShipyardStatValue, &mut Text), Without<ShipyardMaterialText>>,
 ) {
     let Some(selection) = selections
         .iter()
@@ -283,22 +335,33 @@ pub(in crate::ui::city) fn sync_shipyard_details(
             image.image.clone_from(&row.picture);
         }
     }
-    let mut text = RetailRasterTextPainter::from_preset(
-        &fonts,
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        },
-    )
-    .expect("retail Shipyard custom-drawing text style");
     for (visual, image_node) in &details {
         let mut picture = visual.base.clone();
-        draw_shipyard_details(&mut picture, &mut text, &visual.stat_labels, row, city);
+        compose_shipyard_material_icons(&mut picture, row);
         if let Some(mut image) = image_assets.get_mut(&image_node.image) {
             *image = picture.to_image(retail.assets().default_dib_palette());
         }
+    }
+    for (material_text, mut text, mut color, mut visibility) in &mut material_texts {
+        let Some(material) = row.materials.get(material_text.index) else {
+            *visibility = Visibility::Hidden;
+            continue;
+        };
+        *visibility = Visibility::Inherited;
+        let value = if material_text.available {
+            let available = city.stockpile[material.resource];
+            color.0 = if available < material.required {
+                selection.warning_color
+            } else {
+                selection.normal_color
+            };
+            available
+        } else {
+            material.required
+        };
+        text.0 = value.to_string();
+    }
+    for (stat_value, mut text) in &mut stat_values {
+        text.0 = row.stats[stat_value.index].to_string();
     }
 }

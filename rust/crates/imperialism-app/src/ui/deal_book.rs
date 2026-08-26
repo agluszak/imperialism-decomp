@@ -6,7 +6,6 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailPressedOverlay, RetailTree};
 use super::retail_raster::IndexedRasterExt;
-use super::retail_raster_text::RetailRasterText;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::picking::events::{Click, Pointer};
@@ -172,20 +171,10 @@ fn bind_deal_book(
         })),
     };
     let (body, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -1,
-        })
+        .text_style(RetailTextStylePreset::built(10, -1))
         .expect("retail deal-book body text style");
     let (heading, heading_layout, heading_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 14,
-            alignment: -1,
-        })
+        .text_style(RetailTextStylePreset::built(14, -1))
         .expect("retail deal-book heading text style");
     let fonts = DealBookFonts {
         body,
@@ -203,29 +192,13 @@ fn bind_deal_book(
     // Mac titL is family 0 / 18pt. The generator only emits shipped fonts (modes 1-3),
     // and TDealBookPicture::Startup does not restyle titL on Windows.
     let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 18,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(0, 0, 18, 1))
         .expect("retail deal-book title text style");
     commands.entity(tree.find(root, fourcc!("titL"))).insert((
         title_font,
         title_layout,
         title_line_height,
         TextColor(Color::BLACK),
-        RetailRasterText {
-            preset: RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 18,
-                alignment: 1,
-            },
-            width: 157,
-            height: 22,
-            color: 0,
-        },
     ));
 
     let tabs = tree.find(root, fourcc!("tabs"));
@@ -1197,24 +1170,6 @@ fn spawn_text_at(
         } else {
             screen.fonts.body_color
         }),
-        // Family 0 is the bitmap System face; paint it through the indexed-raster
-        // path. TDealLine body text uses theme 0x2b6a (palette 0x5c); TCommodityLine
-        // and the category headings use 0x2b67 (black).
-        RetailRasterText {
-            preset: RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: if heading { 14 } else { 10 },
-                alignment: if heading && left == 0.0 && width == PAGE_WIDTH {
-                    1
-                } else {
-                    -1
-                },
-            },
-            width: width as i32,
-            height: LINE_HEIGHT as i32,
-            color: if heading { 0 } else { 0x5c },
-        },
         Pickable::IGNORE,
         ChildOf(host),
     ));

@@ -9,8 +9,7 @@ use super::retail_amount_bar::{
     trade_amount_bar_click_value, trade_amount_bar_picture,
 };
 use super::retail_raster::IndexedRasterExt;
-use super::retail_raster_text::RetailRasterTextPainter;
-use crate::{AppState, RetailAssetsResource, RetailFonts};
+use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
@@ -203,10 +202,12 @@ enum TradeDisplay {
 #[derive(Component, Clone, Copy)]
 struct TradeGaugeVisual(TradeCommodity);
 
-#[derive(Component)]
-struct TradeScreenVisual {
-    base: IndexedPicture,
-    rows: [(TradeCommodity, IVec2); TRADE_ROWS.len()],
+/// Right-aligned price or stock value of one trade row, drawn as a Bevy text
+/// child over the static trade-screen picture.
+#[derive(Component, Clone, Copy)]
+enum TradeRowText {
+    Price(TradeCommodity),
+    Stock(TradeCommodity),
 }
 
 pub(crate) struct TradePlugin;
@@ -222,7 +223,7 @@ impl Plugin for TradePlugin {
             Update,
             (
                 sync_trade_text,
-                sync_trade_screen_picture,
+                sync_trade_row_text,
                 sync_trade_cards,
                 sync_trade_gauges,
                 sync_trade_presence,
@@ -327,9 +328,39 @@ fn bind_trade_screen(
         .indexed_picture(PictureId::new(2101))
         .expect("retail Trade screen picture must load");
     let image = assets.add_image(base.to_image(&palette));
-    commands
-        .entity(tree.find(*root, fourcc!("main")))
-        .insert((ImageNode::new(image), TradeScreenVisual { base, rows }));
+    let main = tree.find(*root, fourcc!("main"));
+    commands.entity(main).insert(ImageNode::new(image));
+    // `TTradeCluster::DoPostCreate` uses `InitializeUiTextStyleDescriptor(..., 0, 0xe, 0x2b68, 2)`:
+    // explicit family 2 (Book Antiqua), 14pt, right-aligned, palette 0x13.
+    let (text_font, text_layout, text_line_height, _) = assets
+        .text_style(RetailTextStylePreset::explicit(2, 0, 14, -1))
+        .expect("retail Trade price/stock text style");
+    let text_color = TextColor(assets.palette_color(0x13));
+    for &(commodity, origin) in &rows {
+        for (kind, left, width) in [
+            (TradeRowText::Price(commodity), 178, 60),
+            (TradeRowText::Stock(commodity), 260, 40),
+        ] {
+            commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px((origin.x + left) as f32),
+                    top: px(origin.y as f32),
+                    width: px(width as f32),
+                    height: px(20.0),
+                    ..default()
+                },
+                Text::new(""),
+                text_font.clone(),
+                text_layout,
+                text_line_height,
+                text_color,
+                kind,
+                Pickable::IGNORE,
+                ChildOf(main),
+            ));
+        }
+    }
 }
 
 fn bind_trade_controls(
@@ -541,50 +572,26 @@ fn sync_trade_text(
     }
 }
 
-fn sync_trade_screen_picture(
+fn sync_trade_row_text(
     session: Res<GameSession>,
-    retail: Res<RetailAssetsResource>,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
-    mut images: ResMut<Assets<Image>>,
     roots: Query<(), Added<TradeScreen>>,
-    screens: Query<(&TradeScreenVisual, &ImageNode)>,
+    mut texts: Query<(&TradeRowText, &mut Text)>,
 ) {
     if !session.is_changed() && roots.is_empty() {
         return;
     }
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
-    let mut text = RetailRasterTextPainter::from_preset(
-        &fonts,
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 14,
-            alignment: -1,
-        },
-    )
-    .expect("retail Trade custom-drawing text style");
-    for (screen, image_node) in &screens {
-        let mut picture = screen.base.clone();
-        for &(commodity, origin) in &screen.rows {
-            let stock = match major.city.stockpile[commodity.resource()] {
+    for (row, mut text) in &mut texts {
+        text.0 = match *row {
+            TradeRowText::Price(commodity) => {
+                format_currency(session.game.market().rows[commodity].price)
+            }
+            TradeRowText::Stock(commodity) => match major.city.stockpile[commodity.resource()] {
                 0 => "--".to_owned(),
                 stock => stock.to_string(),
-            };
-            text.draw_right(
-                &mut picture,
-                origin.x + 238,
-                origin.y + 12,
-                &format_currency(session.game.market().rows[commodity].price),
-                0x13,
-            );
-            text.draw_right(&mut picture, origin.x + 300, origin.y + 12, &stock, 0x13);
-        }
-        if let Some(mut image) = images.get_mut(&image_node.image) {
-            *image = picture.to_image(retail.assets().default_dib_palette());
-        }
+            },
+        };
     }
 }
 

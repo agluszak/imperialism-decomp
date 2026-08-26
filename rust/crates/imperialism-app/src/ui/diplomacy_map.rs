@@ -2,12 +2,14 @@
 //!
 //! Tile fills and hit testing use the 5-pixel diplomacy scale with the odd-row hex
 //! offset. Label anchors omit that offset, matching the recovered overlay geometry.
+//! Nation names are ordinary Bevy text children positioned by the recovered
+//! collision-layout algorithm once Bevy has measured each label.
 
+use super::retail::RetailUiAssets;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
-use super::retail_raster_text::RetailRasterTextPainter;
 use bevy::prelude::*;
 use imperialism_core::*;
-use imperialism_formats::IndexedPicture;
+use imperialism_formats::{IndexedPicture, RetailTextStylePreset};
 
 pub const DIPLOMACY_MAP_WIDTH: i32 = 540;
 pub const DIPLOMACY_MAP_HEIGHT: i32 = 300;
@@ -111,9 +113,8 @@ pub fn compose_diplomacy_map(
 
 pub fn layout_diplomacy_map_labels(
     seeds: &[Option<DiplomacyLabelSeed<'_>>],
-    measure: impl Fn(&str) -> i32,
+    widths: &[i32; NATION_SLOT_COUNT],
 ) -> Vec<(usize, IRect)> {
-    let mut widths = [0_i32; NATION_SLOT_COUNT];
     let mut xs = [0_i32; NATION_SLOT_COUNT];
     let mut ys = [0_i32; NATION_SLOT_COUNT];
     let mut placed = Vec::new();
@@ -124,11 +125,10 @@ pub fn layout_diplomacy_map_labels(
         if seed.name.is_empty() {
             continue;
         }
-        let width = measure(seed.name);
+        let width = widths[index];
         let anchor = diplomacy_label_anchor(seed.row, seed.column);
         let x = anchor.x - width / 2;
-        let y = resolve_label_y(index, x, anchor.y, width, &widths, &xs, &ys);
-        widths[index] = width;
+        let y = resolve_label_y(index, x, anchor.y, width, widths, &xs, &ys);
         xs[index] = x;
         ys[index] = y;
         let rect = clamp_rect_preserving_size(
@@ -140,19 +140,112 @@ pub fn layout_diplomacy_map_labels(
     placed
 }
 
-pub fn draw_diplomacy_map_labels(
-    picture: &mut IndexedPicture,
-    painter: &mut RetailRasterTextPainter<'_>,
+/// A nation-name label placed on a diplomacy map. The label is measured by
+/// Bevy's text layout (its `ComputedNode` width), then positioned by
+/// [`layout_diplomacy_map_label_entities`] using the recovered collision layout.
+#[derive(Component, Clone)]
+pub struct DiplomacyMapLabel {
+    index: usize,
+    name: String,
+    column: u16,
+    row: u16,
+    measured: Option<i32>,
+}
+
+/// Spawn the nation-name labels as absolutely positioned `Text` children of
+/// `map`. The map node must be `DIPLOMACY_MAP_WIDTH`×`DIPLOMACY_MAP_HEIGHT`.
+pub fn spawn_diplomacy_map_labels(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    map: Entity,
     seeds: &[Option<DiplomacyLabelSeed<'_>>],
-    labels: &[(usize, IRect)],
 ) {
-    for &(index, rect) in labels {
-        let Some(seed) = seeds.get(index).copied().flatten() else {
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(10, 1))
+        .expect("retail diplomacy map label style");
+    for (index, seed) in seeds.iter().enumerate().take(NATION_SLOT_COUNT) {
+        let Some(seed) = seed else {
             continue;
         };
-        let origin = IVec2::new(rect.min.x, rect.max.y);
-        painter.draw(picture, origin + IVec2::ONE, seed.name, 0xd2);
-        painter.draw(picture, origin, seed.name, 0x13);
+        if seed.name.is_empty() {
+            continue;
+        }
+        let anchor = diplomacy_label_anchor(seed.row, seed.column);
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(anchor.x),
+                top: px(anchor.y),
+                ..default()
+            },
+            Text::new(seed.name.to_owned()),
+            font.clone(),
+            layout,
+            line_height,
+            Pickable::IGNORE,
+            DiplomacyMapLabel {
+                index,
+                name: seed.name.to_owned(),
+                column: seed.column,
+                row: seed.row,
+                measured: None,
+            },
+            ChildOf(map),
+        ));
+    }
+}
+
+/// Measures every diplomacy-map label through Bevy's text layout and, once all
+/// widths are known, applies the recovered collision-layout positions.
+pub fn layout_diplomacy_map_label_entities(
+    mut labels: Query<(Entity, &mut DiplomacyMapLabel, &ComputedNode)>,
+    mut nodes: Query<&mut Node>,
+) {
+    let mut all_measured = true;
+    for (_, mut label, computed) in &mut labels {
+        if label.measured.is_none() {
+            let width = computed.size.x.round() as i32;
+            if width <= 0 {
+                all_measured = false;
+            } else {
+                label.measured = Some(width);
+            }
+        }
+    }
+    if !all_measured {
+        return;
+    }
+    let mut names: [Option<(String, u16, u16)>; NATION_SLOT_COUNT] = std::array::from_fn(|_| None);
+    let mut widths = [0_i32; NATION_SLOT_COUNT];
+    let mut entities = [None; NATION_SLOT_COUNT];
+    for (entity, label, _) in &mut labels {
+        let Some(width) = label.measured else {
+            continue;
+        };
+        names[label.index] = Some((label.name.clone(), label.column, label.row));
+        widths[label.index] = width;
+        entities[label.index] = Some(entity);
+    }
+    let mut seeds = [None; NATION_SLOT_COUNT];
+    for (index, entry) in names.iter().enumerate() {
+        if let Some((name, column, row)) = entry.as_ref() {
+            seeds[index] = Some(DiplomacyLabelSeed {
+                name,
+                column: *column,
+                row: *row,
+            });
+        }
+    }
+    for (index, rect) in layout_diplomacy_map_labels(&seeds, &widths) {
+        let Some(entity) = entities[index] else {
+            continue;
+        };
+        if let Ok(mut node) = nodes.get_mut(entity) {
+            node.left = px(rect.min.x);
+            node.top = px(rect.min.y);
+            node.width = px(rect.width());
+            node.height = px(rect.height());
+        }
     }
 }
 
@@ -324,7 +417,10 @@ mod tests {
             });
             seeds
         };
-        let labels = layout_diplomacy_map_labels(&seeds, |name| name.len() as i32);
+        let mut widths = [0_i32; NATION_SLOT_COUNT];
+        widths[0] = 6;
+        widths[1] = 5;
+        let labels = layout_diplomacy_map_labels(&seeds, &widths);
         assert_eq!(labels.len(), 2);
         assert_ne!(labels[0].1.min.y, labels[1].1.min.y);
     }

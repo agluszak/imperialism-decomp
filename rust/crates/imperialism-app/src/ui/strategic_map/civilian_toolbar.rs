@@ -293,12 +293,7 @@ fn spawn_civilian_legend(
         .string(CIVILIAN_NAME_GROUP, i16::from(kind.retail()) + 1)
         .expect("retail civilian class name must load");
     let (name_font, name_layout, name_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::built(12, 1))
         .expect("retail civilian name text style");
     spawn_legend_text(
         commands,
@@ -686,12 +681,7 @@ fn legend_text_style(
     assets: &mut RetailUiAssets,
 ) -> (TextFont, TextLayout, bevy::text::LineHeight, bool) {
     assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        })
+        .text_style(RetailTextStylePreset::built(10, -2))
         .expect("retail civilian legend text style")
 }
 
