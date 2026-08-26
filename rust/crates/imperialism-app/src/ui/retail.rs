@@ -364,6 +364,10 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
+            .add_systems(
+                Update,
+                super::retail_raster_text::rasterize_retail_static_text,
+            )
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
@@ -593,6 +597,7 @@ pub fn ancestor_with<D: QueryData, F: QueryFilter>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
     use bevy::ecs::system::SystemState;
     use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
     use bevy::text::{FontSize, FontSource};

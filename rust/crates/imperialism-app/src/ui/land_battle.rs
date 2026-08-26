@@ -37,7 +37,10 @@ const TACTICAL_NO_FORT_ATLAS_PICTURE: i16 = 0xee7;
 const TACTICAL_EFFECT_ATLAS_PICTURE: i16 = 0xeeb;
 const TACTICAL_EXPERIENCE_STRIP_PICTURE: i16 = 800;
 const TACTICAL_UNIT_STATUS_ATLAS_PICTURE: i16 = 0x244;
-const TACTICAL_TRANSPARENT_INDEX: u8 = 0x24;
+// `TTacArmyView` passes `0x24` to the legacy blitter after selecting palette
+// `0x10`. `RetailAssets::indexed_picture` exposes the resulting DIB indices,
+// where that keyed magenta is index `0x10` (the 0xee2 atlas confirms this).
+const TACTICAL_TRANSPARENT_INDEX: u8 = 0x10;
 const TACTICAL_FIRE_SFX: [u16; 30] = [
     0x3a98, 0x3a98, 0x3a98, 0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3a98, 0x3a98, 0x3a98, 0x3a98,
     0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3aa6, 0x3aa6, 0x3aa6, 0x3a9c, 0x3aa6, 0x3a9a, 0x3a9b, 0x3a9b,
