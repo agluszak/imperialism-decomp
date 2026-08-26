@@ -39,7 +39,7 @@ pub(crate) struct OceanZoneLabel {
 
 #[derive(Component)]
 pub(crate) struct OceanNationLabel {
-    nation: NationId,
+    tile: Option<TileId>,
 }
 
 #[derive(Component)]
@@ -189,10 +189,12 @@ fn spawn_ocean_labels(
 
         // Retail draws the nation name once in the main color with a +1,+1
         // shadow copy; model it as a single Text + TextShadow entity.
-        for (nation, common) in session.game.nations().common_states() {
+        for (_, common) in session.game.nations().common_states() {
             spawn_ocean_label(
                 parent,
-                OceanNationLabel { nation },
+                OceanNationLabel {
+                    tile: common.overlay_anchor_tile,
+                },
                 &common.display_name,
                 Vec2::new(0.0, -14.0),
                 palette_color(&palette, 0),
@@ -240,7 +242,7 @@ fn spawn_ocean_label<M: Component>(
 }
 
 fn sync_ocean_labels(
-    mut session: ResMut<GameSession>,
+    session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     mut zones: Query<
         (
@@ -279,7 +281,7 @@ fn sync_ocean_labels(
     for (label, anchor, mut node, mut visibility) in &mut nations {
         project_ocean_label(
             &projection,
-            session.game.overlay_anchor_for_nation(label.nation),
+            label.tile,
             anchor.offset,
             map.view.is_overview(),
             &mut node,
@@ -432,7 +434,7 @@ mod tests {
     }
 
     #[test]
-    fn nation_ocean_label_follows_the_current_overlay_anchor() {
+    fn nation_ocean_label_keeps_its_bind_time_overlay_anchor() {
         let nation = NationId::new(0);
         let mut first_parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         let owner = TileOwnerTag::from_nation(nation);
@@ -480,7 +482,9 @@ mod tests {
         let label = app
             .world_mut()
             .spawn((
-                OceanNationLabel { nation },
+                OceanNationLabel {
+                    tile: Some(first_tile),
+                },
                 OceanLabelAnchor { offset: Vec2::ZERO },
                 Node::default(),
                 Visibility::Hidden,
@@ -496,7 +500,7 @@ mod tests {
 
         app.insert_resource(second);
         app.update();
-        assert_ne!(app.world().get::<Node>(label).unwrap().left, first_left);
+        assert_eq!(app.world().get::<Node>(label).unwrap().left, first_left);
         assert_eq!(
             app.world().get::<Visibility>(label),
             Some(&Visibility::Visible)

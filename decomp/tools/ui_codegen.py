@@ -2136,18 +2136,18 @@ def _render_city_dialog_controls(
     lines.extend(row_array("ARMORY_ROW_CONTROLS", controls.armory_rows))
     lines.extend(row_array("UNIVERSITY_ROW_CONTROLS", controls.university_rows))
     lines.append(
-        f"pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, f32); {len(controls.shipyard_rows)}] = ["
+        f"pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); {len(controls.shipyard_rows)}] = ["
     )
     for row in controls.shipyard_rows:
         lines.append(
-            f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}, {row.overlay_left}.0),"
+            f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}, {row.overlay_left}),"
         )
     lines.extend(["];", ""])
     lines.append(
-        f"pub const SHIPYARD_STAT_ORIGINS: [(f32, f32); {len(controls.shipyard_stat_origins)}] = ["
+        f"pub const SHIPYARD_STAT_ORIGINS: [(i32, i32); {len(controls.shipyard_stat_origins)}] = ["
     )
     for left, top in controls.shipyard_stat_origins:
-        lines.append(f"    ({left}.0, {top}.0),")
+        lines.append(f"    ({left}, {top}),")
     lines.extend(["];", ""])
     training = ", ".join(_rust_fourcc(tag) for tag in controls.training_orders)
     lines.append(f"pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [{training}];")

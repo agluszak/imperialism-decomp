@@ -16,80 +16,56 @@ pub(in crate::ui::city) struct IndustryPage {
     pub(in crate::ui::city) stocks: &'static [(ResourceKind, FourCc, i16)],
 }
 
-#[derive(Clone, Copy)]
-pub(in crate::ui::city) struct CityChoiceRow {
-    pub(in crate::ui::city) binding: CityOrderBinding,
-    pub(in crate::ui::city) button_tag: FourCc,
-}
+/// The two training rows keyed by training level.
+pub(in crate::ui::city) const TRAINING_CONTROLS: TrainingOrderTable<FourCc> =
+    TrainingOrderTable::from_array(generated::TRAINING_ORDER_TAGS);
 
-impl CityChoiceRow {
-    const fn military(
-        category: MilitaryRecruitmentCategory,
-        (order_tag, button_tag): (FourCc, FourCc),
-    ) -> Self {
-        Self {
-            binding: CityOrderBinding {
-                order: CityOrderId::MilitaryRecruit(category),
-                tag: order_tag,
-            },
-            button_tag,
-        }
-    }
+/// The eight armory rows keyed by recruitment category.
+pub(in crate::ui::city) const ARMORY_CONTROLS: MilitaryRecruitOrderTable<(FourCc, FourCc)> =
+    MilitaryRecruitOrderTable::from_array(generated::ARMORY_ROW_CONTROLS);
 
-    const fn civilian(kind: CivilianUnitKind, (order_tag, button_tag): (FourCc, FourCc)) -> Self {
-        Self {
-            binding: CityOrderBinding {
-                order: CityOrderId::CivilianRecruit(kind),
-                tag: order_tag,
-            },
-            button_tag,
-        }
-    }
+/// The eight shipyard rows keyed by order slot.
+pub(in crate::ui::city) const SHIPYARD_CONTROLS: ShipOrderTable<(FourCc, FourCc, i32)> =
+    ShipOrderTable::from_array(generated::SHIPYARD_ROW_CONTROLS);
 
-    pub(in crate::ui::city) fn military_category(self) -> MilitaryRecruitmentCategory {
-        match self.binding.order {
-            CityOrderId::MilitaryRecruit(category) => category,
-            other => panic!("Armory row is a military recruit order, got {other:?}"),
-        }
-    }
-
-    pub(in crate::ui::city) fn civilian_kind(self) -> CivilianUnitKind {
-        match self.binding.order {
-            CityOrderId::CivilianRecruit(kind) => kind,
-            other => panic!("University row is a civilian recruit order, got {other:?}"),
-        }
-    }
-}
-
-#[derive(Clone, Copy)]
-pub(in crate::ui::city) struct ShipyardRow {
-    pub(in crate::ui::city) binding: CityOrderBinding,
-    pub(in crate::ui::city) button_tag: FourCc,
-    pub(in crate::ui::city) overlay_left: f32,
-}
-
-impl ShipyardRow {
-    const fn new(
-        slot: ShipOrderSlot,
-        (order_tag, button_tag, overlay_left): (FourCc, FourCc, f32),
-    ) -> Self {
-        Self {
-            binding: CityOrderBinding {
-                order: CityOrderId::Ship(slot),
-                tag: order_tag,
-            },
-            button_tag,
-            overlay_left,
-        }
-    }
-
-    pub(in crate::ui::city) fn slot(self) -> ShipOrderSlot {
-        match self.binding.order {
-            CityOrderId::Ship(slot) => slot,
-            other => panic!("Shipyard row is a ship order, got {other:?}"),
-        }
-    }
-}
+/// The seven university rows retail exposes, each carrying its civilian kind.
+pub(in crate::ui::city) const UNIVERSITY_CONTROLS: [(CivilianUnitKind, FourCc, FourCc); 7] = [
+    (
+        CivilianUnitKind::Miner,
+        generated::UNIVERSITY_ROW_CONTROLS[0].0,
+        generated::UNIVERSITY_ROW_CONTROLS[0].1,
+    ),
+    (
+        CivilianUnitKind::Prospector,
+        generated::UNIVERSITY_ROW_CONTROLS[1].0,
+        generated::UNIVERSITY_ROW_CONTROLS[1].1,
+    ),
+    (
+        CivilianUnitKind::Farmer,
+        generated::UNIVERSITY_ROW_CONTROLS[2].0,
+        generated::UNIVERSITY_ROW_CONTROLS[2].1,
+    ),
+    (
+        CivilianUnitKind::Forester,
+        generated::UNIVERSITY_ROW_CONTROLS[3].0,
+        generated::UNIVERSITY_ROW_CONTROLS[3].1,
+    ),
+    (
+        CivilianUnitKind::Engineer,
+        generated::UNIVERSITY_ROW_CONTROLS[4].0,
+        generated::UNIVERSITY_ROW_CONTROLS[4].1,
+    ),
+    (
+        CivilianUnitKind::Rancher,
+        generated::UNIVERSITY_ROW_CONTROLS[5].0,
+        generated::UNIVERSITY_ROW_CONTROLS[5].1,
+    ),
+    (
+        CivilianUnitKind::Driller,
+        generated::UNIVERSITY_ROW_CONTROLS[6].0,
+        generated::UNIVERSITY_ROW_CONTROLS[6].1,
+    ),
+];
 
 const fn item_binding(item: ManufacturedItem, page: usize, order: usize) -> CityOrderBinding {
     CityOrderBinding {
@@ -110,115 +86,7 @@ const fn stock_binding(
     )
 }
 
-pub(in crate::ui::city) const TRAINING_ORDERS: [CityOrderBinding; 2] = [
-    CityOrderBinding {
-        order: CityOrderId::Training(TrainingLevel::Medium),
-        tag: generated::TRAINING_ORDER_TAGS[0],
-    },
-    CityOrderBinding {
-        order: CityOrderId::Training(TrainingLevel::High),
-        tag: generated::TRAINING_ORDER_TAGS[1],
-    },
-];
-pub(in crate::ui::city) const ARMORY_ROWS: [CityChoiceRow; 8] = [
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::LightInfantry,
-        generated::ARMORY_ROW_CONTROLS[0],
-    ),
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::RegularInfantry,
-        generated::ARMORY_ROW_CONTROLS[1],
-    ),
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::HeavyInfantry,
-        generated::ARMORY_ROW_CONTROLS[2],
-    ),
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::LightCavalry,
-        generated::ARMORY_ROW_CONTROLS[3],
-    ),
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::HeavyCavalry,
-        generated::ARMORY_ROW_CONTROLS[4],
-    ),
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::LightArtillery,
-        generated::ARMORY_ROW_CONTROLS[5],
-    ),
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::HeavyArtillery,
-        generated::ARMORY_ROW_CONTROLS[6],
-    ),
-    CityChoiceRow::military(
-        MilitaryRecruitmentCategory::Demolitionist,
-        generated::ARMORY_ROW_CONTROLS[7],
-    ),
-];
-pub(in crate::ui::city) const UNIVERSITY_ROWS: [CityChoiceRow; 7] = [
-    CityChoiceRow::civilian(
-        CivilianUnitKind::Miner,
-        generated::UNIVERSITY_ROW_CONTROLS[0],
-    ),
-    CityChoiceRow::civilian(
-        CivilianUnitKind::Prospector,
-        generated::UNIVERSITY_ROW_CONTROLS[1],
-    ),
-    CityChoiceRow::civilian(
-        CivilianUnitKind::Farmer,
-        generated::UNIVERSITY_ROW_CONTROLS[2],
-    ),
-    CityChoiceRow::civilian(
-        CivilianUnitKind::Forester,
-        generated::UNIVERSITY_ROW_CONTROLS[3],
-    ),
-    CityChoiceRow::civilian(
-        CivilianUnitKind::Engineer,
-        generated::UNIVERSITY_ROW_CONTROLS[4],
-    ),
-    CityChoiceRow::civilian(
-        CivilianUnitKind::Rancher,
-        generated::UNIVERSITY_ROW_CONTROLS[5],
-    ),
-    CityChoiceRow::civilian(
-        CivilianUnitKind::Driller,
-        generated::UNIVERSITY_ROW_CONTROLS[6],
-    ),
-];
-pub(in crate::ui::city) const SHIPYARD_ROWS: [ShipyardRow; 8] = [
-    ShipyardRow::new(
-        ShipOrderSlot::MerchantEarlyPrimary,
-        generated::SHIPYARD_ROW_CONTROLS[0],
-    ),
-    ShipyardRow::new(
-        ShipOrderSlot::MerchantEarlySecondary,
-        generated::SHIPYARD_ROW_CONTROLS[1],
-    ),
-    ShipyardRow::new(
-        ShipOrderSlot::MerchantAdvancedPrimary,
-        generated::SHIPYARD_ROW_CONTROLS[2],
-    ),
-    ShipyardRow::new(
-        ShipOrderSlot::MerchantAdvancedSecondary,
-        generated::SHIPYARD_ROW_CONTROLS[3],
-    ),
-    ShipyardRow::new(
-        ShipOrderSlot::WarshipEarlyPrimary,
-        generated::SHIPYARD_ROW_CONTROLS[4],
-    ),
-    ShipyardRow::new(
-        ShipOrderSlot::WarshipEarlySecondary,
-        generated::SHIPYARD_ROW_CONTROLS[5],
-    ),
-    ShipyardRow::new(
-        ShipOrderSlot::WarshipAdvancedPrimary,
-        generated::SHIPYARD_ROW_CONTROLS[6],
-    ),
-    ShipyardRow::new(
-        ShipOrderSlot::WarshipAdvancedSecondary,
-        generated::SHIPYARD_ROW_CONTROLS[7],
-    ),
-];
-const INDUSTRY_PAGES: [IndustryPage; 7] = [
+pub(in crate::ui::city) const INDUSTRY_PAGES: [IndustryPage; 7] = [
     IndustryPage {
         slot: CityFacilitySlot::TextileMill,
         orders: &[item_binding(ManufacturedItem::Fabric, 0, 0)],

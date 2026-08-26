@@ -18,10 +18,10 @@ const ABILITY_STATUS_PICTURE_INDEX: TechnologyTable<i16> = TechnologyTable::from
 #[derive(Component)]
 struct TechnologyAdvanceRoot;
 
-#[derive(Component, Clone, Copy)]
-enum TechnologyAdvanceDisplay {
-    Picture,
-    Text,
+#[derive(Component)]
+struct TechnologyAdvanceView {
+    picture: Entity,
+    text: Entity,
 }
 
 pub(crate) struct TechnologyAdvancePlugin;
@@ -34,7 +34,7 @@ impl Plugin for TechnologyAdvancePlugin {
         )
         .add_systems(
             Update,
-            project_technology_advance.run_if(
+            render_technology_advance.run_if(
                 in_state(AppState::TechnologyAdvance).and_then(resource_exists::<GameSession>),
             ),
         );
@@ -57,12 +57,10 @@ fn bind_technology_advance(
 ) {
     let root = *root;
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
-    commands
-        .entity(tree.find(root, fourcc!("main")))
-        .insert(TechnologyAdvanceDisplay::Picture);
-    commands
-        .entity(tree.find(root, fourcc!("text")))
-        .insert((TechnologyAdvanceDisplay::Text, Text::default()));
+    commands.entity(root).insert(TechnologyAdvanceView {
+        picture: tree.find(root, fourcc!("main")),
+        text: tree.find(root, fourcc!("text")),
+    });
     commands
         .entity(tree.find(root, fourcc!("end ")))
         .insert(ActivateOnPress)
@@ -70,14 +68,14 @@ fn bind_technology_advance(
         .observe(on_technology_advance_activate);
 }
 
-fn project_technology_advance(
+fn render_technology_advance(
     session: Res<GameSession>,
-    added: Query<(), Added<TechnologyAdvanceDisplay>>,
+    view: Single<Ref<TechnologyAdvanceView>>,
     mut assets: RetailUiAssets,
-    mut pictures: Query<(&TechnologyAdvanceDisplay, &mut ImageNode)>,
-    mut texts: Query<(&TechnologyAdvanceDisplay, &mut Text), Without<ImageNode>>,
+    mut pictures: Query<&mut ImageNode>,
+    mut texts: Query<&mut Text>,
 ) {
-    if super::projection_idle(&session, !added.is_empty()) {
+    if !session.is_changed() && !view.is_added() {
         return;
     }
     let Some(tech) = session.game.current_technology_report() else {
@@ -90,16 +88,14 @@ fn project_technology_advance(
     let status = get_string(&assets, 0x2712, i16::from(tech.retail()));
     let prefix = get_string(&assets, 0x274e, i16::from(tech.retail()) - 1);
     let body = format!("{status}\n\n{prefix}");
-    for (display, mut image) in &mut pictures {
-        if matches!(*display, TechnologyAdvanceDisplay::Picture) {
-            image.image = picture.clone();
-        }
-    }
-    for (display, mut text) in &mut texts {
-        if matches!(*display, TechnologyAdvanceDisplay::Text) {
-            text.0.clone_from(&body);
-        }
-    }
+    pictures
+        .get_mut(view.picture)
+        .expect("bound technology picture must exist")
+        .image = picture;
+    texts
+        .get_mut(view.text)
+        .expect("bound technology text must exist")
+        .0 = body;
 }
 
 fn on_technology_advance_activate(

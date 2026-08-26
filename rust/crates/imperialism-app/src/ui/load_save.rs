@@ -5,7 +5,7 @@ use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
+use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{
     BattleReportPresentation, CityWindows, GameSession, StrategicMapSession, insert_loaded_game,
     remove_game_session,
@@ -932,17 +932,19 @@ fn bind_flag_menu(
                 color: assets.palette_color(shadow_palette),
             },
         ));
-        let Some(control) = control else {
+        let Some(control_tag) = control else {
             continue;
         };
-        let mut control = commands.entity(tree.find(root, control));
+        let control_entity = tree.find(root, control_tag);
+        let mut control = commands.entity(control_entity);
         control
             .insert(AccessibleLabel::new(caption))
             .remove::<InteractionDisabled>();
         if let Some(action) = action {
             control.insert(action).observe(on_flag_menu_activate);
         } else {
-            control.insert((ModalCancel, DismissWindow));
+            dismiss_on_activate(&mut commands, control_entity, root);
+            bind_modal_keys(&mut commands, root, None, Some(control_entity));
         }
     }
 }
@@ -1135,12 +1137,12 @@ mod tests {
     fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
         let root = world.spawn((FlagMenuPrompt { kind }, ModalWindow)).id();
         let accept = world
-            .spawn((DismissWindow, ChildOf(root)))
+            .spawn(ChildOf(root))
             .observe(on_flag_menu_prompt_activate)
             .id();
-        let dismiss = world
-            .spawn((ModalCancel, DismissWindow, ChildOf(root)))
-            .id();
+        let dismiss = world.spawn(ChildOf(root)).id();
+        dismiss_on_activate(&mut world.commands(), accept, root);
+        dismiss_on_activate(&mut world.commands(), dismiss, root);
         (accept, dismiss)
     }
 

@@ -5,7 +5,7 @@ use crate::ui::hover_help::{
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{insert_game_session, insert_loaded_game};
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
@@ -608,12 +608,11 @@ fn bind_planet_seed_dialog(
     let okay = tree.find(*root, OKAY);
     commands
         .entity(okay)
-        .insert((PlanetSeedAccept, ModalDefault, DismissWindow, TabIndex(1)))
+        .insert((PlanetSeedAccept, TabIndex(1)))
         .observe(on_planet_seed_accept);
     // Retail cancel control stays disabled; Escape does not dismiss.
-    commands
-        .entity(tree.find(*root, fourcc!("cncl")))
-        .insert(ModalCancel);
+    dismiss_on_activate(&mut commands, okay, *root);
+    bind_modal_keys(&mut commands, *root, Some(okay), None);
 }
 
 #[derive(SystemParam)]

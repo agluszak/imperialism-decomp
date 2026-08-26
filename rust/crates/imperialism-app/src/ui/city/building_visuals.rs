@@ -171,7 +171,8 @@ pub(in crate::ui::city) fn bind_city_screen(
 
 /// `TPlacard::Draw` uses `BuildUiTextStyleDescriptor(0, 10, 0x2b6c)`: size 10
 /// selects Book Antiqua (family 3), centered, palette `0x28`.
-const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset = RetailTextStylePreset::built(10, 1);
+const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset =
+    RetailTextStylePreset::explicit(3, 0, 10, 1);
 
 fn bind_city_summary_values(
     commands: &mut Commands,

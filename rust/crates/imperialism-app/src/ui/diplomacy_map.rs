@@ -89,16 +89,23 @@ pub fn layout_diplomacy_labels<'a>(
 ) -> Vec<PlacedDiplomacyLabel> {
     let mut xs = NationTable::default();
     let mut ys = NationTable::default();
+    let mut placed_widths = NationTable::default();
     let mut placed = Vec::new();
+    let mut labels = labels.into_iter().collect::<Vec<_>>();
+    labels.sort_by_key(|(nation, _, _)| nation.get());
     for (nation, name, tile) in labels {
         if name.is_empty() {
             continue;
         }
         let (row, column) = geometry.row_column(tile);
         let width = widths[nation];
+        // Retail writes this slot immediately before laying it out. Future
+        // slots intentionally remain zero (and use the special 0x5a width in
+        // collision checks).
+        placed_widths[nation] = width;
         let anchor = diplomacy_label_anchor(row, column);
         let x = anchor.x - width / 2;
-        let y = resolve_label_y(x, anchor.y, width, widths, &xs, &ys);
+        let y = resolve_label_y(x, anchor.y, width, &placed_widths, &xs, &ys);
         xs[nation] = x;
         ys[nation] = y;
         let rect = clamp_rect_preserving_size(
@@ -188,20 +195,20 @@ pub fn layout_diplomacy_nation_label_entities(
         return;
     }
     let geometry = MapGeometry::new(MapTopology::Bounded);
-    let mut widths = NationTable::default();
+    let mut measured_widths = NationTable::default();
     let mut placed: Vec<(Entity, NationId, String, TileId)> = Vec::new();
     for (entity, label, _) in &mut labels {
         let Some(width) = label.measured else {
             continue;
         };
-        widths[label.nation] = width;
+        measured_widths[label.nation] = width;
         placed.push((entity, label.nation, label.name.clone(), label.anchor));
     }
     let items = placed
         .iter()
         .map(|&(_, nation, ref name, tile)| (nation, name.as_str(), tile))
         .collect::<Vec<_>>();
-    for placed_label in layout_diplomacy_labels(items, geometry, &widths) {
+    for placed_label in layout_diplomacy_labels(items, geometry, &measured_widths) {
         let Some((entity, _, _, _)) = placed
             .iter()
             .find(|(_, nation, _, _)| *nation == placed_label.nation)

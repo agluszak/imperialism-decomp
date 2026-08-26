@@ -391,6 +391,7 @@ impl Plugin for DiplomacyPlugin {
                 sync_diplomacy_controls,
                 project_diplomacy_text,
                 render_diplomacy_panels,
+                layout_diplomacy_panel_text,
                 sync_diplomacy_information,
                 render_diplomacy_map,
                 super::diplomacy_map::layout_diplomacy_nation_label_entities,
@@ -1337,7 +1338,10 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
 /// Council). Panels composite only the transparent base; their text is ordinary
 /// Bevy text positioned by `render_diplomacy_panels`.
 #[derive(Component)]
-struct DiplomacyPanelText;
+struct DiplomacyPanelText {
+    origin: IVec2,
+    alignment: Justify,
+}
 
 #[allow(clippy::too_many_arguments)]
 fn spawn_panel_text(
@@ -1348,7 +1352,6 @@ fn spawn_panel_text(
     origin: IVec2,
     preset: RetailTextStylePreset,
     alignment: Justify,
-    box_width: f32,
 ) {
     let (font, _layout, line_height, _) = assets
         .text_style(preset)
@@ -1356,18 +1359,11 @@ fn spawn_panel_text(
     let logical_height = resolve_retail_text_style(preset)
         .map(|style| style.logical_pixel_height)
         .unwrap_or(14);
-    let left = match alignment {
-        Justify::Center => origin.x as f32 - box_width / 2.0,
-        Justify::Right => origin.x as f32 - box_width,
-        _ => origin.x as f32,
-    };
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
-            left: px(left),
+            left: px(origin.x),
             top: px((origin.y - logical_height) as f32),
-            width: px(box_width),
-            height: px(logical_height as f32),
             ..default()
         },
         Text::new(text),
@@ -1380,9 +1376,27 @@ fn spawn_panel_text(
             color: assets.palette_color(0x13),
         },
         Pickable::IGNORE,
-        DiplomacyPanelText,
+        DiplomacyPanelText { origin, alignment },
         ChildOf(panel),
     ));
+}
+
+/// Retail draws a single intrinsic string at its measured origin.  Bevy needs
+/// one layout pass before the corresponding centered/right-aligned origin is
+/// known; no fabricated wrapping rectangle is involved.
+fn layout_diplomacy_panel_text(mut labels: Query<(&DiplomacyPanelText, &ComputedNode, &mut Node)>) {
+    for (label, computed, mut node) in &mut labels {
+        let width = computed.size.x;
+        if width <= 0.0 {
+            continue;
+        }
+        let left = match label.alignment {
+            Justify::Center => label.origin.x as f32 - width / 2.0,
+            Justify::Right => label.origin.x as f32 - width,
+            _ => label.origin.x as f32,
+        };
+        node.left = px(left);
+    }
 }
 
 fn render_diplomacy_panels(
@@ -1427,7 +1441,6 @@ fn render_diplomacy_panels(
                     IVec2::new(15, 13),
                     title,
                     Justify::Left,
-                    90.0,
                 );
                 spawn_panel_text(
                     &mut commands,
@@ -1437,7 +1450,6 @@ fn render_diplomacy_panels(
                     IVec2::new(110, 13),
                     title,
                     Justify::Left,
-                    200.0,
                 );
                 for (index, baseline) in [54, 71, 88].into_iter().enumerate() {
                     spawn_panel_text(
@@ -1448,7 +1460,6 @@ fn render_diplomacy_panels(
                         IVec2::new(15, baseline),
                         row,
                         Justify::Left,
-                        90.0,
                     );
                     spawn_panel_text(
                         &mut commands,
@@ -1458,7 +1469,6 @@ fn render_diplomacy_panels(
                         IVec2::new(110, baseline),
                         row,
                         Justify::Left,
-                        200.0,
                     );
                 }
             }
@@ -1472,7 +1482,6 @@ fn render_diplomacy_panels(
                     IVec2::new(74, 15),
                     title,
                     Justify::Center,
-                    260.0,
                 );
                 for (index, (center, baseline)) in TREATY_LABEL_CENTERS.into_iter().enumerate() {
                     let panel_text = strings(&assets, index as i16 + 6);
@@ -1484,7 +1493,6 @@ fn render_diplomacy_panels(
                         IVec2::new(center as i32, baseline as i32),
                         small,
                         Justify::Center,
-                        60.0,
                     );
                 }
             }
@@ -1507,7 +1515,6 @@ fn render_diplomacy_panels(
                         origin,
                         if is_title { title } else { row },
                         Justify::Left,
-                        150.0,
                     );
                 }
                 let panel_text = format!(
@@ -1523,7 +1530,6 @@ fn render_diplomacy_panels(
                     IVec2::new(15, 37),
                     row,
                     Justify::Left,
-                    150.0,
                 );
             }
             DiplomacyTopic::Trade => {
@@ -1536,7 +1542,6 @@ fn render_diplomacy_panels(
                     IVec2::new(15, 13),
                     title,
                     Justify::Left,
-                    90.0,
                 );
                 for (index, origin) in [
                     IVec2::new(25, 85),
@@ -1558,7 +1563,6 @@ fn render_diplomacy_panels(
                         origin,
                         row,
                         Justify::Left,
-                        45.0,
                     );
                 }
                 for (index, center) in [156, 380, 473].into_iter().enumerate() {
@@ -1571,7 +1575,6 @@ fn render_diplomacy_panels(
                         IVec2::new(center, 108),
                         row,
                         Justify::Center,
-                        70.0,
                     );
                 }
             }
@@ -1584,7 +1587,6 @@ fn render_diplomacy_panels(
                     IVec2::new(259, 36),
                     council,
                     Justify::Center,
-                    300.0,
                 );
                 if let Some(rows) = &council_data.rows {
                     for (row, (label, value)) in rows.iter().enumerate() {
@@ -1597,7 +1599,6 @@ fn render_diplomacy_panels(
                             IVec2::new(259, baseline),
                             title,
                             Justify::Right,
-                            90.0,
                         );
                         spawn_panel_text(
                             &mut commands,
@@ -1607,7 +1608,6 @@ fn render_diplomacy_panels(
                             IVec2::new(263, baseline),
                             title,
                             Justify::Left,
-                            90.0,
                         );
                     }
                 }
