@@ -24,7 +24,6 @@ mod bindings;
 mod building_visuals;
 mod common_controls;
 mod dialogs;
-mod input;
 mod lifecycle;
 
 pub(super) use building_visuals::{CityBuildingActionVisual, CityBuildingVisual};
@@ -33,7 +32,6 @@ use bindings::*;
 use building_visuals::*;
 use common_controls::*;
 use dialogs::*;
-use input::*;
 use lifecycle::*;
 
 pub(in crate::ui::city) fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
@@ -70,11 +68,10 @@ impl Plugin for CityPlugin {
                 sync_city_hover_title,
                 sync_city_buildings,
                 sync_city_building_action_visibility,
-                sync_city_order_quantities,
                 render_industry_dialog,
-                render_rail_dialogs,
                 render_warehouse_dialog,
                 render_food_dialog,
+                render_power_dialog,
                 render_transport_capacity_dialog,
                 render_population_dialog,
                 render_training_dialog,

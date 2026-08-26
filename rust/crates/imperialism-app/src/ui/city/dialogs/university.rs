@@ -6,6 +6,7 @@ use crate::ui::retail_raster_text::RetailRasterTextPainter;
 /// One University row's button and the retail unit facts it selects.
 pub(in crate::ui::city) struct UniversityRowView {
     button: Entity,
+    quantity: Entity,
     unit_name: String,
     description: String,
     preview: IndexedPicture,
@@ -70,7 +71,6 @@ pub(in crate::ui::city) fn configure_university_dialog(
             fourcc!("plus"),
             fourcc!("numb"),
             1,
-            true,
         );
         for arrow in [bound.decrease, bound.increase] {
             commands.entity(arrow).observe(
@@ -107,6 +107,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
         commands.entity(bound.quantity).insert(InteractionDisabled);
         UniversityRowView {
             button,
+            quantity: bound.quantity,
             // Retail `TUniversityView::SetUnit` pre-increments the 0-based
             // recruitment category once and reuses that 1-based index for
             // both `0x2718` (name) and `0x2751` (description).
@@ -191,6 +192,7 @@ pub(in crate::ui::city) fn render_university_dialog(
         if !session.is_changed() && !view.is_added() && !view.is_changed() {
             continue;
         }
+        let nation = session.active_major_nation();
         for (row, view_row) in UNIVERSITY_ROWS.iter().zip(&view.rows) {
             let selected = row.civilian_kind() == view.selected;
             let checked = checked.get(view_row.button).unwrap_or(false);
@@ -199,6 +201,13 @@ pub(in crate::ui::city) fn render_university_dialog(
             } else if !selected && checked {
                 commands.entity(view_row.button).remove::<Checked>();
             }
+            texts
+                .get_mut(view_row.quantity)
+                .expect("bound University order quantity")
+                .0 = session
+                .game
+                .city_order_quantity(nation, row.binding.order)
+                .to_string();
         }
         let row = UNIVERSITY_ROWS
             .iter()
@@ -206,7 +215,6 @@ pub(in crate::ui::city) fn render_university_dialog(
             .find(|(row, _)| row.civilian_kind() == view.selected)
             .map(|(_, row)| row)
             .expect("University selection has a bound retail row");
-        let nation = session.active_major_nation();
         let major = session.game.nations().major(nation);
         let city = &major.city;
         let spec = civilian_recruitment_spec(view.selected);

@@ -19,16 +19,7 @@ const QUERY_LABELS: [(FourCc, i16); 8] = [
 ];
 
 #[derive(Component)]
-struct OpenQueryFloater;
-
-#[derive(Component)]
 struct QueryFloaterRoot;
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum QueryFloaterAction {
-    Advice,
-    DealBook,
-}
 
 pub(crate) struct QueryFloaterPlugin;
 
@@ -41,7 +32,7 @@ impl Plugin for QueryFloaterPlugin {
 pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, tree: &RetailTree) {
     commands
         .entity(tree.find(root, fourcc!("quer")))
-        .insert((OpenQueryFloater, ActivateOnPress))
+        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_open_query_floater);
 }
@@ -88,15 +79,15 @@ fn bind_query_floaters(
         let advice = view.find(fourcc!("advi"));
         commands
             .entity(advice)
-            .insert((QueryFloaterAction::Advice, ActivateOnPress))
+            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
-            .observe(on_query_floater_activate);
+            .observe(on_query_floater_advice);
         let deal = view.find(fourcc!("deal"));
         commands
             .entity(deal)
-            .insert((QueryFloaterAction::DealBook, ActivateOnPress))
+            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
-            .observe(on_query_floater_activate);
+            .observe(on_query_floater_deal_book);
         let cancel = view.find(fourcc!("cncl"));
         commands
             .entity(cancel)
@@ -117,25 +108,22 @@ fn bind_query_floaters(
     }
 }
 
-fn on_query_floater_activate(
-    activate: On<Activate>,
-    actions: Query<&QueryFloaterAction>,
+fn on_query_floater_advice(
+    _activate: On<Activate>,
+    state: Res<State<AppState>>,
+    mut commands: Commands,
+) {
+    super::map_help::spawn(&mut commands, *state.get());
+}
+
+fn on_query_floater_deal_book(
+    _activate: On<Activate>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    match *action {
-        QueryFloaterAction::Advice => {
-            super::map_help::spawn(&mut commands, *state.get());
-        }
-        QueryFloaterAction::DealBook => {
-            commands.insert_resource(ReturnTo(*state.get()));
-            next_state.set(AppState::DealBook);
-        }
-    }
+    commands.insert_resource(ReturnTo(*state.get()));
+    next_state.set(AppState::DealBook);
 }
 
 #[cfg(test)]
@@ -149,12 +137,9 @@ mod tests {
             .add_plugins(bevy::state::app::StatesPlugin)
             .add_plugins(crate::ui::UiWindowPlugin)
             .insert_state(AppState::Trade)
-            .add_observer(on_query_floater_activate);
+            .add_observer(on_query_floater_deal_book);
         let root = app.world_mut().spawn((QueryFloaterRoot, ModalWindow)).id();
-        let action = app
-            .world_mut()
-            .spawn((QueryFloaterAction::DealBook, ChildOf(root)))
-            .id();
+        let action = app.world_mut().spawn(ChildOf(root)).id();
         dismiss_on_activate(&mut app.world_mut().commands(), action, root);
         app.world_mut().flush();
 

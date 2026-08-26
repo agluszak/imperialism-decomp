@@ -62,7 +62,7 @@ impl Plugin for GameShellPlugin {
         )
         .add_systems(
             Update,
-            project_game_status_display.run_if(resource_exists::<GameSession>),
+            render_game_status.run_if(resource_exists::<GameSession>),
         )
         .add_systems(
             Update,
@@ -393,11 +393,11 @@ pub(crate) fn bind_game_status_display(
         .insert(GameStatusView { date, treasury });
 }
 
-fn project_game_status_display(
+fn render_game_status(
     session: Res<GameSession>,
     added: Query<(), Added<GameStatusView>>,
     retail: Res<RetailAssetsResource>,
-    mut views: Query<&GameStatusView>,
+    views: Query<&GameStatusView>,
     mut texts: Query<&mut Text>,
 ) {
     if super::projection_idle(&session, !added.is_empty()) {
@@ -411,7 +411,7 @@ fn project_game_status_display(
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
     let treasury = format_currency(session.game.nations().major(nation).common.treasury);
-    for view in &mut views {
+    for view in &views {
         texts
             .get_mut(view.date)
             .expect("bound status date text")

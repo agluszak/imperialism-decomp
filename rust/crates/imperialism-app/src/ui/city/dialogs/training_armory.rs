@@ -3,6 +3,7 @@ use crate::ui::retail::RetailPictureSwap;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct TrainingView {
+    quantities: [Entity; TRAINING_ORDERS.len()],
     paper_one: Entity,
     paper_two: Entity,
     money_one: Entity,
@@ -17,6 +18,7 @@ pub(in crate::ui::city) struct TrainingView {
 pub(in crate::ui::city) struct ArmoryView {
     selected: MilitaryRecruitmentCategory,
     rows: [Entity; ARMORY_ROWS.len()],
+    quantities: [Entity; ARMORY_ROWS.len()],
     unit: Entity,
     costs: [Entity; 4],
     available: [Entity; 4],
@@ -96,7 +98,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    for binding in TRAINING_ORDERS {
+    let quantities = TRAINING_ORDERS.map(|binding| {
         bind_city_order_row(
             commands,
             root,
@@ -106,9 +108,9 @@ pub(in crate::ui::city) fn bind_training_dialog(
             fourcc!("rght"),
             fourcc!("move"),
             1,
-            true,
-        );
-    }
+        )
+        .quantity
+    });
     let paper_one = tree.find(root, fourcc!("pap1"));
     let paper_two = tree.find(root, fourcc!("pap2"));
     let money_one = tree.find(root, fourcc!("mon1"));
@@ -116,6 +118,7 @@ pub(in crate::ui::city) fn bind_training_dialog(
     let untrained_available = tree.find(root, fourcc!("untV"));
     let trained_available = tree.find(root, fourcc!("traV"));
     commands.entity(root).insert(TrainingView {
+        quantities,
         paper_one,
         paper_two,
         money_one,
@@ -155,7 +158,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
         title_line_height,
         TextColor(normal_color),
     ));
-    let rows = std::array::from_fn(|index| {
+    let rows_and_quantities: [(Entity, Entity); ARMORY_ROWS.len()] = std::array::from_fn(|index| {
         let row = ARMORY_ROWS[index];
         let bound = bind_city_order_row(
             commands,
@@ -166,7 +169,6 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             fourcc!("plus"),
             fourcc!("numb"),
             1,
-            true,
         );
         let category = row.military_category();
         for arrow in [bound.decrease, bound.increase] {
@@ -200,8 +202,10 @@ pub(in crate::ui::city) fn configure_armory_dialog(
             },
         );
         commands.entity(bound.quantity).insert(InteractionDisabled);
-        button
+        (button, bound.quantity)
     });
+    let rows: [Entity; ARMORY_ROWS.len()] = rows_and_quantities.map(|(button, _)| button);
+    let quantities: [Entity; ARMORY_ROWS.len()] = rows_and_quantities.map(|(_, quantity)| quantity);
     let mut bind_detail = |tag, font, line_height| {
         let entity = tree.find(root, tag);
         commands
@@ -256,6 +260,7 @@ pub(in crate::ui::city) fn configure_armory_dialog(
     commands.entity(root).insert(ArmoryView {
         selected: MilitaryRecruitmentCategory::LightInfantry,
         rows,
+        quantities,
         unit,
         costs,
         available,
@@ -269,6 +274,7 @@ pub(in crate::ui::city) fn render_training_dialog(
     session: Res<GameSession>,
     views: Query<Ref<TrainingView>>,
     mut commands: Commands,
+    mut texts: Query<&mut Text>,
 ) {
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
@@ -281,6 +287,15 @@ pub(in crate::ui::city) fn render_training_dialog(
     for view in &views {
         if !session.is_changed() && !view.is_added() {
             continue;
+        }
+        for (binding, quantity) in TRAINING_ORDERS.iter().zip(&view.quantities) {
+            texts
+                .get_mut(*quantity)
+                .expect("bound training order quantity")
+                .0 = session
+                .game
+                .city_order_quantity(nation, binding.order)
+                .to_string();
         }
         let mut set = |entity, visible| {
             commands.entity(entity).insert(if visible {
@@ -318,7 +333,8 @@ pub(in crate::ui::city) fn render_armory_dialog(
         if !session.is_changed() && !view.is_added() && !view.is_changed() {
             continue;
         }
-        for (row, button) in ARMORY_ROWS.iter().zip(&view.rows) {
+        let nation = session.active_major_nation();
+        for ((row, button), quantity) in ARMORY_ROWS.iter().zip(&view.rows).zip(&view.quantities) {
             let selected = row.military_category() == view.selected;
             let checked = checked.get(*button).unwrap_or(false);
             if selected && !checked {
@@ -326,8 +342,14 @@ pub(in crate::ui::city) fn render_armory_dialog(
             } else if !selected && checked {
                 commands.entity(*button).remove::<Checked>();
             }
+            texts
+                .get_mut(*quantity)
+                .expect("bound Armory order quantity")
+                .0 = session
+                .game
+                .city_order_quantity(nation, row.binding.order)
+                .to_string();
         }
-        let nation = session.active_major_nation();
         let major = session.game.nations().major(nation);
         let city = &major.city;
         let order = &city.orders.military_recruitment[view.selected];

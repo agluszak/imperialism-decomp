@@ -22,6 +22,7 @@ struct ShipyardMaterialData {
 /// One Shipyard row's button and the retail ship facts it selects.
 struct ShipyardRowView {
     button: Entity,
+    quantity: Entity,
     details: Option<ShipyardRowData>,
 }
 
@@ -114,7 +115,6 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             fourcc!("plus"),
             fourcc!("numb"),
             1,
-            true,
         );
         for arrow in [bound.decrease, bound.increase] {
             commands.entity(arrow).observe(
@@ -162,7 +162,11 @@ pub(in crate::ui::city) fn configure_shipyard_dialog(
             },
         );
         commands.entity(bound.quantity).insert(InteractionDisabled);
-        ShipyardRowView { button, details }
+        ShipyardRowView {
+            button,
+            quantity: bound.quantity,
+            details,
+        }
     });
     let mut bind_text = |tag| {
         let entity = tree.find(root, tag);
@@ -271,6 +275,7 @@ pub(in crate::ui::city) fn render_shipyard_dialog(
         if !session.is_changed() && !view.is_added() && !view.is_changed() {
             continue;
         }
+        let nation = session.active_major_nation();
         for (spec, row) in SHIPYARD_ROWS.iter().zip(&view.rows) {
             let selected = spec.slot() == view.selected;
             let checked = checked.get(row.button).unwrap_or(false);
@@ -279,6 +284,13 @@ pub(in crate::ui::city) fn render_shipyard_dialog(
             } else if !selected && checked {
                 commands.entity(row.button).remove::<Checked>();
             }
+            texts
+                .get_mut(row.quantity)
+                .expect("bound Shipyard order quantity")
+                .0 = session
+                .game
+                .city_order_quantity(nation, spec.binding.order)
+                .to_string();
         }
         let row = SHIPYARD_ROWS
             .iter()
@@ -301,7 +313,6 @@ pub(in crate::ui::city) fn render_shipyard_dialog(
             .expect("bound Shipyard picture")
             .image
             .clone_from(&row.picture);
-        let nation = session.active_major_nation();
         let city = &session.game.nations().major(nation).city;
         let mut text = RetailRasterTextPainter::from_preset(
             &fonts,

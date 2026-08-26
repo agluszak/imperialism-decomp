@@ -150,7 +150,8 @@ fn bind_recovered_window_hosts(
         if let Some(parent) = parent {
             commands.entity(parent.parent()).insert(Pickable::IGNORE);
         }
-        // Only a parent that is itself a window is the close target.
+        // A parent that is itself a window is never the close target; despawn
+        // the generated host instead.
         let despawn = parent
             .map(ChildOf::parent)
             .filter(|parent| !windows.contains(*parent))

@@ -1,19 +1,17 @@
 use super::*;
-use crate::ui::retail_amount_bar::INDUSTRY_AMOUNT_BAR;
-use crate::ui::retail_amount_bar::INDUSTRY_BAR_FILL;
+use crate::ui::retail_amount_bar::{
+    INDUSTRY_AMOUNT_BAR, INDUSTRY_BAR_FILL, amount_bar_click_value, amount_bar_x_from_normalized,
+    quantize_amount_bar_value,
+};
 
 pub(in crate::ui::city) const INDUSTRY_BAR_X: f32 = 62.0;
 pub(in crate::ui::city) const INDUSTRY_BAR_Y: f32 = 8.0;
 
-#[derive(Component)]
-pub(in crate::ui::city) struct CityOrderQuantity(pub(in crate::ui::city) CityOrderId);
-
-#[derive(Component)]
-pub(in crate::ui::city) struct RailView {
-    pub(in crate::ui::city) order: CityOrderId,
-    pub(in crate::ui::city) step: i16,
-    pub(in crate::ui::city) quantity: Entity,
+/// The rail-style order counter and native amount bar of one rail dialog.
+#[derive(Clone, Copy)]
+pub(in crate::ui::city) struct RailControls {
     pub(in crate::ui::city) bar: Entity,
+    pub(in crate::ui::city) quantity: Entity,
     pub(in crate::ui::city) fill: Entity,
     pub(in crate::ui::city) tick: Entity,
 }
@@ -22,7 +20,6 @@ pub(in crate::ui::city) struct RailView {
 #[derive(Clone, Copy)]
 pub(in crate::ui::city) struct IndustryOrderView {
     quantity: Entity,
-    pub(in crate::ui::city) bar: Entity,
     fill: Entity,
     tick: Entity,
 }
@@ -91,7 +88,6 @@ pub(in crate::ui::city) fn bind_city_order_row(
     increase_tag: FourCc,
     quantity_tag: FourCc,
     step: i16,
-    record_quantity: bool,
 ) -> CityOrderRow {
     let row = tree.find(root, binding.tag);
     let decrease = tree.find(row, decrease_tag);
@@ -108,11 +104,6 @@ pub(in crate::ui::city) fn bind_city_order_row(
     };
     bind_step(commands, decrease, -step);
     bind_step(commands, increase, step);
-    if record_quantity {
-        commands
-            .entity(quantity)
-            .insert((Text::new(""), CityOrderQuantity(binding.order)));
-    }
     CityOrderRow {
         row,
         decrease,
@@ -140,14 +131,34 @@ fn bind_industry_orders(
                 fourcc!("rght"),
                 fourcc!("move"),
                 1,
-                false,
             );
             let bar = tree.find(bound.row, fourcc!("bar "));
             let visual = bind_amount_bar_visual(commands, assets, bar);
-            commands.entity(bar).observe(on_city_amount_bar_click);
+            let order = binding.order;
+            let slot = page.slot;
+            commands.entity(bar).observe(
+                move |mut click: On<Pointer<Click>>, mut session: ResMut<GameSession>| {
+                    let Some(position) = click.hit.position else {
+                        return;
+                    };
+                    click.propagate(false);
+                    let nation = session.active_major_nation();
+                    let city = &session.game.nations().major(nation).city;
+                    let capacity = city.production_orders[slot];
+                    let previous = match order {
+                        CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
+                        _ => unreachable!("industry amount bar has an item order"),
+                    };
+                    let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+                    let x = amount_bar_x_from_normalized(geometry, position.x);
+                    let quantity = amount_bar_click_value(geometry, x, previous);
+                    session
+                        .game
+                        .set_city_order_quantity(nation, order, quantity);
+                },
+            );
             IndustryOrderView {
                 quantity: bound.quantity,
-                bar,
                 fill: visual.fill,
                 tick: visual.tick,
             }
@@ -301,20 +312,6 @@ pub(in crate::ui::city) fn render_industry_dialog(
     }
 }
 
-pub(in crate::ui::city) fn sync_city_order_quantities(
-    session: Res<GameSession>,
-    added: Query<(), Added<CityOrderQuantity>>,
-    mut quantities: Query<(&CityOrderQuantity, &mut Text)>,
-) {
-    if city_projection_idle(&session, !added.is_empty()) {
-        return;
-    }
-    let nation = session.active_major_nation();
-    for (CityOrderQuantity(order), mut text) in &mut quantities {
-        text.0 = session.game.city_order_quantity(nation, *order).to_string();
-    }
-}
-
 /// Overlays a rail amount bar as native fill/range nodes over the static
 /// recovered track. Returns `(bar, fill, tick)` for the owning dialog view.
 pub(in crate::ui::city) fn bind_rail_amount_bar(
@@ -325,11 +322,10 @@ pub(in crate::ui::city) fn bind_rail_amount_bar(
 ) -> (Entity, Entity, Entity) {
     let bar = tree.find(row, fourcc!("bar "));
     let visual = bind_amount_bar_visual(commands, assets, bar);
-    commands.entity(bar).observe(on_city_rail_amount_bar_click);
     (bar, visual.fill, visual.tick)
 }
 
-fn rail_bar_capacity(
+pub(in crate::ui::city) fn rail_bar_capacity(
     city: &CityState,
     order: CityOrderId,
     nation: MajorNationId,
@@ -344,47 +340,73 @@ fn rail_bar_capacity(
     }
 }
 
-pub(in crate::ui::city) fn render_rail_dialogs(
-    session: Res<GameSession>,
-    views: Query<Ref<RailView>>,
-    mut nodes: Query<&mut Node>,
-    mut texts: Query<&mut Text>,
+/// Writes one rail dialog's counter and native amount bar from authoritative state.
+pub(in crate::ui::city) fn render_rail(
+    session: &GameSession,
+    nation: MajorNationId,
+    rail: &RailControls,
+    order: CityOrderId,
+    texts: &mut Query<&mut Text>,
+    nodes: &mut Query<&mut Node>,
 ) {
-    let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
-    for view in &views {
-        if !session.is_changed() && !view.is_added() {
-            continue;
-        }
-        let quantity = session.game.city_order_quantity(nation, view.order);
-        texts
-            .get_mut(view.quantity)
-            .expect("bound rail counter text must exist")
-            .0 = quantity.to_string();
-        let capacity = rail_bar_capacity(city, view.order, nation, &session.game);
-        let maximum = session.game.city_order_limit(nation, view.order).maximum;
-        let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
-        let span = geometry.span(quantity);
-        nodes
-            .get_mut(view.fill)
-            .expect("bound rail amount bar must exist")
-            .width = px(f32::from(span));
-        nodes
-            .get_mut(view.tick)
-            .expect("bound rail amount-bar range must exist")
-            .left = px(f32::from(geometry.span(maximum)));
-        let bar_node = nodes
-            .get(view.bar)
-            .expect("bound rail amount bar must exist");
-        let (Val::Px(bar_left), Val::Px(bar_top)) = (bar_node.left, bar_node.top) else {
-            continue;
-        };
-        let mut counter = nodes
-            .get_mut(view.quantity)
-            .expect("bound rail counter must exist");
-        counter.left = px(bar_left + f32::from(span) - 2.0);
-        counter.top = px(bar_top + 6.0);
-    }
+    let quantity = session.game.city_order_quantity(nation, order);
+    texts
+        .get_mut(rail.quantity)
+        .expect("bound rail counter text must exist")
+        .0 = quantity.to_string();
+    let capacity = rail_bar_capacity(city, order, nation, &session.game);
+    let maximum = session.game.city_order_limit(nation, order).maximum;
+    let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+    let span = geometry.span(quantity);
+    nodes
+        .get_mut(rail.fill)
+        .expect("bound rail amount bar must exist")
+        .width = px(f32::from(span));
+    nodes
+        .get_mut(rail.tick)
+        .expect("bound rail amount-bar range must exist")
+        .left = px(f32::from(geometry.span(maximum)));
+    let bar_node = nodes
+        .get(rail.bar)
+        .expect("bound rail amount bar must exist");
+    let (Val::Px(bar_left), Val::Px(bar_top)) = (bar_node.left, bar_node.top) else {
+        return;
+    };
+    let mut counter = nodes
+        .get_mut(rail.quantity)
+        .expect("bound rail counter must exist");
+    counter.left = px(bar_left + f32::from(span) - 2.0);
+    counter.top = px(bar_top + 6.0);
+}
+
+/// Attaches the recovered rail amount-bar click behavior, capturing the order
+/// and quantization step.
+pub(in crate::ui::city) fn bind_rail_bar_click(
+    commands: &mut Commands,
+    bar: Entity,
+    order: CityOrderId,
+    step: i16,
+) {
+    commands.entity(bar).observe(
+        move |mut click: On<Pointer<Click>>, mut session: ResMut<GameSession>| {
+            let Some(position) = click.hit.position else {
+                return;
+            };
+            click.propagate(false);
+            let nation = session.active_major_nation();
+            let city = &session.game.nations().major(nation).city;
+            let capacity = rail_bar_capacity(city, order, nation, &session.game);
+            let previous = session.game.city_order_quantity(nation, order);
+            let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
+            let x = amount_bar_x_from_normalized(geometry, position.x);
+            let quantity =
+                quantize_amount_bar_value(amount_bar_click_value(geometry, x, previous), step);
+            session
+                .game
+                .set_city_order_quantity(nation, order, quantity);
+        },
+    );
 }
 
 #[cfg(test)]
