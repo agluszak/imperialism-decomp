@@ -134,8 +134,7 @@ fn bind_building_change_common(
     let mut okay_commands = commands.entity(okay);
     okay_commands.insert((
         CityBuildingChangeChoice { slot, accept: true },
-        ModalDefault,
-        DismissWindow,
+        WindowClose { root },
     ));
     okay_commands.observe(on_city_building_change_choice);
     if !can_reserve {
@@ -149,10 +148,13 @@ fn bind_building_change_common(
                 slot,
                 accept: false,
             },
-            ModalCancel,
-            DismissWindow,
+            WindowClose { root },
         ))
         .observe(on_city_building_change_choice);
+    commands.entity(root).insert(ModalControls {
+        default: Some(okay),
+        cancel: Some(cancel),
+    });
 }
 
 #[allow(clippy::too_many_arguments)]

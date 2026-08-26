@@ -7,7 +7,7 @@ use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailTree, ancestor_with};
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::window::{ModalControls, ModalWindow, WindowClose, set_modal_cancel};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::ecs::system::EntityCommands;
 use bevy::prelude::*;
@@ -239,7 +239,11 @@ fn bind_added_map_modals(
             if let Some(entity) = tree.try_find(root, tag) {
                 commands
                     .entity(entity)
-                    .insert((ActivateOnPress, ModalDefault, DismissWindow));
+                    .insert((ActivateOnPress, WindowClose { root }));
+                commands.entity(root).insert(ModalControls {
+                    default: Some(entity),
+                    cancel: None,
+                });
                 break;
             }
         }
@@ -519,11 +523,7 @@ fn bind_added_civilian_modals(
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
                     .entity(linger.okay)
-                    .insert((
-                        ActivateOnPress,
-                        CivilianModalAction::ConfirmDisband(*unit),
-                        DismissWindow,
-                    ))
+                    .insert((ActivateOnPress, CivilianModalAction::ConfirmDisband(*unit)))
                     .observe(on_civilian_modal_action);
                 commands
                     .entity(linger.cancel)
@@ -586,7 +586,7 @@ fn bind_engineer_dialog(
                 ),
                 ActivateOnPress,
                 CivilianModalAction::Engineer(unit, option.choice),
-                DismissWindow,
+                WindowClose { root },
                 ChildOf(dialog),
             ))
             .observe(on_civilian_modal_action);
@@ -612,26 +612,28 @@ fn bind_engineer_dialog(
         );
         y += 42.0;
     }
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(17),
-            top: px(y - 2.0),
-            width: px(61),
-            height: px(24),
-            ..default()
-        },
-        Button,
-        ImageNode::new(
-            assets
-                .picture(PictureId::new(0x24c4))
-                .expect("retail cancel picture"),
-        ),
-        ActivateOnPress,
-        ModalCancel,
-        DismissWindow,
-        ChildOf(dialog),
-    ));
+    let cancel = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(17),
+                top: px(y - 2.0),
+                width: px(61),
+                height: px(24),
+                ..default()
+            },
+            Button,
+            ImageNode::new(
+                assets
+                    .picture(PictureId::new(0x24c4))
+                    .expect("retail cancel picture"),
+            ),
+            ActivateOnPress,
+            WindowClose { root },
+            ChildOf(dialog),
+        ))
+        .id();
+    set_modal_cancel(commands, root, cancel);
     let height = y + 30.0;
     let window = tree.find(root, fourcc!("WIND"));
     commands.entity(window).insert(Node {
@@ -707,9 +709,7 @@ fn bind_purchase_dialog(
     );
     linger.set_title(commands, assets, title);
     linger.set_body(commands, assets, body);
-    commands
-        .entity(linger.okay)
-        .insert((ActivateOnPress, DismissWindow));
+    commands.entity(linger.okay).insert(ActivateOnPress);
     if affordable {
         commands
             .entity(linger.okay)
@@ -753,20 +753,22 @@ fn bind_civilian_report(
         &civilian_report_text(assets, state, unit),
         12,
     );
-    commands.entity(tree.find(root, fourcc!("okay"))).insert((
-        ActivateOnPress,
-        ModalDefault,
-        DismissWindow,
-    ));
     commands
-        .entity(tree.find(root, fourcc!("canc")))
+        .entity(tree.find(root, fourcc!("okay")))
+        .insert((ActivateOnPress, WindowClose { root }));
+    let cancel = tree.find(root, fourcc!("canc"));
+    commands
+        .entity(cancel)
         .insert((
             ActivateOnPress,
             CancelCivilianOrder(unit),
-            ModalCancel,
-            DismissWindow,
+            WindowClose { root },
         ))
         .observe(on_cancel_civilian_order);
+    commands.entity(root).insert(ModalControls {
+        default: Some(tree.find(root, fourcc!("okay"))),
+        cancel: Some(cancel),
+    });
 }
 
 fn civilian_report_text(
@@ -1052,11 +1054,11 @@ fn bind_added_army_reports(
             10,
             3,
         );
-        commands.entity(view.find(fourcc!("canc"))).insert((
-            ActivateOnPress,
-            ModalCancel,
-            DismissWindow,
-        ));
+        let cancel = view.find(fourcc!("canc"));
+        commands
+            .entity(cancel)
+            .insert((ActivateOnPress, WindowClose { root }));
+        set_modal_cancel(&mut commands, root, cancel);
     }
 }
 
@@ -1228,15 +1230,16 @@ fn bind_friendly_fleet_report(
         10,
         3,
     );
+    let cancel = view.find(fourcc!("canc"));
     commands
-        .entity(view.find(fourcc!("canc")))
+        .entity(cancel)
         .insert((
             ActivateOnPress,
             CancelFleetOrders(report.force),
-            ModalCancel,
-            DismissWindow,
+            WindowClose { root },
         ))
         .observe(on_cancel_fleet_orders);
+    set_modal_cancel(commands, root, cancel);
 }
 
 fn bind_enemy_fleet_report(

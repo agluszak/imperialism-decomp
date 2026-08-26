@@ -5,7 +5,7 @@ use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::satellite_preview::nation_owner_palette;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
-use super::window::{DismissWindow, ModalDefault, ModalWindow};
+use super::window::{ModalControls, ModalWindow, WindowClose};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -142,8 +142,12 @@ fn bind_battle_report(
     }
     commands
         .entity(tree.find(*root, fourcc!("okay")))
-        .insert((ActivateOnPress, ModalDefault, DismissWindow))
+        .insert((ActivateOnPress, WindowClose { root: *root }))
         .observe(on_battle_report_close);
+    commands.entity(*root).insert(ModalControls {
+        default: Some(tree.find(*root, fourcc!("okay"))),
+        cancel: None,
+    });
     commands
         .entity(tree.find(*root, fourcc!("info")))
         .insert(ActivateOnPress)
@@ -437,11 +441,13 @@ fn spawn_detail(commands: &mut Commands) {
 }
 
 fn bind_detail(mut commands: Commands, root: Single<Entity, Added<DetailRoot>>, tree: RetailTree) {
-    commands.entity(tree.find(*root, fourcc!("okay"))).insert((
-        ActivateOnPress,
-        ModalDefault,
-        DismissWindow,
-    ));
+    commands
+        .entity(tree.find(*root, fourcc!("okay")))
+        .insert((ActivateOnPress, WindowClose { root: *root }));
+    commands.entity(*root).insert(ModalControls {
+        default: Some(tree.find(*root, fourcc!("okay"))),
+        cancel: None,
+    });
 }
 
 fn project_detail(

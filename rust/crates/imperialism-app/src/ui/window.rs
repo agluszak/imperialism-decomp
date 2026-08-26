@@ -36,17 +36,24 @@ pub struct ModalWindow;
 #[require(FloatingWindow, Pickable)]
 pub struct CaptionedWindow;
 
-#[derive(Component, Debug, Default)]
-struct WindowTitleBar;
+/// A window caption that knows the floating window it drags.
+#[derive(Component, Debug)]
+struct WindowTitleBar {
+    window: Entity,
+}
 
-#[derive(Component, Debug, Default)]
-pub struct ModalDefault;
+/// The host root a window-control button dismisses.
+#[derive(Component, Debug)]
+pub struct WindowClose {
+    pub root: Entity,
+}
 
+/// The default/cancel controls a modal routes Enter/Escape to.
 #[derive(Component, Debug, Default)]
-pub struct ModalCancel;
-
-#[derive(Component, Debug, Default)]
-pub struct DismissWindow;
+pub struct ModalControls {
+    pub default: Option<Entity>,
+    pub cancel: Option<Entity>,
+}
 
 pub struct UiWindowPlugin;
 
@@ -64,6 +71,18 @@ impl Plugin for UiWindowPlugin {
 
 pub fn no_modal(modals: Query<(), With<ModalWindow>>) -> bool {
     modals.is_empty()
+}
+
+/// Records a modal's Escape control, preserving any default already bound.
+pub fn set_modal_cancel(commands: &mut Commands, root: Entity, cancel: Entity) {
+    commands
+        .entity(root)
+        .entry::<ModalControls>()
+        .and_modify(move |mut controls| controls.cancel = Some(cancel))
+        .or_insert(ModalControls {
+            default: None,
+            cancel: Some(cancel),
+        });
 }
 
 pub fn window_position(node: &Node) -> IVec2 {
@@ -131,11 +150,12 @@ fn bind_recovered_window_hosts(
         if let Some(parent) = parent {
             commands.entity(parent.parent()).insert(Pickable::IGNORE);
         }
-        spawn_caption(&mut commands, window, node.width);
+        let host = parent.map(ChildOf::parent).unwrap_or(window);
+        spawn_caption(&mut commands, window, host, node.width);
     }
 }
 
-fn spawn_caption(commands: &mut Commands, window: Entity, width: Val) {
+fn spawn_caption(commands: &mut Commands, window: Entity, host: Entity, width: Val) {
     let caption = commands
         .spawn((
             Node {
@@ -147,7 +167,7 @@ fn spawn_caption(commands: &mut Commands, window: Entity, width: Val) {
                 ..default()
             },
             BackgroundColor(Color::srgb_u8(0, 0, 128)),
-            WindowTitleBar,
+            WindowTitleBar { window },
             Pickable::default(),
             Name::new("retail-window-caption"),
             ChildOf(window),
@@ -169,7 +189,7 @@ fn spawn_caption(commands: &mut Commands, window: Entity, width: Val) {
                     ..default()
                 },
                 BackgroundColor(Color::srgb_u8(192, 192, 192)),
-                DismissWindow,
+                WindowClose { root: host },
                 ZIndex(1),
                 Name::new("retail-window-close"),
             ))
@@ -216,16 +236,18 @@ fn on_window_pressed(
 
 fn on_window_dragged(
     drag: On<Pointer<Drag>>,
-    parents: Query<&ChildOf>,
+    title_bars: Query<&WindowTitleBar>,
     mut windows: Query<&mut Node, With<FloatingWindow>>,
 ) {
     if drag.event.button != PointerButton::Primary {
         return;
     }
-    let Some(root) = ancestor_with(drag.entity, &parents, &windows) else {
+    let Ok(title_bar) = title_bars.get(drag.entity) else {
         return;
     };
-    let mut node = windows.get_mut(root).expect("movable window has a Node");
+    let mut node = windows
+        .get_mut(title_bar.window)
+        .expect("movable window has a Node");
     let position = window_position(&node)
         + IVec2::new(
             drag.event.delta.x.round() as i32,
@@ -234,34 +256,19 @@ fn on_window_dragged(
     set_window_position(&mut node, position);
 }
 
-fn on_window_close(
-    activate: On<Activate>,
-    close: Query<(), With<DismissWindow>>,
-    parents: Query<&ChildOf>,
-    windows: Query<(), With<UiWindow>>,
-    mut commands: Commands,
-) {
-    if !close.contains(activate.entity) {
-        return;
-    }
-    let Some(window) = ancestor_with(activate.entity, &parents, &windows) else {
+fn on_window_close(activate: On<Activate>, closes: Query<&WindowClose>, mut commands: Commands) {
+    let Ok(close) = closes.get(activate.entity) else {
         return;
     };
-    let despawn = parents
-        .get(window)
-        .ok()
-        .map(ChildOf::parent)
-        .filter(|parent| !windows.contains(*parent))
-        .unwrap_or(window);
-    commands.entity(despawn).try_despawn();
+    commands.entity(close.root).try_despawn();
 }
 
 fn modal_keyboard(
     mut input: On<FocusedInput<KeyboardInput>>,
     parents: Query<&ChildOf>,
     modals: Query<(), With<ModalWindow>>,
-    defaults: Query<Entity, (With<ModalDefault>, Without<InteractionDisabled>)>,
-    cancels: Query<Entity, (With<ModalCancel>, Without<InteractionDisabled>)>,
+    controls: Query<&ModalControls>,
+    disabled: Query<Has<InteractionDisabled>>,
     mut commands: Commands,
 ) {
     if input.input.state != ButtonState::Pressed || input.input.repeat {
@@ -271,29 +278,13 @@ fn modal_keyboard(
         return;
     };
     let control = match input.input.key_code {
-        KeyCode::Enter | KeyCode::NumpadEnter => defaults
-            .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents)),
-        KeyCode::Escape => cancels
-            .iter()
-            .find(|entity| ancestor_is(*entity, root, &parents)),
+        KeyCode::Enter | KeyCode::NumpadEnter => controls.get(root).ok().and_then(|c| c.default),
+        KeyCode::Escape => controls.get(root).ok().and_then(|c| c.cancel),
         _ => return,
     };
     input.propagate(false);
-    if let Some(control) = control {
+    if let Some(control) = control.filter(|entity| !disabled.get(*entity).unwrap_or(false)) {
         commands.trigger(Activate { entity: control });
-    }
-}
-
-fn ancestor_is(mut entity: Entity, ancestor: Entity, parents: &Query<&ChildOf>) -> bool {
-    loop {
-        if entity == ancestor {
-            return true;
-        }
-        let Ok(parent) = parents.get(entity) else {
-            return false;
-        };
-        entity = parent.parent();
     }
 }
 
@@ -362,11 +353,17 @@ mod tests {
     fn dismissing_nested_modal_restores_keyboard_to_modal_below() {
         let mut app = test_app();
         let first = app.world_mut().spawn(ModalWindow).id();
-        app.world_mut()
-            .spawn((ModalCancel, ChildOf(first)))
+        let cancel = app
+            .world_mut()
+            .spawn((ChildOf(first), ModalControls::default()))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.cancel += 1;
-            });
+            })
+            .id();
+        app.world_mut().entity_mut(first).insert(ModalControls {
+            default: None,
+            cancel: Some(cancel),
+        });
         let second = app.world_mut().spawn(ModalWindow).id();
         assert_eq!(app.world().resource::<InputFocus>().get(), Some(second));
 
@@ -384,18 +381,22 @@ mod tests {
         let root = app.world_mut().spawn(ModalWindow).id();
         let okay = app
             .world_mut()
-            .spawn((ModalDefault, ChildOf(root)))
+            .spawn(ChildOf(root))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.default += 1;
             })
             .id();
         let cancel = app
             .world_mut()
-            .spawn((ModalCancel, InteractionDisabled, ChildOf(root)))
+            .spawn((InteractionDisabled, ChildOf(root)))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.cancel += 1;
             })
             .id();
+        app.world_mut().entity_mut(root).insert(ModalControls {
+            default: Some(okay),
+            cancel: Some(cancel),
+        });
 
         app.world_mut().write_message(keyboard(KeyCode::Enter));
         app.world_mut().write_message(keyboard(KeyCode::Escape));
@@ -419,11 +420,17 @@ mod tests {
         assert_eq!(app.world().resource::<InputFocus>().get(), Some(root));
 
         let field = app.world_mut().spawn((AutoFocus, ChildOf(root))).id();
-        app.world_mut()
-            .spawn((ModalDefault, ChildOf(root)))
+        let okay = app
+            .world_mut()
+            .spawn(ChildOf(root))
             .observe(|_: On<Activate>, mut activations: ResMut<Activations>| {
                 activations.default += 1;
-            });
+            })
+            .id();
+        app.world_mut().entity_mut(root).insert(ModalControls {
+            default: Some(okay),
+            cancel: None,
+        });
         assert_eq!(app.world().resource::<InputFocus>().get(), Some(field));
 
         app.world_mut().write_message(keyboard(KeyCode::Enter));
@@ -513,7 +520,7 @@ mod tests {
 
         let close = {
             let world = app.world_mut();
-            let mut query = world.query_filtered::<Entity, With<DismissWindow>>();
+            let mut query = world.query_filtered::<Entity, With<WindowClose>>();
             query.single(world).unwrap()
         };
         app.world_mut()

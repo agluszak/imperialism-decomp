@@ -1,6 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
-use super::window::{DismissWindow, ModalCancel, ModalWindow};
+use super::window::{ModalWindow, WindowClose, set_modal_cancel};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -87,18 +87,28 @@ fn bind_query_floaters(
         }
         commands
             .entity(view.find(fourcc!("advi")))
-            .insert((QueryFloaterAction::Advice, ActivateOnPress, DismissWindow))
+            .insert((
+                QueryFloaterAction::Advice,
+                ActivateOnPress,
+                WindowClose { root },
+            ))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
         commands
             .entity(view.find(fourcc!("deal")))
-            .insert((QueryFloaterAction::DealBook, ActivateOnPress, DismissWindow))
+            .insert((
+                QueryFloaterAction::DealBook,
+                ActivateOnPress,
+                WindowClose { root },
+            ))
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_activate);
+        let cancel = view.find(fourcc!("cncl"));
         commands
-            .entity(view.find(fourcc!("cncl")))
-            .insert((ActivateOnPress, ModalCancel, DismissWindow))
+            .entity(cancel)
+            .insert((ActivateOnPress, WindowClose { root }))
             .remove::<InteractionDisabled>();
+        set_modal_cancel(&mut commands, root, cancel);
         for tag in [
             fourcc!("oref"),
             fourcc!("news"),
@@ -146,7 +156,11 @@ mod tests {
         let root = app.world_mut().spawn((QueryFloaterRoot, ModalWindow)).id();
         let action = app
             .world_mut()
-            .spawn((QueryFloaterAction::DealBook, DismissWindow, ChildOf(root)))
+            .spawn((
+                QueryFloaterAction::DealBook,
+                WindowClose { root },
+                ChildOf(root),
+            ))
             .id();
 
         app.world_mut()
