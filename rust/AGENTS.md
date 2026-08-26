@@ -37,6 +37,8 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
 
 ## Recovered UI
 
+- Follow `docs/ui-architecture.md` for the bind-time identity, semantic-view ownership, one-way data
+  flow, component, rendering, and migration contract.
 - Recovered UI definitions come from committed recovery evidence and the existing generator. Change
   that evidence or generator and regenerate; do not maintain parallel handwritten screen trees.
 - Generated output is native Bevy/BSN hierarchy. Handwritten app code wires presentation behavior to
