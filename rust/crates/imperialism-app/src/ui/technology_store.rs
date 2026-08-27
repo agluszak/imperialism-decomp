@@ -120,6 +120,7 @@ fn bind_technology_store(
         fourcc!("topB"),
         Some(fourcc!("tool")),
         false,
+        AppState::TechnologyStore,
     );
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands

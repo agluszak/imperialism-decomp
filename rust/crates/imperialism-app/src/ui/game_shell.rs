@@ -21,7 +21,7 @@ use crate::ui::strategic_map::{
 };
 use crate::ui::window::no_modal;
 use bevy::prelude::*;
-use bevy::ui::InteractionDisabled;
+use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::{NationId, TurnAlert};
@@ -158,7 +158,15 @@ fn bind_strategic_map(
     arrow_parts: Query<&super::retail::NumberedArrowParts>,
     placard_parts: Query<&super::retail::PlacardParts>,
 ) {
-    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
+    bind_native_game_screen_nav(
+        &mut commands,
+        *root,
+        &tree,
+        fourcc!("tool"),
+        None,
+        true,
+        AppState::StrategicMap,
+    );
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
     commands
         .entity(tree.find(*root, fourcc!("DONE")))
@@ -439,6 +447,7 @@ pub(crate) fn bind_native_game_screen_nav(
     toolbar_tag: FourCc,
     leave_toolbar_tag: Option<FourCc>,
     query_floater: bool,
+    current: AppState,
 ) {
     if query_floater {
         bind_query_floater_control(commands, root, tree);
@@ -454,17 +463,19 @@ pub(crate) fn bind_native_game_screen_nav(
         (city, AppState::City),
         (diplomacy, AppState::Diplomacy),
     ] {
+        if destination == current {
+            commands
+                .entity(entity)
+                .insert((Checked, InteractionDisabled));
+            continue;
+        }
         commands
             .entity(entity)
-            .insert(ActivateOnPress)
+            .remove::<Checked>()
             .remove::<InteractionDisabled>()
             .observe(
-                move |_: On<Activate>,
-                      state: Res<State<AppState>>,
-                      mut next_state: ResMut<NextState<AppState>>| {
-                    if destination != *state.get() {
-                        next_state.set(destination);
-                    }
+                move |_: On<Activate>, mut next_state: ResMut<NextState<AppState>>| {
+                    next_state.set(destination);
                 },
             );
     }
