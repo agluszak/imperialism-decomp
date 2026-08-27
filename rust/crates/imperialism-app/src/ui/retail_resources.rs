@@ -3,10 +3,10 @@
 
 use enum_map::Enum;
 use imperialism_core::{
-    ArmyUnitCategory, CityFacilitySlot, CivilianUnitKind, CivilianUnitTable,
-    EngineerConstructionChoice, FortLevel, MilitaryOrderCode, MilitaryUnitKind, NavalAggression,
-    PlayerDiplomacyRejection, ResourceKind, ShipType, TaskForceOrder, Technology, TechnologyTable,
-    TurnAlert,
+    ArmyUnitCategory, CityFacilitySlot, CitySiteError, CivilianUnitKind, CivilianUnitTable,
+    EngineerConstructionChoice, FortLevel, GameState, MilitaryOrderCode, MilitaryUnitKind,
+    NavalAggression, PlayerDiplomacyRejection, ResourceKind, ShipType, TaskForceOrder, Technology,
+    TechnologyTable, TerrainKind, TileId, TurnAlert, supports_city_site_terrain,
 };
 use imperialism_formats::{PictureId, SoundId, StringGroup, StringResourceId};
 
@@ -29,8 +29,14 @@ const MILITARY_UNIT_DESCRIPTIONS: StringGroup = StringGroup::new(0x2750);
 const TURN_ALERTS: StringGroup = StringGroup::new(0x2753);
 const DIPLOMACY_NOTICES: StringGroup = StringGroup::new(0x2754);
 const FLEET_REPORT: StringGroup = StringGroup::new(0x2762);
+const NAVY_ROSTER_STATUS: StringGroup = StringGroup::new(0x2760);
 const GARRISON_ORDERS: StringGroup = StringGroup::new(0x272c);
 const ARMY_COMPOSITION: StringGroup = StringGroup::new(0x2726);
+const BAD_CITY_SITE: StringGroup = StringGroup::new(0x273b);
+const DEAL_BOOK: StringGroup = StringGroup::new(0x2740);
+
+/// Sparse retail status-label indices for the navy roster (`0x2760`).
+const NAVY_ROSTER_STATUS_INDEX: [i16; 14] = [-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7];
 
 const SHIP_DETAIL_PICTURES: PictureId = PictureId::new(0x266a);
 const MATERIAL_PICTURES: PictureId = PictureId::new(700);
@@ -61,6 +67,7 @@ pub(crate) trait ShipTypeRetailResources {
     fn description_string(self) -> StringResourceId;
     fn detail_picture(self) -> PictureId;
     fn navy_toolbar_picture(self) -> PictureId;
+    fn navy_roster_status_string(self) -> Option<StringResourceId>;
 }
 
 impl ShipTypeRetailResources for ShipType {
@@ -82,6 +89,11 @@ impl ShipTypeRetailResources for ShipType {
 
     fn navy_toolbar_picture(self) -> PictureId {
         PictureId::new(0x5e6).offset(i16::from(self.retail()))
+    }
+
+    fn navy_roster_status_string(self) -> Option<StringResourceId> {
+        let index = NAVY_ROSTER_STATUS_INDEX[usize::from(self.retail())];
+        (index >= 0).then(|| NAVY_ROSTER_STATUS.offset(index as u16))
     }
 }
 
@@ -242,7 +254,7 @@ impl EngineerConstructionChoiceRetailResources for EngineerConstructionChoice {
 
     fn label_string(self, fort_level: FortLevel) -> StringResourceId {
         ENGINEER_CONSTRUCTION.offset(match self {
-            Self::Fort => u16::from(fort_level.retail()) + 3,
+            Self::Fort => fort_level.retail() as u16 + 3,
             Self::Rail => 1,
             Self::Port => 2,
         })
@@ -342,6 +354,55 @@ impl TaskForceOrderRetailResources for TaskForceOrder {
     }
 }
 
+pub(crate) trait CitySiteErrorRetailResources {
+    fn message_string(self, state: &GameState, tile: TileId) -> StringResourceId;
+}
+
+impl CitySiteErrorRetailResources for CitySiteError {
+    fn message_string(self, state: &GameState, tile: TileId) -> StringResourceId {
+        let offset = match self {
+            Self::NotOwned => {
+                if state.map()[tile].terrain == TerrainKind::Water {
+                    3
+                } else {
+                    0
+                }
+            }
+            Self::UnsupportedTerrain | Self::InvalidHomeSite => {
+                if supports_city_site_terrain(state.map()[tile].terrain)
+                    && state.can_build_port_at_tile(tile)
+                {
+                    2
+                } else {
+                    1
+                }
+            }
+        };
+        BAD_CITY_SITE.offset(offset)
+    }
+}
+
+pub(crate) trait DealBookEntryKindRetailResources {
+    fn priced_template_string(self) -> StringResourceId;
+    fn market_price_template_string(self) -> StringResourceId;
+}
+
+impl DealBookEntryKindRetailResources for imperialism_core::DealBookEntryKind {
+    fn priced_template_string(self) -> StringResourceId {
+        DEAL_BOOK.offset(match self {
+            Self::Offer => 0x12,
+            Self::Accept => 0x13,
+        })
+    }
+
+    fn market_price_template_string(self) -> StringResourceId {
+        DEAL_BOOK.offset(match self {
+            Self::Offer => 0x14,
+            Self::Accept => 0x15,
+        })
+    }
+}
+
 pub(crate) trait MilitaryUnitKindRetailResources {
     fn name_string(self) -> StringResourceId;
     fn description_string(self) -> StringResourceId;
@@ -428,5 +489,45 @@ mod tests {
     #[test]
     fn technology_history_text_id_is_raw_text_resource() {
         assert_eq!(Technology::CottonGin.history_text_id(), 3 + 0x08fc);
+    }
+
+    #[test]
+    fn civilian_developer_uses_special_disband_and_work_report_offsets() {
+        assert_eq!(
+            CivilianUnitKind::Developer.disband_confirmation_string(),
+            StringGroup::new(0x274d).offset(5)
+        );
+        assert_eq!(
+            CivilianUnitKind::Engineer.disband_confirmation_string(),
+            StringGroup::new(0x274d).offset(4)
+        );
+        assert_eq!(
+            CivilianUnitKind::Developer.work_report_template_string(),
+            StringGroup::new(0x2724).offset(5)
+        );
+        assert_eq!(
+            CivilianUnitKind::Miner.work_report_template_string(),
+            StringGroup::new(0x2724).offset(7)
+        );
+    }
+
+    #[test]
+    fn engineer_construction_labels_depend_on_fort_level() {
+        assert_eq!(
+            EngineerConstructionChoice::Fort.label_string(FortLevel::None),
+            StringGroup::new(0x1c20).offset(3)
+        );
+        assert_eq!(
+            EngineerConstructionChoice::Fort.label_string(FortLevel::Two),
+            StringGroup::new(0x1c20).offset(5)
+        );
+        assert_eq!(
+            EngineerConstructionChoice::Rail.label_string(FortLevel::Three),
+            StringGroup::new(0x1c20).offset(1)
+        );
+        assert_eq!(
+            EngineerConstructionChoice::Port.label_string(FortLevel::One),
+            StringGroup::new(0x1c20).offset(2)
+        );
     }
 }

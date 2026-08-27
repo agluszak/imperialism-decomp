@@ -13,6 +13,7 @@ use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, ancestor_with};
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::retail_raster_text::RetailRasterTextPainter;
+use super::retail_resources::PlayerDiplomacyRejectionRetailResources;
 use super::satellite_preview::nation_owner_palette;
 use super::session::apply_turn_stop;
 use crate::AppState;
@@ -1084,7 +1085,7 @@ fn bind_diplomacy_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let body = assets.get_string(0x2754, (notice.0.proposal_mode() - 1) as u16);
+    let body = assets.string(notice.0.notice_string());
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(
         &mut commands,

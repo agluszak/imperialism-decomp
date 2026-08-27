@@ -7,9 +7,14 @@ use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailTree, ancestor_with};
+use crate::ui::retail_resources::ArmyUnitCategoryRetailResources;
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
+use crate::ui::retail_resources::EngineerConstructionChoiceRetailResources;
+use crate::ui::retail_resources::MilitaryOrderCodeRetailResources;
+use crate::ui::retail_resources::NavalAggressionRetailResources;
 use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::retail_resources::ShipTypeRetailResources;
+use crate::ui::retail_resources::TaskForceOrderRetailResources;
 use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::ecs::system::EntityCommands;
@@ -17,7 +22,6 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
@@ -505,11 +509,7 @@ fn bind_added_civilian_modals(
                     .expect("disband dialog retains its civilian")
                     .unit_type();
                 let title = assets.get_string(0x274d, 3);
-                let body = assets.get_string(0x274d, if kind == CivilianUnitKind::Developer {
-                            5
-                        } else {
-                            4
-                        });
+                let body = assets.string(kind.disband_confirmation_string());
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
@@ -556,15 +556,10 @@ fn bind_engineer_dialog(
         .expect("engineer dialog retains its map unit");
     let fort_level = state.map()[tile]
         .province
-        .map(|province| state.map().provinces[province].fort_level().retail())
-        .unwrap_or(0);
+        .map(|province| state.map().provinces[province].fort_level())
+        .unwrap_or(FortLevel::None);
     let mut y = 40.0;
     for option in options {
-        let (picture, label_offset) = match option.choice {
-            EngineerConstructionChoice::Fort => (PictureId::new(0x1c2a), i16::from(fort_level) + 3),
-            EngineerConstructionChoice::Rail => (PictureId::new(0x1c2c), 1),
-            EngineerConstructionChoice::Port => (PictureId::new(0x1c2e), 2),
-        };
         let option_button = commands
             .spawn((
                 Node {
@@ -576,9 +571,7 @@ fn bind_engineer_dialog(
                     ..default()
                 },
                 Button,
-                ImageNode::new(
-                    assets.picture(picture),
-                ),
+                ImageNode::new(assets.picture(option.choice.picture())),
                 ActivateOnPress,
                 CivilianModalAction::Engineer(unit, option.choice),
                 ChildOf(dialog),
@@ -603,7 +596,7 @@ fn bind_engineer_dialog(
             commands,
             assets,
             label,
-            &assets.get_string(0x1c20, label_offset as u16),
+            &assets.string(option.choice.label_string(fort_level)),
             10,
         );
         y += 42.0;
@@ -847,11 +840,8 @@ fn civilian_report_text(
                 (line, Some(*turns))
             } else {
                 let action = assets.string(civilian.unit_type().work_action_string());
-                let template = assets.get_string(0x2724, if civilian.unit_type() == CivilianUnitKind::Developer {
-                            5
-                        } else {
-                            7
-                        });
+                let template =
+                    assets.string(civilian.unit_type().work_report_template_string());
                 (fill_brackets(&template, &[&action]), Some(*turns))
             }
         }
@@ -922,14 +912,7 @@ fn on_civilian_modal_action(
         CivilianModalAction::Engineer(unit, choice) => {
             match session.game.queue_engineer_construction(unit, choice) {
                 Ok(()) => {
-                    audio.play(
-                        &mut commands,
-                        SoundId::new(match choice {
-                            EngineerConstructionChoice::Fort => 0x232c,
-                            EngineerConstructionChoice::Rail => 0x232a,
-                            EngineerConstructionChoice::Port => 0x232b,
-                        }),
-                    );
+                    audio.play(&mut commands, choice.confirm_sound());
                     completed = true;
                 }
                 Err(CivilianOrderRejection::InsufficientFunds) => {
@@ -1196,7 +1179,7 @@ fn bind_friendly_fleet_report(
     let lab3 = assets.get_string(0x2762, 0xa);
     let composition = ship_composition_text(assets, &report.composition);
     let orders = friendly_orders_text(assets, report);
-    let agro = assets.get_string(0x2762, report.aggression.retail() as u16 + 4);
+    let agro = assets.string(report.aggression.fleet_report_string());
     let authority = fill_brackets(
         &assets.get_string(0x2762, 0),
         &[&fleet_authority_text(assets, &report.authority)],
@@ -1665,7 +1648,7 @@ fn on_cancel_fleet_orders(
 }
 
 fn garrison_order_text(assets: &RetailUiAssets, order: MilitaryOrderCode) -> String {
-    assets.get_string(0x272c, order.get() as u16)
+    assets.string(order.name_string())
 }
 
 fn navy_roster_type_label(assets: &RetailUiAssets, ship_type: ShipType) -> String {
@@ -1686,7 +1669,7 @@ fn army_composition_text(
     composition: &[(ArmyUnitCategory, i32)],
 ) -> String {
     join_counted_labels(composition.iter().map(|(category, count)| {
-        let name = assets.get_string(0x2726, category.into_usize() as u16);
+        let name = assets.string(category.composition_name_string());
         (*count, name)
     }))
 }
@@ -1716,21 +1699,19 @@ fn join_counted_labels(items: impl Iterator<Item = (i32, String)>) -> String {
 }
 
 fn friendly_orders_text(assets: &RetailUiAssets, report: &FriendlyFleetReport) -> String {
+    let template = assets.string(report.order.friendly_orders_string());
     match report.order {
-        TaskForceOrder::Sail => fill_brackets(
-            &assets.get_string(0x2762, 0xb),
-            &[report.target_name.as_deref().unwrap_or("")],
-        ),
+        TaskForceOrder::Sail => {
+            fill_brackets(&template, &[report.target_name.as_deref().unwrap_or("")])
+        }
         TaskForceOrder::Patrol => fill_brackets(
-            &assets.get_string(0x2762, 1),
+            &template,
             &[report.target_name.as_deref().unwrap_or(&report.zone_name)],
         ),
-        TaskForceOrder::Marines => assets.get_string(0x2762, 2),
-        TaskForceOrder::Blockade => fill_brackets(
-            &assets.get_string(0x2762, 0x39),
-            &[report.target_name.as_deref().unwrap_or("")],
-        ),
-        _ => assets.get_string(0x2762, 3),
+        TaskForceOrder::Blockade => {
+            fill_brackets(&template, &[report.target_name.as_deref().unwrap_or("")])
+        }
+        _ => template,
     }
 }
 

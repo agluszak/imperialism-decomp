@@ -13,6 +13,7 @@ use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTree};
+use crate::ui::retail_resources::TurnAlertRetailResources;
 use crate::ui::strategic_map::{
     MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
     animate_civilian_work, animate_strategic_selection, bind_army_toolbar, bind_civilian_toolbar,
@@ -564,16 +565,8 @@ fn bind_turn_alert_notice(
     };
     let (root, notice) = root.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
-    let (title_index, body_index): (u16, u16) = match notice.0 {
-        TurnAlert::LandCapitolThreatened => (0x28, 0x29),
-        TurnAlert::NavalCapitolThreatened => (0x2a, 0x2b),
-        TurnAlert::Treasury { prompt_code } => ((prompt_code - 1) as u16, prompt_code as u16),
-        TurnAlert::CommodityShortage => (0x46, 0x47),
-        TurnAlert::TransportShortage => (0x22, 0x23),
-        TurnAlert::Starvation => (0x20, 0x21),
-    };
-    let title = assets.ui_string(0x2753, title_index);
-    let body = assets.ui_string(0x2753, body_index);
+    let title = assets.string(notice.0.title_string());
+    let body = assets.string(notice.0.body_string());
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     commands

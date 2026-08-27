@@ -21,6 +21,7 @@ const HISTORY_BACKGROUND: PictureId = PictureId::new(0x2260);
 const CATEGORY_BACKGROUND: PictureId = PictureId::new(0x2263);
 const TAB_STRIP_BASE: PictureId = PictureId::new(0x2266);
 const FLAG_ATLAS: PictureId = PictureId::new(0x21fb);
+const DEAL_BOOK_STRINGS: StringGroup = StringGroup::new(0x2740);
 const PAGE_LEFT: f32 = 65.0;
 const PAGE_RIGHT: f32 = 314.0;
 const PAGE_TOP: f32 = 89.0;
@@ -1190,11 +1191,7 @@ fn format_deal_line(
     if deal.amount != 0 {
         let amount = deal.amount.to_string();
         if deal.unit_price != deal.market_price {
-            let template = assets.get_string(0x2740, if deal.kind == DealBookEntryKind::Offer {
-                        0x12
-                    } else {
-                        0x13
-                    });
+            let template = assets.string(deal.kind.priced_template_string());
             fill_brackets(
                 &template,
                 &[
@@ -1205,11 +1202,7 @@ fn format_deal_line(
                 ],
             )
         } else {
-            let template = assets.get_string(0x2740, if deal.kind == DealBookEntryKind::Offer {
-                        0x14
-                    } else {
-                        0x15
-                    });
+            let template = assets.string(deal.kind.market_price_template_string());
             fill_brackets(&template, &[&amount, &commodity, &counterparty])
         }
     } else if deal.uses_navy_status_text() {
@@ -1230,6 +1223,29 @@ fn format_deal_line(
             &assets.get_string(0x2740, 0x16),
             &[&counterparty, &commodity],
         )
+    }
+}
+
+/// App-local deal-book string templates. Private trait because orphan rules
+/// block an inherent `impl` on `imperialism_core::DealBookEntryKind`.
+trait DealBookEntryKindRetailResources {
+    fn priced_template_string(self) -> StringResourceId;
+    fn market_price_template_string(self) -> StringResourceId;
+}
+
+impl DealBookEntryKindRetailResources for DealBookEntryKind {
+    fn priced_template_string(self) -> StringResourceId {
+        DEAL_BOOK_STRINGS.offset(match self {
+            Self::Offer => 0x12,
+            Self::Accept => 0x13,
+        })
+    }
+
+    fn market_price_template_string(self) -> StringResourceId {
+        DEAL_BOOK_STRINGS.offset(match self {
+            Self::Offer => 0x14,
+            Self::Accept => 0x15,
+        })
     }
 }
 
