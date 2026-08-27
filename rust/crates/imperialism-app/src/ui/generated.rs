@@ -464,50 +464,6 @@ pub const WAREHOUSE_STOCK_TAGS: [FourCc; 20] = [
     fourcc!("live"),
 ];
 
-pub struct IndustryPageControls {
-    pub slot: CityFacilitySlot,
-    pub order_tags: &'static [FourCc],
-    pub stocks: &'static [(FourCc, i16)],
-}
-
-pub const INDUSTRY_PAGE_CONTROLS: [IndustryPageControls; 7] = [
-    IndustryPageControls {
-        slot: CityFacilitySlot::TextileMill,
-        order_tags: &[fourcc!("fabr")],
-        stocks: &[(fourcc!("cott"), 1), (fourcc!("wool"), 1)],
-    },
-    IndustryPageControls {
-        slot: CityFacilitySlot::ClothingFactory,
-        order_tags: &[fourcc!("clot")],
-        stocks: &[(fourcc!("fabr"), 2)],
-    },
-    IndustryPageControls {
-        slot: CityFacilitySlot::SteelMill,
-        order_tags: &[fourcc!("stee")],
-        stocks: &[(fourcc!("coal"), 1), (fourcc!("iron"), 1)],
-    },
-    IndustryPageControls {
-        slot: CityFacilitySlot::Metalworks,
-        order_tags: &[fourcc!("hard"), fourcc!("arma")],
-        stocks: &[(fourcc!("stee"), 2)],
-    },
-    IndustryPageControls {
-        slot: CityFacilitySlot::LumberMill,
-        order_tags: &[fourcc!("lumb"), fourcc!("pape")],
-        stocks: &[(fourcc!("timb"), 2)],
-    },
-    IndustryPageControls {
-        slot: CityFacilitySlot::FurnitureFactory,
-        order_tags: &[fourcc!("furn")],
-        stocks: &[(fourcc!("lumb"), 2)],
-    },
-    IndustryPageControls {
-        slot: CityFacilitySlot::OilRefinery,
-        order_tags: &[fourcc!("fuel")],
-        stocks: &[(fourcc!("oil "), 2)],
-    },
-];
-
 pub fn spawn_city_dialog(commands: &mut Commands, slot: CityFacilitySlot) -> Entity {
     match slot {
         CityFacilitySlot::TextileMill => commands.spawn_scene(citydlog_9200()).id(),

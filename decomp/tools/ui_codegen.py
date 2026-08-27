@@ -2419,30 +2419,8 @@ def _render_city_dialog_controls(
         [
             "];",
             "",
-            "pub struct IndustryPageControls {",
-            "    pub slot: CityFacilitySlot,",
-            "    pub order_tags: &'static [FourCc],",
-            "    pub stocks: &'static [(FourCc, i16)],",
-            "}",
-            "",
-            "pub const INDUSTRY_PAGE_CONTROLS: [IndustryPageControls; 7] = [",
         ]
     )
-    for page in controls.industry:
-        order_tags = ", ".join(_rust_fourcc(tag) for tag in page.order_tags)
-        stocks = ", ".join(
-            f"({_rust_fourcc(tag)}, {columns})" for tag, columns in page.stocks
-        )
-        lines.extend(
-            [
-                "    IndustryPageControls {",
-                f"        slot: CityFacilitySlot::{_rust_enum_variant(page.slot)},",
-                f"        order_tags: &[{order_tags}],",
-                f"        stocks: &[{stocks}],",
-                "    },",
-            ]
-        )
-    lines.extend(["];", ""])
     lines.append("pub fn spawn_city_dialog(commands: &mut Commands, slot: CityFacilitySlot) -> Entity {")
     lines.append("    match slot {")
     for visual in city_buildings.visuals:
