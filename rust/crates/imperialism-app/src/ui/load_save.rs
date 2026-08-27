@@ -561,7 +561,7 @@ fn on_load_save_activate(
     map: Option<Res<StrategicMapSession>>,
     city_windows: Option<Res<CityWindows>>,
     battle_reports: Option<Res<BattleReportPresentation>>,
-    assets: RetailUiAssets,
+    assets: Option<RetailUiAssets>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -601,7 +601,7 @@ fn on_load_save_activate(
                 map.as_deref(),
                 city_windows.as_deref(),
                 battle_reports.as_deref(),
-                Some(&assets),
+                assets.as_ref(),
                 returning.0,
                 &mut next_state,
             );
