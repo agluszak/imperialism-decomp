@@ -9,7 +9,6 @@
 
 use super::retail::{
     load_template_transparent_picture, retail_built_text_style, retail_text_color,
-    retail_text_shadow,
 };
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -102,11 +101,11 @@ pub fn retail_numbered_arrow() -> impl Scene {
             ),
             (
                 #Count
-                Node { position_type: PositionType::Absolute, left: px(7), top: px(0), width: px(20), height: px(16) }
+                // `TNumberedArrowButton::Draw`: one pass at origin (7, 0), theme 0x2b67 → palette 0.
+                Node { position_type: PositionType::Absolute, left: px(7), top: px(0) }
                 Text("")
-                retail_built_text_style(10, 1)
-                retail_text_color(0x28)
-                retail_text_shadow(0, 1, 1)
+                retail_built_text_style(10, 0)
+                retail_text_color(0)
                 Pickable::IGNORE
             ),
         ]
@@ -159,11 +158,12 @@ mod tests {
     }
 
     #[test]
-    fn count_caption_uses_built_10pt_book_antiqua() {
+    fn count_caption_uses_built_10pt_left_aligned_book_antiqua() {
         use imperialism_formats::{
-            RetailFontFace, RetailTextStylePreset, resolve_retail_text_style,
+            RetailFontFace, RetailTextAlignment, RetailTextStylePreset, resolve_retail_text_style,
         };
-        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 1)).unwrap();
+        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 0)).unwrap();
         assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
+        assert_eq!(style.alignment, RetailTextAlignment::Left);
     }
 }
