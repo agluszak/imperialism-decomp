@@ -25,6 +25,7 @@ mod random_setup_map;
 mod retail;
 mod retail_amount_bar;
 mod retail_palette;
+mod retail_placard;
 mod retail_raster;
 mod retail_raster_text;
 mod satellite_preview;

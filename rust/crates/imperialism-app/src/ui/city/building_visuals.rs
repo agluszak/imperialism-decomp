@@ -32,13 +32,11 @@ pub(in crate::ui::city) struct CityCanvas {
 pub(in crate::ui::city) struct CitySceneRoot;
 
 #[derive(Clone, Copy)]
-struct PlacardUi(Entity, Entity);
-
 struct CitySummaryUi {
-    labor: [PlacardUi; 3],
-    population: PlacardUi,
-    power: PlacardUi,
-    needs: [(ResourceKind, PlacardUi); 6],
+    labor: [Entity; 3],
+    population: Entity,
+    power: Entity,
+    needs: [(ResourceKind, Entity); 6],
     treasury: Entity,
 }
 
@@ -237,7 +235,6 @@ pub(in crate::ui::city) fn bind_city_screen(
     mut commands: Commands,
     root: Single<Entity, Added<CitySceneRoot>>,
     tree: RetailTree,
-    nodes: Query<&Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -252,7 +249,7 @@ pub(in crate::ui::city) fn bind_city_screen(
 
     let nation = session.active_major_nation();
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    let summary = bind_city_summary_values(&mut commands, *root, &tree, &nodes, &mut assets);
+    let summary = bind_city_summary_values(*root, &tree);
     let hover_title = bind_city_hover_title(&mut commands, *root, &tree, &mut assets);
     spawn_city_buildings(
         &mut commands,
@@ -270,85 +267,24 @@ pub(in crate::ui::city) fn bind_city_screen(
     });
 }
 
-const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset = RetailTextStylePreset {
-    font_family: 3,
-    face_flags: 0,
-    point_size: 10,
-    alignment: 1,
-};
-
-fn bind_city_summary_values(
-    commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    nodes: &Query<&Node>,
-    assets: &mut RetailUiAssets,
-) -> CitySummaryUi {
-    let (font, layout, line_height, _) = assets
-        .text_style(CITY_SUMMARY_NUMBER_STYLE)
-        .expect("placard style");
-    let line_px = match line_height {
-        LineHeight::Px(value) => value,
-        LineHeight::RelativeToFont(_) => unreachable!("absolute line height"),
-    };
-    let text_color = assets.palette_color(0x28);
-    let shadow_color = assets.palette_color(0);
-    let bind_placard = |commands: &mut Commands, tag| {
-        let frame = tree.find(root, tag);
-        let node = nodes.get(frame).expect("placard node");
-        let Val::Px(height) = node.height else {
-            unreachable!("fixed placard height");
-        };
-        let text = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0),
-                    top: px(0),
-                    width: percent(100),
-                    height: percent(100),
-                    padding: UiRect::top(px((height - line_px).max(0.0))),
-                    ..default()
-                },
-                Text::new(""),
-                font.clone(),
-                layout,
-                line_height,
-                TextColor(text_color),
-                TextShadow {
-                    offset: Vec2::ONE,
-                    color: shadow_color,
-                },
-                Pickable::IGNORE,
-                Visibility::Inherited,
-                ChildOf(frame),
-            ))
-            .id();
-        PlacardUi(frame, text)
-    };
-    let labor = [
-        bind_placard(commands, fourcc!("untr")),
-        bind_placard(commands, fourcc!("trai")),
-        bind_placard(commands, fourcc!("prof")),
-    ];
-    let population = bind_placard(commands, fourcc!("labP"));
-    let power = bind_placard(commands, fourcc!("powe"));
-    let needs = [
-        (ResourceKind::Grain, fourcc!("grai")),
-        (ResourceKind::Fruit, fourcc!("prod")),
-        (ResourceKind::Livestock, fourcc!("meat")),
-        (ResourceKind::Hardware, fourcc!("hard")),
-        (ResourceKind::Clothing, fourcc!("clot")),
-        (ResourceKind::Furniture, fourcc!("furn")),
-    ]
-    .map(|(resource, tag)| (resource, bind_placard(commands, tag)));
-    let treasury = tree.find(root, fourcc!("trea"));
+fn bind_city_summary_values(root: Entity, tree: &RetailTree) -> CitySummaryUi {
     CitySummaryUi {
-        labor,
-        population,
-        power,
-        needs,
-        treasury,
+        labor: [
+            tree.find(root, fourcc!("untr")),
+            tree.find(root, fourcc!("trai")),
+            tree.find(root, fourcc!("prof")),
+        ],
+        population: tree.find(root, fourcc!("labP")),
+        power: tree.find(root, fourcc!("powe")),
+        needs: [
+            (ResourceKind::Grain, tree.find(root, fourcc!("grai"))),
+            (ResourceKind::Fruit, tree.find(root, fourcc!("prod"))),
+            (ResourceKind::Livestock, tree.find(root, fourcc!("meat"))),
+            (ResourceKind::Hardware, tree.find(root, fourcc!("hard"))),
+            (ResourceKind::Clothing, tree.find(root, fourcc!("clot"))),
+            (ResourceKind::Furniture, tree.find(root, fourcc!("furn"))),
+        ],
+        treasury: tree.find(root, fourcc!("trea")),
     }
 }
 
@@ -621,13 +557,6 @@ pub(in crate::ui::city) fn animate_city_building_actions(
     }
 }
 
-fn render_placard(ui: &mut CityUi, placard: PlacardUi, value: String) {
-    let shown = value != "0";
-    ui.visible(placard.0, shown);
-    ui.visible(placard.1, shown);
-    ui.text(placard.1, value);
-}
-
 pub(in crate::ui::city) fn render_city_screen(
     session: Res<GameSession>,
     screen: Option<Single<&CityScreenView>>,
@@ -643,22 +572,16 @@ pub(in crate::ui::city) fn render_city_screen(
     let city = &major.city;
     let labor = city.population.baseline_labor();
     let summary = &screen.summary;
-    render_placard(&mut ui, summary.labor[0], labor.low.to_string());
-    render_placard(&mut ui, summary.labor[1], labor.medium.to_string());
-    render_placard(&mut ui, summary.labor[2], labor.high.to_string());
-    render_placard(
-        &mut ui,
-        summary.population,
-        city.population.strength().to_string(),
-    );
-    render_placard(&mut ui, summary.power, city.power_available.to_string());
+    ui.placard(summary.labor[0], labor.low);
+    ui.placard(summary.labor[1], labor.medium);
+    ui.placard(summary.labor[2], labor.high);
+    ui.placard(summary.population, city.population.strength());
+    ui.placard(summary.power, city.power_available);
     for &(resource, placard) in &summary.needs {
-        render_placard(
-            &mut ui,
+        ui.placard(
             placard,
             city.population
-                .predicted_need_after_refresh(resource, city.orders.population_growth.quantity)
-                .to_string(),
+                .predicted_need_after_refresh(resource, city.orders.population_growth.quantity),
         );
     }
     ui.text(summary.treasury, format_currency(major.common.treasury));
@@ -782,7 +705,14 @@ mod tests {
 
     #[test]
     fn city_production_placard_values_use_book_antiqua_10pt() {
-        let style = resolve_retail_text_style(CITY_SUMMARY_NUMBER_STYLE).unwrap();
+        // Matches `TPlacard::Draw` / RetailPlacard text style.
+        let style = resolve_retail_text_style(RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size: 10,
+            alignment: 1,
+        })
+        .unwrap();
         assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
         assert_eq!(style.logical_pixel_height, 14);
         assert_eq!(style.alignment, RetailTextAlignment::Center);

@@ -2,7 +2,8 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::{RetailPlacard, RetailTree, RetailUiAssets};
+use super::retail_amount_bar::RetailAmountBar;
 use super::window::{
     CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
     window_position,
@@ -13,7 +14,6 @@ use bevy::ecs::system::SystemParam;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ValueChange};
 use enum_map::Enum;
@@ -22,12 +22,10 @@ use imperialism_formats::*;
 use std::time::Duration;
 
 mod building_visuals;
-mod common_controls;
 mod dialogs;
 mod lifecycle;
 use building_visuals::*;
 pub(super) use building_visuals::{CityBuildingActionVisual, CityBuildingVisual};
-use common_controls::*;
 use dialogs::*;
 use lifecycle::*;
 
@@ -57,6 +55,8 @@ struct CityUi<'w, 's> {
     nodes: Query<'w, 's, &'static mut Node>,
     images: Query<'w, 's, &'static mut ImageNode>,
     checked: Query<'w, 's, Has<Checked>>,
+    amount_bars: Query<'w, 's, &'static mut RetailAmountBar>,
+    placards: Query<'w, 's, &'static mut RetailPlacard>,
 }
 
 impl CityUi<'_, '_> {
@@ -87,6 +87,10 @@ impl CityUi<'_, '_> {
         } else if !checked && is_checked {
             self.commands.entity(entity).remove::<Checked>();
         }
+    }
+
+    fn placard(&mut self, entity: Entity, value: i16) {
+        self.placards.get_mut(entity).expect("placard").value = value;
     }
 }
 

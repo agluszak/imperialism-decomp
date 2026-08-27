@@ -142,6 +142,33 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("retail_text_style(3, 0, 10, -2)", metal)
         self.assertNotIn("retail_text_style(3, 0, 9, 1)", metal)
 
+    def test_recovered_widget_classes_emit_reusable_rust_widgets(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        industry = rendered[
+            rendered.index("pub fn citydlog_9200()") : rendered.index(
+                "pub fn citydlog_9201()"
+            )
+        ]
+        self.assertIn(
+            "retail_amount_bar(RetailAmountBarKind::Industry)", industry
+        )
+        food = rendered[
+            rendered.index("pub fn citydlog_9209()") : rendered.index(
+                "pub fn citydlog_9211()"
+            )
+        ]
+        self.assertIn("retail_amount_bar(RetailAmountBarKind::Rail)", food)
+        trade = rendered[
+            rendered.index("pub fn trade_2009()") : rendered.index(
+                "pub fn trade_2010()"
+            )
+        ]
+        self.assertIn("retail_amount_bar(RetailAmountBarKind::Trader)", trade)
+        self.assertIn("retail_placard(6013)", rendered)
+        self.assertIn("retail_placard(6001)", rendered)
+
     def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources

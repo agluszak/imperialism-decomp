@@ -12,6 +12,9 @@ use bevy::ui::{Checked, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
 
+pub use super::retail_amount_bar::{RetailAmountBarKind, retail_amount_bar};
+pub use super::retail_placard::RetailPlacard;
+
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RetailTag(pub FourCc);
@@ -64,6 +67,19 @@ pub fn retail_picture(id: i16) -> impl Scene {
                 context,
                 PictureId::new(id),
             )?))
+        })
+    }
+}
+
+/// Recovered `TPlacard`: picture art plus autonomous numeric value widget.
+pub fn retail_placard(picture_id: i16) -> impl Scene {
+    bsn! {
+        template(move |context| {
+            let image = load_template_picture(context, PictureId::new(picture_id))?;
+            context
+                .entity
+                .insert(super::retail_placard::RetailPlacard { value: 0 });
+            Ok(ImageNode::new(image))
         })
     }
 }
@@ -375,6 +391,8 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_radio_text_fill_state::<Add, Checked>)
             .add_observer(on_radio_text_fill_state::<Remove, Checked>)
             .add_observer(on_radio_text_fill_state::<Add, RetailRadioTextFill>);
+        super::retail_amount_bar::register_amount_bar(app);
+        super::retail_placard::register_placard(app);
         super::hover_help::register_hover_help(app);
     }
 }
@@ -463,7 +481,7 @@ fn decode_retail_picture(picture_id: PictureId, bytes: &[u8]) -> Result<Image, R
     .map_err(|source| RetailPictureError::BmpDecode { picture_id, source })
 }
 
-fn load_template_picture(
+pub(super) fn load_template_picture(
     context: &mut TemplateContext,
     picture_id: PictureId,
 ) -> bevy::ecs::error::Result<Handle<Image>> {
@@ -481,7 +499,7 @@ fn load_template_picture(
     })?)
 }
 
-fn retail_text_components(
+pub(super) fn retail_text_components(
     style: ResolvedRetailTextStyle,
     font: &RetailFont,
 ) -> (TextFont, TextLayout, LineHeight, bool) {

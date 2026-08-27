@@ -1644,6 +1644,15 @@ def apply_case_windows_overrides(
     return replace(view, nodes=tuple(nodes))
 
 
+def _rust_amount_bar_kind(node: UiSemanticNode) -> str | None:
+    """Map recovered TAmtBar subclasses to RetailAmountBarKind variants."""
+    return {
+        "TIndustryAmtBar": "Industry",
+        "TRailAmtBar": "Rail",
+        "TTraderAmtBar": "Trader",
+    }.get(node.class_name)
+
+
 def _rust_widget_kind(node: UiSemanticNode) -> str:
     class_name = node.class_name.casefold()
     if node.type_code == "wind":
@@ -1654,6 +1663,10 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
         return "checkbox"
     if node.type_code == "radb" or "radio" in class_name:
         return "radio_or_cluster_control"
+    if node.class_name == "TPlacard":
+        return "placard"
+    if _rust_amount_bar_kind(node) is not None:
+        return "amount_bar"
     if node.type_code == "pict":
         if "toggle" in class_name:
             return "toggle"
@@ -2099,13 +2112,23 @@ def _render_bsn_node(
         elif visual == "czech_box":
             idle_id &= ~1
             active_id = int(picture_id) | 1
-        if visual == "static":
+        if node.class_name == "TPlacard":
+            # Recovered class -> RetailPlacard widget (picture + value presentation).
+            lines.append(f"    retail_placard({idle_id})")
+        elif visual == "static":
             lines.append(f"    retail_picture({idle_id})")
         else:
             lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
     elif behavior == "radio_button":
         # TRadioText has no picture; Draw fills the selected/pressed option.
         lines.append("    retail_radio_text_fill()")
+
+    amount_bar_kind = _rust_amount_bar_kind(node)
+    if amount_bar_kind is not None:
+        # Recovered TAmtBar subclass -> RetailAmountBar widget.
+        lines.append(
+            f"    retail_amount_bar(RetailAmountBarKind::{amount_bar_kind})"
+        )
 
     children = children_by_parent.get(node.node_id, [])
     if children:

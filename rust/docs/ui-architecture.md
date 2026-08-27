@@ -63,7 +63,7 @@ struct TradeRowView {
     decrease: Entity,
     increase: Entity,
     quantity: Entity,
-    gauge_fill: Entity,
+    gauge: Entity,
 }
 ```
 
@@ -130,9 +130,22 @@ If a fixed control's semantic argument is known at binding and only its handler 
 capture it (for example a trade card captures its `TradeCommodity` and `TradeCardKind`). Store it as
 a component only when other independent systems need to query it.
 
-Reusable autonomous presentation components such as `RetailPictureSwap` remain appropriate. The
-criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket
-ban on leaf components.
+Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPlacard`, and
+`RetailAmountBar` remain appropriate. They represent recovered retail widget classes with their own
+presentation state and behavior. The criterion is meaningful state, behavior, lifecycle, or
+relationship on that entity, not a blanket ban on leaf components.
+
+The three-way ownership split for recovered controls is:
+
+```text
+recovered CLASS semantics  -> reusable Rust widget (`RetailPlacard`, `RetailAmountBar`, ...)
+recovered INSTANCE facts   -> generated scene (hierarchy, layout, initial widget attachment)
+game / screen semantics    -> handwritten binder (FourCC find, domain observers, root view refs)
+```
+
+Root views retain widget roots and other semantic addresses, not widget internals such as fill
+nodes, placard text children, or click geometry. Do not invent a generic widget framework
+(`RetailWidget<T>`, `Binding<T>`, lenses); port concrete recovered reusable controls only.
 
 ## Rendering
 

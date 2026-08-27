@@ -1139,6 +1139,7 @@ pub fn citydlog_9200() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1229,6 +1230,7 @@ pub fn citydlog_9201() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1309,6 +1311,7 @@ pub fn citydlog_9202() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1394,6 +1397,7 @@ pub fn citydlog_9203() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1419,6 +1423,7 @@ pub fn citydlog_9203() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1504,6 +1509,7 @@ pub fn citydlog_9204() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1529,6 +1535,7 @@ pub fn citydlog_9204() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1614,6 +1621,7 @@ pub fn citydlog_9205() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1694,6 +1702,7 @@ pub fn citydlog_9206() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
                                 ]
                             ),
@@ -1766,6 +1775,7 @@ pub fn citydlog_9209() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
                                 ]
                             ),
@@ -1791,6 +1801,7 @@ pub fn citydlog_9209() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
                                 ]
                             ),
@@ -1901,6 +1912,7 @@ pub fn citydlog_9211() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
                                 ]
                             ),
@@ -1966,6 +1978,7 @@ pub fn citydlog_9212() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
                                 ]
                             ),
@@ -2406,6 +2419,7 @@ pub fn citydlog_9214() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
                                 ]
                             ),
@@ -2482,6 +2496,7 @@ pub fn citydlog_9215() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
                                 ]
                             ),
@@ -2662,55 +2677,55 @@ pub fn citymain_2011() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("labP"), 6, 110, 39, 35)
-                                retail_picture(6013)
+                                retail_placard(6013)
                             ),
                             (
                                 retail_node(fourcc!("untr"), 6, 149, 39, 35)
-                                retail_picture(6001)
+                                retail_placard(6001)
                             ),
                             (
                                 retail_node(fourcc!("trai"), 6, 189, 39, 35)
-                                retail_picture(6002)
+                                retail_placard(6002)
                             ),
                             (
                                 retail_node(fourcc!("prof"), 6, 229, 39, 35)
-                                retail_picture(6003)
+                                retail_placard(6003)
                             ),
                             (
                                 retail_node(fourcc!("powe"), 6, 269, 39, 35)
-                                retail_picture(6007)
+                                retail_placard(6007)
                             ),
                             (
                                 retail_node(fourcc!("sick"), 6, 349, 39, 35)
-                                retail_picture(6008)
+                                retail_placard(6008)
                             ),
                             (
                                 retail_node(fourcc!("dead"), 6, 389, 39, 35)
-                                retail_picture(6009)
+                                retail_placard(6009)
                             ),
                             (
                                 retail_node(fourcc!("prod"), 595, 149, 39, 35)
-                                retail_picture(6011)
+                                retail_placard(6011)
                             ),
                             (
                                 retail_node(fourcc!("grai"), 595, 110, 39, 35)
-                                retail_picture(6010)
+                                retail_placard(6010)
                             ),
                             (
                                 retail_node(fourcc!("meat"), 595, 189, 39, 80)
-                                retail_picture(6012)
+                                retail_placard(6012)
                             ),
                             (
                                 retail_node(fourcc!("clot"), 595, 318, 39, 35)
-                                retail_picture(6005)
+                                retail_placard(6005)
                             ),
                             (
                                 retail_node(fourcc!("hard"), 595, 395, 39, 35)
-                                retail_picture(6004)
+                                retail_placard(6004)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 595, 357, 39, 35)
-                                retail_picture(6006)
+                                retail_placard(6006)
                             ),
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 228, 67)
@@ -9155,6 +9170,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9209,6 +9225,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9263,6 +9280,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9317,6 +9335,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9371,6 +9390,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9425,6 +9445,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9479,6 +9500,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9533,6 +9555,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9587,6 +9610,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9641,6 +9665,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9695,6 +9720,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9749,6 +9775,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9803,6 +9830,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9857,6 +9885,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9911,6 +9940,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -9965,6 +9995,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -10019,6 +10050,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
                                 ]
                             ),
@@ -10200,6 +10232,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10254,6 +10287,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10308,6 +10342,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10362,6 +10397,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10416,6 +10452,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10470,6 +10507,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10524,6 +10562,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10578,6 +10617,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10632,6 +10672,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10686,6 +10727,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10740,6 +10782,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10794,6 +10837,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10848,6 +10892,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10902,6 +10947,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -10956,6 +11002,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -11010,6 +11057,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),
@@ -11064,6 +11112,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
                                         ]
                                     ),

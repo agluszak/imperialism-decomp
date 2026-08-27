@@ -235,7 +235,13 @@ pub(in crate::ui::city) fn render_food(
     ui: &mut CityUi,
 ) {
     let city = &session.game.nations().major(nation).city;
-    render_rail(session, nation, &view.rail, ui);
+    render_rail(
+        session,
+        nation,
+        CityOrderId::FoodProcessing,
+        &view.rail,
+        ui,
+    );
     ui.visible(view.labor, city.population.strength() >= 2);
     ui.visible(view.grain, city.stockpile[ResourceKind::Grain] >= 2);
     ui.visible(view.fruit, city.stockpile[ResourceKind::Fruit] >= 1);
@@ -251,7 +257,7 @@ pub(in crate::ui::city) fn render_power(
     nation: MajorNationId,
     ui: &mut CityUi,
 ) {
-    render_rail(session, nation, view, ui);
+    render_rail(session, nation, CityOrderId::PowerPlant, view, ui);
 }
 
 pub(in crate::ui::city) fn render_transport(
@@ -261,7 +267,13 @@ pub(in crate::ui::city) fn render_transport(
     ui: &mut CityUi,
 ) {
     let city = &session.game.nations().major(nation).city;
-    render_rail(session, nation, &view.rail, ui);
+    render_rail(
+        session,
+        nation,
+        CityOrderId::TransportCapacity,
+        &view.rail,
+        ui,
+    );
     ui.visible(view.labor, city.population.strength() >= 2);
     ui.visible(view.lumber, city.stockpile[ResourceKind::Lumber] < 1);
     ui.visible(view.steel, city.stockpile[ResourceKind::Steel] < 1);
@@ -278,7 +290,13 @@ pub(in crate::ui::city) fn render_population(
     let city = &major.city;
     let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
     let province_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x1d);
-    render_rail(session, nation, &view.rail, ui);
+    render_rail(
+        session,
+        nation,
+        CityOrderId::PopulationGrowth,
+        &view.rail,
+        ui,
+    );
     ui.visible(view.food, city.stockpile[ResourceKind::Food] >= 1);
     ui.visible(view.clothing, city.stockpile[ResourceKind::Clothing] >= 1);
     ui.visible(view.furniture, city.stockpile[ResourceKind::Furniture] >= 1);
