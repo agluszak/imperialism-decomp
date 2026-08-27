@@ -2,6 +2,25 @@
 # Post-create presentation changes made by the recovered Windows controllers.
 # Text-style patches and controller-induced geometry deltas live here. Mac View
 # IR still owns resource hierarchy and the baseline rectangles.
+
+# TTwoPicSlider picture base, value scale, and Off caption are Windows DoPostCreate
+# facts, not Mac resource fields.
+two_pic_slider_instances:
+  - view: Linger.rsrc:4150
+    node: 0x026a
+    tag: musi
+    picture_base: 0x1036
+    scale: 0xFF
+    off_string: {group: 0x2743, index: 0x3C}
+    evidence: TGamePreferencesPicture::DoPostCreate at 0x0056a5b0 calls InitializePictureSurfaces(0x1036), scales preferenceValues[3] by 0xff, and loads the Off caption string
+  - view: Linger.rsrc:4150
+    node: 0x01ff
+    tag: soun
+    picture_base: 0x1038
+    scale: 100
+    off_string: {group: 0x2743, index: 0x3C}
+    evidence: TGamePreferencesPicture::DoPostCreate at 0x0056a5b0 calls InitializePictureSurfaces(0x1038), scales preferenceValues[2] by 100, and loads the Off caption string
+
 node_property_patches:
   - view: Startup.rsrc:1501
     node: 0x0247

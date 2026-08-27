@@ -1148,37 +1148,7 @@ pub fn citydlog_9200() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1273,37 +1243,7 @@ pub fn citydlog_9201() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1386,37 +1326,7 @@ pub fn citydlog_9202() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1505,37 +1415,7 @@ pub fn citydlog_9203() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1561,37 +1441,7 @@ pub fn citydlog_9203() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1680,37 +1530,7 @@ pub fn citydlog_9204() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1736,37 +1556,7 @@ pub fn citydlog_9204() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1855,37 +1645,7 @@ pub fn citydlog_9205() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1968,37 +1728,7 @@ pub fn citydlog_9206() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2072,37 +1802,7 @@ pub fn citydlog_9209() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2128,37 +1828,7 @@ pub fn citydlog_9209() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2277,37 +1947,7 @@ pub fn citydlog_9211() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2375,37 +2015,7 @@ pub fn citydlog_9212() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2851,37 +2461,7 @@ pub fn citydlog_9214() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2961,37 +2541,7 @@ pub fn citydlog_9215() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(1),
-                                                    width: px(0),
-                                                    height: px(4),
-                                                }
-                                                retail_background_color(0x16)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Inherited)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -3182,315 +2732,55 @@ pub fn citymain_2011() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("labP"), 6, 110, 39, 35)
-                                retail_picture(6013)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6013)
                             ),
                             (
                                 retail_node(fourcc!("untr"), 6, 149, 39, 35)
-                                retail_picture(6001)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6001)
                             ),
                             (
                                 retail_node(fourcc!("trai"), 6, 189, 39, 35)
-                                retail_picture(6002)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6002)
                             ),
                             (
                                 retail_node(fourcc!("prof"), 6, 229, 39, 35)
-                                retail_picture(6003)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6003)
                             ),
                             (
                                 retail_node(fourcc!("powe"), 6, 269, 39, 35)
-                                retail_picture(6007)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6007)
                             ),
                             (
                                 retail_node(fourcc!("sick"), 6, 349, 39, 35)
-                                retail_picture(6008)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6008)
                             ),
                             (
                                 retail_node(fourcc!("dead"), 6, 389, 39, 35)
-                                retail_picture(6009)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6009)
                             ),
                             (
                                 retail_node(fourcc!("prod"), 595, 149, 39, 35)
-                                retail_picture(6011)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6011)
                             ),
                             (
                                 retail_node(fourcc!("grai"), 595, 110, 39, 35)
-                                retail_picture(6010)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6010)
                             ),
                             (
                                 retail_node(fourcc!("meat"), 595, 189, 39, 80)
-                                retail_picture(6012)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6012)
                             ),
                             (
                                 retail_node(fourcc!("clot"), 595, 318, 39, 35)
-                                retail_picture(6005)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6005)
                             ),
                             (
                                 retail_node(fourcc!("hard"), 595, 395, 39, 35)
-                                retail_picture(6004)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6004)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 595, 357, 39, 35)
-                                retail_picture(6006)
-                                PlacardParts { text: #Caption }
-                                Visibility::Hidden
-                                Children [
-                                    (
-                                        #Caption
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(0),
-                                            right: Val::Auto,
-                                            top: px(0),
-                                            width: px(20),
-                                            height: px(14),
-                                        }
-                                        Text("")
-                                        retail_text_style(3, 0, 10, 0)
-                                        retail_text_color(0x28)
-                                        retail_text_shadow(0, 1, 1)
-                                        Pickable::IGNORE
-                                    ),
-                                ]
+                                retail_placard(6006)
                             ),
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 228, 67)
@@ -6124,26 +5414,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
-                                                        PlacardParts { text: #Caption }
-                                                        Children [
-                                                            (
-                                                                #Caption
-                                                                Node {
-                                                                    position_type: PositionType::Absolute,
-                                                                    left: px(60),
-                                                                    right: Val::Auto,
-                                                                    top: px(34),
-                                                                    width: px(40),
-                                                                    height: px(12),
-                                                                }
-                                                                Text("")
-                                                                retail_text_style(0, 0, 10, 1)
-                                                                retail_text_color(0x28)
-                                                                retail_text_shadow(0, 1, 1)
-                                                                Pickable::IGNORE
-                                                            ),
-                                                        ]
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -6164,26 +5435,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
-                                                        PlacardParts { text: #Caption }
-                                                        Children [
-                                                            (
-                                                                #Caption
-                                                                Node {
-                                                                    position_type: PositionType::Absolute,
-                                                                    left: px(60),
-                                                                    right: Val::Auto,
-                                                                    top: px(34),
-                                                                    width: px(40),
-                                                                    height: px(12),
-                                                                }
-                                                                Text("")
-                                                                retail_text_style(0, 0, 10, 1)
-                                                                retail_text_color(0x28)
-                                                                retail_text_shadow(0, 1, 1)
-                                                                Pickable::IGNORE
-                                                            ),
-                                                        ]
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -6204,26 +5456,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
-                                                        PlacardParts { text: #Caption }
-                                                        Children [
-                                                            (
-                                                                #Caption
-                                                                Node {
-                                                                    position_type: PositionType::Absolute,
-                                                                    left: px(60),
-                                                                    right: Val::Auto,
-                                                                    top: px(34),
-                                                                    width: px(40),
-                                                                    height: px(12),
-                                                                }
-                                                                Text("")
-                                                                retail_text_style(0, 0, 10, 1)
-                                                                retail_text_color(0x28)
-                                                                retail_text_shadow(0, 1, 1)
-                                                                Pickable::IGNORE
-                                                            ),
-                                                        ]
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -6244,26 +5477,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
-                                                        PlacardParts { text: #Caption }
-                                                        Children [
-                                                            (
-                                                                #Caption
-                                                                Node {
-                                                                    position_type: PositionType::Absolute,
-                                                                    left: px(60),
-                                                                    right: Val::Auto,
-                                                                    top: px(34),
-                                                                    width: px(40),
-                                                                    height: px(12),
-                                                                }
-                                                                Text("")
-                                                                retail_text_style(0, 0, 10, 1)
-                                                                retail_text_color(0x28)
-                                                                retail_text_shadow(0, 1, 1)
-                                                                Pickable::IGNORE
-                                                            ),
-                                                        ]
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -6444,233 +5658,43 @@ pub fn mapview_2013() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("pic0"), 4, 36, 42, 53)
-                                                retail_picture(1220)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1220)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic1"), 4, 89, 42, 53)
-                                                retail_picture(1221)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1221)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic2"), 4, 142, 42, 53)
-                                                retail_picture(1222)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1222)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic3"), 4, 195, 42, 53)
-                                                retail_picture(1223)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1223)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic4"), 57, 36, 47, 53)
-                                                retail_picture(1224)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1224)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic5"), 57, 89, 47, 53)
-                                                retail_picture(1225)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1225)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic6"), 57, 142, 47, 53)
-                                                retail_picture(1226)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1226)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic7"), 57, 195, 47, 53)
-                                                retail_picture(1227)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1227)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic8"), 4, 248, 42, 53)
-                                                retail_picture(1244)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1244)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic9"), 57, 248, 47, 53)
-                                                retail_picture(1247)
-                                                PlacardParts { text: #Caption }
-                                                Children [
-                                                    (
-                                                        #Caption
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: Val::Auto,
-                                                            right: px(0),
-                                                            top: px(38),
-                                                            width: px(42),
-                                                            height: px(12),
-                                                        }
-                                                        Text("")
-                                                        retail_text_style(0, 0, 10, -1)
-                                                        retail_text_color(0x28)
-                                                        retail_text_shadow(0, 1, 1)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_army_placard(1247)
                                             ),
                                         ]
                                     ),
@@ -10717,37 +9741,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -10802,37 +9796,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -10887,37 +9851,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -10972,37 +9906,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11057,37 +9961,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11142,37 +10016,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11227,37 +10071,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11312,37 +10126,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11397,37 +10181,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11482,37 +10236,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11567,37 +10291,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11652,37 +10346,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11737,37 +10401,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11822,37 +10456,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11907,37 +10511,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -11992,37 +10566,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -12077,37 +10621,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        AmountBarParts {
-                                            fill: #Fill,
-                                            limit: #Limit,
-                                        }
-                                        Children [
-                                            (
-                                                #Fill
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(0),
-                                                    height: percent(100),
-                                                }
-                                                retail_background_color(0xbd)
-                                                Pickable::IGNORE
-                                            ),
-                                            (
-                                                #Limit
-                                                Node {
-                                                    position_type: PositionType::Absolute,
-                                                    left: px(0),
-                                                    top: px(0),
-                                                    width: px(1),
-                                                    height: px(5),
-                                                }
-                                                retail_background_color(0)
-                                                template_value(Visibility::Hidden)
-                                                Pickable::IGNORE
-                                            ),
-                                        ]
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -12302,37 +10816,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12387,37 +10871,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12472,37 +10926,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12557,37 +10981,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12642,37 +11036,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12727,37 +11091,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12812,37 +11146,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12897,37 +11201,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -12982,37 +11256,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13067,37 +11311,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13152,37 +11366,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13237,37 +11421,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13322,37 +11476,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13407,37 +11531,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13492,37 +11586,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13577,37 +11641,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13662,37 +11696,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                AmountBarParts {
-                                                    fill: #Fill,
-                                                    limit: #Limit,
-                                                }
-                                                Children [
-                                                    (
-                                                        #Fill
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(0),
-                                                            height: percent(100),
-                                                        }
-                                                        retail_background_color(0xbd)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                    (
-                                                        #Limit
-                                                        Node {
-                                                            position_type: PositionType::Absolute,
-                                                            left: px(0),
-                                                            top: px(0),
-                                                            width: px(1),
-                                                            height: px(5),
-                                                        }
-                                                        retail_background_color(0)
-                                                        template_value(Visibility::Hidden)
-                                                        Pickable::IGNORE
-                                                    ),
-                                                ]
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -13927,49 +11931,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
-                                retail_picture(4019)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Capacity,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_capacity_gauge(4019, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x33)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
                                         Text("")
@@ -13980,49 +11943,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
-                                retail_picture(4001)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4001, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14043,49 +11965,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
-                                retail_picture(4002)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4002, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14106,49 +11987,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
-                                retail_picture(4003)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4003, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14169,49 +12009,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
-                                retail_picture(4004)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4004, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14232,49 +12031,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
-                                retail_picture(4005)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4005, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14295,49 +12053,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
-                                retail_picture(4006)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4006, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14358,49 +12075,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
-                                retail_picture(4007)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4007, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14421,49 +12097,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
-                                retail_picture(4008)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4008, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14484,49 +12119,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
-                                retail_picture(4009)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4009, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14547,49 +12141,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
-                                retail_picture(4010)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4010, 97)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(97),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(96),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14610,49 +12163,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
-                                retail_picture(4011)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4011, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14673,49 +12185,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
-                                retail_picture(4012)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4012, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14736,49 +12207,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
-                                retail_picture(4013)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4013, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14799,49 +12229,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
-                                retail_picture(4014)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4014, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14862,49 +12251,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
-                                retail_picture(4015)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4015, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14925,49 +12273,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
-                                retail_picture(4016)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4016, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -14988,49 +12295,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
-                                retail_picture(4017)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4017, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -15057,49 +12323,8 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
-                                retail_picture(4018)
-                                TransportGaugeParts {
-                                    kind: RetailTransportGaugeKind::Allocation,
-                                    fill: #Fill,
-                                    limit: #Limit,
-                                }
+                                retail_transport_gauge(4018, 93)
                                 Children [
-                                    (
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(113),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Fill
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(93),
-                                            top: px(13),
-                                            width: px(0),
-                                            height: px(4),
-                                        }
-                                        retail_background_color(0x3a)
-                                        Pickable::IGNORE
-                                    ),
-                                    (
-                                        #Limit
-                                        Node {
-                                            position_type: PositionType::Absolute,
-                                            left: px(92),
-                                            top: px(18),
-                                            width: px(115),
-                                            height: px(2),
-                                        }
-                                        retail_background_color(0x33)
-                                        template(|_context| Ok(Visibility::Hidden))
-                                        Pickable::IGNORE
-                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")

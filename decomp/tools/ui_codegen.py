@@ -181,6 +181,17 @@ class UiWindowPayload:
 
 
 @dataclass(frozen=True)
+class UiTwoPicSliderPayload:
+    """Windows DoPostCreate instance facts for a recovered TTwoPicSlider."""
+
+    picture_base: int
+    scale: int
+    off_group: int
+    off_index: int
+    evidence: str
+
+
+@dataclass(frozen=True)
 class UiSemanticFamily:
     frame_style: int | None = None
     content_insets: tuple[int, int, int, int] | None = None
@@ -192,6 +203,7 @@ class UiSemanticFamily:
     number: UiNumberPayload | None = None
     cluster_value: int | None = None
     window: UiWindowPayload | None = None
+    two_pic_slider: UiTwoPicSliderPayload | None = None
 
 
 @dataclass(frozen=True)
@@ -254,6 +266,18 @@ class UiTextPropertyPatch:
     resource_index: int | None = None
     resource_file: str | None = None
     geometry_top_delta: int | None = None
+
+
+@dataclass(frozen=True)
+class UiTwoPicSliderInstancePatch:
+    resource: UiResourceKey
+    node_id: str
+    tag: str
+    picture_base: int
+    scale: int
+    off_group: int
+    off_index: int
+    evidence: str
 
 
 @dataclass(frozen=True)
@@ -652,6 +676,106 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
             ),
         )
     )
+
+
+def load_two_pic_slider_instances(
+    repo_root: Path,
+) -> tuple[UiTwoPicSliderInstancePatch, ...]:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    rows = data.get("two_pic_slider_instances", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{WINDOWS_DELTA_PATH}: two_pic_slider_instances must be a list")
+    patches: list[UiTwoPicSliderInstancePatch] = []
+    identities: set[tuple[UiResourceKey, str]] = set()
+    for index, raw_row in enumerate(rows):
+        context = f"{WINDOWS_DELTA_PATH}: two_pic_slider_instances[{index}]"
+        row = _mapping(raw_row, context)
+        if set(row) != {
+            "view",
+            "node",
+            "tag",
+            "picture_base",
+            "scale",
+            "off_string",
+            "evidence",
+        }:
+            raise ValueError(f"{context}: malformed two-pic slider instance")
+        resource = UiResourceKey.parse(str(row["view"]))
+        node_id = f"0x{int(str(row['node']), 0):04x}"
+        tag = _fourcc(row["tag"], f"{context}/tag")
+        off = _mapping(row["off_string"], f"{context}/off_string")
+        if set(off) != {"group", "index"}:
+            raise ValueError(f"{context}/off_string: expected group and index")
+        evidence = str(row["evidence"]).strip()
+        if not evidence:
+            raise ValueError(f"{context}: evidence is required")
+        identity = (resource, node_id)
+        if identity in identities:
+            raise ValueError(f"{context}: duplicate slider instance for {resource.text()} {node_id}")
+        identities.add(identity)
+        patches.append(
+            UiTwoPicSliderInstancePatch(
+                resource,
+                node_id,
+                tag,
+                int(row["picture_base"]),
+                int(row["scale"]),
+                int(off["group"]),
+                int(off["index"]),
+                evidence,
+            )
+        )
+    return tuple(patches)
+
+
+def apply_two_pic_slider_instances(
+    key: UiResourceKey,
+    view: UiSemanticView,
+    patches: Iterable[UiTwoPicSliderInstancePatch],
+) -> UiSemanticView:
+    scoped = {patch.node_id: patch for patch in patches if patch.resource == key}
+    if not scoped:
+        return view
+    known_nodes = {node.node_id for node in view.nodes}
+    unknown = sorted(set(scoped) - known_nodes)
+    if unknown:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: {key.text()} slider patches unknown nodes "
+            f"{', '.join(unknown)}"
+        )
+    nodes: list[UiSemanticNode] = []
+    for node in view.nodes:
+        patch = scoped.get(node.node_id)
+        if patch is None:
+            nodes.append(node)
+            continue
+        if patch.tag != node.tag:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} tag "
+                f"{node.tag!r} does not match declared {patch.tag!r}"
+            )
+        if node.class_name != "TTwoPicSlider":
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} is "
+                f"{node.class_name}, not TTwoPicSlider"
+            )
+        nodes.append(
+            replace(
+                node,
+                family=replace(
+                    node.family,
+                    two_pic_slider=UiTwoPicSliderPayload(
+                        patch.picture_base,
+                        patch.scale,
+                        patch.off_group,
+                        patch.off_index,
+                        patch.evidence,
+                    ),
+                ),
+                source=f"{node.source}; Windows: {patch.evidence}",
+            )
+        )
+    return replace(view, nodes=tuple(nodes))
 
 
 def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, ...]:
@@ -1654,19 +1778,17 @@ def _rust_amount_bar_style(node: UiSemanticNode) -> str | None:
 
 
 def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | None:
-    """Windows DoPostCreate picture base + scale + Off string for TTwoPicSlider.
+    """Read recovered TTwoPicSlider instance facts from platform deltas."""
 
-    Instance facts belong in platform deltas long-term; until those fields are
-    modeled, the recovered Preferences tags are the only known sources.
-    """
-
-    if node.class_name != "TTwoPicSlider":
+    payload = node.family.two_pic_slider
+    if payload is None:
         return None
-    # (picture_base, scale, string_group, direct_string_index)
-    return {
-        "musi": (0x1036, 0xFF, 0x2743, 0x3C),
-        "soun": (0x1038, 100, 0x2743, 0x3C),
-    }.get(node.tag)
+    return (
+        payload.picture_base,
+        payload.scale,
+        payload.off_group,
+        payload.off_index,
+    )
 
 
 def _rust_input_semantics(
@@ -1894,6 +2016,7 @@ def _rust_ui_semantic_views(
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
     child_node_patches = load_windows_child_node_patches(repo_root)
+    two_pic_sliders = load_two_pic_slider_instances(repo_root)
     city_buildings = load_city_building_visuals(repo_root)
     city_building_actions = load_city_building_action_visuals(repo_root)
     scene_keys = set(resource_backed_scene_keys(recipe_list))
@@ -1944,6 +2067,9 @@ def _rust_ui_semantic_views(
         )
         semantic_view = apply_windows_child_node_patches(
             key, semantic_view, child_node_patches
+        )
+        semantic_view = apply_two_pic_slider_instances(
+            key, semantic_view, two_pic_sliders
         )
         scene_views.append((key, semantic_view))
     windows_views = load_windows_views(repo_root)
@@ -2065,149 +2191,6 @@ def _indent(lines: Iterable[str], spaces: int) -> list[str]:
     return [prefix + line if line else "" for line in lines]
 
 
-def _rust_amount_bar_bsn(style: str) -> tuple[list[str], list[list[str]]]:
-    """Root components + synthetic fill/limit children for a recovered amount bar."""
-    if style == "Trade":
-        fill_index, fill_top, fill_height, limit_vis = "0xbd", "px(0)", "percent(100)", "Hidden"
-    else:
-        fill_index, fill_top, fill_height, limit_vis = "0x16", "px(1)", "px(4)", "Inherited"
-    root = [
-        "AmountBarParts {",
-        "    fill: #Fill,",
-        "    limit: #Limit,",
-        "}",
-    ]
-    children = [
-        [
-            "(",
-            "    #Fill",
-            "    Node {",
-            "        position_type: PositionType::Absolute,",
-            "        left: px(0),",
-            f"        top: {fill_top},",
-            "        width: px(0),",
-            f"        height: {fill_height},",
-            "    }",
-            f"    retail_background_color({fill_index})",
-            "    Pickable::IGNORE",
-            ")",
-        ],
-        [
-            "(",
-            "    #Limit",
-            "    Node {",
-            "        position_type: PositionType::Absolute,",
-            "        left: px(0),",
-            "        top: px(0),",
-            "        width: px(1),",
-            "        height: px(5),",
-            "    }",
-            "    retail_background_color(0)",
-            f"    template_value(Visibility::{limit_vis})",
-            "    Pickable::IGNORE",
-            ")",
-        ],
-    ]
-    return root, children
-
-
-def _rust_placard_bsn(
-    picture_id: int, kind: str
-) -> tuple[list[str], list[list[str]]]:
-    """Root components + caption child for city/army/ship placards."""
-    layouts = {
-        "city": (3, 0, "px(0)", "px(0)", "px(20)", "px(14)", "Val::Auto", True),
-        "army": (0, -1, "Val::Auto", "px(38)", "px(42)", "px(12)", "px(0)", False),
-        "ship": (0, 1, "px(60)", "px(34)", "px(40)", "px(12)", "Val::Auto", False),
-    }
-    family, align, left, top, width, height, right, hidden = layouts[kind]
-    root = [
-        f"retail_picture({picture_id})",
-        "PlacardParts { text: #Caption }",
-    ]
-    if hidden:
-        root.append("Visibility::Hidden")
-    caption = [
-        "(",
-        "    #Caption",
-        "    Node {",
-        "        position_type: PositionType::Absolute,",
-        f"        left: {left},",
-        f"        right: {right},",
-        f"        top: {top},",
-        f"        width: {width},",
-        f"        height: {height},",
-        "    }",
-        '    Text("")',
-        f"    retail_text_style({family}, 0, 10, {align})",
-        "    retail_text_color(0x28)",
-        "    retail_text_shadow(0, 1, 1)",
-        "    Pickable::IGNORE",
-        ")",
-    ]
-    return root, [caption]
-
-
-def _rust_transport_gauge_bsn(
-    picture_id: int, kind: str, track_left: int
-) -> tuple[list[str], list[list[str]]]:
-    """Root components + track/fill/limit overlays for a transport gauge."""
-    fill_palette = "0x3a" if kind == "Allocation" else "0x33"
-    root = [
-        f"retail_picture({picture_id})",
-        "TransportGaugeParts {",
-        f"    kind: RetailTransportGaugeKind::{kind},",
-        "    fill: #Fill,",
-        "    limit: #Limit,",
-        "}",
-    ]
-    children = [
-        [
-            "(",
-            "    Node {",
-            "        position_type: PositionType::Absolute,",
-            f"        left: px({track_left}),",
-            "        top: px(13),",
-            "        width: px(113),",
-            "        height: px(4),",
-            "    }",
-            "    retail_background_color(0x3b)",
-            "    Pickable::IGNORE",
-            ")",
-        ],
-        [
-            "(",
-            "    #Fill",
-            "    Node {",
-            "        position_type: PositionType::Absolute,",
-            f"        left: px({track_left}),",
-            "        top: px(13),",
-            "        width: px(0),",
-            "        height: px(4),",
-            "    }",
-            f"    retail_background_color({fill_palette})",
-            "    Pickable::IGNORE",
-            ")",
-        ],
-        [
-            "(",
-            "    #Limit",
-            "    Node {",
-            "        position_type: PositionType::Absolute,",
-            f"        left: px({track_left - 1}),",
-            "        top: px(18),",
-            "        width: px(115),",
-            "        height: px(2),",
-            "    }",
-            "    retail_background_color(0x33)",
-            "    template(|_context| Ok(Visibility::Hidden))",
-            "    Pickable::IGNORE",
-            ")",
-        ],
-    ]
-    return root, children
-
-
 def _render_bsn_node(
     key: UiResourceKey | None,
     node: UiSemanticNode,
@@ -2313,24 +2296,21 @@ def _render_bsn_node(
             )
 
     picture_id = node.family.picture_id
-    synthetic_children: list[list[str]] = []
     if presentation == "placard":
-        root, synthetic_children = _rust_placard_bsn(int(picture_id), "city")
-        lines.extend(_indent(root, 4))
+        lines.append(f"    retail_placard({int(picture_id)})")
     elif presentation == "army_placard":
-        root, synthetic_children = _rust_placard_bsn(int(picture_id), "army")
-        lines.extend(_indent(root, 4))
+        lines.append(f"    retail_army_placard({int(picture_id)})")
     elif presentation == "ship_placard":
-        root, synthetic_children = _rust_placard_bsn(int(picture_id), "ship")
-        lines.extend(_indent(root, 4))
+        lines.append(f"    retail_ship_placard({int(picture_id)})")
     elif presentation == "transport_gauge":
         # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
         track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
-        kind = "Capacity" if node.tag == "tota" else "Allocation"
-        root, synthetic_children = _rust_transport_gauge_bsn(
-            int(picture_id), kind, track_left
+        helper = (
+            "retail_transport_capacity_gauge"
+            if node.tag == "tota"
+            else "retail_transport_gauge"
         )
-        lines.extend(_indent(root, 4))
+        lines.append(f"    {helper}({int(picture_id)}, {track_left})")
     elif presentation == "pressed_overlay":
         lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
     elif presentation == "madness":
@@ -2347,24 +2327,22 @@ def _render_bsn_node(
     elif presentation == "amount_bar":
         amount_bar_style = _rust_amount_bar_style(node)
         assert amount_bar_style is not None
-        root, synthetic_children = _rust_amount_bar_bsn(amount_bar_style)
-        lines.extend(_indent(root, 4))
+        lines.append(f"    retail_amount_bar(AmountBarStyle::{amount_bar_style})")
     elif presentation == "two_pic_slider":
         slider = _rust_two_pic_slider(node)
-        if slider is not None:
-            picture_base, scale, off_group, off_index = slider
-            lines.append(
-                "    retail_two_pic_slider("
-                f"{picture_base}, {scale}, {off_group}, {off_index})"
+        if slider is None:
+            raise ValueError(
+                f"{node.tag}: TTwoPicSlider missing two_pic_slider_instances facts"
             )
+        picture_base, scale, off_group, off_index = slider
+        lines.append(
+            "    retail_two_pic_slider("
+            f"{picture_base}, {scale}, {off_group}, {off_index})"
+        )
 
     children = children_by_parent.get(node.node_id, [])
-    if synthetic_children or children:
+    if children:
         lines.append("    Children [")
-        for child_lines in synthetic_children:
-            child_lines = list(child_lines)
-            child_lines[-1] += ","
-            lines.extend(_indent(child_lines, 8))
         for child in children:
             rendered = _render_bsn_node(key, child, children_by_parent)
             rendered[-1] += ","
