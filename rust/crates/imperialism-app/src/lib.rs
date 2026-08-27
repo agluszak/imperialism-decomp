@@ -105,6 +105,7 @@ fn add_game_plugins(app: &mut App) {
             ui::DiplomacyPlugin,
             ui::DealBookPlugin,
         ))
+        .add_plugins(ui::StrategicMapPlugin)
         .add_plugins((
             ui::ScenarioSetupPlugin,
             ui::TownNamingPlugin,

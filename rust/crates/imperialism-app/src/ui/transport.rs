@@ -167,21 +167,7 @@ fn bind_transport_screen(
     let nation = session.active_major_nation();
     session.game.rebuild_nation_resource_yields(nation);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    // HoverHelpBar comes from codegen; curs text style is still binder-owned until a
-    // recovered Transport DoPostCreate delta lands (same InitializeMapHint pair as prefs).
-    let curs = tree.find(*root, fourcc!("curs"));
-    let (cursor_font, cursor_layout, cursor_line_height, _) =
-        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, 1));
-    commands.entity(curs).insert((
-        cursor_font,
-        cursor_layout,
-        cursor_line_height,
-        TextColor(assets.palette_color(0x28)),
-        TextShadow {
-            offset: Vec2::ONE,
-            color: assets.palette_color(0),
-        },
-    ));
+    // HoverHelpBar + curs style come from codegen (same as other management screens).
     let view = bind_transport_view(&mut commands, *root, &tree, &gauges);
     commands.entity(*root).insert(view);
 }

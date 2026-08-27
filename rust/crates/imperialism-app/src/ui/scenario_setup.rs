@@ -20,19 +20,17 @@ struct ScenarioSetupRoot;
 struct SelectScenario(usize);
 
 #[derive(Component)]
-struct ScenarioDescription;
-
-#[derive(Component)]
-struct NationDescription;
+struct ScenarioSetupView {
+    scenario_description: Entity,
+    nation_description: Entity,
+    map: Entity,
+}
 
 #[derive(Component, Default)]
 struct ScenarioMapPreview {
     preview: SatellitePreview,
     rendered_selection: Option<(usize, MajorNationId)>,
 }
-
-#[derive(Component)]
-struct StartScenario;
 
 struct ScenarioChoice {
     info: ScenarioInfo,
@@ -57,7 +55,7 @@ impl Plugin for ScenarioSetupPlugin {
         )
         .add_systems(
             Update,
-            project_scenario_setup.run_if(in_state(AppState::ScenarioSetup)),
+            render_scenario_setup.run_if(in_state(AppState::ScenarioSetup)),
         )
         .add_systems(OnExit(AppState::ScenarioSetup), drop_scenarios);
     }
@@ -114,25 +112,30 @@ fn bind_scenario_setup(
         commands.entity(list).add_child(row);
     }
 
+    let scenario_description = tree.find(root, fourcc!("sdes"));
+    let nation_description = tree.find(root, fourcc!("cdes"));
+    let map = tree.find(root, fourcc!("pmap"));
     commands
-        .entity(tree.find(root, fourcc!("sdes")))
-        .insert((Text::default(), ScenarioDescription));
+        .entity(scenario_description)
+        .insert(Text::default());
+    commands.entity(nation_description).insert(Text::default());
     commands
-        .entity(tree.find(root, fourcc!("cdes")))
-        .insert((Text::default(), NationDescription));
-    commands
-        .entity(tree.find(root, fourcc!("pmap")))
+        .entity(map)
         .insert(ScenarioMapPreview::default())
         .remove::<InteractionDisabled>()
         .observe(on_map_click);
     commands
         .entity(tree.find(root, fourcc!("star")))
-        .insert(StartScenario)
         .remove::<InteractionDisabled>()
         .observe(on_start_scenario);
     commands
         .entity(tree.find(root, fourcc!("exit")))
         .observe(on_exit_scenario_setup);
+    commands.entity(root).insert(ScenarioSetupView {
+        scenario_description,
+        nation_description,
+        map,
+    });
 }
 
 fn scenario_row(title: String, index: usize) -> impl Scene {
@@ -180,55 +183,54 @@ fn on_map_click(
     }
 }
 
-fn project_scenario_setup(
+fn render_scenario_setup(
     setup: Res<ScenarioSetup>,
+    view: Single<&ScenarioSetupView>,
     retail: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut descriptions: Query<&mut Text, With<ScenarioDescription>>,
-    mut nation_descriptions: Query<
-        &mut Text,
-        (With<NationDescription>, Without<ScenarioDescription>),
-    >,
-    mut maps: Query<(Entity, &mut ScenarioMapPreview, Option<&mut ImageNode>)>,
+    mut texts: Query<&mut Text>,
+    mut maps: Query<&mut ScenarioMapPreview>,
+    mut image_nodes: Query<&mut ImageNode>,
     mut commands: Commands,
 ) {
     if !setup.is_changed() {
         return;
     }
     let choice = &setup.choices[setup.selected];
-    for mut text in &mut descriptions {
-        **text = choice.info.description.clone();
+    texts
+        .get_mut(view.scenario_description)
+        .expect("bound scenario description")
+        .0
+        .clone_from(&choice.info.description);
+    texts
+        .get_mut(view.nation_description)
+        .expect("bound nation description")
+        .0
+        .clone_from(&choice.info.nation_descriptions[setup.nation]);
+    let Ok(mut map) = maps.get_mut(view.map) else {
+        return;
+    };
+    let mut preview = SatellitePreview::compose(|tile| choice.map[tile].owner_nation);
+    preview.enhance(setup.nation.nation());
+    let image = preview.to_image(retail.assets().default_dib_palette());
+    if let Ok(mut image_node) = image_nodes.get_mut(view.map) {
+        image_node.image = images.add(image);
+    } else {
+        commands
+            .entity(view.map)
+            .insert(ImageNode::new(images.add(image)));
     }
-    for mut text in &mut nation_descriptions {
-        **text = choice.info.nation_descriptions[setup.nation].clone();
-    }
-    for (entity, mut map, image_node) in &mut maps {
-        let mut preview = SatellitePreview::compose(|tile| choice.map[tile].owner_nation);
-        preview.enhance(setup.nation.nation());
-        let image = preview.to_image(retail.assets().default_dib_palette());
-        if let Some(mut image_node) = image_node {
-            image_node.image = images.add(image);
-        } else {
-            commands
-                .entity(entity)
-                .insert(ImageNode::new(images.add(image)));
-        }
-        map.preview = preview;
-        map.rendered_selection = Some((setup.selected, setup.nation));
-    }
+    map.preview = preview;
+    map.rendered_selection = Some((setup.selected, setup.nation));
 }
 
 fn on_start_scenario(
-    activate: On<Activate>,
-    starts: Query<(), With<StartScenario>>,
+    _activate: On<Activate>,
     setup: Res<ScenarioSetup>,
     retail: Res<RetailAssetsResource>,
     mut commands: Commands,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if starts.get(activate.entity).is_err() {
-        return;
-    }
     let choice = &setup.choices[setup.selected];
     let difficulty = choice.info.difficulty_by_nation[setup.nation]
         .expect("scenario chooser only permits available nations");
