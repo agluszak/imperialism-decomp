@@ -381,10 +381,7 @@ impl RetailUiAssets<'_> {
     }
 
     /// Soft-fail picture load for cases where retail itself tolerates a missing bitmap.
-    fn try_picture(
-        &mut self,
-        picture_id: PictureId,
-    ) -> Result<Handle<Image>, RetailPictureError> {
+    fn try_picture(&mut self, picture_id: PictureId) -> Result<Handle<Image>, RetailPictureError> {
         load_retail_image(
             RetailImageKey::Opaque(picture_id),
             &self.retail_assets,
@@ -447,9 +444,8 @@ impl RetailUiAssets<'_> {
         &self,
         preset: RetailTextStylePreset,
     ) -> (TextFont, TextLayout, LineHeight, bool) {
-        let style = resolve_retail_text_style(preset).unwrap_or_else(|error| {
-            panic!("retail text style {preset:?} must resolve: {error}")
-        });
+        let style = resolve_retail_text_style(preset)
+            .unwrap_or_else(|error| panic!("retail text style {preset:?} must resolve: {error}"));
         retail_text_components(style, self.retail_fonts.get(style.face))
     }
 }

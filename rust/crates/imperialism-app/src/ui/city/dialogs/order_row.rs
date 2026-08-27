@@ -114,10 +114,10 @@ pub(in crate::ui::city) fn bind_recruitment_order_row(
 }
 
 fn bind_order_step(commands: &mut Commands, entity: Entity, order: CityOrderId, delta: i16) {
-    commands.entity(entity).observe(
-        move |_: On<Activate>, mut session: ResMut<GameSession>| {
+    commands
+        .entity(entity)
+        .observe(move |_: On<Activate>, mut session: ResMut<GameSession>| {
             let nation = session.active_major_nation();
             session.game.adjust_city_order(nation, order, delta);
-        },
-    );
+        });
 }
