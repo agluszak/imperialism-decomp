@@ -136,8 +136,6 @@ fn on_numbered_arrow_glyph_pressed<E: EntityEvent>(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn count_caption_uses_built_10pt_book_antiqua() {
         use imperialism_formats::{
