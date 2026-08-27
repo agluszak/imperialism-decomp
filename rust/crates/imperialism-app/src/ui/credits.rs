@@ -71,9 +71,8 @@ fn fill_credits_page(
     } else {
         (0xfb0, 0xfb1)
     };
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, 12, 0))
-        .expect("retail credits text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, 12, 0));
     let color = TextColor(assets.palette_color(0x13));
     let shadow = second_page.then_some(TextShadow {
         offset: Vec2::ONE,

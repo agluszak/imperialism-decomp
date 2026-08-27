@@ -11,7 +11,7 @@ use bevy::ui::UiSystems;
 use bevy::ui_widgets::{
     Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick, ValueChange,
 };
-use imperialism_formats::{PictureId, StringGroup};
+use imperialism_formats::PictureId;
 
 pub const TWO_PIC_SLIDER_SPLIT_PAD: i16 = 0x0c;
 
@@ -79,9 +79,7 @@ pub fn retail_two_pic_slider(
 fn load_off_string(context: &TemplateContext, off_group: i16, off_index: i16) -> String {
     context
         .resource::<RetailAssetsResource>()
-        .assets()
-        .string(StringGroup::new(off_group as u16).entry(off_index as u16))
-        .unwrap_or_else(|_| "Off".to_string())
+        .ui_string(off_group as u16, off_index as u16)
 }
 
 pub(super) fn register_slider(app: &mut App) {

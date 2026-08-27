@@ -77,14 +77,7 @@ impl HexDirection {
     }
 
     pub(crate) const fn retail(self) -> u8 {
-        match self {
-            Self::NorthEast => 0,
-            Self::East => 1,
-            Self::SouthEast => 2,
-            Self::SouthWest => 3,
-            Self::West => 4,
-            Self::NorthWest => 5,
-        }
+        self as u8
     }
 
     pub const fn bit(self) -> u8 {

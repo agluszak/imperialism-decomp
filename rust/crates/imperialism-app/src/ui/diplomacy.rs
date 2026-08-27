@@ -1233,9 +1233,7 @@ fn spawn_panel_text(
     preset: RetailTextStylePreset,
     alignment: Justify,
 ) {
-    let (font, _layout, line_height, _) = assets
-        .text_style(preset)
-        .expect("retail diplomacy panel text style");
+    let (font, _layout, line_height, _) = assets.text_style(preset);
     let logical_height = resolve_retail_text_style(preset)
         .map(|style| style.logical_pixel_height)
         .unwrap_or(14);

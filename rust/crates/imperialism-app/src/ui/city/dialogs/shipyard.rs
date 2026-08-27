@@ -152,9 +152,8 @@ pub(in crate::ui::city) fn render_shipyard(
     for entity in detail_texts.iter() {
         ui.commands.entity(entity).despawn();
     }
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, 10, -2))
-        .expect("shipyard detail text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, 10, -2));
     let costs = ship_order_costs(ship_type);
     for (column, resource) in SHIPYARD_MATERIALS
         .iter()

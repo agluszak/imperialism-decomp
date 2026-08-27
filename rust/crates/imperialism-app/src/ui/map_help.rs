@@ -324,9 +324,8 @@ fn set_text(
     font_family: i32,
     color: Color,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(font_family, 0, size, -2))
-        .expect("retail map-help text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(font_family, 0, size, -2));
     commands
         .entity(entity)
         .insert((Text::new(text), font, layout, line_height, TextColor(color)));

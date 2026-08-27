@@ -51,15 +51,13 @@ fn bind_query_floaters(
     mut commands: Commands,
     roots: Query<Entity, Added<QueryFloaterRoot>>,
     tree: RetailTree,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
     for root in &roots {
         let view = tree.view(root);
-        let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
-                1, 0, 12, -2,
-            ))
-            .expect("retail query-floater label style");
+        let (font, layout, line_height, _) = assets.text_style(
+            imperialism_formats::RetailTextStylePreset::explicit(1, 0, 12, -2),
+        );
         for (tag, index) in QUERY_LABELS {
             let text = assets.ui_string(0x2757, index);
             commands.entity(view.find(tag)).insert((

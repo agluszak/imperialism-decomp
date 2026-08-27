@@ -140,12 +140,10 @@ fn bind_deal_book(
             assets.keyed_picture(kind.material_picture(), 0x10)
         })),
     };
-    let (body, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(10, -1))
-        .expect("retail deal-book body text style");
-    let (heading, heading_layout, heading_line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(14, -1))
-        .expect("retail deal-book heading text style");
+    let (body, body_layout, body_line_height, _) =
+        assets.text_style(RetailTextStylePreset::built(10, -1));
+    let (heading, heading_layout, heading_line_height, _) =
+        assets.text_style(RetailTextStylePreset::built(14, -1));
     let fonts = DealBookFonts {
         body,
         body_layout,
@@ -161,9 +159,8 @@ fn bind_deal_book(
     };
     // Mac titL is family 0 / 18pt. The generator only emits shipped fonts (modes 1-3),
     // and TDealBookPicture::Startup does not restyle titL on Windows.
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(0, 0, 18, 1))
-        .expect("retail deal-book title text style");
+    let (title_font, title_layout, title_line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(0, 0, 18, 1));
     let title_left = tree.find(root, fourcc!("titL"));
     commands.entity(title_left).insert((
         title_font,

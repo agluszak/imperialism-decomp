@@ -94,10 +94,7 @@ pub enum BattleReportSideSlot {
 
 impl BattleReportSideSlot {
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::Left => 0,
-            Self::Right => 1,
-        }
+        self as u8
     }
 
     pub const fn from_retail(value: u8) -> Option<Self> {

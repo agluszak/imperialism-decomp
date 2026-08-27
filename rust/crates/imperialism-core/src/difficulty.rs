@@ -34,12 +34,6 @@ impl TryFrom<u8> for Difficulty {
 
 impl Difficulty {
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::Introductory => 0,
-            Self::Easy => 1,
-            Self::Normal => 2,
-            Self::Hard => 3,
-            Self::NighOnImpossible => 4,
-        }
+        self as u8
     }
 }
