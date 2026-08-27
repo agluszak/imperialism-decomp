@@ -104,7 +104,7 @@ pub fn retail_numbered_arrow() -> impl Scene {
             ),
             (
                 #Count
-                Node { position_type: PositionType::Absolute, left: px(7), top: px(0) }
+                Node { position_type: PositionType::Absolute, left: px(COUNT_ORIGIN_X), top: px(0) }
                 Text("")
                 retail_built_text_style(10, 0)
                 retail_text_color(0)

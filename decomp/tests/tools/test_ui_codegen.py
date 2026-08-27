@@ -58,6 +58,13 @@ class UiCodegenTests(unittest.TestCase):
             (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
         )
 
+    def test_generated_rust_ui_replaces_system_family_with_renderable_face(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertNotIn("retail_text_style(0,", rendered)
+        self.assertIn("retail_text_style(1, 0, 0, 0)", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()
