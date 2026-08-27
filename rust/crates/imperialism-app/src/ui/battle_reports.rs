@@ -2,7 +2,6 @@
 
 use super::fill_brackets;
 use super::generated;
-use super::hover_help::{get_string, ui_string};
 use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::satellite_preview::nation_owner_palette;
@@ -22,7 +21,7 @@ const MAP_LEFT: f32 = 49.0;
 const MAP_TOP: f32 = 45.0;
 const MAP_WIDTH: f32 = 540.0;
 const MAP_HEIGHT: f32 = 300.0;
-const MARKER_ATLAS: i16 = 803;
+const MARKER_ATLAS: PictureId = PictureId::new(803);
 const MARKER_CELL: f32 = 18.0;
 const DETAIL_ROW_WIDTH: f32 = 236.0;
 const DETAIL_ROW_HEIGHT: f32 = 49.0;
@@ -141,9 +140,7 @@ fn bind_battle_report(
 ) {
     let root = *root;
     let main = tree.find(root, fourcc!("main"));
-    let marker_atlas = assets
-        .keyed_picture(PictureId::new(MARKER_ATLAS), KEYED_TRANSPARENT)
-        .expect("retail battle-report marker atlas must load");
+    let marker_atlas = assets.keyed_picture(MARKER_ATLAS, KEYED_TRANSPARENT);
     let map_entity = commands
         .spawn((
             Node {
@@ -295,11 +292,8 @@ fn render_battle_report(
         .expect("bound battle-report text")
         .0 = report_text[other].overlay.clone();
     for (flag, side) in [(view.friendly_flag, participant), (view.enemy_flag, other)] {
-        flags.get_mut(flag).expect("bound battle-report flag").image = assets
-            .picture(PictureId::new(
-                0x1130 + i16::from(report.sides[side].nation.get()),
-            ))
-            .expect("retail battle-report flag picture must load");
+        flags.get_mut(flag).expect("bound battle-report flag").image =
+            assets.picture(battle_report_flag_picture(report.sides[side].nation));
     }
     let count = reports_game.len();
     let active = session.game.turn().active_nation;
@@ -320,6 +314,10 @@ fn render_battle_report(
             commands.entity(entity).insert(InteractionDisabled);
         }
     }
+}
+
+fn battle_report_flag_picture(nation: NationId) -> PictureId {
+    PictureId::new(0x1130 + i16::from(nation.get()))
 }
 
 /// Recomposes the diplomacy map and rebuilds the marker set when the game or
@@ -466,7 +464,8 @@ fn battle_report_location_text(
                 .and_then(|nation| state.nation(nation))
                 .map(|nation| nation.display_name.as_str())
                 .unwrap_or("");
-            get_string(assets, 0x273d, 7)
+            assets
+                .get_string(0x273d, 7)
                 .replace("[1]", &province.name)
                 .replace("[2]", owner)
                 + " "
@@ -575,27 +574,27 @@ fn battle_report_result_text(
     report: &BattleReport,
 ) -> String {
     let (group, index) = battle_report_result_string_index(state, report);
-    get_string(assets, group, index)
+    assets.get_string(group, index)
 }
 
 /// `RefreshMapContextSelectionPanelAndInfoLabels`: the `resu` string group and
 /// (0-based, pre-`GetString` increment) index recovered from the report kind,
 /// the winner/active-nation relation, and land-battle site ownership.
-fn battle_report_result_string_index(state: &GameState, report: &BattleReport) -> (i16, i16) {
+fn battle_report_result_string_index(state: &GameState, report: &BattleReport) -> (u16, u16) {
     let active = state.turn().active_nation;
     let winner = report.participant.unwrap_or(report.displayed_side);
     let relation = if report.sides[winner].nation == active {
-        1
+        1_i16
     } else if report.sides[other_side(winner)].nation == active {
         -1
     } else {
         0
     };
     match report.kind {
-        BattleReportKind::MerchantInterception => (0x273c, relation + 4),
-        BattleReportKind::SeaBattle => (0x273c, relation + 7),
-        BattleReportKind::PreemptedLandBattle => (0x273d, relation + 39),
-        BattleReportKind::UncontestedTakeover => (0x273d, relation + 42),
+        BattleReportKind::MerchantInterception => (0x273c, (relation + 4) as u16),
+        BattleReportKind::SeaBattle => (0x273c, (relation + 7) as u16),
+        BattleReportKind::PreemptedLandBattle => (0x273d, (relation + 39) as u16),
+        BattleReportKind::UncontestedTakeover => (0x273d, (relation + 42) as u16),
         BattleReportKind::LandBattle => {
             let report_sides_are_same = report.displayed_side == winner;
             let report_participant_is_active = report.sides[winner].nation == active;
@@ -793,18 +792,11 @@ fn bind_detail(
             },
         ));
     }
-    let army_atlas = assets
-        .keyed_picture(PictureId::new(ARMY_CHECKBOX_ATLAS), KEYED_TRANSPARENT)
-        .expect("retail battle-detail army atlas");
-    let navy_atlas = assets
-        .keyed_picture(PictureId::new(NAVY_CHECKBOX_ATLAS), KEYED_TRANSPARENT)
-        .expect("retail battle-detail navy atlas");
-    let merc_atlas = assets
-        .keyed_picture(PictureId::new(MERC_CHECKBOX_ATLAS), KEYED_TRANSPARENT)
-        .expect("retail battle-detail merchant atlas");
-    let experience_strip = assets
-        .keyed_picture(PictureId::new(EXPERIENCE_STRIP), KEYED_TRANSPARENT)
-        .expect("retail battle-detail experience strip");
+    let army_atlas = assets.keyed_picture(PictureId::new(ARMY_CHECKBOX_ATLAS), KEYED_TRANSPARENT);
+    let navy_atlas = assets.keyed_picture(PictureId::new(NAVY_CHECKBOX_ATLAS), KEYED_TRANSPARENT);
+    let merc_atlas = assets.keyed_picture(PictureId::new(MERC_CHECKBOX_ATLAS), KEYED_TRANSPARENT);
+    let experience_strip =
+        assets.keyed_picture(PictureId::new(EXPERIENCE_STRIP), KEYED_TRANSPARENT);
     for (entity, picture) in [
         (
             flg_l,
@@ -815,11 +807,9 @@ fn bind_detail(
             0x114e + i16::from(report.sides[BattleReportSideSlot::Right].nation.get()),
         ),
     ] {
-        commands.entity(entity).insert(ImageNode::new(
-            assets
-                .picture(PictureId::new(picture))
-                .expect("retail battle-detail flag"),
-        ));
+        commands
+            .entity(entity)
+            .insert(ImageNode::new(assets.picture(PictureId::new(picture))));
     }
     commands.entity(root).insert(BattleReportDetailView {
         page: 1,
@@ -901,9 +891,7 @@ fn render_detail(
         ),
     ] {
         if let Ok(mut image) = images.get_mut(entity) {
-            image.image = assets
-                .picture(PictureId::new(picture))
-                .expect("retail battle-detail flag");
+            image.image = assets.picture(PictureId::new(picture));
         }
     }
     for line in &lines {
@@ -1045,7 +1033,7 @@ fn spawn_army_detail_row(
     ));
     let level = row.stock_or_required;
     if level < 1 {
-        let training = get_string(assets, 0x273c, if level == -86 { 0x20 } else { 0x1f });
+        let training = assets.get_string(0x273c, if level == -86 { 0x20 } else { 0x1f });
         let (font, layout, line_height, _) = assets
             .text_style(RetailTextStylePreset::explicit(1, 0, 12, -1))
             .expect("retail army training style");
@@ -1217,7 +1205,7 @@ fn spawn_navy_detail_row(
             ChildOf(container),
         ));
     } else {
-        let training = get_string(assets, 0x273c, 0x1b);
+        let training = assets.get_string(0x273c, 0x1b);
         let (font, layout, line_height, _) = assets
             .text_style(RetailTextStylePreset::explicit(1, 0, 12, -1))
             .expect("retail navy training style");
@@ -1251,7 +1239,7 @@ fn navy_type_name(assets: &super::RetailUiAssets, ship: ShipType) -> String {
         _ => None,
     };
     index
-        .map(|index| get_string(assets, 0x2760, index))
+        .map(|index| assets.get_string(0x2760, index as u16))
         .unwrap_or_default()
 }
 
@@ -1290,7 +1278,7 @@ fn spawn_merchant_detail_row(
         ChildOf(container),
     ));
     // FormatLocalizedCommodityCountLabelByIndex(count=-1): singular group, no number prefix.
-    let commodity = get_string(assets, 0x2716, resource as i16);
+    let commodity = assets.get_string(0x2716, resource as u16);
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset::explicit(3, 0, 12, -1))
         .expect("retail merchant commodity label style");
@@ -1311,10 +1299,10 @@ fn spawn_merchant_detail_row(
     ));
     let (status, palette) = if row.stock_or_required != 0 {
         // Theme 0x2b69 → palette 0xcb.
-        (get_string(assets, 0x273c, 0x1c), 0xcb)
+        (assets.get_string(0x273c, 0x1c), 0xcb)
     } else {
         // Theme 0x2b67 → palette 0.
-        (get_string(assets, 0x273c, 0x1b), 0)
+        (assets.get_string(0x273c, 0x1b), 0)
     };
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset::built(12, -1))
@@ -1348,7 +1336,7 @@ fn spawn_item_detail_row(
 ) {
     let count = row.stock_or_required;
     let resource_type = report_unit_resource_type(row.kind);
-    let kind_name = get_string(assets, 0x2711, resource_type);
+    let kind_name = assets.get_string(0x2711, resource_type as u16);
     let count_text = count.to_string();
     let header = if let Some(state) = state {
         let nation_name = state
@@ -1356,14 +1344,11 @@ fn spawn_item_detail_row(
             .map(|nation| nation.display_name.as_str())
             .unwrap_or("");
         fill_brackets(
-            &get_string(assets, 0x273c, 0x1e),
+            &assets.get_string(0x273c, 0x1e),
             &[&count_text, &kind_name, nation_name],
         )
     } else {
-        fill_brackets(
-            &get_string(assets, 0x273c, 0x1d),
-            &[&count_text, &kind_name],
-        )
+        fill_brackets(&assets.get_string(0x273c, 0x1d), &[&count_text, &kind_name])
     };
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset::built(10, -1))
@@ -1388,12 +1373,10 @@ fn spawn_item_detail_row(
         return;
     }
     let per_row = (0x20_i32).min(i32::from((236 - 0x3a) / count.max(1)));
-    let icon = assets
-        .keyed_picture(
-            PictureId::new(COMMODITY_ICON_BASE + resource_type),
-            KEYED_TRANSPARENT,
-        )
-        .expect("retail battle-detail commodity icon");
+    let icon = assets.keyed_picture(
+        PictureId::new(COMMODITY_ICON_BASE + resource_type),
+        KEYED_TRANSPARENT,
+    );
     for index in 0..icon_count {
         let left = 0x1a + per_row * index as i32;
         commands.spawn((
@@ -1549,7 +1532,7 @@ fn generated_battle_report_side_text(
         } else {
             0x11
         };
-        let name = fill_brackets(&get_string(assets, 0x273d, template_index), &[nation_name]);
+        let name = fill_brackets(&assets.get_string(0x273d, template_index), &[nation_name]);
         let overlay = generated_land_overlay(assets, side);
         return BattleReportSideText { name, overlay };
     }
@@ -1573,7 +1556,7 @@ fn generated_land_overlay(assets: &super::RetailUiAssets, side: &BattleReportSid
         if !overlay.is_empty() {
             overlay.push_str(", ");
         }
-        let unit_name = get_string(assets, 0x2717, i16::from(kind.retail()));
+        let unit_name = assets.get_string(0x2717, u16::from(kind.retail()));
         let active = matching
             .iter()
             .filter(|row| row.stock_or_required > 0)
@@ -1582,7 +1565,7 @@ fn generated_land_overlay(assets: &super::RetailUiAssets, side: &BattleReportSid
         let fragment = if active == count {
             fill_brackets("[1] [2]", &[&count.to_string(), &unit_name])
         } else {
-            let inactive = get_string(assets, 0x273d, 0xb);
+            let inactive = assets.get_string(0x273d, 0xb);
             fill_brackets(
                 "[1] [2] ([3] [4])",
                 &[
@@ -1606,7 +1589,7 @@ fn generated_sea_overlay(
     nation_name: &str,
 ) -> String {
     let child_count = side.children.len();
-    let template = ui_string(assets, 0x2762, i16::from(child_count != 1) + 0x11);
+    let template = assets.ui_string(0x2762, u16::from(child_count != 1) + 0x11);
     let zone_name = match report.location {
         BattleReportLocation::Zone(id) => state
             .ocean()
@@ -1616,8 +1599,7 @@ fn generated_sea_overlay(
             .unwrap_or(""),
         BattleReportLocation::Province(_) => "",
     };
-    let order_kind = ui_string(
-        assets,
+    let order_kind = assets.ui_string(
         0x2762,
         side.task_force_order
             .map(sea_overlay_order_string_index)
@@ -1635,8 +1617,8 @@ fn generated_sea_overlay(
 }
 
 /// String-table index for a sea-side task-force order in group `0x2762`.
-fn sea_overlay_order_string_index(order: TaskForceOrder) -> i16 {
-    order.get() as i16 + 0x13
+fn sea_overlay_order_string_index(order: TaskForceOrder) -> u16 {
+    u16::try_from(order.get()).expect("task-force order fits u16") + 0x13
 }
 
 #[cfg(test)]

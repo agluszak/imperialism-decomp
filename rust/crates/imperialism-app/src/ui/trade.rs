@@ -85,18 +85,16 @@ const TRADE_ADVISORIES: [(FourCc, TradeAdvisory); 10] = [
 /// Retail picture for a trade card state.
 fn trade_card_picture(commodity: TradeCommodity, kind: TradeCardKind, active: bool) -> PictureId {
     let base = if commodity == TradeCommodity::Clothing {
-        2125
+        PictureId::new(2125)
     } else {
-        2111
+        PictureId::new(2111)
     };
-    PictureId::new(
-        base + match (kind, active) {
-            (TradeCardKind::Bid, true) => 0,
-            (TradeCardKind::Bid, false) => 1,
-            (TradeCardKind::Offer, true) => 2,
-            (TradeCardKind::Offer, false) => 3,
-        },
-    )
+    base.offset(match (kind, active) {
+        (TradeCardKind::Bid, true) => 0,
+        (TradeCardKind::Bid, false) => 1,
+        (TradeCardKind::Offer, true) => 2,
+        (TradeCardKind::Offer, false) => 3,
+    })
 }
 
 #[derive(Component)]
@@ -375,13 +373,11 @@ fn render_trade(
         let offer_active = matches!(order, PlayerTradeOrder::Sell(_));
         render_trade_card(
             row.bid,
-            assets
-                .picture(trade_card_picture(
-                    commodity,
-                    TradeCardKind::Bid,
-                    bid_active,
-                ))
-                .expect("retail trade bid picture"),
+            assets.picture(trade_card_picture(
+                commodity,
+                TradeCardKind::Bid,
+                bid_active,
+            )),
             TradeCardKind::Bid,
             bid_active,
             &mut images,
@@ -389,13 +385,11 @@ fn render_trade(
         );
         render_trade_card(
             row.offer,
-            assets
-                .picture(trade_card_picture(
-                    commodity,
-                    TradeCardKind::Offer,
-                    offer_active,
-                ))
-                .expect("retail trade offer picture"),
+            assets.picture(trade_card_picture(
+                commodity,
+                TradeCardKind::Offer,
+                offer_active,
+            )),
             TradeCardKind::Offer,
             offer_active,
             &mut images,

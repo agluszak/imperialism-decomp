@@ -1,5 +1,5 @@
 use crate::ui::generated;
-use crate::ui::hover_help::{bind_hover_help_texts, ui_string};
+use crate::ui::hover_help::bind_hover_help_texts;
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
@@ -295,7 +295,7 @@ fn bind_random_setup_labels(
         let entity = tree.find(root, tag);
         commands
             .entity(entity)
-            .insert((Text::new(ui_string(assets, group, index)), Label));
+            .insert((Text::new(assets.ui_string(group, index)), Label));
     }
     let title_color = TextColor(assets.palette_color(0x5c));
     let title_shadow = TextShadow {
@@ -343,7 +343,7 @@ fn bind_random_setup_hover_help(
     assets: &mut RetailUiAssets,
 ) {
     // HoverHelpBar + recovered hot! style come from codegen / Windows deltas.
-    let cancel = ui_string(assets, 0x2737, 0x14);
+    let cancel = assets.ui_string(0x2737, 0x14);
     bind_hover_help_texts(
         commands,
         root,
@@ -352,16 +352,16 @@ fn bind_random_setup_hover_help(
             (fourcc!("main"), String::new()),
             (fourcc!("key "), String::new()),
             (fourcc!("stuf"), String::new()),
-            (fourcc!("name"), ui_string(assets, 0x2758, 0x1e)),
-            (fourcc!("glob"), ui_string(assets, 0x2737, 0x13)),
+            (fourcc!("name"), assets.ui_string(0x2758, 0x1e)),
+            (fourcc!("glob"), assets.ui_string(0x2737, 0x13)),
             (fourcc!("canc"), cancel.clone()),
             (fourcc!("cncl"), cancel),
-            (OKAY, ui_string(assets, 0x2737, 0x15)),
-            (fourcc!("map "), ui_string(assets, 0x2758, 0x13)),
-            (fourcc!("diff"), ui_string(assets, 0x2737, 0x17)),
-            (fourcc!("coun"), ui_string(assets, 0x2737, 0x1a)),
-            (fourcc!("flag"), ui_string(assets, 0x2737, 0x1b)),
-            (fourcc!("coat"), ui_string(assets, 0x2737, 0x1c)),
+            (OKAY, assets.ui_string(0x2737, 0x15)),
+            (fourcc!("map "), assets.ui_string(0x2758, 0x13)),
+            (fourcc!("diff"), assets.ui_string(0x2737, 0x17)),
+            (fourcc!("coun"), assets.ui_string(0x2737, 0x1a)),
+            (fourcc!("flag"), assets.ui_string(0x2737, 0x1b)),
+            (fourcc!("coat"), assets.ui_string(0x2737, 0x1c)),
         ],
     );
 }

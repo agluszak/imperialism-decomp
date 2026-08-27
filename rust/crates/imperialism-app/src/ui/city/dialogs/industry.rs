@@ -139,7 +139,7 @@ pub(in crate::ui::city) fn render_industry(
     ui: &mut CityUi,
 ) {
     let city = &session.game.nations().major(nation).city;
-    let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
+    let capacity_template = city_text(assets, 0x10);
     ui.text(
         view.capacity,
         format_retail_number(&capacity_template, city.production_orders[slot]),

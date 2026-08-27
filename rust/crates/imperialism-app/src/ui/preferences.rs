@@ -1,5 +1,5 @@
 use super::generated;
-use super::hover_help::{HoverHelpText, bind_hover_help_texts, get_string, ui_string};
+use super::hover_help::{HoverHelpText, bind_hover_help_texts};
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailTree, RetailUiAssets};
 use crate::media::RetailAudioAssets;
@@ -153,8 +153,8 @@ fn bind_preferences(
         root,
         &tree,
         [
-            (fourcc!("okay"), ui_string(&assets, 0x2743, 0x25)),
-            (fourcc!("quer"), ui_string(&assets, 0x2730, 3)),
+            (fourcc!("okay"), assets.ui_string(0x2743, 0x25)),
+            (fourcc!("quer"), assets.ui_string(0x2730, 3)),
         ],
     );
 
@@ -171,7 +171,7 @@ fn bind_preferences(
         let Some(checkbox) = checkbox else {
             continue;
         };
-        let hover = ui_string(&assets, 0x2743, row as i16 + 0x26);
+        let hover = assets.ui_string(0x2743, row as u16 + 0x26);
         let mut entity = commands.entity(checkbox);
         entity
             .insert(HoverHelpText(hover))
@@ -197,8 +197,8 @@ fn bind_preferences(
         checkboxes.push((checkbox, slot));
     }
 
-    let music_hover = ui_string(&assets, 0x2743, 0x27);
-    let sound_hover = ui_string(&assets, 0x2743, 0x26);
+    let music_hover = assets.ui_string(0x2743, 0x27);
+    let sound_hover = assets.ui_string(0x2743, 0x26);
     let music = tree.find(root, fourcc!("musi"));
     let sound = tree.find(root, fourcc!("soun"));
     bind_volume_slider(
@@ -286,7 +286,7 @@ fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
 }
 
 fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> String {
-    get_string(assets, 0x2743, row as i16 * 2 + 0x10 + i16::from(!is_on))
+    assets.get_string(0x2743, row as u16 * 2 + 0x10 + u16::from(!is_on))
 }
 
 fn on_preferences_activate(

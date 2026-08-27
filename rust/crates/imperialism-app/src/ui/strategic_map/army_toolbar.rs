@@ -5,6 +5,7 @@ use super::map_interaction::StrategicMapSession;
 use super::map_modals::{spawn_army_roster, spawn_garrison};
 use crate::AppState;
 use crate::ui::GameSession;
+use crate::ui::retail_resources::MilitaryUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
@@ -19,13 +20,9 @@ fn placard_picture_id(
     nation: MajorNationId,
     state: &GameState,
     category: ArmyUnitCategory,
-) -> i16 {
+) -> PictureId {
     let kind = state.technology().selected_capability_slots[nation][category];
-    let mut picture = 0x4c4 + i16::from(kind.retail());
-    if counts.totals[category] <= 0 {
-        picture += 0x1e;
-    }
-    picture
+    kind.army_toolbar_placard_picture(counts.totals[category] <= 0)
 }
 
 #[derive(Clone, Copy)]
@@ -234,9 +231,8 @@ fn write_army_toolbar(
     for category in ArmyUnitCategory::all() {
         let picture_id = placard_picture_id(counts, nation, state, category);
         let placard = view.placards[category];
-        images.get_mut(placard.root).expect("army placard").image = assets
-            .picture(PictureId::new(picture_id))
-            .expect("retail army placard picture must load");
+        images.get_mut(placard.root).expect("army placard").image =
+            assets.picture(picture_id);
         texts.get_mut(placard.text).expect("army placard text").0 = if counts.totals[category] != 0
         {
             counts.totals[category].to_string()
@@ -254,13 +250,13 @@ fn write_army_toolbar(
         }
     }
     if update_garrison {
-        images.get_mut(view.garrison).expect("garrison").image = assets
-            .picture(PictureId::new(if counts.can_upgrade {
-                0x24d5
+        images.get_mut(view.garrison).expect("garrison").image = assets.picture(
+            if counts.can_upgrade {
+                PictureId::new(0x24d5)
             } else {
-                0x04b5
-            }))
-            .expect("retail garrison picture must load");
+                PictureId::new(0x04b5)
+            },
+        );
     }
 }
 

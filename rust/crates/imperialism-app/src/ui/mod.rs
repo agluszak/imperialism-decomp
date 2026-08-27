@@ -28,6 +28,7 @@ mod retail_numbered_arrow;
 mod retail_palette;
 mod retail_placard;
 mod retail_raster;
+mod retail_resources;
 mod retail_slider;
 mod retail_transport_gauge;
 mod satellite_preview;

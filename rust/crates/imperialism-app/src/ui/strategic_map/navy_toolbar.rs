@@ -5,6 +5,7 @@ use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
 use crate::ui::GameSession;
+use crate::ui::retail_resources::ShipTypeRetailResources;
 use bevy::prelude::*;
 use bevy::ui::Checked;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -247,13 +248,12 @@ fn sync_navy_toolbar(
         let picture = session
             .game
             .navy_toolbar_class_ship_type(class)
-            .map(|ship_type| i16::from(ship_type.retail()) + 0x5e6);
+            .map(|ship_type| ship_type.navy_toolbar_picture());
         let row = view.classes[index];
         if available > 0 {
             if let Some(picture_id) = picture {
-                images.get_mut(row.ship_root).expect("navy ship").image = assets
-                    .picture(PictureId::new(picture_id))
-                    .expect("retail navy class picture must load");
+                images.get_mut(row.ship_root).expect("navy ship").image =
+                    assets.picture(picture_id);
             }
             *visibility.get_mut(row.ship_root).expect("navy ship") = Visibility::Visible;
             *visibility.get_mut(row.arrow.root).expect("navy arrow") = Visibility::Visible;

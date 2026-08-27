@@ -8,7 +8,7 @@ pub(in crate::ui::city) fn city_building_name(
     assets: &RetailUiAssets,
     slot: CityFacilitySlot,
 ) -> String {
-    city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail()))
+    assets.string(slot.name_string())
 }
 
 pub(in crate::ui::city) struct CityOrderRow {
@@ -123,16 +123,16 @@ mod tests {
     #[test]
     fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {
         assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::OilRefinery.retail())),
-            7
+            CityFacilitySlot::OilRefinery.name_string(),
+            StringGroup::new(0x2719).entry(7)
         );
         assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::Shipyard.retail())),
-            8
+            CityFacilitySlot::Shipyard.name_string(),
+            StringGroup::new(0x2719).entry(8)
         );
         assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::Armory.retail())),
-            9
+            CityFacilitySlot::Armory.name_string(),
+            StringGroup::new(0x2719).entry(9)
         );
     }
 }

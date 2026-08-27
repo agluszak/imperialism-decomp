@@ -34,9 +34,7 @@ pub(in crate::ui::city) fn bind_shipyard(
 ) -> ShipyardUi {
     let nation = MajorNationId::from_nation(state.turn().active_nation).expect("major nation");
     let city = &state.nations().major(nation).city;
-    let queue_icons = assets
-        .indexed_picture(PictureId::new(9807))
-        .expect("queue icons");
+    let queue_icons = assets.indexed_picture(PictureId::new(9807));
     let rows = ShipOrderTable::from_array(generated::SHIPYARD_ROW_CONTROLS).map(
         |slot, (order_tag, button_tag, overlay_left)| {
             let ship_type = city.orders.ships[slot].ship_type;
@@ -87,9 +85,7 @@ pub(in crate::ui::city) fn bind_shipyard(
     let description = bind_text(fourcc!("desc"));
     let picture = tree.find(root, fourcc!("spic"));
     let dlog = tree.find(root, fourcc!("DLOG"));
-    let details_base = assets
-        .indexed_picture(PictureId::new(9800))
-        .expect("dialog pic");
+    let details_base = assets.indexed_picture(PictureId::new(9800));
     let details_image = assets.add_image(details_base.to_image(assets.default_dib_palette()));
     commands.entity(dlog).insert(ImageNode::new(details_image));
     ShipyardUi {
@@ -112,15 +108,13 @@ fn shipyard_queue_pictures(
     let palette = *assets.default_dib_palette();
     let source_left = i32::from(ship_type.retail() - 1) * 0x50;
     let source = IRect::new(source_left, 0, source_left + 0x50, 0x2d);
-    let mut compose = |picture_id| {
-        let mut picture = assets
-            .indexed_picture(PictureId::new(picture_id))
-            .expect("queue button");
+    let mut compose = |picture_id: PictureId| {
+        let mut picture = assets.indexed_picture(picture_id);
         picture.blit_keyed(queue_icons, source, IVec2::new(overlay_left, 0x0c), 0x10);
         assets.add_image(picture.to_image(&palette))
     };
-    let idle_id = 9808 + i16::from(slot as u8) * 2;
-    (compose(idle_id), compose(idle_id + 1))
+    let idle_id = PictureId::new(9808).offset(i16::from(slot as u8) * 2);
+    (compose(idle_id), compose(idle_id.offset(1)))
 }
 
 pub(in crate::ui::city) fn render_shipyard(
@@ -148,27 +142,13 @@ pub(in crate::ui::city) fn render_shipyard(
     if ship_type == ShipType::NoShip {
         return;
     }
-    ui.text(
-        view.ship_name,
-        assets
-            .string(0x2716, i16::from(ship_type.retail()) + 1)
-            .expect("ship name"),
-    );
+    ui.text(view.ship_name, assets.string(ship_type.name_string()));
     ui.text(
         view.description,
-        assets
-            .string(0x2752, i16::from(ship_type.retail()))
-            .expect("ship desc"),
+        assets.string(ship_type.description_string()),
     );
-    ui.image(
-        view.picture,
-        assets
-            .picture(PictureId::new(9834 + i16::from(ship_type.retail())))
-            .expect("detail pic"),
-    );
-    let mut picture = assets
-        .indexed_picture(PictureId::new(9800))
-        .expect("dialog pic");
+    ui.image(view.picture, assets.picture(ship_type.detail_picture()));
+    let mut picture = assets.indexed_picture(PictureId::new(9800));
     for entity in detail_texts.iter() {
         ui.commands.entity(entity).despawn();
     }
@@ -185,9 +165,7 @@ pub(in crate::ui::city) fn render_shipyard(
         .enumerate()
     {
         let text_x = 0x3a + column as i32 * 0x28;
-        let material = assets
-            .indexed_picture(PictureId::new(700 + i16::from(resource.retail())))
-            .expect("material");
+        let material = assets.indexed_picture(resource.material_picture());
         picture.blit_keyed_at(&material, IVec2::new(text_x - 0x20, 0x98), 0x10);
         picture.blit_keyed_at(&material, IVec2::new(text_x - 0x20, 0xcc), 0x10);
         let required = costs[resource];
@@ -233,7 +211,7 @@ pub(in crate::ui::city) fn render_shipyard(
     ];
     for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
         for (x, value) in [
-            (left, city_string(assets, 0x2736, 0x10 + index as i16)),
+            (left, assets.get_string(0x2736, 0x10 + index as u16)),
             (left + 0x3c, values[index].to_string()),
         ] {
             ui.commands.spawn((

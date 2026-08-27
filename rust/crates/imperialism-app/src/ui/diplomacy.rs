@@ -6,7 +6,6 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, ancestor_with};
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
@@ -432,21 +431,11 @@ fn bind_diplomacy_screen(
 ) {
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     let pictures = DiplomacyBracketPictures {
-        information: assets
-            .picture(PictureId::new(5001))
-            .expect("retail diplomacy information bracket must load"),
-        council: assets
-            .picture(PictureId::new(5002))
-            .expect("retail diplomacy council bracket must load"),
-        treaties: assets
-            .picture(PictureId::new(5003))
-            .expect("retail diplomacy treaties bracket must load"),
-        grants: assets
-            .picture(PictureId::new(5004))
-            .expect("retail diplomacy grants bracket must load"),
-        trade: assets
-            .picture(PictureId::new(5005))
-            .expect("retail diplomacy trade bracket must load"),
+        information: assets.picture(PictureId::new(5001)),
+        council: assets.picture(PictureId::new(5002)),
+        treaties: assets.picture(PictureId::new(5003)),
+        grants: assets.picture(PictureId::new(5004)),
+        trade: assets.picture(PictureId::new(5005)),
     };
     let (map_font, map_layout, map_line_height, _) = assets
         .text_style(RetailTextStylePreset::built(10, 1))
@@ -459,9 +448,7 @@ fn bind_diplomacy_screen(
         shadow: assets.palette_color(0xd2),
     };
     let icon_picture = PictureId::new(802);
-    let icon_atlas = assets
-        .keyed_picture(icon_picture, 0x10)
-        .expect("retail diplomacy icon atlas transparency must apply");
+    let icon_atlas = assets.keyed_picture(icon_picture, 0x10);
     bind_diplomacy_controls(
         &mut commands,
         *root,
@@ -780,18 +767,10 @@ fn bind_diplomacy_map_key(
 ) {
     let map_key = tree.find(information, fourcc!("mkey"));
     commands.entity(map_key).insert(DiplomacyMapKey {
-        owner: assets
-            .picture(PictureId::new(0x1393))
-            .expect("retail diplomacy owner map key must load"),
-        relationship_type: assets
-            .picture(PictureId::new(0x1395))
-            .expect("retail diplomacy relationship-type map key must load"),
-        relationship_notch: assets
-            .picture(PictureId::new(0x1396))
-            .expect("retail diplomacy relationship-notch map key must load"),
-        trade: assets
-            .picture(PictureId::new(0x1397))
-            .expect("retail diplomacy trade map key must load"),
+        owner: assets.picture(PictureId::new(0x1393)),
+        relationship_type: assets.picture(PictureId::new(0x1395)),
+        relationship_notch: assets.picture(PictureId::new(0x1396)),
+        trade: assets.picture(PictureId::new(0x1397)),
     });
     for (major, tag) in MajorNationId::all().zip(DIPLOMACY_MAP_KEY_MAJOR_NAME_TAGS) {
         commands
@@ -1112,7 +1091,7 @@ fn bind_diplomacy_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let body = get_string(&assets, 0x2754, notice.0.proposal_mode() - 1);
+    let body = assets.get_string(0x2754, (notice.0.proposal_mode() - 1) as u16);
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(
         &mut commands,
@@ -1121,12 +1100,16 @@ fn bind_diplomacy_notice(
     );
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500 + i16::from(source.get()));
-    if let Ok(image) = assets.picture(coat_picture) {
-        commands.entity(linger.coat).insert(ImageNode::new(image));
-    }
+    let coat_picture = diplomacy_coat_picture(source);
+    commands
+        .entity(linger.coat)
+        .insert(ImageNode::new(assets.picture(coat_picture)));
     commands.entity(linger.okay).remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
+}
+
+fn diplomacy_coat_picture(nation: MajorNationId) -> PictureId {
+    PictureId::new(9500).offset(i16::from(nation.get()))
 }
 
 fn open_diplomacy_entanglement_notice(
@@ -1151,16 +1134,15 @@ fn bind_diplomacy_entanglement_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let title = get_string(&assets, 0x275d, 5);
+    let title = assets.get_string(0x275d, 5);
     let body = diplomacy_entanglement_body(&session.game, &assets, notice.target, notice.policy);
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500 + i16::from(source.get()));
-    if let Ok(image) = assets.picture(coat_picture) {
-        commands.entity(linger.coat).insert(ImageNode::new(image));
-    }
+    commands.entity(linger.coat).insert(ImageNode::new(
+        assets.picture(diplomacy_coat_picture(source)),
+    ));
     commands
         .entity(linger.okay)
         .remove::<InteractionDisabled>()
@@ -1206,7 +1188,7 @@ fn diplomacy_entanglement_body(
     } else {
         4
     };
-    let intro = fill_brackets(&get_string(assets, 0x275d, intro_index), &[target_name]);
+    let intro = fill_brackets(&assets.get_string(0x275d, intro_index), &[target_name]);
     let mut names = String::new();
     for major in MajorNationId::all() {
         if state.diplomacy().relationships[target][major.nation()] != DiplomaticRelationship::War {
@@ -1317,7 +1299,7 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
     let minor = nation_label(state, prompt.target);
     let enemy = nation_label(state, prompt.source);
     let entangled = war_join_adds_entanglements(state, prompt);
-    let (index, args): (i16, [&str; 4]) = match prompt.kind {
+    let (index, args): (u16, [&str; 4]) = match prompt.kind {
         DiplomacyWarJoinKind::DefendMinor => {
             (if entangled { 4 } else { 0 }, [&enemy, &minor, &enemy, ""])
         }
@@ -1424,8 +1406,7 @@ fn render_diplomacy_panels(
     let row = RetailTextStylePreset::built(12, 0);
     let small = RetailTextStylePreset::explicit(1, 0, 10, 0);
     let council = RetailTextStylePreset::built(18, 0);
-    let strings =
-        |assets: &RetailUiAssets, index: i16| super::hover_help::get_string(assets, 0x2733, index);
+    let strings = |assets: &RetailUiAssets, index: u16| assets.get_string(0x2733, index);
     let (name, labels, values) = diplomacy_information(state, screen.framed_nation);
     let council_data = council_panel_text(state, &assets);
 
@@ -1484,7 +1465,7 @@ fn render_diplomacy_panels(
                     Justify::Center,
                 );
                 for (index, (center, baseline)) in TREATY_LABEL_CENTERS.into_iter().enumerate() {
-                    let panel_text = strings(&assets, index as i16 + 6);
+                    let panel_text = strings(&assets, index as u16 + 6);
                     spawn_panel_text(
                         &mut commands,
                         &mut assets,
@@ -1554,7 +1535,7 @@ fn render_diplomacy_panels(
                 .into_iter()
                 .enumerate()
                 {
-                    let panel_text = strings(&assets, index as i16 + 0x2b);
+                    let panel_text = strings(&assets, index as u16 + 0x2b);
                     spawn_panel_text(
                         &mut commands,
                         &mut assets,
@@ -1566,7 +1547,7 @@ fn render_diplomacy_panels(
                     );
                 }
                 for (index, center) in [156, 380, 473].into_iter().enumerate() {
-                    let panel_text = strings(&assets, index as i16 + 0x31);
+                    let panel_text = strings(&assets, index as u16 + 0x31);
                     spawn_panel_text(
                         &mut commands,
                         &mut assets,
@@ -2110,10 +2091,7 @@ fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPane
     if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;
         CouncilPanelText {
-            title: fill_brackets(
-                &super::hover_help::get_string(assets, 0x2733, 0x35),
-                &[&decade.to_string()],
-            ),
+            title: fill_brackets(&assets.get_string(0x2733, 0x35), &[&decade.to_string()]),
             rows: Some([
                 (
                     format!(
@@ -2136,14 +2114,14 @@ fn council_panel_text(state: &GameState, assets: &RetailUiAssets) -> CouncilPane
                     congress.counterpart_support.to_string(),
                 ),
                 (
-                    super::hover_help::get_string(assets, 0x2733, 0x36),
+                    assets.get_string(0x2733, 0x36),
                     congress.neutral_support.to_string(),
                 ),
             ]),
         }
     } else {
         CouncilPanelText {
-            title: super::hover_help::get_string(assets, 0x2733, 0x34),
+            title: assets.get_string(0x2733, 0x34),
             rows: None,
         }
     }

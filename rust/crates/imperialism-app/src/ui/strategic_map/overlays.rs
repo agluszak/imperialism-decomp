@@ -20,8 +20,22 @@ const RESOURCE_OVERLAY_SOURCE_X: [i16; 28] = [
     0, 0, -114, 798, 570, 456, 0, 0, 0, 0, 0,
 ];
 const IMPROVEMENT_ATLAS_BASE_OFFSET: u16 = 0x6c0;
-pub(super) const IMPROVEMENT_PICTURE_IDS: [i16; 15] = [
-    550, 551, 552, 553, 554, 555, 556, 557, 560, 561, 562, 10_104, 10_105, 578, 579,
+pub(super) const IMPROVEMENT_PICTURE_IDS: [PictureId; 15] = [
+    PictureId::new(550),
+    PictureId::new(551),
+    PictureId::new(552),
+    PictureId::new(553),
+    PictureId::new(554),
+    PictureId::new(555),
+    PictureId::new(556),
+    PictureId::new(557),
+    PictureId::new(560),
+    PictureId::new(561),
+    PictureId::new(562),
+    PictureId::new(10_104),
+    PictureId::new(10_105),
+    PictureId::new(578),
+    PictureId::new(579),
 ];
 pub(super) fn compose_strategic_railways(
     tile_state: &TileState,

@@ -54,8 +54,8 @@ const fn armory_picture_variant(unit: MilitaryUnitKind) -> i16 {
 }
 
 const fn armory_row_pictures(unit: MilitaryUnitKind) -> [PictureId; 2] {
-    let base = 0x1d60 + 2 * armory_picture_variant(unit);
-    [PictureId::new(base), PictureId::new(base + 1)]
+    let base = PictureId::new(0x1d60).offset(2 * armory_picture_variant(unit));
+    [base, base.offset(1)]
 }
 
 pub(in crate::ui::city) fn bind_training(
@@ -106,7 +106,7 @@ pub(in crate::ui::city) fn bind_armory(
     let (detail_font, _, detail_line_height, _) = assets
         .text_style(ARMORY_DETAIL_TEXT_STYLE)
         .expect("detail style");
-    let title = assets.string(0x271c, 0x20).expect("armory title");
+    let title = assets.ui_string(0x271c, 0x20);
     commands.entity(tree.find(root, fourcc!("titl"))).insert((
         Text::new(title),
         title_font,
@@ -125,8 +125,8 @@ pub(in crate::ui::city) fn bind_armory(
             let button = tree.find(root, button_tag);
             let unit = city.orders.military_recruitment[category].unit_kind;
             let [idle_id, selected_id] = armory_row_pictures(unit);
-            let idle = assets.picture(idle_id).expect("row picture");
-            let selected = assets.picture(selected_id).expect("selected picture");
+            let idle = assets.picture(idle_id);
+            let selected = assets.picture(selected_id);
             commands.entity(button).insert((
                 ImageNode::new(idle.clone()),
                 RetailPictureSwap {
@@ -184,7 +184,7 @@ pub(in crate::ui::city) fn bind_armory(
     ] {
         let entity = tree.find(root, tag);
         commands.entity(entity).insert((
-            Text::new(assets.string(0x271c, string_index).expect("armory label")),
+            Text::new(assets.ui_string(0x271c, string_index)),
             detail_font.clone(),
             detail_line_height,
             TextColor(normal_color),
@@ -268,22 +268,16 @@ pub(in crate::ui::city) fn render_armory(
     };
     let secondary = spec.secondary;
     let unit_index = usize::from(order.unit_kind.retail());
-    let unit_name = assets
-        .string(0x2717, i16::from(order.unit_kind.retail()) + 1)
-        .expect("unit name");
-    let description = assets
-        .string(0x2750, i16::from(order.unit_kind.retail()) + 1)
-        .expect("unit desc");
-    let static_text = assets
-        .string(
-            0x271c,
-            if ARMORY_STATIC[unit_index] {
-                0x22
-            } else {
-                0x21
-            },
-        )
-        .expect("yes/no");
+    let unit_name = assets.string(order.unit_kind.name_string());
+    let description = assets.string(order.unit_kind.description_string());
+    let static_text = assets.ui_string(
+        0x271c,
+        if ARMORY_STATIC[unit_index] {
+            0x22
+        } else {
+            0x21
+        },
+    );
     let workforce_available = workforce.min(strength / strength_divisor);
     let primary_available = city.stockpile[spec.primary.resource];
     let secondary_available = secondary.map(|item| city.stockpile[item.resource]);
@@ -336,9 +330,7 @@ pub(in crate::ui::city) fn render_armory(
     }
     ui.image(
         view.placard,
-        assets
-            .picture(PictureId::new(0x1d9c + i16::from(order.unit_kind.retail())))
-            .expect("placard"),
+        assets.picture(order.unit_kind.armory_placard_picture()),
     );
     ui.visible(view.costs[2], secondary.is_some());
     ui.visible(view.available[2], secondary.is_some());

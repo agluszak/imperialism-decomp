@@ -12,7 +12,7 @@ use bevy::prelude::*;
 use bevy::ui_widgets::{
     Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick,
 };
-use imperialism_formats::PictureId;
+use imperialism_formats::{PictureId, StringGroup};
 
 pub const TWO_PIC_SLIDER_SPLIT_PAD: i16 = 0x0c;
 
@@ -93,7 +93,7 @@ fn load_off_string(context: &TemplateContext, off_group: i16, off_index: i16) ->
     context
         .resource::<RetailAssetsResource>()
         .assets()
-        .string(off_group, off_index)
+        .string(StringGroup::new(off_group as u16).entry(off_index as u16))
         .unwrap_or_else(|_| "Off".to_string())
 }
 
