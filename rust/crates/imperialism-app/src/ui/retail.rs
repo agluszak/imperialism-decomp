@@ -13,10 +13,6 @@ use imperialism_formats::*;
 use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{RetailAmountBarKind, retail_amount_bar};
-// Screens import these from `retail_amount_bar` directly; keep the public types
-// discoverable next to the other retail widgets without unused-import noise.
-#[allow(unused_imports)]
-pub use super::retail_amount_bar::{RetailAmountBar, RetailAmountBarState};
 pub use super::retail_counted_picture::RetailCountedPicture;
 pub use super::retail_numbered_arrow::{
     NumberedArrowAction, NumberedArrowClick, RetailNumberedArrow, install_numbered_arrow,
