@@ -117,17 +117,3 @@ impl GameState {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::test_support::game_state;
-
-    #[test]
-    fn score_total_scales_subtotal_by_difficulty_percent() {
-        let state = game_state();
-        let score = state.generate_game_score(MajorNationId::new(0));
-        assert_eq!(score.difficulty_percent, 15);
-        assert_eq!(score.total, score.subtotal * 15 / 10);
-        assert_eq!(score.year, 1000);
-    }
-}

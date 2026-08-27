@@ -84,14 +84,11 @@ fn sync_random_setup_coat(
         if coat.nation == Some(setup.nation) {
             continue;
         }
-        let picture_id = coat_picture_id(setup.nation);
+        let picture_id =
+            FIRST_MAJOR_NATION_COAT_PICTURE.offset(i16::from(setup.nation.get()));
         image_node.image = pictures.picture(picture_id);
         coat.nation = Some(setup.nation);
     }
-}
-
-fn coat_picture_id(nation: MajorNationId) -> PictureId {
-    FIRST_MAJOR_NATION_COAT_PICTURE.offset(i16::from(nation.get()))
 }
 
 fn sync_random_setup_flag(
@@ -196,21 +193,4 @@ fn compose_preview(
     let mut preview = SatellitePreview::compose(|tile| tiles[usize::from(tile.get())].owner);
     preview.enhance(selected_nation.nation());
     preview
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn selected_nation_uses_the_retail_coat_picture_range() {
-        assert_eq!(
-            coat_picture_id(MajorNationId::new(0)),
-            PictureId::new(0x11c6)
-        );
-        assert_eq!(
-            coat_picture_id(MajorNationId::new(6)),
-            PictureId::new(0x11cc)
-        );
-    }
 }

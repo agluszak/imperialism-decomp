@@ -19,6 +19,8 @@ use imperialism_formats::{OKAY, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const PLANET_SEED_MAX_CHARS: usize = 32;
+/// Retail country-name edit limit used by Random Setup (`coun`).
+pub(crate) const COUNTRY_NAME_MAX_CHARS: usize = 12;
 
 /// Presentation-owned values edited by the random-game setup screen.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
@@ -46,10 +48,10 @@ impl FromWorld for RandomGameSetup {
             MajorNationId::new((crt_rng.next_rand() % i32::from(MajorNationId::COUNT)) as u8);
         let mut name_rng = RetailLcg::from_state(clock_seed);
         Self {
-            planet_seed: generate_english_random_setup_name(&mut name_rng),
+            planet_seed: generate_english_name(&mut name_rng),
             topology: MapTopology::Wrapping,
             nation,
-            country_name: generate_english_random_setup_name(&mut name_rng),
+            country_name: generate_english_name(&mut name_rng),
             difficulty: Difficulty::Introductory,
             name_mode: NationNameMode::Historical,
             name_rng,
@@ -553,7 +555,7 @@ fn regenerate_random_setup_planet(
     setup: &mut RandomGameSetup,
     preview: &mut RandomSetupPreview,
 ) {
-    setup.planet_seed = generate_english_random_setup_name(&mut setup.name_rng);
+    setup.planet_seed = generate_english_name(&mut setup.name_rng);
     update_random_setup_preview(
         preview,
         generate_random_setup_preview_with_clock_seed(

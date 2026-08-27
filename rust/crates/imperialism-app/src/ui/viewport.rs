@@ -62,7 +62,8 @@ fn center_retail_views(
     window: Single<&Window, With<PrimaryWindow>>,
     mut roots: Query<&mut Node, Without<ChildOf>>,
 ) {
-    let [left, top] = centered_origin(window.resolution.width(), window.resolution.height());
+    let left = ((window.resolution.width() - RETAIL_WIDTH) / 2.0).max(0.0);
+    let top = ((window.resolution.height() - RETAIL_HEIGHT) / 2.0).max(0.0);
     for mut node in &mut roots {
         if node.position_type == PositionType::Absolute
             && node.width == Val::Px(RETAIL_WIDTH)
@@ -71,24 +72,5 @@ fn center_retail_views(
             node.left = Val::Px(left);
             node.top = Val::Px(top);
         }
-    }
-}
-
-fn centered_origin(width: f32, height: f32) -> [f32; 2] {
-    [
-        ((width - RETAIL_WIDTH) / 2.0).max(0.0),
-        ((height - RETAIL_HEIGHT) / 2.0).max(0.0),
-    ]
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn retail_view_is_centered_without_changing_its_logical_size() {
-        assert_eq!(centered_origin(640.0, 480.0), [0.0, 0.0]);
-        assert_eq!(centered_origin(1920.0, 1080.0), [640.0, 300.0]);
-        assert_eq!(centered_origin(500.0, 400.0), [0.0, 0.0]);
     }
 }

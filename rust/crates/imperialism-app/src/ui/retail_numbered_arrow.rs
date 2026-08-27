@@ -6,10 +6,11 @@
 //! Hit testing matches retail `TrackMouse` (41px: dead at y==0 and y==20).
 //! Glyphs draw at y=0..16 and y=25..41; count paints outside the 11px frame
 //! (`Overflow::visible`).
+//!
+//! Count text matches `Draw`: one left-aligned 10pt `0x2b67` pass at origin (7, 0), no shadow.
 
 use super::retail::{
     load_template_transparent_picture, retail_built_text_style, retail_text_color,
-    retail_text_shadow,
 };
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -29,6 +30,7 @@ const UPPER_HIT_TOP: f32 = 1.0;
 const UPPER_HIT_HEIGHT: f32 = MIDPOINT - UPPER_HIT_TOP;
 const LOWER_HIT_TOP: f32 = MIDPOINT + 1.0;
 const LOWER_HIT_HEIGHT: f32 = HEIGHT - LOWER_HIT_TOP;
+const COUNT_ORIGIN_X: f32 = 7.0;
 
 const TOP_IDLE: Rect = Rect {
     min: Vec2::new(10.0, 0.0),
@@ -102,11 +104,10 @@ pub fn retail_numbered_arrow() -> impl Scene {
             ),
             (
                 #Count
-                Node { position_type: PositionType::Absolute, left: px(7), top: px(0), width: px(20), height: px(16) }
+                Node { position_type: PositionType::Absolute, left: px(COUNT_ORIGIN_X), top: px(0) }
                 Text("")
-                retail_built_text_style(10, 1)
-                retail_text_color(0x28)
-                retail_text_shadow(0, 1, 1)
+                retail_built_text_style(10, 0)
+                retail_text_color(0)
                 Pickable::IGNORE
             ),
         ]
@@ -156,14 +157,5 @@ mod tests {
         assert_eq!(LOWER_GLYPH_TOP, 25.0);
         assert_eq!(GLYPH_HEIGHT, 16.0);
         assert_eq!(LOWER_GLYPH_TOP + GLYPH_HEIGHT, HEIGHT);
-    }
-
-    #[test]
-    fn count_caption_uses_built_10pt_book_antiqua() {
-        use imperialism_formats::{
-            RetailFontFace, RetailTextStylePreset, resolve_retail_text_style,
-        };
-        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 1)).unwrap();
-        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
     }
 }

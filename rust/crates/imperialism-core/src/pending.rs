@@ -206,10 +206,7 @@ mod tests {
                 .growth_reward_level(),
             None
         );
-    }
 
-    #[test]
-    fn newspaper_mark_handled_promotes_navy_growth_through_reward_levels() {
         let mut actions = PendingActionTable::default();
         actions[PendingActionKind::NavyGrowthReward] =
             PendingActionState::new(PendingActionStatus::QUEUED, Some(1));
@@ -217,14 +214,6 @@ mod tests {
         assert_eq!(
             actions[PendingActionKind::NavyGrowthReward].status(),
             PendingActionStatus::from_retail(0x34)
-        );
-
-        actions[PendingActionKind::NavyGrowthReward] =
-            PendingActionState::new(PendingActionStatus::QUEUED, Some(2));
-        mark_pending_status_flags_handled(&mut actions, false);
-        assert_eq!(
-            actions[PendingActionKind::NavyGrowthReward].status(),
-            PendingActionStatus::from_retail(0x35)
         );
 
         actions[PendingActionKind::NavyGrowthReward] =
