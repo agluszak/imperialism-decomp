@@ -41,9 +41,11 @@ fn bind_industry_orders(
             commands.entity(bar).observe(
                 move |change: On<ValueChange<i16>>, mut session: ResMut<GameSession>| {
                     let nation = session.active_major_nation();
-                    session
-                        .game
-                        .set_city_order_quantity(nation, CityOrderId::Item(item), change.value);
+                    session.game.set_city_order_quantity(
+                        nation,
+                        CityOrderId::Item(item),
+                        change.value,
+                    );
                 },
             );
             IndustryOrderUi {

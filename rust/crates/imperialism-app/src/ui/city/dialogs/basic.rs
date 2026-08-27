@@ -235,13 +235,7 @@ pub(in crate::ui::city) fn render_food(
     ui: &mut CityUi,
 ) {
     let city = &session.game.nations().major(nation).city;
-    render_rail(
-        session,
-        nation,
-        CityOrderId::FoodProcessing,
-        &view.rail,
-        ui,
-    );
+    render_rail(session, nation, CityOrderId::FoodProcessing, &view.rail, ui);
     ui.visible(view.labor, city.population.strength() >= 2);
     ui.visible(view.grain, city.stockpile[ResourceKind::Grain] >= 2);
     ui.visible(view.fruit, city.stockpile[ResourceKind::Fruit] >= 1);
