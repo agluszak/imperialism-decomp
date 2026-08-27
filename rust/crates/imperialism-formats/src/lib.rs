@@ -33,7 +33,7 @@ pub use retail_fonts::{
     decode_retail_font_cell_metrics, resolve_retail_text_style,
 };
 pub use retail_resources::{IndexedPicture, RetailCursor};
-pub use retail_ui::{FourCc, OKAY, PictureId, TRADE};
+pub use retail_ui::{FourCc, OKAY, PictureId, StringGroup, StringResourceId, TRADE};
 pub use scenario::{
     ScenarioInfo, ScenarioScriptError, decode_scenario_info, decode_scenario_script,
 };
