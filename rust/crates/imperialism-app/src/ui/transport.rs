@@ -216,34 +216,23 @@ fn bind_transport_view(
         let binding = TRANSPORT_ROWS[index];
         let row = tree.find(root, binding.tag);
         commands.entity(row).insert(HoverHelpText(String::new()));
-        let decrease = tree.find(row, fourcc!("left"));
-        let increase = tree.find(row, fourcc!("rght"));
-        commands.entity(decrease).observe(
-            move |activate: On<Activate>,
-                  disabled: Query<Has<InteractionDisabled>>,
-                  mut session: ResMut<GameSession>| {
-                if disabled.get(activate.entity).unwrap_or(false) {
-                    return;
-                }
-                let nation = session.active_major_nation();
-                session
-                    .game
-                    .step_transport_allocation(nation, binding.allocation, -1);
-            },
-        );
-        commands.entity(increase).observe(
-            move |activate: On<Activate>,
-                  disabled: Query<Has<InteractionDisabled>>,
-                  mut session: ResMut<GameSession>| {
-                if disabled.get(activate.entity).unwrap_or(false) {
-                    return;
-                }
-                let nation = session.active_major_nation();
-                session
-                    .game
-                    .step_transport_allocation(nation, binding.allocation, 1);
-            },
-        );
+        let [decrease, increase] = [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
+            let step = tree.find(row, tag);
+            commands.entity(step).observe(
+                move |activate: On<Activate>,
+                      disabled: Query<Has<InteractionDisabled>>,
+                      mut session: ResMut<GameSession>| {
+                    if disabled.get(activate.entity).unwrap_or(false) {
+                        return;
+                    }
+                    let nation = session.active_major_nation();
+                    session
+                        .game
+                        .step_transport_allocation(nation, binding.allocation, delta);
+                },
+            );
+            step
+        });
         let money = match binding.allocation {
             TransportAllocation::GOLD | TransportAllocation::GEMS => {
                 Some(tree.find(row, fourcc!("valu")))
