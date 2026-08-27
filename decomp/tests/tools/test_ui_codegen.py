@@ -229,12 +229,47 @@ class UiCodegenTests(unittest.TestCase):
         self.assertEqual(transport.count("TransportGaugeParts"), 19)
         fish = transport[transport.index('retail_node(fourcc!("fish")') :]
         fish = fish[: fish.index('retail_node(fourcc!("prod")')]
+        self.assertIn("transport_gauge_remainder(", fish)
+        self.assertIn("transport_gauge_allocation_fill(", fish)
         self.assertIn("#TransportFill", fish)
         self.assertIn("#TransportLimit", fish)
         self.assertIn('retail_node(fourcc!("text")', fish)
         self.assertIn('retail_node(fourcc!("left")', fish)
+        self.assertIn("RetailSidewaysArrow", fish)
+        self.assertNotIn("width: px(113.", transport)
         # Exactly one Children owner on the fish row.
         self.assertEqual(fish.count("Children ["), 1)
+
+    def test_generated_sideways_arrows_use_press_repeat_not_release_button(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        trade = rendered[rendered.index("pub fn trade_2009()") : rendered.index(
+            "pub fn trade_2010()"
+        )]
+        left = trade[
+            trade.index('retail_node(fourcc!("left")') : trade.index(
+                'retail_node(fourcc!("rght")'
+            )
+        ]
+        self.assertIn("RetailSidewaysArrow", left)
+        self.assertNotIn("Button", left)
+
+    def test_generated_page_corners_use_triangular_picking(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        detail = rendered[rendered.index("pub fn diplo_1352()") : rendered.index(
+            "pub fn diplo_1351()"
+        )]
+        self.assertIn("template(|_context| Ok(RetailPageCorner::Left)", detail)
+        self.assertIn("template(|_context| Ok(RetailPageCorner::Right)", detail)
+        lcor = detail[
+            detail.index('retail_node(fourcc!("lcor")') : detail.index(
+                'retail_node(fourcc!("rcor")'
+            )
+        ]
+        self.assertNotIn("Button", lcor)
 
     def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
         rendered = render_rust_ui(

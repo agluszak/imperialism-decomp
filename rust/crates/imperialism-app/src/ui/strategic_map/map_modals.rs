@@ -1008,6 +1008,7 @@ fn bind_added_garrisons(
             model.units.len(),
             GARRISON_PER_COLUMN,
             GARRISON_ROW_HEIGHT,
+            true,
         );
         let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
@@ -1056,6 +1057,7 @@ fn bind_added_army_rosters(
             model.units.len(),
             MINI_ROSTER_PER_COLUMN,
             MINI_ROSTER_ROW_HEIGHT,
+            true,
         );
         let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
@@ -1237,6 +1239,7 @@ fn bind_added_navy_rosters(
             model.ships.len(),
             MINI_ROSTER_PER_COLUMN,
             MINI_ROSTER_ROW_HEIGHT,
+            false,
         );
         let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
@@ -1295,6 +1298,7 @@ fn bind_roster_page(
     count: usize,
     rows_per_column: usize,
     row_height: f32,
+    triangular_page_corners: bool,
 ) {
     let last_column = if count == 0 {
         0
@@ -1320,20 +1324,25 @@ fn bind_roster_page(
         (fourcc!("lcor"), RosterPageAction::Previous),
         (fourcc!("rcor"), RosterPageAction::Next),
     ] {
-        commands
-            .entity(view.find(tag))
-            .insert((
-                Button,
-                action,
-                match action {
-                    RosterPageAction::Previous => Visibility::Hidden,
-                    RosterPageAction::Next if ROSTER_VISIBLE_COLUMNS <= last_column => {
-                        Visibility::Inherited
-                    }
-                    RosterPageAction::Next => Visibility::Hidden,
-                },
-            ))
-            .observe(on_roster_page_action);
+        let entity = view.find(tag);
+        let visibility = match action {
+            RosterPageAction::Previous => Visibility::Hidden,
+            RosterPageAction::Next if ROSTER_VISIBLE_COLUMNS <= last_column => {
+                Visibility::Inherited
+            }
+            RosterPageAction::Next => Visibility::Hidden,
+        };
+        if triangular_page_corners {
+            commands
+                .entity(entity)
+                .insert((action, visibility))
+                .observe(on_roster_page_action);
+        } else {
+            commands
+                .entity(entity)
+                .insert((Button, action, visibility))
+                .observe(on_roster_page_action);
+        }
     }
 }
 

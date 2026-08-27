@@ -1833,9 +1833,12 @@ def _rust_input_semantics(
     # SceneComponent owns two stock Buttons; recovered root is not itself a Button.
     if node.class_name == "TNumberedArrowButton":
         return "passive"
+    if node.class_name == "TSidewaysArrow":
+        return "sideways_arrow"
+    if node.class_name == "TPageCorner":
+        return "page_corner"
     if (
         node.type_code in ("cntl", "nmbr")
-        or node.class_name == "TSidewaysArrow"
         or (node.type_code == "pict" and "button" in class_name)
         # TSetupRandomMapPicture::DoEvent handles this otherwise passive
         # TNoHilitePicture as the random-map regeneration action.
@@ -1875,15 +1878,20 @@ def _rust_presentation_owns_children(presentation: str | None) -> bool:
 
 
 def _rust_transport_gauge_shell_and_children(
-    picture_id: int, track_left: int, capacity: bool
+    picture_id: int, track_left_expr: str, capacity: bool
 ) -> tuple[list[str], list[list[str]]]:
     """Root components + synthetic child BSN nodes for a merged transport gauge.
 
     Used when the recovered `TTransportPicture` already has resource children so
-    codegen emits exactly one `Children` owner.
+    codegen emits exactly one `Children` owner. Geometry lives in
+    `retail_transport_gauge.rs` helpers referenced here.
     """
 
-    fill_palette = 0x33 if capacity else 0x3A
+    fill_helper = (
+        "transport_gauge_capacity_fill"
+        if capacity
+        else "transport_gauge_allocation_fill"
+    )
     shell = [
         f"    retail_picture({picture_id})",
     ]
@@ -1898,25 +1906,13 @@ def _rust_transport_gauge_shell_and_children(
     children: list[list[str]] = [
         [
             "(",
-            (
-                f"    Node {{ position_type: PositionType::Absolute, "
-                f"left: px({float(track_left)}), top: px({float(0x0D)}), "
-                f"width: px(113.), height: px({float(0x04)}) }}"
-            ),
-            "    retail_background_color(0x3b)",
-            "    Pickable::IGNORE",
+            f"    transport_gauge_remainder({track_left_expr})",
             ")",
         ],
         [
             "(",
             "    #TransportFill",
-            (
-                f"    Node {{ position_type: PositionType::Absolute, "
-                f"left: px({float(track_left)}), top: px({float(0x0D)}), "
-                f"width: px(0), height: px({float(0x04)}) }}"
-            ),
-            f"    retail_background_color({fill_palette})",
-            "    Pickable::IGNORE",
+            f"    {fill_helper}({track_left_expr})",
             ")",
         ],
     ]
@@ -1925,14 +1921,7 @@ def _rust_transport_gauge_shell_and_children(
             [
                 "(",
                 "    #TransportLimit",
-                (
-                    f"    Node {{ position_type: PositionType::Absolute, "
-                    f"left: px({float(track_left - 1)}), top: px({float(0x12)}), "
-                    f"width: px(115.), height: px({float(0x02)}) }}"
-                ),
-                "    retail_background_color(0x33)",
-                "    Visibility::Hidden",
-                "    Pickable::IGNORE",
+                f"    transport_gauge_limit({track_left_expr})",
                 ")",
             ]
         )
@@ -2302,6 +2291,7 @@ def _render_bsn_node(
     lines.extend(
         {
             "activate": ["    Button"],
+            "sideways_arrow": ["    RetailSidewaysArrow", "    Pickable"],
             "checkbox": ["    Checkbox"],
             "toggle": ["    Checkbox"],
             "radio_group": ["    RadioGroup"],
@@ -2317,6 +2307,10 @@ def _render_bsn_node(
             ],
         }.get(str(semantics), [])
     )
+    if semantics == "page_corner":
+        corner = "Left" if node.tag == "lcor" else "Right"
+        lines.append(f"    template(|_context| Ok(RetailPageCorner::{corner}))")
+        lines.append("    Pickable")
     if bool(node.state) and semantics in ("checkbox", "toggle", "radio_button"):
         lines.append("    Checked")
     if semantics != "passive" and (not node.enabled or not node.input_gate):
@@ -2382,13 +2376,12 @@ def _render_bsn_node(
     elif presentation == "ship_placard":
         lines.append(f"    retail_ship_placard({int(picture_id)})")
     elif presentation == "transport_gauge":
-        # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
-        track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
+        track_left_expr = f"transport_gauge_track_left({int(node.geometry[0])})"
         capacity = node.tag == "tota"
         if recovered_children:
             # One Children owner: merge synthetic remainder/fill/limit with recovered kids.
             shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
-                int(picture_id), track_left, capacity
+                int(picture_id), track_left_expr, capacity
             )
             lines.extend(shell)
         else:
@@ -2397,7 +2390,7 @@ def _render_bsn_node(
                 if capacity
                 else "retail_transport_gauge"
             )
-            lines.append(f"    {helper}({int(picture_id)}, {track_left})")
+            lines.append(f"    {helper}({int(picture_id)}, {track_left_expr})")
     elif presentation == "pressed_overlay":
         lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
     elif presentation == "madness":

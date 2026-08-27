@@ -1,5 +1,5 @@
 use super::*;
-use crate::ui::retail::AmountBarParts;
+use crate::ui::retail::{AmountBarParts, Step};
 use crate::ui::retail_amount_bar::{
     AmountBarStyle, amount_bar_click_value, amount_bar_geometry, amount_bar_x_from_normalized,
     quantize_amount_bar_value,
@@ -62,12 +62,12 @@ pub(in crate::ui::city) fn bind_industry_order_row(
     let bar = tree.find(row, fourcc!("bar "));
     let parts = *amount_bars.get(bar).expect("bound amount bar");
     let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
-        commands.entity(entity).observe(
-            move |_: On<Activate>, mut session: ResMut<GameSession>| {
+        commands
+            .entity(entity)
+            .observe(move |_: On<Step>, mut session: ResMut<GameSession>| {
                 let nation = session.active_major_nation();
                 session.game.adjust_city_order(nation, order, delta);
-            },
-        );
+            });
     };
     bind_step(commands, decrease, -step);
     bind_step(commands, increase, step);
@@ -113,12 +113,12 @@ pub(in crate::ui::city) fn bind_recruitment_order_row(
     let increase = tree.find(row, fourcc!("plus"));
     let quantity = tree.find(row, fourcc!("numb"));
     let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
-        commands.entity(entity).observe(
-            move |_: On<Activate>, mut session: ResMut<GameSession>| {
+        commands
+            .entity(entity)
+            .observe(move |_: On<Step>, mut session: ResMut<GameSession>| {
                 let nation = session.active_major_nation();
                 session.game.adjust_city_order(nation, order, delta);
-            },
-        );
+            });
     };
     bind_step(commands, decrease, -1);
     bind_step(commands, increase, 1);
