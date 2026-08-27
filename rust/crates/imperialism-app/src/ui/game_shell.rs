@@ -395,14 +395,10 @@ pub(crate) fn bind_game_status_display(
 
 fn render_game_status(
     session: Res<GameSession>,
-    added: Query<(), Added<GameStatusView>>,
     retail: Res<RetailAssetsResource>,
     views: Query<&GameStatusView>,
     mut texts: Query<&mut Text>,
 ) {
-    if super::projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let nation = session.active_major_nation();
     let date = {
         let season = retail

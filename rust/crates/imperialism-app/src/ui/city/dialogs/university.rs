@@ -3,18 +3,19 @@ use crate::RetailFonts;
 use crate::ui::retail_raster::IndexedRasterExt;
 use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
-/// One University row's button and quantity marker.
-struct UniversityRowView {
-    button: Entity,
-    quantity: Entity,
-}
+const UNIVERSITY_KINDS: [CivilianUnitKind; 7] = [
+    CivilianUnitKind::Miner,
+    CivilianUnitKind::Prospector,
+    CivilianUnitKind::Farmer,
+    CivilianUnitKind::Forester,
+    CivilianUnitKind::Engineer,
+    CivilianUnitKind::Rancher,
+    CivilianUnitKind::Driller,
+];
 
-/// Root view of the University dialog. The detail pane is one retail picture
-/// redrawn from the selected kind.
-#[derive(Component)]
-pub(in crate::ui::city) struct UniversityView {
-    selected: CivilianUnitKind,
-    rows: [UniversityRowView; UNIVERSITY_CONTROLS.len()],
+pub(in crate::ui::city) struct UniversityUi {
+    pub(in crate::ui::city) selected: CivilianUnitKind,
+    rows: [(CivilianUnitKind, SelectionRow); 7],
     unit: Entity,
     description: Entity,
     costs: [Entity; 3],
@@ -37,73 +38,58 @@ pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKi
     }
 }
 
-pub(in crate::ui::city) fn configure_university_dialog(
+pub(in crate::ui::city) fn bind_university(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
     state: &GameState,
-) {
-    let nation = MajorNationId::from_nation(state.turn().active_nation)
-        .expect("City active nation is a major nation");
+) -> UniversityUi {
+    let nation = MajorNationId::from_nation(state.turn().active_nation).expect("major nation");
     let available = state.technology().city_capabilities_by_nation[nation]
         .university
         .available;
     let rows = std::array::from_fn(|index| {
-        let (kind, order_tag, button_tag) = UNIVERSITY_CONTROLS[index];
+        let kind = UNIVERSITY_KINDS[index];
+        let (order_tag, button_tag) = generated::UNIVERSITY_ROW_CONTROLS[index];
         let bound = bind_recruitment_order_row(
             commands,
             root,
             tree,
-            CityOrderBinding {
-                order: CityOrderId::CivilianRecruit(kind),
-                tag: order_tag,
-            },
+            CityOrderId::CivilianRecruit(kind),
+            order_tag,
         );
-        for tag in [fourcc!("minu"), fourcc!("plus")] {
-            commands.entity(tree.find(bound.row, tag)).observe(
-                move |_: On<Activate>, mut views: Query<&mut UniversityView>| {
-                    if let Ok(mut view) = views.get_mut(root) {
-                        view.selected = kind;
-                    }
-                },
-            );
-        }
         let button = tree.find(root, button_tag);
         let row_available = available[kind];
         bound.set_available(commands, row_available);
-        let mut button_commands = commands.entity(button);
-        button_commands.insert(if row_available {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
+        {
+            let mut button_commands = commands.entity(button);
+            button_commands.insert(if row_available {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            });
+            if row_available {
+                button_commands.remove::<InteractionDisabled>();
+            } else {
+                button_commands.insert(InteractionDisabled);
+            }
+        }
+        bind_row_selection(commands, tree, root, bound.row, button, move |view| {
+            if let CityDialogView::University(u) = view {
+                u.selected = kind;
+            }
         });
-        button_commands.observe(
-            move |change: On<ValueChange<bool>>, mut views: Query<&mut UniversityView>| {
-                if change.value
-                    && let Ok(mut view) = views.get_mut(root)
-                {
-                    view.selected = kind;
-                }
-            },
-        );
-        if row_available {
-            button_commands.remove::<InteractionDisabled>();
-        } else {
-            button_commands.insert(InteractionDisabled);
-        }
         commands.entity(bound.quantity).insert(InteractionDisabled);
-        UniversityRowView {
-            button,
-            quantity: bound.quantity,
-        }
+        (kind, SelectionRow(button, bound.quantity))
     });
     let dlog = tree.find(root, fourcc!("DLOG"));
     let details_base = assets
         .indexed_picture(PictureId::new(9900))
-        .expect("retail University dialog picture must load");
-    let details_image = assets.add_image(details_base.to_image(assets.default_dib_palette()));
-    commands.entity(dlog).insert(ImageNode::new(details_image));
+        .expect("dialog pic");
+    commands.entity(dlog).insert(ImageNode::new(
+        assets.add_image(details_base.to_image(assets.default_dib_palette())),
+    ));
     let mut bind_text = |tag| {
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(""));
@@ -129,7 +115,7 @@ pub(in crate::ui::city) fn configure_university_dialog(
     for entity in &tier_labels {
         commands.entity(*entity).insert(Visibility::Hidden);
     }
-    commands.entity(root).insert(UniversityView {
+    UniversityUi {
         selected: CivilianUnitKind::Miner,
         rows,
         unit,
@@ -138,160 +124,129 @@ pub(in crate::ui::city) fn configure_university_dialog(
         available,
         tier_labels,
         details: dlog,
-    });
+    }
 }
 
-pub(in crate::ui::city) fn render_university_dialog(
-    session: Res<GameSession>,
-    mut assets: RetailUiAssets,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
-    views: Query<Ref<UniversityView>>,
-    mut commands: Commands,
-    mut texts: Query<&mut Text>,
-    mut text_colors: Query<&mut TextColor>,
-    mut visibilities: Query<&mut Visibility>,
-    mut images: Query<&mut ImageNode>,
-    checked: Query<Has<Checked>>,
+pub(in crate::ui::city) fn render_university(
+    view: &UniversityUi,
+    session: &GameSession,
+    assets: &mut RetailUiAssets,
+    fonts: &RetailFonts,
+    font_assets: &Assets<Font>,
+    ui: &mut CityUi,
 ) {
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
-    for view in &views {
-        if !session.is_changed() && !view.is_added() && !view.is_changed() {
-            continue;
-        }
-        let nation = session.active_major_nation();
-        for ((kind, _, _), view_row) in UNIVERSITY_CONTROLS.iter().zip(&view.rows) {
-            sync_recruitment_row(
-                &mut commands,
-                &checked,
-                &mut texts,
-                view_row.button,
-                *kind == view.selected,
-                view_row.quantity,
-                session
-                    .game
-                    .city_order_quantity(nation, CityOrderId::CivilianRecruit(*kind))
-                    .to_string(),
-            );
-        }
-        let kind = view.selected;
-        let major = session.game.nations().major(nation);
-        let city = &major.city;
-        let spec = civilian_recruitment_spec(kind);
-        let production = city.population.production_labor();
-        let workforce_available = production.high.min(city.population.strength() / 4);
-        let specialties = CIVILIAN_RESOURCE_SPECIALTIES[kind];
-        let levels = &session.game.technology().city_capabilities_by_nation[nation]
-            .university
-            .requirement_levels;
-        let maximum = specialties
-            .iter()
-            .flatten()
-            .map(|resource| levels[*resource])
-            .max()
-            .unwrap_or(UniversityRequirementLevel::None);
-        let unit_name = assets
+    let nation = session.active_major_nation();
+    for &(kind, row) in &view.rows {
+        sync_recruitment_row(
+            ui,
+            row,
+            kind == view.selected,
+            session
+                .game
+                .city_order_quantity(nation, CityOrderId::CivilianRecruit(kind))
+                .to_string(),
+        );
+    }
+    let kind = view.selected;
+    let major = session.game.nations().major(nation);
+    let city = &major.city;
+    let spec = civilian_recruitment_spec(kind);
+    let production = city.population.production_labor();
+    let workforce_available = production.high.min(city.population.strength() / 4);
+    let specialties = CIVILIAN_RESOURCE_SPECIALTIES[kind];
+    let levels = &session.game.technology().city_capabilities_by_nation[nation]
+        .university
+        .requirement_levels;
+    let maximum = specialties
+        .iter()
+        .flatten()
+        .map(|resource| levels[*resource])
+        .max()
+        .unwrap_or(UniversityRequirementLevel::None);
+    ui.text(
+        view.unit,
+        assets
             .string(0x2718, i16::from(kind.retail()) + 1)
-            .expect("retail civilian name");
-        let description = assets
+            .expect("civilian name"),
+    );
+    ui.text(
+        view.description,
+        assets
             .string(0x2751, i16::from(kind.retail()) + 1)
-            .expect("retail civilian description");
-        texts
-            .get_mut(view.unit)
-            .expect("bound University unit name")
-            .0
-            .clone_from(&unit_name);
-        texts
-            .get_mut(view.description)
-            .expect("bound University description")
-            .0
-            .clone_from(&description);
-        let values = [
-            1.to_string(),
-            spec.primary.per_unit().to_string(),
-            format_currency(i32::from(spec.cash_per_unit)),
-            workforce_available.to_string(),
-            city.stockpile[spec.primary.resource].to_string(),
-            format_currency(major.common.treasury),
-        ];
-        for (entity, value) in view.costs.iter().chain(&view.available).zip(&values) {
-            texts
-                .get_mut(*entity)
-                .expect("bound University detail")
-                .0
-                .clone_from(value);
-        }
-        let insufficiencies = [
-            workforce_available < 1,
-            city.stockpile[spec.primary.resource] < spec.primary.per_unit(),
-            major.common.treasury < i32::from(spec.cash_per_unit),
-        ];
-        for (entity, insufficient) in view.available.iter().zip(&insufficiencies) {
-            text_colors
-                .get_mut(*entity)
-                .expect("bound University availability")
-                .0 = if *insufficient {
+            .expect("civilian desc"),
+    );
+    let values = [
+        1.to_string(),
+        spec.primary.per_unit().to_string(),
+        format_currency(i32::from(spec.cash_per_unit)),
+        workforce_available.to_string(),
+        city.stockpile[spec.primary.resource].to_string(),
+        format_currency(major.common.treasury),
+    ];
+    for (entity, value) in view.costs.iter().chain(&view.available).zip(&values) {
+        ui.text(*entity, value.clone());
+    }
+    let insufficiencies = [
+        workforce_available < 1,
+        city.stockpile[spec.primary.resource] < spec.primary.per_unit(),
+        major.common.treasury < i32::from(spec.cash_per_unit),
+    ];
+    for (entity, insufficient) in view.available.iter().zip(&insufficiencies) {
+        ui.color(
+            *entity,
+            if *insufficient {
                 warning_color
             } else {
                 normal_color
-            };
-        }
-        for (entity, index) in view.tier_labels.iter().zip(0..3) {
-            *visibilities
-                .get_mut(*entity)
-                .expect("bound University tier label") = if (index as u8) < maximum.retail() {
-                Visibility::Visible
-            } else {
-                Visibility::Hidden
-            };
-        }
-        let mut picture = assets
-            .indexed_picture(PictureId::new(9900))
-            .expect("retail University dialog picture must load");
-        let preview = assets
-            .indexed_picture(PictureId::new(university_preview_picture(kind)))
-            .expect("retail University preview picture must load");
-        picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
-        let icons = assets
-            .indexed_picture(PictureId::new(750))
-            .expect("retail University resource icons must load");
-        let mut text = RetailRasterTextPainter::from_preset(
-            &fonts,
-            &font_assets,
-            RetailTextStylePreset {
-                font_family: 3,
-                face_flags: 0,
-                point_size: 10,
-                alignment: -2,
             },
-        )
-        .expect("retail University custom-drawing text style");
-        let mut running_max = UniversityRequirementLevel::None;
-        for (row_index, resource) in specialties.into_iter().enumerate() {
-            let Some(resource) = resource else {
-                continue;
-            };
-            let source_left = i32::from(resource.retail()) * 20;
-            picture.blit_keyed(
-                &icons,
-                IRect::new(source_left, 0, source_left + 20, 24),
-                IVec2::new(25, 274 + row_index as i32 * 25),
-                0x10,
-            );
-            running_max = running_max.max(levels[resource]);
-            for level in 1..=running_max.retail() {
-                text.draw(
-                    &mut picture,
-                    IVec2::new(i32::from(level) * 40 + 39, row_index as i32 * 25 + 289),
-                    &resource_development_yield(resource, level).to_string(),
-                    0xd2,
-                );
-            }
-        }
-        let image = images
-            .get_mut(view.details)
-            .expect("bound University details picture");
-        assets.replace_image(&image.image, picture.to_image(assets.default_dib_palette()));
+        );
     }
+    for (entity, index) in view.tier_labels.iter().zip(0..3) {
+        ui.visible(*entity, (index as u8) < maximum.retail());
+    }
+    let mut picture = assets
+        .indexed_picture(PictureId::new(9900))
+        .expect("dialog pic");
+    let preview = assets
+        .indexed_picture(PictureId::new(university_preview_picture(kind)))
+        .expect("preview pic");
+    picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
+    let icons = assets.indexed_picture(PictureId::new(750)).expect("icons");
+    let mut text = RetailRasterTextPainter::from_preset(
+        fonts,
+        font_assets,
+        RetailTextStylePreset {
+            font_family: 3,
+            face_flags: 0,
+            point_size: 10,
+            alignment: -2,
+        },
+    )
+    .expect("text style");
+    let mut running_max = UniversityRequirementLevel::None;
+    for (row_index, resource) in specialties.into_iter().enumerate() {
+        let Some(resource) = resource else {
+            continue;
+        };
+        let source_left = i32::from(resource.retail()) * 20;
+        picture.blit_keyed(
+            &icons,
+            IRect::new(source_left, 0, source_left + 20, 24),
+            IVec2::new(25, 274 + row_index as i32 * 25),
+            0x10,
+        );
+        running_max = running_max.max(levels[resource]);
+        for level in 1..=running_max.retail() {
+            text.draw(
+                &mut picture,
+                IVec2::new(i32::from(level) * 40 + 39, row_index as i32 * 25 + 289),
+                &resource_development_yield(resource, level).to_string(),
+                0xd2,
+            );
+        }
+    }
+    let image = ui.images.get_mut(view.details).expect("details");
+    assets.replace_image(&image.image, picture.to_image(assets.default_dib_palette()));
 }
