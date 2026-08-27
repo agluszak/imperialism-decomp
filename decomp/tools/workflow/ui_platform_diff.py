@@ -13,8 +13,6 @@ from tools.ui_codegen import (
     DEFAULT_CLASSES,
     _render_factory_with_map,
     apply_case_windows_overrides,
-    load_city_building_action_visuals,
-    load_city_building_visuals,
     load_class_substitutions,
     load_windows_child_node_patches,
     load_recipes,
@@ -76,8 +74,6 @@ def _semantic_snapshot(node) -> dict:
 def build_report(repo_root: Path) -> tuple[dict, list[str]]:
     config = _load_delta_config(repo_root)
     child_node_patches = load_windows_child_node_patches(repo_root)
-    load_city_building_visuals(repo_root)
-    load_city_building_action_visuals(repo_root)
     recipes = load_recipes(repo_root)
     raw_views = load_ui_views(repo_root)
     text_resources = load_text_resources(repo_root)

@@ -2,6 +2,7 @@ use super::*;
 use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
 
+// Recovered TShipyardView row overlay offsets (left nudge for queue icon placement).
 const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); 8] = [
     (fourcc!("clu0"), fourcc!("but0"), 4),
     (fourcc!("clu1"), fourcc!("but1"), 4),
@@ -13,6 +14,7 @@ const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); 8] = [
     (fourcc!("clu7"), fourcc!("but7"), 2),
 ];
 
+// Recovered TShipyardView stat caption origins (two columns x three rows).
 const SHIPYARD_STAT_ORIGINS: [(i32, i32); 6] = [
     (28, 86),
     (28, 102),
