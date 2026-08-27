@@ -52,7 +52,6 @@ struct CityUi<'w, 's> {
     texts: Query<'w, 's, &'static mut Text>,
     colors: Query<'w, 's, &'static mut TextColor>,
     visibility: Query<'w, 's, &'static mut Visibility>,
-    nodes: Query<'w, 's, &'static mut Node>,
     images: Query<'w, 's, &'static mut ImageNode>,
     checked: Query<'w, 's, Has<Checked>>,
     amount_bars: Query<'w, 's, &'static mut RetailAmountBarState>,

@@ -1653,6 +1653,36 @@ def _rust_amount_bar_kind(node: UiSemanticNode) -> str | None:
     }.get(node.class_name)
 
 
+def _rust_amount_selector_kind(node: UiSemanticNode) -> str | None:
+    return {
+        "TIndustryCluster": "Industry",
+        "TRailCluster": "Rail",
+        "TTradeCluster": "Trader",
+    }.get(node.class_name)
+
+
+def _rust_amount_selector_child_name(tag: str) -> str | None:
+    return {
+        "left": "Left",
+        "rght": "Right",
+        "move": "Value",
+        "Sell": "Value",
+        "bar ": "Bar",
+    }.get(tag)
+
+
+def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | None:
+    """Windows DoPostCreate picture base + scale + Off string for TTwoPicSlider."""
+
+    if node.class_name != "TTwoPicSlider":
+        return None
+    # (picture_base, scale, string_group, direct_string_index)
+    return {
+        "musi": (0x1036, 0xFF, 0x2743, 0x3C),
+        "soun": (0x1038, 100, 0x2743, 0x3C),
+    }.get(node.tag)
+
+
 def _rust_widget_kind(node: UiSemanticNode) -> str:
     class_name = node.class_name.casefold()
     if node.type_code == "wind":
@@ -1673,10 +1703,14 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
         return "transport_gauge"
     if node.class_name == "TNumberedArrowButton":
         return "numbered_arrow"
+    if node.class_name == "TTwoPicSlider":
+        return "two_pic_slider"
     if node.class_name == "TScrollView":
         return "scroll_view"
     if node.class_name == "TInfoBarText":
         return "hover_help_bar"
+    if _rust_amount_selector_kind(node) is not None:
+        return "amount_selector"
     if _rust_amount_bar_kind(node) is not None:
         return "amount_bar"
     if node.type_code == "pict":
@@ -1727,6 +1761,8 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "toggle"
     if node.type_code == "edit":
         return "text_edit"
+    if node.class_name == "TTwoPicSlider":
+        return "slider"
     if node.class_name == "TScrollView":
         return "scroll_area"
     # TInfoBarText is tevw but not a scroll area; hover-help presentation only.
@@ -1746,7 +1782,7 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         # TSetupRandomMapPicture::DoEvent handles this otherwise passive
         # TNoHilitePicture as the random-map regeneration action.
         or (key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob")
-    ):
+    ) and node.class_name != "TTwoPicSlider":
         return "activate"
     return "passive"
 
@@ -2197,11 +2233,33 @@ def _render_bsn_node(
             f"    retail_amount_bar(RetailAmountBarKind::{amount_bar_kind})"
         )
 
+    selector_kind = _rust_amount_selector_kind(node)
+    if selector_kind is not None:
+        lines.append(
+            f"    retail_amount_selector(RetailAmountSelectorKind::{selector_kind})"
+        )
+
+    slider = _rust_two_pic_slider(node)
+    if slider is not None:
+        picture_base, scale, off_group, off_index = slider
+        lines.append(
+            "    retail_two_pic_slider("
+            f"{picture_base}, {scale}, {off_group}, {off_index})"
+        )
+
     children = children_by_parent.get(node.node_id, [])
     if children:
         lines.append("    Children [")
         for child in children:
             rendered = _render_bsn_node(key, child, children_by_parent)
+            child_name = (
+                _rust_amount_selector_child_name(child.tag)
+                if selector_kind is not None
+                else None
+            )
+            if child_name is not None:
+                # Name recovered cluster children for RetailAmountSelector refs.
+                rendered.insert(1, f"    #{child_name}")
             rendered[-1] += ","
             lines.extend(_indent(rendered, 8))
         lines.append("    ]")

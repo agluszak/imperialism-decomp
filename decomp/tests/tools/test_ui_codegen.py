@@ -154,18 +154,31 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn(
             "retail_amount_bar(RetailAmountBarKind::Industry)", industry
         )
+        self.assertIn(
+            "retail_amount_selector(RetailAmountSelectorKind::Industry)", industry
+        )
+        self.assertIn("#Left", industry)
+        self.assertIn("#Right", industry)
+        self.assertIn("#Value", industry)
+        self.assertIn("#Bar", industry)
         food = rendered[
             rendered.index("pub fn citydlog_9209()") : rendered.index(
                 "pub fn citydlog_9211()"
             )
         ]
         self.assertIn("retail_amount_bar(RetailAmountBarKind::Rail)", food)
+        self.assertIn(
+            "retail_amount_selector(RetailAmountSelectorKind::Rail)", food
+        )
         trade = rendered[
             rendered.index("pub fn trade_2009()") : rendered.index(
                 "pub fn trade_2010()"
             )
         ]
         self.assertIn("retail_amount_bar(RetailAmountBarKind::Trader)", trade)
+        self.assertIn(
+            "retail_amount_selector(RetailAmountSelectorKind::Trader)", trade
+        )
         self.assertIn("retail_placard(6013)", rendered)
         self.assertIn("retail_placard(6001)", rendered)
         self.assertIn("retail_army_placard(", rendered)
@@ -186,6 +199,14 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("Checkbox", opte)
         self.assertIn("retail_madness_picture(4158)", opte)
         self.assertNotIn("retail_picture(4158)", opte)
+        self.assertIn("retail_two_pic_slider(4150, 255, 10051, 60)", preferences)
+        self.assertIn("retail_two_pic_slider(4152, 100, 10051, 60)", preferences)
+        history = rendered[rendered.index("pub fn techstore_2370()") :]
+        next_fn = history.find("\npub fn ", 1)
+        if next_fn != -1:
+            history = history[:next_fn]
+        self.assertIn("ScrollArea", history)
+        self.assertIn("ScrollPosition::default()", history)
         transport = rendered[rendered.index("pub fn transport_2014()") :]
         next_fn = transport.find("\npub fn ", 1)
         if next_fn != -1:

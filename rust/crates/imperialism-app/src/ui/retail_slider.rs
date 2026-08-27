@@ -6,9 +6,12 @@
 use super::retail_raster::IndexedRasterExt;
 use super::retail_raster_text::RetailRasterTextPainter;
 use crate::{RetailAssetsResource, RetailFonts};
+use bevy::ecs::template::TemplateContext;
 use bevy::prelude::*;
-use bevy::ui_widgets::{SliderRange, SliderValue};
-use imperialism_formats::{IndexedPicture, RetailTextStylePreset};
+use bevy::ui_widgets::{
+    Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick,
+};
+use imperialism_formats::{IndexedPicture, PictureId, RetailTextStylePreset};
 
 pub const TWO_PIC_SLIDER_SPLIT_PAD: i16 = 0x0c;
 
@@ -18,6 +21,54 @@ pub struct RetailTwoPicSliderVisual {
     pub upper: IndexedPicture,
     pub lower: IndexedPicture,
     pub off_text: String,
+}
+
+/// Generated construction for recovered `TTwoPicSlider` instances.
+pub fn retail_two_pic_slider(
+    picture_base: i16,
+    scale: i16,
+    off_group: i16,
+    off_index: i16,
+) -> impl Scene {
+    bsn! {
+        Slider {
+            track_click: TrackClick::Snap,
+            orientation: SliderOrientation::Vertical,
+        }
+        SliderValue(0.0)
+        SliderRange::new(0.0, scale as f32)
+        SliderPrecision(0)
+        template(move |context| {
+            let (upper, lower, off_text, image) =
+                load_two_pic_slider(context, picture_base, off_group, off_index)?;
+            context.entity.insert(RetailTwoPicSliderVisual {
+                upper,
+                lower,
+                off_text,
+            });
+            Ok(ImageNode::new(image))
+        })
+    }
+}
+
+fn load_two_pic_slider(
+    context: &mut TemplateContext,
+    picture_base: i16,
+    off_group: i16,
+    off_index: i16,
+) -> bevy::ecs::error::Result<(IndexedPicture, IndexedPicture, String, Handle<Image>)> {
+    Ok(context.entity.world_scope(|world| {
+        let assets = world.resource::<RetailAssetsResource>().assets();
+        let upper = assets.indexed_picture(PictureId::new(picture_base))?;
+        let lower = assets.indexed_picture(PictureId::new(picture_base + 1))?;
+        let off_text = match assets.string(off_group, off_index) {
+            Ok(text) => text,
+            Err(_) => "Off".to_string(),
+        };
+        let image = upper.to_image(assets.default_dib_palette());
+        let handle = world.resource_mut::<Assets<Image>>().add(image);
+        Ok::<_, imperialism_formats::RetailAssetError>((upper, lower, off_text, handle))
+    })?)
 }
 
 pub(super) fn register_slider(app: &mut App) {

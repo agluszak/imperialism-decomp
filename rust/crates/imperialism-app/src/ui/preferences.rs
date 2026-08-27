@@ -1,18 +1,16 @@
 use super::generated;
 use super::hover_help::{HoverHelpText, bind_hover_help_texts, get_string, ui_string};
 use super::query_floater::bind_query_floater_control;
-use super::retail::{RetailTree, RetailTwoPicSliderVisual, RetailUiAssets};
-use super::retail_raster::IndexedRasterExt;
+use super::retail::{RetailTree, RetailUiAssets};
 use crate::media::RetailAudioAssets;
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{
-    Activate, Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick,
-    ValueChange, checkbox_self_update, slider_self_update,
+    Activate, SliderValue, ValueChange, checkbox_self_update, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
-use imperialism_formats::{PictureId, SoundId, fourcc};
+use imperialism_formats::{SoundId, fourcc};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
@@ -38,10 +36,6 @@ const PREFERENCE_ROWS: [(
         fourcc!("txte"),
     ),
 ];
-const MUSIC_SLIDER_SCALE: i16 = 0xff;
-const SOUND_SLIDER_SCALE: i16 = 100;
-const MUSIC_PICTURE_BASE: i16 = 0x1036;
-const SOUND_PICTURE_BASE: i16 = 0x1038;
 
 /// Retail `TSimMgr::preferenceValues[14]`.
 #[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
@@ -149,7 +143,7 @@ fn bind_preferences(
     root: Single<Entity, Added<PreferencesRoot>>,
     tree: RetailTree,
     prefs: Res<GamePreferences>,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
     let root = *root;
     bind_query_floater_control(&mut commands, root, &tree);
@@ -209,20 +203,14 @@ fn bind_preferences(
     let sound = tree.find(root, fourcc!("soun"));
     bind_volume_slider(
         &mut commands,
-        &mut assets,
         music,
-        MUSIC_PICTURE_BASE,
-        MUSIC_SLIDER_SCALE,
         prefs.values[PreferenceSlot::MusicVolume],
         music_hover,
         PreferenceSlot::MusicVolume,
     );
     bind_volume_slider(
         &mut commands,
-        &mut assets,
         sound,
-        SOUND_PICTURE_BASE,
-        SOUND_SLIDER_SCALE,
         prefs.values[PreferenceSlot::SoundVolume],
         sound_hover,
         PreferenceSlot::SoundVolume,
@@ -250,42 +238,17 @@ fn bind_preferences(
         .remove::<InteractionDisabled>();
 }
 
-#[allow(clippy::too_many_arguments)]
 fn bind_volume_slider(
     commands: &mut Commands,
-    assets: &mut RetailUiAssets,
     slider: Entity,
-    picture_base: i16,
-    scale: i16,
     value: i16,
     hover: String,
     slot: PreferenceSlot,
 ) {
-    let upper = assets
-        .indexed_picture(PictureId::new(picture_base))
-        .expect("preference slider upper picture");
-    let lower = assets
-        .indexed_picture(PictureId::new(picture_base + 1))
-        .expect("preference slider lower picture");
-    let image = assets.add_image(upper.to_image(assets.default_dib_palette()));
+    // Slider + RetailTwoPicSliderVisual come from codegen for TTwoPicSlider.
     let mut entity = commands.entity(slider);
     entity
-        .insert((
-            Slider {
-                track_click: TrackClick::Snap,
-                orientation: SliderOrientation::Vertical,
-            },
-            SliderValue(f32::from(value)),
-            SliderRange::new(0.0, f32::from(scale)),
-            SliderPrecision(0),
-            HoverHelpText(hover),
-            ImageNode::new(image),
-            RetailTwoPicSliderVisual {
-                upper,
-                lower,
-                off_text: get_string(assets, 0x2743, 0x3b),
-            },
-        ))
+        .insert((SliderValue(f32::from(value)), HoverHelpText(hover)))
         .observe(slider_self_update)
         .remove::<InteractionDisabled>();
     match slot {

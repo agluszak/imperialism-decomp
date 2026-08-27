@@ -1,7 +1,4 @@
 use super::*;
-use crate::ui::retail_amount_bar::{
-    INDUSTRY_AMOUNT_BAR, amount_bar_counter_offset, quantize_amount_bar_value,
-};
 
 #[derive(Clone, Copy)]
 pub(in crate::ui::city) struct IndustryOrderUi {
@@ -37,20 +34,9 @@ fn bind_industry_orders(
         .map(|(&item, &tag)| {
             let bound =
                 bind_industry_order_row(commands, root, tree, CityOrderId::Item(item), tag, 1);
-            let bar = tree.find(bound.row, fourcc!("bar "));
-            commands.entity(bar).observe(
-                move |change: On<ValueChange<i16>>, mut session: ResMut<GameSession>| {
-                    let nation = session.active_major_nation();
-                    session.game.set_city_order_quantity(
-                        nation,
-                        CityOrderId::Item(item),
-                        change.value,
-                    );
-                },
-            );
             IndustryOrderUi {
                 item,
-                bar,
+                bar: bound.bar.expect("industry amount bar"),
                 quantity: bound.quantity,
             }
         })
@@ -128,16 +114,8 @@ fn render_amount_bar(
             range,
             maximum,
         });
+    // Counter relocation is owned by RetailAmountSelector for Industry/Rail.
     ui.text(quantity, value.to_string());
-    let geometry = INDUSTRY_AMOUNT_BAR.with_segments(range);
-    let offset = amount_bar_counter_offset(geometry, value);
-    let track = ui.nodes.get(bar).expect("bound amount-bar track");
-    let (Val::Px(bar_left), Val::Px(bar_top)) = (track.left, track.top) else {
-        return;
-    };
-    let mut counter = ui.nodes.get_mut(quantity).expect("bound order quantity");
-    counter.left = px(bar_left + offset.x);
-    counter.top = px(bar_top + offset.y);
 }
 
 pub(in crate::ui::city) fn render_industry(
@@ -215,18 +193,8 @@ pub(in crate::ui::city) fn bind_rail(
         .entity(tree.find(root, fourcc!("name")))
         .insert(Text::new(city_building_name(assets, slot)));
     let counter = bind_industry_order_row(commands, root, tree, order, tag, step);
-    let bar = tree.find(counter.row, fourcc!("bar "));
-    commands.entity(bar).observe(
-        move |change: On<ValueChange<i16>>, mut session: ResMut<GameSession>| {
-            let nation = session.active_major_nation();
-            let quantity = quantize_amount_bar_value(change.value, step);
-            session
-                .game
-                .set_city_order_quantity(nation, order, quantity);
-        },
-    );
     RailUi {
-        bar,
+        bar: counter.bar.expect("rail amount bar"),
         quantity: counter.quantity,
     }
 }

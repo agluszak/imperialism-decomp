@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail_amount_bar::quantize_amount_bar_value;
 
 pub(in crate::ui::city) fn city_building_name(
     assets: &RetailUiAssets,
@@ -10,6 +11,7 @@ pub(in crate::ui::city) fn city_building_name(
 pub(in crate::ui::city) struct CityOrderRow {
     pub(in crate::ui::city) row: Entity,
     pub(in crate::ui::city) quantity: Entity,
+    pub(in crate::ui::city) bar: Option<Entity>,
 }
 
 impl CityOrderRow {
@@ -22,34 +24,8 @@ impl CityOrderRow {
     }
 }
 
-fn bind_city_order_row(
-    commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    order: CityOrderId,
-    tag: FourCc,
-    decrease_tag: FourCc,
-    increase_tag: FourCc,
-    quantity_tag: FourCc,
-    step: i16,
-) -> CityOrderRow {
-    let row = tree.find(root, tag);
-    let decrease = tree.find(row, decrease_tag);
-    let increase = tree.find(row, increase_tag);
-    let quantity = tree.find(row, quantity_tag);
-    let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
-        commands.entity(entity).observe(
-            move |_: On<Activate>, mut session: ResMut<GameSession>| {
-                let nation = session.active_major_nation();
-                session.game.adjust_city_order(nation, order, delta);
-            },
-        );
-    };
-    bind_step(commands, decrease, -step);
-    bind_step(commands, increase, step);
-    CityOrderRow { row, quantity }
-}
-
+/// Industry/Rail/`TAmtBarCluster` rows: `RetailAmountSelector` owns `+/-`.
+/// Observe cluster and bar [`ValueChange`] (selector emits on the cluster; bar clicks on the bar).
 pub(in crate::ui::city) fn bind_industry_order_row(
     commands: &mut Commands,
     root: Entity,
@@ -58,17 +34,27 @@ pub(in crate::ui::city) fn bind_industry_order_row(
     tag: FourCc,
     step: i16,
 ) -> CityOrderRow {
-    bind_city_order_row(
-        commands,
-        root,
-        tree,
-        order,
-        tag,
-        fourcc!("left"),
-        fourcc!("rght"),
-        fourcc!("move"),
-        step,
-    )
+    let row = tree.find(root, tag);
+    let quantity = tree.find(row, fourcc!("move"));
+    let bar = tree.find(row, fourcc!("bar "));
+    let bind_value = |commands: &mut Commands, entity: Entity| {
+        commands.entity(entity).observe(
+            move |change: On<ValueChange<i16>>, mut session: ResMut<GameSession>| {
+                let nation = session.active_major_nation();
+                let quantity = quantize_amount_bar_value(change.value, step);
+                session
+                    .game
+                    .set_city_order_quantity(nation, order, quantity);
+            },
+        );
+    };
+    bind_value(commands, row);
+    bind_value(commands, bar);
+    CityOrderRow {
+        row,
+        quantity,
+        bar: Some(bar),
+    }
 }
 
 pub(in crate::ui::city) fn bind_recruitment_order_row(
@@ -78,17 +64,25 @@ pub(in crate::ui::city) fn bind_recruitment_order_row(
     order: CityOrderId,
     tag: FourCc,
 ) -> CityOrderRow {
-    bind_city_order_row(
-        commands,
-        root,
-        tree,
-        order,
-        tag,
-        fourcc!("minu"),
-        fourcc!("plus"),
-        fourcc!("numb"),
-        1,
-    )
+    let row = tree.find(root, tag);
+    let decrease = tree.find(row, fourcc!("minu"));
+    let increase = tree.find(row, fourcc!("plus"));
+    let quantity = tree.find(row, fourcc!("numb"));
+    let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
+        commands.entity(entity).observe(
+            move |_: On<Activate>, mut session: ResMut<GameSession>| {
+                let nation = session.active_major_nation();
+                session.game.adjust_city_order(nation, order, delta);
+            },
+        );
+    };
+    bind_step(commands, decrease, -1);
+    bind_step(commands, increase, 1);
+    CityOrderRow {
+        row,
+        quantity,
+        bar: None,
+    }
 }
 
 #[cfg(test)]
