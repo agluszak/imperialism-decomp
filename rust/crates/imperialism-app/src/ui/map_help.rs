@@ -111,7 +111,7 @@ impl HelpContext {
 }
 
 pub(crate) fn register(app: &mut App) {
-    app.add_systems(Update, bind_added_help);
+    app.add_systems(Update, (bind_added_help, project_map_help));
 }
 
 pub(crate) fn spawn(commands: &mut Commands, state: AppState) {
@@ -166,6 +166,37 @@ fn bind_added_help(
         let previous = tree.find(root, fourcc!("prev"));
         let next = tree.find(root, fourcc!("next"));
         let toggle = tree.find(root, fourcc!("togl"));
+        for entity in topics {
+            commands.entity(entity).insert((
+                UiButton,
+                Pickable::default(),
+                Text::default(),
+                TextColor(LINK_BLUE),
+                Underline,
+            ));
+        }
+        for entity in [previous, next] {
+            commands.entity(entity).insert((
+                UiButton,
+                Pickable::default(),
+                Text::default(),
+                TextColor(LINK_BLUE),
+                Underline,
+            ));
+        }
+        let topics_label = assets.ui_string(0x2749, 9);
+        set_text(
+            &mut commands,
+            &mut assets,
+            toggle,
+            &topics_label,
+            12,
+            3,
+            LINK_BLUE,
+        );
+        commands
+            .entity(toggle)
+            .insert((UiButton, Pickable::default()));
 
         let view = MapHelpView {
             context,
@@ -178,72 +209,41 @@ fn bind_added_help(
             next,
             toggle,
         };
-        show_topic_list(&view, &retail, &mut commands);
 
         for (index, entity) in topics.into_iter().enumerate() {
-            commands
-                .entity(entity)
-                .insert((UiButton, Pickable::default()))
-                .observe(
-                    move |_activate: On<Activate>,
-                          mut views: Query<&mut MapHelpView>,
-                          assets: Res<RetailAssetsResource>,
-                          mut commands: Commands| {
-                        let Ok(mut view) = views.get_mut(root) else {
-                            return;
-                        };
-                        show_topic(&mut view, index, &assets, &mut commands);
-                    },
-                );
-        }
-        commands
-            .entity(toggle)
-            .insert((UiButton, Pickable::default()))
-            .observe(
-                move |_activate: On<Activate>,
-                      mut views: Query<&mut MapHelpView>,
-                      assets: Res<RetailAssetsResource>,
-                      mut commands: Commands| {
+            commands.entity(entity).observe(
+                move |_: On<Activate>, mut views: Query<&mut MapHelpView>| {
                     let Ok(mut view) = views.get_mut(root) else {
                         return;
                     };
-                    view.topic = None;
-                    show_topic_list(&view, &assets, &mut commands);
+                    view.topic = Some(index);
                 },
             );
+        }
+        commands.entity(toggle).observe(
+            move |_: On<Activate>, mut views: Query<&mut MapHelpView>| {
+                let Ok(mut view) = views.get_mut(root) else {
+                    return;
+                };
+                view.topic = None;
+            },
+        );
         for (entity, step) in [(previous, -1i8), (next, 1)] {
-            commands
-                .entity(entity)
-                .insert((UiButton, Pickable::default()))
-                .observe(
-                    move |_activate: On<Activate>,
-                          mut views: Query<&mut MapHelpView>,
-                          assets: Res<RetailAssetsResource>,
-                          mut commands: Commands| {
-                        let Ok(mut view) = views.get_mut(root) else {
-                            return;
-                        };
-                        if step < 0 {
-                            view.set = view.set.saturating_sub(1);
-                        } else {
-                            view.set = (view.set + 1).min(view.context.sets().len() - 1);
-                        }
-                        view.topic = None;
-                        show_topic_list(&view, &assets, &mut commands);
-                    },
-                );
+            commands.entity(entity).observe(
+                move |_: On<Activate>, mut views: Query<&mut MapHelpView>| {
+                    let Ok(mut view) = views.get_mut(root) else {
+                        return;
+                    };
+                    if step < 0 {
+                        view.set = view.set.saturating_sub(1);
+                    } else {
+                        view.set = (view.set + 1).min(view.context.sets().len() - 1);
+                    }
+                    view.topic = None;
+                },
+            );
         }
 
-        let topics_label = assets.ui_string(0x2749, 9);
-        set_text(
-            &mut commands,
-            &mut assets,
-            toggle,
-            &topics_label,
-            12,
-            3,
-            LINK_BLUE,
-        );
         commands
             .entity(tree.find(root, fourcc!("more")))
             .insert(Visibility::Hidden);
@@ -254,65 +254,65 @@ fn bind_added_help(
     }
 }
 
-fn show_topic(
-    view: &mut MapHelpView,
-    topic: usize,
-    assets: &RetailAssetsResource,
-    commands: &mut Commands,
+fn project_map_help(
+    views: Query<Ref<MapHelpView>>,
+    assets: Res<RetailAssetsResource>,
+    mut texts: Query<&mut Text>,
+    mut visibilities: Query<&mut Visibility>,
 ) {
-    let group = view.context.sets()[view.set];
-    view.topic = Some(topic);
-    commands
-        .entity(view.subject)
-        .insert(Text::new(assets.ui_string(group as u16, topic as u16 + 2)));
-    commands.entity(view.body).insert((
-        Text::new(assets.text(group as u16 + topic as u16 + 1)),
-        TextColor(Color::BLACK),
-        Visibility::Visible,
-    ));
-    for entity in view.topics {
-        commands.entity(entity).insert(Visibility::Hidden);
+    let Ok(view_ref) = views.single() else {
+        return;
+    };
+    if !view_ref.is_added() && !view_ref.is_changed() {
+        return;
     }
-    for entity in [view.previous, view.next] {
-        commands.entity(entity).insert(Visibility::Hidden);
+    let view = view_ref.into_inner();
+    if let Some(topic) = view.topic {
+        let group = view.context.sets()[view.set];
+        texts.get_mut(view.subject).expect("bound help subject").0 =
+            assets.ui_string(group as u16, topic as u16 + 2);
+        texts.get_mut(view.body).expect("bound help body").0 =
+            assets.text(group as u16 + topic as u16 + 1);
+        *visibilities.get_mut(view.body).expect("bound help body") = Visibility::Visible;
+        for entity in view.topics {
+            *visibilities.get_mut(entity).expect("bound help topic") = Visibility::Hidden;
+        }
+        for entity in [view.previous, view.next] {
+            *visibilities.get_mut(entity).expect("bound help nav") = Visibility::Hidden;
+        }
+        *visibilities
+            .get_mut(view.toggle)
+            .expect("bound help toggle") = Visibility::Visible;
+        return;
     }
-    commands.entity(view.toggle).insert(Visibility::Visible);
-}
 
-fn show_topic_list(view: &MapHelpView, assets: &RetailAssetsResource, commands: &mut Commands) {
     let group = view.context.sets()[view.set];
-    commands
-        .entity(view.subject)
-        .insert(Text::new(assets.ui_string(group as u16, 1)));
-    commands.entity(view.body).insert(Visibility::Hidden);
+    texts.get_mut(view.subject).expect("bound help subject").0 = assets.ui_string(group as u16, 1);
+    *visibilities.get_mut(view.body).expect("bound help body") = Visibility::Hidden;
     for (index, entity) in view.topics.into_iter().enumerate() {
-        commands.entity(entity).insert((
-            Text::new(assets.ui_string(group as u16, index as u16 + 2)),
-            TextColor(LINK_BLUE),
-            Underline,
+        texts.get_mut(entity).expect("bound help topic").0 =
+            assets.ui_string(group as u16, index as u16 + 2);
+        *visibilities.get_mut(entity).expect("bound help topic") =
             if index < view.context.topic_count(view.set) {
                 Visibility::Visible
             } else {
                 Visibility::Hidden
-            },
-        ));
+            };
     }
     for (entity, index, visible) in [
         (view.previous, 14, view.set > 0),
         (view.next, 15, view.set + 1 < view.context.sets().len()),
     ] {
-        commands.entity(entity).insert((
-            Text::new(assets.ui_string(0x2749, index)),
-            TextColor(LINK_BLUE),
-            Underline,
-            if visible {
-                Visibility::Visible
-            } else {
-                Visibility::Hidden
-            },
-        ));
+        texts.get_mut(entity).expect("bound help nav").0 = assets.ui_string(0x2749, index);
+        *visibilities.get_mut(entity).expect("bound help nav") = if visible {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
     }
-    commands.entity(view.toggle).insert(Visibility::Hidden);
+    *visibilities
+        .get_mut(view.toggle)
+        .expect("bound help toggle") = Visibility::Hidden;
 }
 
 fn set_text(

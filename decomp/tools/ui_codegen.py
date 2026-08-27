@@ -78,6 +78,12 @@ MAC_FONT_FAMILY_IDS = {
     "palatino": 16,
 }
 
+# The Mac View IR's family 0 is the retail System face (or an inherited System
+# style). Bevy cannot render the shipped bitmap-only System face through its
+# outline text path, so generated Rust uses the renderable Belwe face while the
+# C++/retail semantic payload remains family 0.
+RUST_FONT_FAMILY_FALLBACKS = {0: 1}
+
 
 @dataclass(frozen=True)
 class UiResourceKey:
@@ -2267,9 +2273,12 @@ def _rust_enum_variant(value: str) -> str:
     return "".join(part.capitalize() for part in value.split("_"))
 
 
+def _rust_font_family(text: UiTextPayload) -> int:
+    return RUST_FONT_FAMILY_FALLBACKS.get(text.mode, text.mode)
+
+
 def _rust_has_shipped_font(text: UiTextPayload) -> bool:
-    # 0 = system face; 1..=3 = Belwe / Book Antiqua (see resolve_retail_text_style).
-    return text.mode in (0, 1, 2, 3)
+    return _rust_font_family(text) in (1, 2, 3)
 
 
 def _rust_window_is_captioned(node: UiSemanticNode) -> bool:
@@ -2395,6 +2404,7 @@ def _render_bsn_node(
         )
 
     if text is not None:
+        font_family = _rust_font_family(text)
         value = _rust_string(text.value or "")
         if semantics == "text_edit":
             max_chars = node.family.max_chars
@@ -2408,7 +2418,7 @@ def _render_bsn_node(
         if render_text_style:
             lines.append(
                 "    retail_text_style("
-                f"{text.mode}, {text.flags}, {text.point_size}, {text.theme})"
+                f"{font_family}, {text.flags}, {text.point_size}, {text.theme})"
             )
         if text.color_index is None:
             lines.append("    TextColor(Color::BLACK)")
@@ -2422,7 +2432,7 @@ def _render_bsn_node(
         if render_text_style and text.center_vertically:
             lines.append(
                 "    retail_centered_text_padding("
-                f"{text.mode}, {text.flags}, {text.point_size}, "
+                f"{font_family}, {text.flags}, {text.point_size}, "
                 f"{height}, {insets[1]})"
             )
 

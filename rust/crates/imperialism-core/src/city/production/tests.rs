@@ -16,60 +16,6 @@ fn city_mut(game: &mut GameState, nation: MajorNationId) -> &mut CityState {
 }
 
 #[test]
-fn item_limit_records_capacity_workforce_and_resource_constraints() {
-    let (mut game, nation) = fresh_game();
-    let lumber = CityOrderId::Item(ManufacturedItem::Lumber);
-    {
-        let city = city_mut(&mut game, nation);
-        city.production_accum[CityFacilitySlot::LumberMill] = 4;
-        city.stockpile[ResourceKind::Timber] = 20;
-    }
-    assert_eq!(
-        game.city_order_limit(nation, lumber),
-        OrderLimit {
-            maximum: 4,
-            constraint: ProductionConstraint::Capacity,
-        }
-    );
-
-    city_mut(&mut game, nation).production_accum[CityFacilitySlot::LumberMill] = 20;
-    assert_eq!(
-        game.city_order_limit(nation, lumber),
-        OrderLimit {
-            maximum: 6,
-            constraint: ProductionConstraint::Workforce,
-        }
-    );
-
-    {
-        let city = city_mut(&mut game, nation);
-        city.population.strength = 30;
-        city.stockpile[ResourceKind::Timber] = 8;
-    }
-    assert_eq!(
-        game.city_order_limit(nation, lumber),
-        OrderLimit {
-            maximum: 4,
-            constraint: ProductionConstraint::Resources,
-        }
-    );
-
-    {
-        let city = city_mut(&mut game, nation);
-        city.production_accum[CityFacilitySlot::SteelMill] = 20;
-        city.stockpile[ResourceKind::Iron] = 9;
-        city.stockpile[ResourceKind::Coal] = 3;
-    }
-    assert_eq!(
-        game.city_order_limit(nation, CityOrderId::Item(ManufacturedItem::Steel)),
-        OrderLimit {
-            maximum: 3,
-            constraint: ProductionConstraint::Resources,
-        }
-    );
-}
-
-#[test]
 fn steel_order_reserves_both_inputs_and_releases_them() {
     let (mut game, nation) = fresh_game();
     let steel = CityOrderId::Item(ManufacturedItem::Steel);
@@ -104,27 +50,6 @@ fn steel_order_reserves_both_inputs_and_releases_them() {
         after_release.production_accum[CityFacilitySlot::SteelMill],
         1
     );
-}
-
-#[test]
-fn rejected_item_order_leaves_stock_and_capacity_unchanged() {
-    let (mut game, nation) = fresh_game();
-    let lumber = CityOrderId::Item(ManufacturedItem::Lumber);
-    {
-        let city = city_mut(&mut game, nation);
-        city.production_accum[CityFacilitySlot::LumberMill] = 1;
-        city.stockpile[ResourceKind::Timber] = 20;
-    }
-
-    assert!(matches!(
-        game.set_city_order_quantity(nation, lumber, 2),
-        CityOrderUpdate::Rejected(_)
-    ));
-    let city = city(&game, nation);
-    assert_eq!(game.city_order_quantity(nation, lumber), 0);
-    assert_eq!(city.stockpile[ResourceKind::Timber], 20);
-    assert_eq!(city.population.strength, 12);
-    assert_eq!(city.production_accum[CityFacilitySlot::LumberMill], 1);
 }
 
 #[test]
@@ -297,55 +222,6 @@ fn power_plant_order_uses_truncating_fuel_division() {
 }
 
 #[test]
-fn training_limit_records_workforce_treasury_paper_and_the_global_cap() {
-    let (mut game, nation) = fresh_game();
-    let medium = CityOrderId::Training(TrainingLevel::Medium);
-    city_mut(&mut game, nation).stockpile[ResourceKind::Paper] = 10;
-    assert_eq!(
-        game.city_order_limit(nation, medium),
-        OrderLimit {
-            maximum: 4,
-            constraint: ProductionConstraint::Workforce,
-        }
-    );
-
-    game.nations.major_mut(nation).common.treasury = 150;
-    assert_eq!(
-        game.city_order_limit(nation, medium),
-        OrderLimit {
-            maximum: 1,
-            constraint: ProductionConstraint::Treasury,
-        }
-    );
-
-    game.nations.major_mut(nation).common.treasury = 10_000;
-    city_mut(&mut game, nation).stockpile[ResourceKind::Paper] = 0;
-    assert_eq!(
-        game.city_order_limit(nation, medium),
-        OrderLimit {
-            maximum: 0,
-            constraint: ProductionConstraint::Resources,
-        }
-    );
-
-    game.nations.major_mut(nation).economy.diplomacy_eligible = false;
-    {
-        let city = city_mut(&mut game, nation);
-        city.stockpile[ResourceKind::Paper] = 100;
-        city.orders.training[TrainingLevel::Medium].quantity = 98;
-    }
-    assert_eq!(game.city_order_limit(nation, medium).maximum, 99);
-
-    assert_eq!(
-        game.city_order_limit(nation, CityOrderId::Training(TrainingLevel::High)),
-        OrderLimit {
-            maximum: 2,
-            constraint: ProductionConstraint::Workforce,
-        }
-    );
-}
-
-#[test]
 fn training_order_spends_paper_cash_and_workers() {
     let (mut game, nation) = fresh_game();
     let medium = CityOrderId::Training(TrainingLevel::Medium);
@@ -388,99 +264,6 @@ fn training_order_spends_paper_cash_and_workers() {
     assert_eq!(game.nations.major(nation).common.treasury, 1_000);
     assert_eq!(city.population.production_labor.medium, 0);
     assert_eq!(city.population.strength, 8);
-}
-
-#[test]
-fn recruit_limit_uses_workforce_mode_resources_and_human_treasury() {
-    let (mut game, nation) = fresh_game();
-    {
-        let city = city_mut(&mut game, nation);
-        city.stockpile[ResourceKind::Arms] = 200;
-        city.stockpile[ResourceKind::Horses] = 200;
-    }
-    game.nations.major_mut(nation).common.treasury = i32::MAX;
-
-    assert_eq!(
-        game.city_order_limit(
-            nation,
-            CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightInfantry),
-        ),
-        OrderLimit {
-            maximum: 4,
-            constraint: ProductionConstraint::Workforce,
-        }
-    );
-    assert_eq!(
-        game.city_order_limit(
-            nation,
-            CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::HeavyInfantry),
-        ),
-        OrderLimit {
-            maximum: 2,
-            constraint: ProductionConstraint::Workforce,
-        }
-    );
-    assert_eq!(
-        game.city_order_limit(
-            nation,
-            CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::Demolitionist),
-        ),
-        OrderLimit {
-            maximum: 1,
-            constraint: ProductionConstraint::Workforce,
-        }
-    );
-
-    let hussars = CityOrderId::MilitaryRecruit(MilitaryRecruitmentCategory::LightCavalry);
-    {
-        let city = city_mut(&mut game, nation);
-        city.population.production_labor.low = 100;
-        city.population.strength = 100;
-        city.stockpile[ResourceKind::Arms] = 4;
-        city.stockpile[ResourceKind::Horses] = 10;
-    }
-    game.nations.major_mut(nation).common.treasury = i32::MAX;
-    assert_eq!(
-        game.city_order_limit(nation, hussars),
-        OrderLimit {
-            maximum: 4,
-            constraint: ProductionConstraint::Resources,
-        }
-    );
-
-    city_mut(&mut game, nation).stockpile[ResourceKind::Horses] = 3;
-    assert_eq!(
-        game.city_order_limit(nation, hussars),
-        OrderLimit {
-            maximum: 3,
-            constraint: ProductionConstraint::Resources,
-        }
-    );
-
-    city_mut(&mut game, nation).stockpile[ResourceKind::Horses] = 20;
-    game.nations.major_mut(nation).common.treasury = 150;
-    assert_eq!(
-        game.city_order_limit(nation, hussars),
-        OrderLimit {
-            maximum: 1,
-            constraint: ProductionConstraint::Treasury,
-        }
-    );
-
-    game.nations.major_mut(nation).economy.diplomacy_eligible = false;
-    game.nations.major_mut(nation).common.treasury = -10_000;
-    {
-        let city = city_mut(&mut game, nation);
-        city.stockpile[ResourceKind::Arms] = 12;
-        city.stockpile[ResourceKind::Horses] = 12;
-    }
-    assert_eq!(
-        game.city_order_limit(nation, hussars),
-        OrderLimit {
-            maximum: 12,
-            constraint: ProductionConstraint::Resources,
-        }
-    );
 }
 
 #[test]

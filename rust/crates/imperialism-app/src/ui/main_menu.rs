@@ -12,14 +12,37 @@ use imperialism_formats::fourcc;
 #[derive(Component)]
 struct MainMenuRoot;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum MainMenuAction {
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum MainMenuAction {
     RandomGame,
     Scenario,
     LoadGame,
     HighScores,
     Preferences,
     Quit,
+}
+
+fn apply_main_menu_action(
+    action: MainMenuAction,
+    next_state: &mut NextState<AppState>,
+    exit: &mut MessageWriter<AppExit>,
+    commands: &mut Commands,
+) {
+    match action {
+        MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
+        MainMenuAction::Scenario => next_state.set(AppState::ScenarioSetup),
+        MainMenuAction::LoadGame => {
+            open_load_save(commands, next_state, LoadSaveMode::Load, AppState::MainMenu);
+        }
+        MainMenuAction::HighScores => next_state.set(AppState::HighScore),
+        MainMenuAction::Preferences => {
+            commands.insert_resource(ReturnTo(AppState::MainMenu));
+            next_state.set(AppState::Preferences);
+        }
+        MainMenuAction::Quit => {
+            exit.write(AppExit::Success);
+        }
+    }
 }
 
 pub(crate) struct MainMenuPlugin;
@@ -58,12 +81,17 @@ fn bind_main_menu_actions(
         (fourcc!("pref"), MainMenuAction::Preferences),
         (fourcc!("quit"), MainMenuAction::Quit),
     ] {
-        let entity = tree.find(*root, tag);
         commands
-            .entity(entity)
-            .insert(action)
+            .entity(tree.find(*root, tag))
             .remove::<InteractionDisabled>()
-            .observe(on_main_menu_activate);
+            .observe(
+                move |_: On<Activate>,
+                      mut next_state: ResMut<NextState<AppState>>,
+                      mut exit: MessageWriter<AppExit>,
+                      mut commands: Commands| {
+                    apply_main_menu_action(action, &mut next_state, &mut exit, &mut commands);
+                },
+            );
     }
 }
 
@@ -89,36 +117,4 @@ fn bind_main_menu_hover_help(
             (fourcc!("pref"), assets.get_string(0x2743, 8)),
         ],
     );
-}
-
-fn on_main_menu_activate(
-    activate: On<Activate>,
-    actions: Query<&MainMenuAction>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut exit: MessageWriter<AppExit>,
-    mut commands: Commands,
-) {
-    let action = actions
-        .get(activate.entity)
-        .expect("main-menu Activate is bound on a MainMenuAction control");
-    match *action {
-        MainMenuAction::RandomGame => next_state.set(AppState::RandomSetup),
-        MainMenuAction::Scenario => next_state.set(AppState::ScenarioSetup),
-        MainMenuAction::LoadGame => {
-            open_load_save(
-                &mut commands,
-                &mut next_state,
-                LoadSaveMode::Load,
-                AppState::MainMenu,
-            );
-        }
-        MainMenuAction::HighScores => next_state.set(AppState::HighScore),
-        MainMenuAction::Preferences => {
-            commands.insert_resource(ReturnTo(AppState::MainMenu));
-            next_state.set(AppState::Preferences);
-        }
-        MainMenuAction::Quit => {
-            exit.write(AppExit::Success);
-        }
-    }
 }

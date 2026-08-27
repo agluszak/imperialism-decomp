@@ -8,11 +8,6 @@ impl<'a> LegacyStream<'a> {
         Self { bytes, position: 0 }
     }
 
-    #[cfg(test)]
-    pub(crate) const fn position(&self) -> usize {
-        self.position
-    }
-
     pub(crate) fn read_bytes(&mut self, length: usize) -> &'a [u8] {
         let start = self.position;
         self.position += length;

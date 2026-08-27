@@ -108,6 +108,13 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("Button", lcor)
         self.assertIn("should_block_lower: false", lcor)
 
+    def test_generated_rust_ui_replaces_system_family_with_renderable_face(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertNotIn("retail_text_style(0,", rendered)
+        self.assertIn("retail_text_style(1, 0, 0, 0)", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()

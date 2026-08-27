@@ -20,18 +20,14 @@ struct TownNamingRoot;
 #[derive(Component)]
 struct TownNameField;
 
-#[derive(Component)]
-struct TownNamingWired;
-
 pub(crate) struct TownNamingPlugin;
 
 impl Plugin for TownNamingPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::TownNaming), spawn_town_naming)
-            .add_systems(
-                Update,
-                bind_town_naming.run_if(in_state(AppState::TownNaming)),
-            );
+        app.add_systems(
+            OnEnter(AppState::TownNaming),
+            (spawn_town_naming, bind_town_naming).chain(),
+        );
     }
 }
 
@@ -46,23 +42,14 @@ fn spawn_town_naming(mut commands: Commands) {
 
 fn bind_town_naming(
     mut commands: Commands,
-    roots: Query<Entity, (With<TownNamingRoot>, Without<TownNamingWired>)>,
+    root: Single<Entity, Added<TownNamingRoot>>,
     tree: RetailTree,
-    children: Query<&Children>,
     mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     retail_assets: Res<RetailAssetsResource>,
     mut session: ResMut<GameSession>,
 ) {
-    let Ok(root) = roots.single() else {
-        return;
-    };
-    if !children
-        .get(root)
-        .is_ok_and(|children| !children.is_empty())
-    {
-        return;
-    }
+    let root = *root;
     let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
         return;
     };
@@ -87,10 +74,7 @@ fn bind_town_naming(
         if let Val::Px(top) = node.top {
             node.top = px(top + extra_height as f32);
         }
-        commands
-            .entity(entity)
-            .insert(TownNamingWired)
-            .observe(commit_town_name);
+        commands.entity(entity).observe(commit_town_name);
     }
     bind_modal_keys(
         &mut commands,
@@ -116,7 +100,6 @@ fn bind_town_naming(
         tree.find(root, fourcc!("DLOG")),
         yields,
     );
-    commands.entity(root).insert(TownNamingWired);
 }
 
 fn spawn_resource_rows(

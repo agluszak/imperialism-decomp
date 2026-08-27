@@ -13,7 +13,6 @@ use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::retail_resources::ShipTypeRetailResources;
 use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
-use bevy::ecs::system::EntityCommands;
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::InteractionDisabled;
@@ -26,8 +25,7 @@ use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 struct MapModal;
 
 const CIVILIANS_PER_COLUMN: usize = 4;
-const CIVILIAN_LEDGER_VISIBLE_COLUMNS: usize = 2;
-const ROSTER_VISIBLE_COLUMNS: usize = 2;
+const PAGED_VISIBLE_COLUMNS: usize = 2;
 const GARRISON_PER_COLUMN: usize = 6;
 const MINI_ROSTER_PER_COLUMN: usize = 8;
 const ROSTER_ROW_WIDTH: f32 = 229.0;
@@ -35,21 +33,20 @@ const GARRISON_ROW_HEIGHT: f32 = 49.0;
 const MINI_ROSTER_ROW_HEIGHT: f32 = 36.0;
 
 #[derive(Component)]
-struct CivilianLedger {
-    current_column: usize,
-    last_column: usize,
+struct CivilianLedger;
+
+struct PageRow {
+    entity: Entity,
+    column: usize,
 }
 
 #[derive(Component)]
-struct CivilianLedgerRow {
-    column: usize,
-    row: usize,
-}
-
-#[derive(Clone, Copy, Component)]
-enum CivilianLedgerAction {
-    Previous,
-    Next,
+struct PagedRows {
+    current_column: usize,
+    last_column: usize,
+    rows: Vec<PageRow>,
+    previous: Entity,
+    next: Entity,
 }
 
 #[derive(Component)]
@@ -60,16 +57,6 @@ enum CivilianModal {
     Disband(CivilianUnitId),
     Notice { title: String, body: String },
 }
-
-#[derive(Clone, Copy, Component)]
-enum CivilianModalAction {
-    Engineer(CivilianUnitId, EngineerConstructionChoice),
-    ConfirmPurchase(CivilianUnitId, TileId),
-    ConfirmDisband(CivilianUnitId),
-}
-
-#[derive(Clone, Copy, Component)]
-struct CancelCivilianOrder(CivilianUnitId);
 
 #[derive(Component)]
 struct ArmyReportDialog(ProvinceId);
@@ -83,35 +70,8 @@ struct ArmyRosterDialog;
 #[derive(Component)]
 struct FleetReportDialog(FleetReportKind);
 
-#[derive(Clone, Copy, Component)]
-struct CancelFleetOrders(TaskForceId);
-
 #[derive(Component)]
 struct NavyRosterDialog(NavyRosterKind);
-
-#[derive(Component)]
-struct RosterPage {
-    current_column: usize,
-    last_column: usize,
-    row_height: f32,
-}
-
-#[derive(Clone, Copy, Component)]
-struct RosterRow {
-    column: usize,
-    row: usize,
-}
-
-#[derive(Clone, Copy, Component)]
-enum RosterPageAction {
-    Previous,
-    Next,
-}
-
-#[derive(Clone, Copy, Component)]
-enum GarrisonRowAction {
-    Toggle(MilitaryUnitId),
-}
 
 pub(super) fn register(app: &mut App) {
     app.add_systems(
@@ -125,8 +85,7 @@ pub(super) fn register(app: &mut App) {
             bind_added_army_rosters,
             bind_added_fleet_reports,
             bind_added_navy_rosters,
-            project_civilian_ledger,
-            project_roster_pages,
+            project_paged_rows,
         )
             .run_if(in_state(AppState::StrategicMap)),
     );
@@ -170,10 +129,7 @@ pub(crate) fn spawn_army_roster(commands: &mut Commands) {
 pub(crate) fn spawn_civilian_roster(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::mapview_3500()).id();
     spawn_modal(commands, root);
-    commands.entity(root).insert(CivilianLedger {
-        current_column: 0,
-        last_column: 0,
-    });
+    commands.entity(root).insert(CivilianLedger);
 }
 
 pub(crate) fn spawn_engineer_construction(commands: &mut Commands, unit: CivilianUnitId) {
@@ -240,6 +196,8 @@ fn bind_added_civilian_ledgers(
     for root in &added {
         let view = tree.view(root);
         let page = view.find(fourcc!("page"));
+        let previous = view.find(fourcc!("lcor"));
+        let next = view.find(fourcc!("rcor"));
         let active_nation = session.game.turn().active_nation;
         let civilians = session
             .game
@@ -248,10 +206,6 @@ fn bind_added_civilian_ledgers(
             .filter_map(|(_, unit)| unit.location().tile().map(|tile| (unit.unit_type(), tile)))
             .collect::<Vec<_>>();
         let last_column = civilians.len().saturating_sub(1) / CIVILIANS_PER_COLUMN;
-        commands.entity(root).insert(CivilianLedger {
-            current_column: 0,
-            last_column,
-        });
 
         let (font, layout, line_height, _) =
             assets.text_style(RetailTextStylePreset::explicit(3, 0, 12, -2));
@@ -275,24 +229,22 @@ fn bind_added_civilian_ledgers(
             .id();
         commands.entity(view.find(fourcc!("DLOG"))).add_child(title);
 
+        let row_height = 64.0;
+        let mut rows = Vec::new();
         for (index, (kind, tile)) in civilians.into_iter().enumerate() {
             let column = index / CIVILIANS_PER_COLUMN;
             let row_in_column = index % CIVILIANS_PER_COLUMN;
             let name = assets.string(kind.name_string());
             let location = city_name(&session.game, tile);
-            let row = commands
+            let row_entity = commands
                 .spawn((
-                    CivilianLedgerRow {
-                        column,
-                        row: row_in_column,
-                    },
                     Button,
                     Node {
                         position_type: PositionType::Absolute,
-                        left: Val::Px(column as f32 * 229.0),
-                        top: Val::Px(row_in_column as f32 * 64.0),
-                        width: Val::Px(229.0),
-                        height: Val::Px(64.0),
+                        left: Val::Px(column as f32 * ROSTER_ROW_WIDTH),
+                        top: Val::Px(row_in_column as f32 * row_height),
+                        width: Val::Px(ROSTER_ROW_WIDTH),
+                        height: Val::Px(row_height),
                         padding: UiRect::all(Val::Px(4.0)),
                         ..default()
                     },
@@ -301,7 +253,7 @@ fn bind_added_civilian_ledgers(
                     layout,
                     line_height,
                     TextColor(Color::BLACK),
-                    if column < CIVILIAN_LEDGER_VISIBLE_COLUMNS {
+                    if column < PAGED_VISIBLE_COLUMNS {
                         Visibility::Inherited
                     } else {
                         Visibility::Hidden
@@ -339,79 +291,96 @@ fn bind_added_civilian_ledgers(
                     },
                 )
                 .id();
-            commands.entity(page).add_child(row);
+            commands.entity(page).add_child(row_entity);
+            rows.push(PageRow {
+                entity: row_entity,
+                column,
+            });
         }
-        for (tag, action) in [
-            (fourcc!("lcor"), CivilianLedgerAction::Previous),
-            (fourcc!("rcor"), CivilianLedgerAction::Next),
-        ] {
-            commands
-                .entity(view.find(tag))
-                .insert((
-                    Button,
-                    action,
-                    match action {
-                        CivilianLedgerAction::Previous => Visibility::Hidden,
-                        CivilianLedgerAction::Next
-                            if CIVILIAN_LEDGER_VISIBLE_COLUMNS <= last_column =>
-                        {
-                            Visibility::Inherited
-                        }
-                        CivilianLedgerAction::Next => Visibility::Hidden,
-                    },
-                ))
-                .observe(
-                    move |_: On<Activate>, mut ledgers: Query<&mut CivilianLedger>| {
-                        let mut ledger =
-                            ledgers.get_mut(root).expect("civilian ledger action root");
-                        match action {
-                            CivilianLedgerAction::Previous => {
-                                ledger.current_column = ledger
-                                    .current_column
-                                    .saturating_sub(CIVILIAN_LEDGER_VISIBLE_COLUMNS);
-                            }
-                            CivilianLedgerAction::Next => {
-                                ledger.current_column = (ledger.current_column
-                                    + CIVILIAN_LEDGER_VISIBLE_COLUMNS)
-                                    .min(ledger.last_column);
-                            }
-                        }
-                    },
-                );
-        }
+        let paged = PagedRows {
+            current_column: 0,
+            last_column,
+            rows,
+            previous,
+            next,
+        };
+        bind_page_arrows(&mut commands, root, &paged);
+        commands
+            .entity(root)
+            .remove::<CivilianLedger>()
+            .insert(paged);
     }
 }
 
-fn project_civilian_ledger(
-    ledgers: Query<&CivilianLedger, Changed<CivilianLedger>>,
-    mut rows: Query<(&CivilianLedgerRow, &mut Node, &mut Visibility)>,
-    mut arrows: Query<(&CivilianLedgerAction, &mut Visibility), Without<CivilianLedgerRow>>,
+fn bind_page_arrows(commands: &mut Commands, root: Entity, page: &PagedRows) {
+    let prev_visible = page.current_column > 0;
+    let next_visible = page.current_column + PAGED_VISIBLE_COLUMNS <= page.last_column;
+    commands
+        .entity(page.previous)
+        .insert((
+            Button,
+            if prev_visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            },
+        ))
+        .observe(move |_: On<Activate>, mut pages: Query<&mut PagedRows>| {
+            let mut page = pages
+                .get_mut(root)
+                .expect("paged row arrow root retains PagedRows");
+            page.current_column = page.current_column.saturating_sub(PAGED_VISIBLE_COLUMNS);
+        });
+    commands
+        .entity(page.next)
+        .insert((
+            Button,
+            if next_visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            },
+        ))
+        .observe(move |_: On<Activate>, mut pages: Query<&mut PagedRows>| {
+            let mut page = pages
+                .get_mut(root)
+                .expect("paged row arrow root retains PagedRows");
+            page.current_column =
+                (page.current_column + PAGED_VISIBLE_COLUMNS).min(page.last_column);
+        });
+}
+
+fn project_paged_rows(
+    pages: Query<&PagedRows, Changed<PagedRows>>,
+    mut nodes: Query<&mut Node>,
+    mut visibilities: Query<&mut Visibility>,
 ) {
-    let Ok(ledger) = ledgers.single() else {
-        return;
-    };
-    for (row, mut node, mut visibility) in &mut rows {
-        let visible = (ledger.current_column
-            ..ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS)
-            .contains(&row.column);
-        *visibility = if visible {
+    for page in &pages {
+        for row in &page.rows {
+            let visible = (page.current_column..page.current_column + PAGED_VISIBLE_COLUMNS)
+                .contains(&row.column);
+            *visibilities.get_mut(row.entity).expect("bound paged row") = if visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            };
+            if visible {
+                nodes.get_mut(row.entity).expect("bound paged row").left =
+                    Val::Px((row.column - page.current_column) as f32 * ROSTER_ROW_WIDTH);
+            }
+        }
+        let prev_visible = page.current_column > 0;
+        let next_visible = page.current_column + PAGED_VISIBLE_COLUMNS <= page.last_column;
+        *visibilities
+            .get_mut(page.previous)
+            .expect("bound paged row previous arrow") = if prev_visible {
             Visibility::Inherited
         } else {
             Visibility::Hidden
         };
-        if visible {
-            node.left = Val::Px((row.column - ledger.current_column) as f32 * 229.0);
-            node.top = Val::Px(row.row as f32 * 64.0);
-        }
-    }
-    for (action, mut visibility) in &mut arrows {
-        let visible = match action {
-            CivilianLedgerAction::Previous => ledger.current_column > 0,
-            CivilianLedgerAction::Next => {
-                ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS <= ledger.last_column
-            }
-        };
-        *visibility = if visible {
+        *visibilities
+            .get_mut(page.next)
+            .expect("bound paged row next arrow") = if next_visible {
             Visibility::Inherited
         } else {
             Visibility::Hidden
@@ -454,20 +423,26 @@ fn bind_added_civilian_modals(
                 &session.game,
             ),
             CivilianModal::Disband(unit) => {
+                let unit = *unit;
                 let linger = bind_linger_dialog(&mut commands, root, &tree);
                 let kind = session
                     .game
-                    .civilian_unit(*unit)
+                    .civilian_unit(unit)
                     .expect("disband dialog retains its civilian")
                     .unit_type();
                 let title = assets.get_string(0x274d, 3);
                 let body = assets.string(kind.disband_confirmation_string());
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
-                commands
-                    .entity(linger.okay)
-                    .insert(CivilianModalAction::ConfirmDisband(*unit))
-                    .observe(on_civilian_modal_action);
+                commands.entity(linger.okay).observe(
+                    move |_: On<Activate>,
+                          mut map: ResMut<StrategicMapSession>,
+                          mut session: ResMut<GameSession>| {
+                        if session.game.disband_civilian(unit) {
+                            map.cycle_selection(&mut session.game);
+                        }
+                    },
+                );
                 commands
                     .entity(linger.cancel)
                     .remove::<InteractionDisabled>();
@@ -516,10 +491,41 @@ fn bind_engineer_dialog(
                 },
                 Button,
                 ImageNode::new(assets.picture(option.choice.picture())),
-                CivilianModalAction::Engineer(unit, option.choice),
                 ChildOf(dialog),
             ))
-            .observe(on_civilian_modal_action)
+            .observe(
+                move |_: On<Activate>,
+                      mut map: ResMut<StrategicMapSession>,
+                      mut session: ResMut<GameSession>,
+                      mut commands: Commands,
+                      assets: RetailUiAssets,
+                      mut audio: RetailAudioAssets| {
+                    match session
+                        .game
+                        .queue_engineer_construction(unit, option.choice)
+                    {
+                        Ok(()) => {
+                            audio.play(&mut commands, option.choice.confirm_sound());
+                            map.cycle_selection(&mut session.game);
+                        }
+                        Err(CivilianOrderRejection::InsufficientFunds) => {
+                            let cost = session
+                                .game
+                                .engineer_construction_options(unit)
+                                .into_iter()
+                                .find(|entry| entry.choice == option.choice)
+                                .map(|entry| entry.cost)
+                                .unwrap_or(0);
+                            let body = fill_brackets(
+                                &assets.get_string(0x2745, 8),
+                                &[&format_currency(cost)],
+                            );
+                            spawn_notice(&mut commands, String::new(), body);
+                        }
+                        Err(_) => {}
+                    }
+                },
+            )
             .id();
         dismiss_on_activate(commands, option_button, root);
         let label = commands
@@ -647,12 +653,22 @@ fn bind_purchase_dialog(
     linger.set_title(commands, assets, title);
     linger.set_body(commands, assets, body);
     if affordable {
-        commands
-            .entity(linger.okay)
-            .insert(CivilianModalAction::ConfirmPurchase(unit, tile))
-            .observe(on_civilian_modal_action);
-    }
-    if affordable {
+        commands.entity(linger.okay).observe(
+            move |_: On<Activate>,
+                  mut map: ResMut<StrategicMapSession>,
+                  mut session: ResMut<GameSession>,
+                  mut audio: RetailAudioAssets,
+                  mut commands: Commands| {
+                if session
+                    .game
+                    .confirm_developer_tile_purchase(unit, tile)
+                    .is_ok()
+                {
+                    audio.play(&mut commands, SoundId::new(0x2335));
+                    map.cycle_selection(&mut session.game);
+                }
+            },
+        );
     } else {
         commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
@@ -689,10 +705,18 @@ fn bind_civilian_report(
     let okay = tree.find(root, fourcc!("okay"));
     dismiss_on_activate(commands, okay, root);
     let cancel = tree.find(root, fourcc!("canc"));
-    commands
-        .entity(cancel)
-        .insert(CancelCivilianOrder(unit))
-        .observe(on_cancel_civilian_order);
+    commands.entity(cancel).observe(
+        move |_: On<Activate>,
+              mut map: ResMut<StrategicMapSession>,
+              mut session: ResMut<GameSession>| {
+            if session.game.cancel_civilian_work_order(unit).is_ok() {
+                map.apply(
+                    &mut session.game,
+                    MapAction::Select(StrategicSelection::Civilian(Some(unit))),
+                );
+            }
+        },
+    );
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, Some(okay), Some(cancel));
 }
@@ -804,77 +828,6 @@ fn insert_retail_text(
     ));
 }
 
-#[allow(clippy::too_many_arguments)]
-fn on_civilian_modal_action(
-    activate: On<Activate>,
-    actions: Query<&CivilianModalAction>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-    assets: RetailUiAssets,
-    mut audio: RetailAudioAssets,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let mut completed = false;
-    match action {
-        CivilianModalAction::Engineer(unit, choice) => {
-            match session.game.queue_engineer_construction(unit, choice) {
-                Ok(()) => {
-                    audio.play(&mut commands, choice.confirm_sound());
-                    completed = true;
-                }
-                Err(CivilianOrderRejection::InsufficientFunds) => {
-                    let cost = session
-                        .game
-                        .engineer_construction_options(unit)
-                        .into_iter()
-                        .find(|option| option.choice == choice)
-                        .map(|option| option.cost)
-                        .unwrap_or(0);
-                    let body =
-                        fill_brackets(&assets.get_string(0x2745, 8), &[&format_currency(cost)]);
-                    spawn_notice(&mut commands, String::new(), body);
-                }
-                Err(_) => {}
-            }
-        }
-        CivilianModalAction::ConfirmPurchase(unit, tile) => {
-            completed = session
-                .game
-                .confirm_developer_tile_purchase(unit, tile)
-                .is_ok();
-            if completed {
-                audio.play(&mut commands, SoundId::new(0x2335));
-            }
-        }
-        CivilianModalAction::ConfirmDisband(unit) => {
-            completed = session.game.disband_civilian(unit);
-        }
-    }
-    if completed {
-        map.cycle_selection(&mut session.game);
-    }
-}
-
-fn on_cancel_civilian_order(
-    activate: On<Activate>,
-    actions: Query<&CancelCivilianOrder>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-) {
-    let Ok(CancelCivilianOrder(unit)) = actions.get(activate.entity) else {
-        return;
-    };
-    if session.game.cancel_civilian_work_order(*unit).is_ok() {
-        map.apply(
-            &mut session.game,
-            MapAction::Select(StrategicSelection::Civilian(Some(*unit))),
-        );
-    }
-}
-
 fn spawn_notice(commands: &mut Commands, title: String, body: String) {
     spawn_linger_dialog(
         commands,
@@ -963,42 +916,50 @@ fn bind_added_garrisons(
 ) {
     for (root, GarrisonDialog(province)) in &added {
         let model = session.game.garrison_model(*province);
-        bind_roster_page(
-            &mut commands,
-            root,
-            &tree,
-            &mut assets,
-            None,
-            model.units.len(),
-            GARRISON_PER_COLUMN,
-            GARRISON_ROW_HEIGHT,
-        );
-        let page = tree.find(root, fourcc!("page"));
+        let (page, previous, next, last_column) =
+            roster_paging_entities(&tree, root, model.units.len(), GARRISON_PER_COLUMN);
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
+        let mut rows = Vec::new();
         for (index, row) in model.units.iter().enumerate() {
             let column = index / GARRISON_PER_COLUMN;
             let row_in_column = index % GARRISON_PER_COLUMN;
             let kind = garrison_order_text(&assets, row.order);
-            let mut entity = spawn_roster_row(
+            let row_entity = spawn_paged_row(
                 &mut commands,
                 page,
-                RosterRow {
-                    column,
-                    row: row_in_column,
-                },
-                column < ROSTER_VISIBLE_COLUMNS,
+                column,
+                row_in_column,
+                column < PAGED_VISIBLE_COLUMNS,
                 GARRISON_ROW_HEIGHT,
                 format!("{}\n{kind}", row.name),
                 font.clone(),
                 layout,
                 line_height,
             );
+            rows.push(PageRow {
+                entity: row_entity,
+                column,
+            });
             if !row.militia {
-                entity
-                    .insert((Button, GarrisonRowAction::Toggle(row.unit)))
-                    .observe(on_garrison_row_action);
+                let unit = row.unit;
+                commands.entity(row_entity).insert(Button).observe(
+                    move |activate: On<Activate>,
+                          mut texts: Query<&mut Text>,
+                          mut session: ResMut<GameSession>,
+                          assets: RetailUiAssets| {
+                        session.game.toggle_garrison_unit_ready(unit);
+                        let Some(state) = session.game.military_unit(unit) else {
+                            return;
+                        };
+                        let kind = garrison_order_text(&assets, state.order().code());
+                        if let Ok(mut text) = texts.get_mut(activate.entity) {
+                            text.0 = format!("{}\n{kind}", state.name());
+                        }
+                    },
+                );
             }
         }
+        insert_paged_rows(&mut commands, root, rows, previous, next, last_column);
     }
 }
 
@@ -1011,38 +972,38 @@ fn bind_added_army_rosters(
 ) {
     for root in &added {
         let model = session.game.army_roster_model();
-        bind_roster_page(
+        let (page, previous, next, last_column) =
+            roster_paging_entities(&tree, root, model.units.len(), MINI_ROSTER_PER_COLUMN);
+        spawn_roster_title(
             &mut commands,
-            root,
-            &tree,
+            tree.view(root).find(fourcc!("DLOG")),
             &mut assets,
-            Some((0x2746, 0xb)),
-            model.units.len(),
-            MINI_ROSTER_PER_COLUMN,
-            MINI_ROSTER_ROW_HEIGHT,
+            0x2746,
+            0xb,
         );
-        let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
+        let mut rows = Vec::new();
         for (index, row) in model.units.iter().enumerate() {
             let column = index / MINI_ROSTER_PER_COLUMN;
             let row_in_column = index % MINI_ROSTER_PER_COLUMN;
             let province = row.province;
-            spawn_roster_row(
+            let row_entity = spawn_paged_row(
                 &mut commands,
                 page,
-                RosterRow {
-                    column,
-                    row: row_in_column,
-                },
-                column < ROSTER_VISIBLE_COLUMNS,
+                column,
+                row_in_column,
+                column < PAGED_VISIBLE_COLUMNS,
                 MINI_ROSTER_ROW_HEIGHT,
                 format!("{}\n{}", row.name, row.city_name),
                 font.clone(),
                 layout,
                 line_height,
-            )
-            .insert(Button)
-            .observe(
+            );
+            rows.push(PageRow {
+                entity: row_entity,
+                column,
+            });
+            commands.entity(row_entity).insert(Button).observe(
                 move |_: On<Activate>,
                       mut map: ResMut<StrategicMapSession>,
                       mut session: ResMut<GameSession>,
@@ -1059,6 +1020,7 @@ fn bind_added_army_rosters(
                 },
             );
         }
+        insert_paged_rows(&mut commands, root, rows, previous, next, last_column);
     }
 }
 
@@ -1135,10 +1097,19 @@ fn bind_friendly_fleet_report(
         3,
     );
     let cancel = view.find(fourcc!("canc"));
-    commands
-        .entity(cancel)
-        .insert(CancelFleetOrders(report.force))
-        .observe(on_cancel_fleet_orders);
+    let force = report.force;
+    commands.entity(cancel).observe(
+        move |_: On<Activate>,
+              mut map: ResMut<StrategicMapSession>,
+              mut session: ResMut<GameSession>| {
+            let zone = session.game.task_force(force).map(|entry| entry.location);
+            session.game.cancel_task_force(force);
+            map.apply(
+                &mut session.game,
+                MapAction::Select(StrategicSelection::Navy { zone, force: None }),
+            );
+        },
+    );
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, None, Some(cancel));
 }
@@ -1204,46 +1175,45 @@ fn bind_added_navy_rosters(
 ) {
     for (root, NavyRosterDialog(kind)) in &added {
         let model = session.game.navy_roster_model(*kind);
-        let title = match kind {
-            NavyRosterKind::Nation => Some((0x2746, 0xc)),
-            NavyRosterKind::TaskForce(_) => None,
-        };
-        bind_roster_page(
-            &mut commands,
-            root,
-            &tree,
-            &mut assets,
-            title,
-            model.ships.len(),
-            MINI_ROSTER_PER_COLUMN,
-            MINI_ROSTER_ROW_HEIGHT,
-        );
-        let page = tree.find(root, fourcc!("page"));
+        let (page, previous, next, last_column) =
+            roster_paging_entities(&tree, root, model.ships.len(), MINI_ROSTER_PER_COLUMN);
+        if let NavyRosterKind::Nation = kind {
+            spawn_roster_title(
+                &mut commands,
+                tree.view(root).find(fourcc!("DLOG")),
+                &mut assets,
+                0x2746,
+                0xc,
+            );
+        }
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
+        let mut rows = Vec::new();
         for (index, row) in model.ships.iter().enumerate() {
             let column = index / MINI_ROSTER_PER_COLUMN;
             let row_in_column = index % MINI_ROSTER_PER_COLUMN;
             let kind_name = navy_roster_type_label(&assets, row.ship_type);
             let selected = if row.selected { "* " } else { "" };
-            let mut entity = spawn_roster_row(
+            let row_entity = spawn_paged_row(
                 &mut commands,
                 page,
-                RosterRow {
-                    column,
-                    row: row_in_column,
-                },
-                column < ROSTER_VISIBLE_COLUMNS,
+                column,
+                row_in_column,
+                column < PAGED_VISIBLE_COLUMNS,
                 MINI_ROSTER_ROW_HEIGHT,
                 format!("{selected}{kind_name}{}\n{}", row.name, row.zone_name),
                 font.clone(),
                 layout,
                 line_height,
             );
+            rows.push(PageRow {
+                entity: row_entity,
+                column,
+            });
             match kind {
                 NavyRosterKind::Nation => {
                     let zone = row.location;
                     let force = row.force;
-                    entity.insert(Button).observe(
+                    commands.entity(row_entity).insert(Button).observe(
                         move |_: On<Activate>,
                               mut map: ResMut<StrategicMapSession>,
                               mut session: ResMut<GameSession>,
@@ -1257,7 +1227,7 @@ fn bind_added_navy_rosters(
                     let force = *force;
                     let ship = row.ship;
                     let selected = row.selected;
-                    entity.insert(Button).observe(
+                    commands.entity(row_entity).insert(Button).observe(
                         move |_: On<Activate>,
                               mut session: ResMut<GameSession>,
                               mut commands: Commands| {
@@ -1271,68 +1241,45 @@ fn bind_added_navy_rosters(
                 }
             }
         }
+        insert_paged_rows(&mut commands, root, rows, previous, next, last_column);
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn bind_roster_page(
-    commands: &mut Commands,
-    root: Entity,
+fn roster_paging_entities(
     tree: &RetailTree,
-    assets: &mut RetailUiAssets,
-    title: Option<(u16, u16)>,
+    root: Entity,
     count: usize,
     rows_per_column: usize,
-    row_height: f32,
-) {
+) -> (Entity, Entity, Entity, usize) {
+    let view = tree.view(root);
+    let page = view.find(fourcc!("page"));
+    let previous = view.find(fourcc!("lcor"));
+    let next = view.find(fourcc!("rcor"));
     let last_column = if count == 0 {
         0
     } else {
         count.saturating_sub(1) / rows_per_column
     };
-    commands.entity(root).insert(RosterPage {
+    (page, previous, next, last_column)
+}
+
+fn insert_paged_rows(
+    commands: &mut Commands,
+    root: Entity,
+    rows: Vec<PageRow>,
+    previous: Entity,
+    next: Entity,
+    last_column: usize,
+) {
+    let paged = PagedRows {
         current_column: 0,
         last_column,
-        row_height,
-    });
-    if let Some((group, offset)) = title {
-        spawn_roster_title(
-            commands,
-            tree.view(root).find(fourcc!("DLOG")),
-            assets,
-            group,
-            offset,
-        );
-    }
-    let view = tree.view(root);
-    for (tag, action) in [
-        (fourcc!("lcor"), RosterPageAction::Previous),
-        (fourcc!("rcor"), RosterPageAction::Next),
-    ] {
-        let entity = view.find(tag);
-        let visibility = match action {
-            RosterPageAction::Previous => Visibility::Hidden,
-            RosterPageAction::Next if ROSTER_VISIBLE_COLUMNS <= last_column => {
-                Visibility::Inherited
-            }
-            RosterPageAction::Next => Visibility::Hidden,
-        };
-        let mut entity_commands = commands.entity(entity);
-        entity_commands.insert((action, visibility));
-        entity_commands.observe(move |_: On<Activate>, mut pages: Query<&mut RosterPage>| {
-            let mut page = pages.get_mut(root).expect("roster page action root");
-            match action {
-                RosterPageAction::Previous => {
-                    page.current_column =
-                        page.current_column.saturating_sub(ROSTER_VISIBLE_COLUMNS);
-                }
-                RosterPageAction::Next => {
-                    page.current_column =
-                        (page.current_column + ROSTER_VISIBLE_COLUMNS).min(page.last_column);
-                }
-            }
-        });
-    }
+        rows,
+        previous,
+        next,
+    };
+    bind_page_arrows(commands, root, &paged);
+    commands.entity(root).insert(paged);
 }
 
 fn spawn_roster_title(
@@ -1366,41 +1313,43 @@ fn spawn_roster_title(
 }
 
 #[allow(clippy::too_many_arguments)]
-fn spawn_roster_row<'a>(
-    commands: &'a mut Commands,
+fn spawn_paged_row(
+    commands: &mut Commands,
     page: Entity,
-    row: RosterRow,
+    column: usize,
+    row: usize,
     visible: bool,
     height: f32,
     text: String,
     font: TextFont,
     layout: TextLayout,
     line_height: LineHeight,
-) -> EntityCommands<'a> {
-    let mut entity = commands.spawn((
-        row,
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(row.column as f32 * ROSTER_ROW_WIDTH),
-            top: Val::Px(row.row as f32 * height),
-            width: Val::Px(ROSTER_ROW_WIDTH),
-            height: Val::Px(height),
-            padding: UiRect::all(Val::Px(2.0)),
-            ..default()
-        },
-        Text::new(text),
-        font,
-        layout,
-        line_height,
-        TextColor(Color::BLACK),
-        if visible {
-            Visibility::Inherited
-        } else {
-            Visibility::Hidden
-        },
-    ));
-    entity.insert(ChildOf(page));
-    entity
+) -> Entity {
+    let row_entity = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(column as f32 * ROSTER_ROW_WIDTH),
+                top: Val::Px(row as f32 * height),
+                width: Val::Px(ROSTER_ROW_WIDTH),
+                height: Val::Px(height),
+                padding: UiRect::all(Val::Px(2.0)),
+                ..default()
+            },
+            Text::new(text),
+            font,
+            layout,
+            line_height,
+            TextColor(Color::BLACK),
+            if visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            },
+        ))
+        .id();
+    commands.entity(page).add_child(row_entity);
+    row_entity
 }
 
 fn roster_text_style(
@@ -1410,79 +1359,6 @@ fn roster_text_style(
     let (font, layout, line_height, _) =
         assets.text_style(RetailTextStylePreset::explicit(3, 0, point_size, -2));
     (font, layout, line_height)
-}
-
-fn project_roster_pages(
-    pages: Query<&RosterPage, Changed<RosterPage>>,
-    mut rows: Query<(&RosterRow, &mut Node, &mut Visibility)>,
-    mut arrows: Query<(&RosterPageAction, &mut Visibility), Without<RosterRow>>,
-) {
-    let Ok(page) = pages.single() else {
-        return;
-    };
-    for (row, mut node, mut visibility) in &mut rows {
-        let visible = (page.current_column..page.current_column + ROSTER_VISIBLE_COLUMNS)
-            .contains(&row.column);
-        *visibility = if visible {
-            Visibility::Inherited
-        } else {
-            Visibility::Hidden
-        };
-        if visible {
-            node.left = Val::Px((row.column - page.current_column) as f32 * ROSTER_ROW_WIDTH);
-            node.top = Val::Px(row.row as f32 * page.row_height);
-        }
-    }
-    for (action, mut visibility) in &mut arrows {
-        let visible = match action {
-            RosterPageAction::Previous => page.current_column > 0,
-            RosterPageAction::Next => {
-                page.current_column + ROSTER_VISIBLE_COLUMNS <= page.last_column
-            }
-        };
-        *visibility = if visible {
-            Visibility::Inherited
-        } else {
-            Visibility::Hidden
-        };
-    }
-}
-
-fn on_garrison_row_action(
-    activate: On<Activate>,
-    actions: Query<&GarrisonRowAction>,
-    mut texts: Query<&mut Text>,
-    mut session: ResMut<GameSession>,
-    assets: RetailUiAssets,
-) {
-    let Ok(GarrisonRowAction::Toggle(unit)) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    session.game.toggle_garrison_unit_ready(unit);
-    let Some(state) = session.game.military_unit(unit) else {
-        return;
-    };
-    let kind = garrison_order_text(&assets, state.order().code());
-    if let Ok(mut text) = texts.get_mut(activate.entity) {
-        text.0 = format!("{}\n{kind}", state.name());
-    }
-}
-
-fn on_cancel_fleet_orders(
-    activate: On<Activate>,
-    actions: Query<&CancelFleetOrders>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-) {
-    let Ok(CancelFleetOrders(force)) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let zone = session.game.task_force(force).map(|entry| entry.location);
-    session.game.cancel_task_force(force);
-    map.apply(
-        &mut session.game,
-        MapAction::Select(StrategicSelection::Navy { zone, force: None }),
-    );
 }
 
 fn garrison_order_text(assets: &RetailUiAssets, order: MilitaryOrderCode) -> String {
