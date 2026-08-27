@@ -10,7 +10,7 @@ use crate::ui::GameSession;
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -118,7 +118,7 @@ pub(crate) fn bind_civilian_toolbar(
         command_entities[index] = entity;
         commands
             .entity(entity)
-            .insert((ActivateOnPress, InteractionDisabled))
+            .insert(InteractionDisabled)
             .observe(
                 move |_: On<Activate>,
                       mut session: ResMut<GameSession>,
@@ -136,7 +136,7 @@ pub(crate) fn bind_civilian_toolbar(
     command_entities[3] = disband;
     commands
         .entity(disband)
-        .insert((ActivateOnPress, InteractionDisabled))
+        .insert(InteractionDisabled)
         .observe(
             |_: On<Activate>,
              keys: Res<ButtonInput<KeyCode>>,

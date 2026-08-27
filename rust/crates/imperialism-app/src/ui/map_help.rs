@@ -3,7 +3,7 @@ use super::retail::{RetailTree, ancestor_with};
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
+use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_formats::{FourCc, RetailTextStylePreset, fourcc};
 
 const TERRAIN_HELP_SETS: [i16; 5] = [0x0bc2, 0x0bcc, 0x0c94, 0x0c9e, 0x0ca8];
@@ -278,7 +278,7 @@ fn apply_action(
 fn spawn_link_button(commands: &mut Commands, label: Entity, action: MapHelpAction) {
     commands
         .entity(label)
-        .insert((UiButton, Pickable::default(), ActivateOnPress, action))
+        .insert((UiButton, Pickable::default(), action))
         .observe(on_action);
 }
 

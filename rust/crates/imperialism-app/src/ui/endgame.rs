@@ -8,7 +8,7 @@ use crate::ui::load_save::SaveDirectory;
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui::widget::NodeImageMode;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{
     MovieId, empty_high_score_table, fourcc, insert_high_score, read_scores_dat, write_scores_dat,
@@ -200,7 +200,6 @@ fn bind_council(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .observe(on_council_close);
     let congress = &session.game.diplomacy().congress;
     let chairman = congress
@@ -249,7 +248,6 @@ fn bind_game_score(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("done")))
-        .insert(ActivateOnPress)
         .observe(on_game_score_close);
     let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) else {
         return;
@@ -316,7 +314,6 @@ fn bind_high_score(
     let label = tree.find(*root, fourcc!("labl"));
     commands
         .entity(label)
-        .insert(ActivateOnPress)
         .observe(on_high_score_close);
     let table = save_dir
         .and_then(|dir| std::fs::read(dir.0.join("scores.dat")).ok())

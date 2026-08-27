@@ -12,7 +12,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
+use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -225,7 +225,7 @@ fn bind_trade_row(
 
     let [decrease, increase] = [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
         let step = tree.find(row, tag);
-        commands.entity(step).insert(ActivateOnPress).observe(
+        commands.entity(step).observe(
             move |activate: On<Activate>,
                   disabled: Query<Has<InteractionDisabled>>,
                   mut session: ResMut<GameSession>| {
@@ -554,7 +554,7 @@ fn bind_trade_card(
         .and_modify(|mut image| image.image_mode = NodeImageMode::Stretch);
     commands
         .entity(entity)
-        .insert((UiButton, ActivateOnPress, Pickable::default(), ZIndex(1)))
+        .insert((UiButton, Pickable::default(), ZIndex(1)))
         .observe(
             move |activate: On<Activate>,
                   disabled: Query<Has<InteractionDisabled>>,
