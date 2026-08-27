@@ -469,10 +469,7 @@ pub(crate) fn bind_native_game_screen_nav(
         }
         commands
             .entity(entity)
-<<<<<<< HEAD
-=======
             .remove::<Checked>()
->>>>>>> 27213bdbe (Centralize management toolbar Checked state in screen nav binding)
             .remove::<InteractionDisabled>()
             .observe(
                 move |_: On<Activate>, mut next_state: ResMut<NextState<AppState>>| {
