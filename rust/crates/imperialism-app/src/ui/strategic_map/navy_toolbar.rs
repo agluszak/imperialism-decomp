@@ -8,7 +8,7 @@ use crate::ui::GameSession;
 use crate::ui::retail_resources::ShipTypeRetailResources;
 use bevy::prelude::*;
 use bevy::ui::Checked;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::{NavalAggression, NavyRosterKind, NavyToolbarClass};
 use imperialism_formats::*;
 
@@ -133,7 +133,6 @@ pub(crate) fn bind_navy_toolbar(
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert(ActivateOnPress)
             .observe(
                 move |_: On<Activate>,
                       mut session: ResMut<GameSession>,
@@ -146,7 +145,6 @@ pub(crate) fn bind_navy_toolbar(
     }
     commands
         .entity(tree.child(page, fourcc!("dfnd")))
-        .insert(ActivateOnPress)
         .observe(
             |_: On<Activate>,
              mut session: ResMut<GameSession>,
@@ -159,7 +157,6 @@ pub(crate) fn bind_navy_toolbar(
         );
     commands
         .entity(tree.child(page, fourcc!("done")))
-        .insert(ActivateOnPress)
         .observe(
             |_: On<Activate>,
              mut session: ResMut<GameSession>,
@@ -172,7 +169,6 @@ pub(crate) fn bind_navy_toolbar(
         );
     commands
         .entity(tree.child(page, fourcc!("next")))
-        .insert(ActivateOnPress)
         .observe(
             |_: On<Activate>,
              mut session: ResMut<GameSession>,
@@ -182,7 +178,6 @@ pub(crate) fn bind_navy_toolbar(
         );
     commands
         .entity(tree.child(page, fourcc!("bomb")))
-        .insert(ActivateOnPress)
         .observe(
             |_: On<Activate>,
              keys: Res<ButtonInput<KeyCode>>,
