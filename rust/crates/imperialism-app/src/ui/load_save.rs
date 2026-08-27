@@ -1049,10 +1049,6 @@ mod tests {
     use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
-    use bevy::camera::NormalizedRenderTarget;
-    use bevy::picking::backend::HitData;
-    use bevy::picking::events::{Click, Pointer, Press};
-    use bevy::picking::pointer::{Location, PointerButton, PointerId};
     use imperialism_formats::{DibPalette, load_game_from_path};
 
     fn fixture_state() -> GameState {
@@ -1196,42 +1192,9 @@ mod tests {
             })
             .unwrap();
 
-        let location = Location {
-            target: NormalizedRenderTarget::None {
-                width: 1,
-                height: 1,
-            },
-            position: Vec2::ZERO,
-        };
-        let hit = HitData {
-            camera: Entity::PLACEHOLDER,
-            depth: 0.0,
-            position: None,
-            normal: None,
-            extra: None,
-        };
-        // Stock Button activates on release (Press then Click).
-        app.world_mut().trigger(Pointer::new(
-            PointerId::Mouse,
-            location.clone(),
-            Press {
-                button: PointerButton::Primary,
-                hit: hit.clone(),
-                count: 1,
-            },
-            slot,
-        ));
-        app.world_mut().trigger(Pointer::new(
-            PointerId::Mouse,
-            location,
-            Click {
-                button: PointerButton::Primary,
-                hit,
-                duration: std::time::Duration::ZERO,
-                count: 1,
-            },
-            slot,
-        ));
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: slot });
         app.world_mut().flush();
 
         let root = app
