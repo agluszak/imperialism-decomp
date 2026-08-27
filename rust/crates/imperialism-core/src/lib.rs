@@ -77,18 +77,18 @@ pub use battle_report::{
     BattleReportUnit, BattleReportUnitKind,
 };
 pub use calendar::TurnCalendar;
+pub(crate) use city::EXPANSION_INPUTS;
 pub use city::{
     CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrderUpdate, CityOrders,
     CityState, CityTaskOperation, CityTaskState, CityTransportRequest, ExpandableFacility,
-    ExpansionOrderTable, IndustryCapabilitySlot, IndustryCapabilityTable, ItemOrderTable,
-    ManufacturedItem, MilitaryRecruitOrderState, MilitaryRecruitOrderTable,
+    ExpansionOrderTable, IndustryCapabilitySlot, IndustryCapabilityTable, ItemInputs,
+    ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState, MilitaryRecruitOrderTable,
     MilitaryRecruitmentCategory, OrderLimit, PowerPlantOrderState, ProductionConstraint,
     ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState, ResourceCost,
     ShipCapabilities, ShipMaterials, ShipOrderSlot, ShipOrderState, ShipOrderTable, Stockpile,
     TownState, TrainingLevel, TrainingOrderTable, civilian_recruitment_spec,
     military_recruitment_spec, resource_development_yield, ship_capabilities, ship_order_costs,
 };
-pub(crate) use city::{EXPANSION_INPUTS, ItemInputs};
 pub use city_site::{
     CapitalSite, CapitalSiteReport, CitySiteError, capital_site_report, confirm_capital_site,
     enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,

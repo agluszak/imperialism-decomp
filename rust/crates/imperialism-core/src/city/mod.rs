@@ -7,7 +7,7 @@ mod state;
 pub use buildings::{CityFacilitySlot, IndustryCapabilitySlot, IndustryCapabilityTable};
 pub use production::{
     CIVILIAN_RESOURCE_SPECIALTIES, CityOrderId, CityOrderUpdate, CityOrders, ExpandableFacility,
-    ExpansionOrderTable, ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState,
+    ExpansionOrderTable, ItemInputs, ItemOrderTable, ManufacturedItem, MilitaryRecruitOrderState,
     MilitaryRecruitOrderTable, MilitaryRecruitmentCategory, OrderLimit, PowerPlantOrderState,
     ProductionConstraint, ProductionProgress, RecruitmentOrderSpec, RequestedCityOrderState,
     ResourceCost, ShipCapabilities, ShipMaterials, ShipOrderSlot, ShipOrderState, ShipOrderTable,
@@ -15,8 +15,8 @@ pub use production::{
     resource_development_yield, ship_capabilities, ship_order_costs,
 };
 pub(crate) use production::{
-    EXPANSION_INPUTS, ItemInputs, UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID,
-    ship_creates_navy_object, ship_stock_cap,
+    EXPANSION_INPUTS, UNIVERSITY_REQUIREMENT_LEVEL_BY_RETAIL_ID, ship_creates_navy_object,
+    ship_stock_cap,
 };
 pub use state::{
     CityState, CityTaskOperation, CityTaskState, CityTransportRequest, Stockpile, TownState,

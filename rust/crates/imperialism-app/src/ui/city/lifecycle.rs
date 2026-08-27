@@ -1,13 +1,12 @@
 use super::*;
 
 #[derive(Component)]
-pub(in crate::ui::city) struct CityBuildingDialog {
-    pub(in crate::ui::city) slot: CityFacilitySlot,
+pub(crate) struct CityBuildingDialog {
+    pub(crate) slot: CityFacilitySlot,
     saved_position: Option<IVec2>,
 }
 
-#[allow(clippy::too_many_arguments)]
-pub(in crate::ui::city) fn on_city_canvas_click(
+pub(crate) fn on_city_canvas_click(
     click: On<Pointer<Click>>,
     canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
     dialogs: Query<&CityBuildingDialog>,
@@ -48,7 +47,7 @@ pub(in crate::ui::city) fn on_city_canvas_click(
     }
 }
 
-pub(in crate::ui::city) fn open_city_dialog(
+pub(crate) fn open_city_dialog(
     commands: &mut Commands,
     slot: CityFacilitySlot,
     saved_position: Option<IVec2>,
@@ -63,7 +62,7 @@ pub(in crate::ui::city) fn open_city_dialog(
     ));
 }
 
-pub(in crate::ui::city) fn bind_city_dialogs(
+pub(crate) fn bind_city_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
     windows: Query<(), With<CaptionedWindow>>,
@@ -81,43 +80,72 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 .entry::<Node>()
                 .and_modify(move |mut node| set_window_position(&mut node, position));
         }
-        match city_dialog_kind(dialog.slot) {
-            CityDialogKind::Industry(page) => {
-                configure_industry_dialog(&mut commands, &mut assets, root, &tree, page);
+
+        let view = if ExpandableFacility::try_from_slot(dialog.slot).is_some() {
+            CityDialogView::Industry(bind_industry(
+                &mut commands,
+                &mut assets,
+                root,
+                &tree,
+                dialog.slot,
+            ))
+        } else {
+            match dialog.slot {
+                CityFacilitySlot::TradeSchool => {
+                    CityDialogView::Training(bind_training(&mut commands, &assets, root, &tree))
+                }
+                CityFacilitySlot::Armory => CityDialogView::Armory(bind_armory(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                    &session.game,
+                )),
+                CityFacilitySlot::University => CityDialogView::University(bind_university(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                    &session.game,
+                )),
+                CityFacilitySlot::Shipyard => CityDialogView::Shipyard(bind_shipyard(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                    &session.game,
+                )),
+                CityFacilitySlot::Warehouse => CityDialogView::Warehouse(bind_warehouse(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                    &session.game,
+                )),
+                CityFacilitySlot::FoodProcessing => {
+                    CityDialogView::Food(bind_food(&mut commands, &mut assets, root, &tree))
+                }
+                CityFacilitySlot::PowerPlant => {
+                    CityDialogView::Power(bind_power(&mut commands, &mut assets, root, &tree))
+                }
+                CityFacilitySlot::Transport => CityDialogView::Transport(bind_transport(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                )),
+                CityFacilitySlot::RegionalPopulation => CityDialogView::Population(
+                    bind_population(&mut commands, &mut assets, root, &tree),
+                ),
+                _ => unreachable!("ordinary industry is classified by ExpandableFacility"),
             }
-            CityDialogKind::Training => {
-                configure_training_dialog(&mut commands, &assets, root, &tree)
-            }
-            CityDialogKind::Armory => {
-                configure_armory_dialog(&mut commands, &mut assets, root, &tree, &session.game)
-            }
-            CityDialogKind::University => {
-                configure_university_dialog(&mut commands, &mut assets, root, &tree, &session.game)
-            }
-            CityDialogKind::Shipyard => {
-                configure_shipyard_dialog(&mut commands, &mut assets, root, &tree, &session.game)
-            }
-            CityDialogKind::Warehouse => {
-                configure_warehouse_dialog(&mut commands, &mut assets, root, &tree, &session.game)
-            }
-            CityDialogKind::FoodProcessing => {
-                configure_food_dialog(&mut commands, &mut assets, root, &tree)
-            }
-            CityDialogKind::PowerPlant => {
-                configure_power_dialog(&mut commands, &mut assets, root, &tree)
-            }
-            CityDialogKind::Transport => {
-                configure_transport_capacity_dialog(&mut commands, &mut assets, root, &tree)
-            }
-            CityDialogKind::Population => {
-                configure_population_dialog(&mut commands, &mut assets, root, &tree)
-            }
-        }
+        };
+        commands.entity(root).insert(view);
     }
 }
 
-pub(in crate::ui::city) fn restore_city_dialogs(
-    roots: Query<(), Added<CityScreenRoot>>,
+pub(crate) fn restore_city_dialogs(
+    roots: Query<(), Added<CityScreenView>>,
     session: Res<GameSession>,
     windows: Res<CityWindows>,
     mut commands: Commands,
@@ -142,7 +170,7 @@ pub(in crate::ui::city) fn restore_city_dialogs(
     }
 }
 
-pub(in crate::ui::city) fn leave_city_screen(
+pub(crate) fn leave_city_screen(
     session: Res<GameSession>,
     mut windows: ResMut<CityWindows>,
     dialogs: Query<(&CityBuildingDialog, &Children)>,
@@ -154,13 +182,11 @@ pub(in crate::ui::city) fn leave_city_screen(
         let node = children
             .iter()
             .find_map(|child| nodes.get(child).ok())
-            .expect("city building dialog has a captioned window");
+            .expect("captioned window");
         let position = window_position(node);
         positions[dialog.slot] = Some(CityWindowPosition {
-            left: i16::try_from(position.x)
-                .expect("City window coordinate fits retail short storage"),
-            top: i16::try_from(position.y)
-                .expect("City window coordinate fits retail short storage"),
+            left: i16::try_from(position.x).expect("window x"),
+            top: i16::try_from(position.y).expect("window y"),
         });
     }
     windows.0[nation] = positions;

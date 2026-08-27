@@ -78,11 +78,7 @@ pub(crate) use transport::TransportPlugin;
 pub(crate) use viewport::RetailViewportPlugin;
 pub(crate) use window::UiWindowPlugin;
 
-use bevy::prelude::{DetectChanges, Res};
-
-pub(in crate::ui) fn projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    !session.is_changed() && !added
-}
+use bevy::prelude::*;
 
 pub(in crate::ui) fn format_currency(value: i32) -> String {
     let negative = value < 0;

@@ -8,7 +8,8 @@ use super::window::{
     window_position,
 };
 use super::{CityWindows, GameSession};
-use crate::{AppState, RetailAssetsResource};
+use crate::{AppState, RetailAssetsResource, RetailFonts};
+use bevy::ecs::system::SystemParam;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -20,22 +21,123 @@ use imperialism_core::*;
 use imperialism_formats::*;
 use std::time::Duration;
 
-mod bindings;
 mod building_visuals;
 mod common_controls;
 mod dialogs;
 mod lifecycle;
-
-pub(super) use building_visuals::{CityBuildingActionVisual, CityBuildingVisual};
-
-use bindings::*;
 use building_visuals::*;
+pub(super) use building_visuals::{CityBuildingActionVisual, CityBuildingVisual};
 use common_controls::*;
 use dialogs::*;
 use lifecycle::*;
 
-pub(in crate::ui::city) fn city_projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    super::projection_idle(session, added)
+const CITY_BUILDING_STRING_GROUP: i16 = 0x2719;
+const CITY_TEXT_STRING_GROUP: i16 = 0x2738;
+
+fn city_string(assets: &RetailUiAssets, group: i16, zero_based_index: i16) -> String {
+    assets
+        .string(group, city_string_index(zero_based_index))
+        .expect("city string")
+}
+
+const fn city_string_index(zero_based_index: i16) -> i16 {
+    zero_based_index + 1
+}
+
+fn format_retail_number(template: &str, value: i16) -> String {
+    fill_brackets(template, &[&value.to_string()])
+}
+
+#[derive(SystemParam)]
+struct CityUi<'w, 's> {
+    commands: Commands<'w, 's>,
+    texts: Query<'w, 's, &'static mut Text>,
+    colors: Query<'w, 's, &'static mut TextColor>,
+    visibility: Query<'w, 's, &'static mut Visibility>,
+    nodes: Query<'w, 's, &'static mut Node>,
+    images: Query<'w, 's, &'static mut ImageNode>,
+    checked: Query<'w, 's, Has<Checked>>,
+}
+
+impl CityUi<'_, '_> {
+    fn text(&mut self, entity: Entity, value: impl Into<String>) {
+        self.texts.get_mut(entity).expect("text").0 = value.into();
+    }
+
+    fn visible(&mut self, entity: Entity, visible: bool) {
+        *self.visibility.get_mut(entity).expect("vis") = if visible {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
+    }
+
+    fn color(&mut self, entity: Entity, color: Color) {
+        self.colors.get_mut(entity).expect("color").0 = color;
+    }
+
+    fn image(&mut self, entity: Entity, image: Handle<Image>) {
+        self.images.get_mut(entity).expect("image").image = image;
+    }
+
+    fn checked(&mut self, entity: Entity, checked: bool) {
+        let is_checked = self.checked.get(entity).unwrap_or(false);
+        if checked && !is_checked {
+            self.commands.entity(entity).insert(Checked);
+        } else if !checked && is_checked {
+            self.commands.entity(entity).remove::<Checked>();
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
+struct SelectionRow(Entity, Entity);
+
+fn sync_recruitment_row(ui: &mut CityUi, row: SelectionRow, selected: bool, quantity_text: String) {
+    ui.checked(row.0, selected);
+    ui.text(row.1, quantity_text);
+}
+
+fn bind_row_selection(
+    commands: &mut Commands,
+    tree: &RetailTree,
+    root: Entity,
+    row: Entity,
+    button: Entity,
+    select: impl Fn(&mut CityDialogView) + Copy + Send + Sync + 'static,
+) {
+    for tag in [fourcc!("minu"), fourcc!("plus")] {
+        commands.entity(tree.find(row, tag)).observe(
+            move |_: On<Activate>, mut views: Query<&mut CityDialogView>| {
+                if let Ok(mut view) = views.get_mut(root) {
+                    select(&mut view);
+                }
+            },
+        );
+    }
+    commands.entity(button).observe(
+        move |change: On<ValueChange<bool>>, mut views: Query<&mut CityDialogView>| {
+            if change.value
+                && let Ok(mut view) = views.get_mut(root)
+            {
+                select(&mut view);
+            }
+        },
+    );
+}
+
+#[derive(Component)]
+enum CityDialogView {
+    Industry(IndustryUi),
+    Training(TrainingUi),
+    Armory(ArmoryUi),
+    University(UniversityUi),
+    Shipyard(ShipyardUi),
+    Warehouse(WarehouseUi),
+    Food(FoodUi),
+    Power(RailUi),
+    Transport(TransportUi),
+    Population(PopulationUi),
 }
 
 pub(crate) struct CityPlugin;
@@ -49,10 +151,6 @@ impl Plugin for CityPlugin {
         .add_systems(OnExit(AppState::City), leave_city_screen)
         .add_systems(
             Update,
-            animate_city_building_actions.run_if(in_state(AppState::City)),
-        )
-        .add_systems(
-            Update,
             (
                 restore_city_dialogs,
                 bind_building_change_dialogs,
@@ -64,22 +162,46 @@ impl Plugin for CityPlugin {
         .add_systems(
             Update,
             (
-                sync_city_summary,
-                sync_city_hover_title,
-                sync_city_buildings,
-                sync_city_building_action_visibility,
-                render_industry_dialog,
-                render_warehouse_dialog,
-                render_food_dialog,
-                render_power_dialog,
-                render_transport_capacity_dialog,
-                render_population_dialog,
-                render_training_dialog,
-                render_armory_dialog,
-                render_university_dialog,
-                render_shipyard_dialog,
+                render_city_screen,
+                render_city_buildings,
+                render_city_dialogs,
+                animate_city_building_actions,
             )
                 .run_if(in_state(AppState::City)),
         );
+    }
+}
+
+fn render_city_dialogs(
+    session: Res<GameSession>,
+    dialogs: Query<Ref<CityDialogView>>,
+    mut ui: CityUi,
+    mut assets: RetailUiAssets,
+    fonts: Res<RetailFonts>,
+    font_assets: Res<Assets<Font>>,
+) {
+    let nation = session.active_major_nation();
+    let game_changed = session.is_changed();
+    for dialog in &dialogs {
+        let expensive = game_changed || dialog.is_added() || dialog.is_changed();
+        match &*dialog {
+            CityDialogView::Industry(v) => render_industry(v, &session, nation, &assets, &mut ui),
+            CityDialogView::Training(v) => render_training(v, &session, nation, &mut ui),
+            CityDialogView::Armory(v) => render_armory(v, &session, &mut assets, &mut ui),
+            CityDialogView::University(v) if expensive => {
+                render_university(v, &session, &mut assets, &fonts, &font_assets, &mut ui)
+            }
+            CityDialogView::Shipyard(v) if expensive => {
+                render_shipyard(v, &session, &mut assets, &fonts, &font_assets, &mut ui)
+            }
+            CityDialogView::Warehouse(v) => render_warehouse(v, &session, &mut ui),
+            CityDialogView::Food(v) => render_food(v, &session, nation, &mut ui),
+            CityDialogView::Power(v) => render_power(v, &session, nation, &mut ui),
+            CityDialogView::Transport(v) => render_transport(v, &session, nation, &mut ui),
+            CityDialogView::Population(v) => {
+                render_population(v, &session, nation, &assets, &mut ui)
+            }
+            CityDialogView::University(_) | CityDialogView::Shipyard(_) => {}
+        }
     }
 }

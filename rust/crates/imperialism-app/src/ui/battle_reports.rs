@@ -193,10 +193,7 @@ fn render_battle_report(
     let Ok(view) = views.single() else {
         return;
     };
-    if super::projection_idle(&session, !view.is_added())
-        && !view.is_changed()
-        && !reports.is_changed()
-    {
+    if !session.is_changed() && !view.is_added() && !view.is_changed() && !reports.is_changed() {
         return;
     }
     let reports_game = session.game.battle_reports();

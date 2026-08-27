@@ -30,7 +30,10 @@ enum NavalBattleAction {
 }
 
 #[derive(Component)]
-struct NavalBattleCaption;
+struct NavalBattleView {
+    caption: Entity,
+    field: Entity,
+}
 
 #[derive(Component)]
 struct NavalBattlefield {
@@ -128,29 +131,41 @@ fn bind_naval_battle(
     bind_naval_battle_controls(&mut commands, *root, &tree);
 }
 
+fn apply_naval_battle_action(
+    action: NavalBattleAction,
+    session: &mut GameSession,
+    next_state: &mut NextState<AppState>,
+) {
+    let stop = match action {
+        NavalBattleAction::Done => session
+            .game
+            .finish_selected_navy_unit_action()
+            .ok()
+            .flatten(),
+        NavalBattleAction::Retreat => session.game.retreat_from_navy_battle().ok().flatten(),
+        NavalBattleAction::Auto => Some(session.game.auto_resolve_navy_battle()),
+    };
+    if let Some(stop) = stop.filter(|stop| *stop != TurnStop::NavalBattle) {
+        apply_turn_stop(stop, next_state);
+    }
+}
+
 fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
-    commands.entity(tree.find(root, fourcc!("curs"))).insert((
-        NavalBattleCaption,
-        Text::default(),
-        TextColor(Color::WHITE),
-    ));
+    let caption = tree.find(root, fourcc!("curs"));
     commands
-        .entity(tree.find(root, fourcc!("done")))
-        .insert((NavalBattleAction::Done, ActivateOnPress))
-        .observe(on_naval_battle_activate)
-        .remove::<InteractionDisabled>();
-    commands
-        .entity(tree.find(root, fourcc!("auto")))
-        .insert((NavalBattleAction::Auto, ActivateOnPress))
-        .observe(on_naval_battle_activate)
-        .remove::<InteractionDisabled>();
-    commands
-        .entity(tree.find(root, fourcc!("retr")))
-        .insert((NavalBattleAction::Retreat, ActivateOnPress))
-        .observe(on_naval_battle_activate)
-        .remove::<InteractionDisabled>();
-    // Retail `targ` cycles reachable enemy units. Navy damage targeting instead comes
-    // from separate `hull`/`crew`/`sail` controls which are absent from view 3800.
+        .entity(caption)
+        .insert((Text::default(), TextColor(Color::WHITE)));
+    for (tag, action) in [
+        (fourcc!("done"), NavalBattleAction::Done),
+        (fourcc!("auto"), NavalBattleAction::Auto),
+        (fourcc!("retr"), NavalBattleAction::Retreat),
+    ] {
+        commands
+            .entity(tree.find(root, tag))
+            .insert((action, ActivateOnPress))
+            .observe(on_naval_battle_activate)
+            .remove::<InteractionDisabled>();
+    }
     let field = tree.find(root, fourcc!("DLOG"));
     commands
         .entity(field)
@@ -168,99 +183,134 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
         .entity(field)
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
+    commands
+        .entity(root)
+        .insert(NavalBattleView { caption, field });
+}
+
+fn on_naval_battle_activate(
+    activate: On<Activate>,
+    actions: Query<&NavalBattleAction>,
+    mut session: ResMut<GameSession>,
+    mut next_state: ResMut<NextState<AppState>>,
+    mut music: Option<ResMut<MusicDirector>>,
+    time: Option<Res<Time>>,
+) {
+    let Ok(&action) = actions.get(activate.entity) else {
+        return;
+    };
+    apply_naval_battle_action(action, &mut session, &mut next_state);
+    if let Some(music) = music.as_mut() {
+        cue_tactical_result(&session.game, music, time.as_deref());
+    }
 }
 
 #[allow(clippy::type_complexity)]
 fn project_naval_battle(
     mut commands: Commands,
     session: Res<GameSession>,
-    added: Query<(), Added<NavalBattleCaption>>,
-    mut captions: Query<&mut Text, With<NavalBattleCaption>>,
-    mut battlefields: Query<(Entity, &mut NavalBattlefield, Option<&Children>)>,
+    views: Query<&NavalBattleView>,
+    mut captions: Query<&mut Text>,
+    mut battlefields: Query<(&mut NavalBattlefield, Option<&Children>)>,
     projected: Query<Entity, Or<(With<NavalBattleUnit>, With<NavalBattleReachable>)>>,
 ) {
-    if super::projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let Some(pending) = session.game.pending_naval_battle() else {
         return;
     };
+    let Ok(view) = views.single() else {
+        return;
+    };
+    let Ok((mut field_view, children)) = battlefields.get_mut(view.field) else {
+        return;
+    };
+    let mut redraw = session.is_changed() || field_view.is_added() || field_view.is_changed();
+
     let caption = navy_battle_caption(&session.game, pending);
-    for mut text in &mut captions {
-        text.0.clone_from(&caption);
-    }
+    captions
+        .get_mut(view.caption)
+        .expect("caption")
+        .0
+        .clone_from(&caption);
+
     let selected = session.game.selected_navy_unit().map(|unit| unit.ship);
     let reachable = session.game.selected_navy_unit_reachable_tiles();
     let Some(battle) = session.game.navy_battle() else {
         return;
     };
-    for (field, mut view, children) in &mut battlefields {
-        if view.battle.as_ref() != Some(pending) {
-            view.battle = Some(pending.clone());
-            view.view_origin_x = 0;
-            view.view_origin_y = 0;
-            view.centered_ship = None;
+
+    if field_view.battle.as_ref() != Some(pending) {
+        field_view.battle = Some(pending.clone());
+        field_view.view_origin_x = 0;
+        field_view.view_origin_y = 0;
+        field_view.centered_ship = None;
+        redraw = true;
+    }
+    if field_view.centered_ship != selected {
+        if let Some(unit) = session.game.selected_navy_unit()
+            && unit.tile >= 0
+        {
+            field_view.view_origin_y = center_navy_origin_y(
+                field_view.view_origin_y,
+                unit.tile / NavyBattle::tile_stride(),
+            );
         }
-        if view.centered_ship != selected {
-            if let Some(unit) = session.game.selected_navy_unit()
-                && unit.tile >= 0
-            {
-                view.view_origin_y =
-                    center_navy_origin_y(view.view_origin_y, unit.tile / NavyBattle::tile_stride());
+        field_view.centered_ship = selected;
+        redraw = true;
+    }
+    if !redraw {
+        return;
+    }
+    let tile_map = navy_viewport(field_view.view_origin_x, field_view.view_origin_y);
+    if let Some(children) = children {
+        for child in children.iter() {
+            if projected.contains(child) {
+                commands.entity(child).despawn();
             }
-            view.centered_ship = selected;
         }
-        let tile_map = navy_viewport(view.view_origin_x, view.view_origin_y);
-        if let Some(children) = children {
-            for child in children.iter() {
-                if projected.contains(child) {
-                    commands.entity(child).despawn();
-                }
-            }
+    }
+    let field = view.field;
+    for tile in &reachable {
+        let (x, y, width, height) = navy_tile_xywh(&tile_map, *tile);
+        commands.spawn((
+            NavalBattleReachable(*tile),
+            ChildOf(field),
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(x),
+                top: px(y),
+                width: px(width),
+                height: px(height),
+                ..default()
+            },
+            BackgroundColor(Color::srgba(1.0, 1.0, 0.2, 0.35)),
+        ));
+    }
+    for unit in battle.units() {
+        if unit.destroyed || unit.tile < 0 {
+            continue;
         }
-        for tile in &reachable {
-            let (x, y, width, height) = navy_tile_xywh(&tile_map, *tile);
-            commands.spawn((
-                NavalBattleReachable(*tile),
-                ChildOf(field),
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(x),
-                    top: px(y),
-                    width: px(width),
-                    height: px(height),
-                    ..default()
-                },
-                BackgroundColor(Color::srgba(1.0, 1.0, 0.2, 0.35)),
-            ));
-        }
-        for unit in battle.units() {
-            if unit.destroyed || unit.tile < 0 {
-                continue;
-            }
-            let (x, y, width, height) = navy_unit_xywh(&tile_map, unit.tile);
-            let color = match unit.side {
-                BattleSide::Attacker => Color::srgb(0.75, 0.2, 0.15),
-                BattleSide::Defender => Color::srgb(0.15, 0.3, 0.75),
-            };
-            let selected = selected == Some(unit.ship);
-            commands.spawn((
-                NavalBattleUnit(unit.ship),
-                ChildOf(field),
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(x),
-                    top: px(y),
-                    width: px(width),
-                    height: px(height),
-                    border: UiRect::all(px(if selected { 2 } else { 0 })),
-                    ..default()
-                },
-                BorderColor::all(Color::WHITE),
-                BackgroundColor(color),
-                Pickable::IGNORE,
-            ));
-        }
+        let (x, y, width, height) = navy_unit_xywh(&tile_map, unit.tile);
+        let color = match unit.side {
+            BattleSide::Attacker => Color::srgb(0.75, 0.2, 0.15),
+            BattleSide::Defender => Color::srgb(0.15, 0.3, 0.75),
+        };
+        let selected = selected == Some(unit.ship);
+        commands.spawn((
+            NavalBattleUnit(unit.ship),
+            ChildOf(field),
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(x),
+                top: px(y),
+                width: px(width),
+                height: px(height),
+                border: UiRect::all(px(if selected { 2 } else { 0 })),
+                ..default()
+            },
+            BorderColor::all(Color::WHITE),
+            BackgroundColor(color),
+            Pickable::IGNORE,
+        ));
     }
 }
 
@@ -346,43 +396,6 @@ fn apply_battlefield_click(
     session.game.navy_action_at(tile).ok().flatten()
 }
 
-fn on_naval_battle_activate(
-    activate: On<Activate>,
-    actions: Query<&NavalBattleAction>,
-    mut session: ResMut<GameSession>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut music: Option<ResMut<MusicDirector>>,
-    time: Option<Res<Time>>,
-) {
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    match *action {
-        NavalBattleAction::Done => {
-            if let Ok(Some(stop)) = session.game.finish_selected_navy_unit_action()
-                && stop != TurnStop::NavalBattle
-            {
-                apply_turn_stop(stop, &mut next_state);
-            }
-        }
-        NavalBattleAction::Auto => match session.game.auto_resolve_navy_battle() {
-            TurnStop::NavalBattle => {}
-            stop => apply_turn_stop(stop, &mut next_state),
-        },
-        NavalBattleAction::Retreat => {
-            if let Ok(Some(stop)) = session.game.retreat_from_navy_battle()
-                && stop != TurnStop::NavalBattle
-            {
-                apply_turn_stop(stop, &mut next_state);
-            }
-        }
-    }
-    if let Some(music) = music.as_mut() {
-        cue_tactical_result(&session.game, music, time.as_deref());
-    }
-}
-
-/// `TTacticalBattle` result dialog: `RequestAudioPresetChangeWithDeferredApply(9 or 10, 0)`.
 fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option<&Time>) {
     let Some(report) = game.battle_reports().last() else {
         return;
@@ -555,20 +568,29 @@ mod tests {
     }
 
     fn action_entity(app: &mut App, action: NavalBattleAction) -> Entity {
+        let tag = match action {
+            NavalBattleAction::Done => fourcc!("done"),
+            NavalBattleAction::Auto => fourcc!("auto"),
+            NavalBattleAction::Retreat => fourcc!("retr"),
+        };
         app.world_mut()
-            .query::<(Entity, &NavalBattleAction)>()
+            .query::<(Entity, &RetailTag)>()
             .iter(app.world())
-            .find_map(|(entity, bound)| (*bound == action).then_some(entity))
+            .find_map(|(entity, bound)| (bound.0 == tag).then_some(entity))
             .expect("naval-battle action is bound")
     }
 
     fn caption(app: &mut App) -> String {
-        app.world_mut()
-            .query::<(&Text, &NavalBattleCaption)>()
-            .iter(app.world())
-            .next()
-            .map(|(text, _)| text.0.clone())
+        let view = app
+            .world_mut()
+            .query::<&NavalBattleView>()
+            .single(app.world())
+            .expect("naval-battle view is bound");
+        app.world()
+            .get::<Text>(view.caption)
             .expect("naval-battle caption is bound")
+            .0
+            .clone()
     }
 
     fn node_left_top(node: &Node) -> (i32, i32) {
