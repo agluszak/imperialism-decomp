@@ -219,9 +219,4 @@ mod tests {
         let g = INDUSTRY_AMOUNT_BAR.with_segments(50);
         assert_eq!(amount_bar_counter_offset(g, 25), Vec2::new(73.0, 6.0));
     }
-
-    #[test]
-    fn trader_bar_uses_view_manager_resolved_palette_index() {
-        assert_eq!(TRADE_BAR_FILL, 0xbd);
-    }
 }

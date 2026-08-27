@@ -391,9 +391,8 @@ fn bind_technology_modals(
     for (root, history) in &histories {
         let view = tree.view(root);
         let technology = history.0;
-        let (title_font, title_layout, title_line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(1, 0, 18, 1))
-            .expect("retail technology-history title style");
+        let (title_font, title_layout, title_line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(1, 0, 18, 1));
         commands.entity(view.find(fourcc!("titl"))).insert((
             Text::new(assets.string(technology.name_string())),
             title_font,
@@ -408,9 +407,8 @@ fn bind_technology_modals(
 
         // ScrollArea / ScrollPosition / overflow come from codegen for TScrollView.
         let scroll = view.find(fourcc!("scvw"));
-        let (body_font, body_layout, body_line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(1, 0, 12, -2))
-            .expect("retail technology-history body style");
+        let (body_font, body_layout, body_line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, -2));
         commands.spawn((
             Node {
                 width: percent(100),

@@ -63,31 +63,7 @@ impl ResourceKind {
     }
 
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::Cotton => 0,
-            Self::Wool => 1,
-            Self::Timber => 2,
-            Self::Coal => 3,
-            Self::Iron => 4,
-            Self::Horses => 5,
-            Self::Oil => 6,
-            Self::Food => 7,
-            Self::Fabric => 8,
-            Self::Lumber => 9,
-            Self::Paper => 10,
-            Self::Steel => 11,
-            Self::Fuel => 12,
-            Self::Clothing => 13,
-            Self::Furniture => 14,
-            Self::Hardware => 15,
-            Self::Arms => 16,
-            Self::Grain => 17,
-            Self::Fruit => 18,
-            Self::Fish => 19,
-            Self::Livestock => 20,
-            Self::Gems => 21,
-            Self::Gold => 22,
-        }
+        self as u8
     }
 }
 

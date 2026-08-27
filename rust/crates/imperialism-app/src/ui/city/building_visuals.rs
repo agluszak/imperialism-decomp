@@ -304,9 +304,8 @@ fn bind_city_hover_title(
     tree: &RetailTree,
     assets: &mut RetailUiAssets,
 ) -> Entity {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 0, 12, 1))
-        .expect("retail city cursor-panel text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, 1));
     let entity = tree.find(root, fourcc!("curs"));
     commands.entity(entity).insert((
         Text::new(""),

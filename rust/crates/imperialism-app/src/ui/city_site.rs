@@ -584,9 +584,8 @@ fn set_styled_text(
     alignment: i32,
     palette: u8,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 0, point_size, alignment))
-        .expect("retail city-site text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, point_size, alignment));
     commands.entity(entity).insert((
         Text::new(retail_lines(value.as_ref())),
         font,

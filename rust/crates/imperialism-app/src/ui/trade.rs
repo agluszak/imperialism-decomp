@@ -178,9 +178,7 @@ fn bind_trade_screen(
     commands.entity(capacity).insert(InteractionDisabled);
     let advisories = TRADE_ADVISORIES.map(|(tag, _)| tree.find(root, tag));
     let advanced = session.game.technology().advanced_production_unlocked();
-    let text_style = assets
-        .text_style(RetailTextStylePreset::explicit(2, 0, 14, -1))
-        .expect("retail Trade row text style");
+    let text_style = assets.text_style(RetailTextStylePreset::explicit(2, 0, 14, -1));
     let text_color = assets.palette_color(0x13);
     let rows = TRADE_ROW_TAGS.map(|commodity, tag| {
         let row = tree.find(root, tag);

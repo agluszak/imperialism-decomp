@@ -1,5 +1,5 @@
 use super::generated;
-use super::retail::{RetailTree, ancestor_with};
+use super::retail::RetailTree;
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -104,7 +104,7 @@ impl HelpContext {
     }
 }
 
-#[derive(Component, Clone, Copy)]
+#[derive(Clone, Copy)]
 enum MapHelpAction {
     Topic(usize),
     Topics,
@@ -179,14 +179,19 @@ fn bind_added_help(
             Color::BLACK,
         );
         for (index, tag) in TOPICS.into_iter().enumerate() {
-            spawn_link_button(&mut commands, view.find(tag), MapHelpAction::Topic(index));
+            spawn_link_button(
+                &mut commands,
+                root,
+                view.find(tag),
+                MapHelpAction::Topic(index),
+            );
         }
         for (tag, action) in [
             (fourcc!("togl"), MapHelpAction::Topics),
             (fourcc!("prev"), MapHelpAction::Previous),
             (fourcc!("next"), MapHelpAction::Next),
         ] {
-            spawn_link_button(&mut commands, view.find(tag), action);
+            spawn_link_button(&mut commands, root, view.find(tag), action);
         }
         commands
             .entity(view.find(fourcc!("more")))
@@ -204,27 +209,6 @@ fn bind_added_help(
 
         show_topic_list_raw(root, context, 0, &tree, &retail, &mut commands);
     }
-}
-
-fn on_action(
-    activate: On<Activate>,
-    actions: Query<&MapHelpAction>,
-    parents: Query<&ChildOf>,
-    mut roots: Query<&mut MapHelpRoot>,
-    assets: Res<RetailAssetsResource>,
-    tree: RetailTree,
-    mut commands: Commands,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    let mut state = roots
-        .get_mut(root)
-        .expect("help action belongs to help root");
-    apply_action(action, root, &mut state, &assets, &tree, &mut commands);
 }
 
 fn apply_action(
@@ -275,11 +259,22 @@ fn apply_action(
     }
 }
 
-fn spawn_link_button(commands: &mut Commands, label: Entity, action: MapHelpAction) {
+fn spawn_link_button(commands: &mut Commands, root: Entity, label: Entity, action: MapHelpAction) {
     commands
         .entity(label)
-        .insert((UiButton, Pickable::default(), action))
-        .observe(on_action);
+        .insert((UiButton, Pickable::default()))
+        .observe(
+            move |_: On<Activate>,
+                  mut roots: Query<&mut MapHelpRoot>,
+                  assets: Res<RetailAssetsResource>,
+                  tree: RetailTree,
+                  mut commands: Commands| {
+                let mut state = roots
+                    .get_mut(root)
+                    .expect("help action belongs to help root");
+                apply_action(action, root, &mut state, &assets, &tree, &mut commands);
+            },
+        );
 }
 
 fn show_topic_list_raw(
@@ -339,9 +334,8 @@ fn set_text(
     font_family: i32,
     color: Color,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(font_family, 0, size, -2))
-        .expect("retail map-help text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(font_family, 0, size, -2));
     commands
         .entity(entity)
         .insert((Text::new(text), font, layout, line_height, TextColor(color)));
