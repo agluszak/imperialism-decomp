@@ -84,8 +84,7 @@ fn sync_random_setup_coat(
         if coat.nation == Some(setup.nation) {
             continue;
         }
-        let picture_id =
-            FIRST_MAJOR_NATION_COAT_PICTURE.offset(i16::from(setup.nation.get()));
+        let picture_id = FIRST_MAJOR_NATION_COAT_PICTURE.offset(i16::from(setup.nation.get()));
         image_node.image = pictures.picture(picture_id);
         coat.nation = Some(setup.nation);
     }

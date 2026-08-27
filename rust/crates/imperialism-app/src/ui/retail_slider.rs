@@ -197,10 +197,7 @@ fn emit_two_pic_slider_value(
 
 fn on_two_pic_slider_press(
     mut press: On<Pointer<Press>>,
-    sliders: Query<
-        (&SliderRange, &Node, Has<InteractionDisabled>),
-        With<RetailTwoPicSliderParts>,
-    >,
+    sliders: Query<(&SliderRange, &Node, Has<InteractionDisabled>), With<RetailTwoPicSliderParts>>,
     mut commands: Commands,
 ) {
     let Ok((range, node, disabled)) = sliders.get(press.entity) else {
@@ -246,14 +243,7 @@ fn on_two_pic_slider_drag(
     let Some(y) = pointer_y_from_cursor(cursor, height) else {
         return;
     };
-    emit_two_pic_slider_value_at_y(
-        &mut commands,
-        drag.entity,
-        range,
-        height as i16,
-        y,
-        false,
-    );
+    emit_two_pic_slider_value_at_y(&mut commands, drag.entity, range, height as i16, y, false);
 }
 
 fn on_two_pic_slider_drag_end(

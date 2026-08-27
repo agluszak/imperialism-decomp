@@ -4,9 +4,7 @@ use super::overlays::{
     IMPROVEMENT_PICTURE_IDS, RESOURCE_ICON_HEIGHT, RESOURCE_ICON_WIDTH, RESOURCE_OVERLAY_HEIGHT,
     RESOURCE_OVERLAY_WIDTH, SURVEY_FEEDBACK_DESTINATION, SURVEY_FEEDBACK_SOURCE_X,
 };
-use super::terrain::{
-    BASE_WATER_OFFSETS, compose_strategic_base_tile, frame_for_offset,
-};
+use super::terrain::{BASE_WATER_OFFSETS, compose_strategic_base_tile, frame_for_offset};
 use super::*;
 use crate::ui::retail_palette::major_nation_palette;
 use crate::ui::test_support::{
