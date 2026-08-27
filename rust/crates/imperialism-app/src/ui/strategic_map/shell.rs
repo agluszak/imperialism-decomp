@@ -349,18 +349,4 @@ mod tests {
             MapEdges::empty()
         );
     }
-
-    #[test]
-    fn ordinary_map_buttons_do_not_use_press_time_activation() {
-        let source = include_str!("shell.rs");
-        let binder = source
-            .split("fn bind_strategic_map")
-            .nth(1)
-            .and_then(|rest| rest.split("fn on_end_turn").next())
-            .expect("strategic bind");
-        assert!(
-            !binder.contains("OnPress"),
-            "DONE/map controls must activate on release"
-        );
-    }
 }

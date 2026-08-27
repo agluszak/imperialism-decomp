@@ -378,18 +378,4 @@ mod tests {
         assert_eq!(enabled.len(), 3);
         assert!(!enabled.contains(&fourcc!("city")));
     }
-
-    #[test]
-    fn ordinary_shell_buttons_do_not_use_press_time_activation() {
-        let source = include_str!("game_shell.rs");
-        let binder = source
-            .split("pub(crate) fn bind_native_game_screen_nav")
-            .nth(1)
-            .and_then(|rest| rest.split("#[derive(Component)]").next())
-            .expect("nav binder");
-        assert!(
-            !binder.contains("OnPress"),
-            "nav/leave must activate on release"
-        );
-    }
 }

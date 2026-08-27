@@ -113,6 +113,9 @@ pub(crate) fn open_load_save(
 }
 
 #[derive(Component)]
+struct PendingLoadSave(LoadSaveMode);
+
+#[derive(Component)]
 struct LoadSaveRoot {
     mode: LoadSaveMode,
     selected: Option<SaveSlot>,
@@ -147,22 +150,6 @@ struct LoadSavePresentation {
     empty_label: String,
 }
 
-fn empty_root(mode: LoadSaveMode) -> LoadSaveRoot {
-    LoadSaveRoot {
-        mode,
-        selected: None,
-        renaming: false,
-        info: Entity::PLACEHOLDER,
-        map: Entity::PLACEHOLDER,
-        name_field: None,
-        presentation: LoadSavePresentation {
-            slots: std::array::from_fn(|_| None),
-            autosave: None,
-            empty_label: String::new(),
-        },
-    }
-}
-
 #[derive(Component)]
 enum LoadSaveNotice {
     PickSlot,
@@ -173,7 +160,7 @@ enum LoadSaveNotice {
 #[derive(Component)]
 struct FlagMenuRoot;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum FlagMenuAction {
     Save,
     Load,
@@ -293,20 +280,23 @@ fn loaded_game_destination(game: &GameState) -> AppState {
 
 fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
     let root = commands.spawn_scene(generated::linger_1502()).id();
-    commands
-        .entity(root)
-        .insert((empty_root(request.0), DespawnOnExit(AppState::LoadSave)));
+    commands.entity(root).insert((
+        PendingLoadSave(request.0),
+        DespawnOnExit(AppState::LoadSave),
+    ));
 }
 
 fn bind_load_save(
     mut commands: Commands,
-    root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
+    pending: Query<(Entity, &PendingLoadSave), Added<PendingLoadSave>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     save_dir: Res<SaveDirectory>,
 ) {
-    let (root_entity, screen) = root.into_inner();
-    let mode = screen.mode;
+    let Ok((root_entity, pending)) = pending.single() else {
+        return;
+    };
+    let mode = pending.0;
     let info = tree.find(root_entity, fourcc!("info"));
     let map = tree.find(root_entity, fourcc!("map "));
     bind_load_save_actions(&mut commands, root_entity, &tree, mode);
@@ -321,12 +311,20 @@ fn bind_load_save(
             .remove::<InteractionDisabled>();
     }
     commands.entity(info).insert(Text::new(String::new()));
-    commands.entity(map).insert(LoadSaveMapPreview::default());
-    let mut root = empty_root(mode);
-    root.info = info;
-    root.map = map;
-    root.presentation = presentation;
-    commands.entity(root_entity).insert(root);
+    let preview_image = assets.add_image(Image::transparent());
+    commands
+        .entity(map)
+        .insert((LoadSaveMapPreview::default(), ImageNode::new(preview_image)));
+    commands.entity(root_entity).insert(LoadSaveRoot {
+        mode,
+        selected: None,
+        renaming: false,
+        info,
+        map,
+        name_field: None,
+        presentation,
+    });
+    commands.entity(root_entity).remove::<PendingLoadSave>();
 }
 
 fn bind_load_save_actions(
@@ -471,33 +469,27 @@ fn satellite_preview(
 }
 
 fn apply_satellite_preview(
-    commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    entity: Entity,
-    image_node: Option<&ImageNode>,
+    image_node: &mut ImageNode,
     preview: &SatellitePreview,
 ) {
-    let image = preview.to_image(assets.default_dib_palette());
-    if let Some(image_node) = image_node {
-        assets.replace_image(&image_node.image, image);
-    } else {
-        let handle = assets.add_image(image);
-        commands.entity(entity).insert(ImageNode::new(handle));
-    }
+    assets.replace_image(
+        &image_node.image,
+        preview.to_image(assets.default_dib_palette()),
+    );
 }
 
 fn sync_load_save_preview(
-    mut commands: Commands,
     mut assets: RetailUiAssets,
     roots: Query<&LoadSaveRoot>,
-    mut maps: Query<(Option<&ImageNode>, &mut LoadSaveMapPreview)>,
+    mut maps: Query<(&mut ImageNode, &mut LoadSaveMapPreview)>,
     save_dir: Res<SaveDirectory>,
     session: Option<Res<GameSession>>,
 ) {
     let Ok(root) = roots.single() else {
         return;
     };
-    let Ok((image_node, mut preview)) = maps.get_mut(root.map) else {
+    let Ok((mut image_node, mut preview)) = maps.get_mut(root.map) else {
         return;
     };
     let key = match root.mode {
@@ -518,7 +510,7 @@ fn sync_load_save_preview(
             };
             let selected = session.game.turn().active_nation;
             let preview = satellite_preview(|tile| session.game.map()[tile].owner_nation, selected);
-            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
+            apply_satellite_preview(&mut assets, &mut image_node, &preview);
         }
         LoadSavePreviewKey::Slot(slot) => {
             let path = retail_save_path(&save_dir.0, slot);
@@ -537,7 +529,7 @@ fn sync_load_save_preview(
                 |tile| owners.get(usize::from(tile.get())).copied().flatten(),
                 selected,
             );
-            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
+            apply_satellite_preview(&mut assets, &mut image_node, &preview);
         }
     }
 }
@@ -924,7 +916,17 @@ fn bind_flag_menu(
             .insert(AccessibleLabel::new(caption))
             .remove::<InteractionDisabled>();
         if let Some(action) = action {
-            control.insert(action).observe(on_flag_menu_activate);
+            control.observe(
+                move |_: On<Activate>,
+                      prompts: Query<(), With<FlagMenuPrompt>>,
+                      mut next_state: ResMut<NextState<AppState>>,
+                      mut commands: Commands| {
+                    if !prompts.is_empty() {
+                        return;
+                    }
+                    apply_flag_menu_action(action, &mut commands, &mut next_state);
+                },
+            );
         } else {
             dismiss_on_activate(&mut commands, control_entity, root);
             bind_modal_keys(&mut commands, root, None, Some(control_entity));
@@ -932,32 +934,24 @@ fn bind_flag_menu(
     }
 }
 
-fn on_flag_menu_activate(
-    activate: On<Activate>,
-    actions: Query<&FlagMenuAction>,
-    prompts: Query<(), With<FlagMenuPrompt>>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut commands: Commands,
+fn apply_flag_menu_action(
+    action: FlagMenuAction,
+    commands: &mut Commands,
+    next_state: &mut NextState<AppState>,
 ) {
-    if !prompts.is_empty() {
-        return;
-    }
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    match *action {
+    match action {
         FlagMenuAction::Save => {
             open_load_save(
-                &mut commands,
-                &mut next_state,
+                commands,
+                next_state,
                 LoadSaveMode::Save,
                 AppState::StrategicMap,
             );
         }
         FlagMenuAction::Load => {
             open_load_save(
-                &mut commands,
-                &mut next_state,
+                commands,
+                next_state,
                 LoadSaveMode::Load,
                 AppState::StrategicMap,
             );
@@ -971,10 +965,10 @@ fn on_flag_menu_activate(
             next_state.set(AppState::Credits);
         }
         FlagMenuAction::NewGame => {
-            open_flag_menu_prompt(&mut commands, FlagMenuPending::NewGame);
+            open_flag_menu_prompt(commands, FlagMenuPending::NewGame);
         }
         FlagMenuAction::Quit => {
-            open_flag_menu_prompt(&mut commands, FlagMenuPending::Quit);
+            open_flag_menu_prompt(commands, FlagMenuPending::Quit);
         }
     }
 }
@@ -1081,7 +1075,7 @@ mod tests {
     fn spawn_test_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
         let root = commands
             .spawn((
-                empty_root(request.0),
+                PendingLoadSave(request.0),
                 Node::default(),
                 DespawnOnExit(AppState::LoadSave),
             ))
@@ -1101,16 +1095,28 @@ mod tests {
 
     fn bind_test_load_save(
         mut commands: Commands,
-        root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
+        pending: Query<(Entity, &PendingLoadSave), Added<PendingLoadSave>>,
         tree: RetailTree,
     ) {
-        let (entity, screen) = root.into_inner();
+        let Ok((entity, pending)) = pending.single() else {
+            return;
+        };
         let info = tree.find(entity, fourcc!("info"));
-        bind_load_save_actions(&mut commands, entity, &tree, screen.mode);
-        let mut root = empty_root(screen.mode);
-        root.info = info;
-        root.map = info;
-        commands.entity(entity).insert(root);
+        bind_load_save_actions(&mut commands, entity, &tree, pending.0);
+        commands.entity(entity).insert(LoadSaveRoot {
+            mode: pending.0,
+            selected: None,
+            renaming: false,
+            info,
+            map: info,
+            name_field: None,
+            presentation: LoadSavePresentation {
+                slots: std::array::from_fn(|_| None),
+                autosave: None,
+                empty_label: String::new(),
+            },
+        });
+        commands.entity(entity).remove::<PendingLoadSave>();
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
