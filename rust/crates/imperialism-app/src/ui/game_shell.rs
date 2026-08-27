@@ -560,9 +560,7 @@ fn bind_turn_summary_notice(
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, "Imperialism");
     linger.set_body(&mut commands, &mut assets, &notice.0);
-    commands
-        .entity(linger.okay)
-        .remove::<InteractionDisabled>();
+    commands.entity(linger.okay).remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 

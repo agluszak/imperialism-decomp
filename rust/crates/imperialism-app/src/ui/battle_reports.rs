@@ -181,15 +181,11 @@ fn bind_battle_report(
     );
     ensure_battle_report_presentation(&mut assets, session, &mut reports.0);
     let okay = tree.find(root, fourcc!("okay"));
-    commands
-        .entity(okay)
-        .observe(on_battle_report_close);
+    commands.entity(okay).observe(on_battle_report_close);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
     let info = tree.find(root, fourcc!("info"));
-    commands
-        .entity(info)
-        .observe(on_battle_report_detail);
+    commands.entity(info).observe(on_battle_report_detail);
     let previous = tree.find(root, fourcc!("prev"));
     let next = tree.find(root, fourcc!("next"));
     for (entity, is_previous) in [(previous, true), (next, false)] {

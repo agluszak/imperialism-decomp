@@ -127,21 +127,19 @@ pub(crate) fn bind_army_toolbar(
         (fourcc!("latr"), ArmyIdleOrderMode::Latr),
         (fourcc!("done"), ArmyIdleOrderMode::Done),
     ] {
-        commands
-            .entity(tree.child(page, tag))
-            .observe(
-                move |_: On<Activate>,
-                      mut session: ResMut<GameSession>,
-                      mut map: ResMut<StrategicMapSession>| {
-                    let Some(province) = map.selection.army() else {
-                        return;
-                    };
-                    session
-                        .game
-                        .set_idle_unit_orders_on_province(province, mode);
-                    map.cycle_selection(&mut session.game);
-                },
-            );
+        commands.entity(tree.child(page, tag)).observe(
+            move |_: On<Activate>,
+                  mut session: ResMut<GameSession>,
+                  mut map: ResMut<StrategicMapSession>| {
+                let Some(province) = map.selection.army() else {
+                    return;
+                };
+                session
+                    .game
+                    .set_idle_unit_orders_on_province(province, mode);
+                map.cycle_selection(&mut session.game);
+            },
+        );
     }
     commands.entity(garrison).observe(
         |_: On<Activate>,

@@ -1076,10 +1076,7 @@ fn bind_added_army_rosters(
                 layout,
                 line_height,
             )
-            .insert((
-                Button,
-                ArmyRosterRowAction::Select(row.province),
-            ))
+            .insert((Button, ArmyRosterRowAction::Select(row.province)))
             .observe(on_army_roster_row_action);
         }
     }

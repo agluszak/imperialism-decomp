@@ -312,9 +312,7 @@ fn bind_high_score(
     save_dir: Option<Res<SaveDirectory>>,
 ) {
     let label = tree.find(*root, fourcc!("labl"));
-    commands
-        .entity(label)
-        .observe(on_high_score_close);
+    commands.entity(label).observe(on_high_score_close);
     let table = save_dir
         .and_then(|dir| std::fs::read(dir.0.join("scores.dat")).ok())
         .map(|bytes| read_scores_dat(&bytes))

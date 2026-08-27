@@ -107,12 +107,8 @@ fn bind_offer_sheet_controls(
     let reject = tree.find(root, fourcc!("reje"));
     let purc = tree.find(root, fourcc!("purc"));
     let nomo = tree.find(root, fourcc!("nomo"));
-    commands
-        .entity(accept)
-        .remove::<InteractionDisabled>();
-    commands
-        .entity(reject)
-        .remove::<InteractionDisabled>();
+    commands.entity(accept).remove::<InteractionDisabled>();
+    commands.entity(reject).remove::<InteractionDisabled>();
     bind_offer_answer(commands, accept, true);
     bind_offer_answer(commands, reject, false);
     commands
@@ -282,9 +278,7 @@ fn bind_offer_sheet_notice(
     let (root, body) = notice.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_body(&mut commands, &mut assets, &body.0);
-    commands
-        .entity(linger.okay)
-        .remove::<InteractionDisabled>();
+    commands.entity(linger.okay).remove::<InteractionDisabled>();
 }
 
 #[cfg(test)]
