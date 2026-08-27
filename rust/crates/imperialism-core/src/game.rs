@@ -34,6 +34,8 @@ pub struct GameState {
     pub(crate) nations: Nations,
     pub(crate) military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
     pub(crate) civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
+    #[serde(default)]
+    pub(crate) civilian_stack_order: Vec<CivilianUnitId>,
     pub(crate) object_ids: ObjectIdAllocator,
     pub(crate) ships: IndexMap<ShipId, ShipState>,
     pub(crate) admirals: IndexMap<AdmiralId, AdmiralState>,
@@ -95,6 +97,7 @@ impl GameState {
             nations: parts.nations,
             military_units: parts.military_units,
             civilian_units: parts.civilian_units,
+            civilian_stack_order: Vec::new(),
             object_ids: parts.object_ids,
             ships: parts.ships,
             admirals: parts.admirals,
@@ -111,7 +114,7 @@ impl GameState {
                 state.elect_task_force_flagship(force);
             }
         }
-        state.rebuild_civilian_tile_chains();
+        state.rebuild_civilian_stack_order();
         state
     }
 
@@ -248,10 +251,21 @@ impl GameState {
             .representative_tile_index_for_nation(nation, self.nations.home_tile(nation), false)
     }
 
-    /// `TCountry::GetOrComputeOverlayAnchorTileIndex` uses the wrapped-world bias.
-    pub fn ocean_overlay_anchor_for_nation(&self, nation: NationId) -> Option<TileId> {
-        self.map
-            .representative_tile_index_for_nation(nation, self.nations.home_tile(nation), true)
+    /// `TCountry::GetOrComputeOverlayAnchorTileIndex`: the country's diplomacy-map
+    /// overlay anchor. Computed once (from the wrapped-world representative tile)
+    /// and cached in `NationCommonState`, matching retail's lazy, serialized cache.
+    pub fn overlay_anchor_for_nation(&mut self, nation: NationId) -> Option<TileId> {
+        if let Some(anchor) = self.nations.common(nation)?.overlay_anchor_tile {
+            return Some(anchor);
+        }
+        let home = self.nations.home_tile(nation);
+        let computed = self
+            .map
+            .representative_tile_index_for_nation(nation, home, true);
+        if let Some(common) = self.nations.common_mut(nation) {
+            common.overlay_anchor_tile = computed;
+        }
+        computed
     }
 
     /// Sets whether a civilian unit kind is unlocked in the nation's University.

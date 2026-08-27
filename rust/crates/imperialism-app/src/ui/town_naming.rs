@@ -130,7 +130,7 @@ fn spawn_resource_rows(
         if amount == 0 {
             continue;
         }
-        let icon = assets.transparent_picture(resource.material_picture(), 0x10);
+        let icon = assets.keyed_picture(resource.material_picture(), 0x10);
         commands
             .spawn_scene(town_resource_row(row, icon, amount))
             .insert(ChildOf(parent));

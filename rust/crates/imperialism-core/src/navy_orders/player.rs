@@ -313,17 +313,12 @@ impl GameState {
         });
         self.destroy_task_force_ingot(force);
         self.free_task_force(force);
-        let target = if let Some((zone, nation, target)) = context {
+        if let Some((zone, nation, target)) = context {
             self.refresh_zone_focus(zone, nation);
             target
         } else {
             None
-        };
-        self.map.recruit_search_active = false;
-        for tile in self.map.tiles.iter_mut() {
-            tile.recruit_search_visited = 0;
         }
-        target
     }
 
     /// `TNavyMgr::FreeShipsOf` (0x00556f60): cancel every queued force for `nation`.

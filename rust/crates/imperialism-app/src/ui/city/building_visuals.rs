@@ -266,12 +266,10 @@ pub(in crate::ui::city) fn bind_city_screen(
     });
 }
 
-const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset = RetailTextStylePreset {
-    font_family: 3,
-    face_flags: 0,
-    point_size: 10,
-    alignment: 1,
-};
+/// `TPlacard::Draw` uses `BuildUiTextStyleDescriptor(0, 10, 0x2b6c)`: size 10
+/// selects Book Antiqua (family 3), centered, palette `0x28`.
+const CITY_SUMMARY_NUMBER_STYLE: RetailTextStylePreset =
+    RetailTextStylePreset::explicit(3, 0, 10, 1);
 
 fn bind_city_summary_values(
     commands: &mut Commands,
@@ -355,12 +353,7 @@ fn bind_city_hover_title(
     assets: &mut RetailUiAssets,
 ) -> Entity {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 0, 12, 1))
         .expect("retail city cursor-panel text style");
     let entity = tree.find(root, fourcc!("curs"));
     commands.entity(entity).insert((

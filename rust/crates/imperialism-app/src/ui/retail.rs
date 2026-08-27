@@ -94,12 +94,12 @@ pub fn retail_text_style(
     point_size: i32,
     alignment: i32,
 ) -> impl Scene {
-    let style = resolve_retail_text_style(RetailTextStylePreset {
+    let style = resolve_retail_text_style(RetailTextStylePreset::explicit(
         font_family,
         face_flags,
         point_size,
         alignment,
-    })
+    ))
     .expect("generated retail text style must resolve");
     let underline = style.underline.then(|| bsn! { Underline });
     let line_height = LineHeight::Px(style.logical_pixel_height as f32);
@@ -207,12 +207,12 @@ pub fn retail_centered_text_padding(
     height: i32,
     top: i32,
 ) -> impl Scene {
-    let text_height = resolve_retail_text_style(RetailTextStylePreset {
+    let text_height = resolve_retail_text_style(RetailTextStylePreset::explicit(
         font_family,
         face_flags,
         point_size,
-        alignment: 0,
-    })
+        0,
+    ))
     .expect("generated retail text style must resolve")
     .logical_pixel_height;
     bsn! {
@@ -237,7 +237,10 @@ pub enum RetailPictureError {
 }
 
 #[derive(Resource, Default)]
-struct RetailPictureHandles(HashMap<PictureId, Handle<Image>>);
+struct RetailPictureHandles {
+    opaque: HashMap<PictureId, Handle<Image>>,
+    keyed: HashMap<(PictureId, u8), Handle<Image>>,
+}
 
 #[derive(SystemParam)]
 pub struct RetailUiAssets<'w> {
@@ -342,17 +345,30 @@ impl RetailUiAssets<'_> {
         self.images.add(image)
     }
 
-    pub fn transparent_picture(
+    pub fn keyed_picture(
         &mut self,
         picture_id: PictureId,
-        palette_index: u8,
+        transparent_palette_index: u8,
     ) -> Handle<Image> {
+        if let Some(handle) = self
+            .handles
+            .keyed
+            .get(&(picture_id, transparent_palette_index))
+        {
+            return handle.clone();
+        }
         let indexed = self.indexed_picture(picture_id);
         // Decode the indexed DIB once into the UI image instead of applying an
         // alpha mask to Bevy's BMP decoder output. The latter has a distinct
         // scanline layout for some retail DIBs, so its index rows can diverge
         // from the visible RGBA rows (notably atlas 0xee2).
-        self.add_image(indexed.to_keyed_image(self.default_dib_palette(), palette_index))
+        let handle = self.add_image(
+            indexed.to_keyed_image(self.default_dib_palette(), transparent_palette_index),
+        );
+        self.handles
+            .keyed
+            .insert((picture_id, transparent_palette_index), handle.clone());
+        handle
     }
 
     pub fn try_indexed_picture(
@@ -365,10 +381,6 @@ impl RetailUiAssets<'_> {
     pub fn indexed_picture(&self, picture_id: PictureId) -> IndexedPicture {
         self.try_indexed_picture(picture_id)
             .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
-    }
-
-    pub fn fonts(&self) -> &RetailFonts {
-        &self.retail_fonts
     }
 
     pub fn text_style(
@@ -465,13 +477,13 @@ fn load_retail_picture(
     images: &mut Assets<Image>,
     picture_handles: &mut RetailPictureHandles,
 ) -> Result<Handle<Image>, RetailPictureError> {
-    if let Some(handle) = picture_handles.0.get(&picture_id) {
+    if let Some(handle) = picture_handles.opaque.get(&picture_id) {
         return Ok(handle.clone());
     }
     let bytes = retail_assets.assets().picture(picture_id)?;
     let image = decode_retail_picture(picture_id, &bytes)?;
     let handle = images.add(image);
-    picture_handles.0.insert(picture_id, handle.clone());
+    picture_handles.opaque.insert(picture_id, handle.clone());
     Ok(handle)
 }
 
@@ -777,13 +789,8 @@ mod tests {
     fn family_zero_bevy_text_uses_the_registered_system_font() {
         let mut font_assets = Assets::<Font>::default();
         let fonts = crate::fonts::load_test_fonts(&mut font_assets);
-        let style = resolve_retail_text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("family 0 resolves to System");
+        let style = resolve_retail_text_style(RetailTextStylePreset::explicit(0, 0, 12, 1))
+            .expect("family 0 resolves to System");
         assert_eq!(style.face, RetailFontFace::System);
 
         let system = fonts.get(RetailFontFace::System);

@@ -26,7 +26,7 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::TurnAlert;
+use imperialism_core::{NationId, TurnAlert};
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 use std::collections::VecDeque;
 
@@ -157,7 +157,7 @@ fn bind_strategic_map(
     mut nodes: Query<&mut Node>,
     mut pictures: Query<&mut ImageNode>,
     mut assets: RetailUiAssets,
-    session: Res<GameSession>,
+    mut session: ResMut<GameSession>,
     map: Res<StrategicMapSession>,
 ) {
     bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
@@ -193,6 +193,12 @@ fn bind_strategic_map(
         map.view.detailed_origin(&session.game),
     );
     commands.entity(land).observe(on_strategic_map_click);
+    // `TCountry` lazily fills this serialized cache while the view is bound.
+    // Continuous map projection reads the resulting tile without mutating game
+    // state.
+    for nation in NationId::all() {
+        session.game.overlay_anchor_for_nation(nation);
+    }
     let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree, &session);
     commands.entity(ocean).observe(on_strategic_map_click);
     bind_minimap(
@@ -343,20 +349,14 @@ pub(crate) fn bind_game_status_display(
     tree: &RetailTree,
 ) {
     let (season_font, season_layout, season_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: -2,
-        })
+        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+            1, 0, 12, -2,
+        ))
         .expect("retail season status text style");
     let (treasury_font, treasury_layout, treasury_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+            1, 0, 12, 1,
+        ))
         .expect("retail treasury status text style");
     // Retail draws the nominal text first, then its offset "shadow" copy over it.
     // Bevy draws shadows behind text, so use the retail shadow as the visible face.

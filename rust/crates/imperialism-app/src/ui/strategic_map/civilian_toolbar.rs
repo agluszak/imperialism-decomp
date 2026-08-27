@@ -228,7 +228,7 @@ fn sync_civilian_toolbar(
         return;
     };
     despawn_legend_items(&mut commands, legend_children, &items);
-    let Some((_, unit)) = unit else {
+    let Some((id, unit)) = unit else {
         return;
     };
     spawn_civilian_legend(
@@ -236,12 +236,17 @@ fn sync_civilian_toolbar(
         &mut assets,
         legend,
         &session.game,
+        id,
         unit,
         atlases.clone(),
     );
 }
 
-fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) -> [i16; 5] {
+fn civilian_legend_target_counts(
+    state: &GameState,
+    unit_id: CivilianUnitId,
+    unit: &CivilianUnitState,
+) -> [i16; 5] {
     let mut counts = [0; 5];
     let Some(tile) = unit.location().tile() else {
         return counts;
@@ -258,7 +263,7 @@ fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) ->
     let profiles = TARGET_TILE_PROFILES[unit.unit_type()];
     for &province in common.owned_regions() {
         for &linked in &state.map().provinces[province].linked_tiles {
-            if state.map()[linked].recruit_search_visited != 0 {
+            if !state.is_civilian_target_eligible(unit_id, linked) {
                 continue;
             }
             let profile = i16::from(state.map()[linked].gate);
@@ -278,18 +283,14 @@ fn spawn_civilian_legend(
     assets: &mut RetailUiAssets,
     legend: Entity,
     state: &GameState,
+    unit_id: CivilianUnitId,
     unit: &CivilianUnitState,
     atlases: LegendAtlases,
 ) {
     let kind = unit.unit_type();
     let name = assets.string(kind.name_string());
     let (name_font, name_layout, name_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::built(12, 1))
         .expect("retail civilian name text style");
     spawn_legend_text(
         commands,
@@ -309,13 +310,13 @@ fn spawn_civilian_legend(
     );
     match kind {
         CivilianUnitKind::Prospector => {
-            spawn_prospector_legend(commands, assets, legend, state, unit, atlases);
+            spawn_prospector_legend(commands, assets, legend, state, unit_id, unit, atlases);
         }
         CivilianUnitKind::Engineer => {
             spawn_engineer_legend(commands, assets, legend, state, atlases);
         }
         CivilianUnitKind::Developer => {}
-        _ => spawn_developer_legend(commands, assets, legend, state, unit, atlases),
+        _ => spawn_developer_legend(commands, assets, legend, state, unit_id, unit, atlases),
     }
 }
 
@@ -433,6 +434,7 @@ fn spawn_prospector_legend(
     assets: &mut RetailUiAssets,
     legend: Entity,
     state: &GameState,
+    unit_id: CivilianUnitId,
     unit: &CivilianUnitState,
     atlases: LegendAtlases,
 ) {
@@ -456,7 +458,7 @@ fn spawn_prospector_legend(
     let streamlined_hulls_researched = state.technology().research_status_by_nation[nation]
         [Technology::StreamlinedHulls]
         == TechnologyResearchStatus::Researched;
-    let counts = civilian_legend_target_counts(state, unit);
+    let counts = civilian_legend_target_counts(state, unit_id, unit);
     let column_resources: [[i16; 4]; 5] = [
         [3, 4, -1, -1],
         [3, 4, 0x16, 0x15],
@@ -530,6 +532,7 @@ fn spawn_developer_legend(
     assets: &mut RetailUiAssets,
     legend: Entity,
     state: &GameState,
+    unit_id: CivilianUnitId,
     unit: &CivilianUnitState,
     atlases: LegendAtlases,
 ) {
@@ -633,7 +636,7 @@ fn spawn_developer_legend(
     {
         row_limit -= 1;
     }
-    let counts = civilian_legend_target_counts(state, unit);
+    let counts = civilian_legend_target_counts(state, unit_id, unit);
     for row in 0..row_limit {
         let Some(terrain) = TARGET_TILE_PROFILES[kind][row as usize] else {
             continue;
@@ -675,12 +678,7 @@ fn legend_text_style(
     assets: &mut RetailUiAssets,
 ) -> (TextFont, TextLayout, bevy::text::LineHeight, bool) {
     assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        })
+        .text_style(RetailTextStylePreset::built(10, -2))
         .expect("retail civilian legend text style")
 }
 
@@ -750,7 +748,7 @@ fn spawn_atlas_icon(
 }
 
 fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: PictureId) -> Handle<Image> {
-    assets.transparent_picture(picture_id, TRANSPARENT_INDEX)
+    assets.keyed_picture(picture_id, TRANSPARENT_INDEX)
 }
 
 fn despawn_legend_items(
@@ -792,7 +790,7 @@ mod tests {
     fn legend_counts_owned_unvisited_profile_tiles() {
         let state = fixture_state();
         let nation = state.turn().active_nation;
-        let (_, unit) = state
+        let (id, unit) = state
             .civilian_units()
             .find(|(_, unit)| {
                 unit.owner_nation() == nation
@@ -816,7 +814,7 @@ mod tests {
                         .collect::<Vec<_>>()
                 )
             });
-        let counts = civilian_legend_target_counts(&state, unit);
+        let counts = civilian_legend_target_counts(&state, id, unit);
         let profiles = TARGET_TILE_PROFILES[unit.unit_type()];
         for (slot, profile) in profiles.iter().copied().enumerate() {
             if profile.is_none() {

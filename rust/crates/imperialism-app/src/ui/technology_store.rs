@@ -396,12 +396,7 @@ fn bind_technology_modals(
         let view = tree.view(root);
         let technology = history.0;
         let (title_font, title_layout, title_line_height, _) = assets
-            .text_style(RetailTextStylePreset {
-                font_family: 1,
-                face_flags: 0,
-                point_size: 18,
-                alignment: 1,
-            })
+            .text_style(RetailTextStylePreset::explicit(1, 0, 18, 1))
             .expect("retail technology-history title style");
         commands.entity(view.find(fourcc!("titl"))).insert((
             Text::new(assets.string(technology.name_string())),
@@ -424,12 +419,7 @@ fn bind_technology_modals(
             .entity(scroll)
             .insert((ScrollArea, Pickable::default()));
         let (body_font, body_layout, body_line_height, _) = assets
-            .text_style(RetailTextStylePreset {
-                font_family: 1,
-                face_flags: 0,
-                point_size: 12,
-                alignment: -2,
-            })
+            .text_style(RetailTextStylePreset::explicit(1, 0, 12, -2))
             .expect("retail technology-history body style");
         commands.spawn((
             Node {

@@ -15,7 +15,6 @@ use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
 use imperialism_formats::{RetailTextStylePreset, fourcc};
-
 const OFFER_STRING_GROUP: u16 = 0x2740;
 
 #[derive(Component)]
@@ -117,12 +116,7 @@ fn bind_offer_sheet_text(
 ) {
     let text_style = |assets: &mut RetailUiAssets, alignment| {
         assets
-            .text_style(RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment,
-            })
+            .text_style(RetailTextStylePreset::explicit(0, 0, 12, alignment))
             .expect("retail offer-sheet text style")
     };
     let (body, center, body_height, _) = text_style(assets, 1);
@@ -149,12 +143,7 @@ fn bind_offer_sheet_text(
         ));
     }
     let (number, center, number_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(0, 0, 14, 1))
         .expect("retail offer-sheet number text style");
     for tag in [fourcc!("purc"), fourcc!("mCap")] {
         commands.entity(tree.find(root, tag)).insert((
@@ -283,7 +272,7 @@ fn render_offer_sheet(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    let icon = assets.transparent_picture(offer.commodity.resource().material_picture(), 0x10);
+    let icon = assets.keyed_picture(offer.commodity.resource().material_picture(), 0x10);
     commands.entity(view.icon).insert(ImageNode::new(icon));
 
     commands.entity(view.stop_buying).remove::<Checked>();

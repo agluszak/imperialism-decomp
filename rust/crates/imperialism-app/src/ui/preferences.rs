@@ -5,9 +5,8 @@ use super::hover_help::{
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
-use super::retail_raster_text::RetailRasterTextPainter;
 use crate::media::RetailAudioAssets;
-use crate::{AppState, RetailAssetsResource, RetailFonts, ReturnTo};
+use crate::{AppState, RetailAssetsResource, ReturnTo};
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::ui::{Checked, InteractionDisabled};
@@ -136,8 +135,11 @@ struct PreferenceSlider {
 struct PreferenceSliderVisual {
     upper: imperialism_formats::IndexedPicture,
     lower: imperialism_formats::IndexedPicture,
-    off: String,
 }
+
+/// Centered "Off" caption shown while a volume slider sits at its minimum.
+#[derive(Component)]
+struct PreferenceSliderOff;
 
 pub(crate) struct PreferencesPlugin;
 
@@ -285,6 +287,7 @@ fn bind_volume_slider(
     let upper = assets.indexed_picture(picture_base);
     let lower = assets.indexed_picture(picture_base.offset(1));
     let image = assets.add_image(upper.to_image(assets.default_dib_palette()));
+    let off = assets.get_string(0x2743, 0x3b);
     commands
         .entity(slider)
         .insert((
@@ -298,16 +301,31 @@ fn bind_volume_slider(
             PreferenceSlider { slot },
             HoverHelpText(hover),
             ImageNode::new(image),
-            PreferenceSliderVisual {
-                upper,
-                lower,
-                off: assets.get_string(0x2743, 0x3b),
-            },
+            PreferenceSliderVisual { upper, lower },
         ))
         .observe(slider_self_update)
         .observe(on_preference_slider_change)
         .observe(on_sound_slider_released)
         .remove::<InteractionDisabled>();
+    let (off_font, off_layout, off_line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(14, 1))
+        .expect("retail preference slider off text style");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            width: Val::Percent(100.0),
+            height: Val::Percent(100.0),
+            ..default()
+        },
+        Text::new(off),
+        off_font,
+        off_layout,
+        off_line_height,
+        TextColor(Color::BLACK),
+        Pickable::IGNORE,
+        PreferenceSliderOff,
+        ChildOf(slider),
+    ));
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
@@ -372,8 +390,6 @@ fn on_sound_slider_released(
 #[allow(clippy::type_complexity)]
 fn sync_preference_slider_visuals(
     retail: Res<RetailAssetsResource>,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
     mut image_assets: ResMut<Assets<Image>>,
     sliders: Query<
         (
@@ -382,22 +398,13 @@ fn sync_preference_slider_visuals(
             &PreferenceSliderVisual,
             &ImageNode,
             &Node,
+            &Children,
         ),
         (With<PreferenceSlider>, Changed<SliderValue>),
     >,
+    mut off_labels: Query<(&PreferenceSliderOff, &mut Visibility)>,
 ) {
-    let mut text = RetailRasterTextPainter::from_preset(
-        &fonts,
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 1,
-        },
-    )
-    .expect("retail preference slider text style");
-    for (value, range, visual, image_node, node) in &sliders {
+    for (value, range, visual, image_node, node, children) in &sliders {
         let height = match node.height {
             Val::Px(height) => height as i16,
             _ => visual.upper.height as i16,
@@ -411,11 +418,15 @@ fn sync_preference_slider_visuals(
             IRect::new(0, top, visual.lower.width as i32, i32::from(height)),
             IVec2::new(0, top),
         );
-        if split < SLIDER_SPLIT_PAD {
-            let center = visual.upper.width as i32 / 2;
-            let baseline = i32::from(height / 2 + 4);
-            text.draw_center(&mut picture, center, baseline, &visual.off, 0x28);
-            text.draw_center(&mut picture, center + 1, baseline + 1, &visual.off, 0);
+        let show_off = split < SLIDER_SPLIT_PAD;
+        for child in children.iter() {
+            if let Ok((_, mut visibility)) = off_labels.get_mut(child) {
+                *visibility = if show_off {
+                    Visibility::Inherited
+                } else {
+                    Visibility::Hidden
+                };
+            }
         }
         if let Some(mut image) = image_assets.get_mut(&image_node.image) {
             *image = picture.to_image(retail.assets().default_dib_palette());

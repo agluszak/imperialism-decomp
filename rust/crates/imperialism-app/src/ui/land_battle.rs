@@ -535,9 +535,8 @@ fn insert_land_battle_visuals(
         composition_class,
         backdrop: assets.picture(picture),
         fort_strip: assets.picture(TACTICAL_FORT_STRIP_PICTURE),
-        unit_atlas: assets
-            .transparent_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
-        fort_atlas: assets.transparent_picture(
+        unit_atlas: assets.keyed_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+        fort_atlas: assets.keyed_picture(
             if battle.fort_level() == FortLevel::None {
                 TACTICAL_NO_FORT_ATLAS_PICTURE
             } else {
@@ -546,12 +545,12 @@ fn insert_land_battle_visuals(
             TACTICAL_TRANSPARENT_INDEX,
         ),
         effect_atlas: assets
-            .transparent_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
-        experience_strip: assets.transparent_picture(
+            .keyed_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+        experience_strip: assets.keyed_picture(
             TACTICAL_EXPERIENCE_STRIP_PICTURE,
             TACTICAL_TRANSPARENT_INDEX,
         ),
-        unit_status_atlas: assets.transparent_picture(TACTICAL_UNIT_STATUS_ATLAS_PICTURE, 0),
+        unit_status_atlas: assets.keyed_picture(TACTICAL_UNIT_STATUS_ATLAS_PICTURE, 0),
         selection_color: assets.palette_color(0x13),
         inset_color: assets.palette_color(0),
         stat_background: assets.palette_color(view_mgr_color(0x33)),
@@ -1096,7 +1095,7 @@ fn spawn_tactical_effect(
     } else {
         hex_cell_xywh(map, target)
     };
-    let image = assets.transparent_picture(base_picture, TACTICAL_TRANSPARENT_INDEX);
+    let image = assets.keyed_picture(base_picture, TACTICAL_TRANSPARENT_INDEX);
     commands.spawn((
         LandBattleEffect {
             base_picture,
@@ -1209,7 +1208,7 @@ fn animate_land_battle_actions(
             commands.entity(entity).despawn();
             continue;
         }
-        image.image = assets.transparent_picture(
+        image.image = assets.keyed_picture(
             effect.base_picture.offset(i16::from(effect.frame)),
             TACTICAL_TRANSPARENT_INDEX,
         );

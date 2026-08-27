@@ -915,16 +915,19 @@ mod tests {
         seed_town_tiles(&mut state);
         state.append_battle_report(BattleReport {
             participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: NationId::new(0),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(1),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         });
@@ -1064,16 +1067,19 @@ mod tests {
         assert!(!state.battle_reports_pending());
         state.append_battle_report(BattleReport {
             participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
             location: BattleReportLocation::Province(ProvinceId::new(0)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
                     nation: NationId::new(0),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(1),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         });

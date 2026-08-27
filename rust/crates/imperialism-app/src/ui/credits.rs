@@ -72,12 +72,7 @@ fn fill_credits_page(
         (0xfb0, 0xfb1)
     };
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 0, 12, 0))
         .expect("retail credits text style");
     let color = TextColor(assets.palette_color(0x13));
     let shadow = second_page.then_some(TextShadow {

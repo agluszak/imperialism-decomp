@@ -844,7 +844,8 @@ fn strategic_compose_key_tracks_rendered_overlay_facts_not_recruitment_search_st
     let origin = fixture.origin;
     let initial = strategic_map_compose_key(&fixture.state(), origin, None, None);
 
-    fixture.edit(|map, origin| map[origin].recruit_search_visited = 1);
+    // Civilian eligibility is a pure predicate, not map tile state, so the
+    // compose key must remain stable.
     let recruitment = strategic_map_compose_key(&fixture.state(), origin, None, None);
     assert_eq!(initial, recruitment);
 

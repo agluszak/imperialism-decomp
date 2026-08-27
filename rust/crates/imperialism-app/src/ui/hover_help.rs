@@ -88,12 +88,12 @@ pub(crate) fn bind_hover_help_bar(
     style: HoverHelpBarStyle,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: style.point_size,
-            alignment: style.alignment,
-        })
+        .text_style(RetailTextStylePreset::explicit(
+            1,
+            0,
+            style.point_size,
+            style.alignment,
+        ))
         .expect("retail hover-help bar text style");
     let text_color = assets.palette_color(style.text_palette);
     let shadow_color = assets.palette_color(style.shadow_palette);
