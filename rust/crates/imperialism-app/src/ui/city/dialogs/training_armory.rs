@@ -3,7 +3,7 @@ use crate::ui::retail::AmountBarParts;
 use crate::ui::retail::RetailPictureSwap;
 
 pub(in crate::ui::city) struct TrainingUi {
-    quantities: TrainingOrderTable<Entity>,
+    orders: TrainingOrderTable<AmountBarView>,
     paper_one: Entity,
     paper_two: Entity,
     money_one: Entity,
@@ -73,7 +73,7 @@ pub(in crate::ui::city) fn bind_training(
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    let quantities =
+    let orders =
         TrainingOrderTable::from_array(generated::TRAINING_ORDER_TAGS).map(|level, tag| {
             bind_industry_order_row(
                 commands,
@@ -84,10 +84,11 @@ pub(in crate::ui::city) fn bind_training(
                 tag,
                 1,
             )
-            .quantity
+            .bar
+            .expect("training amount bar")
         });
     TrainingUi {
-        quantities,
+        orders,
         paper_one: tree.find(root, fourcc!("pap1")),
         paper_two: tree.find(root, fourcc!("pap2")),
         money_one: tree.find(root, fourcc!("mon1")),
@@ -225,13 +226,13 @@ pub(in crate::ui::city) fn render_training(
     let budget = major
         .economy
         .available_diplomacy_budget(major.common.treasury);
-    for (level, quantity) in &view.quantities {
-        ui.text(
-            *quantity,
-            session
-                .game
-                .city_order_quantity(nation, CityOrderId::Training(level))
-                .to_string(),
+    for (level, bar) in &view.orders {
+        let order = CityOrderId::Training(level);
+        ui.amount_bar(
+            *bar,
+            session.game.city_order_quantity(nation, order),
+            amount_bar_range(&session.game, nation, order),
+            session.game.city_order_limit(nation, order).maximum,
         );
     }
     ui.visible(view.paper_one, city.stockpile[ResourceKind::Paper] >= 1);

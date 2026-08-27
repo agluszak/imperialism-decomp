@@ -9,7 +9,6 @@
 
 use super::retail::{
     load_template_transparent_picture, retail_built_text_style, retail_text_color,
-    retail_text_shadow,
 };
 use bevy::prelude::*;
 use bevy::reflect::Is;
@@ -102,11 +101,10 @@ pub fn retail_numbered_arrow() -> impl Scene {
             ),
             (
                 #Count
-                Node { position_type: PositionType::Absolute, left: px(7), top: px(0), width: px(20), height: px(16) }
+                Node { position_type: PositionType::Absolute, left: px(7), top: px(0) }
                 Text("")
-                retail_built_text_style(10, 1)
-                retail_text_color(0x28)
-                retail_text_shadow(0, 1, 1)
+                retail_built_text_style(10, 0)
+                retail_text_color(0)
                 Pickable::IGNORE
             ),
         ]
