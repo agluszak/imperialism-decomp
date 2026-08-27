@@ -121,14 +121,8 @@ mod tests {
 
     #[test]
     fn string_group_builds_full_width_resource_ids() {
-        assert_eq!(
-            StringGroup::new(0x2752).entry(1).get(),
-            0x2752 * 100 + 1
-        );
-        assert_eq!(
-            StringGroup::new(0x2719).offset(6).get(),
-            0x2719 * 100 + 7
-        );
+        assert_eq!(StringGroup::new(0x2752).entry(1).get(), 0x2752 * 100 + 1);
+        assert_eq!(StringGroup::new(0x2719).offset(6).get(), 0x2719 * 100 + 7);
         // High groups exceed 16 bits; the typed ID must retain the full value.
         assert!(StringGroup::new(0x2752).entry(1).get() > u32::from(u16::MAX));
     }

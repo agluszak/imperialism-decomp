@@ -295,10 +295,7 @@ impl RetailUiAssets<'_> {
         Color::srgb_u8(red, green, blue)
     }
 
-    pub fn string(
-        &self,
-        id: StringResourceId,
-    ) -> Result<String, RetailAssetError> {
+    pub fn string(&self, id: StringResourceId) -> Result<String, RetailAssetError> {
         self.retail_assets.assets().string(id)
     }
 

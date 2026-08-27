@@ -9,7 +9,7 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc, StringGroup};
+use imperialism_formats::{NewsTable, RetailTextStylePreset, StringGroup, fourcc};
 
 const COLUMN_X: [f32; 3] = [24.0, 226.0, 428.0];
 const COLUMN_WIDTH: f32 = 188.0;
@@ -264,7 +264,10 @@ fn format_nation_names(
             continue;
         }
         if string_group {
-            names.push(retail_string(assets, StringGroup::new(0x2711).offset(u16::from(nation.get()))));
+            names.push(retail_string(
+                assets,
+                StringGroup::new(0x2711).offset(u16::from(nation.get())),
+            ));
         } else if let Some(name) = state.nations().display_name(nation) {
             names.push(name.to_owned());
         }

@@ -4,8 +4,8 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::map_help;
-use super::retail_resources::TechnologyRetailResources;
 use super::retail::{RetailPictureSwap, RetailTree, RetailUiAssets, retail_text_style};
+use super::retail_resources::TechnologyRetailResources;
 use super::session::GameSession;
 use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::{AppState, RetailAssetsResource};
@@ -15,7 +15,9 @@ use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
 use imperialism_core::{
     CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
 };
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc, StringGroup, StringResourceId};
+use imperialism_formats::{
+    PictureId, RetailTextStylePreset, StringGroup, StringResourceId, fourcc,
+};
 
 const TECHNOLOGIES_PER_PAGE: usize = 6;
 
@@ -509,9 +511,9 @@ fn project_technology_status(
                 .to_string();
                 fill_brackets(&template, &[&year])
             }
-            TechnologyResearchStatus::Pending => {
-                retail.string(StringGroup::new(0x274f).entry(4)).expect("retail purchasing label")
-            }
+            TechnologyResearchStatus::Pending => retail
+                .string(StringGroup::new(0x274f).entry(4))
+                .expect("retail purchasing label"),
             TechnologyResearchStatus::NotStarted
                 if session
                     .game
@@ -535,7 +537,10 @@ fn project_technology_status(
                     })
                     .collect::<Vec<_>>();
                 let template = retail
-                    .string(StringGroup::new(0x274f).entry((if names.len() == 1 { 3 } else { 2 }) as u16))
+                    .string(
+                        StringGroup::new(0x274f)
+                            .entry((if names.len() == 1 { 3 } else { 2 }) as u16),
+                    )
                     .expect("retail prerequisite template");
                 fill_brackets(
                     &template,

@@ -27,7 +27,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::TurnAlert;
-use imperialism_formats::{FourCc, PictureId, TRADE, fourcc, StringGroup};
+use imperialism_formats::{FourCc, PictureId, StringGroup, TRADE, fourcc};
 use std::collections::VecDeque;
 
 #[derive(Component)]
@@ -301,7 +301,10 @@ fn on_ocean_toggle(
         let body = if tag.is_empty() {
             String::from("Imperialism")
         } else {
-            crate::ui::fill_brackets(&retail_string(&assets, StringGroup::new(0x273f).offset(1)), &[tag])
+            crate::ui::fill_brackets(
+                &retail_string(&assets, StringGroup::new(0x273f).offset(1)),
+                &[tag],
+            )
         };
         spawn_linger_dialog(
             &mut commands,

@@ -167,9 +167,7 @@ pub(in crate::ui::city) fn render_university(
         .unwrap_or(UniversityRequirementLevel::None);
     ui.text(
         view.unit,
-        assets
-            .string(kind.name_string())
-            .expect("civilian name"),
+        assets.string(kind.name_string()).expect("civilian name"),
     );
     ui.text(
         view.description,

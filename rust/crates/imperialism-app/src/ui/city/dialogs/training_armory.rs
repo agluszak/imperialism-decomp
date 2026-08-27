@@ -121,7 +121,9 @@ pub(in crate::ui::city) fn bind_armory(
     let (detail_font, _, detail_line_height, _) = assets
         .text_style(ARMORY_DETAIL_TEXT_STYLE)
         .expect("detail style");
-    let title = assets.string(StringGroup::new(0x271c).entry(0x20)).expect("armory title");
+    let title = assets
+        .string(StringGroup::new(0x271c).entry(0x20))
+        .expect("armory title");
     commands.entity(tree.find(root, fourcc!("titl"))).insert((
         Text::new(title),
         title_font,
@@ -199,7 +201,11 @@ pub(in crate::ui::city) fn bind_armory(
     ] {
         let entity = tree.find(root, tag);
         commands.entity(entity).insert((
-            Text::new(assets.string(StringGroup::new(0x271c).entry((string_index) as u16)).expect("armory label")),
+            Text::new(
+                assets
+                    .string(StringGroup::new(0x271c).entry((string_index) as u16))
+                    .expect("armory label"),
+            ),
             detail_font.clone(),
             detail_line_height,
             TextColor(normal_color),
@@ -290,11 +296,13 @@ pub(in crate::ui::city) fn render_armory(
         .string(order.unit_kind.description_string())
         .expect("unit desc");
     let static_text = assets
-        .string(StringGroup::new(0x271c).entry(if ARMORY_STATIC[unit_index] {
-            0x22
-        } else {
-            0x21
-        }))
+        .string(
+            StringGroup::new(0x271c).entry(if ARMORY_STATIC[unit_index] {
+                0x22
+            } else {
+                0x21
+            }),
+        )
         .expect("yes/no");
     let workforce_available = workforce.min(strength / strength_divisor);
     let primary_available = city.stockpile[spec.primary.resource];

@@ -1105,7 +1105,10 @@ fn bind_diplomacy_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let body = retail_string(&assets, StringGroup::new(0x2754).offset((notice.0.proposal_mode() - 1) as u16));
+    let body = retail_string(
+        &assets,
+        StringGroup::new(0x2754).offset((notice.0.proposal_mode() - 1) as u16),
+    );
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(
         &mut commands,
@@ -1199,7 +1202,13 @@ fn diplomacy_entanglement_body(
     } else {
         4
     };
-    let intro = fill_brackets(&retail_string(assets, StringGroup::new(0x275d).offset((intro_index) as u16)), &[target_name]);
+    let intro = fill_brackets(
+        &retail_string(
+            assets,
+            StringGroup::new(0x275d).offset((intro_index) as u16),
+        ),
+        &[target_name],
+    );
     let mut names = String::new();
     for major in MajorNationId::all() {
         if state.diplomacy().relationships[target][major.nation()] != DiplomaticRelationship::War {
@@ -1300,7 +1309,9 @@ fn diplomacy_offer_message(state: &GameState, assets: &RetailAssetsResource) -> 
         _ => return None,
     };
     Some(fill_brackets(
-        &assets.string(StringGroup::new((group) as u16).offset((index) as u16)).expect("retail string"),
+        &assets
+            .string(StringGroup::new((group) as u16).offset((index) as u16))
+            .expect("retail string"),
         &[&target, &target],
     ))
 }
@@ -1324,7 +1335,12 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
             [&minor, &enemy, &minor, &minor],
         ),
     };
-    Some(fill_brackets(&assets.string(StringGroup::new(0x2729).offset((index) as u16)).expect("retail string"), &args))
+    Some(fill_brackets(
+        &assets
+            .string(StringGroup::new(0x2729).offset((index) as u16))
+            .expect("retail string"),
+        &args,
+    ))
 }
 
 fn draw_diplomacy_text(
@@ -1400,7 +1416,11 @@ fn render_diplomacy_panels(
     let mut row = diplomacy_text_painter(&fonts, &font_assets, 12);
     let mut small = diplomacy_text_painter(&fonts, &font_assets, 10);
     let mut council_paint = diplomacy_text_painter(&fonts, &font_assets, 18);
-    let strings = |index| retail.string(StringGroup::new(0x2733).offset((index) as u16)).expect("retail string");
+    let strings = |index| {
+        retail
+            .string(StringGroup::new(0x2733).offset((index) as u16))
+            .expect("retail string")
+    };
     let (name, labels, values) = diplomacy_information(state, screen.framed_nation);
     let council = council_panel_text(state, &retail);
 
@@ -2045,7 +2065,12 @@ fn council_panel_text(state: &GameState, assets: &RetailAssetsResource) -> Counc
     if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;
         CouncilPanelText {
-            title: fill_brackets(&assets.string(StringGroup::new(0x2733).offset(0x35)).expect("retail string"), &[&decade.to_string()]),
+            title: fill_brackets(
+                &assets
+                    .string(StringGroup::new(0x2733).offset(0x35))
+                    .expect("retail string"),
+                &[&decade.to_string()],
+            ),
             rows: Some([
                 (
                     format!(
@@ -2068,14 +2093,18 @@ fn council_panel_text(state: &GameState, assets: &RetailAssetsResource) -> Counc
                     congress.counterpart_support.to_string(),
                 ),
                 (
-                    assets.string(StringGroup::new(0x2733).offset(0x36)).expect("retail string"),
+                    assets
+                        .string(StringGroup::new(0x2733).offset(0x36))
+                        .expect("retail string"),
                     congress.neutral_support.to_string(),
                 ),
             ]),
         }
     } else {
         CouncilPanelText {
-            title: assets.string(StringGroup::new(0x2733).offset(0x34)).expect("retail string"),
+            title: assets
+                .string(StringGroup::new(0x2733).offset(0x34))
+                .expect("retail string"),
             rows: None,
         }
     }

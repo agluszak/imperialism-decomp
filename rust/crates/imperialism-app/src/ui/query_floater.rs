@@ -5,7 +5,7 @@ use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_formats::{FourCc, fourcc, StringGroup};
+use imperialism_formats::{FourCc, StringGroup, fourcc};
 
 const QUERY_LABELS: [(FourCc, i16); 8] = [
     (fourcc!("titl"), 1),

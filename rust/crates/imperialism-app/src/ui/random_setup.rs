@@ -295,9 +295,13 @@ fn bind_random_setup_labels(
         (fourcc!("dif4"), 0x2737, 0x12),
     ] {
         let entity = tree.find(root, tag);
-        commands
-            .entity(entity)
-            .insert((Text::new(retail_string(assets, StringGroup::new(group as u16).entry(index as u16))), Label));
+        commands.entity(entity).insert((
+            Text::new(retail_string(
+                assets,
+                StringGroup::new(group as u16).entry(index as u16),
+            )),
+            Label,
+        ));
     }
     let title_color = TextColor(assets.palette_color(0x5c));
     let title_shadow = TextShadow {
@@ -364,16 +368,40 @@ fn bind_random_setup_hover_help(
             (fourcc!("main"), String::new()),
             (fourcc!("key "), String::new()),
             (fourcc!("stuf"), String::new()),
-            (fourcc!("name"), retail_string(assets, StringGroup::new(0x2758).entry(0x1e))),
-            (fourcc!("glob"), retail_string(assets, StringGroup::new(0x2737).entry(0x13))),
+            (
+                fourcc!("name"),
+                retail_string(assets, StringGroup::new(0x2758).entry(0x1e)),
+            ),
+            (
+                fourcc!("glob"),
+                retail_string(assets, StringGroup::new(0x2737).entry(0x13)),
+            ),
             (fourcc!("canc"), cancel.clone()),
             (fourcc!("cncl"), cancel),
-            (OKAY, retail_string(assets, StringGroup::new(0x2737).entry(0x15))),
-            (fourcc!("map "), retail_string(assets, StringGroup::new(0x2758).entry(0x13))),
-            (fourcc!("diff"), retail_string(assets, StringGroup::new(0x2737).entry(0x17))),
-            (fourcc!("coun"), retail_string(assets, StringGroup::new(0x2737).entry(0x1a))),
-            (fourcc!("flag"), retail_string(assets, StringGroup::new(0x2737).entry(0x1b))),
-            (fourcc!("coat"), retail_string(assets, StringGroup::new(0x2737).entry(0x1c))),
+            (
+                OKAY,
+                retail_string(assets, StringGroup::new(0x2737).entry(0x15)),
+            ),
+            (
+                fourcc!("map "),
+                retail_string(assets, StringGroup::new(0x2758).entry(0x13)),
+            ),
+            (
+                fourcc!("diff"),
+                retail_string(assets, StringGroup::new(0x2737).entry(0x17)),
+            ),
+            (
+                fourcc!("coun"),
+                retail_string(assets, StringGroup::new(0x2737).entry(0x1a)),
+            ),
+            (
+                fourcc!("flag"),
+                retail_string(assets, StringGroup::new(0x2737).entry(0x1b)),
+            ),
+            (
+                fourcc!("coat"),
+                retail_string(assets, StringGroup::new(0x2737).entry(0x1c)),
+            ),
         ],
     );
 }

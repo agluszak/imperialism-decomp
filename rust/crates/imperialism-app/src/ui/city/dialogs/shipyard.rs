@@ -111,9 +111,7 @@ fn shipyard_queue_pictures(
     let source_left = i32::from(ship_type.retail() - 1) * 0x50;
     let source = IRect::new(source_left, 0, source_left + 0x50, 0x2d);
     let mut compose = |picture_id: PictureId| {
-        let mut picture = assets
-            .indexed_picture(picture_id)
-            .expect("queue button");
+        let mut picture = assets.indexed_picture(picture_id).expect("queue button");
         picture.blit_keyed(queue_icons, source, IVec2::new(overlay_left, 0x0c), 0x10);
         assets.add_image(picture.to_image(&palette))
     };
@@ -149,9 +147,7 @@ pub(in crate::ui::city) fn render_shipyard(
     }
     ui.text(
         view.ship_name,
-        assets
-            .string(ship_type.name_string())
-            .expect("ship name"),
+        assets.string(ship_type.name_string()).expect("ship name"),
     );
     ui.text(
         view.description,

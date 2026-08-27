@@ -7,6 +7,7 @@ use super::hover_help::{
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
 use super::retail_palette::view_mgr_color;
+use super::retail_resources::MilitaryUnitKindRetailResources;
 use super::session::{GameSession, apply_turn_stop};
 #[cfg(test)]
 use super::tactical_viewport::BATTLEFIELD_HEIGHT_PX;
@@ -14,7 +15,6 @@ use super::tactical_viewport::{
     BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX, TACTICAL_TILE_WIDTH_PX, TacticalViewport,
     battlefield_cursor_pixel, rect_xywh,
 };
-use super::retail_resources::MilitaryUnitKindRetailResources;
 use crate::AppState;
 use crate::media::MusicDirector;
 use bevy::picking::events::{Click, Pointer};
@@ -24,7 +24,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc, StringGroup};
+use imperialism_formats::{MusicTrack, PictureId, SoundId, StringGroup, fourcc};
 
 const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
 const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
@@ -389,11 +389,26 @@ fn bind_land_battle(
         *root,
         &tree,
         [
-            (fourcc!("help"), retail_string(&assets, StringGroup::new(0x273d).entry(0x20))),
-            (fourcc!("targ"), retail_string(&assets, StringGroup::new(0x273d).entry(0x21))),
-            (fourcc!("done"), retail_string(&assets, StringGroup::new(0x273d).entry(0x22))),
-            (fourcc!("retr"), retail_string(&assets, StringGroup::new(0x273d).entry(0x23))),
-            (fourcc!("auto"), retail_string(&assets, StringGroup::new(0x273d).entry(0x24))),
+            (
+                fourcc!("help"),
+                retail_string(&assets, StringGroup::new(0x273d).entry(0x20)),
+            ),
+            (
+                fourcc!("targ"),
+                retail_string(&assets, StringGroup::new(0x273d).entry(0x21)),
+            ),
+            (
+                fourcc!("done"),
+                retail_string(&assets, StringGroup::new(0x273d).entry(0x22)),
+            ),
+            (
+                fourcc!("retr"),
+                retail_string(&assets, StringGroup::new(0x273d).entry(0x23)),
+            ),
+            (
+                fourcc!("auto"),
+                retail_string(&assets, StringGroup::new(0x273d).entry(0x24)),
+            ),
             (fourcc!("DLOG"), String::new()),
         ],
     );
@@ -540,10 +555,7 @@ fn insert_land_battle_visuals(
             .picture(TACTICAL_FORT_STRIP_PICTURE)
             .expect("retail tactical fort strip must load"),
         unit_atlas: assets
-            .transparent_picture(
-                TACTICAL_UNIT_ATLAS_PICTURE,
-                TACTICAL_TRANSPARENT_INDEX,
-            )
+            .transparent_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX)
             .expect("retail tactical unit atlas must load"),
         fort_atlas: assets
             .transparent_picture(
@@ -556,10 +568,7 @@ fn insert_land_battle_visuals(
             )
             .expect("retail tactical fort atlas must load"),
         effect_atlas: assets
-            .transparent_picture(
-                TACTICAL_EFFECT_ATLAS_PICTURE,
-                TACTICAL_TRANSPARENT_INDEX,
-            )
+            .transparent_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX)
             .expect("retail tactical effect atlas must load"),
         experience_strip: assets
             .transparent_picture(

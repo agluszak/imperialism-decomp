@@ -92,13 +92,34 @@ fn bind_main_menu_hover_help(
         &tree,
         [
             (fourcc!("main"), String::new()),
-            (fourcc!("rand"), retail_string(&assets, StringGroup::new(0x2737).offset(0))),
-            (fourcc!("load"), retail_string(&assets, StringGroup::new(0x2737).offset(1))),
-            (fourcc!("mult"), retail_string(&assets, StringGroup::new(0x2737).offset(2))),
-            (fourcc!("high"), retail_string(&assets, StringGroup::new(0x2737).offset(3))),
-            (fourcc!("scen"), retail_string(&assets, StringGroup::new(0x2737).offset(4))),
-            (fourcc!("quit"), retail_string(&assets, StringGroup::new(0x2737).offset(9))),
-            (fourcc!("pref"), retail_string(&assets, StringGroup::new(0x2743).offset(8))),
+            (
+                fourcc!("rand"),
+                retail_string(&assets, StringGroup::new(0x2737).offset(0)),
+            ),
+            (
+                fourcc!("load"),
+                retail_string(&assets, StringGroup::new(0x2737).offset(1)),
+            ),
+            (
+                fourcc!("mult"),
+                retail_string(&assets, StringGroup::new(0x2737).offset(2)),
+            ),
+            (
+                fourcc!("high"),
+                retail_string(&assets, StringGroup::new(0x2737).offset(3)),
+            ),
+            (
+                fourcc!("scen"),
+                retail_string(&assets, StringGroup::new(0x2737).offset(4)),
+            ),
+            (
+                fourcc!("quit"),
+                retail_string(&assets, StringGroup::new(0x2737).offset(9)),
+            ),
+            (
+                fourcc!("pref"),
+                retail_string(&assets, StringGroup::new(0x2743).offset(8)),
+            ),
         ],
     );
 }

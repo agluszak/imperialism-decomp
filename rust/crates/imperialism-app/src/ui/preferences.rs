@@ -1,5 +1,7 @@
 use super::generated;
-use super::hover_help::{HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, retail_string};
+use super::hover_help::{
+    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, retail_string,
+};
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
@@ -14,7 +16,7 @@ use bevy::ui_widgets::{
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc, StringGroup};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, StringGroup, fourcc};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
@@ -187,8 +189,14 @@ fn bind_preferences(
         root,
         &tree,
         [
-            (fourcc!("okay"), retail_string(&assets, StringGroup::new(0x2743).entry(0x25))),
-            (fourcc!("quer"), retail_string(&assets, StringGroup::new(0x2730).entry(3))),
+            (
+                fourcc!("okay"),
+                retail_string(&assets, StringGroup::new(0x2743).entry(0x25)),
+            ),
+            (
+                fourcc!("quer"),
+                retail_string(&assets, StringGroup::new(0x2730).entry(3)),
+            ),
         ],
     );
 
@@ -203,7 +211,10 @@ fn bind_preferences(
         let Some(checkbox) = checkbox else {
             continue;
         };
-        let hover = retail_string(&assets, StringGroup::new(0x2743).entry((row as i16 + 0x26) as u16));
+        let hover = retail_string(
+            &assets,
+            StringGroup::new(0x2743).entry((row as i16 + 0x26) as u16),
+        );
         let mut entity = commands.entity(checkbox);
         entity
             .insert((PreferenceRow { ui_row: row, slot }, HoverHelpText(hover)))
@@ -321,7 +332,10 @@ fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
 }
 
 fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> String {
-    retail_string(assets, StringGroup::new(0x2743).offset((row as i16 * 2 + 0x10 + i16::from(!is_on)) as u16))
+    retail_string(
+        assets,
+        StringGroup::new(0x2743).offset((row as i16 * 2 + 0x10 + i16::from(!is_on)) as u16),
+    )
 }
 
 fn slider_split_from_value(value: i16, height: i16, scale: i16) -> i16 {

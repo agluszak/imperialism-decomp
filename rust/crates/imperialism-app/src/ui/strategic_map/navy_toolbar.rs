@@ -3,9 +3,9 @@
 use super::super::retail::{RetailTree, RetailUiAssets};
 use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::spawn_navy_roster;
-use crate::ui::retail_resources::ShipTypeRetailResources;
 use crate::AppState;
 use crate::ui::GameSession;
+use crate::ui::retail_resources::ShipTypeRetailResources;
 use bevy::prelude::*;
 use bevy::ui::{Checked, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress};

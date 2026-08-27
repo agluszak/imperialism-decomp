@@ -7,11 +7,11 @@ use super::map_interaction::StrategicSelection;
 use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
 use crate::ui::GameSession;
+use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use imperialism_formats::*;
 
 const PAGE_TAG: FourCc = fourcc!("uciv");

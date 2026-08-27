@@ -32,10 +32,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
                 .economy
                 .available_diplomacy_budget(major.common.treasury)
                 >= 5_000;
-            (
-                city_text(assets, 0x15),
-                can_reserve,
-            )
+            (city_text(assets, 0x15), can_reserve)
         }
         _ => {
             let (next_capacity, needed) = {
@@ -209,10 +206,7 @@ fn bind_construction_dialog(
     capacity_value: &str,
     can_reserve: bool,
 ) {
-    let capacity = fill_brackets(
-        &city_text(assets, 0x10),
-        &[capacity_value],
-    );
+    let capacity = fill_brackets(&city_text(assets, 0x10), &[capacity_value]);
     let headline = assets
         .string(StringGroup::new(0x2422 + u16::from(slot as u8)).entry(1))
         .expect("headline");
@@ -272,7 +266,9 @@ fn bind_construction_dialog(
         BuildingChangePresentation {
             slot,
             picture: slot.construction_picture(0),
-            name: assets.string(slot.name_string()).expect("city building name"),
+            name: assets
+                .string(slot.name_string())
+                .expect("city building name"),
             capacity,
             cost: city_text(assets, 0x14),
             warning_text: city_text(
@@ -307,11 +303,10 @@ fn bind_expansion_dialog(
         BuildingChangePresentation {
             slot,
             picture: slot.construction_picture(next_level),
-            name: assets.string(slot.name_string()).expect("city building name"),
-            capacity: format_retail_number(
-                &city_text(assets, 0x10),
-                next_capacity,
-            ),
+            name: assets
+                .string(slot.name_string())
+                .expect("city building name"),
+            capacity: format_retail_number(&city_text(assets, 0x10), next_capacity),
             cost: city_text(assets, 0x14),
             warning_text: city_text(assets, 0x17),
             warning_color: assets.palette_color(0xcb),

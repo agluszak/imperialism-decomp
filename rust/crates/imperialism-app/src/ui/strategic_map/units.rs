@@ -538,8 +538,9 @@ fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> PictureId 
         CivilianPose::Idle => {
             CIVILIAN_IDLE_PICTURE_BASE.offset(i16::from(civilian_sprite_class(kind)))
         }
-        CivilianPose::Selected => CIVILIAN_IDLE_PICTURE_BASE
-            .offset(9 + i16::from(civilian_sprite_class(kind))),
+        CivilianPose::Selected => {
+            CIVILIAN_IDLE_PICTURE_BASE.offset(9 + i16::from(civilian_sprite_class(kind)))
+        }
         CivilianPose::Working => {
             CIVILIAN_WORKING_PICTURE_BASE.offset(i16::from(civilian_sprite_class(kind)))
         }

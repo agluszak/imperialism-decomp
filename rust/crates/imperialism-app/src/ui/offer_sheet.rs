@@ -14,7 +14,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{RetailTextStylePreset, fourcc, StringGroup};
+use imperialism_formats::{RetailTextStylePreset, StringGroup, fourcc};
 
 const OFFER_STRING_GROUP: i16 = 0x2740;
 
@@ -165,7 +165,10 @@ fn bind_offer_sheet_text(
         ));
     }
     commands.entity(tree.find(root, fourcc!("info"))).insert((
-        Text::new(retail_string(assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(9))),
+        Text::new(retail_string(
+            assets,
+            StringGroup::new(OFFER_STRING_GROUP as u16).offset(9),
+        )),
         body,
         TextLayout::justify(Justify::Center),
         body_height,
@@ -248,19 +251,29 @@ fn render_offer_sheet(
     let amount = offer.amount.to_string();
     let price = format_currency(i32::from(offer.price));
     commands.entity(view.offer).insert(Text::new(fill_brackets(
-        &retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xc)),
+        &retail_string(
+            &assets,
+            StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xc),
+        ),
         &[&offering, &amount, &commodity, &price],
     )));
     commands
         .entity(view.purchase_title)
-        .insert(Text::new(retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xe))));
-    commands
-        .entity(view.unit)
-        .insert(Text::new(retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xf))));
+        .insert(Text::new(retail_string(
+            &assets,
+            StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xe),
+        )));
+    commands.entity(view.unit).insert(Text::new(retail_string(
+        &assets,
+        StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xf),
+    )));
     commands
         .entity(view.no_offer)
         .insert(Text::new(fill_brackets(
-            &retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xf)),
+            &retail_string(
+                &assets,
+                StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xf),
+            ),
             &[&commodity],
         )));
 
@@ -283,7 +296,8 @@ fn render_offer_sheet(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    if let Ok(icon) = assets.transparent_picture(offer.commodity.resource().material_picture(), 0x10)
+    if let Ok(icon) =
+        assets.transparent_picture(offer.commodity.resource().material_picture(), 0x10)
     {
         commands.entity(view.icon).insert(ImageNode::new(icon));
     }
@@ -322,14 +336,20 @@ fn bind_offer_answer(commands: &mut Commands, button: Entity, accept: bool) {
                 else {
                     spawn_offer_quantity_error(
                         &mut commands,
-                        retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0x10)),
+                        retail_string(
+                            &assets,
+                            StringGroup::new(OFFER_STRING_GROUP as u16).offset(0x10),
+                        ),
                     );
                     return;
                 };
                 if amount < 0 || amount > offer.amount {
                     spawn_offer_quantity_error(
                         &mut commands,
-                        retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0x10)),
+                        retail_string(
+                            &assets,
+                            StringGroup::new(OFFER_STRING_GROUP as u16).offset(0x10),
+                        ),
                     );
                     return;
                 }
