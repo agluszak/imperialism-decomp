@@ -45,14 +45,14 @@ struct ArmyToolbarView {
     garrison: Entity,
 }
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         sync_army_toolbar.run_if(in_state(AppState::StrategicMap)),
     );
 }
 
-pub(crate) fn bind_army_toolbar(
+pub(super) fn bind_army_toolbar(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,

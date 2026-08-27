@@ -82,14 +82,14 @@ struct LegendAtlases {
     terrain: Handle<Image>,
 }
 
-pub(crate) fn register_civilian_toolbar(app: &mut App) {
+pub(super) fn register_civilian_toolbar(app: &mut App) {
     app.add_systems(
         Update,
         sync_civilian_toolbar.run_if(in_state(AppState::StrategicMap)),
     );
 }
 
-pub(crate) fn bind_civilian_toolbar(
+pub(super) fn bind_civilian_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,

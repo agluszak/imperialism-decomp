@@ -21,28 +21,30 @@ mod navy_toolbar;
 mod ocean_raster;
 mod ocean_view;
 mod overlays;
+mod shell;
 mod terrain;
 mod units;
 
-pub(crate) use army_toolbar::{bind_army_toolbar, register as register_army_toolbar};
+use army_toolbar::{bind_army_toolbar, register as register_army_toolbar};
 use borders::compose_strategic_borders;
-pub(crate) use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
-pub(crate) use map_click::{on_strategic_map_click, register as register_map_click};
+use civilian_toolbar::{bind_civilian_toolbar, register_civilian_toolbar};
+use map_click::{on_strategic_map_click, register as register_map_click};
 pub(crate) use map_interaction::{
     MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
 };
-pub(crate) use map_keys::register as register_map_keys;
-pub(crate) use map_modals::register as register_map_modals;
+use map_keys::register as register_map_keys;
+use map_modals::register as register_map_modals;
 use map_projection::DetailedMapProjection;
 pub(crate) use minimap::{bind_minimap, sync_minimap};
-pub(crate) use navy_toolbar::{bind_navy_toolbar, register as register_navy_toolbar};
-pub(crate) use ocean_view::{bind_ocean_view, register as register_ocean_view};
+use navy_toolbar::{bind_navy_toolbar, register as register_navy_toolbar};
+use ocean_view::{bind_ocean_view, register as register_ocean_view};
 use overlays::{
     IMPROVEMENT_PICTURE_IDS, compose_strategic_improvements, compose_strategic_railways,
     town_transport_linked,
 };
+pub(crate) use shell::StrategicMapPlugin;
 use terrain::{compose_strategic_base_tile, uses_bounded_seam_frame};
-pub(crate) use units::{animate_civilian_work, animate_strategic_selection, sync_strategic_units};
+use units::{animate_civilian_work, animate_strategic_selection, sync_strategic_units};
 
 const MAP_TAG: FourCc = fourcc!("DLOG");
 pub(super) const VIEWPORT_WIDTH: usize = 512;
@@ -204,7 +206,7 @@ impl StrategicBaseTerrainCanvas {
     }
 }
 
-pub(crate) fn sync_strategic_base_terrain(
+fn sync_strategic_base_terrain(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     retail_assets: Res<RetailAssetsResource>,
@@ -233,7 +235,7 @@ pub(crate) fn sync_strategic_base_terrain(
     }
 }
 
-pub(crate) fn sync_strategic_selection(
+fn sync_strategic_selection(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     retail_assets: Res<RetailAssetsResource>,

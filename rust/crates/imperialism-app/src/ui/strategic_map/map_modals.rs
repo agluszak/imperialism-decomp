@@ -132,7 +132,7 @@ enum NavyRosterRowAction {
     },
 }
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         (

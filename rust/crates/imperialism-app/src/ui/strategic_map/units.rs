@@ -243,7 +243,7 @@ pub(super) fn bind_strategic_units(
     ));
 }
 
-pub(crate) fn sync_strategic_units(
+pub(super) fn sync_strategic_units(
     mut commands: Commands,
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
@@ -394,7 +394,7 @@ fn project_strategic_units_onto(
     }
 }
 
-pub(crate) fn animate_strategic_selection(
+pub(super) fn animate_strategic_selection(
     time: Res<Time>,
     mut pulse: Local<StrategicSelectionPulse>,
     mut assets: RetailUiAssets,
@@ -425,7 +425,7 @@ pub(crate) fn animate_strategic_selection(
     }
 }
 
-pub(crate) fn animate_civilian_work(
+pub(super) fn animate_civilian_work(
     time: Res<Time>,
     mut session: ResMut<GameSession>,
     mut assets: RetailUiAssets,

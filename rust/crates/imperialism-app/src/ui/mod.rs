@@ -55,6 +55,7 @@ pub(crate) use deal_book::DealBookPlugin;
 pub(crate) use diplomacy::DiplomacyPlugin;
 pub(crate) use endgame::EndgamePlugin;
 pub(crate) use game_shell::GameShellPlugin;
+pub(crate) use strategic_map::StrategicMapPlugin;
 pub(crate) use land_battle::LandBattlePlugin;
 pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};
 pub(crate) use main_menu::MainMenuPlugin;

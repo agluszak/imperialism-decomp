@@ -46,14 +46,14 @@ struct NavyToolbarView {
     aggression: [Entity; 3],
 }
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         (sync_navy_toolbar, sync_navy_aggression).run_if(in_state(AppState::StrategicMap)),
     );
 }
 
-pub(crate) fn bind_navy_toolbar(
+pub(super) fn bind_navy_toolbar(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,

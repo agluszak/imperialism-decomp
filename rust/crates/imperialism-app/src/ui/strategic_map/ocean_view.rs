@@ -47,7 +47,7 @@ struct OceanLabelAnchor {
     offset: Vec2,
 }
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         (sync_ocean_view_frames, sync_ocean_canvas, sync_ocean_labels)
@@ -56,7 +56,7 @@ pub(crate) fn register(app: &mut App) {
     );
 }
 
-pub(crate) fn bind_ocean_view(
+pub(super) fn bind_ocean_view(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
