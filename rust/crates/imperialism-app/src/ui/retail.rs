@@ -98,11 +98,17 @@ pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
                     idle.clone()
                 }
             };
-            context.entity.insert(RetailPictureSwap {
-                idle: idle.clone(),
-                active,
-            });
-            Ok(ImageNode::new(idle))
+            // Generated radios/checkboxes often already have `Checked` (or `Pressed`)
+            // before this template runs; observers on `Add<Checked>` would miss it.
+            let initial = if context.entity.get::<Pressed>().is_some()
+                || context.entity.get::<Checked>().is_some()
+            {
+                active.clone()
+            } else {
+                idle.clone()
+            };
+            context.entity.insert(RetailPictureSwap { idle, active });
+            Ok(ImageNode::new(initial))
         })
     }
 }
@@ -135,9 +141,16 @@ pub fn retail_madness_picture(base: i16) -> impl Scene {
                     }
                 }
             });
-            let idle = frames[0].clone();
+            // Derive the opening frame from components already on the entity;
+            // do not rely on a later `Add` observer to correct construction.
+            let initial = frames[madness_frame_index(
+                context.entity.get::<Checked>().is_some(),
+                context.entity.get::<Pressed>().is_some(),
+                context.entity.get::<InteractionDisabled>().is_some(),
+            )]
+            .clone();
             context.entity.insert(RetailMadnessPicture { frames });
-            Ok(ImageNode::new(idle))
+            Ok(ImageNode::new(initial))
         })
     }
 }
