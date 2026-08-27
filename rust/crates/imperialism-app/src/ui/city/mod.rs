@@ -2,9 +2,8 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{
-    AmountBarParts, PlacardParts, RetailTree, RetailUiAssets, placard_text_layout,
-};
+use super::retail::{AmountBarStyle, RetailTree, RetailUiAssets, placard_text_layout};
+use super::retail_amount_bar::{amount_bar_counter_offset, amount_bar_geometry};
 use super::retail_resources::{
     CityFacilityRetailResources, CivilianUnitKindRetailResources, MilitaryUnitKindRetailResources,
     ResourceKindRetailResources, ShipTypeRetailResources,
@@ -36,6 +35,20 @@ use lifecycle::*;
 
 const CITY_TEXT_STRING_GROUP: u16 = 0x2738;
 
+#[derive(Clone, Copy)]
+struct PlacardView {
+    root: Entity,
+    text: Entity,
+}
+
+#[derive(Clone, Copy)]
+struct AmountBarView {
+    root: Entity,
+    fill: Entity,
+    limit: Entity,
+    quantity: Entity,
+}
+
 fn city_text(assets: &RetailUiAssets, zero_based_index: u16) -> String {
     assets.get_string(CITY_TEXT_STRING_GROUP, zero_based_index)
 }
@@ -53,8 +66,6 @@ struct CityUi<'w, 's> {
     images: Query<'w, 's, &'static mut ImageNode>,
     checked: Query<'w, 's, Has<Checked>>,
     nodes: Query<'w, 's, &'static mut Node>,
-    amount_bars: Query<'w, 's, &'static AmountBarParts>,
-    placard_parts: Query<'w, 's, &'static PlacardParts>,
 }
 
 impl CityUi<'_, '_> {
@@ -87,9 +98,9 @@ impl CityUi<'_, '_> {
         }
     }
 
-    fn placard(&mut self, root: Entity, value: i16) {
+    fn placard(&mut self, view: PlacardView, value: i16) {
         let shown = value != 0;
-        *self.visibility.get_mut(root).expect("placard") = if shown {
+        *self.visibility.get_mut(view.root).expect("placard") = if shown {
             Visibility::Visible
         } else {
             Visibility::Hidden
@@ -97,19 +108,53 @@ impl CityUi<'_, '_> {
         if !shown {
             return;
         }
-        let text = self.placard_parts.get(root).expect("placard parts").text;
         let (width, height) = {
-            let node = self.nodes.get(root).expect("placard node");
+            let node = self.nodes.get(view.root).expect("placard node");
             let (Val::Px(width), Val::Px(height)) = (node.width, node.height) else {
                 return;
             };
             (width, height)
         };
         let (left, top) = placard_text_layout(width, height, value);
-        self.texts.get_mut(text).expect("placard text").0 = value.to_string();
-        let mut text_node = self.nodes.get_mut(text).expect("placard text node");
+        self.texts.get_mut(view.text).expect("placard text").0 = value.to_string();
+        let mut text_node = self.nodes.get_mut(view.text).expect("placard text node");
         text_node.left = Val::Px(left);
         text_node.top = Val::Px(top);
+    }
+
+    /// Production amount bar: fill span, optional limit marker, optional quantity caption.
+    ///
+    /// Trade-style bars leave [`AmountBarView::limit`] as [`Entity::PLACEHOLDER`].
+    fn amount_bar(&mut self, view: AmountBarView, value: i16, range: i16, maximum: i16) {
+        let geometry = amount_bar_geometry(AmountBarStyle::Production, range);
+        self.nodes
+            .get_mut(view.fill)
+            .expect("amount bar fill")
+            .width = Val::Px(f32::from(geometry.span(value)));
+        if view.limit != Entity::PLACEHOLDER {
+            self.nodes
+                .get_mut(view.limit)
+                .expect("amount bar limit")
+                .left = Val::Px(f32::from(geometry.span(maximum)));
+        }
+        if view.quantity == Entity::PLACEHOLDER {
+            return;
+        }
+        self.text(view.quantity, value.to_string());
+        let offset = amount_bar_counter_offset(geometry, value);
+        let (bar_left, bar_top) = {
+            let node = self.nodes.get(view.root).expect("bound amount bar node");
+            let (Val::Px(left), Val::Px(top)) = (node.left, node.top) else {
+                return;
+            };
+            (left, top)
+        };
+        let mut counter = self
+            .nodes
+            .get_mut(view.quantity)
+            .expect("bound quantity node");
+        counter.left = Val::Px(bar_left + offset.x);
+        counter.top = Val::Px(bar_top + offset.y);
     }
 }
 

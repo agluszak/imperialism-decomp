@@ -1,5 +1,8 @@
-//! Recovered `TAmtBar` geometry and click math. Scene structure is generated.
+//! Recovered `TAmtBar` family: structure-only BSN helpers plus click/geometry math.
+//!
+//! Screens own interaction and presentation via retained child entity handles.
 
+use super::retail::retail_background_color;
 use bevy::prelude::*;
 
 pub const INDUSTRY_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
@@ -14,6 +17,10 @@ pub const TRADE_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
     segments: 0,
 };
 
+pub const INDUSTRY_BAR_FILL: u8 = 0x16;
+// `TTraderAmtBar` calls `ApplyLegendSplitSlot34(0x37)` → palette 0xbd via GetColor.
+pub const TRADE_BAR_FILL: u8 = 0xbd;
+
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub enum AmountBarStyle {
     #[default]
@@ -21,11 +28,54 @@ pub enum AmountBarStyle {
     Trade,
 }
 
-/// Private child refs for a generated amount-bar hierarchy.
+/// Private child refs for an amount-bar hierarchy.
+///
+/// Trade bars leave [`Self::limit`] as [`Entity::PLACEHOLDER`] (no limit child).
 #[derive(Component, FromTemplate, Clone, Copy)]
 pub struct AmountBarParts {
     pub fill: Entity,
     pub limit: Entity,
+}
+
+/// Generated helper: production bars include a limit marker; trade bars are fill-only.
+pub fn retail_amount_bar(style: AmountBarStyle) -> impl Scene {
+    let production = (style == AmountBarStyle::Production).then(production_amount_bar);
+    let trade = (style == AmountBarStyle::Trade).then(trade_amount_bar);
+    bsn! { {production} {trade} }
+}
+
+#[rustfmt::skip]
+fn production_amount_bar() -> impl Scene {
+    bsn! {
+        AmountBarParts { fill: #Fill, limit: #Limit }
+        Children [
+            (
+                #Fill
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(1), width: px(0), height: px(4) }
+                retail_background_color(INDUSTRY_BAR_FILL)
+                Pickable::IGNORE
+            ),
+            (
+                #Limit
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(0), width: px(1), height: px(5) }
+                retail_background_color(0)
+                Pickable::IGNORE
+            ),
+        ]
+    }
+}
+
+#[rustfmt::skip]
+fn trade_amount_bar() -> impl Scene {
+    bsn! {
+        AmountBarParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
+        Children [(
+            #Fill
+            Node { position_type: PositionType::Absolute, left: px(0), top: px(0), width: px(0), height: percent(100) }
+            retail_background_color(TRADE_BAR_FILL)
+            Pickable::IGNORE
+        )]
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -67,6 +117,7 @@ pub fn amount_bar_value_at_x(geometry: AmountBarGeometry, x: i32) -> i16 {
         return 0;
     }
     if geometry.segments <= 0 {
+        // `auxValueA <= 0` takes the float branch: `x * 0 / width + 1`.
         return 1;
     }
     let dead_zone = geometry.width / (i32::from(geometry.segments) << 1);
@@ -116,21 +167,61 @@ mod tests {
     use super::*;
 
     #[test]
-    fn click_and_span_match_retail() {
-        let geometry = INDUSTRY_AMOUNT_BAR.with_segments(10);
-        assert_eq!(amount_bar_value_at_x(geometry, 0), 0);
-        assert_eq!(amount_bar_value_at_x(geometry, 6), 0);
-        assert_eq!(amount_bar_value_at_x(geometry, 7), 1);
-        assert_eq!(amount_bar_click_value(geometry, 3, 0), 1);
+    fn click_uses_a_leading_half_segment_dead_zone() {
+        let g = INDUSTRY_AMOUNT_BAR.with_segments(10);
+        for (x, expected) in [(0, 0), (6, 0), (7, 1), (15, 2), (149, 10)] {
+            assert_eq!(amount_bar_value_at_x(g, x), expected, "x={x}");
+        }
+    }
+
+    #[test]
+    fn zero_capacity_click_is_one() {
         assert_eq!(
-            trade_amount_bar_click_value(TRADE_AMOUNT_BAR.with_segments(20), 3),
+            amount_bar_value_at_x(INDUSTRY_AMOUNT_BAR.with_segments(0), 40),
             1
         );
-        assert_eq!(quantize_amount_bar_value(3, 6), 6);
-        assert_eq!(INDUSTRY_AMOUNT_BAR.with_segments(50).span(25), 75);
-        assert_eq!(
-            amount_bar_counter_offset(INDUSTRY_AMOUNT_BAR.with_segments(50), 25),
-            Vec2::new(73.0, 6.0)
-        );
+    }
+
+    #[test]
+    fn click_promotes_dead_zone_when_counter_already_zero() {
+        let g = INDUSTRY_AMOUNT_BAR.with_segments(10);
+        assert_eq!(amount_bar_click_value(g, 3, 0), 1);
+        assert_eq!(amount_bar_click_value(g, 3, 4), 0);
+        assert_eq!(amount_bar_click_value(g, 0, 0), 0);
+    }
+
+    #[test]
+    fn trade_click_clamps_first_capacity_column_to_one() {
+        let g = TRADE_AMOUNT_BAR.with_segments(20);
+        assert_eq!(trade_amount_bar_click_value(g, 0), 0);
+        assert_eq!(trade_amount_bar_click_value(g, 3), 1);
+        assert_eq!(trade_amount_bar_click_value(g, 50), 11);
+    }
+
+    #[test]
+    fn rail_click_quantizes_to_cluster_step() {
+        for (value, step, expected) in [(1, 2, 2), (2, 2, 2), (3, 6, 6), (2, 6, 0), (5, 1, 5)] {
+            assert_eq!(quantize_amount_bar_value(value, step), expected);
+        }
+    }
+
+    #[test]
+    fn span_scales_against_segments() {
+        let g = INDUSTRY_AMOUNT_BAR.with_segments(50);
+        assert_eq!(g.span(0), 0);
+        assert_eq!(g.span(25), 75);
+        assert_eq!(g.span(50), 150);
+        assert_eq!(INDUSTRY_AMOUNT_BAR.span(10), 0);
+    }
+
+    #[test]
+    fn counter_offset_tracks_fill_span() {
+        let g = INDUSTRY_AMOUNT_BAR.with_segments(50);
+        assert_eq!(amount_bar_counter_offset(g, 25), Vec2::new(73.0, 6.0));
+    }
+
+    #[test]
+    fn trader_bar_uses_view_manager_resolved_palette_index() {
+        assert_eq!(TRADE_BAR_FILL, 0xbd);
     }
 }

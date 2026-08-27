@@ -152,9 +152,10 @@ gameplay.
 Map each recovered class to the smallest Bevy mechanism that preserves observable
 behavior: stock widget + retail skin when possible; a plain scene helper plus Parts when
 the hierarchy must be shared with generated screens; handwritten binder observers for
-domain clicks. Prefer `Component` + `FromTemplate` Parts over `SceneComponent` unless the
-control genuinely needs autonomous reusable component behavior. Do not invent a Rust type
-per recovered C++ class.
+domain clicks. Use plain BSN scene fragments by default. Add a Parts component when
+consumers need stable child addresses. Use `SceneComponent` only when existence of a
+component must intrinsically guarantee an autonomous associated scene/lifecycle. Do not
+invent a Rust type per recovered C++ class.
 
 When recovered class identity is known while generating a static resource scene, the generator
 emits the Bevy structure directly (amount-bar fill/limit children, placard captions, transport
@@ -213,9 +214,11 @@ root knows its default and cancel controls. Each is established once at binding:
 keyboard, and activation events propagate to those observers, whose closures capture the invariant
 targets.
 
-Generated BSN remains the structure mechanism for recovered screens. Reusable hierarchical widgets
-authored by this project use Rust BSN `SceneComponent`s (not `.bsn` asset files). Recovered screens
-do not get a second handcrafted scene merely to wrap their generated hierarchy.
+Generated BSN remains the structure mechanism for recovered screens. Use plain BSN scene fragments
+by default. Add a Parts component when consumers need stable child addresses. Use `SceneComponent`
+only when existence of a component must intrinsically guarantee an autonomous associated
+scene/lifecycle. Recovered screens do not get a second handcrafted scene merely to wrap their
+generated hierarchy.
 
 ### Out-of-frame retail drawing vs Bevy clipping
 

@@ -231,8 +231,7 @@ fn write_army_toolbar(
     for category in ArmyUnitCategory::all() {
         let picture_id = placard_picture_id(counts, nation, state, category);
         let placard = view.placards[category];
-        images.get_mut(placard.root).expect("army placard").image =
-            assets.picture(picture_id);
+        images.get_mut(placard.root).expect("army placard").image = assets.picture(picture_id);
         texts.get_mut(placard.text).expect("army placard text").0 = if counts.totals[category] != 0
         {
             counts.totals[category].to_string()
@@ -250,13 +249,12 @@ fn write_army_toolbar(
         }
     }
     if update_garrison {
-        images.get_mut(view.garrison).expect("garrison").image = assets.picture(
-            if counts.can_upgrade {
+        images.get_mut(view.garrison).expect("garrison").image =
+            assets.picture(if counts.can_upgrade {
                 PictureId::new(0x24d5)
             } else {
                 PictureId::new(0x04b5)
-            },
-        );
+            });
     }
 }
 

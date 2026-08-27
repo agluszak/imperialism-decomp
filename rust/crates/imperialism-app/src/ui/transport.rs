@@ -5,9 +5,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::HoverHelpText;
-use super::retail::{
-    RetailTransportGaugeKind, RetailTree, TransportGaugeParts, transport_gauge_width,
-};
+use super::retail::{RetailTree, TransportGaugeParts, transport_gauge_width};
 use super::retail_resources::ResourceKindRetailResources;
 use super::retail_transport_gauge::{
     TRANSPORT_GAUGE_FULL_PALETTE, TRANSPORT_GAUGE_PARTIAL_PALETTE,
@@ -106,9 +104,9 @@ struct TransportScreen;
 #[derive(Clone, Copy)]
 struct TransportGaugeView {
     fill: Entity,
+    /// [`Entity::PLACEHOLDER`] for capacity gauges (no limit marker).
     limit: Entity,
     caption: Entity,
-    kind: RetailTransportGaugeKind,
 }
 
 #[derive(Clone, Copy)]
@@ -200,7 +198,6 @@ fn bind_gauge_view(
         fill: parts.fill,
         limit: parts.limit,
         caption: tree.find(entity, fourcc!("text")),
-        kind: parts.kind,
     }
 }
 
@@ -304,7 +301,7 @@ fn render_transport(
         set_transport_visibility(&mut commands, row.row, status.adjustable);
         set_transport_enabled(&mut commands, row.decrease, status.can_decrease);
         set_transport_enabled(&mut commands, row.increase, status.can_increase);
-        write_transport_gauge(
+        write_allocation_gauge(
             &row.gauge,
             status.allocated,
             status.available,
@@ -318,21 +315,19 @@ fn render_transport(
         );
     }
     let capacities = economy.capacities;
-    write_transport_gauge(
+    write_capacity_gauge(
         &view.capacity,
         capacities.reserved_transport,
         capacities.transport,
-        None,
         &mut nodes,
         &mut texts,
         &mut backgrounds,
-        &mut commands,
         partial,
         full,
     );
 }
 
-fn write_transport_gauge(
+fn write_allocation_gauge(
     gauge: &TransportGaugeView,
     current: i16,
     total: i16,
@@ -352,30 +347,51 @@ fn write_transport_gauge(
         .get_mut(gauge.caption)
         .expect("transport gauge caption")
         .0 = format!("{current}  /  {total}");
-    match gauge.kind {
-        RetailTransportGaugeKind::Allocation => match limit {
-            Some(limit) => {
-                commands.entity(gauge.limit).insert(Visibility::Visible);
-                backgrounds
-                    .get_mut(gauge.limit)
-                    .expect("transport gauge limit")
-                    .0 = if current < limit { partial } else { full };
-            }
-            None => {
-                commands.entity(gauge.limit).insert(Visibility::Hidden);
-            }
-        },
-        RetailTransportGaugeKind::Capacity => {
+    debug_assert_ne!(
+        gauge.limit,
+        Entity::PLACEHOLDER,
+        "allocation gauges retain a limit marker"
+    );
+    match limit {
+        Some(limit) => {
+            commands.entity(gauge.limit).insert(Visibility::Visible);
             backgrounds
-                .get_mut(gauge.fill)
-                .expect("transport gauge fill colour")
-                .0 = if total > 0 && current == total {
-                full
-            } else {
-                partial
-            };
+                .get_mut(gauge.limit)
+                .expect("transport gauge limit")
+                .0 = if current < limit { partial } else { full };
+        }
+        None => {
+            commands.entity(gauge.limit).insert(Visibility::Hidden);
         }
     }
+}
+
+fn write_capacity_gauge(
+    gauge: &TransportGaugeView,
+    current: i16,
+    total: i16,
+    nodes: &mut Query<&mut Node>,
+    texts: &mut Query<&mut Text>,
+    backgrounds: &mut Query<&mut BackgroundColor>,
+    partial: Color,
+    full: Color,
+) {
+    nodes
+        .get_mut(gauge.fill)
+        .expect("transport gauge fill")
+        .width = Val::Px(transport_gauge_width(current, total));
+    texts
+        .get_mut(gauge.caption)
+        .expect("transport gauge caption")
+        .0 = format!("{current}  /  {total}");
+    backgrounds
+        .get_mut(gauge.fill)
+        .expect("transport gauge fill colour")
+        .0 = if total > 0 && current == total {
+        full
+    } else {
+        partial
+    };
 }
 
 fn set_transport_visibility(commands: &mut Commands, entity: Entity, visible: bool) {
@@ -454,7 +470,7 @@ fn allocation_amount(
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::{RetailTag, RetailTransportGaugeKind};
+    use super::super::retail::RetailTag;
     use super::*;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
@@ -515,15 +531,13 @@ mod tests {
             world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
         }
         let fill = world.spawn(Node::default()).id();
-        let limit = world.spawn(Node::default()).id();
         let total = world
             .spawn((
                 RetailTag(fourcc!("tota")),
                 Node::default(),
                 TransportGaugeParts {
-                    kind: RetailTransportGaugeKind::Capacity,
                     fill,
-                    limit,
+                    limit: Entity::PLACEHOLDER,
                 },
                 ChildOf(root),
             ))
@@ -541,11 +555,7 @@ mod tests {
                 .spawn((
                     RetailTag(binding.tag),
                     Node::default(),
-                    TransportGaugeParts {
-                        kind: RetailTransportGaugeKind::Allocation,
-                        fill,
-                        limit,
-                    },
+                    TransportGaugeParts { fill, limit },
                     ChildOf(root),
                 ))
                 .id();

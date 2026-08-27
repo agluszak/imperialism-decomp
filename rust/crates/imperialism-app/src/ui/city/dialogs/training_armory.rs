@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail::AmountBarParts;
 use crate::ui::retail::RetailPictureSwap;
 
 pub(in crate::ui::city) struct TrainingUi {
@@ -63,6 +64,7 @@ pub(in crate::ui::city) fn bind_training(
     assets: &RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> TrainingUi {
     let building_name = city_building_name(assets, CityFacilitySlot::TradeSchool);
     let name = tree.find(root, fourcc!("name"));
@@ -73,8 +75,16 @@ pub(in crate::ui::city) fn bind_training(
     }
     let quantities =
         TrainingOrderTable::from_array(generated::TRAINING_ORDER_TAGS).map(|level, tag| {
-            bind_industry_order_row(commands, root, tree, CityOrderId::Training(level), tag, 1)
-                .quantity
+            bind_industry_order_row(
+                commands,
+                root,
+                tree,
+                amount_bars,
+                CityOrderId::Training(level),
+                tag,
+                1,
+            )
+            .quantity
         });
     TrainingUi {
         quantities,

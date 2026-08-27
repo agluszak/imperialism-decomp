@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail::AmountBarParts;
 
 pub(in crate::ui::city) struct WarehouseUi {
     stocks: Vec<(Entity, ResourceKind)>,
@@ -113,12 +114,14 @@ pub(in crate::ui::city) fn bind_food(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> FoodUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::FoodProcessing,
         CityOrderId::FoodProcessing,
         generated::FOOD_ORDER_TAG,
@@ -138,12 +141,14 @@ pub(in crate::ui::city) fn bind_power(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> RailUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::PowerPlant,
         CityOrderId::PowerPlant,
         generated::POWER_ORDER_TAG,
@@ -161,12 +166,14 @@ pub(in crate::ui::city) fn bind_transport(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> TransportUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::Transport,
         CityOrderId::TransportCapacity,
         generated::TRANSPORT_ORDER_TAG,
@@ -185,12 +192,14 @@ pub(in crate::ui::city) fn bind_population(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> PopulationUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::RegionalPopulation,
         CityOrderId::PopulationGrowth,
         generated::POPULATION_ORDER_TAG,

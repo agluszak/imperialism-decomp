@@ -9,6 +9,7 @@ use super::retail::{
 use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
 use bevy::prelude::*;
+use bevy::ui::UiSystems;
 use bevy::ui_widgets::{
     Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick,
 };
@@ -98,7 +99,10 @@ fn load_off_string(context: &TemplateContext, off_group: i16, off_index: i16) ->
 }
 
 pub(super) fn register_slider(app: &mut App) {
-    app.add_systems(PostUpdate, sync_two_pic_slider_visuals);
+    app.add_systems(
+        PostUpdate,
+        sync_two_pic_slider_visuals.before(UiSystems::Prepare),
+    );
 }
 
 type TwoPicSliderQuery = (

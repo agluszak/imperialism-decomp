@@ -1,10 +1,11 @@
-//! Recovered `TNumberedArrowButton`: two Bevy `Button`s with atlas skins.
+//! Recovered `TNumberedArrowButton`: separate glyph images and Bevy `Button` hit boxes.
 //!
 //! Screens write the count caption and observe `Activate` on upper/lower.
-//! This module only swaps glyph crops from child `Pressed` state.
+//! This module only swaps glyph crops from button `Pressed` state onto the image entities.
 //!
 //! Hit testing matches retail `TrackMouse` (41px: dead at y==0 and y==20).
-//! Count caption paints outside the 11px frame (`Overflow::visible`).
+//! Glyphs draw at y=0..16 and y=25..41; count paints outside the 11px frame
+//! (`Overflow::visible`).
 
 use super::retail::{
     load_template_transparent_picture, retail_text_color, retail_text_shadow, retail_text_style,
@@ -20,6 +21,9 @@ const TRANSPARENT_INDEX: u8 = 0x10;
 const WIDTH: f32 = 11.0;
 const HEIGHT: f32 = 41.0;
 const MIDPOINT: f32 = 20.0;
+const GLYPH_HEIGHT: f32 = 16.0;
+const UPPER_GLYPH_TOP: f32 = 0.0;
+const LOWER_GLYPH_TOP: f32 = 25.0;
 const UPPER_HIT_TOP: f32 = 1.0;
 const UPPER_HIT_HEIGHT: f32 = MIDPOINT - UPPER_HIT_TOP;
 const LOWER_HIT_TOP: f32 = MIDPOINT + 1.0;
@@ -42,8 +46,10 @@ const BOTTOM_PRESSED: Rect = Rect {
     max: Vec2::new(33.0, 16.0),
 };
 
-#[derive(Component, FromTemplate, Clone, Copy, Default)]
-struct NumberedArrowGlyph {
+/// Links a hit-box button to the glyph image whose atlas crop it drives.
+#[derive(Component, FromTemplate, Clone, Copy)]
+struct ArrowGlyph {
+    image: Entity,
     idle: Rect,
     pressed: Rect,
 }
@@ -56,60 +62,46 @@ pub struct NumberedArrowParts {
     pub count: Entity,
 }
 
+#[rustfmt::skip]
 pub fn retail_numbered_arrow() -> impl Scene {
     bsn! {
         Pickable::IGNORE
         Node { overflow: Overflow::visible() }
-        NumberedArrowParts {
-            upper: #Upper,
-            lower: #Lower,
-            count: #Count,
-        }
+        NumberedArrowParts { upper: #Upper, lower: #Lower, count: #Count }
         Children [
             (
+                #UpperImage
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(UPPER_GLYPH_TOP), width: px(WIDTH), height: px(GLYPH_HEIGHT) }
+                template(|context| Ok(ImageNode {
+                    image: load_template_transparent_picture(context, PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)?,
+                    rect: Some(TOP_IDLE), ..default()
+                }))
+                Pickable::IGNORE
+            ),
+            (
+                #LowerImage
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(LOWER_GLYPH_TOP), width: px(WIDTH), height: px(GLYPH_HEIGHT) }
+                template(|context| Ok(ImageNode {
+                    image: load_template_transparent_picture(context, PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)?,
+                    rect: Some(BOTTOM_IDLE), ..default()
+                }))
+                Pickable::IGNORE
+            ),
+            (
                 #Upper
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0), top: px(UPPER_HIT_TOP),
-                    width: px(WIDTH), height: px(UPPER_HIT_HEIGHT),
-                }
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(UPPER_HIT_TOP), width: px(WIDTH), height: px(UPPER_HIT_HEIGHT) }
                 Button
-                NumberedArrowGlyph { idle: TOP_IDLE, pressed: TOP_PRESSED }
-                template(|context| {
-                    Ok(ImageNode {
-                        image: load_template_transparent_picture(
-                            context, PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX,
-                        )?,
-                        rect: Some(TOP_IDLE),
-                        ..default()
-                    })
-                })
+                ArrowGlyph { image: #UpperImage, idle: TOP_IDLE, pressed: TOP_PRESSED }
             ),
             (
                 #Lower
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0), top: px(LOWER_HIT_TOP),
-                    width: px(WIDTH), height: px(LOWER_HIT_HEIGHT),
-                }
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(LOWER_HIT_TOP), width: px(WIDTH), height: px(LOWER_HIT_HEIGHT) }
                 Button
-                NumberedArrowGlyph { idle: BOTTOM_IDLE, pressed: BOTTOM_PRESSED }
-                template(|context| {
-                    Ok(ImageNode {
-                        image: load_template_transparent_picture(
-                            context, PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX,
-                        )?,
-                        rect: Some(BOTTOM_IDLE),
-                        ..default()
-                    })
-                })
+                ArrowGlyph { image: #LowerImage, idle: BOTTOM_IDLE, pressed: BOTTOM_PRESSED }
             ),
             (
                 #Count
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(7), top: px(0), width: px(20), height: px(16),
-                }
+                Node { position_type: PositionType::Absolute, left: px(7), top: px(0), width: px(20), height: px(16) }
                 Text("")
                 retail_text_style(0, 0, 10, 1)
                 retail_text_color(0x28)
@@ -127,9 +119,13 @@ pub(super) fn register_numbered_arrow(app: &mut App) {
 
 fn on_numbered_arrow_glyph_pressed<E: EntityEvent>(
     event: On<E, Pressed>,
-    mut glyphs: Query<(&NumberedArrowGlyph, &mut ImageNode)>,
+    glyphs: Query<&ArrowGlyph>,
+    mut images: Query<&mut ImageNode>,
 ) {
-    let Ok((glyph, mut image)) = glyphs.get_mut(event.event_target()) else {
+    let Ok(glyph) = glyphs.get(event.event_target()) else {
+        return;
+    };
+    let Ok(mut image) = images.get_mut(glyph.image) else {
         return;
     };
     image.rect = Some(if !E::is::<Remove>() {
@@ -151,5 +147,13 @@ mod tests {
         assert_eq!(LOWER_HIT_HEIGHT, 20.0);
         assert_eq!(UPPER_HIT_TOP + UPPER_HIT_HEIGHT, MIDPOINT);
         assert_eq!(LOWER_HIT_TOP + LOWER_HIT_HEIGHT, HEIGHT);
+    }
+
+    #[test]
+    fn glyph_rects_match_retail_draw() {
+        assert_eq!(UPPER_GLYPH_TOP, 0.0);
+        assert_eq!(LOWER_GLYPH_TOP, 25.0);
+        assert_eq!(GLYPH_HEIGHT, 16.0);
+        assert_eq!(LOWER_GLYPH_TOP + GLYPH_HEIGHT, HEIGHT);
     }
 }

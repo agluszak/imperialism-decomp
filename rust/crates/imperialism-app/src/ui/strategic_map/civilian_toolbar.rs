@@ -223,7 +223,6 @@ fn sync_civilian_toolbar(
     );
 }
 
-
 fn civilian_legend_target_counts(
     state: &GameState,
     unit_id: CivilianUnitId,

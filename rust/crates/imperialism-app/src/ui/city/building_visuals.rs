@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail::PlacardParts;
 use crate::ui::retail::apply_index_transparency;
 use crate::ui::retail_raster::IndexedRasterExt;
 
@@ -33,10 +34,10 @@ pub(in crate::ui::city) struct CitySceneRoot;
 
 #[derive(Clone, Copy)]
 struct CitySummaryUi {
-    labor: [Entity; 3],
-    population: Entity,
-    power: Entity,
-    needs: [(ResourceKind, Entity); 6],
+    labor: [PlacardView; 3],
+    population: PlacardView,
+    power: PlacardView,
+    needs: [(ResourceKind, PlacardView); 6],
     treasury: Entity,
 }
 
@@ -231,6 +232,7 @@ pub(in crate::ui::city) fn bind_city_screen(
     mut commands: Commands,
     root: Single<Entity, Added<CitySceneRoot>>,
     tree: RetailTree,
+    placard_parts: Query<&PlacardParts>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -245,7 +247,7 @@ pub(in crate::ui::city) fn bind_city_screen(
 
     let nation = session.active_major_nation();
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    let summary = bind_city_summary_values(*root, &tree);
+    let summary = bind_city_summary_values(*root, &tree, &placard_parts);
     let hover_title = bind_city_hover_title(&mut commands, *root, &tree, &mut assets);
     spawn_city_buildings(
         &mut commands,
@@ -263,22 +265,33 @@ pub(in crate::ui::city) fn bind_city_screen(
     });
 }
 
-fn bind_city_summary_values(root: Entity, tree: &RetailTree) -> CitySummaryUi {
+fn bind_city_summary_values(
+    root: Entity,
+    tree: &RetailTree,
+    placard_parts: &Query<&PlacardParts>,
+) -> CitySummaryUi {
+    let placard = |tag: FourCc| {
+        let root = tree.find(root, tag);
+        PlacardView {
+            root,
+            text: placard_parts.get(root).expect("placard parts").text,
+        }
+    };
     CitySummaryUi {
         labor: [
-            tree.find(root, fourcc!("untr")),
-            tree.find(root, fourcc!("trai")),
-            tree.find(root, fourcc!("prof")),
+            placard(fourcc!("untr")),
+            placard(fourcc!("trai")),
+            placard(fourcc!("prof")),
         ],
-        population: tree.find(root, fourcc!("labP")),
-        power: tree.find(root, fourcc!("powe")),
+        population: placard(fourcc!("labP")),
+        power: placard(fourcc!("powe")),
         needs: [
-            (ResourceKind::Grain, tree.find(root, fourcc!("grai"))),
-            (ResourceKind::Fruit, tree.find(root, fourcc!("prod"))),
-            (ResourceKind::Livestock, tree.find(root, fourcc!("meat"))),
-            (ResourceKind::Hardware, tree.find(root, fourcc!("hard"))),
-            (ResourceKind::Clothing, tree.find(root, fourcc!("clot"))),
-            (ResourceKind::Furniture, tree.find(root, fourcc!("furn"))),
+            (ResourceKind::Grain, placard(fourcc!("grai"))),
+            (ResourceKind::Fruit, placard(fourcc!("prod"))),
+            (ResourceKind::Livestock, placard(fourcc!("meat"))),
+            (ResourceKind::Hardware, placard(fourcc!("hard"))),
+            (ResourceKind::Clothing, placard(fourcc!("clot"))),
+            (ResourceKind::Furniture, placard(fourcc!("furn"))),
         ],
         treasury: tree.find(root, fourcc!("trea")),
     }

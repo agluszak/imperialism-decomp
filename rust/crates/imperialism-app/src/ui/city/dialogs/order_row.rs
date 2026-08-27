@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail::AmountBarParts;
 use crate::ui::retail_amount_bar::{
     AmountBarStyle, amount_bar_click_value, amount_bar_geometry, amount_bar_x_from_normalized,
     quantize_amount_bar_value,
@@ -14,7 +15,7 @@ pub(in crate::ui::city) fn city_building_name(
 pub(in crate::ui::city) struct CityOrderRow {
     pub(in crate::ui::city) row: Entity,
     pub(in crate::ui::city) quantity: Entity,
-    pub(in crate::ui::city) bar: Option<Entity>,
+    pub(in crate::ui::city) bar: Option<AmountBarView>,
 }
 
 impl CityOrderRow {
@@ -44,6 +45,7 @@ pub(in crate::ui::city) fn bind_industry_order_row(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
     order: CityOrderId,
     tag: FourCc,
     step: i16,
@@ -53,6 +55,7 @@ pub(in crate::ui::city) fn bind_industry_order_row(
     let increase = tree.find(row, fourcc!("rght"));
     let quantity = tree.find(row, fourcc!("move"));
     let bar = tree.find(row, fourcc!("bar "));
+    let parts = *amount_bars.get(bar).expect("bound amount bar");
     let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
         commands.entity(entity).observe(
             move |_: On<Activate>, mut session: ResMut<GameSession>| {
@@ -84,7 +87,12 @@ pub(in crate::ui::city) fn bind_industry_order_row(
     CityOrderRow {
         row,
         quantity,
-        bar: Some(bar),
+        bar: Some(AmountBarView {
+            root: bar,
+            fill: parts.fill,
+            limit: parts.limit,
+            quantity,
+        }),
     }
 }
 

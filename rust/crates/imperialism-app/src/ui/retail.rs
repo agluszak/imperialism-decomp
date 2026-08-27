@@ -12,16 +12,18 @@ use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
 
-#[allow(unused_imports)] // barrel re-exports for binders and generated screens
-pub use super::retail_amount_bar::{AmountBarParts, AmountBarStyle, amount_bar_geometry};
+pub use super::retail_amount_bar::{
+    AmountBarParts, AmountBarStyle, retail_amount_bar,
+};
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
-#[allow(unused_imports)] // barrel re-exports for binders and generated screens
-pub use super::retail_placard::{PlacardParts, placard_text_layout, placard_text_x};
-#[allow(unused_imports)] // barrel re-exports for binders and generated screens
-pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
-#[allow(unused_imports)] // barrel re-exports for binders and generated screens
+pub use super::retail_placard::{
+    PlacardParts, placard_text_layout, retail_army_placard, retail_placard,
+    retail_ship_placard,
+};
+pub use super::retail_slider::retail_two_pic_slider;
 pub use super::retail_transport_gauge::{
-    RetailTransportGaugeKind, TransportGaugeParts, transport_gauge_width,
+    TransportGaugeParts, retail_transport_capacity_gauge, retail_transport_gauge,
+    transport_gauge_width,
 };
 
 /// Provenance tag recovered from the retail View resource.
@@ -308,14 +310,14 @@ pub enum RetailPictureError {
     },
 }
 
-#[derive(Resource, Default)]
-struct RetailPictureHandles {
-    opaque: HashMap<PictureId, Handle<Image>>,
-    keyed: HashMap<(PictureId, u8), Handle<Image>>,
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+enum RetailImageKey {
+    Opaque(PictureId),
+    Transparent(PictureId, u8),
 }
 
 #[derive(Resource, Default)]
-struct RetailTransparentPictureHandles(HashMap<(PictureId, u8), Handle<Image>>);
+struct RetailPictureHandles(HashMap<RetailImageKey, Handle<Image>>);
 
 #[derive(SystemParam)]
 pub struct RetailUiAssets<'w> {
@@ -392,8 +394,8 @@ impl RetailUiAssets<'_> {
         &mut self,
         picture_id: PictureId,
     ) -> Result<Handle<Image>, RetailPictureError> {
-        load_retail_picture(
-            picture_id,
+        load_retail_image(
+            RetailImageKey::Opaque(picture_id),
             &self.retail_assets,
             &mut self.images,
             &mut self.handles,
@@ -425,25 +427,17 @@ impl RetailUiAssets<'_> {
         picture_id: PictureId,
         transparent_palette_index: u8,
     ) -> Handle<Image> {
-        if let Some(handle) = self
-            .handles
-            .keyed
-            .get(&(picture_id, transparent_palette_index))
-        {
-            return handle.clone();
-        }
-        let indexed = self.indexed_picture(picture_id);
-        // Decode the indexed DIB once into the UI image instead of applying an
-        // alpha mask to Bevy's BMP decoder output. The latter has a distinct
-        // scanline layout for some retail DIBs, so its index rows can diverge
-        // from the visible RGBA rows (notably atlas 0xee2).
-        let handle = self.add_image(
-            indexed.to_keyed_image(self.default_dib_palette(), transparent_palette_index),
-        );
-        self.handles
-            .keyed
-            .insert((picture_id, transparent_palette_index), handle.clone());
-        handle
+        load_retail_image(
+            RetailImageKey::Transparent(picture_id, transparent_palette_index),
+            &self.retail_assets,
+            &mut self.images,
+            &mut self.handles,
+        )
+        .unwrap_or_else(|error| {
+            panic!(
+                "retail keyed picture {picture_id}/{transparent_palette_index} must load: {error}"
+            )
+        })
     }
 
     pub fn try_indexed_picture(
@@ -475,7 +469,6 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
-            .init_resource::<RetailTransparentPictureHandles>()
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
@@ -488,7 +481,6 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_retail_madness_picture_state::<Remove, Checked>)
             .add_observer(on_retail_madness_picture_state::<Add, InteractionDisabled>)
             .add_observer(on_retail_madness_picture_state::<Remove, InteractionDisabled>)
-            .add_observer(on_retail_madness_picture_inserted)
             .add_observer(on_radio_text_fill_state::<Add, Pressed>)
             .add_observer(on_radio_text_fill_state::<Remove, Pressed>)
             .add_observer(on_radio_text_fill_state::<Add, Checked>)
@@ -518,16 +510,6 @@ fn madness_frame_index(checked: bool, pressed: bool, disabled: bool) -> usize {
     } else {
         usize::from(!checked) * 2 + usize::from(pressed)
     }
-}
-
-fn on_retail_madness_picture_inserted(
-    event: On<Add, RetailMadnessPicture>,
-    mut nodes: Query<MadnessPictureQuery>,
-) {
-    let Ok((skin, mut image, pressed, checked, disabled)) = nodes.get_mut(event.entity) else {
-        return;
-    };
-    image.image = skin.frames[madness_frame_index(checked, pressed, disabled)].clone();
 }
 
 fn on_retail_madness_picture_state<E: EntityEvent, C: Component>(
@@ -597,19 +579,31 @@ fn on_radio_text_fill_state<E: EntityEvent, C: Component>(
     };
 }
 
-fn load_retail_picture(
-    picture_id: PictureId,
+fn load_retail_image(
+    key: RetailImageKey,
     retail_assets: &RetailAssetsResource,
     images: &mut Assets<Image>,
     picture_handles: &mut RetailPictureHandles,
 ) -> Result<Handle<Image>, RetailPictureError> {
-    if let Some(handle) = picture_handles.opaque.get(&picture_id) {
+    if let Some(handle) = picture_handles.0.get(&key) {
         return Ok(handle.clone());
     }
-    let bytes = retail_assets.assets().picture(picture_id)?;
-    let image = decode_retail_picture(picture_id, &bytes)?;
+    let image = match key {
+        RetailImageKey::Opaque(picture_id) => {
+            let bytes = retail_assets.assets().picture(picture_id)?;
+            decode_retail_picture(picture_id, &bytes)?
+        }
+        RetailImageKey::Transparent(picture_id, palette_index) => {
+            // Decode the indexed DIB once into the UI image instead of applying an
+            // alpha mask to Bevy's BMP decoder output. The latter has a distinct
+            // scanline layout for some retail DIBs, so its index rows can diverge
+            // from the visible RGBA rows (notably atlas 0xee2).
+            let indexed = retail_assets.assets().indexed_picture(picture_id)?;
+            indexed.to_keyed_image(retail_assets.assets().default_dib_palette(), palette_index)
+        }
+    };
     let handle = images.add(image);
-    picture_handles.opaque.insert(picture_id, handle.clone());
+    picture_handles.0.insert(key, handle.clone());
     Ok(handle)
 }
 
@@ -629,18 +623,7 @@ pub(super) fn load_template_picture(
     context: &mut TemplateContext,
     picture_id: PictureId,
 ) -> bevy::ecs::error::Result<Handle<Image>> {
-    Ok(context.entity.world_scope(|world| {
-        world.resource_scope(|world, mut handles: Mut<RetailPictureHandles>| {
-            world.resource_scope(|world, mut images: Mut<Assets<Image>>| {
-                load_retail_picture(
-                    picture_id,
-                    world.resource::<RetailAssetsResource>(),
-                    &mut images,
-                    &mut handles,
-                )
-            })
-        })
-    })?)
+    load_template_image(context, RetailImageKey::Opaque(picture_id))
 }
 
 /// Load a palette-keyed transparent picture, cached by `(picture_id, key)`.
@@ -649,21 +632,25 @@ pub(super) fn load_template_transparent_picture(
     picture_id: PictureId,
     palette_index: u8,
 ) -> bevy::ecs::error::Result<Handle<Image>> {
+    load_template_image(
+        context,
+        RetailImageKey::Transparent(picture_id, palette_index),
+    )
+}
+
+fn load_template_image(
+    context: &mut TemplateContext,
+    key: RetailImageKey,
+) -> bevy::ecs::error::Result<Handle<Image>> {
     Ok(context.entity.world_scope(|world| {
-        world.resource_scope(|world, mut handles: Mut<RetailTransparentPictureHandles>| {
+        world.resource_scope(|world, mut handles: Mut<RetailPictureHandles>| {
             world.resource_scope(|world, mut images: Mut<Assets<Image>>| {
-                if let Some(handle) = handles.0.get(&(picture_id, palette_index)) {
-                    return Ok::<Handle<Image>, RetailPictureError>(handle.clone());
-                }
-                let assets = world.resource::<RetailAssetsResource>();
-                let indexed = assets.assets().indexed_picture(picture_id)?;
-                let image =
-                    indexed.to_keyed_image(assets.assets().default_dib_palette(), palette_index);
-                let handle = images.add(image);
-                handles
-                    .0
-                    .insert((picture_id, palette_index), handle.clone());
-                Ok(handle)
+                load_retail_image(
+                    key,
+                    world.resource::<RetailAssetsResource>(),
+                    &mut images,
+                    &mut handles,
+                )
             })
         })
     })?)
