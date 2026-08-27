@@ -1,8 +1,6 @@
 use super::*;
-use crate::RetailFonts;
 use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
-use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
 const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Fabric,
@@ -12,6 +10,11 @@ const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Coal,
     ResourceKind::Fuel,
 ];
+
+/// Text that retail drew over the Shipyard detail DIB. Icons remain indexed;
+/// the recovered numeric labels use the normal UI text path.
+#[derive(Component)]
+pub(in crate::ui::city) struct ShipyardDetailText;
 
 pub(in crate::ui::city) struct ShipyardUi {
     pub(in crate::ui::city) selected: ShipOrderSlot,
@@ -124,9 +127,8 @@ pub(in crate::ui::city) fn render_shipyard(
     view: &ShipyardUi,
     session: &GameSession,
     assets: &mut RetailUiAssets,
-    fonts: &RetailFonts,
-    font_assets: &Assets<Font>,
     ui: &mut CityUi,
+    detail_texts: &Query<Entity, With<ShipyardDetailText>>,
 ) {
     let nation = session.active_major_nation();
     for (slot, row) in &view.rows {
@@ -167,23 +169,18 @@ pub(in crate::ui::city) fn render_shipyard(
     let mut picture = assets
         .indexed_picture(PictureId::new(9800))
         .expect("dialog pic");
-    let mut text = RetailRasterTextPainter::from_preset(
-        fonts,
-        font_assets,
-        RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        },
-    )
-    .expect("text style");
+    for entity in detail_texts.iter() {
+        ui.commands.entity(entity).despawn();
+    }
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::explicit(3, 0, 10, -2))
+        .expect("shipyard detail text style");
     let costs = ship_order_costs(ship_type);
-    for (column, (resource, required)) in SHIPYARD_MATERIALS
+    for (column, resource) in SHIPYARD_MATERIALS
         .iter()
         .filter_map(|&resource| {
             let required = costs[resource];
-            (required != 0).then_some((resource, required))
+            (required != 0).then_some(resource)
         })
         .enumerate()
     {
@@ -193,19 +190,37 @@ pub(in crate::ui::city) fn render_shipyard(
             .expect("material");
         picture.blit_keyed_at(&material, IVec2::new(text_x - 0x20, 0x98), 0x10);
         picture.blit_keyed_at(&material, IVec2::new(text_x - 0x20, 0xcc), 0x10);
-        text.draw(
-            &mut picture,
-            IVec2::new(text_x, 0xb2),
-            &required.to_string(),
-            0xd2,
-        );
+        let required = costs[resource];
         let available = city.stockpile[resource];
-        text.draw(
-            &mut picture,
-            IVec2::new(text_x, 0xe6),
-            &available.to_string(),
-            if available < required { 0xcb } else { 0xd2 },
-        );
+        for (baseline, value, color) in [
+            (0xb2, required, assets.palette_color(0xd2)),
+            (
+                0xe6,
+                available,
+                if available < required {
+                    assets.palette_color(0xcb)
+                } else {
+                    assets.palette_color(0xd2)
+                },
+            ),
+        ] {
+            ui.commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(text_x),
+                    top: px(baseline - 11),
+                    ..default()
+                },
+                Text::new(value.to_string()),
+                font.clone(),
+                layout,
+                line_height,
+                TextColor(color),
+                Pickable::IGNORE,
+                ShipyardDetailText,
+                ChildOf(view.details),
+            ));
+        }
     }
     let capabilities = ship_capabilities(ship_type);
     let values = [
@@ -217,19 +232,27 @@ pub(in crate::ui::city) fn render_shipyard(
         capabilities.resource_weight,
     ];
     for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
-        let origin = IVec2::new(left, baseline);
-        text.draw(
-            &mut picture,
-            origin,
-            &city_string(assets, 0x2736, 0x10 + index as i16),
-            0xd2,
-        );
-        text.draw(
-            &mut picture,
-            origin + IVec2::new(0x3c, 0),
-            &values[index].to_string(),
-            0xd2,
-        );
+        for (x, value) in [
+            (left, city_string(assets, 0x2736, 0x10 + index as i16)),
+            (left + 0x3c, values[index].to_string()),
+        ] {
+            ui.commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(x),
+                    top: px(baseline - 11),
+                    ..default()
+                },
+                Text::new(value),
+                font.clone(),
+                layout,
+                line_height,
+                TextColor(assets.palette_color(0xd2)),
+                Pickable::IGNORE,
+                ShipyardDetailText,
+                ChildOf(view.details),
+            ));
+        }
     }
     let image = ui.images.get_mut(view.details).expect("details");
     assets.replace_image(&image.image, picture.to_image(assets.default_dib_palette()));

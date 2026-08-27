@@ -39,7 +39,7 @@ pub(crate) struct OceanZoneLabel {
 
 #[derive(Component)]
 pub(crate) struct OceanNationLabel {
-    nation: NationId,
+    tile: Option<TileId>,
 }
 
 #[derive(Component)]
@@ -157,20 +157,10 @@ fn spawn_ocean_labels(
     session: &GameSession,
 ) {
     let (zone_font, zone_layout, zone_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 2,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 2, 12, 1))
         .expect("retail ocean-zone text style");
     let (nation_font, nation_layout, nation_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 1,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 1, 12, 1))
         .expect("retail ocean-nation text style");
     let palette = *assets.default_dib_palette();
 
@@ -190,33 +180,25 @@ fn spawn_ocean_labels(
                 &zone.zone().display_name,
                 Vec2::new(0.0, 2.0),
                 color,
+                Color::NONE,
                 &zone_font,
                 &zone_layout,
                 zone_line_height,
             );
         }
 
-        for slot in 0..NationId::COUNT {
-            let nation = NationId::new(slot);
-            let Some(name) = session.game.nations().display_name(nation) else {
-                continue;
-            };
+        // Retail draws the nation name once in the main color with a +1,+1
+        // shadow copy; model it as a single Text + TextShadow entity.
+        for (_, common) in session.game.nations().common_states() {
             spawn_ocean_label(
                 parent,
-                OceanNationLabel { nation },
-                name,
-                Vec2::new(1.0, -13.0),
-                palette_color(&palette, 0x13),
-                &nation_font,
-                &nation_layout,
-                nation_line_height,
-            );
-            spawn_ocean_label(
-                parent,
-                OceanNationLabel { nation },
-                name,
+                OceanNationLabel {
+                    tile: common.overlay_anchor_tile,
+                },
+                &common.display_name,
                 Vec2::new(0.0, -14.0),
                 palette_color(&palette, 0),
+                palette_color(&palette, 0x13),
                 &nation_font,
                 &nation_layout,
                 nation_line_height,
@@ -232,6 +214,7 @@ fn spawn_ocean_label<M: Component>(
     text: &str,
     offset: Vec2,
     color: Color,
+    shadow_color: Color,
     font: &TextFont,
     layout: &TextLayout,
     line_height: LineHeight,
@@ -246,6 +229,10 @@ fn spawn_ocean_label<M: Component>(
         *layout,
         line_height,
         TextColor(color),
+        TextShadow {
+            offset: Vec2::ONE,
+            color: shadow_color,
+        },
         Node {
             position_type: PositionType::Absolute,
             width: Val::Px(300.0),
@@ -291,33 +278,16 @@ fn sync_ocean_labels(
             &mut visibility,
         );
     }
-    let nation_tiles = ocean_nation_overlay_tiles(&session.game);
     for (label, anchor, mut node, mut visibility) in &mut nations {
         project_ocean_label(
             &projection,
-            nation_tiles[usize::from(label.nation.get())],
+            label.tile,
             anchor.offset,
             map.view.is_overview(),
             &mut node,
             &mut visibility,
         );
     }
-}
-
-fn ocean_nation_overlay_tiles(game: &GameState) -> [Option<TileId>; NationId::COUNT as usize] {
-    let mut tiles = [None; NationId::COUNT as usize];
-    for slot in 0..NationId::COUNT {
-        let nation = NationId::new(slot);
-        if game.nations().display_name(nation).is_none() {
-            continue;
-        }
-        // Retail stops the nation loop on the first missing computed anchor.
-        let Some(tile) = game.ocean_overlay_anchor_for_nation(nation) else {
-            break;
-        };
-        tiles[usize::from(slot)] = Some(tile);
-    }
-    tiles
 }
 
 fn project_ocean_label(
@@ -464,7 +434,7 @@ mod tests {
     }
 
     #[test]
-    fn nation_ocean_label_follows_the_current_overlay_anchor() {
+    fn nation_ocean_label_keeps_its_bind_time_overlay_anchor() {
         let nation = NationId::new(0);
         let mut first_parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         let owner = TileOwnerTag::from_nation(nation);
@@ -486,17 +456,17 @@ mod tests {
             .expect("nation 0 owns another tile in the same ocean view");
 
         keep_only_owned_tile(&mut first_parts.map, owner, first_tile);
-        let first = GameSession::new(GameState::from_parts(first_parts));
+        let mut first = GameSession::new(GameState::from_parts(first_parts));
         assert_eq!(
-            first.game.ocean_overlay_anchor_for_nation(nation),
+            first.game.overlay_anchor_for_nation(nation),
             Some(first_tile)
         );
 
         let mut second_parts = beginning_of_game_parts_with(strategic_map_beginning_context());
         keep_only_owned_tile(&mut second_parts.map, owner, second_tile);
-        let second = GameSession::new(GameState::from_parts(second_parts));
+        let mut second = GameSession::new(GameState::from_parts(second_parts));
         assert_eq!(
-            second.game.ocean_overlay_anchor_for_nation(nation),
+            second.game.overlay_anchor_for_nation(nation),
             Some(second_tile)
         );
 
@@ -512,7 +482,9 @@ mod tests {
         let label = app
             .world_mut()
             .spawn((
-                OceanNationLabel { nation },
+                OceanNationLabel {
+                    tile: Some(first_tile),
+                },
                 OceanLabelAnchor { offset: Vec2::ZERO },
                 Node::default(),
                 Visibility::Hidden,
@@ -528,7 +500,7 @@ mod tests {
 
         app.insert_resource(second);
         app.update();
-        assert_ne!(app.world().get::<Node>(label).unwrap().left, first_left);
+        assert_eq!(app.world().get::<Node>(label).unwrap().left, first_left);
         assert_eq!(
             app.world().get::<Visibility>(label),
             Some(&Visibility::Visible)

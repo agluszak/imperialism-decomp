@@ -1702,6 +1702,7 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
                 .map(|score| TradePolicyScore::new(i32::from(score))),
         ),
     );
+    common.overlay_anchor_tile = optional_tile_id(country.overlay_anchor_tile);
     common.unit_name_ordinal_by_type =
         MilitaryUnitTable::from_array(country.unit_name_ordinal_by_type);
     common.unit_name_counter = country.unit_name_counter;
@@ -1721,6 +1722,8 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
             let [left, right] = &report.sides;
             Some(BattleReport {
                 participant: BattleReportSideSlot::from_retail(report.participant_index),
+                displayed_side: BattleReportSideSlot::from_retail(report.displayed_participant)
+                    .unwrap_or(BattleReportSideSlot::Left),
                 kind,
                 location,
                 sides: BattleReportSideTable::from_array([left, right].map(|side| {

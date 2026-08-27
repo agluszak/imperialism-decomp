@@ -239,7 +239,8 @@ impl GameState {
             })
     }
 
-    pub(crate) fn capitol_province(&self, nation: NationId) -> Option<ProvinceId> {
+    /// `TCountry::GetCapitolProvince`: the province/city record of the nation's home tile.
+    pub fn capitol_province(&self, nation: NationId) -> Option<ProvinceId> {
         let home = self.nations.home_tile(nation)?;
         self.map[home].province
     }

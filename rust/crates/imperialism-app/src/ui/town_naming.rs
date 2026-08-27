@@ -133,7 +133,7 @@ fn spawn_resource_rows(
             continue;
         }
         let icon = assets
-            .transparent_picture(
+            .keyed_picture(
                 PictureId::new(ICON_PICTURE_BASE + i16::from(resource.retail())),
                 0x10,
             )

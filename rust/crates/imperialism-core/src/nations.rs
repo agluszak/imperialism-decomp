@@ -78,6 +78,11 @@ impl Nations {
         self.common(nation).and_then(|common| common.home_tile)
     }
 
+    /// `TCountry::overlayAnchorTileCache8c`, as loaded from the save or computed.
+    pub fn overlay_anchor_tile(&self, nation: NationId) -> Option<TileId> {
+        self.common(nation)?.overlay_anchor_tile
+    }
+
     pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
             self.majors.get(&nation).map(|nation| &nation.common)
@@ -86,6 +91,13 @@ impl Nations {
                 .get(&MinorNationId::new(nation.get()))
                 .map(|nation| &nation.common)
         }
+    }
+
+    /// Slot-ordered iterator over the countries that exist in this game, with
+    /// each country's `NationId`. Use this instead of iterating every numeric
+    /// slot and probing `display_name` as an existence test.
+    pub fn common_states(&self) -> impl Iterator<Item = (NationId, &NationCommonState)> {
+        NationId::all().filter_map(|nation| self.common(nation).map(|common| (nation, common)))
     }
 
     pub(crate) fn common_mut(&mut self, nation: NationId) -> Option<&mut NationCommonState> {
@@ -260,6 +272,10 @@ pub struct NationCommonState {
     owned_regions: Vec<ProvinceId>,
     pub treasury: i32,
     pub home_tile: Option<TileId>,
+    /// `TCountry::overlayAnchorTileCache8c`: lazily computed diplomacy-map
+    /// overlay anchor, serialized with the save. `None` means the retail `-1`
+    /// sentinel (not yet computed).
+    pub overlay_anchor_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
     pub unit_name_ordinal_by_type: crate::MilitaryUnitTable<i16>,
     pub unit_name_counter: i16,
@@ -280,6 +296,7 @@ impl NationCommonState {
             owned_regions,
             treasury,
             home_tile,
+            overlay_anchor_tile: None,
             trade_policy_by_nation,
             unit_name_ordinal_by_type: crate::MilitaryUnitTable::from_array(
                 [1; crate::MilitaryUnitKind::LENGTH],

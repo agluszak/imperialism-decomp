@@ -67,7 +67,7 @@ pub(crate) fn bind_navy_toolbar(
         },
     ));
     let arrow_atlas = assets
-        .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
+        .keyed_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
     const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
         (NavyToolbarClass::Class0, fourcc!("cls0")),
@@ -245,12 +245,7 @@ fn set_count_text(
 
 fn spawn_count_label(commands: &mut Commands, parent: Entity, assets: &mut RetailUiAssets) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 10,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::built(10, 1))
         .expect("retail navy count text style");
     commands.spawn((
         Node {

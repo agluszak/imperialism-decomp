@@ -1138,4 +1138,37 @@ mod tests {
             (0, 101)
         );
     }
+
+    /// `TCountry::GetOrComputeOverlayAnchorTileIndex` caches the anchor after the
+    /// first lookup: later territorial changes must not move it, because retail
+    /// serializes the cached tile rather than recomputing it every frame.
+    #[test]
+    fn overlay_anchor_is_cached_after_first_lookup() {
+        let mut state = crate::test_support::game_state();
+        let nation = NationId::new(0);
+        let owner = TileOwnerTag::from_nation(nation);
+        state
+            .nations
+            .major_mut(MajorNationId::new(0))
+            .common
+            .home_tile = Some(TileId::new(1));
+        let home = TileId::new(1);
+        state.map[home].province = Some(ProvinceId::new(0));
+        state.map.provinces[ProvinceId::new(0)].region_class = Some(1);
+        for tile in [TileId::new(1), TileId::new(2), TileId::new(3)] {
+            state.map[tile].owner_nation = Some(owner);
+            state.map[tile].province = Some(ProvinceId::new(0));
+        }
+        let cached = state
+            .overlay_anchor_for_nation(nation)
+            .expect("nation 0 has an overlay anchor");
+
+        // A second, far-away owned tile in the same home region would shift a
+        // fresh representative-tile average; the cached anchor must stay put.
+        let far = TileId::new(400);
+        state.map[far].owner_nation = Some(owner);
+        state.map[far].province = Some(ProvinceId::new(0));
+        assert_eq!(state.overlay_anchor_for_nation(nation), Some(cached));
+        assert_ne!(cached, far);
+    }
 }

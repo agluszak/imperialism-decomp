@@ -539,13 +539,13 @@ fn insert_land_battle_visuals(
             .picture(PictureId::new(TACTICAL_FORT_STRIP_PICTURE))
             .expect("retail tactical fort strip must load"),
         unit_atlas: assets
-            .transparent_picture(
+            .keyed_picture(
                 PictureId::new(TACTICAL_UNIT_ATLAS_PICTURE),
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical unit atlas must load"),
         fort_atlas: assets
-            .transparent_picture(
+            .keyed_picture(
                 PictureId::new(if battle.fort_level() == FortLevel::None {
                     TACTICAL_NO_FORT_ATLAS_PICTURE
                 } else {
@@ -555,19 +555,19 @@ fn insert_land_battle_visuals(
             )
             .expect("retail tactical fort atlas must load"),
         effect_atlas: assets
-            .transparent_picture(
+            .keyed_picture(
                 PictureId::new(TACTICAL_EFFECT_ATLAS_PICTURE),
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical effect atlas must load"),
         experience_strip: assets
-            .transparent_picture(
+            .keyed_picture(
                 PictureId::new(TACTICAL_EXPERIENCE_STRIP_PICTURE),
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical experience strip must load"),
         unit_status_atlas: assets
-            .transparent_picture(PictureId::new(TACTICAL_UNIT_STATUS_ATLAS_PICTURE), 0)
+            .keyed_picture(PictureId::new(TACTICAL_UNIT_STATUS_ATLAS_PICTURE), 0)
             .expect("retail tactical unit-status atlas must load"),
         selection_color: assets.palette_color(0x13),
         inset_color: assets.palette_color(0),
@@ -1114,7 +1114,7 @@ fn spawn_tactical_effect(
         hex_cell_xywh(map, target)
     };
     let image = assets
-        .transparent_picture(PictureId::new(base_picture), TACTICAL_TRANSPARENT_INDEX)
+        .keyed_picture(PictureId::new(base_picture), TACTICAL_TRANSPARENT_INDEX)
         .expect("retail tactical effect frame");
     commands.spawn((
         LandBattleEffect {
@@ -1229,7 +1229,7 @@ fn animate_land_battle_actions(
             continue;
         }
         image.image = assets
-            .transparent_picture(
+            .keyed_picture(
                 PictureId::new(effect.base_picture + i16::from(effect.frame)),
                 TACTICAL_TRANSPARENT_INDEX,
             )

@@ -1,6 +1,8 @@
 //! Post-combat `TBattleReportView` / `TBattleDetailBook`.
 
+use super::fill_brackets;
 use super::generated;
+use super::hover_help::{get_string, ui_string};
 use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::satellite_preview::nation_owner_palette;
@@ -9,6 +11,7 @@ use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{
@@ -21,6 +24,20 @@ const MAP_WIDTH: f32 = 540.0;
 const MAP_HEIGHT: f32 = 300.0;
 const MARKER_ATLAS: i16 = 803;
 const MARKER_CELL: f32 = 18.0;
+const DETAIL_ROW_WIDTH: f32 = 236.0;
+const DETAIL_ROW_HEIGHT: f32 = 49.0;
+const DETAIL_ROWS_PER_PAGE: usize = 6;
+const ARMY_CHECKBOX_ATLAS: i16 = 0xdb8;
+const NAVY_CHECKBOX_ATLAS: i16 = 0xdba;
+const MERC_CHECKBOX_ATLAS: i16 = 0xdbb;
+const EXPERIENCE_STRIP: i16 = 800;
+const BATTLE_REPORT_ITEM_IDENTITY: u32 = 0x6974_656d;
+const BATTLE_REPORT_RUPT_IDENTITY: u32 = 0x7275_7074;
+const BATTLE_REPORT_MERC_IDENTITY: u32 = 0x6d65_7263;
+const SHIP_ATLAS_OFFSETS: [i16; 14] = [
+    0, 0, 0, 0, 0xa0, 0, 0, 0x140, 0x1e0, 0x280, 0, 0x320, 0x3c0, 0x460,
+];
+const MERCHANT_ATLAS_SLOTS: [i16; 14] = [0, 0, 1, 0, 0, 2, 3, 0, 0, 0, 4, 0, 0, 0];
 
 #[derive(Component)]
 struct BattleReportScreen;
@@ -52,10 +69,32 @@ struct BattleReportView {
     enemy_ships: Entity,
     friendly_flag: Entity,
     enemy_flag: Entity,
+    previous: Entity,
+    next: Entity,
+    info: Entity,
 }
 
 #[derive(Component)]
-struct DetailRoot;
+struct BattleReportDetailView {
+    page: usize,
+    /// Summary selection last projected into this book; used to reset paging.
+    selected_report: usize,
+    nat_l: Entity,
+    nat_r: Entity,
+    flg_l: Entity,
+    flg_r: Entity,
+    page_panel: Entity,
+    pagf_panel: Entity,
+    lcor: Entity,
+    rcor: Entity,
+    army_atlas: Handle<Image>,
+    navy_atlas: Handle<Image>,
+    merc_atlas: Handle<Image>,
+    experience_strip: Handle<Image>,
+}
+
+#[derive(Component)]
+struct BattleDetailLine;
 
 pub(crate) struct BattleReportPlugin;
 
@@ -70,8 +109,10 @@ impl Plugin for BattleReportPlugin {
             (
                 render_battle_report,
                 render_battle_report_map,
+                super::diplomacy_map::layout_diplomacy_nation_label_entities,
                 blink_selected_battle_report_marker,
                 bind_detail,
+                render_detail,
             )
                 .run_if(in_state(AppState::BattleReport).and_then(resource_exists::<GameSession>)),
         );
@@ -90,13 +131,14 @@ fn bind_battle_report(
     root: Single<Entity, Added<BattleReportScreen>>,
     tree: RetailTree,
     mut assets: super::RetailUiAssets,
+    mut session: ResMut<GameSession>,
 ) {
     let root = *root;
     let main = tree.find(root, fourcc!("main"));
     let marker_atlas = assets
-        .transparent_picture(PictureId::new(MARKER_ATLAS), 0x24)
+        .keyed_picture(PictureId::new(MARKER_ATLAS), 0x24)
         .expect("retail battle-report marker atlas must load");
-    commands
+    let map_entity = commands
         .spawn((
             Node {
                 position_type: PositionType::Absolute,
@@ -108,25 +150,42 @@ fn bind_battle_report(
                 ..default()
             },
             ImageNode::default(),
+            RelativeCursorPosition::default(),
             BattleReportMap { marker_atlas },
             ChildOf(main),
         ))
-        .observe(on_battle_report_map_click);
+        .observe(on_battle_report_map_click)
+        .id();
+    let countries = session
+        .game
+        .nations()
+        .common_states()
+        .map(|(nation, common)| (nation, common.display_name.clone()))
+        .filter(|(_, name)| !name.is_empty())
+        .collect::<Vec<_>>();
+    let mut labels = Vec::new();
+    let session = &mut *session;
+    for (nation, name) in countries {
+        if let Some(anchor) = session.game.overlay_anchor_for_nation(nation) {
+            labels.push((nation, name, anchor));
+        }
+    }
+    super::diplomacy_map::spawn_diplomacy_nation_labels(
+        &mut commands,
+        &mut assets,
+        map_entity,
+        labels,
+    );
     for (tag, preset) in [
-        (fourcc!("resu"), (0, 14)),
-        (fourcc!("loca"), (2, 14)),
-        (fourcc!("fadm"), (0, 12)),
-        (fourcc!("eadm"), (0, 12)),
-        (fourcc!("fshp"), (0, 10)),
-        (fourcc!("eshp"), (0, 10)),
+        (fourcc!("resu"), RetailTextStylePreset::explicit(0, 0, 14, -1)),
+        (fourcc!("loca"), RetailTextStylePreset::explicit(2, 0, 14, -1)),
+        (fourcc!("fadm"), RetailTextStylePreset::explicit(0, 0, 12, -1)),
+        (fourcc!("eadm"), RetailTextStylePreset::explicit(0, 0, 12, -1)),
+        (fourcc!("fshp"), RetailTextStylePreset::explicit(0, 0, 10, -1)),
+        (fourcc!("eshp"), RetailTextStylePreset::explicit(0, 0, 10, -1)),
     ] {
         let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset {
-                font_family: preset.0,
-                face_flags: 0,
-                point_size: preset.1,
-                alignment: -1,
-            })
+            .text_style(preset)
             .expect("retail battle-report text style");
         commands
             .entity(tree.find(root, tag))
@@ -139,32 +198,32 @@ fn bind_battle_report(
         .observe(on_battle_report_close);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
+    let info = tree.find(root, fourcc!("info"));
     commands
-        .entity(tree.find(root, fourcc!("info")))
+        .entity(info)
         .insert(ActivateOnPress)
         .observe(on_battle_report_detail);
-    for (tag, previous) in [(fourcc!("prev"), true), (fourcc!("next"), false)] {
-        commands
-            .entity(tree.find(root, tag))
-            .insert(ActivateOnPress)
-            .observe(
-                move |_: On<Activate>,
-                      mut views: Query<&mut BattleReportView>,
-                      session: Res<GameSession>| {
-                    let count = session.game.battle_reports().len();
-                    if count == 0 {
-                        return;
-                    }
-                    let Ok(mut view) = views.single_mut() else {
-                        return;
-                    };
-                    view.selected = if previous {
-                        (view.selected + count - 1) % count
-                    } else {
-                        (view.selected + 1) % count
-                    };
-                },
-            );
+    let previous = tree.find(root, fourcc!("prev"));
+    let next = tree.find(root, fourcc!("next"));
+    for (entity, is_previous) in [(previous, true), (next, false)] {
+        commands.entity(entity).insert(ActivateOnPress).observe(
+            move |_: On<Activate>,
+                  mut views: Query<&mut BattleReportView>,
+                  session: Res<GameSession>| {
+                let count = session.game.battle_reports().len();
+                if count == 0 {
+                    return;
+                }
+                let Ok(mut view) = views.single_mut() else {
+                    return;
+                };
+                view.selected = if is_previous {
+                    view.selected.saturating_sub(1)
+                } else {
+                    (view.selected + 1).min(count.saturating_sub(1))
+                };
+            },
+        );
     }
     commands.entity(root).insert(BattleReportView {
         selected: 0,
@@ -176,13 +235,15 @@ fn bind_battle_report(
         enemy_ships: tree.find(root, fourcc!("eshp")),
         friendly_flag: tree.find(root, fourcc!("fflg")),
         enemy_flag: tree.find(root, fourcc!("eflg")),
+        previous,
+        next,
+        info,
     });
 }
 
-/// Projects the selected report's text and the two fixed flag destinations.
-/// Runs on selection, bind, and report-collection changes; the map surface is
-/// owned by `render_battle_report_map` and does not rebuild on Prev/Next.
+/// Projects the selected report's text, flags, and step/info visibility.
 fn render_battle_report(
+    mut commands: Commands,
     session: Res<GameSession>,
     reports: Res<BattleReportPresentation>,
     views: Query<Ref<BattleReportView>>,
@@ -214,53 +275,58 @@ fn render_battle_report(
         }
         return;
     };
-    let report_text = battle_report_text(&session, &reports.0, view.selected);
-    let location = match report.location {
-        BattleReportLocation::Province(id) => session.game.map().provinces[id].name.clone(),
-        BattleReportLocation::Zone(id) => format!("zone {}", id.get()),
-    };
+    let report_text = battle_report_text(Some(&assets), &session, &reports.0, view.selected);
+    let participant = report.displayed_side;
+    let other = other_side(participant);
     texts
         .get_mut(view.result)
         .expect("bound battle-report text")
-        .0 = report_text[BattleReportSideSlot::Left].overlay.clone();
+        .0 = battle_report_result_text(&assets, &session.game, report);
     texts
         .get_mut(view.location)
         .expect("bound battle-report text")
-        .0 = location;
+        .0 = battle_report_location_text(&assets, &session.game, report);
     texts
         .get_mut(view.friendly_admiral)
         .expect("bound battle-report text")
-        .0 = report_text[BattleReportSideSlot::Left].name.clone();
+        .0 = report_text[participant].name.clone();
     texts
         .get_mut(view.enemy_admiral)
         .expect("bound battle-report text")
-        .0 = report_text[BattleReportSideSlot::Right].name.clone();
+        .0 = report_text[other].name.clone();
     texts
         .get_mut(view.friendly_ships)
         .expect("bound battle-report text")
-        .0 = report.sides[BattleReportSideSlot::Left]
-        .children
-        .iter()
-        .map(|row| row.name.as_str())
-        .collect::<Vec<_>>()
-        .join("\n");
+        .0 = report_text[participant].overlay.clone();
     texts
         .get_mut(view.enemy_ships)
         .expect("bound battle-report text")
-        .0 = report.sides[BattleReportSideSlot::Right]
-        .children
-        .iter()
-        .map(|row| row.name.as_str())
-        .collect::<Vec<_>>()
-        .join("\n");
-    let participant = report.participant.unwrap_or(BattleReportSideSlot::Left);
-    let other = other_side(participant);
+        .0 = report_text[other].overlay.clone();
     for (flag, side) in [(view.friendly_flag, participant), (view.enemy_flag, other)] {
         flags.get_mut(flag).expect("bound battle-report flag").image = assets
             .picture(PictureId::new(
                 0x1130 + i16::from(report.sides[side].nation.get()),
             ))
             .expect("retail battle-report flag picture must load");
+    }
+    let count = reports_game.len();
+    let active = session.game.turn().active_nation;
+    let participates = report.sides.iter().any(|(_, side)| side.nation == active);
+    for (entity, visible) in [
+        (view.previous, view.selected != 0),
+        (view.next, view.selected + 1 < count),
+        (view.info, participates),
+    ] {
+        commands.entity(entity).insert(if visible {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        });
+        if visible {
+            commands.entity(entity).remove::<InteractionDisabled>();
+        } else {
+            commands.entity(entity).insert(InteractionDisabled);
+        }
     }
 }
 
@@ -301,10 +367,15 @@ fn render_battle_report_map(
     for marker in &markers {
         commands.entity(marker).despawn();
     }
-    for (index, report) in reports_game.iter().enumerate() {
+    let mut crowd = vec![0u8; STRATEGIC_TILE_COUNT];
+    let geometry = state.map().geometry();
+    // Retail walks this one-based list from count down to one. The crowd grid
+    // is mutated after every marker, so this order is observable.
+    for (index, report) in reports_game.iter().enumerate().rev() {
         let Some(tile) = battle_report_tile(state, report) else {
             continue;
         };
+        let tile = battle_report_marker_tile(geometry, tile, &mut crowd);
         let (row, column) = state.map().geometry().row_column(tile);
         let point = super::diplomacy_map::diplomacy_tile_pixel(row, column) - IVec2::splat(9);
         commands.spawn((
@@ -350,16 +421,20 @@ fn blink_selected_battle_report_marker(
 
 fn on_battle_report_map_click(
     click: On<Pointer<Click>>,
+    maps: Query<&RelativeCursorPosition, With<BattleReportMap>>,
     markers: Query<(&BattleReportMarker, &Node)>,
     mut views: Query<&mut BattleReportView>,
 ) {
     if click.event.button != PointerButton::Primary {
         return;
     }
-    let Some(point) = click.hit.position else {
+    let Ok(cursor) = maps.get(click.entity) else {
         return;
     };
-    let point = point.truncate();
+    let Some(point) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
+        return;
+    };
+    let point = Vec2::new((point.x + 0.5) * MAP_WIDTH, (point.y + 0.5) * MAP_HEIGHT);
     let Some(report) = markers.iter().find_map(|(marker, node)| {
         let (Val::Px(left), Val::Px(top)) = (node.left, node.top) else {
             return None;
@@ -375,6 +450,200 @@ fn on_battle_report_map_click(
     };
     if let Ok(mut view) = views.single_mut() {
         view.selected = report;
+    }
+}
+
+fn battle_report_location_text(
+    assets: &super::RetailUiAssets,
+    state: &GameState,
+    report: &BattleReport,
+) -> String {
+    match report.location {
+        BattleReportLocation::Zone(id) => state
+            .ocean()
+            .zones
+            .get(usize::from(id.get()))
+            .map(|zone| zone.zone().display_name.clone())
+            .unwrap_or_default(),
+        BattleReportLocation::Province(id) => {
+            let province = &state.map().provinces[id];
+            let owner = province
+                .city_tile()
+                .and_then(|tile| state.map()[tile].owner_nation)
+                .and_then(TileOwnerTag::nation)
+                .and_then(|nation| state.nation(nation))
+                .map(|nation| nation.display_name.as_str())
+                .unwrap_or("");
+            get_string(assets, 0x273d, 7)
+                .replace("[1]", &province.name)
+                .replace("[2]", owner)
+                + " "
+        }
+    }
+}
+
+/// `TBattleReportView::DoPostCreate` marker placement: spiral outward from the
+/// report's map cell on a 60×108 crowding grid until a free hex is found, then
+/// mark a radius-3 neighborhood around it as crowded. The steps replicate retail
+/// `TMapMgr::StepHexRowColByDirectionWithWrapRules`, which wraps columns around
+/// the map edges when the map is bounded.
+fn battle_report_marker_tile(geometry: MapGeometry, origin: TileId, crowd: &mut [u8]) -> TileId {
+    let cell = i32::from(origin.get());
+    let (mut row, mut column) = (cell / 108, cell % 108);
+    let mut ring_leg = 1;
+    let mut leg_step = 0;
+    let mut radius = 0;
+    let mut found_cell = cell;
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, ring_leg);
+    while radius < 10 {
+        if let Some(probe) = crowd_probe(row, column)
+            && crowd[probe as usize] == 0
+        {
+            found_cell = probe;
+            break;
+        }
+        leg_step += 1;
+        if leg_step >= radius {
+            leg_step = 0;
+            ring_leg += 1;
+            if ring_leg >= 6 {
+                ring_leg = 0;
+                radius += 1;
+                step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+            }
+        }
+        step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, ring_leg);
+    }
+    (row, column) = (found_cell / 108, found_cell % 108);
+    let mut ring = 0;
+    let mut mark_leg = 1;
+    let mut mark_step = 0;
+    let mut mark_leg_len = found_cell % 108;
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+    step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, mark_leg);
+    while ring < 3 {
+        if let Some(probe) = crowd_probe(row, column) {
+            crowd[probe as usize] += 1;
+        }
+        mark_step += 1;
+        if mark_step >= mark_leg_len {
+            mark_step = 0;
+            mark_leg += 1;
+            if mark_leg >= 6 {
+                mark_leg = 0;
+                mark_leg_len += 1;
+                ring += 1;
+                step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, 4);
+            }
+        }
+        step_hex_row_col_by_wrap_rules(geometry, &mut row, &mut column, mark_leg);
+    }
+    crowd[found_cell as usize] += 1;
+    TileId::new(u16::try_from(found_cell).expect("battle-report marker tile fits the map"))
+}
+
+fn crowd_probe(row: i32, column: i32) -> Option<i32> {
+    ((0..STRATEGIC_MAP_HEIGHT as i32).contains(&row)
+        && (0..STRATEGIC_MAP_WIDTH as i32).contains(&column))
+    .then_some(row * STRATEGIC_MAP_WIDTH as i32 + column)
+}
+
+/// Retail `TMapMgr::StepHexRowColByDirectionWithWrapRules` integer row/column
+/// stepping, including its out-of-bounds column wrap quirk.
+fn step_hex_row_col_by_wrap_rules(
+    geometry: MapGeometry,
+    row: &mut i32,
+    column: &mut i32,
+    direction: i32,
+) {
+    if direction == 4 || (direction > 2 && *row & 1 == 0) {
+        let next = *column - 1;
+        *column = next;
+        if next < 0 && !geometry.wraps_horizontally() {
+            *column = STRATEGIC_MAP_WIDTH as i32 - 1;
+        }
+    } else if direction == 1 || (direction < 3 && *row & 1 != 0) {
+        let next = *column + 1;
+        *column = next;
+        if next >= STRATEGIC_MAP_WIDTH as i32 && !geometry.wraps_horizontally() {
+            *column = 0;
+        }
+    }
+    if direction == 5 || direction == 0 {
+        *row -= 1;
+    } else if direction == 3 || direction == 2 {
+        *row += 1;
+    }
+}
+
+fn battle_report_result_text(
+    assets: &super::RetailUiAssets,
+    state: &GameState,
+    report: &BattleReport,
+) -> String {
+    let (group, index) = battle_report_result_string_index(state, report);
+    get_string(assets, group, index)
+}
+
+/// `RefreshMapContextSelectionPanelAndInfoLabels`: the `resu` string group and
+/// (0-based, pre-`GetString` increment) index recovered from the report kind,
+/// the winner/active-nation relation, and land-battle site ownership.
+fn battle_report_result_string_index(state: &GameState, report: &BattleReport) -> (i16, i16) {
+    let active = state.turn().active_nation;
+    let winner = report.participant.unwrap_or(report.displayed_side);
+    let relation = if report.sides[winner].nation == active {
+        1
+    } else if report.sides[other_side(winner)].nation == active {
+        -1
+    } else {
+        0
+    };
+    match report.kind {
+        BattleReportKind::MerchantInterception => (0x273c, relation + 4),
+        BattleReportKind::SeaBattle => (0x273c, relation + 7),
+        BattleReportKind::PreemptedLandBattle => (0x273d, relation + 39),
+        BattleReportKind::UncontestedTakeover => (0x273d, relation + 42),
+        BattleReportKind::LandBattle => {
+            let report_sides_are_same = report.displayed_side == winner;
+            let report_participant_is_active = report.sides[winner].nation == active;
+            let active_nation_is_other_report_side = relation != 0 && !report_participant_is_active;
+            let displayed_participant_is_active =
+                report.sides[report.displayed_side].nation == active;
+            let mut other_nation = report.sides[BattleReportSideSlot::Left].nation;
+            if other_nation == active {
+                other_nation = report.sides[BattleReportSideSlot::Right].nation;
+            }
+            let BattleReportLocation::Province(province) = report.location else {
+                unreachable!("land battle reports store a province");
+            };
+            let active_nation_owns_battle_site = state.capitol_province(active) == Some(province);
+            let other_nation_owns_battle_site =
+                state.capitol_province(other_nation) == Some(province);
+            let index = if active_nation_owns_battle_site && displayed_participant_is_active {
+                47
+            } else if active_nation_owns_battle_site && active_nation_is_other_report_side {
+                48
+            } else if report_participant_is_active
+                && report_sides_are_same
+                && other_nation_owns_battle_site
+            {
+                47
+            } else if report_participant_is_active && report_sides_are_same {
+                3
+            } else if report_participant_is_active {
+                6
+            } else if active_nation_is_other_report_side && report_sides_are_same {
+                4
+            } else if active_nation_is_other_report_side {
+                1
+            } else if report_sides_are_same {
+                2
+            } else {
+                5
+            };
+            (0x273d, index)
+        }
     }
 }
 
@@ -431,7 +700,7 @@ fn on_battle_report_detail(
     _activate: On<Activate>,
     mut commands: Commands,
     session: Res<GameSession>,
-    details: Query<(), With<DetailRoot>>,
+    details: Query<(), With<BattleReportDetailView>>,
 ) {
     if details.is_empty() && !session.game.battle_reports().is_empty() {
         spawn_detail(&mut commands);
@@ -440,46 +709,585 @@ fn on_battle_report_detail(
 
 fn spawn_detail(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::diplo_1352()).id();
-    commands.entity(root).insert((
-        DetailRoot,
-        ModalWindow,
-        DespawnOnExit(AppState::BattleReport),
-    ));
+    commands
+        .entity(root)
+        .insert((DetailBookRoot, ModalWindow, DespawnOnExit(AppState::BattleReport)));
 }
+
+/// Marker on the diplo_1352 detail book so `bind_detail` does not claim other modals.
+#[derive(Component)]
+struct DetailBookRoot;
 
 fn bind_detail(
     mut commands: Commands,
-    root: Single<Entity, Added<DetailRoot>>,
+    root: Single<Entity, Added<DetailBookRoot>>,
     tree: RetailTree,
+    mut assets: super::RetailUiAssets,
     session: Res<GameSession>,
     reports: Res<BattleReportPresentation>,
     views: Query<&BattleReportView>,
 ) {
     let root = *root;
+    let Ok(view) = views.single() else {
+        return;
+    };
+    let Some(report) = session.game.battle_reports().get(view.selected) else {
+        return;
+    };
+    let nat_l = tree.find(root, fourcc!("natL"));
+    let nat_r = tree.find(root, fourcc!("natR"));
+    let flg_l = tree.find(root, fourcc!("flgL"));
+    let flg_r = tree.find(root, fourcc!("flgR"));
+    let page_panel = tree.find(root, fourcc!("page"));
+    let pagf_panel = tree.find(root, fourcc!("pagf"));
+    let lcor = tree.find(root, fourcc!("lcor"));
+    let rcor = tree.find(root, fourcc!("rcor"));
     let okay = tree.find(root, fourcc!("okay"));
     commands.entity(okay).insert(ActivateOnPress);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
-    let Ok(view) = views.single() else {
+    for (entity, previous) in [(lcor, true), (rcor, false)] {
+        commands.entity(entity).insert(ActivateOnPress).observe(
+            move |_: On<Activate>,
+                  session: Res<GameSession>,
+                  selected: Query<&BattleReportView>,
+                  mut details: Query<&mut BattleReportDetailView>| {
+                let (Ok(selected), Ok(mut detail)) = (selected.single(), details.single_mut())
+                else {
+                    return;
+                };
+                let Some(report) = session.game.battle_reports().get(selected.selected) else {
+                    return;
+                };
+                let count = detail_page_count(report);
+                if previous {
+                    if detail.page > 1 {
+                        detail.page -= 1;
+                    }
+                } else if detail.page < count {
+                    detail.page += 1;
+                }
+            },
+        );
+    }
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(14, 1))
+        .expect("retail battle-detail nation header style");
+    let text_color = assets.palette_color(0x28);
+    let shadow_color = assets.palette_color(0xd2);
+    let report_text = battle_report_text(Some(&assets), &session, &reports.0, view.selected);
+    for (entity, side) in [
+        (nat_l, BattleReportSideSlot::Left),
+        (nat_r, BattleReportSideSlot::Right),
+    ] {
+        commands.entity(entity).insert((
+            Text::new(report_text[side].name.clone()),
+            font.clone(),
+            layout,
+            line_height,
+            TextColor(text_color),
+            TextShadow {
+                offset: Vec2::new(1.0, 1.0),
+                color: shadow_color,
+            },
+        ));
+    }
+    let army_atlas = assets
+        .keyed_picture(PictureId::new(ARMY_CHECKBOX_ATLAS), 0x24)
+        .expect("retail battle-detail army atlas");
+    let navy_atlas = assets
+        .keyed_picture(PictureId::new(NAVY_CHECKBOX_ATLAS), 0x24)
+        .expect("retail battle-detail navy atlas");
+    let merc_atlas = assets
+        .keyed_picture(PictureId::new(MERC_CHECKBOX_ATLAS), 0x24)
+        .expect("retail battle-detail merchant atlas");
+    let experience_strip = assets
+        .keyed_picture(PictureId::new(EXPERIENCE_STRIP), 0x24)
+        .expect("retail battle-detail experience strip");
+    for (entity, picture) in [
+        (
+            flg_l,
+            0x1147 + i16::from(report.sides[BattleReportSideSlot::Left].nation.get()),
+        ),
+        (
+            flg_r,
+            0x114e + i16::from(report.sides[BattleReportSideSlot::Right].nation.get()),
+        ),
+    ] {
+        commands.entity(entity).insert(ImageNode::new(
+            assets
+                .picture(PictureId::new(picture))
+                .expect("retail battle-detail flag"),
+        ));
+    }
+    commands.entity(root).insert(BattleReportDetailView {
+        page: 1,
+        selected_report: view.selected,
+        nat_l,
+        nat_r,
+        flg_l,
+        flg_r,
+        page_panel,
+        pagf_panel,
+        lcor,
+        rcor,
+        army_atlas,
+        navy_atlas,
+        merc_atlas,
+        experience_strip,
+    });
+}
+
+fn detail_page_count(report: &BattleReport) -> usize {
+    report
+        .sides
+        .iter()
+        .map(|(_, side)| side.children.len().div_ceil(DETAIL_ROWS_PER_PAGE))
+        .max()
+        .unwrap_or(1)
+        .max(1)
+}
+
+fn render_detail(
+    mut commands: Commands,
+    session: Res<GameSession>,
+    reports: Res<BattleReportPresentation>,
+    selected: Query<Ref<BattleReportView>>,
+    mut details: Query<&mut BattleReportDetailView>,
+    lines: Query<Entity, With<BattleDetailLine>>,
+    mut texts: Query<&mut Text>,
+    mut images: Query<&mut ImageNode>,
+    mut assets: super::RetailUiAssets,
+) {
+    let Ok(selected) = selected.single() else {
         return;
     };
-    let Some(_) = session.game.battle_reports().get(view.selected) else {
+    let Ok(mut detail) = details.single_mut() else {
         return;
     };
-    let report_text = battle_report_text(&session, &reports.0, view.selected);
-    commands
-        .entity(tree.find(root, fourcc!("natL")))
-        .insert(Text::new(
-            report_text[BattleReportSideSlot::Left].name.clone(),
+    let selection_changed = detail.selected_report != selected.selected;
+    if !detail.is_added()
+        && !detail.is_changed()
+        && !selection_changed
+        && !reports.is_changed()
+        && !selected.is_changed()
+    {
+        return;
+    }
+    let Some(report) = session.game.battle_reports().get(selected.selected) else {
+        return;
+    };
+    if selection_changed {
+        detail.page = 1;
+        detail.selected_report = selected.selected;
+    }
+    let page = detail.page;
+    let report_text = battle_report_text(Some(&assets), &session, &reports.0, selected.selected);
+    if let Ok(mut text) = texts.get_mut(detail.nat_l) {
+        text.0 = report_text[BattleReportSideSlot::Left].name.clone();
+    }
+    if let Ok(mut text) = texts.get_mut(detail.nat_r) {
+        text.0 = report_text[BattleReportSideSlot::Right].name.clone();
+    }
+    for (entity, picture) in [
+        (
+            detail.flg_l,
+            0x1147 + i16::from(report.sides[BattleReportSideSlot::Left].nation.get()),
+        ),
+        (
+            detail.flg_r,
+            0x114e + i16::from(report.sides[BattleReportSideSlot::Right].nation.get()),
+        ),
+    ] {
+        if let Ok(mut image) = images.get_mut(entity) {
+            image.image = assets
+                .picture(PictureId::new(picture))
+                .expect("retail battle-detail flag");
+        }
+    }
+    for line in &lines {
+        commands.entity(line).despawn();
+    }
+    let skip = page.saturating_sub(1) * DETAIL_ROWS_PER_PAGE;
+    for (panel, side) in [
+        (detail.page_panel, BattleReportSideSlot::Left),
+        (detail.pagf_panel, BattleReportSideSlot::Right),
+    ] {
+        for (index, row) in report.sides[side]
+            .children
+            .iter()
+            .skip(skip)
+            .take(DETAIL_ROWS_PER_PAGE)
+            .enumerate()
+        {
+            spawn_detail_row(&mut commands, &mut assets, &detail, panel, index, row);
+        }
+    }
+    let count = detail_page_count(report);
+    for (entity, visible) in [(detail.lcor, page > 1), (detail.rcor, page < count)] {
+        commands.entity(entity).insert(if visible {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        });
+        if visible {
+            commands.entity(entity).remove::<InteractionDisabled>();
+        } else {
+            commands.entity(entity).insert(InteractionDisabled);
+        }
+    }
+}
+
+fn spawn_detail_row(
+    commands: &mut Commands,
+    assets: &mut super::RetailUiAssets,
+    detail: &BattleReportDetailView,
+    panel: Entity,
+    index: usize,
+    row: &BattleReportUnit,
+) {
+    let container = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0),
+                top: px(index as f32 * DETAIL_ROW_HEIGHT),
+                width: px(DETAIL_ROW_WIDTH),
+                height: px(DETAIL_ROW_HEIGHT),
+                ..default()
+            },
+            Pickable::IGNORE,
+            BattleDetailLine,
+            ChildOf(panel),
+        ))
+        .id();
+    match row.detail_identity {
+        BATTLE_REPORT_ARMY_IDENTITY => spawn_army_detail_row(commands, assets, detail, container, row),
+        BATTLE_REPORT_NAVY_IDENTITY => spawn_navy_detail_row(commands, assets, detail, container, row),
+        BATTLE_REPORT_MERC_IDENTITY => {
+            spawn_merchant_detail_row(commands, assets, detail, container, row)
+        }
+        BATTLE_REPORT_ITEM_IDENTITY | BATTLE_REPORT_RUPT_IDENTITY => {
+            spawn_text_only_detail_row(commands, assets, container, &row.name, 0)
+        }
+        _ => spawn_text_only_detail_row(commands, assets, container, &row.name, 0),
+    }
+}
+
+fn spawn_army_detail_row(
+    commands: &mut Commands,
+    assets: &mut super::RetailUiAssets,
+    detail: &BattleReportDetailView,
+    container: Entity,
+    row: &BattleReportUnit,
+) {
+    let resource = match row.kind {
+        BattleReportUnitKind::Military(kind) => i32::from(kind.retail()),
+        _ => 0,
+    };
+    let offset = resource << 7;
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0),
+            top: px(0),
+            width: px(64),
+            height: px(49),
+            ..default()
+        },
+        ImageNode {
+            image: detail.army_atlas.clone(),
+            rect: Some(Rect::from_corners(
+                Vec2::new(offset as f32, 0.0),
+                Vec2::new(offset as f32 + 64.0, 49.0),
+            )),
+            ..default()
+        },
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::explicit(0, 0, 12, -1))
+        .expect("retail army-boy name style");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0x40),
+            top: px(0x10),
+            ..default()
+        },
+        Text::new(row.name.clone()),
+        font,
+        layout,
+        line_height,
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+    let level = row.stock_or_required;
+    if level < 1 {
+        let training = get_string(assets, 0x273c, if level == -86 { 0x20 } else { 0x1f });
+        let (font, layout, line_height, _) = assets
+            .text_style(RetailTextStylePreset::explicit(1, 0, 12, -1))
+            .expect("retail army training style");
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0x43),
+                top: px(0x1f),
+                ..default()
+            },
+            Text::new(training),
+            font,
+            layout,
+            line_height,
+            Pickable::IGNORE,
+            ChildOf(container),
         ));
-    commands
-        .entity(tree.find(root, fourcc!("natR")))
-        .insert(Text::new(
-            report_text[BattleReportSideSlot::Right].name.clone(),
+    } else {
+        let mut bucket = level / 0x19 + 1;
+        if bucket > 0x14 {
+            bucket = 0x14;
+        }
+        let row_y = if bucket < 5 {
+            0x1a
+        } else if bucket > 0xe {
+            10
+        } else {
+            18
+        };
+        let width = bucket * 4;
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0x43),
+                top: px(0x1f),
+                width: px(width),
+                height: px(7),
+                ..default()
+            },
+            ImageNode {
+                image: detail.experience_strip.clone(),
+                rect: Some(Rect::new(0.0, row_y as f32, width as f32, (row_y + 7) as f32)),
+                ..default()
+            },
+            Pickable::IGNORE,
+            ChildOf(container),
         ));
+    }
+    let xp = row.strength_bucket;
+    let mut bar_width = i32::from(xp) * 0xb;
+    if xp % 100 > 0x31 {
+        bar_width += 5;
+    }
+    if bar_width != 0 {
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0x94),
+                top: px(0x1f),
+                width: px(bar_width),
+                height: px(10),
+                ..default()
+            },
+            ImageNode {
+                image: detail.experience_strip.clone(),
+                rect: Some(Rect::new(0.0, 0.0, bar_width as f32, 10.0)),
+                ..default()
+            },
+            Pickable::IGNORE,
+            ChildOf(container),
+        ));
+    }
+}
+
+fn spawn_navy_detail_row(
+    commands: &mut Commands,
+    assets: &mut super::RetailUiAssets,
+    detail: &BattleReportDetailView,
+    container: Entity,
+    row: &BattleReportUnit,
+) {
+    let ship = match row.kind {
+        BattleReportUnitKind::Ship(ship) => ship,
+        _ => ShipType::NoShip,
+    };
+    let retail = usize::from(ship.retail());
+    let offset = i32::from(SHIP_ATLAS_OFFSETS.get(retail).copied().unwrap_or(0));
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0),
+            top: px(0),
+            width: px(80),
+            height: px(45),
+            ..default()
+        },
+        ImageNode {
+            image: detail.navy_atlas.clone(),
+            rect: Some(Rect::from_corners(
+                Vec2::new(offset as f32, 0.0),
+                Vec2::new(offset as f32 + 80.0, 45.0),
+            )),
+            ..default()
+        },
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+    let label = format!("{} {}", navy_type_name(assets, ship), row.name);
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::explicit(0, 0, 10, -1))
+        .expect("retail navy-boy label style");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0x50),
+            top: px(0x12),
+            ..default()
+        },
+        Text::new(label),
+        font,
+        layout,
+        line_height,
+        TextColor(assets.palette_color(0x5c)),
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+    let level = row.stock_or_required;
+    if level > 0 {
+        let divisor = i32::from(ship_capabilities(ship).stock_capacity).max(1);
+        let mut bucket = (i32::from(level) * 0x14) / divisor + 1;
+        if bucket > 0x14 {
+            bucket = 0x14;
+        }
+        let row_y = if bucket < 5 {
+            0x1a
+        } else if bucket > 0xe {
+            10
+        } else {
+            18
+        };
+        let width = bucket * 4;
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0x52),
+                top: px(0x1e),
+                width: px(width),
+                height: px(7),
+                ..default()
+            },
+            ImageNode {
+                image: detail.experience_strip.clone(),
+                rect: Some(Rect::new(0.0, row_y as f32, width as f32, (row_y + 7) as f32)),
+                ..default()
+            },
+            Pickable::IGNORE,
+            ChildOf(container),
+        ));
+    } else {
+        let training = get_string(assets, 0x273c, 0x1b);
+        let (font, layout, line_height, _) = assets
+            .text_style(RetailTextStylePreset::explicit(1, 0, 12, -1))
+            .expect("retail navy training style");
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0x52),
+                top: px(0x1e),
+                ..default()
+            },
+            Text::new(training),
+            font,
+            layout,
+            line_height,
+            Pickable::IGNORE,
+            ChildOf(container),
+        ));
+    }
+}
+
+fn navy_type_name(assets: &super::RetailUiAssets, ship: ShipType) -> String {
+    // TNavyBoyView slots 3,4,7,8,9,11,12,13 from group 0x2760; 12 and 13 share index 6.
+    let index = match ship.retail() {
+        3 => Some(0),
+        4 => Some(1),
+        7 => Some(2),
+        8 => Some(3),
+        9 => Some(4),
+        11 => Some(5),
+        12 | 13 => Some(6),
+        _ => None,
+    };
+    index
+        .map(|index| get_string(assets, 0x2760, index))
+        .unwrap_or_default()
+}
+
+fn spawn_merchant_detail_row(
+    commands: &mut Commands,
+    assets: &mut super::RetailUiAssets,
+    detail: &BattleReportDetailView,
+    container: Entity,
+    row: &BattleReportUnit,
+) {
+    let resource = match row.kind {
+        BattleReportUnitKind::Resource(kind) => usize::from(kind.retail()),
+        BattleReportUnitKind::Ship(ship) => usize::from(ship.retail()),
+        _ => 0,
+    };
+    let offset = i32::from(MERCHANT_ATLAS_SLOTS.get(resource).copied().unwrap_or(0)) * 0x50;
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0),
+            top: px(0),
+            width: px(80),
+            height: px(45),
+            ..default()
+        },
+        ImageNode {
+            image: detail.merc_atlas.clone(),
+            rect: Some(Rect::from_corners(
+                Vec2::new(offset as f32, 0.0),
+                Vec2::new(offset as f32 + 80.0, 45.0),
+            )),
+            ..default()
+        },
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+    spawn_text_only_detail_row(commands, assets, container, &row.name, 0x50);
+}
+
+fn spawn_text_only_detail_row(
+    commands: &mut Commands,
+    assets: &mut super::RetailUiAssets,
+    container: Entity,
+    name: &str,
+    left: i32,
+) {
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(10, 0))
+        .expect("retail battle-detail text row style");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(left),
+            top: px(0x12),
+            ..default()
+        },
+        Text::new(name.to_owned()),
+        font,
+        layout,
+        line_height,
+        TextColor(assets.palette_color(0xd2)),
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
 }
 
 pub(crate) fn battle_report_texts_for_save(
+    assets: Option<&super::RetailUiAssets>,
     session: &GameSession,
     captured: &[BattleReportText],
 ) -> Vec<BattleReportText> {
@@ -488,11 +1296,12 @@ pub(crate) fn battle_report_texts_for_save(
         .battle_reports()
         .iter()
         .enumerate()
-        .map(|(index, _)| battle_report_text(session, captured, index))
+        .map(|(index, _)| battle_report_text(assets, session, captured, index))
         .collect()
 }
 
 fn battle_report_text(
+    assets: Option<&super::RetailUiAssets>,
     session: &GameSession,
     captured: &[BattleReportText],
     index: usize,
@@ -500,14 +1309,21 @@ fn battle_report_text(
     if let Some(text) = captured.get(index) {
         return text.clone();
     }
+    let assets = assets.expect("generating battle-report presentation requires retail assets");
     let report = &session.game.battle_reports()[index];
     BattleReportText::from_array([
-        generated_battle_report_side_text(&session.game, report, BattleReportSideSlot::Left),
-        generated_battle_report_side_text(&session.game, report, BattleReportSideSlot::Right),
+        generated_battle_report_side_text(assets, &session.game, report, BattleReportSideSlot::Left),
+        generated_battle_report_side_text(
+            assets,
+            &session.game,
+            report,
+            BattleReportSideSlot::Right,
+        ),
     ])
 }
 
 fn generated_battle_report_side_text(
+    assets: &super::RetailUiAssets,
     state: &GameState,
     report: &BattleReport,
     slot: BattleReportSideSlot,
@@ -517,16 +1333,22 @@ fn generated_battle_report_side_text(
         .nation(side.nation)
         .map(|nation| nation.display_name.as_str())
         .unwrap_or("");
-    let role = match (report.kind.is_land(), slot) {
-        (true, BattleReportSideSlot::Left) => "Units Attacking",
-        (true, BattleReportSideSlot::Right) => "Defensive Muster",
-        (false, _) => "",
-    };
-    let name = if role.is_empty() {
-        nation_name.to_owned()
-    } else {
-        format!("{nation_name}: {role}")
-    };
+    if report.kind.is_land() {
+        let template_index = if slot == BattleReportSideSlot::Left {
+            0x10
+        } else {
+            0x11
+        };
+        let name = fill_brackets(&get_string(assets, 0x273d, template_index), &[nation_name]);
+        let overlay = generated_land_overlay(assets, side);
+        return BattleReportSideText { name, overlay };
+    }
+    let name = nation_name.to_owned();
+    let overlay = generated_sea_overlay(assets, state, report, side, nation_name);
+    BattleReportSideText { name, overlay }
+}
+
+fn generated_land_overlay(assets: &super::RetailUiAssets, side: &BattleReportSide) -> String {
     let mut overlay = String::new();
     for kind_index in 0..MilitaryUnitKind::LENGTH {
         let kind = MilitaryUnitKind::from_index(kind_index as u8).expect("military kind index");
@@ -541,27 +1363,63 @@ fn generated_battle_report_side_text(
         if !overlay.is_empty() {
             overlay.push_str(", ");
         }
-        let unit_name = match kind {
-            MilitaryUnitKind::Minutemen => "Minutemen",
-            MilitaryUnitKind::Skirmishers => "Skirmishers",
-            MilitaryUnitKind::Regulars => "Regulars",
-            MilitaryUnitKind::Grenadiers => "Grenadiers",
-            MilitaryUnitKind::Hussars => "Hussars",
-            MilitaryUnitKind::Cuirassiers => "Cuirassiers",
-            MilitaryUnitKind::LightArtillery => "Light Artillery",
-            MilitaryUnitKind::Artillery => "Artillery",
-            _ => &matching[0].name,
-        };
-        overlay.push_str(&format!("{} {unit_name}", matching.len()));
-        let inactive = matching
+        let unit_name = get_string(assets, 0x2717, i16::from(kind.retail()));
+        let active = matching
             .iter()
-            .filter(|row| row.stock_or_required <= 0)
+            .filter(|row| row.stock_or_required > 0)
             .count();
-        if inactive != 0 {
-            overlay.push_str(&format!(" ({inactive} Inactive)"));
-        }
+        let count = matching.len();
+        let fragment = if active == count {
+            fill_brackets("[1] [2]", &[&count.to_string(), &unit_name])
+        } else {
+            let inactive = get_string(assets, 0x273d, 0xb);
+            fill_brackets(
+                "[1] [2] ([3] [4])",
+                &[
+                    &count.to_string(),
+                    &unit_name,
+                    &(count - active).to_string(),
+                    &inactive,
+                ],
+            )
+        };
+        overlay.push_str(&fragment);
     }
-    BattleReportSideText { name, overlay }
+    overlay
+}
+
+fn generated_sea_overlay(
+    assets: &super::RetailUiAssets,
+    state: &GameState,
+    report: &BattleReport,
+    side: &BattleReportSide,
+    nation_name: &str,
+) -> String {
+    let child_count = side.children.len();
+    let template = ui_string(
+        assets,
+        0x2762,
+        i16::from(child_count != 1) + 0x11,
+    );
+    let zone_name = match report.location {
+        BattleReportLocation::Zone(id) => state
+            .ocean()
+            .zones
+            .get(usize::from(id.get()))
+            .map(|zone| zone.zone().display_name.as_str())
+            .unwrap_or(""),
+        BattleReportLocation::Province(_) => "",
+    };
+    let order_kind = ui_string(assets, 0x2762, 0x13);
+    fill_brackets(
+        &template,
+        &[
+            nation_name,
+            zone_name,
+            &child_count.to_string(),
+            &order_kind,
+        ],
+    )
 }
 
 #[cfg(test)]
@@ -569,50 +1427,178 @@ mod tests {
     use super::*;
     use crate::ui::test_support::beginning_of_game;
 
+    fn land_overlay_counts(side: &BattleReportSide) -> Vec<(MilitaryUnitKind, usize, usize)> {
+        let mut counts = Vec::new();
+        for kind_index in 0..MilitaryUnitKind::LENGTH {
+            let kind = MilitaryUnitKind::from_index(kind_index as u8).expect("military kind index");
+            let matching = side
+                .children
+                .iter()
+                .filter(|row| row.kind == BattleReportUnitKind::Military(kind))
+                .collect::<Vec<_>>();
+            if matching.is_empty() {
+                continue;
+            }
+            let active = matching
+                .iter()
+                .filter(|row| row.stock_or_required > 0)
+                .count();
+            counts.push((kind, matching.len(), matching.len() - active));
+        }
+        counts
+    }
+
     #[test]
-    fn generated_land_report_text_preserves_retail_caption_and_summary_order() {
+    fn battle_report_marker_spiral_matches_retail_placement_order() {
+        let geometry = MapGeometry::new(MapTopology::Bounded);
+        let mut crowd = vec![0u8; STRATEGIC_TILE_COUNT];
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1000), &mut crowd),
+            TileId::new(1000)
+        );
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1000), &mut crowd),
+            TileId::new(1109)
+        );
+        let mut crowd = vec![0u8; STRATEGIC_TILE_COUNT];
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1000), &mut crowd),
+            TileId::new(1000)
+        );
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(1001), &mut crowd),
+            TileId::new(1110)
+        );
+        assert_eq!(
+            battle_report_marker_tile(geometry, TileId::new(999), &mut crowd),
+            TileId::new(996)
+        );
+    }
+
+    #[test]
+    fn battle_report_result_string_index_follows_retail_decision_tree() {
         let state = beginning_of_game();
-        let nation = state.turn().active_nation;
+        let active = state.turn().active_nation;
         let report = BattleReport {
             participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
             kind: BattleReportKind::LandBattle,
-            location: BattleReportLocation::Province(ProvinceId::new(0)),
+            location: BattleReportLocation::Province(ProvinceId::new(21)),
             sides: BattleReportSideTable::from_array([
                 BattleReportSide {
-                    nation,
-                    children: vec![
-                        BattleReportUnit {
-                            kind: BattleReportUnitKind::Military(MilitaryUnitKind::Regulars),
-                            stock_or_required: 100,
-                            name: "1st Regulars".to_owned(),
-                            strength_bucket: 1,
-                            detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
-                        },
-                        BattleReportUnit {
-                            kind: BattleReportUnitKind::Military(MilitaryUnitKind::Regulars),
-                            stock_or_required: 0,
-                            name: "2nd Regulars".to_owned(),
-                            strength_bucket: 1,
-                            detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
-                        },
-                    ],
+                    nation: active,
+                    children: Vec::new(),
                 },
                 BattleReportSide {
-                    nation: NationId::new(1),
+                    nation: NationId::new(0),
                     children: Vec::new(),
                 },
             ]),
         };
-
-        let text = generated_battle_report_side_text(&state, &report, BattleReportSideSlot::Left);
-
         assert_eq!(
-            text.name,
-            format!(
-                "{}: Units Attacking",
-                state.nation(nation).unwrap().display_name
-            )
+            battle_report_result_string_index(&state, &report),
+            (0x273d, 47)
         );
-        assert_eq!(text.overlay, "2 Regulars (1 Inactive)");
+        // The enemy's capitol, won by that enemy while the active nation is the
+        // displayed other side.
+        let report = BattleReport {
+            participant: Some(BattleReportSideSlot::Right),
+            displayed_side: BattleReportSideSlot::Left,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(80)),
+            sides: BattleReportSideTable::from_array([
+                BattleReportSide {
+                    nation: active,
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: NationId::new(0),
+                    children: Vec::new(),
+                },
+            ]),
+        };
+        assert_eq!(
+            battle_report_result_string_index(&state, &report),
+            (0x273d, 1)
+        );
+        // Sea-battle strings key off the winner/active relation alone.
+        let report = BattleReport {
+            participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
+            kind: BattleReportKind::SeaBattle,
+            location: BattleReportLocation::Zone(OceanZoneId::new(0)),
+            sides: BattleReportSideTable::from_array([
+                BattleReportSide {
+                    nation: active,
+                    children: Vec::new(),
+                },
+                BattleReportSide {
+                    nation: NationId::new(0),
+                    children: Vec::new(),
+                },
+            ]),
+        };
+        assert_eq!(
+            battle_report_result_string_index(&state, &report),
+            (0x273c, 8)
+        );
+    }
+
+    #[test]
+    fn land_overlay_counts_preserve_retail_summary_order() {
+        let side = BattleReportSide {
+            nation: NationId::new(1),
+            children: vec![
+                BattleReportUnit {
+                    kind: BattleReportUnitKind::Military(MilitaryUnitKind::Regulars),
+                    stock_or_required: 100,
+                    name: "1st Regulars".to_owned(),
+                    strength_bucket: 1,
+                    detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
+                },
+                BattleReportUnit {
+                    kind: BattleReportUnitKind::Military(MilitaryUnitKind::Regulars),
+                    stock_or_required: 0,
+                    name: "2nd Regulars".to_owned(),
+                    strength_bucket: 1,
+                    detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
+                },
+            ],
+        };
+        assert_eq!(
+            land_overlay_counts(&side),
+            vec![(MilitaryUnitKind::Regulars, 2, 1)]
+        );
+    }
+
+    #[test]
+    fn detail_page_count_uses_six_rows_per_page() {
+        let mut children = Vec::new();
+        for index in 0..13 {
+            children.push(BattleReportUnit {
+                kind: BattleReportUnitKind::Military(MilitaryUnitKind::Regulars),
+                stock_or_required: 100,
+                name: format!("Unit {index}"),
+                strength_bucket: 1,
+                detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
+            });
+        }
+        let report = BattleReport {
+            participant: Some(BattleReportSideSlot::Left),
+            displayed_side: BattleReportSideSlot::Left,
+            kind: BattleReportKind::LandBattle,
+            location: BattleReportLocation::Province(ProvinceId::new(0)),
+            sides: BattleReportSideTable::from_array([
+                BattleReportSide {
+                    nation: NationId::new(1),
+                    children,
+                },
+                BattleReportSide {
+                    nation: NationId::new(2),
+                    children: Vec::new(),
+                },
+            ]),
+        };
+        assert_eq!(detail_page_count(&report), 3);
     }
 }

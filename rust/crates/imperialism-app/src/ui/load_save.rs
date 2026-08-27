@@ -251,6 +251,7 @@ pub(crate) fn save_current_game(
     origin: TileId,
     city_windows: &CityWindowLayout,
     captured_reports: &[BattleReportText],
+    assets: Option<&RetailUiAssets>,
     label: &str,
 ) -> Result<(), SaveFileError> {
     let label = normalize_save_label(label);
@@ -258,7 +259,7 @@ pub(crate) fn save_current_game(
         SaveSlot::Numbered(index) => i32::from(index),
         SaveSlot::Autosave => AUTOSAVE_SESSION_SLOT,
     };
-    let battle_report_text = battle_report_texts_for_save(session, captured_reports);
+    let battle_report_text = battle_report_texts_for_save(assets, session, captured_reports);
     let bytes = write_game_state(
         &session.game,
         origin,
@@ -560,6 +561,7 @@ fn on_load_save_activate(
     map: Option<Res<StrategicMapSession>>,
     city_windows: Option<Res<CityWindows>>,
     battle_reports: Option<Res<BattleReportPresentation>>,
+    assets: RetailUiAssets,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -599,6 +601,7 @@ fn on_load_save_activate(
                 map.as_deref(),
                 city_windows.as_deref(),
                 battle_reports.as_deref(),
+                Some(&assets),
                 returning.0,
                 &mut next_state,
             );
@@ -677,6 +680,7 @@ fn confirm_or_apply(
     map: Option<&StrategicMapSession>,
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
+    assets: Option<&RetailUiAssets>,
     returning: AppState,
     next_state: &mut NextState<AppState>,
 ) {
@@ -725,6 +729,7 @@ fn confirm_or_apply(
                 map,
                 city_windows,
                 battle_reports,
+                assets,
                 &label,
                 returning,
                 next_state,
@@ -782,6 +787,7 @@ fn apply_save(
     map: Option<&StrategicMapSession>,
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
+    assets: Option<&RetailUiAssets>,
     label: &str,
     returning: AppState,
     next_state: &mut NextState<AppState>,
@@ -802,6 +808,7 @@ fn apply_save(
         origin,
         city_windows,
         captured,
+        assets,
         label,
     ) {
         Ok(()) => next_state.set(returning),
@@ -907,12 +914,12 @@ fn bind_flag_menu(
     for (index, (label_tag, control, action)) in FLAG_MENU_ROWS.iter().copied().enumerate() {
         let entity = tree.find(root, label_tag);
         let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset {
-                font_family: 1,
-                face_flags: 0,
-                point_size: if index == 0 { 12 } else { 14 },
-                alignment: if index > 1 { -2 } else { 1 },
-            })
+            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+                1,
+                0,
+                if index == 0 { 12 } else { 14 },
+                if index > 1 { -2 } else { 1 },
+            ))
             .expect("retail flag-menu label style");
         let (text_palette, shadow_palette) = if index == 0 {
             (0x5c, 0x28)
@@ -1075,6 +1082,7 @@ mod tests {
             TileId::new(1),
             &CityWindowLayout::default(),
             &[],
+            None,
             label,
         )
         .unwrap();
