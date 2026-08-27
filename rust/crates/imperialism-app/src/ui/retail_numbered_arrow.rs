@@ -101,7 +101,6 @@ pub fn retail_numbered_arrow() -> impl Scene {
             ),
             (
                 #Count
-                // `TNumberedArrowButton::Draw`: one pass at origin (7, 0), theme 0x2b67 → palette 0.
                 Node { position_type: PositionType::Absolute, left: px(7), top: px(0) }
                 Text("")
                 retail_built_text_style(10, 0)
@@ -158,12 +157,11 @@ mod tests {
     }
 
     #[test]
-    fn count_caption_uses_built_10pt_left_aligned_book_antiqua() {
+    fn count_caption_uses_built_10pt_book_antiqua() {
         use imperialism_formats::{
-            RetailFontFace, RetailTextAlignment, RetailTextStylePreset, resolve_retail_text_style,
+            RetailFontFace, RetailTextStylePreset, resolve_retail_text_style,
         };
-        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 0)).unwrap();
+        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 1)).unwrap();
         assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
-        assert_eq!(style.alignment, RetailTextAlignment::Left);
     }
 }

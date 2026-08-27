@@ -198,34 +198,41 @@ fn bind_preferences(
         checkboxes.push((checkbox, slot));
     }
 
-    let music_hover = assets.ui_string(0x2743, 0x27);
-    let sound_hover = assets.ui_string(0x2743, 0x26);
-    let music_root = tree.find(root, fourcc!("musi"));
-    let sound_root = tree.find(root, fourcc!("soun"));
-    let music = slider_parts
-        .get(music_root)
-        .expect("bound music two-pic slider")
-        .input;
-    let sound = slider_parts
-        .get(sound_root)
-        .expect("bound sound two-pic slider")
-        .input;
-    bind_volume_slider(
-        &mut commands,
-        music_root,
-        music,
-        prefs.values[PreferenceSlot::MusicVolume],
-        music_hover,
-        PreferenceSlot::MusicVolume,
-    );
-    bind_volume_slider(
-        &mut commands,
-        sound_root,
-        sound,
-        prefs.values[PreferenceSlot::SoundVolume],
-        sound_hover,
-        PreferenceSlot::SoundVolume,
-    );
+    let [music, sound] = [
+        (fourcc!("musi"), 0x27u16, PreferenceSlot::MusicVolume),
+        (fourcc!("soun"), 0x26, PreferenceSlot::SoundVolume),
+    ]
+    .map(|(tag, hover, slot)| {
+        let slider_root = tree.find(root, tag);
+        let input = slider_parts
+            .get(slider_root)
+            .expect("bound two-pic slider")
+            .input;
+        commands
+            .entity(slider_root)
+            .insert(HoverHelpText(assets.ui_string(0x2743, hover)))
+            .remove::<InteractionDisabled>();
+        let write_on_drag = matches!(slot, PreferenceSlot::MusicVolume);
+        commands
+            .entity(input)
+            .insert(SliderValue(f32::from(prefs.values[slot])))
+            .observe(slider_self_update)
+            .remove::<InteractionDisabled>()
+            .observe(
+                move |change: On<ValueChange<f32>>,
+                      mut prefs: ResMut<GamePreferences>,
+                      mut commands: Commands,
+                      mut audio: RetailAudioAssets| {
+                    if write_on_drag || change.is_final {
+                        prefs.values[slot] = change.value as i16;
+                    }
+                    if matches!(slot, PreferenceSlot::SoundVolume) && change.is_final {
+                        audio.play(&mut commands, SoundId::UI_CLICK);
+                    }
+                },
+            );
+        input
+    });
     commands.entity(root).insert(PreferencesView {
         music,
         sound,
@@ -247,40 +254,6 @@ fn bind_preferences(
     commands
         .entity(tree.find(root, fourcc!("opca")))
         .remove::<InteractionDisabled>();
-}
-
-fn bind_volume_slider(
-    commands: &mut Commands,
-    root: Entity,
-    input: Entity,
-    value: i16,
-    hover: String,
-    slot: PreferenceSlot,
-) {
-    // Stock Slider lives on the height-12 track child; hover stays on the recovered root.
-    commands
-        .entity(root)
-        .insert(HoverHelpText(hover))
-        .remove::<InteractionDisabled>();
-    let mut entity = commands.entity(input);
-    entity
-        .insert(SliderValue(f32::from(value)))
-        .observe(slider_self_update)
-        .remove::<InteractionDisabled>();
-    let write_on_drag = matches!(slot, PreferenceSlot::MusicVolume);
-    entity.observe(
-        move |change: On<ValueChange<f32>>,
-              mut prefs: ResMut<GamePreferences>,
-              mut commands: Commands,
-              mut audio: RetailAudioAssets| {
-            if write_on_drag || change.is_final {
-                prefs.values[slot] = change.value as i16;
-            }
-            if matches!(slot, PreferenceSlot::SoundVolume) && change.is_final {
-                audio.play(&mut commands, SoundId::UI_CLICK);
-            }
-        },
-    );
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
