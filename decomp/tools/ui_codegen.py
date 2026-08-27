@@ -1683,59 +1683,13 @@ def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | No
     }.get(node.tag)
 
 
-def _rust_widget_kind(node: UiSemanticNode) -> str:
-    class_name = node.class_name.casefold()
-    if node.type_code == "wind":
-        return "window"
-    if node.type_code == "fwnd":
-        return "floating_window"
-    if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
-        return "checkbox"
-    if node.type_code == "radb" or "radio" in class_name:
-        return "radio_or_cluster_control"
-    if node.class_name == "TPlacard":
-        return "placard"
-    if node.class_name == "TArmyPlacard":
-        return "army_placard"
-    if node.class_name == "TShipPlacard":
-        return "ship_placard"
-    if node.class_name == "TTransportPicture":
-        return "transport_gauge"
-    if node.class_name == "TNumberedArrowButton":
-        return "numbered_arrow"
-    if node.class_name == "TTwoPicSlider":
-        return "two_pic_slider"
-    if node.class_name == "TScrollView":
-        return "scroll_view"
-    if node.class_name == "TInfoBarText":
-        return "hover_help_bar"
-    if _rust_amount_selector_kind(node) is not None:
-        return "amount_selector"
-    if _rust_amount_bar_kind(node) is not None:
-        return "amount_bar"
-    if node.type_code == "pict":
-        if "toggle" in class_name:
-            return "toggle"
-        if "button" in class_name:
-            return "picture_button"
-        return "picture"
-    if node.type_code == "stat":
-        return "static_text"
-    if node.type_code == "nmbr":
-        return "numeric_value"
-    if node.type_code == "edit":
-        return "edit_control"
-    if node.type_code == "tevw":
-        return "list_or_scrolling_pane"
-    if node.type_code == "clus":
-        return "radio_or_cluster_control"
-    if node.type_code == "view":
-        return "container" if node.class_name == "TView" else "custom_canvas"
-    return "specialized"
+def _rust_input_semantics(
+    key: UiResourceKey | None, node: UiSemanticNode
+) -> str:
+    """Interaction role for Button / Checkbox / ScrollArea / etc. emission.
 
-
-def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
-    """Return interaction behavior independent from visual [`_rust_widget_kind`].
+    Values: passive, activate, checkbox, toggle, radio_button, radio_group,
+    slider, scroll_area, pointer_canvas, text_edit.
 
     The generator is the one place where recovered type/class evidence decides
     whether a static-text-looking control is a radio, a picture is an activate
@@ -1744,7 +1698,6 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
     """
 
     class_name = node.class_name.casefold()
-    kind = _rust_widget_kind(node)
     # Generic `clus` records are layout groups (TIndustryCluster, TToolBarCluster,
     # the random-setup `stuf` panel). Only TRadioTextCluster is a mutually
     # exclusive option group.
@@ -1757,7 +1710,7 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "checkbox"
     if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
         return "checkbox"
-    if kind == "toggle":
+    if node.type_code == "pict" and "toggle" in class_name:
         return "toggle"
     if node.type_code == "edit":
         return "text_edit"
@@ -1787,41 +1740,83 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
     return "passive"
 
 
-def _rust_picture_visual(node: UiSemanticNode) -> str:
-    """How retail picture art reacts to Pressed / Checked / disabled.
+def _rust_picture_swap_ids(node: UiSemanticNode, picture_id: int) -> tuple[int, int]:
+    """Idle/active picture IDs for `picture_swap` presentation.
 
     Evidence:
     - TUpDownPictureButton / TRadioPictureButton / TTextPictureButton:
       HiliteState swaps to glyphBase84 +/- 1 (immutable resting ID + 1 when active).
     - TCzechBox: CheckTheLook uses odd ID when checked or pressed, even when idle.
-    - TMadnessButton: CheckTheLook selects base+{0..4} from checked/pressed/disabled.
-    - TPictureButton: HiliteState shows/hides the picture (pressed overlay), not an ID swap.
+    """
+
+    folded = node.class_name.casefold()
+    if node.type_code == "chkb" or "czechbox" in folded:
+        return int(picture_id) & ~1, int(picture_id) | 1
+    return int(picture_id), int(picture_id) + 1
+
+
+def _rust_presentation(node: UiSemanticNode) -> str | None:
+    """Which visual helper to emit for this recovered node.
+
+    Values: hover_help_bar, placard, army_placard, ship_placard, transport_gauge,
+    numbered_arrow, amount_bar, amount_selector, two_pic_slider, madness,
+    pressed_overlay, picture_swap, static_picture, radio_text_fill; None when
+    the node has no dedicated presentation helper.
     """
 
     class_name = node.class_name
     folded = class_name.casefold()
-    if class_name == "TMadnessButton":
-        return "madness"
-    if class_name == "TPictureButton":
-        return "pressed_overlay"
-    if node.type_code == "chkb" or "czechbox" in folded:
-        return "czech_box"
-    if (
-        node.type_code == "radb"
-        or class_name
-        in (
-            "TUpDownPictureButton",
-            "TRadioPictureButton",
-            "TTextPictureButton",
-            "TSidewaysArrow",
-            "TCivilianButton",
-            "TOverlayRadioButton",
-        )
-        or "updownpicture" in folded
-        or "radiopicture" in folded
+    if class_name == "TInfoBarText":
+        return "hover_help_bar"
+    if class_name == "TPlacard":
+        return "placard"
+    if class_name == "TArmyPlacard":
+        return "army_placard"
+    if class_name == "TShipPlacard":
+        return "ship_placard"
+    if class_name == "TTransportPicture":
+        return "transport_gauge"
+    if class_name == "TNumberedArrowButton":
+        return "numbered_arrow"
+    if class_name == "TTwoPicSlider":
+        return "two_pic_slider"
+    if _rust_amount_bar_kind(node) is not None:
+        return "amount_bar"
+    if _rust_amount_selector_kind(node) is not None:
+        return "amount_selector"
+
+    picture_id = node.family.picture_id
+    if picture_id is not None:
+        if class_name == "TMadnessButton":
+            return "madness"
+        if class_name == "TPictureButton":
+            return "pressed_overlay"
+        if node.type_code == "chkb" or "czechbox" in folded:
+            return "picture_swap"
+        if (
+            node.type_code == "radb"
+            or class_name
+            in (
+                "TUpDownPictureButton",
+                "TRadioPictureButton",
+                "TTextPictureButton",
+                "TSidewaysArrow",
+                "TCivilianButton",
+                "TOverlayRadioButton",
+            )
+            or "updownpicture" in folded
+            or "radiopicture" in folded
+        ):
+            return "picture_swap"
+        return "static_picture"
+
+    # TRadioText has no picture; Draw fills the selected/pressed option.
+    # TRadioTextCluster is radio_group input only (checked above via class table).
+    if class_name != "TRadioTextCluster" and (
+        node.type_code == "radb" or "radio" in folded
     ):
-        return "up_down"
-    return "static"
+        return "radio_text_fill"
+    return None
 
 
 def _case_for_resource(
@@ -2003,17 +1998,19 @@ def report_unsupported_ui_roles(
         semantic_view = normalize_resource_view(key, raw_view, text_resources)
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
-            key, semantic_view, text_property_patches
+            key, semantic_view, text_property_patches, text_resources
         )
         unsupported: list[str] = []
         for node in semantic_view.nodes:
-            kind = _rust_widget_kind(node)
-            behavior = _rust_widget_behavior(key, node)
+            semantics = _rust_input_semantics(key, node)
+            presentation = _rust_presentation(node)
             notes: list[str] = []
-            if kind == "specialized":
-                notes.append(f"kind={kind}")
-            if behavior in ("scroll_area",):
-                notes.append(f"behavior={behavior}")
+            # Recovered `cntl` nodes without a dedicated presentation still need
+            # hand-authored visuals (TClickZone / TDealTabControl / TControl).
+            if node.type_code == "cntl" and presentation is None:
+                notes.append("kind=specialized")
+            if semantics in ("scroll_area",):
+                notes.append(f"behavior={semantics}")
             if notes:
                 unsupported.append(
                     f"  {node.tag!r} ({node.class_name}): " + ", ".join(notes)
@@ -2115,7 +2112,7 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    behavior = _rust_widget_behavior(key, node)
+    semantics = _rust_input_semantics(key, node)
     lines.extend(
         {
             "activate": ["    Button"],
@@ -2132,14 +2129,15 @@ def _render_bsn_node(
                 "    }",
                 "    Pickable",
             ],
-        }.get(str(behavior), [])
+        }.get(str(semantics), [])
     )
-    if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
+    if bool(node.state) and semantics in ("checkbox", "toggle", "radio_button"):
         lines.append("    Checked")
-    if behavior != "passive" and (not node.enabled or not node.input_gate):
+    if semantics != "passive" and (not node.enabled or not node.input_gate):
         lines.append("    InteractionDisabled")
 
-    if node.class_name == "TInfoBarText":
+    presentation = _rust_presentation(node)
+    if presentation == "hover_help_bar":
         lines.append("    template(|_context| Ok(HoverHelpBar))")
         # Empty text until hover systems write; style comes from Windows deltas.
         if text is None:
@@ -2157,7 +2155,7 @@ def _render_bsn_node(
 
     if text is not None:
         value = _rust_string(text.value or "")
-        if behavior == "text_edit":
+        if semantics == "text_edit":
             max_chars = node.family.max_chars
             if max_chars is not None and max_chars < 0:
                 max_chars = None
@@ -2188,64 +2186,53 @@ def _render_bsn_node(
             )
 
     picture_id = node.family.picture_id
-    if picture_id is not None:
-        visual = _rust_picture_visual(node)
-        idle_id = int(picture_id)
-        active_id = idle_id
-        if visual == "up_down":
-            active_id += 1
-        elif visual == "czech_box":
-            idle_id &= ~1
-            active_id = int(picture_id) | 1
-        if node.class_name == "TPlacard":
-            # Recovered class -> RetailPlacard widget (picture + value presentation).
-            lines.append(f"    retail_placard({idle_id})")
-        elif node.class_name == "TArmyPlacard":
-            lines.append(f"    retail_army_placard({idle_id})")
-        elif node.class_name == "TShipPlacard":
-            lines.append(f"    retail_ship_placard({idle_id})")
-        elif node.class_name == "TTransportPicture":
-            # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
-            track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
-            kind = "Capacity" if node.tag == "tota" else "Allocation"
-            lines.append(
-                "    retail_transport_gauge("
-                f"{idle_id}, RetailTransportGaugeKind::{kind}, {track_left})"
-            )
-        elif visual == "pressed_overlay":
-            lines.append(f"    retail_pressed_overlay_picture({idle_id})")
-        elif visual == "madness":
-            lines.append(f"    retail_madness_picture({idle_id})")
-        elif visual == "static":
-            lines.append(f"    retail_picture({idle_id})")
-        else:
-            lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
-    elif node.class_name == "TNumberedArrowButton":
+    if presentation == "placard":
+        # Recovered class -> RetailPlacard widget (picture + value presentation).
+        lines.append(f"    retail_placard({int(picture_id)})")
+    elif presentation == "army_placard":
+        lines.append(f"    retail_army_placard({int(picture_id)})")
+    elif presentation == "ship_placard":
+        lines.append(f"    retail_ship_placard({int(picture_id)})")
+    elif presentation == "transport_gauge":
+        # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
+        track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
+        kind = "Capacity" if node.tag == "tota" else "Allocation"
+        lines.append(
+            "    retail_transport_gauge("
+            f"{int(picture_id)}, RetailTransportGaugeKind::{kind}, {track_left})"
+        )
+    elif presentation == "pressed_overlay":
+        lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
+    elif presentation == "madness":
+        lines.append(f"    retail_madness_picture({int(picture_id)})")
+    elif presentation == "static_picture":
+        lines.append(f"    retail_picture({int(picture_id)})")
+    elif presentation == "picture_swap":
+        idle_id, active_id = _rust_picture_swap_ids(node, int(picture_id))
+        lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+    elif presentation == "numbered_arrow":
         lines.append("    retail_numbered_arrow()")
-    elif behavior == "radio_button":
-        # TRadioText has no picture; Draw fills the selected/pressed option.
+    elif presentation == "radio_text_fill":
         lines.append("    retail_radio_text_fill()")
-
-    amount_bar_kind = _rust_amount_bar_kind(node)
-    if amount_bar_kind is not None:
+    elif presentation == "amount_bar":
         # Recovered TAmtBar subclass -> RetailAmountBar widget.
+        amount_bar_kind = _rust_amount_bar_kind(node)
         lines.append(
             f"    retail_amount_bar(RetailAmountBarKind::{amount_bar_kind})"
         )
-
-    selector_kind = _rust_amount_selector_kind(node)
-    if selector_kind is not None:
+    elif presentation == "amount_selector":
+        selector_kind = _rust_amount_selector_kind(node)
         lines.append(
             f"    retail_amount_selector(RetailAmountSelectorKind::{selector_kind})"
         )
-
-    slider = _rust_two_pic_slider(node)
-    if slider is not None:
-        picture_base, scale, off_group, off_index = slider
-        lines.append(
-            "    retail_two_pic_slider("
-            f"{picture_base}, {scale}, {off_group}, {off_index})"
-        )
+    elif presentation == "two_pic_slider":
+        slider = _rust_two_pic_slider(node)
+        if slider is not None:
+            picture_base, scale, off_group, off_index = slider
+            lines.append(
+                "    retail_two_pic_slider("
+                f"{picture_base}, {scale}, {off_group}, {off_index})"
+            )
 
     children = children_by_parent.get(node.node_id, [])
     if children:
@@ -2254,7 +2241,7 @@ def _render_bsn_node(
             rendered = _render_bsn_node(key, child, children_by_parent)
             child_name = (
                 _rust_amount_selector_child_name(child.tag)
-                if selector_kind is not None
+                if presentation == "amount_selector"
                 else None
             )
             if child_name is not None:
