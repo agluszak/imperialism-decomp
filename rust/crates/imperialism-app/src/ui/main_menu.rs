@@ -1,7 +1,5 @@
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
-};
+use crate::ui::hover_help::{bind_hover_help_texts, get_string};
 use crate::ui::load_save::{LoadSaveMode, open_load_save};
 use crate::ui::retail::{RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
@@ -73,19 +71,9 @@ fn bind_main_menu_hover_help(
     mut commands: Commands,
     root: Single<Entity, Added<MainMenuRoot>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
-    let bar = tree.find(*root, fourcc!("curs"));
-    bind_hover_help_bar(
-        &mut commands,
-        &mut assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("main-menu hover-help bar has Node"),
-        HoverHelpBarStyle::MAIN_MENU,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         &mut commands,
         *root,

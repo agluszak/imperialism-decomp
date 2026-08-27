@@ -2,7 +2,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
+use super::hover_help::get_string;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
@@ -13,7 +13,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, fourcc};
 
 const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
@@ -76,7 +76,6 @@ fn bind_offer_sheet(
     mut commands: Commands,
     root: Option<Single<Entity, Added<OfferSheetRoot>>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
 ) {
     let Some(root) = root else {
@@ -84,7 +83,6 @@ fn bind_offer_sheet(
     };
     let root = *root;
     let view = bind_offer_sheet_controls(&mut commands, root, &tree);
-    bind_offer_sheet_text(&mut commands, &mut assets, root, &tree);
     for tag in [
         fourcc!("ForM"),
         fourcc!("tabs"),
@@ -95,86 +93,10 @@ fn bind_offer_sheet(
             .entity(tree.find(root, tag))
             .insert(InteractionDisabled);
     }
-    let curs = tree.find(root, fourcc!("curs"));
-    bind_hover_help_bar(
-        &mut commands,
-        &mut assets,
-        curs,
-        &mut nodes
-            .get_mut(curs)
-            .expect("offer-sheet hover-help bar has Node"),
-        HoverHelpBarStyle::MAIN_MENU,
-    );
+    // HoverHelpBar + recovered curs / offe/purT/unit/noof/purc/mCap/info styles
+    // come from codegen / Windows deltas (including STR# 0x2740 index 10 on info).
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands.entity(root).insert(view);
-}
-
-fn bind_offer_sheet_text(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-) {
-    let text_style = |assets: &mut RetailUiAssets, alignment| {
-        assets
-            .text_style(RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment,
-            })
-            .expect("retail offer-sheet text style")
-    };
-    let (body, center, body_height, _) = text_style(assets, 1);
-    commands.entity(tree.find(root, fourcc!("offe"))).insert((
-        body.clone(),
-        center,
-        body_height,
-        TextColor(Color::BLACK),
-    ));
-    let (body, right, body_height, _) = text_style(assets, -1);
-    commands.entity(tree.find(root, fourcc!("purT"))).insert((
-        body.clone(),
-        right,
-        body_height,
-        TextColor(Color::BLACK),
-    ));
-    let (body, left, body_height, _) = text_style(assets, -2);
-    for tag in [fourcc!("unit"), fourcc!("noof")] {
-        commands.entity(tree.find(root, tag)).insert((
-            body.clone(),
-            left,
-            body_height,
-            TextColor(Color::BLACK),
-        ));
-    }
-    let (number, center, number_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 1,
-        })
-        .expect("retail offer-sheet number text style");
-    for tag in [fourcc!("purc"), fourcc!("mCap")] {
-        commands.entity(tree.find(root, tag)).insert((
-            number.clone(),
-            center,
-            number_height,
-            TextColor(Color::BLACK),
-        ));
-    }
-    commands.entity(tree.find(root, fourcc!("info"))).insert((
-        Text::new(get_string(assets, OFFER_STRING_GROUP, 9)),
-        body,
-        TextLayout::justify(Justify::Center),
-        body_height,
-        TextColor(assets.palette_color(0x28)),
-        TextShadow {
-            offset: Vec2::new(1.0, 1.0),
-            color: assets.palette_color(0xd2),
-        },
-    ));
 }
 
 fn bind_offer_sheet_controls(

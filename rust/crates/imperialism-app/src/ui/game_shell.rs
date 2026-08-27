@@ -6,9 +6,7 @@ use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
-};
+use crate::ui::hover_help::{HoverHelpText, bind_hover_help_texts, get_string};
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
@@ -154,7 +152,6 @@ fn bind_strategic_map(
     mut commands: Commands,
     root: Single<Entity, Added<StrategicMapRoot>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
@@ -197,7 +194,7 @@ fn bind_strategic_map(
     bind_army_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    bind_strategic_hover(&mut commands, &mut assets, *root, &tree, &mut nodes);
+    bind_strategic_hover(&mut commands, &mut assets, *root, &tree);
 }
 
 fn on_end_turn(
@@ -230,18 +227,8 @@ fn bind_strategic_hover(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-    nodes: &mut Query<&mut Node>,
 ) {
-    let bar = tree.find(root, fourcc!("curs"));
-    bind_hover_help_bar(
-        commands,
-        assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("strategic hover-help bar has Node"),
-        HoverHelpBarStyle::CITY_SITE,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     let civilian_seas = format!(
         "{}, {}",
         get_string(assets, 0x2730, 0x12),

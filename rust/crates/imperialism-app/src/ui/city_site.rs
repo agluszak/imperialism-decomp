@@ -1,9 +1,7 @@
 use crate::ui::RetailUiAssets;
 use crate::ui::fill_brackets;
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string, ui_string,
-};
+use crate::ui::hover_help::{bind_hover_help_texts, get_string, ui_string};
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
@@ -90,7 +88,6 @@ fn bind_city_site(
     mut commands: Commands,
     roots: Query<Entity, (With<CitySiteRoot>, Without<CitySiteWired>)>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
@@ -101,7 +98,7 @@ fn bind_city_site(
     if !scene_has_children(root, &tree.children) {
         return;
     }
-    bind_city_site_controls(&mut commands, root, &tree, &mut nodes, &mut assets);
+    bind_city_site_controls(&mut commands, root, &tree, &mut assets);
     let origin = map.view.detailed_origin(&session.game);
     let map_entity =
         bind_strategic_base_terrain(&mut commands, root, &tree, &mut assets, &session, origin);
@@ -118,7 +115,6 @@ fn bind_city_site_controls(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
     bind_query_floater_control(commands, root, tree);
@@ -127,16 +123,7 @@ fn bind_city_site_controls(
         .entity(cancel)
         .insert((CitySiteAction::Cancel, ActivateOnPress))
         .observe(on_city_site_activate);
-    let bar = tree.find(root, fourcc!("curs"));
-    bind_hover_help_bar(
-        commands,
-        assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("city-site hover-help bar has Node"),
-        HoverHelpBarStyle::CITY_SITE,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         commands,
         root,

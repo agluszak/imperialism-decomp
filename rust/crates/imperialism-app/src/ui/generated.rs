@@ -2,11 +2,12 @@
 #![allow(dead_code, clippy::identity_op)]
 
 use super::city::{CityBuildingActionVisual, CityBuildingVisual};
+use super::hover_help::HoverHelpBar;
 use super::retail::*;
 use super::window::CaptionedWindow;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};
+use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};
+use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea, Slider};
 use imperialism_core::CityFacilitySlot;
 use imperialism_formats::{FourCc, PictureId, fourcc};
 
@@ -985,11 +986,13 @@ pub fn armory_9208() -> impl Scene {
                                     (
                                         retail_node(fourcc!("cost"), 3, 84, 73, 16)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("avai"), 3, 133, 73, 16)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1058,21 +1061,25 @@ pub fn armory_9208() -> impl Scene {
                                     (
                                         retail_node(fourcc!("lab0"), 3, 5, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("lab1"), 3, 24, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("lab2"), 3, 43, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("lab3"), 3, 62, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -1080,6 +1087,7 @@ pub fn armory_9208() -> impl Scene {
                             (
                                 retail_node(fourcc!("desc"), 17, 273, 170, 106)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1115,22 +1123,27 @@ pub fn citydlog_9200() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 64, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 19, 87, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1138,6 +1151,7 @@ pub fn citydlog_9200() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1155,6 +1169,7 @@ pub fn citydlog_9200() -> impl Scene {
                             (
                                 retail_node(fourcc!("or  "), 126, 59, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1172,11 +1187,13 @@ pub fn citydlog_9200() -> impl Scene {
                             (
                                 retail_node(fourcc!("cott"), 119, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("wool"), 196, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1206,22 +1223,27 @@ pub fn citydlog_9201() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 88, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("clot"), 19, 87, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 3, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1229,6 +1251,7 @@ pub fn citydlog_9201() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1258,6 +1281,7 @@ pub fn citydlog_9201() -> impl Scene {
                             (
                                 retail_node(fourcc!("fabr"), 155, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1287,22 +1311,27 @@ pub fn citydlog_9202() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 75, 76, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("stee"), 19, 87, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1310,6 +1339,7 @@ pub fn citydlog_9202() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1339,11 +1369,13 @@ pub fn citydlog_9202() -> impl Scene {
                             (
                                 retail_node(fourcc!("coal"), 126, 76, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("iron"), 170, 76, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1373,22 +1405,27 @@ pub fn citydlog_9203() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 64, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("hard"), 19, 92, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
@@ -1396,6 +1433,7 @@ pub fn citydlog_9203() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1403,18 +1441,22 @@ pub fn citydlog_9203() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("arma"), 19, 122, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 59, 17, 21, 11)
                                         Button
                                         Text("")
@@ -1422,6 +1464,7 @@ pub fn citydlog_9203() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1439,6 +1482,7 @@ pub fn citydlog_9203() -> impl Scene {
                             (
                                 retail_node(fourcc!("or  "), 188, 59, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1456,6 +1500,7 @@ pub fn citydlog_9203() -> impl Scene {
                             (
                                 retail_node(fourcc!("stee"), 124, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1485,22 +1530,27 @@ pub fn citydlog_9204() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 63, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 19, 92, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
@@ -1508,6 +1558,7 @@ pub fn citydlog_9204() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1515,18 +1566,22 @@ pub fn citydlog_9204() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("pape"), 19, 122, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
@@ -1534,6 +1589,7 @@ pub fn citydlog_9204() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1551,6 +1607,7 @@ pub fn citydlog_9204() -> impl Scene {
                             (
                                 retail_node(fourcc!("or  "), 190, 54, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1568,6 +1625,7 @@ pub fn citydlog_9204() -> impl Scene {
                             (
                                 retail_node(fourcc!("timb"), 121, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1597,22 +1655,27 @@ pub fn citydlog_9205() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 85, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 19, 87, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1620,6 +1683,7 @@ pub fn citydlog_9205() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1649,6 +1713,7 @@ pub fn citydlog_9205() -> impl Scene {
                             (
                                 retail_node(fourcc!("lumb"), 150, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1678,22 +1743,27 @@ pub fn citydlog_9206() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 86, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 19, 87, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1701,6 +1771,7 @@ pub fn citydlog_9206() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1730,6 +1801,7 @@ pub fn citydlog_9206() -> impl Scene {
                             (
                                 retail_node(fourcc!("oil "), 153, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1755,18 +1827,22 @@ pub fn citydlog_9209() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("trai"), 20, 152, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -1774,6 +1850,7 @@ pub fn citydlog_9209() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -1781,18 +1858,22 @@ pub fn citydlog_9209() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prof"), 20, 233, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -1800,6 +1881,7 @@ pub fn citydlog_9209() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -1808,11 +1890,13 @@ pub fn citydlog_9209() -> impl Scene {
                             (
                                 retail_node(fourcc!("cos1"), 147, 118, 44, 17)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("cos2"), 150, 200, 44, 17)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1833,31 +1917,37 @@ pub fn citydlog_9209() -> impl Scene {
                             (
                                 retail_node(fourcc!("pap1"), 116, 136, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("pap2"), 127, 218, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("untV"), 59, 136, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("traV"), 59, 218, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("mon1"), 189, 136, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("mon2"), 189, 218, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1892,18 +1982,22 @@ pub fn citydlog_9211() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("powe"), 19, 81, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
                                         Text("")
@@ -1911,6 +2005,7 @@ pub fn citydlog_9211() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -1925,6 +2020,7 @@ pub fn citydlog_9211() -> impl Scene {
                             (
                                 retail_node(fourcc!("fuel"), 45, 66, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1954,22 +2050,27 @@ pub fn citydlog_9212() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 55, 85, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("food"), 20, 121, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
                                         Text("")
@@ -1977,6 +2078,7 @@ pub fn citydlog_9212() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -1985,6 +2087,7 @@ pub fn citydlog_9212() -> impl Scene {
                             (
                                 retail_node(fourcc!("or  "), 172, 69, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1996,16 +2099,19 @@ pub fn citydlog_9212() -> impl Scene {
                             (
                                 retail_node(fourcc!("prod"), 147, 85, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("grai"), 100, 85, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("fish"), 196, 103, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -2395,22 +2501,27 @@ pub fn citydlog_9214() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 72, 68, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("rail"), 19, 87, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 211, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -2418,6 +2529,7 @@ pub fn citydlog_9214() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -2432,11 +2544,13 @@ pub fn citydlog_9214() -> impl Scene {
                             (
                                 retail_node(fourcc!("stee"), 124, 68, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 174, 68, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -2472,22 +2586,27 @@ pub fn citydlog_9215() -> impl Scene {
                             (
                                 retail_node(fourcc!("food"), 73, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("popu"), 25, 85, 239, 36)
+                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
+                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -2495,6 +2614,7 @@ pub fn citydlog_9215() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -2509,11 +2629,13 @@ pub fn citydlog_9215() -> impl Scene {
                             (
                                 retail_node(fourcc!("clot"), 124, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 165, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -2555,41 +2677,49 @@ pub fn citydlog_9220() -> impl Scene {
                             (
                                 retail_node(fourcc!("tex1"), 20, 194, 281, 36)
                                 Text("")
+                                retail_text_style(0, 0, 0, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex2"), 19, 257, 282, 30)
                                 Text("")
+                                retail_text_style(0, 0, 0, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("warn"), 226, 283, 84, 32)
                                 Text("Insufficient\rMaterials")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("name"), 14, 6, 290, 15)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("cost"), 227, 47, 86, 35)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("capT"), 14, 19, 290, 15)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("or  "), 205, 235, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("buck"), 227, 92, 86, 35)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -2786,6 +2916,13 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -2820,6 +2957,13 @@ pub fn diplo_1351() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("curs"), 434, 7, 201, 21)
+                                        template(|_context| Ok(HoverHelpBar))
+                                        Text("")
+                                        Node {
+                                            flex_direction: FlexDirection::Column,
+                                            justify_content: JustifyContent::Center,
+                                            overflow: Overflow::clip(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("prev"), 294, 381, 22, 22)
@@ -2844,6 +2988,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("resu"), 24, 360, 286, 20)
                                         Text("")
+                                        retail_text_style(0, 0, 0, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2853,6 +2998,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("fadm"), 63, 382, 224, 22)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2862,21 +3008,25 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("eadm"), 391, 382, 239, 23)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("loca"), 331, 360, 288, 20)
                                         Text("")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("fshp"), 29, 407, 257, 65)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("eshp"), 357, 407, 272, 65)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2935,11 +3085,13 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("natL"), 26, 40, 158, 38)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("natR"), 257, 40, 157, 36)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -3252,6 +3404,12 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
                                             (
                                                 retail_node(fourcc!("prop"), 113, 12, 291, 92)
+                                                ScrollArea
+                                                ScrollPosition::default()
+                                                Node {
+                                                    overflow: Overflow::scroll_y(),
+                                                }
+                                                Pickable
                                             ),
                                             (
                                                 retail_node(fourcc!("reje"), 12, 26, 75, 70)
@@ -3270,6 +3428,12 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
                                             (
                                                 retail_node(fourcc!("text"), 113, 12, 291, 92)
+                                                ScrollArea
+                                                ScrollPosition::default()
+                                                Node {
+                                                    overflow: Overflow::scroll_y(),
+                                                }
+                                                Pickable
                                             ),
                                         ]
                                     ),
@@ -3398,6 +3562,13 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 218, 29)
@@ -3467,76 +3638,91 @@ pub fn diplo_2016() -> impl Scene {
                             (
                                 retail_node(fourcc!("ttl0"), 239, 372, 162, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 239, 400, 162, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl2"), 239, 425, 162, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl3"), 239, 450, 162, 16)
                                 Text("Other Great Power")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can0"), 22, 366, 139, 18)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can1"), 470, 366, 139, 18)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num0"), 192, 372, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num1"), 192, 400, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num2"), 192, 425, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num3"), 192, 450, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("sco0"), 120, 402, 54, 39)
                                 Text("888")
+                                retail_text_style(0, 0, 24, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num7"), 408, 450, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num6"), 408, 425, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num5"), 408, 400, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num4"), 408, 372, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -3550,14 +3736,23 @@ pub fn diplo_2016() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 48, 6, 338, 30)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("sco1"), 455, 402, 54, 39)
                                 Text("888")
+                                retail_text_style(0, 0, 24, -1)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -3591,21 +3786,25 @@ pub fn diplo_2017() -> impl Scene {
                             (
                                 retail_node(fourcc!("coun"), 208, 59, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 207, 102, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can0"), 207, 146, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can1"), 207, 190, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -3720,6 +3919,7 @@ pub fn flagview_8500() -> impl Scene {
                                         retail_node(fourcc!("mCap"), 411, 284, 37, 15)
                                         Button
                                         Text("")
+                                        retail_text_style(0, 0, 14, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3734,6 +3934,7 @@ pub fn flagview_8500() -> impl Scene {
                                         }
                                         Button
                                         Text("")
+                                        retail_text_style(0, 0, 14, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3761,21 +3962,25 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
                                         Text("")
+                                        retail_text_style(0, 0, 12, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("purT"), 12, 200, 100, 19)
                                         Text("")
+                                        retail_text_style(0, 0, 12, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("noof"), 63, 224, 145, 14)
                                         Text("")
+                                        retail_text_style(0, 0, 12, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("unit"), 157, 200, 58, 20)
                                         Text("")
+                                        retail_text_style(0, 0, 12, -2)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3787,8 +3992,10 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 349, 4, 153, 249)
-                                        Text("")
-                                        TextColor(Color::BLACK)
+                                        Text("Trade Book")
+                                        retail_text_style(0, 0, 12, 1)
+                                        retail_text_color(40)
+                                        retail_text_shadow(210, 1, 1)
                                     ),
                                 ]
                             ),
@@ -3799,6 +4006,7 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("text"), 40, 134, 145, 92)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3813,11 +4021,13 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("titL"), 43, 9, 157, 21)
                                         Text("Deal Book")
+                                        retail_text_style(0, 0, 18, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("rtil"), 271, 9, 199, 20)
                                         Text("Winter 1820")
+                                        retail_text_style(0, 0, 18, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3853,6 +4063,16 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 273, 7, 318, 25)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 14, 1)
+                                retail_text_color(40)
+                                retail_text_shadow(210, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 608, 39, 30, 40)
@@ -3934,6 +4154,7 @@ pub fn flagview_8800() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("titL"), 101, 54, 157, 22)
                                                 Text("Deal Book")
+                                                retail_text_style(0, 0, 18, 1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -3985,6 +4206,13 @@ pub fn flagview_8800() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 245, 7, 365, 21)
+                        template(|_context| Ok(HoverHelpBar))
+                        Text("")
+                        Node {
+                            flex_direction: FlexDirection::Column,
+                            justify_content: JustifyContent::Center,
+                            overflow: Overflow::clip(),
+                        }
                     ),
                 ]
             ),
@@ -4032,6 +4260,7 @@ pub fn linger_954() -> impl Scene {
                                         RadioButton
                                         Checked
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                         retail_radio_text_fill()
                                     ),
@@ -4040,6 +4269,7 @@ pub fn linger_954() -> impl Scene {
                                         RadioButton
                                         Checked
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                         retail_radio_text_fill()
                                     ),
@@ -4063,6 +4293,7 @@ pub fn linger_954() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(32))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4111,41 +4342,49 @@ pub fn linger_1502() -> impl Scene {
                             (
                                 retail_node(fourcc!("slt0"), 72, 290, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt1"), 72, 326, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt3"), 73, 394, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt2"), 73, 360, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt7"), 346, 394, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt6"), 346, 360, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt5"), 345, 326, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt4"), 345, 290, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4177,6 +4416,7 @@ pub fn linger_1502() -> impl Scene {
                                     (
                                         retail_node(fourcc!("info"), 20, 197, 205, 43)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -4196,6 +4436,13 @@ pub fn linger_1502() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 49, 19, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -4264,6 +4511,12 @@ pub fn linger_2020() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 17, 160, 354, 84)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                         ]
                     ),
@@ -4288,6 +4541,12 @@ pub fn linger_3000() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("swin"), 21, 146, 363, 163)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("nam1"), 15, 187, 244, 15)
@@ -4340,6 +4599,7 @@ pub fn linger_3000() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 105, 14, 181, 62)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4355,6 +4615,7 @@ pub fn linger_3000() -> impl Scene {
                             (
                                 retail_node(fourcc!("subj"), 105, 81, 181, 31)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4380,10 +4641,17 @@ pub fn linger_3005() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("info"), 9, 91, 373, 57)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("titl"), 85, 11, 219, 45)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4467,6 +4735,7 @@ pub fn linger_3005() -> impl Scene {
                             (
                                 retail_node(fourcc!("item"), 85, 57, 219, 20)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4527,41 +4796,49 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 101, 22, 126, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex0"), 91, 156, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex1"), 91, 192, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex2"), 91, 230, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex3"), 91, 266, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex4"), 91, 304, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex5"), 91, 340, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex6"), 89, 115, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4587,36 +4864,43 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("txt0"), 98, 22, 129, 15)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt1"), 104, 109, 116, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt2"), 85, 193, 119, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt3"), 85, 154, 144, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt4"), 85, 231, 138, 17)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt5"), 85, 268, 124, 15)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt6"), 85, 303, 126, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4657,6 +4941,7 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("txt7"), 84, 340, 126, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4707,7 +4992,7 @@ pub fn linger_4150() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                Button
+                                retail_two_pic_slider(4152, 100, 10051, 60)
                             ),
                             (
                                 retail_node(fourcc!("musi"), 194, 92, 102, 91)
@@ -4719,7 +5004,7 @@ pub fn linger_4150() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                Button
+                                retail_two_pic_slider(4150, 255, 10051, 60)
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
@@ -4733,30 +5018,60 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("txtb"), 197, 193, 96, 47)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txta"), 57, 193, 96, 47)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txtc"), 57, 396, 96, 47)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txtd"), 197, 396, 96, 47)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txte"), 423, 322, 96, 47)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
@@ -4790,6 +5105,12 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tpca"), 370, 380, 195, 47)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                                 InteractionDisabled
                                 Text("Switch to Game Resolution When Starting the Game")
                                 retail_text_style(1, 0, 12, 1)
@@ -4807,6 +5128,16 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                         ]
                     ),
@@ -4830,9 +5161,21 @@ pub fn linger_4175() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("cred"), 36, 19, 257, 428)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("cre2"), 326, 19, 290, 428)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                         ]
                     ),
@@ -4866,6 +5209,13 @@ pub fn linger_4300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("tab0"), 13, 134, 60, 56)
@@ -5491,6 +5841,16 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, -1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
@@ -5536,15 +5896,23 @@ pub fn mapview_3012() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 10, 173, 131, 17)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl2"), 164, 173, 130, 17)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -5691,11 +6059,13 @@ pub fn mapview_3508() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(16))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 28, 12, 201, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -5755,16 +6125,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nama"), 10, 24, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namb"), 10, 47, 110, 15)
                         Text("Skirmishers")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5779,11 +6152,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namc"), 10, 70, 110, 15)
                         Text("Regulars")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5798,6 +6173,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5812,16 +6188,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namd"), 10, 93, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namg"), 10, 162, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5836,6 +6215,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5850,16 +6230,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namh"), 10, 185, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namf"), 10, 139, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5874,6 +6257,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5888,16 +6272,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("name"), 10, 116, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nami"), 192, 25, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5912,6 +6299,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5926,16 +6314,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namj"), 192, 48, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namk"), 192, 71, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5950,6 +6341,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5964,16 +6356,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("naml"), 192, 94, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namm"), 192, 117, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5988,6 +6383,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6002,16 +6398,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namn"), 192, 140, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namo"), 192, 163, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6026,6 +6425,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6040,16 +6440,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namp"), 192, 186, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namq"), 367, 25, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6064,6 +6467,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6078,16 +6482,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namr"), 367, 48, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nams"), 367, 71, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6102,6 +6509,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6116,16 +6524,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namt"), 367, 94, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namu"), 367, 117, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6140,6 +6551,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6154,16 +6566,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namv"), 367, 140, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namw"), 367, 163, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6178,6 +6593,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6192,11 +6608,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namy"), 10, 208, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6216,16 +6634,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namx"), 367, 186, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namz"), 191, 209, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6240,11 +6661,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namx"), 367, 209, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6259,11 +6682,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam{"), 10, 231, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6278,11 +6703,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam|"), 191, 232, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6297,11 +6724,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam~"), 191, 256, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6316,11 +6745,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam}"), 9, 257, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6335,6 +6766,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                 ]
@@ -6367,16 +6799,19 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namd"), 215, 37, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("name"), 215, 60, 110, 15)
                         Text("Skirmishers")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6391,11 +6826,13 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namh"), 215, 83, 110, 15)
                         Text("Regulars")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6410,6 +6847,7 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6424,16 +6862,19 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nami"), 215, 106, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namm"), 215, 175, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6448,11 +6889,13 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("naml"), 215, 152, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6467,6 +6910,7 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6481,11 +6925,13 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namj"), 215, 129, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6505,6 +6951,7 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                 ]
@@ -6891,6 +7338,12 @@ pub fn minister_9480() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 17, 160, 354, 84)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                         ]
                     ),
@@ -6930,11 +7383,13 @@ pub fn multiplayer_1507() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(30))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tgam"), 18, 76, 270, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -6988,6 +7443,7 @@ pub fn multiplayer_1508() -> impl Scene {
                             (
                                 retail_node(fourcc!("mess"), 333, 425, 192, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -7049,41 +7505,49 @@ pub fn multiplayer_1508() -> impl Scene {
                             (
                                 retail_node(fourcc!("nam0"), 136, 310, 142, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam1"), 136, 349, 142, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam2"), 136, 388, 144, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam3"), 136, 427, 145, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam4"), 358, 309, 147, 20)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam5"), 358, 348, 146, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam6"), 358, 387, 146, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tnam"), 304, 202, 319, 17)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -7148,6 +7612,13 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("labl"), 33, 26, 234, 18)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -7191,6 +7662,7 @@ pub fn multiplayer_1510() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -7638,6 +8110,16 @@ pub fn startup_952() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, -1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                         ]
                     ),
@@ -7817,6 +8299,16 @@ pub fn startup_1500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 180, 424, 274, 52)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 14, 1)
+                                retail_text_color(40)
+                                retail_text_shadow(210, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("quit"), 221, 102, 195, 195)
@@ -7874,6 +8366,16 @@ pub fn startup_1501() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("hot!"), 36, 22, 238, 27)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(210)
+                                retail_text_shadow(40, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("stuf"), 288, 4, 345, 466)
@@ -8026,6 +8528,7 @@ pub fn startup_1501() -> impl Scene {
                             (
                                 retail_node(fourcc!("auto"), 217, 66, 65, 41)
                                 Text("All AutoGP's")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8107,10 +8610,22 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("cdes"), 309, 230, 310, 185)
+                                        ScrollArea
+                                        ScrollPosition::default()
+                                        Node {
+                                            overflow: Overflow::scroll_y(),
+                                        }
+                                        Pickable
                                         InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("sdes"), 48, 230, 228, 222)
+                                        ScrollArea
+                                        ScrollPosition::default()
+                                        Node {
+                                            overflow: Overflow::scroll_y(),
+                                        }
+                                        Pickable
                                         InteractionDisabled
                                     ),
                                     (
@@ -8130,10 +8645,18 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("curs"), 50, 17, 214, 30)
+                                        template(|_context| Ok(HoverHelpBar))
+                                        Text("")
+                                        Node {
+                                            flex_direction: FlexDirection::Column,
+                                            justify_content: JustifyContent::Center,
+                                            overflow: Overflow::clip(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("more"), 40, 176, 242, 20)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -8172,6 +8695,7 @@ pub fn startup_1504() -> impl Scene {
                                     (
                                         retail_node(fourcc!("labl"), 27, 68, 234, 18)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -8217,21 +8741,25 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("txt0"), 264, 171, 138, 18)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt1"), 263, 206, 140, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt2"), 264, 237, 143, 17)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt3"), 264, 270, 139, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8286,6 +8814,7 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("tgam"), 21, 101, 98, 19)
                                 Text("Game name:")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8300,10 +8829,18 @@ pub fn startup_1506() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("labl"), 21, 67, 200, 21)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -8387,10 +8924,18 @@ pub fn startup_1509() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 34, 18, 233, 33)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("name"), 245, 381, 165, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8457,131 +9002,157 @@ pub fn startup_1515() -> impl Scene {
                                     (
                                         retail_node(fourcc!("scra"), 118, 165, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrb"), 118, 219, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrc"), 118, 273, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrd"), 118, 309, 120, 48)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scre"), 416, 165, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrf"), 416, 219, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrg"), 416, 265, 120, 32)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrh"), 416, 329, 120, 32)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scri"), 118, 383, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrj"), 344, 381, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrk"), 344, 406, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrl"), 346, 440, 120, 24)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numa"), 233, 165, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numb"), 233, 219, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numc"), 233, 273, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numd"), 234, 325, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numi"), 233, 383, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("nume"), 531, 165, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numf"), 531, 219, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numg"), 531, 273, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numh"), 531, 337, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numj"), 531, 381, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numk"), 532, 405, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numl"), 532, 440, 73, 24)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("vict"), 130, 44, 396, 72)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("ptfr"), 118, 127, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -8624,6 +9195,12 @@ pub fn startup_20000() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("sale"), 7, 6, 398, 379)
+                                        ScrollArea
+                                        ScrollPosition::default()
+                                        Node {
+                                            overflow: Overflow::scroll_y(),
+                                        }
+                                        Pickable
                                     ),
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
@@ -8637,19 +9214,33 @@ pub fn startup_20000() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
+                                        ScrollArea
+                                        ScrollPosition::default()
+                                        Node {
+                                            overflow: Overflow::scroll_y(),
+                                        }
+                                        Pickable
                                     ),
                                     (
                                         retail_node(fourcc!("tsho"), 51, 446, 138, 23)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("tqui"), 459, 445, 138, 23)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("titl"), 132, 6, 375, 37)
+                                        ScrollArea
+                                        ScrollPosition::default()
+                                        Node {
+                                            overflow: Overflow::scroll_y(),
+                                        }
+                                        Pickable
                                         InteractionDisabled
                                     ),
                                 ]
@@ -8684,6 +9275,16 @@ pub fn tactical_3800() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("curs"), 221, 4, 360, 20)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, -1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("DLOG"), 5, 25, 575, 450)
@@ -8757,15 +9358,23 @@ pub fn tactical_3821() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 13, 201, 210, 112)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("loca"), 7, 182, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -8799,15 +9408,23 @@ pub fn tactical_3865() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 12, 197, 417, 59)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("loca"), 7, 182, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8874,6 +9491,13 @@ pub fn tech_2200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 247, 7, 341, 17)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("patc"), 584, 35, 52, 72)
@@ -8995,6 +9619,13 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -9022,6 +9653,7 @@ pub fn techstore_2370() -> impl Scene {
                                     (
                                         retail_node(fourcc!("titl"), 81, 19, 264, 32)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9030,6 +9662,12 @@ pub fn techstore_2370() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("scvw"), 9, 76, 342, 175)
+                                        ScrollArea
+                                        ScrollPosition::default()
+                                        Node {
+                                            overflow: Overflow::scroll_y(),
+                                        }
+                                        Pickable
                                     ),
                                     (
                                         retail_node(fourcc!("okay"), 281, 260, 61, 24)
@@ -9137,8 +9775,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                         Node {
                                             padding: UiRect {
@@ -9163,11 +9803,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2128)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
@@ -9177,6 +9819,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9192,8 +9835,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -9222,16 +9867,19 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9247,8 +9895,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node {
                                             padding: UiRect {
@@ -9277,16 +9927,19 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9302,8 +9955,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -9332,16 +9987,19 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9357,8 +10015,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node {
                                             padding: UiRect {
@@ -9383,6 +10043,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9392,11 +10053,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9412,8 +10075,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -9438,6 +10103,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9447,11 +10113,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9467,8 +10135,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -9493,6 +10163,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9502,11 +10173,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9522,8 +10195,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -9548,6 +10223,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9557,11 +10233,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9577,8 +10255,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9603,6 +10283,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9612,11 +10293,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9632,8 +10315,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9658,6 +10343,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9667,11 +10353,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9687,8 +10375,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9713,6 +10403,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9722,11 +10413,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9742,8 +10435,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9768,6 +10463,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9777,11 +10473,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9797,8 +10495,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9823,6 +10523,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9832,11 +10533,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9852,8 +10555,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9878,6 +10583,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9887,11 +10593,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9907,8 +10615,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9933,6 +10643,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9942,11 +10653,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9962,8 +10675,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -9988,6 +10703,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -9997,11 +10713,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10017,8 +10735,10 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
+                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
+                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10043,6 +10763,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
+                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10052,11 +10773,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
+                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
+                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10065,31 +10788,37 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("topT"), 54, 37, 533, 20)
                                 Text("Board of Trade")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("comT"), 48, 73, 90, 23)
                                 Text("Commodity")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ordT"), 138, 73, 90, 23)
                                 Text("Orders")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("priT"), 240, 73, 67, 23)
                                 Text("Price")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("avaT"), 310, 73, 72, 21)
                                 Text("Available")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("qtyT"), 386, 73, 181, 21)
                                 Text("Quantity to Offer")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -10119,6 +10848,13 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("timb"), 5, 231, 42, 24)
@@ -10199,8 +10935,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10225,11 +10963,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2128)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
@@ -10239,6 +10979,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10254,8 +10995,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10284,16 +11027,19 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10309,8 +11055,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10339,16 +11087,19 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10364,8 +11115,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10394,16 +11147,19 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10419,8 +11175,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10445,6 +11203,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10454,11 +11213,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10474,8 +11235,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10500,6 +11263,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10509,11 +11273,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10529,8 +11295,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10555,6 +11323,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10564,11 +11333,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10584,8 +11355,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10610,6 +11383,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10619,11 +11393,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10639,8 +11415,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10665,6 +11443,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10674,11 +11453,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10694,8 +11475,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10720,6 +11503,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10729,11 +11513,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10749,8 +11535,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10775,6 +11563,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10784,11 +11573,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10804,8 +11595,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10830,6 +11623,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10839,11 +11633,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10859,8 +11655,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10885,6 +11683,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10894,11 +11693,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10914,8 +11715,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10940,6 +11743,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -10949,11 +11753,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10969,8 +11775,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10995,6 +11803,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11004,11 +11813,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11024,8 +11835,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11050,6 +11863,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11059,11 +11873,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11079,8 +11895,10 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
+                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
+                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11105,6 +11923,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
+                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11114,11 +11933,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
+                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
+                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11127,31 +11948,37 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("topT"), 54, 37, 533, 20)
                                         Text("Board of Trade")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("comT"), 48, 73, 90, 23)
                                         Text("Commodity")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("ordT"), 138, 73, 90, 23)
                                         Text("Orders")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("priT"), 240, 73, 67, 23)
                                         Text("Price")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("avaT"), 310, 73, 72, 21)
                                         Text("Available")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("qtyT"), 386, 73, 181, 21)
                                         Text("Quantity to Offer")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -11264,6 +12091,13 @@ pub fn trade_2010() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                        template(|_context| Ok(HoverHelpBar))
+                        Text("")
+                        Node {
+                            flex_direction: FlexDirection::Column,
+                            justify_content: JustifyContent::Center,
+                            overflow: Overflow::clip(),
+                        }
                     ),
                 ]
             ),
@@ -11776,6 +12610,13 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -12259,6 +13100,7 @@ pub fn join_selector_message() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
