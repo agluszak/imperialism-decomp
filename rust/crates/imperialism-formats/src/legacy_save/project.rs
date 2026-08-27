@@ -1768,6 +1768,8 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                                 detail_identity: child.detail_identity,
                             })
                             .collect(),
+                        // Loaded saves use captured presentation text for overlays.
+                        task_force_order: None,
                     }
                 })),
             })

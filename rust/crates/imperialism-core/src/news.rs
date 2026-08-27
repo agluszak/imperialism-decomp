@@ -885,10 +885,12 @@ mod tests {
                 BattleReportSide {
                     nation: MajorNationId::new(1).nation(),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: MajorNationId::new(2).nation(),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         });

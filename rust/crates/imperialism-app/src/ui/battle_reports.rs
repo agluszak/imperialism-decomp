@@ -31,6 +31,11 @@ const ARMY_CHECKBOX_ATLAS: i16 = 0xdb8;
 const NAVY_CHECKBOX_ATLAS: i16 = 0xdba;
 const MERC_CHECKBOX_ATLAS: i16 = 0xdbb;
 const EXPERIENCE_STRIP: i16 = 800;
+/// Retail's blit selects palette index `0x10` as transparent; `0x24` is the blitter flags.
+const KEYED_TRANSPARENT: u8 = 0x10;
+const COMMODITY_ICON_BASE: i16 = 700;
+const COMMODITY_ICON_WIDTH: f32 = 32.0;
+const COMMODITY_ICON_HEIGHT: f32 = 23.0;
 const BATTLE_REPORT_ITEM_IDENTITY: u32 = 0x6974_656d;
 const BATTLE_REPORT_RUPT_IDENTITY: u32 = 0x7275_7074;
 const BATTLE_REPORT_MERC_IDENTITY: u32 = 0x6d65_7263;
@@ -132,11 +137,12 @@ fn bind_battle_report(
     tree: RetailTree,
     mut assets: super::RetailUiAssets,
     mut session: ResMut<GameSession>,
+    mut reports: ResMut<BattleReportPresentation>,
 ) {
     let root = *root;
     let main = tree.find(root, fourcc!("main"));
     let marker_atlas = assets
-        .keyed_picture(PictureId::new(MARKER_ATLAS), 0x24)
+        .keyed_picture(PictureId::new(MARKER_ATLAS), KEYED_TRANSPARENT)
         .expect("retail battle-report marker atlas must load");
     let map_entity = commands
         .spawn((
@@ -176,39 +182,7 @@ fn bind_battle_report(
         map_entity,
         labels,
     );
-    for (tag, preset) in [
-        (
-            fourcc!("resu"),
-            RetailTextStylePreset::explicit(0, 0, 14, -1),
-        ),
-        (
-            fourcc!("loca"),
-            RetailTextStylePreset::explicit(2, 0, 14, -1),
-        ),
-        (
-            fourcc!("fadm"),
-            RetailTextStylePreset::explicit(0, 0, 12, -1),
-        ),
-        (
-            fourcc!("eadm"),
-            RetailTextStylePreset::explicit(0, 0, 12, -1),
-        ),
-        (
-            fourcc!("fshp"),
-            RetailTextStylePreset::explicit(0, 0, 10, -1),
-        ),
-        (
-            fourcc!("eshp"),
-            RetailTextStylePreset::explicit(0, 0, 10, -1),
-        ),
-    ] {
-        let (font, layout, line_height, _) = assets
-            .text_style(preset)
-            .expect("retail battle-report text style");
-        commands
-            .entity(tree.find(root, tag))
-            .insert((font, layout, line_height));
-    }
+    ensure_battle_report_presentation(&mut assets, session, &mut reports.0);
     let okay = tree.find(root, fourcc!("okay"));
     commands
         .entity(okay)
@@ -263,7 +237,7 @@ fn bind_battle_report(
 fn render_battle_report(
     mut commands: Commands,
     session: Res<GameSession>,
-    mut reports: ResMut<BattleReportPresentation>,
+    reports: Res<BattleReportPresentation>,
     views: Query<Ref<BattleReportView>>,
     mut assets: super::RetailUiAssets,
     mut texts: Query<&mut Text>,
@@ -275,10 +249,6 @@ fn render_battle_report(
     if !session.is_changed() && !view.is_added() && !view.is_changed() && !reports.is_changed() {
         return;
     }
-    // Retail serializes name/overlay buffers on every report. Ensure live-generated
-    // reports materialize those strings into the presentation resource so a later
-    // save does not fall back to empty buffers.
-    ensure_battle_report_presentation(&mut assets, &session, &mut reports.0);
     let reports_game = session.game.battle_reports();
     let Some(report) = reports_game.get(view.selected) else {
         for entity in [
@@ -676,8 +646,18 @@ fn battle_report_tile(state: &GameState, report: &BattleReport) -> Option<TileId
             .ocean()
             .zones
             .get(usize::from(zone.get()))
-            .and_then(|zone| zone.zone().active_tile.or(zone.zone().target_tile)),
+            .and_then(|zone| {
+                zone_report_marker_tile(zone.zone().target_tile, zone.zone().active_tile)
+            }),
     }
+}
+
+/// Sea-report map markers use the zone's `target_tile` only (not `active_tile`).
+fn zone_report_marker_tile(
+    target_tile: Option<TileId>,
+    _active_tile: Option<TileId>,
+) -> Option<TileId> {
+    target_tile
 }
 
 fn battle_report_marker_sprite(state: &GameState, report: &BattleReport) -> i32 {
@@ -817,16 +797,16 @@ fn bind_detail(
         ));
     }
     let army_atlas = assets
-        .keyed_picture(PictureId::new(ARMY_CHECKBOX_ATLAS), 0x24)
+        .keyed_picture(PictureId::new(ARMY_CHECKBOX_ATLAS), KEYED_TRANSPARENT)
         .expect("retail battle-detail army atlas");
     let navy_atlas = assets
-        .keyed_picture(PictureId::new(NAVY_CHECKBOX_ATLAS), 0x24)
+        .keyed_picture(PictureId::new(NAVY_CHECKBOX_ATLAS), KEYED_TRANSPARENT)
         .expect("retail battle-detail navy atlas");
     let merc_atlas = assets
-        .keyed_picture(PictureId::new(MERC_CHECKBOX_ATLAS), 0x24)
+        .keyed_picture(PictureId::new(MERC_CHECKBOX_ATLAS), KEYED_TRANSPARENT)
         .expect("retail battle-detail merchant atlas");
     let experience_strip = assets
-        .keyed_picture(PictureId::new(EXPERIENCE_STRIP), 0x24)
+        .keyed_picture(PictureId::new(EXPERIENCE_STRIP), KEYED_TRANSPARENT)
         .expect("retail battle-detail experience strip");
     for (entity, picture) in [
         (
@@ -944,7 +924,15 @@ fn render_detail(
             .take(DETAIL_ROWS_PER_PAGE)
             .enumerate()
         {
-            spawn_detail_row(&mut commands, &mut assets, &detail, panel, index, row);
+            spawn_detail_row(
+                &mut commands,
+                &mut assets,
+                &session.game,
+                &detail,
+                panel,
+                index,
+                row,
+            );
         }
     }
     let count = detail_page_count(report);
@@ -965,6 +953,7 @@ fn render_detail(
 fn spawn_detail_row(
     commands: &mut Commands,
     assets: &mut super::RetailUiAssets,
+    state: &GameState,
     detail: &BattleReportDetailView,
     panel: Entity,
     index: usize,
@@ -995,8 +984,11 @@ fn spawn_detail_row(
         BATTLE_REPORT_MERC_IDENTITY => {
             spawn_merchant_detail_row(commands, assets, detail, container, row)
         }
-        BATTLE_REPORT_ITEM_IDENTITY | BATTLE_REPORT_RUPT_IDENTITY => {
-            spawn_text_only_detail_row(commands, assets, container, &row.name, 0)
+        BATTLE_REPORT_ITEM_IDENTITY => {
+            spawn_item_detail_row(commands, assets, container, row, None)
+        }
+        BATTLE_REPORT_RUPT_IDENTITY => {
+            spawn_item_detail_row(commands, assets, container, row, Some(state))
         }
         _ => spawn_text_only_detail_row(commands, assets, container, &row.name, 0),
     }
@@ -1013,7 +1005,8 @@ fn spawn_army_detail_row(
         BattleReportUnitKind::Military(kind) => i32::from(kind.retail()),
         _ => 0,
     };
-    let offset = resource << 7;
+    // SetState(1): ON frame sits 64px after the OFF base (resource << 7).
+    let offset = (resource << 7) + 64;
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -1035,7 +1028,7 @@ fn spawn_army_detail_row(
         ChildOf(container),
     ));
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(0, 0, 12, -1))
+        .text_style(RetailTextStylePreset::built(12, -1))
         .expect("retail army-boy name style");
     commands.spawn((
         Node {
@@ -1048,6 +1041,8 @@ fn spawn_army_detail_row(
         font,
         layout,
         line_height,
+        // Windows COLORREF 0x1c474b is 0x00BBGGRR → R=0x4b, G=0x47, B=0x1c.
+        TextColor(Color::srgb_u8(0x4b, 0x47, 0x1c)),
         Pickable::IGNORE,
         ChildOf(container),
     ));
@@ -1145,7 +1140,8 @@ fn spawn_navy_detail_row(
         _ => ShipType::NoShip,
     };
     let retail = usize::from(ship.retail());
-    let offset = i32::from(SHIP_ATLAS_OFFSETS.get(retail).copied().unwrap_or(0));
+    // SetState(1): ON frame sits 80px after the type's atlas base.
+    let offset = i32::from(SHIP_ATLAS_OFFSETS.get(retail).copied().unwrap_or(0)) + 80;
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -1167,8 +1163,9 @@ fn spawn_navy_detail_row(
         ChildOf(container),
     ));
     let label = format!("{} {}", navy_type_name(assets, ship), row.name);
+    // InitializeUiTextStyleDescriptor(2, 0xc, 0x2b6a, 3) → family 3, italic, 12pt.
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(0, 0, 10, -1))
+        .text_style(RetailTextStylePreset::explicit(3, 2, 12, -1))
         .expect("retail navy-boy label style");
     commands.spawn((
         Node {
@@ -1273,6 +1270,7 @@ fn spawn_merchant_detail_row(
         BattleReportUnitKind::Ship(ship) => usize::from(ship.retail()),
         _ => 0,
     };
+    // SetState(0): OFF / base frame only (no +80 ON offset).
     let offset = i32::from(MERCHANT_ATLAS_SLOTS.get(resource).copied().unwrap_or(0)) * 0x50;
     commands.spawn((
         Node {
@@ -1294,7 +1292,142 @@ fn spawn_merchant_detail_row(
         Pickable::IGNORE,
         ChildOf(container),
     ));
-    spawn_text_only_detail_row(commands, assets, container, &row.name, 0x50);
+    // FormatLocalizedCommodityCountLabelByIndex(count=-1): singular group, no number prefix.
+    let commodity = get_string(assets, 0x2716, resource as i16);
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::explicit(3, 0, 12, -1))
+        .expect("retail merchant commodity label style");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0x50),
+            top: px(0x10),
+            ..default()
+        },
+        Text::new(commodity),
+        font,
+        layout,
+        line_height,
+        TextColor(assets.palette_color(0x5c)),
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+    let (status, palette) = if row.stock_or_required != 0 {
+        // Theme 0x2b69 → palette 0xcb.
+        (get_string(assets, 0x273c, 0x1c), 0xcb)
+    } else {
+        // Theme 0x2b67 → palette 0.
+        (get_string(assets, 0x273c, 0x1b), 0)
+    };
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(12, -1))
+        .expect("retail merchant status style");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0x50),
+            top: px(0x1e),
+            ..default()
+        },
+        Text::new(status),
+        font,
+        layout,
+        line_height,
+        TextColor(assets.palette_color(palette)),
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+}
+
+/// Shared `TItemBoyView` / `TRuptBoyView` row: header + commodity icon strip.
+/// When `state` is `Some`, uses the interruptus template with the nation from
+/// `strength_bucket`.
+fn spawn_item_detail_row(
+    commands: &mut Commands,
+    assets: &mut super::RetailUiAssets,
+    container: Entity,
+    row: &BattleReportUnit,
+    state: Option<&GameState>,
+) {
+    let count = row.stock_or_required;
+    let resource_type = report_unit_resource_type(row.kind);
+    let kind_name = get_string(assets, 0x2711, resource_type);
+    let count_text = count.to_string();
+    let header = if let Some(state) = state {
+        let nation_name = state
+            .nation(NationId::new(row.strength_bucket as u8))
+            .map(|nation| nation.display_name.as_str())
+            .unwrap_or("");
+        fill_brackets(
+            &get_string(assets, 0x273c, 0x1e),
+            &[&count_text, &kind_name, nation_name],
+        )
+    } else {
+        fill_brackets(
+            &get_string(assets, 0x273c, 0x1d),
+            &[&count_text, &kind_name],
+        )
+    };
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::built(10, -1))
+        .expect("retail item/rupt header style");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: px(0x1a),
+            top: px(0x0c),
+            ..default()
+        },
+        Text::new(header),
+        font,
+        layout,
+        line_height,
+        TextColor(assets.palette_color(0x5c)),
+        Pickable::IGNORE,
+        ChildOf(container),
+    ));
+    let icon_count = count.max(0) as usize;
+    if icon_count == 0 {
+        return;
+    }
+    let per_row = (0x20_i32).min((236 - 0x3a) / count.max(1));
+    let icon = assets
+        .keyed_picture(
+            PictureId::new(COMMODITY_ICON_BASE + resource_type),
+            KEYED_TRANSPARENT,
+        )
+        .expect("retail battle-detail commodity icon");
+    for index in 0..icon_count {
+        let left = 0x1a + per_row * index as i32;
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(left),
+                top: px(0x19),
+                width: px(COMMODITY_ICON_WIDTH),
+                height: px(0x17),
+                ..default()
+            },
+            ImageNode {
+                image: icon.clone(),
+                rect: Some(Rect::from_corners(
+                    Vec2::ZERO,
+                    Vec2::new(COMMODITY_ICON_WIDTH, COMMODITY_ICON_HEIGHT),
+                )),
+                ..default()
+            },
+            Pickable::IGNORE,
+            ChildOf(container),
+        ));
+    }
+}
+
+fn report_unit_resource_type(kind: BattleReportUnitKind) -> i16 {
+    match kind {
+        BattleReportUnitKind::Resource(resource) => i16::from(resource.retail()),
+        BattleReportUnitKind::Ship(ship) => i16::from(ship.retail()),
+        BattleReportUnitKind::Military(military) => i16::from(military.retail()),
+    }
 }
 
 fn spawn_text_only_detail_row(
@@ -1486,7 +1619,12 @@ fn generated_sea_overlay(
             .unwrap_or(""),
         BattleReportLocation::Province(_) => "",
     };
-    let order_kind = ui_string(assets, 0x2762, 0x13);
+    let order = side.task_force_order.map(TaskForceOrder::get).unwrap_or(0);
+    let order_kind = ui_string(
+        assets,
+        0x2762,
+        sea_overlay_order_string_index_from_retail(order),
+    );
     fill_brackets(
         &template,
         &[
@@ -1496,6 +1634,15 @@ fn generated_sea_overlay(
             &order_kind,
         ],
     )
+}
+
+/// String-table index for a sea-side task-force order in group `0x2762`.
+fn sea_overlay_order_string_index(order: TaskForceOrder) -> i16 {
+    sea_overlay_order_string_index_from_retail(order.get())
+}
+
+fn sea_overlay_order_string_index_from_retail(order: i32) -> i16 {
+    order as i16 + 0x13
 }
 
 #[cfg(test)]
@@ -1564,10 +1711,12 @@ mod tests {
                 BattleReportSide {
                     nation: active,
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(0),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         };
@@ -1586,10 +1735,12 @@ mod tests {
                 BattleReportSide {
                     nation: active,
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(0),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         };
@@ -1607,10 +1758,12 @@ mod tests {
                 BattleReportSide {
                     nation: active,
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(0),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         };
@@ -1640,6 +1793,7 @@ mod tests {
                     detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
                 },
             ],
+            task_force_order: None,
         };
         assert_eq!(
             land_overlay_counts(&side),
@@ -1668,13 +1822,38 @@ mod tests {
                 BattleReportSide {
                     nation: NationId::new(1),
                     children,
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(2),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         };
         assert_eq!(detail_page_count(&report), 3);
+    }
+
+    #[test]
+    fn sea_overlay_order_string_index_uses_task_force_order() {
+        assert_eq!(sea_overlay_order_string_index(TaskForceOrder::None), 0x13);
+        assert_eq!(sea_overlay_order_string_index(TaskForceOrder::Sail), 0x14);
+        assert_eq!(sea_overlay_order_string_index(TaskForceOrder::Patrol), 0x16);
+        assert_eq!(
+            sea_overlay_order_string_index(TaskForceOrder::Blockade),
+            0x19
+        );
+    }
+
+    #[test]
+    fn battle_report_tile_zone_prefers_target_tile() {
+        let target = TileId::new(42);
+        let active = TileId::new(99);
+        assert_eq!(
+            zone_report_marker_tile(Some(target), Some(active)),
+            Some(target)
+        );
+        assert_eq!(zone_report_marker_tile(None, Some(active)), None);
+        assert_eq!(zone_report_marker_tile(Some(target), None), Some(target));
     }
 }

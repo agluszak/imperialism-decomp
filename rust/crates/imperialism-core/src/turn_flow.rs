@@ -922,10 +922,12 @@ mod tests {
                 BattleReportSide {
                     nation: NationId::new(0),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(1),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         });
@@ -1072,10 +1074,12 @@ mod tests {
                 BattleReportSide {
                     nation: NationId::new(0),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
                 BattleReportSide {
                     nation: NationId::new(1),
                     children: Vec::new(),
+                    task_force_order: None,
                 },
             ]),
         });

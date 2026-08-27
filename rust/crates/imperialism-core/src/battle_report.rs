@@ -79,6 +79,8 @@ pub enum BattleReportUnitKind {
 pub struct BattleReportSide {
     pub nation: NationId,
     pub children: Vec<BattleReportUnit>,
+    /// Task-force order used for snooper overlay text. `None` for land sides.
+    pub task_force_order: Option<TaskForceOrder>,
 }
 
 /// Fixed left/right participant slot in a retail battle report.
@@ -183,7 +185,11 @@ impl GameState {
                 detail_identity: BATTLE_REPORT_ARMY_IDENTITY,
             });
         }
-        BattleReportSide { nation, children }
+        BattleReportSide {
+            nation,
+            children,
+            task_force_order: None,
+        }
     }
 }
 
