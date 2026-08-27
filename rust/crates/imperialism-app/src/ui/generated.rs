@@ -11342,7 +11342,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
-                                retail_picture(4019)
+                                retail_transport_gauge(4019, RetailTransportGaugeKind::Capacity, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
@@ -11354,7 +11354,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
-                                retail_picture(4001)
+                                retail_transport_gauge(4001, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11376,7 +11376,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
-                                retail_picture(4002)
+                                retail_transport_gauge(4002, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11398,7 +11398,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
-                                retail_picture(4003)
+                                retail_transport_gauge(4003, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11420,7 +11420,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
-                                retail_picture(4004)
+                                retail_transport_gauge(4004, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11442,7 +11442,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
-                                retail_picture(4005)
+                                retail_transport_gauge(4005, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11464,7 +11464,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
-                                retail_picture(4006)
+                                retail_transport_gauge(4006, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11486,7 +11486,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
-                                retail_picture(4007)
+                                retail_transport_gauge(4007, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11508,7 +11508,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
-                                retail_picture(4008)
+                                retail_transport_gauge(4008, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11530,7 +11530,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
-                                retail_picture(4009)
+                                retail_transport_gauge(4009, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11552,7 +11552,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
-                                retail_picture(4010)
+                                retail_transport_gauge(4010, RetailTransportGaugeKind::Allocation, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11574,7 +11574,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
-                                retail_picture(4011)
+                                retail_transport_gauge(4011, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11596,7 +11596,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
-                                retail_picture(4012)
+                                retail_transport_gauge(4012, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11618,7 +11618,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
-                                retail_picture(4013)
+                                retail_transport_gauge(4013, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11640,7 +11640,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
-                                retail_picture(4014)
+                                retail_transport_gauge(4014, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11662,7 +11662,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
-                                retail_picture(4015)
+                                retail_transport_gauge(4015, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11684,7 +11684,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
-                                retail_picture(4016)
+                                retail_transport_gauge(4016, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11706,7 +11706,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
-                                retail_picture(4017)
+                                retail_transport_gauge(4017, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11734,7 +11734,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
-                                retail_picture(4018)
+                                retail_transport_gauge(4018, RetailTransportGaugeKind::Allocation, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)

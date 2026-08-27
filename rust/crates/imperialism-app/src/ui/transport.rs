@@ -4,7 +4,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::RetailTree;
+use super::retail::{RetailTree, TransportGaugeValue};
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
@@ -95,8 +95,6 @@ const TRANSPORT_ROWS: [TransportRowBinding; 18] = [
     },
 ];
 
-const LEFT_TRANSPORT_ROW_COUNT: usize = 10;
-
 #[derive(Component)]
 struct TransportScreen;
 
@@ -106,28 +104,14 @@ struct TransportRowView {
     caption: Entity,
     decrease: Entity,
     increase: Entity,
-    gauge: TransportGaugeView,
+    gauge: Entity,
     money: Option<Entity>,
-}
-
-#[derive(Clone, Copy)]
-struct TransportGaugeView {
-    fill: Entity,
-    limit: Option<Entity>,
-}
-
-/// Palette colors resolved during binding for the static gauge overlays.
-#[derive(Clone, Copy)]
-struct TransportGaugeColors {
-    allocation: Color,
-    remainder: Color,
-    partial: Color,
 }
 
 #[derive(Component)]
 struct TransportView {
     cursor: Entity,
-    capacity: TransportGaugeView,
+    capacity: Entity,
     capacity_caption: Entity,
     rows: [TransportRowView; TRANSPORT_ROWS.len()],
 }
@@ -188,12 +172,7 @@ fn bind_transport_screen(
         assets.palette_color(0x28),
         assets.palette_color(0),
     );
-    let gauge_colors = TransportGaugeColors {
-        allocation: assets.palette_color(0x3a),
-        remainder: assets.palette_color(0x3b),
-        partial: assets.palette_color(0x33),
-    };
-    let view = bind_transport_view(&mut commands, *root, &tree, cursor_style, gauge_colors);
+    let view = bind_transport_view(&mut commands, *root, &tree, cursor_style);
     commands.entity(*root).insert(view);
 }
 
@@ -202,7 +181,6 @@ fn bind_transport_view(
     root: Entity,
     tree: &RetailTree,
     cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
-    gauge_colors: TransportGaugeColors,
 ) -> TransportView {
     let selected = tree.find(root, fourcc!("tran"));
     commands
@@ -224,14 +202,6 @@ fn bind_transport_view(
     ));
     let capacity = tree.find(root, fourcc!("tota"));
     let capacity_caption = tree.find(capacity, fourcc!("text"));
-    let capacity = install_transport_gauge(
-        commands,
-        capacity,
-        0x5d,
-        false,
-        gauge_colors.partial,
-        gauge_colors,
-    );
     let rows = std::array::from_fn(|index| {
         let binding = TRANSPORT_ROWS[index];
         let row = tree.find(root, binding.tag);
@@ -271,25 +241,12 @@ fn bind_transport_view(
             }
             _ => None,
         };
-        let track_left = if index < LEFT_TRANSPORT_ROW_COUNT {
-            0x61
-        } else {
-            0x5d
-        };
-        let gauge = install_transport_gauge(
-            commands,
-            row,
-            track_left,
-            true,
-            gauge_colors.allocation,
-            gauge_colors,
-        );
         TransportRowView {
             row,
             caption,
             decrease,
             increase,
-            gauge,
+            gauge: row,
             money,
         }
     });
@@ -301,69 +258,16 @@ fn bind_transport_view(
     }
 }
 
-/// Overlays the recovered gauge fill, remainder, and optional limit strip as
-/// native nodes above the static gauge background. `track_left` locates the
-/// 113-pixel track; the remainder fills the whole track and the fill node
-/// covers its left portion, so rendering only updates the fill width.
-fn install_transport_gauge(
-    commands: &mut Commands,
-    entity: Entity,
-    track_left: i32,
-    limit_strip: bool,
-    fill_color: Color,
-    gauge_colors: TransportGaugeColors,
-) -> TransportGaugeView {
-    let mut node = |left: i32, top: i32, width: f32, height: f32, color: Color| {
-        commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(left as f32),
-                    top: px(top as f32),
-                    width: px(width),
-                    height: px(height),
-                    ..default()
-                },
-                BackgroundColor(color),
-                Pickable::IGNORE,
-                ChildOf(entity),
-            ))
-            .id()
-    };
-    let _remainder = node(
-        track_left,
-        0x0d,
-        0x71 as f32,
-        0x04 as f32,
-        gauge_colors.remainder,
-    );
-    let fill = node(track_left, 0x0d, 0.0, 0x04 as f32, fill_color);
-    let limit = limit_strip.then(|| {
-        node(
-            track_left - 1,
-            0x12,
-            0x73 as f32,
-            0x02 as f32,
-            gauge_colors.partial,
-        )
-    });
-    TransportGaugeView { fill, limit }
-}
-
 fn render_transport(
     session: Res<GameSession>,
     view: Single<Ref<TransportView>>,
-    assets: RetailUiAssets,
     mut commands: Commands,
     mut texts: Query<&mut Text>,
-    mut nodes: Query<&mut Node>,
-    mut backgrounds: Query<&mut BackgroundColor>,
+    mut gauges: Query<&mut TransportGaugeValue>,
 ) {
     if !session.is_changed() && !view.is_added() {
         return;
     }
-    let partial = assets.palette_color(0x33);
-    let full = assets.palette_color(0x34);
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let economy = &major.economy;
@@ -390,28 +294,14 @@ fn render_transport(
         set_transport_visibility(&mut commands, row.row, status.adjustable);
         set_transport_enabled(&mut commands, row.decrease, status.can_decrease);
         set_transport_enabled(&mut commands, row.increase, status.can_increase);
-        nodes
-            .get_mut(row.gauge.fill)
-            .expect("bound transport gauge fill must exist")
-            .width = px(transport_gauge_width(status.allocated, status.available));
-        if let Some(limit) = row.gauge.limit {
-            match status.limit {
-                Some(limit_value) => {
-                    commands.entity(limit).insert(Visibility::Visible);
-                    backgrounds
-                        .get_mut(limit)
-                        .expect("bound transport gauge limit must exist")
-                        .0 = if status.allocated < limit_value {
-                        partial
-                    } else {
-                        full
-                    };
-                }
-                None => {
-                    commands.entity(limit).insert(Visibility::Hidden);
-                }
-            }
-        }
+        gauges
+            .get_mut(row.gauge)
+            .expect("bound transport gauge must exist")
+            .set_if_neq(TransportGaugeValue {
+                current: status.allocated,
+                total: status.available,
+                limit: status.limit,
+            });
     }
     let capacities = economy.capacities;
     texts
@@ -421,21 +311,14 @@ fn render_transport(
         "{}  /  {}",
         capacities.reserved_transport, capacities.transport
     );
-    nodes
-        .get_mut(view.capacity.fill)
+    gauges
+        .get_mut(view.capacity)
         .expect("bound transport capacity gauge must exist")
-        .width = px(transport_gauge_width(
-        capacities.reserved_transport,
-        capacities.transport,
-    ));
-    backgrounds
-        .get_mut(view.capacity.fill)
-        .expect("bound transport capacity gauge must exist")
-        .0 = if capacities.reserved_transport == capacities.transport {
-        full
-    } else {
-        partial
-    };
+        .set_if_neq(TransportGaugeValue {
+            current: capacities.reserved_transport,
+            total: capacities.transport,
+            limit: None,
+        });
 }
 
 fn set_transport_visibility(commands: &mut Commands, entity: Entity, visible: bool) {
@@ -559,21 +442,6 @@ fn allocation_amount(
     amount(primary) + secondary.map_or(0, amount)
 }
 
-fn transport_gauge_width(value: i16, total: i16) -> f32 {
-    if total <= 0 {
-        return 0.0;
-    }
-    let pixels_per_unit = 113.0 / f32::from(total);
-    let remainder = 113.0 - pixels_per_unit * f32::from(total);
-    let value = f32::from(value);
-    let width = if remainder < value {
-        remainder * (pixels_per_unit + 1.0) + (value - remainder) * pixels_per_unit
-    } else {
-        value * (pixels_per_unit + 1.0)
-    };
-    width.clamp(0.0, 113.0).trunc()
-}
-
 #[cfg(test)]
 mod tests {
     use super::super::retail::RetailTag;
@@ -677,11 +545,6 @@ mod tests {
         root: Single<Entity, Added<TestTransportRoot>>,
         tree: RetailTree,
     ) {
-        let gauge_colors = TransportGaugeColors {
-            allocation: Color::srgb_u8(0, 0, 255),
-            remainder: Color::srgb_u8(128, 128, 128),
-            partial: Color::WHITE,
-        };
         let view = bind_transport_view(
             &mut commands,
             *root,
@@ -693,7 +556,6 @@ mod tests {
                 Color::WHITE,
                 Color::BLACK,
             ),
-            gauge_colors,
         );
         commands.entity(*root).insert(view);
     }

@@ -20,6 +20,9 @@ pub use super::retail_numbered_arrow::{
 pub use super::retail_placard::{PlacardValue, retail_placard};
 pub use super::retail_ship_placard::{ShipPlacardValue, retail_ship_placard};
 pub use super::retail_slider::RetailTwoPicSliderVisual;
+pub use super::retail_transport_gauge::{
+    RetailTransportGaugeKind, TransportGaugeValue, retail_transport_gauge,
+};
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -442,6 +445,7 @@ impl Plugin for RetailUiPlugin {
         super::retail_numbered_arrow::register_numbered_arrow(app);
         super::retail_army_placard::register_army_placard(app);
         super::retail_ship_placard::register_ship_placard(app);
+        super::retail_transport_gauge::register_transport_gauge(app);
         super::hover_help::register_hover_help(app);
     }
 }

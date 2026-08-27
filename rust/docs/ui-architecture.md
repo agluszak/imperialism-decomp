@@ -133,23 +133,25 @@ a component only when other independent systems need to query it.
 Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPressedOverlay`,
 `RetailMadnessPicture`, `RetailPlacard` / `PlacardValue`, `RetailAmountBar` /
 `RetailAmountBarState`, `RetailTwoPicSliderVisual`, `RetailNumberedArrow` /
-`NumberedArrowValue`, `RetailArmyPlacard` / `ArmyPlacardValue`, and `RetailShipPlacard` /
-`ShipPlacardValue` remain appropriate. Prefer stock Bevy headless widgets (`Slider`, `Button`,
-`Checkbox`, `RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a
-skin or a genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
+`NumberedArrowValue`, `RetailArmyPlacard` / `ArmyPlacardValue`, `RetailShipPlacard` /
+`ShipPlacardValue`, and `RetailTransportGauge` / `TransportGaugeValue` remain appropriate.
+Prefer stock Bevy headless widgets (`Slider`, `Button`, `Checkbox`, `RadioButton`,
+`ScrollArea`) for input semantics; custom retail code is usually a skin or a genuinely
+non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
 
 Hierarchical retail widgets are BSN `SceneComponent`s: structure and private children are spawned
 atomically with the scene (`RetailPlacard`, `RetailAmountBar`, `RetailNumberedArrow`,
-`RetailArmyPlacard`, `RetailShipPlacard`); mutable presentation lives in a small separate state
-component (`PlacardValue`, `RetailAmountBarState`, `NumberedArrowValue`, `ArmyPlacardValue`,
-`ShipPlacardValue`). Screens project with `set_if_neq` so `Changed<…>` stays meaningful. Widget
-draw systems run in `PostUpdate` before `UiSystems::Prepare`.
+`RetailArmyPlacard`, `RetailShipPlacard`, `RetailTransportGauge`); mutable presentation lives in a
+small separate state component (`PlacardValue`, `RetailAmountBarState`, `NumberedArrowValue`,
+`ArmyPlacardValue`, `ShipPlacardValue`, `TransportGaugeValue`). Screens project with `set_if_neq`
+so `Changed<…>` stays meaningful. Widget draw systems run in `PostUpdate` before
+`UiSystems::Prepare`.
 
 When recovered class identity is known while generating a static resource scene, the generator
 attaches the widget (`retail_numbered_arrow()`, `retail_army_placard(...)`,
-`retail_ship_placard(...)`, `retail_pressed_overlay_picture(...)`, `retail_madness_picture(...)`,
-…). `apply_scene` is for runtime/dynamic composition only—not for binders to rediscover and patch
-recovered class semantics onto already-generated nodes.
+`retail_ship_placard(...)`, `retail_transport_gauge(...)`, `retail_pressed_overlay_picture(...)`,
+`retail_madness_picture(...)`, …). `apply_scene` is for runtime/dynamic composition only—not for
+binders to rediscover and patch recovered class semantics onto already-generated nodes.
 
 They represent recovered retail widget *semantics*, not a port of the C++ class hierarchy. The
 criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket

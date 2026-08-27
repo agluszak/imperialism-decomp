@@ -186,6 +186,14 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("Checkbox", opte)
         self.assertIn("retail_madness_picture(4158)", opte)
         self.assertNotIn("retail_picture(4158)", opte)
+        transport = rendered[rendered.index("pub fn transport_2014()") :]
+        next_fn = transport.find("\npub fn ", 1)
+        if next_fn != -1:
+            transport = transport[:next_fn]
+        self.assertIn("RetailTransportGaugeKind::Capacity, 93)", transport)
+        self.assertIn("RetailTransportGaugeKind::Allocation, 97)", transport)
+        self.assertIn("RetailTransportGaugeKind::Allocation, 93)", transport)
+        self.assertEqual(transport.count("retail_transport_gauge("), 19)
 
     def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
         rendered = render_rust_ui(

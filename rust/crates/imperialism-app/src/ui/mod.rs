@@ -32,6 +32,7 @@ mod retail_raster;
 mod retail_raster_text;
 mod retail_ship_placard;
 mod retail_slider;
+mod retail_transport_gauge;
 mod satellite_preview;
 mod scenario_setup;
 mod session;

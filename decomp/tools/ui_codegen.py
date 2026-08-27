@@ -1669,6 +1669,8 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
         return "army_placard"
     if node.class_name == "TShipPlacard":
         return "ship_placard"
+    if node.class_name == "TTransportPicture":
+        return "transport_gauge"
     if node.class_name == "TNumberedArrowButton":
         return "numbered_arrow"
     if _rust_amount_bar_kind(node) is not None:
@@ -2132,6 +2134,14 @@ def _render_bsn_node(
             lines.append(f"    retail_army_placard({idle_id})")
         elif node.class_name == "TShipPlacard":
             lines.append(f"    retail_ship_placard({idle_id})")
+        elif node.class_name == "TTransportPicture":
+            # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
+            track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
+            kind = "Capacity" if node.tag == "tota" else "Allocation"
+            lines.append(
+                "    retail_transport_gauge("
+                f"{idle_id}, RetailTransportGaugeKind::{kind}, {track_left})"
+            )
         elif visual == "pressed_overlay":
             lines.append(f"    retail_pressed_overlay_picture({idle_id})")
         elif visual == "madness":
