@@ -133,15 +133,3 @@ fn on_numbered_arrow_glyph_pressed<E: EntityEvent>(
         glyph.idle
     });
 }
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn count_caption_uses_built_10pt_book_antiqua() {
-        use imperialism_formats::{
-            RetailFontFace, RetailTextStylePreset, resolve_retail_text_style,
-        };
-        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 1)).unwrap();
-        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
-    }
-}

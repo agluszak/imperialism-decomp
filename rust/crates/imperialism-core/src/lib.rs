@@ -5,7 +5,6 @@ mod ai;
 mod ai_civilian;
 mod army_orders;
 mod battle_report;
-mod calendar;
 mod city;
 mod city_economy;
 mod city_industry;
@@ -76,7 +75,6 @@ pub use battle_report::{
     BattleReportLocation, BattleReportSide, BattleReportSideSlot, BattleReportSideTable,
     BattleReportUnit, BattleReportUnitKind,
 };
-pub use calendar::TurnCalendar;
 pub(crate) use city::EXPANSION_INPUTS;
 pub use city::{
     CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrderUpdate, CityOrders,

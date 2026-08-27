@@ -39,6 +39,5 @@ pub use scenario::{
 };
 pub use scores_dat::{
     HIGH_SCORE_COUNT, HIGH_SCORE_NAME_LENGTH, HighScoreEntry, HighScoreTable,
-    empty_high_score_table, insert_high_score, read_scores_dat, read_scores_dat_from,
-    write_scores_dat, write_scores_dat_to,
+    empty_high_score_table, insert_high_score, read_scores_dat, write_scores_dat,
 };
