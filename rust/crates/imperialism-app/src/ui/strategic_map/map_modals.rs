@@ -7,14 +7,10 @@ use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailTree, ancestor_with};
-use crate::ui::retail_resources::ArmyUnitCategoryRetailResources;
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use crate::ui::retail_resources::EngineerConstructionChoiceRetailResources;
-use crate::ui::retail_resources::MilitaryOrderCodeRetailResources;
-use crate::ui::retail_resources::NavalAggressionRetailResources;
 use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::retail_resources::ShipTypeRetailResources;
-use crate::ui::retail_resources::TaskForceOrderRetailResources;
 use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::ecs::system::EntityCommands;
@@ -22,6 +18,7 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
@@ -1147,7 +1144,7 @@ fn bind_friendly_fleet_report(
     let lab3 = assets.get_string(0x2762, 0xa);
     let composition = ship_composition_text(assets, &report.composition);
     let orders = friendly_orders_text(assets, report);
-    let agro = assets.string(report.aggression.fleet_report_string());
+    let agro = assets.get_string(0x2762, report.aggression.retail() as u16 + 4);
     let authority = fill_brackets(
         &assets.get_string(0x2762, 0),
         &[&fleet_authority_text(assets, &report.authority)],
@@ -1616,7 +1613,7 @@ fn on_cancel_fleet_orders(
 }
 
 fn garrison_order_text(assets: &RetailUiAssets, order: MilitaryOrderCode) -> String {
-    assets.string(order.name_string())
+    assets.get_string(0x272c, order.get() as u16)
 }
 
 fn navy_roster_type_label(assets: &RetailUiAssets, ship_type: ShipType) -> String {
@@ -1631,7 +1628,7 @@ fn army_composition_text(
     composition: &[(ArmyUnitCategory, i32)],
 ) -> String {
     join_counted_labels(composition.iter().map(|(category, count)| {
-        let name = assets.string(category.composition_name_string());
+        let name = assets.get_string(0x2726, category.into_usize() as u16);
         (*count, name)
     }))
 }
@@ -1661,19 +1658,21 @@ fn join_counted_labels(items: impl Iterator<Item = (i32, String)>) -> String {
 }
 
 fn friendly_orders_text(assets: &RetailUiAssets, report: &FriendlyFleetReport) -> String {
-    let template = assets.string(report.order.friendly_orders_string());
     match report.order {
-        TaskForceOrder::Sail => {
-            fill_brackets(&template, &[report.target_name.as_deref().unwrap_or("")])
-        }
+        TaskForceOrder::Sail => fill_brackets(
+            &assets.get_string(0x2762, 0xb),
+            &[report.target_name.as_deref().unwrap_or("")],
+        ),
         TaskForceOrder::Patrol => fill_brackets(
-            &template,
+            &assets.get_string(0x2762, 1),
             &[report.target_name.as_deref().unwrap_or(&report.zone_name)],
         ),
-        TaskForceOrder::Blockade => {
-            fill_brackets(&template, &[report.target_name.as_deref().unwrap_or("")])
-        }
-        _ => template,
+        TaskForceOrder::Marines => assets.get_string(0x2762, 2),
+        TaskForceOrder::Blockade => fill_brackets(
+            &assets.get_string(0x2762, 0x39),
+            &[report.target_name.as_deref().unwrap_or("")],
+        ),
+        _ => assets.get_string(0x2762, 3),
     }
 }
 

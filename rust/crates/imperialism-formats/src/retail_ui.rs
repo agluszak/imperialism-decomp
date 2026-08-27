@@ -23,19 +23,19 @@ impl fmt::Display for PictureId {
     }
 }
 
-/// Final Windows `LoadStringA` / `RT_STRING` identifier.
+/// Effective Windows `LoadStringA` / `RT_STRING` identifier (`LOWORD(uID)`).
 ///
-/// Retail builds this as `group * 100 + direct_index` with full-width integer
-/// arithmetic. Win32 then selects the `RT_STRING` block from `LOWORD(id)`.
+/// Retail builds the value as `group * 100 + direct_index` with wrapping 16-bit
+/// arithmetic — the same effective ID Win32 uses to select the string block.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub struct StringResourceId(u32);
+pub struct StringResourceId(u16);
 
 impl StringResourceId {
-    pub const fn new(value: u32) -> Self {
+    pub const fn new(value: u16) -> Self {
         Self(value)
     }
 
-    pub const fn get(self) -> u32 {
+    pub const fn get(self) -> u16 {
         self.0
     }
 }
@@ -57,16 +57,12 @@ impl StringGroup {
 
     /// Direct retail index `n` (`LoadUiStringResourceByGroupAndIndex`).
     pub const fn entry(self, direct_index: u16) -> StringResourceId {
-        StringResourceId::new(self.0 as u32 * 100 + direct_index as u32)
+        StringResourceId(self.0.wrapping_mul(100).wrapping_add(direct_index))
     }
 
     /// Zero-based `TSimMgr::GetString` offset (adds one before the direct lookup).
     pub const fn offset(self, zero_based: u16) -> StringResourceId {
-        self.entry(zero_based + 1)
-    }
-
-    pub const fn get(self) -> u16 {
-        self.0
+        self.entry(zero_based.wrapping_add(1))
     }
 }
 
@@ -120,11 +116,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn string_group_builds_full_width_resource_ids() {
-        assert_eq!(StringGroup::new(0x2752).entry(1).get(), 0x2752 * 100 + 1);
-        assert_eq!(StringGroup::new(0x2719).offset(6).get(), 0x2719 * 100 + 7);
-        // High groups exceed 16 bits; the typed ID must retain the full value.
-        assert!(StringGroup::new(0x2752).entry(1).get() > u32::from(u16::MAX));
+    fn string_group_builds_wrapping_u16_resource_ids() {
+        assert_eq!(
+            StringGroup::new(0x2719).offset(6).get(),
+            0x2719u16.wrapping_mul(100).wrapping_add(7)
+        );
+        // High groups wrap to the same LOWORD Win32 LoadString uses.
+        assert_eq!(
+            StringGroup::new(0x2752).entry(1).get(),
+            0x2752u16.wrapping_mul(100).wrapping_add(1)
+        );
     }
 
     #[test]

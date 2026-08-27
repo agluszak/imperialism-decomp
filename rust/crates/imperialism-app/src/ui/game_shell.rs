@@ -13,7 +13,6 @@ use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTree};
-use crate::ui::retail_resources::TurnAlertRetailResources;
 use crate::ui::strategic_map::{
     MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
     animate_civilian_work, animate_strategic_selection, bind_army_toolbar, bind_civilian_toolbar,
@@ -562,8 +561,9 @@ fn bind_turn_alert_notice(
     };
     let (root, notice) = root.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
-    let title = assets.string(notice.0.title_string());
-    let body = assets.string(notice.0.body_string());
+    let [title_id, body_id] = turn_alert_strings(notice.0);
+    let title = assets.string(title_id);
+    let body = assets.string(body_id);
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     commands
@@ -572,6 +572,20 @@ fn bind_turn_alert_notice(
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
     commands.entity(linger.cancel).insert(Visibility::Hidden);
+}
+
+fn turn_alert_strings(alert: TurnAlert) -> [imperialism_formats::StringResourceId; 2] {
+    use imperialism_formats::StringGroup;
+    const TURN_ALERTS: StringGroup = StringGroup::new(0x2753);
+    let (title, body) = match alert {
+        TurnAlert::LandCapitolThreatened => (0x28, 0x29),
+        TurnAlert::NavalCapitolThreatened => (0x2a, 0x2b),
+        TurnAlert::Treasury { prompt_code } => ((prompt_code - 1) as u16, prompt_code as u16),
+        TurnAlert::CommodityShortage => (0x46, 0x47),
+        TurnAlert::TransportShortage => (0x22, 0x23),
+        TurnAlert::Starvation => (0x20, 0x21),
+    };
+    [TURN_ALERTS.entry(title), TURN_ALERTS.entry(body)]
 }
 
 fn bind_turn_summary_notice(

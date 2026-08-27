@@ -6,7 +6,6 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailPressedOverlay, RetailTree};
 use super::retail_raster::IndexedRasterExt;
-use super::retail_resources::DealBookEntryKindRetailResources;
 use super::retail_resources::ResourceKindRetailResources;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, RetailAssetsResource, ReturnTo};
@@ -1186,7 +1185,14 @@ fn format_deal_line(
     if deal.amount != 0 {
         let amount = deal.amount.to_string();
         if deal.unit_price != deal.market_price {
-            let template = assets.string(deal.kind.priced_template_string());
+            let template = assets.get_string(
+                0x2740,
+                if deal.kind == DealBookEntryKind::Offer {
+                    0x12
+                } else {
+                    0x13
+                },
+            );
             fill_brackets(
                 &template,
                 &[
@@ -1197,7 +1203,14 @@ fn format_deal_line(
                 ],
             )
         } else {
-            let template = assets.string(deal.kind.market_price_template_string());
+            let template = assets.get_string(
+                0x2740,
+                if deal.kind == DealBookEntryKind::Offer {
+                    0x14
+                } else {
+                    0x15
+                },
+            );
             fill_brackets(&template, &[&amount, &commodity, &counterparty])
         }
     } else if deal.uses_navy_status_text() {

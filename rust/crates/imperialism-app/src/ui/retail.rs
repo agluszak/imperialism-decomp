@@ -296,22 +296,20 @@ impl RetailUiAssets<'_> {
     }
 
     pub fn string(&self, id: StringResourceId) -> String {
-        self.retail_assets
-            .assets()
-            .string(id)
-            .unwrap_or_else(|error| panic!("retail string {id} must load: {error}"))
+        self.retail_assets.string(id)
     }
 
     /// `TSimMgr::GetString`: zero-based offset (adds one before the direct lookup).
     pub fn get_string(&self, group: u16, offset: u16) -> String {
-        self.string(StringGroup::new(group).offset(offset))
+        self.retail_assets.get_string(group, offset)
     }
 
     /// Direct `LoadUiStringResourceByGroupAndIndex` / `LoadStringA` group/index.
     pub fn ui_string(&self, group: u16, index: u16) -> String {
-        self.string(StringGroup::new(group).entry(index))
+        self.retail_assets.ui_string(group, index)
     }
 
+    /// Soft-fail picture load for cases where retail itself tolerates a missing bitmap.
     pub fn try_picture(
         &mut self,
         picture_id: PictureId,
@@ -329,31 +327,19 @@ impl RetailUiAssets<'_> {
             .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
     }
 
-    pub fn try_transformed_picture(
+    pub fn transformed_picture(
         &mut self,
         picture_id: PictureId,
         transform: impl FnOnce(&mut Image),
-    ) -> Result<Handle<Image>, RetailPictureError> {
-        let handle = self.try_picture(picture_id)?;
+    ) -> Handle<Image> {
+        let handle = self.picture(picture_id);
         let mut image = self
             .images
             .get(&handle)
             .expect("picture handle was just resolved")
             .clone();
         transform(&mut image);
-        Ok(self.images.add(image))
-    }
-
-    /// Infallible transform of a retail picture. Prefer this over [`Self::try_transformed_picture`]
-    /// when a missing asset is a programming error rather than an expected soft miss.
-    #[allow(dead_code)]
-    pub fn transformed_picture(
-        &mut self,
-        picture_id: PictureId,
-        transform: impl FnOnce(&mut Image),
-    ) -> Handle<Image> {
-        self.try_transformed_picture(picture_id, transform)
-            .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
+        self.images.add(image)
     }
 
     pub fn transparent_picture(

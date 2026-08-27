@@ -103,7 +103,7 @@ fn fill_credits_page(
 
 fn string_from_id(assets: &RetailUiAssets, string_id: i16) -> String {
     // `LoadUiStringResourceById` is LoadStringA(id); the flat id is the final resource id.
-    assets.string(StringResourceId::new(string_id as u32))
+    assets.string(StringResourceId::new(string_id as u16))
 }
 
 fn on_credits_activate(

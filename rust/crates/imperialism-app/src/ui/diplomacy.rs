@@ -13,7 +13,6 @@ use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, ancestor_with};
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::retail_raster_text::RetailRasterTextPainter;
-use super::retail_resources::PlayerDiplomacyRejectionRetailResources;
 use super::satellite_preview::nation_owner_palette;
 use super::session::apply_turn_stop;
 use crate::AppState;
@@ -1085,7 +1084,7 @@ fn bind_diplomacy_notice(
     session: Res<GameSession>,
 ) {
     let (root, notice) = *notice;
-    let body = assets.string(notice.0.notice_string());
+    let body = assets.get_string(0x2754, (notice.0.proposal_mode() - 1) as u16);
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(
         &mut commands,
@@ -1094,12 +1093,16 @@ fn bind_diplomacy_notice(
     );
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500).offset(i16::from(source.get()));
-    if let Ok(image) = assets.try_picture(coat_picture) {
-        commands.entity(linger.coat).insert(ImageNode::new(image));
-    }
+    let coat_picture = diplomacy_coat_picture(source);
+    commands
+        .entity(linger.coat)
+        .insert(ImageNode::new(assets.picture(coat_picture)));
     commands.entity(linger.okay).remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
+}
+
+fn diplomacy_coat_picture(nation: MajorNationId) -> PictureId {
+    PictureId::new(9500).offset(i16::from(nation.get()))
 }
 
 fn open_diplomacy_entanglement_notice(
@@ -1130,10 +1133,9 @@ fn bind_diplomacy_entanglement_notice(
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
-    let coat_picture = PictureId::new(9500).offset(i16::from(source.get()));
-    if let Ok(image) = assets.try_picture(coat_picture) {
-        commands.entity(linger.coat).insert(ImageNode::new(image));
-    }
+    commands.entity(linger.coat).insert(ImageNode::new(
+        assets.picture(diplomacy_coat_picture(source)),
+    ));
     commands
         .entity(linger.okay)
         .remove::<InteractionDisabled>()

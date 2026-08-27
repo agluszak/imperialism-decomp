@@ -193,10 +193,7 @@ fn spawn_technology_row(
     game: &imperialism_core::GameState,
 ) -> Entity {
     let y = (row % TECHNOLOGIES_PER_PAGE) as f32 * 63.0;
-    let picture = assets.picture(technology.store_idle_picture());
-    let active_picture = assets
-        .try_picture(technology.store_active_picture())
-        .unwrap_or_else(|_| picture.clone());
+    let [picture, active_picture] = technology.store_pictures().map(|id| assets.picture(id));
     let name = assets.string(technology.name_string());
     let available_year =
         1815 + i32::from(game.technology().scheduled_unlock_turn_by_technology[technology]) / 4;
@@ -206,11 +203,10 @@ fn spawn_technology_row(
     let purchase_pictures = (status != TechnologyResearchStatus::Researched
         && game.technology_prerequisites_completed(nation, technology))
     .then(|| {
-        let idle = assets.picture(PictureId::new(0x08ff));
-        let active = assets
-            .try_picture(PictureId::new(0x0900))
-            .unwrap_or_else(|_| idle.clone());
-        (idle, active)
+        (
+            assets.picture(PictureId::new(0x08ff)),
+            assets.picture(PictureId::new(0x0900)),
+        )
     });
     commands
         .spawn_scene(technology_row_scene(

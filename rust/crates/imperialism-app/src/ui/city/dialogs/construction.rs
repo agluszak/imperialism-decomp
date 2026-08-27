@@ -152,13 +152,9 @@ fn bind_building_change_common(
         warning_color,
         can_reserve,
     } = presentation;
-    match assets.try_picture(picture) {
-        Ok(handle) => {
-            let dialog = tree.find(root, fourcc!("DLOG"));
-            commands.entity(dialog).insert(ImageNode::new(handle));
-        }
-        Err(error) => warn!("could not load building-change picture {picture}: {error}"),
-    }
+    commands
+        .entity(tree.find(root, fourcc!("DLOG")))
+        .insert(ImageNode::new(assets.picture(picture)));
     for (tag, text) in [
         (fourcc!("name"), name),
         (fourcc!("capT"), capacity),

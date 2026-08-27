@@ -436,20 +436,8 @@ fn apply_load_okay_pictures(
     tree: &RetailTree,
 ) {
     let okay = tree.find(root, fourcc!("okay"));
-    let idle = match assets.try_picture(LOAD_OKAY_IDLE_PICTURE) {
-        Ok(handle) => handle,
-        Err(error) => {
-            warn!("could not load Load Game okay picture: {error}");
-            return;
-        }
-    };
-    let active = match assets.try_picture(LOAD_OKAY_ACTIVE_PICTURE) {
-        Ok(handle) => handle,
-        Err(error) => {
-            warn!("could not load Load Game okay pressed picture: {error}");
-            idle.clone()
-        }
-    };
+    let idle = assets.picture(LOAD_OKAY_IDLE_PICTURE);
+    let active = assets.picture(LOAD_OKAY_ACTIVE_PICTURE);
     commands.entity(okay).insert((
         RetailPictureSwap {
             idle: idle.clone(),

@@ -392,18 +392,10 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
         let mask_picture = visual.slot.city_hit_mask_picture(level);
-        let mask = match assets.try_indexed_picture(mask_picture) {
-            Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(&indexed) {
-                Some(mask) => mask,
-                None => {
-                    warn!("city building mask {mask_picture} has no usable silhouette");
-                    continue;
-                }
-            },
-            Err(error) => {
-                warn!("could not decode city building mask {mask_picture}: {error}");
-                continue;
-            }
+        let indexed = assets.indexed_picture(mask_picture);
+        let Some(mask) = CityBuildingHitMask::from_indexed_picture(&indexed) else {
+            warn!("city building mask {mask_picture} has no usable silhouette");
+            continue;
         };
         commands.spawn((
             Node {
@@ -498,16 +490,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
         .filter(|action| city_building_level(state, nation, action.slot) == i16::from(action.level))
         .collect();
     for (draw_order, action) in active_actions.iter().enumerate() {
-        let indexed = match assets.try_indexed_picture(action.picture_id) {
-            Ok(indexed) => indexed,
-            Err(error) => {
-                warn!(
-                    "could not decode city action strip {}: {error}",
-                    action.picture_id
-                );
-                continue;
-            }
-        };
+        let indexed = assets.indexed_picture(action.picture_id);
         let strip_width = u32::try_from(action.frame_size[0] * i32::from(action.frame_count))
             .expect("generated city action strip has a positive width");
         let frame_height = u32::try_from(action.frame_size[1])
@@ -536,7 +519,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
                 ]);
             }
         }
-        let handle = match assets.try_transformed_picture(action.picture_id, |image| {
+        let handle = assets.transformed_picture(action.picture_id, |image| {
             apply_city_action_transparency(
                 image,
                 &indexed,
@@ -544,16 +527,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
                 action.frame_count,
                 &occlusions,
             );
-        }) {
-            Ok(handle) => handle,
-            Err(error) => {
-                warn!(
-                    "could not prepare city action strip {}: {error}",
-                    action.picture_id
-                );
-                continue;
-            }
-        };
+        });
         let frame_width = action.frame_size[0] as f32;
         let frame_height = action.frame_size[1] as f32;
         commands.spawn((
@@ -709,28 +683,17 @@ pub(in crate::ui::city) fn render_city_buildings(
             *visibility = Visibility::Visible;
             continue;
         }
-        let indexed = match assets.try_indexed_picture(picture) {
-            Ok(indexed) => indexed,
-            Err(error) => {
-                warn!("could not decode indexed city building picture {picture}: {error}");
-                continue;
-            }
-        };
+        let indexed = assets.indexed_picture(picture);
         if indexed.width == 0 || indexed.height == 0 {
             warn!("city building picture {picture} has no pixels");
             continue;
         }
         let transparent = indexed.pixels[(indexed.height as usize - 1) * indexed.width as usize];
-        match assets.try_transformed_picture(picture, |picture_image| {
+        image.image = assets.transformed_picture(picture, |picture_image| {
             apply_index_transparency(picture_image, &indexed, transparent);
-        }) {
-            Ok(handle) => {
-                image.image = handle;
-                sprite.picture = Some(picture);
-                *visibility = Visibility::Visible;
-            }
-            Err(error) => warn!("could not load city building picture {picture}: {error}"),
-        }
+        });
+        sprite.picture = Some(picture);
+        *visibility = Visibility::Visible;
     }
     for (action, mut visibility) in &mut actions {
         *visibility = if city_building_action_enabled(city, action.slot) {

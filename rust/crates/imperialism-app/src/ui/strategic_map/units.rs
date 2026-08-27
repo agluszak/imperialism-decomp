@@ -10,6 +10,7 @@ use super::StrategicMapSession;
 use super::map_projection::DetailedMapProjection;
 use super::{TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
+use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use enum_map::Enum;
 use imperialism_core::*;
@@ -44,8 +45,6 @@ const FORT_PICTURE_IDS: [PictureId; 3] = [
 ];
 const ORDER_MARKER_PICTURE_ID: PictureId = PictureId::new(806);
 const FLEET_ATLAS_PICTURE_BASE: PictureId = PictureId::new(1_380);
-const CIVILIAN_SPRITE_CLASS: CivilianUnitTable<u8> =
-    CivilianUnitTable::from_array([2, 3, 1, 6, 0, 7, 5, 4, 8]);
 const CIVILIAN_ANIMATION_PICTURE_IDS: CivilianUnitTable<PictureId> =
     CivilianUnitTable::from_array([
         PictureId::new(14_000),
@@ -959,7 +958,7 @@ fn civilian_uses_work_animation(order: &CivilianWorkOrder) -> bool {
 }
 
 fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
-    CIVILIAN_SPRITE_CLASS[kind]
+    kind.sprite_class()
 }
 
 fn civilian_tile_is_visible(owner: Option<TileOwnerTag>, active: NationId) -> bool {

@@ -196,35 +196,32 @@ impl RetailAssets {
     /// Loads one Windows `LoadStringA` / `RT_STRING` identifier from the English
     /// retail string library.
     pub fn string(&self, id: StringResourceId) -> Result<String, RetailAssetError> {
-        // Win32 `LoadString` selects the `RT_STRING` block from `LOWORD(uID)`.
-        let id16 = id.get() as u16;
-        let block_id = u32::from((id16 >> 4) + 1);
-        let slot = usize::from(id16 & 0xf);
-        let block = self
-            .strings
-            .find(
-                ResourceName::Id(STRING_RESOURCE_TYPE),
-                ResourceName::Id(block_id),
-            )
-            .ok_or(RetailAssetError::StringNotFound(id))?;
-        decode_string_table_entry(&self.strings.path, block, slot)
+        match self.string_table_entry(id.get()) {
+            Some(result) => result,
+            None => Err(RetailAssetError::StringNotFound(id)),
+        }
     }
 
-    /// Loads one long-form help `TEXT` resource by its raw PE resource ID.
+    /// Loads one long-form help body by its raw PE resource ID.
     ///
-    /// These are a separate retail namespace from [`StringResourceId`] / `RT_STRING`,
-    /// even when individual numeric values coincide with string-table entries.
+    /// Callers treat these as a distinct provenance from ordinary UI string
+    /// lookups even though retail stores both in the same `RT_STRING` table.
     pub fn text(&self, resource_id: u16) -> Result<String, RetailAssetError> {
-        let block_id = u32::from((resource_id >> 4) + 1);
-        let slot = usize::from(resource_id & 0xf);
-        let block = self
-            .strings
-            .find(
-                ResourceName::Id(STRING_RESOURCE_TYPE),
-                ResourceName::Id(block_id),
-            )
-            .ok_or(RetailAssetError::TextNotFound(resource_id))?;
-        decode_string_table_entry(&self.strings.path, block, slot)
+        match self.string_table_entry(resource_id) {
+            Some(result) => result,
+            None => Err(RetailAssetError::TextNotFound(resource_id)),
+        }
+    }
+
+    /// Shared `RT_STRING` block/slot decode used by [`Self::string`] and [`Self::text`].
+    fn string_table_entry(&self, id: u16) -> Option<Result<String, RetailAssetError>> {
+        let block_id = u32::from((id >> 4) + 1);
+        let slot = usize::from(id & 0xf);
+        let block = self.strings.find(
+            ResourceName::Id(STRING_RESOURCE_TYPE),
+            ResourceName::Id(block_id),
+        )?;
+        Some(decode_string_table_entry(&self.strings.path, block, slot))
     }
 
     /// Materializes the localized STR# inputs used by random-game province and ocean naming.

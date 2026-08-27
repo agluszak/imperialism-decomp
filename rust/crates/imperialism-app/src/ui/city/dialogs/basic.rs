@@ -61,12 +61,9 @@ pub(in crate::ui::city) fn bind_warehouse(
     if advanced_production_unlocked {
         let picture = PictureId::new(9215);
         let dialog = tree.find(root, fourcc!("DLOG"));
-        match assets.try_picture(picture) {
-            Ok(handle) => {
-                commands.entity(dialog).insert(ImageNode::new(handle));
-            }
-            Err(error) => warn!("could not load Warehouse picture {picture}: {error}"),
-        }
+        commands
+            .entity(dialog)
+            .insert(ImageNode::new(assets.picture(picture)));
         commands
             .entity(dialog)
             .entry::<Node>()

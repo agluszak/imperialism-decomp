@@ -5,7 +5,6 @@ use crate::ui::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, bind_hover_h
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
-use crate::ui::retail_resources::CitySiteErrorRetailResources;
 use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
@@ -20,15 +19,48 @@ use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{
+    OKAY, PictureId, RetailTextStylePreset, StringGroup, StringResourceId, fourcc,
+};
 
 const PLACE_CITY_STRING_GROUP: u16 = 0x273f;
+const BAD_CITY_SITE_STRINGS: StringGroup = StringGroup::new(0x273b);
 const MINISTER_STRING_GROUP: u16 = 0x2749;
 const NEW_CITY_DIALOG_WIDTH: i32 = 328;
 const RESOURCE_ITEM_WIDTH: i32 = 0x2c;
 const RESOURCE_ITEM_HEIGHT: i32 = 0x20;
 const CITY_SITE_INTRO_GOLD_PICTURE: PictureId = PictureId::new(0x24d1);
 const COAT_PICTURE_BASE: PictureId = PictureId::new(9500);
+
+fn city_site_error_string(
+    error: CitySiteError,
+    state: &GameState,
+    tile: TileId,
+) -> StringResourceId {
+    let offset = match error {
+        CitySiteError::NotOwned => {
+            if state.map()[tile].terrain == TerrainKind::Water {
+                3
+            } else {
+                0
+            }
+        }
+        CitySiteError::UnsupportedTerrain | CitySiteError::InvalidHomeSite => {
+            if supports_city_site_terrain(state.map()[tile].terrain)
+                && state.can_build_port_at_tile(tile)
+            {
+                2
+            } else {
+                1
+            }
+        }
+    };
+    BAD_CITY_SITE_STRINGS.offset(offset)
+}
+
+fn city_site_coat_picture(nation: MajorNationId) -> PictureId {
+    COAT_PICTURE_BASE.offset(i16::from(nation.get()))
+}
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum CitySiteAction {
@@ -182,7 +214,7 @@ fn bind_city_site_intro(
         &title,
         &body,
         Some(CITY_SITE_INTRO_GOLD_PICTURE),
-        Some(COAT_PICTURE_BASE.offset(i16::from(nation.get()))),
+        Some(city_site_coat_picture(nation)),
         true,
     );
     let okay = tree.find(root, OKAY);
@@ -272,7 +304,7 @@ fn on_city_site_map_click(
     match validate_capital_site_selection(&session.game, nation, tile) {
         Ok(site) => open_new_city_dialog(&mut commands, site),
         Err(error) => {
-            let body = assets.string(error.message_string(&session.game, tile));
+            let body = assets.string(city_site_error_string(error, &session.game, tile));
             open_city_site_notice(&mut commands, body);
         }
     }
@@ -491,7 +523,7 @@ fn bind_city_site_notice(
         "",
         &notice.0,
         None,
-        Some(COAT_PICTURE_BASE.offset(i16::from(nation.get()))),
+        Some(city_site_coat_picture(nation)),
         true,
     );
     let okay = tree.find(root, OKAY);
@@ -532,9 +564,9 @@ fn stuff_minister_dialog(
             .insert(ImageNode::new(gold));
     }
     if let Some(picture) = coat_picture {
-        if let Ok(image) = assets.try_picture(picture) {
-            commands.entity(linger.coat).insert(ImageNode::new(image));
-        }
+        commands
+            .entity(linger.coat)
+            .insert(ImageNode::new(assets.picture(picture)));
     } else {
         commands.entity(linger.coat).insert(Visibility::Hidden);
     }

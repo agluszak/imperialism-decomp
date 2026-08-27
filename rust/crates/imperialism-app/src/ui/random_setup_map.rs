@@ -3,7 +3,6 @@ use super::random_setup::{RandomGameSetup, RandomSetupPreview};
 use super::retail::RetailTree;
 use super::satellite_preview::SatellitePreview;
 use crate::RetailAssetsResource;
-use bevy::log::warn;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -86,17 +85,7 @@ fn sync_random_setup_coat(
             continue;
         }
         let picture_id = coat_picture_id(setup.nation);
-        let handle = match pictures.try_picture(picture_id) {
-            Ok(handle) => handle,
-            Err(error) => {
-                warn!(
-                    "could not load retail setup coat picture {:?}: {error}",
-                    picture_id
-                );
-                continue;
-            }
-        };
-        image_node.image = handle;
+        image_node.image = pictures.picture(picture_id);
         coat.nation = Some(setup.nation);
     }
 }
