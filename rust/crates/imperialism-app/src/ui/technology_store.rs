@@ -11,7 +11,7 @@ use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
 use imperialism_core::{
     CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
 };

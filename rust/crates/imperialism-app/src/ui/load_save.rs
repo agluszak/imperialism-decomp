@@ -11,17 +11,7 @@ use crate::ui::{
 };
 use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
-#[cfg(test)]
-use bevy::camera::NormalizedRenderTarget;
 use bevy::input_focus::AutoFocus;
-#[cfg(test)]
-use bevy::picking::backend::HitData;
-#[cfg(test)]
-use bevy::picking::events::Pointer;
-#[cfg(test)]
-use bevy::picking::events::Press;
-#[cfg(test)]
-use bevy::picking::pointer::{Location, PointerButton, PointerId};
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
@@ -1062,6 +1052,10 @@ mod tests {
     use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
+    use bevy::camera::NormalizedRenderTarget;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::events::{Pointer, Press};
+    use bevy::picking::pointer::{Location, PointerButton, PointerId};
     use imperialism_formats::{DibPalette, load_game_from_path};
 
     fn fixture_state() -> GameState {
