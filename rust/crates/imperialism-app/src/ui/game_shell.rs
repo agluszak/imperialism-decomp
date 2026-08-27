@@ -155,6 +155,9 @@ fn bind_strategic_map(
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
+    arrow_parts: Query<&super::retail::NumberedArrowParts>,
+    army_placards: Query<&super::retail::ArmyPlacardParts>,
+    ship_placards: Query<&super::retail::ShipPlacardParts>,
 ) {
     bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
@@ -191,8 +194,22 @@ fn bind_strategic_map(
         map.view.detailed_origin(&session.game),
     );
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_army_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
+    bind_army_toolbar(
+        &mut commands,
+        &mut assets,
+        *root,
+        &tree,
+        &arrow_parts,
+        &army_placards,
+    );
+    bind_navy_toolbar(
+        &mut commands,
+        &mut assets,
+        *root,
+        &tree,
+        &arrow_parts,
+        &ship_placards,
+    );
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     bind_strategic_hover(&mut commands, &mut assets, *root, &tree);
 }

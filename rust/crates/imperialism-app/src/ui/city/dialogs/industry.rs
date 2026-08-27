@@ -1,4 +1,6 @@
 use super::*;
+use crate::ui::retail::{AmountBarStyle, apply_amount_bar_fill};
+use crate::ui::retail_amount_bar::{amount_bar_counter_offset, amount_bar_geometry};
 
 #[derive(Clone, Copy)]
 pub(in crate::ui::city) struct IndustryOrderUi {
@@ -106,16 +108,32 @@ fn render_amount_bar(
     range: i16,
     maximum: i16,
 ) {
-    ui.amount_bars
-        .get_mut(bar)
+    let parts = ui
+        .amount_bars
+        .get(bar)
         .expect("bound amount bar")
-        .set_if_neq(crate::ui::retail_amount_bar::RetailAmountBarState {
-            value,
-            range,
-            maximum,
-        });
-    // Counter relocation is owned by RetailAmountSelector for Industry/Rail.
+        .clone();
+    apply_amount_bar_fill(
+        &parts,
+        AmountBarStyle::Production,
+        value,
+        range,
+        maximum,
+        &mut ui.nodes,
+    );
     ui.text(quantity, value.to_string());
+    let geometry = amount_bar_geometry(AmountBarStyle::Production, range);
+    let offset = amount_bar_counter_offset(geometry, value);
+    let (bar_left, bar_top) = {
+        let node = ui.nodes.get(bar).expect("bound amount bar node");
+        let (Val::Px(left), Val::Px(top)) = (node.left, node.top) else {
+            return;
+        };
+        (left, top)
+    };
+    let mut counter = ui.nodes.get_mut(quantity).expect("bound quantity node");
+    counter.left = Val::Px(bar_left + offset.x);
+    counter.top = Val::Px(bar_top + offset.y);
 }
 
 pub(in crate::ui::city) fn render_industry(

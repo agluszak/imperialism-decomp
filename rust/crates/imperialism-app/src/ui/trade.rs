@@ -3,13 +3,16 @@ use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::RetailTree;
-use super::retail_amount_bar::RetailAmountBarState;
+use super::retail::{AmountBarParts, AmountBarStyle, RetailTree, apply_amount_bar_fill};
+use super::retail_amount_bar::{
+    amount_bar_geometry, amount_bar_x_from_normalized, trade_amount_bar_click_value,
+};
 use crate::AppState;
+use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton, ValueChange};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -245,7 +248,11 @@ fn bind_trade_row(
     let offer_indicator = tree.find(row, fourcc!("gree"));
     let gauge = tree.find(row, fourcc!("bar "));
     commands.entity(gauge).observe(
-        move |change: On<ValueChange<i16>>, mut session: ResMut<GameSession>| {
+        move |mut click: On<Pointer<Click>>, mut session: ResMut<GameSession>| {
+            let Some(position) = click.hit.position else {
+                return;
+            };
+            click.propagate(false);
             let nation = session.active_major_nation();
             if !matches!(
                 session.game.player_trade_order(nation, commodity),
@@ -263,7 +270,9 @@ fn bind_trade_row(
             if capacity <= 0 {
                 return;
             }
-            let quantity = change.value;
+            let geometry = amount_bar_geometry(AmountBarStyle::Trade, capacity);
+            let x = amount_bar_x_from_normalized(geometry, position.x);
+            let quantity = trade_amount_bar_click_value(geometry, x);
             if quantity == 0 {
                 session
                     .game
@@ -337,7 +346,7 @@ fn render_trade(
     mut texts: Query<&mut Text>,
     mut images: Query<&mut ImageNode>,
     mut nodes: Query<&mut Node>,
-    mut amount_bars: Query<&mut RetailAmountBarState>,
+    amount_bars: Query<&AmountBarParts>,
 ) {
     if !session.is_changed() && !view.is_added() {
         return;
@@ -417,14 +426,18 @@ fn render_trade(
         set_trade_visibility(&mut commands, row.quantity, selling);
         set_trade_visibility(&mut commands, row.offer_indicator, selling);
         set_trade_visibility(&mut commands, row.gauge, selling);
-        amount_bars
-            .get_mut(row.gauge)
+        let parts = amount_bars
+            .get(row.gauge)
             .expect("bound trade amount bar must exist")
-            .set_if_neq(RetailAmountBarState {
-                value: quantity,
-                range: capacity,
-                maximum: 0,
-            });
+            .clone();
+        apply_amount_bar_fill(
+            &parts,
+            AmountBarStyle::Trade,
+            quantity,
+            capacity,
+            0,
+            &mut nodes,
+        );
         texts
             .get_mut(row.price)
             .expect("bound trade price text must exist")
@@ -631,7 +644,6 @@ mod tests {
             world.spawn((
                 RetailTag(fourcc!("bar ")),
                 Node::default(),
-                RetailAmountBarState::default(),
                 ChildOf(row),
             ));
         }

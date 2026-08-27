@@ -5,7 +5,12 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::HoverHelpText;
-use super::retail::{RetailTree, TransportGaugeValue};
+use super::retail::{
+    RetailTree, RetailTransportGaugeKind, TransportGaugeParts, apply_transport_gauge,
+};
+use super::retail_transport_gauge::{
+    TRANSPORT_GAUGE_FULL_PALETTE, TRANSPORT_GAUGE_PARTIAL_PALETTE,
+};
 use crate::AppState;
 use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled};
@@ -239,7 +244,9 @@ fn render_transport(
     mut commands: Commands,
     mut texts: Query<&mut Text>,
     mut help: Query<&mut HoverHelpText>,
-    mut gauges: Query<&mut TransportGaugeValue>,
+    gauges: Query<&TransportGaugeParts>,
+    mut nodes: Query<&mut Node>,
+    mut backgrounds: Query<&mut BackgroundColor>,
     assets: RetailUiAssets,
 ) {
     if !session.is_changed() && !view.is_added() {
@@ -248,6 +255,8 @@ fn render_transport(
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let economy = &major.economy;
+    let partial = assets.palette_color(TRANSPORT_GAUGE_PARTIAL_PALETTE);
+    let full = assets.palette_color(TRANSPORT_GAUGE_FULL_PALETTE);
     for (binding, row) in TRANSPORT_ROWS.iter().zip(&view.rows) {
         let status = session
             .game
@@ -270,24 +279,40 @@ fn render_transport(
         set_transport_visibility(&mut commands, row.row, status.adjustable);
         set_transport_enabled(&mut commands, row.decrease, status.can_decrease);
         set_transport_enabled(&mut commands, row.increase, status.can_increase);
-        gauges
-            .get_mut(row.gauge)
+        let parts = gauges
+            .get(row.gauge)
             .expect("bound transport gauge must exist")
-            .set_if_neq(TransportGaugeValue {
-                current: status.allocated,
-                total: status.available,
-                limit: status.limit,
-            });
+            .clone();
+        apply_transport_gauge(
+            &parts,
+            status.allocated,
+            status.available,
+            status.limit,
+            &mut nodes,
+            &mut texts,
+            &mut backgrounds,
+            &mut commands,
+            partial,
+            full,
+        );
     }
     let capacities = economy.capacities;
-    gauges
-        .get_mut(view.capacity)
+    let parts = gauges
+        .get(view.capacity)
         .expect("bound transport capacity gauge must exist")
-        .set_if_neq(TransportGaugeValue {
-            current: capacities.reserved_transport,
-            total: capacities.transport,
-            limit: None,
-        });
+        .clone();
+    apply_transport_gauge(
+        &parts,
+        capacities.reserved_transport,
+        capacities.transport,
+        None,
+        &mut nodes,
+        &mut texts,
+        &mut backgrounds,
+        &mut commands,
+        partial,
+        full,
+    );
 }
 
 fn set_transport_visibility(commands: &mut Commands, entity: Entity, visible: bool) {
@@ -430,11 +455,18 @@ mod tests {
         for tag in [fourcc!("tran"), fourcc!("curs"), fourcc!("trea")] {
             world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
         }
+        let fill = world.spawn(Node::default()).id();
+        let limit = world.spawn(Node::default()).id();
         let total = world
             .spawn((
                 RetailTag(fourcc!("tota")),
                 Node::default(),
-                TransportGaugeValue::default(),
+                TransportGaugeParts {
+                    kind: RetailTransportGaugeKind::Capacity,
+                    fill,
+                    limit,
+                    caption: Entity::PLACEHOLDER,
+                },
                 ChildOf(root),
             ))
             .id();
@@ -445,11 +477,18 @@ mod tests {
             ChildOf(total),
         ));
         for binding in TRANSPORT_ROWS {
+            let fill = world.spawn(Node::default()).id();
+            let limit = world.spawn(Node::default()).id();
             let row = world
                 .spawn((
                     RetailTag(binding.tag),
                     Node::default(),
-                    TransportGaugeValue::default(),
+                    TransportGaugeParts {
+                        kind: RetailTransportGaugeKind::Allocation,
+                        fill,
+                        limit,
+                        caption: Entity::PLACEHOLDER,
+                    },
                     ChildOf(root),
                 ))
                 .id();

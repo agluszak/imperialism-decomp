@@ -2,8 +2,11 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{PlacardValue, RetailTree, RetailUiAssets};
-use super::retail_amount_bar::RetailAmountBarState;
+use super::retail::{
+    AmountBarParts, AmountBarStyle, PlacardParts, RetailTree, RetailUiAssets, apply_amount_bar_fill,
+    placard_text_layout,
+};
+use super::retail_amount_bar::{amount_bar_counter_offset, amount_bar_geometry};
 use super::window::{
     CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
     window_position,
@@ -54,8 +57,9 @@ struct CityUi<'w, 's> {
     visibility: Query<'w, 's, &'static mut Visibility>,
     images: Query<'w, 's, &'static mut ImageNode>,
     checked: Query<'w, 's, Has<Checked>>,
-    amount_bars: Query<'w, 's, &'static mut RetailAmountBarState>,
-    placards: Query<'w, 's, &'static mut PlacardValue>,
+    nodes: Query<'w, 's, &'static mut Node>,
+    amount_bars: Query<'w, 's, &'static AmountBarParts>,
+    placard_parts: Query<'w, 's, &'static PlacardParts>,
 }
 
 impl CityUi<'_, '_> {
@@ -88,11 +92,33 @@ impl CityUi<'_, '_> {
         }
     }
 
-    fn placard(&mut self, entity: Entity, value: i16) {
-        self.placards
-            .get_mut(entity)
-            .expect("placard")
-            .set_if_neq(PlacardValue(value));
+    fn placard(&mut self, root: Entity, value: i16) {
+        let shown = value != 0;
+        *self.visibility.get_mut(root).expect("placard") = if shown {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
+        if !shown {
+            return;
+        }
+        let text = self
+            .placard_parts
+            .get(root)
+            .expect("placard parts")
+            .text;
+        let (width, height) = {
+            let node = self.nodes.get(root).expect("placard node");
+            let (Val::Px(width), Val::Px(height)) = (node.width, node.height) else {
+                return;
+            };
+            (width, height)
+        };
+        let (left, top) = placard_text_layout(width, height, value);
+        self.texts.get_mut(text).expect("placard text").0 = value.to_string();
+        let mut text_node = self.nodes.get_mut(text).expect("placard text node");
+        text_node.left = Val::Px(left);
+        text_node.top = Val::Px(top);
     }
 }
 
