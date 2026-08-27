@@ -3329,12 +3329,6 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
                                             (
                                                 retail_node(fourcc!("prop"), 113, 12, 291, 92)
-                                                ScrollArea
-                                                ScrollPosition::default()
-                                                Node {
-                                                    overflow: Overflow::scroll_y(),
-                                                }
-                                                Pickable
                                             ),
                                             (
                                                 retail_node(fourcc!("reje"), 12, 26, 75, 70)
@@ -3353,12 +3347,6 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
                                             (
                                                 retail_node(fourcc!("text"), 113, 12, 291, 92)
-                                                ScrollArea
-                                                ScrollPosition::default()
-                                                Node {
-                                                    overflow: Overflow::scroll_y(),
-                                                }
-                                                Pickable
                                             ),
                                         ]
                                     ),
@@ -4436,12 +4424,6 @@ pub fn linger_2020() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 17, 160, 354, 84)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                         ]
                     ),
@@ -4566,12 +4548,6 @@ pub fn linger_3005() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("info"), 9, 91, 373, 57)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("titl"), 85, 11, 219, 45)
@@ -4943,60 +4919,30 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("txtb"), 197, 193, 96, 47)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txta"), 57, 193, 96, 47)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txtc"), 57, 396, 96, 47)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txtd"), 197, 396, 96, 47)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
                             ),
                             (
                                 retail_node(fourcc!("txte"), 423, 322, 96, 47)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
@@ -5030,13 +4976,6 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tpca"), 370, 380, 195, 47)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
-                                InteractionDisabled
                                 Text("Switch to Game Resolution When Starting the Game")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
@@ -5086,21 +5025,9 @@ pub fn linger_4175() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("cred"), 36, 19, 257, 428)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("cre2"), 326, 19, 290, 428)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                         ]
                     ),
@@ -5821,12 +5748,6 @@ pub fn mapview_3012() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 10, 173, 131, 17)
@@ -7263,12 +7184,6 @@ pub fn minister_9480() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 17, 160, 354, 84)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                         ]
                     ),
@@ -8535,23 +8450,9 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("cdes"), 309, 230, 310, 185)
-                                        ScrollArea
-                                        ScrollPosition::default()
-                                        Node {
-                                            overflow: Overflow::scroll_y(),
-                                        }
-                                        Pickable
-                                        InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("sdes"), 48, 230, 228, 222)
-                                        ScrollArea
-                                        ScrollPosition::default()
-                                        Node {
-                                            overflow: Overflow::scroll_y(),
-                                        }
-                                        Pickable
-                                        InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("list"), 39, 61, 244, 110)
@@ -9120,12 +9021,6 @@ pub fn startup_20000() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("sale"), 7, 6, 398, 379)
-                                        ScrollArea
-                                        ScrollPosition::default()
-                                        Node {
-                                            overflow: Overflow::scroll_y(),
-                                        }
-                                        Pickable
                                     ),
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
@@ -9139,12 +9034,6 @@ pub fn startup_20000() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
-                                        ScrollArea
-                                        ScrollPosition::default()
-                                        Node {
-                                            overflow: Overflow::scroll_y(),
-                                        }
-                                        Pickable
                                     ),
                                     (
                                         retail_node(fourcc!("tsho"), 51, 446, 138, 23)
@@ -9160,13 +9049,6 @@ pub fn startup_20000() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("titl"), 132, 6, 375, 37)
-                                        ScrollArea
-                                        ScrollPosition::default()
-                                        Node {
-                                            overflow: Overflow::scroll_y(),
-                                        }
-                                        Pickable
-                                        InteractionDisabled
                                     ),
                                 ]
                             ),
@@ -9283,12 +9165,6 @@ pub fn tactical_3821() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 13, 201, 210, 112)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
@@ -9333,12 +9209,6 @@ pub fn tactical_3865() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 12, 197, 417, 59)
-                                ScrollArea
-                                ScrollPosition::default()
-                                Node {
-                                    overflow: Overflow::scroll_y(),
-                                }
-                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)

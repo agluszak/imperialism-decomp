@@ -1824,12 +1824,9 @@ def _rust_input_semantics(
         return "text_edit"
     if node.class_name == "TTwoPicSlider":
         return "slider"
+    # `tevw` is the TTEView resource family (TDeluxeText, TDialogTEView, …), not
+    # evidence of scrolling. Only recovered TScrollView becomes a ScrollArea.
     if node.class_name == "TScrollView":
-        return "scroll_area"
-    # TInfoBarText is tevw but not a scroll area; hover-help presentation only.
-    if node.class_name == "TInfoBarText":
-        return "passive"
-    if node.type_code == "tevw":
         return "scroll_area"
     if node.class_name in ("TMapPreviewView", "TCitySiteView", "TCityProductionView"):
         return "pointer_canvas"
