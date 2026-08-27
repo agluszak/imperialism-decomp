@@ -501,7 +501,7 @@ fn bind_added_civilian_modals(
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
                     .entity(linger.okay)
-                    .insert((CivilianModalAction::ConfirmDisband(*unit)))
+                    .insert(CivilianModalAction::ConfirmDisband(*unit))
                     .observe(on_civilian_modal_action);
                 commands
                     .entity(linger.cancel)
@@ -726,7 +726,7 @@ fn bind_civilian_report(
     let cancel = tree.find(root, fourcc!("canc"));
     commands
         .entity(cancel)
-        .insert((CancelCivilianOrder(unit)))
+        .insert(CancelCivilianOrder(unit))
         .observe(on_cancel_civilian_order);
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, Some(okay), Some(cancel));
@@ -1160,7 +1160,7 @@ fn bind_friendly_fleet_report(
     let cancel = view.find(fourcc!("canc"));
     commands
         .entity(cancel)
-        .insert((CancelFleetOrders(report.force)))
+        .insert(CancelFleetOrders(report.force))
         .observe(on_cancel_fleet_orders);
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, None, Some(cancel));
