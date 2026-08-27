@@ -72,6 +72,7 @@ class UiCodegenTests(unittest.TestCase):
         fish = transport[transport.index('retail_node(fourcc!("fish")') :]
         fish = fish[: fish.index('retail_node(fourcc!("prod")')]
         self.assertIn("RetailSidewaysArrow", fish)
+        self.assertNotIn("RetailSidewaysArrowHilite", fish)
         self.assertEqual(fish.count("Children ["), 1)
 
     def test_generated_sideways_arrows_use_press_repeat_not_release_button(self) -> None:

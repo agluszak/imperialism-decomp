@@ -831,6 +831,41 @@ def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, 
     return tuple(patches)
 
 
+def load_runtime_input_semantics(
+    repo_root: Path,
+) -> dict[tuple[UiResourceKey, str], str]:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    rows = data.get("runtime_input_semantics", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{WINDOWS_DELTA_PATH}: runtime_input_semantics must be a list")
+    semantics: dict[tuple[UiResourceKey, str], str] = {}
+    for index, raw_row in enumerate(rows):
+        context = f"{WINDOWS_DELTA_PATH}: runtime_input_semantics[{index}]"
+        row = _mapping(raw_row, context)
+        expected = {"view", "mac_class", "semantics", "evidence"}
+        if set(row) != expected:
+            raise ValueError(f"{context}: expected {sorted(expected)!r}")
+        resource = UiResourceKey.parse(str(row["view"]))
+        mac_class = str(row["mac_class"])
+        semantics_name = str(row["semantics"])
+        if semantics_name not in ("right_left_view",):
+            raise ValueError(
+                f"{context}: unsupported semantics {semantics_name!r}; "
+                "expected right_left_view"
+            )
+        evidence = str(row["evidence"]).strip()
+        if not evidence:
+            raise ValueError(f"{context}: evidence is required")
+        identity = (resource, mac_class)
+        if identity in semantics:
+            raise ValueError(
+                f"{context}: duplicate runtime semantics for "
+                f"{resource.text()} {mac_class}"
+            )
+        semantics[identity] = semantics_name
+    return semantics
+
+
 def load_city_building_visuals(repo_root: Path) -> CityBuildingVisuals:
     data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
     context = f"{WINDOWS_DELTA_PATH}: city_buildings"
@@ -1792,18 +1827,26 @@ def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | No
 
 
 def _rust_input_semantics(
-    key: UiResourceKey | None, node: UiSemanticNode
+    key: UiResourceKey | None,
+    node: UiSemanticNode,
+    runtime_semantics: dict[tuple[UiResourceKey, str], str] | None = None,
 ) -> str:
     """Interaction role for Button / Checkbox / ScrollArea / etc. emission.
 
     Values: passive, activate, checkbox, toggle, radio_button, radio_group,
-    slider, scroll_area, pointer_canvas, text_edit.
+    slider, scroll_area, pointer_canvas, text_edit, sideways_arrow,
+    right_left_view, page_corner.
 
     The generator is the one place where recovered type/class evidence decides
     whether a static-text-looking control is a radio, a picture is an activate
     button, or a canvas takes pointer input. The generated BSN carries the
     resulting native Bevy component, not those C++ class details.
     """
+
+    if key is not None and runtime_semantics is not None:
+        override = runtime_semantics.get((key, node.class_name))
+        if override is not None:
+            return override
 
     class_name = node.class_name.casefold()
     # Generic `clus` records are layout groups (TIndustryCluster, TToolBarCluster,
@@ -2265,6 +2308,7 @@ def _render_bsn_node(
     key: UiResourceKey | None,
     node: UiSemanticNode,
     children_by_parent: dict[str | None, list[UiSemanticNode]],
+    runtime_semantics: dict[tuple[UiResourceKey, str], str] | None = None,
 ) -> list[str]:
     x, y, width, height = node.geometry
     insets = node.family.content_insets or (0, 0, 0, 0)
@@ -2292,13 +2336,17 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    semantics = _rust_input_semantics(key, node)
+    semantics = _rust_input_semantics(key, node, runtime_semantics)
     lines.extend(
         {
             "activate": ["    Button"],
             "sideways_arrow": [
                 "    RetailSidewaysArrow",
                 "    RetailSidewaysArrowHilite",
+                "    Pickable",
+            ],
+            "right_left_view": [
+                "    RetailSidewaysArrow",
                 "    Pickable",
             ],
             "checkbox": ["    Checkbox"],
@@ -2439,7 +2487,9 @@ def _render_bsn_node(
             child_lines[-1] += ","
             lines.extend(_indent(child_lines, 8))
         for child in recovered_children:
-            rendered = _render_bsn_node(key, child, children_by_parent)
+            rendered = _render_bsn_node(
+                key, child, children_by_parent, runtime_semantics
+            )
             rendered[-1] += ","
             lines.extend(_indent(rendered, 8))
         lines.append("    ]")
@@ -2543,6 +2593,7 @@ def render_rust_ui(
     scene_views, city_buildings, city_building_actions = _rust_ui_semantic_views(
         repo_root, recipes, views, text_resources
     )
+    runtime_semantics = load_runtime_input_semantics(repo_root)
     dialog_controls = load_city_dialog_controls(repo_root)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
@@ -2614,7 +2665,7 @@ def render_rust_ui(
             ]
         )
         for node in roots:
-            rendered = _render_bsn_node(key, node, children_by_parent)
+            rendered = _render_bsn_node(key, node, children_by_parent, runtime_semantics)
             rendered[-1] += ","
             lines.extend(_indent(rendered, 12))
         lines.extend(["        ]", "    }", "}", ""])
