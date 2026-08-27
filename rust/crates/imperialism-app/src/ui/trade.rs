@@ -3,7 +3,7 @@ use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{AmountBarParts, AmountBarStyle, RetailTree, apply_amount_bar_fill};
+use super::retail::{AmountBarParts, AmountBarStyle, RetailTree};
 use super::retail_amount_bar::{
     amount_bar_geometry, amount_bar_x_from_normalized, trade_amount_bar_click_value,
 };
@@ -118,6 +118,7 @@ struct TradeRowView {
     quantity: Entity,
     offer_indicator: Entity,
     gauge: Entity,
+    gauge_fill: Entity,
     price: Entity,
     stock: Entity,
 }
@@ -159,6 +160,7 @@ fn bind_trade_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TradeScreen>>,
     tree: RetailTree,
+    amount_bars: Query<&AmountBarParts>,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
 ) {
@@ -202,6 +204,7 @@ fn bind_trade_screen(
             commodity,
             &text_style,
             text_color,
+            &amount_bars,
         )
     });
     commands.entity(root).insert(TradeView {
@@ -218,6 +221,7 @@ fn bind_trade_row(
     commodity: TradeCommodity,
     text_style: &(TextFont, TextLayout, LineHeight, bool),
     text_color: Color,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> TradeRowView {
     commands.entity(row).insert(Pickable::IGNORE);
 
@@ -288,6 +292,10 @@ fn bind_trade_row(
     );
     let price = spawn_trade_row_text(commands, row, 180.0, 58.0, text_style, text_color);
     let stock = spawn_trade_row_text(commands, row, 238.0, 62.0, text_style, text_color);
+    let gauge_fill = amount_bars
+        .get(gauge)
+        .expect("bound trade amount bar must exist")
+        .fill;
     TradeRowView {
         bid,
         offer,
@@ -296,6 +304,7 @@ fn bind_trade_row(
         quantity,
         offer_indicator,
         gauge,
+        gauge_fill,
         price,
         stock,
     }
@@ -346,7 +355,6 @@ fn render_trade(
     mut texts: Query<&mut Text>,
     mut images: Query<&mut ImageNode>,
     mut nodes: Query<&mut Node>,
-    amount_bars: Query<&AmountBarParts>,
 ) {
     if !session.is_changed() && !view.is_added() {
         return;
@@ -426,18 +434,12 @@ fn render_trade(
         set_trade_visibility(&mut commands, row.quantity, selling);
         set_trade_visibility(&mut commands, row.offer_indicator, selling);
         set_trade_visibility(&mut commands, row.gauge, selling);
-        let parts = amount_bars
-            .get(row.gauge)
-            .expect("bound trade amount bar must exist")
-            .clone();
-        apply_amount_bar_fill(
-            &parts,
-            AmountBarStyle::Trade,
-            quantity,
-            capacity,
-            0,
-            &mut nodes,
-        );
+        let fill_width =
+            f32::from(amount_bar_geometry(AmountBarStyle::Trade, capacity).span(quantity));
+        nodes
+            .get_mut(row.gauge_fill)
+            .expect("bound trade amount bar fill")
+            .width = Val::Px(fill_width);
         texts
             .get_mut(row.price)
             .expect("bound trade price text must exist")
@@ -641,9 +643,12 @@ mod tests {
                 ChildOf(row),
             ));
             world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
+            let fill = world.spawn(Node::default()).id();
+            let limit = world.spawn(Node::default()).id();
             world.spawn((
                 RetailTag(fourcc!("bar ")),
                 Node::default(),
+                AmountBarParts { fill, limit },
                 ChildOf(row),
             ));
         }
@@ -654,6 +659,7 @@ mod tests {
         mut commands: Commands,
         root: Single<Entity, Added<TestTradeRoot>>,
         tree: RetailTree,
+        amount_bars: Query<&AmountBarParts>,
         session: Res<GameSession>,
     ) {
         let capacity = tree.find(*root, fourcc!("mCap"));
@@ -677,6 +683,7 @@ mod tests {
                 commodity,
                 &text_style,
                 Color::BLACK,
+                &amount_bars,
             )
         });
         commands.entity(*root).insert(TradeView {

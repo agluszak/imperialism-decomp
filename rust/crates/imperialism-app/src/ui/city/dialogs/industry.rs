@@ -1,5 +1,5 @@
 use super::*;
-use crate::ui::retail::{AmountBarStyle, apply_amount_bar_fill};
+use crate::ui::retail::AmountBarStyle;
 use crate::ui::retail_amount_bar::{amount_bar_counter_offset, amount_bar_geometry};
 
 #[derive(Clone, Copy)]
@@ -108,21 +108,15 @@ fn render_amount_bar(
     range: i16,
     maximum: i16,
 ) {
-    let parts = ui
-        .amount_bars
-        .get(bar)
-        .expect("bound amount bar")
-        .clone();
-    apply_amount_bar_fill(
-        &parts,
-        AmountBarStyle::Production,
-        value,
-        range,
-        maximum,
-        &mut ui.nodes,
-    );
-    ui.text(quantity, value.to_string());
+    let parts = *ui.amount_bars.get(bar).expect("bound amount bar");
     let geometry = amount_bar_geometry(AmountBarStyle::Production, range);
+    ui.nodes.get_mut(parts.fill).expect("amount bar fill").width =
+        Val::Px(f32::from(geometry.span(value)));
+    ui.nodes
+        .get_mut(parts.limit)
+        .expect("amount bar limit")
+        .left = Val::Px(f32::from(geometry.span(maximum)));
+    ui.text(quantity, value.to_string());
     let offset = amount_bar_counter_offset(geometry, value);
     let (bar_left, bar_top) = {
         let node = ui.nodes.get(bar).expect("bound amount bar node");

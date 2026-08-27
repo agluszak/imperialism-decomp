@@ -151,7 +151,8 @@ class UiCodegenTests(unittest.TestCase):
                 "pub fn citydlog_9201()"
             )
         ]
-        self.assertIn("retail_amount_bar(AmountBarStyle::Production)", industry)
+        self.assertIn("AmountBarParts", industry)
+        self.assertIn("retail_background_color(0x16)", industry)
         self.assertNotIn("retail_amount_selector", industry)
         self.assertNotIn("#Left", industry)
         food = rendered[
@@ -159,20 +160,22 @@ class UiCodegenTests(unittest.TestCase):
                 "pub fn citydlog_9211()"
             )
         ]
-        self.assertIn("retail_amount_bar(AmountBarStyle::Production)", food)
+        self.assertIn("AmountBarParts", food)
+        self.assertIn("retail_background_color(0x16)", food)
         self.assertNotIn("retail_amount_selector", food)
         trade = rendered[
             rendered.index("pub fn trade_2009()") : rendered.index(
                 "pub fn trade_2010()"
             )
         ]
-        self.assertIn("retail_amount_bar(AmountBarStyle::Trade)", trade)
+        self.assertIn("AmountBarParts", trade)
+        self.assertIn("retail_background_color(0xbd)", trade)
         self.assertNotIn("retail_amount_selector", trade)
-        self.assertIn("retail_placard(6013)", rendered)
-        self.assertIn("retail_placard(6001)", rendered)
-        self.assertIn("retail_army_placard(", rendered)
+        self.assertIn("PlacardParts", rendered)
+        self.assertIn("retail_picture(6013)", rendered)
+        self.assertIn("retail_picture(6001)", rendered)
+        self.assertIn("#Caption", rendered)
         self.assertIn("retail_numbered_arrow()", rendered)
-        self.assertIn("retail_ship_placard(", rendered)
         self.assertIn("retail_pressed_overlay_picture(", rendered)
         self.assertIn("retail_madness_picture(", rendered)
         preferences = rendered[
@@ -200,10 +203,11 @@ class UiCodegenTests(unittest.TestCase):
         next_fn = transport.find("\npub fn ", 1)
         if next_fn != -1:
             transport = transport[:next_fn]
-        self.assertIn("RetailTransportGaugeKind::Capacity, 93)", transport)
-        self.assertIn("RetailTransportGaugeKind::Allocation, 97)", transport)
-        self.assertIn("RetailTransportGaugeKind::Allocation, 93)", transport)
-        self.assertEqual(transport.count("retail_transport_gauge("), 19)
+        self.assertIn("RetailTransportGaugeKind::Capacity", transport)
+        self.assertIn("RetailTransportGaugeKind::Allocation", transport)
+        self.assertIn("left: px(93)", transport)
+        self.assertIn("left: px(97)", transport)
+        self.assertEqual(transport.count("TransportGaugeParts"), 19)
 
     def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
         rendered = render_rust_ui(

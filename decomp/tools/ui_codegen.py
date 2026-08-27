@@ -2065,6 +2065,149 @@ def _indent(lines: Iterable[str], spaces: int) -> list[str]:
     return [prefix + line if line else "" for line in lines]
 
 
+def _rust_amount_bar_bsn(style: str) -> tuple[list[str], list[list[str]]]:
+    """Root components + synthetic fill/limit children for a recovered amount bar."""
+    if style == "Trade":
+        fill_index, fill_top, fill_height, limit_vis = "0xbd", "px(0)", "percent(100)", "Hidden"
+    else:
+        fill_index, fill_top, fill_height, limit_vis = "0x16", "px(1)", "px(4)", "Inherited"
+    root = [
+        "AmountBarParts {",
+        "    fill: #Fill,",
+        "    limit: #Limit,",
+        "}",
+    ]
+    children = [
+        [
+            "(",
+            "    #Fill",
+            "    Node {",
+            "        position_type: PositionType::Absolute,",
+            "        left: px(0),",
+            f"        top: {fill_top},",
+            "        width: px(0),",
+            f"        height: {fill_height},",
+            "    }",
+            f"    retail_background_color({fill_index})",
+            "    Pickable::IGNORE",
+            ")",
+        ],
+        [
+            "(",
+            "    #Limit",
+            "    Node {",
+            "        position_type: PositionType::Absolute,",
+            "        left: px(0),",
+            "        top: px(0),",
+            "        width: px(1),",
+            "        height: px(5),",
+            "    }",
+            "    retail_background_color(0)",
+            f"    template_value(Visibility::{limit_vis})",
+            "    Pickable::IGNORE",
+            ")",
+        ],
+    ]
+    return root, children
+
+
+def _rust_placard_bsn(
+    picture_id: int, kind: str
+) -> tuple[list[str], list[list[str]]]:
+    """Root components + caption child for city/army/ship placards."""
+    layouts = {
+        "city": (3, 0, "px(0)", "px(0)", "px(20)", "px(14)", "Val::Auto", True),
+        "army": (0, -1, "Val::Auto", "px(38)", "px(42)", "px(12)", "px(0)", False),
+        "ship": (0, 1, "px(60)", "px(34)", "px(40)", "px(12)", "Val::Auto", False),
+    }
+    family, align, left, top, width, height, right, hidden = layouts[kind]
+    root = [
+        f"retail_picture({picture_id})",
+        "PlacardParts { text: #Caption }",
+    ]
+    if hidden:
+        root.append("Visibility::Hidden")
+    caption = [
+        "(",
+        "    #Caption",
+        "    Node {",
+        "        position_type: PositionType::Absolute,",
+        f"        left: {left},",
+        f"        right: {right},",
+        f"        top: {top},",
+        f"        width: {width},",
+        f"        height: {height},",
+        "    }",
+        '    Text("")',
+        f"    retail_text_style({family}, 0, 10, {align})",
+        "    retail_text_color(0x28)",
+        "    retail_text_shadow(0, 1, 1)",
+        "    Pickable::IGNORE",
+        ")",
+    ]
+    return root, [caption]
+
+
+def _rust_transport_gauge_bsn(
+    picture_id: int, kind: str, track_left: int
+) -> tuple[list[str], list[list[str]]]:
+    """Root components + track/fill/limit overlays for a transport gauge."""
+    fill_palette = "0x3a" if kind == "Allocation" else "0x33"
+    root = [
+        f"retail_picture({picture_id})",
+        "TransportGaugeParts {",
+        f"    kind: RetailTransportGaugeKind::{kind},",
+        "    fill: #Fill,",
+        "    limit: #Limit,",
+        "}",
+    ]
+    children = [
+        [
+            "(",
+            "    Node {",
+            "        position_type: PositionType::Absolute,",
+            f"        left: px({track_left}),",
+            "        top: px(13),",
+            "        width: px(113),",
+            "        height: px(4),",
+            "    }",
+            "    retail_background_color(0x3b)",
+            "    Pickable::IGNORE",
+            ")",
+        ],
+        [
+            "(",
+            "    #Fill",
+            "    Node {",
+            "        position_type: PositionType::Absolute,",
+            f"        left: px({track_left}),",
+            "        top: px(13),",
+            "        width: px(0),",
+            "        height: px(4),",
+            "    }",
+            f"    retail_background_color({fill_palette})",
+            "    Pickable::IGNORE",
+            ")",
+        ],
+        [
+            "(",
+            "    #Limit",
+            "    Node {",
+            "        position_type: PositionType::Absolute,",
+            f"        left: px({track_left - 1}),",
+            "        top: px(18),",
+            "        width: px(115),",
+            "        height: px(2),",
+            "    }",
+            "    retail_background_color(0x33)",
+            "    template(|_context| Ok(Visibility::Hidden))",
+            "    Pickable::IGNORE",
+            ")",
+        ],
+    ]
+    return root, children
+
+
 def _render_bsn_node(
     key: UiResourceKey | None,
     node: UiSemanticNode,
@@ -2170,21 +2313,24 @@ def _render_bsn_node(
             )
 
     picture_id = node.family.picture_id
+    synthetic_children: list[list[str]] = []
     if presentation == "placard":
-        # Recovered class -> RetailPlacard widget (picture + value presentation).
-        lines.append(f"    retail_placard({int(picture_id)})")
+        root, synthetic_children = _rust_placard_bsn(int(picture_id), "city")
+        lines.extend(_indent(root, 4))
     elif presentation == "army_placard":
-        lines.append(f"    retail_army_placard({int(picture_id)})")
+        root, synthetic_children = _rust_placard_bsn(int(picture_id), "army")
+        lines.extend(_indent(root, 4))
     elif presentation == "ship_placard":
-        lines.append(f"    retail_ship_placard({int(picture_id)})")
+        root, synthetic_children = _rust_placard_bsn(int(picture_id), "ship")
+        lines.extend(_indent(root, 4))
     elif presentation == "transport_gauge":
         # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
         track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
         kind = "Capacity" if node.tag == "tota" else "Allocation"
-        lines.append(
-            "    retail_transport_gauge("
-            f"{int(picture_id)}, RetailTransportGaugeKind::{kind}, {track_left})"
+        root, synthetic_children = _rust_transport_gauge_bsn(
+            int(picture_id), kind, track_left
         )
+        lines.extend(_indent(root, 4))
     elif presentation == "pressed_overlay":
         lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
     elif presentation == "madness":
@@ -2200,7 +2346,9 @@ def _render_bsn_node(
         lines.append("    retail_radio_text_fill()")
     elif presentation == "amount_bar":
         amount_bar_style = _rust_amount_bar_style(node)
-        lines.append(f"    retail_amount_bar(AmountBarStyle::{amount_bar_style})")
+        assert amount_bar_style is not None
+        root, synthetic_children = _rust_amount_bar_bsn(amount_bar_style)
+        lines.extend(_indent(root, 4))
     elif presentation == "two_pic_slider":
         slider = _rust_two_pic_slider(node)
         if slider is not None:
@@ -2211,8 +2359,12 @@ def _render_bsn_node(
             )
 
     children = children_by_parent.get(node.node_id, [])
-    if children:
+    if synthetic_children or children:
         lines.append("    Children [")
+        for child_lines in synthetic_children:
+            child_lines = list(child_lines)
+            child_lines[-1] += ","
+            lines.extend(_indent(child_lines, 8))
         for child in children:
             rendered = _render_bsn_node(key, child, children_by_parent)
             rendered[-1] += ","

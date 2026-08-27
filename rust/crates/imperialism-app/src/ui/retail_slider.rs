@@ -1,7 +1,7 @@
 //! Recovered `TTwoPicSlider` presentation over Bevy's stock `Slider`.
 //!
-//! Input semantics stay on `Slider` / `SliderValue` / `ValueChange<f32>`.
-//! This module syncs the lower clipped bitmap and Off caption from `SliderValue`.
+//! Input stays on `Slider` / `SliderValue` / `ValueChange<f32>`.
+//! Syncs the clipped lower bitmap and Off caption from `SliderValue`.
 
 use super::retail::{
     load_template_picture, retail_text_color, retail_text_shadow, retail_text_style,
@@ -17,7 +17,7 @@ use imperialism_formats::PictureId;
 pub const TWO_PIC_SLIDER_SPLIT_PAD: i16 = 0x0c;
 
 /// Private child refs for the two-picture slider hierarchy.
-#[derive(Component, FromTemplate, Clone)]
+#[derive(Component, FromTemplate, Clone, Copy)]
 pub struct RetailTwoPicSliderParts {
     pub lower: Entity,
     pub off: Entity,
@@ -90,19 +90,23 @@ pub fn retail_two_pic_slider(
 }
 
 fn load_off_string(context: &TemplateContext, off_group: i16, off_index: i16) -> String {
-    match context
+    context
         .resource::<RetailAssetsResource>()
         .assets()
         .string(off_group, off_index)
-    {
-        Ok(text) => text,
-        Err(_) => "Off".to_string(),
-    }
+        .unwrap_or_else(|_| "Off".to_string())
 }
 
 pub(super) fn register_slider(app: &mut App) {
     app.add_systems(PostUpdate, sync_two_pic_slider_visuals);
 }
+
+type TwoPicSliderQuery = (
+    &'static SliderValue,
+    &'static SliderRange,
+    &'static RetailTwoPicSliderParts,
+    &'static Node,
+);
 
 pub fn two_pic_slider_split(value: i16, height: i16, scale: i16) -> i16 {
     let span = height - TWO_PIC_SLIDER_SPLIT_PAD;
@@ -117,39 +121,27 @@ pub fn two_pic_slider_split(value: i16, height: i16, scale: i16) -> i16 {
     }
 }
 
-fn two_pic_slider_fill_height(split: i16) -> i16 {
-    if split < TWO_PIC_SLIDER_SPLIT_PAD {
-        0
-    } else {
-        split
-    }
-}
-
 fn sync_two_pic_slider_visuals(
-    sliders: Query<
-        (&SliderValue, &SliderRange, &RetailTwoPicSliderParts, &Node),
-        (With<RetailTwoPicSliderParts>, Changed<SliderValue>),
-    >,
+    sliders: Query<TwoPicSliderQuery, (With<RetailTwoPicSliderParts>, Changed<SliderValue>)>,
     mut nodes: Query<&mut Node, Without<RetailTwoPicSliderParts>>,
     mut images: Query<&mut ImageNode, Without<RetailTwoPicSliderParts>>,
     mut visibilities: Query<&mut Visibility>,
 ) {
     for (value, range, parts, root) in &sliders {
-        let height = match root.height {
-            Val::Px(height) => height as i16,
-            _ => continue,
+        let (Val::Px(height), Val::Px(width)) = (root.height, root.width) else {
+            continue;
         };
-        let width = match root.width {
-            Val::Px(width) => width,
-            _ => continue,
-        };
+        let height = height as i16;
         let split = two_pic_slider_split(value.0 as i16, height, range.end() as i16);
-        let fill = two_pic_slider_fill_height(split);
+        let fill = if split < TWO_PIC_SLIDER_SPLIT_PAD {
+            0
+        } else {
+            split
+        };
         if let Ok(mut lower_node) = nodes.get_mut(parts.lower) {
             lower_node.height = Val::Px(f32::from(fill));
         }
         if let Ok(mut lower_image) = images.get_mut(parts.lower) {
-            // Bottom `fill` rows of the lower picture (matches retail blit).
             let top = f32::from(height - fill);
             lower_image.rect = Some(Rect {
                 min: Vec2::new(0.0, top),

@@ -156,8 +156,7 @@ fn bind_strategic_map(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     arrow_parts: Query<&super::retail::NumberedArrowParts>,
-    army_placards: Query<&super::retail::ArmyPlacardParts>,
-    ship_placards: Query<&super::retail::ShipPlacardParts>,
+    placard_parts: Query<&super::retail::PlacardParts>,
 ) {
     bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
@@ -200,7 +199,7 @@ fn bind_strategic_map(
         *root,
         &tree,
         &arrow_parts,
-        &army_placards,
+        &placard_parts,
     );
     bind_navy_toolbar(
         &mut commands,
@@ -208,7 +207,7 @@ fn bind_strategic_map(
         *root,
         &tree,
         &arrow_parts,
-        &ship_placards,
+        &placard_parts,
     );
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     bind_strategic_hover(&mut commands, &mut assets, *root, &tree);

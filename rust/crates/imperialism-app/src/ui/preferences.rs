@@ -245,7 +245,7 @@ fn bind_volume_slider(
     hover: String,
     slot: PreferenceSlot,
 ) {
-    // Slider + RetailTwoPicSliderVisual come from codegen for TTwoPicSlider.
+    // Slider + retained two-pic presentation come from codegen for TTwoPicSlider.
     let mut entity = commands.entity(slider);
     entity
         .insert((SliderValue(f32::from(value)), HoverHelpText(hover)))
@@ -313,14 +313,6 @@ fn on_preferences_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn slider_split_matches_retail_padding() {
-        use super::super::retail_slider::two_pic_slider_split;
-        assert_eq!(two_pic_slider_split(0, 91, 100), 0);
-        assert_eq!(two_pic_slider_split(100, 91, 100), 91);
-        assert_eq!(two_pic_slider_split(0xff, 91, 0xff), 91);
-    }
 
     #[test]
     fn sound_slider_release_writes_preference_slot_2() {

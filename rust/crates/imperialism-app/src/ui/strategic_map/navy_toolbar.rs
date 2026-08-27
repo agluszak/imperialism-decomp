@@ -1,8 +1,6 @@
 //! Right-hand navy command page (`unav` / `TNavyToolbarCluster`).
 
-use super::super::retail::{
-    NumberedArrowParts, RetailTree, RetailUiAssets, ShipPlacardParts,
-};
+use super::super::retail::{NumberedArrowParts, PlacardParts, RetailTree, RetailUiAssets};
 use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
@@ -60,7 +58,7 @@ pub(crate) fn bind_navy_toolbar(
     root: Entity,
     tree: &RetailTree,
     arrow_parts: &Query<&NumberedArrowParts>,
-    ship_parts: &Query<&ShipPlacardParts>,
+    ship_parts: &Query<&PlacardParts>,
 ) {
     let page = tree.find(root, PAGE_TAG);
     const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
@@ -80,27 +78,19 @@ pub(crate) fn bind_navy_toolbar(
     for (index, (class, tag)) in CLASS_TAGS.into_iter().enumerate() {
         let cluster = tree.child(page, tag);
         let ship = tree.child(cluster, fourcc!("ship"));
-        let ShipPlacardParts { text: ship_text } = ship_parts
-            .get(ship)
-            .expect("navy ship placard parts")
-            .clone();
+        let PlacardParts { text: ship_text } =
+            *ship_parts.get(ship).expect("navy ship placard parts");
         commands.entity(ship).insert(Visibility::Hidden);
         let arrow = tree.child(cluster, fourcc!("arro"));
         let NumberedArrowParts {
             upper,
             lower,
             count,
-        } = arrow_parts
-            .get(arrow)
-            .expect("navy arrow parts")
-            .clone();
+        } = *arrow_parts.get(arrow).expect("navy arrow parts");
         classes[index] = NavyClassView {
             ship_root: ship,
             ship_text,
-            arrow: ArrowBinding {
-                root: arrow,
-                count,
-            },
+            arrow: ArrowBinding { root: arrow, count },
         };
         let class_capture = class;
         commands.entity(arrow).insert(Visibility::Hidden);
@@ -266,17 +256,13 @@ fn sync_navy_toolbar(
                     .expect("retail navy class picture must load");
             }
             *visibility.get_mut(row.ship_root).expect("navy ship") = Visibility::Visible;
-            *visibility
-                .get_mut(row.arrow.root)
-                .expect("navy arrow") = Visibility::Visible;
+            *visibility.get_mut(row.arrow.root).expect("navy arrow") = Visibility::Visible;
             texts.get_mut(row.ship_text).expect("navy ship text").0 = available.to_string();
             texts.get_mut(row.arrow.count).expect("navy arrow count").0 =
                 selected.max(0).to_string();
         } else {
             *visibility.get_mut(row.ship_root).expect("navy ship") = Visibility::Hidden;
-            *visibility
-                .get_mut(row.arrow.root)
-                .expect("navy arrow") = Visibility::Hidden;
+            *visibility.get_mut(row.arrow.root).expect("navy arrow") = Visibility::Hidden;
             texts.get_mut(row.ship_text).expect("navy ship text").0 = String::new();
             texts.get_mut(row.arrow.count).expect("navy arrow count").0 = String::new();
         }

@@ -2,7 +2,9 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{AmountBarParts, PlacardParts, RetailTree, RetailUiAssets, placard_text_layout};
+use super::retail::{
+    AmountBarParts, PlacardParts, RetailTree, RetailUiAssets, placard_text_layout,
+};
 use super::window::{
     CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
     window_position,
@@ -98,11 +100,7 @@ impl CityUi<'_, '_> {
         if !shown {
             return;
         }
-        let text = self
-            .placard_parts
-            .get(root)
-            .expect("placard parts")
-            .text;
+        let text = self.placard_parts.get(root).expect("placard parts").text;
         let (width, height) = {
             let node = self.nodes.get(root).expect("placard node");
             let (Val::Px(width), Val::Px(height)) = (node.width, node.height) else {
