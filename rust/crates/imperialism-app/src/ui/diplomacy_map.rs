@@ -136,9 +136,7 @@ pub fn spawn_diplomacy_nation_labels(
     map: Entity,
     labels: impl IntoIterator<Item = (NationId, String, TileId)>,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(10, 1))
-        .expect("retail diplomacy map label style");
+    let (font, layout, line_height, _) = assets.text_style(RetailTextStylePreset::built(10, 1));
     let geometry = MapGeometry::new(MapTopology::Bounded);
     for (nation, name, tile) in labels {
         if name.is_empty() {

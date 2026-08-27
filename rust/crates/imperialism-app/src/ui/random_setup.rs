@@ -13,7 +13,7 @@ use bevy::prelude::*;
 use bevy::text::TextCursorStyle;
 use bevy::text::{EditableText, TextEditChange};
 use bevy::ui::{Checked, InteractionDisabled};
-use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus, ValueChange};
+use bevy::ui_widgets::{Activate, SelectAllOnFocus, ValueChange};
 use imperialism_core::*;
 use imperialism_formats::{OKAY, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -264,12 +264,12 @@ fn bind_random_setup_controls(
         let entity = tree.find(root, tag);
         commands
             .entity(entity)
-            .insert((action, ActivateOnPress))
+            .insert(action)
             .observe(on_random_setup_activate);
     }
     commands
         .entity(tree.find(root, fourcc!("glob")))
-        .insert((RandomSetupGlobe, ActivateOnPress))
+        .insert(RandomSetupGlobe)
         .observe(on_random_setup_globe);
 }
 
@@ -715,12 +715,8 @@ mod tests {
         assert_eq!(cursor.selected_text_color, Some(Color::BLACK));
         let mut globe = app
             .world_mut()
-            .query_filtered::<Has<ActivateOnPress>, With<RandomSetupGlobe>>();
-        assert!(
-            globe
-                .iter(app.world())
-                .any(|activate_on_press| activate_on_press)
-        );
+            .query_filtered::<Entity, With<RandomSetupGlobe>>();
+        assert!(globe.iter(app.world()).next().is_some());
     }
 
     #[test]

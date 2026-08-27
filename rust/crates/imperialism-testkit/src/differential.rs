@@ -48,13 +48,11 @@ struct NativeTurnState {
     quarter_gate_by_decade: [u8; 10],
     difficulty: Difficulty,
     active_nation: NationId,
-    selected_nation: NationId,
     last_turn_alert_tick: i32,
 }
 
 impl NativeTurnState {
     fn into_core(self) -> TurnState {
-        let _ = self.selected_nation;
         let mut phase_state_by_decade = [0; 12];
         phase_state_by_decade[..10].copy_from_slice(&self.quarter_gate_by_decade);
         let mut turn = TurnState::new(

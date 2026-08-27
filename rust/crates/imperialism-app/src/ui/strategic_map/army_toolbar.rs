@@ -7,7 +7,7 @@ use crate::AppState;
 use crate::ui::GameSession;
 use crate::ui::retail_resources::MilitaryUnitKindRetailResources;
 use bevy::prelude::*;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -45,14 +45,14 @@ struct ArmyToolbarView {
     garrison: Entity,
 }
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         sync_army_toolbar.run_if(in_state(AppState::StrategicMap)),
     );
 }
 
-pub(crate) fn bind_army_toolbar(
+pub(super) fn bind_army_toolbar(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
@@ -127,24 +127,21 @@ pub(crate) fn bind_army_toolbar(
         (fourcc!("latr"), ArmyIdleOrderMode::Latr),
         (fourcc!("done"), ArmyIdleOrderMode::Done),
     ] {
-        commands
-            .entity(tree.child(page, tag))
-            .insert(ActivateOnPress)
-            .observe(
-                move |_: On<Activate>,
-                      mut session: ResMut<GameSession>,
-                      mut map: ResMut<StrategicMapSession>| {
-                    let Some(province) = map.selection.army() else {
-                        return;
-                    };
-                    session
-                        .game
-                        .set_idle_unit_orders_on_province(province, mode);
-                    map.cycle_selection(&mut session.game);
-                },
-            );
+        commands.entity(tree.child(page, tag)).observe(
+            move |_: On<Activate>,
+                  mut session: ResMut<GameSession>,
+                  mut map: ResMut<StrategicMapSession>| {
+                let Some(province) = map.selection.army() else {
+                    return;
+                };
+                session
+                    .game
+                    .set_idle_unit_orders_on_province(province, mode);
+                map.cycle_selection(&mut session.game);
+            },
+        );
     }
-    commands.entity(garrison).insert(ActivateOnPress).observe(
+    commands.entity(garrison).observe(
         |_: On<Activate>,
          keys: Res<ButtonInput<KeyCode>>,
          mut commands: Commands,

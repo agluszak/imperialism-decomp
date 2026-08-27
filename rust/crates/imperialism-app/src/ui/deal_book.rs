@@ -13,7 +13,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
+use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -39,41 +39,12 @@ enum DealBookMode {
     Category(TradeCommodity),
 }
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum DealBookHost {
-    Sold,
-    Bought,
-    SoldByCategory,
-    BoughtByCategory,
-}
-
-#[derive(Component)]
-struct DealBookBackground;
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum DealBookTitle {
-    Left,
-    Right,
-}
-
-#[derive(Component)]
-struct DealBookTabs;
-
 #[derive(Component)]
 struct DealBookTabVisual {
     empty: IndexedPicture,
     filled: IndexedPicture,
     shown_row: Option<u8>,
 }
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum DealBookPageButton {
-    Previous,
-    Next,
-}
-
-#[derive(Component)]
-struct DealBookHistory;
 
 #[derive(Clone)]
 struct DealBookPictures {
@@ -103,6 +74,17 @@ struct DealBookRoot;
 struct DealBookScreen {
     mode: DealBookMode,
     page: u16,
+    background: Entity,
+    history: Entity,
+    title_left: Entity,
+    title_right: Entity,
+    sold: Entity,
+    bought: Entity,
+    sold_by_category: Entity,
+    bought_by_category: Entity,
+    page_previous: Entity,
+    page_next: Entity,
+    tabs: Entity,
     pictures: DealBookPictures,
     fonts: DealBookFonts,
     advanced_production_unlocked: bool,
@@ -158,12 +140,10 @@ fn bind_deal_book(
             assets.keyed_picture(kind.material_picture(), 0x10)
         })),
     };
-    let (body, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(10, -1))
-        .expect("retail deal-book body text style");
-    let (heading, heading_layout, heading_line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(14, -1))
-        .expect("retail deal-book heading text style");
+    let (body, body_layout, body_line_height, _) =
+        assets.text_style(RetailTextStylePreset::built(10, -1));
+    let (heading, heading_layout, heading_line_height, _) =
+        assets.text_style(RetailTextStylePreset::built(14, -1));
     let fonts = DealBookFonts {
         body,
         body_layout,
@@ -179,10 +159,10 @@ fn bind_deal_book(
     };
     // Mac titL is family 0 / 18pt. The generator only emits shipped fonts (modes 1-3),
     // and TDealBookPicture::Startup does not restyle titL on Windows.
-    let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(0, 0, 18, 1))
-        .expect("retail deal-book title text style");
-    commands.entity(tree.find(root, fourcc!("titL"))).insert((
+    let (title_font, title_layout, title_line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(0, 0, 18, 1));
+    let title_left = tree.find(root, fourcc!("titL"));
+    commands.entity(title_left).insert((
         title_font,
         title_layout,
         title_line_height,
@@ -196,7 +176,6 @@ fn bind_deal_book(
     commands
         .entity(tabs)
         .insert((
-            DealBookTabs,
             DealBookTabVisual {
                 empty: empty_tabs,
                 filled: filled_tabs,
@@ -208,65 +187,64 @@ fn bind_deal_book(
         .observe(on_deal_book_tabs_click);
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_deal_book_close);
     commands
         .entity(tree.find(root, fourcc!("quer")))
         .insert(InteractionDisabled);
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
-    let mark = tree.find(root, fourcc!("mark"));
-    commands
-        .entity(mark)
-        .insert((DealBookHistory, ActivateOnPress))
-        .observe(on_deal_book_history);
+    let history = tree.find(root, fourcc!("mark"));
+    commands.entity(history).observe(on_deal_book_history);
     // `mark` is a generated `TPictureButton`: picture 8812 is its hilite bitmap with
     // `RetailPressedOverlay`. TDealBookPicture enables its input only in category mode.
+    let page_previous = tree.find(root, fourcc!("lcor"));
     commands
-        .entity(tree.find(root, fourcc!("lcor")))
-        .insert((
-            UiButton,
-            DealBookPageButton::Previous,
-            ActivateOnPress,
-            Visibility::Hidden,
-            InteractionDisabled,
-        ))
-        .observe(on_deal_book_page);
+        .entity(page_previous)
+        .insert((UiButton, Visibility::Hidden, InteractionDisabled))
+        .observe(
+            |_activate: On<Activate>, mut screens: Query<&mut DealBookScreen>| {
+                let Ok(mut screen) = screens.single_mut() else {
+                    return;
+                };
+                screen.page = screen.page.saturating_sub(1);
+            },
+        );
+    let page_next = tree.find(root, fourcc!("rcor"));
     commands
-        .entity(tree.find(root, fourcc!("rcor")))
-        .insert((
-            UiButton,
-            DealBookPageButton::Next,
-            ActivateOnPress,
-            Visibility::Hidden,
-            InteractionDisabled,
-        ))
-        .observe(on_deal_book_page);
-    commands
-        .entity(tree.find(root, fourcc!("main")))
-        .insert(DealBookBackground);
-    commands
-        .entity(tree.find(root, fourcc!("sold")))
-        .insert(DealBookHost::Sold);
-    commands
-        .entity(tree.find(root, fourcc!("boug")))
-        .insert(DealBookHost::Bought);
-    commands
-        .entity(tree.find(root, fourcc!("tsol")))
-        .insert(DealBookHost::SoldByCategory);
-    commands
-        .entity(tree.find(root, fourcc!("tbou")))
-        .insert(DealBookHost::BoughtByCategory);
-    commands
-        .entity(tree.find(root, fourcc!("titL")))
-        .insert(DealBookTitle::Left);
-    commands
-        .entity(tree.find(root, fourcc!("rtil")))
-        .insert(DealBookTitle::Right);
+        .entity(page_next)
+        .insert((UiButton, Visibility::Hidden, InteractionDisabled))
+        .observe(
+            |_activate: On<Activate>,
+             mut screens: Query<&mut DealBookScreen>,
+             session: Res<GameSession>| {
+                let Ok(mut screen) = screens.single_mut() else {
+                    return;
+                };
+                let last_page = deal_book_last_page(&screen, &session);
+                screen.page = (screen.page + 1).min(last_page);
+            },
+        );
+    let background = tree.find(root, fourcc!("main"));
+    let sold = tree.find(root, fourcc!("sold"));
+    let bought = tree.find(root, fourcc!("boug"));
+    let sold_by_category = tree.find(root, fourcc!("tsol"));
+    let bought_by_category = tree.find(root, fourcc!("tbou"));
+    let title_right = tree.find(root, fourcc!("rtil"));
 
     commands.entity(root).insert(DealBookScreen {
         mode: DealBookMode::History,
         page: 0,
+        background,
+        history,
+        title_left,
+        title_right,
+        sold,
+        bought,
+        sold_by_category,
+        bought_by_category,
+        page_previous,
+        page_next,
+        tabs,
         pictures,
         fonts,
         advanced_production_unlocked,
@@ -297,29 +275,6 @@ fn on_deal_book_history(_activate: On<Activate>, mut screens: Query<&mut DealBoo
     }
 }
 
-fn on_deal_book_page(
-    activate: On<Activate>,
-    buttons: Query<&DealBookPageButton>,
-    mut screens: Query<&mut DealBookScreen>,
-    session: Res<GameSession>,
-) {
-    let Ok(button) = buttons.get(activate.entity) else {
-        return;
-    };
-    let Ok(mut screen) = screens.single_mut() else {
-        return;
-    };
-    match *button {
-        DealBookPageButton::Previous => {
-            screen.page = screen.page.saturating_sub(1);
-        }
-        DealBookPageButton::Next => {
-            let last_page = deal_book_last_page(&screen, &session);
-            screen.page = (screen.page + 1).min(last_page);
-        }
-    }
-}
-
 fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
     let nation = session.active_major_nation();
     match screen.mode {
@@ -333,13 +288,13 @@ fn deal_book_last_page(screen: &DealBookScreen, session: &GameSession) -> u16 {
 
 fn on_deal_book_tabs_click(
     mut click: On<Pointer<Click>>,
-    tabs: Query<&RelativeCursorPosition, With<DealBookTabs>>,
+    cursors: Query<&RelativeCursorPosition>,
     mut screens: Query<&mut DealBookScreen>,
 ) {
     let Ok(mut screen) = screens.single_mut() else {
         return;
     };
-    let Ok(cursor) = tabs.get(click.entity) else {
+    let Ok(cursor) = cursors.get(click.entity) else {
         return;
     };
     let Some(commodity) = tab_row(cursor, screen.advanced_production_unlocked) else {
@@ -378,15 +333,12 @@ fn hover_deal_book_tabs(
     retail: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     screen: Option<Single<&DealBookScreen>>,
-    mut tabs: Query<
-        (&RelativeCursorPosition, &mut DealBookTabVisual, &ImageNode),
-        With<DealBookTabs>,
-    >,
+    mut tabs: Query<(&RelativeCursorPosition, &mut DealBookTabVisual, &ImageNode)>,
 ) {
     let Some(screen) = screen else {
         return;
     };
-    let Ok((cursor, mut visual, image_node)) = tabs.single_mut() else {
+    let Ok((cursor, mut visual, image_node)) = tabs.get_mut(screen.tabs) else {
         return;
     };
     let shown = tab_row(cursor, screen.advanced_production_unlocked)
@@ -421,30 +373,18 @@ fn tab_row(
         .and_then(|row| deal_book_tab_commodity(advanced_production_unlocked, row))
 }
 
-#[allow(clippy::too_many_arguments)]
 fn sync_deal_book(
     mut commands: Commands,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     screen: Option<Single<&DealBookScreen, Changed<DealBookScreen>>>,
     children: Query<&Children>,
-    hosts: Query<(Entity, &DealBookHost)>,
-    titles: Query<(Entity, &DealBookTitle)>,
-    background: Option<Single<Entity, With<DealBookBackground>>>,
-    history: Option<Single<Entity, With<DealBookHistory>>>,
-    page_buttons: Query<(Entity, &DealBookPageButton)>,
     mut nodes: Query<&mut Node>,
     mut texts: Query<&mut Text>,
     mut pictures: Query<&mut ImageNode>,
     mut visibilities: Query<&mut Visibility>,
 ) {
     let Some(screen) = screen else {
-        return;
-    };
-    let Some(&background) = background.as_deref() else {
-        return;
-    };
-    let Some(&history) = history.as_deref() else {
         return;
     };
     let nation = session.active_major_nation();
@@ -455,10 +395,6 @@ fn sync_deal_book(
             &session.game,
             nation,
             *screen,
-            &hosts,
-            &titles,
-            background,
-            history,
             &children,
             &mut nodes,
             &mut texts,
@@ -472,10 +408,6 @@ fn sync_deal_book(
             nation,
             commodity,
             *screen,
-            &hosts,
-            &titles,
-            background,
-            history,
             &children,
             &mut nodes,
             &mut texts,
@@ -484,100 +416,89 @@ fn sync_deal_book(
         ),
     };
     let page = screen.page.min(last_page);
-    for (entity, button) in &page_buttons {
-        let enabled = match *button {
-            DealBookPageButton::Previous => page > 0,
-            DealBookPageButton::Next => page < last_page && last_page != 0,
-        };
-        set_page_button(&mut commands, &mut visibilities, entity, enabled);
-    }
+    set_page_button(
+        &mut commands,
+        &mut visibilities,
+        screen.page_previous,
+        page > 0,
+    );
+    set_page_button(
+        &mut commands,
+        &mut visibilities,
+        screen.page_next,
+        page < last_page && last_page != 0,
+    );
 }
 
-fn deal_book_host(hosts: &Query<(Entity, &DealBookHost)>, kind: DealBookHost) -> Entity {
-    hosts
-        .iter()
-        .find_map(|(entity, host)| (*host == kind).then_some(entity))
-        .expect("deal-book host is bound")
-}
-
-fn deal_book_title(titles: &Query<(Entity, &DealBookTitle)>, which: DealBookTitle) -> Entity {
-    titles
-        .iter()
-        .find_map(|(entity, title)| (*title == which).then_some(entity))
-        .expect("deal-book title is bound")
-}
-
-#[allow(clippy::too_many_arguments)]
 fn project_history(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     state: &GameState,
     nation: MajorNationId,
     screen: &DealBookScreen,
-    hosts: &Query<(Entity, &DealBookHost)>,
-    titles: &Query<(Entity, &DealBookTitle)>,
-    background: Entity,
-    history: Entity,
     children: &Query<&Children>,
     nodes: &mut Query<&mut Node>,
     texts: &mut Query<&mut Text>,
     pictures: &mut Query<&mut ImageNode>,
     visibilities: &mut Query<&mut Visibility>,
 ) -> u16 {
-    let sold = deal_book_host(hosts, DealBookHost::Sold);
-    let bought = deal_book_host(hosts, DealBookHost::Bought);
-    place_page(nodes, sold, PAGE_LEFT, PAGE_TOP);
-    place_page(nodes, bought, PAGE_RIGHT, PAGE_TOP);
+    place_page(nodes, screen.sold, PAGE_LEFT, PAGE_TOP);
+    place_page(nodes, screen.bought, PAGE_RIGHT, PAGE_TOP);
     place_page(
         nodes,
-        deal_book_host(hosts, DealBookHost::SoldByCategory),
+        screen.sold_by_category,
         PAGE_OFFSCREEN,
         PAGE_OFFSCREEN,
     );
     place_page(
         nodes,
-        deal_book_host(hosts, DealBookHost::BoughtByCategory),
+        screen.bought_by_category,
         PAGE_OFFSCREEN,
         PAGE_OFFSCREEN,
     );
-    set_picture(pictures, background, screen.pictures.history.clone());
-    commands.entity(history).insert(InteractionDisabled);
+    set_picture(pictures, screen.background, screen.pictures.history.clone());
+    commands.entity(screen.history).insert(InteractionDisabled);
     let sold_title = assets.ui_string(0x2740, 0x19);
     let bought_title = assets.ui_string(0x2740, 0x1a);
-    set_text(
-        texts,
-        deal_book_title(titles, DealBookTitle::Left),
-        sold_title,
-    );
-    set_text(
-        texts,
-        deal_book_title(titles, DealBookTitle::Right),
-        bought_title,
-    );
+    set_text(texts, screen.title_left, sold_title);
+    set_text(texts, screen.title_right, bought_title);
 
     let history_rows = state.deal_book_history(nation);
     let sold_pages = history_rows.sold_pages();
     let bought_pages = history_rows.bought_pages();
     let last_page = history_rows.last_page_index();
     let page = usize::from(screen.page.min(last_page));
-    clear_host(commands, sold, children);
-    clear_host(commands, bought, children);
+    clear_host(commands, screen.sold, children);
+    clear_host(commands, screen.bought, children);
     if page < sold_pages.len() {
-        set_visible(visibilities, sold, true);
-        spawn_history_rows(commands, assets, state, screen, sold, &sold_pages[page]);
+        set_visible(visibilities, screen.sold, true);
+        spawn_history_rows(
+            commands,
+            assets,
+            state,
+            screen,
+            screen.sold,
+            &sold_pages[page],
+        );
     } else {
-        set_visible(visibilities, sold, false);
+        set_visible(visibilities, screen.sold, false);
     }
     if page < bought_pages.len() {
-        set_visible(visibilities, bought, true);
-        spawn_history_rows(commands, assets, state, screen, bought, &bought_pages[page]);
+        set_visible(visibilities, screen.bought, true);
+        spawn_history_rows(
+            commands,
+            assets,
+            state,
+            screen,
+            screen.bought,
+            &bought_pages[page],
+        );
     } else {
-        set_visible(visibilities, bought, false);
+        set_visible(visibilities, screen.bought, false);
     }
     last_page
 }
 
-#[allow(clippy::too_many_arguments)]
 fn project_category(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
@@ -585,44 +506,34 @@ fn project_category(
     nation: MajorNationId,
     commodity: TradeCommodity,
     screen: &DealBookScreen,
-    hosts: &Query<(Entity, &DealBookHost)>,
-    titles: &Query<(Entity, &DealBookTitle)>,
-    background: Entity,
-    history: Entity,
     children: &Query<&Children>,
     nodes: &mut Query<&mut Node>,
     texts: &mut Query<&mut Text>,
     pictures: &mut Query<&mut ImageNode>,
     visibilities: &mut Query<&mut Visibility>,
 ) -> u16 {
-    let sold = deal_book_host(hosts, DealBookHost::SoldByCategory);
-    let bought = deal_book_host(hosts, DealBookHost::BoughtByCategory);
-    place_page(nodes, sold, PAGE_LEFT, PAGE_TOP);
-    place_page(nodes, bought, PAGE_RIGHT, PAGE_TOP);
-    place_page(
-        nodes,
-        deal_book_host(hosts, DealBookHost::Sold),
-        PAGE_OFFSCREEN,
-        PAGE_OFFSCREEN,
+    place_page(nodes, screen.sold_by_category, PAGE_LEFT, PAGE_TOP);
+    place_page(nodes, screen.bought_by_category, PAGE_RIGHT, PAGE_TOP);
+    place_page(nodes, screen.sold, PAGE_OFFSCREEN, PAGE_OFFSCREEN);
+    place_page(nodes, screen.bought, PAGE_OFFSCREEN, PAGE_OFFSCREEN);
+    set_picture(
+        pictures,
+        screen.background,
+        screen.pictures.category.clone(),
     );
-    place_page(
-        nodes,
-        deal_book_host(hosts, DealBookHost::Bought),
-        PAGE_OFFSCREEN,
-        PAGE_OFFSCREEN,
-    );
-    set_picture(pictures, background, screen.pictures.category.clone());
-    commands.entity(history).remove::<InteractionDisabled>();
+    commands
+        .entity(screen.history)
+        .remove::<InteractionDisabled>();
     let template = assets.get_string(0x2741, 3);
     let commodity_name = assets.string(commodity.resource().name_string());
     set_text(
         texts,
-        deal_book_title(titles, DealBookTitle::Left),
+        screen.title_left,
         fill_brackets(&template, &[&commodity_name]),
     );
     set_text(
         texts,
-        deal_book_title(titles, DealBookTitle::Right),
+        screen.title_right,
         category_date(assets, state.turn().economic_turn),
     );
 
@@ -631,35 +542,35 @@ fn project_category(
     let buy_pages = category.buy_pages();
     let last_page = category.last_page_index();
     let page = usize::from(screen.page.min(last_page));
-    clear_host(commands, sold, children);
-    clear_host(commands, bought, children);
+    clear_host(commands, screen.sold_by_category, children);
+    clear_host(commands, screen.bought_by_category, children);
     if page < sell_pages.len() {
-        set_visible(visibilities, sold, true);
+        set_visible(visibilities, screen.sold_by_category, true);
         spawn_category_rows(
             commands,
             assets,
             state,
             screen,
-            sold,
-            DealBookHost::SoldByCategory,
+            screen.sold_by_category,
+            true,
             &sell_pages[page],
         );
     } else {
-        set_visible(visibilities, sold, false);
+        set_visible(visibilities, screen.sold_by_category, false);
     }
     if page < buy_pages.len() {
-        set_visible(visibilities, bought, true);
+        set_visible(visibilities, screen.bought_by_category, true);
         spawn_category_rows(
             commands,
             assets,
             state,
             screen,
-            bought,
-            DealBookHost::BoughtByCategory,
+            screen.bought_by_category,
+            false,
             &buy_pages[page],
         );
     } else {
-        set_visible(visibilities, bought, false);
+        set_visible(visibilities, screen.bought_by_category, false);
     }
     last_page
 }
@@ -751,20 +662,13 @@ fn spawn_category_rows(
     state: &GameState,
     screen: &DealBookScreen,
     host: Entity,
-    host_kind: DealBookHost,
+    sold_side: bool,
     rows: &[DealBookCategoryRow],
 ) {
     let mut y = 0.0;
     for row in rows {
         match row {
             DealBookCategoryRow::Header => {
-                let group = match host_kind {
-                    DealBookHost::SoldByCategory => 1,
-                    DealBookHost::BoughtByCategory => 2,
-                    DealBookHost::Sold | DealBookHost::Bought => {
-                        panic!("category headers are only spawned on category hosts")
-                    }
-                };
                 spawn_text_row(
                     commands,
                     screen,
@@ -773,7 +677,7 @@ fn spawn_category_rows(
                     0.0,
                     PAGE_WIDTH,
                     true,
-                    assets.get_string(0x2741, group),
+                    assets.get_string(0x2741, if sold_side { 1 } else { 2 }),
                 );
             }
             DealBookCategoryRow::FallbackHeader => {

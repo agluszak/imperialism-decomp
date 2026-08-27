@@ -10,7 +10,7 @@ use crate::ui::GameSession;
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -82,14 +82,14 @@ struct LegendAtlases {
     terrain: Handle<Image>,
 }
 
-pub(crate) fn register_civilian_toolbar(app: &mut App) {
+pub(super) fn register_civilian_toolbar(app: &mut App) {
     app.add_systems(
         Update,
         sync_civilian_toolbar.run_if(in_state(AppState::StrategicMap)),
     );
 }
 
-pub(crate) fn bind_civilian_toolbar(
+pub(super) fn bind_civilian_toolbar(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -116,27 +116,24 @@ pub(crate) fn bind_civilian_toolbar(
     {
         let entity = tree.child(page, tag);
         command_entities[index] = entity;
-        commands
-            .entity(entity)
-            .insert((ActivateOnPress, InteractionDisabled))
-            .observe(
-                move |_: On<Activate>,
-                      mut session: ResMut<GameSession>,
-                      mut map: ResMut<StrategicMapSession>| {
-                    let Some(unit) = map.selection.civilian() else {
-                        return;
-                    };
-                    if session.game.set_civilian_idle_order(unit, mode) {
-                        map.cycle_selection(&mut session.game);
-                    }
-                },
-            );
+        commands.entity(entity).insert(InteractionDisabled).observe(
+            move |_: On<Activate>,
+                  mut session: ResMut<GameSession>,
+                  mut map: ResMut<StrategicMapSession>| {
+                let Some(unit) = map.selection.civilian() else {
+                    return;
+                };
+                if session.game.set_civilian_idle_order(unit, mode) {
+                    map.cycle_selection(&mut session.game);
+                }
+            },
+        );
     }
     let disband = tree.child(page, fourcc!("garr"));
     command_entities[3] = disband;
     commands
         .entity(disband)
-        .insert((ActivateOnPress, InteractionDisabled))
+        .insert(InteractionDisabled)
         .observe(
             |_: On<Activate>,
              keys: Res<ButtonInput<KeyCode>>,
@@ -270,9 +267,8 @@ fn spawn_civilian_legend(
 ) {
     let kind = unit.unit_type();
     let name = assets.string(kind.name_string());
-    let (name_font, name_layout, name_line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(12, 1))
-        .expect("retail civilian name text style");
+    let (name_font, name_layout, name_line_height, _) =
+        assets.text_style(RetailTextStylePreset::built(12, 1));
     spawn_legend_text(
         commands,
         legend,
@@ -658,9 +654,7 @@ fn legend_string(assets: &RetailUiAssets, index: i16) -> String {
 fn legend_text_style(
     assets: &mut RetailUiAssets,
 ) -> (TextFont, TextLayout, bevy::text::LineHeight, bool) {
-    assets
-        .text_style(RetailTextStylePreset::built(10, -2))
-        .expect("retail civilian legend text style")
+    assets.text_style(RetailTextStylePreset::built(10, -2))
 }
 
 #[allow(clippy::too_many_arguments)]

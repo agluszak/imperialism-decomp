@@ -41,7 +41,6 @@ pub use slots::{
     write_save_file,
 };
 
-#[allow(dead_code)]
 pub struct LegacySaveV62 {
     header: LegacySaveHeader,
     simulation: LegacySimulationPrefix,

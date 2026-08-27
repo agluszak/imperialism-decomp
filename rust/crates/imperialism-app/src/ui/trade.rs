@@ -11,8 +11,8 @@ use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
-use bevy::ui::{Checked, InteractionDisabled};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
+use bevy::ui::InteractionDisabled;
+use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -170,20 +170,15 @@ fn bind_trade_screen(
         fourcc!("topB"),
         Some(fourcc!("tool")),
         true,
+        AppState::Trade,
     );
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
 
-    let selected = tree.find(root, fourcc!("trad"));
-    commands
-        .entity(selected)
-        .insert((Checked, InteractionDisabled));
     let capacity = tree.find(root, fourcc!("mCap"));
     commands.entity(capacity).insert(InteractionDisabled);
     let advisories = TRADE_ADVISORIES.map(|(tag, _)| tree.find(root, tag));
     let advanced = session.game.technology().advanced_production_unlocked();
-    let text_style = assets
-        .text_style(RetailTextStylePreset::explicit(2, 0, 14, -1))
-        .expect("retail Trade row text style");
+    let text_style = assets.text_style(RetailTextStylePreset::explicit(2, 0, 14, -1));
     let text_color = assets.palette_color(0x13);
     let rows = TRADE_ROW_TAGS.map(|commodity, tag| {
         let row = tree.find(root, tag);
@@ -225,7 +220,7 @@ fn bind_trade_row(
 
     let [decrease, increase] = [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
         let step = tree.find(row, tag);
-        commands.entity(step).insert(ActivateOnPress).observe(
+        commands.entity(step).observe(
             move |activate: On<Activate>,
                   disabled: Query<Has<InteractionDisabled>>,
                   mut session: ResMut<GameSession>| {
@@ -554,7 +549,7 @@ fn bind_trade_card(
         .and_modify(|mut image| image.image_mode = NodeImageMode::Stretch);
     commands
         .entity(entity)
-        .insert((UiButton, ActivateOnPress, Pickable::default(), ZIndex(1)))
+        .insert((UiButton, Pickable::default(), ZIndex(1)))
         .observe(
             move |activate: On<Activate>,
                   disabled: Query<Has<InteractionDisabled>>,

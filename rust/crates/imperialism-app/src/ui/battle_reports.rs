@@ -11,7 +11,7 @@ use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{
     BattleReportSideText, BattleReportText, PictureId, RetailTextStylePreset, fourcc,
@@ -181,21 +181,15 @@ fn bind_battle_report(
     );
     ensure_battle_report_presentation(&mut assets, session, &mut reports.0);
     let okay = tree.find(root, fourcc!("okay"));
-    commands
-        .entity(okay)
-        .insert(ActivateOnPress)
-        .observe(on_battle_report_close);
+    commands.entity(okay).observe(on_battle_report_close);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
     let info = tree.find(root, fourcc!("info"));
-    commands
-        .entity(info)
-        .insert(ActivateOnPress)
-        .observe(on_battle_report_detail);
+    commands.entity(info).observe(on_battle_report_detail);
     let previous = tree.find(root, fourcc!("prev"));
     let next = tree.find(root, fourcc!("next"));
     for (entity, is_previous) in [(previous, true), (next, false)] {
-        commands.entity(entity).insert(ActivateOnPress).observe(
+        commands.entity(entity).observe(
             move |_: On<Activate>,
                   mut views: Query<&mut BattleReportView>,
                   session: Res<GameSession>| {
@@ -743,11 +737,10 @@ fn bind_detail(
     let lcor = tree.find(root, fourcc!("lcor"));
     let rcor = tree.find(root, fourcc!("rcor"));
     let okay = tree.find(root, fourcc!("okay"));
-    commands.entity(okay).insert(ActivateOnPress);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
     for (entity, previous) in [(lcor, true), (rcor, false)] {
-        commands.entity(entity).insert(ActivateOnPress).observe(
+        commands.entity(entity).observe(
             move |_: On<Activate>,
                   session: Res<GameSession>,
                   selected: Query<&BattleReportView>,
@@ -770,9 +763,7 @@ fn bind_detail(
             },
         );
     }
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(14, 1))
-        .expect("retail battle-detail nation header style");
+    let (font, layout, line_height, _) = assets.text_style(RetailTextStylePreset::built(14, 1));
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0xd2);
     let report_text = battle_report_text(Some(&assets), &session, &reports.0, view.selected);
@@ -1012,9 +1003,7 @@ fn spawn_army_detail_row(
         Pickable::IGNORE,
         ChildOf(container),
     ));
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(12, -1))
-        .expect("retail army-boy name style");
+    let (font, layout, line_height, _) = assets.text_style(RetailTextStylePreset::built(12, -1));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -1034,9 +1023,8 @@ fn spawn_army_detail_row(
     let level = row.stock_or_required;
     if level < 1 {
         let training = assets.get_string(0x273c, if level == -86 { 0x20 } else { 0x1f });
-        let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(1, 0, 12, -1))
-            .expect("retail army training style");
+        let (font, layout, line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, -1));
         commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
@@ -1149,9 +1137,8 @@ fn spawn_navy_detail_row(
     ));
     let label = format!("{} {}", navy_type_name(assets, ship), row.name);
     // InitializeUiTextStyleDescriptor(2, 0xc, 0x2b6a, 3) → family 3, italic, 12pt.
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 2, 12, -1))
-        .expect("retail navy-boy label style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 2, 12, -1));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -1206,9 +1193,8 @@ fn spawn_navy_detail_row(
         ));
     } else {
         let training = assets.get_string(0x273c, 0x1b);
-        let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(1, 0, 12, -1))
-            .expect("retail navy training style");
+        let (font, layout, line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, -1));
         commands.spawn((
             Node {
                 position_type: PositionType::Absolute,
@@ -1279,9 +1265,8 @@ fn spawn_merchant_detail_row(
     ));
     // FormatLocalizedCommodityCountLabelByIndex(count=-1): singular group, no number prefix.
     let commodity = assets.get_string(0x2716, resource as u16);
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, 12, -1))
-        .expect("retail merchant commodity label style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, 12, -1));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -1304,9 +1289,7 @@ fn spawn_merchant_detail_row(
         // Theme 0x2b67 → palette 0.
         (assets.get_string(0x273c, 0x1b), 0)
     };
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(12, -1))
-        .expect("retail merchant status style");
+    let (font, layout, line_height, _) = assets.text_style(RetailTextStylePreset::built(12, -1));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -1350,9 +1333,7 @@ fn spawn_item_detail_row(
     } else {
         fill_brackets(&assets.get_string(0x273c, 0x1d), &[&count_text, &kind_name])
     };
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(10, -1))
-        .expect("retail item/rupt header style");
+    let (font, layout, line_height, _) = assets.text_style(RetailTextStylePreset::built(10, -1));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -1417,9 +1398,7 @@ fn spawn_text_only_detail_row(
     name: &str,
     left: i32,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(10, 0))
-        .expect("retail battle-detail text row style");
+    let (font, layout, line_height, _) = assets.text_style(RetailTextStylePreset::built(10, 0));
     commands.spawn((
         Node {
             position_type: PositionType::Absolute,

@@ -17,7 +17,7 @@ use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{
     OKAY, PictureId, RetailTextStylePreset, StringGroup, StringResourceId, fourcc,
@@ -153,7 +153,7 @@ fn bind_city_site_controls(
     let cancel = tree.find(root, fourcc!("canc"));
     commands
         .entity(cancel)
-        .insert((CitySiteAction::Cancel, ActivateOnPress))
+        .insert(CitySiteAction::Cancel)
         .observe(on_city_site_activate);
     // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
@@ -209,7 +209,6 @@ fn bind_city_site_intro(
     let okay = tree.find(root, OKAY);
     commands
         .entity(okay)
-        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>();
     commands.entity(root).insert(CitySiteWired);
 }
@@ -340,13 +339,11 @@ fn bind_new_city_dialog(
     let okay = tree.find(root, OKAY);
     commands
         .entity(okay)
-        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>()
         .observe(on_new_city_activate);
     let cancel = tree.find(root, fourcc!("cncl"));
     commands
         .entity(cancel)
-        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>();
     dismiss_on_activate(&mut commands, okay, root);
     dismiss_on_activate(&mut commands, cancel, root);
@@ -518,7 +515,6 @@ fn bind_city_site_notice(
     let okay = tree.find(root, OKAY);
     commands
         .entity(okay)
-        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>();
     commands.entity(root).insert(CitySiteWired);
 }
@@ -588,9 +584,8 @@ fn set_styled_text(
     alignment: i32,
     palette: u8,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 0, point_size, alignment))
-        .expect("retail city-site text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, point_size, alignment));
     commands.entity(entity).insert((
         Text::new(retail_lines(value.as_ref())),
         font,

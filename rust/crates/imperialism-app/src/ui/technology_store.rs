@@ -11,7 +11,7 @@ use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
+use bevy::ui_widgets::{Activate, Button};
 use imperialism_core::{
     CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
 };
@@ -74,7 +74,6 @@ impl Plugin for TechnologyStorePlugin {
 pub(crate) fn bind_open_control(commands: &mut Commands, entity: Entity) {
     commands
         .entity(entity)
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_open_technology_store);
 }
@@ -120,16 +119,15 @@ fn bind_technology_store(
         fourcc!("topB"),
         Some(fourcc!("tool")),
         false,
+        AppState::TechnologyStore,
     );
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_leave_technology_store);
     commands
         .entity(tree.find(root, fourcc!("quer")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_technology_help);
 
@@ -149,20 +147,17 @@ fn bind_technology_store(
     let previous = tree.find(root, fourcc!("lcor"));
     let next = tree.find(root, fourcc!("rcor"));
     let turn = |commands: &mut Commands, entity: Entity, delta: isize| {
-        commands
-            .entity(entity)
-            .insert((Button, ActivateOnPress))
-            .observe(
-                move |_: On<Activate>, mut views: Query<&mut TechnologyStoreView>| {
-                    if let Ok(mut view) = views.get_mut(root) {
-                        let last_page = view.rows.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE;
-                        view.current_page = view
-                            .current_page
-                            .saturating_add_signed(delta)
-                            .min(last_page);
-                    }
-                },
-            );
+        commands.entity(entity).insert(Button).observe(
+            move |_: On<Activate>, mut views: Query<&mut TechnologyStoreView>| {
+                if let Ok(mut view) = views.get_mut(root) {
+                    let last_page = view.rows.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE;
+                    view.current_page = view
+                        .current_page
+                        .saturating_add_signed(delta)
+                        .min(last_page);
+                }
+            },
+        );
     };
     turn(&mut commands, previous, -1);
     turn(&mut commands, next, 1);
@@ -242,7 +237,6 @@ fn technology_row_scene(
         let image = idle.clone();
         bsn! {
             Button
-            ActivateOnPress
             template(move |_context| Ok(TechnologyPurchase(technology)))
             template(move |_context| Ok(ImageNode::new(image.clone())))
             template(move |_context| Ok(RetailPictureSwap {
@@ -267,7 +261,6 @@ fn technology_row_scene(
                     left: px(0), top: px(0), width: px(64), height: px(63),
                 }
                 Button
-                ActivateOnPress
                 template(move |_context| Ok(TechnologyHistory(technology)))
                 template(move |_context| Ok(ImageNode::new(history_picture.clone())))
                 template(move |_context| Ok(RetailPictureSwap {
@@ -398,9 +391,8 @@ fn bind_technology_modals(
     for (root, history) in &histories {
         let view = tree.view(root);
         let technology = history.0;
-        let (title_font, title_layout, title_line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(1, 0, 18, 1))
-            .expect("retail technology-history title style");
+        let (title_font, title_layout, title_line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(1, 0, 18, 1));
         commands.entity(view.find(fourcc!("titl"))).insert((
             Text::new(assets.string(technology.name_string())),
             title_font,
@@ -415,9 +407,8 @@ fn bind_technology_modals(
 
         // ScrollArea / ScrollPosition / overflow come from codegen for TScrollView.
         let scroll = view.find(fourcc!("scvw"));
-        let (body_font, body_layout, body_line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(1, 0, 12, -2))
-            .expect("retail technology-history body style");
+        let (body_font, body_layout, body_line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, -2));
         commands.spawn((
             Node {
                 width: percent(100),
@@ -432,7 +423,6 @@ fn bind_technology_modals(
             ChildOf(scroll),
         ));
         let okay = view.find(fourcc!("okay"));
-        commands.entity(okay).insert(ActivateOnPress);
         dismiss_on_activate(&mut commands, okay, root);
         bind_modal_keys(&mut commands, root, Some(okay), None);
     }
@@ -441,7 +431,6 @@ fn bind_technology_modals(
         let body = assets.ui_string(0x2745, 4);
         linger.set_title(&mut commands, &mut assets, "");
         linger.set_body(&mut commands, &mut assets, body);
-        commands.entity(linger.okay).insert(ActivateOnPress);
         commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
 }

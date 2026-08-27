@@ -1,35 +1,20 @@
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
 use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
-use crate::ui::generated;
-use crate::ui::hover_help::{HoverHelpText, bind_hover_help_texts};
-use crate::ui::load_save::bind_open_flag_menu;
+use crate::ui::hover_help::HoverHelpText;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailTree};
-use crate::ui::strategic_map::{
-    MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
-    animate_civilian_work, animate_strategic_selection, bind_army_toolbar, bind_civilian_toolbar,
-    bind_minimap, bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain,
-    on_strategic_map_click, register_army_toolbar, register_civilian_toolbar, register_map_click,
-    register_map_keys, register_map_modals, register_navy_toolbar, register_ocean_view,
-    sync_minimap, sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
-};
-use crate::ui::window::no_modal;
+use crate::ui::retail::RetailTree;
+use crate::ui::strategic_map::{StrategicMapSession, StrategicSelection};
 use bevy::prelude::*;
-use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
-use bevy::window::PrimaryWindow;
-use imperialism_core::{NationId, TurnAlert};
-use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
+use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui_widgets::Activate;
+use imperialism_core::TurnAlert;
+use imperialism_formats::{FourCc, TRADE, fourcc};
 use std::collections::VecDeque;
-
-#[derive(Component)]
-struct StrategicMapRoot;
 
 #[derive(Component)]
 pub(crate) struct GameStatusView {
@@ -41,38 +26,15 @@ pub(crate) struct GameShellPlugin;
 
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
-        register_civilian_toolbar(app);
-        register_army_toolbar(app);
-        register_navy_toolbar(app);
-        register_map_click(app);
-        register_map_keys(app);
-        register_map_modals(app);
-        register_ocean_view(app);
         map_help::register(app);
         app.add_systems(
-            OnEnter(AppState::StrategicMap),
-            (
-                enter_strategic_map_view,
-                spawn_strategic_map,
-                bind_strategic_map,
-            )
-                .chain(),
-        )
-        .add_systems(
             Update,
             render_game_status.run_if(resource_exists::<GameSession>),
         )
         .add_systems(
             Update,
             (
-                scroll_strategic_map.run_if(no_modal),
                 sync_status_date_hover,
-                sync_strategic_base_terrain,
-                sync_strategic_units,
-                sync_strategic_selection,
-                animate_strategic_selection,
-                animate_civilian_work,
-                sync_minimap,
                 spawn_turn_alerts_if_pending,
                 bind_turn_alert_notice,
                 bind_turn_summary_notice,
@@ -83,245 +45,18 @@ impl Plugin for GameShellPlugin {
     }
 }
 
-fn scroll_strategic_map(
-    time: Res<Time>,
-    mut last_scroll_tick: Local<Option<u128>>,
-    window: Single<&Window, With<PrimaryWindow>>,
-    mut session: ResMut<GameSession>,
-    mut map: ResMut<StrategicMapSession>,
-) {
-    let Some(cursor) = window.cursor_position() else {
-        return;
-    };
-    let edges = strategic_edge_scroll_mask(cursor, Vec2::new(window.width(), window.height()));
-    if edges.is_empty() {
-        return;
-    }
-    let tick16 = time.elapsed().as_millis() / 16;
-    if last_scroll_tick.is_some_and(|last| last + 3 >= tick16) {
-        return;
-    }
-    *last_scroll_tick = Some(tick16);
-    map.apply(&mut session.game, MapAction::Scroll(edges));
-}
-
-fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
-    const EDGE_PIXELS: f32 = 4.0;
-
-    let x = position.x;
-    let y = position.y;
-    if x <= -200.0 || y <= -200.0 || x >= dialog_size.x + 200.0 || y >= dialog_size.y + 200.0 {
-        return MapEdges::empty();
-    }
-    let mut edges = MapEdges::empty();
-    if x <= EDGE_PIXELS {
-        edges |= MapEdges::LEFT;
-    } else if x >= dialog_size.x - EDGE_PIXELS {
-        edges |= MapEdges::RIGHT;
-    }
-    if y <= EDGE_PIXELS {
-        edges |= MapEdges::TOP;
-    } else if y >= dialog_size.y - EDGE_PIXELS {
-        edges |= MapEdges::BOTTOM;
-    }
-    edges
-}
-
-fn spawn_strategic_map(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::mapview_2013()).id();
-    commands
-        .entity(root)
-        .insert((StrategicMapRoot, DespawnOnExit(AppState::StrategicMap)));
-}
-
-fn enter_strategic_map_view(session: Res<GameSession>, mut map: ResMut<StrategicMapSession>) {
-    let nation = session.game.turn().active_nation;
-    let idle = session.game.first_idle_civilian(nation).map(|(id, _)| id);
-    map.selection = StrategicSelection::Civilian(idle);
-    if let Some(tile) = session.game.first_idle_civilian_tile(nation) {
-        map.view = StrategicView::Detailed {
-            origin: session.game.map().viewport_origin_centered_on(tile),
-        };
-    } else if map.view.is_overview() {
-        let origin = map.view.detailed_origin(&session.game);
-        map.view = StrategicView::Detailed { origin };
-    }
-}
-
-fn bind_strategic_map(
-    mut commands: Commands,
-    root: Single<Entity, Added<StrategicMapRoot>>,
-    tree: RetailTree,
-    mut assets: RetailUiAssets,
-    mut session: ResMut<GameSession>,
-    map: Res<StrategicMapSession>,
-    arrow_parts: Query<&super::retail::NumberedArrowParts>,
-    placard_parts: Query<&super::retail::PlacardParts>,
-) {
-    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
-    bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
-    commands
-        .entity(tree.find(*root, fourcc!("DONE")))
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_end_turn);
-    let flag = tree.find(*root, fourcc!("Flag"));
-    bind_open_flag_menu(&mut commands, flag);
-    // `quer` is enabled by `bind_native_game_screen_nav` / query floater binding.
-    // Generated `TPictureButton` already carries `RetailPressedOverlay`.
-    super::technology_store::bind_open_control(&mut commands, tree.find(*root, fourcc!("mmap")));
-    commands
-        .entity(tree.find(*root, fourcc!("send")))
-        .insert(Visibility::Hidden);
-    let land = bind_strategic_base_terrain(
-        &mut commands,
-        *root,
-        &tree,
-        &mut assets,
-        &session,
-        map.view.detailed_origin(&session.game),
-    );
-    commands.entity(land).observe(on_strategic_map_click);
-    // `TCountry` lazily fills this serialized cache while the view is bound.
-    // Continuous map projection reads the resulting tile without mutating game
-    // state.
-    for nation in NationId::all() {
-        session.game.overlay_anchor_for_nation(nation);
-    }
-    let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree, &session);
-    commands.entity(ocean).observe(on_strategic_map_click);
-    bind_minimap(
-        &mut commands,
-        *root,
-        &tree,
-        &mut assets,
-        &session,
-        map.view.detailed_origin(&session.game),
-    );
-    bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_army_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
-    bind_navy_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
-    bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    bind_strategic_hover(&mut commands, &mut assets, *root, &tree);
-}
-
-fn on_end_turn(
-    _activate: On<Activate>,
-    mut commands: Commands,
-    mut session: ResMut<GameSession>,
-    prefs: Res<super::preferences::GamePreferences>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    let stop = session
-        .game
-        .finish_player_orders(prefs.turn_alerts_enabled());
-    let stop = session
-        .game
-        .apply_land_battle_watch_policy(stop, prefs.tactical_battles_enabled());
-    match stop {
-        imperialism_core::TurnStop::TurnAlerts(alerts) => {
-            commands.insert_resource(TurnAlertQueue(alerts.into()));
-            next_state.set(AppState::StrategicMap);
-        }
-        stop => {
-            commands.remove_resource::<TurnAlertQueue>();
-            apply_turn_stop(stop, &mut next_state);
-        }
-    }
-}
-
-fn bind_strategic_hover(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-) {
-    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
-    let civilian_seas = format!(
-        "{}, {}",
-        assets.get_string(0x2730, 0x12),
-        assets.get_string(0x2730, 8)
-    );
-    bind_hover_help_texts(
-        commands,
-        root,
-        tree,
-        [
-            (fourcc!("seas"), civilian_seas),
-            (fourcc!("ZmOt"), String::new()),
-        ],
-    );
-    commands
-        .entity(tree.find(root, fourcc!("ZmOt")))
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>()
-        .observe(on_ocean_toggle);
-}
-
-fn on_ocean_toggle(
-    _activate: On<Activate>,
-    keys: Res<ButtonInput<KeyCode>>,
-    mut commands: Commands,
-    assets: RetailUiAssets,
-    mut session: ResMut<GameSession>,
-    mut map: ResMut<StrategicMapSession>,
-) {
-    if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
-        let tag = session.game.map().scenario_tag.as_str();
-        let body = if tag.is_empty() {
-            String::from("Imperialism")
-        } else {
-            crate::ui::fill_brackets(&assets.get_string(0x273f, 1), &[tag])
-        };
-        spawn_linger_dialog(
-            &mut commands,
-            TurnSummaryNotice(body),
-            AppState::StrategicMap,
-        );
-        return;
-    }
-    map.apply(&mut session.game, MapAction::ToggleZoom);
-}
-
-fn bind_strategic_map_management_pictures(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    root: Entity,
-    tree: &RetailTree,
-) {
-    let toolbar = tree.find(root, fourcc!("tool"));
-    for (tag, idle_id) in [
-        (fourcc!("dipl"), PictureId::new(0x24d9)),
-        (fourcc!("trad"), PictureId::new(0x24db)),
-        (fourcc!("city"), PictureId::new(0x24dd)),
-        (fourcc!("tran"), PictureId::new(0x24df)),
-    ] {
-        let entity = tree.find(toolbar, tag);
-        let idle = assets.picture(idle_id);
-        let active = assets.picture(idle_id.offset(1));
-        commands.entity(entity).insert((
-            ImageNode::new(idle.clone()),
-            RetailPictureSwap { idle, active },
-        ));
-    }
-}
-
 pub(crate) fn bind_game_status_display(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
 ) {
-    let (season_font, season_layout, season_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
-            1, 0, 12, -2,
-        ))
-        .expect("retail season status text style");
-    let (treasury_font, treasury_layout, treasury_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
-            1, 0, 12, 1,
-        ))
-        .expect("retail treasury status text style");
+    let (season_font, season_layout, season_line_height, _) = assets.text_style(
+        imperialism_formats::RetailTextStylePreset::explicit(1, 0, 12, -2),
+    );
+    let (treasury_font, treasury_layout, treasury_line_height, _) = assets.text_style(
+        imperialism_formats::RetailTextStylePreset::explicit(1, 0, 12, 1),
+    );
     // Retail draws the nominal text first, then its offset "shadow" copy over it.
     // Bevy draws shadows behind text, so use the retail shadow as the visible face.
     let text_color = assets.palette_color(0x28);
@@ -356,16 +91,20 @@ pub(crate) fn bind_game_status_display(
 fn render_game_status(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
-    views: Query<&GameStatusView>,
+    views: Query<Ref<GameStatusView>>,
     mut texts: Query<&mut Text>,
 ) {
-    let nation = session.active_major_nation();
+    let session_changed = session.is_changed();
     let date = {
         let season = retail.ui_string(10_000, (session.game.turn().economic_turn % 4) as u16);
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
+    let nation = session.active_major_nation();
     let treasury = format_currency(session.game.nations().major(nation).common.treasury);
     for view in &views {
+        if !session_changed && !view.is_added() {
+            continue;
+        }
         texts
             .get_mut(view.date)
             .expect("bound status date text")
@@ -439,6 +178,7 @@ pub(crate) fn bind_native_game_screen_nav(
     toolbar_tag: FourCc,
     leave_toolbar_tag: Option<FourCc>,
     query_floater: bool,
+    current: AppState,
 ) {
     if query_floater {
         bind_query_floater_control(commands, root, tree);
@@ -454,17 +194,19 @@ pub(crate) fn bind_native_game_screen_nav(
         (city, AppState::City),
         (diplomacy, AppState::Diplomacy),
     ] {
+        if destination == current {
+            commands
+                .entity(entity)
+                .insert((Checked, InteractionDisabled));
+            continue;
+        }
         commands
             .entity(entity)
-            .insert(ActivateOnPress)
+            .remove::<Checked>()
             .remove::<InteractionDisabled>()
             .observe(
-                move |_: On<Activate>,
-                      state: Res<State<AppState>>,
-                      mut next_state: ResMut<NextState<AppState>>| {
-                    if destination != *state.get() {
-                        next_state.set(destination);
-                    }
+                move |_: On<Activate>, mut next_state: ResMut<NextState<AppState>>| {
+                    next_state.set(destination);
                 },
             );
     }
@@ -473,7 +215,6 @@ pub(crate) fn bind_native_game_screen_nav(
         let leave = tree.find(toolbar, fourcc!("end "));
         commands
             .entity(leave)
-            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
             .observe(
                 move |_: On<Activate>,
@@ -491,10 +232,10 @@ pub(crate) fn bind_native_game_screen_nav(
 struct TurnAlertNotice(TurnAlert);
 
 #[derive(Resource)]
-struct TurnAlertQueue(VecDeque<TurnAlert>);
+pub(crate) struct TurnAlertQueue(pub(crate) VecDeque<TurnAlert>);
 
 #[derive(Component)]
-struct TurnSummaryNotice(String);
+pub(crate) struct TurnSummaryNotice(pub(crate) String);
 
 fn spawn_turn_alerts_if_pending(
     mut commands: Commands,
@@ -532,7 +273,6 @@ fn bind_turn_alert_notice(
     linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
     commands.entity(linger.cancel).insert(Visibility::Hidden);
@@ -565,10 +305,7 @@ fn bind_turn_summary_notice(
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, "Imperialism");
     linger.set_body(&mut commands, &mut assets, &notice.0);
-    commands
-        .entity(linger.okay)
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>();
+    commands.entity(linger.okay).remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
@@ -582,52 +319,77 @@ fn on_turn_alert_dismiss(_activate: On<Activate>, mut queue: ResMut<TurnAlertQue
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTag;
 
     #[test]
-    fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {
-        let dialog = Vec2::new(640.0, 480.0);
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(5.0, 5.0), dialog),
-            MapEdges::empty()
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(4.0, 240.0), dialog),
-            MapEdges::LEFT
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(636.0, 240.0), dialog),
-            MapEdges::RIGHT
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(320.0, 4.0), dialog),
-            MapEdges::TOP
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(320.0, 476.0), dialog),
-            MapEdges::BOTTOM
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(-199.0, -199.0), dialog),
-            MapEdges::TOP | MapEdges::LEFT
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(-200.0, 240.0), dialog),
-            MapEdges::empty()
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(840.0, 240.0), dialog),
-            MapEdges::empty()
-        );
+    fn management_nav_marks_only_the_current_screen_checked() {
+        #[derive(Component)]
+        struct TestNavRoot;
 
-        // The map child ends at x=517 beneath the right toolbar. Retail tests
-        // the enclosing 640-pixel dialog, so toolbar hover is not an edge.
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(520.0, 120.0), dialog),
-            MapEdges::empty()
-        );
-        assert_eq!(
-            strategic_edge_scroll_mask(Vec2::new(620.0, 120.0), dialog),
-            MapEdges::empty()
+        fn bind_city_nav(
+            mut commands: Commands,
+            root: Single<Entity, Added<TestNavRoot>>,
+            tree: RetailTree,
+        ) {
+            bind_native_game_screen_nav(
+                &mut commands,
+                *root,
+                &tree,
+                fourcc!("topB"),
+                None,
+                false,
+                AppState::City,
+            );
+        }
+
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_systems(Update, bind_city_nav);
+        let root = app.world_mut().spawn((TestNavRoot, Node::default())).id();
+        let toolbar = app
+            .world_mut()
+            .spawn((RetailTag(fourcc!("topB")), Node::default(), ChildOf(root)))
+            .id();
+        for tag in [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")] {
+            app.world_mut()
+                .spawn((RetailTag(tag), Node::default(), ChildOf(toolbar)));
+        }
+        app.update();
+
+        let mut checked = Vec::new();
+        let mut enabled = Vec::new();
+        let nav_tags = [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")];
+        for (tag, has_checked, disabled) in app
+            .world_mut()
+            .query::<(&RetailTag, Has<Checked>, Has<InteractionDisabled>)>()
+            .iter(app.world())
+        {
+            if !nav_tags.contains(&tag.0) {
+                continue;
+            }
+            if has_checked {
+                checked.push(tag.0);
+            }
+            if !disabled {
+                enabled.push(tag.0);
+            }
+        }
+        assert_eq!(checked, vec![fourcc!("city")]);
+        assert_eq!(enabled.len(), 3);
+        assert!(!enabled.contains(&fourcc!("city")));
+    }
+
+    #[test]
+    fn ordinary_shell_buttons_do_not_use_press_time_activation() {
+        let source = include_str!("game_shell.rs");
+        let binder = source
+            .split("pub(crate) fn bind_native_game_screen_nav")
+            .nth(1)
+            .and_then(|rest| rest.split("#[derive(Component)]").next())
+            .expect("nav binder");
+        assert!(
+            !binder.contains("OnPress"),
+            "nav/leave must activate on release"
         );
     }
 }

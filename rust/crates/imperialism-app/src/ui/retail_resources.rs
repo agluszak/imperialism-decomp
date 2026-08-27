@@ -347,19 +347,6 @@ mod tests {
     }
 
     #[test]
-    fn technology_history_text_id_is_raw_text_resource() {
-        assert_eq!(Technology::CottonGin.history_text_id(), 3 + 0x08fc);
-    }
-
-    #[test]
-    fn technology_store_pictures_are_adjacent_pair() {
-        assert_eq!(
-            Technology::CottonGin.store_pictures(),
-            [PictureId::new(0x08ff + 6), PictureId::new(0x08ff + 7),]
-        );
-    }
-
-    #[test]
     fn civilian_developer_uses_special_disband_and_work_report_offsets() {
         assert_eq!(
             CivilianUnitKind::Developer.disband_confirmation_string(),

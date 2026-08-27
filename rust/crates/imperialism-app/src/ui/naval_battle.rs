@@ -14,7 +14,7 @@ use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use bevy::window::PrimaryWindow;
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, fourcc};
@@ -44,12 +44,10 @@ struct NavalBattlefield {
 }
 
 #[derive(Component, Clone, Copy)]
-#[allow(dead_code)]
-struct NavalBattleUnit(ShipId);
+struct NavalBattleUnit;
 
 #[derive(Component, Clone, Copy)]
-#[allow(dead_code)]
-struct NavalBattleReachable(i32);
+struct NavalBattleReachable;
 
 fn navy_viewport(origin_x: i32, origin_y: i32) -> TacticalViewport {
     TacticalViewport::navy(IVec2::new(origin_x, origin_y))
@@ -162,7 +160,6 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
     ] {
         commands
             .entity(tree.find(root, tag))
-            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
             .observe(
                 move |_: On<Activate>,
@@ -266,7 +263,7 @@ fn project_naval_battle(
     for tile in &reachable {
         let (x, y, width, height) = navy_tile_xywh(&tile_map, *tile);
         commands.spawn((
-            NavalBattleReachable(*tile),
+            NavalBattleReachable,
             ChildOf(field),
             Node {
                 position_type: PositionType::Absolute,
@@ -290,7 +287,7 @@ fn project_naval_battle(
         };
         let selected = selected == Some(unit.ship);
         commands.spawn((
-            NavalBattleUnit(unit.ship),
+            NavalBattleUnit,
             ChildOf(field),
             Node {
                 position_type: PositionType::Absolute,
@@ -636,7 +633,7 @@ mod tests {
                     return None;
                 }
                 let (x, y, _, _) = navy_unit_xywh(&navy_viewport(0, 0), unit.tile);
-                Some((unit.ship, x, y))
+                Some((x, y))
             })
             .collect();
         assert_eq!(
@@ -662,14 +659,11 @@ mod tests {
             .world_mut()
             .query::<(&NavalBattleUnit, &Node)>()
             .iter(app.world())
-            .map(|(unit, node)| {
-                let (left, top) = node_left_top(node);
-                (unit.0, left, top)
-            })
+            .map(|(_, node)| node_left_top(node))
             .collect();
-        projected.sort_by_key(|(id, _, _)| *id);
+        projected.sort();
         let mut expected = expected;
-        expected.sort_by_key(|(id, _, _)| *id);
+        expected.sort();
         assert_eq!(projected, expected);
         let expected_caption = {
             let session = app.world().resource::<GameSession>();

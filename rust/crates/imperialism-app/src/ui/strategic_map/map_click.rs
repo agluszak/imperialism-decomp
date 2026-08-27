@@ -93,14 +93,14 @@ fn navy_selection_cursor_token(
     navy_cursor_token(state.navy_command_for_tile(force, tile))
 }
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         sync_strategic_map_cursor.run_if(in_state(AppState::StrategicMap)),
     );
 }
 
-pub(crate) fn on_strategic_map_click(
+pub(super) fn on_strategic_map_click(
     click: On<Pointer<Click>>,
     mut commands: Commands,
     land: Query<

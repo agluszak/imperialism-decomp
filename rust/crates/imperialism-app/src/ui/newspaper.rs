@@ -6,7 +6,7 @@ use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
 
@@ -64,7 +64,6 @@ fn bind_newspaper(
     );
     commands
         .entity(tree.find(root, fourcc!("end ")))
-        .insert(ActivateOnPress)
         .observe(on_newspaper_activate);
 }
 
@@ -132,15 +131,12 @@ fn fill_newspaper_stories(
         return;
     };
     let main = tree.find(root, fourcc!("main"));
-    let (feature_font, feature_layout, feature_line, _) = assets
-        .text_style(RetailTextStylePreset::explicit(2, 0, 14, 2))
-        .expect("newspaper feature headline style");
-    let (event_font, event_layout, event_line, _) = assets
-        .text_style(RetailTextStylePreset::explicit(2, 1, 14, 2))
-        .expect("newspaper event headline style");
-    let (body_font, body_layout, body_line, _) = assets
-        .text_style(RetailTextStylePreset::explicit(2, 0, 12, 2))
-        .expect("newspaper body style");
+    let (feature_font, feature_layout, feature_line, _) =
+        assets.text_style(RetailTextStylePreset::explicit(2, 0, 14, 2));
+    let (event_font, event_layout, event_line, _) =
+        assets.text_style(RetailTextStylePreset::explicit(2, 1, 14, 2));
+    let (body_font, body_layout, body_line, _) =
+        assets.text_style(RetailTextStylePreset::explicit(2, 0, 12, 2));
 
     let columns = COLUMN_X.map(|left| {
         commands

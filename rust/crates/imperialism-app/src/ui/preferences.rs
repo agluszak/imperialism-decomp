@@ -1,7 +1,7 @@
 use super::generated;
 use super::hover_help::{HoverHelpText, bind_hover_help_texts};
 use super::query_floater::bind_query_floater_control;
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::{RetailTree, RetailTwoPicSliderParts, RetailUiAssets};
 use crate::media::RetailAudioAssets;
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
@@ -144,6 +144,7 @@ fn bind_preferences(
     tree: RetailTree,
     prefs: Res<GamePreferences>,
     assets: RetailUiAssets,
+    slider_parts: Query<&RetailTwoPicSliderParts>,
 ) {
     let root = *root;
     bind_query_floater_control(&mut commands, root, &tree);
@@ -197,24 +198,41 @@ fn bind_preferences(
         checkboxes.push((checkbox, slot));
     }
 
-    let music_hover = assets.ui_string(0x2743, 0x27);
-    let sound_hover = assets.ui_string(0x2743, 0x26);
-    let music = tree.find(root, fourcc!("musi"));
-    let sound = tree.find(root, fourcc!("soun"));
-    bind_volume_slider(
-        &mut commands,
-        music,
-        prefs.values[PreferenceSlot::MusicVolume],
-        music_hover,
-        PreferenceSlot::MusicVolume,
-    );
-    bind_volume_slider(
-        &mut commands,
-        sound,
-        prefs.values[PreferenceSlot::SoundVolume],
-        sound_hover,
-        PreferenceSlot::SoundVolume,
-    );
+    let [music, sound] = [
+        (fourcc!("musi"), 0x27u16, PreferenceSlot::MusicVolume),
+        (fourcc!("soun"), 0x26, PreferenceSlot::SoundVolume),
+    ]
+    .map(|(tag, hover, slot)| {
+        let slider_root = tree.find(root, tag);
+        let input = slider_parts
+            .get(slider_root)
+            .expect("bound two-pic slider")
+            .input;
+        commands
+            .entity(slider_root)
+            .insert(HoverHelpText(assets.ui_string(0x2743, hover)))
+            .remove::<InteractionDisabled>();
+        let write_on_drag = matches!(slot, PreferenceSlot::MusicVolume);
+        commands
+            .entity(input)
+            .insert(SliderValue(f32::from(prefs.values[slot])))
+            .observe(slider_self_update)
+            .remove::<InteractionDisabled>()
+            .observe(
+                move |change: On<ValueChange<f32>>,
+                      mut prefs: ResMut<GamePreferences>,
+                      mut commands: Commands,
+                      mut audio: RetailAudioAssets| {
+                    if write_on_drag || change.is_final {
+                        prefs.values[slot] = change.value as i16;
+                    }
+                    if matches!(slot, PreferenceSlot::SoundVolume) && change.is_final {
+                        audio.play(&mut commands, SoundId::UI_CLICK);
+                    }
+                },
+            );
+        input
+    });
     commands.entity(root).insert(PreferencesView {
         music,
         sound,
@@ -236,49 +254,6 @@ fn bind_preferences(
     commands
         .entity(tree.find(root, fourcc!("opca")))
         .remove::<InteractionDisabled>();
-}
-
-fn bind_volume_slider(
-    commands: &mut Commands,
-    slider: Entity,
-    value: i16,
-    hover: String,
-    slot: PreferenceSlot,
-) {
-    // Slider + retained two-pic presentation come from codegen for TTwoPicSlider.
-    let mut entity = commands.entity(slider);
-    entity
-        .insert((SliderValue(f32::from(value)), HoverHelpText(hover)))
-        .observe(slider_self_update)
-        .remove::<InteractionDisabled>();
-    match slot {
-        PreferenceSlot::MusicVolume => {
-            entity.observe(
-                |change: On<ValueChange<f32>>, mut prefs: ResMut<GamePreferences>| {
-                    prefs.values[PreferenceSlot::MusicVolume] = change.value as i16;
-                },
-            );
-        }
-        PreferenceSlot::SoundVolume => {
-            entity.observe(
-                |change: On<ValueChange<f32>>, mut prefs: ResMut<GamePreferences>| {
-                    if change.is_final {
-                        prefs.values[PreferenceSlot::SoundVolume] = change.value as i16;
-                    }
-                },
-            );
-            entity.observe(
-                |change: On<ValueChange<f32>>,
-                 mut commands: Commands,
-                 mut audio: RetailAudioAssets| {
-                    if change.is_final {
-                        audio.play(&mut commands, SoundId::UI_CLICK);
-                    }
-                },
-            );
-        }
-        _ => {}
-    }
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {

@@ -7,13 +7,11 @@ use bevy::prelude::*;
 
 pub const INDUSTRY_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
     width: 150,
-    height: 6,
     segments: 0,
 };
 
 pub const TRADE_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
     width: 100,
-    height: 7,
     segments: 0,
 };
 
@@ -81,7 +79,6 @@ fn trade_amount_bar() -> impl Scene {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct AmountBarGeometry {
     pub width: i32,
-    pub height: i32,
     pub segments: i16,
 }
 

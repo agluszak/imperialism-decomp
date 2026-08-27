@@ -243,6 +243,7 @@ pub(in crate::ui::city) fn bind_city_screen(
         fourcc!("topB"),
         Some(fourcc!("tool")),
         true,
+        AppState::City,
     );
 
     let nation = session.active_major_nation();
@@ -303,9 +304,8 @@ fn bind_city_hover_title(
     tree: &RetailTree,
     assets: &mut RetailUiAssets,
 ) -> Entity {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 0, 12, 1))
-        .expect("retail city cursor-panel text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, 1));
     let entity = tree.find(root, fourcc!("curs"));
     commands.entity(entity).insert((
         Text::new(""),

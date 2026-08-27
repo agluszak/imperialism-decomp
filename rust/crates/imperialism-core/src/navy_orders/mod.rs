@@ -61,7 +61,6 @@ pub(crate) struct NavyOrderDescriptor {
     pub(crate) resource_weight: i32,
     pub(crate) toolbar_class: Option<NavyToolbarClass>,
     pub(crate) descriptor_weight: i32,
-    #[allow(dead_code)]
     pub(crate) priority_tier: i32,
 }
 

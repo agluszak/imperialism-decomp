@@ -4,7 +4,7 @@ use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_formats::{FourCc, fourcc};
 
 const QUERY_LABELS: [(FourCc, u16); 8] = [
@@ -32,7 +32,6 @@ impl Plugin for QueryFloaterPlugin {
 pub(crate) fn bind_query_floater_control(commands: &mut Commands, root: Entity, tree: &RetailTree) {
     commands
         .entity(tree.find(root, fourcc!("quer")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_open_query_floater);
 }
@@ -52,15 +51,13 @@ fn bind_query_floaters(
     mut commands: Commands,
     roots: Query<Entity, Added<QueryFloaterRoot>>,
     tree: RetailTree,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
     for root in &roots {
         let view = tree.view(root);
-        let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
-                1, 0, 12, -2,
-            ))
-            .expect("retail query-floater label style");
+        let (font, layout, line_height, _) = assets.text_style(
+            imperialism_formats::RetailTextStylePreset::explicit(1, 0, 12, -2),
+        );
         for (tag, index) in QUERY_LABELS {
             let text = assets.ui_string(0x2757, index);
             commands.entity(view.find(tag)).insert((
@@ -74,20 +71,15 @@ fn bind_query_floaters(
         let advice = view.find(fourcc!("advi"));
         commands
             .entity(advice)
-            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_advice);
         let deal = view.find(fourcc!("deal"));
         commands
             .entity(deal)
-            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_deal_book);
         let cancel = view.find(fourcc!("cncl"));
-        commands
-            .entity(cancel)
-            .insert(ActivateOnPress)
-            .remove::<InteractionDisabled>();
+        commands.entity(cancel).remove::<InteractionDisabled>();
         for button in [advice, deal, cancel] {
             dismiss_on_activate(&mut commands, button, root);
         }

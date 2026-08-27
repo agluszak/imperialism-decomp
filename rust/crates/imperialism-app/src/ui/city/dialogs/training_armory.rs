@@ -3,7 +3,7 @@ use crate::ui::retail::AmountBarParts;
 use crate::ui::retail::RetailPictureSwap;
 
 pub(in crate::ui::city) struct TrainingUi {
-    quantities: TrainingOrderTable<Entity>,
+    orders: TrainingOrderTable<AmountBarView>,
     paper_one: Entity,
     paper_two: Entity,
     money_one: Entity,
@@ -73,7 +73,7 @@ pub(in crate::ui::city) fn bind_training(
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    let quantities =
+    let orders =
         TrainingOrderTable::from_array(generated::TRAINING_ORDER_TAGS).map(|level, tag| {
             bind_industry_order_row(
                 commands,
@@ -84,10 +84,11 @@ pub(in crate::ui::city) fn bind_training(
                 tag,
                 1,
             )
-            .quantity
+            .bar
+            .expect("training amount bar")
         });
     TrainingUi {
-        quantities,
+        orders,
         paper_one: tree.find(root, fourcc!("pap1")),
         paper_two: tree.find(root, fourcc!("pap2")),
         money_one: tree.find(root, fourcc!("mon1")),
@@ -107,15 +108,9 @@ pub(in crate::ui::city) fn bind_armory(
     let nation = MajorNationId::from_nation(state.turn().active_nation).expect("major nation");
     let city = &state.nations().major(nation).city;
     let normal_color = assets.palette_color(0xd2);
-    let (title_font, _, title_line_height, _) = assets
-        .text_style(ARMORY_TITLE_TEXT_STYLE)
-        .expect("title style");
-    let (unit_font, _, unit_line_height, _) = assets
-        .text_style(ARMORY_UNIT_TEXT_STYLE)
-        .expect("unit style");
-    let (detail_font, _, detail_line_height, _) = assets
-        .text_style(ARMORY_DETAIL_TEXT_STYLE)
-        .expect("detail style");
+    let (title_font, _, title_line_height, _) = assets.text_style(ARMORY_TITLE_TEXT_STYLE);
+    let (unit_font, _, unit_line_height, _) = assets.text_style(ARMORY_UNIT_TEXT_STYLE);
+    let (detail_font, _, detail_line_height, _) = assets.text_style(ARMORY_DETAIL_TEXT_STYLE);
     let title = assets.ui_string(0x271c, 0x20);
     commands.entity(tree.find(root, fourcc!("titl"))).insert((
         Text::new(title),
@@ -225,13 +220,13 @@ pub(in crate::ui::city) fn render_training(
     let budget = major
         .economy
         .available_diplomacy_budget(major.common.treasury);
-    for (level, quantity) in &view.quantities {
-        ui.text(
-            *quantity,
-            session
-                .game
-                .city_order_quantity(nation, CityOrderId::Training(level))
-                .to_string(),
+    for (level, bar) in &view.orders {
+        let order = CityOrderId::Training(level);
+        ui.amount_bar(
+            *bar,
+            session.game.city_order_quantity(nation, order),
+            amount_bar_range(&session.game, nation, order),
+            session.game.city_order_limit(nation, order).maximum,
         );
     }
     ui.visible(view.paper_one, city.stockpile[ResourceKind::Paper] >= 1);

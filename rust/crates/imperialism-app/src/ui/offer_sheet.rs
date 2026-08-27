@@ -11,7 +11,7 @@ use bevy::input_focus::AutoFocus;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
-use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
+use bevy::ui_widgets::{Activate, SelectAllOnFocus};
 use imperialism_core::*;
 use imperialism_formats::fourcc;
 
@@ -107,14 +107,8 @@ fn bind_offer_sheet_controls(
     let reject = tree.find(root, fourcc!("reje"));
     let purc = tree.find(root, fourcc!("purc"));
     let nomo = tree.find(root, fourcc!("nomo"));
-    commands
-        .entity(accept)
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>();
-    commands
-        .entity(reject)
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>();
+    commands.entity(accept).remove::<InteractionDisabled>();
+    commands.entity(reject).remove::<InteractionDisabled>();
     bind_offer_answer(commands, accept, true);
     bind_offer_answer(commands, reject, false);
     commands
@@ -284,10 +278,7 @@ fn bind_offer_sheet_notice(
     let (root, body) = notice.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_body(&mut commands, &mut assets, &body.0);
-    commands
-        .entity(linger.okay)
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>();
+    commands.entity(linger.okay).remove::<InteractionDisabled>();
 }
 
 #[cfg(test)]
