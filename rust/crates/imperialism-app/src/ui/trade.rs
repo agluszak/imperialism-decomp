@@ -412,7 +412,14 @@ fn render_trade(
             &mut images,
             &mut nodes,
         );
-        set_trade_enabled(&mut commands, row.bid, bid_active || bid_count < 4);
+        // C++ `TTradeCluster::DoControlAction`: idle `card` tabs stay shown while
+        // `fieldEc < 4`, otherwise `Show(0)`. Opening with `merchantCapacity == 0`
+        // forces `fieldEc = 5`, which hides every non-selected bid tab.
+        set_trade_visibility(
+            &mut commands,
+            row.bid,
+            trade_bid_tab_visible(capacity, bid_active, bid_count),
+        );
         set_trade_visibility(
             &mut commands,
             row.offer,
@@ -534,12 +541,9 @@ fn set_trade_visibility(commands: &mut Commands, entity: Entity, visible: bool) 
     });
 }
 
-fn set_trade_enabled(commands: &mut Commands, entity: Entity, enabled: bool) {
-    if enabled {
-        commands.entity(entity).remove::<InteractionDisabled>();
-    } else {
-        commands.entity(entity).insert(InteractionDisabled);
-    }
+/// Idle buy tabs follow retail `fieldEc` / merchant-capacity gating.
+const fn trade_bid_tab_visible(capacity: i16, active: bool, bid_count: usize) -> bool {
+    active || (capacity > 0 && bid_count < 4)
 }
 
 fn bind_trade_card(
@@ -569,8 +573,13 @@ fn bind_trade_card(
         .observe(
             move |activate: On<Activate>,
                   disabled: Query<Has<InteractionDisabled>>,
+                  visibility: Query<&Visibility>,
                   mut session: ResMut<GameSession>| {
                 if disabled.get(activate.entity).unwrap_or(false) {
+                    return;
+                }
+                // C++ `TView::Show(0)` clears actionability; hidden buy tabs must not toggle.
+                if visibility.get(activate.entity).ok() == Some(&Visibility::Hidden) {
                     return;
                 }
                 let nation = session.active_major_nation();
@@ -780,5 +789,138 @@ mod tests {
         assert!(!trade_offer_tab_visible(4, false, 0));
         assert!(trade_offer_tab_visible(4, false, 2));
         assert!(trade_offer_tab_visible(4, true, 0));
+    }
+
+    #[test]
+    fn idle_bid_tabs_follow_retail_four_bid_and_capacity_gates() {
+        assert!(trade_bid_tab_visible(4, false, 0));
+        assert!(trade_bid_tab_visible(4, false, 3));
+        assert!(!trade_bid_tab_visible(4, false, 4));
+        assert!(trade_bid_tab_visible(4, true, 4));
+        assert!(!trade_bid_tab_visible(0, false, 0));
+        assert!(trade_bid_tab_visible(0, true, 1));
+    }
+
+    #[test]
+    fn hidden_idle_bid_tabs_do_not_accept_activation_at_the_four_bid_cap() {
+        let state = fixture_state();
+        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        let bids = [
+            TradeCommodity::Cotton,
+            TradeCommodity::Wool,
+            TradeCommodity::Timber,
+            TradeCommodity::Coal,
+        ];
+        let other = TradeCommodity::Iron;
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            StatesPlugin,
+        ))
+        .insert_state(AppState::Trade)
+        .insert_resource(GameSession::new(state))
+        .add_systems(Update, bind_test_trade);
+        let root = spawn_trade_hierarchy(app.world_mut());
+        app.update();
+
+        let rows = app
+            .world()
+            .get::<TradeView>(root)
+            .expect("trade root has a semantic view")
+            .rows;
+        let bid = |commodity: TradeCommodity| rows[commodity].bid;
+
+        for commodity in bids {
+            activate(&mut app, bid(commodity));
+            assert_eq!(
+                app.world()
+                    .resource::<GameSession>()
+                    .game
+                    .player_trade_order(nation, commodity),
+                PlayerTradeOrder::Buy
+            );
+        }
+
+        // Mirror `render_trade`'s retail projection without loading picture assets.
+        let capacity = app
+            .world()
+            .resource::<GameSession>()
+            .game
+            .nations()
+            .major(nation)
+            .economy
+            .capacities
+            .trade_offer;
+        let bid_count = bids.len();
+        for (commodity, _) in &TRADE_ROW_TAGS {
+            let active = app
+                .world()
+                .resource::<GameSession>()
+                .game
+                .player_trade_order(nation, commodity)
+                == PlayerTradeOrder::Buy;
+            let visible = trade_bid_tab_visible(capacity, active, bid_count);
+            app.world_mut()
+                .entity_mut(bid(commodity))
+                .insert(if visible {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                });
+        }
+
+        assert_eq!(
+            app.world().get::<Visibility>(bid(other)),
+            Some(&Visibility::Hidden)
+        );
+        activate(&mut app, bid(other));
+        assert_eq!(
+            app.world()
+                .resource::<GameSession>()
+                .game
+                .player_trade_order(nation, other),
+            PlayerTradeOrder::None,
+            "hidden idle buy tabs must not become a fifth bid"
+        );
+
+        activate(&mut app, bid(bids[0]));
+        assert_eq!(
+            app.world()
+                .resource::<GameSession>()
+                .game
+                .player_trade_order(nation, bids[0]),
+            PlayerTradeOrder::None
+        );
+        let bid_count = bids.len() - 1;
+        for (commodity, _) in &TRADE_ROW_TAGS {
+            let active = app
+                .world()
+                .resource::<GameSession>()
+                .game
+                .player_trade_order(nation, commodity)
+                == PlayerTradeOrder::Buy;
+            let visible = trade_bid_tab_visible(capacity, active, bid_count);
+            app.world_mut()
+                .entity_mut(bid(commodity))
+                .insert(if visible {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                });
+        }
+        assert_eq!(
+            app.world().get::<Visibility>(bid(other)),
+            Some(&Visibility::Visible)
+        );
+        activate(&mut app, bid(other));
+        assert_eq!(
+            app.world()
+                .resource::<GameSession>()
+                .game
+                .player_trade_order(nation, other),
+            PlayerTradeOrder::Buy
+        );
     }
 }
