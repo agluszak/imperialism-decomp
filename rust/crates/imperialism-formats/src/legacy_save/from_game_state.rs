@@ -264,7 +264,7 @@ fn country_dto(
         unit_name_counter: common.unit_name_counter,
         treasury: common.treasury,
         home_tile: option_i32(common.home_tile.map(TileId::get)),
-        overlay_anchor_tile: -1,
+        overlay_anchor_tile: option_i32(common.overlay_anchor_tile.map(TileId::get)),
         need_level_by_nation: nation_i16_table(&common.trade_policy_by_nation, |score| {
             score.get() as i16
         }),
@@ -988,7 +988,7 @@ fn map_dto(map: &MapMgr, view_origin: TileId) -> LegacyMapState {
     LegacyMapState {
         view_origin_tile: view_origin.get() as i16,
         map_data_ready: u8::from(map.map_data_ready),
-        recruit_search_active: u8::from(map.recruit_search_active),
+        recruit_search_active: 0,
         city_score_total: map.city_score_total,
         scenario_tag: map.scenario_tag.clone(),
         no_horizontal_wrap: u8::from(!map.topology.wraps_horizontally()),
@@ -1027,7 +1027,7 @@ fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
         development_classes: (tile.development.surface.get()
             | (tile.development.extractive.get() << 4)) as i8,
         pending_development_visibility: visibility,
-        recruit_search_visited: tile.recruit_search_visited,
+        recruit_search_visited: 0,
         per_tile_visited: tile.per_tile_visited,
         // The map dialog owns this transient sprite-atlas slot and resets every tile to
         // the retail sentinel when it builds the loaded map.
@@ -1342,7 +1342,7 @@ fn army_reports_from_state(
                 .participant
                 .map(BattleReportSideSlot::retail)
                 .unwrap_or(u8::MAX),
-            displayed_participant: BattleReportSideSlot::Left.retail(),
+            displayed_participant: report.displayed_side.retail(),
             kind: report.kind.retail(),
             node_id: match report.location {
                 BattleReportLocation::Province(province) => province.get() as i16,

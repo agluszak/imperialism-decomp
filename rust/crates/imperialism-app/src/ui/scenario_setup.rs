@@ -6,7 +6,7 @@ use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
 use imperialism_core::{
     MajorNationId, MapMgr, ScenarioInstruction, create_scenario_game,
     enter_strategic_map_without_capital_selection,
@@ -242,11 +242,8 @@ fn on_start_scenario(
         difficulty,
         1,
     );
-    let stop = enter_strategic_map_without_capital_selection(
-        &mut game,
-        setup.nation,
-        retail.news_story_ids(),
-    );
+    game.set_game_data(super::session::retail_game_data(&retail));
+    let stop = enter_strategic_map_without_capital_selection(&mut game, setup.nation);
     apply_turn_stop(stop, &mut next_state);
     insert_game_session(&mut commands, game);
 }

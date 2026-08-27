@@ -1,36 +1,66 @@
 use crate::ui::RetailUiAssets;
 use crate::ui::fill_brackets;
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string, ui_string,
-};
+use crate::ui::hover_help::bind_hover_help_texts;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
+use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::session::apply_turn_stop;
 use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
     compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow, no_modal};
-use crate::ui::{GameSession, MapViewOrigin};
+use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate, no_modal};
+use crate::ui::{GameSession, StrategicMapSession};
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{
+    OKAY, PictureId, RetailTextStylePreset, StringGroup, StringResourceId, fourcc,
+};
 
-const PLACE_CITY_STRING_GROUP: i16 = 0x273f;
-const BAD_CITY_SITE_STRING_GROUP: i16 = 0x273b;
-const MINISTER_STRING_GROUP: i16 = 0x2749;
+const PLACE_CITY_STRING_GROUP: u16 = 0x273f;
+const BAD_CITY_SITE_STRINGS: StringGroup = StringGroup::new(0x273b);
+const MINISTER_STRING_GROUP: u16 = 0x2749;
 const NEW_CITY_DIALOG_WIDTH: i32 = 328;
 const RESOURCE_ITEM_WIDTH: i32 = 0x2c;
 const RESOURCE_ITEM_HEIGHT: i32 = 0x20;
-const COMMODITY_ICON_PICTURE_BASE: i16 = 700;
-const CITY_SITE_INTRO_GOLD_PICTURE: i16 = 0x24d1;
-const COAT_PICTURE_BASE: i16 = 9500;
+const CITY_SITE_INTRO_GOLD_PICTURE: PictureId = PictureId::new(0x24d1);
+const COAT_PICTURE_BASE: PictureId = PictureId::new(9500);
+
+fn city_site_error_string(
+    error: CitySiteError,
+    state: &GameState,
+    tile: TileId,
+) -> StringResourceId {
+    let offset = match error {
+        CitySiteError::NotOwned => {
+            if state.map()[tile].terrain == TerrainKind::Water {
+                3
+            } else {
+                0
+            }
+        }
+        CitySiteError::UnsupportedTerrain | CitySiteError::InvalidHomeSite => {
+            if supports_city_site_terrain(state.map()[tile].terrain)
+                && state.can_build_port_at_tile(tile)
+            {
+                2
+            } else {
+                1
+            }
+        }
+    };
+    BAD_CITY_SITE_STRINGS.offset(offset)
+}
+
+fn city_site_coat_picture(nation: MajorNationId) -> PictureId {
+    COAT_PICTURE_BASE.offset(i16::from(nation.get()))
+}
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum CitySiteAction {
@@ -90,10 +120,9 @@ fn bind_city_site(
     mut commands: Commands,
     roots: Query<Entity, (With<CitySiteRoot>, Without<CitySiteWired>)>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
+    map: Res<StrategicMapSession>,
 ) {
     let Ok(root) = roots.single() else {
         return;
@@ -101,12 +130,13 @@ fn bind_city_site(
     if !scene_has_children(root, &tree.children) {
         return;
     }
-    bind_city_site_controls(&mut commands, root, &tree, &mut nodes, &mut assets);
-    let map =
-        bind_strategic_base_terrain(&mut commands, root, &tree, &mut assets, &session, origin.0);
-    bind_minimap(&mut commands, root, &tree, &mut assets, &session, origin.0);
+    bind_city_site_controls(&mut commands, root, &tree, &mut assets);
+    let origin = map.view.detailed_origin(&session.game);
+    let map_entity =
+        bind_strategic_base_terrain(&mut commands, root, &tree, &mut assets, &session, origin);
+    bind_minimap(&mut commands, root, &tree, &mut assets, &session, origin);
     commands
-        .entity(map)
+        .entity(map_entity)
         .insert(CitySiteHover::default())
         .observe(on_city_site_map_click);
     open_city_site_intro(&mut commands);
@@ -117,7 +147,6 @@ fn bind_city_site_controls(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
     bind_query_floater_control(commands, root, tree);
@@ -126,16 +155,7 @@ fn bind_city_site_controls(
         .entity(cancel)
         .insert((CitySiteAction::Cancel, ActivateOnPress))
         .observe(on_city_site_activate);
-    let bar = tree.find(root, fourcc!("curs"));
-    bind_hover_help_bar(
-        commands,
-        assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("city-site hover-help bar has Node"),
-        HoverHelpBarStyle::CITY_SITE,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         commands,
         root,
@@ -145,9 +165,9 @@ fn bind_city_site_controls(
             (fourcc!("DLOG"), String::new()),
             (
                 fourcc!("canc"),
-                ui_string(assets, PLACE_CITY_STRING_GROUP, 9),
+                assets.ui_string(PLACE_CITY_STRING_GROUP, 9),
             ),
-            (fourcc!("quer"), ui_string(assets, 0x2730, 3)),
+            (fourcc!("quer"), assets.ui_string(0x2730, 3)),
         ],
     );
 }
@@ -170,11 +190,11 @@ fn bind_city_site_intro(
         return;
     }
     let nation = session.active_major_nation();
-    let minister = get_string(&assets, MINISTER_STRING_GROUP, 2);
-    let mut title = fill_brackets(&get_string(&assets, MINISTER_STRING_GROUP, 4), &[&minister]);
+    let minister = assets.get_string(MINISTER_STRING_GROUP, 2);
+    let mut title = fill_brackets(&assets.get_string(MINISTER_STRING_GROUP, 4), &[&minister]);
     title.push_str("\n\n");
-    title.push_str(&get_string(&assets, PLACE_CITY_STRING_GROUP, 3));
-    let body = get_string(&assets, PLACE_CITY_STRING_GROUP, 4);
+    title.push_str(&assets.get_string(PLACE_CITY_STRING_GROUP, 3));
+    let body = assets.get_string(PLACE_CITY_STRING_GROUP, 4);
     stuff_minister_dialog(
         &mut commands,
         root,
@@ -183,7 +203,7 @@ fn bind_city_site_intro(
         &title,
         &body,
         Some(CITY_SITE_INTRO_GOLD_PICTURE),
-        Some(COAT_PICTURE_BASE + i16::from(nation.get())),
+        Some(city_site_coat_picture(nation)),
         true,
     );
     let okay = tree.find(root, OKAY);
@@ -196,7 +216,7 @@ fn bind_city_site_intro(
 
 fn sync_city_site_hover(
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
+    map: Res<StrategicMapSession>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(
@@ -207,9 +227,10 @@ fn sync_city_site_hover(
     )>,
 ) {
     let nation = session.active_major_nation();
+    let origin = map.view.detailed_origin(&session.game);
     for (canvas, cursor, image_node, mut hover) in &mut maps {
-        let tile = strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor);
-        if hover.0 == tile && !session.is_changed() && !origin.is_changed() {
+        let tile = strategic_base_terrain_tile_at_cursor(&session.game, origin, cursor);
+        if hover.0 == tile && !session.is_changed() && !map.is_changed() {
             continue;
         }
         hover.0 = tile;
@@ -217,7 +238,7 @@ fn sync_city_site_hover(
             tile.filter(|&tile| highlights_city_site_candidate(&session.game, nation, tile));
         let image = compose_city_site_terrain(
             &session.game,
-            origin.0,
+            origin,
             canvas,
             nation,
             highlighted,
@@ -256,7 +277,7 @@ fn on_city_site_activate(
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
+    map: Res<StrategicMapSession>,
     maps: Query<&RelativeCursorPosition, With<StrategicBaseTerrainCanvas>>,
     mut commands: Commands,
     assets: RetailUiAssets,
@@ -264,18 +285,15 @@ fn on_city_site_map_click(
     let cursor = maps
         .get(click.entity)
         .expect("city-site map click is bound on the strategic canvas");
-    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, origin.0, cursor) else {
+    let origin = map.view.detailed_origin(&session.game);
+    let Some(tile) = strategic_base_terrain_tile_at_cursor(&session.game, origin, cursor) else {
         return;
     };
     let nation = session.active_major_nation();
     match validate_capital_site_selection(&session.game, nation, tile) {
         Ok(site) => open_new_city_dialog(&mut commands, site),
         Err(error) => {
-            let body = get_string(
-                &assets,
-                BAD_CITY_SITE_STRING_GROUP,
-                error.message_offset(&session.game, tile),
-            );
+            let body = assets.string(city_site_error_string(error, &session.game, tile));
             open_city_site_notice(&mut commands, body);
         }
     }
@@ -319,15 +337,20 @@ fn bind_new_city_dialog(
         &mut assets,
         &report,
     );
+    let okay = tree.find(root, OKAY);
     commands
-        .entity(tree.find(root, OKAY))
-        .insert((ActivateOnPress, ModalDefault, DismissWindow))
+        .entity(okay)
+        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>()
         .observe(on_new_city_activate);
+    let cancel = tree.find(root, fourcc!("cncl"));
     commands
-        .entity(tree.find(root, fourcc!("cncl")))
-        .insert((ActivateOnPress, ModalCancel, DismissWindow))
+        .entity(cancel)
+        .insert(ActivateOnPress)
         .remove::<bevy::ui::InteractionDisabled>();
+    dismiss_on_activate(&mut commands, okay, root);
+    dismiss_on_activate(&mut commands, cancel, root);
+    bind_modal_keys(&mut commands, root, Some(okay), Some(cancel));
     commands.entity(root).insert(CitySiteWired);
 }
 
@@ -370,7 +393,7 @@ fn stuff_new_city_dialog(
         }
     }
 
-    let title = get_string(assets, PLACE_CITY_STRING_GROUP, 7);
+    let title = assets.get_string(PLACE_CITY_STRING_GROUP, 7);
     set_text(
         commands,
         tree.find(root, fourcc!("titl")),
@@ -379,7 +402,7 @@ fn stuff_new_city_dialog(
         0x5c,
     );
     let summary = fill_brackets(
-        &get_string(assets, PLACE_CITY_STRING_GROUP, 5),
+        &assets.get_string(PLACE_CITY_STRING_GROUP, 5),
         &[
             &report.sustainable_population.to_string(),
             &report.total_food.to_string(),
@@ -410,7 +433,7 @@ fn stuff_new_city_dialog(
             x = 0x10;
             y += RESOURCE_ITEM_HEIGHT;
         }
-        spawn_numbered_resource_item(commands, assets, dlog, x, y, index as i16, count);
+        spawn_numbered_resource_item(commands, assets, dlog, x, y, resource, count);
     }
 }
 
@@ -420,10 +443,10 @@ fn spawn_numbered_resource_item(
     parent: Entity,
     x: i32,
     y: i32,
-    resource_index: i16,
+    resource: ResourceKind,
     count: i16,
 ) {
-    let icon = commodity_icon(assets, resource_index);
+    let icon = commodity_icon(assets, resource);
     commands
         .spawn_scene(numbered_resource_item_scene(x, y, icon, count))
         .insert(ChildOf(parent));
@@ -489,7 +512,7 @@ fn bind_city_site_notice(
         "",
         &notice.0,
         None,
-        Some(COAT_PICTURE_BASE + i16::from(nation.get())),
+        Some(city_site_coat_picture(nation)),
         true,
     );
     let okay = tree.find(root, OKAY);
@@ -505,9 +528,8 @@ fn on_new_city_activate(
     dialog: Single<&NewCityDialogRoot>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Res<RetailAssetsResource>,
 ) {
-    let stop = confirm_capital_site(&mut session.game, dialog.0, assets.news_story_ids());
+    let stop = confirm_capital_site(&mut session.game, dialog.0);
     apply_turn_stop(stop, &mut next_state);
 }
 
@@ -519,23 +541,21 @@ fn stuff_minister_dialog(
     assets: &mut RetailUiAssets,
     title: &str,
     body: &str,
-    gold_picture: Option<i16>,
-    coat_picture: Option<i16>,
+    gold_picture: Option<PictureId>,
+    coat_picture: Option<PictureId>,
     hide_cancel: bool,
 ) {
     let linger = bind_linger_dialog(commands, root, tree);
     if let Some(picture) = gold_picture {
-        let gold = assets
-            .picture(PictureId::new(picture))
-            .expect("retail minister gold picture must load");
+        let gold = assets.picture(picture);
         commands
             .entity(tree.find(root, fourcc!("DLOG")))
             .insert(ImageNode::new(gold));
     }
     if let Some(picture) = coat_picture {
-        if let Ok(image) = assets.picture(PictureId::new(picture)) {
-            commands.entity(linger.coat).insert(ImageNode::new(image));
-        }
+        commands
+            .entity(linger.coat)
+            .insert(ImageNode::new(assets.picture(picture)));
     } else {
         commands.entity(linger.coat).insert(Visibility::Hidden);
     }
@@ -569,12 +589,7 @@ fn set_styled_text(
     palette: u8,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size,
-            alignment,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 0, point_size, alignment))
         .expect("retail city-site text style");
     commands.entity(entity).insert((
         Text::new(retail_lines(value.as_ref())),
@@ -591,11 +606,8 @@ fn scene_has_children(root: Entity, children: &Query<&Children>) -> bool {
         .is_ok_and(|children| !children.is_empty())
 }
 
-fn commodity_icon(assets: &mut RetailUiAssets, resource_index: i16) -> Handle<Image> {
-    let picture_id = PictureId::new(COMMODITY_ICON_PICTURE_BASE + resource_index);
-    assets
-        .transparent_picture(picture_id, 0x10)
-        .expect("retail commodity icon must load")
+fn commodity_icon(assets: &mut RetailUiAssets, resource: ResourceKind) -> Handle<Image> {
+    assets.keyed_picture(resource.material_picture(), 0x10)
 }
 
 fn retail_lines(text: &str) -> String {

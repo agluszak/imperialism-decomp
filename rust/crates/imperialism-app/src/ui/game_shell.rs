@@ -2,51 +2,39 @@ use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::session::apply_turn_stop;
 use crate::AppState;
 use crate::RetailAssetsResource;
+use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
-};
+use crate::ui::hover_help::{HoverHelpText, bind_hover_help_texts};
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTag, RetailTree};
+use crate::ui::retail::{RetailPictureSwap, RetailTree};
 use crate::ui::strategic_map::{
-    MapEdges, MapInteractionMode, MapProjection, MapTransition, MapZoomControl,
-    StrategicInteraction, StrategicViewport, animate_civilian_work, animate_strategic_selection,
-    apply_map_transition, bind_army_toolbar, bind_civilian_toolbar, bind_minimap,
-    bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain, on_strategic_map_click,
-    register_army_toolbar, register_civilian_toolbar, register_map_click, register_map_keys,
-    register_map_modals, register_navy_toolbar, register_ocean_view, sync_minimap,
-    sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
+    MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
+    animate_civilian_work, animate_strategic_selection, bind_army_toolbar, bind_civilian_toolbar,
+    bind_minimap, bind_navy_toolbar, bind_ocean_view, bind_strategic_base_terrain,
+    on_strategic_map_click, register_army_toolbar, register_civilian_toolbar, register_map_click,
+    register_map_keys, register_map_modals, register_navy_toolbar, register_ocean_view,
+    sync_minimap, sync_strategic_base_terrain, sync_strategic_selection, sync_strategic_units,
 };
 use crate::ui::window::no_modal;
-use crate::ui::{GameSession, MapViewOrigin};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
-use imperialism_core::TurnAlert;
+use imperialism_core::{NationId, TurnAlert};
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 use std::collections::VecDeque;
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum GameStatusDisplay {
-    Date,
-    Treasury,
-}
 
 #[derive(Component)]
 struct StrategicMapRoot;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum GameScreenNavAction {
-    StrategicMap,
-    Trade,
-    Transport,
-    City,
-    Diplomacy,
+#[derive(Component)]
+pub(crate) struct GameStatusView {
+    date: Entity,
+    treasury: Entity,
 }
 
 pub(crate) struct GameShellPlugin;
@@ -72,7 +60,7 @@ impl Plugin for GameShellPlugin {
         )
         .add_systems(
             Update,
-            project_game_status_display.run_if(resource_exists::<GameSession>),
+            render_game_status.run_if(resource_exists::<GameSession>),
         )
         .add_systems(
             Update,
@@ -85,7 +73,6 @@ impl Plugin for GameShellPlugin {
                 animate_strategic_selection,
                 animate_civilian_work,
                 sync_minimap,
-                sync_zoom_control,
                 spawn_turn_alerts_if_pending,
                 bind_turn_alert_notice,
                 bind_turn_summary_notice,
@@ -101,12 +88,8 @@ fn scroll_strategic_map(
     mut last_scroll_tick: Local<Option<u128>>,
     window: Single<&Window, With<PrimaryWindow>>,
     mut session: ResMut<GameSession>,
-    mut origin: ResMut<MapViewOrigin>,
-    mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut map: ResMut<StrategicMapSession>,
 ) {
-    let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
-        return;
-    };
     let Some(cursor) = window.cursor_position() else {
         return;
     };
@@ -119,13 +102,7 @@ fn scroll_strategic_map(
         return;
     }
     *last_scroll_tick = Some(tick16);
-    apply_map_transition(
-        &mut session,
-        &mut origin,
-        &mut interaction,
-        &mut viewport,
-        MapTransition::Scroll(edges),
-    );
+    map.apply(&mut session.game, MapAction::Scroll(edges));
 }
 
 fn strategic_edge_scroll_mask(position: Vec2, dialog_size: Vec2) -> MapEdges {
@@ -157,12 +134,17 @@ fn spawn_strategic_map(mut commands: Commands) {
         .insert((StrategicMapRoot, DespawnOnExit(AppState::StrategicMap)));
 }
 
-fn enter_strategic_map_view(session: Res<GameSession>, mut origin: ResMut<MapViewOrigin>) {
-    if let Some(tile) = session
-        .game
-        .first_idle_civilian_tile(session.game.turn().active_nation)
-    {
-        origin.center_on(&session.game, tile);
+fn enter_strategic_map_view(session: Res<GameSession>, mut map: ResMut<StrategicMapSession>) {
+    let nation = session.game.turn().active_nation;
+    let idle = session.game.first_idle_civilian(nation).map(|(id, _)| id);
+    map.selection = StrategicSelection::Civilian(idle);
+    if let Some(tile) = session.game.first_idle_civilian_tile(nation) {
+        map.view = StrategicView::Detailed {
+            origin: session.game.map().viewport_origin_centered_on(tile),
+        };
+    } else if map.view.is_overview() {
+        let origin = map.view.detailed_origin(&session.game);
+        map.view = StrategicView::Detailed { origin };
     }
 }
 
@@ -170,11 +152,11 @@ fn bind_strategic_map(
     mut commands: Commands,
     root: Single<Entity, Added<StrategicMapRoot>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
-    mut pictures: Query<&mut ImageNode>,
     mut assets: RetailUiAssets,
-    session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
+    mut session: ResMut<GameSession>,
+    map: Res<StrategicMapSession>,
+    arrow_parts: Query<&super::retail::NumberedArrowParts>,
+    placard_parts: Query<&super::retail::PlacardParts>,
 ) {
     bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
@@ -184,49 +166,43 @@ fn bind_strategic_map(
         .remove::<InteractionDisabled>()
         .observe(on_end_turn);
     let flag = tree.find(*root, fourcc!("Flag"));
-    bind_pressed_overlay(&mut commands, &mut pictures, flag);
     bind_open_flag_menu(&mut commands, flag);
-    bind_pressed_overlay(
-        &mut commands,
-        &mut pictures,
-        tree.find(*root, fourcc!("quer")),
-    );
-    bind_pressed_overlay(
-        &mut commands,
-        &mut pictures,
-        tree.find(*root, fourcc!("ZmOt")),
-    );
+    // `quer` is enabled by `bind_native_game_screen_nav` / query floater binding.
+    // Generated `TPictureButton` already carries `RetailPressedOverlay`.
     super::technology_store::bind_open_control(&mut commands, tree.find(*root, fourcc!("mmap")));
     commands
         .entity(tree.find(*root, fourcc!("send")))
         .insert(Visibility::Hidden);
-    let land =
-        bind_strategic_base_terrain(&mut commands, *root, &tree, &mut assets, &session, origin.0);
+    let land = bind_strategic_base_terrain(
+        &mut commands,
+        *root,
+        &tree,
+        &mut assets,
+        &session,
+        map.view.detailed_origin(&session.game),
+    );
     commands.entity(land).observe(on_strategic_map_click);
+    // `TCountry` lazily fills this serialized cache while the view is bound.
+    // Continuous map projection reads the resulting tile without mutating game
+    // state.
+    for nation in NationId::all() {
+        session.game.overlay_anchor_for_nation(nation);
+    }
     let ocean = bind_ocean_view(&mut commands, &mut assets, *root, &tree, &session);
     commands.entity(ocean).observe(on_strategic_map_click);
-    bind_minimap(&mut commands, *root, &tree, &mut assets, &session, origin.0);
+    bind_minimap(
+        &mut commands,
+        *root,
+        &tree,
+        &mut assets,
+        &session,
+        map.view.detailed_origin(&session.game),
+    );
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_army_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
+    bind_army_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
+    bind_navy_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    bind_strategic_hover(&mut commands, &mut assets, *root, &tree, &mut nodes);
-}
-
-fn bind_pressed_overlay(
-    commands: &mut Commands,
-    pictures: &mut Query<&mut ImageNode>,
-    entity: Entity,
-) {
-    commands
-        .entity(entity)
-        .insert(RetailPressedOverlay)
-        .remove::<InteractionDisabled>();
-    pictures
-        .get_mut(entity)
-        .expect("retail picture button has an image")
-        .color
-        .set_alpha(0.0);
+    bind_strategic_hover(&mut commands, &mut assets, *root, &tree);
 }
 
 fn on_end_turn(
@@ -234,17 +210,15 @@ fn on_end_turn(
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Res<RetailAssetsResource>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let stop = session
         .game
-        .finish_player_orders(prefs.turn_alerts_enabled(), assets.news_story_ids());
+        .finish_player_orders(prefs.turn_alerts_enabled());
     let stop = if matches!(stop, imperialism_core::TurnStop::LandBattle(_)) {
-        session.game.apply_land_battle_watch_policy(
-            prefs.tactical_battles_enabled(),
-            assets.news_story_ids(),
-        )
+        session
+            .game
+            .apply_land_battle_watch_policy(prefs.tactical_battles_enabled())
     } else {
         stop
     };
@@ -265,22 +239,12 @@ fn bind_strategic_hover(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-    nodes: &mut Query<&mut Node>,
 ) {
-    let bar = tree.find(root, fourcc!("curs"));
-    bind_hover_help_bar(
-        commands,
-        assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("strategic hover-help bar has Node"),
-        HoverHelpBarStyle::CITY_SITE,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     let civilian_seas = format!(
         "{}, {}",
-        get_string(assets, 0x2730, 0x12),
-        get_string(assets, 0x2730, 8)
+        assets.get_string(0x2730, 0x12),
+        assets.get_string(0x2730, 8)
     );
     bind_hover_help_texts(
         commands,
@@ -293,8 +257,8 @@ fn bind_strategic_hover(
     );
     commands
         .entity(tree.find(root, fourcc!("ZmOt")))
-        .insert(MapZoomControl)
         .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
         .observe(on_ocean_toggle);
 }
 
@@ -304,18 +268,14 @@ fn on_ocean_toggle(
     mut commands: Commands,
     assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
-    mut origin: ResMut<MapViewOrigin>,
-    mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut map: ResMut<StrategicMapSession>,
 ) {
-    let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
-        return;
-    };
     if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
         let tag = session.game.map().scenario_tag.as_str();
         let body = if tag.is_empty() {
             String::from("Imperialism")
         } else {
-            crate::ui::fill_brackets(&get_string(&assets, 0x273f, 1), &[tag])
+            crate::ui::fill_brackets(&assets.get_string(0x273f, 1), &[tag])
         };
         spawn_linger_dialog(
             &mut commands,
@@ -324,27 +284,7 @@ fn on_ocean_toggle(
         );
         return;
     }
-    apply_map_transition(
-        &mut session,
-        &mut origin,
-        &mut interaction,
-        &mut viewport,
-        MapTransition::ToggleZoom,
-    );
-}
-
-fn sync_zoom_control(
-    viewports: Query<&StrategicViewport>,
-    mut controls: Query<&mut RetailTag, With<MapZoomControl>>,
-) {
-    let (Ok(viewport), Ok(mut tag)) = (viewports.single(), controls.single_mut()) else {
-        return;
-    };
-    tag.0 = if viewport.projection == MapProjection::Overview {
-        fourcc!("ZmIn")
-    } else {
-        fourcc!("ZmOt")
-    };
+    map.apply(&mut session.game, MapAction::ToggleZoom);
 }
 
 fn bind_strategic_map_management_pictures(
@@ -355,18 +295,14 @@ fn bind_strategic_map_management_pictures(
 ) {
     let toolbar = tree.find(root, fourcc!("tool"));
     for (tag, idle_id) in [
-        (fourcc!("dipl"), 0x24d9),
-        (fourcc!("trad"), 0x24db),
-        (fourcc!("city"), 0x24dd),
-        (fourcc!("tran"), 0x24df),
+        (fourcc!("dipl"), PictureId::new(0x24d9)),
+        (fourcc!("trad"), PictureId::new(0x24db)),
+        (fourcc!("city"), PictureId::new(0x24dd)),
+        (fourcc!("tran"), PictureId::new(0x24df)),
     ] {
         let entity = tree.find(toolbar, tag);
-        let idle = assets
-            .picture(PictureId::new(idle_id))
-            .expect("retail strategic management button must load");
-        let active = assets
-            .picture(PictureId::new(idle_id + 1))
-            .expect("retail strategic management pressed button must load");
+        let idle = assets.picture(idle_id);
+        let active = assets.picture(idle_id.offset(1));
         commands.entity(entity).insert((
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
@@ -381,73 +317,68 @@ pub(crate) fn bind_game_status_display(
     tree: &RetailTree,
 ) {
     let (season_font, season_layout, season_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: -2,
-        })
+        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+            1, 0, 12, -2,
+        ))
         .expect("retail season status text style");
     let (treasury_font, treasury_layout, treasury_line_height, _) = assets
-        .text_style(imperialism_formats::RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+            1, 0, 12, 1,
+        ))
         .expect("retail treasury status text style");
     // Retail draws the nominal text first, then its offset "shadow" copy over it.
     // Bevy draws shadows behind text, so use the retail shadow as the visible face.
     let text_color = assets.palette_color(0x28);
     let shadow_color = assets.palette_color(0);
-    bind_status_text(
+    let date = bind_status_text(
         commands,
         root,
         tree,
         fourcc!("seas"),
-        GameStatusDisplay::Date,
         season_font,
         season_layout,
         season_line_height,
         text_color,
         shadow_color,
     );
-    bind_status_text(
+    let treasury = bind_status_text(
         commands,
         root,
         tree,
         fourcc!("trea"),
-        GameStatusDisplay::Treasury,
         treasury_font,
         treasury_layout,
         treasury_line_height,
         text_color,
         shadow_color,
     );
+    commands
+        .entity(root)
+        .insert(GameStatusView { date, treasury });
 }
 
-fn project_game_status_display(
+fn render_game_status(
     session: Res<GameSession>,
-    added: Query<(), Added<GameStatusDisplay>>,
     retail: Res<RetailAssetsResource>,
-    mut displays: Query<(&GameStatusDisplay, &mut Text)>,
+    views: Query<&GameStatusView>,
+    mut texts: Query<&mut Text>,
 ) {
-    if super::projection_idle(&session, !added.is_empty()) {
-        return;
-    }
     let nation = session.active_major_nation();
     let date = {
-        let season = retail
-            .string(10_000, (session.game.turn().economic_turn % 4) as i16)
-            .expect("retail season name must load");
+        let season = retail.ui_string(10_000, (session.game.turn().economic_turn % 4) as u16);
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
     let treasury = format_currency(session.game.nations().major(nation).common.treasury);
-    for (kind, mut text) in &mut displays {
-        text.0 = match kind {
-            GameStatusDisplay::Date => date.clone(),
-            GameStatusDisplay::Treasury => treasury.clone(),
-        };
+    for view in &views {
+        texts
+            .get_mut(view.date)
+            .expect("bound status date text")
+            .0
+            .clone_from(&date);
+        texts
+            .get_mut(view.treasury)
+            .expect("bound status treasury text")
+            .0 = treasury.clone();
     }
 }
 
@@ -457,15 +388,14 @@ fn bind_status_text(
     root: Entity,
     tree: &RetailTree,
     tag: FourCc,
-    kind: GameStatusDisplay,
     font: TextFont,
     layout: TextLayout,
     line_height: bevy::text::LineHeight,
     text_color: Color,
     shadow_color: Color,
-) {
-    commands.entity(tree.find(root, tag)).insert((
-        kind,
+) -> Entity {
+    let entity = tree.find(root, tag);
+    commands.entity(entity).insert((
         Text::default(),
         font,
         layout,
@@ -476,32 +406,33 @@ fn bind_status_text(
             color: shadow_color,
         },
     ));
+    entity
 }
 
 fn sync_status_date_hover(
-    interactions: Query<Ref<StrategicInteraction>>,
+    map: Res<StrategicMapSession>,
     assets: RetailUiAssets,
-    mut texts: Query<(&GameStatusDisplay, &mut HoverHelpText)>,
+    mut views: Query<&GameStatusView>,
+    mut texts: Query<&mut HoverHelpText>,
 ) {
-    let Ok(interaction) = interactions.single() else {
-        return;
-    };
-    if !interaction.is_changed() {
+    if !map.is_changed() {
         return;
     }
-    let help = if interaction.mode == MapInteractionMode::Army {
-        get_string(&assets, 0x2732, 0x11)
+    let help = if matches!(map.selection, StrategicSelection::Army(_)) {
+        assets.get_string(0x2732, 0x11)
     } else {
         format!(
             "{}, {}",
-            get_string(&assets, 0x2730, 0x12),
-            get_string(&assets, 0x2730, 8)
+            assets.get_string(0x2730, 0x12),
+            assets.get_string(0x2730, 8)
         )
     };
-    for (kind, mut text) in &mut texts {
-        if *kind == GameStatusDisplay::Date {
-            text.0.clone_from(&help);
-        }
+    for view in &mut views {
+        texts
+            .get_mut(view.date)
+            .expect("bound status date text")
+            .0
+            .clone_from(&help);
     }
 }
 
@@ -521,47 +452,42 @@ pub(crate) fn bind_native_game_screen_nav(
     let transport = tree.find(toolbar, fourcc!("tran"));
     let city = tree.find(toolbar, fourcc!("city"));
     let diplomacy = tree.find(toolbar, fourcc!("dipl"));
-    for (entity, action) in [
-        (trade, GameScreenNavAction::Trade),
-        (transport, GameScreenNavAction::Transport),
-        (city, GameScreenNavAction::City),
-        (diplomacy, GameScreenNavAction::Diplomacy),
+    for (entity, destination) in [
+        (trade, AppState::Trade),
+        (transport, AppState::Transport),
+        (city, AppState::City),
+        (diplomacy, AppState::Diplomacy),
     ] {
         commands
             .entity(entity)
-            .insert((action, ActivateOnPress))
+            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
-            .observe(on_game_screen_activate);
+            .observe(
+                move |_: On<Activate>,
+                      state: Res<State<AppState>>,
+                      mut next_state: ResMut<NextState<AppState>>| {
+                    if destination != *state.get() {
+                        next_state.set(destination);
+                    }
+                },
+            );
     }
     if let Some(leave_toolbar_tag) = leave_toolbar_tag {
         let toolbar = tree.find(root, leave_toolbar_tag);
         let leave = tree.find(toolbar, fourcc!("end "));
         commands
             .entity(leave)
-            .insert((GameScreenNavAction::StrategicMap, ActivateOnPress))
+            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
-            .observe(on_game_screen_activate);
-    }
-}
-
-fn on_game_screen_activate(
-    activate: On<Activate>,
-    actions: Query<&GameScreenNavAction>,
-    state: Res<State<AppState>>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    let action = actions
-        .get(activate.entity)
-        .expect("game-screen Activate is bound on a GameScreenNavAction control");
-    let destination = match *action {
-        GameScreenNavAction::StrategicMap => AppState::StrategicMap,
-        GameScreenNavAction::Trade => AppState::Trade,
-        GameScreenNavAction::Transport => AppState::Transport,
-        GameScreenNavAction::City => AppState::City,
-        GameScreenNavAction::Diplomacy => AppState::Diplomacy,
-    };
-    if destination != *state.get() {
-        next_state.set(destination);
+            .observe(
+                move |_: On<Activate>,
+                      state: Res<State<AppState>>,
+                      mut next_state: ResMut<NextState<AppState>>| {
+                    if AppState::StrategicMap != *state.get() {
+                        next_state.set(AppState::StrategicMap);
+                    }
+                },
+            );
     }
 }
 
@@ -603,20 +529,9 @@ fn bind_turn_alert_notice(
     };
     let (root, notice) = root.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
-    let (title_index, body_index) = match notice.0 {
-        TurnAlert::LandCapitolThreatened => (0x28, 0x29),
-        TurnAlert::NavalCapitolThreatened => (0x2a, 0x2b),
-        TurnAlert::Treasury { prompt_code } => (prompt_code - 1, prompt_code),
-        TurnAlert::CommodityShortage => (0x46, 0x47),
-        TurnAlert::TransportShortage => (0x22, 0x23),
-        TurnAlert::Starvation => (0x20, 0x21),
-    };
-    let title = assets
-        .string(0x2753, title_index)
-        .expect("retail turn-alert title must load");
-    let body = assets
-        .string(0x2753, body_index)
-        .expect("retail turn-alert body must load");
+    let [title_id, body_id] = turn_alert_strings(notice.0);
+    let title = assets.string(title_id);
+    let body = assets.string(body_id);
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     commands
@@ -625,6 +540,20 @@ fn bind_turn_alert_notice(
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
     commands.entity(linger.cancel).insert(Visibility::Hidden);
+}
+
+fn turn_alert_strings(alert: TurnAlert) -> [imperialism_formats::StringResourceId; 2] {
+    use imperialism_formats::StringGroup;
+    const TURN_ALERTS: StringGroup = StringGroup::new(0x2753);
+    let (title, body) = match alert {
+        TurnAlert::LandCapitolThreatened => (0x28, 0x29),
+        TurnAlert::NavalCapitolThreatened => (0x2a, 0x2b),
+        TurnAlert::Treasury { prompt_code } => ((prompt_code - 1) as u16, prompt_code as u16),
+        TurnAlert::CommodityShortage => (0x46, 0x47),
+        TurnAlert::TransportShortage => (0x22, 0x23),
+        TurnAlert::Starvation => (0x20, 0x21),
+    };
+    [TURN_ALERTS.entry(title), TURN_ALERTS.entry(body)]
 }
 
 fn bind_turn_summary_notice(

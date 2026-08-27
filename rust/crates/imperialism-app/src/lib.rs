@@ -7,7 +7,7 @@ mod ui;
 use bevy::input_focus::tab_navigation::TabNavigationPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
-use imperialism_core::RandomGameNames;
+use imperialism_core::{GameData, RandomGameNames};
 use imperialism_formats::{LoadedGame, RetailAssets};
 use std::path::PathBuf;
 
@@ -60,29 +60,26 @@ impl RetailAssetsResource {
         &self.0
     }
 
-    pub(crate) fn string(
-        &self,
-        group: i16,
-        direct_index: i16,
-    ) -> Result<String, imperialism_formats::RetailAssetError> {
-        self.0.string(group, direct_index)
+    pub(crate) fn string(&self, id: imperialism_formats::StringResourceId) -> String {
+        self.0
+            .string(id)
+            .unwrap_or_else(|error| panic!("retail string {id} must load: {error}"))
     }
 
-    pub(crate) fn text(
-        &self,
-        resource_id: u16,
-    ) -> Result<String, imperialism_formats::RetailAssetError> {
-        self.0.text(resource_id)
+    /// `TSimMgr::GetString`: zero-based offset (adds one before the direct lookup).
+    pub(crate) fn get_string(&self, group: u16, offset: u16) -> String {
+        self.string(imperialism_formats::StringGroup::new(group).offset(offset))
     }
 
-    /// `TSimMgr::GetString`: adds one before the direct lookup.
-    pub(crate) fn get_string(&self, group: i16, offset: i16) -> String {
-        self.string(group, offset + 1)
-            .expect("retail hover-help string")
+    /// Direct `LoadUiStringResourceByGroupAndIndex` / `LoadStringA` group/index.
+    pub(crate) fn ui_string(&self, group: u16, index: u16) -> String {
+        self.string(imperialism_formats::StringGroup::new(group).entry(index))
     }
 
-    pub(crate) fn news_story_ids(&self) -> &[i32] {
-        self.0.news_table().story_ids()
+    pub(crate) fn text(&self, resource_id: u16) -> String {
+        self.0
+            .text(resource_id)
+            .unwrap_or_else(|error| panic!("retail TEXT {resource_id} must load: {error}"))
     }
 }
 
@@ -147,12 +144,15 @@ pub fn run(
                 ..default()
             }),
     );
-    if let Some(loaded) = initial_game {
+    if let Some(mut loaded) = initial_game {
         assert_eq!(
             loaded.game.turn().phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );
+        loaded.game.set_game_data(GameData::from_news_story_ids(
+            retail_assets.news_table().story_ids().to_vec(),
+        ));
         ui::insert_loaded_game_world(app.world_mut(), loaded);
         app.insert_state(AppState::StrategicMap);
     } else {

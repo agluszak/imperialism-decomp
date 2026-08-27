@@ -142,6 +142,91 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("retail_text_style(3, 0, 10, -2)", metal)
         self.assertNotIn("retail_text_style(3, 0, 9, 1)", metal)
 
+    def test_recovered_widget_classes_emit_reusable_rust_widgets(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        industry = rendered[
+            rendered.index("pub fn citydlog_9200()") : rendered.index(
+                "pub fn citydlog_9201()"
+            )
+        ]
+        self.assertIn("retail_amount_bar(AmountBarStyle::Production)", industry)
+        self.assertNotIn("AmountBarParts", industry)
+        self.assertNotIn("retail_amount_selector", industry)
+        self.assertNotIn("#Left", industry)
+        food = rendered[
+            rendered.index("pub fn citydlog_9209()") : rendered.index(
+                "pub fn citydlog_9211()"
+            )
+        ]
+        self.assertIn("retail_amount_bar(AmountBarStyle::Production)", food)
+        self.assertNotIn("AmountBarParts", food)
+        self.assertNotIn("retail_amount_selector", food)
+        trade = rendered[
+            rendered.index("pub fn trade_2009()") : rendered.index(
+                "pub fn trade_2010()"
+            )
+        ]
+        self.assertIn("retail_amount_bar(AmountBarStyle::Trade)", trade)
+        self.assertNotIn("AmountBarParts", trade)
+        self.assertNotIn("retail_amount_selector", trade)
+        self.assertIn("retail_placard(", rendered)
+        self.assertIn("retail_army_placard(", rendered)
+        self.assertIn("retail_ship_placard(", rendered)
+        self.assertIn("retail_numbered_arrow()", rendered)
+        self.assertIn("retail_pressed_overlay_picture(", rendered)
+        self.assertIn("retail_madness_picture(", rendered)
+        preferences = rendered[
+            rendered.index("pub fn linger_4150()") : rendered.index(
+                "pub fn linger_4300()"
+            )
+        ]
+        opte = preferences[
+            preferences.index('retail_node(fourcc!("opte")') : preferences.index(
+                'retail_node(fourcc!("soun")'
+            )
+        ]
+        self.assertIn("Checkbox", opte)
+        self.assertIn("retail_madness_picture(4158)", opte)
+        self.assertNotIn("retail_picture(4158)", opte)
+        self.assertIn("retail_two_pic_slider(4150, 255, 10051, 60)", preferences)
+        self.assertIn("retail_two_pic_slider(4152, 100, 10051, 60)", preferences)
+        # TDeluxeText is tevw but must not become ScrollArea.
+        for tag in ("txta", "txtb", "txtc", "txtd", "txte"):
+            start = preferences.index(f'retail_node(fourcc!("{tag}")')
+            end = preferences.find("retail_node(fourcc!", start + 1)
+            chunk = preferences[start:end]
+            self.assertNotIn("ScrollArea", chunk, tag)
+        history = rendered[rendered.index("pub fn techstore_2370()") :]
+        next_fn = history.find("\npub fn ", 1)
+        if next_fn != -1:
+            history = history[:next_fn]
+        # Recovered TScrollView (`scvw`) is the only scroll area on this screen.
+        self.assertIn('retail_node(fourcc!("scvw")', history)
+        scvw = history[
+            history.index('retail_node(fourcc!("scvw")') : history.find(
+                "retail_node(fourcc!",
+                history.index('retail_node(fourcc!("scvw")') + 1,
+            )
+        ]
+        self.assertIn("ScrollArea", scvw)
+        self.assertIn("ScrollPosition::default()", scvw)
+        # Preference-style deluxe text elsewhere must stay passive.
+        self.assertEqual(history.count("ScrollArea"), 1)
+        transport = rendered[rendered.index("pub fn transport_2014()") :]
+        next_fn = transport.find("\npub fn ", 1)
+        if next_fn != -1:
+            transport = transport[:next_fn]
+        self.assertIn("retail_transport_capacity_gauge(", transport)
+        self.assertIn("retail_transport_gauge(", transport)
+        self.assertNotIn("RetailTransportGaugeKind", transport)
+        self.assertNotIn("TransportGaugeParts", transport)
+        self.assertIn(", 93)", transport)
+        self.assertIn(", 97)", transport)
+        self.assertEqual(transport.count("retail_transport_gauge("), 18)
+        self.assertEqual(transport.count("retail_transport_capacity_gauge("), 1)
+
     def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
@@ -467,6 +552,39 @@ class UiCodegenTests(unittest.TestCase):
             "variable:",
         ):
             self.assertNotIn(implementation_field, windows_view_text)
+
+
+    def test_scroll_area_requires_tscrollview_not_tevw(self) -> None:
+        """tevw is the TTEView family; only TScrollView becomes ScrollArea."""
+        from tools.ui_codegen import (
+            UiSemanticFamily,
+            UiSemanticNode,
+            _rust_input_semantics,
+        )
+
+        def node(class_name: str, type_code: str = "tevw") -> UiSemanticNode:
+            return UiSemanticNode(
+                node_id="0x0001",
+                type_code=type_code,
+                tag="scvw",
+                class_name=class_name,
+                parent_id=None,
+                geometry=(0, 0, 10, 10),
+                state=0,
+                enabled=1,
+                input_gate=1,
+                child_hit_test=0,
+                control_value=0,
+                family=UiSemanticFamily(),
+                source="test",
+                confidence="high",
+            )
+
+        self.assertEqual(_rust_input_semantics(None, node("TScrollView")), "scroll_area")
+        self.assertEqual(_rust_input_semantics(None, node("TDeluxeText")), "passive")
+        self.assertEqual(_rust_input_semantics(None, node("TDialogTEView")), "passive")
+        self.assertEqual(_rust_input_semantics(None, node("TInfoBarText")), "passive")
+        self.assertEqual(_rust_input_semantics(None, node("TTEView")), "passive")
 
     def test_writing_same_inputs_does_not_touch_outputs(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

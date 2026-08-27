@@ -1,13 +1,11 @@
 //! In-game toolbar mini-map: `TMiniMapView::Draw` / `TrackMouse` plus the
 //! `TMacViewMgr` owner-color atlas.
 
+use super::super::GameSession;
 use super::super::RetailUiAssets;
 use super::super::retail::RetailTree;
 use super::super::retail_raster::{IndexedRasterExt, indexed_picture};
-use super::super::{GameSession, MapViewOrigin};
-use super::map_interaction::{
-    MapProjection, MapTransition, StrategicInteraction, StrategicViewport, apply_map_transition,
-};
+use super::map_interaction::{MapAction, StrategicMapSession, StrategicView};
 use crate::RetailAssetsResource;
 use crate::ui::retail_palette::view_mgr_color;
 use bevy::picking::events::{Click, Drag, DragEnd, Pointer, Press};
@@ -109,23 +107,15 @@ pub(crate) fn bind_minimap(
 
 pub(crate) fn sync_minimap(
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
-    viewports: Query<Ref<StrategicViewport>>,
+    map: Res<StrategicMapSession>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
     mut minimaps: Query<(&mut MiniMap, &ImageNode)>,
 ) {
-    let Ok(viewport) = viewports.single() else {
-        return;
-    };
-    let (view_origin, marker) = active_minimap_view(&session, origin.0, &viewport);
+    let (view_origin, marker) = active_minimap_view(&session, map.view);
     let palette = retail_assets.assets().default_dib_palette();
     for (mut minimap, image_node) in &mut minimaps {
-        if !session.is_changed()
-            && !origin.is_changed()
-            && !viewport.is_changed()
-            && !minimap.is_added()
-        {
+        if !session.is_changed() && !map.is_changed() && !minimap.is_added() {
             continue;
         }
         let drag_pixel = minimap.drag_pixel;
@@ -145,8 +135,7 @@ pub(crate) fn sync_minimap(
 fn on_minimap_press(
     press: On<Pointer<Press>>,
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
-    viewports: Query<&StrategicViewport>,
+    map: Res<StrategicMapSession>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
     mut minimaps: Query<(&RelativeCursorPosition, &mut MiniMap, &ImageNode)>,
@@ -160,10 +149,7 @@ fn on_minimap_press(
     let Some(pixel) = cursor_pixel(cursor) else {
         return;
     };
-    let Ok(viewport) = viewports.single() else {
-        return;
-    };
-    let (view_origin, marker) = active_minimap_view(&session, origin.0, viewport);
+    let (view_origin, marker) = active_minimap_view(&session, map.view);
     minimap.drag_pixel = Some(pixel);
     write_minimap(
         &mut minimap,
@@ -180,8 +166,7 @@ fn on_minimap_press(
 fn on_minimap_drag(
     drag: On<Pointer<Drag>>,
     session: Res<GameSession>,
-    origin: Res<MapViewOrigin>,
-    viewports: Query<&StrategicViewport>,
+    map: Res<StrategicMapSession>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
     mut minimaps: Query<(&RelativeCursorPosition, &mut MiniMap, &ImageNode)>,
@@ -195,10 +180,7 @@ fn on_minimap_drag(
     let Some(pixel) = cursor_pixel(cursor) else {
         return;
     };
-    let Ok(viewport) = viewports.single() else {
-        return;
-    };
-    let (view_origin, marker) = active_minimap_view(&session, origin.0, viewport);
+    let (view_origin, marker) = active_minimap_view(&session, map.view);
     minimap.drag_pixel = Some(pixel);
     write_minimap(
         &mut minimap,
@@ -215,8 +197,7 @@ fn on_minimap_drag(
 fn on_minimap_click(
     click: On<Pointer<Click>>,
     mut session: ResMut<GameSession>,
-    mut origin: ResMut<MapViewOrigin>,
-    mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut map: ResMut<StrategicMapSession>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
     mut minimaps: Query<(&RelativeCursorPosition, &mut MiniMap, &ImageNode)>,
@@ -227,17 +208,12 @@ fn on_minimap_click(
     let Ok((cursor, mut minimap, image_node)) = minimaps.get_mut(click.entity) else {
         return;
     };
-    let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
-        return;
-    };
     commit_minimap_track(
         cursor,
         &mut minimap,
         image_node,
         &mut session,
-        &mut origin,
-        &mut interaction,
-        &mut viewport,
+        &mut map,
         &mut images,
         retail_assets.assets().default_dib_palette(),
     );
@@ -246,8 +222,7 @@ fn on_minimap_click(
 fn on_minimap_drag_end(
     drag_end: On<Pointer<DragEnd>>,
     mut session: ResMut<GameSession>,
-    mut origin: ResMut<MapViewOrigin>,
-    mut maps: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
+    mut map: ResMut<StrategicMapSession>,
     mut images: ResMut<Assets<Image>>,
     retail_assets: Res<RetailAssetsResource>,
     mut minimaps: Query<(&RelativeCursorPosition, &mut MiniMap, &ImageNode)>,
@@ -258,17 +233,12 @@ fn on_minimap_drag_end(
     let Ok((cursor, mut minimap, image_node)) = minimaps.get_mut(drag_end.entity) else {
         return;
     };
-    let Ok((mut interaction, mut viewport)) = maps.single_mut() else {
-        return;
-    };
     commit_minimap_track(
         cursor,
         &mut minimap,
         image_node,
         &mut session,
-        &mut origin,
-        &mut interaction,
-        &mut viewport,
+        &mut map,
         &mut images,
         retail_assets.assets().default_dib_palette(),
     );
@@ -279,9 +249,7 @@ fn commit_minimap_track(
     minimap: &mut MiniMap,
     image_node: &ImageNode,
     session: &mut GameSession,
-    origin: &mut MapViewOrigin,
-    interaction: &mut StrategicInteraction,
-    viewport: &mut StrategicViewport,
+    map: &mut StrategicMapSession,
     images: &mut Assets<Image>,
     palette: &DibPalette,
 ) {
@@ -289,18 +257,15 @@ fn commit_minimap_track(
         return;
     };
     let pixel = cursor_pixel_unclamped(cursor).unwrap_or(drag_pixel);
-    let marker = marker_size(viewport);
+    let marker = marker_size(map.view);
     let (column, row) =
         minimap_release_cell(pixel, minimap.scroll_column, minimap.scroll_row, marker);
-    apply_map_transition(
-        session,
-        origin,
-        interaction,
-        viewport,
-        MapTransition::SetUpperLeft(IVec2::new(column, row)),
+    map.apply(
+        &mut session.game,
+        MapAction::SetUpperLeft(IVec2::new(column, row)),
     );
     minimap.drag_pixel = None;
-    let (view_origin, marker) = active_minimap_view(session, origin.0, viewport);
+    let (view_origin, marker) = active_minimap_view(session, map.view);
     write_minimap(
         minimap,
         image_node,
@@ -332,33 +297,28 @@ fn write_minimap(
     *existing = image;
 }
 
-fn marker_size(viewport: &StrategicViewport) -> ViewportMarker {
-    if viewport.projection == MapProjection::Overview {
+fn marker_size(view: StrategicView) -> ViewportMarker {
+    if view.is_overview() {
         OCEAN_MARKER
     } else {
         DETAILED_MARKER
     }
 }
 
-fn active_minimap_view(
-    session: &GameSession,
-    origin: TileId,
-    viewport: &StrategicViewport,
-) -> (TileId, ViewportMarker) {
-    let marker = marker_size(viewport);
-    if viewport.projection == MapProjection::Detailed {
-        return (origin, marker);
+fn active_minimap_view(session: &GameSession, view: StrategicView) -> (TileId, ViewportMarker) {
+    let marker = marker_size(view);
+    match view {
+        StrategicView::Detailed { origin } => (origin, marker),
+        StrategicView::Overview { origin } => {
+            let origin = session
+                .game
+                .map()
+                .geometry()
+                .tile(origin.y as u16, origin.x as u16)
+                .expect("retail ocean origin is inside the map");
+            (origin, marker)
+        }
     }
-    let origin = session
-        .game
-        .map()
-        .geometry()
-        .tile(
-            viewport.ocean.origin.y as u16,
-            viewport.ocean.origin.x as u16,
-        )
-        .expect("retail ocean origin is inside the map");
-    (origin, marker)
 }
 
 fn cursor_pixel(cursor: &RelativeCursorPosition) -> Option<(i32, i32)> {

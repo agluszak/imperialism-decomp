@@ -1,3 +1,4 @@
+use super::retail_raster::IndexedRasterExt;
 use crate::{RetailAssetsResource, RetailFont, RetailFonts};
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::query::{QueryData, QueryFilter};
@@ -7,9 +8,20 @@ use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError}
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
-use bevy::ui::{Checked, Pressed};
+use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
+
+pub use super::retail_amount_bar::{AmountBarParts, AmountBarStyle, retail_amount_bar};
+pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
+pub use super::retail_placard::{
+    PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
+};
+pub use super::retail_slider::retail_two_pic_slider;
+pub use super::retail_transport_gauge::{
+    TransportGaugeParts, retail_transport_capacity_gauge, retail_transport_gauge,
+    transport_gauge_width,
+};
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -25,6 +37,12 @@ pub struct RetailPictureSwap {
 /// A `TPictureButton` down-state bitmap drawn only while the control is pressed.
 #[derive(Component, Debug, Default)]
 pub struct RetailPressedOverlay;
+
+/// `TMadnessButton::CheckTheLook` bitmap frames: base+0..=4 from checked/pressed/disabled.
+#[derive(Component, Clone, Debug)]
+pub struct RetailMadnessPicture {
+    pub frames: [Handle<Image>; 5],
+}
 
 pub fn retail_view(name: &'static str) -> impl Scene {
     // TView clips each child's paint rectangle to its parent content bounds.
@@ -78,11 +96,59 @@ pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
                     idle.clone()
                 }
             };
-            context.entity.insert(RetailPictureSwap {
-                idle: idle.clone(),
-                active,
+            // Generated radios/checkboxes often already have `Checked` (or `Pressed`)
+            // before this template runs; observers on `Add<Checked>` would miss it.
+            let initial = if context.entity.get::<Pressed>().is_some()
+                || context.entity.get::<Checked>().is_some()
+            {
+                active.clone()
+            } else {
+                idle.clone()
+            };
+            context.entity.insert(RetailPictureSwap { idle, active });
+            Ok(ImageNode::new(initial))
+        })
+    }
+}
+
+/// `TPictureButton` hilite bitmap: present but fully transparent until `Pressed`.
+pub fn retail_pressed_overlay_picture(id: i16) -> impl Scene {
+    bsn! {
+        template(move |context| {
+            let image = load_template_picture(context, PictureId::new(id))?;
+            context.entity.insert(RetailPressedOverlay);
+            let mut node = ImageNode::new(image);
+            node.color.set_alpha(0.0);
+            Ok(node)
+        })
+    }
+}
+
+/// `TMadnessButton` multi-offset CzechBox skin over stock `Checkbox`.
+pub fn retail_madness_picture(base: i16) -> impl Scene {
+    bsn! {
+        template(move |context| {
+            let frames = std::array::from_fn(|index| {
+                let id = base + index as i16;
+                match load_template_picture(context, PictureId::new(id)) {
+                    Ok(handle) => handle,
+                    Err(error) => {
+                        warn!("could not preload madness picture {id}: {error}");
+                        load_template_picture(context, PictureId::new(base))
+                            .unwrap_or_else(|_| Handle::default())
+                    }
+                }
             });
-            Ok(ImageNode::new(idle))
+            // Derive the opening frame from components already on the entity;
+            // do not rely on a later `Add` observer to correct construction.
+            let initial = frames[madness_frame_index(
+                context.entity.get::<Checked>().is_some(),
+                context.entity.get::<Pressed>().is_some(),
+                context.entity.get::<InteractionDisabled>().is_some(),
+            )]
+            .clone();
+            context.entity.insert(RetailMadnessPicture { frames });
+            Ok(ImageNode::new(initial))
         })
     }
 }
@@ -93,13 +159,22 @@ pub fn retail_text_style(
     point_size: i32,
     alignment: i32,
 ) -> impl Scene {
-    let style = resolve_retail_text_style(RetailTextStylePreset {
+    retail_text_style_preset(RetailTextStylePreset::explicit(
         font_family,
         face_flags,
         point_size,
         alignment,
-    })
-    .expect("generated retail text style must resolve");
+    ))
+}
+
+/// `BuildUiTextStyleDescriptor`: family derives from point size (Book Antiqua below 12pt).
+pub fn retail_built_text_style(point_size: i32, alignment: i32) -> impl Scene {
+    retail_text_style_preset(RetailTextStylePreset::built(point_size, alignment))
+}
+
+fn retail_text_style_preset(preset: RetailTextStylePreset) -> impl Scene {
+    let style =
+        resolve_retail_text_style(preset).expect("generated retail text style must resolve");
     let underline = style.underline.then(|| bsn! { Underline });
     let line_height = LineHeight::Px(style.logical_pixel_height as f32);
     bsn! {
@@ -121,6 +196,12 @@ pub fn retail_text_style(
 pub fn retail_text_color(index: u8) -> impl Scene {
     bsn! {
         template(move |context| Ok(TextColor(template_palette_color(context, index))))
+    }
+}
+
+pub fn retail_background_color(index: u8) -> impl Scene {
+    bsn! {
+        template(move |context| Ok(BackgroundColor(template_palette_color(context, index))))
     }
 }
 
@@ -206,12 +287,12 @@ pub fn retail_centered_text_padding(
     height: i32,
     top: i32,
 ) -> impl Scene {
-    let text_height = resolve_retail_text_style(RetailTextStylePreset {
+    let text_height = resolve_retail_text_style(RetailTextStylePreset::explicit(
         font_family,
         face_flags,
         point_size,
-        alignment: 0,
-    })
+        0,
+    ))
     .expect("generated retail text style must resolve")
     .logical_pixel_height;
     bsn! {
@@ -235,8 +316,14 @@ pub enum RetailPictureError {
     },
 }
 
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+enum RetailImageKey {
+    Opaque(PictureId),
+    Transparent(PictureId, u8),
+}
+
 #[derive(Resource, Default)]
-struct RetailPictureHandles(HashMap<PictureId, Handle<Image>>);
+struct RetailPictureHandles(HashMap<RetailImageKey, Handle<Image>>);
 
 #[derive(SystemParam)]
 pub struct RetailUiAssets<'w> {
@@ -294,54 +381,81 @@ impl RetailUiAssets<'_> {
         Color::srgb_u8(red, green, blue)
     }
 
-    pub fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
-        self.retail_assets.assets().string(group, direct_index)
+    pub fn string(&self, id: StringResourceId) -> String {
+        self.retail_assets.string(id)
     }
 
-    pub fn picture(&mut self, picture_id: PictureId) -> Result<Handle<Image>, RetailPictureError> {
-        load_retail_picture(
-            picture_id,
+    /// `TSimMgr::GetString`: zero-based offset (adds one before the direct lookup).
+    pub fn get_string(&self, group: u16, offset: u16) -> String {
+        self.retail_assets.get_string(group, offset)
+    }
+
+    /// Direct `LoadUiStringResourceByGroupAndIndex` / `LoadStringA` group/index.
+    pub fn ui_string(&self, group: u16, index: u16) -> String {
+        self.retail_assets.ui_string(group, index)
+    }
+
+    /// Soft-fail picture load for cases where retail itself tolerates a missing bitmap.
+    pub fn try_picture(
+        &mut self,
+        picture_id: PictureId,
+    ) -> Result<Handle<Image>, RetailPictureError> {
+        load_retail_image(
+            RetailImageKey::Opaque(picture_id),
             &self.retail_assets,
             &mut self.images,
             &mut self.handles,
         )
     }
 
+    pub fn picture(&mut self, picture_id: PictureId) -> Handle<Image> {
+        self.try_picture(picture_id)
+            .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
+    }
+
     pub fn transformed_picture(
         &mut self,
         picture_id: PictureId,
         transform: impl FnOnce(&mut Image),
-    ) -> Result<Handle<Image>, RetailPictureError> {
-        let handle = self.picture(picture_id)?;
+    ) -> Handle<Image> {
+        let handle = self.picture(picture_id);
         let mut image = self
             .images
             .get(&handle)
             .expect("picture handle was just resolved")
             .clone();
         transform(&mut image);
-        Ok(self.images.add(image))
+        self.images.add(image)
     }
 
-    pub fn transparent_picture(
+    pub fn keyed_picture(
         &mut self,
         picture_id: PictureId,
-        palette_index: u8,
-    ) -> Result<Handle<Image>, RetailPictureError> {
-        let indexed = self.indexed_picture(picture_id)?;
-        self.transformed_picture(picture_id, move |image| {
-            apply_index_transparency(image, &indexed, palette_index);
+        transparent_palette_index: u8,
+    ) -> Handle<Image> {
+        load_retail_image(
+            RetailImageKey::Transparent(picture_id, transparent_palette_index),
+            &self.retail_assets,
+            &mut self.images,
+            &mut self.handles,
+        )
+        .unwrap_or_else(|error| {
+            panic!(
+                "retail keyed picture {picture_id}/{transparent_palette_index} must load: {error}"
+            )
         })
     }
 
-    pub fn indexed_picture(
+    pub fn try_indexed_picture(
         &self,
         picture_id: PictureId,
     ) -> Result<IndexedPicture, RetailAssetError> {
         self.retail_assets.assets().indexed_picture(picture_id)
     }
 
-    pub fn fonts(&self) -> &RetailFonts {
-        &self.retail_fonts
+    pub fn indexed_picture(&self, picture_id: PictureId) -> IndexedPicture {
+        self.try_indexed_picture(picture_id)
+            .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
     }
 
     pub fn text_style(
@@ -367,11 +481,19 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_retail_picture_swap_state::<Remove, Checked>)
             .add_observer(on_retail_pressed_overlay_state::<Add>)
             .add_observer(on_retail_pressed_overlay_state::<Remove>)
+            .add_observer(on_retail_madness_picture_state::<Add, Pressed>)
+            .add_observer(on_retail_madness_picture_state::<Remove, Pressed>)
+            .add_observer(on_retail_madness_picture_state::<Add, Checked>)
+            .add_observer(on_retail_madness_picture_state::<Remove, Checked>)
+            .add_observer(on_retail_madness_picture_state::<Add, InteractionDisabled>)
+            .add_observer(on_retail_madness_picture_state::<Remove, InteractionDisabled>)
             .add_observer(on_radio_text_fill_state::<Add, Pressed>)
             .add_observer(on_radio_text_fill_state::<Remove, Pressed>)
             .add_observer(on_radio_text_fill_state::<Add, Checked>)
             .add_observer(on_radio_text_fill_state::<Remove, Checked>)
             .add_observer(on_radio_text_fill_state::<Add, RetailRadioTextFill>);
+        super::retail_slider::register_slider(app);
+        super::retail_numbered_arrow::register_numbered_arrow(app);
         super::hover_help::register_hover_help(app);
     }
 }
@@ -386,6 +508,37 @@ fn on_retail_pressed_overlay_state<E: EntityEvent>(
     let pressed = pressed && !E::is::<Remove>();
     image.color.set_alpha(if pressed { 1.0 } else { 0.0 });
 }
+
+fn madness_frame_index(checked: bool, pressed: bool, disabled: bool) -> usize {
+    // `TMadnessButton::CheckTheLook`: disabled => +4; else (!on => +2) + (pressed => +1).
+    if disabled {
+        4
+    } else {
+        usize::from(!checked) * 2 + usize::from(pressed)
+    }
+}
+
+fn on_retail_madness_picture_state<E: EntityEvent, C: Component>(
+    event: On<E, C>,
+    mut nodes: Query<MadnessPictureQuery>,
+) {
+    let Ok((skin, mut image, pressed, checked, disabled)) = nodes.get_mut(event.event_target())
+    else {
+        return;
+    };
+    let pressed = pressed && !(E::is::<Remove>() && C::is::<Pressed>());
+    let checked = checked && !(E::is::<Remove>() && C::is::<Checked>());
+    let disabled = disabled && !(E::is::<Remove>() && C::is::<InteractionDisabled>());
+    image.image = skin.frames[madness_frame_index(checked, pressed, disabled)].clone();
+}
+
+type MadnessPictureQuery = (
+    &'static RetailMadnessPicture,
+    &'static mut ImageNode,
+    Has<Pressed>,
+    Has<Checked>,
+    Has<InteractionDisabled>,
+);
 
 fn on_retail_picture_swap_state<E: EntityEvent, C: Component>(
     event: On<E, C>,
@@ -432,19 +585,31 @@ fn on_radio_text_fill_state<E: EntityEvent, C: Component>(
     };
 }
 
-fn load_retail_picture(
-    picture_id: PictureId,
+fn load_retail_image(
+    key: RetailImageKey,
     retail_assets: &RetailAssetsResource,
     images: &mut Assets<Image>,
     picture_handles: &mut RetailPictureHandles,
 ) -> Result<Handle<Image>, RetailPictureError> {
-    if let Some(handle) = picture_handles.0.get(&picture_id) {
+    if let Some(handle) = picture_handles.0.get(&key) {
         return Ok(handle.clone());
     }
-    let bytes = retail_assets.assets().picture(picture_id)?;
-    let image = decode_retail_picture(picture_id, &bytes)?;
+    let image = match key {
+        RetailImageKey::Opaque(picture_id) => {
+            let bytes = retail_assets.assets().picture(picture_id)?;
+            decode_retail_picture(picture_id, &bytes)?
+        }
+        RetailImageKey::Transparent(picture_id, palette_index) => {
+            // Decode the indexed DIB once into the UI image instead of applying an
+            // alpha mask to Bevy's BMP decoder output. The latter has a distinct
+            // scanline layout for some retail DIBs, so its index rows can diverge
+            // from the visible RGBA rows (notably atlas 0xee2).
+            let indexed = retail_assets.assets().indexed_picture(picture_id)?;
+            indexed.to_keyed_image(retail_assets.assets().default_dib_palette(), palette_index)
+        }
+    };
     let handle = images.add(image);
-    picture_handles.0.insert(picture_id, handle.clone());
+    picture_handles.0.insert(key, handle.clone());
     Ok(handle)
 }
 
@@ -460,15 +625,34 @@ fn decode_retail_picture(picture_id: PictureId, bytes: &[u8]) -> Result<Image, R
     .map_err(|source| RetailPictureError::BmpDecode { picture_id, source })
 }
 
-fn load_template_picture(
+pub(super) fn load_template_picture(
     context: &mut TemplateContext,
     picture_id: PictureId,
+) -> bevy::ecs::error::Result<Handle<Image>> {
+    load_template_image(context, RetailImageKey::Opaque(picture_id))
+}
+
+/// Load a palette-keyed transparent picture, cached by `(picture_id, key)`.
+pub(super) fn load_template_transparent_picture(
+    context: &mut TemplateContext,
+    picture_id: PictureId,
+    palette_index: u8,
+) -> bevy::ecs::error::Result<Handle<Image>> {
+    load_template_image(
+        context,
+        RetailImageKey::Transparent(picture_id, palette_index),
+    )
+}
+
+fn load_template_image(
+    context: &mut TemplateContext,
+    key: RetailImageKey,
 ) -> bevy::ecs::error::Result<Handle<Image>> {
     Ok(context.entity.world_scope(|world| {
         world.resource_scope(|world, mut handles: Mut<RetailPictureHandles>| {
             world.resource_scope(|world, mut images: Mut<Assets<Image>>| {
-                load_retail_picture(
-                    picture_id,
+                load_retail_image(
+                    key,
                     world.resource::<RetailAssetsResource>(),
                     &mut images,
                     &mut handles,
@@ -478,7 +662,7 @@ fn load_template_picture(
     })?)
 }
 
-fn retail_text_components(
+pub(super) fn retail_text_components(
     style: ResolvedRetailTextStyle,
     font: &RetailFont,
 ) -> (TextFont, TextLayout, LineHeight, bool) {
@@ -590,6 +774,7 @@ pub fn ancestor_with<D: QueryData, F: QueryFilter>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
     use bevy::ecs::system::SystemState;
     use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
     use bevy::text::{FontSize, FontSource};
@@ -749,13 +934,8 @@ mod tests {
     fn family_zero_bevy_text_uses_the_registered_system_font() {
         let mut font_assets = Assets::<Font>::default();
         let fonts = crate::fonts::load_test_fonts(&mut font_assets);
-        let style = resolve_retail_text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
-        .expect("family 0 resolves to System");
+        let style = resolve_retail_text_style(RetailTextStylePreset::explicit(0, 0, 12, 1))
+            .expect("family 0 resolves to System");
         assert_eq!(style.face, RetailFontFace::System);
 
         let system = fonts.get(RetailFontFace::System);

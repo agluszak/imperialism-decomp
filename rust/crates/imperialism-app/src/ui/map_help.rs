@@ -149,7 +149,7 @@ fn bind_added_help(
         let context = state.context;
         let title = fill_brackets(
             &retail.get_string(0x2749, 6),
-            &[&retail.get_string(0x2749, context.event_code())],
+            &[&retail.get_string(0x2749, context.event_code() as u16)],
         );
         set_text(
             &mut commands,
@@ -191,7 +191,7 @@ fn bind_added_help(
         commands
             .entity(view.find(fourcc!("more")))
             .insert(Visibility::Hidden);
-        let topics_label = assets.string(0x2749, 9).expect("retail show-topics label");
+        let topics_label = assets.ui_string(0x2749, 9);
         set_text(
             &mut commands,
             &mut assets,
@@ -242,17 +242,9 @@ fn apply_action(
             state.topic = Some(topic);
             commands
                 .entity(view.find(fourcc!("subj")))
-                .insert(Text::new(
-                    assets
-                        .string(group, topic as i16 + 2)
-                        .expect("retail map-help topic"),
-                ));
+                .insert(Text::new(assets.ui_string(group as u16, topic as u16 + 2)));
             commands.entity(view.find(fourcc!("swin"))).insert((
-                Text::new(
-                    assets
-                        .text(group as u16 + topic as u16 + 1)
-                        .expect("retail map-help body"),
-                ),
+                Text::new(assets.text(group as u16 + topic as u16 + 1)),
                 TextColor(Color::BLACK),
                 Visibility::Visible,
             ));
@@ -302,19 +294,13 @@ fn show_topic_list_raw(
     let group = context.sets()[set];
     commands
         .entity(view.find(fourcc!("subj")))
-        .insert(Text::new(
-            assets.string(group, 1).expect("retail map-help subject"),
-        ));
+        .insert(Text::new(assets.ui_string(group as u16, 1)));
     commands
         .entity(view.find(fourcc!("swin")))
         .insert(Visibility::Hidden);
     for (index, tag) in TOPICS.into_iter().enumerate() {
         commands.entity(view.find(tag)).insert((
-            Text::new(
-                assets
-                    .string(group, index as i16 + 2)
-                    .expect("retail map-help topic"),
-            ),
+            Text::new(assets.ui_string(group as u16, index as u16 + 2)),
             TextColor(LINK_BLUE),
             Underline,
             if index < context.topic_count(set) {
@@ -329,11 +315,7 @@ fn show_topic_list_raw(
         (fourcc!("next"), 15, set + 1 < context.sets().len()),
     ] {
         commands.entity(view.find(tag)).insert((
-            Text::new(
-                assets
-                    .string(0x2749, index)
-                    .expect("retail map-help navigation label"),
-            ),
+            Text::new(assets.ui_string(0x2749, index)),
             TextColor(LINK_BLUE),
             Underline,
             if visible {
@@ -358,12 +340,7 @@ fn set_text(
     color: Color,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family,
-            face_flags: 0,
-            point_size: size,
-            alignment: -2,
-        })
+        .text_style(RetailTextStylePreset::explicit(font_family, 0, size, -2))
         .expect("retail map-help text style");
     commands
         .entity(entity)

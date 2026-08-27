@@ -72,7 +72,7 @@ impl ProductionProgress {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum ItemInputs {
+pub enum ItemInputs {
     Double(ResourceKind),
     Both(ResourceKind, ResourceKind),
     Either(ResourceKind, ResourceKind),
@@ -323,7 +323,7 @@ impl ManufacturedItem {
         }
     }
 
-    pub(crate) const fn inputs(self) -> ItemInputs {
+    pub const fn inputs(self) -> ItemInputs {
         match self {
             Self::Fabric => ItemInputs::Either(ResourceKind::Wool, ResourceKind::Cotton),
             Self::Lumber | Self::Paper => ItemInputs::Double(ResourceKind::Timber),

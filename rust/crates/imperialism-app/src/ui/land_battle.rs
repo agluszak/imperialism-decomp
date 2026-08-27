@@ -1,11 +1,11 @@
 use super::RetailUiAssets;
 use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use super::generated;
-use super::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, ui_string,
-};
+use super::hover_help::{HoverHelpText, bind_hover_help_texts};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
+use super::retail_palette::view_mgr_color;
+use super::retail_resources::MilitaryUnitKindRetailResources;
 use super::session::{GameSession, apply_turn_stop};
 #[cfg(test)]
 use super::tactical_viewport::BATTLEFIELD_HEIGHT_PX;
@@ -21,7 +21,6 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use bevy::window::PrimaryWindow;
 use imperialism_core::*;
 use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc};
 
@@ -29,15 +28,18 @@ const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
 const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
 const TACTICAL_UNIT_CELL_PX: i32 = 0x32;
 const FORT_STRIP_WIDTH_PX: i32 = 0x11e;
-const TACTICAL_COMPOSITION_PICTURE_BASE: i16 = 0xf0a;
-const TACTICAL_FORT_STRIP_PICTURE: i16 = 0xf0e;
-const TACTICAL_UNIT_ATLAS_PICTURE: i16 = 0xee2;
-const TACTICAL_FORT_ATLAS_BASE: i16 = 0xee6;
-const TACTICAL_NO_FORT_ATLAS_PICTURE: i16 = 0xee7;
-const TACTICAL_EFFECT_ATLAS_PICTURE: i16 = 0xeeb;
-const TACTICAL_EXPERIENCE_STRIP_PICTURE: i16 = 800;
-const TACTICAL_UNIT_STATUS_ATLAS_PICTURE: i16 = 0x244;
-const TACTICAL_TRANSPARENT_INDEX: u8 = 0x24;
+const TACTICAL_COMPOSITION_PICTURE_BASE: PictureId = PictureId::new(0xf0a);
+const TACTICAL_FORT_STRIP_PICTURE: PictureId = PictureId::new(0xf0e);
+const TACTICAL_UNIT_ATLAS_PICTURE: PictureId = PictureId::new(0xee2);
+const TACTICAL_FORT_ATLAS_BASE: PictureId = PictureId::new(0xee6);
+const TACTICAL_NO_FORT_ATLAS_PICTURE: PictureId = PictureId::new(0xee7);
+const TACTICAL_EFFECT_ATLAS_PICTURE: PictureId = PictureId::new(0xeeb);
+const TACTICAL_EXPERIENCE_STRIP_PICTURE: PictureId = PictureId::new(800);
+const TACTICAL_UNIT_STATUS_ATLAS_PICTURE: PictureId = PictureId::new(0x244);
+// `TTacArmyView` passes `0x24` to the legacy blitter after selecting palette
+// `0x10`. `RetailAssets::indexed_picture` exposes the resulting DIB indices,
+// where that keyed magenta is index `0x10` (the 0xee2 atlas confirms this).
+const TACTICAL_TRANSPARENT_INDEX: u8 = 0x10;
 const TACTICAL_FIRE_SFX: [u16; 30] = [
     0x3a98, 0x3a98, 0x3a98, 0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3a98, 0x3a98, 0x3a98, 0x3a98,
     0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3aa6, 0x3aa6, 0x3aa6, 0x3a9c, 0x3aa6, 0x3a9a, 0x3a9b, 0x3a9b,
@@ -159,6 +161,9 @@ const TACTICAL_UNIT_FACING_OFFSETS: [[[(i32, i32); 2]; 7]; 12] = [
 #[derive(Component)]
 struct LandBattleRoot;
 
+#[derive(Component)]
+struct LandBattleEdgeScroll;
+
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum LandBattleAction {
     Help,
@@ -172,7 +177,7 @@ enum LandBattleAction {
 struct LandBattlefield {
     battle: Option<PendingLandBattle>,
     view_origin_x: i32,
-    centered_unit: Option<ArmyUnitId>,
+    centered_selection: Option<(ArmyUnitId, Option<TacticalHex>)>,
     hovered_hex: Option<TacticalHex>,
     projected_origin_x: i32,
     projected_hover: Option<TacticalHex>,
@@ -242,7 +247,7 @@ struct LandBattleRetreatPrompt;
 
 #[derive(Component)]
 struct LandBattleEffect {
-    base_picture: i16,
+    base_picture: PictureId,
     frame_count: u8,
     frame: u8,
     next_tick: u128,
@@ -332,15 +337,12 @@ fn synchronize_interactive_army_battle(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     mut commands: Commands,
 ) {
     if session.game.pending_land_battle().is_some()
         && session.game.army_battle().is_none()
-        && let Some(progress) = session
-            .game
-            .synchronize_army_battle(super::session::news_story_ids(assets.as_deref()))
+        && let Some(progress) = session.game.synchronize_army_battle()
         && let Ok((field, mut view)) = fields.single_mut()
     {
         queue_land_battle_progress(
@@ -351,7 +353,6 @@ fn synchronize_interactive_army_battle(
             &mut next_state,
             &mut session.game,
             prefs.tactical_battles_enabled(),
-            super::session::news_story_ids(assets.as_deref()),
         );
     }
 }
@@ -367,36 +368,29 @@ fn bind_land_battle(
     mut commands: Commands,
     root: Single<Entity, Added<LandBattleRoot>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
     bind_land_battle_controls(&mut commands, *root, &tree);
-    let curs = tree.find(*root, fourcc!("curs"));
-    bind_hover_help_bar(
-        &mut commands,
-        &mut assets,
-        curs,
-        &mut nodes
-            .get_mut(curs)
-            .expect("tactical hover-help bar has Node"),
-        HoverHelpBarStyle::TACTICAL,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         &mut commands,
         *root,
         &tree,
         [
-            (fourcc!("help"), ui_string(&assets, 0x273d, 0x20)),
-            (fourcc!("targ"), ui_string(&assets, 0x273d, 0x21)),
-            (fourcc!("done"), ui_string(&assets, 0x273d, 0x22)),
-            (fourcc!("retr"), ui_string(&assets, 0x273d, 0x23)),
-            (fourcc!("auto"), ui_string(&assets, 0x273d, 0x24)),
+            (fourcc!("help"), assets.ui_string(0x273d, 0x20)),
+            (fourcc!("targ"), assets.ui_string(0x273d, 0x21)),
+            (fourcc!("done"), assets.ui_string(0x273d, 0x22)),
+            (fourcc!("retr"), assets.ui_string(0x273d, 0x23)),
+            (fourcc!("auto"), assets.ui_string(0x273d, 0x24)),
             (fourcc!("DLOG"), String::new()),
         ],
     );
 }
 
 fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+    commands
+        .entity(tree.try_find(root, fourcc!("main")).unwrap_or(root))
+        .insert((RelativeCursorPosition::default(), LandBattleEdgeScroll));
     for (tag, action) in [
         (fourcc!("help"), LandBattleAction::Help),
         (fourcc!("targ"), LandBattleAction::Target),
@@ -426,12 +420,13 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
             LandBattlefield {
                 battle: None,
                 view_origin_x: 0,
-                centered_unit: None,
+                centered_selection: None,
                 hovered_hex: None,
                 projected_origin_x: -1,
                 projected_hover: None,
             },
             RelativeCursorPosition::default(),
+            Pickable::default(),
         ))
         .observe(on_battlefield_click);
     commands
@@ -448,7 +443,7 @@ fn bind_land_battle_retreat_prompt(
 ) {
     for root in &prompts {
         let linger = bind_linger_dialog(&mut commands, root, &tree);
-        let body = ui_string(&assets, 0x273d, 0x32);
+        let body = assets.ui_string(0x273d, 0x32);
         linger.set_body(&mut commands, &mut assets, body);
         commands
             .entity(linger.okay)
@@ -465,14 +460,10 @@ fn on_confirm_land_battle_retreat(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     mut commands: Commands,
 ) {
-    let Ok(progress) = session
-        .game
-        .retreat_from_army_battle(super::session::news_story_ids(assets.as_deref()))
-    else {
+    let Ok(progress) = session.game.retreat_from_army_battle() else {
         return;
     };
     if let Ok((field, mut view)) = fields.single_mut() {
@@ -484,7 +475,6 @@ fn on_confirm_land_battle_retreat(
             &mut next_state,
             &mut session.game,
             prefs.tactical_battles_enabled(),
-            super::session::news_story_ids(assets.as_deref()),
         );
     }
 }
@@ -526,55 +516,36 @@ fn insert_land_battle_visuals(
     assets: &mut RetailUiAssets,
 ) {
     let composition_class = battle.composition_class();
-    let picture = i16::try_from(composition_class)
-        .expect("retail tactical composition class fits i16")
-        + TACTICAL_COMPOSITION_PICTURE_BASE;
+    let picture = TACTICAL_COMPOSITION_PICTURE_BASE.offset(
+        i16::try_from(composition_class).expect("retail tactical composition class fits i16"),
+    );
     let visuals = LandBattleVisuals {
         composition_class,
-        backdrop: assets
-            .picture(PictureId::new(picture))
-            .expect("retail tactical composition backdrop must load"),
-        fort_strip: assets
-            .picture(PictureId::new(TACTICAL_FORT_STRIP_PICTURE))
-            .expect("retail tactical fort strip must load"),
-        unit_atlas: assets
-            .transparent_picture(
-                PictureId::new(TACTICAL_UNIT_ATLAS_PICTURE),
-                TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical unit atlas must load"),
-        fort_atlas: assets
-            .transparent_picture(
-                PictureId::new(if battle.fort_level() == FortLevel::None {
-                    TACTICAL_NO_FORT_ATLAS_PICTURE
-                } else {
-                    TACTICAL_FORT_ATLAS_BASE + i16::from(battle.fort_level().retail())
-                }),
-                TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical fort atlas must load"),
+        backdrop: assets.picture(picture),
+        fort_strip: assets.picture(TACTICAL_FORT_STRIP_PICTURE),
+        unit_atlas: assets.keyed_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+        fort_atlas: assets.keyed_picture(
+            if battle.fort_level() == FortLevel::None {
+                TACTICAL_NO_FORT_ATLAS_PICTURE
+            } else {
+                TACTICAL_FORT_ATLAS_BASE.offset(i16::from(battle.fort_level().retail()))
+            },
+            TACTICAL_TRANSPARENT_INDEX,
+        ),
         effect_atlas: assets
-            .transparent_picture(
-                PictureId::new(TACTICAL_EFFECT_ATLAS_PICTURE),
-                TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical effect atlas must load"),
-        experience_strip: assets
-            .transparent_picture(
-                PictureId::new(TACTICAL_EXPERIENCE_STRIP_PICTURE),
-                TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical experience strip must load"),
-        unit_status_atlas: assets
-            .transparent_picture(PictureId::new(TACTICAL_UNIT_STATUS_ATLAS_PICTURE), 0)
-            .expect("retail tactical unit-status atlas must load"),
+            .keyed_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+        experience_strip: assets.keyed_picture(
+            TACTICAL_EXPERIENCE_STRIP_PICTURE,
+            TACTICAL_TRANSPARENT_INDEX,
+        ),
+        unit_status_atlas: assets.keyed_picture(TACTICAL_UNIT_STATUS_ATLAS_PICTURE, 0),
         selection_color: assets.palette_color(0x13),
         inset_color: assets.palette_color(0),
-        stat_background: assets.palette_color(0x33),
-        strength_color: assets.palette_color(6),
-        morale_color: assets.palette_color(0x34),
-        guide_primary: assets.palette_color(0x35),
-        guide_secondary: assets.palette_color(0x34),
+        stat_background: assets.palette_color(view_mgr_color(0x33)),
+        strength_color: assets.palette_color(view_mgr_color(6)),
+        morale_color: assets.palette_color(view_mgr_color(0x34)),
+        guide_primary: assets.palette_color(view_mgr_color(0x35)),
+        guide_secondary: assets.palette_color(view_mgr_color(0x34)),
     };
     commands.entity(field).insert(visuals);
 }
@@ -656,12 +627,15 @@ fn project_land_battle(
             With<LandBattleGuide>,
         )>,
     >,
-    glides: Query<&LandBattleGlide>,
+    glides: Query<Ref<LandBattleGlide>>,
 ) {
     let Some(pending) = session.game.pending_land_battle() else {
         return;
     };
-    let selected = session.game.selected_army_unit().map(|unit| unit.id);
+    let selected = session
+        .game
+        .selected_army_unit()
+        .map(|unit| (unit.id, unit.hex));
     let reachable_hexes = session.game.selected_army_unit_reachable_hexes();
     let Some(battle) = session.game.army_battle() else {
         return;
@@ -670,20 +644,19 @@ fn project_land_battle(
         if view.battle.as_ref() != Some(pending) {
             view.battle = Some(pending.clone());
             view.view_origin_x = 0;
-            view.centered_unit = None;
+            view.centered_selection = None;
             view.projected_origin_x = -1;
             view.projected_hover = None;
         }
-        if view.centered_unit != selected {
-            if let Some(unit) = selected.and_then(|id| battle.unit(id))
-                && let Some(hex) = unit.hex
-            {
+        if view.centered_selection != selected {
+            if let Some((_, Some(hex))) = selected {
                 view.view_origin_x =
                     center_land_origin(view.view_origin_x, battle.column_count(), hex);
             }
-            view.centered_unit = selected;
+            view.centered_selection = selected;
         }
         if !session.is_changed()
+            && !glides.iter().any(|glide| glide.is_added())
             && view.projected_origin_x == view.view_origin_x
             && view.projected_hover == view.hovered_hex
         {
@@ -790,7 +763,7 @@ fn project_land_battle(
                 continue;
             };
             let (mut x, mut y, width, height) = hex_unit_xywh(&hex_map, hex);
-            let selected = selected == Some(unit.id);
+            let selected = selected.is_some_and(|(id, _)| id == unit.id);
             if selected {
                 spawn_hex_outline(
                     &mut commands,
@@ -1100,7 +1073,7 @@ fn spawn_tactical_effect(
     field: Entity,
     map: &TacticalViewport,
     target: TacticalHex,
-    base_picture: i16,
+    base_picture: PictureId,
     frame_count: u8,
     now: u128,
     unit_sized: bool,
@@ -1110,9 +1083,7 @@ fn spawn_tactical_effect(
     } else {
         hex_cell_xywh(map, target)
     };
-    let image = assets
-        .transparent_picture(PictureId::new(base_picture), TACTICAL_TRANSPARENT_INDEX)
-        .expect("retail tactical effect frame");
+    let image = assets.keyed_picture(base_picture, TACTICAL_TRANSPARENT_INDEX);
     commands.spawn((
         LandBattleEffect {
             base_picture,
@@ -1225,12 +1196,10 @@ fn animate_land_battle_actions(
             commands.entity(entity).despawn();
             continue;
         }
-        image.image = assets
-            .transparent_picture(
-                PictureId::new(effect.base_picture + i16::from(effect.frame)),
-                TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical effect frame");
+        image.image = assets.keyed_picture(
+            effect.base_picture.offset(i16::from(effect.frame)),
+            TACTICAL_TRANSPARENT_INDEX,
+        );
     }
     let Ok((field_entity, mut field, visuals, queue, deferred)) = fields.single_mut() else {
         return;
@@ -1322,11 +1291,11 @@ fn animate_land_battle_actions(
                         SoundId::new(TACTICAL_FIRE_SFX[unit_type.retail() as usize]),
                     );
                     let (base, frames) = if fort_target {
-                        (0xf98, 6)
+                        (PictureId::new(0xf98), 6)
                     } else if matches!(unit_type.retail(), 6 | 7 | 14 | 15 | 21 | 22 | 23) {
-                        (0xf6e, 6)
+                        (PictureId::new(0xf6e), 6)
                     } else {
-                        (0xf78, 3)
+                        (PictureId::new(0xf78), 3)
                     };
                     spawn_tactical_effect(
                         &mut commands,
@@ -1349,7 +1318,7 @@ fn animate_land_battle_actions(
                         field_entity,
                         &map,
                         target,
-                        0xf98,
+                        PictureId::new(0xf98),
                         6,
                         now,
                         false,
@@ -1540,18 +1509,22 @@ fn project_land_battle_toolbar(
             commands.entity(entity).remove::<InteractionDisabled>();
         }
         let (idle_id, active_id, help_index) = match (*action, stage) {
-            (LandBattleAction::Done, ArmyBattleStage::Deploying) => (0xed4, 0xed5, 0x2e),
-            (LandBattleAction::Retreat, ArmyBattleStage::Deploying) => (0xed2, 0xed3, 0x2f),
-            (LandBattleAction::Done, ArmyBattleStage::Live) => (0xece, 0xecf, 0x22),
-            (LandBattleAction::Retreat, ArmyBattleStage::Live) => (0xed0, 0xed1, 0x23),
+            (LandBattleAction::Done, ArmyBattleStage::Deploying) => {
+                (PictureId::new(0xed4), PictureId::new(0xed5), 0x2e)
+            }
+            (LandBattleAction::Retreat, ArmyBattleStage::Deploying) => {
+                (PictureId::new(0xed2), PictureId::new(0xed3), 0x2f)
+            }
+            (LandBattleAction::Done, ArmyBattleStage::Live) => {
+                (PictureId::new(0xece), PictureId::new(0xecf), 0x22)
+            }
+            (LandBattleAction::Retreat, ArmyBattleStage::Live) => {
+                (PictureId::new(0xed0), PictureId::new(0xed1), 0x23)
+            }
             _ => continue,
         };
-        let idle = assets
-            .picture(PictureId::new(idle_id))
-            .expect("retail tactical toolbar picture");
-        let active = assets
-            .picture(PictureId::new(active_id))
-            .expect("retail tactical toolbar pressed picture");
+        let idle = assets.picture(idle_id);
+        let active = assets.picture(active_id);
         if let Some(mut image) = image {
             image.image = idle.clone();
         }
@@ -1560,7 +1533,7 @@ fn project_land_battle_toolbar(
             swap.active = active;
         }
         if let Some(mut help) = help {
-            help.0 = ui_string(&assets, 0x273d, help_index);
+            help.0 = assets.ui_string(0x273d, help_index);
         }
     }
 
@@ -1587,15 +1560,8 @@ fn project_land_battle_toolbar(
             continue;
         };
         *visibility = Visibility::Inherited;
-        let side = match unit.side {
-            BattleSide::Attacker => 0,
-            BattleSide::Defender => 1,
-        };
-        image.image = assets
-            .picture(PictureId::new(
-                0xf1e + i16::from(unit.unit_type.retail()) * 2 + side,
-            ))
-            .expect("retail tactical unit portrait");
+        let defender_side = matches!(unit.side, BattleSide::Defender);
+        image.image = assets.picture(unit.unit_type.tactical_portrait_picture(defender_side));
         let experience = session
             .game
             .military_unit(unit.id.source())
@@ -1626,14 +1592,14 @@ fn project_land_battle_toolbar(
             ));
         }
     }
-    let coat = assets
-        .picture(PictureId::new(
-            0xea6 + i16::from(battle.nation(battle.active_side()).get()),
-        ))
-        .expect("retail tactical current-player coat");
+    let coat = assets.picture(tactical_coat_picture(battle.nation(battle.active_side())));
     for mut image in &mut coats {
         image.image = coat.clone();
     }
+}
+
+fn tactical_coat_picture(nation: NationId) -> PictureId {
+    PictureId::new(0xea6).offset(i16::from(nation.get()))
 }
 
 fn project_tile_atlases(
@@ -1863,11 +1829,9 @@ fn queue_land_battle_progress(
     next_state: &mut NextState<AppState>,
     game: &mut GameState,
     tactical_battles_enabled: bool,
-    story_ids: &[i32],
 ) {
     if progress.stop.is_some() {
-        progress.stop =
-            Some(game.apply_land_battle_watch_policy(tactical_battles_enabled, story_ids));
+        progress.stop = Some(game.apply_land_battle_watch_policy(tactical_battles_enabled));
     }
     if progress.events.is_empty() {
         if let Some(stop) = progress.stop
@@ -1895,7 +1859,7 @@ fn queue_land_battle_progress(
 fn scroll_land_battle(
     time: Res<Time>,
     mut last_scroll_tick: Local<Option<u128>>,
-    window: Single<&Window, With<PrimaryWindow>>,
+    dialogs: Query<&RelativeCursorPosition, With<LandBattleEdgeScroll>>,
     mut fields: Query<&mut LandBattlefield>,
     session: Res<GameSession>,
     animations: Query<
@@ -1913,14 +1877,10 @@ fn scroll_land_battle(
     let Ok(mut view) = fields.single_mut() else {
         return;
     };
-    let Some(cursor) = window.cursor_position() else {
+    let Ok(cursor) = dialogs.single() else {
         return;
     };
-    let direction = if cursor.x <= 4.0 {
-        -1
-    } else if cursor.x >= window.width() - 4.0 {
-        1
-    } else {
+    let Some(direction) = tactical_edge_scroll_direction(cursor) else {
         return;
     };
     let tick16 = time.elapsed().as_millis() / 16;
@@ -1931,16 +1891,38 @@ fn scroll_land_battle(
     let Some(battle) = session.game.army_battle() else {
         return;
     };
-    let max_origin =
-        ((battle.column_count() + 1) * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX).max(0);
-    if direction < 0 {
-        if view.view_origin_x > 0 {
-            view.view_origin_x -= TACTICAL_TILE_WIDTH_PX;
-        }
-    } else if view.view_origin_x < max_origin - TACTICAL_TILE_WIDTH_PX {
-        view.view_origin_x += TACTICAL_TILE_WIDTH_PX;
+    view.view_origin_x =
+        tactical_scroll_origin(view.view_origin_x, battle.column_count(), direction);
+}
+
+/// `TAmbitApplication::HandleCursor` checks the centered active 640x480 dialog,
+/// not the maximized host window. `TTacticalBattleView::Scroll` accepts only a
+/// pure left or right edge mask; corners include a vertical bit and therefore do
+/// not pan the horizontal tactical viewport.
+fn tactical_edge_scroll_direction(cursor: &RelativeCursorPosition) -> Option<i32> {
+    if !cursor.cursor_over() {
+        return None;
     }
-    view.centered_unit = session.game.selected_army_unit().map(|unit| unit.id);
+    let point = cursor.normalized?;
+    let horizontal = if point.x <= -0.5 + 4.0 / 640.0 {
+        -1
+    } else if point.x >= 0.5 - 4.0 / 640.0 {
+        1
+    } else {
+        return None;
+    };
+    (point.y > -0.5 + 4.0 / 480.0 && point.y < 0.5 - 4.0 / 480.0).then_some(horizontal)
+}
+
+fn tactical_scroll_origin(origin: i32, column_count: i32, direction: i32) -> i32 {
+    let maximum = ((column_count + 1) * TACTICAL_TILE_WIDTH_PX - BATTLEFIELD_WIDTH_PX).max(0);
+    if direction < 0 && origin > 0 {
+        origin - TACTICAL_TILE_WIDTH_PX
+    } else if direction > 0 && origin < maximum - TACTICAL_TILE_WIDTH_PX {
+        origin + TACTICAL_TILE_WIDTH_PX
+    } else {
+        origin
+    }
 }
 
 #[allow(clippy::type_complexity)]
@@ -1958,7 +1940,6 @@ fn on_battlefield_click(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     prefs: Res<super::preferences::GamePreferences>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     mut commands: Commands,
 ) {
     if click.event.button != PointerButton::Primary || !animations.is_empty() {
@@ -1977,10 +1958,7 @@ fn on_battlefield_click(
     let Some(target) = hex_at_pixel(&map, x, y) else {
         return;
     };
-    let Ok((_action, progress)) = session
-        .game
-        .army_action_at(target, super::session::news_story_ids(assets.as_deref()))
-    else {
+    let Ok((_action, progress)) = session.game.army_action_at(target) else {
         return;
     };
     queue_land_battle_progress(
@@ -1991,26 +1969,7 @@ fn on_battlefield_click(
         &mut next_state,
         &mut session.game,
         prefs.tactical_battles_enabled(),
-        super::session::news_story_ids(assets.as_deref()),
     );
-}
-
-#[cfg(test)]
-fn apply_battlefield_click(
-    session: &mut GameSession,
-    x: i32,
-    y: i32,
-    view_origin_x: i32,
-    story_ids: &[i32],
-) -> Option<TurnStop> {
-    let column_count = session.game.army_battle().map(ArmyBattle::column_count)?;
-    let hex_map = land_viewport(column_count, view_origin_x);
-    let hex = hex_at_pixel(&hex_map, x, y)?;
-    session
-        .game
-        .army_action_at(hex, story_ids)
-        .ok()
-        .and_then(|(_, progress)| progress.stop)
 }
 
 #[allow(clippy::type_complexity)]
@@ -2021,7 +1980,6 @@ fn on_land_battle_activate(
     mut next_state: ResMut<NextState<AppState>>,
     mut music: Option<ResMut<MusicDirector>>,
     time: Option<Res<Time>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     prefs: Res<super::preferences::GamePreferences>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     animations: Query<
@@ -2054,15 +2012,12 @@ fn on_land_battle_activate(
                     for (_, mut view) in &mut fields {
                         view.view_origin_x =
                             center_land_origin(view.view_origin_x, battle.column_count(), center);
-                        view.centered_unit = session.game.selected_army_unit().map(|unit| unit.id);
                     }
                 }
             }
         }
         LandBattleAction::Done => {
-            if let Ok(progress) = session
-                .game
-                .finish_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(progress) = session.game.finish_selected_army_unit_action()
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
@@ -2073,14 +2028,11 @@ fn on_land_battle_activate(
                     &mut next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
-                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
         LandBattleAction::Auto => {
-            if let Ok(progress) = session
-                .game
-                .auto_play_army_battle_side(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(progress) = session.game.auto_play_army_battle_side()
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
@@ -2091,7 +2043,6 @@ fn on_land_battle_activate(
                     &mut next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
-                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
@@ -2104,9 +2055,7 @@ fn on_land_battle_activate(
                 spawn_linger_dialog(&mut commands, LandBattleRetreatPrompt, AppState::LandBattle);
                 return;
             }
-            if let Ok(progress) = session
-                .game
-                .retreat_from_army_battle(super::session::news_story_ids(assets.as_deref()))
+            if let Ok(progress) = session.game.retreat_from_army_battle()
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
@@ -2117,7 +2066,6 @@ fn on_land_battle_activate(
                     &mut next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
-                    super::session::news_story_ids(assets.as_deref()),
                 );
             }
         }
@@ -2134,7 +2082,6 @@ fn land_battle_keyboard(
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
-    assets: Option<Res<crate::RetailAssetsResource>>,
     prefs: Res<super::preferences::GamePreferences>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     animations: Query<
@@ -2164,9 +2111,7 @@ fn land_battle_keyboard(
         commands.trigger(Activate { entity });
     }
     if keys.just_pressed(KeyCode::KeyS)
-        && let Ok(progress) = session
-            .game
-            .skip_selected_army_unit_action(super::session::news_story_ids(assets.as_deref()))
+        && let Ok(progress) = session.game.skip_selected_army_unit_action()
         && let Ok((field, mut view)) = fields.single_mut()
     {
         queue_land_battle_progress(
@@ -2177,7 +2122,6 @@ fn land_battle_keyboard(
             &mut next_state,
             &mut session.game,
             prefs.tactical_battles_enabled(),
-            super::session::news_story_ids(assets.as_deref()),
         );
     }
 }
@@ -2207,7 +2151,11 @@ mod tests {
     use super::super::retail::RetailTag;
     use super::*;
     use crate::ui::test_support::beginning_of_game_parts;
+    use bevy::camera::NormalizedRenderTarget;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::pointer::{Location, PointerId};
     use bevy::state::app::StatesPlugin;
+    use std::time::Duration;
 
     fn fixture_parts() -> GameStateParts {
         beginning_of_game_parts()
@@ -2373,7 +2321,7 @@ mod tests {
         );
 
         let mut state = GameState::from_parts(parts);
-        assert!(matches!(state.advance_turn(&[]), TurnStop::LandBattle(_)));
+        assert!(matches!(state.advance_turn(), TurnStop::LandBattle(_)));
         assert!(state.pending_land_battle().is_some());
         state
     }
@@ -2481,6 +2429,67 @@ mod tests {
     }
 
     #[test]
+    fn edge_scroll_uses_the_centered_retail_dialog_and_tactical_bounds() {
+        let mut cursor = RelativeCursorPosition {
+            cursor_over: true,
+            normalized: Some(Vec2::new(-0.5 + 3.0 / 640.0, 0.0)),
+        };
+        assert_eq!(tactical_edge_scroll_direction(&cursor), Some(-1));
+        cursor.normalized = Some(Vec2::new(0.5 - 3.0 / 640.0, 0.0));
+        assert_eq!(tactical_edge_scroll_direction(&cursor), Some(1));
+        cursor.normalized = Some(Vec2::new(-0.5, -0.5));
+        assert_eq!(tactical_edge_scroll_direction(&cursor), None);
+        assert_eq!(tactical_scroll_origin(50, 20, -1), 0);
+        assert_eq!(tactical_scroll_origin(0, 20, -1), 0);
+        assert_eq!(tactical_scroll_origin(0, 20, 1), 50);
+        assert_eq!(tactical_scroll_origin(400, 20, 1), 450);
+        assert_eq!(tactical_scroll_origin(450, 20, 1), 450);
+    }
+
+    #[test]
+    fn new_glide_reprojects_without_the_static_copy_of_its_unit() {
+        let mut app = test_app(two_land_battles_state());
+        app.update();
+        app.update();
+        let (unit, hex) = app
+            .world_mut()
+            .resource_scope(|_, mut session: Mut<GameSession>| {
+                let unit = session
+                    .game
+                    .selected_army_unit()
+                    .expect("core selected unit")
+                    .id;
+                let hex = session
+                    .game
+                    .selected_army_unit_reachable_hexes()
+                    .into_iter()
+                    .next()
+                    .expect("attacker has a deployment hex");
+                session
+                    .game
+                    .army_action_at(hex)
+                    .expect("deploy action succeeds");
+                (unit, hex)
+            });
+        app.update();
+        app.update();
+        app.world_mut().spawn(LandBattleGlide {
+            unit,
+            path: vec![hex, hex],
+            segment: 0,
+            frame: 0,
+            next_tick: 0,
+        });
+        app.update();
+        assert!(
+            app.world_mut()
+                .query::<&LandBattleUnit>()
+                .iter(app.world())
+                .all(|projected| projected.0 != unit)
+        );
+    }
+
+    #[test]
     fn trench_cells_follow_the_retail_direction_tables() {
         assert_eq!(trench_sprite_cell(1), Some(0x19));
         assert_eq!(trench_sprite_cell(1 | 4), Some(0x0a));
@@ -2557,7 +2566,7 @@ mod tests {
     }
 
     #[test]
-    fn clicking_a_deployment_hex_places_the_core_selected_unit() {
+    fn battlefield_pointer_click_places_the_core_selected_unit() {
         let mut app = test_app(two_land_battles_state());
         app.update();
         app.update();
@@ -2596,14 +2605,46 @@ mod tests {
             (x + w / 2, y + h / 2)
         };
 
-        app.world_mut()
-            .resource_scope(|_, mut session: Mut<GameSession>| {
-                assert_eq!(
-                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0, &[]),
-                    None
-                );
-            });
-        app.update();
+        let field = app
+            .world_mut()
+            .query::<(Entity, &RetailTag)>()
+            .iter(app.world())
+            .find_map(|(entity, tag)| (tag.0 == fourcc!("DLOG")).then_some(entity))
+            .expect("recovered DLOG battlefield control");
+        {
+            let mut cursor = app
+                .world_mut()
+                .get_mut::<RelativeCursorPosition>(field)
+                .expect("battlefield receives relative pointer positions");
+            cursor.cursor_over = true;
+            cursor.normalized = Some(Vec2::new(
+                dest_pixel.0 as f32 / BATTLEFIELD_WIDTH_PX as f32 - 0.5,
+                dest_pixel.1 as f32 / BATTLEFIELD_HEIGHT_PX as f32 - 0.5,
+            ));
+        }
+        app.world_mut().trigger(Pointer::new_without_propagate(
+            PointerId::Mouse,
+            Location {
+                target: NormalizedRenderTarget::None {
+                    width: BATTLEFIELD_WIDTH_PX as u32,
+                    height: BATTLEFIELD_HEIGHT_PX as u32,
+                },
+                position: Vec2::new(dest_pixel.0 as f32, dest_pixel.1 as f32),
+            },
+            Click {
+                button: PointerButton::Primary,
+                hit: HitData {
+                    camera: Entity::PLACEHOLDER,
+                    depth: 0.0,
+                    position: None,
+                    normal: None,
+                    extra: None,
+                },
+                duration: Duration::ZERO,
+                count: 1,
+            },
+            field,
+        ));
         let after = app
             .world()
             .resource::<GameSession>()

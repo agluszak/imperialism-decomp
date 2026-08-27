@@ -1,7 +1,7 @@
 use crate::color::DibPalette;
 use crate::media::{MovieId, MusicTrack, SoundId};
 use crate::retail_resources::*;
-use crate::{PictureId, RetailCursor, RetailFontFace, ScenarioInfo};
+use crate::{PictureId, RetailCursor, RetailFontFace, ScenarioInfo, StringGroup, StringResourceId};
 use imperialism_core::{
     MajorNationId, MapMgr, NEWS_TEMPLATE_COUNT, NationId, NationTable, RandomGameNames,
     ScenarioInstruction, ScenarioMapId,
@@ -193,45 +193,48 @@ impl RetailAssets {
         bitmap_resource_to_indexed_picture(dib).map_err(|error| resource_error(path, error))
     }
 
-    /// Loads one direct `LoadStringA` index from the English retail string library.
-    pub fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
-        let string_id = group.wrapping_mul(100).wrapping_add(direct_index) as u16;
-        self.string_id(string_id).map_err(|error| match error {
-            RetailAssetError::StringIdNotFound(_) => RetailAssetError::StringNotFound {
-                group,
-                direct_index,
-            },
-            error => error,
-        })
+    /// Loads one Windows `LoadStringA` / `RT_STRING` identifier from the English
+    /// retail string library.
+    pub fn string(&self, id: StringResourceId) -> Result<String, RetailAssetError> {
+        match self.string_table_entry(id.get()) {
+            Some(result) => result,
+            None => Err(RetailAssetError::StringNotFound(id)),
+        }
     }
 
-    /// Loads one direct Windows `RT_STRING` identifier.
+    /// Loads one long-form help body by its raw PE resource ID.
     ///
-    /// Retail's long-form help `TEXT` resources were assigned the same numeric
-    /// identifiers when the Windows string library was built.
+    /// Callers treat these as a distinct provenance from ordinary UI string
+    /// lookups even though retail stores both in the same `RT_STRING` table.
     pub fn text(&self, resource_id: u16) -> Result<String, RetailAssetError> {
-        self.string_id(resource_id)
+        match self.string_table_entry(resource_id) {
+            Some(result) => result,
+            None => Err(RetailAssetError::TextNotFound(resource_id)),
+        }
     }
 
-    fn string_id(&self, string_id: u16) -> Result<String, RetailAssetError> {
-        let block_id = u32::from((string_id >> 4) + 1);
-        let slot = usize::from(string_id & 0xf);
-        let block = self
-            .strings
-            .find(
-                ResourceName::Id(STRING_RESOURCE_TYPE),
-                ResourceName::Id(block_id),
-            )
-            .ok_or(RetailAssetError::StringIdNotFound(string_id))?;
-        decode_string_table_entry(&self.strings.path, block, slot)
+    /// Shared `RT_STRING` block/slot decode used by [`Self::string`] and [`Self::text`].
+    fn string_table_entry(&self, id: u16) -> Option<Result<String, RetailAssetError>> {
+        let block_id = u32::from((id >> 4) + 1);
+        let slot = usize::from(id & 0xf);
+        let block = self.strings.find(
+            ResourceName::Id(STRING_RESOURCE_TYPE),
+            ResourceName::Id(block_id),
+        )?;
+        Some(decode_string_table_entry(&self.strings.path, block, slot))
     }
 
     /// Materializes the localized STR# inputs used by random-game province and ocean naming.
     pub fn random_game_names(&self) -> Result<RandomGameNames, RetailAssetError> {
+        let nation_names = StringGroup::new(0x2715);
+        let zone_headlines = StringGroup::new(0x275a);
+        let fallback_oceans = StringGroup::new(0x275b);
+
         let mut localized_nation_names = NationTable::default();
         for nation in NationId::all() {
             // `TSimMgr::GetString(0x2715, nationSlot)` adds one before direct lookup.
-            localized_nation_names[nation] = self.string(0x2715, i16::from(nation.get()) + 1)?;
+            localized_nation_names[nation] =
+                self.string(nation_names.offset(u16::from(nation.get())))?;
         }
 
         let mut province_names_by_nation: NationTable<Vec<String>> = NationTable::default();
@@ -241,24 +244,28 @@ impl RetailAssets {
             } else {
                 4
             };
+            let province_names = StringGroup::new(8000 + u16::from(nation.get()));
             for ordinal in 1..=name_count {
                 // `TSimMgr::GetString(group, offset)` adds one before the direct resource lookup.
-                province_names_by_nation[nation].push(self.string(
-                    8000 + i16::from(nation.get()),
-                    i16::try_from(ordinal + 1).expect("province-name ordinal fits i16"),
-                )?);
+                province_names_by_nation[nation].push(
+                    self.string(
+                        province_names.offset(
+                            u16::try_from(ordinal).expect("province-name ordinal fits u16"),
+                        ),
+                    )?,
+                );
             }
         }
 
         let mut zone_headline_templates = Vec::with_capacity(24);
-        for status_code in 0..24 {
+        for status_code in 0..24u16 {
             // `TSimMgr::GetString(0x275a, statusCode)` performs this same +1 conversion.
-            zone_headline_templates.push(self.string(0x275a, status_code + 1)?);
+            zone_headline_templates.push(self.string(zone_headlines.offset(status_code))?);
         }
         let mut fallback_ocean_names = Vec::with_capacity(37);
-        for cache_id in 0..37 {
+        for cache_id in 0..37u16 {
             // The localized fallback cursor is a zero-based `GetString(0x275b, cacheId)` offset.
-            fallback_ocean_names.push(self.string(0x275b, cache_id + 1)?);
+            fallback_ocean_names.push(self.string(fallback_oceans.offset(cache_id))?);
         }
 
         Ok(RandomGameNames {
@@ -586,10 +593,10 @@ pub enum RetailAssetError {
     ChromeBackdropNotFound,
     #[error("no English turn-event cursor ~C{resource_id} is available")]
     CursorNotFound { resource_id: u16 },
-    #[error("no English string is available for group {group:#06x}, direct index {direct_index}")]
-    StringNotFound { group: i16, direct_index: i16 },
-    #[error("no English text resource {0} is available")]
-    StringIdNotFound(u16),
+    #[error("no English string resource {0} is available")]
+    StringNotFound(StringResourceId),
+    #[error("no English TEXT resource {0} is available")]
+    TextNotFound(u16),
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
     DefaultDibPaletteNotFound,
     #[error("news.tab / news.tex are unavailable in Data/tabsenu.gob or as Data files")]
@@ -827,7 +834,14 @@ mod tests {
                 .as_deref(),
             Some(b"not a font".as_slice())
         );
-        assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
+        assert_eq!(
+            assets.string(StringGroup::new(0x2719).entry(1)).unwrap(),
+            "Textile Mill"
+        );
+        assert_eq!(
+            assets.string(StringGroup::new(0x2752).entry(1)).unwrap(),
+            "Clipper description"
+        );
         assert_eq!(assets.news_table().story_ids()[0], 42);
         assert_eq!(assets.news_table().headline(0), "Title");
         assert_eq!(assets.news_table().body(0), "Body");
@@ -853,10 +867,22 @@ mod tests {
         );
         let assets = RetailAssets::open(&root).unwrap();
 
-        assert_eq!(assets.string(0x2719, 1).unwrap(), "Textile Mill");
-        assert_eq!(assets.string(0x2724, 12).unwrap(), "Civilian Report");
-        assert_eq!(assets.string(0x2724, 13).unwrap(), "Rescind Orders");
-        assert_eq!(assets.string(0x2724, 14).unwrap(), "Confirm Orders");
+        assert_eq!(
+            assets.string(StringGroup::new(0x2719).entry(1)).unwrap(),
+            "Textile Mill"
+        );
+        assert_eq!(
+            assets.string(StringGroup::new(0x2724).entry(12)).unwrap(),
+            "Civilian Report"
+        );
+        assert_eq!(
+            assets.string(StringGroup::new(0x2724).entry(13)).unwrap(),
+            "Rescind Orders"
+        );
+        assert_eq!(
+            assets.string(StringGroup::new(0x2724).entry(14)).unwrap(),
+            "Confirm Orders"
+        );
         let names = assets.random_game_names().unwrap();
         assert_eq!(names.localized_nation_names[NationId::new(0)], "Zimm");
         assert_eq!(names.localized_nation_names[NationId::new(22)], "Sindel");
@@ -1063,11 +1089,21 @@ mod tests {
         write_retail_file(
             root.path(),
             STRINGS_ARCHIVE_PATH,
-            &synthetic_pe(vec![TestResource::new(
-                TestName::id(STRING_RESOURCE_TYPE),
-                TestName::id(1117),
-                string_table_block(5, "Textile Mill"),
-            )]),
+            &synthetic_pe(vec![
+                TestResource::new(
+                    TestName::id(STRING_RESOURCE_TYPE),
+                    // Win32 LoadString uses LOWORD(group*100+index) for the block id.
+                    // 0x2719*100+1 -> LOWORD 0x45c5 -> block 1117, slot 5.
+                    TestName::id(1117),
+                    string_table_block(5, "Textile Mill"),
+                ),
+                TestResource::new(
+                    TestName::id(STRING_RESOURCE_TYPE),
+                    // 0x2752*100+1 -> LOWORD 0x5c09 -> block 1473, slot 9.
+                    TestName::id(1473),
+                    string_table_block(9, "Clipper description"),
+                ),
+            ]),
         );
 
         for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {

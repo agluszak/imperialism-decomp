@@ -65,7 +65,7 @@ impl GameState {
     ///
     /// Identical orders produce identical movement and battle-creation state.
     /// The first would-be tactical battle is returned with the remaining stacks
-    /// for the turn driver to store as [`crate::TurnContinuation::LandBattle`].
+    /// for the turn driver to store as [`crate::TurnStop::LandBattle`].
     pub fn do_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
         let mut stationed = StationedUnits::from_units(&self.military_units);
         let stacks = self.form_stacks(&mut stationed);
@@ -156,7 +156,7 @@ impl GameState {
     }
 
     /// Continues `DoCombatMoves` after the current land battle has been resolved.
-    pub fn resume_after_land_battle(&mut self, story_ids: &[i32]) -> crate::TurnStop {
+    pub fn resume_after_land_battle(&mut self) -> crate::TurnStop {
         let Some(crate::turn_flow::TurnStop::LandBattle(continuation)) =
             std::mem::take(&mut self.stop)
         else {
@@ -165,7 +165,7 @@ impl GameState {
         if let Some(continuation) = self.resume_combat_moves(continuation) {
             return self.halt(crate::turn_flow::TurnStop::LandBattle(continuation));
         }
-        self.advance_turn(story_ids)
+        self.advance_turn()
     }
 
     fn form_stacks(&mut self, stationed: &mut StationedUnits) -> Vec<ArmyStack> {
@@ -809,7 +809,7 @@ mod tests {
             defender_units: vec![defender],
         };
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         assert_eq!(state.turn.phase(), crate::PhaseCode::MILITARY_CLEANUP);
@@ -818,7 +818,7 @@ mod tests {
         let restored: GameState = serde_json::from_slice(&encoded).expect("deserialize");
         assert_eq!(restored.pending_land_battle(), Some(&expected));
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         assert_eq!(
@@ -842,7 +842,7 @@ mod tests {
             state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
                 DiplomaticRelationship::War;
             assert!(matches!(
-                state.advance_turn(&[]),
+                state.advance_turn(),
                 crate::TurnStop::LandBattle(_)
             ));
             state
@@ -850,14 +850,14 @@ mod tests {
 
         let mut watched = pending_battle();
         assert!(matches!(
-            watched.apply_land_battle_watch_policy(true, &[]),
+            watched.apply_land_battle_watch_policy(true),
             crate::TurnStop::LandBattle(_)
         ));
         assert!(watched.pending_land_battle().is_some());
 
         let mut disabled = pending_battle();
         assert!(!matches!(
-            disabled.apply_land_battle_watch_policy(false, &[]),
+            disabled.apply_land_battle_watch_policy(false),
             crate::TurnStop::LandBattle(_)
         ));
         assert!(disabled.pending_land_battle().is_none());
@@ -874,7 +874,7 @@ mod tests {
             .economy
             .diplomacy_eligible = false;
         assert!(!matches!(
-            ai_only.apply_land_battle_watch_policy(true, &[]),
+            ai_only.apply_land_battle_watch_policy(true),
             crate::TurnStop::LandBattle(_)
         ));
         assert!(ai_only.pending_land_battle().is_none());
@@ -899,7 +899,7 @@ mod tests {
             DiplomaticRelationship::War;
 
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         let first = state
@@ -923,7 +923,7 @@ mod tests {
         };
 
         assert!(matches!(
-            state.resume_after_land_battle(&[]),
+            state.resume_after_land_battle(),
             crate::TurnStop::LandBattle(_)
         ));
         let second = state
@@ -973,7 +973,7 @@ mod tests {
     fn later_uncontested_stack_moves_without_reforming() {
         let (mut state, attacker, mover) = battle_then_later_uncontested_state();
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         let battle = state
@@ -1015,7 +1015,7 @@ mod tests {
     fn resolve_land_battle_then_continue_remaining_stacks() {
         let (mut state, attacker, mover) = battle_then_later_uncontested_state();
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         state.resolve_land_battle(true);
@@ -1081,12 +1081,12 @@ mod tests {
         seed_war(&mut state);
 
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         let attacker_strength = state.military_units[0].strength;
         let defender_strength = state.military_units[1].strength;
-        let _ = state.auto_resolve_land_battle(&[]);
+        let _ = state.auto_resolve_land_battle();
         assert!(state.battle_reports_pending());
         assert_ne!(
             (
@@ -1136,7 +1136,7 @@ mod tests {
         seed_war(&mut state);
 
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         let first = state
@@ -1162,7 +1162,7 @@ mod tests {
         state.military_units.insert(dummy, dummy_unit);
 
         assert!(matches!(
-            state.resume_after_land_battle(&[]),
+            state.resume_after_land_battle(),
             crate::TurnStop::LandBattle(_)
         ));
         let second = state

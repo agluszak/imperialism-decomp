@@ -181,6 +181,17 @@ class UiWindowPayload:
 
 
 @dataclass(frozen=True)
+class UiTwoPicSliderPayload:
+    """Windows DoPostCreate instance facts for a recovered TTwoPicSlider."""
+
+    picture_base: int
+    scale: int
+    off_group: int
+    off_index: int
+    evidence: str
+
+
+@dataclass(frozen=True)
 class UiSemanticFamily:
     frame_style: int | None = None
     content_insets: tuple[int, int, int, int] | None = None
@@ -192,6 +203,7 @@ class UiSemanticFamily:
     number: UiNumberPayload | None = None
     cluster_value: int | None = None
     window: UiWindowPayload | None = None
+    two_pic_slider: UiTwoPicSliderPayload | None = None
 
 
 @dataclass(frozen=True)
@@ -254,6 +266,18 @@ class UiTextPropertyPatch:
     resource_index: int | None = None
     resource_file: str | None = None
     geometry_top_delta: int | None = None
+
+
+@dataclass(frozen=True)
+class UiTwoPicSliderInstancePatch:
+    resource: UiResourceKey
+    node_id: str
+    tag: str
+    picture_base: int
+    scale: int
+    off_group: int
+    off_index: int
+    evidence: str
 
 
 @dataclass(frozen=True)
@@ -652,6 +676,106 @@ def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyP
             ),
         )
     )
+
+
+def load_two_pic_slider_instances(
+    repo_root: Path,
+) -> tuple[UiTwoPicSliderInstancePatch, ...]:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    rows = data.get("two_pic_slider_instances", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{WINDOWS_DELTA_PATH}: two_pic_slider_instances must be a list")
+    patches: list[UiTwoPicSliderInstancePatch] = []
+    identities: set[tuple[UiResourceKey, str]] = set()
+    for index, raw_row in enumerate(rows):
+        context = f"{WINDOWS_DELTA_PATH}: two_pic_slider_instances[{index}]"
+        row = _mapping(raw_row, context)
+        if set(row) != {
+            "view",
+            "node",
+            "tag",
+            "picture_base",
+            "scale",
+            "off_string",
+            "evidence",
+        }:
+            raise ValueError(f"{context}: malformed two-pic slider instance")
+        resource = UiResourceKey.parse(str(row["view"]))
+        node_id = f"0x{int(str(row['node']), 0):04x}"
+        tag = _fourcc(row["tag"], f"{context}/tag")
+        off = _mapping(row["off_string"], f"{context}/off_string")
+        if set(off) != {"group", "index"}:
+            raise ValueError(f"{context}/off_string: expected group and index")
+        evidence = str(row["evidence"]).strip()
+        if not evidence:
+            raise ValueError(f"{context}: evidence is required")
+        identity = (resource, node_id)
+        if identity in identities:
+            raise ValueError(f"{context}: duplicate slider instance for {resource.text()} {node_id}")
+        identities.add(identity)
+        patches.append(
+            UiTwoPicSliderInstancePatch(
+                resource,
+                node_id,
+                tag,
+                int(row["picture_base"]),
+                int(row["scale"]),
+                int(off["group"]),
+                int(off["index"]),
+                evidence,
+            )
+        )
+    return tuple(patches)
+
+
+def apply_two_pic_slider_instances(
+    key: UiResourceKey,
+    view: UiSemanticView,
+    patches: Iterable[UiTwoPicSliderInstancePatch],
+) -> UiSemanticView:
+    scoped = {patch.node_id: patch for patch in patches if patch.resource == key}
+    if not scoped:
+        return view
+    known_nodes = {node.node_id for node in view.nodes}
+    unknown = sorted(set(scoped) - known_nodes)
+    if unknown:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: {key.text()} slider patches unknown nodes "
+            f"{', '.join(unknown)}"
+        )
+    nodes: list[UiSemanticNode] = []
+    for node in view.nodes:
+        patch = scoped.get(node.node_id)
+        if patch is None:
+            nodes.append(node)
+            continue
+        if patch.tag != node.tag:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} tag "
+                f"{node.tag!r} does not match declared {patch.tag!r}"
+            )
+        if node.class_name != "TTwoPicSlider":
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} is "
+                f"{node.class_name}, not TTwoPicSlider"
+            )
+        nodes.append(
+            replace(
+                node,
+                family=replace(
+                    node.family,
+                    two_pic_slider=UiTwoPicSliderPayload(
+                        patch.picture_base,
+                        patch.scale,
+                        patch.off_group,
+                        patch.off_index,
+                        patch.evidence,
+                    ),
+                ),
+                source=f"{node.source}; Windows: {patch.evidence}",
+            )
+        )
+    return replace(view, nodes=tuple(nodes))
 
 
 def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, ...]:
@@ -1644,39 +1768,36 @@ def apply_case_windows_overrides(
     return replace(view, nodes=tuple(nodes))
 
 
-def _rust_widget_kind(node: UiSemanticNode) -> str:
-    class_name = node.class_name.casefold()
-    if node.type_code == "wind":
-        return "window"
-    if node.type_code == "fwnd":
-        return "floating_window"
-    if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
-        return "checkbox"
-    if node.type_code == "radb" or "radio" in class_name:
-        return "radio_or_cluster_control"
-    if node.type_code == "pict":
-        if "toggle" in class_name:
-            return "toggle"
-        if "button" in class_name:
-            return "picture_button"
-        return "picture"
-    if node.type_code == "stat":
-        return "static_text"
-    if node.type_code == "nmbr":
-        return "numeric_value"
-    if node.type_code == "edit":
-        return "edit_control"
-    if node.type_code == "tevw":
-        return "list_or_scrolling_pane"
-    if node.type_code == "clus":
-        return "radio_or_cluster_control"
-    if node.type_code == "view":
-        return "container" if node.class_name == "TView" else "custom_canvas"
-    return "specialized"
+def _rust_amount_bar_style(node: UiSemanticNode) -> str | None:
+    """Map recovered TAmtBar subclasses to AmountBarStyle (behavior, not C++ taxonomy)."""
+    return {
+        "TIndustryAmtBar": "Production",
+        "TRailAmtBar": "Production",
+        "TTraderAmtBar": "Trade",
+    }.get(node.class_name)
 
 
-def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
-    """Return interaction behavior independent from visual [`_rust_widget_kind`].
+def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | None:
+    """Read recovered TTwoPicSlider instance facts from platform deltas."""
+
+    payload = node.family.two_pic_slider
+    if payload is None:
+        return None
+    return (
+        payload.picture_base,
+        payload.scale,
+        payload.off_group,
+        payload.off_index,
+    )
+
+
+def _rust_input_semantics(
+    key: UiResourceKey | None, node: UiSemanticNode
+) -> str:
+    """Interaction role for Button / Checkbox / ScrollArea / etc. emission.
+
+    Values: passive, activate, checkbox, toggle, radio_button, radio_group,
+    slider, scroll_area, pointer_canvas, text_edit.
 
     The generator is the one place where recovered type/class evidence decides
     whether a static-text-looking control is a radio, a picture is an activate
@@ -1685,7 +1806,6 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
     """
 
     class_name = node.class_name.casefold()
-    kind = _rust_widget_kind(node)
     # Generic `clus` records are layout groups (TIndustryCluster, TToolBarCluster,
     # the random-setup `stuf` panel). Only TRadioTextCluster is a mutually
     # exclusive option group.
@@ -1693,16 +1813,26 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "radio_group"
     if node.type_code == "radb" or "radio" in class_name:
         return "radio_button"
+    # TMadnessButton is a TCzechBox pictured as `pict`; input is Checkbox, not Button.
+    if node.class_name == "TMadnessButton":
+        return "checkbox"
     if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
         return "checkbox"
-    if kind == "toggle":
+    if node.type_code == "pict" and "toggle" in class_name:
         return "toggle"
     if node.type_code == "edit":
         return "text_edit"
-    if node.type_code == "tevw":
+    if node.class_name == "TTwoPicSlider":
+        return "slider"
+    # `tevw` is the TTEView resource family (TDeluxeText, TDialogTEView, …), not
+    # evidence of scrolling. Only recovered TScrollView becomes a ScrollArea.
+    if node.class_name == "TScrollView":
         return "scroll_area"
     if node.class_name in ("TMapPreviewView", "TCitySiteView", "TCityProductionView"):
         return "pointer_canvas"
+    # SceneComponent owns two stock Buttons; recovered root is not itself a Button.
+    if node.class_name == "TNumberedArrowButton":
+        return "passive"
     if (
         node.type_code in ("cntl", "nmbr")
         or node.class_name == "TSidewaysArrow"
@@ -1710,45 +1840,86 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         # TSetupRandomMapPicture::DoEvent handles this otherwise passive
         # TNoHilitePicture as the random-map regeneration action.
         or (key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob")
-    ):
+    ) and node.class_name != "TTwoPicSlider":
         return "activate"
     return "passive"
 
 
-def _rust_picture_visual(node: UiSemanticNode) -> str:
-    """How retail picture art reacts to Pressed / Checked.
+def _rust_picture_swap_ids(node: UiSemanticNode, picture_id: int) -> tuple[int, int]:
+    """Idle/active picture IDs for `picture_swap` presentation.
 
     Evidence:
     - TUpDownPictureButton / TRadioPictureButton / TTextPictureButton:
       HiliteState swaps to glyphBase84 +/- 1 (immutable resting ID + 1 when active).
     - TCzechBox: CheckTheLook uses odd ID when checked or pressed, even when idle.
-    - TMadnessButton replaces CzechBox with a multi-offset scheme; leave static
-      until that specialized rule is modeled.
-    - TPictureButton uses visibility hilite, not an ID swap.
+    """
+
+    folded = node.class_name.casefold()
+    if node.type_code == "chkb" or "czechbox" in folded:
+        return int(picture_id) & ~1, int(picture_id) | 1
+    return int(picture_id), int(picture_id) + 1
+
+
+def _rust_presentation(node: UiSemanticNode) -> str | None:
+    """Which visual helper to emit for this recovered node.
+
+    Values: hover_help_bar, placard, army_placard, ship_placard, transport_gauge,
+    numbered_arrow, amount_bar, two_pic_slider, madness, pressed_overlay,
+    picture_swap, static_picture, radio_text_fill; None when the node has no
+    dedicated presentation helper.
     """
 
     class_name = node.class_name
     folded = class_name.casefold()
-    if class_name == "TMadnessButton":
-        return "static"
-    if node.type_code == "chkb" or "czechbox" in folded:
-        return "czech_box"
-    if (
-        node.type_code == "radb"
-        or class_name
-        in (
-            "TUpDownPictureButton",
-            "TRadioPictureButton",
-            "TTextPictureButton",
-            "TSidewaysArrow",
-            "TCivilianButton",
-            "TOverlayRadioButton",
-        )
-        or "updownpicture" in folded
-        or "radiopicture" in folded
+    if class_name == "TInfoBarText":
+        return "hover_help_bar"
+    if class_name == "TPlacard":
+        return "placard"
+    if class_name == "TArmyPlacard":
+        return "army_placard"
+    if class_name == "TShipPlacard":
+        return "ship_placard"
+    if class_name == "TTransportPicture":
+        return "transport_gauge"
+    if class_name == "TNumberedArrowButton":
+        return "numbered_arrow"
+    if class_name == "TTwoPicSlider":
+        return "two_pic_slider"
+    if _rust_amount_bar_style(node) is not None:
+        return "amount_bar"
+
+    picture_id = node.family.picture_id
+    if picture_id is not None:
+        if class_name == "TMadnessButton":
+            return "madness"
+        if class_name == "TPictureButton":
+            return "pressed_overlay"
+        if node.type_code == "chkb" or "czechbox" in folded:
+            return "picture_swap"
+        if (
+            node.type_code == "radb"
+            or class_name
+            in (
+                "TUpDownPictureButton",
+                "TRadioPictureButton",
+                "TTextPictureButton",
+                "TSidewaysArrow",
+                "TCivilianButton",
+                "TOverlayRadioButton",
+            )
+            or "updownpicture" in folded
+            or "radiopicture" in folded
+        ):
+            return "picture_swap"
+        return "static_picture"
+
+    # TRadioText has no picture; Draw fills the selected/pressed option.
+    # TRadioTextCluster is radio_group input only (checked above via class table).
+    if class_name != "TRadioTextCluster" and (
+        node.type_code == "radb" or "radio" in folded
     ):
-        return "up_down"
-    return "static"
+        return "radio_text_fill"
+    return None
 
 
 def _case_for_resource(
@@ -1842,6 +2013,7 @@ def _rust_ui_semantic_views(
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
     child_node_patches = load_windows_child_node_patches(repo_root)
+    two_pic_sliders = load_two_pic_slider_instances(repo_root)
     city_buildings = load_city_building_visuals(repo_root)
     city_building_actions = load_city_building_action_visuals(repo_root)
     scene_keys = set(resource_backed_scene_keys(recipe_list))
@@ -1893,6 +2065,9 @@ def _rust_ui_semantic_views(
         semantic_view = apply_windows_child_node_patches(
             key, semantic_view, child_node_patches
         )
+        semantic_view = apply_two_pic_slider_instances(
+            key, semantic_view, two_pic_sliders
+        )
         scene_views.append((key, semantic_view))
     windows_views = load_windows_views(repo_root)
     emitted_windows: set[str] = set()
@@ -1930,17 +2105,19 @@ def report_unsupported_ui_roles(
         semantic_view = normalize_resource_view(key, raw_view, text_resources)
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
-            key, semantic_view, text_property_patches
+            key, semantic_view, text_property_patches, text_resources
         )
         unsupported: list[str] = []
         for node in semantic_view.nodes:
-            kind = _rust_widget_kind(node)
-            behavior = _rust_widget_behavior(key, node)
+            semantics = _rust_input_semantics(key, node)
+            presentation = _rust_presentation(node)
             notes: list[str] = []
-            if kind == "specialized":
-                notes.append(f"kind={kind}")
-            if behavior in ("scroll_area",):
-                notes.append(f"behavior={behavior}")
+            # Recovered `cntl` nodes without a dedicated presentation still need
+            # hand-authored visuals (TClickZone / TDealTabControl / TControl).
+            if node.type_code == "cntl" and presentation is None:
+                notes.append("kind=specialized")
+            if semantics in ("scroll_area",):
+                notes.append(f"behavior={semantics}")
             if notes:
                 unsupported.append(
                     f"  {node.tag!r} ({node.class_name}): " + ", ".join(notes)
@@ -1975,7 +2152,8 @@ def _rust_enum_variant(value: str) -> str:
 
 
 def _rust_has_shipped_font(text: UiTextPayload) -> bool:
-    return text.mode in (1, 2, 3)
+    # 0 = system face; 1..=3 = Belwe / Book Antiqua (see resolve_retail_text_style).
+    return text.mode in (0, 1, 2, 3)
 
 
 def _rust_window_is_captioned(node: UiSemanticNode) -> bool:
@@ -2041,7 +2219,7 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    behavior = _rust_widget_behavior(key, node)
+    semantics = _rust_input_semantics(key, node)
     lines.extend(
         {
             "activate": ["    Button"],
@@ -2050,16 +2228,41 @@ def _render_bsn_node(
             "radio_group": ["    RadioGroup"],
             "radio_button": ["    RadioButton"],
             "pointer_canvas": ["    RelativeCursorPosition"],
-        }.get(str(behavior), [])
+            "scroll_area": [
+                "    ScrollArea",
+                "    ScrollPosition::default()",
+                "    Node {",
+                "        overflow: Overflow::scroll_y(),",
+                "    }",
+                "    Pickable",
+            ],
+        }.get(str(semantics), [])
     )
-    if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
+    if bool(node.state) and semantics in ("checkbox", "toggle", "radio_button"):
         lines.append("    Checked")
-    if behavior != "passive" and (not node.enabled or not node.input_gate):
+    if semantics != "passive" and (not node.enabled or not node.input_gate):
         lines.append("    InteractionDisabled")
+
+    presentation = _rust_presentation(node)
+    if presentation == "hover_help_bar":
+        lines.append("    template(|_context| Ok(HoverHelpBar))")
+        # Empty text until hover systems write; style comes from Windows deltas.
+        if text is None:
+            lines.append('    Text("")')
+        # Vertically center the help caption inside the recovered info-bar bounds.
+        lines.extend(
+            [
+                "    Node {",
+                "        flex_direction: FlexDirection::Column,",
+                "        justify_content: JustifyContent::Center,",
+                "        overflow: Overflow::clip(),",
+                "    }",
+            ]
+        )
 
     if text is not None:
         value = _rust_string(text.value or "")
-        if behavior == "text_edit":
+        if semantics == "text_edit":
             max_chars = node.family.max_chars
             if max_chars is not None and max_chars < 0:
                 max_chars = None
@@ -2090,22 +2293,49 @@ def _render_bsn_node(
             )
 
     picture_id = node.family.picture_id
-    if picture_id is not None:
-        visual = _rust_picture_visual(node)
-        idle_id = int(picture_id)
-        active_id = idle_id
-        if visual == "up_down":
-            active_id += 1
-        elif visual == "czech_box":
-            idle_id &= ~1
-            active_id = int(picture_id) | 1
-        if visual == "static":
-            lines.append(f"    retail_picture({idle_id})")
-        else:
-            lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
-    elif behavior == "radio_button":
-        # TRadioText has no picture; Draw fills the selected/pressed option.
+    if presentation == "placard":
+        lines.append(f"    retail_placard({int(picture_id)})")
+    elif presentation == "army_placard":
+        lines.append(f"    retail_army_placard({int(picture_id)})")
+    elif presentation == "ship_placard":
+        lines.append(f"    retail_ship_placard({int(picture_id)})")
+    elif presentation == "transport_gauge":
+        # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
+        track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
+        helper = (
+            "retail_transport_capacity_gauge"
+            if node.tag == "tota"
+            else "retail_transport_gauge"
+        )
+        lines.append(f"    {helper}({int(picture_id)}, {track_left})")
+    elif presentation == "pressed_overlay":
+        lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
+    elif presentation == "madness":
+        lines.append(f"    retail_madness_picture({int(picture_id)})")
+    elif presentation == "static_picture":
+        lines.append(f"    retail_picture({int(picture_id)})")
+    elif presentation == "picture_swap":
+        idle_id, active_id = _rust_picture_swap_ids(node, int(picture_id))
+        lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+    elif presentation == "numbered_arrow":
+        lines.append("    retail_numbered_arrow()")
+    elif presentation == "radio_text_fill":
         lines.append("    retail_radio_text_fill()")
+    elif presentation == "amount_bar":
+        amount_bar_style = _rust_amount_bar_style(node)
+        assert amount_bar_style is not None
+        lines.append(f"    retail_amount_bar(AmountBarStyle::{amount_bar_style})")
+    elif presentation == "two_pic_slider":
+        slider = _rust_two_pic_slider(node)
+        if slider is None:
+            raise ValueError(
+                f"{node.tag}: TTwoPicSlider missing two_pic_slider_instances facts"
+            )
+        picture_base, scale, off_group, off_index = slider
+        lines.append(
+            "    retail_two_pic_slider("
+            f"{picture_base}, {scale}, {off_group}, {off_index})"
+        )
 
     children = children_by_parent.get(node.node_id, [])
     if children:
@@ -2136,18 +2366,18 @@ def _render_city_dialog_controls(
     lines.extend(row_array("ARMORY_ROW_CONTROLS", controls.armory_rows))
     lines.extend(row_array("UNIVERSITY_ROW_CONTROLS", controls.university_rows))
     lines.append(
-        f"pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, f32); {len(controls.shipyard_rows)}] = ["
+        f"pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); {len(controls.shipyard_rows)}] = ["
     )
     for row in controls.shipyard_rows:
         lines.append(
-            f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}, {row.overlay_left}.0),"
+            f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}, {row.overlay_left}),"
         )
     lines.extend(["];", ""])
     lines.append(
-        f"pub const SHIPYARD_STAT_ORIGINS: [(f32, f32); {len(controls.shipyard_stat_origins)}] = ["
+        f"pub const SHIPYARD_STAT_ORIGINS: [(i32, i32); {len(controls.shipyard_stat_origins)}] = ["
     )
     for left, top in controls.shipyard_stat_origins:
-        lines.append(f"    ({left}.0, {top}.0),")
+        lines.append(f"    ({left}, {top}),")
     lines.extend(["];", ""])
     training = ", ".join(_rust_fourcc(tag) for tag in controls.training_orders)
     lines.append(f"pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [{training}];")
@@ -2221,11 +2451,12 @@ def render_rust_ui(
         "#![allow(dead_code, clippy::identity_op)]",
         "",
         "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
+        "use super::hover_help::HoverHelpBar;",
         "use super::retail::*;",
         "use super::window::CaptionedWindow;",
         "use bevy::prelude::*;",
-        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
-        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
+        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};",
+        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};",
         "use imperialism_core::CityFacilitySlot;",
         "use imperialism_formats::{FourCc, PictureId, fourcc};",
         "",

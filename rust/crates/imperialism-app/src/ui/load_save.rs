@@ -1,13 +1,12 @@
 use crate::RetailAssetsResource;
 use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
-use crate::ui::hover_help::get_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalWindow};
+use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{
-    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_loaded_game,
+    BattleReportPresentation, CityWindows, GameSession, StrategicMapSession, insert_loaded_game,
     remove_game_session,
 };
 use crate::{AppState, ReturnTo};
@@ -16,7 +15,7 @@ use bevy::input_focus::AutoFocus;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, SelectAllOnFocus};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
@@ -39,17 +38,17 @@ const SLOT_TAGS: [FourCc; NUMBERED_SAVE_SLOT_COUNT as usize] = [
     fourcc!("slt7"),
 ];
 const AUTOSAVE_SESSION_SLOT: i32 = 0xa1;
-const LOAD_OKAY_IDLE_PICTURE: i16 = 4524;
-const LOAD_OKAY_ACTIVE_PICTURE: i16 = 4525;
-const EMPTY_SLOT_STRING_GROUP: i16 = 0x2737;
-const EMPTY_SLOT_STRING_INDEX: i16 = 0xd;
-const DIFFICULTY_STRING_GROUP: i16 = 0x2737;
-const DIFFICULTY_STRING_BASE: i16 = 0xd;
-const CONFIRM_LOAD_STRING_GROUP: i16 = 0x2737;
-const CONFIRM_LOAD_STRING_INDEX: i16 = 0x33;
-const PICK_SLOT_STRING_GROUP: i16 = 0x2758;
-const PICK_SLOT_STRING_INDEX: i16 = 0x17;
-const FLAG_MENU_STRING_GROUP: i16 = 0x2743;
+const LOAD_OKAY_IDLE_PICTURE: PictureId = PictureId::new(4524);
+const LOAD_OKAY_ACTIVE_PICTURE: PictureId = PictureId::new(4525);
+const EMPTY_SLOT_STRING_GROUP: u16 = 0x2737;
+const EMPTY_SLOT_STRING_INDEX: u16 = 0xd;
+const DIFFICULTY_STRING_GROUP: u16 = 0x2737;
+const DIFFICULTY_STRING_BASE: u16 = 0xd;
+const CONFIRM_LOAD_STRING_GROUP: u16 = 0x2737;
+const CONFIRM_LOAD_STRING_INDEX: u16 = 0x33;
+const PICK_SLOT_STRING_GROUP: u16 = 0x2758;
+const PICK_SLOT_STRING_INDEX: u16 = 0x17;
+const FLAG_MENU_STRING_GROUP: u16 = 0x2743;
 const FLAG_MENU_ROWS: [(FourCc, Option<FourCc>, Option<FlagMenuAction>); 8] = [
     (fourcc!("txt0"), None, None),
     (
@@ -251,6 +250,7 @@ pub(crate) fn save_current_game(
     origin: TileId,
     city_windows: &CityWindowLayout,
     captured_reports: &[BattleReportText],
+    assets: Option<&RetailUiAssets>,
     label: &str,
 ) -> Result<(), SaveFileError> {
     let label = normalize_save_label(label);
@@ -258,7 +258,7 @@ pub(crate) fn save_current_game(
         SaveSlot::Numbered(index) => i32::from(index),
         SaveSlot::Autosave => AUTOSAVE_SESSION_SLOT,
     };
-    let battle_report_text = battle_report_texts_for_save(session, captured_reports);
+    let battle_report_text = battle_report_texts_for_save(assets, session, captured_reports);
     let bytes = write_game_state(
         &session.game,
         origin,
@@ -307,9 +307,7 @@ fn bind_load_save(
     let mode = screen.mode;
     bind_load_save_actions(&mut commands, root_entity, &tree, mode);
     let listing = list_save_slots(&save_dir.0);
-    let empty_label = assets
-        .string(EMPTY_SLOT_STRING_GROUP, EMPTY_SLOT_STRING_INDEX)
-        .unwrap_or_default();
+    let empty_label = assets.ui_string(EMPTY_SLOT_STRING_GROUP, EMPTY_SLOT_STRING_INDEX);
     let presentation = presentation_from_listing(&listing, &empty_label, &assets);
     populate_load_save_slots(&mut commands, root_entity, &tree, mode, &presentation);
     if mode == LoadSaveMode::Load {
@@ -338,7 +336,7 @@ fn bind_load_save_actions(
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
         commands
             .entity(entity)
-            .insert((Button, LoadSaveAction::SelectSlot(slot)))
+            .insert((Button, ActivateOnPress, LoadSaveAction::SelectSlot(slot)))
             .observe(on_load_save_activate);
     }
     commands
@@ -346,17 +344,20 @@ fn bind_load_save_actions(
         .insert(LoadSaveInfo);
     commands
         .entity(tree.find(root, fourcc!("okay")))
-        .insert(LoadSaveAction::Okay)
+        .insert((ActivateOnPress, LoadSaveAction::Okay))
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
     commands
         .entity(tree.find(root, fourcc!("cncl")))
-        .insert(LoadSaveAction::Cancel)
+        .insert((ActivateOnPress, LoadSaveAction::Cancel))
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
     let otto = tree.find(root, fourcc!("otto"));
     let mut otto_commands = commands.entity(otto);
-    otto_commands.insert(LoadSaveAction::SelectSlot(SaveSlot::Autosave));
+    otto_commands.insert((
+        ActivateOnPress,
+        LoadSaveAction::SelectSlot(SaveSlot::Autosave),
+    ));
     otto_commands.observe(on_load_save_activate);
     if mode == LoadSaveMode::Save {
         otto_commands.insert(InteractionDisabled);
@@ -383,12 +384,10 @@ fn presentation_from_listing(
 }
 
 fn slot_presentation(header: &SaveHeaderInfo, assets: &RetailUiAssets) -> SlotPresentation {
-    let difficulty = assets
-        .string(
-            DIFFICULTY_STRING_GROUP,
-            DIFFICULTY_STRING_BASE + i16::from(header.difficulty),
-        )
-        .unwrap_or_default();
+    let difficulty = assets.ui_string(
+        DIFFICULTY_STRING_GROUP,
+        DIFFICULTY_STRING_BASE + u16::from(header.difficulty),
+    );
     SlotPresentation {
         label: header.label.clone(),
         info: format!(
@@ -441,20 +440,8 @@ fn apply_load_okay_pictures(
     tree: &RetailTree,
 ) {
     let okay = tree.find(root, fourcc!("okay"));
-    let idle = match assets.picture(PictureId::new(LOAD_OKAY_IDLE_PICTURE)) {
-        Ok(handle) => handle,
-        Err(error) => {
-            warn!("could not load Load Game okay picture: {error}");
-            return;
-        }
-    };
-    let active = match assets.picture(PictureId::new(LOAD_OKAY_ACTIVE_PICTURE)) {
-        Ok(handle) => handle,
-        Err(error) => {
-            warn!("could not load Load Game okay pressed picture: {error}");
-            idle.clone()
-        }
-    };
+    let idle = assets.picture(LOAD_OKAY_IDLE_PICTURE);
+    let active = assets.picture(LOAD_OKAY_ACTIVE_PICTURE);
     commands.entity(okay).insert((
         RetailPictureSwap {
             idle: idle.clone(),
@@ -557,9 +544,10 @@ fn on_load_save_activate(
     save_dir: Option<Res<SaveDirectory>>,
     returning: Res<ReturnTo>,
     session: Option<Res<GameSession>>,
-    origin: Option<Res<MapViewOrigin>>,
+    map: Option<Res<StrategicMapSession>>,
     city_windows: Option<Res<CityWindows>>,
     battle_reports: Option<Res<BattleReportPresentation>>,
+    assets: Option<RetailUiAssets>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -596,9 +584,10 @@ fn on_load_save_activate(
                 presentation,
                 &save_dir.0,
                 session.as_deref(),
-                origin.as_deref(),
+                map.as_deref(),
                 city_windows.as_deref(),
                 battle_reports.as_deref(),
+                assets.as_ref(),
                 returning.0,
                 &mut next_state,
             );
@@ -674,9 +663,10 @@ fn confirm_or_apply(
     presentation: Option<&LoadSavePresentation>,
     save_dir: &Path,
     session: Option<&GameSession>,
-    origin: Option<&MapViewOrigin>,
+    map: Option<&StrategicMapSession>,
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
+    assets: Option<&RetailUiAssets>,
     returning: AppState,
     next_state: &mut NextState<AppState>,
 ) {
@@ -722,9 +712,10 @@ fn confirm_or_apply(
                 save_dir,
                 slot,
                 session,
-                origin,
+                map,
                 city_windows,
                 battle_reports,
+                assets,
                 &label,
                 returning,
                 next_state,
@@ -752,7 +743,12 @@ fn apply_load(
         load_game_from_bytes(&bytes, context)
     })();
     match load {
-        Ok(loaded) => {
+        Ok(mut loaded) => {
+            if let Some(assets) = assets {
+                loaded
+                    .game
+                    .set_game_data(crate::ui::retail_game_data(assets));
+            }
             let destination = loaded_game_destination(&loaded.game);
             insert_loaded_game(commands, loaded);
             next_state.set(destination);
@@ -774,14 +770,18 @@ fn apply_save(
     save_dir: &Path,
     slot: SaveSlot,
     session: &GameSession,
-    origin: Option<&MapViewOrigin>,
+    map: Option<&StrategicMapSession>,
     city_windows: Option<&CityWindows>,
     battle_reports: Option<&BattleReportPresentation>,
+    assets: Option<&RetailUiAssets>,
     label: &str,
     returning: AppState,
     next_state: &mut NextState<AppState>,
 ) {
-    let origin = origin.expect("saving a game requires MapViewOrigin").0;
+    let origin = map
+        .expect("saving a game requires StrategicMapSession")
+        .view
+        .detailed_origin(&session.game);
     let city_windows = &city_windows.expect("saving a game requires CityWindows").0;
     let captured = battle_reports
         .expect("saving a game requires BattleReportPresentation")
@@ -794,6 +794,7 @@ fn apply_save(
         origin,
         city_windows,
         captured,
+        assets,
         label,
     ) {
         Ok(()) => next_state.set(returning),
@@ -803,8 +804,8 @@ fn apply_save(
 
 fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> String {
     let retail = match error {
-        LoadGameError::InvalidMagic | LoadGameError::Truncated => assets.string(0x2737, 7).ok(),
-        LoadGameError::UnsupportedVersion(_) => assets.string(0x2737, 8).ok(),
+        LoadGameError::InvalidMagic | LoadGameError::Truncated => Some(assets.ui_string(0x2737, 7)),
+        LoadGameError::UnsupportedVersion(_) => Some(assets.ui_string(0x2737, 8)),
         _ => None,
     };
     retail.unwrap_or_else(|| error.to_string())
@@ -823,12 +824,12 @@ fn bind_load_save_notice(
     let (root, notice) = notice.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     let body = match notice {
-        LoadSaveNotice::PickSlot => assets
-            .string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
-            .unwrap_or_default(),
-        LoadSaveNotice::ConfirmLoad => assets
-            .string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX)
-            .unwrap_or_default(),
+        LoadSaveNotice::PickSlot => {
+            assets.ui_string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
+        }
+        LoadSaveNotice::ConfirmLoad => {
+            assets.ui_string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX)
+        }
         LoadSaveNotice::Error(body) => body.clone(),
     };
     linger.set_body(&mut commands, &mut assets, &body);
@@ -899,19 +900,19 @@ fn bind_flag_menu(
     for (index, (label_tag, control, action)) in FLAG_MENU_ROWS.iter().copied().enumerate() {
         let entity = tree.find(root, label_tag);
         let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset {
-                font_family: 1,
-                face_flags: 0,
-                point_size: if index == 0 { 12 } else { 14 },
-                alignment: if index > 1 { -2 } else { 1 },
-            })
+            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+                1,
+                0,
+                if index == 0 { 12 } else { 14 },
+                if index > 1 { -2 } else { 1 },
+            ))
             .expect("retail flag-menu label style");
         let (text_palette, shadow_palette) = if index == 0 {
             (0x5c, 0x28)
         } else {
             (0x28, 0xd2)
         };
-        let caption = get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16);
+        let caption = assets.get_string(FLAG_MENU_STRING_GROUP, index as u16);
         commands.entity(entity).insert((
             Text::new(caption.clone()),
             Label,
@@ -924,17 +925,19 @@ fn bind_flag_menu(
                 color: assets.palette_color(shadow_palette),
             },
         ));
-        let Some(control) = control else {
+        let Some(control_tag) = control else {
             continue;
         };
-        let mut control = commands.entity(tree.find(root, control));
+        let control_entity = tree.find(root, control_tag);
+        let mut control = commands.entity(control_entity);
         control
             .insert(AccessibleLabel::new(caption))
             .remove::<InteractionDisabled>();
         if let Some(action) = action {
             control.insert(action).observe(on_flag_menu_activate);
         } else {
-            control.insert((ModalCancel, DismissWindow));
+            dismiss_on_activate(&mut commands, control_entity, root);
+            bind_modal_keys(&mut commands, root, None, Some(control_entity));
         }
     }
 }
@@ -1006,9 +1009,7 @@ fn bind_flag_menu_prompt(
         FlagMenuPending::NewGame => 0x2b,
         FlagMenuPending::Quit => 0x2a,
     };
-    let body = assets
-        .string(0x2737, index)
-        .expect("retail flag-menu confirm string");
+    let body = assets.ui_string(0x2737, index);
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_body(&mut commands, &mut assets, body);
     commands
@@ -1051,6 +1052,10 @@ mod tests {
     use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
+    use bevy::camera::NormalizedRenderTarget;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::events::{Pointer, Press};
+    use bevy::picking::pointer::{Location, PointerButton, PointerId};
     use imperialism_formats::{DibPalette, load_game_from_path};
 
     fn fixture_state() -> GameState {
@@ -1065,6 +1070,7 @@ mod tests {
             TileId::new(1),
             &CityWindowLayout::default(),
             &[],
+            None,
             label,
         )
         .unwrap();
@@ -1074,6 +1080,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
+            .add_plugins(bevy::ui_widgets::ButtonPlugin)
             .add_plugins(crate::ui::UiWindowPlugin)
             .add_message::<AppExit>()
             .insert_state(initial)
@@ -1127,12 +1134,12 @@ mod tests {
     fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
         let root = world.spawn((FlagMenuPrompt { kind }, ModalWindow)).id();
         let accept = world
-            .spawn((DismissWindow, ChildOf(root)))
+            .spawn(ChildOf(root))
             .observe(on_flag_menu_prompt_activate)
             .id();
-        let dismiss = world
-            .spawn((ModalCancel, DismissWindow, ChildOf(root)))
-            .id();
+        let dismiss = world.spawn(ChildOf(root)).id();
+        dismiss_on_activate(&mut world.commands(), accept, root);
+        dismiss_on_activate(&mut world.commands(), dismiss, root);
         (accept, dismiss)
     }
 
@@ -1167,6 +1174,83 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::MainMenu
         );
+    }
+
+    #[test]
+    fn selecting_a_save_slot_starts_editing_its_label_and_saves() {
+        let mut app = test_app(AppState::StrategicMap);
+        let game = fixture_state();
+        let directory = tempfile::tempdir().unwrap();
+        insert_game_session_world(app.world_mut(), game.clone());
+        app.insert_resource(SaveDirectory(directory.path().to_owned()));
+        app.insert_resource(LoadSaveRequest(LoadSaveMode::Save));
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::LoadSave);
+        app.update();
+
+        let slot = app
+            .world_mut()
+            .query_filtered::<Entity, With<LoadSaveAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<LoadSaveAction>(*entity)
+                    == Some(&LoadSaveAction::SelectSlot(SaveSlot::Numbered(0)))
+            })
+            .unwrap();
+        assert!(app.world().get::<ActivateOnPress>(slot).is_some());
+
+        app.world_mut().trigger(Pointer::new(
+            PointerId::Mouse,
+            Location {
+                target: NormalizedRenderTarget::None {
+                    width: 1,
+                    height: 1,
+                },
+                position: Vec2::ZERO,
+            },
+            Press {
+                button: PointerButton::Primary,
+                hit: HitData {
+                    camera: Entity::PLACEHOLDER,
+                    depth: 0.0,
+                    position: None,
+                    normal: None,
+                    extra: None,
+                },
+                count: 1,
+            },
+            slot,
+        ));
+        app.world_mut().flush();
+
+        let root = app
+            .world_mut()
+            .query::<&LoadSaveRoot>()
+            .single(app.world())
+            .unwrap();
+        assert_eq!(root.selected, Some(SaveSlot::Numbered(0)));
+        assert!(root.renaming);
+        assert!(app.world().get::<SaveNameField>(slot).is_some());
+
+        let okay = app
+            .world_mut()
+            .query_filtered::<Entity, With<LoadSaveAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<LoadSaveAction>(*entity) == Some(&LoadSaveAction::Okay)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: okay });
+        app.world_mut().flush();
+        app.update();
+
+        let bytes = std::fs::read(retail_save_path(directory.path(), SaveSlot::Numbered(0)))
+            .expect("clicking okay writes the selected save slot");
+        let loaded = load_game_from_bytes(&bytes, runtime_context_for_load(Some(&game))).unwrap();
+        assert_eq!(loaded.game, game);
     }
 
     #[test]

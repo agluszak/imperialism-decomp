@@ -1,11 +1,10 @@
 use super::generated;
-use super::hover_help::ui_string;
 use super::retail::{RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_formats::{RetailTextStylePreset, fourcc};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
+use imperialism_formats::{RetailTextStylePreset, StringResourceId, fourcc};
 
 #[derive(Component)]
 struct CreditsRoot {
@@ -73,12 +72,7 @@ fn fill_credits_page(
         (0xfb0, 0xfb1)
     };
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 0,
-        })
+        .text_style(RetailTextStylePreset::explicit(3, 0, 12, 0))
         .expect("retail credits text style");
     let color = TextColor(assets.palette_color(0x13));
     let shadow = second_page.then_some(TextShadow {
@@ -103,8 +97,8 @@ fn fill_credits_page(
 }
 
 fn string_from_id(assets: &RetailUiAssets, string_id: i16) -> String {
-    // `LoadUiStringResourceById` is LoadStringA(id); group/index form is id = group*100+index.
-    ui_string(assets, string_id / 100, string_id % 100)
+    // `LoadUiStringResourceById` is LoadStringA(id); the flat id is the final resource id.
+    assets.string(StringResourceId::new(string_id as u16))
 }
 
 fn on_credits_activate(

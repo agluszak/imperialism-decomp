@@ -1,11 +1,9 @@
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, ui_string,
-};
+use crate::ui::hover_help::bind_hover_help_texts;
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
-use crate::ui::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{insert_game_session, insert_loaded_game};
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
@@ -181,7 +179,7 @@ fn bind_random_setup(
     bind_random_setup_controls(&mut commands, *root, &tree, &setup);
     bind_random_setup_labels(&mut commands, *root, &tree, &mut nodes, &mut assets);
     random_setup_map::attach_random_setup_meanings(&mut commands, *root, &tree);
-    bind_random_setup_hover_help(&mut commands, *root, &tree, &mut nodes, &mut assets);
+    bind_random_setup_hover_help(&mut commands, *root, &tree, &mut assets);
 }
 
 /// Attach screen meanings only; Bevy widget semantics come from generated components.
@@ -297,7 +295,7 @@ fn bind_random_setup_labels(
         let entity = tree.find(root, tag);
         commands
             .entity(entity)
-            .insert((Text::new(ui_string(assets, group, index)), Label));
+            .insert((Text::new(assets.ui_string(group, index)), Label));
     }
     let title_color = TextColor(assets.palette_color(0x5c));
     let title_shadow = TextShadow {
@@ -342,20 +340,10 @@ fn bind_random_setup_hover_help(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
-    let bar = tree.find(root, fourcc!("hot!"));
-    bind_hover_help_bar(
-        commands,
-        assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("random-setup hover-help bar has Node"),
-        HoverHelpBarStyle::RANDOM_SETUP,
-    );
-    let cancel = ui_string(assets, 0x2737, 0x14);
+    // HoverHelpBar + recovered hot! style come from codegen / Windows deltas.
+    let cancel = assets.ui_string(0x2737, 0x14);
     bind_hover_help_texts(
         commands,
         root,
@@ -364,16 +352,16 @@ fn bind_random_setup_hover_help(
             (fourcc!("main"), String::new()),
             (fourcc!("key "), String::new()),
             (fourcc!("stuf"), String::new()),
-            (fourcc!("name"), ui_string(assets, 0x2758, 0x1e)),
-            (fourcc!("glob"), ui_string(assets, 0x2737, 0x13)),
+            (fourcc!("name"), assets.ui_string(0x2758, 0x1e)),
+            (fourcc!("glob"), assets.ui_string(0x2737, 0x13)),
             (fourcc!("canc"), cancel.clone()),
             (fourcc!("cncl"), cancel),
-            (OKAY, ui_string(assets, 0x2737, 0x15)),
-            (fourcc!("map "), ui_string(assets, 0x2758, 0x13)),
-            (fourcc!("diff"), ui_string(assets, 0x2737, 0x17)),
-            (fourcc!("coun"), ui_string(assets, 0x2737, 0x1a)),
-            (fourcc!("flag"), ui_string(assets, 0x2737, 0x1b)),
-            (fourcc!("coat"), ui_string(assets, 0x2737, 0x1c)),
+            (OKAY, assets.ui_string(0x2737, 0x15)),
+            (fourcc!("map "), assets.ui_string(0x2758, 0x13)),
+            (fourcc!("diff"), assets.ui_string(0x2737, 0x17)),
+            (fourcc!("coun"), assets.ui_string(0x2737, 0x1a)),
+            (fourcc!("flag"), assets.ui_string(0x2737, 0x1b)),
+            (fourcc!("coat"), assets.ui_string(0x2737, 0x1c)),
         ],
     );
 }
@@ -538,6 +526,9 @@ fn accept_random_setup(
         1,
         names,
     );
+    game.set_game_data(GameData::from_news_story_ids(
+        assets.news_table().story_ids().to_vec(),
+    ));
     if requires_capital_site_selection(setup.difficulty) {
         let map_view_origin = capital_selection_view_origin(game.map(), setup.nation);
         insert_loaded_game(
@@ -551,11 +542,7 @@ fn accept_random_setup(
         );
         next_state.set(AppState::CitySite);
     } else {
-        let stop = enter_strategic_map_without_capital_selection(
-            &mut game,
-            setup.nation,
-            assets.news_table().story_ids(),
-        );
+        let stop = enter_strategic_map_without_capital_selection(&mut game, setup.nation);
         apply_turn_stop(stop, next_state);
         insert_game_session(commands, game);
     }
@@ -609,12 +596,11 @@ fn bind_planet_seed_dialog(
     let okay = tree.find(*root, OKAY);
     commands
         .entity(okay)
-        .insert((PlanetSeedAccept, ModalDefault, DismissWindow, TabIndex(1)))
+        .insert((PlanetSeedAccept, TabIndex(1)))
         .observe(on_planet_seed_accept);
     // Retail cancel control stays disabled; Escape does not dismiss.
-    commands
-        .entity(tree.find(*root, fourcc!("cncl")))
-        .insert(ModalCancel);
+    dismiss_on_activate(&mut commands, okay, *root);
+    bind_modal_keys(&mut commands, *root, Some(okay), None);
 }
 
 #[derive(SystemParam)]

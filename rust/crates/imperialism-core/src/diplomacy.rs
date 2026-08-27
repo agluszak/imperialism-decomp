@@ -375,7 +375,7 @@ pub enum PlayerDiplomacyOrderResult {
 
 /// Retail `proposalArrayMode` values written by
 /// `ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode` and the grant-funds
-/// failure path, then shown through string group `0x2754` at index `mode - 1`.
+/// failure path.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PlayerDiplomacyRejection {

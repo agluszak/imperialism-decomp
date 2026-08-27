@@ -78,7 +78,7 @@ impl GameState {
 
     /// Continues the retained `CarryOutOrders` scan after the tactical naval
     /// battle has applied its outcome to the two authoritative task forces.
-    pub fn resume_after_naval_battle(&mut self, story_ids: &[i32]) -> crate::TurnStop {
+    pub fn resume_after_naval_battle(&mut self) -> crate::TurnStop {
         let Some(crate::turn_flow::TurnStop::NavalBattle(continuation)) =
             std::mem::take(&mut self.stop)
         else {
@@ -87,7 +87,7 @@ impl GameState {
         if let Some(continuation) = self.resume_navy_orders(continuation) {
             return self.halt(crate::turn_flow::TurnStop::NavalBattle(continuation));
         }
-        self.advance_turn(story_ids)
+        self.advance_turn()
     }
 
     pub(crate) fn give_navy_mission_orders(&mut self, mission: MissionId) {
@@ -674,15 +674,21 @@ impl GameState {
             return;
         };
         let location = left.location;
+        let left_nation = left.nation;
+        let right_nation = right.nation;
+        // Capture orders before the battle loop mutates either force.
+        let left_order = left.order;
+        let right_order = right.order;
         let left_report_ships = left.ships.keys().copied().collect::<Vec<_>>();
         let right_report_ships = right.ships.keys().copied().collect::<Vec<_>>();
         let mut report = BattleReport {
             participant: None,
+            displayed_side: BattleReportSideSlot::Left,
             kind: BattleReportKind::SeaBattle,
             location: BattleReportLocation::Zone(location),
             sides: BattleReportSideTable::from_array([
-                self.naval_report_side(left.nation, &left_report_ships),
-                self.naval_report_side(right.nation, &right_report_ships),
+                self.naval_report_side(left_nation, &left_report_ships, left_order),
+                self.naval_report_side(right_nation, &right_report_ships, right_order),
             ]),
         };
         let left_start = left.ships.len();
@@ -810,7 +816,12 @@ impl GameState {
         self.append_battle_report(report);
     }
 
-    fn naval_report_side(&self, nation: NationId, ships: &[ShipId]) -> BattleReportSide {
+    fn naval_report_side(
+        &self,
+        nation: NationId,
+        ships: &[ShipId],
+        order: TaskForceOrder,
+    ) -> BattleReportSide {
         BattleReportSide {
             nation,
             children: ships
@@ -826,6 +837,7 @@ impl GameState {
                     }
                 })
                 .collect(),
+            task_force_order: Some(order),
         }
     }
 

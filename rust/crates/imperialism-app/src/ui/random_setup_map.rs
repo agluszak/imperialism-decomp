@@ -3,7 +3,6 @@ use super::random_setup::{RandomGameSetup, RandomSetupPreview};
 use super::retail::RetailTree;
 use super::satellite_preview::SatellitePreview;
 use crate::RetailAssetsResource;
-use bevy::log::warn;
 use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -14,7 +13,7 @@ use imperialism_formats::{FourCc, PictureId, fourcc};
 const MAP_TAG: FourCc = fourcc!("map ");
 const COAT_TAG: FourCc = fourcc!("coat");
 const FLAG_TAG: FourCc = fourcc!("flag");
-const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
+const FIRST_MAJOR_NATION_COAT_PICTURE: PictureId = PictureId::new(0x11c6);
 const FLAG_ATLAS_PICTURE: PictureId = PictureId::new(8699);
 const FLAG_WIDTH: usize = 32;
 const FLAG_HEIGHT: usize = 24;
@@ -86,23 +85,13 @@ fn sync_random_setup_coat(
             continue;
         }
         let picture_id = coat_picture_id(setup.nation);
-        let handle = match pictures.picture(picture_id) {
-            Ok(handle) => handle,
-            Err(error) => {
-                warn!(
-                    "could not load retail setup coat picture {:?}: {error}",
-                    picture_id
-                );
-                continue;
-            }
-        };
-        image_node.image = handle;
+        image_node.image = pictures.picture(picture_id);
         coat.nation = Some(setup.nation);
     }
 }
 
 fn coat_picture_id(nation: MajorNationId) -> PictureId {
-    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + i16::from(nation.get()))
+    FIRST_MAJOR_NATION_COAT_PICTURE.offset(i16::from(nation.get()))
 }
 
 fn sync_random_setup_flag(
@@ -119,19 +108,9 @@ fn sync_random_setup_flag(
     let handle = if let Some(handle) = transparent_atlas.clone() {
         handle
     } else {
-        match pictures.transparent_picture(FLAG_ATLAS_PICTURE, OFF_MAP_PALETTE) {
-            Ok(handle) => {
-                *transparent_atlas = Some(handle.clone());
-                handle
-            }
-            Err(error) => {
-                warn!(
-                    "could not apply transparency to retail setup flag atlas {:?}: {error}",
-                    FLAG_ATLAS_PICTURE
-                );
-                return;
-            }
-        }
+        let handle = pictures.keyed_picture(FLAG_ATLAS_PICTURE, OFF_MAP_PALETTE);
+        *transparent_atlas = Some(handle.clone());
+        handle
     };
 
     for (entity, mut flag, image_node) in &mut flags {

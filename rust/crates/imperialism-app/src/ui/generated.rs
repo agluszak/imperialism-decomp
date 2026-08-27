@@ -2,11 +2,12 @@
 #![allow(dead_code, clippy::identity_op)]
 
 use super::city::{CityBuildingActionVisual, CityBuildingVisual};
+use super::hover_help::HoverHelpBar;
 use super::retail::*;
 use super::window::CaptionedWindow;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};
+use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};
+use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};
 use imperialism_core::CityFacilitySlot;
 use imperialism_formats::{FourCc, PictureId, fourcc};
 
@@ -415,24 +416,24 @@ pub const UNIVERSITY_ROW_CONTROLS: [(FourCc, FourCc); 7] = [
     (fourcc!("clu8"), fourcc!("civ8")),
 ];
 
-pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, f32); 8] = [
-    (fourcc!("clu0"), fourcc!("but0"), 4.0),
-    (fourcc!("clu1"), fourcc!("but1"), 4.0),
-    (fourcc!("clu2"), fourcc!("but2"), 3.0),
-    (fourcc!("clu3"), fourcc!("but3"), 2.0),
-    (fourcc!("clu4"), fourcc!("but4"), 4.0),
-    (fourcc!("clu5"), fourcc!("but5"), 4.0),
-    (fourcc!("clu6"), fourcc!("but6"), 3.0),
-    (fourcc!("clu7"), fourcc!("but7"), 2.0),
+pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); 8] = [
+    (fourcc!("clu0"), fourcc!("but0"), 4),
+    (fourcc!("clu1"), fourcc!("but1"), 4),
+    (fourcc!("clu2"), fourcc!("but2"), 3),
+    (fourcc!("clu3"), fourcc!("but3"), 2),
+    (fourcc!("clu4"), fourcc!("but4"), 4),
+    (fourcc!("clu5"), fourcc!("but5"), 4),
+    (fourcc!("clu6"), fourcc!("but6"), 3),
+    (fourcc!("clu7"), fourcc!("but7"), 2),
 ];
 
-pub const SHIPYARD_STAT_ORIGINS: [(f32, f32); 6] = [
-    (28.0, 86.0),
-    (28.0, 102.0),
-    (28.0, 118.0),
-    (120.0, 86.0),
-    (120.0, 102.0),
-    (120.0, 118.0),
+pub const SHIPYARD_STAT_ORIGINS: [(i32, i32); 6] = [
+    (28, 86),
+    (28, 102),
+    (28, 118),
+    (120, 86),
+    (120, 102),
+    (120, 118),
 ];
 
 pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [fourcc!("trai"), fourcc!("prof")];
@@ -985,11 +986,13 @@ pub fn armory_9208() -> impl Scene {
                                     (
                                         retail_node(fourcc!("cost"), 3, 84, 73, 16)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("avai"), 3, 133, 73, 16)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -1058,21 +1061,25 @@ pub fn armory_9208() -> impl Scene {
                                     (
                                         retail_node(fourcc!("lab0"), 3, 5, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("lab1"), 3, 24, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("lab2"), 3, 43, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("lab3"), 3, 62, 71, 18)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -1080,6 +1087,7 @@ pub fn armory_9208() -> impl Scene {
                             (
                                 retail_node(fourcc!("desc"), 17, 273, 170, 106)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1115,6 +1123,7 @@ pub fn citydlog_9200() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 64, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1139,6 +1148,7 @@ pub fn citydlog_9200() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1154,6 +1164,7 @@ pub fn citydlog_9200() -> impl Scene {
                             (
                                 retail_node(fourcc!("or  "), 126, 59, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1171,11 +1182,13 @@ pub fn citydlog_9200() -> impl Scene {
                             (
                                 retail_node(fourcc!("cott"), 119, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("wool"), 196, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1205,6 +1218,7 @@ pub fn citydlog_9201() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 88, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1229,6 +1243,7 @@ pub fn citydlog_9201() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1256,6 +1271,7 @@ pub fn citydlog_9201() -> impl Scene {
                             (
                                 retail_node(fourcc!("fabr"), 155, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1285,6 +1301,7 @@ pub fn citydlog_9202() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 75, 76, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1309,6 +1326,7 @@ pub fn citydlog_9202() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1336,11 +1354,13 @@ pub fn citydlog_9202() -> impl Scene {
                             (
                                 retail_node(fourcc!("coal"), 126, 76, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("iron"), 170, 76, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1370,6 +1390,7 @@ pub fn citydlog_9203() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 64, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1394,6 +1415,7 @@ pub fn citydlog_9203() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1419,6 +1441,7 @@ pub fn citydlog_9203() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1434,6 +1457,7 @@ pub fn citydlog_9203() -> impl Scene {
                             (
                                 retail_node(fourcc!("or  "), 188, 59, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1451,6 +1475,7 @@ pub fn citydlog_9203() -> impl Scene {
                             (
                                 retail_node(fourcc!("stee"), 124, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1480,6 +1505,7 @@ pub fn citydlog_9204() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 63, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1504,6 +1530,7 @@ pub fn citydlog_9204() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1529,6 +1556,7 @@ pub fn citydlog_9204() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1544,6 +1572,7 @@ pub fn citydlog_9204() -> impl Scene {
                             (
                                 retail_node(fourcc!("or  "), 190, 54, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1561,6 +1590,7 @@ pub fn citydlog_9204() -> impl Scene {
                             (
                                 retail_node(fourcc!("timb"), 121, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1590,6 +1620,7 @@ pub fn citydlog_9205() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 85, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1614,6 +1645,7 @@ pub fn citydlog_9205() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1641,6 +1673,7 @@ pub fn citydlog_9205() -> impl Scene {
                             (
                                 retail_node(fourcc!("lumb"), 150, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1670,6 +1703,7 @@ pub fn citydlog_9206() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 86, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1694,6 +1728,7 @@ pub fn citydlog_9206() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1721,6 +1756,7 @@ pub fn citydlog_9206() -> impl Scene {
                             (
                                 retail_node(fourcc!("oil "), 153, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1766,6 +1802,7 @@ pub fn citydlog_9209() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1791,17 +1828,20 @@ pub fn citydlog_9209() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("cos1"), 147, 118, 44, 17)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("cos2"), 150, 200, 44, 17)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1822,31 +1862,37 @@ pub fn citydlog_9209() -> impl Scene {
                             (
                                 retail_node(fourcc!("pap1"), 116, 136, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("pap2"), 127, 218, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("untV"), 59, 136, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("traV"), 59, 218, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("mon1"), 189, 136, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("mon2"), 189, 218, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1901,6 +1947,7 @@ pub fn citydlog_9211() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -1913,6 +1960,7 @@ pub fn citydlog_9211() -> impl Scene {
                             (
                                 retail_node(fourcc!("fuel"), 45, 66, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -1942,6 +1990,7 @@ pub fn citydlog_9212() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 55, 85, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1966,12 +2015,14 @@ pub fn citydlog_9212() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("or  "), 172, 69, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -1983,16 +2034,19 @@ pub fn citydlog_9212() -> impl Scene {
                             (
                                 retail_node(fourcc!("prod"), 147, 85, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("grai"), 100, 85, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("fish"), 196, 103, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -2382,6 +2436,7 @@ pub fn citydlog_9214() -> impl Scene {
                             (
                                 retail_node(fourcc!("labV"), 72, 68, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -2406,6 +2461,7 @@ pub fn citydlog_9214() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2418,11 +2474,13 @@ pub fn citydlog_9214() -> impl Scene {
                             (
                                 retail_node(fourcc!("stee"), 124, 68, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 174, 68, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -2458,6 +2516,7 @@ pub fn citydlog_9215() -> impl Scene {
                             (
                                 retail_node(fourcc!("food"), 73, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -2482,6 +2541,7 @@ pub fn citydlog_9215() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                        retail_amount_bar(AmountBarStyle::Production)
                                     ),
                                 ]
                             ),
@@ -2494,11 +2554,13 @@ pub fn citydlog_9215() -> impl Scene {
                             (
                                 retail_node(fourcc!("clot"), 124, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 165, 71, 14, 14)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -2540,41 +2602,49 @@ pub fn citydlog_9220() -> impl Scene {
                             (
                                 retail_node(fourcc!("tex1"), 20, 194, 281, 36)
                                 Text("")
+                                retail_text_style(0, 0, 0, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex2"), 19, 257, 282, 30)
                                 Text("")
+                                retail_text_style(0, 0, 0, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("warn"), 226, 283, 84, 32)
                                 Text("Insufficient\rMaterials")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("name"), 14, 6, 290, 15)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("cost"), 227, 47, 86, 35)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("capT"), 14, 19, 290, 15)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("or  "), 205, 235, 30, 15)
                                 Text("-or-")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("buck"), 227, 92, 86, 35)
                                 Text("")
+                                retail_text_style(0, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -2662,55 +2732,55 @@ pub fn citymain_2011() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("labP"), 6, 110, 39, 35)
-                                retail_picture(6013)
+                                retail_placard(6013)
                             ),
                             (
                                 retail_node(fourcc!("untr"), 6, 149, 39, 35)
-                                retail_picture(6001)
+                                retail_placard(6001)
                             ),
                             (
                                 retail_node(fourcc!("trai"), 6, 189, 39, 35)
-                                retail_picture(6002)
+                                retail_placard(6002)
                             ),
                             (
                                 retail_node(fourcc!("prof"), 6, 229, 39, 35)
-                                retail_picture(6003)
+                                retail_placard(6003)
                             ),
                             (
                                 retail_node(fourcc!("powe"), 6, 269, 39, 35)
-                                retail_picture(6007)
+                                retail_placard(6007)
                             ),
                             (
                                 retail_node(fourcc!("sick"), 6, 349, 39, 35)
-                                retail_picture(6008)
+                                retail_placard(6008)
                             ),
                             (
                                 retail_node(fourcc!("dead"), 6, 389, 39, 35)
-                                retail_picture(6009)
+                                retail_placard(6009)
                             ),
                             (
                                 retail_node(fourcc!("prod"), 595, 149, 39, 35)
-                                retail_picture(6011)
+                                retail_placard(6011)
                             ),
                             (
                                 retail_node(fourcc!("grai"), 595, 110, 39, 35)
-                                retail_picture(6010)
+                                retail_placard(6010)
                             ),
                             (
                                 retail_node(fourcc!("meat"), 595, 189, 39, 80)
-                                retail_picture(6012)
+                                retail_placard(6012)
                             ),
                             (
                                 retail_node(fourcc!("clot"), 595, 318, 39, 35)
-                                retail_picture(6005)
+                                retail_placard(6005)
                             ),
                             (
                                 retail_node(fourcc!("hard"), 595, 395, 39, 35)
-                                retail_picture(6004)
+                                retail_placard(6004)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 595, 357, 39, 35)
-                                retail_picture(6006)
+                                retail_placard(6006)
                             ),
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 228, 67)
@@ -2718,7 +2788,7 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
-                                        retail_picture(6021)
+                                        retail_pressed_overlay_picture(6021)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -2765,12 +2835,19 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
-                                        retail_picture(6020)
+                                        retail_pressed_overlay_picture(6020)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -2805,6 +2882,13 @@ pub fn diplo_1351() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("curs"), 434, 7, 201, 21)
+                                        template(|_context| Ok(HoverHelpBar))
+                                        Text("")
+                                        Node {
+                                            flex_direction: FlexDirection::Column,
+                                            justify_content: JustifyContent::Center,
+                                            overflow: Overflow::clip(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("prev"), 294, 381, 22, 22)
@@ -2819,7 +2903,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 8, 38, 31, 51)
                                         Button
-                                        retail_picture(4106)
+                                        retail_pressed_overlay_picture(4106)
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 294, 412, 53, 57)
@@ -2829,6 +2913,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("resu"), 24, 360, 286, 20)
                                         Text("")
+                                        retail_text_style(1, 0, 14, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2838,6 +2923,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("fadm"), 63, 382, 224, 22)
                                         Text("")
+                                        retail_text_style(1, 0, 12, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2847,21 +2933,25 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("eadm"), 391, 382, 239, 23)
                                         Text("")
+                                        retail_text_style(1, 0, 12, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("loca"), 331, 360, 288, 20)
                                         Text("")
+                                        retail_text_style(1, 0, 14, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("fshp"), 29, 407, 257, 65)
                                         Text("")
+                                        retail_text_style(3, 0, 10, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("eshp"), 357, 407, 272, 65)
                                         Text("")
+                                        retail_text_style(3, 0, 10, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -2870,7 +2960,7 @@ pub fn diplo_1351() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
                                                 Button
-                                                retail_picture(4107)
+                                                retail_pressed_overlay_picture(4107)
                                             ),
                                         ]
                                     ),
@@ -2907,7 +2997,7 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 27, 9, 33, 32)
                                 Button
-                                retail_picture(4070)
+                                retail_pressed_overlay_picture(4070)
                             ),
                             (
                                 retail_node(fourcc!("flgR"), 408, 10, 64, 86)
@@ -2920,11 +3010,13 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("natL"), 26, 40, 158, 38)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("natR"), 257, 40, 157, 36)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -3266,7 +3358,7 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        retail_picture(5052)
+                                        retail_pressed_overlay_picture(5052)
                                     ),
                                 ]
                             ),
@@ -3352,7 +3444,7 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
                                         Button
-                                        retail_picture(5051)
+                                        retail_pressed_overlay_picture(5051)
                                     ),
                                 ]
                             ),
@@ -3383,6 +3475,13 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 218, 29)
@@ -3435,7 +3534,7 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        retail_picture(4140)
+                                        retail_pressed_overlay_picture(4140)
                                     ),
                                 ]
                             ),
@@ -3445,83 +3544,98 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        retail_picture(4141)
+                                        retail_pressed_overlay_picture(4141)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("ttl0"), 239, 372, 162, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 239, 400, 162, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl2"), 239, 425, 162, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl3"), 239, 450, 162, 16)
                                 Text("Other Great Power")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can0"), 22, 366, 139, 18)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can1"), 470, 366, 139, 18)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num0"), 192, 372, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num1"), 192, 400, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num2"), 192, 425, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num3"), 192, 450, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("sco0"), 120, 402, 54, 39)
                                 Text("888")
+                                retail_text_style(0, 0, 24, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num7"), 408, 450, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num6"), 408, 425, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num5"), 408, 400, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("num4"), 408, 372, 38, 16)
                                 Text("0")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -3535,14 +3649,23 @@ pub fn diplo_2016() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 48, 6, 338, 30)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("sco1"), 455, 402, 54, 39)
                                 Text("888")
+                                retail_text_style(0, 0, 24, -1)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -3576,21 +3699,25 @@ pub fn diplo_2017() -> impl Scene {
                             (
                                 retail_node(fourcc!("coun"), 208, 59, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 207, 102, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can0"), 207, 146, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("can1"), 207, 190, 227, 36)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -3619,7 +3746,7 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
                                         Button
-                                        retail_picture(8454)
+                                        retail_pressed_overlay_picture(8454)
                                     ),
                                 ]
                             ),
@@ -3629,7 +3756,7 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
                                         Button
-                                        retail_picture(8456)
+                                        retail_pressed_overlay_picture(8456)
                                     ),
                                 ]
                             ),
@@ -3705,6 +3832,7 @@ pub fn flagview_8500() -> impl Scene {
                                         retail_node(fourcc!("mCap"), 411, 284, 37, 15)
                                         Button
                                         Text("")
+                                        retail_text_style(1, 0, 14, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3719,6 +3847,7 @@ pub fn flagview_8500() -> impl Scene {
                                         }
                                         Button
                                         Text("")
+                                        retail_text_style(1, 0, 14, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3736,32 +3865,36 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
                                         Button
-                                        retail_picture(8533)
+                                        retail_pressed_overlay_picture(8533)
                                     ),
                                     (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
                                         Button
-                                        retail_picture(8532)
+                                        retail_pressed_overlay_picture(8532)
                                     ),
                                     (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
                                         Text("")
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, 1)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("purT"), 12, 200, 100, 19)
                                         Text("")
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, -1)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("noof"), 63, 224, 145, 14)
                                         Text("")
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, -2)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("unit"), 157, 200, 58, 20)
                                         Text("")
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, -2)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("icon"), 97, 68, 32, 24)
@@ -3772,8 +3905,10 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 349, 4, 153, 249)
-                                        Text("")
-                                        TextColor(Color::BLACK)
+                                        Text("Trade Book")
+                                        retail_text_style(1, 0, 12, 1)
+                                        retail_text_color(210)
+                                        retail_text_shadow(40, -1, -1)
                                     ),
                                 ]
                             ),
@@ -3784,6 +3919,7 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("text"), 40, 134, 145, 92)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3798,11 +3934,13 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("titL"), 43, 9, 157, 21)
                                         Text("Deal Book")
+                                        retail_text_style(0, 0, 18, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("rtil"), 271, 9, 199, 20)
                                         Text("Winter 1820")
+                                        retail_text_style(0, 0, 18, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3838,6 +3976,16 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 273, 7, 318, 25)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 14, 1)
+                                retail_text_color(40)
+                                retail_text_shadow(210, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 608, 39, 30, 40)
@@ -3845,14 +3993,14 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        retail_picture(8404)
+                                        retail_pressed_overlay_picture(8404)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
                                 Button
-                                retail_picture(8825)
+                                retail_pressed_overlay_picture(8825)
                             ),
                         ]
                     ),
@@ -3886,7 +4034,7 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
                                                         Button
-                                                        retail_picture(8814)
+                                                        retail_pressed_overlay_picture(8814)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -3919,6 +4067,7 @@ pub fn flagview_8800() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("titL"), 101, 54, 157, 22)
                                                 Text("Deal Book")
+                                                retail_text_style(0, 0, 18, 1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
@@ -3950,7 +4099,7 @@ pub fn flagview_8800() -> impl Scene {
                                                 retail_node(fourcc!("mark"), 8, 136, 40, 53)
                                                 Button
                                                 InteractionDisabled
-                                                retail_picture(8812)
+                                                retail_pressed_overlay_picture(8812)
                                             ),
                                             (
                                                 retail_node(fourcc!("tbr2"), 608, 40, 22, 37)
@@ -3958,7 +4107,7 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
                                                         Button
-                                                        retail_picture(8816)
+                                                        retail_pressed_overlay_picture(8816)
                                                     ),
                                                 ]
                                             ),
@@ -3970,6 +4119,13 @@ pub fn flagview_8800() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 245, 7, 365, 21)
+                        template(|_context| Ok(HoverHelpBar))
+                        Text("")
+                        Node {
+                            flex_direction: FlexDirection::Column,
+                            justify_content: JustifyContent::Center,
+                            overflow: Overflow::clip(),
+                        }
                     ),
                 ]
             ),
@@ -4017,6 +4173,7 @@ pub fn linger_954() -> impl Scene {
                                         RadioButton
                                         Checked
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                         retail_radio_text_fill()
                                     ),
@@ -4025,6 +4182,7 @@ pub fn linger_954() -> impl Scene {
                                         RadioButton
                                         Checked
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                         retail_radio_text_fill()
                                     ),
@@ -4048,6 +4206,7 @@ pub fn linger_954() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(32))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4096,41 +4255,49 @@ pub fn linger_1502() -> impl Scene {
                             (
                                 retail_node(fourcc!("slt0"), 72, 290, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt1"), 72, 326, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt3"), 73, 394, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt2"), 73, 360, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt7"), 346, 394, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt6"), 346, 360, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt5"), 345, 326, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("slt4"), 345, 290, 225, 21)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4162,6 +4329,7 @@ pub fn linger_1502() -> impl Scene {
                                     (
                                         retail_node(fourcc!("info"), 20, 197, 205, 43)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -4181,6 +4349,13 @@ pub fn linger_1502() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 49, 19, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -4273,6 +4448,12 @@ pub fn linger_3000() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("swin"), 21, 146, 363, 163)
+                                ScrollArea
+                                ScrollPosition::default()
+                                Node {
+                                    overflow: Overflow::scroll_y(),
+                                }
+                                Pickable
                             ),
                             (
                                 retail_node(fourcc!("nam1"), 15, 187, 244, 15)
@@ -4325,6 +4506,7 @@ pub fn linger_3000() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 105, 14, 181, 62)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4340,6 +4522,7 @@ pub fn linger_3000() -> impl Scene {
                             (
                                 retail_node(fourcc!("subj"), 105, 81, 181, 31)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4369,6 +4552,7 @@ pub fn linger_3005() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 85, 11, 219, 45)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -4452,6 +4636,7 @@ pub fn linger_3005() -> impl Scene {
                             (
                                 retail_node(fourcc!("item"), 85, 57, 219, 20)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4477,7 +4662,7 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("advi"), 113, 65, 97, 37)
                                 Button
-                                retail_picture(4123)
+                                retail_pressed_overlay_picture(4123)
                             ),
                             (
                                 retail_node(fourcc!("oref"), 11, 150, 65, 27)
@@ -4507,46 +4692,54 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("cncl"), 10, 335, 65, 27)
                                 Button
-                                retail_picture(4129)
+                                retail_pressed_overlay_picture(4129)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 101, 22, 126, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex0"), 91, 156, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex1"), 91, 192, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex2"), 91, 230, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex3"), 91, 266, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex4"), 91, 304, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex5"), 91, 340, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex6"), 89, 115, 144, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4572,76 +4765,84 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("txt0"), 98, 22, 129, 15)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt1"), 104, 109, 116, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt2"), 85, 193, 119, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt3"), 85, 154, 144, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt4"), 85, 231, 138, 17)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt5"), 85, 268, 124, 15)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt6"), 85, 303, 126, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("save"), 112, 65, 97, 37)
                                 Button
-                                retail_picture(1331)
+                                retail_pressed_overlay_picture(1331)
                             ),
                             (
                                 retail_node(fourcc!("newg"), 10, 149, 65, 27)
                                 Button
-                                retail_picture(1332)
+                                retail_pressed_overlay_picture(1332)
                             ),
                             (
                                 retail_node(fourcc!("load"), 10, 186, 65, 27)
                                 Button
-                                retail_picture(1333)
+                                retail_pressed_overlay_picture(1333)
                             ),
                             (
                                 retail_node(fourcc!("pref"), 10, 223, 65, 27)
                                 Button
-                                retail_picture(1334)
+                                retail_pressed_overlay_picture(1334)
                             ),
                             (
                                 retail_node(fourcc!("cred"), 10, 260, 65, 27)
                                 Button
-                                retail_picture(1335)
+                                retail_pressed_overlay_picture(1335)
                             ),
                             (
                                 retail_node(fourcc!("quit"), 10, 297, 65, 27)
                                 Button
-                                retail_picture(1336)
+                                retail_pressed_overlay_picture(1336)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 11, 335, 65, 27)
                                 Button
-                                retail_picture(1337)
+                                retail_pressed_overlay_picture(1337)
                             ),
                             (
                                 retail_node(fourcc!("txt7"), 84, 340, 126, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -4678,8 +4879,9 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("opte"), 390, 156, 160, 160)
-                                Button
-                                retail_picture(4158)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4158)
                             ),
                             (
                                 retail_node(fourcc!("soun"), 54, 92, 102, 91)
@@ -4691,7 +4893,7 @@ pub fn linger_4150() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                Button
+                                retail_two_pic_slider(4152, 100, 10051, 60)
                             ),
                             (
                                 retail_node(fourcc!("musi"), 194, 92, 102, 91)
@@ -4703,7 +4905,7 @@ pub fn linger_4150() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                Button
+                                retail_two_pic_slider(4150, 255, 10051, 60)
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
@@ -4711,7 +4913,7 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
-                                        retail_picture(4145)
+                                        retail_pressed_overlay_picture(4145)
                                     ),
                                 ]
                             ),
@@ -4774,7 +4976,6 @@ pub fn linger_4150() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tpca"), 370, 380, 195, 47)
-                                InteractionDisabled
                                 Text("Switch to Game Resolution When Starting the Game")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(56)
@@ -4785,12 +4986,22 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
                                         Button
-                                        retail_picture(4146)
+                                        retail_pressed_overlay_picture(4146)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                         ]
                     ),
@@ -4844,12 +5055,19 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        retail_picture(4325)
+                                        retail_pressed_overlay_picture(4325)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("tab0"), 13, 134, 60, 56)
@@ -4897,7 +5115,7 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
-                                        retail_picture(4145)
+                                        retail_pressed_overlay_picture(4145)
                                     ),
                                 ]
                             ),
@@ -5058,7 +5276,7 @@ pub fn mapview_2013() -> impl Scene {
                                         retail_node(fourcc!("Flag"), 62, 8, 25, 35)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(1300)
+                                        retail_pressed_overlay_picture(1300)
                                     ),
                                     (
                                         retail_node(fourcc!("mmap"), 33, 8, 25, 35)
@@ -5069,7 +5287,7 @@ pub fn mapview_2013() -> impl Scene {
                                         retail_node(fourcc!("quer"), 91, 8, 25, 35)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(1307)
+                                        retail_pressed_overlay_picture(1307)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
@@ -5123,7 +5341,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -5135,7 +5353,7 @@ pub fn mapview_2013() -> impl Scene {
                                                                 bottom: px(0),
                                                             },
                                                         }
-                                                        Button
+                                                        retail_numbered_arrow()
                                                     ),
                                                 ]
                                             ),
@@ -5144,7 +5362,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -5156,7 +5374,7 @@ pub fn mapview_2013() -> impl Scene {
                                                                 bottom: px(0),
                                                             },
                                                         }
-                                                        Button
+                                                        retail_numbered_arrow()
                                                     ),
                                                 ]
                                             ),
@@ -5165,7 +5383,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -5177,7 +5395,7 @@ pub fn mapview_2013() -> impl Scene {
                                                                 bottom: px(0),
                                                             },
                                                         }
-                                                        Button
+                                                        retail_numbered_arrow()
                                                     ),
                                                 ]
                                             ),
@@ -5186,7 +5404,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
-                                                        retail_picture(1513)
+                                                        retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
@@ -5198,7 +5416,7 @@ pub fn mapview_2013() -> impl Scene {
                                                                 bottom: px(0),
                                                             },
                                                         }
-                                                        Button
+                                                        retail_numbered_arrow()
                                                     ),
                                                 ]
                                             ),
@@ -5235,7 +5453,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr1"), 46, 89, 11, 41)
@@ -5247,7 +5465,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr2"), 46, 142, 11, 41)
@@ -5259,7 +5477,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr3"), 46, 195, 11, 41)
@@ -5271,7 +5489,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr4"), 104, 36, 11, 41)
@@ -5283,7 +5501,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr5"), 104, 89, 11, 41)
@@ -5295,7 +5513,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr6"), 104, 142, 11, 41)
@@ -5307,7 +5525,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr7"), 104, 195, 11, 41)
@@ -5319,7 +5537,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr8"), 46, 248, 11, 41)
@@ -5331,7 +5549,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("arr9"), 104, 248, 11, 41)
@@ -5343,7 +5561,7 @@ pub fn mapview_2013() -> impl Scene {
                                                         bottom: px(0),
                                                     },
                                                 }
-                                                Button
+                                                retail_numbered_arrow()
                                             ),
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 7, 25, 25)
@@ -5367,50 +5585,50 @@ pub fn mapview_2013() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("pic0"), 4, 36, 42, 53)
-                                                retail_picture(1220)
+                                                retail_army_placard(1220)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic1"), 4, 89, 42, 53)
-                                                retail_picture(1221)
+                                                retail_army_placard(1221)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic2"), 4, 142, 42, 53)
-                                                retail_picture(1222)
+                                                retail_army_placard(1222)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic3"), 4, 195, 42, 53)
-                                                retail_picture(1223)
+                                                retail_army_placard(1223)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic4"), 57, 36, 47, 53)
-                                                retail_picture(1224)
+                                                retail_army_placard(1224)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic5"), 57, 89, 47, 53)
-                                                retail_picture(1225)
+                                                retail_army_placard(1225)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic6"), 57, 142, 47, 53)
-                                                retail_picture(1226)
+                                                retail_army_placard(1226)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic7"), 57, 195, 47, 53)
-                                                retail_picture(1227)
+                                                retail_army_placard(1227)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic8"), 4, 248, 42, 53)
-                                                retail_picture(1244)
+                                                retail_army_placard(1244)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic9"), 57, 248, 47, 53)
-                                                retail_picture(1247)
+                                                retail_army_placard(1247)
                                             ),
                                         ]
                                     ),
                                     (
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
                                         Button
-                                        retail_picture(1011)
+                                        retail_pressed_overlay_picture(1011)
                                     ),
                                     (
                                         retail_node(fourcc!("uciv"), 128, 143, 126, 306)
@@ -5450,7 +5668,7 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
                                                 Button
-                                                retail_picture(1113)
+                                                retail_pressed_overlay_picture(1113)
                                             ),
                                         ]
                                     ),
@@ -5475,6 +5693,16 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, -1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
@@ -5511,12 +5739,12 @@ pub fn mapview_3012() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
                                 Button
-                                retail_picture(3014)
+                                retail_pressed_overlay_picture(3014)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
                                 Button
-                                retail_picture(3013)
+                                retail_pressed_overlay_picture(3013)
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
@@ -5524,11 +5752,13 @@ pub fn mapview_3012() -> impl Scene {
                             (
                                 retail_node(fourcc!("ttl1"), 10, 173, 131, 17)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl2"), 164, 173, 130, 17)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -5631,7 +5861,7 @@ pub fn mapview_3500() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
                                 Button
-                                retail_picture(3507)
+                                retail_pressed_overlay_picture(3507)
                             ),
                         ]
                     ),
@@ -5675,11 +5905,13 @@ pub fn mapview_3508() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(16))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 28, 12, 201, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -5739,16 +5971,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nama"), 10, 24, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namb"), 10, 47, 110, 15)
                         Text("Skirmishers")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5763,11 +5998,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namc"), 10, 70, 110, 15)
                         Text("Regulars")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5782,6 +6019,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5796,16 +6034,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namd"), 10, 93, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namg"), 10, 162, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5820,6 +6061,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5834,16 +6076,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namh"), 10, 185, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namf"), 10, 139, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5858,6 +6103,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5872,16 +6118,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("name"), 10, 116, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nami"), 192, 25, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5896,6 +6145,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5910,16 +6160,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namj"), 192, 48, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namk"), 192, 71, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5934,6 +6187,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5948,16 +6202,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("naml"), 192, 94, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namm"), 192, 117, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5972,6 +6229,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -5986,16 +6244,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namn"), 192, 140, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namo"), 192, 163, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6010,6 +6271,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6024,16 +6286,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namp"), 192, 186, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namq"), 367, 25, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6048,6 +6313,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6062,16 +6328,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namr"), 367, 48, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nams"), 367, 71, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6086,6 +6355,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6100,16 +6370,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namt"), 367, 94, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namu"), 367, 117, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6124,6 +6397,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6138,16 +6412,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namv"), 367, 140, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namw"), 367, 163, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6162,6 +6439,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6176,11 +6454,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namy"), 10, 208, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6200,16 +6480,19 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namx"), 367, 186, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namz"), 191, 209, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6224,11 +6507,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namx"), 367, 209, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6243,11 +6528,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam{"), 10, 231, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6262,11 +6549,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam|"), 191, 232, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6281,11 +6570,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam~"), 191, 256, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6300,11 +6591,13 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nam}"), 9, 257, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6319,6 +6612,7 @@ pub fn mapview_9460() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                 ]
@@ -6351,16 +6645,19 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namd"), 215, 37, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("name"), 215, 60, 110, 15)
                         Text("Skirmishers")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6375,11 +6672,13 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namh"), 215, 83, 110, 15)
                         Text("Regulars")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6394,6 +6693,7 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6408,16 +6708,19 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nami"), 215, 106, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namm"), 215, 175, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6432,11 +6735,13 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("naml"), 215, 152, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6451,6 +6756,7 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6465,11 +6771,13 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namj"), 215, 129, 110, 15)
                         Text("Minuteman")
+                        retail_text_style(0, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
@@ -6489,6 +6797,7 @@ pub fn mapview_9462() -> impl Scene {
                         }
                         Button
                         Text("")
+                        retail_text_style(0, 0, 0, 0)
                         TextColor(Color::BLACK)
                     ),
                 ]
@@ -6827,7 +7136,7 @@ pub fn mapview_9478() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
                                 Button
-                                retail_picture(3507)
+                                retail_pressed_overlay_picture(3507)
                             ),
                             (
                                 retail_node(fourcc!("page"), 13, 46, 458, 310)
@@ -6914,11 +7223,13 @@ pub fn multiplayer_1507() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(30))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tgam"), 18, 76, 270, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -6972,6 +7283,7 @@ pub fn multiplayer_1508() -> impl Scene {
                             (
                                 retail_node(fourcc!("mess"), 333, 425, 192, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -7033,41 +7345,49 @@ pub fn multiplayer_1508() -> impl Scene {
                             (
                                 retail_node(fourcc!("nam0"), 136, 310, 142, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam1"), 136, 349, 142, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam2"), 136, 388, 144, 18)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam3"), 136, 427, 145, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam4"), 358, 309, 147, 20)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam5"), 358, 348, 146, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam6"), 358, 387, 146, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tnam"), 304, 202, 319, 17)
                                 Text("")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -7132,6 +7452,13 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("labl"), 33, 26, 234, 18)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -7175,42 +7502,50 @@ pub fn multiplayer_1510() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("box0"), 29, 62, 29, 22)
-                                Button
-                                retail_picture(4651)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4651)
                             ),
                             (
                                 retail_node(fourcc!("box1"), 70, 62, 29, 22)
-                                Button
-                                retail_picture(4656)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4656)
                             ),
                             (
                                 retail_node(fourcc!("box2"), 111, 62, 29, 22)
-                                Button
-                                retail_picture(4661)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4661)
                             ),
                             (
                                 retail_node(fourcc!("box3"), 152, 62, 29, 22)
-                                Button
-                                retail_picture(4666)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4666)
                             ),
                             (
                                 retail_node(fourcc!("box4"), 193, 62, 29, 22)
-                                Button
-                                retail_picture(4671)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4671)
                             ),
                             (
                                 retail_node(fourcc!("box5"), 234, 62, 29, 22)
-                                Button
-                                retail_picture(4676)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4676)
                             ),
                             (
                                 retail_node(fourcc!("box6"), 275, 62, 29, 22)
-                                Button
-                                retail_picture(4681)
+                                Checkbox
+                                Checked
+                                retail_madness_picture(4681)
                             ),
                         ]
                     ),
@@ -7594,12 +7929,12 @@ pub fn startup_952() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
                                         Button
-                                        retail_picture(1017)
+                                        retail_pressed_overlay_picture(1017)
                                     ),
                                     (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
                                         Button
-                                        retail_picture(1018)
+                                        retail_pressed_overlay_picture(1018)
                                     ),
                                 ]
                             ),
@@ -7615,6 +7950,16 @@ pub fn startup_952() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, -1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                         ]
                     ),
@@ -7794,6 +8139,16 @@ pub fn startup_1500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 180, 424, 274, 52)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 14, 1)
+                                retail_text_color(40)
+                                retail_text_shadow(210, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("quit"), 221, 102, 195, 195)
@@ -7851,6 +8206,16 @@ pub fn startup_1501() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("hot!"), 36, 22, 238, 27)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                retail_text_color(210)
+                                retail_text_shadow(40, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("stuf"), 288, 4, 345, 466)
@@ -8003,6 +8368,7 @@ pub fn startup_1501() -> impl Scene {
                             (
                                 retail_node(fourcc!("auto"), 217, 66, 65, 41)
                                 Text("All AutoGP's")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8084,11 +8450,9 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("cdes"), 309, 230, 310, 185)
-                                        InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("sdes"), 48, 230, 228, 222)
-                                        InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("list"), 39, 61, 244, 110)
@@ -8107,10 +8471,18 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("curs"), 50, 17, 214, 30)
+                                        template(|_context| Ok(HoverHelpBar))
+                                        Text("")
+                                        Node {
+                                            flex_direction: FlexDirection::Column,
+                                            justify_content: JustifyContent::Center,
+                                            overflow: Overflow::clip(),
+                                        }
                                     ),
                                     (
                                         retail_node(fourcc!("more"), 40, 176, 242, 20)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -8149,6 +8521,7 @@ pub fn startup_1504() -> impl Scene {
                                     (
                                         retail_node(fourcc!("labl"), 27, 68, 234, 18)
                                         Text("")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                 ]
@@ -8184,31 +8557,35 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
                                 Button
-                                retail_picture(4510)
+                                retail_pressed_overlay_picture(4510)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
                                 Button
-                                retail_picture(4511)
+                                retail_pressed_overlay_picture(4511)
                             ),
                             (
                                 retail_node(fourcc!("txt0"), 264, 171, 138, 18)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt1"), 263, 206, 140, 15)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt2"), 264, 237, 143, 17)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt3"), 264, 270, 139, 16)
                                 Text("Static Text")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8263,6 +8640,7 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("tgam"), 21, 101, 98, 19)
                                 Text("Game name:")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8277,10 +8655,18 @@ pub fn startup_1506() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("labl"), 21, 67, 200, 21)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -8364,10 +8750,18 @@ pub fn startup_1509() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 34, 18, 233, 33)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("name"), 245, 381, 165, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8434,137 +8828,163 @@ pub fn startup_1515() -> impl Scene {
                                     (
                                         retail_node(fourcc!("scra"), 118, 165, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrb"), 118, 219, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrc"), 118, 273, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrd"), 118, 309, 120, 48)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scre"), 416, 165, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrf"), 416, 219, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrg"), 416, 265, 120, 32)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrh"), 416, 329, 120, 32)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scri"), 118, 383, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrj"), 344, 381, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrk"), 344, 406, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrl"), 346, 440, 120, 24)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numa"), 233, 165, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numb"), 233, 219, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numc"), 233, 273, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numd"), 234, 325, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numi"), 233, 383, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("nume"), 531, 165, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numf"), 531, 219, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numg"), 531, 273, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numh"), 531, 337, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numj"), 531, 381, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numk"), 532, 405, 73, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numl"), 532, 440, 73, 24)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("vict"), 130, 44, 396, 72)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("ptfr"), 118, 127, 120, 16)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
                                         Button
-                                        retail_picture(4596)
+                                        retail_pressed_overlay_picture(4596)
                                     ),
                                 ]
                             ),
@@ -8605,12 +9025,12 @@ pub fn startup_20000() -> impl Scene {
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
                                         Button
-                                        retail_picture(20001)
+                                        retail_pressed_overlay_picture(20001)
                                     ),
                                     (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
                                         Button
-                                        retail_picture(20002)
+                                        retail_pressed_overlay_picture(20002)
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
@@ -8618,16 +9038,17 @@ pub fn startup_20000() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tsho"), 51, 446, 138, 23)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("tqui"), 459, 445, 138, 23)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("titl"), 132, 6, 375, 37)
-                                        InteractionDisabled
                                     ),
                                 ]
                             ),
@@ -8661,6 +9082,16 @@ pub fn tactical_3800() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("curs"), 221, 4, 360, 20)
+                                template(|_context| Ok(HoverHelpBar))
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
+                                Text("")
+                                retail_text_style(1, 0, 12, -1)
+                                retail_text_color(40)
+                                retail_text_shadow(0, 1, 1)
                             ),
                             (
                                 retail_node(fourcc!("DLOG"), 5, 25, 575, 450)
@@ -8699,7 +9130,7 @@ pub fn tactical_3800() -> impl Scene {
                                     (
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
                                         Button
-                                        retail_picture(3798)
+                                        retail_pressed_overlay_picture(3798)
                                     ),
                                     (
                                         retail_node(fourcc!("tpic"), 2, 356, 50, 50)
@@ -8738,11 +9169,13 @@ pub fn tactical_3821() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("loca"), 7, 182, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                         ]
@@ -8780,11 +9213,13 @@ pub fn tactical_3865() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("loca"), 7, 182, 221, 19)
                                 Text("")
+                                retail_text_style(0, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -8833,7 +9268,7 @@ pub fn tech_2200() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(2228)
+                                        retail_pressed_overlay_picture(2228)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -8851,6 +9286,13 @@ pub fn tech_2200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 247, 7, 341, 17)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("patc"), 584, 35, 52, 72)
@@ -8890,7 +9332,7 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
                                         Button
-                                        retail_picture(2301)
+                                        retail_pressed_overlay_picture(2301)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -8937,7 +9379,7 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
                                         Button
-                                        retail_picture(2302)
+                                        retail_pressed_overlay_picture(2302)
                                     ),
                                 ]
                             ),
@@ -8972,6 +9414,13 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -8999,6 +9448,7 @@ pub fn techstore_2370() -> impl Scene {
                                     (
                                         retail_node(fourcc!("titl"), 81, 19, 264, 32)
                                         Text("Static Text")
+                                        retail_text_style(0, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -9007,6 +9457,12 @@ pub fn techstore_2370() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("scvw"), 9, 76, 342, 175)
+                                        ScrollArea
+                                        ScrollPosition::default()
+                                        Node {
+                                            overflow: Overflow::scroll_y(),
+                                        }
+                                        Pickable
                                     ),
                                     (
                                         retail_node(fourcc!("okay"), 281, 260, 61, 24)
@@ -9049,7 +9505,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
-                                        retail_picture(6020)
+                                        retail_pressed_overlay_picture(6020)
                                     ),
                                 ]
                             ),
@@ -9074,7 +9530,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
-                                        retail_picture(6021)
+                                        retail_pressed_overlay_picture(6021)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -9155,6 +9611,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9209,6 +9666,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9263,6 +9721,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9317,6 +9776,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9371,6 +9831,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9425,6 +9886,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9479,6 +9941,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9533,6 +9996,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9587,6 +10051,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9641,6 +10106,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9695,6 +10161,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9749,6 +10216,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9803,6 +10271,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9857,6 +10326,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9911,6 +10381,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -9965,6 +10436,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
@@ -10019,37 +10491,44 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        retail_amount_bar(AmountBarStyle::Trade)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("topT"), 54, 37, 533, 20)
                                 Text("Board of Trade")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("comT"), 48, 73, 90, 23)
                                 Text("Commodity")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ordT"), 138, 73, 90, 23)
                                 Text("Orders")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("priT"), 240, 73, 67, 23)
                                 Text("Price")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("avaT"), 310, 73, 72, 21)
                                 Text("Available")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("qtyT"), 386, 73, 181, 21)
                                 Text("Quantity to Offer")
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
@@ -10079,6 +10558,13 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                             (
                                 retail_node(fourcc!("timb"), 5, 231, 42, 24)
@@ -10145,7 +10631,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                                 Button
-                                                retail_picture(6020)
+                                                retail_pressed_overlay_picture(6020)
                                             ),
                                         ]
                                     ),
@@ -10200,6 +10686,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10254,6 +10741,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10308,6 +10796,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10362,6 +10851,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10416,6 +10906,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10470,6 +10961,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10524,6 +11016,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10578,6 +11071,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10632,6 +11126,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10686,6 +11181,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10740,6 +11236,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10794,6 +11291,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10848,6 +11346,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10902,6 +11401,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -10956,6 +11456,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -11010,6 +11511,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
@@ -11064,37 +11566,44 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                retail_amount_bar(AmountBarStyle::Trade)
                                             ),
                                         ]
                                     ),
                                     (
                                         retail_node(fourcc!("topT"), 54, 37, 533, 20)
                                         Text("Board of Trade")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("comT"), 48, 73, 90, 23)
                                         Text("Commodity")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("ordT"), 138, 73, 90, 23)
                                         Text("Orders")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("priT"), 240, 73, 67, 23)
                                         Text("Price")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("avaT"), 310, 73, 72, 21)
                                         Text("Available")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("qtyT"), 386, 73, 181, 21)
                                         Text("Quantity to Offer")
+                                        retail_text_style(0, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -11103,7 +11612,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
                                                 Button
-                                                retail_picture(6021)
+                                                retail_pressed_overlay_picture(6021)
                                             ),
                                             (
                                                 retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -11207,6 +11716,13 @@ pub fn trade_2010() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                        template(|_context| Ok(HoverHelpBar))
+                        Text("")
+                        Node {
+                            flex_direction: FlexDirection::Column,
+                            justify_content: JustifyContent::Center,
+                            overflow: Overflow::clip(),
+                        }
                     ),
                 ]
             ),
@@ -11257,7 +11773,7 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
                                         Button
-                                        retail_picture(4025)
+                                        retail_pressed_overlay_picture(4025)
                                     ),
                                 ]
                             ),
@@ -11267,7 +11783,7 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        retail_picture(4024)
+                                        retail_pressed_overlay_picture(4024)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -11285,7 +11801,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
-                                retail_picture(4019)
+                                retail_transport_capacity_gauge(4019, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
@@ -11297,7 +11813,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
-                                retail_picture(4001)
+                                retail_transport_gauge(4001, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11319,7 +11835,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
-                                retail_picture(4002)
+                                retail_transport_gauge(4002, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11341,7 +11857,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
-                                retail_picture(4003)
+                                retail_transport_gauge(4003, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11363,7 +11879,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
-                                retail_picture(4004)
+                                retail_transport_gauge(4004, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11385,7 +11901,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
-                                retail_picture(4005)
+                                retail_transport_gauge(4005, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11407,7 +11923,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
-                                retail_picture(4006)
+                                retail_transport_gauge(4006, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11429,7 +11945,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
-                                retail_picture(4007)
+                                retail_transport_gauge(4007, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11451,7 +11967,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
-                                retail_picture(4008)
+                                retail_transport_gauge(4008, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11473,7 +11989,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
-                                retail_picture(4009)
+                                retail_transport_gauge(4009, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11495,7 +12011,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
-                                retail_picture(4010)
+                                retail_transport_gauge(4010, 97)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11517,7 +12033,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
-                                retail_picture(4011)
+                                retail_transport_gauge(4011, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11539,7 +12055,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
-                                retail_picture(4012)
+                                retail_transport_gauge(4012, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11561,7 +12077,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
-                                retail_picture(4013)
+                                retail_transport_gauge(4013, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11583,7 +12099,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
-                                retail_picture(4014)
+                                retail_transport_gauge(4014, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11605,7 +12121,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
-                                retail_picture(4015)
+                                retail_transport_gauge(4015, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11627,7 +12143,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
-                                retail_picture(4016)
+                                retail_transport_gauge(4016, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11649,7 +12165,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
-                                retail_picture(4017)
+                                retail_transport_gauge(4017, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11677,7 +12193,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
-                                retail_picture(4018)
+                                retail_transport_gauge(4018, 93)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11719,6 +12235,13 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)
+                                template(|_context| Ok(HoverHelpBar))
+                                Text("")
+                                Node {
+                                    flex_direction: FlexDirection::Column,
+                                    justify_content: JustifyContent::Center,
+                                    overflow: Overflow::clip(),
+                                }
                             ),
                         ]
                     ),
@@ -11810,13 +12333,13 @@ pub fn univ_9210() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 105, 12, 161, 30)
                                 Text("University")
-                                retail_text_style(3, 0, 24, 1)
+                                retail_text_style(1, 0, 24, 1)
                                 retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("unit"), 28, 60, 153, 16)
                                 Text("")
-                                retail_text_style(3, 0, 12, 1)
+                                retail_text_style(1, 0, 12, 1)
                                 retail_text_color(210)
                             ),
                             (
@@ -12202,6 +12725,7 @@ pub fn join_selector_message() -> impl Scene {
                                 }
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
+                                retail_text_style(0, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (

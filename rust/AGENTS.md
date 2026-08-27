@@ -37,16 +37,24 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
 
 ## Recovered UI
 
+- Follow `docs/ui-architecture.md` for the bind-time identity, semantic-view ownership, one-way data
+  flow, component, rendering, and migration contract.
 - Recovered UI definitions come from committed recovery evidence and the existing generator. Change
   that evidence or generator and regenerate; do not maintain parallel handwritten screen trees.
 - Generated output is native Bevy/BSN hierarchy. Handwritten app code wires presentation behavior to
   direct typed core operations and projects authoritative results.
 - Keep retail hierarchy, coordinates, tags, ordering, and presentation semantics when observable.
   Do not promote recovery-only offsets or symbolic node identifiers into runtime identity.
-- `GameSession` holds only `GameState`. Detailed-map camera origin, city-dialog positions, and
-  captured battle-report strings are separate resources (`MapViewOrigin`, `CityWindows`,
+- `GameSession` holds only `GameState`. Strategic-map selection and camera, city-dialog positions, and
+  captured battle-report strings are separate resources (`StrategicMapSession`, `CityWindows`,
   `BattleReportPresentation`) so scrolling or layout changes do not mark gameplay changed. Do not
   split `GameState` itself into ECS components.
+- Immutable retail catalogs used by simulation (`GameData`, currently the news story-id table) are
+  loaded once onto `GameState` and are not persisted. Do not thread them through gameplay
+  operations.
+- Immutable retail catalogs used by simulation (`GameData`, currently the news story-id table) are
+  loaded once onto `GameState` and are not persisted. Do not thread them through gameplay
+  operations.
 
 Use `port-behavior` for the C++-to-Rust differential procedure and `ui-recovery` for the resource-to-
 Bevy generation procedure.

@@ -2,6 +2,25 @@ use crate::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
+/// Immutable retail catalogs used by simulation.
+///
+/// Loaded once for a session and owned beside the mutable [`GameState`]. Not
+/// written to `.imp` saves; restore from retail data after load.
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct GameData {
+    news_story_ids: Vec<i32>,
+}
+
+impl GameData {
+    pub fn from_news_story_ids(news_story_ids: Vec<i32>) -> Self {
+        Self { news_story_ids }
+    }
+
+    pub fn news_story_ids(&self) -> &[i32] {
+        &self.news_story_ids
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct GameState {
     pub(crate) turn: TurnState,
@@ -15,6 +34,8 @@ pub struct GameState {
     pub(crate) nations: Nations,
     pub(crate) military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
     pub(crate) civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
+    #[serde(default)]
+    pub(crate) civilian_stack_order: Vec<CivilianUnitId>,
     pub(crate) object_ids: ObjectIdAllocator,
     pub(crate) ships: IndexMap<ShipId, ShipState>,
     pub(crate) admirals: IndexMap<AdmiralId, AdmiralState>,
@@ -35,6 +56,9 @@ pub struct GameState {
     /// saveable boundary with entries queued, so it is not serialized.
     #[serde(skip)]
     pub(crate) pending_town_namings: Vec<(MajorNationId, crate::TileId)>,
+    /// Immutable catalogs for this session. Restored from retail data on load.
+    #[serde(skip)]
+    pub(crate) data: GameData,
 }
 
 /// Construction-only parameter object for assembling [`GameState`].
@@ -81,6 +105,7 @@ impl GameState {
             nations: parts.nations,
             military_units: parts.military_units,
             civilian_units: parts.civilian_units,
+            civilian_stack_order: Vec::new(),
             object_ids: parts.object_ids,
             ships: parts.ships,
             admirals: parts.admirals,
@@ -91,13 +116,14 @@ impl GameState {
             battle_reports: parts.battle_reports,
             stop: parts.stop,
             pending_town_namings: parts.pending_town_namings,
+            data: GameData::default(),
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
             if state.task_forces[&force].flagship.is_none() {
                 state.elect_task_force_flagship(force);
             }
         }
-        state.rebuild_civilian_tile_chains();
+        state.rebuild_civilian_stack_order();
         state
     }
 
@@ -105,6 +131,14 @@ impl GameState {
     /// not need to copy battle/trade resume payloads out of the state.
     pub fn stop(&self) -> Option<&crate::turn_flow::TurnStop> {
         self.stop.as_ref()
+    }
+
+    pub const fn game_data(&self) -> &GameData {
+        &self.data
+    }
+
+    pub fn set_game_data(&mut self, data: GameData) {
+        self.data = data;
     }
 
     pub const fn turn(&self) -> &TurnState {
@@ -232,10 +266,21 @@ impl GameState {
             .representative_tile_index_for_nation(nation, self.nations.home_tile(nation), false)
     }
 
-    /// `TCountry::GetOrComputeOverlayAnchorTileIndex` uses the wrapped-world bias.
-    pub fn ocean_overlay_anchor_for_nation(&self, nation: NationId) -> Option<TileId> {
-        self.map
-            .representative_tile_index_for_nation(nation, self.nations.home_tile(nation), true)
+    /// `TCountry::GetOrComputeOverlayAnchorTileIndex`: the country's diplomacy-map
+    /// overlay anchor. Computed once (from the wrapped-world representative tile)
+    /// and cached in `NationCommonState`, matching retail's lazy, serialized cache.
+    pub fn overlay_anchor_for_nation(&mut self, nation: NationId) -> Option<TileId> {
+        if let Some(anchor) = self.nations.common(nation)?.overlay_anchor_tile {
+            return Some(anchor);
+        }
+        let home = self.nations.home_tile(nation);
+        let computed = self
+            .map
+            .representative_tile_index_for_nation(nation, home, true);
+        if let Some(common) = self.nations.common_mut(nation) {
+            common.overlay_anchor_tile = computed;
+        }
+        computed
     }
 
     /// Sets whether a civilian unit kind is unlocked in the nation's University.

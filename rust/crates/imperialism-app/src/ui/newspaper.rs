@@ -1,7 +1,6 @@
 use super::GamePreferences;
 use super::fill_brackets;
 use super::generated;
-use super::hover_help::get_string;
 use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
@@ -19,12 +18,6 @@ const STORY_HEIGHT: f32 = 396.0;
 #[derive(Component)]
 struct NewspaperRoot;
 
-#[derive(Component, Clone, Copy)]
-enum NewspaperDisplay {
-    Date,
-    Spec,
-}
-
 pub(crate) struct NewspaperPlugin;
 
 impl Plugin for NewspaperPlugin {
@@ -32,11 +25,6 @@ impl Plugin for NewspaperPlugin {
         app.add_systems(
             OnEnter(AppState::Newspaper),
             (spawn_newspaper, bind_newspaper).chain(),
-        )
-        .add_systems(
-            Update,
-            project_newspaper_chrome
-                .run_if(in_state(AppState::Newspaper).and_then(resource_exists::<GameSession>)),
         );
     }
 }
@@ -57,7 +45,15 @@ fn bind_newspaper(
     retail: Res<RetailAssetsResource>,
 ) {
     let root = *root;
-    bind_newspaper_chrome(&mut commands, root, &tree);
+    commands
+        .entity(tree.find(root, fourcc!("date")))
+        .insert(Text::new(project_newspaper_date(
+            &assets,
+            session.game.turn().economic_turn,
+        )));
+    commands
+        .entity(tree.find(root, fourcc!("spec")))
+        .insert(Text::new(newspaper_spec_text(&assets, &session.game)));
     fill_newspaper_stories(
         &mut commands,
         &mut assets,
@@ -72,36 +68,8 @@ fn bind_newspaper(
         .observe(on_newspaper_activate);
 }
 
-fn bind_newspaper_chrome(commands: &mut Commands, root: Entity, tree: &RetailTree) {
-    commands
-        .entity(tree.find(root, fourcc!("date")))
-        .insert(NewspaperDisplay::Date);
-    commands
-        .entity(tree.find(root, fourcc!("spec")))
-        .insert(NewspaperDisplay::Spec);
-}
-
-fn project_newspaper_chrome(
-    session: Res<GameSession>,
-    added: Query<(), Added<NewspaperDisplay>>,
-    assets: RetailUiAssets,
-    mut displays: Query<(&NewspaperDisplay, &mut Text)>,
-) {
-    if super::projection_idle(&session, !added.is_empty()) {
-        return;
-    }
-    let date = project_newspaper_date(&assets, session.game.turn().economic_turn);
-    let spec = newspaper_spec_text(&assets, &session.game);
-    for (display, mut text) in &mut displays {
-        text.0 = match display {
-            NewspaperDisplay::Date => date.clone(),
-            NewspaperDisplay::Spec => spec.clone(),
-        };
-    }
-}
-
 fn project_newspaper_date(assets: &RetailUiAssets, economic_turn: i32) -> String {
-    let season = get_string(assets, 10_000, (economic_turn % 4) as i16);
+    let season = assets.get_string(10_000, (economic_turn % 4) as u16);
     format!("{season}, {}", 1815 + economic_turn / 4)
 }
 
@@ -110,7 +78,7 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
         .expect("newspaper requires an active major nation");
     let (template, value) = match state.turn().economic_turn % 4 {
         0 => (
-            get_string(assets, 0x275e, 0),
+            assets.get_string(0x275e, 0),
             state
                 .nations()
                 .major(nation)
@@ -129,7 +97,7 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
                 .sum::<i32>();
             let change = sum / TradeCommodity::LENGTH as i32;
             (
-                get_string(assets, 0x275e, 1),
+                assets.get_string(0x275e, 1),
                 if change > 0 {
                     format!("+{change}")
                 } else {
@@ -138,11 +106,11 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
             )
         }
         2 => (
-            get_string(assets, 0x275e, 2),
+            assets.get_string(0x275e, 2),
             state.newspaper_commodity_power(nation).to_string(),
         ),
         3 => (
-            get_string(assets, 0x275e, 3),
+            assets.get_string(0x275e, 3),
             state.newspaper_military_power(nation).to_string(),
         ),
         _ => unreachable!("economic turn modulo four is in range"),
@@ -165,28 +133,13 @@ fn fill_newspaper_stories(
     };
     let main = tree.find(root, fourcc!("main"));
     let (feature_font, feature_layout, feature_line, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 2,
-        })
+        .text_style(RetailTextStylePreset::explicit(2, 0, 14, 2))
         .expect("newspaper feature headline style");
     let (event_font, event_layout, event_line, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 1,
-            point_size: 14,
-            alignment: 2,
-        })
+        .text_style(RetailTextStylePreset::explicit(2, 1, 14, 2))
         .expect("newspaper event headline style");
     let (body_font, body_layout, body_line, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 2,
-        })
+        .text_style(RetailTextStylePreset::explicit(2, 0, 12, 2))
         .expect("newspaper body style");
 
     let columns = COLUMN_X.map(|left| {
@@ -292,7 +245,7 @@ fn format_nation_names(
             continue;
         }
         if string_group {
-            names.push(get_string(assets, 0x2711, i16::from(nation.get())));
+            names.push(assets.get_string(0x2711, u16::from(nation.get())));
         } else if let Some(name) = state.nations().display_name(nation) {
             names.push(name.to_owned());
         }
@@ -308,7 +261,7 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
             let conjunction = if list_and {
                 " and ".to_owned()
             } else {
-                get_string(assets, 0x275e, 4)
+                assets.get_string(0x275e, 4)
             };
             format!("{}{}{}", names[0], conjunction, names[1])
         }
@@ -316,7 +269,7 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
             let conjunction = if list_and {
                 " and ".to_owned()
             } else {
-                get_string(assets, 0x275e, 4)
+                assets.get_string(0x275e, 4)
             };
             let mut out = String::new();
             for (index, name) in names.iter().enumerate() {

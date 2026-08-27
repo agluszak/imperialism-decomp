@@ -59,30 +59,6 @@ impl CapitalSiteReport {
     }
 }
 
-impl CitySiteError {
-    /// `TSimMgr::GetString` offset into group `0x273b` for a rejected map click.
-    pub fn message_offset(self, state: &GameState, tile: TileId) -> i16 {
-        match self {
-            Self::NotOwned => {
-                if state.map()[tile].terrain == TerrainKind::Water {
-                    3
-                } else {
-                    0
-                }
-            }
-            Self::UnsupportedTerrain | Self::InvalidHomeSite => {
-                if supports_city_site_terrain(state.map()[tile].terrain)
-                    && state.can_build_port_at_tile(tile)
-                {
-                    2
-                } else {
-                    1
-                }
-            }
-        }
-    }
-}
-
 /// Retail difficulties that dispatch the city-site selector (`difficultyLevel > 1`).
 pub const fn requires_capital_site_selection(difficulty: Difficulty) -> bool {
     matches!(
@@ -97,29 +73,6 @@ pub const fn supports_city_site_terrain(terrain: TerrainKind) -> bool {
         terrain,
         TerrainKind::Plains | TerrainKind::Farmland | TerrainKind::Forest | TerrainKind::Desert
     )
-}
-
-impl MapMgr {
-    /// Retail `TMapMgr::SeedValidCitySiteCandidateTilesForNation`.
-    pub(crate) fn seed_valid_city_site_candidate_tiles_for_nation(
-        &mut self,
-        nation: MajorNationId,
-    ) {
-        let owner = TileOwnerTag::from_nation(nation.nation());
-        self.recruit_search_active = true;
-        for tile in TileId::all() {
-            let is_candidate = {
-                let state = &self[tile];
-                state.owner_nation == Some(owner)
-                    && !matches!(
-                        state.terrain,
-                        TerrainKind::Hills | TerrainKind::Mountain | TerrainKind::Swamp
-                    )
-                    && is_valid_secondary_nation_home_tile_candidate(self, tile)
-            };
-            self[tile].recruit_search_visited = u8::from(!is_candidate);
-        }
-    }
 }
 
 /// Sea-neighbor / river-flow check from `TMapMgr::IsValidSecondaryNationHomeTileCandidate`.
@@ -263,16 +216,12 @@ pub fn place_city(world: &mut MapMgr, tile: TileId, owner_nation: TileOwnerTag) 
 ///
 /// Retail follows with `StartNextPhase()` through season advance, technology, and
 /// the newspaper.
-pub fn confirm_capital_site(
-    state: &mut GameState,
-    site: CapitalSite,
-    story_ids: &[i32],
-) -> crate::TurnStop {
+pub fn confirm_capital_site(state: &mut GameState, site: CapitalSite) -> crate::TurnStop {
     let tile = site.tile();
     let owner = TileOwnerTag::from_nation(site.nation().nation());
     place_city(&mut state.map, tile, owner);
     bind_home_city_tile(state, site.nation(), tile);
-    state.advance_turn(story_ids)
+    state.advance_turn()
 }
 
 /// Introductory/Easy path: no city-site selector; bind the frog-city marker and
@@ -280,7 +229,6 @@ pub fn confirm_capital_site(
 pub fn enter_strategic_map_without_capital_selection(
     state: &mut GameState,
     nation: MajorNationId,
-    story_ids: &[i32],
 ) -> crate::TurnStop {
     let home = state
         .nations
@@ -291,7 +239,7 @@ pub fn enter_strategic_map_without_capital_selection(
         .copied()
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
-    state.advance_turn(story_ids)
+    state.advance_turn()
 }
 
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
@@ -512,7 +460,8 @@ mod tests {
         let site = validate_capital_site_selection(&state, MajorNationId::new(6), tile).unwrap();
         let mut story_ids = vec![1; 360];
         story_ids[0] = -1003;
-        let stop = confirm_capital_site(&mut state, site, &story_ids);
+        state.set_game_data(crate::GameData::from_news_story_ids(story_ids));
+        let stop = confirm_capital_site(&mut state, site);
 
         assert!(matches!(
             (stop, state.turn.phase),
@@ -615,11 +564,8 @@ mod tests {
         assert!(state.map[home].flags.is_city());
         let mut story_ids = vec![1; 360];
         story_ids[0] = -1003;
-        let stop = enter_strategic_map_without_capital_selection(
-            &mut state,
-            MajorNationId::new(6),
-            &story_ids,
-        );
+        state.set_game_data(crate::GameData::from_news_story_ids(story_ids));
+        let stop = enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert!(matches!(
             (stop, state.turn.phase),
             (
@@ -656,7 +602,7 @@ mod tests {
             1,
             &crate::test_support::random_game_names(),
         );
-        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6), &[]);
+        enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert_opening_civilians(&state, MajorNationId::new(6), 5);
         for nation in MajorNationId::all() {
             if nation == MajorNationId::new(6)

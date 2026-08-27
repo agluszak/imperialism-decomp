@@ -1,6 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
-use super::window::{DismissWindow, ModalCancel, ModalDefault, ModalWindow};
+use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::AppState;
 use bevy::prelude::*;
 use imperialism_formats::{RetailTextStylePreset, fourcc};
@@ -37,12 +37,9 @@ pub fn bind_linger_dialog(
         cancel: tree.find(root, fourcc!("cncl")),
         coat: tree.find(root, fourcc!("coat")),
     };
-    commands
-        .entity(controls.okay)
-        .insert((ModalDefault, DismissWindow));
-    commands
-        .entity(controls.cancel)
-        .insert((ModalCancel, DismissWindow));
+    dismiss_on_activate(commands, controls.okay, root);
+    dismiss_on_activate(commands, controls.cancel, root);
+    bind_modal_keys(commands, root, Some(controls.okay), Some(controls.cancel));
     controls
 }
 
@@ -74,12 +71,7 @@ fn insert_linger_text(
     alignment: i32,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 0, 12, alignment))
         .expect("retail linger dialog text style");
     commands.entity(entity).insert((
         Text::new(text.to_owned()),

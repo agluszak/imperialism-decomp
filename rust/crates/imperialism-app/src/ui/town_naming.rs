@@ -1,7 +1,8 @@
 use crate::ui::generated;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
-use crate::ui::session::{apply_turn_stop, news_story_ids};
-use crate::ui::window::{ModalCancel, ModalDefault, ModalWindow};
+use crate::ui::retail_resources::ResourceKindRetailResources;
+use crate::ui::session::apply_turn_stop;
+use crate::ui::window::{ModalWindow, bind_modal_keys};
 use crate::ui::{GameSession, RetailUiAssets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::AutoFocus;
@@ -9,10 +10,9 @@ use bevy::prelude::*;
 use bevy::text::EditableText;
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::ResourceTable;
-use imperialism_formats::{PictureId, fourcc};
+use imperialism_formats::fourcc;
 
 const ROW_HEIGHT: i32 = 0x20;
-const ICON_PICTURE_BASE: i16 = 700;
 
 #[derive(Component)]
 struct TownNamingRoot;
@@ -66,12 +66,10 @@ fn bind_town_naming(
     let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
         return;
     };
-    let suggestion = retail_assets
-        .string(
-            0x1c52,
-            i16::from(session.game.roll_pending_town_name_suggestion()),
-        )
-        .expect("retail town-name string");
+    let suggestion = retail_assets.ui_string(
+        0x1c52,
+        u16::from(session.game.roll_pending_town_name_suggestion()),
+    );
     let yields = session.game.nations().major(nation).towns[&tile].resource_yield_by_type;
     let visible = yields.values().filter(|&&amount| amount != 0).count() as i32;
     let extra_height = visible * ROW_HEIGHT;
@@ -94,12 +92,12 @@ fn bind_town_naming(
             .insert((ActivateOnPress, TownNamingWired))
             .observe(commit_town_name);
     }
-    commands
-        .entity(tree.find(root, fourcc!("okay")))
-        .insert(ModalDefault);
-    commands
-        .entity(tree.find(root, fourcc!("cncl")))
-        .insert(ModalCancel);
+    bind_modal_keys(
+        &mut commands,
+        root,
+        Some(tree.find(root, fourcc!("okay"))),
+        Some(tree.find(root, fourcc!("cncl"))),
+    );
 
     let name = tree.find(root, fourcc!("name"));
     commands.entity(name).insert((
@@ -132,12 +130,7 @@ fn spawn_resource_rows(
         if amount == 0 {
             continue;
         }
-        let icon = assets
-            .transparent_picture(
-                PictureId::new(ICON_PICTURE_BASE + i16::from(resource.retail())),
-                0x10,
-            )
-            .expect("retail town resource icon");
+        let icon = assets.keyed_picture(resource.material_picture(), 0x10);
         commands
             .spawn_scene(town_resource_row(row, icon, amount))
             .insert(ChildOf(parent));
@@ -179,10 +172,9 @@ fn commit_town_name(
     _activate: On<Activate>,
     field: Single<&EditableText, With<TownNameField>>,
     mut session: ResMut<GameSession>,
-    assets: Option<Res<RetailAssetsResource>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     session.game.name_pending_town(field.value().to_string());
-    let stop = session.game.advance_turn(news_story_ids(assets.as_deref()));
+    let stop = session.game.advance_turn();
     apply_turn_stop(stop, &mut next_state);
 }

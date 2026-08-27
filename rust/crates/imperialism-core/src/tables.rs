@@ -57,11 +57,12 @@ macro_rules! fixed_table {
 
 /// The fourteen entries in the retail shipyard descriptor table.
 ///
-/// Their order is the zero-based index into the retail ship-name string group
-/// `0x2716`; the first entry deliberately denotes no ship.
+/// Variant order is the retail ship table ordinal; the first entry deliberately
+/// denotes no ship.
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
 )]
+#[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum ShipType {
     NoShip,
@@ -84,22 +85,7 @@ impl ShipType {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::NoShip => 0,
-            Self::Trader => 1,
-            Self::Indiaman => 2,
-            Self::Frigate => 3,
-            Self::ShipOfTheLine => 4,
-            Self::Paddlewheeler => 5,
-            Self::Clipper => 6,
-            Self::Raider => 7,
-            Self::Ironclad => 8,
-            Self::AdvancedIronclad => 9,
-            Self::Freighter => 10,
-            Self::ArmoredCruiser => 11,
-            Self::Dreadnought => 12,
-            Self::Battlecruiser => 13,
-        }
+        self as u8
     }
 
     pub fn from_index(index: u8) -> Option<Self> {
@@ -258,7 +244,7 @@ impl<'de, T: Deserialize<'de>> Deserialize<'de> for ProvinceTable<T> {
     }
 }
 
-/// Zero-based entries in the retail reward-prompt string group `0x273a`.
+/// Zero-based entries in the retail pending-action / reward-prompt table.
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
 )]

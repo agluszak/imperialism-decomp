@@ -1014,15 +1014,11 @@ impl GameState {
 
     /// Applies retail's tactical-battle preference and participant watch flags.
     /// Unwatched battles run headlessly until the next observable turn stop.
-    pub fn apply_land_battle_watch_policy(
-        &mut self,
-        tactical_battles_enabled: bool,
-        story_ids: &[i32],
-    ) -> TurnStop {
+    pub fn apply_land_battle_watch_policy(&mut self, tactical_battles_enabled: bool) -> TurnStop {
         while matches!(self.stop, Some(TurnStop::LandBattle(_)))
             && !self.pending_land_battle_is_watched(tactical_battles_enabled)
         {
-            self.auto_resolve_land_battle(story_ids);
+            self.auto_resolve_land_battle();
         }
         self.current_stop()
     }
@@ -1042,7 +1038,7 @@ impl GameState {
 
     /// Headless retail Auto: TArmyPlayer auto-deploy + Auto turn pump + ApplyChanges
     /// + ApplyPostBattleStackOutcomeAndGrowUnitMeters, then remaining combat-moves.
-    pub fn auto_resolve_land_battle(&mut self, story_ids: &[i32]) -> TurnStop {
+    pub fn auto_resolve_land_battle(&mut self) -> TurnStop {
         let Some(crate::turn_flow::TurnStop::LandBattle(_)) = &self.stop else {
             panic!("land-battle auto-resolve requires a combat-moves continuation");
         };
@@ -1076,7 +1072,7 @@ impl GameState {
                 break;
             }
         }
-        self.resume_after_land_battle(story_ids)
+        self.resume_after_land_battle()
     }
 
     pub fn army_battle(&self) -> Option<&ArmyBattle> {
@@ -1101,7 +1097,7 @@ impl GameState {
     /// Opens the pending land battle and pumps to local deployment or live input.
     pub fn ensure_army_battle(&mut self) -> &ArmyBattle {
         let stop = self
-            .synchronize_army_battle(&[])
+            .synchronize_army_battle()
             .and_then(|progress| progress.stop);
         assert!(
             stop.is_none(),
@@ -1115,7 +1111,7 @@ impl GameState {
     ///
     /// Returns a turn stop only if forced/opponent actions finish the battle before
     /// the active nation receives input.
-    pub fn synchronize_army_battle(&mut self, story_ids: &[i32]) -> Option<ArmyBattleProgress> {
+    pub fn synchronize_army_battle(&mut self) -> Option<ArmyBattleProgress> {
         if self.army_battle().is_some() {
             return None;
         }
@@ -1127,7 +1123,7 @@ impl GameState {
         if inner.live && inner.pump_until_active_input(self) {
             let events = std::mem::take(&mut inner.events);
             return Some(ArmyBattleProgress {
-                stop: Some(self.resume_after_land_battle(story_ids)),
+                stop: Some(self.resume_after_land_battle()),
                 events,
             });
         }
@@ -1152,7 +1148,6 @@ impl GameState {
     pub fn army_action_at(
         &mut self,
         target: TacticalHex,
-        story_ids: &[i32],
     ) -> Result<(ArmyAction, ArmyBattleProgress), ArmyActionRejection> {
         let active_nation = self.turn.active_nation;
         let Some(mut battle) = self.take_army_battle() else {
@@ -1175,13 +1170,12 @@ impl GameState {
                 return Ok((result, ArmyBattleProgress { stop: None, events }));
             }
         }
-        let progress = self.finish_interactive_army_action(battle, story_ids);
+        let progress = self.finish_interactive_army_action(battle);
         Ok((result, progress))
     }
 
     pub fn finish_selected_army_unit_action(
         &mut self,
-        story_ids: &[i32],
     ) -> Result<ArmyBattleProgress, ArmyActionRejection> {
         let active_nation = self.turn.active_nation;
         let Some(mut battle) = self.take_army_battle() else {
@@ -1200,7 +1194,7 @@ impl GameState {
             return Ok(ArmyBattleProgress { stop: None, events });
         }
         battle.inner.finish_action();
-        Ok(self.finish_interactive_army_action(battle, story_ids))
+        Ok(self.finish_interactive_army_action(battle))
     }
 
     pub fn cycle_selected_army_target(&mut self) -> Result<ArmyTargetCycle, ArmyActionRejection> {
@@ -1215,7 +1209,6 @@ impl GameState {
 
     pub fn auto_play_army_battle_side(
         &mut self,
-        story_ids: &[i32],
     ) -> Result<ArmyBattleProgress, ArmyActionRejection> {
         let active_nation = self.turn.active_nation;
         let Some(mut battle) = self.take_army_battle() else {
@@ -1239,12 +1232,11 @@ impl GameState {
             battle.inner.select_and_apply_cursor_mode(self, side);
             battle.inner.advance_auto_pulse(self, side);
         }
-        Ok(self.finish_interactive_army_action(battle, story_ids))
+        Ok(self.finish_interactive_army_action(battle))
     }
 
     pub fn skip_selected_army_unit_action(
         &mut self,
-        story_ids: &[i32],
     ) -> Result<ArmyBattleProgress, ArmyActionRejection> {
         let active_nation = self.turn.active_nation;
         let Some(mut battle) = self.take_army_battle() else {
@@ -1265,13 +1257,10 @@ impl GameState {
         }
         battle.inner.sides[battle.inner.current_side].field20 = true;
         battle.inner.finish_action();
-        Ok(self.finish_interactive_army_action(battle, story_ids))
+        Ok(self.finish_interactive_army_action(battle))
     }
 
-    pub fn retreat_from_army_battle(
-        &mut self,
-        story_ids: &[i32],
-    ) -> Result<ArmyBattleProgress, ArmyActionRejection> {
+    pub fn retreat_from_army_battle(&mut self) -> Result<ArmyBattleProgress, ArmyActionRejection> {
         let active_nation = self.turn.active_nation;
         let Some(mut battle) = self.take_army_battle() else {
             return Err(ArmyActionRejection::NoLiveBattle);
@@ -1287,7 +1276,7 @@ impl GameState {
                 self.store_army_battle(battle);
                 return Ok(ArmyBattleProgress { stop: None, events });
             }
-            return Ok(self.finish_interactive_army_action(battle, story_ids));
+            return Ok(self.finish_interactive_army_action(battle));
         }
         let side = battle.inner.current_side;
         battle.inner.sides[side].field_f = true;
@@ -1295,18 +1284,14 @@ impl GameState {
         battle.inner.sides[side].last_stance = None;
         battle.inner.select_and_apply_cursor_mode(self, side);
         battle.inner.advance_auto_pulse(self, side);
-        Ok(self.finish_interactive_army_action(battle, story_ids))
+        Ok(self.finish_interactive_army_action(battle))
     }
 
-    fn finish_interactive_army_action(
-        &mut self,
-        mut battle: ArmyBattle,
-        story_ids: &[i32],
-    ) -> ArmyBattleProgress {
+    fn finish_interactive_army_action(&mut self, mut battle: ArmyBattle) -> ArmyBattleProgress {
         let ended = battle.inner.pump_until_active_input(self);
         let events = std::mem::take(&mut battle.inner.events);
         let stop = if ended {
-            Some(self.resume_after_land_battle(story_ids))
+            Some(self.resume_after_land_battle())
         } else {
             self.store_army_battle(battle);
             None
@@ -4198,7 +4183,7 @@ mod tests {
         state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
             DiplomaticRelationship::War;
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         (state, attacker, defender)
@@ -4219,7 +4204,7 @@ mod tests {
         state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
             DiplomaticRelationship::War;
         assert!(matches!(
-            state.advance_turn(&[]),
+            state.advance_turn(),
             crate::TurnStop::LandBattle(_)
         ));
         state.ensure_army_battle();
@@ -4244,7 +4229,7 @@ mod tests {
             };
             assert_eq!(battle.hover_action(deploy, other), HoverAction::Wait);
         }
-        state.army_action_at(deploy, &[]).unwrap();
+        state.army_action_at(deploy).unwrap();
         let battle = state.army_battle().expect("battle remains after deploy");
         assert_eq!(battle.stage(), ArmyBattleStage::Deploying);
         assert_eq!(battle.hover_action(deploy, nation), HoverAction::Undeploy);
@@ -4258,7 +4243,7 @@ mod tests {
                 .into_iter()
                 .next()
                 .expect("local unit has a deployment tile");
-            state.army_action_at(target, &[]).unwrap();
+            state.army_action_at(target).unwrap();
         }
     }
 
@@ -4330,8 +4315,8 @@ mod tests {
             .next()
             .expect("restored selection remains actionable");
         assert_eq!(
-            state.army_action_at(target, &[]),
-            restored.army_action_at(target, &[])
+            state.army_action_at(target),
+            restored.army_action_at(target)
         );
         assert_eq!(
             state.army_battle_differential_snapshot(),
@@ -4373,10 +4358,7 @@ mod tests {
         let (mut state, attacker, _) = pending_regulars_vs_militia();
         state.ensure_army_battle();
 
-        assert_eq!(
-            state.finish_selected_army_unit_action(&[]).unwrap().stop,
-            None
-        );
+        assert_eq!(state.finish_selected_army_unit_action().unwrap().stop, None);
         let selected = state
             .selected_army_unit()
             .expect("deployment selection remains");
@@ -4398,7 +4380,7 @@ mod tests {
             BattleSide::Defender
         );
 
-        assert_eq!(state.retreat_from_army_battle(&[]).unwrap().stop, None);
+        assert_eq!(state.retreat_from_army_battle().unwrap().stop, None);
 
         let battle = state.army_battle().expect("deployment remains interactive");
         assert_eq!(battle.stage(), ArmyBattleStage::Deploying);
@@ -4434,7 +4416,7 @@ mod tests {
             .find(|hex| hex.column() != origin.column() || hex.row() != origin.row())
             .expect("a distinct destination exists");
         let (action, stop) = state
-            .army_action_at(destination, &[])
+            .army_action_at(destination)
             .expect("core accepts a reachable hex");
         let ArmyAction::Move(moved) = action else {
             panic!("reachable empty hex moves the selected unit");
@@ -4458,7 +4440,7 @@ mod tests {
         let origin = selected.hex.expect("selected unit is on the grid");
         let far = TacticalHex::from_row_column(1, 20).expect("grid contains column 20");
         assert_eq!(
-            state.army_action_at(far, &[]),
+            state.army_action_at(far),
             Err(ArmyActionRejection::InvalidTarget)
         );
         let after = state
@@ -4483,7 +4465,7 @@ mod tests {
             .expect("enemy is deployed");
 
         assert_eq!(
-            state.army_action_at(enemy_hex, &[]),
+            state.army_action_at(enemy_hex),
             Err(ArmyActionRejection::InvalidTarget)
         );
         assert_eq!(state.selected_army_unit(), Some(selected));
@@ -4521,7 +4503,7 @@ mod tests {
         };
 
         let (action, _) = state
-            .army_action_at(target, &[])
+            .army_action_at(target)
             .expect("adjacent enemy is a valid attack target");
         assert_eq!(action, ArmyAction::Attack { attacker, target });
     }
@@ -4543,7 +4525,7 @@ mod tests {
         state.turn.active_nation = other_nation;
 
         assert_eq!(
-            state.army_action_at(destination, &[]),
+            state.army_action_at(destination),
             Err(ArmyActionRejection::NotControlled)
         );
         assert!(state.selected_army_unit_reachable_hexes().is_empty());
@@ -4582,7 +4564,7 @@ mod tests {
         };
 
         let (_, stop) = state
-            .army_action_at(destination, &[])
+            .army_action_at(destination)
             .expect("destination remains reachable at the exact action-point budget");
         assert_eq!(stop.stop, None);
         assert_ne!(before, expected);
@@ -4610,10 +4592,7 @@ mod tests {
                 .expect("another tactical unit follows")
         };
 
-        assert_eq!(
-            state.finish_selected_army_unit_action(&[]).unwrap().stop,
-            None
-        );
+        assert_eq!(state.finish_selected_army_unit_action().unwrap().stop, None);
         assert_eq!(
             state.selected_army_unit().map(|unit| unit.id),
             Some(expected)
@@ -4628,7 +4607,7 @@ mod tests {
         let reports_before = state.battle_reports().len();
 
         let stop = state
-            .retreat_from_army_battle(&[])
+            .retreat_from_army_battle()
             .expect("active tactical player may retreat");
 
         assert!(
@@ -4642,7 +4621,7 @@ mod tests {
             active_nation
         );
         assert_eq!(
-            state.retreat_from_army_battle(&[]),
+            state.retreat_from_army_battle(),
             Err(ArmyActionRejection::NoLiveBattle)
         );
         assert_eq!(state.battle_reports().len(), reports_before + 1);
@@ -4652,10 +4631,10 @@ mod tests {
     fn interactive_initialization_then_auto_matches_direct_auto_and_rng() {
         let (state, _, _) = pending_regulars_vs_militia();
         let mut direct = state.clone();
-        let direct_stop = direct.auto_resolve_land_battle(&[]);
+        let direct_stop = direct.auto_resolve_land_battle();
         let mut interactive = state;
         interactive.ensure_army_battle();
-        let interactive_stop = interactive.auto_resolve_land_battle(&[]);
+        let interactive_stop = interactive.auto_resolve_land_battle();
 
         assert_eq!(interactive_stop, direct_stop);
         assert_eq!(interactive.rng(), direct.rng());

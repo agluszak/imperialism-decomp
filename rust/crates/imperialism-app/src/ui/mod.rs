@@ -24,9 +24,13 @@ mod random_setup;
 mod random_setup_map;
 mod retail;
 mod retail_amount_bar;
+mod retail_numbered_arrow;
 mod retail_palette;
+mod retail_placard;
 mod retail_raster;
-mod retail_raster_text;
+mod retail_resources;
+mod retail_slider;
+mod retail_transport_gauge;
 mod satellite_preview;
 mod scenario_setup;
 mod session;
@@ -66,9 +70,10 @@ pub(crate) use scenario_setup::ScenarioSetupPlugin;
 #[cfg(test)]
 pub(crate) use session::insert_game_session_world;
 pub(crate) use session::{
-    BattleReportPresentation, CityWindows, GameSession, MapViewOrigin, insert_game_session,
-    insert_loaded_game, insert_loaded_game_world, remove_game_session,
+    BattleReportPresentation, CityWindows, GameSession, insert_game_session, insert_loaded_game,
+    insert_loaded_game_world, remove_game_session, retail_game_data,
 };
+pub(crate) use strategic_map::StrategicMapSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use technology_store::TechnologyStorePlugin;
 pub(crate) use town_naming::TownNamingPlugin;
@@ -76,12 +81,6 @@ pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 pub(crate) use viewport::RetailViewportPlugin;
 pub(crate) use window::UiWindowPlugin;
-
-use bevy::prelude::{DetectChanges, Res};
-
-pub(in crate::ui) fn projection_idle(session: &Res<GameSession>, added: bool) -> bool {
-    !session.is_changed() && !added
-}
 
 pub(in crate::ui) fn format_currency(value: i32) -> String {
     let negative = value < 0;

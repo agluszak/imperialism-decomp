@@ -123,7 +123,6 @@ pub fn create_random_game(
         world.provinces[ProvinceId::new(index as u16)].region_class = Some(generated.region_class);
     }
     world.map_data_ready = true;
-    world.recruit_search_active = true;
     world.scenario_tag = preview.scenario_tag.clone();
     world.pending_river_mouth_tile = post.pending_river_mouth_tile;
     // Fresh-map BuildOrLoadGlobalMapStateForSession runs this mode-0 cache pass
@@ -187,9 +186,6 @@ pub fn create_random_game(
         localized_names,
         &mut zone_status_rng,
     );
-    if requires_capital_site_selection(difficulty) {
-        world.seed_valid_city_site_candidate_tiles_for_nation(human_nation);
-    }
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
@@ -290,6 +286,7 @@ pub fn create_random_game(
         nations,
         military_units,
         civilian_units: Default::default(),
+        civilian_stack_order: Vec::new(),
         object_ids,
         ships: Default::default(),
         admirals: Default::default(),
@@ -300,6 +297,7 @@ pub fn create_random_game(
         battle_reports: Vec::new(),
         stop: None,
         pending_town_namings: Vec::new(),
+        data: GameData::default(),
     }
 }
 
@@ -313,7 +311,6 @@ pub fn create_scenario_game(
     runtime_seed: u32,
 ) -> GameState {
     world.map_data_ready = true;
-    world.recruit_search_active = true;
 
     let foreign_ministers = choose_scenario_foreign_ministers(&world, human_nation);
     let mut nations = Nations::new(
@@ -440,6 +437,7 @@ pub fn create_scenario_game(
         nations,
         military_units: IndexMap::new(),
         civilian_units: IndexMap::new(),
+        civilian_stack_order: Vec::new(),
         object_ids,
         ships: IndexMap::new(),
         admirals: IndexMap::new(),
@@ -450,6 +448,7 @@ pub fn create_scenario_game(
         battle_reports: Vec::new(),
         stop: None,
         pending_town_namings: Vec::new(),
+        data: GameData::default(),
     };
     // Nation reconstruction creates each fixed-map home port context before the scenario
     // script runs: primary slots 6..0, then secondary slots 7..22.
@@ -464,6 +463,7 @@ pub fn create_scenario_game(
     }
 
     state.apply_scenario_script(instructions);
+    state.rebuild_civilian_stack_order();
     state
 }
 pub use map_post_pass::capital_selection_view_origin;

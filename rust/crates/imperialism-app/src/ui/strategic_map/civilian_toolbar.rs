@@ -2,11 +2,12 @@
 
 use super::super::format_currency;
 use super::super::retail::{RetailTree, RetailUiAssets};
-use super::map_interaction::cycle_map_interaction_selection;
-use super::map_interaction::{MapInteractionMode, StrategicInteraction, StrategicViewport};
+use super::map_interaction::StrategicMapSession;
+use super::map_interaction::StrategicSelection;
 use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
-use crate::ui::{GameSession, MapViewOrigin};
+use crate::ui::GameSession;
+use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -18,12 +19,10 @@ const PORTRAIT_TAG: FourCc = fourcc!("unit");
 const LEGEND_TAG: FourCc = fourcc!("back");
 const CIVILIAN_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x8f as f32);
 const CIVILIAN_PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const PORTRAIT_PICTURE_BASE: i16 = 0x438;
-const CIVILIAN_NAME_GROUP: i16 = 0x2718;
-const CIVILIAN_LEGEND_GROUP: i16 = 0x272d;
-const RESOURCE_ICON_ATLAS: i16 = 750;
-const DEVELOPMENT_STRIP_ATLAS: i16 = 751;
-const TERRAIN_ICON_ATLAS: i16 = 801;
+const CIVILIAN_LEGEND_GROUP: u16 = 0x272d;
+const RESOURCE_ICON_ATLAS: PictureId = PictureId::new(750);
+const DEVELOPMENT_STRIP_ATLAS: PictureId = PictureId::new(751);
+const TERRAIN_ICON_ATLAS: PictureId = PictureId::new(801);
 const RESOURCE_ICON_SIZE: Vec2 = Vec2::new(20.0, 24.0);
 const TERRAIN_ICON_SIZE: Vec2 = Vec2::new(20.0, 20.0);
 const DEVELOPMENT_FRAME_SIZE: Vec2 = Vec2::new(38.0, 26.0);
@@ -66,29 +65,17 @@ const DEVELOPER_ROW_ICON_X: [i16; 12] =
 const LEGEND_WINDOW_ORIGIN: IVec2 = IVec2::new(517, 182);
 
 #[derive(Component)]
-struct CivilianToolbarPage;
-
-#[derive(Component)]
-struct CivilianPortrait;
-
-#[derive(Component)]
-struct CivilianLegend;
+struct CivilianToolbarView {
+    portrait: Entity,
+    legend: Entity,
+    commands: [Entity; 4],
+    atlases: LegendAtlases,
+}
 
 #[derive(Component)]
 struct CivilianLegendItem;
 
-#[derive(Component)]
-struct CivilianCommandButton;
-
-#[derive(Component, Clone, Copy)]
-enum CivilianCommand {
-    Defend,
-    Later,
-    Done,
-    Disband,
-}
-
-#[derive(Component, Clone)]
+#[derive(Clone)]
 struct LegendAtlases {
     resources: Handle<Image>,
     development: Handle<Image>,
@@ -110,99 +97,90 @@ pub(crate) fn bind_civilian_toolbar(
 ) {
     let page = tree.find(root, PAGE_TAG);
     locate_node(commands, page, CIVILIAN_PAGE_PARKED);
-    commands.entity(page).insert(CivilianToolbarPage);
-    commands
-        .entity(tree.child(page, PORTRAIT_TAG))
-        .insert((CivilianPortrait, Visibility::Hidden));
-    commands.entity(tree.child(page, LEGEND_TAG)).insert((
-        CivilianLegend,
-        LegendAtlases {
-            resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
-            development: transparent_atlas(assets, DEVELOPMENT_STRIP_ATLAS),
-            terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
-        },
-    ));
-    for (tag, command) in [
-        (fourcc!("dfnd"), CivilianCommand::Defend),
-        (fourcc!("latr"), CivilianCommand::Later),
-        (fourcc!("done"), CivilianCommand::Done),
-        (fourcc!("garr"), CivilianCommand::Disband),
-    ] {
-        commands
-            .entity(tree.child(page, tag))
-            .insert((
-                CivilianCommandButton,
-                command,
-                ActivateOnPress,
-                InteractionDisabled,
-            ))
-            .observe(on_civilian_command);
-    }
-}
-
-fn on_civilian_command(
-    activate: On<Activate>,
-    commands_query: Query<&CivilianCommand>,
-    mut commands: Commands,
-    mut session: ResMut<GameSession>,
-    mut origin: ResMut<MapViewOrigin>,
-    mut interactions: Query<(&mut StrategicInteraction, &mut StrategicViewport)>,
-    keys: Res<ButtonInput<KeyCode>>,
-) {
-    let Ok(command) = commands_query.get(activate.entity).copied() else {
-        return;
+    let portrait = tree.child(page, PORTRAIT_TAG);
+    commands.entity(portrait).insert(Visibility::Hidden);
+    let legend = tree.child(page, LEGEND_TAG);
+    let atlases = LegendAtlases {
+        resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
+        development: transparent_atlas(assets, DEVELOPMENT_STRIP_ATLAS),
+        terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
     };
-    let Ok((mut interaction, mut viewport)) = interactions.single_mut() else {
-        return;
-    };
-    let Some(unit) = interaction.civilian else {
-        return;
-    };
-    let mode = match command {
-        CivilianCommand::Defend => Some(CivilianIdleOrderMode::Sleep),
-        CivilianCommand::Later => Some(CivilianIdleOrderMode::Later),
-        CivilianCommand::Done => Some(CivilianIdleOrderMode::Done),
-        CivilianCommand::Disband => {
-            if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
-                spawn_civilian_roster(&mut commands);
-            } else {
-                spawn_civilian_disband(&mut commands, unit);
-            }
-            None
-        }
-    };
-    if let Some(mode) = mode
-        && session.game.set_civilian_idle_order(unit, mode)
+    let mut command_entities = [Entity::PLACEHOLDER; 4];
+    for (index, (tag, mode)) in [
+        (fourcc!("dfnd"), CivilianIdleOrderMode::Sleep),
+        (fourcc!("latr"), CivilianIdleOrderMode::Later),
+        (fourcc!("done"), CivilianIdleOrderMode::Done),
+    ]
+    .into_iter()
+    .enumerate()
     {
-        cycle_map_interaction_selection(&mut session, &mut origin, &mut interaction, &mut viewport);
+        let entity = tree.child(page, tag);
+        command_entities[index] = entity;
+        commands
+            .entity(entity)
+            .insert((ActivateOnPress, InteractionDisabled))
+            .observe(
+                move |_: On<Activate>,
+                      mut session: ResMut<GameSession>,
+                      mut map: ResMut<StrategicMapSession>| {
+                    let Some(unit) = map.selection.civilian() else {
+                        return;
+                    };
+                    if session.game.set_civilian_idle_order(unit, mode) {
+                        map.cycle_selection(&mut session.game);
+                    }
+                },
+            );
     }
+    let disband = tree.child(page, fourcc!("garr"));
+    command_entities[3] = disband;
+    commands
+        .entity(disband)
+        .insert((ActivateOnPress, InteractionDisabled))
+        .observe(
+            |_: On<Activate>,
+             keys: Res<ButtonInput<KeyCode>>,
+             mut commands: Commands,
+             map: Res<StrategicMapSession>| {
+                let Some(unit) = map.selection.civilian() else {
+                    return;
+                };
+                if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                    spawn_civilian_roster(&mut commands);
+                } else {
+                    spawn_civilian_disband(&mut commands, unit);
+                }
+            },
+        );
+    commands.entity(page).insert(CivilianToolbarView {
+        portrait,
+        legend,
+        commands: command_entities,
+        atlases,
+    });
 }
 
 #[allow(clippy::too_many_arguments)]
 fn sync_civilian_toolbar(
     session: Res<GameSession>,
-    selected: Query<Ref<StrategicInteraction>>,
+    map: Res<StrategicMapSession>,
     mut commands: Commands,
-    mut pages: Query<&mut Node, With<CivilianToolbarPage>>,
-    portraits: Query<Entity, With<CivilianPortrait>>,
-    legends: Query<(Entity, &LegendAtlases, Option<&Children>), With<CivilianLegend>>,
-    buttons: Query<Entity, With<CivilianCommandButton>>,
+    mut pages: Query<(&mut Node, &CivilianToolbarView)>,
     items: Query<Entity, With<CivilianLegendItem>>,
+    children: Query<&Children>,
     mut assets: RetailUiAssets,
 ) {
-    let Ok(selected) = selected.single() else {
-        return;
-    };
-    if !session.is_changed() && !selected.is_changed() {
+    if !session.is_changed() && !map.is_changed() {
         return;
     }
-    let Ok(mut page) = pages.single_mut() else {
+    let Ok((mut page, view)) = pages.single_mut() else {
         return;
     };
-    let unit = selected
-        .civilian
+    let unit = map
+        .selection
+        .civilian()
         .and_then(|id| session.game.civilian_unit(id).map(|unit| (id, unit)));
-    let position = if selected.mode == MapInteractionMode::Civilian {
+    let position = if matches!(map.selection, StrategicSelection::Civilian(_)) {
         CIVILIAN_PAGE_VISIBLE
     } else {
         CIVILIAN_PAGE_PARKED
@@ -210,7 +188,7 @@ fn sync_civilian_toolbar(
     page.left = Val::Px(position.x);
     page.top = Val::Px(position.y);
     let command_enabled = unit.is_some();
-    for button in &buttons {
+    for &button in &view.commands {
         let mut entity = commands.entity(button);
         if command_enabled {
             entity.remove::<InteractionDisabled>();
@@ -218,43 +196,38 @@ fn sync_civilian_toolbar(
             entity.insert(InteractionDisabled);
         }
     }
-    if let Ok(portrait) = portraits.single() {
-        match unit {
-            Some((_, unit)) => {
-                let picture = assets
-                    .picture(PictureId::new(portrait_picture_id(unit.unit_type())))
-                    .expect("retail civilian toolbar portrait must load");
-                commands
-                    .entity(portrait)
-                    .insert((ImageNode::new(picture), Visibility::Visible));
-            }
-            None => {
-                commands.entity(portrait).insert(Visibility::Hidden);
-            }
+    match unit {
+        Some((_, unit)) => {
+            let picture = assets.picture(unit.unit_type().portrait_picture());
+            commands
+                .entity(view.portrait)
+                .insert((ImageNode::new(picture), Visibility::Visible));
+        }
+        None => {
+            commands.entity(view.portrait).insert(Visibility::Hidden);
         }
     }
-    let Ok((legend, atlases, legend_children)) = legends.single() else {
-        return;
-    };
+    let legend_children = children.get(view.legend).ok();
     despawn_legend_items(&mut commands, legend_children, &items);
-    let Some((_, unit)) = unit else {
+    let Some((id, unit)) = unit else {
         return;
     };
     spawn_civilian_legend(
         &mut commands,
         &mut assets,
-        legend,
+        view.legend,
         &session.game,
+        id,
         unit,
-        atlases.clone(),
+        view.atlases.clone(),
     );
 }
 
-fn portrait_picture_id(kind: CivilianUnitKind) -> i16 {
-    PORTRAIT_PICTURE_BASE + i16::from(kind.retail())
-}
-
-fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) -> [i16; 5] {
+fn civilian_legend_target_counts(
+    state: &GameState,
+    unit_id: CivilianUnitId,
+    unit: &CivilianUnitState,
+) -> [i16; 5] {
     let mut counts = [0; 5];
     let Some(tile) = unit.location().tile() else {
         return counts;
@@ -271,7 +244,7 @@ fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) ->
     let profiles = TARGET_TILE_PROFILES[unit.unit_type()];
     for &province in common.owned_regions() {
         for &linked in &state.map().provinces[province].linked_tiles {
-            if state.map()[linked].recruit_search_visited != 0 {
+            if !state.is_civilian_target_eligible(unit_id, linked) {
                 continue;
             }
             let profile = i16::from(state.map()[linked].gate);
@@ -291,20 +264,14 @@ fn spawn_civilian_legend(
     assets: &mut RetailUiAssets,
     legend: Entity,
     state: &GameState,
+    unit_id: CivilianUnitId,
     unit: &CivilianUnitState,
     atlases: LegendAtlases,
 ) {
     let kind = unit.unit_type();
-    let name = assets
-        .string(CIVILIAN_NAME_GROUP, i16::from(kind.retail()) + 1)
-        .expect("retail civilian class name must load");
+    let name = assets.string(kind.name_string());
     let (name_font, name_layout, name_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::built(12, 1))
         .expect("retail civilian name text style");
     spawn_legend_text(
         commands,
@@ -324,13 +291,13 @@ fn spawn_civilian_legend(
     );
     match kind {
         CivilianUnitKind::Prospector => {
-            spawn_prospector_legend(commands, assets, legend, state, unit, atlases);
+            spawn_prospector_legend(commands, assets, legend, state, unit_id, unit, atlases);
         }
         CivilianUnitKind::Engineer => {
             spawn_engineer_legend(commands, assets, legend, state, atlases);
         }
         CivilianUnitKind::Developer => {}
-        _ => spawn_developer_legend(commands, assets, legend, state, unit, atlases),
+        _ => spawn_developer_legend(commands, assets, legend, state, unit_id, unit, atlases),
     }
 }
 
@@ -448,6 +415,7 @@ fn spawn_prospector_legend(
     assets: &mut RetailUiAssets,
     legend: Entity,
     state: &GameState,
+    unit_id: CivilianUnitId,
     unit: &CivilianUnitState,
     atlases: LegendAtlases,
 ) {
@@ -471,7 +439,7 @@ fn spawn_prospector_legend(
     let streamlined_hulls_researched = state.technology().research_status_by_nation[nation]
         [Technology::StreamlinedHulls]
         == TechnologyResearchStatus::Researched;
-    let counts = civilian_legend_target_counts(state, unit);
+    let counts = civilian_legend_target_counts(state, unit_id, unit);
     let column_resources: [[i16; 4]; 5] = [
         [3, 4, -1, -1],
         [3, 4, 0x16, 0x15],
@@ -545,6 +513,7 @@ fn spawn_developer_legend(
     assets: &mut RetailUiAssets,
     legend: Entity,
     state: &GameState,
+    unit_id: CivilianUnitId,
     unit: &CivilianUnitState,
     atlases: LegendAtlases,
 ) {
@@ -648,7 +617,7 @@ fn spawn_developer_legend(
     {
         row_limit -= 1;
     }
-    let counts = civilian_legend_target_counts(state, unit);
+    let counts = civilian_legend_target_counts(state, unit_id, unit);
     for row in 0..row_limit {
         let Some(terrain) = TARGET_TILE_PROFILES[kind][row as usize] else {
             continue;
@@ -683,21 +652,14 @@ fn spawn_developer_legend(
 }
 
 fn legend_string(assets: &RetailUiAssets, index: i16) -> String {
-    assets
-        .string(CIVILIAN_LEGEND_GROUP, index + 1)
-        .expect("retail civilian legend string must load")
+    assets.ui_string(CIVILIAN_LEGEND_GROUP, (index + 1) as u16)
 }
 
 fn legend_text_style(
     assets: &mut RetailUiAssets,
 ) -> (TextFont, TextLayout, bevy::text::LineHeight, bool) {
     assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        })
+        .text_style(RetailTextStylePreset::built(10, -2))
         .expect("retail civilian legend text style")
 }
 
@@ -766,10 +728,8 @@ fn spawn_atlas_icon(
     ));
 }
 
-fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: i16) -> Handle<Image> {
-    assets
-        .transparent_picture(PictureId::new(picture_id), TRANSPARENT_INDEX)
-        .expect("retail civilian legend atlas must load")
+fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: PictureId) -> Handle<Image> {
+    assets.keyed_picture(picture_id, TRANSPARENT_INDEX)
 }
 
 fn despawn_legend_items(
@@ -811,7 +771,7 @@ mod tests {
     fn legend_counts_owned_unvisited_profile_tiles() {
         let state = fixture_state();
         let nation = state.turn().active_nation;
-        let (_, unit) = state
+        let (id, unit) = state
             .civilian_units()
             .find(|(_, unit)| {
                 unit.owner_nation() == nation
@@ -835,7 +795,7 @@ mod tests {
                         .collect::<Vec<_>>()
                 )
             });
-        let counts = civilian_legend_target_counts(&state, unit);
+        let counts = civilian_legend_target_counts(&state, id, unit);
         let profiles = TARGET_TILE_PROFILES[unit.unit_type()];
         for (slot, profile) in profiles.iter().copied().enumerate() {
             if profile.is_none() {
