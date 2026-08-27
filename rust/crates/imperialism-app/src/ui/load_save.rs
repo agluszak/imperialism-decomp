@@ -160,7 +160,7 @@ enum LoadSaveNotice {
 #[derive(Component)]
 struct FlagMenuRoot;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum FlagMenuAction {
     Save,
     Load,
@@ -311,7 +311,9 @@ fn bind_load_save(
             .remove::<InteractionDisabled>();
     }
     commands.entity(info).insert(Text::new(String::new()));
-    commands.entity(map).insert(LoadSaveMapPreview::default());
+    commands
+        .entity(map)
+        .insert((LoadSaveMapPreview::default(), ImageNode::default()));
     commands.entity(root_entity).insert(LoadSaveRoot {
         mode,
         selected: None,
@@ -466,33 +468,27 @@ fn satellite_preview(
 }
 
 fn apply_satellite_preview(
-    commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    entity: Entity,
-    image_node: Option<&ImageNode>,
+    image_node: &mut ImageNode,
     preview: &SatellitePreview,
 ) {
-    let image = preview.to_image(assets.default_dib_palette());
-    if let Some(image_node) = image_node {
-        assets.replace_image(&image_node.image, image);
-    } else {
-        let handle = assets.add_image(image);
-        commands.entity(entity).insert(ImageNode::new(handle));
-    }
+    assets.replace_image(
+        &image_node.image,
+        preview.to_image(assets.default_dib_palette()),
+    );
 }
 
 fn sync_load_save_preview(
-    mut commands: Commands,
     mut assets: RetailUiAssets,
     roots: Query<&LoadSaveRoot>,
-    mut maps: Query<(Option<&ImageNode>, &mut LoadSaveMapPreview)>,
+    mut maps: Query<(&mut ImageNode, &mut LoadSaveMapPreview)>,
     save_dir: Res<SaveDirectory>,
     session: Option<Res<GameSession>>,
 ) {
     let Ok(root) = roots.single() else {
         return;
     };
-    let Ok((image_node, mut preview)) = maps.get_mut(root.map) else {
+    let Ok((mut image_node, mut preview)) = maps.get_mut(root.map) else {
         return;
     };
     let key = match root.mode {
@@ -513,7 +509,7 @@ fn sync_load_save_preview(
             };
             let selected = session.game.turn().active_nation;
             let preview = satellite_preview(|tile| session.game.map()[tile].owner_nation, selected);
-            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
+            apply_satellite_preview(&mut assets, &mut image_node, &preview);
         }
         LoadSavePreviewKey::Slot(slot) => {
             let path = retail_save_path(&save_dir.0, slot);
@@ -532,7 +528,7 @@ fn sync_load_save_preview(
                 |tile| owners.get(usize::from(tile.get())).copied().flatten(),
                 selected,
             );
-            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
+            apply_satellite_preview(&mut assets, &mut image_node, &preview);
         }
     }
 }
@@ -919,7 +915,17 @@ fn bind_flag_menu(
             .insert(AccessibleLabel::new(caption))
             .remove::<InteractionDisabled>();
         if let Some(action) = action {
-            control.insert(action).observe(on_flag_menu_activate);
+            control.observe(
+                move |_: On<Activate>,
+                      prompts: Query<(), With<FlagMenuPrompt>>,
+                      mut next_state: ResMut<NextState<AppState>>,
+                      mut commands: Commands| {
+                    if !prompts.is_empty() {
+                        return;
+                    }
+                    apply_flag_menu_action(action, &mut commands, &mut next_state);
+                },
+            );
         } else {
             dismiss_on_activate(&mut commands, control_entity, root);
             bind_modal_keys(&mut commands, root, None, Some(control_entity));
@@ -927,32 +933,24 @@ fn bind_flag_menu(
     }
 }
 
-fn on_flag_menu_activate(
-    activate: On<Activate>,
-    actions: Query<&FlagMenuAction>,
-    prompts: Query<(), With<FlagMenuPrompt>>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut commands: Commands,
+fn apply_flag_menu_action(
+    action: FlagMenuAction,
+    commands: &mut Commands,
+    next_state: &mut NextState<AppState>,
 ) {
-    if !prompts.is_empty() {
-        return;
-    }
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    match *action {
+    match action {
         FlagMenuAction::Save => {
             open_load_save(
-                &mut commands,
-                &mut next_state,
+                commands,
+                next_state,
                 LoadSaveMode::Save,
                 AppState::StrategicMap,
             );
         }
         FlagMenuAction::Load => {
             open_load_save(
-                &mut commands,
-                &mut next_state,
+                commands,
+                next_state,
                 LoadSaveMode::Load,
                 AppState::StrategicMap,
             );
@@ -966,10 +964,10 @@ fn on_flag_menu_activate(
             next_state.set(AppState::Credits);
         }
         FlagMenuAction::NewGame => {
-            open_flag_menu_prompt(&mut commands, FlagMenuPending::NewGame);
+            open_flag_menu_prompt(commands, FlagMenuPending::NewGame);
         }
         FlagMenuAction::Quit => {
-            open_flag_menu_prompt(&mut commands, FlagMenuPending::Quit);
+            open_flag_menu_prompt(commands, FlagMenuPending::Quit);
         }
     }
 }

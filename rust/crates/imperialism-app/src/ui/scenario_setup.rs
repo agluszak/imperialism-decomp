@@ -121,7 +121,7 @@ fn bind_scenario_setup(
     commands.entity(nation_description).insert(Text::default());
     commands
         .entity(map)
-        .insert(ScenarioMapPreview::default())
+        .insert((ScenarioMapPreview::default(), ImageNode::default()))
         .remove::<InteractionDisabled>()
         .observe(on_map_click);
     commands
@@ -191,7 +191,6 @@ fn render_scenario_setup(
     mut texts: Query<&mut Text>,
     mut maps: Query<&mut ScenarioMapPreview>,
     mut image_nodes: Query<&mut ImageNode>,
-    mut commands: Commands,
 ) {
     if !setup.is_changed() {
         return;
@@ -212,14 +211,10 @@ fn render_scenario_setup(
     };
     let mut preview = SatellitePreview::compose(|tile| choice.map[tile].owner_nation);
     preview.enhance(setup.nation.nation());
-    let image = preview.to_image(retail.assets().default_dib_palette());
-    if let Ok(mut image_node) = image_nodes.get_mut(view.map) {
-        image_node.image = images.add(image);
-    } else {
-        commands
-            .entity(view.map)
-            .insert(ImageNode::new(images.add(image)));
-    }
+    image_nodes
+        .get_mut(view.map)
+        .expect("bound scenario map preview")
+        .image = images.add(preview.to_image(retail.assets().default_dib_palette()));
     map.preview = preview;
     map.rendered_selection = Some((setup.selected, setup.nation));
 }

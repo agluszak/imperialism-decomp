@@ -231,16 +231,6 @@ impl DiplomacyMode {
         }
     }
 
-    fn selected_radio(self) -> Option<DiplomacyAction> {
-        match self {
-            Self::Grant { amount, recurring } => Some(DiplomacyAction::Grant { amount, recurring }),
-            Self::Trade(choice) => Some(DiplomacyAction::Trade(choice)),
-            Self::Treaty(policy) => Some(DiplomacyAction::Treaty(policy)),
-            Self::Information { overlay } => Some(DiplomacyAction::Overlay(overlay)),
-            Self::Council | Self::Offers => None,
-        }
-    }
-
     fn cursor_offset(self) -> usize {
         match self {
             Self::Grant { amount, .. } => GRANT_AMOUNTS
@@ -274,14 +264,6 @@ impl DiplomacyScreen {
     fn map_action(&self) -> DiplomacyMapAction {
         self.mode.map_action()
     }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum DiplomacyAction {
-    Grant { amount: i32, recurring: bool },
-    Trade(TradePolicyChoice),
-    Treaty(DiplomacyPolicy),
-    Overlay(DiplomacyInformationOverlay),
 }
 
 #[derive(Component)]
@@ -708,7 +690,7 @@ fn bind_diplomacy_controls(
         control
     });
 
-    let start_radio = DiplomacyMode::from_topic(DiplomacyTopic::Information).selected_radio();
+    let start_mode = DiplomacyMode::from_topic(DiplomacyTopic::Information);
     let grant_radios = [
         fourcc!("doc0"),
         fourcc!("doc1"),
@@ -722,11 +704,12 @@ fn bind_diplomacy_controls(
     .into_iter()
     .enumerate()
     .map(|(index, tag)| {
-        let action = DiplomacyAction::Grant {
-            amount: GRANT_AMOUNTS[index / 2],
-            recurring: index % 2 != 0,
-        };
-        bind_diplomacy_radio(commands, tree.find(root, tag), action, start_radio)
+        bind_diplomacy_radio(
+            commands,
+            tree.find(root, tag),
+            diplomacy_grant_mode(index),
+            start_mode,
+        )
     })
     .collect::<Vec<_>>()
     .try_into()
@@ -744,8 +727,12 @@ fn bind_diplomacy_controls(
             fourcc!("trag"),
         ])
         .map(|(score, tag)| {
-            let action = DiplomacyAction::Trade(TradePolicyChoice::Policy(score));
-            bind_diplomacy_radio(commands, tree.find(trade_cluster, tag), action, start_radio)
+            bind_diplomacy_radio(
+                commands,
+                tree.find(trade_cluster, tag),
+                DiplomacyMode::Trade(TradePolicyChoice::Policy(score)),
+                start_mode,
+            )
         })
         .collect::<Vec<_>>()
         .try_into()
@@ -764,10 +751,14 @@ fn bind_diplomacy_controls(
         ),
     ]
     .map(|(overlay, tag)| {
-        let action = DiplomacyAction::Overlay(overlay);
         let control = tree.find(root, tag);
         commands.entity(control).remove::<InteractionDisabled>();
-        bind_diplomacy_radio(commands, control, action, start_radio)
+        bind_diplomacy_radio(
+            commands,
+            control,
+            DiplomacyMode::Information { overlay },
+            start_mode,
+        )
     });
 
     let treaty_radios = TREATY_POLICIES
@@ -782,10 +773,9 @@ fn bind_diplomacy_controls(
             fourcc!("scr6"),
         ])
         .map(|(policy, tag)| {
-            let action = DiplomacyAction::Treaty(policy);
             let control = tree.find(root, tag);
             commands.entity(control).remove::<InteractionDisabled>();
-            bind_diplomacy_radio(commands, control, action, start_radio)
+            bind_diplomacy_radio(commands, control, DiplomacyMode::Treaty(policy), start_mode)
         })
         .collect::<Vec<_>>()
         .try_into()
@@ -799,8 +789,8 @@ fn bind_diplomacy_controls(
     bind_diplomacy_radio(
         commands,
         colony_boycott,
-        DiplomacyAction::Trade(TradePolicyChoice::ColonyBoycott),
-        start_radio,
+        DiplomacyMode::Trade(TradePolicyChoice::ColonyBoycott),
+        start_mode,
     );
 
     let accept = tree.find(root, fourcc!("acce"));
@@ -902,11 +892,18 @@ fn bind_diplomacy_controls(
     }
 }
 
+fn diplomacy_grant_mode(index: usize) -> DiplomacyMode {
+    DiplomacyMode::Grant {
+        amount: GRANT_AMOUNTS[index / 2],
+        recurring: !index.is_multiple_of(2),
+    }
+}
+
 fn bind_diplomacy_radio(
     commands: &mut Commands,
     control: Entity,
-    action: DiplomacyAction,
-    start_radio: Option<DiplomacyAction>,
+    mode: DiplomacyMode,
+    start_mode: DiplomacyMode,
 ) -> Entity {
     let mut entity = commands.entity(control);
     entity.observe(
@@ -917,10 +914,10 @@ fn bind_diplomacy_radio(
             let mut screen = screens
                 .single_mut()
                 .expect("Diplomacy control has one open Diplomacy screen");
-            apply_diplomacy_radio_action(action, &mut screen);
+            select_diplomacy_radio_mode(mode, &mut screen);
         },
     );
-    if start_radio == Some(action) {
+    if start_mode == mode {
         entity.insert(Checked);
     } else {
         entity.remove::<Checked>();
@@ -969,15 +966,9 @@ fn select_diplomacy_topic(
     screen.framed_nation = session.active_major_nation().nation();
 }
 
-fn apply_diplomacy_radio_action(action: DiplomacyAction, screen: &mut DiplomacyScreen) {
-    let next = match action {
-        DiplomacyAction::Grant { amount, recurring } => DiplomacyMode::Grant { amount, recurring },
-        DiplomacyAction::Trade(choice) => DiplomacyMode::Trade(choice),
-        DiplomacyAction::Treaty(policy) => DiplomacyMode::Treaty(policy),
-        DiplomacyAction::Overlay(overlay) => DiplomacyMode::Information { overlay },
-    };
-    if screen.topic() == next.topic() {
-        screen.mode = next;
+fn select_diplomacy_radio_mode(mode: DiplomacyMode, screen: &mut DiplomacyScreen) {
+    if screen.topic() == mode.topic() {
+        screen.mode = mode;
     }
 }
 
@@ -1620,33 +1611,28 @@ fn render_diplomacy_chrome(
         });
     }
 
-    let selected = screen.mode.selected_radio();
+    let mode = screen.mode;
     for (index, entity) in view.grant_radios.into_iter().enumerate() {
-        let action = DiplomacyAction::Grant {
-            amount: GRANT_AMOUNTS[index / 2],
-            recurring: index % 2 != 0,
-        };
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == diplomacy_grant_mode(index),
         );
     }
     for (score, entity) in TRADE_POLICY_SCORES.into_iter().zip(view.trade_radios) {
-        let action = DiplomacyAction::Trade(TradePolicyChoice::Policy(score));
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == DiplomacyMode::Trade(TradePolicyChoice::Policy(score)),
         );
     }
     set_checked(
         &mut commands,
         view.colony_boycott,
         checked.contains(view.colony_boycott),
-        selected == Some(DiplomacyAction::Trade(TradePolicyChoice::ColonyBoycott)),
+        mode == DiplomacyMode::Trade(TradePolicyChoice::ColonyBoycott),
     );
     for (overlay, entity) in [
         DiplomacyInformationOverlay::Owner,
@@ -1657,21 +1643,19 @@ fn render_diplomacy_chrome(
     .into_iter()
     .zip(view.overlay_radios)
     {
-        let action = DiplomacyAction::Overlay(overlay);
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == DiplomacyMode::Information { overlay },
         );
     }
     for (policy, entity) in TREATY_POLICIES.into_iter().zip(view.treaty_radios) {
-        let action = DiplomacyAction::Treaty(policy);
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == DiplomacyMode::Treaty(policy),
         );
     }
 
@@ -2226,35 +2210,35 @@ mod tests {
     #[test]
     fn treaty_radio_value_change_selects_that_pact() {
         let mut app = App::new();
-        app.world_mut().spawn(DiplomacyScreen {
+        let screen = app.world_mut().spawn(DiplomacyScreen {
             framed_nation: NationId::new(0),
             mode: DiplomacyMode::Treaty(DiplomacyPolicy::BuildConsulate),
         });
-        let action = DiplomacyAction::Treaty(DiplomacyPolicy::NonAggressionPact);
-        let radio = app
-            .world_mut()
-            .spawn_empty()
-            .observe(
-                move |change: On<ValueChange<bool>>, mut screens: Query<&mut DiplomacyScreen>| {
-                    if !change.value {
-                        return;
-                    }
-                    let mut screen = screens
-                        .single_mut()
-                        .expect("Diplomacy control has one open Diplomacy screen");
-                    apply_diplomacy_radio_action(action, &mut screen);
-                },
+        let screen_id = screen.id();
+        let mode = DiplomacyMode::Treaty(DiplomacyPolicy::NonAggressionPact);
+        let radio = {
+            let mut commands = app.world_mut().commands();
+            bind_diplomacy_radio(
+                &mut commands,
+                screen_id,
+                mode,
+                DiplomacyMode::Treaty(DiplomacyPolicy::BuildConsulate),
             )
-            .id();
-        app.world_mut().commands().trigger(ValueChange {
-            source: radio,
-            value: true,
-            is_final: true,
-        });
+        };
+        app.world_mut()
+            .commands()
+            .trigger(ValueChange {
+                source: radio,
+                value: true,
+                is_final: true,
+            });
         app.world_mut().flush();
 
-        let mut screens = app.world_mut().query::<&DiplomacyScreen>();
-        let screen = screens.single(app.world()).unwrap();
+        let screen = app
+            .world()
+            .entity(screen_id)
+            .get::<DiplomacyScreen>()
+            .unwrap();
         assert_eq!(
             screen.mode,
             DiplomacyMode::Treaty(DiplomacyPolicy::NonAggressionPact)

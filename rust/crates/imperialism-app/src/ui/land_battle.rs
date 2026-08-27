@@ -173,6 +173,32 @@ enum LandBattleAction {
     Retreat,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum LandBattleStageButton {
+    Done,
+    Retreat,
+}
+
+fn land_battle_stage_button_art(
+    button: LandBattleStageButton,
+    stage: ArmyBattleStage,
+) -> (PictureId, PictureId, u16) {
+    match (button, stage) {
+        (LandBattleStageButton::Done, ArmyBattleStage::Deploying) => {
+            (PictureId::new(0xed4), PictureId::new(0xed5), 0x2e)
+        }
+        (LandBattleStageButton::Retreat, ArmyBattleStage::Deploying) => {
+            (PictureId::new(0xed2), PictureId::new(0xed3), 0x2f)
+        }
+        (LandBattleStageButton::Done, ArmyBattleStage::Live) => {
+            (PictureId::new(0xece), PictureId::new(0xecf), 0x22)
+        }
+        (LandBattleStageButton::Retreat, ArmyBattleStage::Live) => {
+            (PictureId::new(0xed0), PictureId::new(0xed1), 0x23)
+        }
+    }
+}
+
 #[derive(Component)]
 struct LandBattleView {
     #[expect(dead_code)]
@@ -1532,25 +1558,11 @@ fn project_land_battle_toolbar(
             commands.entity(entity).remove::<InteractionDisabled>();
         }
     }
-    for (entity, action) in [
-        (view.done, LandBattleAction::Done),
-        (view.retreat, LandBattleAction::Retreat),
+    for (entity, button) in [
+        (view.done, LandBattleStageButton::Done),
+        (view.retreat, LandBattleStageButton::Retreat),
     ] {
-        let (idle_id, active_id, help_index) = match (action, stage) {
-            (LandBattleAction::Done, ArmyBattleStage::Deploying) => {
-                (PictureId::new(0xed4), PictureId::new(0xed5), 0x2e)
-            }
-            (LandBattleAction::Retreat, ArmyBattleStage::Deploying) => {
-                (PictureId::new(0xed2), PictureId::new(0xed3), 0x2f)
-            }
-            (LandBattleAction::Done, ArmyBattleStage::Live) => {
-                (PictureId::new(0xece), PictureId::new(0xecf), 0x22)
-            }
-            (LandBattleAction::Retreat, ArmyBattleStage::Live) => {
-                (PictureId::new(0xed0), PictureId::new(0xed1), 0x23)
-            }
-            _ => continue,
-        };
+        let (idle_id, active_id, help_index) = land_battle_stage_button_art(button, stage);
         let idle = assets.picture(idle_id);
         let active = assets.picture(active_id);
         if let Ok(mut image) = images.get_mut(entity) {
