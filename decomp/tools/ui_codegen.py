@@ -1877,10 +1877,10 @@ def _rust_presentation_owns_children(presentation: str | None) -> bool:
 def _rust_transport_gauge_shell_and_children(
     picture_id: int, track_left: int, capacity: bool
 ) -> tuple[list[str], list[list[str]]]:
-    """Root components + synthetic child BSN nodes for a merged transport gauge.
+    """Root components + synthetic child BSN nodes for a transport gauge.
 
-    Used when the recovered `TTransportPicture` already has resource children so
-    codegen emits exactly one `Children` owner.
+    Always used for transport_gauge presentation so codegen emits exactly one
+    `Children` owner (synthetic remainder/fill/limit merged with any recovered kids).
     """
 
     fill_palette = 0x33 if capacity else 0x3A
@@ -2383,21 +2383,14 @@ def _render_bsn_node(
         lines.append(f"    retail_ship_placard({int(picture_id)})")
     elif presentation == "transport_gauge":
         # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
+        # Always emit shell + synthetic children so there is one Children owner
+        # even when the recovered node has no resource kids.
         track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
         capacity = node.tag == "tota"
-        if recovered_children:
-            # One Children owner: merge synthetic remainder/fill/limit with recovered kids.
-            shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
-                int(picture_id), track_left, capacity
-            )
-            lines.extend(shell)
-        else:
-            helper = (
-                "retail_transport_capacity_gauge"
-                if capacity
-                else "retail_transport_gauge"
-            )
-            lines.append(f"    {helper}({int(picture_id)}, {track_left})")
+        shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
+            int(picture_id), track_left, capacity
+        )
+        lines.extend(shell)
     elif presentation == "pressed_overlay":
         lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
     elif presentation == "madness":

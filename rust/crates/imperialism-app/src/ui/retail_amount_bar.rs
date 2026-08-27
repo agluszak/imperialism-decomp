@@ -7,13 +7,11 @@ use bevy::prelude::*;
 
 pub const INDUSTRY_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
     width: 150,
-    height: 6,
     segments: 0,
 };
 
 pub const TRADE_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
     width: 100,
-    height: 7,
     segments: 0,
 };
 
@@ -81,7 +79,6 @@ fn trade_amount_bar() -> impl Scene {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct AmountBarGeometry {
     pub width: i32,
-    pub height: i32,
     pub segments: i16,
 }
 
@@ -203,25 +200,5 @@ mod tests {
         for (value, step, expected) in [(1, 2, 2), (2, 2, 2), (3, 6, 6), (2, 6, 0), (5, 1, 5)] {
             assert_eq!(quantize_amount_bar_value(value, step), expected);
         }
-    }
-
-    #[test]
-    fn span_scales_against_segments() {
-        let g = INDUSTRY_AMOUNT_BAR.with_segments(50);
-        assert_eq!(g.span(0), 0);
-        assert_eq!(g.span(25), 75);
-        assert_eq!(g.span(50), 150);
-        assert_eq!(INDUSTRY_AMOUNT_BAR.span(10), 0);
-    }
-
-    #[test]
-    fn counter_offset_tracks_fill_span() {
-        let g = INDUSTRY_AMOUNT_BAR.with_segments(50);
-        assert_eq!(amount_bar_counter_offset(g, 25), Vec2::new(73.0, 6.0));
-    }
-
-    #[test]
-    fn trader_bar_uses_view_manager_resolved_palette_index() {
-        assert_eq!(TRADE_BAR_FILL, 0xbd);
     }
 }

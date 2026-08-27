@@ -7,9 +7,7 @@ pub use differential::{assert_game_state_eq, compare_native, load_save_backed_st
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, ProvinceId, RetailCrtRng, RetailLcg, ZoneKind,
     create_random_game,
-    differential::{
-        CoarseMapTrace, RandomMapTerrainTrace, trace_coarse_random_map, trace_random_map_terrain,
-    },
+    differential::{RandomMapTerrainTrace, trace_random_map_terrain},
     generate_random_setup_preview,
 };
 use imperialism_formats::RetailAssets;
@@ -22,14 +20,6 @@ use std::collections::BTreeSet;
 pub struct RetailTopologyByte(u8);
 
 impl RetailTopologyByte {
-    pub const fn from_retail_byte(value: u8) -> Self {
-        Self(value)
-    }
-
-    pub const fn retail_byte(self) -> u8 {
-        self.0
-    }
-
     pub const fn topology(self) -> MapTopology {
         if self.0 == 0 {
             MapTopology::Wrapping
@@ -208,18 +198,6 @@ fn retail_text_hex(text: &str) -> String {
             ]
         })
         .collect()
-}
-
-pub fn generate_and_compare_coarse_trace(
-    expected: &CoarseMapTrace,
-) -> Result<CoarseMapTrace, Difference> {
-    let mut rng = RetailLcg::from_state(expected.initial_map_lcg);
-    let actual = trace_coarse_random_map(&mut rng);
-    match first_serialized_difference(expected, &actual) {
-        Ok(None) => Ok(actual),
-        Ok(Some(difference)) => Err(difference),
-        Err(error) => unreachable!("semantic state serialization failed: {error}"),
-    }
 }
 
 pub fn first_serialized_difference<T: Serialize>(
