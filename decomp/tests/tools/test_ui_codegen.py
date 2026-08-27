@@ -13,6 +13,7 @@ from tools.ui_codegen import (
     apply_windows_child_node_patches,
     apply_windows_text_property_patches,
     classify_widget,
+    load_class_substitutions,
     load_recipes,
     load_text_resources,
     load_two_pic_slider_instances,
@@ -40,10 +41,13 @@ def _iter_rust_semantic_nodes(repo_root: Path):
     two_pic_sliders = load_two_pic_slider_instances(repo_root)
     windows_views = load_windows_views(repo_root)
 
+    class_substitutions = load_class_substitutions(repo_root)
     for key in resource_backed_scene_keys(recipes):
         raw_view = views[key]
         recipe, case = _case_for_resource(recipes, key)
-        semantic_view = normalize_resource_view(key, raw_view, text_resources)
+        semantic_view = normalize_resource_view(
+            key, raw_view, text_resources, class_substitutions
+        )
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches, text_resources

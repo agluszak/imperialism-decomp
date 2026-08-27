@@ -608,8 +608,7 @@ city_dialog_controls:
       stocks: [{tag: "oil ", columns: 2}]
 
 # Explicit semantic differences between the Mac resource class name and the
-# Windows source model. These are not ABI claims; each substitution must remain
-# represented by tools.ui_codegen.CLASS_ALIASES.
+# Windows source model. These are not ABI claims.
 class_substitutions:
   TBookView:
     windows_class: TBook

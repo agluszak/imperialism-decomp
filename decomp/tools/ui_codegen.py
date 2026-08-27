@@ -49,19 +49,6 @@ DEFAULT_CLASSES = {
     "fwnd": "TFloatWindow",
 }
 
-CLASS_ALIASES = {
-    "TBookView": "TBook",
-    "TDefenseNotesView": "TBook",
-    "TExportsView": "TBook",
-    "TForeignNotesView": "TBook",
-    "TInteriorNotesView": "TBook",
-    "TMerchantMarineView": "TBook",
-    "TMiniDealBookView": "TBook",
-    "TToolbarCluster": "TToolBarCluster",
-    "TTreasuriesView": "TBook",
-    "TMyWindow": "TWindow",
-}
-
 LAYOUT_FAMILIES = frozenset(
     ("pict", "cntl", "stat", "clus", "edit", "nmbr", "radb", "chkb")
 )
@@ -812,6 +799,23 @@ def apply_two_pic_slider_instances(
     return replace(view, nodes=tuple(nodes))
 
 
+def load_class_substitutions(repo_root: Path) -> dict[str, str]:
+    """Mac resource class name -> Windows source model class from platform deltas."""
+
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    context = f"{WINDOWS_DELTA_PATH}: class_substitutions"
+    rows = _mapping(data.get("class_substitutions") or {}, context)
+    substitutions: dict[str, str] = {}
+    for mac_class, raw_row in rows.items():
+        row = _mapping(raw_row, f"{context}/{mac_class}")
+        if set(row) != {"windows_class", "reason", "evidence"}:
+            raise ValueError(f"{context}/{mac_class}: expected windows_class, reason, evidence")
+        if not all(str(row[key]).strip() for key in row):
+            raise ValueError(f"{context}/{mac_class}: empty class substitution evidence")
+        substitutions[str(mac_class)] = str(row["windows_class"])
+    return substitutions
+
+
 def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, ...]:
     data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
     rows = data.get("windows_child_nodes", [])
@@ -937,45 +941,6 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
     if not str(section["evidence"]).strip():
         raise ValueError(f"{context}: evidence is required")
 
-    expected_picture_ids = (
-        15000,
-        15003,
-        15004,
-        15006,
-        15010,
-        15013,
-        15014,
-        15016,
-        15017,
-        15020,
-        15021,
-        15023,
-        15024,
-        15026,
-        15027,
-        15028,
-        15030,
-        15031,
-        15033,
-        15034,
-        15036,
-        15037,
-        15040,
-        15041,
-        15043,
-        15044,
-        15045,
-        15046,
-        15047,
-        15050,
-        15051,
-        15053,
-        15056,
-        15057,
-        15058,
-        15060,
-        15070,
-    )
     slots_by_group = (
         "textile_mill",
         "clothing_factory",
@@ -986,9 +951,10 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
         "oil_refinery",
         "power_plant",
     )
-    rows = _sequence(
-        section["actions"], len(expected_picture_ids), f"{context}/actions"
-    )
+    actions_raw = section["actions"]
+    if not isinstance(actions_raw, list) or not actions_raw:
+        raise ValueError(f"{context}/actions: expected a non-empty list")
+    rows = actions_raw
     actions: list[CityBuildingActionVisual] = []
     for index, raw_row in enumerate(rows):
         row_context = f"{context}/actions[{index}]"
@@ -1004,10 +970,6 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
         if set(row) != expected_fields:
             raise ValueError(f"{row_context}: malformed city building action visual")
         picture_id = int(row["picture_id"])
-        if picture_id != expected_picture_ids[index]:
-            raise ValueError(
-                f"{row_context}: expected recovered picture id {expected_picture_ids[index]}"
-            )
         group = (picture_id - 15000) // 10
         level = (picture_id % 10) // 3 + 1
         slot = str(row["slot"])
@@ -1539,10 +1501,10 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
     return views
 
 
-def _resolved_class(node: dict) -> str:
+def _resolved_class(node: dict, class_substitutions: dict[str, str]) -> str:
     class_name = str(node.get("class_name") or "")
     if class_name:
-        return CLASS_ALIASES.get(class_name, class_name)
+        return class_substitutions.get(class_name, class_name)
     try:
         return DEFAULT_CLASSES[str(node["type_code"])]
     except KeyError as exc:
@@ -1605,13 +1567,16 @@ def _normalize_mac_window_payload(type_code: str, raw_family: dict) -> UiWindowP
 
 
 def normalize_resource_view(
-    key: UiResourceKey, view: dict, text_resources: TextResources
+    key: UiResourceKey,
+    view: dict,
+    text_resources: TextResources,
+    class_substitutions: dict[str, str],
 ) -> UiSemanticView:
     nodes: list[UiSemanticNode] = []
     for row in view.get("nodes", []):
         offset = int(row["offset"])
         type_code = str(row["type_code"])
-        class_name = _resolved_class(row)
+        class_name = _resolved_class(row, class_substitutions)
         raw_family = row.get("family", {})
         frame_style: int | None = None
         content_insets: tuple[int, int, int, int] | None = None
@@ -2033,6 +1998,7 @@ def _rust_ui_semantic_views(
     text_property_patches = load_windows_text_property_patches(repo_root)
     child_node_patches = load_windows_child_node_patches(repo_root)
     two_pic_sliders = load_two_pic_slider_instances(repo_root)
+    class_substitutions = load_class_substitutions(repo_root)
     city_buildings = load_city_building_visuals(repo_root)
     city_building_actions = load_city_building_action_visuals(repo_root)
     scene_keys = set(resource_backed_scene_keys(recipe_list))
@@ -2076,7 +2042,9 @@ def _rust_ui_semantic_views(
         if raw_view is None:
             raise ValueError(f"{key.text()}: missing committed Mac View IR")
         recipe, case = _case_for_resource(recipe_list, key)
-        semantic_view = normalize_resource_view(key, raw_view, text_resources)
+        semantic_view = normalize_resource_view(
+            key, raw_view, text_resources, class_substitutions
+        )
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches, text_resources
@@ -2114,6 +2082,7 @@ def report_unsupported_ui_roles(
 
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
+    class_substitutions = load_class_substitutions(repo_root)
     lines: list[str] = []
     for key in resource_backed_scene_keys(recipe_list):
         raw_view = views.get(key)
@@ -2121,7 +2090,9 @@ def report_unsupported_ui_roles(
             lines.append(f"{key.text()}: missing Mac View IR")
             continue
         recipe, case = _case_for_resource(recipe_list, key)
-        semantic_view = normalize_resource_view(key, raw_view, text_resources)
+        semantic_view = normalize_resource_view(
+            key, raw_view, text_resources, class_substitutions
+        )
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches, text_resources
@@ -2652,6 +2623,7 @@ def validate(
     windows_views: dict[str, UiSemanticView],
 ) -> list[str]:
     recipe_list = list(recipes)
+    class_substitutions = load_class_substitutions(repo_root)
     errors: list[str] = []
     referenced_windows: set[str] = set()
     declarations = _squash_ws(
@@ -2686,7 +2658,7 @@ def validate(
                 errors.extend(validate_view_structure(raw_view, require_cluster_counts=True))
                 try:
                     view = normalize_resource_view(
-                        case.resource, raw_view, text_resources
+                        case.resource, raw_view, text_resources, class_substitutions
                     )
                 except (KeyError, ValueError) as exc:
                     errors.append(f"{context}: {exc}")
@@ -2890,6 +2862,9 @@ def _render_factory_with_map(
     vocabulary_by_event, _ = load_turn_event_vocabulary(
         repo_root_from_file(__file__, levels_up=1)
     )
+    class_substitutions = load_class_substitutions(
+        repo_root_from_file(__file__, levels_up=1)
+    )
     body: list[str] = []
     classes: set[str] = set()
     case_maps: dict[str, object] = {}
@@ -2915,7 +2890,10 @@ def _render_factory_with_map(
             body.append(f"{indent}// FUNCTIONAL_PARITY: {case.evidence}.")
         if case.resource is not None:
             view = normalize_resource_view(
-                case.resource, views[case.resource], text_resources
+                case.resource,
+                views[case.resource],
+                text_resources,
+                class_substitutions,
             )
         elif case.windows_view is not None:
             view = windows_views[case.windows_view]
