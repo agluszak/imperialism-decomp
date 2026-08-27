@@ -703,6 +703,10 @@ mod tests {
         assert!(!state.nations.majors[&nation].economy.turn_finished);
     }
 
+    fn at_player_orders(state: &mut GameState) {
+        state.halt(crate::TurnStop::PlayerOrders);
+    }
+
     fn start_driver_at(state: &mut GameState, phase: crate::PhaseCode) {
         state.stop = None;
         state.turn.phase = phase;
@@ -774,6 +778,7 @@ mod tests {
         seed_town_tiles(&mut state);
         pose_alliance_offer(&mut state);
 
+        at_player_orders(&mut state);
         state.finish_player_orders(true);
         let crate::TurnStop::DiplomacyOffer { .. } = state.stop() else {
             panic!("expected a diplomacy offer stop");
@@ -805,6 +810,7 @@ mod tests {
         seed_town_tiles(&mut state);
         pose_alliance_offer(&mut state);
 
+        at_player_orders(&mut state);
         state.finish_player_orders(true);
         let crate::TurnStop::DiplomacyOffer { .. } = state.stop() else {
             panic!("expected a diplomacy offer stop");
@@ -998,6 +1004,7 @@ mod tests {
     fn quiet_full_turn_stops_at_deal_book_then_returns_to_player_orders() {
         let mut state = game_state();
         seed_town_tiles(&mut state);
+        at_player_orders(&mut state);
         state.finish_player_orders(true);
         assert!(matches!(state.stop(), crate::TurnStop::DealBook));
         assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
@@ -1019,6 +1026,7 @@ mod tests {
         state.turn.turn_flow_status_flags = 0x1010;
         state.diplomacy.last_diplomatic_effort_turn = 0;
 
+        at_player_orders(&mut state);
         state.finish_player_orders(true);
         let crate::TurnStop::TurnAlerts(alerts) = state.stop() else {
             panic!("expected turn alerts, got {:?}", state.stop());
