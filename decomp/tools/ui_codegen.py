@@ -2296,7 +2296,11 @@ def _render_bsn_node(
     lines.extend(
         {
             "activate": ["    Button"],
-            "sideways_arrow": ["    RetailSidewaysArrow", "    Pickable"],
+            "sideways_arrow": [
+                "    RetailSidewaysArrow",
+                "    RetailSidewaysArrowHilite",
+                "    Pickable",
+            ],
             "checkbox": ["    Checkbox"],
             "toggle": ["    Checkbox"],
             "radio_group": ["    RadioGroup"],

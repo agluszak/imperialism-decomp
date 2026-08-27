@@ -86,7 +86,7 @@ class UiCodegenTests(unittest.TestCase):
                 'retail_node(fourcc!("rght")'
             )
         ]
-        self.assertIn("RetailSidewaysArrow", left)
+        self.assertIn("RetailSidewaysArrowHilite", left)
         self.assertNotIn("Button", left)
 
     def test_generated_page_corners_use_triangular_picking(self) -> None:

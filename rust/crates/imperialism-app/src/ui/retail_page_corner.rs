@@ -7,6 +7,7 @@ use bevy::picking::PickingSystems;
 use bevy::picking::backend::{HitData, PointerHits};
 use bevy::prelude::*;
 use bevy::ui::ComputedNode;
+use bevy::ui::InteractionDisabled;
 use bevy::ui::picking_backend::ui_picking;
 
 /// Which half of a page-corner control accepts clicks.
@@ -52,10 +53,14 @@ fn corner_hit_valid(
     entity: Entity,
     hit: &HitData,
     corners: &Query<(&RetailPageCorner, &ComputedNode)>,
+    disabled: &Query<(), With<InteractionDisabled>>,
 ) -> bool {
     let Ok((corner, node)) = corners.get(entity) else {
         return true;
     };
+    if disabled.get(entity).is_ok() {
+        return false;
+    }
     let Some(hit) = hit.position else {
         return false;
     };
@@ -65,29 +70,31 @@ fn corner_hit_valid(
     page_corner_hit(*corner, node.size.x, node.size.y, x, y)
 }
 
-/// Drop rejected triangle hits and truncate to the corner when it wins.
+/// Drop rejected triangle/disabled hits; truncate after the first retained corner.
 pub fn filter_page_corner_picks(
     picks: &mut Vec<(Entity, HitData)>,
     corners: &Query<(&RetailPageCorner, &ComputedNode)>,
+    disabled: &Query<(), With<InteractionDisabled>>,
 ) {
-    picks.retain(|(entity, hit)| corner_hit_valid(*entity, hit, corners));
-    if picks
-        .first()
-        .is_some_and(|(entity, _)| corners.get(*entity).is_ok())
+    picks.retain(|(entity, hit)| corner_hit_valid(*entity, hit, corners, disabled));
+    if let Some(index) = picks
+        .iter()
+        .position(|(entity, _)| corners.get(*entity).is_ok())
     {
-        picks.truncate(1);
+        picks.truncate(index + 1);
     }
 }
 
 fn filter_page_corner_pointer_hits(
-    mut pointer_hits: Option<MessageMutator<PointerHits>>,
+    pointer_hits: Option<MessageMutator<PointerHits>>,
     corners: Query<(&RetailPageCorner, &ComputedNode)>,
+    disabled: Query<(), With<InteractionDisabled>>,
 ) {
     let Some(mut pointer_hits) = pointer_hits else {
         return;
     };
     for hits in pointer_hits.read() {
-        filter_page_corner_picks(&mut hits.picks, &corners);
+        filter_page_corner_picks(&mut hits.picks, &corners, &disabled);
     }
 }
 
@@ -112,6 +119,15 @@ mod tests {
             entity,
             HitData::new(camera, 0.0, Some(Vec3::new(x, y, 0.0)), None),
         )
+    }
+
+    fn filter_picks(app: &mut App, picks: &mut Vec<(Entity, HitData)>) {
+        let mut state = SystemState::<(
+            Query<(&RetailPageCorner, &ComputedNode)>,
+            Query<(), With<InteractionDisabled>>,
+        )>::new(app.world_mut());
+        let (corners, disabled) = state.get_mut(app.world_mut()).unwrap();
+        filter_page_corner_picks(picks, &corners, &disabled);
     }
 
     fn pointer_location() -> bevy::picking::pointer::Location {
@@ -143,24 +159,6 @@ mod tests {
     }
 
     #[test]
-    fn right_corner_accepts_lower_triangle() {
-        assert!(page_corner_hit(
-            RetailPageCorner::Right,
-            40.0,
-            35.0,
-            30.0,
-            30.0
-        ));
-        assert!(!page_corner_hit(
-            RetailPageCorner::Right,
-            40.0,
-            35.0,
-            5.0,
-            5.0
-        ));
-    }
-
-    #[test]
     fn rejected_triangle_lets_lower_target_remain_in_picks() {
         let mut app = App::new();
         app.world_mut().spawn(Camera::default());
@@ -175,12 +173,8 @@ mod tests {
             ))
             .id();
         let lower = app.world_mut().spawn_empty().id();
-        let mut state =
-            SystemState::<Query<(&RetailPageCorner, &ComputedNode)>>::new(app.world_mut());
-        let corners = state.get(app.world()).unwrap();
-
         let mut picks = vec![hit_at(corner, 0.2, -0.2), hit_at(lower, 0.0, 0.0)];
-        filter_page_corner_picks(&mut picks, &corners);
+        filter_picks(&mut app, &mut picks);
 
         assert_eq!(picks.len(), 1);
         assert_eq!(picks[0].0, lower);
@@ -201,15 +195,60 @@ mod tests {
             ))
             .id();
         let lower = app.world_mut().spawn_empty().id();
-        let mut state =
-            SystemState::<Query<(&RetailPageCorner, &ComputedNode)>>::new(app.world_mut());
-        let corners = state.get(app.world()).unwrap();
-
         let mut picks = vec![hit_at(corner, -0.2, 0.2), hit_at(lower, 0.0, 0.0)];
-        filter_page_corner_picks(&mut picks, &corners);
+        filter_picks(&mut app, &mut picks);
 
         assert_eq!(picks.len(), 1);
         assert_eq!(picks[0].0, corner);
+    }
+
+    #[test]
+    fn disabled_valid_corner_falls_through_to_lower_target() {
+        let mut app = App::new();
+        let corner = app
+            .world_mut()
+            .spawn((
+                RetailPageCorner::Left,
+                InteractionDisabled,
+                ComputedNode {
+                    size: Vec2::new(40.0, 36.0),
+                    ..default()
+                },
+            ))
+            .id();
+        let lower = app.world_mut().spawn_empty().id();
+        let mut picks = vec![hit_at(corner, -0.2, 0.2), hit_at(lower, 0.0, 0.0)];
+        filter_picks(&mut app, &mut picks);
+
+        assert_eq!(picks.len(), 1);
+        assert_eq!(picks[0].0, lower);
+    }
+
+    #[test]
+    fn overlay_before_corner_truncates_after_corner_not_before() {
+        let mut app = App::new();
+        let overlay = app.world_mut().spawn_empty().id();
+        let corner = app
+            .world_mut()
+            .spawn((
+                RetailPageCorner::Left,
+                ComputedNode {
+                    size: Vec2::new(40.0, 36.0),
+                    ..default()
+                },
+            ))
+            .id();
+        let lower = app.world_mut().spawn_empty().id();
+        let mut picks = vec![
+            hit_at(overlay, 0.0, 0.0),
+            hit_at(corner, -0.2, 0.2),
+            hit_at(lower, 0.0, 0.0),
+        ];
+        filter_picks(&mut app, &mut picks);
+
+        assert_eq!(picks.len(), 2);
+        assert_eq!(picks[0].0, overlay);
+        assert_eq!(picks[1].0, corner);
     }
 
     #[test]

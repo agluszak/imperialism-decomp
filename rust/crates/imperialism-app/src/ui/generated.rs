@@ -1132,12 +1132,14 @@ pub fn citydlog_9200() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1229,12 +1231,14 @@ pub fn citydlog_9201() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 3, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1314,12 +1318,14 @@ pub fn citydlog_9202() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1405,12 +1411,14 @@ pub fn citydlog_9203() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1433,12 +1441,14 @@ pub fn citydlog_9203() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1524,12 +1534,14 @@ pub fn citydlog_9204() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1552,12 +1564,14 @@ pub fn citydlog_9204() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1643,12 +1657,14 @@ pub fn citydlog_9205() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1728,12 +1744,14 @@ pub fn citydlog_9206() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1804,12 +1822,14 @@ pub fn citydlog_9209() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1832,12 +1852,14 @@ pub fn citydlog_9209() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -1953,12 +1975,14 @@ pub fn citydlog_9211() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -2023,12 +2047,14 @@ pub fn citydlog_9212() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -2471,12 +2497,14 @@ pub fn citydlog_9214() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -2553,12 +2581,14 @@ pub fn citydlog_9215() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
@@ -9650,12 +9680,14 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -9711,12 +9743,14 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -9768,12 +9802,14 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -9825,12 +9861,14 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -9878,6 +9916,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -9888,6 +9927,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -9935,6 +9975,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -9945,6 +9986,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -9992,6 +10034,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10002,6 +10045,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10049,6 +10093,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10059,6 +10104,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10106,6 +10152,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10116,6 +10163,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10163,6 +10211,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10173,6 +10222,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10220,6 +10270,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10230,6 +10281,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10277,6 +10329,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10287,6 +10340,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10334,6 +10388,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10344,6 +10399,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10391,6 +10447,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10401,6 +10458,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10448,6 +10506,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10458,6 +10517,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10505,6 +10565,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10515,6 +10576,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10562,6 +10624,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
@@ -10572,6 +10635,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
@@ -10759,12 +10823,14 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -10820,12 +10886,14 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -10877,12 +10945,14 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -10934,12 +11004,14 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -10987,6 +11059,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -10997,6 +11070,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11044,6 +11118,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11054,6 +11129,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11101,6 +11177,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11111,6 +11188,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11158,6 +11236,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11168,6 +11247,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11215,6 +11295,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11225,6 +11306,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11272,6 +11354,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11282,6 +11365,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11329,6 +11413,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11339,6 +11424,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11386,6 +11472,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11396,6 +11483,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11443,6 +11531,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11453,6 +11542,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11500,6 +11590,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11510,6 +11601,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11557,6 +11649,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11567,6 +11660,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11614,6 +11708,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11624,6 +11719,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11671,6 +11767,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
@@ -11681,6 +11778,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
                                                 Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
@@ -11964,12 +12062,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12000,12 +12100,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12036,12 +12138,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12072,12 +12176,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12108,12 +12214,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12144,12 +12252,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12180,12 +12290,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12216,12 +12328,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12252,12 +12366,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12288,12 +12404,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
@@ -12324,12 +12442,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
@@ -12360,12 +12480,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
@@ -12396,12 +12518,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
@@ -12432,12 +12556,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
@@ -12468,12 +12594,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
@@ -12504,12 +12632,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
@@ -12546,12 +12676,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
@@ -12588,12 +12720,14 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
                                         Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),

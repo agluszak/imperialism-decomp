@@ -17,7 +17,7 @@ pub use super::retail_page_corner::RetailPageCorner;
 pub use super::retail_placard::{
     PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
 };
-pub use super::retail_sideways_arrow::{RetailSidewaysArrow, Step};
+pub use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite, Step};
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_transport_gauge::{
     TransportGaugeParts, transport_gauge_allocation_fill, transport_gauge_capacity_fill,
