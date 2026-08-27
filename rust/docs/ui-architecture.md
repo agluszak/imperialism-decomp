@@ -131,31 +131,32 @@ capture it (for example a trade card captures its `TradeCommodity` and `TradeCar
 a component only when other independent systems need to query it.
 
 Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPressedOverlay`,
-`RetailMadnessPicture`, `RetailPlacard` / `PlacardValue`, `RetailAmountBar` /
-`RetailAmountBarState`, `RetailTwoPicSliderVisual`, `RetailNumberedArrow` /
-`NumberedArrowValue`, `RetailArmyPlacard` / `ArmyPlacardValue`, `RetailShipPlacard` /
-`ShipPlacardValue`, and `RetailTransportGauge` / `TransportGaugeValue` remain appropriate.
-Prefer stock Bevy headless widgets (`Slider`, `Button`, `Checkbox`, `RadioButton`,
-`ScrollArea`) for input semantics; custom retail code is usually a skin or a genuinely
-non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
+`RetailMadnessPicture`, and `RetailTwoPicSliderVisual` remain appropriate when they own interactive
+skin or widget-local operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`,
+`Checkbox`, `RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a skin
+or a genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
 
-Hierarchical retail widgets are BSN `SceneComponent`s: structure and private children are spawned
-atomically with the scene (`RetailPlacard`, `RetailAmountBar`, `RetailNumberedArrow`,
-`RetailArmyPlacard`, `RetailShipPlacard`, `RetailTransportGauge`); mutable presentation lives in a
-small separate state component (`PlacardValue`, `RetailAmountBarState`, `NumberedArrowValue`,
-`ArmyPlacardValue`, `ShipPlacardValue`, `TransportGaugeValue`). Screens project with `set_if_neq`
-so `Changed<…>` stays meaningful. Widget draw systems run in `PostUpdate` before
-`UiSystems::Prepare`.
+Recovered hierarchical retail widgets are structure-only BSN `SceneComponent` Parts
+(`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `ArmyPlacardParts`, `ShipPlacardParts`,
+`TransportGaugeParts`). They spawn private children atomically with the scene. They are not a port
+of the C++ class hierarchy and must not carry `FooValue` projection components or `FooValue`→
+`draw_foo` PostUpdate systems for passive displays. Coarse screen/dialog renderers write `Text`,
+`Node`, `Visibility`, `ImageNode`, and `BackgroundColor` directly (helpers such as
+`apply_amount_bar_fill` / `apply_transport_gauge` / `placard_text_layout` are fine). Root semantic
+views may retain private child entity handles resolved at bind time. Custom ECS state belongs only
+to interactive widget operation (press, checked, slider value), not to passive caption/fill
+mirrors of gameplay.
+
+Map each recovered class to the smallest Bevy mechanism that preserves observable behavior: stock
+widget + retail skin when possible; Parts-only SceneComponent when the hierarchy must be shared
+with generated scenes; handwritten binder observers for domain clicks. `SceneComponent` is OK only
+for structural Parts, not for class-hierarchy ports.
 
 When recovered class identity is known while generating a static resource scene, the generator
 attaches the widget (`retail_numbered_arrow()`, `retail_army_placard(...)`,
 `retail_ship_placard(...)`, `retail_transport_gauge(...)`, `retail_pressed_overlay_picture(...)`,
 `retail_madness_picture(...)`, …). `apply_scene` is for runtime/dynamic composition only—not for
 binders to rediscover and patch recovered class semantics onto already-generated nodes.
-
-They represent recovered retail widget *semantics*, not a port of the C++ class hierarchy. The
-criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket
-ban on leaf components.
 
 The three-way ownership split for recovered controls is:
 
@@ -166,8 +167,7 @@ game / screen semantics    -> handwritten binder (FourCC find, domain observers,
 ```
 
 Split input behavior from presentation in the generator when a class has both (for example
-`TTwoPicSlider` → stock `Slider` + `RetailTwoPicSliderVisual`). Root views retain widget roots, not
-internals (`AmountBarParts`, half-buttons, placard text children). Do not invent a generic widget
+`TTwoPicSlider` → stock `Slider` + `RetailTwoPicSliderVisual`). Do not invent a generic widget
 framework (`RetailWidget<T>`, `Binding<T>`, lenses); port concrete recovered reusable controls only.
 Custom widgets must not know `GameSession`, domain IDs, or FourCC application meaning. When a widget
 consumes a pointer event, stop propagation.
