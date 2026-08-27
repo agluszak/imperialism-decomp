@@ -49,8 +49,12 @@ pub(crate) struct TechnologyStorePlugin;
 
 impl Plugin for TechnologyStorePlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(on_technology_purchase)
-            .add_observer(on_technology_history)
+        app.add_observer(
+            on_technology_purchase.run_if(
+                in_state(AppState::TechnologyStore).and_then(resource_exists::<GameSession>),
+            ),
+        );
+        app.add_observer(on_technology_history)
             .add_systems(
                 OnEnter(AppState::TechnologyStore),
                 (spawn_technology_store, bind_technology_store).chain(),
@@ -528,5 +532,23 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::TechnologyStore
         );
+    }
+
+    #[test]
+    fn technology_purchase_is_ignored_without_a_game_session() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(bevy::state::app::StatesPlugin)
+            .insert_state(AppState::TechnologyStore)
+            .add_plugins(TechnologyStorePlugin);
+        let purchase = app
+            .world_mut()
+            .spawn(TechnologyPurchase(Technology::HighPressureSteamEngine))
+            .id();
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: purchase });
+        app.world_mut().flush();
     }
 }
