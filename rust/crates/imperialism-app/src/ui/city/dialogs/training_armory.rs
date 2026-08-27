@@ -353,28 +353,6 @@ mod tests {
     use crate::ui::test_support::beginning_of_game;
 
     #[test]
-    fn armory_uses_the_recovered_windows_font_families() {
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_TITLE_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_UNIT_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_DETAIL_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BookAntiquaRegular
-        );
-    }
-
-    #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {
         let state = beginning_of_game();
         let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();

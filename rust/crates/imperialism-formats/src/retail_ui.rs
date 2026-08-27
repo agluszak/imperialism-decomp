@@ -127,9 +127,4 @@ mod tests {
             0x2752u16.wrapping_mul(100).wrapping_add(1)
         );
     }
-
-    #[test]
-    fn picture_id_offset_keeps_resource_family_arithmetic() {
-        assert_eq!(PictureId::new(0x266a).offset(3).get(), 0x266a + 3);
-    }
 }

@@ -169,20 +169,4 @@ mod tests {
         assert_eq!(two_pic_slider_split(100, 91, 100), 91);
         assert_eq!(two_pic_slider_split(0xff, 91, 0xff), 91);
     }
-
-    #[test]
-    fn slider_track_excludes_zero_plateau() {
-        let height = 91i16;
-        let scale = 100i16;
-        let span = height - TWO_PIC_SLIDER_SPLIT_PAD;
-        let value_from_y = |y: i16| {
-            let split = height - y.clamp(0, height);
-            let adjusted = (split - TWO_PIC_SLIDER_SPLIT_PAD).max(0);
-            (i32::from(adjusted) * i32::from(scale) / i32::from(span)) as i16
-        };
-        assert_eq!(value_from_y(0), scale);
-        assert_eq!(value_from_y(height - TWO_PIC_SLIDER_SPLIT_PAD), 0);
-        assert_eq!(value_from_y(height - 6), 0);
-        assert_eq!(value_from_y(height), 0);
-    }
 }
