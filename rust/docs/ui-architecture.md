@@ -209,6 +209,17 @@ Generated BSN remains the structure mechanism for recovered screens. Reusable hi
 authored by this project use Rust BSN `SceneComponent`s (not `.bsn` asset files). Recovered screens
 do not get a second handcrafted scene merely to wrap their generated hierarchy.
 
+### Out-of-frame retail drawing vs Bevy clipping
+
+Retail controls sometimes paint outside their nominal frame (for example `TNumberedArrowButton`
+draws its count to the right of an 11×41 hit box, and some placard captions use a QuickDraw
+baseline that is not a Bevy child top-left). Generated `retail_node` defaults to
+`Overflow::clip()`. Do not model that as “widen the clickable `Node` so a clipped child fits.”
+Keep the recovered hit / layout frame for input, convert QuickDraw baselines with retail font
+metrics when placing Bevy text boxes, and explicitly opt the self-drawn overlay out of the parent
+clip (`Overflow::visible()` on the widget root, or an unclipped overlay) when retail really paints
+beyond its extent.
+
 ## Tests
 
 Tests follow the same boundaries:
