@@ -11,11 +11,7 @@ const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Fuel,
 ];
 
-/// Text that retail drew over the Shipyard detail DIB. Icons remain indexed;
-/// the recovered numeric labels use the normal UI text path.
-#[derive(Component)]
-pub(in crate::ui::city) struct ShipyardDetailText;
-
+/// Icons remain indexed; recovered numeric labels use the normal UI text path.
 pub(in crate::ui::city) struct ShipyardUi {
     pub(in crate::ui::city) selected: ShipOrderSlot,
     rows: ShipOrderTable<SelectionRow>,
@@ -23,6 +19,7 @@ pub(in crate::ui::city) struct ShipyardUi {
     description: Entity,
     picture: Entity,
     details: Entity,
+    details_text_root: Entity,
 }
 
 pub(in crate::ui::city) fn bind_shipyard(
@@ -88,6 +85,20 @@ pub(in crate::ui::city) fn bind_shipyard(
     let details_base = assets.indexed_picture(PictureId::new(9800));
     let details_image = assets.add_image(details_base.to_image(assets.default_dib_palette()));
     commands.entity(dlog).insert(ImageNode::new(details_image));
+    let details_text_root = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0),
+                top: px(0),
+                width: percent(100),
+                height: percent(100),
+                ..default()
+            },
+            Pickable::IGNORE,
+            ChildOf(dlog),
+        ))
+        .id();
     ShipyardUi {
         selected: ShipOrderSlot::MerchantEarlyPrimary,
         rows,
@@ -95,6 +106,7 @@ pub(in crate::ui::city) fn bind_shipyard(
         description,
         picture,
         details: dlog,
+        details_text_root,
     }
 }
 
@@ -122,7 +134,6 @@ pub(in crate::ui::city) fn render_shipyard(
     session: &GameSession,
     assets: &mut RetailUiAssets,
     ui: &mut CityUi,
-    detail_texts: &Query<Entity, With<ShipyardDetailText>>,
 ) {
     let nation = session.active_major_nation();
     for (slot, row) in &view.rows {
@@ -149,9 +160,9 @@ pub(in crate::ui::city) fn render_shipyard(
     );
     ui.image(view.picture, assets.picture(ship_type.detail_picture()));
     let mut picture = assets.indexed_picture(PictureId::new(9800));
-    for entity in detail_texts.iter() {
-        ui.commands.entity(entity).despawn();
-    }
+    ui.commands
+        .entity(view.details_text_root)
+        .despawn_children();
     let (font, layout, line_height, _) =
         assets.text_style(RetailTextStylePreset::explicit(3, 0, 10, -2));
     let costs = ship_order_costs(ship_type);
@@ -194,8 +205,7 @@ pub(in crate::ui::city) fn render_shipyard(
                 line_height,
                 TextColor(color),
                 Pickable::IGNORE,
-                ShipyardDetailText,
-                ChildOf(view.details),
+                ChildOf(view.details_text_root),
             ));
         }
     }
@@ -226,8 +236,7 @@ pub(in crate::ui::city) fn render_shipyard(
                 line_height,
                 TextColor(assets.palette_color(0xd2)),
                 Pickable::IGNORE,
-                ShipyardDetailText,
-                ChildOf(view.details),
+                ChildOf(view.details_text_root),
             ));
         }
     }
