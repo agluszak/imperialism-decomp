@@ -81,9 +81,7 @@ fn bind_query_floaters(
             .remove::<InteractionDisabled>()
             .observe(on_query_floater_deal_book);
         let cancel = view.find(fourcc!("cncl"));
-        commands
-            .entity(cancel)
-            .remove::<InteractionDisabled>();
+        commands.entity(cancel).remove::<InteractionDisabled>();
         for button in [advice, deal, cancel] {
             dismiss_on_activate(&mut commands, button, root);
         }

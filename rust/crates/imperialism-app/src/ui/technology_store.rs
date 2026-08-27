@@ -146,20 +146,17 @@ fn bind_technology_store(
     let previous = tree.find(root, fourcc!("lcor"));
     let next = tree.find(root, fourcc!("rcor"));
     let turn = |commands: &mut Commands, entity: Entity, delta: isize| {
-        commands
-            .entity(entity)
-            .insert(Button)
-            .observe(
-                move |_: On<Activate>, mut views: Query<&mut TechnologyStoreView>| {
-                    if let Ok(mut view) = views.get_mut(root) {
-                        let last_page = view.rows.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE;
-                        view.current_page = view
-                            .current_page
-                            .saturating_add_signed(delta)
-                            .min(last_page);
-                    }
-                },
-            );
+        commands.entity(entity).insert(Button).observe(
+            move |_: On<Activate>, mut views: Query<&mut TechnologyStoreView>| {
+                if let Ok(mut view) = views.get_mut(root) {
+                    let last_page = view.rows.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE;
+                    view.current_page = view
+                        .current_page
+                        .saturating_add_signed(delta)
+                        .min(last_page);
+                }
+            },
+        );
     };
     turn(&mut commands, previous, -1);
     turn(&mut commands, next, 1);
