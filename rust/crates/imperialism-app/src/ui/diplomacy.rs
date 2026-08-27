@@ -18,7 +18,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton, ValueChange};
+use bevy::ui_widgets::{Activate, Button as UiButton, ValueChange};
 use enum_map::EnumMap;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -482,13 +482,14 @@ fn bind_diplomacy_controls(
             fourcc!("topB"),
             Some(fourcc!("too3")),
             true,
+            AppState::Diplomacy,
         );
+    } else {
+        let top = tree.find(root, fourcc!("topB"));
+        commands
+            .entity(tree.find(top, fourcc!("dipl")))
+            .insert((Checked, InteractionDisabled));
     }
-    let top = tree.find(root, fourcc!("topB"));
-    let selected = tree.find(top, fourcc!("dipl"));
-    commands
-        .entity(selected)
-        .insert((Checked, InteractionDisabled));
 
     let main = tree.find(root, fourcc!("main"));
     let view = tree.view(main);
@@ -649,7 +650,7 @@ fn bind_diplomacy_controls(
         let control = tree.find(root, tag);
         commands
             .entity(control)
-            .insert((action, ActivateOnPress))
+            .insert(action)
             .remove::<InteractionDisabled>()
             .observe(on_diplomacy_offer_activate);
     }

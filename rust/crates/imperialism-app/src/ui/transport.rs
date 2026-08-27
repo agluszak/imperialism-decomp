@@ -12,7 +12,7 @@ use super::retail_transport_gauge::{
 };
 use crate::AppState;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -161,6 +161,7 @@ fn bind_transport_screen(
         fourcc!("topB"),
         Some(fourcc!("tool")),
         true,
+        AppState::Transport,
     );
 
     let nation = session.active_major_nation();
@@ -207,10 +208,6 @@ fn bind_transport_view(
     tree: &RetailTree,
     gauges: &Query<&TransportGaugeParts>,
 ) -> TransportView {
-    let selected = tree.find(root, fourcc!("tran"));
-    commands
-        .entity(selected)
-        .insert((Checked, InteractionDisabled));
     let capacity = bind_gauge_view(tree, gauges, tree.find(root, fourcc!("tota")));
     let rows = std::array::from_fn(|index| {
         let binding = TRANSPORT_ROWS[index];
@@ -532,6 +529,7 @@ mod tests {
                 ChildOf(root),
             ))
             .id();
+        world.entity_mut(fill).insert(ChildOf(total));
         world.spawn((
             RetailTag(fourcc!("text")),
             Node::default(),
@@ -549,6 +547,8 @@ mod tests {
                     ChildOf(root),
                 ))
                 .id();
+            world.entity_mut(fill).insert(ChildOf(row));
+            world.entity_mut(limit).insert(ChildOf(row));
             world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
             world.spawn((
@@ -630,5 +630,42 @@ mod tests {
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
+    }
+
+    #[test]
+    fn transport_gauge_overlays_are_children_of_their_row() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin));
+        let root = spawn_transport_hierarchy(app.world_mut());
+        app.update();
+
+        let fish = app
+            .world_mut()
+            .query::<(Entity, &RetailTag, &TransportGaugeParts)>()
+            .iter(app.world())
+            .find(|(_, tag, _)| tag.0 == fourcc!("fish"))
+            .map(|(entity, _, parts)| (entity, *parts))
+            .expect("fish row");
+        let (row, parts) = fish;
+        assert_eq!(
+            app.world().get::<ChildOf>(parts.fill).map(|c| c.0),
+            Some(row),
+            "fill must be a child of the transport row for inherited visibility"
+        );
+        assert_eq!(
+            app.world().get::<ChildOf>(parts.limit).map(|c| c.0),
+            Some(row),
+            "limit strip must be a child of the transport row for inherited visibility"
+        );
+        assert_ne!(parts.limit, Entity::PLACEHOLDER);
+
+        // Hiding the row must not leave orphan gauge overlays elsewhere in the tree.
+        app.world_mut().entity_mut(row).insert(Visibility::Hidden);
+        assert!(
+            app.world()
+                .get::<ChildOf>(parts.limit)
+                .is_some_and(|c| c.0 == row)
+        );
+        let _ = root;
     }
 }

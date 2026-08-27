@@ -10,7 +10,7 @@ use crate::ui::GameSession;
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -116,27 +116,24 @@ pub(crate) fn bind_civilian_toolbar(
     {
         let entity = tree.child(page, tag);
         command_entities[index] = entity;
-        commands
-            .entity(entity)
-            .insert((ActivateOnPress, InteractionDisabled))
-            .observe(
-                move |_: On<Activate>,
-                      mut session: ResMut<GameSession>,
-                      mut map: ResMut<StrategicMapSession>| {
-                    let Some(unit) = map.selection.civilian() else {
-                        return;
-                    };
-                    if session.game.set_civilian_idle_order(unit, mode) {
-                        map.cycle_selection(&mut session.game);
-                    }
-                },
-            );
+        commands.entity(entity).insert(InteractionDisabled).observe(
+            move |_: On<Activate>,
+                  mut session: ResMut<GameSession>,
+                  mut map: ResMut<StrategicMapSession>| {
+                let Some(unit) = map.selection.civilian() else {
+                    return;
+                };
+                if session.game.set_civilian_idle_order(unit, mode) {
+                    map.cycle_selection(&mut session.game);
+                }
+            },
+        );
     }
     let disband = tree.child(page, fourcc!("garr"));
     command_entities[3] = disband;
     commands
         .entity(disband)
-        .insert((ActivateOnPress, InteractionDisabled))
+        .insert(InteractionDisabled)
         .observe(
             |_: On<Activate>,
              keys: Res<ButtonInput<KeyCode>>,

@@ -137,14 +137,20 @@ operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`, `Checkb
 genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`, `TTwoPicSlider`'s
 12px zero plateau via a shorter stock `Slider` track).
 
+Stock `Button` matches ordinary retail `TControl::TrackMouse` (action on release). Do not attach
+`ActivateOnPress` unless recovered C++ proves press-time / hold / repeat semantics.
+
 Recovered hierarchical retail widgets are structure-only BSN Parts
 (`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `TransportGaugeParts`,
 `RetailTwoPicSliderParts`).
-They spawn private children atomically with the scene. They are not a port of the C++
-class hierarchy and must not carry `FooValue` projection components or `FooValue`→
-`draw_foo` PostUpdate systems for passive displays. Coarse screen/dialog renderers write
-`Text`, `Node`, `Visibility`, `ImageNode`, and `BackgroundColor` directly (pure helpers
-such as `transport_gauge_width` / `placard_text_layout` / `amount_bar_geometry` are fine).
+They spawn private children atomically with the scene. A presentation helper that owns
+`Children` must not be emitted beside a second recovered `Children` list on the same node —
+codegen merges synthetic and recovered children into one hierarchy (see `TTransportPicture`).
+They are not a port of the C++ class hierarchy and must not carry `FooValue` projection
+components or `FooValue`→ `draw_foo` PostUpdate systems for passive displays. Coarse
+screen/dialog renderers write `Text`, `Node`, `Visibility`, `ImageNode`, and `BackgroundColor`
+directly (pure helpers such as `transport_gauge_width` / `placard_text_layout` /
+`amount_bar_geometry` are fine).
 Root semantic views may retain private child entity handles resolved at bind time—
 including synthetic render children. Encapsulation is not valuable enough to justify
 another runtime state-and-system layer. Custom ECS state belongs only to interactive

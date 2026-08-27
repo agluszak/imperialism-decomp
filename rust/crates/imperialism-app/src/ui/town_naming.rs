@@ -8,7 +8,7 @@ use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::AutoFocus;
 use bevy::prelude::*;
 use bevy::text::EditableText;
-use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
+use bevy::ui_widgets::{Activate, SelectAllOnFocus};
 use imperialism_core::ResourceTable;
 use imperialism_formats::fourcc;
 
@@ -89,7 +89,7 @@ fn bind_town_naming(
         }
         commands
             .entity(entity)
-            .insert((ActivateOnPress, TownNamingWired))
+            .insert(TownNamingWired)
             .observe(commit_town_name);
     }
     bind_modal_keys(

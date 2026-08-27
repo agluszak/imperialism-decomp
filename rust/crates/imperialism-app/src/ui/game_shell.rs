@@ -21,8 +21,8 @@ use crate::ui::strategic_map::{
 };
 use crate::ui::window::no_modal;
 use bevy::prelude::*;
-use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui_widgets::Activate;
 use bevy::window::PrimaryWindow;
 use imperialism_core::{NationId, TurnAlert};
 use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
@@ -158,11 +158,18 @@ fn bind_strategic_map(
     arrow_parts: Query<&super::retail::NumberedArrowParts>,
     placard_parts: Query<&super::retail::PlacardParts>,
 ) {
-    bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
+    bind_native_game_screen_nav(
+        &mut commands,
+        *root,
+        &tree,
+        fourcc!("tool"),
+        None,
+        true,
+        AppState::StrategicMap,
+    );
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
     commands
         .entity(tree.find(*root, fourcc!("DONE")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_end_turn);
     let flag = tree.find(*root, fourcc!("Flag"));
@@ -253,7 +260,6 @@ fn bind_strategic_hover(
     );
     commands
         .entity(tree.find(root, fourcc!("ZmOt")))
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_ocean_toggle);
 }
@@ -439,6 +445,7 @@ pub(crate) fn bind_native_game_screen_nav(
     toolbar_tag: FourCc,
     leave_toolbar_tag: Option<FourCc>,
     query_floater: bool,
+    current: AppState,
 ) {
     if query_floater {
         bind_query_floater_control(commands, root, tree);
@@ -454,17 +461,19 @@ pub(crate) fn bind_native_game_screen_nav(
         (city, AppState::City),
         (diplomacy, AppState::Diplomacy),
     ] {
+        if destination == current {
+            commands
+                .entity(entity)
+                .insert((Checked, InteractionDisabled));
+            continue;
+        }
         commands
             .entity(entity)
-            .insert(ActivateOnPress)
+            .remove::<Checked>()
             .remove::<InteractionDisabled>()
             .observe(
-                move |_: On<Activate>,
-                      state: Res<State<AppState>>,
-                      mut next_state: ResMut<NextState<AppState>>| {
-                    if destination != *state.get() {
-                        next_state.set(destination);
-                    }
+                move |_: On<Activate>, mut next_state: ResMut<NextState<AppState>>| {
+                    next_state.set(destination);
                 },
             );
     }
@@ -473,7 +482,6 @@ pub(crate) fn bind_native_game_screen_nav(
         let leave = tree.find(toolbar, fourcc!("end "));
         commands
             .entity(leave)
-            .insert(ActivateOnPress)
             .remove::<InteractionDisabled>()
             .observe(
                 move |_: On<Activate>,
@@ -532,7 +540,6 @@ fn bind_turn_alert_notice(
     linger.set_body(&mut commands, &mut assets, body);
     commands
         .entity(linger.okay)
-        .insert(ActivateOnPress)
         .remove::<InteractionDisabled>()
         .observe(on_turn_alert_dismiss);
     commands.entity(linger.cancel).insert(Visibility::Hidden);
@@ -565,10 +572,7 @@ fn bind_turn_summary_notice(
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_title(&mut commands, &mut assets, "Imperialism");
     linger.set_body(&mut commands, &mut assets, &notice.0);
-    commands
-        .entity(linger.okay)
-        .insert(ActivateOnPress)
-        .remove::<InteractionDisabled>();
+    commands.entity(linger.okay).remove::<InteractionDisabled>();
     commands.entity(linger.cancel).insert(Visibility::Hidden);
 }
 
@@ -582,6 +586,7 @@ fn on_turn_alert_dismiss(_activate: On<Activate>, mut queue: ResMut<TurnAlertQue
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTag;
 
     #[test]
     fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {
@@ -628,6 +633,83 @@ mod tests {
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(620.0, 120.0), dialog),
             MapEdges::empty()
+        );
+    }
+
+    #[test]
+    fn management_nav_marks_only_the_current_screen_checked() {
+        #[derive(Component)]
+        struct TestNavRoot;
+
+        fn bind_city_nav(
+            mut commands: Commands,
+            root: Single<Entity, Added<TestNavRoot>>,
+            tree: RetailTree,
+        ) {
+            bind_native_game_screen_nav(
+                &mut commands,
+                *root,
+                &tree,
+                fourcc!("topB"),
+                None,
+                false,
+                AppState::City,
+            );
+        }
+
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_systems(Update, bind_city_nav);
+        let root = app.world_mut().spawn((TestNavRoot, Node::default())).id();
+        let toolbar = app
+            .world_mut()
+            .spawn((RetailTag(fourcc!("topB")), Node::default(), ChildOf(root)))
+            .id();
+        for tag in [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")] {
+            app.world_mut()
+                .spawn((RetailTag(tag), Node::default(), ChildOf(toolbar)));
+        }
+        app.update();
+
+        let mut checked = Vec::new();
+        let mut enabled = Vec::new();
+        let nav_tags = [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")];
+        for (tag, has_checked, disabled) in app
+            .world_mut()
+            .query::<(&RetailTag, Has<Checked>, Has<InteractionDisabled>)>()
+            .iter(app.world())
+        {
+            if !nav_tags.contains(&tag.0) {
+                continue;
+            }
+            if has_checked {
+                checked.push(tag.0);
+            }
+            if !disabled {
+                enabled.push(tag.0);
+            }
+        }
+        assert_eq!(checked, vec![fourcc!("city")]);
+        assert_eq!(enabled.len(), 3);
+        assert!(!enabled.contains(&fourcc!("city")));
+    }
+
+    #[test]
+    fn ordinary_shell_buttons_do_not_use_press_time_activation() {
+        let source = include_str!("game_shell.rs");
+        let binder = source
+            .split("pub(crate) fn bind_native_game_screen_nav")
+            .nth(1)
+            .and_then(|rest| rest.split("#[derive(Component)]").next())
+            .expect("nav binder");
+        let end_turn = source
+            .split("fn bind_strategic_map")
+            .nth(1)
+            .and_then(|rest| rest.split("fn on_end_turn").next())
+            .expect("strategic bind");
+        assert!(
+            !binder.contains("OnPress") && !end_turn.contains("OnPress"),
+            "DONE/nav/leave must activate on release"
         );
     }
 }

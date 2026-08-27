@@ -1,6 +1,9 @@
 //! Recovered `TTransportPicture` gauge overlays as structure-only scene helpers.
 //!
 //! Screens write fill/limit via bind-time handles. Allocation vs capacity is a binder concern.
+//! When a recovered transport node also has resource children, codegen merges those with the
+//! synthetic remainder/fill/limit children into one `Children` list — do not nest
+//! [`retail_transport_gauge`] (which owns `Children`) beside another `Children` block.
 
 use super::retail::{retail_background_color, retail_picture};
 use bevy::prelude::*;
@@ -23,7 +26,11 @@ pub struct TransportGaugeParts {
     pub limit: Entity,
 }
 
-/// Allocation row gauge: fill + limit marker.
+/// Leaf construction when the recovered node has no resource children.
+///
+/// Production transport rows always merge via codegen; this helper remains for the
+/// no-children codegen path and as the structure reference for that merge.
+#[allow(dead_code)]
 #[rustfmt::skip]
 pub fn retail_transport_gauge(picture_id: i16, track_left: i16) -> impl Scene {
     let left = f32::from(track_left);
@@ -53,7 +60,8 @@ pub fn retail_transport_gauge(picture_id: i16, track_left: i16) -> impl Scene {
     }
 }
 
-/// Capacity (`tota`) gauge: fill only.
+/// Capacity (`tota`) leaf helper when the recovered node has no resource children.
+#[allow(dead_code)]
 #[rustfmt::skip]
 pub fn retail_transport_capacity_gauge(picture_id: i16, track_left: i16) -> impl Scene {
     let left = f32::from(track_left);

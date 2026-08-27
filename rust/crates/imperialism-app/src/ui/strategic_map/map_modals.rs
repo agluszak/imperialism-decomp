@@ -17,7 +17,7 @@ use bevy::ecs::system::EntityCommands;
 use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
+use bevy::ui_widgets::{Activate, Button};
 use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
@@ -241,7 +241,6 @@ fn bind_added_map_modals(
     for root in &added {
         for tag in [fourcc!("okay"), fourcc!("end ")] {
             if let Some(entity) = tree.try_find(root, tag) {
-                commands.entity(entity).insert(ActivateOnPress);
                 dismiss_on_activate(&mut commands, entity, root);
                 bind_modal_keys(&mut commands, root, Some(entity), None);
                 break;
@@ -309,7 +308,6 @@ fn bind_added_civilian_ledgers(
                     },
                     CivilianLedgerAction::Select(tile),
                     Button,
-                    ActivateOnPress,
                     Node {
                         position_type: PositionType::Absolute,
                         left: Val::Px(column as f32 * 229.0),
@@ -342,7 +340,6 @@ fn bind_added_civilian_ledgers(
                 .entity(view.find(tag))
                 .insert((
                     Button,
-                    ActivateOnPress,
                     action,
                     match action {
                         CivilianLedgerAction::Previous => Visibility::Hidden,
@@ -504,18 +501,16 @@ fn bind_added_civilian_modals(
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
                     .entity(linger.okay)
-                    .insert((ActivateOnPress, CivilianModalAction::ConfirmDisband(*unit)))
+                    .insert(CivilianModalAction::ConfirmDisband(*unit))
                     .observe(on_civilian_modal_action);
                 commands
                     .entity(linger.cancel)
-                    .insert(ActivateOnPress)
                     .remove::<InteractionDisabled>();
             }
             CivilianModal::Notice { title, body } => {
                 let linger = bind_linger_dialog(&mut commands, root, &tree);
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
-                commands.entity(linger.okay).insert(ActivateOnPress);
                 commands.entity(linger.cancel).insert(Visibility::Hidden);
             }
         }
@@ -556,7 +551,6 @@ fn bind_engineer_dialog(
                 },
                 Button,
                 ImageNode::new(assets.picture(option.choice.picture())),
-                ActivateOnPress,
                 CivilianModalAction::Engineer(unit, option.choice),
                 ChildOf(dialog),
             ))
@@ -597,7 +591,6 @@ fn bind_engineer_dialog(
             },
             Button,
             ImageNode::new(assets.picture(PictureId::new(0x24c4))),
-            ActivateOnPress,
             ChildOf(dialog),
         ))
         .id();
@@ -688,7 +681,6 @@ fn bind_purchase_dialog(
     );
     linger.set_title(commands, assets, title);
     linger.set_body(commands, assets, body);
-    commands.entity(linger.okay).insert(ActivateOnPress);
     if affordable {
         commands
             .entity(linger.okay)
@@ -696,7 +688,6 @@ fn bind_purchase_dialog(
             .observe(on_civilian_modal_action);
     }
     if affordable {
-        commands.entity(linger.cancel).insert(ActivateOnPress);
     } else {
         commands.entity(linger.cancel).insert(Visibility::Hidden);
     }
@@ -731,12 +722,11 @@ fn bind_civilian_report(
         12,
     );
     let okay = tree.find(root, fourcc!("okay"));
-    commands.entity(okay).insert(ActivateOnPress);
     dismiss_on_activate(commands, okay, root);
     let cancel = tree.find(root, fourcc!("canc"));
     commands
         .entity(cancel)
-        .insert((ActivateOnPress, CancelCivilianOrder(unit)))
+        .insert(CancelCivilianOrder(unit))
         .observe(on_cancel_civilian_order);
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, Some(okay), Some(cancel));
@@ -995,7 +985,6 @@ fn bind_added_army_reports(
             3,
         );
         let cancel = view.find(fourcc!("canc"));
-        commands.entity(cancel).insert(ActivateOnPress);
         dismiss_on_activate(&mut commands, cancel, root);
         bind_modal_keys(&mut commands, root, None, Some(cancel));
     }
@@ -1042,7 +1031,7 @@ fn bind_added_garrisons(
             );
             if !row.militia {
                 entity
-                    .insert((Button, ActivateOnPress, GarrisonRowAction::Toggle(row.unit)))
+                    .insert((Button, GarrisonRowAction::Toggle(row.unit)))
                     .observe(on_garrison_row_action);
             }
         }
@@ -1087,11 +1076,7 @@ fn bind_added_army_rosters(
                 layout,
                 line_height,
             )
-            .insert((
-                Button,
-                ActivateOnPress,
-                ArmyRosterRowAction::Select(row.province),
-            ))
+            .insert((Button, ArmyRosterRowAction::Select(row.province)))
             .observe(on_army_roster_row_action);
         }
     }
@@ -1172,7 +1157,7 @@ fn bind_friendly_fleet_report(
     let cancel = view.find(fourcc!("canc"));
     commands
         .entity(cancel)
-        .insert((ActivateOnPress, CancelFleetOrders(report.force)))
+        .insert(CancelFleetOrders(report.force))
         .observe(on_cancel_fleet_orders);
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, None, Some(cancel));
@@ -1278,7 +1263,6 @@ fn bind_added_navy_rosters(
                 NavyRosterKind::Nation => {
                     entity.insert((
                         Button,
-                        ActivateOnPress,
                         NavyRosterRowAction::Select {
                             zone: row.location,
                             force: row.force,
@@ -1288,7 +1272,6 @@ fn bind_added_navy_rosters(
                 NavyRosterKind::TaskForce(force) => {
                     entity.insert((
                         Button,
-                        ActivateOnPress,
                         NavyRosterRowAction::Toggle {
                             force: *force,
                             ship: row.ship,
@@ -1341,7 +1324,6 @@ fn bind_roster_page(
             .entity(view.find(tag))
             .insert((
                 Button,
-                ActivateOnPress,
                 action,
                 match action {
                     RosterPageAction::Previous => Visibility::Hidden,

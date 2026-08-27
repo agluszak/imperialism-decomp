@@ -18,10 +18,7 @@ pub use super::retail_placard::{
     PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
 };
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
-pub use super::retail_transport_gauge::{
-    TransportGaugeParts, retail_transport_capacity_gauge, retail_transport_gauge,
-    transport_gauge_width,
-};
+pub use super::retail_transport_gauge::{TransportGaugeParts, transport_gauge_width};
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]

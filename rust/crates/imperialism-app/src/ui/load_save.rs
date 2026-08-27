@@ -15,7 +15,7 @@ use bevy::input_focus::AutoFocus;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button, SelectAllOnFocus};
+use bevy::ui_widgets::{Activate, Button, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
@@ -336,7 +336,7 @@ fn bind_load_save_actions(
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
         commands
             .entity(entity)
-            .insert((Button, ActivateOnPress, LoadSaveAction::SelectSlot(slot)))
+            .insert((Button, LoadSaveAction::SelectSlot(slot)))
             .observe(on_load_save_activate);
     }
     commands
@@ -344,20 +344,17 @@ fn bind_load_save_actions(
         .insert(LoadSaveInfo);
     commands
         .entity(tree.find(root, fourcc!("okay")))
-        .insert((ActivateOnPress, LoadSaveAction::Okay))
+        .insert(LoadSaveAction::Okay)
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
     commands
         .entity(tree.find(root, fourcc!("cncl")))
-        .insert((ActivateOnPress, LoadSaveAction::Cancel))
+        .insert(LoadSaveAction::Cancel)
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
     let otto = tree.find(root, fourcc!("otto"));
     let mut otto_commands = commands.entity(otto);
-    otto_commands.insert((
-        ActivateOnPress,
-        LoadSaveAction::SelectSlot(SaveSlot::Autosave),
-    ));
+    otto_commands.insert(LoadSaveAction::SelectSlot(SaveSlot::Autosave));
     otto_commands.observe(on_load_save_activate);
     if mode == LoadSaveMode::Save {
         otto_commands.insert(InteractionDisabled);
@@ -1052,10 +1049,6 @@ mod tests {
     use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
-    use bevy::camera::NormalizedRenderTarget;
-    use bevy::picking::backend::HitData;
-    use bevy::picking::events::{Pointer, Press};
-    use bevy::picking::pointer::{Location, PointerButton, PointerId};
     use imperialism_formats::{DibPalette, load_game_from_path};
 
     fn fixture_state() -> GameState {
@@ -1198,30 +1191,10 @@ mod tests {
                     == Some(&LoadSaveAction::SelectSlot(SaveSlot::Numbered(0)))
             })
             .unwrap();
-        assert!(app.world().get::<ActivateOnPress>(slot).is_some());
 
-        app.world_mut().trigger(Pointer::new(
-            PointerId::Mouse,
-            Location {
-                target: NormalizedRenderTarget::None {
-                    width: 1,
-                    height: 1,
-                },
-                position: Vec2::ZERO,
-            },
-            Press {
-                button: PointerButton::Primary,
-                hit: HitData {
-                    camera: Entity::PLACEHOLDER,
-                    depth: 0.0,
-                    position: None,
-                    normal: None,
-                    extra: None,
-                },
-                count: 1,
-            },
-            slot,
-        ));
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: slot });
         app.world_mut().flush();
 
         let root = app

@@ -11,7 +11,7 @@ use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::{
     BattleReportSideText, BattleReportText, PictureId, RetailTextStylePreset, fourcc,
@@ -181,21 +181,15 @@ fn bind_battle_report(
     );
     ensure_battle_report_presentation(&mut assets, session, &mut reports.0);
     let okay = tree.find(root, fourcc!("okay"));
-    commands
-        .entity(okay)
-        .insert(ActivateOnPress)
-        .observe(on_battle_report_close);
+    commands.entity(okay).observe(on_battle_report_close);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
     let info = tree.find(root, fourcc!("info"));
-    commands
-        .entity(info)
-        .insert(ActivateOnPress)
-        .observe(on_battle_report_detail);
+    commands.entity(info).observe(on_battle_report_detail);
     let previous = tree.find(root, fourcc!("prev"));
     let next = tree.find(root, fourcc!("next"));
     for (entity, is_previous) in [(previous, true), (next, false)] {
-        commands.entity(entity).insert(ActivateOnPress).observe(
+        commands.entity(entity).observe(
             move |_: On<Activate>,
                   mut views: Query<&mut BattleReportView>,
                   session: Res<GameSession>| {
@@ -743,11 +737,10 @@ fn bind_detail(
     let lcor = tree.find(root, fourcc!("lcor"));
     let rcor = tree.find(root, fourcc!("rcor"));
     let okay = tree.find(root, fourcc!("okay"));
-    commands.entity(okay).insert(ActivateOnPress);
     dismiss_on_activate(&mut commands, okay, root);
     bind_modal_keys(&mut commands, root, Some(okay), None);
     for (entity, previous) in [(lcor, true), (rcor, false)] {
-        commands.entity(entity).insert(ActivateOnPress).observe(
+        commands.entity(entity).observe(
             move |_: On<Activate>,
                   session: Res<GameSession>,
                   selected: Query<&BattleReportView>,

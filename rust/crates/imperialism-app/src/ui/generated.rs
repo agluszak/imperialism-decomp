@@ -11801,8 +11801,20 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
-                                retail_transport_capacity_gauge(4019, 93)
+                                retail_picture(4019)
+                                TransportGaugeParts { fill: #TransportFill, limit: {Entity::PLACEHOLDER} }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(51)
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
                                         Text("")
@@ -11813,8 +11825,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
-                                retail_transport_gauge(4001, 97)
+                                retail_picture(4001)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11835,8 +11866,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
-                                retail_transport_gauge(4002, 97)
+                                retail_picture(4002)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11857,8 +11907,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
-                                retail_transport_gauge(4003, 97)
+                                retail_picture(4003)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11879,8 +11948,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
-                                retail_transport_gauge(4004, 97)
+                                retail_picture(4004)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11901,8 +11989,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
-                                retail_transport_gauge(4005, 97)
+                                retail_picture(4005)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11923,8 +12030,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
-                                retail_transport_gauge(4006, 97)
+                                retail_picture(4006)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11945,8 +12071,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
-                                retail_transport_gauge(4007, 97)
+                                retail_picture(4007)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11967,8 +12112,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
-                                retail_transport_gauge(4008, 97)
+                                retail_picture(4008)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -11989,8 +12153,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
-                                retail_transport_gauge(4009, 97)
+                                retail_picture(4009)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12011,8 +12194,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
-                                retail_transport_gauge(4010, 97)
+                                retail_picture(4010)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12033,8 +12235,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
-                                retail_transport_gauge(4011, 93)
+                                retail_picture(4011)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12055,8 +12276,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
-                                retail_transport_gauge(4012, 93)
+                                retail_picture(4012)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12077,8 +12317,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
-                                retail_transport_gauge(4013, 93)
+                                retail_picture(4013)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12099,8 +12358,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
-                                retail_transport_gauge(4014, 93)
+                                retail_picture(4014)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12121,8 +12399,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
-                                retail_transport_gauge(4015, 93)
+                                retail_picture(4015)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12143,8 +12440,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
-                                retail_transport_gauge(4016, 93)
+                                retail_picture(4016)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12165,8 +12481,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
-                                retail_transport_gauge(4017, 93)
+                                retail_picture(4017)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")
@@ -12193,8 +12528,27 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
-                                retail_transport_gauge(4018, 93)
+                                retail_picture(4018)
+                                TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
+                                    (
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
+                                        retail_background_color(0x3b)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportFill
+                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
+                                        retail_background_color(58)
+                                        Pickable::IGNORE
+                                    ),
+                                    (
+                                        #TransportLimit
+                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
+                                        retail_background_color(0x33)
+                                        Visibility::Hidden
+                                        Pickable::IGNORE
+                                    ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
                                         Text("")

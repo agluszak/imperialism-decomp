@@ -8,7 +8,7 @@ use crate::ui::GameSession;
 use crate::ui::retail_resources::ShipTypeRetailResources;
 use bevy::prelude::*;
 use bevy::ui::Checked;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::Activate;
 use imperialism_core::{NavalAggression, NavyRosterKind, NavyToolbarClass};
 use imperialism_formats::*;
 
@@ -131,74 +131,59 @@ pub(crate) fn bind_navy_toolbar(
         (fourcc!("agr1"), NavalAggression::Balanced),
         (fourcc!("agr2"), NavalAggression::Aggressive),
     ] {
-        commands
-            .entity(tree.child(page, tag))
-            .insert(ActivateOnPress)
-            .observe(
-                move |_: On<Activate>,
-                      mut session: ResMut<GameSession>,
-                      map: Res<StrategicMapSession>| {
-                    if let Some(force) = map.selection.navy_force() {
-                        session.game.set_task_force_aggression(force, level);
-                    }
-                },
-            );
+        commands.entity(tree.child(page, tag)).observe(
+            move |_: On<Activate>,
+                  mut session: ResMut<GameSession>,
+                  map: Res<StrategicMapSession>| {
+                if let Some(force) = map.selection.navy_force() {
+                    session.game.set_task_force_aggression(force, level);
+                }
+            },
+        );
     }
-    commands
-        .entity(tree.child(page, fourcc!("dfnd")))
-        .insert(ActivateOnPress)
-        .observe(
-            |_: On<Activate>,
-             mut session: ResMut<GameSession>,
-             mut map: ResMut<StrategicMapSession>| {
-                if let Some(force) = map.selection.navy_force() {
-                    session.game.drop_task_force_ships(force, false);
-                }
-                map.cycle_selection(&mut session.game);
-            },
-        );
-    commands
-        .entity(tree.child(page, fourcc!("done")))
-        .insert(ActivateOnPress)
-        .observe(
-            |_: On<Activate>,
-             mut session: ResMut<GameSession>,
-             mut map: ResMut<StrategicMapSession>| {
-                if let Some(force) = map.selection.navy_force() {
-                    session.game.drop_task_force_ships(force, true);
-                }
-                map.cycle_selection(&mut session.game);
-            },
-        );
-    commands
-        .entity(tree.child(page, fourcc!("next")))
-        .insert(ActivateOnPress)
-        .observe(
-            |_: On<Activate>,
-             mut session: ResMut<GameSession>,
-             mut map: ResMut<StrategicMapSession>| {
-                map.cycle_selection(&mut session.game);
-            },
-        );
-    commands
-        .entity(tree.child(page, fourcc!("bomb")))
-        .insert(ActivateOnPress)
-        .observe(
-            |_: On<Activate>,
-             keys: Res<ButtonInput<KeyCode>>,
-             mut commands: Commands,
-             map: Res<StrategicMapSession>| {
-                let roster =
-                    if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
-                        NavyRosterKind::Nation
-                    } else if let Some(force) = map.selection.navy_force() {
-                        NavyRosterKind::TaskForce(force)
-                    } else {
-                        return;
-                    };
-                spawn_navy_roster(&mut commands, roster);
-            },
-        );
+    commands.entity(tree.child(page, fourcc!("dfnd"))).observe(
+        |_: On<Activate>,
+         mut session: ResMut<GameSession>,
+         mut map: ResMut<StrategicMapSession>| {
+            if let Some(force) = map.selection.navy_force() {
+                session.game.drop_task_force_ships(force, false);
+            }
+            map.cycle_selection(&mut session.game);
+        },
+    );
+    commands.entity(tree.child(page, fourcc!("done"))).observe(
+        |_: On<Activate>,
+         mut session: ResMut<GameSession>,
+         mut map: ResMut<StrategicMapSession>| {
+            if let Some(force) = map.selection.navy_force() {
+                session.game.drop_task_force_ships(force, true);
+            }
+            map.cycle_selection(&mut session.game);
+        },
+    );
+    commands.entity(tree.child(page, fourcc!("next"))).observe(
+        |_: On<Activate>,
+         mut session: ResMut<GameSession>,
+         mut map: ResMut<StrategicMapSession>| {
+            map.cycle_selection(&mut session.game);
+        },
+    );
+    commands.entity(tree.child(page, fourcc!("bomb"))).observe(
+        |_: On<Activate>,
+         keys: Res<ButtonInput<KeyCode>>,
+         mut commands: Commands,
+         map: Res<StrategicMapSession>| {
+            let roster =
+                if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                    NavyRosterKind::Nation
+                } else if let Some(force) = map.selection.navy_force() {
+                    NavyRosterKind::TaskForce(force)
+                } else {
+                    return;
+                };
+            spawn_navy_roster(&mut commands, roster);
+        },
+    );
 }
 
 pub(crate) fn navy_page_position(selection: StrategicSelection) -> Vec2 {

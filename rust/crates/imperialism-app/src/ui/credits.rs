@@ -3,7 +3,7 @@ use super::retail::{RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
+use bevy::ui_widgets::{Activate, Button};
 use imperialism_formats::{RetailTextStylePreset, StringResourceId, fourcc};
 
 #[derive(Component)]
@@ -42,7 +42,7 @@ fn bind_credits(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("main")))
-        .insert((Button, ActivateOnPress))
+        .insert(Button)
         .observe(on_credits_activate)
         .remove::<InteractionDisabled>();
 }

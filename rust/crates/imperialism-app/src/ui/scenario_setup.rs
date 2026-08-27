@@ -6,7 +6,7 @@ use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
+use bevy::ui_widgets::{Activate, Button};
 use imperialism_core::{
     MajorNationId, MapMgr, ScenarioInstruction, create_scenario_game,
     enter_strategic_map_without_capital_selection,
@@ -127,12 +127,11 @@ fn bind_scenario_setup(
         .observe(on_map_click);
     commands
         .entity(tree.find(root, fourcc!("star")))
-        .insert((StartScenario, ActivateOnPress))
+        .insert(StartScenario)
         .remove::<InteractionDisabled>()
         .observe(on_start_scenario);
     commands
         .entity(tree.find(root, fourcc!("exit")))
-        .insert(ActivateOnPress)
         .observe(on_exit_scenario_setup);
 }
 
@@ -143,7 +142,6 @@ fn scenario_row(title: String, index: usize) -> impl Scene {
             left: px(0), top: px(index as i32 * 16), width: percent(100), height: px(16),
         }
         Button
-        ActivateOnPress
         template(move |_context| Ok(SelectScenario(index)))
         template(move |_context| Ok(Text::new(title.clone())))
         retail_text_style(1, 0, 12, -2)
