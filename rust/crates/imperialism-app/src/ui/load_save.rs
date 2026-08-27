@@ -11,11 +11,21 @@ use crate::ui::{
 };
 use crate::{AppState, ReturnTo};
 use bevy::app::AppExit;
+#[cfg(test)]
+use bevy::camera::NormalizedRenderTarget;
 use bevy::input_focus::AutoFocus;
+#[cfg(test)]
+use bevy::picking::backend::HitData;
+#[cfg(test)]
+use bevy::picking::events::Pointer;
+#[cfg(test)]
+use bevy::picking::events::Press;
+#[cfg(test)]
+use bevy::picking::pointer::{Location, PointerButton, PointerId};
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
@@ -1076,6 +1086,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
+            .add_plugins(bevy::ui_widgets::ButtonPlugin)
             .add_plugins(crate::ui::UiWindowPlugin)
             .add_message::<AppExit>()
             .insert_state(initial)
@@ -1195,9 +1206,28 @@ mod tests {
             .unwrap();
         assert!(app.world().get::<ActivateOnPress>(slot).is_some());
 
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: slot });
+        app.world_mut().trigger(Pointer::new(
+            PointerId::Mouse,
+            Location {
+                target: NormalizedRenderTarget::None {
+                    width: 1,
+                    height: 1,
+                },
+                position: Vec2::ZERO,
+            },
+            Press {
+                button: PointerButton::Primary,
+                hit: HitData {
+                    camera: Entity::PLACEHOLDER,
+                    depth: 0.0,
+                    position: None,
+                    normal: None,
+                    extra: None,
+                },
+                count: 1,
+            },
+            slot,
+        ));
         app.world_mut().flush();
 
         let root = app
