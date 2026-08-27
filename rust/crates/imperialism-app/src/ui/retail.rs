@@ -12,17 +12,20 @@ use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
 
-pub use super::retail_amount_bar::{RetailAmountBarKind, retail_amount_bar};
-pub use super::retail_amount_selector::{RetailAmountSelectorKind, retail_amount_selector};
-pub use super::retail_army_placard::{ArmyPlacardValue, retail_army_placard};
-pub use super::retail_numbered_arrow::{
-    NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, retail_numbered_arrow,
+pub use super::retail_amount_bar::{
+    AmountBarParts, AmountBarStyle, amount_bar_fill_widths, amount_bar_geometry,
+    apply_amount_bar_fill, retail_amount_bar,
 };
-pub use super::retail_placard::{PlacardValue, retail_placard};
-pub use super::retail_ship_placard::{ShipPlacardValue, retail_ship_placard};
-pub use super::retail_slider::retail_two_pic_slider;
+pub use super::retail_army_placard::{ArmyPlacardParts, retail_army_placard};
+pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
+pub use super::retail_placard::{
+    PlacardParts, placard_text_layout, placard_text_x, retail_placard,
+};
+pub use super::retail_ship_placard::{ShipPlacardParts, retail_ship_placard};
+pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_transport_gauge::{
-    RetailTransportGaugeKind, TransportGaugeValue, retail_transport_gauge,
+    RetailTransportGaugeKind, TransportGaugeParts, apply_transport_gauge, retail_transport_gauge,
+    transport_gauge_width,
 };
 
 /// Provenance tag recovered from the retail View resource.
@@ -453,13 +456,8 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_radio_text_fill_state::<Add, Checked>)
             .add_observer(on_radio_text_fill_state::<Remove, Checked>)
             .add_observer(on_radio_text_fill_state::<Add, RetailRadioTextFill>);
-        super::retail_amount_bar::register_amount_bar(app);
-        super::retail_amount_selector::register_amount_selector(app);
-        super::retail_placard::register_placard(app);
         super::retail_slider::register_slider(app);
         super::retail_numbered_arrow::register_numbered_arrow(app);
-        super::retail_army_placard::register_army_placard(app);
-        super::retail_ship_placard::register_ship_placard(app);
         super::retail_transport_gauge::register_transport_gauge(app);
         super::hover_help::register_hover_help(app);
     }

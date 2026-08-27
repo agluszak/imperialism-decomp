@@ -1,15 +1,13 @@
-//! Recovered `TAmtBar` family as a BSN SceneComponent.
+//! Recovered `TAmtBar` family as a structure-only BSN SceneComponent.
 //!
-//! Structure (`RetailAmountBar` + fill/limit children) is spawned atomically.
-//! Screens project [`RetailAmountBarState`] and observe `ValueChange<i16>`.
+//! Screens own interaction and presentation: set fill/limit widths via
+//! [`amount_bar_fill_widths`] (or geometry.span) and observe clicks themselves.
+
+use crate::RetailAssetsResource;
+use bevy::prelude::*;
+use imperialism_formats::IndexedPicture;
 
 use super::retail_raster::IndexedRasterExt;
-use crate::RetailAssetsResource;
-use bevy::picking::events::{Click, Pointer};
-use bevy::prelude::*;
-use bevy::ui::UiSystems;
-use bevy::ui_widgets::ValueChange;
-use imperialism_formats::IndexedPicture;
 
 pub const INDUSTRY_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
     width: 150,
@@ -29,69 +27,45 @@ pub const INDUSTRY_BAR_FILL: u8 = 0x16;
 pub const TRADE_BAR_FILL: u8 = 0xbd;
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub enum RetailAmountBarKind {
+pub enum AmountBarStyle {
     #[default]
-    Industry,
-    Rail,
-    Trader,
+    Production,
+    Trade,
 }
 
-/// Immutable recovered amount-bar specialization plus private child refs.
+/// Private child refs for the amount-bar hierarchy.
 #[derive(SceneComponent, FromTemplate, Clone)]
-#[scene(RetailAmountBarProps)]
-pub struct RetailAmountBar {
-    pub kind: RetailAmountBarKind,
+#[scene(AmountBarProps)]
+pub struct AmountBarParts {
     pub fill: Entity,
     pub limit: Entity,
 }
 
-/// Static construction props for [`RetailAmountBar`].
+/// Static construction props for [`AmountBarParts`].
 #[derive(Default, Clone, Copy)]
-pub struct RetailAmountBarProps {
-    pub kind: RetailAmountBarKind,
+pub struct AmountBarProps {
+    pub style: AmountBarStyle,
 }
 
-/// Live presentation state projected from authoritative gameplay.
-#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct RetailAmountBarState {
-    pub value: i16,
-    pub range: i16,
-    pub maximum: i16,
-}
-
-impl RetailAmountBar {
-    pub fn geometry(&self, state: RetailAmountBarState) -> AmountBarGeometry {
-        match self.kind {
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
-                INDUSTRY_AMOUNT_BAR.with_segments(state.range)
-            }
-            RetailAmountBarKind::Trader => TRADE_AMOUNT_BAR.with_segments(state.range),
-        }
-    }
-
-    fn scene(props: RetailAmountBarProps) -> impl Scene {
-        let fill_index = match props.kind {
-            RetailAmountBarKind::Trader => TRADE_BAR_FILL,
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => INDUSTRY_BAR_FILL,
+impl AmountBarParts {
+    fn scene(props: AmountBarProps) -> impl Scene {
+        let fill_index = match props.style {
+            AmountBarStyle::Trade => TRADE_BAR_FILL,
+            AmountBarStyle::Production => INDUSTRY_BAR_FILL,
         };
-        let (fill_top, fill_height) = match props.kind {
-            RetailAmountBarKind::Trader => (Val::Px(0.0), Val::Percent(100.0)),
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
-                (Val::Px(1.0), Val::Px(4.0))
-            }
+        let (fill_top, fill_height) = match props.style {
+            AmountBarStyle::Trade => (Val::Px(0.0), Val::Percent(100.0)),
+            AmountBarStyle::Production => (Val::Px(1.0), Val::Px(4.0)),
         };
-        let limit_visibility = match props.kind {
-            RetailAmountBarKind::Trader => Visibility::Hidden,
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => Visibility::Inherited,
+        let limit_visibility = match props.style {
+            AmountBarStyle::Trade => Visibility::Hidden,
+            AmountBarStyle::Production => Visibility::Inherited,
         };
         bsn! {
-            RetailAmountBar {
-                kind: {props.kind},
+            AmountBarParts {
                 fill: #Fill,
                 limit: #Limit,
             }
-            RetailAmountBarState
-            on(on_amount_bar_click)
             Children [
                 (
                     #Fill
@@ -128,10 +102,10 @@ impl RetailAmountBar {
 }
 
 /// BSN helper used by generated screens.
-pub fn retail_amount_bar(kind: RetailAmountBarKind) -> impl Scene {
+pub fn retail_amount_bar(style: AmountBarStyle) -> impl Scene {
     bsn! {
-        @RetailAmountBar {
-            @kind: kind,
+        @AmountBarParts {
+            @style: style,
         }
     }
 }
@@ -157,6 +131,51 @@ impl AmountBarGeometry {
     }
 }
 
+pub fn amount_bar_geometry(style: AmountBarStyle, segments: i16) -> AmountBarGeometry {
+    match style {
+        AmountBarStyle::Production => INDUSTRY_AMOUNT_BAR.with_segments(segments),
+        AmountBarStyle::Trade => TRADE_AMOUNT_BAR.with_segments(segments),
+    }
+}
+
+/// Fill width and optional limit-marker left for screens to write onto [`AmountBarParts`].
+pub fn amount_bar_fill_widths(
+    style: AmountBarStyle,
+    value: i16,
+    range: i16,
+    maximum: i16,
+) -> (f32, Option<f32>) {
+    let geometry = amount_bar_geometry(style, range);
+    let fill = f32::from(geometry.span(value));
+    let limit = match style {
+        AmountBarStyle::Production => Some(f32::from(geometry.span(maximum))),
+        AmountBarStyle::Trade => None,
+    };
+    (fill, limit)
+}
+
+/// Apply fill/limit node widths from authoritative values.
+pub fn apply_amount_bar_fill(
+    parts: &AmountBarParts,
+    style: AmountBarStyle,
+    value: i16,
+    range: i16,
+    maximum: i16,
+    nodes: &mut Query<&mut Node>,
+) {
+    let (fill, limit) = amount_bar_fill_widths(style, value, range, maximum);
+    nodes
+        .get_mut(parts.fill)
+        .expect("AmountBarParts fill child")
+        .width = Val::Px(fill);
+    if let Some(left) = limit {
+        nodes
+            .get_mut(parts.limit)
+            .expect("AmountBarParts limit child")
+            .left = Val::Px(left);
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct AmountBarPixels {
     pub range: i16,
@@ -170,10 +189,6 @@ pub fn amount_bar_counter_offset(geometry: AmountBarGeometry, value: i16) -> Vec
     Vec2::new(f32::from(span) - 2.0, 6.0)
 }
 
-pub(super) fn register_amount_bar(app: &mut App) {
-    app.add_systems(PostUpdate, draw_amount_bars.before(UiSystems::Prepare));
-}
-
 fn template_palette_color(context: &bevy::ecs::template::TemplateContext, index: u8) -> Color {
     let [red, green, blue] = context
         .resource::<RetailAssetsResource>()
@@ -181,53 +196,6 @@ fn template_palette_color(context: &bevy::ecs::template::TemplateContext, index:
         .default_dib_palette()[index]
         .to_array();
     Color::srgb_u8(red, green, blue)
-}
-
-fn draw_amount_bars(
-    bars: Query<(&RetailAmountBar, &RetailAmountBarState), Changed<RetailAmountBarState>>,
-    mut nodes: Query<&mut Node>,
-) {
-    for (bar, state) in &bars {
-        let geometry = bar.geometry(*state);
-        let span = geometry.span(state.value);
-        nodes
-            .get_mut(bar.fill)
-            .expect("RetailAmountBar fill child")
-            .width = Val::Px(f32::from(span));
-        if !matches!(bar.kind, RetailAmountBarKind::Trader) {
-            nodes
-                .get_mut(bar.limit)
-                .expect("RetailAmountBar limit child")
-                .left = Val::Px(f32::from(geometry.span(state.maximum)));
-        }
-    }
-}
-
-fn on_amount_bar_click(
-    mut click: On<Pointer<Click>>,
-    bars: Query<(&RetailAmountBar, &RetailAmountBarState)>,
-    mut commands: Commands,
-) {
-    let Ok((bar, state)) = bars.get(click.entity) else {
-        return;
-    };
-    let Some(position) = click.hit.position else {
-        return;
-    };
-    click.propagate(false);
-    let geometry = bar.geometry(*state);
-    let x = amount_bar_x_from_normalized(geometry, position.x);
-    let value = match bar.kind {
-        RetailAmountBarKind::Trader => trade_amount_bar_click_value(geometry, x),
-        RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
-            amount_bar_click_value(geometry, x, state.value)
-        }
-    };
-    commands.trigger(ValueChange {
-        source: click.entity,
-        value,
-        is_final: true,
-    });
 }
 
 /// `TAmtBar::DoMouseCommand`: `x * segments / width + 1`, with a leading half-segment dead zone.
@@ -389,5 +357,15 @@ mod tests {
             amount_bar_counter_offset(geometry, 25),
             Vec2::new(73.0, 6.0)
         );
+    }
+
+    #[test]
+    fn fill_widths_hide_trade_limit() {
+        let (fill, limit) = amount_bar_fill_widths(AmountBarStyle::Trade, 10, 20, 15);
+        assert_eq!(fill, 50.0);
+        assert_eq!(limit, None);
+        let (fill, limit) = amount_bar_fill_widths(AmountBarStyle::Production, 25, 50, 40);
+        assert_eq!(fill, 75.0);
+        assert_eq!(limit, Some(120.0));
     }
 }

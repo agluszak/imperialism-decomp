@@ -1,37 +1,33 @@
-//! Recovered `TPlacard` as a BSN SceneComponent.
+//! Recovered `TPlacard` as a structure-only BSN SceneComponent.
 //!
-//! Structure (`RetailPlacard` + text child) is spawned atomically with the scene.
-//! Screens project `PlacardValue`; this module redraws text and digit-aware layout.
+//! Screens write the caption [`Text`], layout, and root [`Visibility`].
 
 use super::retail::{retail_picture, retail_text_color, retail_text_shadow, retail_text_style};
 use bevy::prelude::*;
-use bevy::ui::UiSystems;
+
+/// System 10pt logical cell height (`(10*10+3)/8`).
+const SYSTEM_10PT_HEIGHT: f32 = 12.0;
 
 /// Private structure for the recovered placard hierarchy.
 #[derive(SceneComponent, FromTemplate, Clone)]
-#[scene(RetailPlacardProps)]
-pub struct RetailPlacard {
+#[scene(PlacardProps)]
+pub struct PlacardParts {
     pub text: Entity,
 }
 
-/// Static construction props for [`RetailPlacard`].
+/// Static construction props for [`PlacardParts`].
 #[derive(Default, Clone, Copy)]
-pub struct RetailPlacardProps {
+pub struct PlacardProps {
     pub picture_id: i16,
 }
 
-/// Externally projected placard value (`TPlacard::glyph90`).
-#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct PlacardValue(pub i16);
-
-impl RetailPlacard {
-    fn scene(props: RetailPlacardProps) -> impl Scene {
+impl PlacardParts {
+    fn scene(props: PlacardProps) -> impl Scene {
         bsn! {
             retail_picture(props.picture_id)
-            RetailPlacard {
+            PlacardParts {
                 text: #Value,
             }
-            PlacardValue(0)
             Visibility::Hidden
             Children [(
                 #Value
@@ -55,14 +51,10 @@ impl RetailPlacard {
 /// BSN helper used by generated screens.
 pub fn retail_placard(picture_id: i16) -> impl Scene {
     bsn! {
-        @RetailPlacard {
+        @PlacardParts {
             @picture_id: picture_id,
         }
     }
-}
-
-pub(super) fn register_placard(app: &mut App) {
-    app.add_systems(PostUpdate, draw_placards.before(UiSystems::Prepare));
 }
 
 /// `TPlacard::Draw` digit-aware X origin relative to placard left.
@@ -77,39 +69,10 @@ pub fn placard_text_x(width: f32, value: i16) -> f32 {
     }
 }
 
-fn draw_placards(
-    mut placards: Query<
-        (&PlacardValue, &RetailPlacard, &Node, &mut Visibility),
-        Changed<PlacardValue>,
-    >,
-    mut texts: Query<&mut Text>,
-    mut nodes: Query<&mut Node, Without<RetailPlacard>>,
-) {
-    for (value, placard, root, mut visibility) in &mut placards {
-        let shown = value.0 != 0;
-        *visibility = if shown {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
-        if !shown {
-            continue;
-        }
-        let (Val::Px(width), Val::Px(height)) = (root.width, root.height) else {
-            continue;
-        };
-        // QuickDraw baseline is `frameHeight - 2`; Book Antiqua 10pt cell is 14px.
-        let top = (height - 2.0 - 12.0).max(0.0);
-        let mut text = texts
-            .get_mut(placard.text)
-            .expect("RetailPlacard text child");
-        text.0 = value.0.to_string();
-        let mut text_node = nodes
-            .get_mut(placard.text)
-            .expect("RetailPlacard text node");
-        text_node.left = Val::Px(placard_text_x(width, value.0));
-        text_node.top = Val::Px(top);
-    }
+/// QuickDraw baseline `frameHeight - 2` with system 10pt cell height 12.
+pub fn placard_text_layout(root_width: f32, root_height: f32, value: i16) -> (f32, f32) {
+    let top = (root_height - 2.0 - SYSTEM_10PT_HEIGHT).max(0.0);
+    (placard_text_x(root_width, value), top)
 }
 
 #[cfg(test)]
@@ -121,5 +84,10 @@ mod tests {
         assert_eq!(placard_text_x(39.0, 9), 39.0 / 2.0 - 2.0);
         assert_eq!(placard_text_x(39.0, 10), 39.0 / 2.0 - 6.0);
         assert_eq!(placard_text_x(39.0, 100), 39.0 / 2.0 - 10.0);
+    }
+
+    #[test]
+    fn layout_uses_baseline_minus_cell_height() {
+        assert_eq!(placard_text_layout(39.0, 40.0, 9), (39.0 / 2.0 - 2.0, 26.0));
     }
 }

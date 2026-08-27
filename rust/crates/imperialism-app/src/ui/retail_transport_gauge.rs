@@ -1,14 +1,12 @@
-//! Recovered `TTransportPicture` gauge overlays as a BSN SceneComponent.
+//! Recovered `TTransportPicture` gauge overlays as a structure-only BSN SceneComponent.
 //!
-//! The retail picture is the static art; this widget owns the 113px fill track,
-//! remainder band, optional limit strip, capacity fill colouring, and the
-//! generated `text` child caption (`"{current}  /  {total}"`).
+//! Screens call [`apply_transport_gauge`] (or write fill/caption/limit directly).
+//! The Add observer wires the generated `text` child into [`TransportGaugeParts`].
 
 use super::retail::{RetailTag, retail_picture};
 use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
 use bevy::prelude::*;
-use bevy::ui::UiSystems;
 use imperialism_formats::fourcc;
 
 const TRACK_WIDTH: f32 = 113.0;
@@ -31,8 +29,8 @@ pub enum RetailTransportGaugeKind {
 
 /// Private structure for the transport-gauge hierarchy.
 #[derive(SceneComponent, FromTemplate, Clone)]
-#[scene(RetailTransportGaugeProps)]
-pub struct RetailTransportGauge {
+#[scene(TransportGaugeProps)]
+pub struct TransportGaugeParts {
     pub kind: RetailTransportGaugeKind,
     pub fill: Entity,
     pub limit: Entity,
@@ -40,24 +38,16 @@ pub struct RetailTransportGauge {
     pub caption: Entity,
 }
 
-/// Static construction props for [`RetailTransportGauge`].
+/// Static construction props for [`TransportGaugeParts`].
 #[derive(Default, Clone, Copy)]
-pub struct RetailTransportGaugeProps {
+pub struct TransportGaugeProps {
     pub picture_id: i16,
     pub kind: RetailTransportGaugeKind,
     pub track_left: i16,
 }
 
-/// Externally projected gauge state (`splitValue94` / `96` / `splitLimit98`).
-#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct TransportGaugeValue {
-    pub current: i16,
-    pub total: i16,
-    pub limit: Option<i16>,
-}
-
-impl RetailTransportGauge {
-    fn scene(props: RetailTransportGaugeProps) -> impl Scene {
+impl TransportGaugeParts {
+    fn scene(props: TransportGaugeProps) -> impl Scene {
         let track_left = f32::from(props.track_left);
         let fill_palette = match props.kind {
             RetailTransportGaugeKind::Allocation => ALLOCATION_FILL_PALETTE,
@@ -65,13 +55,12 @@ impl RetailTransportGauge {
         };
         bsn! {
             retail_picture(props.picture_id)
-            RetailTransportGauge {
+            TransportGaugeParts {
                 kind: {props.kind},
                 fill: #Fill,
                 limit: #Limit,
                 caption: {Entity::PLACEHOLDER},
             }
-            TransportGaugeValue
             Children [
                 (
                     Node {
@@ -127,7 +116,7 @@ pub fn retail_transport_gauge(
     track_left: i16,
 ) -> impl Scene {
     bsn! {
-        @RetailTransportGauge {
+        @TransportGaugeParts {
             @picture_id: picture_id,
             @kind: kind,
             @track_left: track_left,
@@ -136,15 +125,14 @@ pub fn retail_transport_gauge(
 }
 
 pub(super) fn register_transport_gauge(app: &mut App) {
-    app.add_systems(PostUpdate, draw_transport_gauges.before(UiSystems::Prepare))
-        .add_observer(on_transport_gauge_added);
+    app.add_observer(on_transport_gauge_added);
 }
 
 fn on_transport_gauge_added(
-    event: On<Add, RetailTransportGauge>,
+    event: On<Add, TransportGaugeParts>,
     children: Query<&Children>,
     tags: Query<&RetailTag>,
-    mut gauges: Query<&mut RetailTransportGauge>,
+    mut gauges: Query<&mut TransportGaugeParts>,
 ) {
     let Ok(mut gauge) = gauges.get_mut(event.entity) else {
         return;
@@ -176,6 +164,55 @@ pub fn transport_gauge_width(value: i16, total: i16) -> f32 {
     width.clamp(0.0, TRACK_WIDTH).trunc()
 }
 
+/// Project authoritative gauge values onto fill, caption, and limit presentation.
+pub fn apply_transport_gauge(
+    parts: &TransportGaugeParts,
+    current: i16,
+    total: i16,
+    limit: Option<i16>,
+    nodes: &mut Query<&mut Node>,
+    texts: &mut Query<&mut Text>,
+    backgrounds: &mut Query<&mut BackgroundColor>,
+    commands: &mut Commands,
+    partial: Color,
+    full: Color,
+) {
+    nodes
+        .get_mut(parts.fill)
+        .expect("TransportGaugeParts fill child")
+        .width = Val::Px(transport_gauge_width(current, total));
+    if parts.caption != Entity::PLACEHOLDER {
+        texts
+            .get_mut(parts.caption)
+            .expect("TransportGaugeParts caption child")
+            .0 = format!("{current}  /  {total}");
+    }
+    match parts.kind {
+        RetailTransportGaugeKind::Allocation => match limit {
+            Some(limit) => {
+                commands.entity(parts.limit).insert(Visibility::Visible);
+                backgrounds
+                    .get_mut(parts.limit)
+                    .expect("TransportGaugeParts limit child")
+                    .0 = if current < limit { partial } else { full };
+            }
+            None => {
+                commands.entity(parts.limit).insert(Visibility::Hidden);
+            }
+        },
+        RetailTransportGaugeKind::Capacity => {
+            backgrounds
+                .get_mut(parts.fill)
+                .expect("TransportGaugeParts fill child")
+                .0 = if total > 0 && current == total {
+                full
+            } else {
+                partial
+            };
+        }
+    }
+}
+
 fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
     let [red, green, blue] = context
         .resource::<RetailAssetsResource>()
@@ -185,61 +222,9 @@ fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
     Color::srgb_u8(red, green, blue)
 }
 
-fn draw_transport_gauges(
-    gauges: Query<(&RetailTransportGauge, &TransportGaugeValue), Changed<TransportGaugeValue>>,
-    mut nodes: Query<&mut Node>,
-    mut backgrounds: Query<&mut BackgroundColor>,
-    mut texts: Query<&mut Text>,
-    mut commands: Commands,
-    assets: Option<Res<RetailAssetsResource>>,
-) {
-    let Some(assets) = assets else {
-        return;
-    };
-    let partial = palette_color(&assets, PARTIAL_PALETTE);
-    let full = palette_color(&assets, FULL_PALETTE);
-    for (gauge, value) in &gauges {
-        nodes
-            .get_mut(gauge.fill)
-            .expect("RetailTransportGauge fill child")
-            .width = Val::Px(transport_gauge_width(value.current, value.total));
-        if gauge.caption != Entity::PLACEHOLDER {
-            texts
-                .get_mut(gauge.caption)
-                .expect("RetailTransportGauge caption child")
-                .0 = format!("{}  /  {}", value.current, value.total);
-        }
-        match gauge.kind {
-            RetailTransportGaugeKind::Allocation => match value.limit {
-                Some(limit) => {
-                    commands.entity(gauge.limit).insert(Visibility::Visible);
-                    backgrounds
-                        .get_mut(gauge.limit)
-                        .expect("RetailTransportGauge limit child")
-                        .0 = if value.current < limit { partial } else { full };
-                }
-                None => {
-                    commands.entity(gauge.limit).insert(Visibility::Hidden);
-                }
-            },
-            RetailTransportGaugeKind::Capacity => {
-                backgrounds
-                    .get_mut(gauge.fill)
-                    .expect("RetailTransportGauge fill child")
-                    .0 = if value.total > 0 && value.current == value.total {
-                    full
-                } else {
-                    partial
-                };
-            }
-        }
-    }
-}
-
-fn palette_color(assets: &RetailAssetsResource, index: u8) -> Color {
-    let [red, green, blue] = assets.assets().default_dib_palette()[index].to_array();
-    Color::srgb_u8(red, green, blue)
-}
+/// Palette indices used by [`apply_transport_gauge`] for capacity/limit colouring.
+pub const TRANSPORT_GAUGE_PARTIAL_PALETTE: u8 = PARTIAL_PALETTE;
+pub const TRANSPORT_GAUGE_FULL_PALETTE: u8 = FULL_PALETTE;
 
 #[cfg(test)]
 mod tests {

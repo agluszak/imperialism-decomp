@@ -1,12 +1,11 @@
-//! Recovered `TShipPlacard` as a BSN SceneComponent.
+//! Recovered `TShipPlacard` as a structure-only BSN SceneComponent.
 //!
-//! Visually distinct from [`super::retail_army_placard::RetailArmyPlacard`]: retail centers the
-//! available-count caption around (0x50, 0x2e) with theme `0x2b6c` / shadow `0x2b67` (+1,+1).
-//! `(0x50 - width/2, 0x2e)` is the QuickDraw baseline origin, not a Bevy text-box top-left.
+//! Screens write the available-count caption. Retail centers around (0x50, 0x2e)
+//! with theme `0x2b6c` / shadow `0x2b67` (+1,+1). `(0x50 - width/2, 0x2e)` is the
+//! QuickDraw baseline origin, not a Bevy text-box top-left.
 
 use super::retail::{retail_picture, retail_text_color, retail_text_shadow, retail_text_style};
 use bevy::prelude::*;
-use bevy::ui::UiSystems;
 
 /// System 10pt logical cell height (`(10*10+3)/8`).
 const SYSTEM_10PT_HEIGHT: f32 = 12.0;
@@ -20,29 +19,24 @@ const TEXT_LEFT: f32 = CENTER_X - TEXT_WIDTH / 2.0;
 
 /// Private structure for the ship-placard hierarchy.
 #[derive(SceneComponent, FromTemplate, Clone)]
-#[scene(RetailShipPlacardProps)]
-pub struct RetailShipPlacard {
+#[scene(ShipPlacardProps)]
+pub struct ShipPlacardParts {
     pub text: Entity,
 }
 
-/// Static construction props for [`RetailShipPlacard`].
+/// Static construction props for [`ShipPlacardParts`].
 #[derive(Default, Clone, Copy)]
-pub struct RetailShipPlacardProps {
+pub struct ShipPlacardProps {
     pub picture_id: i16,
 }
 
-/// Externally projected available ship count. `None` or non-positive clears the label.
-#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct ShipPlacardValue(pub Option<i32>);
-
-impl RetailShipPlacard {
-    fn scene(props: RetailShipPlacardProps) -> impl Scene {
+impl ShipPlacardParts {
+    fn scene(props: ShipPlacardProps) -> impl Scene {
         bsn! {
             retail_picture(props.picture_id)
-            RetailShipPlacard {
+            ShipPlacardParts {
                 text: #Count,
             }
-            ShipPlacardValue(None)
             Children [(
                 #Count
                 Node {
@@ -65,29 +59,9 @@ impl RetailShipPlacard {
 /// BSN helper used by generated screens.
 pub fn retail_ship_placard(picture_id: i16) -> impl Scene {
     bsn! {
-        @RetailShipPlacard {
+        @ShipPlacardParts {
             @picture_id: picture_id,
         }
-    }
-}
-
-pub(super) fn register_ship_placard(app: &mut App) {
-    app.add_systems(PostUpdate, draw_ship_placards.before(UiSystems::Prepare));
-}
-
-fn draw_ship_placards(
-    pictures: Query<(&ShipPlacardValue, &RetailShipPlacard), Changed<ShipPlacardValue>>,
-    mut texts: Query<&mut Text>,
-) {
-    for (value, picture) in &pictures {
-        texts
-            .get_mut(picture.text)
-            .expect("RetailShipPlacard text child")
-            .0 = value
-            .0
-            .filter(|&count| count > 0)
-            .map(|count| count.to_string())
-            .unwrap_or_default();
     }
 }
 
