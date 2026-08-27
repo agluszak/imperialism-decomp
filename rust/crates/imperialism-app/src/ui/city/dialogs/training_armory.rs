@@ -87,18 +87,18 @@ pub(in crate::ui::city) fn bind_training(
         commands.entity(entity).insert(Text::new(text));
     }
     let orders = TrainingOrderTable::from_array(TRAINING_ORDER_TAGS).map(|level, tag| {
-            bind_industry_order_row(
-                commands,
-                root,
-                tree,
-                amount_bars,
-                CityOrderId::Training(level),
-                tag,
-                1,
-            )
-            .bar
-            .expect("training amount bar")
-        });
+        bind_industry_order_row(
+            commands,
+            root,
+            tree,
+            amount_bars,
+            CityOrderId::Training(level),
+            tag,
+            1,
+        )
+        .bar
+        .expect("training amount bar")
+    });
     TrainingUi {
         orders,
         paper_one: tree.find(root, fourcc!("pap1")),

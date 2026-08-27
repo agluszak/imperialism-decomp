@@ -5,6 +5,7 @@ from pathlib import Path
 
 from tools.source_model import build_model
 from tools.ui_codegen import (
+    RUST_CITY_LAYOUT_PATH,
     RUST_UI_PATH,
     WidgetKind,
     _case_for_resource,
@@ -22,6 +23,7 @@ from tools.ui_codegen import (
     load_windows_text_property_patches,
     load_windows_views,
     normalize_resource_view,
+    render_city_building_layout,
     render_rust_ui,
     resource_backed_scene_keys,
     validate,
@@ -103,6 +105,13 @@ class UiCodegenTests(unittest.TestCase):
         self.assertEqual(
             rendered,
             (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
+        )
+
+    def test_generated_city_building_layout_is_current(self) -> None:
+        rendered = render_city_building_layout(REPO_ROOT)
+        self.assertEqual(
+            rendered,
+            (REPO_ROOT / RUST_CITY_LAYOUT_PATH).read_text(encoding="utf-8"),
         )
 
     def test_generated_rust_ui_omits_handwritten_city_tables(self) -> None:

@@ -1,34 +1,6 @@
 use super::*;
 use crate::ui::retail::AmountBarParts;
 
-fn warehouse_stock_tag(resource: ResourceKind) -> FourCc {
-    match resource {
-        ResourceKind::Cotton => fourcc!("cott"),
-        ResourceKind::Wool => fourcc!("wool"),
-        ResourceKind::Timber => fourcc!("timb"),
-        ResourceKind::Coal => fourcc!("coal"),
-        ResourceKind::Iron => fourcc!("iron"),
-        ResourceKind::Horses => fourcc!("hors"),
-        ResourceKind::Oil => fourcc!("oil "),
-        ResourceKind::Food => fourcc!("food"),
-        ResourceKind::Fabric => fourcc!("fabr"),
-        ResourceKind::Lumber => fourcc!("lumb"),
-        ResourceKind::Paper => fourcc!("pape"),
-        ResourceKind::Steel => fourcc!("stee"),
-        ResourceKind::Fuel => fourcc!("fuel"),
-        ResourceKind::Clothing => fourcc!("clot"),
-        ResourceKind::Furniture => fourcc!("furn"),
-        ResourceKind::Hardware => fourcc!("hard"),
-        ResourceKind::Arms => fourcc!("arma"),
-        ResourceKind::Grain => fourcc!("grai"),
-        ResourceKind::Fruit => fourcc!("prod"),
-        ResourceKind::Livestock => fourcc!("live"),
-        ResourceKind::Fish | ResourceKind::Gems | ResourceKind::Gold => {
-            panic!("warehouse stock tag requested for {resource:?}")
-        }
-    }
-}
-
 pub(in crate::ui::city) struct WarehouseUi {
     stocks: Vec<(Entity, ResourceKind)>,
     labor: Entity,
@@ -71,7 +43,7 @@ pub(in crate::ui::city) fn bind_warehouse(
     let stocks = (0..=ResourceKind::Livestock.retail())
         .filter_map(ResourceKind::from_index)
         .filter(|resource| *resource != ResourceKind::Fish)
-        .map(|resource| (tree.find(root, warehouse_stock_tag(resource)), resource))
+        .map(|resource| (tree.find(root, resource_control_tag(resource)), resource))
         .collect();
     let labor = tree.find(root, fourcc!("labo"));
     let power = tree.find(root, fourcc!("powe"));

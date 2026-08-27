@@ -33,6 +33,9 @@ TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resource
 WINDOWS_VIEW_PATH = "config/ui_factory_windows_views.yml"
 WINDOWS_DELTA_PATH = "config/ui_platform_deltas.yml"
 RUST_UI_PATH = "../rust/crates/imperialism-app/src/ui/generated.rs"
+RUST_CITY_LAYOUT_PATH = (
+    "../rust/crates/imperialism-app/src/ui/city/building_layout_generated.rs"
+)
 
 DEFAULT_CLASSES = {
     "view": "TView",
@@ -342,41 +345,6 @@ class CityBuildingActionVisual:
 class CityBuildingActionVisuals:
     view: UiResourceKey
     actions: tuple[CityBuildingActionVisual, ...]
-
-
-@dataclass(frozen=True)
-class CityRowControls:
-    cluster: str
-    button: str
-
-
-@dataclass(frozen=True)
-class CityShipyardRowControls:
-    cluster: str
-    button: str
-    overlay_left: int
-
-
-@dataclass(frozen=True)
-class CityIndustryPageControls:
-    slot: str
-    order_tags: tuple[str, ...]
-    stocks: tuple[tuple[str, int], ...]
-
-
-@dataclass(frozen=True)
-class CityDialogControls:
-    armory_rows: tuple[CityRowControls, ...]
-    university_rows: tuple[CityRowControls, ...]
-    shipyard_rows: tuple[CityShipyardRowControls, ...]
-    shipyard_stat_origins: tuple[tuple[int, int], ...]
-    training_orders: tuple[str, ...]
-    food_order: str
-    power_order: str
-    transport_order: str
-    population_order: str
-    warehouse_stocks: tuple[str, ...]
-    industry: tuple[CityIndustryPageControls, ...]
 
 
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
@@ -1004,147 +972,6 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
     return CityBuildingActionVisuals(
         view=UiResourceKey.parse(str(section["view"])),
         actions=tuple(actions),
-    )
-
-
-def _load_row_controls(
-    rows: object, length: int, context: str
-) -> tuple[CityRowControls, ...]:
-    loaded: list[CityRowControls] = []
-    for index, raw_row in enumerate(_sequence(rows, length, context)):
-        row_context = f"{context}[{index}]"
-        row = _mapping(raw_row, row_context)
-        if set(row) != {"cluster", "button"}:
-            raise ValueError(f"{row_context}: expected cluster and button")
-        loaded.append(
-            CityRowControls(
-                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
-                button=_fourcc(row["button"], f"{row_context}/button"),
-            )
-        )
-    return tuple(loaded)
-
-
-def load_city_dialog_controls(repo_root: Path) -> CityDialogControls:
-    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
-    context = f"{WINDOWS_DELTA_PATH}: city_dialog_controls"
-    section = _mapping(data.get("city_dialog_controls"), context)
-    expected = {
-        "evidence",
-        "armory_rows",
-        "university_rows",
-        "shipyard_rows",
-        "shipyard_stat_origins",
-        "training_orders",
-        "food_order",
-        "power_order",
-        "transport_order",
-        "population_order",
-        "warehouse_stocks",
-        "industry",
-    }
-    if set(section) != expected:
-        raise ValueError(f"{context}: unexpected keys")
-    if not str(section["evidence"]).strip():
-        raise ValueError(f"{context}: evidence is required")
-
-    shipyard_rows: list[CityShipyardRowControls] = []
-    for index, raw_row in enumerate(
-        _sequence(section["shipyard_rows"], 8, f"{context}/shipyard_rows")
-    ):
-        row_context = f"{context}/shipyard_rows[{index}]"
-        row = _mapping(raw_row, row_context)
-        if set(row) != {"cluster", "button", "overlay_left"}:
-            raise ValueError(f"{row_context}: malformed shipyard row")
-        overlay_left = int(row["overlay_left"])
-        if overlay_left < 0:
-            raise ValueError(f"{row_context}: overlay_left must be non-negative")
-        shipyard_rows.append(
-            CityShipyardRowControls(
-                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
-                button=_fourcc(row["button"], f"{row_context}/button"),
-                overlay_left=overlay_left,
-            )
-        )
-
-    origins: list[tuple[int, int]] = []
-    for index, raw_origin in enumerate(
-        _sequence(section["shipyard_stat_origins"], 6, f"{context}/shipyard_stat_origins")
-    ):
-        origin = _sequence(raw_origin, 2, f"{context}/shipyard_stat_origins[{index}]")
-        origins.append((int(origin[0]), int(origin[1])))
-
-    industry_slots = (
-        "textile_mill",
-        "clothing_factory",
-        "steel_mill",
-        "metalworks",
-        "lumber_mill",
-        "furniture_factory",
-        "oil_refinery",
-    )
-    industry: list[CityIndustryPageControls] = []
-    for index, raw_page in enumerate(
-        _sequence(section["industry"], 7, f"{context}/industry")
-    ):
-        page_context = f"{context}/industry[{index}]"
-        page = _mapping(raw_page, page_context)
-        if set(page) != {"slot", "orders", "stocks"}:
-            raise ValueError(f"{page_context}: malformed industry page")
-        slot = str(page["slot"])
-        if slot != industry_slots[index]:
-            raise ValueError(f"{page_context}: expected slot {industry_slots[index]}")
-        orders = tuple(
-            _fourcc(tag, f"{page_context}/orders[{order_index}]")
-            for order_index, tag in enumerate(page["orders"])
-        )
-        if not orders:
-            raise ValueError(f"{page_context}: orders must not be empty")
-        stocks: list[tuple[str, int]] = []
-        raw_stocks = page["stocks"]
-        if not isinstance(raw_stocks, list) or not raw_stocks:
-            raise ValueError(f"{page_context}/stocks: expected a non-empty list")
-        for stock_index, raw_stock in enumerate(raw_stocks):
-            stock_context = f"{page_context}/stocks[{stock_index}]"
-            stock = _mapping(raw_stock, stock_context)
-            if set(stock) != {"tag", "columns"}:
-                raise ValueError(f"{stock_context}: expected tag and columns")
-            columns = int(stock["columns"])
-            if columns not in (1, 2):
-                raise ValueError(f"{stock_context}: columns must be 1 or 2")
-            stocks.append((_fourcc(stock["tag"], f"{stock_context}/tag"), columns))
-        industry.append(
-            CityIndustryPageControls(slot, orders, tuple(stocks))
-        )
-
-    warehouse = tuple(
-        _fourcc(tag, f"{context}/warehouse_stocks[{index}]")
-        for index, tag in enumerate(
-            _sequence(section["warehouse_stocks"], 20, f"{context}/warehouse_stocks")
-        )
-    )
-    training = tuple(
-        _fourcc(tag, f"{context}/training_orders[{index}]")
-        for index, tag in enumerate(
-            _sequence(section["training_orders"], 2, f"{context}/training_orders")
-        )
-    )
-    return CityDialogControls(
-        armory_rows=_load_row_controls(section["armory_rows"], 8, f"{context}/armory_rows"),
-        university_rows=_load_row_controls(
-            section["university_rows"], 7, f"{context}/university_rows"
-        ),
-        shipyard_rows=tuple(shipyard_rows),
-        shipyard_stat_origins=tuple(origins),
-        training_orders=training,
-        food_order=_fourcc(section["food_order"], f"{context}/food_order"),
-        power_order=_fourcc(section["power_order"], f"{context}/power_order"),
-        transport_order=_fourcc(section["transport_order"], f"{context}/transport_order"),
-        population_order=_fourcc(
-            section["population_order"], f"{context}/population_order"
-        ),
-        warehouse_stocks=warehouse,
-        industry=tuple(industry),
     )
 
 
@@ -1866,17 +1693,17 @@ def _rust_picture_swap_ids(node: UiSemanticNode, picture_id: int) -> tuple[int, 
     return int(picture_id), int(picture_id) + 1
 
 
-def _widget_kind_owns_children(kind: WidgetKind) -> bool:
-    """True when the Rust helper for this widget emits its own `Children` list."""
-
-    return kind in {
+_ATOMIC_WIDGET_KINDS = frozenset(
+    {
         WidgetKind.PLACARD,
         WidgetKind.ARMY_PLACARD,
         WidgetKind.SHIP_PLACARD,
         WidgetKind.NUMBERED_ARROW,
         WidgetKind.AMOUNT_BAR,
         WidgetKind.TWO_PIC_SLIDER,
+        WidgetKind.TRANSPORT_GAUGE,
     }
+)
 
 
 _INTERACTIVE_WIDGET_KINDS = frozenset(
@@ -1984,6 +1811,42 @@ def apply_windows_child_node_patches(
     return replace(semantic_view, nodes=tuple(nodes))
 
 
+def _prune_atomic_widget_subtrees(
+    key: UiResourceKey | str,
+    semantic_view: UiSemanticView,
+) -> UiSemanticView:
+    """Drop descendant nodes owned by atomic widget helpers in handwritten Rust."""
+
+    children_by_parent: dict[str | None, list[UiSemanticNode]] = {}
+    for node in semantic_view.nodes:
+        children_by_parent.setdefault(node.parent_id, []).append(node)
+
+    atomic_roots = {
+        node.node_id
+        for node in semantic_view.nodes
+        if classify_widget(key, node).kind in _ATOMIC_WIDGET_KINDS
+    }
+    if not atomic_roots:
+        return semantic_view
+
+    remove: set[str] = set()
+    for root_id in atomic_roots:
+        pending = [child.node_id for child in children_by_parent.get(root_id, ())]
+        while pending:
+            node_id = pending.pop()
+            if node_id in remove:
+                continue
+            remove.add(node_id)
+            pending.extend(
+                child.node_id for child in children_by_parent.get(node_id, ())
+            )
+
+    return replace(
+        semantic_view,
+        nodes=tuple(node for node in semantic_view.nodes if node.node_id not in remove),
+    )
+
+
 def _rust_ui_semantic_views(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -2051,6 +1914,7 @@ def _rust_ui_semantic_views(
         semantic_view = apply_two_pic_slider_instances(
             key, semantic_view, two_pic_sliders
         )
+        semantic_view = _prune_atomic_widget_subtrees(key, semantic_view)
         scene_views.append((key, semantic_view))
     windows_views = load_windows_views(repo_root)
     emitted_windows: set[str] = set()
@@ -2063,6 +1927,9 @@ def _rust_ui_semantic_views(
                 raise ValueError(
                     f"{WINDOWS_VIEW_PATH}: missing Windows view {case.windows_view!r}"
                 )
+            semantic_view = _prune_atomic_widget_subtrees(
+                case.windows_view, semantic_view
+            )
             scene_views.append((case.windows_view, semantic_view))
             emitted_windows.add(case.windows_view)
     return scene_views
@@ -2316,10 +2183,10 @@ def _render_bsn_node(
 
     match kind:
         case WidgetKind.TRANSPORT_GAUGE:
-            track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
+            owner_left = int(node.geometry[0])
             capacity = node.tag == "tota"
             lines.append(
-                f"    retail_transport_gauge({track_left}, {str(capacity).lower()})"
+                f"    retail_transport_gauge({owner_left}, {str(capacity).lower()})"
             )
         case WidgetKind.NUMBERED_ARROW:
             lines.append("    retail_numbered_arrow()")
@@ -2344,13 +2211,9 @@ def _render_bsn_node(
         case _:
             pass
 
-    if (
-        _widget_kind_owns_children(kind)
-        and recovered_children
-    ):
+    if kind in _ATOMIC_WIDGET_KINDS and recovered_children:
         raise ValueError(
-            f"{node.tag}: widget {kind.name} owns Children but the recovered "
-            "node also has children"
+            f"{node.tag}: atomic widget {kind.name} cannot have recovered children"
         )
 
     if recovered_children:
@@ -2364,6 +2227,46 @@ def _render_bsn_node(
     return lines
 
 
+def render_city_building_layout(repo_root: Path) -> str:
+    city_buildings = load_city_building_visuals(repo_root)
+    city_building_actions = load_city_building_action_visuals(repo_root)
+    lines = [
+        "// @generated by tools.ui_codegen. Do not edit by hand.",
+        "",
+        "use super::building_visuals::{CityBuildingActionVisual, CityBuildingVisual};",
+        "use imperialism_core::CityFacilitySlot;",
+        "use imperialism_formats::PictureId;",
+        "",
+        "pub(in crate::ui::city) const CITY_BUILDINGS: &[CityBuildingVisual] = &[",
+    ]
+    for visual in city_buildings.visuals:
+        lines.extend(
+            [
+                "    CityBuildingVisual {",
+                f"        slot: CityFacilitySlot::{_rust_enum_variant(visual.slot)},",
+                f"        origin: [{visual.origin[0]}, {visual.origin[1]}],",
+                f"        draw_order: {visual.draw_order},",
+                "    },",
+            ]
+        )
+    lines.extend(["];", "", "pub(in crate::ui::city) const CITY_BUILDING_ACTIONS: &[CityBuildingActionVisual] = &["])
+    for action in city_building_actions.actions:
+        lines.extend(
+            [
+                "    CityBuildingActionVisual {",
+                f"        slot: CityFacilitySlot::{_rust_enum_variant(action.slot)},",
+                f"        level: {action.level},",
+                f"        picture_id: PictureId::new({action.picture_id}),",
+                f"        frame_count: {action.frame_count},",
+                f"        origin: [{action.origin[0]}, {action.origin[1]}],",
+                f"        frame_size: [{action.frame_size[0]}, {action.frame_size[1]}],",
+                "    },",
+            ]
+        )
+    lines.extend(["];", ""])
+    return "\n".join(lines)
+
+
 def render_rust_ui(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -2373,7 +2276,6 @@ def render_rust_ui(
     scene_views = _rust_ui_semantic_views(
         repo_root, recipes, views, text_resources
     )
-    load_city_dialog_controls(repo_root)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
         "#![allow(dead_code, clippy::identity_op)]",
@@ -2384,7 +2286,7 @@ def render_rust_ui(
         "use bevy::prelude::*;",
         "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};",
         "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};",
-        "use imperialism_formats::{FourCc, PictureId, fourcc};",
+        "use imperialism_formats::fourcc;",
         "",
         "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
         "",
@@ -2435,6 +2337,13 @@ def write_rust_ui(
     return path
 
 
+def write_city_building_layout(repo_root: Path) -> Path:
+    path = repo_root / RUST_CITY_LAYOUT_PATH
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _write_if_changed(path, render_city_building_layout(repo_root))
+    return path
+
+
 def rust_ui_is_current(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -2444,6 +2353,13 @@ def rust_ui_is_current(
     path = repo_root / RUST_UI_PATH
     return path.is_file() and path.read_text(encoding="utf-8") == render_rust_ui(
         repo_root, recipes, views, text_resources
+    )
+
+
+def city_building_layout_is_current(repo_root: Path) -> bool:
+    path = repo_root / RUST_CITY_LAYOUT_PATH
+    return path.is_file() and path.read_text(encoding="utf-8") == render_city_building_layout(
+        repo_root
     )
 
 
@@ -3068,7 +2984,9 @@ def main() -> int:
         path = write_rust_ui(
             repo_root, recipes, views, text_resources
         )
+        layout_path = write_city_building_layout(repo_root)
         print(f"Wrote native Bevy UI scenes to {path}")
+        print(f"Wrote city building layout to {layout_path}")
         return 0
     if args.report_unsupported_roles:
         for line in report_unsupported_ui_roles(
@@ -3088,6 +3006,12 @@ def main() -> int:
         ):
             print(
                 f"UI codegen check failed: {RUST_UI_PATH} is stale; "
+                "run with --write-rust-ui"
+            )
+            return 1
+        if not city_building_layout_is_current(repo_root):
+            print(
+                f"UI codegen check failed: {RUST_CITY_LAYOUT_PATH} is stale; "
                 "run with --write-rust-ui"
             )
             return 1

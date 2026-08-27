@@ -1,32 +1,14 @@
 use super::*;
 use crate::ui::retail::AmountBarParts;
 
-fn manufactured_order_tag(item: ManufacturedItem) -> FourCc {
-    match item.resource() {
-        ResourceKind::Fabric => fourcc!("fabr"),
-        ResourceKind::Lumber => fourcc!("lumb"),
-        ResourceKind::Paper => fourcc!("pape"),
-        ResourceKind::Steel => fourcc!("stee"),
-        ResourceKind::Fuel => fourcc!("fuel"),
-        ResourceKind::Clothing => fourcc!("clot"),
-        ResourceKind::Furniture => fourcc!("furn"),
-        ResourceKind::Hardware => fourcc!("hard"),
-        ResourceKind::Arms => fourcc!("arma"),
-        other => panic!("unexpected manufactured resource {other:?}"),
-    }
-}
-
-fn industry_stock_indicator(resource: ResourceKind) -> (FourCc, i16) {
+fn industry_stock_minimum(resource: ResourceKind) -> i16 {
     match resource {
-        ResourceKind::Cotton => (fourcc!("cott"), 1),
-        ResourceKind::Wool => (fourcc!("wool"), 1),
-        ResourceKind::Fabric => (fourcc!("fabr"), 2),
-        ResourceKind::Iron => (fourcc!("iron"), 1),
-        ResourceKind::Coal => (fourcc!("coal"), 1),
-        ResourceKind::Steel => (fourcc!("stee"), 2),
-        ResourceKind::Timber => (fourcc!("timb"), 2),
-        ResourceKind::Lumber => (fourcc!("lumb"), 2),
-        ResourceKind::Oil => (fourcc!("oil "), 2),
+        ResourceKind::Cotton | ResourceKind::Wool | ResourceKind::Iron | ResourceKind::Coal => 1,
+        ResourceKind::Fabric
+        | ResourceKind::Steel
+        | ResourceKind::Timber
+        | ResourceKind::Lumber
+        | ResourceKind::Oil => 2,
         other => panic!("unexpected industry input resource {other:?}"),
     }
 }
@@ -112,7 +94,7 @@ pub(in crate::ui::city) fn bind_industry(
     let order_tags: Vec<_> = items
         .iter()
         .copied()
-        .map(manufactured_order_tag)
+        .map(|item| resource_control_tag(item.resource()))
         .collect();
     let inputs = industry_inputs(&items);
 
@@ -126,18 +108,12 @@ pub(in crate::ui::city) fn bind_industry(
         .iter()
         .copied()
         .map(|resource| {
-            let (tag, minimum) = industry_stock_indicator(resource);
+            let tag = resource_control_tag(resource);
+            let minimum = industry_stock_minimum(resource);
             (tree.find(root, tag), resource, minimum)
         })
         .collect();
-    let orders = bind_industry_orders(
-        commands,
-        root,
-        tree,
-        amount_bars,
-        &items,
-        &order_tags,
-    );
+    let orders = bind_industry_orders(commands, root, tree, amount_bars, &items, &order_tags);
     commands.entity(tree.find(root, fourcc!("expa"))).observe(
         move |_: On<Activate>, session: Res<GameSession>, mut commands: Commands| {
             open_city_expansion_dialog(&mut commands, &session, slot);
@@ -222,21 +198,21 @@ mod tests {
         assert_eq!(
             industry_items(CityFacilitySlot::TextileMill)
                 .into_iter()
-                .map(manufactured_order_tag)
+                .map(|item| resource_control_tag(item.resource()))
                 .collect::<Vec<_>>(),
             vec![fourcc!("fabr")]
         );
         assert_eq!(
             industry_items(CityFacilitySlot::Metalworks)
                 .into_iter()
-                .map(manufactured_order_tag)
+                .map(|item| resource_control_tag(item.resource()))
                 .collect::<Vec<_>>(),
             vec![fourcc!("hard"), fourcc!("arma")]
         );
         assert_eq!(
             industry_items(CityFacilitySlot::LumberMill)
                 .into_iter()
-                .map(manufactured_order_tag)
+                .map(|item| resource_control_tag(item.resource()))
                 .collect::<Vec<_>>(),
             vec![fourcc!("lumb"), fourcc!("pape")]
         );
@@ -248,7 +224,10 @@ mod tests {
         assert_eq!(
             industry_inputs(&textile)
                 .into_iter()
-                .map(industry_stock_indicator)
+                .map(|resource| (
+                    resource_control_tag(resource),
+                    industry_stock_minimum(resource)
+                ))
                 .collect::<Vec<_>>(),
             vec![(fourcc!("cott"), 1), (fourcc!("wool"), 1)]
         );
@@ -257,7 +236,10 @@ mod tests {
         assert_eq!(
             industry_inputs(&metalworks)
                 .into_iter()
-                .map(industry_stock_indicator)
+                .map(|resource| (
+                    resource_control_tag(resource),
+                    industry_stock_minimum(resource)
+                ))
                 .collect::<Vec<_>>(),
             vec![(fourcc!("stee"), 2)]
         );

@@ -32,78 +32,114 @@ pub struct TransportGaugeParts {
     pub limit: Entity,
 }
 
+#[derive(Clone, Copy)]
+struct TransportGaugeColors {
+    track_bg: Color,
+    fill: Color,
+    limit: Color,
+}
+
 /// `TTransportPicture` track/fill/limit chrome for one gauge row.
 ///
-/// `track_left` mirrors `Refresh`: owner local x > 0xc8 => 0x5d else 0x61.
-pub fn retail_transport_gauge(track_left: i32, capacity: bool) -> impl Scene {
+/// `owner_left` is the recovered control origin; track placement follows
+/// `TTransportPicture::Refresh` (`owner_left > 0xc8` => 0x5d else 0x61).
+pub fn retail_transport_gauge(owner_left: i32, capacity: bool) -> impl Scene {
     bsn! {
-        template(move |context| Ok(spawn_transport_gauge(context, track_left, capacity)))
+        template(move |context| Ok(spawn_transport_gauge(context, owner_left, capacity)))
+    }
+}
+
+fn transport_gauge_track_left(owner_left: i32) -> f32 {
+    if owner_left > 0xC8 {
+        0x5D as f32
+    } else {
+        0x61 as f32
     }
 }
 
 fn spawn_transport_gauge(
     context: &mut TemplateContext,
-    track_left: i32,
+    owner_left: i32,
     capacity: bool,
 ) -> TransportGaugeParts {
-    let track_left = track_left as f32;
-    let fill_palette = if capacity {
-        CAPACITY_FILL_PALETTE
-    } else {
-        ALLOCATION_FILL_PALETTE
+    let colors = TransportGaugeColors {
+        track_bg: palette_color(context, TRACK_BG_PALETTE),
+        fill: palette_color(
+            context,
+            if capacity {
+                CAPACITY_FILL_PALETTE
+            } else {
+                ALLOCATION_FILL_PALETTE
+            },
+        ),
+        limit: palette_color(context, LIMIT_PALETTE),
     };
-    let track_bg = palette_color(context, TRACK_BG_PALETTE);
-    let fill_color = palette_color(context, fill_palette);
-    let limit_color = palette_color(context, LIMIT_PALETTE);
-
-    let mut fill = Entity::PLACEHOLDER;
-    let mut limit = Entity::PLACEHOLDER;
-
+    let mut parts = TransportGaugeParts {
+        fill: Entity::PLACEHOLDER,
+        limit: Entity::PLACEHOLDER,
+    };
     context.entity.with_children(|parent| {
-        parent.spawn((
+        parts = spawn_transport_gauge_nodes(
+            parent,
+            transport_gauge_track_left(owner_left),
+            capacity,
+            colors,
+        );
+    });
+    parts
+}
+
+fn spawn_transport_gauge_nodes(
+    parent: &mut ChildSpawner,
+    track_left: f32,
+    capacity: bool,
+    colors: TransportGaugeColors,
+) -> TransportGaugeParts {
+    parent.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: Val::Px(track_left),
+            top: Val::Px(TRACK_TOP),
+            width: Val::Px(TRACK_WIDTH),
+            height: Val::Px(TRACK_HEIGHT),
+            ..default()
+        },
+        BackgroundColor(colors.track_bg),
+        Pickable::IGNORE,
+    ));
+    let fill = parent
+        .spawn((
             Node {
                 position_type: PositionType::Absolute,
                 left: Val::Px(track_left),
                 top: Val::Px(TRACK_TOP),
-                width: Val::Px(TRACK_WIDTH),
+                width: Val::Px(0.0),
                 height: Val::Px(TRACK_HEIGHT),
                 ..default()
             },
-            BackgroundColor(track_bg),
+            BackgroundColor(colors.fill),
             Pickable::IGNORE,
-        ));
-        fill = parent
+        ))
+        .id();
+    let limit = if capacity {
+        Entity::PLACEHOLDER
+    } else {
+        parent
             .spawn((
                 Node {
                     position_type: PositionType::Absolute,
-                    left: Val::Px(track_left),
-                    top: Val::Px(TRACK_TOP),
-                    width: Val::Px(0.0),
-                    height: Val::Px(TRACK_HEIGHT),
+                    left: Val::Px(track_left - 1.0),
+                    top: Val::Px(LIMIT_TOP),
+                    width: Val::Px(LIMIT_WIDTH),
+                    height: Val::Px(LIMIT_HEIGHT),
                     ..default()
                 },
-                BackgroundColor(fill_color),
+                BackgroundColor(colors.limit),
+                Visibility::Hidden,
                 Pickable::IGNORE,
             ))
-            .id();
-        if !capacity {
-            limit = parent
-                .spawn((
-                    Node {
-                        position_type: PositionType::Absolute,
-                        left: Val::Px(track_left - 1.0),
-                        top: Val::Px(LIMIT_TOP),
-                        width: Val::Px(LIMIT_WIDTH),
-                        height: Val::Px(LIMIT_HEIGHT),
-                        ..default()
-                    },
-                    BackgroundColor(limit_color),
-                    Visibility::Hidden,
-                    Pickable::IGNORE,
-                ))
-                .id();
-        }
-    });
+            .id()
+    };
 
     TransportGaugeParts { fill, limit }
 }
@@ -138,10 +174,75 @@ mod tests {
     use super::*;
 
     #[test]
+    fn transport_gauge_track_left_follows_refresh_rule() {
+        assert_eq!(transport_gauge_track_left(0xC9), 0x5D as f32);
+        assert_eq!(transport_gauge_track_left(0xC8), 0x61 as f32);
+    }
+
+    #[test]
     fn transport_gauge_width_distributes_remainder_pixels() {
         assert_eq!(transport_gauge_width(0, 10), 0.0);
         assert_eq!(transport_gauge_width(0, 0), 0.0);
         assert!(transport_gauge_width(5, 10) > 0.0);
         assert!(transport_gauge_width(10, 10) <= TRACK_WIDTH);
+    }
+
+    #[test]
+    fn transport_gauge_spawn_builds_allocation_and_capacity_hierarchies() {
+        let colors = TransportGaugeColors {
+            track_bg: Color::WHITE,
+            fill: Color::srgb(1.0, 0.0, 0.0),
+            limit: Color::srgb(0.0, 0.0, 1.0),
+        };
+        let mut world = World::new();
+        let allocation_root = world.spawn_empty().id();
+        let allocation_parts = {
+            let mut parts = TransportGaugeParts {
+                fill: Entity::PLACEHOLDER,
+                limit: Entity::PLACEHOLDER,
+            };
+            world.entity_mut(allocation_root).with_children(|parent| {
+                parts = spawn_transport_gauge_nodes(parent, 0x61 as f32, false, colors);
+            });
+            parts
+        };
+        world.entity_mut(allocation_root).insert(allocation_parts);
+        let allocation_parts = world
+            .get::<TransportGaugeParts>(allocation_root)
+            .copied()
+            .expect("allocation gauge");
+        assert_ne!(allocation_parts.limit, Entity::PLACEHOLDER);
+        assert_eq!(
+            world.get::<ChildOf>(allocation_parts.fill).unwrap().0,
+            allocation_root
+        );
+        assert_eq!(
+            world.get::<ChildOf>(allocation_parts.limit).unwrap().0,
+            allocation_root
+        );
+        assert_eq!(world.get::<Children>(allocation_root).unwrap().len(), 3);
+
+        let capacity_root = world.spawn_empty().id();
+        let capacity_parts = {
+            let mut parts = TransportGaugeParts {
+                fill: Entity::PLACEHOLDER,
+                limit: Entity::PLACEHOLDER,
+            };
+            world.entity_mut(capacity_root).with_children(|parent| {
+                parts = spawn_transport_gauge_nodes(parent, 0x5D as f32, true, colors);
+            });
+            parts
+        };
+        world.entity_mut(capacity_root).insert(capacity_parts);
+        let capacity_parts = world
+            .get::<TransportGaugeParts>(capacity_root)
+            .copied()
+            .expect("capacity gauge");
+        assert_eq!(capacity_parts.limit, Entity::PLACEHOLDER);
+        assert_eq!(
+            world.get::<ChildOf>(capacity_parts.fill).unwrap().0,
+            capacity_root
+        );
+        assert_eq!(world.get::<Children>(capacity_root).unwrap().len(), 2);
     }
 }
