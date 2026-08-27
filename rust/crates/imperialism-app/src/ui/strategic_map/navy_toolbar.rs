@@ -1,12 +1,15 @@
 //! Right-hand navy command page (`unav` / `TNavyToolbarCluster`).
 
-use super::super::retail::{RetailTree, RetailUiAssets};
+use super::super::retail::{
+    NumberedArrowAction, NumberedArrowClick, RetailNumberedArrow, RetailTree, RetailUiAssets,
+    install_numbered_arrow,
+};
 use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
 use crate::ui::GameSession;
 use bevy::prelude::*;
-use bevy::ui::{Checked, RelativeCursorPosition};
+use bevy::ui::Checked;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::{NavalAggression, NavyRosterKind, NavyToolbarClass};
 use imperialism_formats::*;
@@ -14,8 +17,6 @@ use imperialism_formats::*;
 const PAGE_TAG: FourCc = fourcc!("unav");
 const NAVY_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x90 as f32);
 const PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const ARROW_ATLAS: i16 = 804;
-const TRANSPARENT_INDEX: u8 = 0x10;
 
 #[derive(Component)]
 pub(super) struct NavyToolbarPage;
@@ -37,9 +38,6 @@ enum NavyCommand {
     Bomb,
     Aggression(NavalAggression),
 }
-
-#[derive(Component)]
-struct NavyCountLabel;
 
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
@@ -66,9 +64,6 @@ pub(crate) fn bind_navy_toolbar(
             ..default()
         },
     ));
-    let arrow_atlas = assets
-        .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
-        .expect("retail numbered-arrow atlas 804 must load");
     const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
         (NavyToolbarClass::Class0, fourcc!("cls0")),
         (NavyToolbarClass::Class1, fourcc!("cls1")),
@@ -83,24 +78,37 @@ pub(crate) fn bind_navy_toolbar(
             .entity(ship)
             .insert((NavyClassShip, Visibility::Hidden));
         let arrow = tree.child(cluster, fourcc!("arro"));
+        install_numbered_arrow(commands, arrow, assets);
+        let class_capture = class;
         commands
             .entity(arrow)
-            .insert((
-                NavyClassArrow(class),
-                ImageNode {
-                    image: arrow_atlas.clone(),
-                    rect: Some(Rect::from_corners(
-                        Vec2::new(10.0, 0.0),
-                        Vec2::new(21.0, 16.0),
-                    )),
-                    ..default()
+            .insert((NavyClassArrow(class), Visibility::Hidden))
+            .remove::<bevy::ui_widgets::Button>()
+            .observe(
+                move |click: On<NumberedArrowClick>,
+                      mut session: ResMut<GameSession>,
+                      map: Res<StrategicMapSession>| {
+                    let Some(force) = map.selection.navy_force() else {
+                        return;
+                    };
+                    match click.action {
+                        NumberedArrowAction::Upper => {
+                            session.game.select_task_force_toolbar_class(
+                                force,
+                                class_capture,
+                                true,
+                            );
+                        }
+                        NumberedArrowAction::Lower => {
+                            session.game.select_task_force_toolbar_class(
+                                force,
+                                class_capture,
+                                false,
+                            );
+                        }
+                    }
                 },
-                RelativeCursorPosition::default(),
-                ActivateOnPress,
-                Visibility::Hidden,
-            ))
-            .observe(on_navy_class_arrow);
-        spawn_count_label(commands, arrow, assets);
+            );
     }
     for (tag, command) in [
         (fourcc!("dfnd"), NavyCommand::Defend),
@@ -141,21 +149,14 @@ fn sync_navy_toolbar(
     map: Res<StrategicMapSession>,
     mut assets: RetailUiAssets,
     mut pages: Query<&mut Node, With<NavyToolbarPage>>,
-    mut ships: Query<
-        (&ChildOf, &mut ImageNode, &mut Visibility),
-        (With<NavyClassShip>, Without<NavyClassArrow>),
-    >,
-    mut arrows: Query<
-        (
-            Entity,
-            &NavyClassArrow,
-            &mut ImageNode,
-            &mut Visibility,
-            &ChildOf,
-        ),
-        Without<NavyClassShip>,
-    >,
-    mut counts: Query<(&ChildOf, &mut Text, &NavyCountLabel)>,
+    mut ships: Query<(&ChildOf, &mut ImageNode, &mut Visibility), With<NavyClassShip>>,
+    mut arrows: Query<(
+        Entity,
+        &NavyClassArrow,
+        &mut Visibility,
+        &mut RetailNumberedArrow,
+        &ChildOf,
+    )>,
     classes: Query<(Entity, &NavyClass)>,
 ) {
     if !session.is_changed() && !map.is_changed() {
@@ -191,16 +192,16 @@ fn sync_navy_toolbar(
                 *visibility = Visibility::Hidden;
             }
         }
-        for (arrow_entity, arrow, _, mut visibility, child_of) in &mut arrows {
+        for (_, arrow, mut visibility, mut numbered, child_of) in &mut arrows {
             if child_of.parent() != entity || arrow.0 != class.0 {
                 continue;
             }
             if available > 0 {
                 *visibility = Visibility::Visible;
-                set_count_text(arrow_entity, &mut counts, Some(i32::from(selected.max(0))));
+                numbered.value = i32::from(selected.max(0));
             } else {
                 *visibility = Visibility::Hidden;
-                set_count_text(arrow_entity, &mut counts, None);
+                numbered.value = 0;
             }
         }
     }
@@ -226,50 +227,6 @@ fn sync_navy_aggression(
             }
         }
     }
-}
-
-fn set_count_text(
-    parent: Entity,
-    counts: &mut Query<(&ChildOf, &mut Text, &NavyCountLabel)>,
-    value: Option<i32>,
-) {
-    for (child_of, mut text, _) in counts.iter_mut() {
-        if child_of.parent() == parent {
-            text.0 = value
-                .filter(|&count| count >= 0)
-                .map(|count| count.to_string())
-                .unwrap_or_default();
-        }
-    }
-}
-
-fn spawn_count_label(commands: &mut Commands, parent: Entity, assets: &mut RetailUiAssets) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 10,
-            alignment: 1,
-        })
-        .expect("retail navy count text style");
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(7.0),
-            top: Val::Px(0.0),
-            width: Val::Px(11.0),
-            height: Val::Px(16.0),
-            ..default()
-        },
-        Text::new(""),
-        font,
-        layout,
-        line_height,
-        TextColor(assets.palette_color(0x28)),
-        Pickable::IGNORE,
-        NavyCountLabel,
-        ChildOf(parent),
-    ));
 }
 
 fn on_navy_command(
@@ -316,30 +273,6 @@ fn on_navy_command(
             spawn_navy_roster(&mut commands, roster);
         }
     }
-}
-
-fn on_navy_class_arrow(
-    activate: On<Activate>,
-    arrows: Query<(&NavyClassArrow, &RelativeCursorPosition)>,
-    mut session: ResMut<GameSession>,
-    map: Res<StrategicMapSession>,
-) {
-    let Ok((arrow, cursor)) = arrows.get(activate.entity) else {
-        return;
-    };
-    let Some(force) = map.selection.navy_force() else {
-        return;
-    };
-    let Some(normalized) = cursor.normalized else {
-        return;
-    };
-    if normalized.y == 0.0 {
-        return;
-    }
-    // Top half 0x64 increment/select; bottom 0x65 decrement/deselect.
-    session
-        .game
-        .select_task_force_toolbar_class(force, arrow.0, normalized.y < 0.0);
 }
 
 #[cfg(test)]
