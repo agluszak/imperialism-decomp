@@ -1390,7 +1390,7 @@ fn spawn_item_detail_row(
     if icon_count == 0 {
         return;
     }
-    let per_row = (0x20_i32).min((236 - 0x3a) / count.max(1));
+    let per_row = (0x20_i32).min(i32::from((236 - 0x3a) / count.max(1)));
     let icon = assets
         .keyed_picture(
             PictureId::new(COMMODITY_ICON_BASE + resource_type),
@@ -1619,11 +1619,12 @@ fn generated_sea_overlay(
             .unwrap_or(""),
         BattleReportLocation::Province(_) => "",
     };
-    let order = side.task_force_order.map(TaskForceOrder::get).unwrap_or(0);
     let order_kind = ui_string(
         assets,
         0x2762,
-        sea_overlay_order_string_index_from_retail(order),
+        side.task_force_order
+            .map(sea_overlay_order_string_index)
+            .unwrap_or(0x13),
     );
     fill_brackets(
         &template,
@@ -1638,11 +1639,7 @@ fn generated_sea_overlay(
 
 /// String-table index for a sea-side task-force order in group `0x2762`.
 fn sea_overlay_order_string_index(order: TaskForceOrder) -> i16 {
-    sea_overlay_order_string_index_from_retail(order.get())
-}
-
-fn sea_overlay_order_string_index_from_retail(order: i32) -> i16 {
-    order as i16 + 0x13
+    order.get() as i16 + 0x13
 }
 
 #[cfg(test)]
