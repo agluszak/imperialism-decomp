@@ -1,9 +1,12 @@
 //! Recovered `TNumberedArrowButton` as a BSN SceneComponent of two Bevy `Button`s.
 //!
 //! Bevy owns press/click on the transparent halves. This widget owns atlas
-//! presentation from child `Pressed` state and the count overlay.
+//! presentation from child `Pressed` state and the count overlay. Atlas 804 is
+//! loaded inside the scene (keyed transparency), not passed as a binder prop.
 
-use super::retail::{retail_text_color, retail_text_shadow, retail_text_style};
+use super::retail::{
+    load_template_transparent_picture, retail_text_color, retail_text_shadow, retail_text_style,
+};
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::ui::{Pressed, UiSystems};
@@ -37,22 +40,15 @@ const BOTTOM_PRESSED: Rect = Rect {
 
 /// Private structure for the numbered-arrow hierarchy.
 #[derive(SceneComponent, FromTemplate, Clone)]
-#[scene(RetailNumberedArrowProps)]
 pub struct RetailNumberedArrow {
     pub upper_image: Entity,
     pub lower_image: Entity,
     pub count: Entity,
 }
 
-/// Construction props: atlas handle loaded by the installer.
-#[derive(Clone, Default)]
-pub struct RetailNumberedArrowProps {
-    pub atlas: Handle<Image>,
-}
-
-/// Externally projected arrow count.
+/// Externally projected arrow count. `None` clears the caption; `Some(0)` shows `0`.
 #[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct NumberedArrowValue(pub i32);
+pub struct NumberedArrowValue(pub Option<i32>);
 
 /// Which half of a numbered arrow was activated.
 #[derive(EntityEvent, Clone, Copy, Debug, Eq, PartialEq)]
@@ -75,12 +71,11 @@ struct NumberedArrowHalf {
 }
 
 impl RetailNumberedArrow {
-    fn scene(props: RetailNumberedArrowProps) -> impl Scene {
-        let atlas = props.atlas;
+    fn scene() -> impl Scene {
         bsn! {
             #Root
             Pickable::IGNORE
-            NumberedArrowValue(0)
+            NumberedArrowValue(None)
             RetailNumberedArrow {
                 upper_image: #UpperImage,
                 lower_image: #LowerImage,
@@ -96,10 +91,17 @@ impl RetailNumberedArrow {
                         width: px(WIDTH),
                         height: px(HALF_HEIGHT),
                     }
-                    ImageNode {
-                        image: {atlas.clone()},
-                        rect: {Some(TOP_IDLE)},
-                    }
+                    template(|context| {
+                        Ok(ImageNode {
+                            image: load_template_transparent_picture(
+                                context,
+                                PictureId::new(ARROW_ATLAS),
+                                TRANSPARENT_INDEX,
+                            )?,
+                            rect: Some(TOP_IDLE),
+                            ..default()
+                        })
+                    })
                     Pickable::IGNORE
                 ),
                 (
@@ -111,10 +113,17 @@ impl RetailNumberedArrow {
                         width: px(WIDTH),
                         height: px(HALF_HEIGHT),
                     }
-                    ImageNode {
-                        image: {atlas},
-                        rect: {Some(BOTTOM_IDLE)},
-                    }
+                    template(|context| {
+                        Ok(ImageNode {
+                            image: load_template_transparent_picture(
+                                context,
+                                PictureId::new(ARROW_ATLAS),
+                                TRANSPARENT_INDEX,
+                            )?,
+                            rect: Some(BOTTOM_IDLE),
+                            ..default()
+                        })
+                    })
                     Pickable::IGNORE
                 ),
                 (
@@ -169,23 +178,11 @@ impl RetailNumberedArrow {
     }
 }
 
-/// Install atlas art and the numbered-arrow SceneComponent on a recovered node.
-pub fn install_numbered_arrow(
-    commands: &mut Commands,
-    entity: Entity,
-    assets: &mut super::retail::RetailUiAssets,
-) {
-    let atlas = assets
-        .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
-        .expect("retail numbered-arrow atlas 804 must load");
-    commands
-        .entity(entity)
-        .remove::<Button>()
-        .apply_scene(bsn! {
-            @RetailNumberedArrow {
-                @atlas: atlas,
-            }
-        });
+/// BSN helper used by generated screens.
+pub fn retail_numbered_arrow() -> impl Scene {
+    bsn! {
+        @RetailNumberedArrow
+    }
 }
 
 pub(super) fn register_numbered_arrow(app: &mut App) {
@@ -205,10 +202,9 @@ fn draw_numbered_arrow_counts(
         texts
             .get_mut(arrow.count)
             .expect("RetailNumberedArrow count child")
-            .0 = if value.0 == 0 {
-            String::new()
-        } else {
-            value.0.to_string()
+            .0 = match value.0 {
+            None => String::new(),
+            Some(count) => count.to_string(),
         };
     }
 }
@@ -250,6 +246,8 @@ fn on_numbered_arrow_half_activate(
     let Ok(half) = halves.get(activate.entity) else {
         return;
     };
+    // Pointer propagation is already stopped by `ActivateOnPress` on the half button.
+    // `Activate` itself is not a propagating entity event in Bevy 0.19.
     let action = if half.upper {
         NumberedArrowAction::Upper
     } else {

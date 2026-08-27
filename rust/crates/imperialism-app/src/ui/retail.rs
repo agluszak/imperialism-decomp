@@ -8,16 +8,17 @@ use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError}
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
-use bevy::ui::{Checked, Pressed};
+use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{RetailAmountBarKind, retail_amount_bar};
-pub use super::retail_counted_picture::{CountedPictureValue, install_counted_picture};
+pub use super::retail_army_placard::{ArmyPlacardValue, retail_army_placard};
 pub use super::retail_numbered_arrow::{
-    NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, install_numbered_arrow,
+    NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, retail_numbered_arrow,
 };
 pub use super::retail_placard::{PlacardValue, retail_placard};
+pub use super::retail_ship_placard::{ShipPlacardValue, retail_ship_placard};
 pub use super::retail_slider::RetailTwoPicSliderVisual;
 
 /// Provenance tag recovered from the retail View resource.
@@ -34,6 +35,12 @@ pub struct RetailPictureSwap {
 /// A `TPictureButton` down-state bitmap drawn only while the control is pressed.
 #[derive(Component, Debug, Default)]
 pub struct RetailPressedOverlay;
+
+/// `TMadnessButton::CheckTheLook` bitmap frames: base+0..=4 from checked/pressed/disabled.
+#[derive(Component, Clone, Debug)]
+pub struct RetailMadnessPicture {
+    pub frames: [Handle<Image>; 5],
+}
 
 pub fn retail_view(name: &'static str) -> impl Scene {
     // TView clips each child's paint rectangle to its parent content bounds.
@@ -91,6 +98,41 @@ pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
                 idle: idle.clone(),
                 active,
             });
+            Ok(ImageNode::new(idle))
+        })
+    }
+}
+
+/// `TPictureButton` hilite bitmap: present but fully transparent until `Pressed`.
+pub fn retail_pressed_overlay_picture(id: i16) -> impl Scene {
+    bsn! {
+        template(move |context| {
+            let image = load_template_picture(context, PictureId::new(id))?;
+            context.entity.insert(RetailPressedOverlay);
+            let mut node = ImageNode::new(image);
+            node.color.set_alpha(0.0);
+            Ok(node)
+        })
+    }
+}
+
+/// `TMadnessButton` multi-offset CzechBox skin over stock `Checkbox`.
+pub fn retail_madness_picture(base: i16) -> impl Scene {
+    bsn! {
+        template(move |context| {
+            let frames = std::array::from_fn(|index| {
+                let id = base + index as i16;
+                match load_template_picture(context, PictureId::new(id)) {
+                    Ok(handle) => handle,
+                    Err(error) => {
+                        warn!("could not preload madness picture {id}: {error}");
+                        load_template_picture(context, PictureId::new(base))
+                            .unwrap_or_else(|_| Handle::default())
+                    }
+                }
+            });
+            let idle = frames[0].clone();
+            context.entity.insert(RetailMadnessPicture { frames });
             Ok(ImageNode::new(idle))
         })
     }
@@ -247,6 +289,9 @@ pub enum RetailPictureError {
 #[derive(Resource, Default)]
 struct RetailPictureHandles(HashMap<PictureId, Handle<Image>>);
 
+#[derive(Resource, Default)]
+struct RetailTransparentPictureHandles(HashMap<(PictureId, u8), Handle<Image>>);
+
 #[derive(SystemParam)]
 pub struct RetailUiAssets<'w> {
     retail_assets: Res<'w, RetailAssetsResource>,
@@ -372,12 +417,20 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
+            .init_resource::<RetailTransparentPictureHandles>()
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
             .add_observer(on_retail_picture_swap_state::<Remove, Checked>)
             .add_observer(on_retail_pressed_overlay_state::<Add>)
             .add_observer(on_retail_pressed_overlay_state::<Remove>)
+            .add_observer(on_retail_madness_picture_state::<Add, Pressed>)
+            .add_observer(on_retail_madness_picture_state::<Remove, Pressed>)
+            .add_observer(on_retail_madness_picture_state::<Add, Checked>)
+            .add_observer(on_retail_madness_picture_state::<Remove, Checked>)
+            .add_observer(on_retail_madness_picture_state::<Add, InteractionDisabled>)
+            .add_observer(on_retail_madness_picture_state::<Remove, InteractionDisabled>)
+            .add_observer(on_retail_madness_picture_inserted)
             .add_observer(on_radio_text_fill_state::<Add, Pressed>)
             .add_observer(on_radio_text_fill_state::<Remove, Pressed>)
             .add_observer(on_radio_text_fill_state::<Add, Checked>)
@@ -387,7 +440,8 @@ impl Plugin for RetailUiPlugin {
         super::retail_placard::register_placard(app);
         super::retail_slider::register_slider(app);
         super::retail_numbered_arrow::register_numbered_arrow(app);
-        super::retail_counted_picture::register_counted_picture(app);
+        super::retail_army_placard::register_army_placard(app);
+        super::retail_ship_placard::register_ship_placard(app);
         super::hover_help::register_hover_help(app);
     }
 }
@@ -402,6 +456,47 @@ fn on_retail_pressed_overlay_state<E: EntityEvent>(
     let pressed = pressed && !E::is::<Remove>();
     image.color.set_alpha(if pressed { 1.0 } else { 0.0 });
 }
+
+fn madness_frame_index(checked: bool, pressed: bool, disabled: bool) -> usize {
+    // `TMadnessButton::CheckTheLook`: disabled => +4; else (!on => +2) + (pressed => +1).
+    if disabled {
+        4
+    } else {
+        usize::from(!checked) * 2 + usize::from(pressed)
+    }
+}
+
+fn on_retail_madness_picture_inserted(
+    event: On<Add, RetailMadnessPicture>,
+    mut nodes: Query<MadnessPictureQuery>,
+) {
+    let Ok((skin, mut image, pressed, checked, disabled)) = nodes.get_mut(event.entity) else {
+        return;
+    };
+    image.image = skin.frames[madness_frame_index(checked, pressed, disabled)].clone();
+}
+
+fn on_retail_madness_picture_state<E: EntityEvent, C: Component>(
+    event: On<E, C>,
+    mut nodes: Query<MadnessPictureQuery>,
+) {
+    let Ok((skin, mut image, pressed, checked, disabled)) = nodes.get_mut(event.event_target())
+    else {
+        return;
+    };
+    let pressed = pressed && !(E::is::<Remove>() && C::is::<Pressed>());
+    let checked = checked && !(E::is::<Remove>() && C::is::<Checked>());
+    let disabled = disabled && !(E::is::<Remove>() && C::is::<InteractionDisabled>());
+    image.image = skin.frames[madness_frame_index(checked, pressed, disabled)].clone();
+}
+
+type MadnessPictureQuery = (
+    &'static RetailMadnessPicture,
+    &'static mut ImageNode,
+    Has<Pressed>,
+    Has<Checked>,
+    Has<InteractionDisabled>,
+);
 
 fn on_retail_picture_swap_state<E: EntityEvent, C: Component>(
     event: On<E, C>,
@@ -489,6 +584,32 @@ pub(super) fn load_template_picture(
                     &mut images,
                     &mut handles,
                 )
+            })
+        })
+    })?)
+}
+
+/// Load a palette-keyed transparent picture, cached by `(picture_id, key)`.
+pub(super) fn load_template_transparent_picture(
+    context: &mut TemplateContext,
+    picture_id: PictureId,
+    palette_index: u8,
+) -> bevy::ecs::error::Result<Handle<Image>> {
+    Ok(context.entity.world_scope(|world| {
+        world.resource_scope(|world, mut handles: Mut<RetailTransparentPictureHandles>| {
+            world.resource_scope(|world, mut images: Mut<Assets<Image>>| {
+                if let Some(handle) = handles.0.get(&(picture_id, palette_index)) {
+                    return Ok::<Handle<Image>, RetailPictureError>(handle.clone());
+                }
+                let assets = world.resource::<RetailAssetsResource>();
+                let indexed = assets.assets().indexed_picture(picture_id)?;
+                let image =
+                    indexed.to_keyed_image(assets.assets().default_dib_palette(), palette_index);
+                let handle = images.add(image);
+                handles
+                    .0
+                    .insert((picture_id, palette_index), handle.clone());
+                Ok(handle)
             })
         })
     })?)

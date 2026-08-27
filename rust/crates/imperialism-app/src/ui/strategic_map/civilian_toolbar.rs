@@ -69,16 +69,15 @@ const LEGEND_WINDOW_ORIGIN: IVec2 = IVec2::new(517, 182);
 struct CivilianToolbarPage;
 
 #[derive(Component)]
-struct CivilianPortrait;
-
-#[derive(Component)]
-struct CivilianLegend;
+struct CivilianToolbarView {
+    portrait: Entity,
+    legend: Entity,
+    commands: [Entity; 4],
+    atlases: LegendAtlases,
+}
 
 #[derive(Component)]
 struct CivilianLegendItem;
-
-#[derive(Component)]
-struct CivilianCommandButton;
 
 #[derive(Component, Clone, Copy)]
 enum CivilianCommand {
@@ -88,7 +87,7 @@ enum CivilianCommand {
     Disband,
 }
 
-#[derive(Component, Clone)]
+#[derive(Clone)]
 struct LegendAtlases {
     resources: Handle<Image>,
     development: Handle<Image>,
@@ -110,34 +109,40 @@ pub(crate) fn bind_civilian_toolbar(
 ) {
     let page = tree.find(root, PAGE_TAG);
     locate_node(commands, page, CIVILIAN_PAGE_PARKED);
-    commands.entity(page).insert(CivilianToolbarPage);
-    commands
-        .entity(tree.child(page, PORTRAIT_TAG))
-        .insert((CivilianPortrait, Visibility::Hidden));
-    commands.entity(tree.child(page, LEGEND_TAG)).insert((
-        CivilianLegend,
-        LegendAtlases {
-            resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
-            development: transparent_atlas(assets, DEVELOPMENT_STRIP_ATLAS),
-            terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
-        },
-    ));
-    for (tag, command) in [
+    let portrait = tree.child(page, PORTRAIT_TAG);
+    commands.entity(portrait).insert(Visibility::Hidden);
+    let legend = tree.child(page, LEGEND_TAG);
+    let atlases = LegendAtlases {
+        resources: transparent_atlas(assets, RESOURCE_ICON_ATLAS),
+        development: transparent_atlas(assets, DEVELOPMENT_STRIP_ATLAS),
+        terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
+    };
+    let mut command_entities = [Entity::PLACEHOLDER; 4];
+    for (index, (tag, command)) in [
         (fourcc!("dfnd"), CivilianCommand::Defend),
         (fourcc!("latr"), CivilianCommand::Later),
         (fourcc!("done"), CivilianCommand::Done),
         (fourcc!("garr"), CivilianCommand::Disband),
-    ] {
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let entity = tree.child(page, tag);
+        command_entities[index] = entity;
         commands
-            .entity(tree.child(page, tag))
-            .insert((
-                CivilianCommandButton,
-                command,
-                ActivateOnPress,
-                InteractionDisabled,
-            ))
+            .entity(entity)
+            .insert((command, ActivateOnPress, InteractionDisabled))
             .observe(on_civilian_command);
     }
+    commands.entity(page).insert((
+        CivilianToolbarPage,
+        CivilianToolbarView {
+            portrait,
+            legend,
+            commands: command_entities,
+            atlases,
+        },
+    ));
 }
 
 fn on_civilian_command(
@@ -179,17 +184,15 @@ fn sync_civilian_toolbar(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     mut commands: Commands,
-    mut pages: Query<&mut Node, With<CivilianToolbarPage>>,
-    portraits: Query<Entity, With<CivilianPortrait>>,
-    legends: Query<(Entity, &LegendAtlases, Option<&Children>), With<CivilianLegend>>,
-    buttons: Query<Entity, With<CivilianCommandButton>>,
+    mut pages: Query<(&mut Node, &CivilianToolbarView), With<CivilianToolbarPage>>,
     items: Query<Entity, With<CivilianLegendItem>>,
+    children: Query<&Children>,
     mut assets: RetailUiAssets,
 ) {
     if !session.is_changed() && !map.is_changed() {
         return;
     }
-    let Ok(mut page) = pages.single_mut() else {
+    let Ok((mut page, view)) = pages.single_mut() else {
         return;
     };
     let unit = map
@@ -204,7 +207,7 @@ fn sync_civilian_toolbar(
     page.left = Val::Px(position.x);
     page.top = Val::Px(position.y);
     let command_enabled = unit.is_some();
-    for button in &buttons {
+    for &button in &view.commands {
         let mut entity = commands.entity(button);
         if command_enabled {
             entity.remove::<InteractionDisabled>();
@@ -212,24 +215,20 @@ fn sync_civilian_toolbar(
             entity.insert(InteractionDisabled);
         }
     }
-    if let Ok(portrait) = portraits.single() {
-        match unit {
-            Some((_, unit)) => {
-                let picture = assets
-                    .picture(PictureId::new(portrait_picture_id(unit.unit_type())))
-                    .expect("retail civilian toolbar portrait must load");
-                commands
-                    .entity(portrait)
-                    .insert((ImageNode::new(picture), Visibility::Visible));
-            }
-            None => {
-                commands.entity(portrait).insert(Visibility::Hidden);
-            }
+    match unit {
+        Some((_, unit)) => {
+            let picture = assets
+                .picture(PictureId::new(portrait_picture_id(unit.unit_type())))
+                .expect("retail civilian toolbar portrait must load");
+            commands
+                .entity(view.portrait)
+                .insert((ImageNode::new(picture), Visibility::Visible));
+        }
+        None => {
+            commands.entity(view.portrait).insert(Visibility::Hidden);
         }
     }
-    let Ok((legend, atlases, legend_children)) = legends.single() else {
-        return;
-    };
+    let legend_children = children.get(view.legend).ok();
     despawn_legend_items(&mut commands, legend_children, &items);
     let Some((_, unit)) = unit else {
         return;
@@ -237,10 +236,10 @@ fn sync_civilian_toolbar(
     spawn_civilian_legend(
         &mut commands,
         &mut assets,
-        legend,
+        view.legend,
         &session.game,
         unit,
-        atlases.clone(),
+        view.atlases.clone(),
     );
 }
 

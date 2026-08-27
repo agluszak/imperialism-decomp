@@ -168,6 +168,24 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("retail_amount_bar(RetailAmountBarKind::Trader)", trade)
         self.assertIn("retail_placard(6013)", rendered)
         self.assertIn("retail_placard(6001)", rendered)
+        self.assertIn("retail_army_placard(", rendered)
+        self.assertIn("retail_numbered_arrow()", rendered)
+        self.assertIn("retail_ship_placard(", rendered)
+        self.assertIn("retail_pressed_overlay_picture(", rendered)
+        self.assertIn("retail_madness_picture(", rendered)
+        preferences = rendered[
+            rendered.index("pub fn linger_4150()") : rendered.index(
+                "pub fn linger_4300()"
+            )
+        ]
+        opte = preferences[
+            preferences.index('retail_node(fourcc!("opte")') : preferences.index(
+                'retail_node(fourcc!("soun")'
+            )
+        ]
+        self.assertIn("Checkbox", opte)
+        self.assertIn("retail_madness_picture(4158)", opte)
+        self.assertNotIn("retail_picture(4158)", opte)
 
     def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
         rendered = render_rust_ui(

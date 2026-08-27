@@ -4,7 +4,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::retail::{RetailPressedOverlay, RetailTree};
+use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, RetailAssetsResource, ReturnTo};
@@ -139,7 +139,6 @@ fn bind_deal_book(
     tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
-    mut images: Query<&mut ImageNode>,
 ) {
     let root = *root;
     let advanced_production_unlocked = session.game.technology().advanced_production_unlocked();
@@ -245,16 +244,10 @@ fn bind_deal_book(
     let mark = tree.find(root, fourcc!("mark"));
     commands
         .entity(mark)
-        .insert((DealBookHistory, ActivateOnPress, RetailPressedOverlay))
+        .insert((DealBookHistory, ActivateOnPress))
         .observe(on_deal_book_history);
-    // `mark` is a TPictureButton: picture 8812 is its hilite bitmap, not an
-    // always-visible icon. TDealBookPicture enables its input only in category
-    // mode; RetailPressedOverlay supplies TPictureButton::HiliteState's paint.
-    images
-        .get_mut(mark)
-        .expect("retail deal-book mark picture must load")
-        .color
-        .set_alpha(0.0);
+    // `mark` is a generated `TPictureButton`: picture 8812 is its hilite bitmap with
+    // `RetailPressedOverlay`. TDealBookPicture enables its input only in category mode.
     commands
         .entity(tree.find(root, fourcc!("lcor")))
         .insert((

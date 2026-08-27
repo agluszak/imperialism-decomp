@@ -1665,6 +1665,12 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
         return "radio_or_cluster_control"
     if node.class_name == "TPlacard":
         return "placard"
+    if node.class_name == "TArmyPlacard":
+        return "army_placard"
+    if node.class_name == "TShipPlacard":
+        return "ship_placard"
+    if node.class_name == "TNumberedArrowButton":
+        return "numbered_arrow"
     if _rust_amount_bar_kind(node) is not None:
         return "amount_bar"
     if node.type_code == "pict":
@@ -1706,6 +1712,9 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "radio_group"
     if node.type_code == "radb" or "radio" in class_name:
         return "radio_button"
+    # TMadnessButton is a TCzechBox pictured as `pict`; input is Checkbox, not Button.
+    if node.class_name == "TMadnessButton":
+        return "checkbox"
     if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
         return "checkbox"
     if kind == "toggle":
@@ -1716,6 +1725,9 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "scroll_area"
     if node.class_name in ("TMapPreviewView", "TCitySiteView", "TCityProductionView"):
         return "pointer_canvas"
+    # SceneComponent owns two stock Buttons; recovered root is not itself a Button.
+    if node.class_name == "TNumberedArrowButton":
+        return "passive"
     if (
         node.type_code in ("cntl", "nmbr")
         or node.class_name == "TSidewaysArrow"
@@ -1729,21 +1741,22 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
 
 
 def _rust_picture_visual(node: UiSemanticNode) -> str:
-    """How retail picture art reacts to Pressed / Checked.
+    """How retail picture art reacts to Pressed / Checked / disabled.
 
     Evidence:
     - TUpDownPictureButton / TRadioPictureButton / TTextPictureButton:
       HiliteState swaps to glyphBase84 +/- 1 (immutable resting ID + 1 when active).
     - TCzechBox: CheckTheLook uses odd ID when checked or pressed, even when idle.
-    - TMadnessButton replaces CzechBox with a multi-offset scheme; leave static
-      until that specialized rule is modeled.
-    - TPictureButton uses visibility hilite, not an ID swap.
+    - TMadnessButton: CheckTheLook selects base+{0..4} from checked/pressed/disabled.
+    - TPictureButton: HiliteState shows/hides the picture (pressed overlay), not an ID swap.
     """
 
     class_name = node.class_name
     folded = class_name.casefold()
     if class_name == "TMadnessButton":
-        return "static"
+        return "madness"
+    if class_name == "TPictureButton":
+        return "pressed_overlay"
     if node.type_code == "chkb" or "czechbox" in folded:
         return "czech_box"
     if (
@@ -2115,10 +2128,20 @@ def _render_bsn_node(
         if node.class_name == "TPlacard":
             # Recovered class -> RetailPlacard widget (picture + value presentation).
             lines.append(f"    retail_placard({idle_id})")
+        elif node.class_name == "TArmyPlacard":
+            lines.append(f"    retail_army_placard({idle_id})")
+        elif node.class_name == "TShipPlacard":
+            lines.append(f"    retail_ship_placard({idle_id})")
+        elif visual == "pressed_overlay":
+            lines.append(f"    retail_pressed_overlay_picture({idle_id})")
+        elif visual == "madness":
+            lines.append(f"    retail_madness_picture({idle_id})")
         elif visual == "static":
             lines.append(f"    retail_picture({idle_id})")
         else:
             lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+    elif node.class_name == "TNumberedArrowButton":
+        lines.append("    retail_numbered_arrow()")
     elif behavior == "radio_button":
         # TRadioText has no picture; Draw fills the selected/pressed option.
         lines.append("    retail_radio_text_fill()")

@@ -4,18 +4,15 @@ use super::hover_help::{
     ui_string,
 };
 use super::query_floater::bind_query_floater_control;
-use super::retail::{
-    RetailPictureSwap, RetailTag, RetailTree, RetailTwoPicSliderVisual, RetailUiAssets,
-};
+use super::retail::{RetailTree, RetailTwoPicSliderVisual, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
 use crate::media::RetailAudioAssets;
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
-use bevy::reflect::Is;
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{
-    Activate, Button, Checkbox, Slider, SliderOrientation, SliderPrecision, SliderRange,
-    SliderValue, TrackClick, ValueChange, slider_self_update,
+    Activate, Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick,
+    ValueChange, checkbox_self_update, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
 use imperialism_formats::{PictureId, SoundId, fourcc};
@@ -48,8 +45,6 @@ const MUSIC_SLIDER_SCALE: i16 = 0xff;
 const SOUND_SLIDER_SCALE: i16 = 100;
 const MUSIC_PICTURE_BASE: i16 = 0x1036;
 const SOUND_PICTURE_BASE: i16 = 0x1038;
-const TACTICAL_BATTLE_ON_PICTURE: i16 = 4158;
-const TACTICAL_BATTLE_OFF_PICTURE: i16 = 4160;
 
 /// Retail `TSimMgr::preferenceValues[14]`.
 #[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
@@ -125,12 +120,8 @@ struct PreferencesRoot;
 struct PreferencesView {
     music: Entity,
     sound: Entity,
-}
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-struct PreferenceRow {
-    ui_row: usize,
-    slot: PreferenceSlot,
+    /// Dialog-local checkbox draft state; slot captured at bind time.
+    checkboxes: Vec<(Entity, PreferenceSlot)>,
 }
 
 pub(crate) struct PreferencesPlugin;
@@ -184,13 +175,15 @@ fn bind_preferences(
         ],
     );
 
+    let mut checkboxes = Vec::new();
     for (row, &(slot, checkbox_tag, label_tag)) in PREFERENCE_ROWS.iter().enumerate() {
         let checkbox = tree.try_find(root, checkbox_tag);
         // Missing opta/optb: label-only row always uses the "on" caption.
         let caption_on = checkbox.is_none() || preference_row_is_on(&prefs, row);
         let caption = preference_caption(&assets, row, caption_on);
+        let label = tree.find(root, label_tag);
         commands
-            .entity(tree.find(root, label_tag))
+            .entity(label)
             .insert((Text::new(caption.clone()), AccessibleLabel::new(caption)));
         let Some(checkbox) = checkbox else {
             continue;
@@ -198,31 +191,27 @@ fn bind_preferences(
         let hover = ui_string(&assets, 0x2743, row as i16 + 0x26);
         let mut entity = commands.entity(checkbox);
         entity
-            .insert((PreferenceRow { ui_row: row, slot }, HoverHelpText(hover)))
-            .observe(on_preference_checked::<Add, Checked>)
-            .observe(on_preference_checked::<Remove, Checked>)
-            .remove::<InteractionDisabled>();
-        if row == 4 {
-            let idle = assets
-                .picture(PictureId::new(TACTICAL_BATTLE_OFF_PICTURE))
-                .expect("tactical-battle preference off picture");
-            let on = assets
-                .picture(PictureId::new(TACTICAL_BATTLE_ON_PICTURE))
-                .expect("tactical-battle preference on picture");
-            entity.remove::<Button>().insert((
-                Checkbox,
-                RetailPictureSwap {
-                    idle: idle.clone(),
-                    active: on,
+            .insert(HoverHelpText(hover))
+            .observe(checkbox_self_update)
+            .observe(
+                move |change: On<ValueChange<bool>>,
+                      mut commands: Commands,
+                      mut texts: Query<&mut Text>,
+                      assets: RetailUiAssets| {
+                    let caption = preference_caption(&assets, row, change.value);
+                    if let Ok(mut text) = texts.get_mut(label) {
+                        text.0.clone_from(&caption);
+                    }
+                    commands.entity(label).insert(AccessibleLabel::new(caption));
                 },
-                ImageNode::new(idle),
-            ));
-        }
+            )
+            .remove::<InteractionDisabled>();
         if preference_row_is_on(&prefs, row) {
             entity.insert(Checked);
         } else {
             entity.remove::<Checked>();
         }
+        checkboxes.push((checkbox, slot));
     }
 
     let music_hover = ui_string(&assets, 0x2743, 0x27);
@@ -249,9 +238,11 @@ fn bind_preferences(
         sound_hover,
         PreferenceSlot::SoundVolume,
     );
-    commands
-        .entity(root)
-        .insert(PreferencesView { music, sound });
+    commands.entity(root).insert(PreferencesView {
+        music,
+        sound,
+        checkboxes,
+    });
 
     commands
         .entity(tree.find(root, fourcc!("okay")))
@@ -346,34 +337,10 @@ fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> Strin
     get_string(assets, 0x2743, row as i16 * 2 + 0x10 + i16::from(!is_on))
 }
 
-fn on_preference_checked<E: EntityEvent, C: Component>(
-    event: On<E, C>,
-    mut commands: Commands,
-    rows: Query<&PreferenceRow>,
-    mut texts: Query<&mut Text>,
-    labels: Query<(Entity, &RetailTag)>,
-    assets: RetailUiAssets,
-) {
-    let Ok(row) = rows.get(event.event_target()) else {
-        return;
-    };
-    let Some((label, _)) = labels
-        .iter()
-        .find(|(_, tag)| tag.0 == PREFERENCE_ROWS[row.ui_row].2)
-    else {
-        return;
-    };
-    if let Ok(mut text) = texts.get_mut(label) {
-        let caption = preference_caption(&assets, row.ui_row, E::is::<Add>());
-        text.0.clone_from(&caption);
-        commands.entity(label).insert(AccessibleLabel::new(caption));
-    }
-}
-
 fn on_preferences_activate(
     _activate: On<Activate>,
-    rows: Query<(&PreferenceRow, Has<Checked>)>,
     view: Single<&PreferencesView>,
+    checked: Query<(), With<Checked>>,
     values: Query<&SliderValue>,
     mut prefs: ResMut<GamePreferences>,
     returning: Res<ReturnTo>,
@@ -381,8 +348,8 @@ fn on_preferences_activate(
 ) {
     // `TGamePreferencesPicture::DoEvent` writes `preferenceValues[row] = IsOn`
     // for each present opta+row checkbox, then overwrites [3]/[2] from the sliders.
-    for (row, checked) in &rows {
-        prefs.values[row.slot] = i16::from(checked);
+    for &(entity, slot) in &view.checkboxes {
+        prefs.values[slot] = i16::from(checked.contains(entity));
     }
     prefs.values[PreferenceSlot::MusicVolume] =
         values.get(view.music).expect("bound music slider").0 as i16;

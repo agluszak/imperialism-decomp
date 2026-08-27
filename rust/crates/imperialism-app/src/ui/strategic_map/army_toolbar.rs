@@ -1,8 +1,8 @@
 //! Right-hand army command page (`uarm` / `TArmyToolbar`).
 
 use super::super::retail::{
-    CountedPictureValue, NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, RetailTree,
-    RetailUiAssets, install_counted_picture, install_numbered_arrow,
+    ArmyPlacardValue, NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, RetailTree,
+    RetailUiAssets,
 };
 use super::map_interaction::StrategicMapSession;
 use super::map_modals::{spawn_army_roster, spawn_garrison};
@@ -34,11 +34,12 @@ fn placard_picture_id(
 #[derive(Component)]
 pub(super) struct ArmyToolbarPage;
 
-#[derive(Component, Clone, Copy)]
-struct ArmyPlacard(ArmyUnitCategory);
-
-#[derive(Component, Clone, Copy)]
-struct ArmyArrow(ArmyUnitCategory);
+#[derive(Component)]
+struct ArmyToolbarView {
+    placards: ArmyCategoryTable<Entity>,
+    arrows: ArmyCategoryTable<Entity>,
+    garrison: Entity,
+}
 
 #[derive(Component, Clone, Copy)]
 enum ArmyCommand {
@@ -57,13 +58,50 @@ pub(crate) fn register(app: &mut App) {
 
 pub(crate) fn bind_army_toolbar(
     commands: &mut Commands,
-    assets: &mut RetailUiAssets,
+    _assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
 ) {
     let page = tree.find(root, PAGE_TAG);
+    let mut placards =
+        ArmyCategoryTable::from_array([Entity::PLACEHOLDER; ArmyUnitCategory::LENGTH]);
+    let mut arrows = ArmyCategoryTable::from_array([Entity::PLACEHOLDER; ArmyUnitCategory::LENGTH]);
+    for category in ArmyUnitCategory::all() {
+        let pic = tree.child(page, placard_tag(category));
+        placards[category] = pic;
+        let arrow = tree.child(page, arrow_tag(category));
+        arrows[category] = arrow;
+        let category_capture = category;
+        commands.entity(arrow).insert(Visibility::Hidden).observe(
+            move |click: On<NumberedArrowClick>,
+                  mut session: ResMut<GameSession>,
+                  map: Res<StrategicMapSession>| {
+                let Some(province) = map.selection.army() else {
+                    return;
+                };
+                match click.action {
+                    NumberedArrowAction::Upper => {
+                        session
+                            .game
+                            .activate_first_active_unit_by_category(province, category_capture);
+                    }
+                    NumberedArrowAction::Lower => {
+                        session
+                            .game
+                            .activate_first_idle_unit_by_category(province, category_capture);
+                    }
+                }
+            },
+        );
+    }
+    let garrison = tree.child(page, fourcc!("garr"));
     commands.entity(page).insert((
         ArmyToolbarPage,
+        ArmyToolbarView {
+            placards,
+            arrows,
+            garrison,
+        },
         Node {
             position_type: PositionType::Absolute,
             left: Val::Px(PAGE_PARKED.x),
@@ -73,38 +111,6 @@ pub(crate) fn bind_army_toolbar(
             ..default()
         },
     ));
-    for category in ArmyUnitCategory::all() {
-        let pic = tree.child(page, placard_tag(category));
-        commands.entity(pic).insert(ArmyPlacard(category));
-        install_counted_picture(commands, pic);
-        let arrow = tree.child(page, arrow_tag(category));
-        install_numbered_arrow(commands, arrow, assets);
-        let category_capture = category;
-        commands
-            .entity(arrow)
-            .insert((ArmyArrow(category), Visibility::Hidden))
-            .observe(
-                move |click: On<NumberedArrowClick>,
-                      mut session: ResMut<GameSession>,
-                      map: Res<StrategicMapSession>| {
-                    let Some(province) = map.selection.army() else {
-                        return;
-                    };
-                    match click.action {
-                        NumberedArrowAction::Upper => {
-                            session
-                                .game
-                                .activate_first_active_unit_by_category(province, category_capture);
-                        }
-                        NumberedArrowAction::Lower => {
-                            session
-                                .game
-                                .activate_first_idle_unit_by_category(province, category_capture);
-                        }
-                    }
-                },
-            );
-    }
     for (tag, command) in [
         (fourcc!("dfnd"), ArmyCommand::Defend),
         (fourcc!("latr"), ArmyCommand::Later),
@@ -118,28 +124,34 @@ pub(crate) fn bind_army_toolbar(
     }
 }
 
-#[allow(clippy::type_complexity)]
 fn sync_army_toolbar(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     mut assets: RetailUiAssets,
-    mut pages: Query<&mut Node, With<ArmyToolbarPage>>,
-    mut placards: Query<(
-        Entity,
-        &ArmyPlacard,
-        &mut ImageNode,
-        &mut CountedPictureValue,
-    )>,
-    mut arrows: Query<(Entity, &ArmyArrow, &mut Visibility, &mut NumberedArrowValue)>,
-    mut garrisons: Query<(&ArmyCommand, &mut ImageNode), Without<ArmyPlacard>>,
+    mut pages: Query<(&mut Node, &ArmyToolbarView), With<ArmyToolbarPage>>,
+    mut images: Query<&mut ImageNode>,
+    mut visibility: Query<&mut Visibility>,
+    mut counts: Query<&mut ArmyPlacardValue>,
+    mut arrows: Query<&mut NumberedArrowValue>,
 ) {
-    let Ok(mut page) = pages.single_mut() else {
+    if !session.is_changed() && !map.is_changed() {
+        return;
+    }
+    let Ok((mut page, view)) = pages.single_mut() else {
         return;
     };
     let Some(province) = map.selection.army() else {
         page.left = Val::Px(PAGE_PARKED.x);
         page.top = Val::Px(PAGE_PARKED.y);
-        hide_empty_toolbar(&mut assets, &session.game, &mut placards, &mut arrows);
+        hide_empty_toolbar(
+            &mut assets,
+            &session.game,
+            view,
+            &mut images,
+            &mut visibility,
+            &mut counts,
+            &mut arrows,
+        );
         return;
     };
     page.left = Val::Px(ARMY_PAGE_VISIBLE.x);
@@ -147,63 +159,80 @@ fn sync_army_toolbar(
     let nation = MajorNationId::from_nation(session.game.turn().active_nation)
         .expect("army toolbar requires an active major nation");
     let counts_state = session.game.army_toolbar_counts(province);
-    for (_, placard, mut image, mut counted) in &mut placards {
-        let picture_id = placard_picture_id(counts_state, nation, &session.game, placard.0);
-        image.image = assets
+    for category in ArmyUnitCategory::all() {
+        let picture_id = placard_picture_id(counts_state, nation, &session.game, category);
+        images
+            .get_mut(view.placards[category])
+            .expect("army placard")
+            .image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");
-        counted.set_if_neq(CountedPictureValue(
-            (counts_state.totals[placard.0] != 0).then_some(counts_state.totals[placard.0]),
-        ));
-    }
-    for (_, arrow, mut visibility, mut numbered) in &mut arrows {
-        if counts_state.totals[arrow.0] != 0 && arrow.0 != ArmyUnitCategory::Garrison {
-            *visibility = Visibility::Visible;
-            numbered.set_if_neq(NumberedArrowValue(counts_state.available[arrow.0]));
+        counts
+            .get_mut(view.placards[category])
+            .expect("army placard value")
+            .set_if_neq(ArmyPlacardValue(
+                (counts_state.totals[category] != 0).then_some(counts_state.totals[category]),
+            ));
+        if counts_state.totals[category] != 0 && category != ArmyUnitCategory::Garrison {
+            *visibility
+                .get_mut(view.arrows[category])
+                .expect("army arrow") = Visibility::Visible;
+            arrows
+                .get_mut(view.arrows[category])
+                .expect("army arrow value")
+                .set_if_neq(NumberedArrowValue(Some(counts_state.available[category])));
         } else {
-            *visibility = Visibility::Hidden;
-            numbered.set_if_neq(NumberedArrowValue(0));
+            *visibility
+                .get_mut(view.arrows[category])
+                .expect("army arrow") = Visibility::Hidden;
+            arrows
+                .get_mut(view.arrows[category])
+                .expect("army arrow value")
+                .set_if_neq(NumberedArrowValue(None));
         }
     }
-    for (command, mut image) in &mut garrisons {
-        if matches!(*command, ArmyCommand::Garrison) {
-            image.image = assets
-                .picture(PictureId::new(if counts_state.can_upgrade {
-                    0x24d5
-                } else {
-                    0x04b5
-                }))
-                .expect("retail garrison picture must load");
-        }
-    }
+    images.get_mut(view.garrison).expect("garrison").image = assets
+        .picture(PictureId::new(if counts_state.can_upgrade {
+            0x24d5
+        } else {
+            0x04b5
+        }))
+        .expect("retail garrison picture must load");
 }
 
-#[allow(clippy::type_complexity)]
+#[allow(clippy::too_many_arguments)]
 fn hide_empty_toolbar(
     assets: &mut RetailUiAssets,
     state: &GameState,
-    placards: &mut Query<(
-        Entity,
-        &ArmyPlacard,
-        &mut ImageNode,
-        &mut CountedPictureValue,
-    )>,
-    arrows: &mut Query<(Entity, &ArmyArrow, &mut Visibility, &mut NumberedArrowValue)>,
+    view: &ArmyToolbarView,
+    images: &mut Query<&mut ImageNode>,
+    visibility: &mut Query<&mut Visibility>,
+    counts: &mut Query<&mut ArmyPlacardValue>,
+    arrows: &mut Query<&mut NumberedArrowValue>,
 ) {
     let Some(nation) = MajorNationId::from_nation(state.turn().active_nation) else {
         return;
     };
     let empty = ArmyToolbarCounts::default();
-    for (_, placard, mut image, mut counted) in placards.iter_mut() {
-        let picture_id = placard_picture_id(empty, nation, state, placard.0);
-        image.image = assets
+    for category in ArmyUnitCategory::all() {
+        let picture_id = placard_picture_id(empty, nation, state, category);
+        images
+            .get_mut(view.placards[category])
+            .expect("army placard")
+            .image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");
-        counted.set_if_neq(CountedPictureValue(None));
-    }
-    for (_, _, mut visibility, mut numbered) in arrows.iter_mut() {
-        *visibility = Visibility::Hidden;
-        numbered.set_if_neq(NumberedArrowValue(0));
+        counts
+            .get_mut(view.placards[category])
+            .expect("army placard value")
+            .set_if_neq(ArmyPlacardValue(None));
+        *visibility
+            .get_mut(view.arrows[category])
+            .expect("army arrow") = Visibility::Hidden;
+        arrows
+            .get_mut(view.arrows[category])
+            .expect("army arrow value")
+            .set_if_neq(NumberedArrowValue(None));
     }
 }
 
