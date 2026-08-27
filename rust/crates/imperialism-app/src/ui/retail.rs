@@ -13,9 +13,9 @@ use imperialism_formats::*;
 use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{RetailAmountBarKind, retail_amount_bar};
-pub use super::retail_counted_picture::RetailCountedPicture;
+pub use super::retail_counted_picture::{CountedPictureValue, install_counted_picture};
 pub use super::retail_numbered_arrow::{
-    NumberedArrowAction, NumberedArrowClick, RetailNumberedArrow, install_numbered_arrow,
+    NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, install_numbered_arrow,
 };
 pub use super::retail_placard::{PlacardValue, retail_placard};
 pub use super::retail_slider::RetailTwoPicSliderVisual;

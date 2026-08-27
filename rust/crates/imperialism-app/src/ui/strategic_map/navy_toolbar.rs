@@ -1,7 +1,7 @@
 //! Right-hand navy command page (`unav` / `TNavyToolbarCluster`).
 
 use super::super::retail::{
-    NumberedArrowAction, NumberedArrowClick, RetailNumberedArrow, RetailTree, RetailUiAssets,
+    NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, RetailTree, RetailUiAssets,
     install_numbered_arrow,
 };
 use super::map_interaction::{StrategicMapSession, StrategicSelection};
@@ -83,7 +83,6 @@ pub(crate) fn bind_navy_toolbar(
         commands
             .entity(arrow)
             .insert((NavyClassArrow(class), Visibility::Hidden))
-            .remove::<bevy::ui_widgets::Button>()
             .observe(
                 move |click: On<NumberedArrowClick>,
                       mut session: ResMut<GameSession>,
@@ -154,7 +153,7 @@ fn sync_navy_toolbar(
         Entity,
         &NavyClassArrow,
         &mut Visibility,
-        &mut RetailNumberedArrow,
+        &mut NumberedArrowValue,
         &ChildOf,
     )>,
     classes: Query<(Entity, &NavyClass)>,
@@ -198,10 +197,10 @@ fn sync_navy_toolbar(
             }
             if available > 0 {
                 *visibility = Visibility::Visible;
-                numbered.value = i32::from(selected.max(0));
+                numbered.set_if_neq(NumberedArrowValue(i32::from(selected.max(0))));
             } else {
                 *visibility = Visibility::Hidden;
-                numbered.value = 0;
+                numbered.set_if_neq(NumberedArrowValue(0));
             }
         }
     }

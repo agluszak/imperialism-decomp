@@ -1,23 +1,17 @@
-//! Recovered `TNumberedArrowButton` as composition of two Bevy `Button`s.
+//! Recovered `TNumberedArrowButton` as a BSN SceneComponent of two Bevy `Button`s.
 //!
 //! Bevy owns press/click on the transparent halves. This widget owns atlas
 //! presentation from child `Pressed` state and the count overlay.
 
-use super::retail::retail_text_components;
-use crate::{RetailAssetsResource, RetailFonts};
+use super::retail::{retail_text_color, retail_text_shadow, retail_text_style};
 use bevy::prelude::*;
 use bevy::reflect::Is;
-use bevy::text::LineHeight;
-use bevy::ui::Pressed;
+use bevy::ui::{Pressed, UiSystems};
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
-use imperialism_formats::{
-    PictureId, RetailTextStyleError, RetailTextStylePreset, resolve_retail_text_style,
-};
+use imperialism_formats::PictureId;
 
 const ARROW_ATLAS: i16 = 804;
 const TRANSPARENT_INDEX: u8 = 0x10;
-const COUNT_PALETTE: u8 = 0x28;
-const COUNT_SHADOW_PALETTE: u8 = 0xd2;
 const HALF_HEIGHT: f32 = 16.0;
 const LOWER_TOP: f32 = 25.0;
 const WIDTH: f32 = 11.0;
@@ -41,11 +35,24 @@ const BOTTOM_PRESSED: Rect = Rect {
     max: Vec2::new(33.0, 16.0),
 };
 
-/// Presentation state for the numbered arrow count.
-#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
+/// Private structure for the numbered-arrow hierarchy.
+#[derive(SceneComponent, FromTemplate, Clone)]
+#[scene(RetailNumberedArrowProps)]
 pub struct RetailNumberedArrow {
-    pub value: i32,
+    pub upper_image: Entity,
+    pub lower_image: Entity,
+    pub count: Entity,
 }
+
+/// Construction props: atlas handle loaded by the installer.
+#[derive(Clone, Default)]
+pub struct RetailNumberedArrowProps {
+    pub atlas: Handle<Image>,
+}
+
+/// Externally projected arrow count.
+#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct NumberedArrowValue(pub i32);
 
 /// Which half of a numbered arrow was activated.
 #[derive(EntityEvent, Clone, Copy, Debug, Eq, PartialEq)]
@@ -61,30 +68,108 @@ pub enum NumberedArrowAction {
     Lower,
 }
 
-#[derive(Component, Clone, Copy)]
+#[derive(Component, FromTemplate, Clone)]
 struct NumberedArrowHalf {
     root: Entity,
     upper: bool,
 }
 
-#[derive(Component, Clone, Copy)]
-struct NumberedArrowParts {
-    upper_image: Entity,
-    lower_image: Entity,
-    count: Entity,
+impl RetailNumberedArrow {
+    fn scene(props: RetailNumberedArrowProps) -> impl Scene {
+        let atlas = props.atlas;
+        bsn! {
+            #Root
+            Pickable::IGNORE
+            NumberedArrowValue(0)
+            RetailNumberedArrow {
+                upper_image: #UpperImage,
+                lower_image: #LowerImage,
+                count: #Count,
+            }
+            Children [
+                (
+                    #UpperImage
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(0),
+                        width: px(WIDTH),
+                        height: px(HALF_HEIGHT),
+                    }
+                    ImageNode {
+                        image: {atlas.clone()},
+                        rect: {Some(TOP_IDLE)},
+                    }
+                    Pickable::IGNORE
+                ),
+                (
+                    #LowerImage
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(LOWER_TOP),
+                        width: px(WIDTH),
+                        height: px(HALF_HEIGHT),
+                    }
+                    ImageNode {
+                        image: {atlas},
+                        rect: {Some(BOTTOM_IDLE)},
+                    }
+                    Pickable::IGNORE
+                ),
+                (
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(0),
+                        width: px(WIDTH),
+                        height: px(HEIGHT / 2.0),
+                    }
+                    Button
+                    ActivateOnPress
+                    NumberedArrowHalf {
+                        root: #Root,
+                        upper: true,
+                    }
+                    on(on_numbered_arrow_half_activate)
+                ),
+                (
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(HEIGHT / 2.0),
+                        width: px(WIDTH),
+                        height: px(HEIGHT / 2.0),
+                    }
+                    Button
+                    ActivateOnPress
+                    NumberedArrowHalf {
+                        root: #Root,
+                        upper: false,
+                    }
+                    on(on_numbered_arrow_half_activate)
+                ),
+                (
+                    #Count
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(7),
+                        top: px(0),
+                        width: px(11),
+                        height: px(16),
+                    }
+                    Text("")
+                    retail_text_style(0, 0, 10, 1)
+                    retail_text_color(0x28)
+                    retail_text_shadow(0xd2, -1, -1)
+                    Pickable::IGNORE
+                ),
+            ]
+        }
+    }
 }
 
-pub(super) fn register_numbered_arrow(app: &mut App) {
-    app.add_systems(
-        PostUpdate,
-        (spawn_numbered_arrow_parts, draw_numbered_arrow_counts).chain(),
-    )
-    .add_observer(on_numbered_arrow_half_activate)
-    .add_observer(on_numbered_arrow_half_pressed::<Add>)
-    .add_observer(on_numbered_arrow_half_pressed::<Remove>);
-}
-
-/// Install atlas art and widget state on a recovered numbered-arrow node.
+/// Install atlas art and the numbered-arrow SceneComponent on a recovered node.
 pub fn install_numbered_arrow(
     commands: &mut Commands,
     entity: Entity,
@@ -93,174 +178,61 @@ pub fn install_numbered_arrow(
     let atlas = assets
         .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
-    commands.entity(entity).insert((
-        RetailNumberedArrow { value: 0 },
-        ImageNode {
-            image: atlas,
-            // Root image is unused; halves own the glyphs. Keep IGNORE pick so
-            // transparent half buttons receive hits.
-            ..default()
-        },
-        Pickable::IGNORE,
-    ));
-}
-
-#[allow(clippy::type_complexity)]
-fn spawn_numbered_arrow_parts(
-    mut commands: Commands,
-    arrows: Query<(Entity, &ImageNode), (Added<RetailNumberedArrow>, Without<NumberedArrowParts>)>,
-    fonts: Res<RetailFonts>,
-    assets: Res<RetailAssetsResource>,
-) {
-    let Ok((font, layout, line_height)) = arrow_count_style(&fonts) else {
-        return;
-    };
-    let text_color = palette_color(&assets, COUNT_PALETTE);
-    let shadow_color = palette_color(&assets, COUNT_SHADOW_PALETTE);
-    for (root, image) in &arrows {
-        let atlas = image.image.clone();
-        let upper_image = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0.0),
-                    top: Val::Px(0.0),
-                    width: Val::Px(WIDTH),
-                    height: Val::Px(HALF_HEIGHT),
-                    ..default()
-                },
-                ImageNode {
-                    image: atlas.clone(),
-                    rect: Some(TOP_IDLE),
-                    ..default()
-                },
-                Pickable::IGNORE,
-                ChildOf(root),
-            ))
-            .id();
-        let lower_image = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0.0),
-                    top: Val::Px(LOWER_TOP),
-                    width: Val::Px(WIDTH),
-                    height: Val::Px(HALF_HEIGHT),
-                    ..default()
-                },
-                ImageNode {
-                    image: atlas,
-                    rect: Some(BOTTOM_IDLE),
-                    ..default()
-                },
-                Pickable::IGNORE,
-                ChildOf(root),
-            ))
-            .id();
-        let upper_button = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0.0),
-                    top: Val::Px(0.0),
-                    width: Val::Px(WIDTH),
-                    height: Val::Px(HEIGHT / 2.0),
-                    ..default()
-                },
-                Button,
-                ActivateOnPress,
-                NumberedArrowHalf { root, upper: true },
-                ChildOf(root),
-            ))
-            .id();
-        let lower_button = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0.0),
-                    top: Val::Px(HEIGHT / 2.0),
-                    width: Val::Px(WIDTH),
-                    height: Val::Px(HEIGHT / 2.0),
-                    ..default()
-                },
-                Button,
-                ActivateOnPress,
-                NumberedArrowHalf { root, upper: false },
-                ChildOf(root),
-            ))
-            .id();
-        let _ = (upper_button, lower_button);
-        let count = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(7.0),
-                    top: Val::Px(0.0),
-                    width: Val::Px(11.0),
-                    height: Val::Px(16.0),
-                    ..default()
-                },
-                Text::new(""),
-                font.clone(),
-                layout,
-                line_height,
-                TextColor(text_color),
-                TextShadow {
-                    offset: Vec2::new(-1.0, -1.0),
-                    color: shadow_color,
-                },
-                Pickable::IGNORE,
-                ChildOf(root),
-            ))
-            .id();
-        commands.entity(root).insert(NumberedArrowParts {
-            upper_image,
-            lower_image,
-            count,
+    commands
+        .entity(entity)
+        .remove::<Button>()
+        .apply_scene(bsn! {
+            @RetailNumberedArrow {
+                @atlas: atlas,
+            }
         });
-    }
 }
 
-#[allow(clippy::type_complexity)]
+pub(super) fn register_numbered_arrow(app: &mut App) {
+    app.add_systems(
+        PostUpdate,
+        draw_numbered_arrow_counts.before(UiSystems::Prepare),
+    )
+    .add_observer(on_numbered_arrow_half_pressed::<Add>)
+    .add_observer(on_numbered_arrow_half_pressed::<Remove>);
+}
+
 fn draw_numbered_arrow_counts(
-    arrows: Query<
-        (&RetailNumberedArrow, &NumberedArrowParts),
-        Or<(Changed<RetailNumberedArrow>, Added<NumberedArrowParts>)>,
-    >,
+    arrows: Query<(&NumberedArrowValue, &RetailNumberedArrow), Changed<NumberedArrowValue>>,
     mut texts: Query<&mut Text>,
 ) {
-    for (arrow, parts) in &arrows {
-        if let Ok(mut text) = texts.get_mut(parts.count) {
-            text.0 = if arrow.value == 0 {
-                String::new()
-            } else {
-                arrow.value.to_string()
-            };
-        }
+    for (value, arrow) in &arrows {
+        texts
+            .get_mut(arrow.count)
+            .expect("RetailNumberedArrow count child")
+            .0 = if value.0 == 0 {
+            String::new()
+        } else {
+            value.0.to_string()
+        };
     }
 }
 
-#[allow(clippy::type_complexity)]
 fn on_numbered_arrow_half_pressed<E: EntityEvent>(
     event: On<E, Pressed>,
     halves: Query<&NumberedArrowHalf>,
-    parts: Query<&NumberedArrowParts>,
+    arrows: Query<&RetailNumberedArrow>,
     mut images: Query<&mut ImageNode>,
 ) {
     let Ok(half) = halves.get(event.event_target()) else {
         return;
     };
-    let Ok(parts) = parts.get(half.root) else {
+    let Ok(arrow) = arrows.get(half.root) else {
         return;
     };
     let entity = if half.upper {
-        parts.upper_image
+        arrow.upper_image
     } else {
-        parts.lower_image
+        arrow.lower_image
     };
-    let Ok(mut image) = images.get_mut(entity) else {
-        return;
-    };
+    let mut image = images
+        .get_mut(entity)
+        .expect("RetailNumberedArrow half image");
     let pressed = !E::is::<Remove>();
     image.rect = Some(match (half.upper, pressed) {
         (true, false) => TOP_IDLE,
@@ -287,22 +259,4 @@ fn on_numbered_arrow_half_activate(
         entity: half.root,
         action,
     });
-}
-
-fn palette_color(assets: &RetailAssetsResource, index: u8) -> Color {
-    let [red, green, blue] = assets.assets().default_dib_palette()[index].to_array();
-    Color::srgb_u8(red, green, blue)
-}
-
-fn arrow_count_style(
-    fonts: &RetailFonts,
-) -> Result<(TextFont, TextLayout, LineHeight), RetailTextStyleError> {
-    let style = resolve_retail_text_style(RetailTextStylePreset {
-        font_family: 0,
-        face_flags: 0,
-        point_size: 10,
-        alignment: 1,
-    })?;
-    let (font, layout, line_height, _) = retail_text_components(style, fonts.get(style.face));
-    Ok((font, layout, line_height))
 }

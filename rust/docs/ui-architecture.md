@@ -138,9 +138,12 @@ retail code is usually a skin or a genuinely non-standard interaction (`TAmtBar`
 `TPageCorner`).
 
 Hierarchical retail widgets are BSN `SceneComponent`s: structure and private children are spawned
-atomically with the scene; mutable presentation lives in a small separate state component
-(`PlacardValue`, `RetailAmountBarState`). Screens project with `set_if_neq` so `Changed<…>` stays
-meaningful. Widget draw systems run in `PostUpdate` before `UiSystems::Prepare`.
+atomically with the scene (`RetailPlacard`, `RetailAmountBar`, `RetailNumberedArrow`,
+`RetailCountedPicture`); mutable presentation lives in a small separate state component
+(`PlacardValue`, `RetailAmountBarState`, `NumberedArrowValue`, `CountedPictureValue`). Screens
+project with `set_if_neq` so `Changed<…>` stays meaningful. Widget draw systems run in `PostUpdate`
+before `UiSystems::Prepare`. Binders apply widgets onto recovered nodes with `apply_scene` /
+`install_*` helpers when the generated root already exists.
 
 They represent recovered retail widget *semantics*, not a port of the C++ class hierarchy. The
 criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket

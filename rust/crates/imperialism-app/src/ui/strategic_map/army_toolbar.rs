@@ -1,8 +1,8 @@
 //! Right-hand army command page (`uarm` / `TArmyToolbar`).
 
 use super::super::retail::{
-    NumberedArrowAction, NumberedArrowClick, RetailCountedPicture, RetailNumberedArrow, RetailTree,
-    RetailUiAssets, install_numbered_arrow,
+    CountedPictureValue, NumberedArrowAction, NumberedArrowClick, NumberedArrowValue, RetailTree,
+    RetailUiAssets, install_counted_picture, install_numbered_arrow,
 };
 use super::map_interaction::StrategicMapSession;
 use super::map_modals::{spawn_army_roster, spawn_garrison};
@@ -75,16 +75,14 @@ pub(crate) fn bind_army_toolbar(
     ));
     for category in ArmyUnitCategory::all() {
         let pic = tree.child(page, placard_tag(category));
-        commands
-            .entity(pic)
-            .insert((ArmyPlacard(category), RetailCountedPicture { value: None }));
+        commands.entity(pic).insert(ArmyPlacard(category));
+        install_counted_picture(commands, pic);
         let arrow = tree.child(page, arrow_tag(category));
         install_numbered_arrow(commands, arrow, assets);
         let category_capture = category;
         commands
             .entity(arrow)
             .insert((ArmyArrow(category), Visibility::Hidden))
-            .remove::<bevy::ui_widgets::Button>()
             .observe(
                 move |click: On<NumberedArrowClick>,
                       mut session: ResMut<GameSession>,
@@ -130,14 +128,9 @@ fn sync_army_toolbar(
         Entity,
         &ArmyPlacard,
         &mut ImageNode,
-        &mut RetailCountedPicture,
+        &mut CountedPictureValue,
     )>,
-    mut arrows: Query<(
-        Entity,
-        &ArmyArrow,
-        &mut Visibility,
-        &mut RetailNumberedArrow,
-    )>,
+    mut arrows: Query<(Entity, &ArmyArrow, &mut Visibility, &mut NumberedArrowValue)>,
     mut garrisons: Query<(&ArmyCommand, &mut ImageNode), Without<ArmyPlacard>>,
 ) {
     let Ok(mut page) = pages.single_mut() else {
@@ -159,16 +152,17 @@ fn sync_army_toolbar(
         image.image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");
-        counted.value =
-            (counts_state.totals[placard.0] != 0).then_some(counts_state.totals[placard.0]);
+        counted.set_if_neq(CountedPictureValue(
+            (counts_state.totals[placard.0] != 0).then_some(counts_state.totals[placard.0]),
+        ));
     }
     for (_, arrow, mut visibility, mut numbered) in &mut arrows {
         if counts_state.totals[arrow.0] != 0 && arrow.0 != ArmyUnitCategory::Garrison {
             *visibility = Visibility::Visible;
-            numbered.value = counts_state.available[arrow.0];
+            numbered.set_if_neq(NumberedArrowValue(counts_state.available[arrow.0]));
         } else {
             *visibility = Visibility::Hidden;
-            numbered.value = 0;
+            numbered.set_if_neq(NumberedArrowValue(0));
         }
     }
     for (command, mut image) in &mut garrisons {
@@ -192,14 +186,9 @@ fn hide_empty_toolbar(
         Entity,
         &ArmyPlacard,
         &mut ImageNode,
-        &mut RetailCountedPicture,
+        &mut CountedPictureValue,
     )>,
-    arrows: &mut Query<(
-        Entity,
-        &ArmyArrow,
-        &mut Visibility,
-        &mut RetailNumberedArrow,
-    )>,
+    arrows: &mut Query<(Entity, &ArmyArrow, &mut Visibility, &mut NumberedArrowValue)>,
 ) {
     let Some(nation) = MajorNationId::from_nation(state.turn().active_nation) else {
         return;
@@ -210,11 +199,11 @@ fn hide_empty_toolbar(
         image.image = assets
             .picture(PictureId::new(picture_id))
             .expect("retail army placard picture must load");
-        counted.value = None;
+        counted.set_if_neq(CountedPictureValue(None));
     }
     for (_, _, mut visibility, mut numbered) in arrows.iter_mut() {
         *visibility = Visibility::Hidden;
-        numbered.value = 0;
+        numbered.set_if_neq(NumberedArrowValue(0));
     }
 }
 
