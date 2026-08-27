@@ -164,13 +164,27 @@ struct LandBattleRoot;
 #[derive(Component)]
 struct LandBattleEdgeScroll;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum LandBattleAction {
     Help,
     Target,
     Done,
     Auto,
     Retreat,
+}
+
+#[derive(Component)]
+struct LandBattleView {
+    #[expect(dead_code)]
+    field: Entity,
+    help: Entity,
+    target: Entity,
+    done: Entity,
+    auto: Entity,
+    retreat: Entity,
+    coat: Entity,
+    current_portrait: Entity,
+    other_portrait: Entity,
 }
 
 #[derive(Component)]
@@ -223,15 +237,6 @@ enum LandBattleSelection {
     Inset,
 }
 
-#[derive(Component, Clone, Copy)]
-enum LandBattlePortrait {
-    Current,
-    Other,
-}
-
-#[derive(Component)]
-struct LandBattleCoat;
-
 #[derive(Component)]
 struct LandBattleUnitStat;
 
@@ -269,6 +274,12 @@ struct LandBattleAnimationQueue {
 
 #[derive(Component)]
 struct LandBattleDeferredStop(Option<TurnStop>);
+
+type LandBattleAnimationBlock = Or<(
+    With<LandBattleEffect>,
+    With<LandBattleGlide>,
+    With<LandBattleAnimationQueue>,
+)>;
 
 fn land_viewport(column_count: i32, origin_x: i32) -> TacticalViewport {
     TacticalViewport::land(column_count, origin_x)
@@ -369,7 +380,7 @@ fn bind_land_battle(
     tree: RetailTree,
     assets: RetailUiAssets,
 ) {
-    bind_land_battle_controls(&mut commands, *root, &tree);
+    let view = bind_land_battle_controls(&mut commands, *root, &tree);
     // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         &mut commands,
@@ -384,34 +395,60 @@ fn bind_land_battle(
             (fourcc!("DLOG"), String::new()),
         ],
     );
+    commands.entity(*root).insert(view);
 }
 
-fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &RetailTree) {
+fn bind_land_battle_controls(
+    commands: &mut Commands,
+    root: Entity,
+    tree: &RetailTree,
+) -> LandBattleView {
     commands
         .entity(tree.try_find(root, fourcc!("main")).unwrap_or(root))
         .insert((RelativeCursorPosition::default(), LandBattleEdgeScroll));
-    for (tag, action) in [
-        (fourcc!("help"), LandBattleAction::Help),
-        (fourcc!("targ"), LandBattleAction::Target),
-        (fourcc!("done"), LandBattleAction::Done),
-        (fourcc!("auto"), LandBattleAction::Auto),
-        (fourcc!("retr"), LandBattleAction::Retreat),
+    let help = tree.find(root, fourcc!("help"));
+    let target = tree.find(root, fourcc!("targ"));
+    let done = tree.find(root, fourcc!("done"));
+    let auto = tree.find(root, fourcc!("auto"));
+    let retreat = tree.find(root, fourcc!("retr"));
+    for (entity, action) in [
+        (help, LandBattleAction::Help),
+        (target, LandBattleAction::Target),
+        (done, LandBattleAction::Done),
+        (auto, LandBattleAction::Auto),
+        (retreat, LandBattleAction::Retreat),
     ] {
         commands
-            .entity(tree.find(root, tag))
-            .insert(action)
-            .observe(on_land_battle_activate)
-            .remove::<InteractionDisabled>();
+            .entity(entity)
+            .remove::<InteractionDisabled>()
+            .observe(
+                move |_: On<Activate>,
+                      mut session: ResMut<GameSession>,
+                      mut next_state: ResMut<NextState<AppState>>,
+                      mut music: Option<ResMut<MusicDirector>>,
+                      time: Option<Res<Time>>,
+                      prefs: Res<super::preferences::GamePreferences>,
+                      mut fields: Query<(Entity, &mut LandBattlefield)>,
+                      animations: Query<(), LandBattleAnimationBlock>,
+                      mut commands: Commands,
+                      mut audio: crate::media::RetailAudioAssets| {
+                    if !animations.is_empty() {
+                        return;
+                    }
+                    apply_land_battle_action(
+                        action,
+                        &mut commands,
+                        &mut session,
+                        &mut next_state,
+                        &prefs,
+                        &mut fields,
+                        &mut audio,
+                        music.as_deref_mut(),
+                        time.as_deref(),
+                    );
+                },
+            );
     }
-    commands
-        .entity(tree.find(root, fourcc!("coat")))
-        .insert(LandBattleCoat);
-    commands
-        .entity(tree.find(root, fourcc!("curr")))
-        .insert(LandBattlePortrait::Current);
-    commands
-        .entity(tree.find(root, fourcc!("tpic")))
-        .insert(LandBattlePortrait::Other);
     let field = tree.find(root, fourcc!("DLOG"));
     commands
         .entity(field)
@@ -432,6 +469,17 @@ fn bind_land_battle_controls(commands: &mut Commands, root: Entity, tree: &Retai
         .entity(field)
         .entry::<Node>()
         .and_modify(|mut node| node.overflow = Overflow::clip());
+    LandBattleView {
+        field,
+        help,
+        target,
+        done,
+        auto,
+        retreat,
+        coat: tree.find(root, fourcc!("coat")),
+        current_portrait: tree.find(root, fourcc!("curr")),
+        other_portrait: tree.find(root, fourcc!("tpic")),
+    }
 }
 
 fn bind_land_battle_retreat_prompt(
@@ -1447,67 +1495,48 @@ fn spawn_unit_status_flag(
     }
 }
 
-#[allow(clippy::type_complexity)]
+#[allow(clippy::too_many_arguments)]
 fn project_land_battle_toolbar(
     mut commands: Commands,
     session: Res<GameSession>,
+    view: Single<&LandBattleView>,
     mut fields: Query<(&LandBattlefield, &LandBattleVisuals, &mut HoverHelpText)>,
-    mut buttons: Query<
-        (
-            Entity,
-            &LandBattleAction,
-            &mut Visibility,
-            Option<&mut ImageNode>,
-            Option<&mut RetailPictureSwap>,
-            Option<&mut HoverHelpText>,
-        ),
-        (
-            Without<LandBattlePortrait>,
-            Without<LandBattleCoat>,
-            Without<LandBattlefield>,
-        ),
-    >,
-    mut portraits: Query<
-        (
-            Entity,
-            &LandBattlePortrait,
-            &mut ImageNode,
-            &mut Visibility,
-            Option<&Children>,
-        ),
-        (Without<LandBattleAction>, Without<LandBattleCoat>),
-    >,
+    mut visibilities: Query<&mut Visibility>,
+    mut images: Query<&mut ImageNode>,
+    mut swaps: Query<&mut RetailPictureSwap>,
+    mut helps: Query<&mut HoverHelpText>,
     experience_bars: Query<(), With<LandBattleExperienceBar>>,
-    mut coats: Query<
-        &mut ImageNode,
-        (
-            With<LandBattleCoat>,
-            Without<LandBattleAction>,
-            Without<LandBattlePortrait>,
-        ),
-    >,
+    children: Query<&Children>,
     mut assets: RetailUiAssets,
 ) {
     let Some(battle) = session.game.army_battle() else {
         return;
     };
-    let Ok((view, visuals, mut field_help)) = fields.single_mut() else {
+    let Ok((field_view, visuals, mut field_help)) = fields.single_mut() else {
         return;
     };
+    let view = view.into_inner();
     let stage = battle.stage();
-    for (entity, action, mut visibility, image, swap, help) in &mut buttons {
-        let live_only = matches!(action, LandBattleAction::Target | LandBattleAction::Auto);
-        *visibility = if live_only && stage == ArmyBattleStage::Deploying {
-            Visibility::Hidden
-        } else {
-            Visibility::Inherited
-        };
+    for (entity, live_only) in [(view.target, true), (view.auto, true)] {
+        *visibilities
+            .get_mut(entity)
+            .expect("land battle toolbar control") =
+            if live_only && stage == ArmyBattleStage::Deploying {
+                Visibility::Hidden
+            } else {
+                Visibility::Inherited
+            };
         if live_only && stage == ArmyBattleStage::Deploying {
             commands.entity(entity).insert(InteractionDisabled);
         } else {
             commands.entity(entity).remove::<InteractionDisabled>();
         }
-        let (idle_id, active_id, help_index) = match (*action, stage) {
+    }
+    for (entity, action) in [
+        (view.done, LandBattleAction::Done),
+        (view.retreat, LandBattleAction::Retreat),
+    ] {
+        let (idle_id, active_id, help_index) = match (action, stage) {
             (LandBattleAction::Done, ArmyBattleStage::Deploying) => {
                 (PictureId::new(0xed4), PictureId::new(0xed5), 0x2e)
             }
@@ -1524,43 +1553,43 @@ fn project_land_battle_toolbar(
         };
         let idle = assets.picture(idle_id);
         let active = assets.picture(active_id);
-        if let Some(mut image) = image {
+        if let Ok(mut image) = images.get_mut(entity) {
             image.image = idle.clone();
         }
-        if let Some(mut swap) = swap {
+        if let Ok(mut swap) = swaps.get_mut(entity) {
             swap.idle = idle;
             swap.active = active;
         }
-        if let Some(mut help) = help {
+        if let Ok(mut help) = helps.get_mut(entity) {
             help.0 = assets.ui_string(0x273d, help_index);
         }
     }
 
-    let hovered = view.hovered_hex;
+    let hovered = field_view.hovered_hex;
     let current = session.game.selected_army_unit();
     field_help.0 = current
         .and_then(|unit| session.game.military_unit(unit.id.source()))
         .map_or_else(String::new, |unit| unit.name().to_owned());
     let other = hovered.and_then(|hex| battle.unit_at(hex));
-    for (entity, portrait, mut image, mut visibility, children) in &mut portraits {
-        if let Some(children) = children {
+    for (entity, unit, bar_top) in [
+        (view.current_portrait, current, -10),
+        (view.other_portrait, other, -11),
+    ] {
+        if let Ok(children) = children.get(entity) {
             for child in children.iter() {
                 if experience_bars.contains(child) {
                     commands.entity(child).despawn();
                 }
             }
         }
-        let unit = match portrait {
-            LandBattlePortrait::Current => current,
-            LandBattlePortrait::Other => other,
-        };
         let Some(unit) = unit else {
-            *visibility = Visibility::Hidden;
+            *visibilities.get_mut(entity).expect("land battle portrait") = Visibility::Hidden;
             continue;
         };
-        *visibility = Visibility::Inherited;
+        *visibilities.get_mut(entity).expect("land battle portrait") = Visibility::Inherited;
         let defender_side = matches!(unit.side, BattleSide::Defender);
-        image.image = assets.picture(unit.unit_type.tactical_portrait_picture(defender_side));
+        images.get_mut(entity).expect("land battle portrait").image =
+            assets.picture(unit.unit_type.tactical_portrait_picture(defender_side));
         let experience = session
             .game
             .military_unit(unit.id.source())
@@ -1574,10 +1603,7 @@ fn project_land_battle_toolbar(
                 Node {
                     position_type: PositionType::Absolute,
                     left: px(0),
-                    top: px(match portrait {
-                        LandBattlePortrait::Current => -10,
-                        LandBattlePortrait::Other => -11,
-                    }),
+                    top: px(bar_top),
                     width: px(width),
                     height: px(10),
                     ..default()
@@ -1592,9 +1618,7 @@ fn project_land_battle_toolbar(
         }
     }
     let coat = assets.picture(tactical_coat_picture(battle.nation(battle.active_side())));
-    for mut image in &mut coats {
-        image.image = coat.clone();
-    }
+    images.get_mut(view.coat).expect("land battle coat").image = coat;
 }
 
 fn tactical_coat_picture(nation: NationId) -> PictureId {
@@ -1971,44 +1995,29 @@ fn on_battlefield_click(
     );
 }
 
-#[allow(clippy::type_complexity)]
-fn on_land_battle_activate(
-    activate: On<Activate>,
-    actions: Query<&LandBattleAction>,
-    mut session: ResMut<GameSession>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut music: Option<ResMut<MusicDirector>>,
-    time: Option<Res<Time>>,
-    prefs: Res<super::preferences::GamePreferences>,
-    mut fields: Query<(Entity, &mut LandBattlefield)>,
-    animations: Query<
-        (),
-        Or<(
-            With<LandBattleEffect>,
-            With<LandBattleGlide>,
-            With<LandBattleAnimationQueue>,
-        )>,
-    >,
-    mut commands: Commands,
-    mut audio: crate::media::RetailAudioAssets,
+#[allow(clippy::too_many_arguments)]
+fn apply_land_battle_action(
+    action: LandBattleAction,
+    commands: &mut Commands,
+    session: &mut GameSession,
+    next_state: &mut NextState<AppState>,
+    prefs: &super::preferences::GamePreferences,
+    fields: &mut Query<(Entity, &mut LandBattlefield)>,
+    audio: &mut crate::media::RetailAudioAssets,
+    music: Option<&mut MusicDirector>,
+    time: Option<&Time>,
 ) {
-    if !animations.is_empty() {
-        return;
-    }
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    match *action {
-        LandBattleAction::Help => super::map_help::spawn(&mut commands, AppState::LandBattle),
+    match action {
+        LandBattleAction::Help => super::map_help::spawn(commands, AppState::LandBattle),
         LandBattleAction::Target => {
             if let Ok(cycle) = session.game.cycle_selected_army_target() {
                 if !cycle.has_target {
-                    audio.play(&mut commands, SoundId::new(0x1b5a));
+                    audio.play(commands, SoundId::new(0x1b5a));
                 }
                 if let Some(center) = cycle.center
                     && let Some(battle) = session.game.army_battle()
                 {
-                    for (_, mut view) in &mut fields {
+                    for (_, mut view) in fields.iter_mut() {
                         view.view_origin_x =
                             center_land_origin(view.view_origin_x, battle.column_count(), center);
                     }
@@ -2020,11 +2029,11 @@ fn on_land_battle_activate(
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
-                    &mut commands,
+                    commands,
                     field,
                     &mut view,
                     progress,
-                    &mut next_state,
+                    next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
                 );
@@ -2035,11 +2044,11 @@ fn on_land_battle_activate(
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
-                    &mut commands,
+                    commands,
                     field,
                     &mut view,
                     progress,
-                    &mut next_state,
+                    next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
                 );
@@ -2051,62 +2060,52 @@ fn on_land_battle_activate(
                 .army_battle()
                 .is_some_and(|battle| battle.stage() == ArmyBattleStage::Live)
             {
-                spawn_linger_dialog(&mut commands, LandBattleRetreatPrompt, AppState::LandBattle);
+                spawn_linger_dialog(commands, LandBattleRetreatPrompt, AppState::LandBattle);
                 return;
             }
             if let Ok(progress) = session.game.retreat_from_army_battle()
                 && let Ok((field, mut view)) = fields.single_mut()
             {
                 queue_land_battle_progress(
-                    &mut commands,
+                    commands,
                     field,
                     &mut view,
                     progress,
-                    &mut next_state,
+                    next_state,
                     &mut session.game,
                     prefs.tactical_battles_enabled(),
                 );
             }
         }
     }
-    if let Some(music) = music.as_mut() {
-        cue_tactical_result(&session.game, music, time.as_deref());
+    if let Some(music) = music {
+        cue_tactical_result(&session.game, music, time);
     }
 }
 
-#[allow(clippy::type_complexity)]
 fn land_battle_keyboard(
     keys: Res<ButtonInput<KeyCode>>,
-    actions: Query<(Entity, &LandBattleAction)>,
+    view: Single<&LandBattleView>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     prefs: Res<super::preferences::GamePreferences>,
     mut fields: Query<(Entity, &mut LandBattlefield)>,
-    animations: Query<
-        (),
-        Or<(
-            With<LandBattleEffect>,
-            With<LandBattleGlide>,
-            With<LandBattleAnimationQueue>,
-        )>,
-    >,
+    animations: Query<(), LandBattleAnimationBlock>,
 ) {
     if !animations.is_empty() {
         return;
     }
-    let action = if keys.just_pressed(KeyCode::Space) {
-        Some(LandBattleAction::Target)
+    let entity = if keys.just_pressed(KeyCode::Space) {
+        Some(view.target)
     } else if keys.just_pressed(KeyCode::KeyD) {
-        Some(LandBattleAction::Done)
+        Some(view.done)
     } else if keys.just_pressed(KeyCode::KeyH) {
-        Some(LandBattleAction::Help)
+        Some(view.help)
     } else {
         None
     };
-    if let Some(action) = action
-        && let Some((entity, _)) = actions.iter().find(|(_, bound)| **bound == action)
-    {
+    if let Some(entity) = entity {
         commands.trigger(Activate { entity });
     }
     if keys.just_pressed(KeyCode::KeyS)

@@ -33,10 +33,7 @@ struct OfferSheetView {
 }
 
 #[derive(Component)]
-struct OfferSheetNotice;
-
-#[derive(Component)]
-struct OfferSheetNoticeBody(String);
+struct OfferSheetNotice(String);
 
 pub(crate) struct OfferSheetPlugin;
 
@@ -125,7 +122,7 @@ fn bind_offer_sheet_controls(
             ..EditableText::new(String::new())
         },
     ));
-    OfferSheetView {
+    let view = OfferSheetView {
         offer: tree.find(root, fourcc!("offe")),
         purchase_title: tree.find(root, fourcc!("purT")),
         unit: tree.find(root, fourcc!("unit")),
@@ -134,15 +131,29 @@ fn bind_offer_sheet_controls(
         amount: purc,
         icon: tree.find(root, fourcc!("icon")),
         stop_buying: nomo,
+    };
+    for entity in [
+        view.offer,
+        view.purchase_title,
+        view.unit,
+        view.no_offer,
+        view.merchant_capacity,
+    ] {
+        commands.entity(entity).insert(Text::default());
     }
+    commands.entity(view.icon).insert(ImageNode::default());
+    view
 }
 
 fn render_offer_sheet(
     views: Query<Ref<OfferSheetView>>,
     mut commands: Commands,
     mut amounts: Query<&mut EditableText>,
+    mut texts: Query<&mut Text>,
+    mut images: Query<&mut ImageNode>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
+    checked: Query<(), With<Checked>>,
 ) {
     let Ok(view) = views.single() else {
         return;
@@ -162,34 +173,33 @@ fn render_offer_sheet(
     let commodity = assets.string(offer.commodity.resource().name_string());
     let amount = offer.amount.to_string();
     let price = format_currency(i32::from(offer.price));
-    commands.entity(view.offer).insert(Text::new(fill_brackets(
+    texts.get_mut(view.offer).expect("bound offer text").0 = fill_brackets(
         &assets.get_string(OFFER_STRING_GROUP, 0xc),
         &[&offering, &amount, &commodity, &price],
-    )));
-    commands
-        .entity(view.purchase_title)
-        .insert(Text::new(assets.get_string(OFFER_STRING_GROUP, 0xe)));
-    commands
-        .entity(view.unit)
-        .insert(Text::new(assets.get_string(OFFER_STRING_GROUP, 0xf)));
-    commands
-        .entity(view.no_offer)
-        .insert(Text::new(fill_brackets(
-            &assets.get_string(OFFER_STRING_GROUP, 0xf),
-            &[&commodity],
-        )));
+    );
+    texts
+        .get_mut(view.purchase_title)
+        .expect("bound purchase title")
+        .0 = assets.get_string(OFFER_STRING_GROUP, 0xe);
+    texts.get_mut(view.unit).expect("bound unit label").0 =
+        assets.get_string(OFFER_STRING_GROUP, 0xf);
+    texts
+        .get_mut(view.no_offer)
+        .expect("bound no-offer label")
+        .0 = fill_brackets(&assets.get_string(OFFER_STRING_GROUP, 0xf), &[&commodity]);
 
     let nation = session.active_major_nation();
-    commands.entity(view.merchant_capacity).insert(Text::new(
-        session
-            .game
-            .nations()
-            .major(nation)
-            .economy
-            .capacities
-            .available_merchant
-            .to_string(),
-    ));
+    texts
+        .get_mut(view.merchant_capacity)
+        .expect("bound merchant capacity")
+        .0 = session
+        .game
+        .nations()
+        .major(nation)
+        .economy
+        .capacities
+        .available_merchant
+        .to_string();
 
     if let Ok(mut editable) = amounts.get_mut(view.amount) {
         *editable = EditableText {
@@ -198,10 +208,11 @@ fn render_offer_sheet(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    let icon = assets.keyed_picture(offer.commodity.resource().material_picture(), 0x10);
-    commands.entity(view.icon).insert(ImageNode::new(icon));
-
-    commands.entity(view.stop_buying).remove::<Checked>();
+    images.get_mut(view.icon).expect("bound offer icon").image =
+        assets.keyed_picture(offer.commodity.resource().material_picture(), 0x10);
+    if checked.get(view.stop_buying).is_ok() {
+        commands.entity(view.stop_buying).remove::<Checked>();
+    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -259,16 +270,12 @@ fn bind_offer_answer(commands: &mut Commands, button: Entity, accept: bool) {
 }
 
 fn spawn_offer_quantity_error(commands: &mut Commands, body: String) {
-    spawn_linger_dialog(
-        commands,
-        (OfferSheetNotice, OfferSheetNoticeBody(body)),
-        AppState::OfferSheet,
-    );
+    spawn_linger_dialog(commands, OfferSheetNotice(body), AppState::OfferSheet);
 }
 
 fn bind_offer_sheet_notice(
     mut commands: Commands,
-    notice: Option<Single<(Entity, &OfferSheetNoticeBody), Added<OfferSheetNotice>>>,
+    notice: Option<Single<(Entity, &OfferSheetNotice), Added<OfferSheetNotice>>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
@@ -349,7 +356,13 @@ mod tests {
             fourcc!("mCap"),
             fourcc!("icon"),
         ] {
-            commands.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
+            let mut entity = commands.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
+            if tag != fourcc!("icon") && tag != fourcc!("purc") && tag != fourcc!("nomo") {
+                entity.insert(Text::default());
+            }
+            if tag == fourcc!("icon") {
+                entity.insert(ImageNode::default());
+            }
         }
     }
 

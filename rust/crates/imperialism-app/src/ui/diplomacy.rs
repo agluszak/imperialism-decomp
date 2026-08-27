@@ -388,7 +388,7 @@ impl Plugin for DiplomacyPlugin {
                 bind_diplomacy_entanglement_notice,
                 pose_diplomacy_from_session,
                 render_diplomacy_chrome,
-                render_diplomacy_panels,
+                sync_diplomacy_panel_text,
                 layout_diplomacy_panel_text,
                 sync_diplomacy_information,
                 render_diplomacy_map,
@@ -447,7 +447,192 @@ fn bind_diplomacy_screen(
         &mut assets,
         &mut session,
     );
-    commands.entity(*root).insert(view);
+    let panel_content = bind_diplomacy_panel_text(&mut commands, &mut assets, &view);
+    commands.entity(*root).insert((view, panel_content));
+}
+
+fn bind_diplomacy_panel_text(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    view: &DiplomacyView,
+) -> DiplomacyPanelContent {
+    let title = RetailTextStylePreset::built(14, 0);
+    let row = RetailTextStylePreset::built(12, 0);
+    let small = RetailTextStylePreset::explicit(1, 0, 10, 0);
+    let council = RetailTextStylePreset::built(18, 0);
+
+    spawn_panel_text(
+        commands,
+        assets,
+        view.information,
+        assets.get_string(0x2733, 0),
+        IVec2::new(15, 13),
+        title,
+        Justify::Left,
+    );
+    let information_name = spawn_panel_text(
+        commands,
+        assets,
+        view.information,
+        String::new(),
+        IVec2::new(110, 13),
+        title,
+        Justify::Left,
+    );
+    let information_labels = [54, 71, 88].map(|baseline| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.information,
+            String::new(),
+            IVec2::new(15, baseline),
+            row,
+            Justify::Left,
+        )
+    });
+    let information_values = [54, 71, 88].map(|baseline| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.information,
+            String::new(),
+            IVec2::new(110, baseline),
+            row,
+            Justify::Left,
+        )
+    });
+
+    spawn_panel_text(
+        commands,
+        assets,
+        view.treaties,
+        assets.get_string(0x2733, 0x20),
+        IVec2::new(74, 15),
+        title,
+        Justify::Center,
+    );
+    for (index, (center, baseline)) in TREATY_LABEL_CENTERS.into_iter().enumerate() {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.treaties,
+            assets.get_string(0x2733, index as u16 + 6),
+            IVec2::new(center as i32, baseline as i32),
+            small,
+            Justify::Center,
+        );
+    }
+
+    for (index, origin, is_title) in [
+        (0x21, IVec2::new(15, 13), true),
+        (0x22, IVec2::new(174, 13), false),
+        (0x23, IVec2::new(276, 30), false),
+        (0x24, IVec2::new(440, 30), false),
+        (0x26, IVec2::new(37, 115), false),
+        (0x27, IVec2::new(175, 115), false),
+        (0x28, IVec2::new(314, 115), false),
+        (0x29, IVec2::new(446, 115), false),
+    ] {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.grants,
+            assets.get_string(0x2733, index),
+            origin,
+            if is_title { title } else { row },
+            Justify::Left,
+        );
+    }
+    let grants_total = spawn_panel_text(
+        commands,
+        assets,
+        view.grants,
+        String::new(),
+        IVec2::new(15, 37),
+        row,
+        Justify::Left,
+    );
+
+    spawn_panel_text(
+        commands,
+        assets,
+        view.trade,
+        assets.get_string(0x2733, 0x2a),
+        IVec2::new(15, 13),
+        title,
+        Justify::Left,
+    );
+    for (index, origin) in [
+        (0x2b, IVec2::new(25, 85)),
+        (0x2c, IVec2::new(74, 34)),
+        (0x2d, IVec2::new(125, 85)),
+        (0x2e, IVec2::new(177, 34)),
+        (0x2f, IVec2::new(228, 85)),
+        (0x30, IVec2::new(275, 34)),
+    ] {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.trade,
+            assets.get_string(0x2733, index),
+            origin,
+            row,
+            Justify::Left,
+        );
+    }
+    for (index, center) in [(0x31, 156), (0x32, 380), (0x33, 473)] {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.trade,
+            assets.get_string(0x2733, index),
+            IVec2::new(center, 108),
+            row,
+            Justify::Center,
+        );
+    }
+
+    let council_title = spawn_panel_text(
+        commands,
+        assets,
+        view.council,
+        String::new(),
+        IVec2::new(259, 36),
+        council,
+        Justify::Center,
+    );
+    let council_labels = std::array::from_fn(|row| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.council,
+            String::new(),
+            IVec2::new(259, 60 + row as i32 * 16),
+            title,
+            Justify::Right,
+        )
+    });
+    let council_values = std::array::from_fn(|row| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.council,
+            String::new(),
+            IVec2::new(263, 60 + row as i32 * 16),
+            title,
+            Justify::Left,
+        )
+    });
+
+    DiplomacyPanelContent {
+        information_name,
+        information_labels,
+        information_values,
+        grants_total,
+        council_title,
+        council_labels,
+        council_values,
+    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -1214,9 +1399,20 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
     Some(fill_brackets(&assets.get_string(0x2729, index), &args))
 }
 
-/// One text child of a diplomacy topic panel (Information/Treaties/Grants/Trade/
-/// Council). Panels composite only the transparent base; their text is ordinary
-/// Bevy text positioned by `render_diplomacy_panels`.
+/// Dynamic diplomacy panel text updated by [`sync_diplomacy_panel_text`].
+#[derive(Component)]
+struct DiplomacyPanelContent {
+    information_name: Entity,
+    information_labels: [Entity; 3],
+    information_values: [Entity; 3],
+    grants_total: Entity,
+    council_title: Entity,
+    council_labels: [Entity; 3],
+    council_values: [Entity; 3],
+}
+
+/// Bevy text positioned at bind time. Centered/right-aligned labels keep
+/// [`DiplomacyPanelText`] so [`layout_diplomacy_panel_text`] can adjust origin.
 #[derive(Component)]
 struct DiplomacyPanelText {
     origin: IVec2,
@@ -1232,12 +1428,12 @@ fn spawn_panel_text(
     origin: IVec2,
     preset: RetailTextStylePreset,
     alignment: Justify,
-) {
+) -> Entity {
     let (font, _layout, line_height, _) = assets.text_style(preset);
     let logical_height = resolve_retail_text_style(preset)
         .map(|style| style.logical_pixel_height)
         .unwrap_or(14);
-    commands.spawn((
+    let mut entity = commands.spawn((
         Node {
             position_type: PositionType::Absolute,
             left: px(origin.x),
@@ -1254,9 +1450,12 @@ fn spawn_panel_text(
             color: assets.palette_color(0x13),
         },
         Pickable::IGNORE,
-        DiplomacyPanelText { origin, alignment },
         ChildOf(panel),
     ));
+    if matches!(alignment, Justify::Center | Justify::Right) {
+        entity.insert(DiplomacyPanelText { origin, alignment });
+    }
+    entity.id()
 }
 
 /// Retail draws a single intrinsic string at its measured origin.  Bevy needs
@@ -1277,227 +1476,81 @@ fn layout_diplomacy_panel_text(mut labels: Query<(&DiplomacyPanelText, &Computed
     }
 }
 
-fn render_diplomacy_panels(
-    mut commands: Commands,
+fn sync_diplomacy_panel_text(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    view: Single<Ref<DiplomacyView>>,
-    mut assets: RetailUiAssets,
-    panel_texts: Query<Entity, With<DiplomacyPanelText>>,
+    panels: Single<Ref<DiplomacyPanelContent>>,
+    mut texts: Query<&mut Text>,
+    mut visibilities: Query<&mut Visibility>,
+    assets: RetailUiAssets,
 ) {
     let screen = screens
         .single()
         .expect("Diplomacy state has one Diplomacy screen");
-    if !session.is_changed() && !screen.is_added() && !screen.is_changed() && !view.is_added() {
+    if !session.is_changed() && !screen.is_added() && !screen.is_changed() && !panels.is_added() {
         return;
     }
-    let view = view.into_inner();
-    for entity in &panel_texts {
-        commands.entity(entity).despawn();
-    }
+    let panels = panels.into_inner();
     let state = &session.game;
     let source = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let major = state.nations().major(source);
-    let title = RetailTextStylePreset::built(14, 0);
-    let row = RetailTextStylePreset::built(12, 0);
-    let small = RetailTextStylePreset::explicit(1, 0, 10, 0);
-    let council = RetailTextStylePreset::built(18, 0);
-    let strings = |assets: &RetailUiAssets, index: u16| assets.get_string(0x2733, index);
     let (name, labels, values) = diplomacy_information(state, screen.framed_nation);
-    let council_data = council_panel_text(state, &assets);
+    texts
+        .get_mut(panels.information_name)
+        .expect("bound diplomacy information name")
+        .0 = name;
+    for (entity, label) in panels.information_labels.into_iter().zip(labels) {
+        texts
+            .get_mut(entity)
+            .expect("bound diplomacy information label")
+            .0 = label;
+    }
+    for (entity, value) in panels.information_values.into_iter().zip(values) {
+        texts
+            .get_mut(entity)
+            .expect("bound diplomacy information value")
+            .0 = value;
+    }
+    texts
+        .get_mut(panels.grants_total)
+        .expect("bound diplomacy grants total")
+        .0 = format!(
+        "{} {}",
+        assets.get_string(0x2733, 0x25),
+        format_currency(major.economy.grant_total_cost)
+    );
 
-    for topic in [
-        DiplomacyTopic::Information,
-        DiplomacyTopic::Treaties,
-        DiplomacyTopic::Grants,
-        DiplomacyTopic::Trade,
-        DiplomacyTopic::Council,
-    ] {
-        let panel = view.panel(topic);
-        match topic {
-            DiplomacyTopic::Information => {
-                let panel_text = strings(&assets, 0);
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(15, 13),
-                    title,
-                    Justify::Left,
-                );
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    name.clone(),
-                    IVec2::new(110, 13),
-                    title,
-                    Justify::Left,
-                );
-                for (index, baseline) in [54, 71, 88].into_iter().enumerate() {
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        labels[index].clone(),
-                        IVec2::new(15, baseline),
-                        row,
-                        Justify::Left,
-                    );
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        values[index].clone(),
-                        IVec2::new(110, baseline),
-                        row,
-                        Justify::Left,
-                    );
-                }
-            }
-            DiplomacyTopic::Treaties => {
-                let panel_text = strings(&assets, 0x20);
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(74, 15),
-                    title,
-                    Justify::Center,
-                );
-                for (index, (center, baseline)) in TREATY_LABEL_CENTERS.into_iter().enumerate() {
-                    let panel_text = strings(&assets, index as u16 + 6);
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        panel_text,
-                        IVec2::new(center as i32, baseline as i32),
-                        small,
-                        Justify::Center,
-                    );
-                }
-            }
-            DiplomacyTopic::Grants => {
-                for (text, origin, is_title) in [
-                    (strings(&assets, 0x21), IVec2::new(15, 13), true),
-                    (strings(&assets, 0x22), IVec2::new(174, 13), false),
-                    (strings(&assets, 0x23), IVec2::new(276, 30), false),
-                    (strings(&assets, 0x24), IVec2::new(440, 30), false),
-                    (strings(&assets, 0x26), IVec2::new(37, 115), false),
-                    (strings(&assets, 0x27), IVec2::new(175, 115), false),
-                    (strings(&assets, 0x28), IVec2::new(314, 115), false),
-                    (strings(&assets, 0x29), IVec2::new(446, 115), false),
-                ] {
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        text,
-                        origin,
-                        if is_title { title } else { row },
-                        Justify::Left,
-                    );
-                }
-                let panel_text = format!(
-                    "{} {}",
-                    strings(&assets, 0x25),
-                    format_currency(major.economy.grant_total_cost)
-                );
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(15, 37),
-                    row,
-                    Justify::Left,
-                );
-            }
-            DiplomacyTopic::Trade => {
-                let panel_text = strings(&assets, 0x2a);
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(15, 13),
-                    title,
-                    Justify::Left,
-                );
-                for (index, origin) in [
-                    IVec2::new(25, 85),
-                    IVec2::new(74, 34),
-                    IVec2::new(125, 85),
-                    IVec2::new(177, 34),
-                    IVec2::new(228, 85),
-                    IVec2::new(275, 34),
-                ]
-                .into_iter()
-                .enumerate()
-                {
-                    let panel_text = strings(&assets, index as u16 + 0x2b);
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        panel_text,
-                        origin,
-                        row,
-                        Justify::Left,
-                    );
-                }
-                for (index, center) in [156, 380, 473].into_iter().enumerate() {
-                    let panel_text = strings(&assets, index as u16 + 0x31);
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        panel_text,
-                        IVec2::new(center, 108),
-                        row,
-                        Justify::Center,
-                    );
-                }
-            }
-            DiplomacyTopic::Council => {
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    council_data.title.clone(),
-                    IVec2::new(259, 36),
-                    council,
-                    Justify::Center,
-                );
-                if let Some(rows) = &council_data.rows {
-                    for (row, (label, value)) in rows.iter().enumerate() {
-                        let baseline = 60 + row as i32 * 16;
-                        spawn_panel_text(
-                            &mut commands,
-                            &mut assets,
-                            panel,
-                            label.clone(),
-                            IVec2::new(259, baseline),
-                            title,
-                            Justify::Right,
-                        );
-                        spawn_panel_text(
-                            &mut commands,
-                            &mut assets,
-                            panel,
-                            value.clone(),
-                            IVec2::new(263, baseline),
-                            title,
-                            Justify::Left,
-                        );
-                    }
-                }
-            }
-            DiplomacyTopic::Offers => {}
+    let council_data = council_panel_text(state, &assets);
+    texts
+        .get_mut(panels.council_title)
+        .expect("bound diplomacy council title")
+        .0 = council_data.title;
+    if let Some(rows) = council_data.rows {
+        for (row, (label, value)) in rows.into_iter().enumerate() {
+            *visibilities
+                .get_mut(panels.council_labels[row])
+                .expect("bound diplomacy council label") = Visibility::Inherited;
+            *visibilities
+                .get_mut(panels.council_values[row])
+                .expect("bound diplomacy council value") = Visibility::Inherited;
+            texts
+                .get_mut(panels.council_labels[row])
+                .expect("bound diplomacy council label")
+                .0 = label;
+            texts
+                .get_mut(panels.council_values[row])
+                .expect("bound diplomacy council value")
+                .0 = value;
+        }
+    } else {
+        for row in 0..3 {
+            *visibilities
+                .get_mut(panels.council_labels[row])
+                .expect("bound diplomacy council label") = Visibility::Hidden;
+            *visibilities
+                .get_mut(panels.council_values[row])
+                .expect("bound diplomacy council value") = Visibility::Hidden;
         }
     }
 }

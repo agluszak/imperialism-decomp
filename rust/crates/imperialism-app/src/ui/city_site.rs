@@ -62,11 +62,6 @@ fn city_site_coat_picture(nation: MajorNationId) -> PictureId {
     COAT_PICTURE_BASE.offset(i16::from(nation.get()))
 }
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum CitySiteAction {
-    Cancel,
-}
-
 #[derive(Component)]
 struct NewCityDialogRoot(CapitalSite);
 
@@ -82,30 +77,25 @@ struct CitySiteIntro;
 #[derive(Component)]
 struct CitySiteNotice(String);
 
-/// Marks a spawned city-site scene whose retail controls have been stuffed.
-///
-/// `spawn_scene` can leave the root in the world before its children exist.
-/// Bind retries until the hierarchy is present instead of running once on `Added`.
-#[derive(Component)]
-struct CitySiteWired;
-
 pub(crate) struct CitySitePlugin;
 
 impl Plugin for CitySitePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::CitySite), enter_city_site)
-            .add_systems(
-                Update,
-                (
-                    bind_city_site,
-                    bind_city_site_intro,
-                    bind_new_city_dialog,
-                    bind_city_site_notice,
-                    sync_city_site_hover.run_if(no_modal),
-                    sync_minimap,
-                )
-                    .run_if(in_state(AppState::CitySite)),
-            );
+        app.add_systems(
+            OnEnter(AppState::CitySite),
+            (enter_city_site, bind_city_site).chain(),
+        )
+        .add_systems(
+            Update,
+            (
+                bind_city_site_intro,
+                bind_new_city_dialog,
+                bind_city_site_notice,
+                sync_city_site_hover.run_if(no_modal),
+                sync_minimap,
+            )
+                .run_if(in_state(AppState::CitySite)),
+        );
     }
 }
 
@@ -118,18 +108,13 @@ fn enter_city_site(mut commands: Commands) {
 
 fn bind_city_site(
     mut commands: Commands,
-    roots: Query<Entity, (With<CitySiteRoot>, Without<CitySiteWired>)>,
+    root: Single<Entity, Added<CitySiteRoot>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
 ) {
-    let Ok(root) = roots.single() else {
-        return;
-    };
-    if !scene_has_children(root, &tree.children) {
-        return;
-    }
+    let root = *root;
     bind_city_site_controls(&mut commands, root, &tree, &mut assets);
     let origin = map.view.detailed_origin(&session.game);
     let map_entity =
@@ -140,7 +125,6 @@ fn bind_city_site(
         .insert(CitySiteHover::default())
         .observe(on_city_site_map_click);
     open_city_site_intro(&mut commands);
-    commands.entity(root).insert(CitySiteWired);
 }
 
 fn bind_city_site_controls(
@@ -151,10 +135,11 @@ fn bind_city_site_controls(
 ) {
     bind_query_floater_control(commands, root, tree);
     let cancel = tree.find(root, fourcc!("canc"));
-    commands
-        .entity(cancel)
-        .insert(CitySiteAction::Cancel)
-        .observe(on_city_site_activate);
+    commands.entity(cancel).observe(
+        |_: On<Activate>, mut next_state: ResMut<NextState<AppState>>| {
+            next_state.set(AppState::RandomSetup);
+        },
+    );
     // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         commands,
@@ -178,7 +163,7 @@ fn open_city_site_intro(commands: &mut Commands) {
 
 fn bind_city_site_intro(
     mut commands: Commands,
-    roots: Query<Entity, (With<CitySiteIntro>, Without<CitySiteWired>)>,
+    roots: Query<Entity, Added<CitySiteIntro>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
@@ -186,9 +171,6 @@ fn bind_city_site_intro(
     let Ok(root) = roots.single() else {
         return;
     };
-    if !scene_has_children(root, &tree.children) {
-        return;
-    }
     let nation = session.active_major_nation();
     let minister = assets.get_string(MINISTER_STRING_GROUP, 2);
     let mut title = fill_brackets(&assets.get_string(MINISTER_STRING_GROUP, 4), &[&minister]);
@@ -210,7 +192,6 @@ fn bind_city_site_intro(
     commands
         .entity(okay)
         .remove::<bevy::ui::InteractionDisabled>();
-    commands.entity(root).insert(CitySiteWired);
 }
 
 fn sync_city_site_hover(
@@ -260,19 +241,6 @@ fn highlights_city_site_candidate(state: &GameState, nation: MajorNationId, tile
         && is_valid_secondary_nation_home_tile_candidate(state.map(), tile)
 }
 
-fn on_city_site_activate(
-    activate: On<Activate>,
-    actions: Query<&CitySiteAction>,
-    mut next_state: ResMut<NextState<AppState>>,
-) {
-    let action = actions
-        .get(activate.entity)
-        .expect("city-site Activate is bound on a CitySiteAction control");
-    match *action {
-        CitySiteAction::Cancel => next_state.set(AppState::RandomSetup),
-    }
-}
-
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
     session: Res<GameSession>,
@@ -313,7 +281,7 @@ fn open_city_site_notice(commands: &mut Commands, body: String) {
 
 fn bind_new_city_dialog(
     mut commands: Commands,
-    dialogs: Query<(Entity, &NewCityDialogRoot), Without<CitySiteWired>>,
+    dialogs: Query<(Entity, &NewCityDialogRoot), Added<NewCityDialogRoot>>,
     tree: RetailTree,
     mut nodes: Query<&mut Node>,
     mut pictures: Query<&mut ImageNode>,
@@ -323,9 +291,6 @@ fn bind_new_city_dialog(
     let Ok((root, dialog)) = dialogs.single() else {
         return;
     };
-    if !scene_has_children(root, &tree.children) {
-        return;
-    }
     let report = capital_site_report(&session.game, dialog.0);
     stuff_new_city_dialog(
         &mut commands,
@@ -348,7 +313,6 @@ fn bind_new_city_dialog(
     dismiss_on_activate(&mut commands, okay, root);
     dismiss_on_activate(&mut commands, cancel, root);
     bind_modal_keys(&mut commands, root, Some(okay), Some(cancel));
-    commands.entity(root).insert(CitySiteWired);
 }
 
 fn stuff_new_city_dialog(
@@ -489,7 +453,7 @@ fn new_city_extra_height(visible: i16) -> i32 {
 
 fn bind_city_site_notice(
     mut commands: Commands,
-    notices: Query<(Entity, &CitySiteNotice), Without<CitySiteWired>>,
+    notices: Query<(Entity, &CitySiteNotice), Added<CitySiteNotice>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
@@ -497,9 +461,6 @@ fn bind_city_site_notice(
     let Ok((root, notice)) = notices.single() else {
         return;
     };
-    if !scene_has_children(root, &tree.children) {
-        return;
-    }
     let nation = session.active_major_nation();
     stuff_minister_dialog(
         &mut commands,
@@ -516,7 +477,6 @@ fn bind_city_site_notice(
     commands
         .entity(okay)
         .remove::<bevy::ui::InteractionDisabled>();
-    commands.entity(root).insert(CitySiteWired);
 }
 
 fn on_new_city_activate(
@@ -593,12 +553,6 @@ fn set_styled_text(
         line_height,
         TextColor(assets.palette_color(palette)),
     ));
-}
-
-fn scene_has_children(root: Entity, children: &Query<&Children>) -> bool {
-    children
-        .get(root)
-        .is_ok_and(|children| !children.is_empty())
 }
 
 fn commodity_icon(assets: &mut RetailUiAssets, resource: ResourceKind) -> Handle<Image> {

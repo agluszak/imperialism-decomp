@@ -113,6 +113,9 @@ pub(crate) fn open_load_save(
 }
 
 #[derive(Component)]
+struct PendingLoadSave(LoadSaveMode);
+
+#[derive(Component)]
 struct LoadSaveRoot {
     mode: LoadSaveMode,
     selected: Option<SaveSlot>,
@@ -145,22 +148,6 @@ struct LoadSavePresentation {
     slots: [Option<SlotPresentation>; NUMBERED_SAVE_SLOT_COUNT as usize],
     autosave: Option<SlotPresentation>,
     empty_label: String,
-}
-
-fn empty_root(mode: LoadSaveMode) -> LoadSaveRoot {
-    LoadSaveRoot {
-        mode,
-        selected: None,
-        renaming: false,
-        info: Entity::PLACEHOLDER,
-        map: Entity::PLACEHOLDER,
-        name_field: None,
-        presentation: LoadSavePresentation {
-            slots: std::array::from_fn(|_| None),
-            autosave: None,
-            empty_label: String::new(),
-        },
-    }
 }
 
 #[derive(Component)]
@@ -293,20 +280,23 @@ fn loaded_game_destination(game: &GameState) -> AppState {
 
 fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
     let root = commands.spawn_scene(generated::linger_1502()).id();
-    commands
-        .entity(root)
-        .insert((empty_root(request.0), DespawnOnExit(AppState::LoadSave)));
+    commands.entity(root).insert((
+        PendingLoadSave(request.0),
+        DespawnOnExit(AppState::LoadSave),
+    ));
 }
 
 fn bind_load_save(
     mut commands: Commands,
-    root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
+    pending: Query<(Entity, &PendingLoadSave), Added<PendingLoadSave>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     save_dir: Res<SaveDirectory>,
 ) {
-    let (root_entity, screen) = root.into_inner();
-    let mode = screen.mode;
+    let Ok((root_entity, pending)) = pending.single() else {
+        return;
+    };
+    let mode = pending.0;
     let info = tree.find(root_entity, fourcc!("info"));
     let map = tree.find(root_entity, fourcc!("map "));
     bind_load_save_actions(&mut commands, root_entity, &tree, mode);
@@ -322,11 +312,16 @@ fn bind_load_save(
     }
     commands.entity(info).insert(Text::new(String::new()));
     commands.entity(map).insert(LoadSaveMapPreview::default());
-    let mut root = empty_root(mode);
-    root.info = info;
-    root.map = map;
-    root.presentation = presentation;
-    commands.entity(root_entity).insert(root);
+    commands.entity(root_entity).insert(LoadSaveRoot {
+        mode,
+        selected: None,
+        renaming: false,
+        info,
+        map,
+        name_field: None,
+        presentation,
+    });
+    commands.entity(root_entity).remove::<PendingLoadSave>();
 }
 
 fn bind_load_save_actions(
@@ -1081,7 +1076,7 @@ mod tests {
     fn spawn_test_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
         let root = commands
             .spawn((
-                empty_root(request.0),
+                PendingLoadSave(request.0),
                 Node::default(),
                 DespawnOnExit(AppState::LoadSave),
             ))
@@ -1101,16 +1096,28 @@ mod tests {
 
     fn bind_test_load_save(
         mut commands: Commands,
-        root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
+        pending: Query<(Entity, &PendingLoadSave), Added<PendingLoadSave>>,
         tree: RetailTree,
     ) {
-        let (entity, screen) = root.into_inner();
+        let Ok((entity, pending)) = pending.single() else {
+            return;
+        };
         let info = tree.find(entity, fourcc!("info"));
-        bind_load_save_actions(&mut commands, entity, &tree, screen.mode);
-        let mut root = empty_root(screen.mode);
-        root.info = info;
-        root.map = info;
-        commands.entity(entity).insert(root);
+        bind_load_save_actions(&mut commands, entity, &tree, pending.0);
+        commands.entity(entity).insert(LoadSaveRoot {
+            mode: pending.0,
+            selected: None,
+            renaming: false,
+            info,
+            map: info,
+            name_field: None,
+            presentation: LoadSavePresentation {
+                slots: std::array::from_fn(|_| None),
+                autosave: None,
+                empty_label: String::new(),
+            },
+        });
+        commands.entity(entity).remove::<PendingLoadSave>();
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
