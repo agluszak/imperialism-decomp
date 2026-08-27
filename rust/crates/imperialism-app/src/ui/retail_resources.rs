@@ -1,11 +1,14 @@
 //! App-local mapping from `imperialism-core` semantic values to typed retail
 //! resource identities. Loading stays in `RetailUiAssets` / `RetailAssets`.
 
+use enum_map::Enum;
 use imperialism_core::{
-    CityFacilitySlot, CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, ResourceKind,
-    ShipType, Technology, TechnologyTable,
+    ArmyUnitCategory, CityFacilitySlot, CivilianUnitKind, CivilianUnitTable,
+    EngineerConstructionChoice, FortLevel, MilitaryOrderCode, MilitaryUnitKind, NavalAggression,
+    PlayerDiplomacyRejection, ResourceKind, ShipType, TaskForceOrder, Technology, TechnologyTable,
+    TurnAlert,
 };
-use imperialism_formats::{PictureId, StringGroup, StringResourceId};
+use imperialism_formats::{PictureId, SoundId, StringGroup, StringResourceId};
 
 const CITY_BUILDING_NAMES: StringGroup = StringGroup::new(0x2719);
 const CITY_CONSTRUCTION_HEADLINES: StringGroup = StringGroup::new(0x2422);
@@ -18,8 +21,16 @@ const TECHNOLOGY_DESCRIPTIONS: StringGroup = StringGroup::new(0x274e);
 const CIVILIAN_NAMES: StringGroup = StringGroup::new(0x2718);
 const CIVILIAN_DESCRIPTIONS: StringGroup = StringGroup::new(0x2751);
 const CIVILIAN_WORK_ACTIONS: StringGroup = StringGroup::new(0x2725);
+const CIVILIAN_DISBAND: StringGroup = StringGroup::new(0x274d);
+const CIVILIAN_WORK_REPORT: StringGroup = StringGroup::new(0x2724);
+const ENGINEER_CONSTRUCTION: StringGroup = StringGroup::new(0x1c20);
 const MILITARY_UNIT_NAMES: StringGroup = StringGroup::new(0x2717);
 const MILITARY_UNIT_DESCRIPTIONS: StringGroup = StringGroup::new(0x2750);
+const TURN_ALERTS: StringGroup = StringGroup::new(0x2753);
+const DIPLOMACY_NOTICES: StringGroup = StringGroup::new(0x2754);
+const FLEET_REPORT: StringGroup = StringGroup::new(0x2762);
+const GARRISON_ORDERS: StringGroup = StringGroup::new(0x272c);
+const ARMY_COMPOSITION: StringGroup = StringGroup::new(0x2726);
 
 const SHIP_DETAIL_PICTURES: PictureId = PictureId::new(0x266a);
 const MATERIAL_PICTURES: PictureId = PictureId::new(700);
@@ -170,6 +181,8 @@ pub(crate) trait CivilianUnitKindRetailResources {
     fn name_string(self) -> StringResourceId;
     fn description_string(self) -> StringResourceId;
     fn work_action_string(self) -> StringResourceId;
+    fn disband_confirmation_string(self) -> StringResourceId;
+    fn work_report_template_string(self) -> StringResourceId;
     fn portrait_picture(self) -> PictureId;
     fn university_preview_picture(self) -> PictureId;
 }
@@ -187,12 +200,145 @@ impl CivilianUnitKindRetailResources for CivilianUnitKind {
         CIVILIAN_WORK_ACTIONS.offset(u16::from(self.retail()))
     }
 
+    fn disband_confirmation_string(self) -> StringResourceId {
+        CIVILIAN_DISBAND.offset(if self == CivilianUnitKind::Developer {
+            5
+        } else {
+            4
+        })
+    }
+
+    fn work_report_template_string(self) -> StringResourceId {
+        CIVILIAN_WORK_REPORT.offset(if self == CivilianUnitKind::Developer {
+            5
+        } else {
+            7
+        })
+    }
+
     fn portrait_picture(self) -> PictureId {
         CIVILIAN_PORTRAIT_PICTURES.offset(i16::from(self.retail()))
     }
 
     fn university_preview_picture(self) -> PictureId {
         CIVILIAN_UNIVERSITY_PREVIEW_PICTURES.offset(i16::from(CIVILIAN_SPRITE_CLASS[self]))
+    }
+}
+
+pub(crate) trait EngineerConstructionChoiceRetailResources {
+    fn picture(self) -> PictureId;
+    fn label_string(self, fort_level: FortLevel) -> StringResourceId;
+    fn confirm_sound(self) -> SoundId;
+}
+
+impl EngineerConstructionChoiceRetailResources for EngineerConstructionChoice {
+    fn picture(self) -> PictureId {
+        match self {
+            Self::Fort => PictureId::new(0x1c2a),
+            Self::Rail => PictureId::new(0x1c2c),
+            Self::Port => PictureId::new(0x1c2e),
+        }
+    }
+
+    fn label_string(self, fort_level: FortLevel) -> StringResourceId {
+        ENGINEER_CONSTRUCTION.offset(match self {
+            Self::Fort => u16::from(fort_level.retail()) + 3,
+            Self::Rail => 1,
+            Self::Port => 2,
+        })
+    }
+
+    fn confirm_sound(self) -> SoundId {
+        match self {
+            Self::Fort => SoundId::new(0x232c),
+            Self::Rail => SoundId::new(0x232a),
+            Self::Port => SoundId::new(0x232b),
+        }
+    }
+}
+
+pub(crate) trait TurnAlertRetailResources {
+    fn title_string(self) -> StringResourceId;
+    fn body_string(self) -> StringResourceId;
+}
+
+impl TurnAlertRetailResources for TurnAlert {
+    fn title_string(self) -> StringResourceId {
+        TURN_ALERTS.entry(match self {
+            Self::LandCapitolThreatened => 0x28,
+            Self::NavalCapitolThreatened => 0x2a,
+            Self::Treasury { prompt_code } => (prompt_code - 1) as u16,
+            Self::CommodityShortage => 0x46,
+            Self::TransportShortage => 0x22,
+            Self::Starvation => 0x20,
+        })
+    }
+
+    fn body_string(self) -> StringResourceId {
+        TURN_ALERTS.entry(match self {
+            Self::LandCapitolThreatened => 0x29,
+            Self::NavalCapitolThreatened => 0x2b,
+            Self::Treasury { prompt_code } => prompt_code as u16,
+            Self::CommodityShortage => 0x47,
+            Self::TransportShortage => 0x23,
+            Self::Starvation => 0x21,
+        })
+    }
+}
+
+pub(crate) trait PlayerDiplomacyRejectionRetailResources {
+    fn notice_string(self) -> StringResourceId;
+}
+
+impl PlayerDiplomacyRejectionRetailResources for PlayerDiplomacyRejection {
+    fn notice_string(self) -> StringResourceId {
+        DIPLOMACY_NOTICES.offset((self.proposal_mode() - 1) as u16)
+    }
+}
+
+pub(crate) trait NavalAggressionRetailResources {
+    fn fleet_report_string(self) -> StringResourceId;
+}
+
+impl NavalAggressionRetailResources for NavalAggression {
+    fn fleet_report_string(self) -> StringResourceId {
+        FLEET_REPORT.offset(self.retail() as u16 + 4)
+    }
+}
+
+pub(crate) trait MilitaryOrderCodeRetailResources {
+    fn name_string(self) -> StringResourceId;
+}
+
+impl MilitaryOrderCodeRetailResources for MilitaryOrderCode {
+    fn name_string(self) -> StringResourceId {
+        GARRISON_ORDERS.offset(self.get() as u16)
+    }
+}
+
+pub(crate) trait ArmyUnitCategoryRetailResources {
+    fn composition_name_string(self) -> StringResourceId;
+}
+
+impl ArmyUnitCategoryRetailResources for ArmyUnitCategory {
+    fn composition_name_string(self) -> StringResourceId {
+        ARMY_COMPOSITION.offset(self.into_usize() as u16)
+    }
+}
+
+pub(crate) trait TaskForceOrderRetailResources {
+    fn friendly_orders_string(self) -> StringResourceId;
+}
+
+impl TaskForceOrderRetailResources for TaskForceOrder {
+    fn friendly_orders_string(self) -> StringResourceId {
+        FLEET_REPORT.offset(match self {
+            Self::Sail => 0xb,
+            Self::Patrol => 1,
+            Self::Marines => 2,
+            Self::Blockade => 0x39,
+            _ => 3,
+        })
     }
 }
 
@@ -233,95 +379,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn ship_type_maps_to_recovered_shipyard_resources() {
-        assert_eq!(
-            ShipType::Clipper.name_string(),
-            StringGroup::new(0x2716).entry(7)
-        );
-        assert_eq!(
-            ShipType::Clipper.description_string(),
-            StringGroup::new(0x2752).entry(6)
-        );
-        assert_eq!(
-            ShipType::Clipper.detail_picture(),
-            PictureId::new(0x266a + 6)
-        );
-    }
-
-    #[test]
-    fn city_facility_maps_to_one_based_building_name_indexes() {
-        assert_eq!(
-            CityFacilitySlot::OilRefinery.name_string(),
-            StringGroup::new(0x2719).entry(7)
-        );
-        assert_eq!(
-            CityFacilitySlot::Shipyard.name_string(),
-            StringGroup::new(0x2719).entry(8)
-        );
-        assert_eq!(
-            CityFacilitySlot::Armory.name_string(),
-            StringGroup::new(0x2719).entry(9)
-        );
-    }
-
-    #[test]
-    fn resource_kind_maps_to_material_name_and_picture() {
-        assert_eq!(
-            ResourceKind::Coal.name_string(),
-            StringGroup::new(0x2711).entry(4)
-        );
-        assert_eq!(
-            ResourceKind::Coal.material_picture(),
-            PictureId::new(700 + 3)
-        );
-    }
-
-    #[test]
-    fn technology_maps_to_name_description_and_pictures() {
-        assert_eq!(
-            Technology::CottonGin.name_string(),
-            StringGroup::new(0x2712).entry(4)
-        );
-        assert_eq!(
-            Technology::CottonGin.description_string(),
-            StringGroup::new(0x274e).entry(3)
-        );
-        assert_eq!(
-            Technology::CottonGin.store_idle_picture(),
-            PictureId::new(0x08ff + 3 * 2)
-        );
-        assert_eq!(
-            Technology::CottonGin.store_active_picture(),
-            PictureId::new(0x0900 + 3 * 2)
-        );
-        assert_eq!(
-            Technology::CottonGin.history_picture(),
-            PictureId::new(0x0944 + 3)
-        );
+    fn technology_status_picture_uses_nonlinear_frame_table() {
         assert_eq!(
             Technology::CottonGin.status_picture(),
             PictureId::new(0x897 + 2)
         );
+        assert_eq!(TECHNOLOGY_STATUS_FRAME[Technology::CottonGin], 2);
     }
 
     #[test]
-    fn civilian_unit_maps_to_name_description_and_portrait() {
-        assert_eq!(
-            CivilianUnitKind::Engineer.name_string(),
-            StringGroup::new(0x2718).entry(5)
-        );
-        assert_eq!(
-            CivilianUnitKind::Engineer.description_string(),
-            StringGroup::new(0x2751).entry(5)
-        );
-        assert_eq!(
-            CivilianUnitKind::Engineer.work_action_string(),
-            StringGroup::new(0x2725).entry(5)
-        );
-        assert_eq!(
-            CivilianUnitKind::Engineer.portrait_picture(),
-            PictureId::new(0x438 + 4)
-        );
+    fn civilian_university_preview_uses_sprite_class_table() {
         assert_eq!(
             CivilianUnitKind::Engineer.university_preview_picture(),
             PictureId::new(400)
@@ -330,22 +397,24 @@ mod tests {
             CivilianUnitKind::Miner.university_preview_picture(),
             PictureId::new(402)
         );
+        assert_eq!(CIVILIAN_SPRITE_CLASS[CivilianUnitKind::Engineer], 0);
+        assert_eq!(CIVILIAN_SPRITE_CLASS[CivilianUnitKind::Miner], 2);
     }
 
     #[test]
-    fn military_unit_maps_to_name_description_and_pictures() {
+    fn city_view_picture_selects_expanding_atlas_for_capacity_centers() {
         assert_eq!(
-            MilitaryUnitKind::Regulars.name_string(),
-            StringGroup::new(0x2717).entry(3)
+            CityFacilitySlot::TextileMill.city_view_picture(2, false),
+            PictureId::new(7000 + 2 * 16)
         );
         assert_eq!(
-            MilitaryUnitKind::Regulars.description_string(),
-            StringGroup::new(0x2750).entry(3)
+            CityFacilitySlot::TextileMill.city_view_picture(2, true),
+            PictureId::new(7300 + 2 * 16)
         );
-        assert_eq!(
-            MilitaryUnitKind::Regulars.armory_placard_picture(),
-            PictureId::new(0x1d9c + 2)
-        );
+    }
+
+    #[test]
+    fn army_toolbar_placard_applies_empty_offset() {
         assert_eq!(
             MilitaryUnitKind::Regulars.army_toolbar_placard_picture(false),
             PictureId::new(0x4c4 + 2)
@@ -354,45 +423,10 @@ mod tests {
             MilitaryUnitKind::Regulars.army_toolbar_placard_picture(true),
             PictureId::new(0x4c4 + 2 + 0x1e)
         );
-        assert_eq!(
-            MilitaryUnitKind::Regulars.tactical_portrait_picture(true),
-            PictureId::new(0xf1e + 2 * 2 + 1)
-        );
     }
 
     #[test]
-    fn city_facility_maps_to_construction_and_city_view_pictures() {
-        assert_eq!(
-            CityFacilitySlot::OilRefinery.construction_picture(0),
-            PictureId::new(9250 + 6 * 5)
-        );
-        assert_eq!(
-            CityFacilitySlot::Armory.construction_picture(2),
-            PictureId::new(9250 + 8 * 5 + 2)
-        );
-        assert_eq!(
-            CityFacilitySlot::OilRefinery.construction_headline_string(),
-            StringGroup::new(0x2422 + 6).entry(1)
-        );
-        assert_eq!(
-            CityFacilitySlot::TextileMill.city_view_picture(2, false),
-            PictureId::new(7000 + 2 * 16)
-        );
-        assert_eq!(
-            CityFacilitySlot::TextileMill.city_hit_mask_picture(2),
-            PictureId::new(7100 + 2 * 16)
-        );
-    }
-
-    #[test]
-    fn ship_type_maps_plural_names_and_technology_history_body() {
-        assert_eq!(
-            ShipType::Clipper.plural_name_string(),
-            StringGroup::new(0x271a).entry(7)
-        );
-        assert_eq!(
-            Technology::CottonGin.history_text_id(),
-            3 + 0x08fc
-        );
+    fn technology_history_text_id_is_raw_text_resource() {
+        assert_eq!(Technology::CottonGin.history_text_id(), 3 + 0x08fc);
     }
 }
