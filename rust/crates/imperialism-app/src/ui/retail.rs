@@ -13,7 +13,16 @@ use imperialism_formats::*;
 use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{RetailAmountBarKind, retail_amount_bar};
+// Screens import these from `retail_amount_bar` directly; keep the public types
+// discoverable next to the other retail widgets without unused-import noise.
+#[allow(unused_imports)]
+pub use super::retail_amount_bar::{RetailAmountBar, RetailAmountBarState};
+pub use super::retail_counted_picture::RetailCountedPicture;
+pub use super::retail_numbered_arrow::{
+    NumberedArrowAction, NumberedArrowClick, RetailNumberedArrow, install_numbered_arrow,
+};
 pub use super::retail_placard::RetailPlacard;
+pub use super::retail_slider::RetailTwoPicSliderVisual;
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
@@ -78,7 +87,7 @@ pub fn retail_placard(picture_id: i16) -> impl Scene {
             let image = load_template_picture(context, PictureId::new(picture_id))?;
             context
                 .entity
-                .insert(super::retail_placard::RetailPlacard { value: 0 });
+                .insert(super::retail_placard::RetailPlacard(0));
             Ok(ImageNode::new(image))
         })
     }
@@ -393,6 +402,9 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_radio_text_fill_state::<Add, RetailRadioTextFill>);
         super::retail_amount_bar::register_amount_bar(app);
         super::retail_placard::register_placard(app);
+        super::retail_slider::register_slider(app);
+        super::retail_numbered_arrow::register_numbered_arrow(app);
+        super::retail_counted_picture::register_counted_picture(app);
         super::hover_help::register_hover_help(app);
     }
 }

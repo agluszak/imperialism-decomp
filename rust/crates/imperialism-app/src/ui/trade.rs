@@ -4,7 +4,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::RetailTree;
-use super::retail_amount_bar::RetailAmountBar;
+use super::retail_amount_bar::RetailAmountBarState;
 use crate::AppState;
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -337,7 +337,7 @@ fn render_trade(
     mut texts: Query<&mut Text>,
     mut images: Query<&mut ImageNode>,
     mut nodes: Query<&mut Node>,
-    mut amount_bars: Query<&mut RetailAmountBar>,
+    mut amount_bars: Query<&mut RetailAmountBarState>,
 ) {
     if !session.is_changed() && !view.is_added() {
         return;
@@ -576,7 +576,7 @@ const fn trade_offer_tab_visible(capacity: i16, active: bool, stockpile: i16) ->
 #[cfg(test)]
 mod tests {
     use super::super::retail::RetailTag;
-    use super::super::retail_amount_bar::RetailAmountBarKind;
+    use super::super::retail_amount_bar::{RetailAmountBar, RetailAmountBarKind};
     use super::*;
     use crate::ui::test_support::beginning_of_game;
     use bevy::asset::AssetPlugin;
@@ -629,6 +629,7 @@ mod tests {
                 RetailTag(fourcc!("bar ")),
                 Node::default(),
                 RetailAmountBar::new(RetailAmountBarKind::Trader),
+                RetailAmountBarState::default(),
                 ChildOf(row),
             ));
         }

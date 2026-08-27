@@ -3,7 +3,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailPlacard, RetailTree, RetailUiAssets};
-use super::retail_amount_bar::RetailAmountBar;
+use super::retail_amount_bar::RetailAmountBarState;
 use super::window::{
     CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
     window_position,
@@ -55,7 +55,7 @@ struct CityUi<'w, 's> {
     nodes: Query<'w, 's, &'static mut Node>,
     images: Query<'w, 's, &'static mut ImageNode>,
     checked: Query<'w, 's, Has<Checked>>,
-    amount_bars: Query<'w, 's, &'static mut RetailAmountBar>,
+    amount_bars: Query<'w, 's, &'static mut RetailAmountBarState>,
     placards: Query<'w, 's, &'static mut RetailPlacard>,
 }
 
@@ -90,7 +90,7 @@ impl CityUi<'_, '_> {
     }
 
     fn placard(&mut self, entity: Entity, value: i16) {
-        self.placards.get_mut(entity).expect("placard").value = value;
+        self.placards.get_mut(entity).expect("placard").0 = value;
     }
 }
 

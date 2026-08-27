@@ -1,7 +1,7 @@
 //! Recovered `TPlacard` as a reusable Bevy widget.
 //!
-//! Owns numeric value, zero-hides visibility, decimal formatting, digit-aware
-//! layout padding, fixed text style, and shadow. Screens only write `value`.
+//! Owns numeric value, zero-hides root visibility, decimal formatting, fixed
+//! text style, and shadow. Screens only write the value.
 
 use super::retail::retail_text_components;
 use crate::{RetailAssetsResource, RetailFonts};
@@ -17,10 +17,9 @@ const PLACARD_TEXT_STYLE: RetailTextStylePreset = RetailTextStylePreset {
 };
 
 /// Recovered placard presentation state (`TPlacard::glyph90`).
-#[derive(Component, Clone, Copy, Debug, Default)]
-pub struct RetailPlacard {
-    pub value: i16,
-}
+#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[require(Visibility)]
+pub struct RetailPlacard(pub i16);
 
 #[derive(Component, Clone, Copy, Debug)]
 struct PlacardText(Entity);
@@ -83,7 +82,6 @@ fn spawn_placard_text(
                     color: shadow_color,
                 },
                 Pickable::IGNORE,
-                Visibility::Inherited,
                 ChildOf(entity),
             ))
             .id();
@@ -93,25 +91,22 @@ fn spawn_placard_text(
 
 #[allow(clippy::type_complexity)]
 fn draw_placards(
-    placards: Query<
-        (Entity, &RetailPlacard, &PlacardText),
+    mut placards: Query<
+        (&RetailPlacard, &PlacardText, &mut Visibility),
         Or<(Changed<RetailPlacard>, Added<PlacardText>)>,
     >,
-    mut commands: Commands,
     mut texts: Query<&mut Text>,
 ) {
-    for (entity, placard, PlacardText(text)) in &placards {
-        let shown = placard.value != 0;
-        let visibility = if shown {
+    for (placard, PlacardText(text), mut visibility) in &mut placards {
+        let shown = placard.0 != 0;
+        *visibility = if shown {
             Visibility::Visible
         } else {
             Visibility::Hidden
         };
-        commands.entity(entity).insert(visibility);
-        commands.entity(*text).insert(visibility);
         if let Ok(mut label) = texts.get_mut(*text) {
             label.0 = if shown {
-                placard.value.to_string()
+                placard.0.to_string()
             } else {
                 String::new()
             };

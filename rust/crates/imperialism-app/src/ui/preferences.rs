@@ -4,11 +4,12 @@ use super::hover_help::{
     ui_string,
 };
 use super::query_floater::bind_query_floater_control;
-use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
+use super::retail::{
+    RetailPictureSwap, RetailTag, RetailTree, RetailTwoPicSliderVisual, RetailUiAssets,
+};
 use super::retail_raster::IndexedRasterExt;
-use super::retail_raster_text::RetailRasterTextPainter;
 use crate::media::RetailAudioAssets;
-use crate::{AppState, RetailAssetsResource, RetailFonts, ReturnTo};
+use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::ui::{Checked, InteractionDisabled};
@@ -17,7 +18,7 @@ use bevy::ui_widgets::{
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
+use imperialism_formats::{PictureId, SoundId, fourcc};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
@@ -43,7 +44,6 @@ const PREFERENCE_ROWS: [(
         fourcc!("txte"),
     ),
 ];
-const SLIDER_SPLIT_PAD: i16 = 0x0c;
 const MUSIC_SLIDER_SCALE: i16 = 0xff;
 const SOUND_SLIDER_SCALE: i16 = 100;
 const MUSIC_PICTURE_BASE: i16 = 0x1036;
@@ -121,23 +121,16 @@ impl GamePreferences {
 #[derive(Component)]
 struct PreferencesRoot;
 
+#[derive(Component)]
+struct PreferencesView {
+    music: Entity,
+    sound: Entity,
+}
+
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct PreferenceRow {
     ui_row: usize,
     slot: PreferenceSlot,
-}
-
-/// Preference slot Okay writes after the checkboxes.
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-struct PreferenceSlider {
-    slot: PreferenceSlot,
-}
-
-#[derive(Component)]
-struct PreferenceSliderVisual {
-    upper: imperialism_formats::IndexedPicture,
-    lower: imperialism_formats::IndexedPicture,
-    off: String,
 }
 
 pub(crate) struct PreferencesPlugin;
@@ -148,10 +141,6 @@ impl Plugin for PreferencesPlugin {
             .add_systems(
                 OnEnter(AppState::Preferences),
                 (spawn_preferences, bind_preferences).chain(),
-            )
-            .add_systems(
-                Update,
-                sync_preference_slider_visuals.run_if(in_state(AppState::Preferences)),
             )
             .add_systems(
                 OnExit(AppState::Preferences),
@@ -238,26 +227,31 @@ fn bind_preferences(
 
     let music_hover = ui_string(&assets, 0x2743, 0x27);
     let sound_hover = ui_string(&assets, 0x2743, 0x26);
+    let music = tree.find(root, fourcc!("musi"));
+    let sound = tree.find(root, fourcc!("soun"));
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        tree.find(root, fourcc!("musi")),
+        music,
         MUSIC_PICTURE_BASE,
-        PreferenceSlot::MusicVolume,
         MUSIC_SLIDER_SCALE,
         prefs.values[PreferenceSlot::MusicVolume],
         music_hover,
+        PreferenceSlot::MusicVolume,
     );
     bind_volume_slider(
         &mut commands,
         &mut assets,
-        tree.find(root, fourcc!("soun")),
+        sound,
         SOUND_PICTURE_BASE,
-        PreferenceSlot::SoundVolume,
         SOUND_SLIDER_SCALE,
         prefs.values[PreferenceSlot::SoundVolume],
         sound_hover,
+        PreferenceSlot::SoundVolume,
     );
+    commands
+        .entity(root)
+        .insert(PreferencesView { music, sound });
 
     commands
         .entity(tree.find(root, fourcc!("okay")))
@@ -282,10 +276,10 @@ fn bind_volume_slider(
     assets: &mut RetailUiAssets,
     slider: Entity,
     picture_base: i16,
-    slot: PreferenceSlot,
     scale: i16,
     value: i16,
     hover: String,
+    slot: PreferenceSlot,
 ) {
     let upper = assets
         .indexed_picture(PictureId::new(picture_base))
@@ -294,8 +288,8 @@ fn bind_volume_slider(
         .indexed_picture(PictureId::new(picture_base + 1))
         .expect("preference slider lower picture");
     let image = assets.add_image(upper.to_image(assets.default_dib_palette()));
-    commands
-        .entity(slider)
+    let mut entity = commands.entity(slider);
+    entity
         .insert((
             Slider {
                 track_click: TrackClick::Snap,
@@ -304,19 +298,44 @@ fn bind_volume_slider(
             SliderValue(f32::from(value)),
             SliderRange::new(0.0, f32::from(scale)),
             SliderPrecision(0),
-            PreferenceSlider { slot },
             HoverHelpText(hover),
             ImageNode::new(image),
-            PreferenceSliderVisual {
+            RetailTwoPicSliderVisual {
                 upper,
                 lower,
-                off: get_string(assets, 0x2743, 0x3b),
+                off_text: get_string(assets, 0x2743, 0x3b),
             },
         ))
         .observe(slider_self_update)
-        .observe(on_preference_slider_change)
-        .observe(on_sound_slider_released)
         .remove::<InteractionDisabled>();
+    match slot {
+        PreferenceSlot::MusicVolume => {
+            entity.observe(
+                |change: On<ValueChange<f32>>, mut prefs: ResMut<GamePreferences>| {
+                    prefs.values[PreferenceSlot::MusicVolume] = change.value as i16;
+                },
+            );
+        }
+        PreferenceSlot::SoundVolume => {
+            entity.observe(
+                |change: On<ValueChange<f32>>, mut prefs: ResMut<GamePreferences>| {
+                    if change.is_final {
+                        prefs.values[PreferenceSlot::SoundVolume] = change.value as i16;
+                    }
+                },
+            );
+            entity.observe(
+                |change: On<ValueChange<f32>>,
+                 mut commands: Commands,
+                 mut audio: RetailAudioAssets| {
+                    if change.is_final {
+                        audio.play(&mut commands, SoundId::UI_CLICK);
+                    }
+                },
+            );
+        }
+        _ => {}
+    }
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
@@ -325,111 +344,6 @@ fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
 
 fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> String {
     get_string(assets, 0x2743, row as i16 * 2 + 0x10 + i16::from(!is_on))
-}
-
-fn slider_split_from_value(value: i16, height: i16, scale: i16) -> i16 {
-    let span = height - SLIDER_SPLIT_PAD;
-    if span <= 0 || scale == 0 {
-        return 0;
-    }
-    let split = value * span / scale;
-    if split == 0 {
-        0
-    } else {
-        split + SLIDER_SPLIT_PAD
-    }
-}
-
-fn slider_fill_height(split: i16) -> i16 {
-    if split < SLIDER_SPLIT_PAD { 0 } else { split }
-}
-
-fn on_preference_slider_change(
-    change: On<ValueChange<f32>>,
-    sliders: Query<&PreferenceSlider>,
-    mut prefs: ResMut<GamePreferences>,
-) {
-    let Ok(slider) = sliders.get(change.source) else {
-        return;
-    };
-    match slider.slot {
-        PreferenceSlot::MusicVolume => {
-            prefs.values[PreferenceSlot::MusicVolume] = change.value as i16
-        }
-        PreferenceSlot::SoundVolume if change.is_final => {
-            prefs.values[PreferenceSlot::SoundVolume] = change.value as i16
-        }
-        _ => {}
-    }
-}
-
-fn on_sound_slider_released(
-    change: On<ValueChange<f32>>,
-    sliders: Query<&PreferenceSlider>,
-    mut commands: Commands,
-    mut audio: RetailAudioAssets,
-) {
-    let Ok(slider) = sliders.get(change.source) else {
-        return;
-    };
-    if slider.slot != PreferenceSlot::SoundVolume || !change.is_final {
-        return;
-    }
-    audio.play(&mut commands, SoundId::UI_CLICK);
-}
-
-#[allow(clippy::type_complexity)]
-fn sync_preference_slider_visuals(
-    retail: Res<RetailAssetsResource>,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
-    mut image_assets: ResMut<Assets<Image>>,
-    sliders: Query<
-        (
-            &SliderValue,
-            &SliderRange,
-            &PreferenceSliderVisual,
-            &ImageNode,
-            &Node,
-        ),
-        (With<PreferenceSlider>, Changed<SliderValue>),
-    >,
-) {
-    let mut text = RetailRasterTextPainter::from_preset(
-        &fonts,
-        &font_assets,
-        RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 1,
-        },
-    )
-    .expect("retail preference slider text style");
-    for (value, range, visual, image_node, node) in &sliders {
-        let height = match node.height {
-            Val::Px(height) => height as i16,
-            _ => visual.upper.height as i16,
-        };
-        let split = slider_split_from_value(value.0 as i16, height, range.end() as i16);
-        let fill = slider_fill_height(split);
-        let mut picture = visual.upper.clone();
-        let top = i32::from(height - fill);
-        picture.copy_rect(
-            &visual.lower,
-            IRect::new(0, top, visual.lower.width as i32, i32::from(height)),
-            IVec2::new(0, top),
-        );
-        if split < SLIDER_SPLIT_PAD {
-            let center = visual.upper.width as i32 / 2;
-            let baseline = i32::from(height / 2 + 4);
-            text.draw_center(&mut picture, center, baseline, &visual.off, 0x28);
-            text.draw_center(&mut picture, center + 1, baseline + 1, &visual.off, 0);
-        }
-        if let Some(mut image) = image_assets.get_mut(&image_node.image) {
-            *image = picture.to_image(retail.assets().default_dib_palette());
-        }
-    }
 }
 
 fn on_preference_checked<E: EntityEvent, C: Component>(
@@ -459,7 +373,8 @@ fn on_preference_checked<E: EntityEvent, C: Component>(
 fn on_preferences_activate(
     _activate: On<Activate>,
     rows: Query<(&PreferenceRow, Has<Checked>)>,
-    sliders: Query<(&PreferenceSlider, &SliderValue)>,
+    view: Single<&PreferencesView>,
+    values: Query<&SliderValue>,
     mut prefs: ResMut<GamePreferences>,
     returning: Res<ReturnTo>,
     mut next_state: ResMut<NextState<AppState>>,
@@ -469,9 +384,10 @@ fn on_preferences_activate(
     for (row, checked) in &rows {
         prefs.values[row.slot] = i16::from(checked);
     }
-    for (slider, value) in &sliders {
-        prefs.values[slider.slot] = value.0 as i16;
-    }
+    prefs.values[PreferenceSlot::MusicVolume] =
+        values.get(view.music).expect("bound music slider").0 as i16;
+    prefs.values[PreferenceSlot::SoundVolume] =
+        values.get(view.sound).expect("bound sound slider").0 as i16;
     next_state.set(returning.0);
 }
 
@@ -481,23 +397,25 @@ mod tests {
 
     #[test]
     fn slider_split_matches_retail_padding() {
-        assert_eq!(slider_split_from_value(0, 91, 100), 0);
-        assert_eq!(slider_split_from_value(100, 91, 100), 91);
-        assert_eq!(slider_split_from_value(0xff, 91, 0xff), 91);
+        use super::super::retail_slider::two_pic_slider_split;
+        assert_eq!(two_pic_slider_split(0, 91, 100), 0);
+        assert_eq!(two_pic_slider_split(100, 91, 100), 91);
+        assert_eq!(two_pic_slider_split(0xff, 91, 0xff), 91);
     }
 
     #[test]
     fn sound_slider_release_writes_preference_slot_2() {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .init_resource::<GamePreferences>()
-            .add_observer(on_preference_slider_change);
-        let slider = app
-            .world_mut()
-            .spawn(PreferenceSlider {
-                slot: PreferenceSlot::SoundVolume,
-            })
-            .id();
+            .init_resource::<GamePreferences>();
+        let slider = app.world_mut().spawn_empty().id();
+        app.world_mut().entity_mut(slider).observe(
+            |change: On<ValueChange<f32>>, mut prefs: ResMut<GamePreferences>| {
+                if change.is_final {
+                    prefs.values[PreferenceSlot::SoundVolume] = change.value as i16;
+                }
+            },
+        );
         app.world_mut().commands().trigger(ValueChange {
             source: slider,
             value: 40.0_f32,

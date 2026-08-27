@@ -35,39 +35,40 @@ pub enum RetailAmountBarKind {
     Trader,
 }
 
-/// Recovered amount-bar presentation state. `range` is capacity / segment count
-/// (`auxValueA`); `maximum` drives the industry/rail limit tick.
+/// Immutable recovered amount-bar specialization.
 #[derive(Component, Clone, Copy, Debug)]
 pub struct RetailAmountBar {
-    pub value: i16,
-    pub range: i16,
-    pub maximum: i16,
     pub kind: RetailAmountBarKind,
+}
+
+/// Live presentation state projected from authoritative gameplay.
+#[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct RetailAmountBarState {
+    pub value: i16,
+    pub limit: i16,
+    pub segments: i16,
 }
 
 impl RetailAmountBar {
     pub const fn new(kind: RetailAmountBarKind) -> Self {
-        Self {
-            value: 0,
-            range: 0,
-            maximum: 0,
-            kind,
-        }
+        Self { kind }
     }
 
-    pub fn geometry(self) -> AmountBarGeometry {
+    pub fn geometry(self, state: RetailAmountBarState) -> AmountBarGeometry {
         match self.kind {
             RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
-                INDUSTRY_AMOUNT_BAR.with_segments(self.range)
+                INDUSTRY_AMOUNT_BAR.with_segments(state.segments)
             }
-            RetailAmountBarKind::Trader => TRADE_AMOUNT_BAR.with_segments(self.range),
+            RetailAmountBarKind::Trader => TRADE_AMOUNT_BAR.with_segments(state.segments),
         }
     }
+}
 
-    pub fn set(&mut self, value: i16, range: i16, maximum: i16) {
+impl RetailAmountBarState {
+    pub fn set(&mut self, value: i16, segments: i16, limit: i16) {
         self.value = value;
-        self.range = range;
-        self.maximum = maximum;
+        self.segments = segments;
+        self.limit = limit;
     }
 }
 
@@ -115,7 +116,10 @@ pub fn amount_bar_counter_offset(geometry: AmountBarGeometry, value: i16) -> Vec
 /// BSN helper: attach a recovered amount-bar widget to the generated track node.
 pub fn retail_amount_bar(kind: RetailAmountBarKind) -> impl Scene {
     bsn! {
-        template(move |_context| Ok(RetailAmountBar::new(kind)))
+        template(move |context| {
+            context.entity.insert(RetailAmountBarState::default());
+            Ok(RetailAmountBar::new(kind))
+        })
     }
 }
 
@@ -193,43 +197,43 @@ fn spawn_amount_bar_parts(
 #[allow(clippy::type_complexity)]
 fn draw_amount_bars(
     bars: Query<
-        (&RetailAmountBar, &AmountBarParts),
-        Or<(Changed<RetailAmountBar>, Added<AmountBarParts>)>,
+        (&RetailAmountBar, &RetailAmountBarState, &AmountBarParts),
+        Or<(Changed<RetailAmountBarState>, Added<AmountBarParts>)>,
     >,
     mut nodes: Query<&mut Node>,
 ) {
-    for (bar, parts) in &bars {
-        let geometry = bar.geometry();
-        let span = geometry.span(bar.value);
+    for (bar, state, parts) in &bars {
+        let geometry = bar.geometry(*state);
+        let span = geometry.span(state.value);
         if let Ok(mut fill) = nodes.get_mut(parts.fill) {
             fill.width = Val::Px(f32::from(span));
         }
         if let Some(limit) = parts.limit
             && let Ok(mut limit_node) = nodes.get_mut(limit)
         {
-            limit_node.left = Val::Px(f32::from(geometry.span(bar.maximum)));
+            limit_node.left = Val::Px(f32::from(geometry.span(state.limit)));
         }
     }
 }
 
 fn on_amount_bar_click(
     mut click: On<Pointer<Click>>,
-    bars: Query<&RetailAmountBar>,
+    bars: Query<(&RetailAmountBar, &RetailAmountBarState)>,
     mut commands: Commands,
 ) {
-    let Ok(bar) = bars.get(click.entity) else {
+    let Ok((bar, state)) = bars.get(click.entity) else {
         return;
     };
     let Some(position) = click.hit.position else {
         return;
     };
     click.propagate(false);
-    let geometry = bar.geometry();
+    let geometry = bar.geometry(*state);
     let x = amount_bar_x_from_normalized(geometry, position.x);
     let value = match bar.kind {
         RetailAmountBarKind::Trader => trade_amount_bar_click_value(geometry, x),
         RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
-            amount_bar_click_value(geometry, x, bar.value)
+            amount_bar_click_value(geometry, x, state.value)
         }
     };
     commands.trigger(ValueChange {
