@@ -2,10 +2,21 @@
 //!
 //! Visually distinct from [`super::retail_army_placard::RetailArmyPlacard`]: retail centers the
 //! available-count caption around (0x50, 0x2e) with theme `0x2b6c` / shadow `0x2b67` (+1,+1).
+//! `(0x50 - width/2, 0x2e)` is the QuickDraw baseline origin, not a Bevy text-box top-left.
 
 use super::retail::{retail_picture, retail_text_color, retail_text_shadow, retail_text_style};
 use bevy::prelude::*;
 use bevy::ui::UiSystems;
+
+/// System 10pt logical cell height (`(10*10+3)/8`).
+const SYSTEM_10PT_HEIGHT: f32 = 12.0;
+/// Main (0x28) QuickDraw baseline Y from `TShipPlacard::Draw`.
+const BASELINE_Y: f32 = 0x2e as f32;
+const TEXT_TOP: f32 = BASELINE_Y - SYSTEM_10PT_HEIGHT;
+/// Center X of the caption (`0x50`); box is wide enough for multi-digit counts.
+const CENTER_X: f32 = 0x50 as f32;
+const TEXT_WIDTH: f32 = 40.0;
+const TEXT_LEFT: f32 = CENTER_X - TEXT_WIDTH / 2.0;
 
 /// Private structure for the ship-placard hierarchy.
 #[derive(SceneComponent, FromTemplate, Clone)]
@@ -26,7 +37,6 @@ pub struct ShipPlacardValue(pub Option<i32>);
 
 impl RetailShipPlacard {
     fn scene(props: RetailShipPlacardProps) -> impl Scene {
-        // Caption centered at x≈80 within the 100px-wide placard (retail 0x50 ± extent/2).
         bsn! {
             retail_picture(props.picture_id)
             RetailShipPlacard {
@@ -37,10 +47,10 @@ impl RetailShipPlacard {
                 #Count
                 Node {
                     position_type: PositionType::Absolute,
-                    left: px(40),
-                    top: px(0x2e),
-                    width: px(80),
-                    height: px(16),
+                    left: px(TEXT_LEFT),
+                    top: px(TEXT_TOP),
+                    width: px(TEXT_WIDTH),
+                    height: px(SYSTEM_10PT_HEIGHT),
                 }
                 Text("")
                 retail_text_style(0, 0, 10, 1)
@@ -78,5 +88,17 @@ fn draw_ship_placards(
             .filter(|&count| count > 0)
             .map(|count| count.to_string())
             .unwrap_or_default();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn text_box_stays_inside_100x57_placard() {
+        assert_eq!(TEXT_TOP, 34.0);
+        assert!(TEXT_TOP + SYSTEM_10PT_HEIGHT <= 57.0);
+        assert!(TEXT_LEFT + TEXT_WIDTH <= 100.0);
     }
 }
