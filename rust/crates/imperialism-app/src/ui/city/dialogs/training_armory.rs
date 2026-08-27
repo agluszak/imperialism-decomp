@@ -23,6 +23,19 @@ pub(in crate::ui::city) struct ArmoryUi {
     placard: Entity,
 }
 
+const ARMORY_ROW_CONTROLS: [(FourCc, FourCc); 8] = [
+    (fourcc!("clu0"), fourcc!("civ0")),
+    (fourcc!("clu1"), fourcc!("civ1")),
+    (fourcc!("clu2"), fourcc!("civ2")),
+    (fourcc!("clu3"), fourcc!("civ3")),
+    (fourcc!("clu4"), fourcc!("civ4")),
+    (fourcc!("clu5"), fourcc!("civ5")),
+    (fourcc!("clu6"), fourcc!("civ6")),
+    (fourcc!("clu7"), fourcc!("civ7")),
+];
+
+const TRAINING_ORDER_TAGS: [FourCc; 2] = [fourcc!("trai"), fourcc!("prof")];
+
 const ARMORY_FIREPOWER: [i16; 30] = [
     5, 5, 10, 12, 7, 15, 10, 16, 7, 10, 15, 17, 10, 20, 17, 30, 10, 15, 22, 25, 22, 45, 25, 50, 0,
     0, 0, 0, 0, 0,
@@ -73,8 +86,7 @@ pub(in crate::ui::city) fn bind_training(
         let entity = tree.find(root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    let orders =
-        TrainingOrderTable::from_array(generated::TRAINING_ORDER_TAGS).map(|level, tag| {
+    let orders = TrainingOrderTable::from_array(TRAINING_ORDER_TAGS).map(|level, tag| {
             bind_industry_order_row(
                 commands,
                 root,
@@ -118,7 +130,7 @@ pub(in crate::ui::city) fn bind_armory(
         title_line_height,
         TextColor(normal_color),
     ));
-    let rows = MilitaryRecruitOrderTable::from_array(generated::ARMORY_ROW_CONTROLS).map(
+    let rows = MilitaryRecruitOrderTable::from_array(ARMORY_ROW_CONTROLS).map(
         |category, (order_tag, button_tag)| {
             let bound = bind_recruitment_order_row(
                 commands,

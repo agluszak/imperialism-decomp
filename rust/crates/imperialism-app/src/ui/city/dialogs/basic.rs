@@ -1,6 +1,34 @@
 use super::*;
 use crate::ui::retail::AmountBarParts;
 
+fn warehouse_stock_tag(resource: ResourceKind) -> FourCc {
+    match resource {
+        ResourceKind::Cotton => fourcc!("cott"),
+        ResourceKind::Wool => fourcc!("wool"),
+        ResourceKind::Timber => fourcc!("timb"),
+        ResourceKind::Coal => fourcc!("coal"),
+        ResourceKind::Iron => fourcc!("iron"),
+        ResourceKind::Horses => fourcc!("hors"),
+        ResourceKind::Oil => fourcc!("oil "),
+        ResourceKind::Food => fourcc!("food"),
+        ResourceKind::Fabric => fourcc!("fabr"),
+        ResourceKind::Lumber => fourcc!("lumb"),
+        ResourceKind::Paper => fourcc!("pape"),
+        ResourceKind::Steel => fourcc!("stee"),
+        ResourceKind::Fuel => fourcc!("fuel"),
+        ResourceKind::Clothing => fourcc!("clot"),
+        ResourceKind::Furniture => fourcc!("furn"),
+        ResourceKind::Hardware => fourcc!("hard"),
+        ResourceKind::Arms => fourcc!("arma"),
+        ResourceKind::Grain => fourcc!("grai"),
+        ResourceKind::Fruit => fourcc!("prod"),
+        ResourceKind::Livestock => fourcc!("live"),
+        ResourceKind::Fish | ResourceKind::Gems | ResourceKind::Gold => {
+            panic!("warehouse stock tag requested for {resource:?}")
+        }
+    }
+}
+
 pub(in crate::ui::city) struct WarehouseUi {
     stocks: Vec<(Entity, ResourceKind)>,
     labor: Entity,
@@ -43,8 +71,7 @@ pub(in crate::ui::city) fn bind_warehouse(
     let stocks = (0..=ResourceKind::Livestock.retail())
         .filter_map(ResourceKind::from_index)
         .filter(|resource| *resource != ResourceKind::Fish)
-        .zip(generated::WAREHOUSE_STOCK_TAGS)
-        .map(|(resource, tag)| (tree.find(root, tag), resource))
+        .map(|resource| (tree.find(root, warehouse_stock_tag(resource)), resource))
         .collect();
     let labor = tree.find(root, fourcc!("labo"));
     let power = tree.find(root, fourcc!("powe"));
@@ -120,7 +147,7 @@ pub(in crate::ui::city) fn bind_food(
         amount_bars,
         CityFacilitySlot::FoodProcessing,
         CityOrderId::FoodProcessing,
-        generated::FOOD_ORDER_TAG,
+        fourcc!("food"),
         2,
     );
     FoodUi {
@@ -147,7 +174,7 @@ pub(in crate::ui::city) fn bind_power(
         amount_bars,
         CityFacilitySlot::PowerPlant,
         CityOrderId::PowerPlant,
-        generated::POWER_ORDER_TAG,
+        fourcc!("powe"),
         6,
     );
     let fuel = tree.find(root, fourcc!("fuel"));
@@ -172,7 +199,7 @@ pub(in crate::ui::city) fn bind_transport(
         amount_bars,
         CityFacilitySlot::Transport,
         CityOrderId::TransportCapacity,
-        generated::TRANSPORT_ORDER_TAG,
+        fourcc!("rail"),
         1,
     );
     TransportUi {
@@ -198,7 +225,7 @@ pub(in crate::ui::city) fn bind_population(
         amount_bars,
         CityFacilitySlot::RegionalPopulation,
         CityOrderId::PopulationGrowth,
-        generated::POPULATION_ORDER_TAG,
+        fourcc!("popu"),
         1,
     );
     PopulationUi {

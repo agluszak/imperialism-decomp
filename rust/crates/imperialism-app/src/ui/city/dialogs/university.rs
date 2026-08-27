@@ -1,6 +1,16 @@
 use super::*;
 use crate::ui::retail_raster::IndexedRasterExt;
 
+const UNIVERSITY_ROW_CONTROLS: [(FourCc, FourCc); 7] = [
+    (fourcc!("clu0"), fourcc!("civ0")),
+    (fourcc!("clu1"), fourcc!("civ1")),
+    (fourcc!("clu2"), fourcc!("civ2")),
+    (fourcc!("clu3"), fourcc!("civ3")),
+    (fourcc!("clu4"), fourcc!("civ4")),
+    (fourcc!("clu5"), fourcc!("civ5")),
+    (fourcc!("clu8"), fourcc!("civ8")),
+];
+
 const UNIVERSITY_KINDS: [CivilianUnitKind; 7] = [
     CivilianUnitKind::Miner,
     CivilianUnitKind::Prospector,
@@ -38,7 +48,7 @@ pub(in crate::ui::city) fn bind_university(
         .available;
     let rows = std::array::from_fn(|index| {
         let kind = UNIVERSITY_KINDS[index];
-        let (order_tag, button_tag) = generated::UNIVERSITY_ROW_CONTROLS[index];
+        let (order_tag, button_tag) = UNIVERSITY_ROW_CONTROLS[index];
         let bound = bind_recruitment_order_row(
             commands,
             root,
