@@ -1605,12 +1605,14 @@ fn project_land_battle_toolbar(
             ));
         }
     }
-    let coat = assets.picture(
-        PictureId::new(0xea6).offset(i16::from(battle.nation(battle.active_side()).get())),
-    );
+    let coat = assets.picture(tactical_coat_picture(battle.nation(battle.active_side())));
     for mut image in &mut coats {
         image.image = coat.clone();
     }
+}
+
+fn tactical_coat_picture(nation: NationId) -> PictureId {
+    PictureId::new(0xea6).offset(i16::from(nation.get()))
 }
 
 fn project_tile_atlases(
