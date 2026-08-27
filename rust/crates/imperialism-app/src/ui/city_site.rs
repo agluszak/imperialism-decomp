@@ -21,16 +21,44 @@ use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, StringGroup, StringResourceId, fourcc};
 
 const PLACE_CITY_STRING_GROUP: u16 = 0x273f;
-const BAD_CITY_SITE_STRING_GROUP: u16 = 0x273b;
+const BAD_CITY_SITE_STRING_GROUP: StringGroup = StringGroup::new(0x273b);
 const MINISTER_STRING_GROUP: u16 = 0x2749;
 const NEW_CITY_DIALOG_WIDTH: i32 = 328;
 const RESOURCE_ITEM_WIDTH: i32 = 0x2c;
 const RESOURCE_ITEM_HEIGHT: i32 = 0x20;
 const CITY_SITE_INTRO_GOLD_PICTURE: PictureId = PictureId::new(0x24d1);
 const COAT_PICTURE_BASE: PictureId = PictureId::new(9500);
+
+trait CitySiteErrorRetailResources {
+    fn message_string(self, state: &GameState, tile: TileId) -> StringResourceId;
+}
+
+impl CitySiteErrorRetailResources for CitySiteError {
+    fn message_string(self, state: &GameState, tile: TileId) -> StringResourceId {
+        let offset = match self {
+            Self::NotOwned => {
+                if state.map()[tile].terrain == TerrainKind::Water {
+                    3
+                } else {
+                    0
+                }
+            }
+            Self::UnsupportedTerrain | Self::InvalidHomeSite => {
+                if supports_city_site_terrain(state.map()[tile].terrain)
+                    && state.can_build_port_at_tile(tile)
+                {
+                    2
+                } else {
+                    1
+                }
+            }
+        };
+        BAD_CITY_SITE_STRING_GROUP.offset(offset)
+    }
+}
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum CitySiteAction {
@@ -279,10 +307,7 @@ fn on_city_site_map_click(
     match validate_capital_site_selection(&session.game, nation, tile) {
         Ok(site) => open_new_city_dialog(&mut commands, site),
         Err(error) => {
-            let body = assets.get_string(
-                BAD_CITY_SITE_STRING_GROUP,
-                error.message_offset(&session.game, tile) as u16,
-            );
+            let body = assets.string(error.message_string(&session.game, tile));
             open_city_site_notice(&mut commands, body);
         }
     }
