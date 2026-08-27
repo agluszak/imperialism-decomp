@@ -184,12 +184,19 @@ fn bind_added_help(
                 Underline,
             ));
         }
-        commands.entity(toggle).insert((
-            UiButton,
-            Pickable::default(),
-            Text::new(assets.ui_string(0x2749, 9)),
-            TextColor(LINK_BLUE),
-        ));
+        let topics_label = assets.ui_string(0x2749, 9);
+        set_text(
+            &mut commands,
+            &mut assets,
+            toggle,
+            &topics_label,
+            12,
+            3,
+            LINK_BLUE,
+        );
+        commands
+            .entity(toggle)
+            .insert((UiButton, Pickable::default()));
 
         let view = MapHelpView {
             context,

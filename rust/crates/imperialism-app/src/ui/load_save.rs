@@ -311,9 +311,10 @@ fn bind_load_save(
             .remove::<InteractionDisabled>();
     }
     commands.entity(info).insert(Text::new(String::new()));
+    let preview_image = assets.add_image(Image::transparent());
     commands
         .entity(map)
-        .insert((LoadSaveMapPreview::default(), ImageNode::default()));
+        .insert((LoadSaveMapPreview::default(), ImageNode::new(preview_image)));
     commands.entity(root_entity).insert(LoadSaveRoot {
         mode,
         selected: None,

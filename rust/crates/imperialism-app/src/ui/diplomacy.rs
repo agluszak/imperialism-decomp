@@ -2225,13 +2225,11 @@ mod tests {
                 DiplomacyMode::Treaty(DiplomacyPolicy::BuildConsulate),
             )
         };
-        app.world_mut()
-            .commands()
-            .trigger(ValueChange {
-                source: radio,
-                value: true,
-                is_final: true,
-            });
+        app.world_mut().commands().trigger(ValueChange {
+            source: radio,
+            value: true,
+            is_final: true,
+        });
         app.world_mut().flush();
 
         let screen = app
