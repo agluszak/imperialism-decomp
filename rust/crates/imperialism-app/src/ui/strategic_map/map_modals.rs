@@ -972,7 +972,6 @@ fn bind_added_garrisons(
             model.units.len(),
             GARRISON_PER_COLUMN,
             GARRISON_ROW_HEIGHT,
-            true,
         );
         let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
@@ -1021,7 +1020,6 @@ fn bind_added_army_rosters(
             model.units.len(),
             MINI_ROSTER_PER_COLUMN,
             MINI_ROSTER_ROW_HEIGHT,
-            true,
         );
         let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
@@ -1219,7 +1217,6 @@ fn bind_added_navy_rosters(
             model.ships.len(),
             MINI_ROSTER_PER_COLUMN,
             MINI_ROSTER_ROW_HEIGHT,
-            false,
         );
         let page = tree.find(root, fourcc!("page"));
         let (font, layout, line_height) = roster_text_style(&mut assets, 12);
@@ -1287,7 +1284,6 @@ fn bind_roster_page(
     count: usize,
     rows_per_column: usize,
     row_height: f32,
-    triangular_page_corners: bool,
 ) {
     let last_column = if count == 0 {
         0
@@ -1322,11 +1318,7 @@ fn bind_roster_page(
             RosterPageAction::Next => Visibility::Hidden,
         };
         let mut entity_commands = commands.entity(entity);
-        if triangular_page_corners {
-            entity_commands.insert((action, visibility));
-        } else {
-            entity_commands.insert((Button, action, visibility));
-        }
+        entity_commands.insert((action, visibility));
         entity_commands.observe(move |_: On<Activate>, mut pages: Query<&mut RosterPage>| {
             let mut page = pages.get_mut(root).expect("roster page action root");
             match action {

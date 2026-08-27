@@ -104,7 +104,8 @@ class UiCodegenTests(unittest.TestCase):
                 'retail_node(fourcc!("rcor")'
             )
         ]
-        self.assertNotIn("Button", lcor)
+        self.assertIn("Button", lcor)
+        self.assertIn("should_block_lower: false", lcor)
 
 
 if __name__ == "__main__":

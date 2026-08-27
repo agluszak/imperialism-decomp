@@ -1835,6 +1835,10 @@ def _rust_input_semantics(
         return "passive"
     if node.class_name == "TSidewaysArrow":
         return "sideways_arrow"
+    if node.tag in ("lcor", "rcor"):
+        if node.class_name == "TPageCorner":
+            return "page_corner"
+        return "activate"
     if node.class_name == "TPageCorner":
         return "page_corner"
     if (
@@ -2311,7 +2315,8 @@ def _render_bsn_node(
     if semantics == "page_corner":
         corner = "Left" if node.tag == "lcor" else "Right"
         lines.append(f"    template(|_context| Ok(RetailPageCorner::{corner}))")
-        lines.append("    Pickable")
+        lines.append("    Pickable { should_block_lower: false, is_hoverable: true }")
+        lines.append("    Button")
     if bool(node.state) and semantics in ("checkbox", "toggle", "radio_button"):
         lines.append("    Checked")
     if semantics != "passive" and (not node.enabled or not node.input_gate):

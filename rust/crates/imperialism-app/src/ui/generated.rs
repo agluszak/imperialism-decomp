@@ -3019,14 +3019,16 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("lcor"), 12, 387, 37, 35)
                                 template(|_context| Ok(RetailPageCorner::Left))
-                                Pickable
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
                                 InteractionDisabled
                                 retail_picture(4068)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 387, 40, 35)
                                 template(|_context| Ok(RetailPageCorner::Right))
-                                Pickable
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
                                 InteractionDisabled
                                 retail_picture(4069)
                             ),
@@ -3993,10 +3995,12 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("lcor"), -1, 392, 38, 34)
+                                        Button
                                         retail_picture(8801)
                                     ),
                                     (
                                         retail_node(fourcc!("rcor"), 462, 390, 41, 36)
+                                        Button
                                         retail_picture(8802)
                                     ),
                                     (
@@ -4088,10 +4092,12 @@ pub fn flagview_8800() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rcor"), 520, 435, 41, 36)
+                                                Button
                                                 retail_picture(8802)
                                             ),
                                             (
                                                 retail_node(fourcc!("lcor"), 57, 437, 38, 34)
+                                                Button
                                                 retail_picture(8801)
                                             ),
                                             (
@@ -5889,13 +5895,15 @@ pub fn mapview_3500() -> impl Scene {
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
                                 template(|_context| Ok(RetailPageCorner::Left))
-                                Pickable
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 356, 41, 36)
                                 template(|_context| Ok(RetailPageCorner::Right))
-                                Pickable
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
                                 retail_picture(3505)
                             ),
                             (
@@ -7183,10 +7191,12 @@ pub fn mapview_9478() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
+                                Button
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 432, 356, 41, 36)
+                                Button
                                 retail_picture(3505)
                             ),
                         ]
@@ -9428,10 +9438,12 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 17, 445, 32, 30)
+                                Button
                                 retail_picture(2361)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 590, 445, 32, 30)
+                                Button
                                 retail_picture(2362)
                             ),
                             (

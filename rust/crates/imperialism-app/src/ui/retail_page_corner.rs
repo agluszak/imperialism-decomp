@@ -1,13 +1,13 @@
 //! Recovered `TPageCorner` triangular hit testing.
 //!
-//! Only the corner triangle accepts input; other clicks fall through to the page underneath.
-//! Valid presses trigger [`Activate`] for handwritten binders.
+//! Triangular acceptance happens in the picking pipeline so rejected clicks fall through.
+//! Valid corners use stock [`Button`] release activation like other controls.
 
-use bevy::picking::events::{Pointer, Press};
-use bevy::picking::pointer::PointerButton;
+use bevy::picking::PickingSystems;
+use bevy::picking::backend::{HitData, PointerHits};
 use bevy::prelude::*;
-use bevy::ui::{ComputedNode, InteractionDisabled};
-use bevy::ui_widgets::Activate;
+use bevy::ui::ComputedNode;
+use bevy::ui::picking_backend::ui_picking;
 
 /// Which half of a page-corner control accepts clicks.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq, Reflect)]
@@ -20,7 +20,12 @@ pub enum RetailPageCorner {
 }
 
 pub(super) fn register_page_corner(app: &mut App) {
-    app.add_observer(on_page_corner_press);
+    app.add_systems(
+        PreUpdate,
+        filter_page_corner_pointer_hits
+            .after(ui_picking)
+            .in_set(PickingSystems::Backend),
+    );
 }
 
 /// Retail `TPageCorner::HandleMouseDown` triangle test in pixel coordinates.
@@ -43,38 +48,81 @@ fn local_pixels(hit: Vec3, size: Vec2) -> Option<(f32, f32)> {
     Some((x, y))
 }
 
-fn on_page_corner_press(
-    mut press: On<Pointer<Press>>,
-    disabled: Query<Has<InteractionDisabled>>,
-    corners: Query<(&RetailPageCorner, &ComputedNode)>,
-    mut commands: Commands,
-) {
-    if press.event.button != PointerButton::Primary {
-        return;
-    }
-    let entity = press.entity;
-    if disabled.get(entity).unwrap_or(false) {
-        return;
-    }
+fn corner_hit_valid(
+    entity: Entity,
+    hit: &HitData,
+    corners: &Query<(&RetailPageCorner, &ComputedNode)>,
+) -> bool {
     let Ok((corner, node)) = corners.get(entity) else {
-        return;
+        return true;
     };
-    let Some(hit) = press.hit.position else {
-        return;
+    let Some(hit) = hit.position else {
+        return false;
     };
     let Some((x, y)) = local_pixels(hit, node.size) else {
+        return false;
+    };
+    page_corner_hit(*corner, node.size.x, node.size.y, x, y)
+}
+
+/// Drop rejected triangle hits and truncate to the corner when it wins.
+pub fn filter_page_corner_picks(
+    picks: &mut Vec<(Entity, HitData)>,
+    corners: &Query<(&RetailPageCorner, &ComputedNode)>,
+) {
+    picks.retain(|(entity, hit)| corner_hit_valid(*entity, hit, corners));
+    if picks
+        .first()
+        .is_some_and(|(entity, _)| corners.get(*entity).is_ok())
+    {
+        picks.truncate(1);
+    }
+}
+
+fn filter_page_corner_pointer_hits(
+    mut pointer_hits: Option<MessageMutator<PointerHits>>,
+    corners: Query<(&RetailPageCorner, &ComputedNode)>,
+) {
+    let Some(mut pointer_hits) = pointer_hits else {
         return;
     };
-    if !page_corner_hit(*corner, node.size.x, node.size.y, x, y) {
-        return;
+    for hits in pointer_hits.read() {
+        filter_page_corner_picks(&mut hits.picks, &corners);
     }
-    press.propagate(false);
-    commands.trigger(Activate { entity });
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use bevy::camera::Camera;
+    use bevy::ecs::system::SystemState;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::events::{Click, Pointer, Press};
+    use bevy::picking::pointer::{PointerButton, PointerId};
+    use bevy::ui::Pressed;
+    use bevy::ui_widgets::{Activate, Button, ButtonPlugin};
+    use std::time::Duration;
+
+    #[derive(Resource, Default)]
+    struct ActivateCount(u32);
+
+    fn hit_at(entity: Entity, x: f32, y: f32) -> (Entity, HitData) {
+        let camera = Entity::from_bits(1);
+        (
+            entity,
+            HitData::new(camera, 0.0, Some(Vec3::new(x, y, 0.0)), None),
+        )
+    }
+
+    fn pointer_location() -> bevy::picking::pointer::Location {
+        bevy::picking::pointer::Location {
+            target: bevy::camera::NormalizedRenderTarget::None {
+                width: 1,
+                height: 1,
+            },
+            position: Vec2::ZERO,
+        }
+    }
 
     #[test]
     fn left_corner_accepts_upper_triangle() {
@@ -110,5 +158,114 @@ mod tests {
             5.0,
             5.0
         ));
+    }
+
+    #[test]
+    fn rejected_triangle_lets_lower_target_remain_in_picks() {
+        let mut app = App::new();
+        app.world_mut().spawn(Camera::default());
+        let corner = app
+            .world_mut()
+            .spawn((
+                RetailPageCorner::Left,
+                ComputedNode {
+                    size: Vec2::new(40.0, 36.0),
+                    ..default()
+                },
+            ))
+            .id();
+        let lower = app.world_mut().spawn_empty().id();
+        let mut state =
+            SystemState::<Query<(&RetailPageCorner, &ComputedNode)>>::new(app.world_mut());
+        let corners = state.get(app.world()).unwrap();
+
+        let mut picks = vec![hit_at(corner, 0.2, -0.2), hit_at(lower, 0.0, 0.0)];
+        filter_page_corner_picks(&mut picks, &corners);
+
+        assert_eq!(picks.len(), 1);
+        assert_eq!(picks[0].0, lower);
+    }
+
+    #[test]
+    fn valid_triangle_keeps_only_corner_pick() {
+        let mut app = App::new();
+        app.world_mut().spawn(Camera::default());
+        let corner = app
+            .world_mut()
+            .spawn((
+                RetailPageCorner::Left,
+                ComputedNode {
+                    size: Vec2::new(40.0, 36.0),
+                    ..default()
+                },
+            ))
+            .id();
+        let lower = app.world_mut().spawn_empty().id();
+        let mut state =
+            SystemState::<Query<(&RetailPageCorner, &ComputedNode)>>::new(app.world_mut());
+        let corners = state.get(app.world()).unwrap();
+
+        let mut picks = vec![hit_at(corner, -0.2, 0.2), hit_at(lower, 0.0, 0.0)];
+        filter_page_corner_picks(&mut picks, &corners);
+
+        assert_eq!(picks.len(), 1);
+        assert_eq!(picks[0].0, corner);
+    }
+
+    #[test]
+    fn button_press_alone_does_not_activate() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, ButtonPlugin))
+            .init_resource::<ActivateCount>();
+        let entity = app.world_mut().spawn(Button).id();
+        app.world_mut().add_observer(
+            move |activate: On<Activate>, mut count: ResMut<ActivateCount>| {
+                if activate.entity == entity {
+                    count.0 += 1;
+                }
+            },
+        );
+
+        app.world_mut().trigger(Pointer::new(
+            PointerId::Mouse,
+            pointer_location(),
+            Press {
+                button: PointerButton::Primary,
+                hit: HitData::new(Entity::from_bits(1), 0.0, None, None),
+                count: 1,
+            },
+            entity,
+        ));
+        app.update();
+        assert_eq!(app.world().resource::<ActivateCount>().0, 0);
+    }
+
+    #[test]
+    fn button_click_after_press_activates() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, ButtonPlugin))
+            .init_resource::<ActivateCount>();
+        let entity = app.world_mut().spawn((Button, Pressed)).id();
+        app.world_mut().add_observer(
+            move |activate: On<Activate>, mut count: ResMut<ActivateCount>| {
+                if activate.entity == entity {
+                    count.0 += 1;
+                }
+            },
+        );
+
+        app.world_mut().trigger(Pointer::new(
+            PointerId::Mouse,
+            pointer_location(),
+            Click {
+                button: PointerButton::Primary,
+                hit: HitData::new(Entity::from_bits(1), 0.0, None, None),
+                duration: Duration::ZERO,
+                count: 1,
+            },
+            entity,
+        ));
+        app.update();
+        assert_eq!(app.world().resource::<ActivateCount>().0, 1);
     }
 }
