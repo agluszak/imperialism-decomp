@@ -132,6 +132,7 @@ fn palette_color(assets: &RetailAssetsResource, index: u8) -> Color {
     Color::srgb_u8(red, green, blue)
 }
 
+#[allow(clippy::type_complexity)]
 fn spawn_amount_bar_parts(
     mut commands: Commands,
     bars: Query<(Entity, &RetailAmountBar), (Added<RetailAmountBar>, Without<AmountBarParts>)>,
@@ -144,7 +145,9 @@ fn spawn_amount_bar_parts(
         };
         let (fill_top, fill_height) = match bar.kind {
             RetailAmountBarKind::Trader => (Val::Px(0.0), Val::Percent(100.0)),
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => (Val::Px(1.0), Val::Px(4.0)),
+            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
+                (Val::Px(1.0), Val::Px(4.0))
+            }
         };
         let fill = commands
             .spawn((
@@ -187,6 +190,7 @@ fn spawn_amount_bar_parts(
     }
 }
 
+#[allow(clippy::type_complexity)]
 fn draw_amount_bars(
     bars: Query<
         (&RetailAmountBar, &AmountBarParts),

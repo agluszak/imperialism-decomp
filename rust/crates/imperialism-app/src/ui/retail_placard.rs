@@ -26,10 +26,7 @@ pub struct RetailPlacard {
 struct PlacardText(Entity);
 
 pub(super) fn register_placard(app: &mut App) {
-    app.add_systems(
-        PostUpdate,
-        (spawn_placard_text, draw_placards).chain(),
-    );
+    app.add_systems(PostUpdate, (spawn_placard_text, draw_placards).chain());
 }
 
 fn palette_color(assets: &RetailAssetsResource, index: u8) -> Color {
@@ -49,6 +46,7 @@ fn placard_text_style(
     Ok((font, layout, line_height, line_px))
 }
 
+#[allow(clippy::type_complexity)]
 fn spawn_placard_text(
     mut commands: Commands,
     placards: Query<(Entity, &Node), (Added<RetailPlacard>, Without<PlacardText>)>,
@@ -93,6 +91,7 @@ fn spawn_placard_text(
     }
 }
 
+#[allow(clippy::type_complexity)]
 fn draw_placards(
     placards: Query<
         (Entity, &RetailPlacard, &PlacardText),

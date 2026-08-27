@@ -192,7 +192,14 @@ fn bind_trade_screen(
         if !advanced && matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel) {
             commands.entity(row).insert(Visibility::Hidden);
         }
-        bind_trade_row(&mut commands, &tree, row, commodity, &text_style, text_color)
+        bind_trade_row(
+            &mut commands,
+            &tree,
+            row,
+            commodity,
+            &text_style,
+            text_color,
+        )
     });
     commands.entity(root).insert(TradeView {
         capacity,
@@ -569,6 +576,7 @@ const fn trade_offer_tab_visible(capacity: i16, active: bool, stockpile: i16) ->
 #[cfg(test)]
 mod tests {
     use super::super::retail::RetailTag;
+    use super::super::retail_amount_bar::RetailAmountBarKind;
     use super::*;
     use crate::ui::test_support::beginning_of_game;
     use bevy::asset::AssetPlugin;
@@ -617,7 +625,12 @@ mod tests {
                 ChildOf(row),
             ));
             world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("bar ")), Node::default(), ChildOf(row)));
+            world.spawn((
+                RetailTag(fourcc!("bar ")),
+                Node::default(),
+                RetailAmountBar::new(RetailAmountBarKind::Trader),
+                ChildOf(row),
+            ));
         }
         root
     }
@@ -649,7 +662,6 @@ mod tests {
                 commodity,
                 &text_style,
                 Color::BLACK,
-                Color::WHITE,
             )
         });
         commands.entity(*root).insert(TradeView {
