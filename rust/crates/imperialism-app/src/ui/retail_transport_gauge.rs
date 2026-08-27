@@ -1,6 +1,7 @@
 //! Recovered `TTransportPicture` gauge overlays as structure-only scene helpers.
 //!
-//! Screens write fill/limit via bind-time handles. Allocation vs capacity is a binder concern.
+//! Screens write fill/limit via bind-time handles. Allocation and capacity use distinct
+//! Parts structs so capacity gauges never represent a missing limit as a sentinel entity.
 
 use super::retail::{retail_background_color, retail_picture};
 use bevy::prelude::*;
@@ -14,13 +15,17 @@ const ALLOCATION_FILL_PALETTE: u8 = 0x3a;
 pub const TRANSPORT_GAUGE_PARTIAL_PALETTE: u8 = 0x33;
 pub const TRANSPORT_GAUGE_FULL_PALETTE: u8 = 0x34;
 
-/// Child refs for a transport-gauge hierarchy.
-///
-/// Capacity gauges leave [`Self::limit`] as [`Entity::PLACEHOLDER`].
+/// Child refs for an allocation-row gauge (fill + limit marker).
 #[derive(Component, FromTemplate, Clone, Copy)]
-pub struct TransportGaugeParts {
+pub struct TransportAllocationGaugeParts {
     pub fill: Entity,
     pub limit: Entity,
+}
+
+/// Child refs for the capacity (`tota`) gauge (fill only).
+#[derive(Component, FromTemplate, Clone, Copy)]
+pub struct TransportCapacityGaugeParts {
+    pub fill: Entity,
 }
 
 /// Allocation row gauge: fill + limit marker.
@@ -29,7 +34,7 @@ pub fn retail_transport_gauge(picture_id: i16, track_left: i16) -> impl Scene {
     let left = f32::from(track_left);
     bsn! {
         retail_picture(picture_id)
-        TransportGaugeParts { fill: #Fill, limit: #Limit }
+        TransportAllocationGaugeParts { fill: #Fill, limit: #Limit }
         Children [
             (
                 Node { position_type: PositionType::Absolute, left: px(left), top: px(TRACK_TOP), width: px(TRACK_WIDTH), height: px(TRACK_HEIGHT) }
@@ -59,7 +64,7 @@ pub fn retail_transport_capacity_gauge(picture_id: i16, track_left: i16) -> impl
     let left = f32::from(track_left);
     bsn! {
         retail_picture(picture_id)
-        TransportGaugeParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
+        TransportCapacityGaugeParts { fill: #Fill }
         Children [
             (
                 Node { position_type: PositionType::Absolute, left: px(left), top: px(TRACK_TOP), width: px(TRACK_WIDTH), height: px(TRACK_HEIGHT) }

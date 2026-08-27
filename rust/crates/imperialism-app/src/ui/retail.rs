@@ -19,8 +19,8 @@ pub use super::retail_placard::{
 };
 pub use super::retail_slider::retail_two_pic_slider;
 pub use super::retail_transport_gauge::{
-    TransportGaugeParts, retail_transport_capacity_gauge, retail_transport_gauge,
-    transport_gauge_width,
+    TransportAllocationGaugeParts, TransportCapacityGaugeParts, retail_transport_capacity_gauge,
+    retail_transport_gauge, transport_gauge_width,
 };
 
 /// Provenance tag recovered from the retail View resource.

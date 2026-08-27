@@ -5,7 +5,9 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::HoverHelpText;
-use super::retail::{RetailTree, TransportGaugeParts, transport_gauge_width};
+use super::retail::{
+    RetailTree, TransportAllocationGaugeParts, TransportCapacityGaugeParts, transport_gauge_width,
+};
 use super::retail_resources::ResourceKindRetailResources;
 use super::retail_transport_gauge::{
     TRANSPORT_GAUGE_FULL_PALETTE, TRANSPORT_GAUGE_PARTIAL_PALETTE,
@@ -104,8 +106,7 @@ struct TransportScreen;
 #[derive(Clone, Copy)]
 struct TransportGaugeView {
     fill: Entity,
-    /// [`Entity::PLACEHOLDER`] for capacity gauges (no limit marker).
-    limit: Entity,
+    limit: Option<Entity>,
     caption: Entity,
 }
 
@@ -150,7 +151,8 @@ fn bind_transport_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TransportScreen>>,
     tree: RetailTree,
-    gauges: Query<&TransportGaugeParts>,
+    allocation_gauges: Query<&TransportAllocationGaugeParts>,
+    capacity_gauges: Query<&TransportCapacityGaugeParts>,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
 ) {
@@ -182,21 +184,42 @@ fn bind_transport_screen(
             color: assets.palette_color(0),
         },
     ));
-    let view = bind_transport_view(&mut commands, *root, &tree, &gauges);
+    let view = bind_transport_view(
+        &mut commands,
+        *root,
+        &tree,
+        &allocation_gauges,
+        &capacity_gauges,
+    );
     commands.entity(*root).insert(view);
 }
 
-fn bind_gauge_view(
+fn bind_allocation_gauge_view(
     tree: &RetailTree,
-    gauges: &Query<&TransportGaugeParts>,
+    gauges: &Query<&TransportAllocationGaugeParts>,
     entity: Entity,
 ) -> TransportGaugeView {
     let parts = *gauges
         .get(entity)
-        .expect("bound transport gauge must exist");
+        .expect("bound transport allocation gauge must exist");
     TransportGaugeView {
         fill: parts.fill,
-        limit: parts.limit,
+        limit: Some(parts.limit),
+        caption: tree.find(entity, fourcc!("text")),
+    }
+}
+
+fn bind_capacity_gauge_view(
+    tree: &RetailTree,
+    gauges: &Query<&TransportCapacityGaugeParts>,
+    entity: Entity,
+) -> TransportGaugeView {
+    let parts = *gauges
+        .get(entity)
+        .expect("bound transport capacity gauge must exist");
+    TransportGaugeView {
+        fill: parts.fill,
+        limit: None,
         caption: tree.find(entity, fourcc!("text")),
     }
 }
@@ -205,13 +228,15 @@ fn bind_transport_view(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    gauges: &Query<&TransportGaugeParts>,
+    allocation_gauges: &Query<&TransportAllocationGaugeParts>,
+    capacity_gauges: &Query<&TransportCapacityGaugeParts>,
 ) -> TransportView {
     let selected = tree.find(root, fourcc!("tran"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    let capacity = bind_gauge_view(tree, gauges, tree.find(root, fourcc!("tota")));
+    let capacity =
+        bind_capacity_gauge_view(tree, capacity_gauges, tree.find(root, fourcc!("tota")));
     let rows = std::array::from_fn(|index| {
         let binding = TRANSPORT_ROWS[index];
         let row = tree.find(root, binding.tag);
@@ -254,7 +279,7 @@ fn bind_transport_view(
             row,
             decrease,
             increase,
-            gauge: bind_gauge_view(tree, gauges, row),
+            gauge: bind_allocation_gauge_view(tree, allocation_gauges, row),
             money,
         }
     });
@@ -347,21 +372,19 @@ fn write_allocation_gauge(
         .get_mut(gauge.caption)
         .expect("transport gauge caption")
         .0 = format!("{current}  /  {total}");
-    debug_assert_ne!(
-        gauge.limit,
-        Entity::PLACEHOLDER,
-        "allocation gauges retain a limit marker"
-    );
+    let limit_entity = gauge
+        .limit
+        .expect("allocation gauges retain a limit marker");
     match limit {
         Some(limit) => {
-            commands.entity(gauge.limit).insert(Visibility::Visible);
+            commands.entity(limit_entity).insert(Visibility::Visible);
             backgrounds
-                .get_mut(gauge.limit)
+                .get_mut(limit_entity)
                 .expect("transport gauge limit")
                 .0 = if current < limit { partial } else { full };
         }
         None => {
-            commands.entity(gauge.limit).insert(Visibility::Hidden);
+            commands.entity(limit_entity).insert(Visibility::Hidden);
         }
     }
 }
@@ -535,10 +558,7 @@ mod tests {
             .spawn((
                 RetailTag(fourcc!("tota")),
                 Node::default(),
-                TransportGaugeParts {
-                    fill,
-                    limit: Entity::PLACEHOLDER,
-                },
+                TransportCapacityGaugeParts { fill },
                 ChildOf(root),
             ))
             .id();
@@ -555,7 +575,7 @@ mod tests {
                 .spawn((
                     RetailTag(binding.tag),
                     Node::default(),
-                    TransportGaugeParts { fill, limit },
+                    TransportAllocationGaugeParts { fill, limit },
                     ChildOf(root),
                 ))
                 .id();
@@ -586,9 +606,16 @@ mod tests {
         mut commands: Commands,
         root: Single<Entity, Added<TestTransportRoot>>,
         tree: RetailTree,
-        gauges: Query<&TransportGaugeParts>,
+        allocation_gauges: Query<&TransportAllocationGaugeParts>,
+        capacity_gauges: Query<&TransportCapacityGaugeParts>,
     ) {
-        let view = bind_transport_view(&mut commands, *root, &tree, &gauges);
+        let view = bind_transport_view(
+            &mut commands,
+            *root,
+            &tree,
+            &allocation_gauges,
+            &capacity_gauges,
+        );
         commands.entity(*root).insert(view);
     }
 

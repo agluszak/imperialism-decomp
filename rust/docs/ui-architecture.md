@@ -131,18 +131,21 @@ capture it (for example a trade card captures its `TradeCommodity` and `TradeCar
 a component only when other independent systems need to query it.
 
 Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPressedOverlay`,
-`RetailMadnessPicture`, and `RetailTwoPicSliderVisual` remain appropriate when they own interactive
-skin or widget-local operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`,
-`Checkbox`, `RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a skin
-or a genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
+and `RetailMadnessPicture` remain appropriate when they own interactive skin or widget-local
+operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`, `Checkbox`,
+`RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a skin or a
+genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`, `TTwoPicSlider`'s
+12px zero plateau).
 
 Recovered hierarchical retail widgets are structure-only BSN Parts
-(`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `TransportGaugeParts`).
+(`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `TransportAllocationGaugeParts`,
+`TransportCapacityGaugeParts`, `RetailTwoPicSliderParts`).
 They spawn private children atomically with the scene. They are not a port of the C++
 class hierarchy and must not carry `FooValue` projection components or `FooValue`→
 `draw_foo` PostUpdate systems for passive displays. Coarse screen/dialog renderers write
 `Text`, `Node`, `Visibility`, `ImageNode`, and `BackgroundColor` directly (pure helpers
-such as `transport_gauge_width` / `placard_text_layout` / `amount_bar_geometry` are fine).
+such as `transport_gauge_width` / `placard_text_layout` / `amount_bar_geometry` /
+`two_pic_slider_value_from_y` are fine).
 Root semantic views may retain private child entity handles resolved at bind time—
 including synthetic render children. Encapsulation is not valuable enough to justify
 another runtime state-and-system layer. Custom ECS state belongs only to interactive
@@ -173,7 +176,8 @@ game / screen semantics    -> handwritten binder (FourCC find, domain observers,
 ```
 
 Split input behavior from presentation in the generator when a class has both (for example
-`TTwoPicSlider` → stock `Slider` + retained lower-clip / Off presentation). Do not invent a
+`TTwoPicSlider` → retained lower-clip / Off presentation + retail pointer→value mapping into
+`SliderValue`). Do not invent a
 generic widget framework (`RetailWidget<T>`, `Binding<T>`, lenses); port concrete recovered
 reusable behavior only. Custom widgets must not know `GameSession`, domain IDs, or FourCC
 application meaning. When a widget consumes a pointer event, stop propagation.
