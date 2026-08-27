@@ -78,16 +78,15 @@ impl GameState {
 
     /// Continues the retained `CarryOutOrders` scan after the tactical naval
     /// battle has applied its outcome to the two authoritative task forces.
-    pub fn resume_after_naval_battle(&mut self) -> crate::TurnStop {
-        let Some(crate::turn_flow::TurnStop::NavalBattle(continuation)) =
-            std::mem::take(&mut self.stop)
-        else {
+    pub fn resume_after_naval_battle(&mut self) {
+        let Some(crate::turn_flow::TurnStop::NavalBattle(continuation)) = self.stop.take() else {
             panic!("naval-battle resume requires a navy-orders continuation");
         };
         if let Some(continuation) = self.resume_navy_orders(continuation) {
-            return self.halt(crate::turn_flow::TurnStop::NavalBattle(continuation));
+            self.halt(crate::turn_flow::TurnStop::NavalBattle(continuation));
+            return;
         }
-        self.advance_turn()
+        self.advance_turn();
     }
 
     pub(crate) fn give_navy_mission_orders(&mut self, mission: MissionId) {

@@ -212,19 +212,20 @@ fn on_end_turn(
     prefs: Res<super::preferences::GamePreferences>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let stop = session
+    session
         .game
         .finish_player_orders(prefs.turn_alerts_enabled());
-    let stop = if matches!(stop, imperialism_core::TurnStop::LandBattle(_)) {
+    if matches!(
+        session.game.stop(),
+        imperialism_core::TurnStop::LandBattle(_)
+    ) {
         session
             .game
-            .apply_land_battle_watch_policy(prefs.tactical_battles_enabled())
-    } else {
-        stop
-    };
-    match stop {
+            .apply_land_battle_watch_policy(prefs.tactical_battles_enabled());
+    }
+    match session.game.stop() {
         imperialism_core::TurnStop::TurnAlerts(alerts) => {
-            commands.insert_resource(TurnAlertQueue(alerts.into()));
+            commands.insert_resource(TurnAlertQueue(alerts.clone().into()));
             next_state.set(AppState::StrategicMap);
         }
         stop => {

@@ -204,8 +204,15 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
     parts.diplomacy.last_processed_nation = capture.ephemeral.last_processed_nation;
-    parts.stop = capture.ephemeral.stop;
-    Ok(GameState::from_parts(parts))
+    let mut state = GameState::from_parts(parts);
+    match capture.ephemeral.stop {
+        Some(stop) => state.restore_captured_stop(Some(stop)),
+        None if state.turn().phase() == PhaseCode::STRATEGIC_MAP => {
+            state.restore_captured_stop(Some(TurnStop::PlayerOrders));
+        }
+        None => {}
+    }
+    Ok(state)
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {

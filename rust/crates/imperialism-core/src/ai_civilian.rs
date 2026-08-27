@@ -14,7 +14,7 @@ const GATE_QUALIFIES: [u8; 24] = [
 impl GameState {
     #[allow(clippy::too_many_lines)]
     pub(crate) fn process_ai_civilian_orders(&mut self, nation: MajorNationId) {
-        self.continue_civilian_orders(nation);
+        self.continue_civilian_orders(nation, &mut Vec::new());
 
         let owned_tiles: Vec<TileId> = (0..STRATEGIC_TILE_COUNT)
             .map(|index| TileId::new(index as u16))

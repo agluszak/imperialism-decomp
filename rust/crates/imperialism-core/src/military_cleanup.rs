@@ -1545,14 +1545,16 @@ mod tests {
             CountryStatus::ProtectorateOf(NationId::new(0)),
         );
 
-        let mut expected = state.clone();
-        expected.recompute_tile_strategic_score_heatmap();
         for province in ProvinceId::all() {
             state.map.provinces[province].set_city_score(1);
         }
         state.map.city_score_total = 1;
 
         state.do_military_cleanup();
+        let rebuilt_total = state.map.city_score_total;
+        let rebuilt_scores: Vec<_> = ProvinceId::all()
+            .map(|province| state.map.provinces[province].city_score())
+            .collect();
 
         assert_eq!(
             state.ships[&ShipId::new(0)].selection,
@@ -1562,16 +1564,14 @@ mod tests {
             state.ships[&ShipId::new(1)].selection,
             ShipSelection::Reserved
         );
+        state.recompute_tile_strategic_score_heatmap();
         assert_eq!(
-            state.map.city_score_total, expected.map.city_score_total,
+            state.map.city_score_total, rebuilt_total,
             "cleanup must rebuild the heatmap, not keep a corrupted total"
         );
-        assert_ne!(state.map.city_score_total, 1);
-        for province in ProvinceId::all() {
-            assert_eq!(
-                state.map.provinces[province].city_score(),
-                expected.map.provinces[province].city_score()
-            );
+        assert_ne!(rebuilt_total, 1);
+        for (province, score) in ProvinceId::all().zip(rebuilt_scores) {
+            assert_eq!(state.map.provinces[province].city_score(), score);
         }
         assert_eq!(
             state.nations.majors[&eligible].city.stockpile[ResourceKind::Food],

@@ -188,11 +188,16 @@ pub(crate) fn game_state() -> GameState {
         pending: crate::PendingWorkState::default(),
         battle_reports: Vec::new(),
         stop: None,
-        pending_town_namings: Vec::new(),
         data: GameData::default(),
     };
     // Town markers must sit on owned land. The turn loop reaches city/transport
     // on this fixture, and that phase rebuilds yields from those markers.
     state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
+    state.halt(TurnStop::PlayerOrders);
     state
+}
+
+pub(crate) fn start_phase(state: &mut GameState, phase: crate::PhaseCode) {
+    state.stop = None;
+    state.turn.phase = phase;
 }

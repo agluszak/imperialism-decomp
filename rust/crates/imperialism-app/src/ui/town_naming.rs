@@ -63,9 +63,11 @@ fn bind_town_naming(
     {
         return;
     }
-    let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
+    let Some(naming) = session.game.prepare_pending_town_naming() else {
         return;
     };
+    let nation = naming.nation;
+    let tile = naming.tile;
     let suggestion = retail_assets.ui_string(
         0x1c52,
         u16::from(session.game.roll_pending_town_name_suggestion()),
@@ -175,6 +177,5 @@ fn commit_town_name(
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     session.game.name_pending_town(field.value().to_string());
-    let stop = session.game.advance_turn();
-    apply_turn_stop(stop, &mut next_state);
+    apply_turn_stop(session.game.stop(), &mut next_state);
 }

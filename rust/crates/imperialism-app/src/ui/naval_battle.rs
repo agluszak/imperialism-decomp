@@ -107,12 +107,11 @@ fn synchronize_interactive_navy_battle(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    if session.game.pending_naval_battle().is_some()
-        && session.game.navy_battle().is_none()
-        && let Some(stop) = session.game.synchronize_navy_battle()
-        && !matches!(stop, TurnStop::NavalBattle(_))
-    {
-        apply_turn_stop(stop, &mut next_state);
+    if session.game.pending_naval_battle().is_some() && session.game.navy_battle().is_none() {
+        session.game.synchronize_navy_battle();
+        if !matches!(session.game.stop(), TurnStop::NavalBattle(_)) {
+            apply_turn_stop(session.game.stop(), &mut next_state);
+        }
     }
 }
 
@@ -136,17 +135,17 @@ fn apply_naval_battle_action(
     session: &mut GameSession,
     next_state: &mut NextState<AppState>,
 ) {
-    let stop = match action {
-        NavalBattleAction::Done => session
-            .game
-            .finish_selected_navy_unit_action()
-            .ok()
-            .flatten(),
-        NavalBattleAction::Retreat => session.game.retreat_from_navy_battle().ok().flatten(),
-        NavalBattleAction::Auto => Some(session.game.auto_resolve_navy_battle()),
-    };
-    if let Some(stop) = stop.filter(|stop| !matches!(stop, TurnStop::NavalBattle(_))) {
-        apply_turn_stop(stop, next_state);
+    match action {
+        NavalBattleAction::Done => {
+            let _ = session.game.finish_selected_navy_unit_action();
+        }
+        NavalBattleAction::Retreat => {
+            let _ = session.game.retreat_from_navy_battle();
+        }
+        NavalBattleAction::Auto => session.game.auto_resolve_navy_battle(),
+    }
+    if !matches!(session.game.stop(), TurnStop::NavalBattle(_)) {
+        apply_turn_stop(session.game.stop(), next_state);
     }
 }
 
@@ -370,11 +369,10 @@ fn on_battlefield_click(
     let Some((x, y)) = battlefield_cursor_pixel(cursor) else {
         return;
     };
-    if let Some(stop) =
-        apply_battlefield_click(&mut session, x, y, view.view_origin_x, view.view_origin_y)
-        && !matches!(stop, TurnStop::NavalBattle(_))
+    if apply_battlefield_click(&mut session, x, y, view.view_origin_x, view.view_origin_y)
+        && !matches!(session.game.stop(), TurnStop::NavalBattle(_))
     {
-        apply_turn_stop(stop, &mut next_state);
+        apply_turn_stop(session.game.stop(), &mut next_state);
     }
 }
 
@@ -384,10 +382,12 @@ fn apply_battlefield_click(
     y: i32,
     view_origin_x: i32,
     view_origin_y: i32,
-) -> Option<TurnStop> {
+) -> bool {
     let tile_map = navy_viewport(view_origin_x, view_origin_y);
-    let tile = navy_tile_at_pixel(&tile_map, x, y)?;
-    session.game.navy_action_at(tile).ok().flatten()
+    let Some(tile) = navy_tile_at_pixel(&tile_map, x, y) else {
+        return false;
+    };
+    session.game.navy_action_at(tile).is_ok()
 }
 
 fn cue_tactical_result(game: &GameState, music: &mut MusicDirector, time: Option<&Time>) {
@@ -498,11 +498,11 @@ mod tests {
             parts.turn.difficulty,
             player,
         );
-        parts.stop = Some(TurnStop::NavalBattle(
+        let mut state = GameState::from_parts(parts);
+        state.restore_captured_stop(Some(TurnStop::NavalBattle(
             NavyOrdersContinuation::player_encounter(attacker_force, defender_force),
-        ));
-
-        GameState::from_parts(parts)
+        )));
+        state
     }
 
     fn test_app(state: GameState) -> App {
@@ -625,7 +625,7 @@ mod tests {
     #[test]
     fn naval_battle_projects_units_onto_stride_six_anchors() {
         let state = player_naval_battle_state();
-        let mut probe = state.clone();
+        let mut probe = player_naval_battle_state();
         probe.ensure_navy_battle();
         let expected: Vec<_> = probe
             .navy_battle()
@@ -715,10 +715,13 @@ mod tests {
 
         app.world_mut()
             .resource_scope(|_, mut session: Mut<GameSession>| {
-                assert_eq!(
-                    apply_battlefield_click(&mut session, dest_pixel.0, dest_pixel.1, 0, 0),
-                    None
-                );
+                assert!(apply_battlefield_click(
+                    &mut session,
+                    dest_pixel.0,
+                    dest_pixel.1,
+                    0,
+                    0
+                ));
             });
         app.update();
         let after = app

@@ -294,8 +294,8 @@ fn on_newspaper_activate(
     preferences: Res<GamePreferences>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let stop = session
+    session
         .game
         .close_newspaper(preferences.music_volume() != 0);
-    apply_turn_stop(stop, &mut next_state);
+    apply_turn_stop(session.game.stop(), &mut next_state);
 }

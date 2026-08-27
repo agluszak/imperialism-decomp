@@ -296,7 +296,6 @@ pub fn create_random_game(
         pending,
         battle_reports: Vec::new(),
         stop: None,
-        pending_town_namings: Vec::new(),
         data: GameData::default(),
     }
 }
@@ -447,7 +446,6 @@ pub fn create_scenario_game(
         pending: PendingWorkState::default(),
         battle_reports: Vec::new(),
         stop: None,
-        pending_town_namings: Vec::new(),
         data: GameData::default(),
     };
     // Nation reconstruction creates each fixed-map home port context before the scenario

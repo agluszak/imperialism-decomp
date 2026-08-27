@@ -959,7 +959,8 @@ impl GameState {
     }
 
     /// Retail `TSimMgr::DoCivilians`.
-    pub fn do_civilians(&mut self) {
+    pub fn do_civilians(&mut self) -> Vec<crate::PendingTownNaming> {
+        let mut namings = Vec::new();
         self.rebuild_civilian_stack_order();
         self.resolve_civilian_disputes();
         for nation in MajorNationId::all() {
@@ -967,12 +968,13 @@ impl GameState {
                 continue;
             }
             if self.nations.major(nation).auto.is_none() {
-                self.continue_civilian_orders(nation);
+                self.continue_civilian_orders(nation, &mut namings);
                 self.sort_tracked_orders_by_type_priority(nation);
             } else {
                 self.process_ai_civilian_orders(nation);
             }
         }
+        namings
     }
 
     pub fn advance_civilian_work(&mut self, civilian: CivilianUnitId) {
@@ -980,7 +982,12 @@ impl GameState {
             self.civilian_units.contains_key(&civilian),
             "work advances a present unit"
         );
-        self.continue_civilian_order(civilian);
+        let mut namings = Vec::new();
+        self.continue_civilian_order(civilian, &mut namings);
+        debug_assert!(
+            namings.is_empty(),
+            "map-phase civilian work does not complete depot/port namings"
+        );
     }
 
     fn civilian_nation_is_eligible(&self, nation: MajorNationId) -> bool {
@@ -990,7 +997,11 @@ impl GameState {
         )
     }
 
-    pub(crate) fn continue_civilian_orders(&mut self, nation: MajorNationId) {
+    pub(crate) fn continue_civilian_orders(
+        &mut self,
+        nation: MajorNationId,
+        namings: &mut Vec<crate::PendingTownNaming>,
+    ) {
         let ids: Vec<CivilianUnitId> = self
             .civilian_units
             .iter()
@@ -998,11 +1009,15 @@ impl GameState {
             .map(|(&id, _)| id)
             .collect();
         for id in ids {
-            self.continue_civilian_order(id);
+            self.continue_civilian_order(id, namings);
         }
     }
 
-    fn continue_civilian_order(&mut self, id: CivilianUnitId) {
+    fn continue_civilian_order(
+        &mut self,
+        id: CivilianUnitId,
+        namings: &mut Vec<crate::PendingTownNaming>,
+    ) {
         enum Completion {
             None,
             Idle,
@@ -1085,8 +1100,8 @@ impl GameState {
                     .order = CivilianWorkOrder::Idle
             }
             Completion::Rail(segment) => self.complete_rail_construction(id, segment),
-            Completion::Depot => self.complete_depot_construction(id),
-            Completion::Port => self.complete_port_construction(id),
+            Completion::Depot => self.complete_depot_construction(id, namings),
+            Completion::Port => self.complete_port_construction(id, namings),
             Completion::Prospect => self.complete_prospecting(id),
             Completion::Develop => self.complete_resource_development(id),
             Completion::Fort => self.complete_fort_construction(id),
@@ -1267,7 +1282,11 @@ impl GameState {
             .order = CivilianWorkOrder::Idle;
     }
 
-    fn complete_depot_construction(&mut self, id: CivilianUnitId) {
+    fn complete_depot_construction(
+        &mut self,
+        id: CivilianUnitId,
+        namings: &mut Vec<crate::PendingTownNaming>,
+    ) {
         let unit = &self.civilian_units[&id];
         let tile = unit
             .location
@@ -1275,7 +1294,7 @@ impl GameState {
             .expect("depot orders are normalized with an on-map location");
         let nation = MajorNationId::from_nation(unit.owner_nation)
             .expect("engineers belong to a major nation");
-        self.queue_depot_construction(tile, nation);
+        self.queue_depot_construction(tile, nation, namings);
         let _ = self.apply_town_transport_links(nation);
         self.civilian_units
             .get_mut(&id)
@@ -1283,7 +1302,11 @@ impl GameState {
             .order = CivilianWorkOrder::Idle;
     }
 
-    fn complete_port_construction(&mut self, id: CivilianUnitId) {
+    fn complete_port_construction(
+        &mut self,
+        id: CivilianUnitId,
+        namings: &mut Vec<crate::PendingTownNaming>,
+    ) {
         let unit = &self.civilian_units[&id];
         let tile = unit
             .location
@@ -1291,7 +1314,7 @@ impl GameState {
             .expect("port orders are normalized with an on-map location");
         let nation = MajorNationId::from_nation(unit.owner_nation)
             .expect("engineers belong to a major nation");
-        self.queue_port_construction(tile, nation);
+        self.queue_port_construction(tile, nation, namings);
         let _ = self.apply_town_transport_links(nation);
         self.civilian_units
             .get_mut(&id)
@@ -1299,13 +1322,18 @@ impl GameState {
             .order = CivilianWorkOrder::Idle;
     }
 
-    pub(crate) fn queue_depot_construction(&mut self, tile: TileId, nation: MajorNationId) {
+    pub(crate) fn queue_depot_construction(
+        &mut self,
+        tile: TileId,
+        nation: MajorNationId,
+        namings: &mut Vec<crate::PendingTownNaming>,
+    ) {
         if self.map[tile].flags.contains(TileFlags::PORT) {
             if let Some(town) = self.find_town_at_mut(nation, tile) {
                 town.active = true;
             }
         } else {
-            self.push_new_town(tile, nation, 0);
+            self.push_new_town(tile, nation, 0, namings);
             self.flood_fill_region_marker(tile, nation);
         }
         if !self.nations.major(nation).economy.diplomacy_eligible {
@@ -1314,13 +1342,18 @@ impl GameState {
         self.map[tile].flags.insert(TileFlags::DEPOT);
     }
 
-    pub(crate) fn queue_port_construction(&mut self, tile: TileId, nation: MajorNationId) {
+    pub(crate) fn queue_port_construction(
+        &mut self,
+        tile: TileId,
+        nation: MajorNationId,
+        namings: &mut Vec<crate::PendingTownNaming>,
+    ) {
         if self.map[tile].flags.contains(TileFlags::DEPOT) {
             if let Some(town) = self.find_town_at_mut(nation, tile) {
                 town.enabled = 1;
             }
         } else {
-            self.push_new_town(tile, nation, 1);
+            self.push_new_town(tile, nation, 1, namings);
             self.flood_fill_region_marker(tile, nation);
         }
         if !self.nations.major(nation).economy.diplomacy_eligible {
@@ -1330,7 +1363,13 @@ impl GameState {
         self.ensure_port_zone_for_tile(tile);
     }
 
-    fn push_new_town(&mut self, tile: TileId, nation: MajorNationId, enabled: u8) {
+    fn push_new_town(
+        &mut self,
+        tile: TileId,
+        nation: MajorNationId,
+        enabled: u8,
+        namings: &mut Vec<crate::PendingTownNaming>,
+    ) {
         let town = TownState::constructed(
             tile,
             nation.nation(),
@@ -1339,7 +1378,7 @@ impl GameState {
         );
         self.nations.major_mut(nation).towns.insert(tile, town);
         if self.nations.major(nation).auto.is_none() {
-            self.pending_town_namings.push((nation, tile));
+            namings.push(crate::PendingTownNaming { nation, tile });
         }
     }
 
@@ -1411,20 +1450,20 @@ impl GameState {
     }
 
     /// The next completed human depot/port awaiting the retail `TNewTownView`
-    /// naming interaction. AI-run nations enqueue nothing here.
-    pub fn pending_town_naming(&self) -> Option<(MajorNationId, TileId)> {
-        self.pending_town_namings.first().copied()
+    /// naming interaction.
+    pub fn pending_town_naming(&self) -> Option<crate::PendingTownNaming> {
+        match self.stop.as_ref() {
+            Some(crate::turn_flow::TurnStop::TownNaming { current, .. }) => Some(*current),
+            _ => None,
+        }
     }
 
     /// Retail `TNewTownView::StuffValues` computes raw resources when the naming
     /// view is actually presented, not when `TTown` is constructed.
-    pub fn prepare_pending_town_naming(&mut self) -> Option<(MajorNationId, TileId)> {
-        let (nation, tile) = match self.stop {
-            Some(crate::turn_flow::TurnStop::TownNaming { nation, tile }) => (nation, tile),
-            _ => self.pending_town_naming()?,
-        };
-        self.finish_new_town(tile, nation);
-        Some((nation, tile))
+    pub fn prepare_pending_town_naming(&mut self) -> Option<crate::PendingTownNaming> {
+        let naming = self.pending_town_naming()?;
+        self.finish_new_town(naming.tile, naming.nation);
+        Some(naming)
     }
 
     /// Retail `TTownNameDialog::DoPostCreate` selects one of eight STR# 7250 entries.
@@ -1433,32 +1472,25 @@ impl GameState {
         (self.rng.next_crt_rand() % 8 + 1) as u8
     }
 
-    /// Names the town of the active naming stop and consumes it. The stored
-    /// `{ nation, tile }` is authoritative; an empty name stays empty instead of
-    /// re-triggering the dialog.
-    pub fn name_pending_town(&mut self, name: String) -> bool {
-        let Some(crate::turn_flow::TurnStop::TownNaming { nation, tile }) = self.stop.take() else {
-            return false;
+    /// Names the town of the active naming stop and continues. An empty name stays
+    /// empty instead of re-triggering the dialog.
+    pub fn name_pending_town(&mut self, name: String) {
+        let Some(crate::turn_flow::TurnStop::TownNaming { current, remaining }) = self.stop.take()
+        else {
+            panic!("town naming requires an active town-naming stop");
         };
         let town = self
             .nations
-            .major_mut(nation)
+            .major_mut(current.nation)
             .towns
-            .get_mut(&tile)
+            .get_mut(&current.tile)
             .expect("naming stop retains its pending town");
         town.name = name;
-        let queued = self
-            .pending_town_namings
-            .first()
-            .copied()
-            .expect("naming stop retains its queued record");
-        assert_eq!(
-            queued,
-            (nation, tile),
-            "naming stop and naming queue disagree"
-        );
-        self.pending_town_namings.remove(0);
-        true
+        if remaining.is_empty() {
+            self.advance_turn();
+        } else {
+            self.halt_town_namings(remaining);
+        }
     }
 
     fn find_town_at_mut(&mut self, nation: MajorNationId, tile: TileId) -> Option<&mut TownState> {
@@ -2247,7 +2279,8 @@ mod tests {
             }
         }
 
-        state.do_civilians();
+        let namings = state.do_civilians();
+        assert!(state.halt_town_namings(namings));
 
         assert!(
             state.map[prospect_tile]
@@ -2287,27 +2320,34 @@ mod tests {
         );
         assert_eq!(
             state.pending_town_naming(),
-            Some((MajorNationId::new(0), depot_tile))
+            Some(crate::PendingTownNaming {
+                nation: MajorNationId::new(0),
+                tile: depot_tile,
+            })
         );
         assert!(matches!(
-            state.advance_turn(),
-            TurnStop::TownNaming { nation, tile }
-                if nation == MajorNationId::new(0) && tile == depot_tile
+            state.stop(),
+            TurnStop::TownNaming { current, remaining }
+                if current.nation == MajorNationId::new(0)
+                    && current.tile == depot_tile
+                    && remaining.as_slice()
+                        == [crate::PendingTownNaming {
+                            nation: MajorNationId::new(0),
+                            tile: port_tile,
+                        }]
         ));
-        assert!(state.name_pending_town("Depot Name".to_owned()));
+        state.name_pending_town("Depot Name".to_owned());
         assert_eq!(
             state.nations.major(MajorNationId::new(0)).towns[&depot_tile].name,
             "Depot Name"
         );
         assert_eq!(
             state.pending_town_naming(),
-            Some((MajorNationId::new(0), port_tile))
+            Some(crate::PendingTownNaming {
+                nation: MajorNationId::new(0),
+                tile: port_tile,
+            })
         );
-        assert!(matches!(
-            state.advance_turn(),
-            TurnStop::TownNaming { nation, tile }
-                if nation == MajorNationId::new(0) && tile == port_tile
-        ));
         assert!(
             matches!(
                 &state.ocean.zones[..],

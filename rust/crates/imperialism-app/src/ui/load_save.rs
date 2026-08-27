@@ -1181,7 +1181,7 @@ mod tests {
         let mut app = test_app(AppState::StrategicMap);
         let game = fixture_state();
         let directory = tempfile::tempdir().unwrap();
-        insert_game_session_world(app.world_mut(), game.clone());
+        insert_game_session_world(app.world_mut(), fixture_state());
         app.insert_resource(SaveDirectory(directory.path().to_owned()));
         app.insert_resource(LoadSaveRequest(LoadSaveMode::Save));
         app.world_mut()
@@ -1324,7 +1324,7 @@ mod tests {
     #[test]
     fn successful_load_replaces_the_session_and_enters_the_saved_phase() {
         let original = fixture_state();
-        let session = GameSession::new(original.clone());
+        let session = GameSession::new(fixture_state());
         let dir = tempfile::tempdir().unwrap();
         save_fixture(dir.path(), SaveSlot::Numbered(1), &session, "England");
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(1))).unwrap();
@@ -1340,7 +1340,7 @@ mod tests {
     #[test]
     fn save_helper_overwrites_an_existing_slot_file() {
         let original = fixture_state();
-        let session = GameSession::new(original.clone());
+        let session = GameSession::new(fixture_state());
         let dir = tempfile::tempdir().unwrap();
         save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "First");
         save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "Second");
@@ -1360,7 +1360,7 @@ mod tests {
     #[test]
     fn save_header_owners_compose_the_retail_satellite_preview() {
         let original = fixture_state();
-        let session = GameSession::new(original.clone());
+        let session = GameSession::new(fixture_state());
         let dir = tempfile::tempdir().unwrap();
         save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "Preview");
         let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
@@ -1392,7 +1392,7 @@ mod tests {
     #[test]
     fn in_game_load_inherits_the_live_session_rng() {
         let original = fixture_state();
-        let session = GameSession::new(original.clone());
+        let session = GameSession::new(fixture_state());
         let dir = tempfile::tempdir().unwrap();
         save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "England");
         let loaded = load_game_from_path(
@@ -1406,7 +1406,7 @@ mod tests {
     #[test]
     fn main_menu_load_uses_retail_startup_rng_context() {
         let original = fixture_state();
-        let session = GameSession::new(original.clone());
+        let session = GameSession::new(fixture_state());
         let dir = tempfile::tempdir().unwrap();
         save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "England");
         let loaded = load_game_from_path(

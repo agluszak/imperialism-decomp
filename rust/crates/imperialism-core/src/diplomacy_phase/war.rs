@@ -64,7 +64,7 @@ impl GameState {
         self.continue_war_reactions(pair.first, pair.second, 0)
     }
 
-    pub(super) fn continue_war_reactions(
+    pub(crate) fn continue_war_reactions(
         &mut self,
         first: NationId,
         second: NationId,
@@ -144,7 +144,7 @@ impl GameState {
         DiplomacyPhaseResult::Resolved
     }
 
-    pub(super) fn apply_war_join_decision(&mut self, prompt: DiplomacyWarJoinPrompt, accept: bool) {
+    pub(crate) fn apply_war_join_decision(&mut self, prompt: DiplomacyWarJoinPrompt, accept: bool) {
         let nation = prompt.nation.nation();
         match prompt.kind {
             DiplomacyWarJoinKind::DefendMinor if accept => {

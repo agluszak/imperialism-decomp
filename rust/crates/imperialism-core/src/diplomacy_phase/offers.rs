@@ -143,7 +143,7 @@ impl GameState {
         self.queue_wars_against_enemies_of(nation.nation(), source, None);
     }
 
-    pub(super) fn reply_to_diplomacy_offers_from(
+    pub(crate) fn reply_to_diplomacy_offers_from(
         &mut self,
         start_nation: u8,
         start_index: usize,
@@ -233,7 +233,7 @@ impl GameState {
         None
     }
 
-    pub(super) fn apply_human_offer_decision(
+    pub(crate) fn apply_human_offer_decision(
         &mut self,
         nation: MajorNationId,
         index: usize,

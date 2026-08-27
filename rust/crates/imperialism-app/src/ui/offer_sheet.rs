@@ -256,9 +256,9 @@ fn bind_offer_answer(commands: &mut Commands, button: Entity, accept: bool) {
             } else {
                 0
             };
-            match session.game.answer_trade_offer(amount, stop_buying) {
-                TurnStop::Trade(_) => {}
-                stop => apply_turn_stop(stop, &mut next_state),
+            session.game.answer_trade_offer(amount, stop_buying);
+            if !matches!(session.game.stop(), TurnStop::Trade(_)) {
+                apply_turn_stop(session.game.stop(), &mut next_state);
             }
         },
     );

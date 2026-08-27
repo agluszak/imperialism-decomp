@@ -74,7 +74,7 @@ pub(crate) fn retail_game_data(assets: &RetailAssetsResource) -> GameData {
 }
 
 /// Maps one core turn stop onto the matching Bevy screen.
-pub(crate) fn apply_turn_stop(stop: TurnStop, next_state: &mut NextState<AppState>) {
+pub(crate) fn apply_turn_stop(stop: &TurnStop, next_state: &mut NextState<AppState>) {
     match stop {
         TurnStop::PlayerOrders | TurnStop::TurnAlerts(_) => next_state.set(AppState::StrategicMap),
         TurnStop::TownNaming { .. } => next_state.set(AppState::TownNaming),

@@ -529,8 +529,8 @@ fn on_new_city_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let stop = confirm_capital_site(&mut session.game, dialog.0);
-    apply_turn_stop(stop, &mut next_state);
+    confirm_capital_site(&mut session.game, dialog.0);
+    apply_turn_stop(session.game.stop(), &mut next_state);
 }
 
 #[allow(clippy::too_many_arguments)]

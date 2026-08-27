@@ -95,8 +95,8 @@ fn on_technology_advance_activate(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    match session.game.acknowledge_technology_report() {
-        TurnStop::TechnologyReport(_) => {}
-        stop => apply_turn_stop(stop, &mut next_state),
+    session.game.acknowledge_technology_report();
+    if !matches!(session.game.stop(), TurnStop::TechnologyReport(_)) {
+        apply_turn_stop(session.game.stop(), &mut next_state);
     }
 }

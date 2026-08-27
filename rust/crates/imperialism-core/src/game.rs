@@ -21,7 +21,7 @@ impl GameData {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct GameState {
     pub(crate) turn: TurnState,
     pub(crate) unit_ids: UnitIdAllocator,
@@ -50,12 +50,6 @@ pub struct GameState {
     /// Included in semantic `GameState` serialization; not written to `.imp`.
     #[serde(default)]
     pub(crate) stop: Option<crate::turn_flow::TurnStop>,
-    /// Completed human depot/port namings awaiting the retail `TNewTownView`
-    /// interaction, in completion order. The active one is mirrored by
-    /// [`GameState::stop`]. Driver protocol state: a game can never reach a
-    /// saveable boundary with entries queued, so it is not serialized.
-    #[serde(skip)]
-    pub(crate) pending_town_namings: Vec<(MajorNationId, crate::TileId)>,
     /// Immutable catalogs for this session. Restored from retail data on load.
     #[serde(skip)]
     pub(crate) data: GameData,
@@ -86,8 +80,6 @@ pub struct GameStateParts {
     pub news: NewsState,
     pub pending: PendingWorkState,
     pub battle_reports: Vec<crate::BattleReport>,
-    pub stop: Option<crate::turn_flow::TurnStop>,
-    pub pending_town_namings: Vec<(MajorNationId, crate::TileId)>,
 }
 
 impl GameState {
@@ -114,8 +106,7 @@ impl GameState {
             news: parts.news,
             pending: parts.pending,
             battle_reports: parts.battle_reports,
-            stop: parts.stop,
-            pending_town_namings: parts.pending_town_namings,
+            stop: None,
             data: GameData::default(),
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
@@ -127,10 +118,23 @@ impl GameState {
         state
     }
 
-    /// The blocking interaction, if the turn driver is halted. Inspection does
-    /// not need to copy battle/trade resume payloads out of the state.
-    pub fn stop(&self) -> Option<&crate::turn_flow::TurnStop> {
-        self.stop.as_ref()
+    /// Why simulation is currently blocked. Externally observable games are halted.
+    pub fn stop(&self) -> &crate::turn_flow::TurnStop {
+        self.stop
+            .as_ref()
+            .expect("externally observable game must be halted")
+    }
+
+    /// Applies a captured runtime stop after assembling state from a retail save.
+    ///
+    /// `.imp` files never contain a stop. Oracle overlays and session entry points
+    /// restore it here rather than through [`GameStateParts`].
+    pub fn restore_captured_stop(&mut self, stop: Option<crate::turn_flow::TurnStop>) {
+        assert!(
+            self.stop.is_none(),
+            "captured stop restore requires a freshly assembled game"
+        );
+        self.stop = stop;
     }
 
     pub const fn game_data(&self) -> &GameData {

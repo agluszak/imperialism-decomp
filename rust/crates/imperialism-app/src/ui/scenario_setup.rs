@@ -243,8 +243,8 @@ fn on_start_scenario(
         1,
     );
     game.set_game_data(super::session::retail_game_data(&retail));
-    let stop = enter_strategic_map_without_capital_selection(&mut game, setup.nation);
-    apply_turn_stop(stop, &mut next_state);
+    enter_strategic_map_without_capital_selection(&mut game, setup.nation);
+    apply_turn_stop(game.stop(), &mut next_state);
     insert_game_session(&mut commands, game);
 }
 

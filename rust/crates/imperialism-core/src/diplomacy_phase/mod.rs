@@ -86,18 +86,18 @@ impl GameState {
     }
 
     fn record_diplomacy_result(&mut self, result: DiplomacyPhaseResult) -> DiplomacyPhaseResult {
-        self.stop = match result {
-            DiplomacyPhaseResult::Resolved => None,
+        match result {
+            DiplomacyPhaseResult::Resolved => {}
             DiplomacyPhaseResult::Offer(prompt) => {
-                Some(crate::turn_flow::TurnStop::DiplomacyOffer {
+                self.halt(crate::turn_flow::TurnStop::DiplomacyOffer {
                     nation: prompt.nation,
                     index: prompt.index,
                 })
             }
             DiplomacyPhaseResult::WarJoin(prompt) => {
-                Some(crate::turn_flow::TurnStop::DiplomacyWarJoin(prompt))
+                self.halt(crate::turn_flow::TurnStop::DiplomacyWarJoin(prompt))
             }
-        };
+        }
         result
     }
 

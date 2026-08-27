@@ -167,7 +167,7 @@ impl GameState {
         session.skip_empty_categories();
         let progress = self.continue_trade_deals(&mut session);
         if matches!(progress, TradeProgress::Offer(_)) {
-            self.stop = Some(crate::turn_flow::TurnStop::Trade(session));
+            self.halt(crate::turn_flow::TurnStop::Trade(session));
         }
         progress
     }
@@ -199,7 +199,7 @@ impl GameState {
         );
         let progress = self.continue_trade_deals(&mut session);
         if matches!(progress, TradeProgress::Offer(_)) {
-            self.stop = Some(crate::turn_flow::TurnStop::Trade(session));
+            self.halt(crate::turn_flow::TurnStop::Trade(session));
         }
         progress
     }

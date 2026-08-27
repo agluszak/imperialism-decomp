@@ -283,8 +283,8 @@ fn on_deal_book_close(
         next_state.set(return_state.0);
         return;
     }
-    let stop = session.game.close_turn_deal_book();
-    apply_turn_stop(stop, &mut next_state);
+    session.game.close_turn_deal_book();
+    apply_turn_stop(session.game.stop(), &mut next_state);
 }
 
 fn on_deal_book_history(_activate: On<Activate>, mut screens: Query<&mut DealBookScreen>) {

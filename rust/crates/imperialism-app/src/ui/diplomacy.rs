@@ -898,12 +898,12 @@ fn on_diplomacy_offer_activate(
     {
         return;
     }
-    let stop = if session.game.current_diplomacy_offer().is_some() {
-        session.game.answer_current_diplomacy_offer(accept)
+    if session.game.current_diplomacy_offer().is_some() {
+        session.game.answer_current_diplomacy_offer(accept);
     } else {
-        session.game.answer_current_diplomacy_war_join(accept)
-    };
-    match stop {
+        session.game.answer_current_diplomacy_war_join(accept);
+    }
+    match session.game.stop() {
         TurnStop::DiplomacyOffer { .. } => {
             let prompt = session
                 .game
@@ -2341,7 +2341,9 @@ mod tests {
                 Some(DiplomacyPolicy::Alliance);
         });
         let mut state = GameState::from_parts(parts);
-        let TurnStop::DiplomacyOffer { .. } = state.finish_player_orders(true) else {
+        state.resume_retail_save_on_strategic_map();
+        state.finish_player_orders(true);
+        let TurnStop::DiplomacyOffer { .. } = state.stop() else {
             panic!("alliance offer must stop for the diplomacy-offer dialog");
         };
         state
@@ -2373,7 +2375,9 @@ mod tests {
         }
         let mut state = GameState::from_parts(parts);
         state.set_country_status(minor, CountryStatus::Independent);
-        let TurnStop::DiplomacyWarJoin(_) = state.finish_player_orders(true) else {
+        state.resume_retail_save_on_strategic_map();
+        state.finish_player_orders(true);
+        let TurnStop::DiplomacyWarJoin(_) = state.stop() else {
             panic!("declare-war on the favorite's minor must stop for the war-join dialog");
         };
         state

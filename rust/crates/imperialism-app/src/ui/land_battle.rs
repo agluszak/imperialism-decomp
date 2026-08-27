@@ -269,7 +269,7 @@ struct LandBattleAnimationQueue {
 }
 
 #[derive(Component)]
-struct LandBattleDeferredStop(Option<TurnStop>);
+struct LandBattleDeferredStop;
 
 fn land_viewport(column_count: i32, origin_x: i32) -> TacticalViewport {
     TacticalViewport::land(column_count, origin_x)
@@ -1177,7 +1177,7 @@ fn animate_land_battle_actions(
         &mut LandBattlefield,
         &LandBattleVisuals,
         Option<&mut LandBattleAnimationQueue>,
-        Option<&mut LandBattleDeferredStop>,
+        Option<&LandBattleDeferredStop>,
     )>,
     mut next_state: ResMut<NextState<AppState>>,
     mut assets: RetailUiAssets,
@@ -1335,11 +1335,8 @@ fn animate_land_battle_actions(
             .remove::<LandBattleAnimationQueue>();
         return;
     }
-    if let Some(mut stop) = deferred {
-        apply_turn_stop(
-            stop.0.take().expect("deferred turn stop is consumed once"),
-            &mut next_state,
-        );
+    if deferred.is_some() {
+        apply_turn_stop(session.game.stop(), &mut next_state);
         commands
             .entity(field_entity)
             .remove::<LandBattleDeferredStop>();
@@ -1825,19 +1822,17 @@ fn queue_land_battle_progress(
     commands: &mut Commands,
     field: Entity,
     view: &mut LandBattlefield,
-    mut progress: ArmyBattleProgress,
+    progress: ArmyBattleProgress,
     next_state: &mut NextState<AppState>,
     game: &mut GameState,
     tactical_battles_enabled: bool,
 ) {
-    if progress.stop.is_some() {
-        progress.stop = Some(game.apply_land_battle_watch_policy(tactical_battles_enabled));
+    if progress.ended {
+        game.apply_land_battle_watch_policy(tactical_battles_enabled);
     }
     if progress.events.is_empty() {
-        if let Some(stop) = progress.stop
-            && !matches!(stop, TurnStop::LandBattle(_))
-        {
-            apply_turn_stop(stop, next_state);
+        if progress.ended && !matches!(game.stop(), TurnStop::LandBattle(_)) {
+            apply_turn_stop(game.stop(), next_state);
         }
         return;
     }
@@ -1846,12 +1841,8 @@ fn queue_land_battle_progress(
         events: progress.events,
         next: 0,
     });
-    if let Some(stop) = progress.stop
-        && !matches!(stop, TurnStop::LandBattle(_))
-    {
-        commands
-            .entity(field)
-            .insert(LandBattleDeferredStop(Some(stop)));
+    if progress.ended && !matches!(game.stop(), TurnStop::LandBattle(_)) {
+        commands.entity(field).insert(LandBattleDeferredStop);
     }
 }
 
@@ -2321,7 +2312,8 @@ mod tests {
         );
 
         let mut state = GameState::from_parts(parts);
-        assert!(matches!(state.advance_turn(), TurnStop::LandBattle(_)));
+        state.advance_turn();
+        assert!(matches!(state.stop(), TurnStop::LandBattle(_)));
         assert!(state.pending_land_battle().is_some());
         state
     }
@@ -2526,7 +2518,7 @@ mod tests {
     #[test]
     fn land_battle_projects_units_onto_retail_hex_anchors() {
         let state = two_land_battles_state();
-        let mut probe = state.clone();
+        let mut probe = two_land_battles_state();
         probe.ensure_army_battle();
         let expected: Vec<_> = probe
             .army_battle()
