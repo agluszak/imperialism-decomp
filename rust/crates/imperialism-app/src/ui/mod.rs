@@ -55,7 +55,6 @@ pub(crate) use deal_book::DealBookPlugin;
 pub(crate) use diplomacy::DiplomacyPlugin;
 pub(crate) use endgame::EndgamePlugin;
 pub(crate) use game_shell::GameShellPlugin;
-pub(crate) use strategic_map::StrategicMapPlugin;
 pub(crate) use land_battle::LandBattlePlugin;
 pub(crate) use load_save::{LoadSavePlugin, SaveDirectory};
 pub(crate) use main_menu::MainMenuPlugin;
@@ -74,6 +73,7 @@ pub(crate) use session::{
     BattleReportPresentation, CityWindows, GameSession, insert_game_session, insert_loaded_game,
     insert_loaded_game_world, remove_game_session, retail_game_data,
 };
+pub(crate) use strategic_map::StrategicMapPlugin;
 pub(crate) use strategic_map::StrategicMapSession;
 pub(crate) use technology::TechnologyAdvancePlugin;
 pub(crate) use technology_store::TechnologyStorePlugin;
