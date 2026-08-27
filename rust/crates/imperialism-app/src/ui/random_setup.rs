@@ -1,5 +1,5 @@
 use crate::ui::generated;
-use crate::ui::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts};
+use crate::ui::hover_help::bind_hover_help_texts;
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
@@ -179,7 +179,7 @@ fn bind_random_setup(
     bind_random_setup_controls(&mut commands, *root, &tree, &setup);
     bind_random_setup_labels(&mut commands, *root, &tree, &mut nodes, &mut assets);
     random_setup_map::attach_random_setup_meanings(&mut commands, *root, &tree);
-    bind_random_setup_hover_help(&mut commands, *root, &tree, &mut nodes, &mut assets);
+    bind_random_setup_hover_help(&mut commands, *root, &tree, &mut assets);
 }
 
 /// Attach screen meanings only; Bevy widget semantics come from generated components.
@@ -340,19 +340,9 @@ fn bind_random_setup_hover_help(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    nodes: &mut Query<&mut Node>,
     assets: &mut RetailUiAssets,
 ) {
-    let bar = tree.find(root, fourcc!("hot!"));
-    bind_hover_help_bar(
-        commands,
-        assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("random-setup hover-help bar has Node"),
-        HoverHelpBarStyle::RANDOM_SETUP,
-    );
+    // HoverHelpBar + recovered hot! style come from codegen / Windows deltas.
     let cancel = assets.ui_string(0x2737, 0x14);
     bind_hover_help_texts(
         commands,

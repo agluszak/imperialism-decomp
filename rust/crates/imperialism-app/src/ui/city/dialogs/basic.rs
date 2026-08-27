@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail::AmountBarParts;
 
 pub(in crate::ui::city) struct WarehouseUi {
     stocks: Vec<(Entity, ResourceKind)>,
@@ -61,9 +62,12 @@ pub(in crate::ui::city) fn bind_warehouse(
     if advanced_production_unlocked {
         let picture = PictureId::new(9215);
         let dialog = tree.find(root, fourcc!("DLOG"));
-        commands
-            .entity(dialog)
-            .insert(ImageNode::new(assets.picture(picture)));
+        match assets.try_picture(picture) {
+            Ok(handle) => {
+                commands.entity(dialog).insert(ImageNode::new(handle));
+            }
+            Err(error) => warn!("could not load Warehouse picture {picture}: {error}"),
+        }
         commands
             .entity(dialog)
             .entry::<Node>()
@@ -110,12 +114,14 @@ pub(in crate::ui::city) fn bind_food(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> FoodUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::FoodProcessing,
         CityOrderId::FoodProcessing,
         generated::FOOD_ORDER_TAG,
@@ -135,12 +141,14 @@ pub(in crate::ui::city) fn bind_power(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> RailUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::PowerPlant,
         CityOrderId::PowerPlant,
         generated::POWER_ORDER_TAG,
@@ -158,12 +166,14 @@ pub(in crate::ui::city) fn bind_transport(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> TransportUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::Transport,
         CityOrderId::TransportCapacity,
         generated::TRANSPORT_ORDER_TAG,
@@ -182,12 +192,14 @@ pub(in crate::ui::city) fn bind_population(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> PopulationUi {
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
+        amount_bars,
         CityFacilitySlot::RegionalPopulation,
         CityOrderId::PopulationGrowth,
         generated::POPULATION_ORDER_TAG,
@@ -232,7 +244,7 @@ pub(in crate::ui::city) fn render_food(
     ui: &mut CityUi,
 ) {
     let city = &session.game.nations().major(nation).city;
-    render_rail(session, nation, &view.rail, ui);
+    render_rail(session, nation, CityOrderId::FoodProcessing, &view.rail, ui);
     ui.visible(view.labor, city.population.strength() >= 2);
     ui.visible(view.grain, city.stockpile[ResourceKind::Grain] >= 2);
     ui.visible(view.fruit, city.stockpile[ResourceKind::Fruit] >= 1);
@@ -248,7 +260,7 @@ pub(in crate::ui::city) fn render_power(
     nation: MajorNationId,
     ui: &mut CityUi,
 ) {
-    render_rail(session, nation, view, ui);
+    render_rail(session, nation, CityOrderId::PowerPlant, view, ui);
 }
 
 pub(in crate::ui::city) fn render_transport(
@@ -258,7 +270,13 @@ pub(in crate::ui::city) fn render_transport(
     ui: &mut CityUi,
 ) {
     let city = &session.game.nations().major(nation).city;
-    render_rail(session, nation, &view.rail, ui);
+    render_rail(
+        session,
+        nation,
+        CityOrderId::TransportCapacity,
+        &view.rail,
+        ui,
+    );
     ui.visible(view.labor, city.population.strength() >= 2);
     ui.visible(view.lumber, city.stockpile[ResourceKind::Lumber] < 1);
     ui.visible(view.steel, city.stockpile[ResourceKind::Steel] < 1);
@@ -275,7 +293,13 @@ pub(in crate::ui::city) fn render_population(
     let city = &major.city;
     let capacity_template = city_text(assets, 0x10);
     let province_template = city_text(assets, 0x1d);
-    render_rail(session, nation, &view.rail, ui);
+    render_rail(
+        session,
+        nation,
+        CityOrderId::PopulationGrowth,
+        &view.rail,
+        ui,
+    );
     ui.visible(view.food, city.stockpile[ResourceKind::Food] >= 1);
     ui.visible(view.clothing, city.stockpile[ResourceKind::Clothing] >= 1);
     ui.visible(view.furniture, city.stockpile[ResourceKind::Furniture] >= 1);

@@ -1,13 +1,13 @@
 //! Right-hand navy command page (`unav` / `TNavyToolbarCluster`).
 
-use super::super::retail::{RetailTree, RetailUiAssets};
+use super::super::retail::{NumberedArrowParts, PlacardParts, RetailTree, RetailUiAssets};
 use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::spawn_navy_roster;
 use crate::AppState;
 use crate::ui::GameSession;
 use crate::ui::retail_resources::ShipTypeRetailResources;
 use bevy::prelude::*;
-use bevy::ui::{Checked, RelativeCursorPosition};
+use bevy::ui::Checked;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::{NavalAggression, NavyRosterKind, NavyToolbarClass};
 use imperialism_formats::*;
@@ -15,32 +15,36 @@ use imperialism_formats::*;
 const PAGE_TAG: FourCc = fourcc!("unav");
 const NAVY_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x90 as f32);
 const PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const ARROW_ATLAS: PictureId = PictureId::new(804);
-const TRANSPARENT_INDEX: u8 = 0x10;
+const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
+    (NavyToolbarClass::Class0, fourcc!("cls0")),
+    (NavyToolbarClass::Class1, fourcc!("cls1")),
+    (NavyToolbarClass::Class2, fourcc!("cls2")),
+    (NavyToolbarClass::Class3, fourcc!("cls3")),
+];
+const AGGRESSION_LEVELS: [NavalAggression; 3] = [
+    NavalAggression::Cautious,
+    NavalAggression::Balanced,
+    NavalAggression::Aggressive,
+];
 
-#[derive(Component)]
-pub(super) struct NavyToolbarPage;
+#[derive(Clone, Copy)]
+struct ArrowBinding {
+    root: Entity,
+    count: Entity,
+}
 
-#[derive(Component, Clone, Copy)]
-struct NavyClass(NavyToolbarClass);
-
-#[derive(Component)]
-struct NavyClassShip;
-
-#[derive(Component, Clone, Copy)]
-struct NavyClassArrow(NavyToolbarClass);
-
-#[derive(Component, Clone, Copy)]
-enum NavyCommand {
-    Defend,
-    Done,
-    Next,
-    Bomb,
-    Aggression(NavalAggression),
+#[derive(Clone, Copy)]
+struct NavyClassView {
+    ship_root: Entity,
+    ship_text: Entity,
+    arrow: ArrowBinding,
 }
 
 #[derive(Component)]
-struct NavyCountLabel;
+struct NavyToolbarView {
+    classes: [NavyClassView; 4],
+    aggression: [Entity; 3],
+}
 
 pub(crate) fn register(app: &mut App) {
     app.add_systems(
@@ -51,13 +55,68 @@ pub(crate) fn register(app: &mut App) {
 
 pub(crate) fn bind_navy_toolbar(
     commands: &mut Commands,
-    assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
+    arrow_parts: &Query<&NumberedArrowParts>,
+    ship_parts: &Query<&PlacardParts>,
 ) {
     let page = tree.find(root, PAGE_TAG);
+    let mut classes = [None; 4];
+    for (index, (class, tag)) in CLASS_TAGS.into_iter().enumerate() {
+        let cluster = tree.child(page, tag);
+        let ship = tree.child(cluster, fourcc!("ship"));
+        let PlacardParts { text: ship_text } =
+            *ship_parts.get(ship).expect("navy ship placard parts");
+        commands.entity(ship).insert(Visibility::Hidden);
+        let arrow = tree.child(cluster, fourcc!("arro"));
+        let NumberedArrowParts {
+            upper,
+            lower,
+            count,
+        } = *arrow_parts.get(arrow).expect("navy arrow parts");
+        classes[index] = Some(NavyClassView {
+            ship_root: ship,
+            ship_text,
+            arrow: ArrowBinding { root: arrow, count },
+        });
+        let class_capture = class;
+        commands.entity(arrow).insert(Visibility::Hidden);
+        commands.entity(upper).observe(
+            move |_: On<Activate>,
+                  mut session: ResMut<GameSession>,
+                  map: Res<StrategicMapSession>| {
+                let Some(force) = map.selection.navy_force() else {
+                    return;
+                };
+                session
+                    .game
+                    .select_task_force_toolbar_class(force, class_capture, true);
+            },
+        );
+        commands.entity(lower).observe(
+            move |_: On<Activate>,
+                  mut session: ResMut<GameSession>,
+                  map: Res<StrategicMapSession>| {
+                let Some(force) = map.selection.navy_force() else {
+                    return;
+                };
+                session
+                    .game
+                    .select_task_force_toolbar_class(force, class_capture, false);
+            },
+        );
+    }
+    let classes = classes.map(|row| row.expect("every navy class row is bound"));
+    let aggression = [
+        tree.child(page, fourcc!("agr0")),
+        tree.child(page, fourcc!("agr1")),
+        tree.child(page, fourcc!("agr2")),
+    ];
     commands.entity(page).insert((
-        NavyToolbarPage,
+        NavyToolbarView {
+            classes,
+            aggression,
+        },
         Node {
             position_type: PositionType::Absolute,
             left: Val::Px(PAGE_PARKED.x),
@@ -67,63 +126,79 @@ pub(crate) fn bind_navy_toolbar(
             ..default()
         },
     ));
-    let arrow_atlas = assets.keyed_picture(ARROW_ATLAS, TRANSPARENT_INDEX);
-    const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
-        (NavyToolbarClass::Class0, fourcc!("cls0")),
-        (NavyToolbarClass::Class1, fourcc!("cls1")),
-        (NavyToolbarClass::Class2, fourcc!("cls2")),
-        (NavyToolbarClass::Class3, fourcc!("cls3")),
-    ];
-    for (class, tag) in CLASS_TAGS {
-        let cluster = tree.child(page, tag);
-        commands.entity(cluster).insert(NavyClass(class));
-        let ship = tree.child(cluster, fourcc!("ship"));
-        commands
-            .entity(ship)
-            .insert((NavyClassShip, Visibility::Hidden));
-        let arrow = tree.child(cluster, fourcc!("arro"));
-        commands
-            .entity(arrow)
-            .insert((
-                NavyClassArrow(class),
-                ImageNode {
-                    image: arrow_atlas.clone(),
-                    rect: Some(Rect::from_corners(
-                        Vec2::new(10.0, 0.0),
-                        Vec2::new(21.0, 16.0),
-                    )),
-                    ..default()
-                },
-                RelativeCursorPosition::default(),
-                ActivateOnPress,
-                Visibility::Hidden,
-            ))
-            .observe(on_navy_class_arrow);
-        spawn_count_label(commands, arrow, assets);
-    }
-    for (tag, command) in [
-        (fourcc!("dfnd"), NavyCommand::Defend),
-        (fourcc!("done"), NavyCommand::Done),
-        (fourcc!("next"), NavyCommand::Next),
-        (fourcc!("bomb"), NavyCommand::Bomb),
-        (
-            fourcc!("agr0"),
-            NavyCommand::Aggression(NavalAggression::Cautious),
-        ),
-        (
-            fourcc!("agr1"),
-            NavyCommand::Aggression(NavalAggression::Balanced),
-        ),
-        (
-            fourcc!("agr2"),
-            NavyCommand::Aggression(NavalAggression::Aggressive),
-        ),
+    for (tag, level) in [
+        (fourcc!("agr0"), NavalAggression::Cautious),
+        (fourcc!("agr1"), NavalAggression::Balanced),
+        (fourcc!("agr2"), NavalAggression::Aggressive),
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert((command, ActivateOnPress))
-            .observe(on_navy_command);
+            .insert(ActivateOnPress)
+            .observe(
+                move |_: On<Activate>,
+                      mut session: ResMut<GameSession>,
+                      map: Res<StrategicMapSession>| {
+                    if let Some(force) = map.selection.navy_force() {
+                        session.game.set_task_force_aggression(force, level);
+                    }
+                },
+            );
     }
+    commands
+        .entity(tree.child(page, fourcc!("dfnd")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<Activate>,
+             mut session: ResMut<GameSession>,
+             mut map: ResMut<StrategicMapSession>| {
+                if let Some(force) = map.selection.navy_force() {
+                    session.game.drop_task_force_ships(force, false);
+                }
+                map.cycle_selection(&mut session.game);
+            },
+        );
+    commands
+        .entity(tree.child(page, fourcc!("done")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<Activate>,
+             mut session: ResMut<GameSession>,
+             mut map: ResMut<StrategicMapSession>| {
+                if let Some(force) = map.selection.navy_force() {
+                    session.game.drop_task_force_ships(force, true);
+                }
+                map.cycle_selection(&mut session.game);
+            },
+        );
+    commands
+        .entity(tree.child(page, fourcc!("next")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<Activate>,
+             mut session: ResMut<GameSession>,
+             mut map: ResMut<StrategicMapSession>| {
+                map.cycle_selection(&mut session.game);
+            },
+        );
+    commands
+        .entity(tree.child(page, fourcc!("bomb")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<Activate>,
+             keys: Res<ButtonInput<KeyCode>>,
+             mut commands: Commands,
+             map: Res<StrategicMapSession>| {
+                let roster =
+                    if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                        NavyRosterKind::Nation
+                    } else if let Some(force) = map.selection.navy_force() {
+                        NavyRosterKind::TaskForce(force)
+                    } else {
+                        return;
+                    };
+                spawn_navy_roster(&mut commands, roster);
+            },
+        );
 }
 
 pub(crate) fn navy_page_position(selection: StrategicSelection) -> Vec2 {
@@ -134,33 +209,19 @@ pub(crate) fn navy_page_position(selection: StrategicSelection) -> Vec2 {
     }
 }
 
-#[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn sync_navy_toolbar(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     mut assets: RetailUiAssets,
-    mut pages: Query<&mut Node, With<NavyToolbarPage>>,
-    mut ships: Query<
-        (&ChildOf, &mut ImageNode, &mut Visibility),
-        (With<NavyClassShip>, Without<NavyClassArrow>),
-    >,
-    mut arrows: Query<
-        (
-            Entity,
-            &NavyClassArrow,
-            &mut ImageNode,
-            &mut Visibility,
-            &ChildOf,
-        ),
-        Without<NavyClassShip>,
-    >,
-    mut counts: Query<(&ChildOf, &mut Text, &NavyCountLabel)>,
-    classes: Query<(Entity, &NavyClass)>,
+    mut pages: Query<(&mut Node, &NavyToolbarView)>,
+    mut images: Query<&mut ImageNode>,
+    mut visibility: Query<&mut Visibility>,
+    mut texts: Query<&mut Text>,
 ) {
     if !session.is_changed() && !map.is_changed() {
         return;
     }
-    let Ok(mut page) = pages.single_mut() else {
+    let Ok((mut page, view)) = pages.single_mut() else {
         return;
     };
     let position = navy_page_position(map.selection);
@@ -168,37 +229,29 @@ fn sync_navy_toolbar(
     page.top = Val::Px(position.y);
     let force = map.selection.navy_force();
     let toolbar = session.game.navy_toolbar_counts(force);
-    for (entity, class) in &classes {
-        let available = toolbar.available[class.0];
-        let selected = toolbar.selected[class.0];
+    for (index, (class, _)) in CLASS_TAGS.into_iter().enumerate() {
+        let available = toolbar.available[class];
+        let selected = toolbar.selected[class];
         let picture = session
             .game
-            .navy_toolbar_class_ship_type(class.0)
+            .navy_toolbar_class_ship_type(class)
             .map(|ship_type| ship_type.navy_toolbar_picture());
-        for (child_of, mut image, mut visibility) in &mut ships {
-            if child_of.parent() != entity {
-                continue;
+        let row = view.classes[index];
+        if available > 0 {
+            if let Some(picture_id) = picture {
+                images.get_mut(row.ship_root).expect("navy ship").image =
+                    assets.picture(picture_id);
             }
-            if available > 0 {
-                if let Some(picture_id) = picture {
-                    image.image = assets.picture(picture_id);
-                }
-                *visibility = Visibility::Visible;
-            } else {
-                *visibility = Visibility::Hidden;
-            }
-        }
-        for (arrow_entity, arrow, _, mut visibility, child_of) in &mut arrows {
-            if child_of.parent() != entity || arrow.0 != class.0 {
-                continue;
-            }
-            if available > 0 {
-                *visibility = Visibility::Visible;
-                set_count_text(arrow_entity, &mut counts, Some(i32::from(selected.max(0))));
-            } else {
-                *visibility = Visibility::Hidden;
-                set_count_text(arrow_entity, &mut counts, None);
-            }
+            *visibility.get_mut(row.ship_root).expect("navy ship") = Visibility::Visible;
+            *visibility.get_mut(row.arrow.root).expect("navy arrow") = Visibility::Visible;
+            texts.get_mut(row.ship_text).expect("navy ship text").0 = available.to_string();
+            texts.get_mut(row.arrow.count).expect("navy arrow count").0 =
+                selected.max(0).to_string();
+        } else {
+            *visibility.get_mut(row.ship_root).expect("navy ship") = Visibility::Hidden;
+            *visibility.get_mut(row.arrow.root).expect("navy arrow") = Visibility::Hidden;
+            texts.get_mut(row.ship_text).expect("navy ship text").0 = String::new();
+            texts.get_mut(row.arrow.count).expect("navy arrow count").0 = String::new();
         }
     }
 }
@@ -206,132 +259,24 @@ fn sync_navy_toolbar(
 fn sync_navy_aggression(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
-    radios: Query<(&NavyCommand, Entity)>,
+    pages: Query<&NavyToolbarView>,
     mut commands: Commands,
 ) {
     if !session.is_changed() && !map.is_changed() {
         return;
     }
+    let Ok(view) = pages.single() else {
+        return;
+    };
     let force = map.selection.navy_force();
     let aggression = force.and_then(|id| session.game.task_force(id).map(|f| f.aggression));
-    for (command, entity) in &radios {
-        if let NavyCommand::Aggression(level) = *command {
-            if aggression == Some(level) {
-                commands.entity(entity).insert(Checked);
-            } else {
-                commands.entity(entity).remove::<Checked>();
-            }
+    for (&entity, &level) in view.aggression.iter().zip(AGGRESSION_LEVELS.iter()) {
+        if aggression == Some(level) {
+            commands.entity(entity).insert(Checked);
+        } else {
+            commands.entity(entity).remove::<Checked>();
         }
     }
-}
-
-fn set_count_text(
-    parent: Entity,
-    counts: &mut Query<(&ChildOf, &mut Text, &NavyCountLabel)>,
-    value: Option<i32>,
-) {
-    for (child_of, mut text, _) in counts.iter_mut() {
-        if child_of.parent() == parent {
-            text.0 = value
-                .filter(|&count| count >= 0)
-                .map(|count| count.to_string())
-                .unwrap_or_default();
-        }
-    }
-}
-
-fn spawn_count_label(commands: &mut Commands, parent: Entity, assets: &mut RetailUiAssets) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(10, 1))
-        .expect("retail navy count text style");
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(7.0),
-            top: Val::Px(0.0),
-            width: Val::Px(11.0),
-            height: Val::Px(16.0),
-            ..default()
-        },
-        Text::new(""),
-        font,
-        layout,
-        line_height,
-        TextColor(assets.palette_color(0x28)),
-        Pickable::IGNORE,
-        NavyCountLabel,
-        ChildOf(parent),
-    ));
-}
-
-fn on_navy_command(
-    activate: On<Activate>,
-    commands_query: Query<&NavyCommand>,
-    keys: Res<ButtonInput<KeyCode>>,
-    mut commands: Commands,
-    mut session: ResMut<GameSession>,
-    mut map: ResMut<StrategicMapSession>,
-) {
-    let Ok(command) = commands_query.get(activate.entity) else {
-        return;
-    };
-    match *command {
-        NavyCommand::Aggression(level) => {
-            if let Some(force) = map.selection.navy_force() {
-                session.game.set_task_force_aggression(force, level);
-            }
-        }
-        NavyCommand::Defend => {
-            if let Some(force) = map.selection.navy_force() {
-                session.game.drop_task_force_ships(force, false);
-            }
-            map.cycle_selection(&mut session.game);
-        }
-        NavyCommand::Done => {
-            if let Some(force) = map.selection.navy_force() {
-                session.game.drop_task_force_ships(force, true);
-            }
-            map.cycle_selection(&mut session.game);
-        }
-        NavyCommand::Next => {
-            map.cycle_selection(&mut session.game);
-        }
-        NavyCommand::Bomb => {
-            let roster =
-                if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
-                    NavyRosterKind::Nation
-                } else if let Some(force) = map.selection.navy_force() {
-                    NavyRosterKind::TaskForce(force)
-                } else {
-                    return;
-                };
-            spawn_navy_roster(&mut commands, roster);
-        }
-    }
-}
-
-fn on_navy_class_arrow(
-    activate: On<Activate>,
-    arrows: Query<(&NavyClassArrow, &RelativeCursorPosition)>,
-    mut session: ResMut<GameSession>,
-    map: Res<StrategicMapSession>,
-) {
-    let Ok((arrow, cursor)) = arrows.get(activate.entity) else {
-        return;
-    };
-    let Some(force) = map.selection.navy_force() else {
-        return;
-    };
-    let Some(normalized) = cursor.normalized else {
-        return;
-    };
-    if normalized.y == 0.0 {
-        return;
-    }
-    // Top half 0x64 increment/select; bottom 0x65 decrement/deselect.
-    session
-        .game
-        .select_task_force_toolbar_class(force, arrow.0, normalized.y < 0.0);
 }
 
 #[cfg(test)]
@@ -410,18 +355,20 @@ mod tests {
             .insert_resource(GameSession::new(state))
             .add_systems(Update, sync_navy_aggression);
 
-        let agr0 = app
-            .world_mut()
-            .spawn(NavyCommand::Aggression(NavalAggression::Cautious))
-            .id();
-        let agr1 = app
-            .world_mut()
-            .spawn(NavyCommand::Aggression(NavalAggression::Balanced))
-            .id();
-        let agr2 = app
-            .world_mut()
-            .spawn(NavyCommand::Aggression(NavalAggression::Aggressive))
-            .id();
+        let agr0 = app.world_mut().spawn_empty().id();
+        let agr1 = app.world_mut().spawn_empty().id();
+        let agr2 = app.world_mut().spawn_empty().id();
+        app.world_mut().spawn(NavyToolbarView {
+            classes: [NavyClassView {
+                ship_root: Entity::PLACEHOLDER,
+                ship_text: Entity::PLACEHOLDER,
+                arrow: ArrowBinding {
+                    root: Entity::PLACEHOLDER,
+                    count: Entity::PLACEHOLDER,
+                },
+            }; 4],
+            aggression: [agr0, agr1, agr2],
+        });
         app.insert_resource(StrategicMapSession {
             selection: StrategicSelection::Navy {
                 zone: None,

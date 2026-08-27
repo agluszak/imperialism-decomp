@@ -11,7 +11,7 @@ use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
+use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::{
     CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
 };
@@ -390,7 +390,6 @@ fn bind_technology_modals(
     tree: RetailTree,
     mut assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
-    mut nodes: Query<&mut Node>,
 ) {
     for (root, history) in &histories {
         let view = tree.view(root);
@@ -410,14 +409,8 @@ fn bind_technology_modals(
             .entity(view.find(fourcc!("pict")))
             .insert(ImageNode::new(picture));
 
+        // ScrollArea / ScrollPosition / overflow come from codegen for TScrollView.
         let scroll = view.find(fourcc!("scvw"));
-        nodes
-            .get_mut(scroll)
-            .expect("technology-history scroll view")
-            .overflow = Overflow::scroll_y();
-        commands
-            .entity(scroll)
-            .insert((ScrollArea, Pickable::default()));
         let (body_font, body_layout, body_line_height, _) = assets
             .text_style(RetailTextStylePreset::explicit(1, 0, 12, -2))
             .expect("retail technology-history body style");

@@ -1,7 +1,7 @@
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::RetailTree;
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
-use imperialism_formats::{FourCc, RetailTextStylePreset};
+use imperialism_formats::FourCc;
 
 /// Hover-help string shown in the screen's info bar while this control is the cursor hit.
 ///
@@ -12,106 +12,16 @@ use imperialism_formats::{FourCc, RetailTextStylePreset};
 pub(crate) struct HoverHelpText(pub String);
 
 /// The retail `curs` / `hot!` info-bar control that displays hover-help text.
+///
+/// Attached by codegen for `TInfoBarText`; recovered text styles come from Windows deltas.
 #[derive(Component)]
 pub(crate) struct HoverHelpBar;
-
-#[derive(Clone, Copy)]
-pub(crate) struct HoverHelpBarStyle {
-    point_size: i32,
-    alignment: i32,
-    text_palette: u8,
-    shadow_palette: u8,
-}
-
-impl HoverHelpBarStyle {
-    /// `TViewMgr::HandleTurnEventDialogFactorySlotF8` restyles `curs` to 14pt theme `0x2b6c`
-    /// (palette `0x28`) with shadow theme `0x2b6b` (palette `0xd2`).
-    pub(crate) const MAIN_MENU: Self = Self {
-        point_size: 14,
-        alignment: 1,
-        text_palette: 0x28,
-        shadow_palette: 0xd2,
-    };
-
-    /// `TSetupRandomMapPicture::DoPostCreate` restyles `hot!` through
-    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c)`: 12pt, text palette `0xd2`,
-    /// shadow palette `0x28`.
-    pub(crate) const RANDOM_SETUP: Self = Self {
-        point_size: 12,
-        alignment: 1,
-        text_palette: 0xd2,
-        shadow_palette: 0x28,
-    };
-
-    /// `TCitySiteView::DoPostCreate` restyles `curs` through
-    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)`: 12pt right-aligned,
-    /// text palette `0x28`, shadow palette `0`.
-    pub(crate) const CITY_SITE: Self = Self {
-        point_size: 12,
-        alignment: -1,
-        text_palette: 0x28,
-        shadow_palette: 0,
-    };
-
-    /// `TTacticalBattleView::DoPostCreate` uses the same recovered 12pt right-aligned
-    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)` style.
-    pub(crate) const TACTICAL: Self = Self {
-        point_size: 12,
-        alignment: -1,
-        text_palette: 0x28,
-        shadow_palette: 0,
-    };
-
-    /// `TGamePreferencesPicture::DoPostCreate` restyles `curs` through
-    /// `InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67)`: 12pt, text palette `0x28`,
-    /// shadow palette `0`.
-    pub(crate) const PREFERENCES: Self = Self {
-        point_size: 12,
-        alignment: 1,
-        text_palette: 0x28,
-        shadow_palette: 0,
-    };
-}
 
 pub(crate) fn register_hover_help(app: &mut App) {
     app.add_systems(
         Update,
         (sync_hover_help_bar, sync_hover_help_accessible_labels),
     );
-}
-
-pub(crate) fn bind_hover_help_bar(
-    commands: &mut Commands,
-    assets: &mut RetailUiAssets,
-    bar: Entity,
-    node: &mut Node,
-    style: HoverHelpBarStyle,
-) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(
-            1,
-            0,
-            style.point_size,
-            style.alignment,
-        ))
-        .expect("retail hover-help bar text style");
-    let text_color = assets.palette_color(style.text_palette);
-    let shadow_color = assets.palette_color(style.shadow_palette);
-    commands.entity(bar).insert((
-        HoverHelpBar,
-        Text::new(""),
-        font,
-        layout,
-        line_height,
-        TextColor(text_color),
-        TextShadow {
-            offset: Vec2::new(1.0, 1.0),
-            color: shadow_color,
-        },
-    ));
-    node.flex_direction = FlexDirection::Column;
-    node.justify_content = JustifyContent::Center;
-    node.overflow = Overflow::clip();
 }
 
 pub(crate) fn bind_hover_help_texts(

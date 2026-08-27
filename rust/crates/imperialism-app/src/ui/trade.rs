@@ -3,9 +3,9 @@ use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::RetailTree;
+use super::retail::{AmountBarParts, AmountBarStyle, RetailTree};
 use super::retail_amount_bar::{
-    TRADE_AMOUNT_BAR, TRADE_BAR_FILL, amount_bar_x_from_normalized, trade_amount_bar_click_value,
+    amount_bar_geometry, amount_bar_x_from_normalized, trade_amount_bar_click_value,
 };
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
@@ -158,6 +158,7 @@ fn bind_trade_screen(
     mut commands: Commands,
     root: Single<Entity, Added<TradeScreen>>,
     tree: RetailTree,
+    amount_bars: Query<&AmountBarParts>,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
 ) {
@@ -184,7 +185,6 @@ fn bind_trade_screen(
         .text_style(RetailTextStylePreset::explicit(2, 0, 14, -1))
         .expect("retail Trade row text style");
     let text_color = assets.palette_color(0x13);
-    let gauge_color = assets.palette_color(TRADE_BAR_FILL);
     let rows = TRADE_ROW_TAGS.map(|commodity, tag| {
         let row = tree.find(root, tag);
         if !advanced && matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel) {
@@ -197,7 +197,7 @@ fn bind_trade_screen(
             commodity,
             &text_style,
             text_color,
-            gauge_color,
+            &amount_bars,
         )
     });
     commands.entity(root).insert(TradeView {
@@ -214,7 +214,7 @@ fn bind_trade_row(
     commodity: TradeCommodity,
     text_style: &(TextFont, TextLayout, LineHeight, bool),
     text_color: Color,
-    gauge_color: Color,
+    amount_bars: &Query<&AmountBarParts>,
 ) -> TradeRowView {
     commands.entity(row).insert(Pickable::IGNORE);
 
@@ -256,7 +256,6 @@ fn bind_trade_row(
             ) {
                 return;
             }
-            click.propagate(false);
             let capacity = session
                 .game
                 .nations()
@@ -267,7 +266,8 @@ fn bind_trade_row(
             if capacity <= 0 {
                 return;
             }
-            let geometry = TRADE_AMOUNT_BAR.with_segments(capacity);
+            click.propagate(false);
+            let geometry = amount_bar_geometry(AmountBarStyle::Trade, capacity);
             let x = amount_bar_x_from_normalized(geometry, position.x);
             let quantity = trade_amount_bar_click_value(geometry, x);
             if quantity == 0 {
@@ -283,23 +283,12 @@ fn bind_trade_row(
             );
         },
     );
-    let gauge_fill = commands
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(0),
-                top: px(0),
-                width: px(0),
-                height: percent(100),
-                ..default()
-            },
-            BackgroundColor(gauge_color),
-            Pickable::IGNORE,
-            ChildOf(gauge),
-        ))
-        .id();
     let price = spawn_trade_row_text(commands, row, 180.0, 58.0, text_style, text_color);
     let stock = spawn_trade_row_text(commands, row, 238.0, 62.0, text_style, text_color);
+    let gauge_fill = amount_bars
+        .get(gauge)
+        .expect("bound trade amount bar must exist")
+        .fill;
     TradeRowView {
         bid,
         offer,
@@ -441,10 +430,12 @@ fn render_trade(
         set_trade_visibility(&mut commands, row.quantity, selling);
         set_trade_visibility(&mut commands, row.offer_indicator, selling);
         set_trade_visibility(&mut commands, row.gauge, selling);
+        let fill_width =
+            f32::from(amount_bar_geometry(AmountBarStyle::Trade, capacity).span(quantity));
         nodes
             .get_mut(row.gauge_fill)
-            .expect("bound trade gauge fill must exist")
-            .width = px(TRADE_AMOUNT_BAR.with_segments(capacity).span(quantity));
+            .expect("bound trade amount bar fill")
+            .width = Val::Px(fill_width);
         texts
             .get_mut(row.price)
             .expect("bound trade price text must exist")
@@ -650,7 +641,14 @@ mod tests {
                 ChildOf(row),
             ));
             world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("bar ")), Node::default(), ChildOf(row)));
+            let fill = world.spawn(Node::default()).id();
+            let limit = world.spawn(Node::default()).id();
+            world.spawn((
+                RetailTag(fourcc!("bar ")),
+                Node::default(),
+                AmountBarParts { fill, limit },
+                ChildOf(row),
+            ));
         }
         root
     }
@@ -659,6 +657,7 @@ mod tests {
         mut commands: Commands,
         root: Single<Entity, Added<TestTradeRoot>>,
         tree: RetailTree,
+        amount_bars: Query<&AmountBarParts>,
         session: Res<GameSession>,
     ) {
         let capacity = tree.find(*root, fourcc!("mCap"));
@@ -682,7 +681,7 @@ mod tests {
                 commodity,
                 &text_style,
                 Color::BLACK,
-                Color::WHITE,
+                &amount_bars,
             )
         });
         commands.entity(*root).insert(TradeView {

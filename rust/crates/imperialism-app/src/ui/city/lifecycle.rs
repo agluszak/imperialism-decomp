@@ -1,4 +1,5 @@
 use super::*;
+use crate::ui::retail::AmountBarParts;
 
 #[derive(Component)]
 pub(in crate::ui::city) struct CityBuildingDialog {
@@ -67,6 +68,7 @@ pub(in crate::ui::city) fn bind_city_dialogs(
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
     windows: Query<(), With<CaptionedWindow>>,
     tree: RetailTree,
+    amount_bars: Query<&AmountBarParts>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
@@ -87,13 +89,18 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                 &mut assets,
                 root,
                 &tree,
+                &amount_bars,
                 dialog.slot,
             ))
         } else {
             match dialog.slot {
-                CityFacilitySlot::TradeSchool => {
-                    CityDialogView::Training(bind_training(&mut commands, &assets, root, &tree))
-                }
+                CityFacilitySlot::TradeSchool => CityDialogView::Training(bind_training(
+                    &mut commands,
+                    &assets,
+                    root,
+                    &tree,
+                    &amount_bars,
+                )),
                 CityFacilitySlot::Armory => CityDialogView::Armory(bind_armory(
                     &mut commands,
                     &mut assets,
@@ -122,20 +129,29 @@ pub(in crate::ui::city) fn bind_city_dialogs(
                     &tree,
                     &session.game,
                 )),
-                CityFacilitySlot::FoodProcessing => {
-                    CityDialogView::Food(bind_food(&mut commands, &mut assets, root, &tree))
-                }
-                CityFacilitySlot::PowerPlant => {
-                    CityDialogView::Power(bind_power(&mut commands, &mut assets, root, &tree))
-                }
+                CityFacilitySlot::FoodProcessing => CityDialogView::Food(bind_food(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                    &amount_bars,
+                )),
+                CityFacilitySlot::PowerPlant => CityDialogView::Power(bind_power(
+                    &mut commands,
+                    &mut assets,
+                    root,
+                    &tree,
+                    &amount_bars,
+                )),
                 CityFacilitySlot::Transport => CityDialogView::Transport(bind_transport(
                     &mut commands,
                     &mut assets,
                     root,
                     &tree,
+                    &amount_bars,
                 )),
                 CityFacilitySlot::RegionalPopulation => CityDialogView::Population(
-                    bind_population(&mut commands, &mut assets, root, &tree),
+                    bind_population(&mut commands, &mut assets, root, &tree, &amount_bars),
                 ),
                 _ => unreachable!("ordinary industry is classified by ExpandableFacility"),
             }

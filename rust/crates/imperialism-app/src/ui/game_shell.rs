@@ -6,13 +6,11 @@ use crate::ui::GameSession;
 use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts,
-};
+use crate::ui::hover_help::{HoverHelpText, bind_hover_help_texts};
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
 use crate::ui::query_floater::bind_query_floater_control;
-use crate::ui::retail::{RetailPictureSwap, RetailPressedOverlay, RetailTree};
+use crate::ui::retail::{RetailPictureSwap, RetailTree};
 use crate::ui::strategic_map::{
     MapAction, MapEdges, StrategicMapSession, StrategicSelection, StrategicView,
     animate_civilian_work, animate_strategic_selection, bind_army_toolbar, bind_civilian_toolbar,
@@ -154,11 +152,11 @@ fn bind_strategic_map(
     mut commands: Commands,
     root: Single<Entity, Added<StrategicMapRoot>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
-    mut pictures: Query<&mut ImageNode>,
     mut assets: RetailUiAssets,
     mut session: ResMut<GameSession>,
     map: Res<StrategicMapSession>,
+    arrow_parts: Query<&super::retail::NumberedArrowParts>,
+    placard_parts: Query<&super::retail::PlacardParts>,
 ) {
     bind_native_game_screen_nav(&mut commands, *root, &tree, fourcc!("tool"), None, true);
     bind_strategic_map_management_pictures(&mut commands, &mut assets, *root, &tree);
@@ -168,18 +166,9 @@ fn bind_strategic_map(
         .remove::<InteractionDisabled>()
         .observe(on_end_turn);
     let flag = tree.find(*root, fourcc!("Flag"));
-    bind_pressed_overlay(&mut commands, &mut pictures, flag);
     bind_open_flag_menu(&mut commands, flag);
-    bind_pressed_overlay(
-        &mut commands,
-        &mut pictures,
-        tree.find(*root, fourcc!("quer")),
-    );
-    bind_pressed_overlay(
-        &mut commands,
-        &mut pictures,
-        tree.find(*root, fourcc!("ZmOt")),
-    );
+    // `quer` is enabled by `bind_native_game_screen_nav` / query floater binding.
+    // Generated `TPictureButton` already carries `RetailPressedOverlay`.
     super::technology_store::bind_open_control(&mut commands, tree.find(*root, fourcc!("mmap")));
     commands
         .entity(tree.find(*root, fourcc!("send")))
@@ -210,26 +199,10 @@ fn bind_strategic_map(
         map.view.detailed_origin(&session.game),
     );
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_army_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_navy_toolbar(&mut commands, &mut assets, *root, &tree);
+    bind_army_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
+    bind_navy_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
-    bind_strategic_hover(&mut commands, &mut assets, *root, &tree, &mut nodes);
-}
-
-fn bind_pressed_overlay(
-    commands: &mut Commands,
-    pictures: &mut Query<&mut ImageNode>,
-    entity: Entity,
-) {
-    commands
-        .entity(entity)
-        .insert(RetailPressedOverlay)
-        .remove::<InteractionDisabled>();
-    pictures
-        .get_mut(entity)
-        .expect("retail picture button has an image")
-        .color
-        .set_alpha(0.0);
+    bind_strategic_hover(&mut commands, &mut assets, *root, &tree);
 }
 
 fn on_end_turn(
@@ -262,18 +235,8 @@ fn bind_strategic_hover(
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-    nodes: &mut Query<&mut Node>,
 ) {
-    let bar = tree.find(root, fourcc!("curs"));
-    bind_hover_help_bar(
-        commands,
-        assets,
-        bar,
-        &mut nodes
-            .get_mut(bar)
-            .expect("strategic hover-help bar has Node"),
-        HoverHelpBarStyle::CITY_SITE,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     let civilian_seas = format!(
         "{}, {}",
         assets.get_string(0x2730, 0x12),
@@ -291,6 +254,7 @@ fn bind_strategic_hover(
     commands
         .entity(tree.find(root, fourcc!("ZmOt")))
         .insert(ActivateOnPress)
+        .remove::<InteractionDisabled>()
         .observe(on_ocean_toggle);
 }
 

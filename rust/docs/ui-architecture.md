@@ -63,7 +63,7 @@ struct TradeRowView {
     decrease: Entity,
     increase: Entity,
     quantity: Entity,
-    gauge_fill: Entity,
+    gauge: Entity,
 }
 ```
 
@@ -130,9 +130,56 @@ If a fixed control's semantic argument is known at binding and only its handler 
 capture it (for example a trade card captures its `TradeCommodity` and `TradeCardKind`). Store it as
 a component only when other independent systems need to query it.
 
-Reusable autonomous presentation components such as `RetailPictureSwap` remain appropriate. The
-criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket
-ban on leaf components.
+Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPressedOverlay`,
+`RetailMadnessPicture`, and `RetailTwoPicSliderVisual` remain appropriate when they own interactive
+skin or widget-local operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`,
+`Checkbox`, `RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a skin
+or a genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
+
+Recovered hierarchical retail widgets are structure-only BSN Parts
+(`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `TransportGaugeParts`).
+They spawn private children atomically with the scene. They are not a port of the C++
+class hierarchy and must not carry `FooValue` projection components or `FooValue`→
+`draw_foo` PostUpdate systems for passive displays. Coarse screen/dialog renderers write
+`Text`, `Node`, `Visibility`, `ImageNode`, and `BackgroundColor` directly (pure helpers
+such as `transport_gauge_width` / `placard_text_layout` / `amount_bar_geometry` are fine).
+Root semantic views may retain private child entity handles resolved at bind time—
+including synthetic render children. Encapsulation is not valuable enough to justify
+another runtime state-and-system layer. Custom ECS state belongs only to interactive
+widget operation (press, checked, slider value), not to passive caption/fill mirrors of
+gameplay.
+
+Map each recovered class to the smallest Bevy mechanism that preserves observable
+behavior: stock widget + retail skin when possible; a plain scene helper plus Parts when
+the hierarchy must be shared with generated screens; handwritten binder observers for
+domain clicks. Use plain BSN scene fragments by default. Add a Parts component when
+consumers need stable child addresses. Use `SceneComponent` only when existence of a
+component must intrinsically guarantee an autonomous associated scene/lifecycle. Do not
+invent a Rust type per recovered C++ class.
+
+When recovered class identity is known while generating a static resource scene, the generator
+emits the Bevy structure directly (amount-bar fill/limit children, placard captions, transport
+gauge overlays, …) or attaches a small scene helper when intrinsic behavior must live in Rust
+(`retail_numbered_arrow()`, `retail_two_pic_slider(...)`, `retail_pressed_overlay_picture(...)`,
+`retail_madness_picture(...)`, …). `apply_scene` is for runtime/dynamic composition only—not for
+binders to rediscover and patch recovered class semantics onto already-generated nodes.
+
+The three-way ownership split for recovered controls is:
+
+```text
+recovered CLASS evidence   -> smallest Bevy mechanism (stock widget, scene helper, pure fn, …)
+recovered INSTANCE facts   -> generated scene (hierarchy, layout, initial widget attachment)
+game / screen semantics    -> handwritten binder (FourCC find, domain observers, root view refs)
+```
+
+Split input behavior from presentation in the generator when a class has both (for example
+`TTwoPicSlider` → stock `Slider` + retained lower-clip / Off presentation). Do not invent a
+generic widget framework (`RetailWidget<T>`, `Binding<T>`, lenses); port concrete recovered
+reusable behavior only. Custom widgets must not know `GameSession`, domain IDs, or FourCC
+application meaning. When a widget consumes a pointer event, stop propagation.
+
+Do not create custom ECS state merely to represent a value that the coarse renderer could write
+directly to final Bevy presentation components.
 
 ## Rendering
 
@@ -167,9 +214,22 @@ root knows its default and cancel controls. Each is established once at binding:
 keyboard, and activation events propagate to those observers, whose closures capture the invariant
 targets.
 
-Generated BSN remains the structure mechanism for recovered screens. `SceneComponent` may be used
-for a genuinely reusable semantic widget authored by this project, but recovered screens do not get
-a second handcrafted scene merely to wrap their generated hierarchy.
+Generated BSN remains the structure mechanism for recovered screens. Use plain BSN scene fragments
+by default. Add a Parts component when consumers need stable child addresses. Use `SceneComponent`
+only when existence of a component must intrinsically guarantee an autonomous associated
+scene/lifecycle. Recovered screens do not get a second handcrafted scene merely to wrap their
+generated hierarchy.
+
+### Out-of-frame retail drawing vs Bevy clipping
+
+Retail controls sometimes paint outside their nominal frame (for example `TNumberedArrowButton`
+draws its count to the right of an 11×41 hit box, and some placard captions use a QuickDraw
+baseline that is not a Bevy child top-left). Generated `retail_node` defaults to
+`Overflow::clip()`. Do not model that as “widen the clickable `Node` so a clipped child fits.”
+Keep the recovered hit / layout frame for input, convert QuickDraw baselines with retail font
+metrics when placing Bevy text boxes, and explicitly opt the self-drawn overlay out of the parent
+clip (`Overflow::visible()` on the widget root, or an unclipped overlay) when retail really paints
+beyond its extent.
 
 ## Tests
 
@@ -200,10 +260,10 @@ UI changes must preserve these rules:
    `Entity` is the runtime address. There is no additional application UI identity namespace.
 5. FourCC lookup and recovered-tree traversal stop after binding a newly spawned scene. Normal
    behavior and rendering do not rediscover static controls.
-6. A screen or dialog root retains only the addresses and semantic state that must survive binding
-   in one semantic view. It does not cache presentation facts already owned by addressed entities or
-   identities already expressed by typed table keys. Nested row and control structures are normally
-   plain Rust structs.
+6. A screen or dialog root retains the addresses and semantic state that must survive binding
+   in one semantic view—including synthetic/private render children the coarse renderer needs.
+   It does not cache presentation facts already owned by addressed entities or identities already
+   expressed by typed table keys. Nested row and control structures are normally plain Rust structs.
 7. Bind-time constants needed only by an event handler are captured in that observer's closure, not
    stored as components. Store a leaf component only when other independent systems need to query
    it, or it describes genuinely first-class behavior or relationship.

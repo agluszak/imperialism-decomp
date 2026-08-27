@@ -2,6 +2,25 @@
 # Post-create presentation changes made by the recovered Windows controllers.
 # Text-style patches and controller-induced geometry deltas live here. Mac View
 # IR still owns resource hierarchy and the baseline rectangles.
+
+# TTwoPicSlider picture base, value scale, and Off caption are Windows DoPostCreate
+# facts, not Mac resource fields.
+two_pic_slider_instances:
+  - view: Linger.rsrc:4150
+    node: 0x026a
+    tag: musi
+    picture_base: 0x1036
+    scale: 0xFF
+    off_string: {group: 0x2743, index: 0x3C}
+    evidence: TGamePreferencesPicture::DoPostCreate at 0x0056a5b0 calls InitializePictureSurfaces(0x1036), scales preferenceValues[3] by 0xff, and loads the Off caption string
+  - view: Linger.rsrc:4150
+    node: 0x01ff
+    tag: soun
+    picture_base: 0x1038
+    scale: 100
+    off_string: {group: 0x2743, index: 0x3C}
+    evidence: TGamePreferencesPicture::DoPostCreate at 0x0056a5b0 calls InitializePictureSurfaces(0x1038), scales preferenceValues[2] by 100, and loads the Off caption string
+
 node_property_patches:
   - view: Startup.rsrc:1501
     node: 0x0247
@@ -401,7 +420,7 @@ node_property_patches:
   - {view: FlagView.rsrc:8500, node: 0x06bb, tag: noof, properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: -2, color_index: 0xd2}}, evidence: "TOfferDeskPicture::PoseOfferSheet at 0x005bea00 reuses the 0xc Build style on noof and sets alignment -2"}
   - {view: FlagView.rsrc:8500, node: 0x02e3, tag: mCap, properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 1}}, evidence: "TOfferDeskPicture::PoseOfferSheet at 0x005bea00 installs BuildUiTextStyleDescriptor(..., 0, 0xe, 0x2b67) on mCap and centers it; 0x2b67 maps to black"}
   - {view: FlagView.rsrc:8500, node: 0x0370, tag: purc, properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 1}}, evidence: "TOfferDeskPicture::PoseOfferSheet at 0x005bea00 installs BuildUiTextStyleDescriptor(..., 0, 0xe, 0x2b67) on the purc number control and centers it"}
-  - {view: FlagView.rsrc:8500, node: 0x0855, tag: info, properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0xd2, shadow_color_index: 0x28, shadow_offset: [-1, -1]}}, evidence: "TOfferDeskPicture at 0x005bea00 applies ApplyUiTextStyleAndThemeFlags(info, 0, 0xc, 0x2b6c, 0x2b6b); GetColor maps text theme 0x2b6b to palette 0xd2 and shadow theme 0x2b6c to palette 0x28"}
+  - {view: FlagView.rsrc:8500, node: 0x0855, tag: info, properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0xd2, shadow_color_index: 0x28, shadow_offset: [-1, -1], resource_file: Strings.rsrc, resource_id: 0x2740, resource_index: 10}}, evidence: "TOfferDeskPicture at 0x005bea00 applies ApplyUiTextStyleAndThemeFlags(info, 0, 0xc, 0x2b6c, 0x2b6b); GetColor maps text theme 0x2b6b to palette 0xd2 and shadow theme 0x2b6c to palette 0x28; caption from STR# 0x2740 index 10 (GetString offset 9)"}
 
   # TBattleReportView::DoPostCreate installs BuildUiTextStyleDescriptor styles on
   # the report fields; the C++ never restyles their (default left) alignment.
@@ -415,6 +434,17 @@ node_property_patches:
 # Child controls created by recovered Windows post-create code after the Mac
 # resource tree is loaded. Each row is a complete semantic node patch; the
 # generator has no screen- or widget-specific child construction rules.
+
+  # Hover-help bars (TInfoBarText): recovered InitializeMapHintTextStyleAndThemeFlags /
+  # HandleTurnEventDialogFactorySlotF8 styles used by bind-time HoverHelpBarStyle.
+  - {view: Startup.rsrc:1500, node: 0x02c5, tag: curs, properties: {text: &hover_help_main_menu {font_family: 1, face_flags: 0, point_size: 14, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [1, 1]}}, evidence: &hover_help_main_menu_evidence "TViewMgr::HandleTurnEventDialogFactorySlotF8 restyles curs to 14pt theme 0x2b6c (palette 0x28) with shadow theme 0x2b6b (palette 0xd2)"}
+  - {view: FlagView.rsrc:8500, node: 0x0d80, tag: curs, properties: {text: *hover_help_main_menu}, evidence: *hover_help_main_menu_evidence}
+  - {view: Startup.rsrc:1501, node: 0x00f4, tag: "hot!", properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0xd2, shadow_color_index: 0x28, shadow_offset: [1, 1]}}, evidence: "TSetupRandomMapPicture::DoPostCreate restyles hot! through InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c): 12pt, text palette 0xd2, shadow palette 0x28"}
+  - {view: Startup.rsrc:952, node: 0x02ff, tag: curs, properties: {text: &hover_help_city_site {font_family: 1, face_flags: 0, point_size: 12, alignment: -1, color_index: 0x28, shadow_color_index: 0, shadow_offset: [1, 1]}}, evidence: &hover_help_city_site_evidence "TCitySiteView::DoPostCreate restyles curs through InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67): 12pt right-aligned, text palette 0x28, shadow palette 0"}
+  - {view: Tactical.rsrc:3800, node: 0x00f0, tag: curs, properties: {text: *hover_help_city_site}, evidence: "TTacticalBattleView::DoPostCreate uses the recovered 12pt right-aligned InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67) style"}
+  - {view: MapView.rsrc:2013, node: 0x1efd, tag: curs, properties: {text: *hover_help_city_site}, evidence: *hover_help_city_site_evidence}
+  - {view: Linger.rsrc:4150, node: 0x0994, tag: curs, properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0, shadow_offset: [1, 1]}}, evidence: "TGamePreferencesPicture::DoPostCreate restyles curs through InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67): 12pt, text palette 0x28, shadow palette 0"}
+
 windows_child_nodes:
   - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam0, class: TDeluxeText, geometry: [44, 19, 70, 25], family: &diplomacy_map_key_text {text: {resource_id: 0, resource_index: -1, source: g_szEmptyString, mode: 3, flags: 0, point_size: 10, theme: 0, color_index: 0xd2, shadow_color_index: 0x13, shadow_offset: [1, 1], center_vertically: true}}, evidence: &diplomacy_map_key_evidence TMapKey::DoPostCreate at 0x004fcac0 creates nam0 through nam6 under mkey from the recovered legend coordinate tables}
   - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam1, class: TDeluxeText, geometry: [44, 44, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}

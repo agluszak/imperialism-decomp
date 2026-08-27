@@ -1,9 +1,7 @@
 use super::RetailUiAssets;
 use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use super::generated;
-use super::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts,
-};
+use super::hover_help::{HoverHelpText, bind_hover_help_texts};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
 use super::retail_palette::view_mgr_color;
@@ -370,20 +368,10 @@ fn bind_land_battle(
     mut commands: Commands,
     root: Single<Entity, Added<LandBattleRoot>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
     bind_land_battle_controls(&mut commands, *root, &tree);
-    let curs = tree.find(*root, fourcc!("curs"));
-    bind_hover_help_bar(
-        &mut commands,
-        &mut assets,
-        curs,
-        &mut nodes
-            .get_mut(curs)
-            .expect("tactical hover-help bar has Node"),
-        HoverHelpBarStyle::TACTICAL,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         &mut commands,
         *root,
