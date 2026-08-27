@@ -442,7 +442,7 @@ fn colony_annex_clears_boycotted_companies_and_deports_civilians() {
     state.map.provinces[ProvinceId::new(0)] = province(target, &[], &[20]);
     state.map[TileId::new(20)].secondary_owner_nation = Some(major(1));
     state.nations.majors[&source].economy.colony_boycott_flags[nation(1)] = 1;
-    state.civilian_units.insert(
+    state.insert_civilian_unit(
         CivilianUnitId::new(1),
         CivilianUnitState::new(
             nation(1),

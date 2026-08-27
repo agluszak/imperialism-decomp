@@ -445,12 +445,9 @@ impl GameState {
                         .common
                         .home_tile
                         .expect("foreign developer requires its owner's home town");
-                    self.civilian_units
-                        .get_mut(&id)
-                        .expect("civilian remained present")
-                        .location = crate::CivilianLocation::OnMap(home);
+                    self.move_civilian_to(id, home);
                 } else {
-                    self.civilian_units.shift_remove(&id);
+                    self.remove_civilian_unit(id);
                 }
             }
         }
@@ -476,9 +473,9 @@ impl GameState {
                         .get_mut(&id)
                         .expect("civilian remained present");
                     unit.order = crate::CivilianWorkOrder::Idle;
-                    unit.location = crate::CivilianLocation::OnMap(destination);
+                    self.move_civilian_to(id, destination);
                 } else {
-                    self.civilian_units.shift_remove(&id);
+                    self.remove_civilian_unit(id);
                 }
             }
         }
@@ -758,7 +755,7 @@ mod tests {
         destination.economy.pending_actions
             [crate::PendingActionKind::ConqueredCapitalArmoryUpgrade] =
             crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
-        state.civilian_units.insert(
+        state.insert_civilian_unit(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
                 NationId::new(0),
@@ -826,7 +823,7 @@ mod tests {
         state.map[TileId::new(20)].secondary_owner_nation = Some(MajorNationId::new(2));
         set_owned(&mut state, NationId::new(1), &[]);
         state.map[TileId::new(1)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(2)));
-        state.civilian_units.insert(
+        state.insert_civilian_unit(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
                 NationId::new(2),
@@ -1008,7 +1005,7 @@ mod tests {
         state.map.provinces[ProvinceId::new(2)].linked_tiles = vec![TileId::new(20)];
         state.map[TileId::new(20)].province = Some(ProvinceId::new(2));
         state.map[TileId::new(20)].owner_nation = Some(TileOwnerTag::from_nation(NationId::new(0)));
-        state.civilian_units.insert(
+        state.insert_civilian_unit(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
                 NationId::new(0),

@@ -988,7 +988,7 @@ fn map_dto(map: &MapMgr, view_origin: TileId) -> LegacyMapState {
     LegacyMapState {
         view_origin_tile: view_origin.get() as i16,
         map_data_ready: u8::from(map.map_data_ready),
-        recruit_search_active: u8::from(map.recruit_search_active),
+        recruit_search_active: 0,
         city_score_total: map.city_score_total,
         scenario_tag: map.scenario_tag.clone(),
         no_horizontal_wrap: u8::from(!map.topology.wraps_horizontally()),
@@ -1027,7 +1027,7 @@ fn tile_dto(tile: &TileState) -> LegacyTerrainTile {
         development_classes: (tile.development.surface.get()
             | (tile.development.extractive.get() << 4)) as i8,
         pending_development_visibility: visibility,
-        recruit_search_visited: tile.recruit_search_visited,
+        recruit_search_visited: 0,
         per_tile_visited: tile.per_tile_visited,
         // The map dialog owns this transient sprite-atlas slot and resets every tile to
         // the retail sentinel when it builds the loaded map.

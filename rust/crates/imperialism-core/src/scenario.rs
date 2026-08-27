@@ -192,7 +192,6 @@ impl GameState {
                         owner_nation: owner,
                         roster_id: 0,
                         registered: false,
-                        next_on_tile: None,
                     },
                 );
             }

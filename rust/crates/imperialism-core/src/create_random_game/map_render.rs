@@ -14,7 +14,6 @@ pub(super) fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
         water_adjacency_mask: 0,
         province: tile.province,
         gate: tile.gate.map_or(-1, |gate| gate.code()),
-        recruit_search_visited: 0,
         per_tile_visited: 0,
         tile_action_ordinal: -1,
         development: Default::default(),

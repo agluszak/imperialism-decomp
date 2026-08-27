@@ -34,6 +34,8 @@ pub struct GameState {
     pub(crate) nations: Nations,
     pub(crate) military_units: IndexMap<MilitaryUnitId, MilitaryUnitState>,
     pub(crate) civilian_units: IndexMap<CivilianUnitId, CivilianUnitState>,
+    #[serde(default)]
+    pub(crate) civilian_stack_order: Vec<CivilianUnitId>,
     pub(crate) object_ids: ObjectIdAllocator,
     pub(crate) ships: IndexMap<ShipId, ShipState>,
     pub(crate) admirals: IndexMap<AdmiralId, AdmiralState>,
@@ -95,6 +97,7 @@ impl GameState {
             nations: parts.nations,
             military_units: parts.military_units,
             civilian_units: parts.civilian_units,
+            civilian_stack_order: Vec::new(),
             object_ids: parts.object_ids,
             ships: parts.ships,
             admirals: parts.admirals,
@@ -111,7 +114,7 @@ impl GameState {
                 state.elect_task_force_flagship(force);
             }
         }
-        state.rebuild_civilian_tile_chains();
+        state.rebuild_civilian_stack_order();
         state
     }
 

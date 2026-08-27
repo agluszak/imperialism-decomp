@@ -672,7 +672,6 @@ impl LegacyTerrainTile {
             water_adjacency_mask: self.water_adjacency_mask,
             province: optional_province_id(self.city_record_index),
             gate: self.gate,
-            recruit_search_visited: self.recruit_search_visited,
             per_tile_visited: self.per_tile_visited,
             tile_action_ordinal: self.tile_action_ordinal,
             development: TileDevelopment {
@@ -714,7 +713,6 @@ impl LegacyMapState {
             self.province_states(),
         );
         map.map_data_ready = self.map_data_ready != 0;
-        map.recruit_search_active = self.recruit_search_active != 0;
         map.city_score_total = self.city_score_total;
         map.scenario_tag.clone_from(&self.scenario_tag);
         map.pending_river_mouth_tile = optional_tile_id(i32::from(self.pending_river_mouth_tile));
