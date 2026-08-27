@@ -295,8 +295,11 @@ impl RetailUiAssets<'_> {
         Color::srgb_u8(red, green, blue)
     }
 
-    pub fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
-        self.retail_assets.assets().string(group, direct_index)
+    pub fn string(
+        &self,
+        id: StringResourceId,
+    ) -> Result<String, RetailAssetError> {
+        self.retail_assets.assets().string(id)
     }
 
     pub fn picture(&mut self, picture_id: PictureId) -> Result<Handle<Image>, RetailPictureError> {

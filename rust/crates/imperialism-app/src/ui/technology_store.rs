@@ -4,6 +4,7 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::map_help;
+use super::retail_resources::TechnologyRetailResources;
 use super::retail::{RetailPictureSwap, RetailTree, RetailUiAssets, retail_text_style};
 use super::session::GameSession;
 use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
@@ -14,7 +15,7 @@ use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
 use imperialism_core::{
     CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
 };
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc, StringGroup, StringResourceId};
 
 const TECHNOLOGIES_PER_PAGE: usize = 6;
 
@@ -199,13 +200,13 @@ fn spawn_technology_row(
         .picture(PictureId::new(0x0900 + i16::from(technology.retail()) * 2))
         .unwrap_or_else(|_| picture.clone());
     let name = assets
-        .string(0x2712, i16::from(technology.retail()) + 1)
+        .string(technology.name_string())
         .expect("retail technology name");
     let available_year =
         1815 + i32::from(game.technology().scheduled_unlock_turn_by_technology[technology]) / 4;
     let name = format!("{name}\n{available_year}");
     let description = assets
-        .string(0x274e, i16::from(technology.retail()))
+        .string(technology.description_string())
         .expect("retail technology benefit");
     let status = game.technology().research_status_by_nation[nation][technology];
     let purchase_pictures = (status != TechnologyResearchStatus::Researched
@@ -417,7 +418,7 @@ fn bind_technology_modals(
         commands.entity(view.find(fourcc!("titl"))).insert((
             Text::new(
                 assets
-                    .string(0x2712, i16::from(technology.retail()) + 1)
+                    .string(technology.name_string())
                     .expect("retail technology-history title"),
             ),
             title_font,
@@ -455,7 +456,9 @@ fn bind_technology_modals(
             },
             Text::new(
                 retail
-                    .text(u16::from(technology.retail()) + 0x08fc)
+                    .text(StringResourceId::new(
+                        u32::from(technology.retail()) + 0x08fc,
+                    ))
                     .expect("retail technology-history body"),
             ),
             body_font,
@@ -473,7 +476,7 @@ fn bind_technology_modals(
     for root in &notices {
         let linger = bind_linger_dialog(&mut commands, root, &tree);
         let body = assets
-            .string(0x2745, 4)
+            .string(StringGroup::new(0x2745).entry(4))
             .expect("retail insufficient-funds message");
         linger.set_title(&mut commands, &mut assets, "");
         linger.set_body(&mut commands, &mut assets, body);
@@ -497,7 +500,7 @@ fn project_technology_status(
         text.0 = match session.game.technology().research_status_by_nation[nation][technology] {
             TechnologyResearchStatus::Researched => {
                 let template = retail
-                    .string(0x274f, 1)
+                    .string(StringGroup::new(0x274f).entry(1))
                     .expect("retail technology completion template");
                 let year = (1815
                     + i32::from(
@@ -507,7 +510,7 @@ fn project_technology_status(
                 fill_brackets(&template, &[&year])
             }
             TechnologyResearchStatus::Pending => {
-                retail.string(0x274f, 4).expect("retail purchasing label")
+                retail.string(StringGroup::new(0x274f).entry(4)).expect("retail purchasing label")
             }
             TechnologyResearchStatus::NotStarted
                 if session
@@ -527,12 +530,12 @@ fn project_technology_status(
                     .flatten()
                     .map(|prerequisite| {
                         retail
-                            .string(0x2712, i16::from(prerequisite.retail()) + 1)
+                            .string(prerequisite.name_string())
                             .expect("retail prerequisite technology name")
                     })
                     .collect::<Vec<_>>();
                 let template = retail
-                    .string(0x274f, if names.len() == 1 { 3 } else { 2 })
+                    .string(StringGroup::new(0x274f).entry((if names.len() == 1 { 3 } else { 2 }) as u16))
                     .expect("retail prerequisite template");
                 fill_brackets(
                     &template,

@@ -3,6 +3,10 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
+use super::retail_resources::{
+    CityFacilityRetailResources, CivilianUnitKindRetailResources, MilitaryUnitKindRetailResources,
+    ResourceKindRetailResources, ShipTypeRetailResources,
+};
 use super::window::{
     CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
     window_position,
@@ -31,17 +35,12 @@ use common_controls::*;
 use dialogs::*;
 use lifecycle::*;
 
-const CITY_BUILDING_STRING_GROUP: i16 = 0x2719;
-const CITY_TEXT_STRING_GROUP: i16 = 0x2738;
+const CITY_TEXT_STRING_GROUP: StringGroup = StringGroup::new(0x2738);
 
-fn city_string(assets: &RetailUiAssets, group: i16, zero_based_index: i16) -> String {
+fn city_text(assets: &RetailUiAssets, zero_based_index: u16) -> String {
     assets
-        .string(group, city_string_index(zero_based_index))
+        .string(CITY_TEXT_STRING_GROUP.offset(zero_based_index))
         .expect("city string")
-}
-
-const fn city_string_index(zero_based_index: i16) -> i16 {
-    zero_based_index + 1
 }
 
 fn format_retail_number(template: &str, value: i16) -> String {

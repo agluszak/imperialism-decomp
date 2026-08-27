@@ -27,6 +27,7 @@ mod retail_amount_bar;
 mod retail_palette;
 mod retail_raster;
 mod retail_raster_text;
+mod retail_resources;
 mod satellite_preview;
 mod scenario_setup;
 mod session;

@@ -62,23 +62,16 @@ impl RetailAssetsResource {
 
     pub(crate) fn string(
         &self,
-        group: i16,
-        direct_index: i16,
+        id: imperialism_formats::StringResourceId,
     ) -> Result<String, imperialism_formats::RetailAssetError> {
-        self.0.string(group, direct_index)
+        self.0.string(id)
     }
 
     pub(crate) fn text(
         &self,
-        resource_id: u16,
+        id: imperialism_formats::StringResourceId,
     ) -> Result<String, imperialism_formats::RetailAssetError> {
-        self.0.text(resource_id)
-    }
-
-    /// `TSimMgr::GetString`: adds one before the direct lookup.
-    pub(crate) fn get_string(&self, group: i16, offset: i16) -> String {
-        self.string(group, offset + 1)
-            .expect("retail hover-help string")
+        self.0.text(id)
     }
 }
 

@@ -2,7 +2,7 @@ use super::RetailUiAssets;
 use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use super::generated;
 use super::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, ui_string,
+    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, retail_string,
 };
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
@@ -23,7 +23,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc};
+use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc, StringGroup};
 
 const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
 const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
@@ -388,11 +388,11 @@ fn bind_land_battle(
         *root,
         &tree,
         [
-            (fourcc!("help"), ui_string(&assets, 0x273d, 0x20)),
-            (fourcc!("targ"), ui_string(&assets, 0x273d, 0x21)),
-            (fourcc!("done"), ui_string(&assets, 0x273d, 0x22)),
-            (fourcc!("retr"), ui_string(&assets, 0x273d, 0x23)),
-            (fourcc!("auto"), ui_string(&assets, 0x273d, 0x24)),
+            (fourcc!("help"), retail_string(&assets, StringGroup::new(0x273d).entry(0x20))),
+            (fourcc!("targ"), retail_string(&assets, StringGroup::new(0x273d).entry(0x21))),
+            (fourcc!("done"), retail_string(&assets, StringGroup::new(0x273d).entry(0x22))),
+            (fourcc!("retr"), retail_string(&assets, StringGroup::new(0x273d).entry(0x23))),
+            (fourcc!("auto"), retail_string(&assets, StringGroup::new(0x273d).entry(0x24))),
             (fourcc!("DLOG"), String::new()),
         ],
     );
@@ -454,7 +454,7 @@ fn bind_land_battle_retreat_prompt(
 ) {
     for root in &prompts {
         let linger = bind_linger_dialog(&mut commands, root, &tree);
-        let body = ui_string(&assets, 0x273d, 0x32);
+        let body = retail_string(&assets, StringGroup::new(0x273d).entry(0x32));
         linger.set_body(&mut commands, &mut assets, body);
         commands
             .entity(linger.okay)
@@ -1563,7 +1563,7 @@ fn project_land_battle_toolbar(
             swap.active = active;
         }
         if let Some(mut help) = help {
-            help.0 = ui_string(&assets, 0x273d, help_index);
+            help.0 = retail_string(&assets, StringGroup::new(0x273d).entry((help_index) as u16));
         }
     }
 

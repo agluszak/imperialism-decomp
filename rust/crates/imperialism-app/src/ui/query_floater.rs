@@ -5,7 +5,7 @@ use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_formats::{FourCc, fourcc};
+use imperialism_formats::{FourCc, fourcc, StringGroup};
 
 const QUERY_LABELS: [(FourCc, i16); 8] = [
     (fourcc!("titl"), 1),
@@ -66,7 +66,7 @@ fn bind_query_floaters(
             .expect("retail query-floater label style");
         for (tag, index) in QUERY_LABELS {
             let text = assets
-                .string(0x2757, index)
+                .string(StringGroup::new(0x2757).entry(index as u16))
                 .expect("retail query-floater label must load");
             commands.entity(view.find(tag)).insert((
                 Text::new(text),

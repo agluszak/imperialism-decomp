@@ -2,9 +2,10 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
+use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, retail_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, RetailUiAssets};
+use super::retail_resources::ResourceKindRetailResources;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
@@ -13,7 +14,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc, StringGroup};
 
 const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
@@ -165,7 +166,7 @@ fn bind_offer_sheet_text(
         ));
     }
     commands.entity(tree.find(root, fourcc!("info"))).insert((
-        Text::new(get_string(assets, OFFER_STRING_GROUP, 9)),
+        Text::new(retail_string(assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(9))),
         body,
         TextLayout::justify(Justify::Center),
         body_height,
@@ -244,27 +245,23 @@ fn render_offer_sheet(
         .display_name(offer.seller)
         .unwrap_or("")
         .to_owned();
-    let commodity = get_string(
-        &assets,
-        0x2711,
-        i16::from(offer.commodity.resource().retail()),
-    );
+    let commodity = retail_string(&assets, offer.commodity.resource().name_string());
     let amount = offer.amount.to_string();
     let price = format_currency(i32::from(offer.price));
     commands.entity(view.offer).insert(Text::new(fill_brackets(
-        &get_string(&assets, OFFER_STRING_GROUP, 0xc),
+        &retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xc)),
         &[&offering, &amount, &commodity, &price],
     )));
     commands
         .entity(view.purchase_title)
-        .insert(Text::new(get_string(&assets, OFFER_STRING_GROUP, 0xe)));
+        .insert(Text::new(retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xe))));
     commands
         .entity(view.unit)
-        .insert(Text::new(get_string(&assets, OFFER_STRING_GROUP, 0xf)));
+        .insert(Text::new(retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xf))));
     commands
         .entity(view.no_offer)
         .insert(Text::new(fill_brackets(
-            &get_string(&assets, OFFER_STRING_GROUP, 0xf),
+            &retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0xf)),
             &[&commodity],
         )));
 
@@ -328,14 +325,14 @@ fn bind_offer_answer(commands: &mut Commands, button: Entity, accept: bool) {
                 else {
                     spawn_offer_quantity_error(
                         &mut commands,
-                        get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                        retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0x10)),
                     );
                     return;
                 };
                 if amount < 0 || amount > offer.amount {
                     spawn_offer_quantity_error(
                         &mut commands,
-                        get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                        retail_string(&assets, StringGroup::new(OFFER_STRING_GROUP as u16).offset(0x10)),
                     );
                     return;
                 }

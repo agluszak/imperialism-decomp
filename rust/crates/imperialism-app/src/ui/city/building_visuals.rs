@@ -685,10 +685,7 @@ pub(in crate::ui::city) fn render_city_screen(
     let text = hovered.map_or_else(String::new, |building| {
         if city_oil_industry_unlocked(&session.game, nation, building.slot) {
             assets
-                .string(
-                    CITY_BUILDING_STRING_GROUP,
-                    city_string_index(i16::from(building.slot.retail())),
-                )
+                .string(building.slot.name_string())
                 .expect("retail English City string")
         } else {
             String::new()

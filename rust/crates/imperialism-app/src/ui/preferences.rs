@@ -1,8 +1,5 @@
 use super::generated;
-use super::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
-    ui_string,
-};
+use super::hover_help::{HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, retail_string};
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
@@ -17,7 +14,7 @@ use bevy::ui_widgets::{
     SliderValue, TrackClick, ValueChange, slider_self_update,
 };
 use enum_map::{Enum, EnumMap};
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc, StringGroup};
 
 /// `g_anGamePreferenceIndexByRow` and the controls for each displayed row.
 const PREFERENCE_ROWS: [(
@@ -190,8 +187,8 @@ fn bind_preferences(
         root,
         &tree,
         [
-            (fourcc!("okay"), ui_string(&assets, 0x2743, 0x25)),
-            (fourcc!("quer"), ui_string(&assets, 0x2730, 3)),
+            (fourcc!("okay"), retail_string(&assets, StringGroup::new(0x2743).entry(0x25))),
+            (fourcc!("quer"), retail_string(&assets, StringGroup::new(0x2730).entry(3))),
         ],
     );
 
@@ -206,7 +203,7 @@ fn bind_preferences(
         let Some(checkbox) = checkbox else {
             continue;
         };
-        let hover = ui_string(&assets, 0x2743, row as i16 + 0x26);
+        let hover = retail_string(&assets, StringGroup::new(0x2743).entry((row as i16 + 0x26) as u16));
         let mut entity = commands.entity(checkbox);
         entity
             .insert((PreferenceRow { ui_row: row, slot }, HoverHelpText(hover)))
@@ -236,8 +233,8 @@ fn bind_preferences(
         }
     }
 
-    let music_hover = ui_string(&assets, 0x2743, 0x27);
-    let sound_hover = ui_string(&assets, 0x2743, 0x26);
+    let music_hover = retail_string(&assets, StringGroup::new(0x2743).entry(0x27));
+    let sound_hover = retail_string(&assets, StringGroup::new(0x2743).entry(0x26));
     bind_volume_slider(
         &mut commands,
         &mut assets,
@@ -310,7 +307,7 @@ fn bind_volume_slider(
             PreferenceSliderVisual {
                 upper,
                 lower,
-                off: get_string(assets, 0x2743, 0x3b),
+                off: retail_string(assets, StringGroup::new(0x2743).offset(0x3b)),
             },
         ))
         .observe(slider_self_update)
@@ -324,7 +321,7 @@ fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
 }
 
 fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> String {
-    get_string(assets, 0x2743, row as i16 * 2 + 0x10 + i16::from(!is_on))
+    retail_string(assets, StringGroup::new(0x2743).offset((row as i16 * 2 + 0x10 + i16::from(!is_on)) as u16))
 }
 
 fn slider_split_from_value(value: i16, height: i16, scale: i16) -> i16 {

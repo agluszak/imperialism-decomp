@@ -11,6 +11,7 @@ use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
+use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use imperialism_formats::*;
 
 const PAGE_TAG: FourCc = fourcc!("uciv");
@@ -19,7 +20,6 @@ const LEGEND_TAG: FourCc = fourcc!("back");
 const CIVILIAN_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x8f as f32);
 const CIVILIAN_PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
 const PORTRAIT_PICTURE_BASE: i16 = 0x438;
-const CIVILIAN_NAME_GROUP: i16 = 0x2718;
 const CIVILIAN_LEGEND_GROUP: i16 = 0x272d;
 const RESOURCE_ICON_ATLAS: i16 = 750;
 const DEVELOPMENT_STRIP_ATLAS: i16 = 751;
@@ -290,7 +290,7 @@ fn spawn_civilian_legend(
 ) {
     let kind = unit.unit_type();
     let name = assets
-        .string(CIVILIAN_NAME_GROUP, i16::from(kind.retail()) + 1)
+        .string(kind.name_string())
         .expect("retail civilian class name must load");
     let (name_font, name_layout, name_line_height, _) = assets
         .text_style(RetailTextStylePreset {
@@ -678,7 +678,7 @@ fn spawn_developer_legend(
 
 fn legend_string(assets: &RetailUiAssets, index: i16) -> String {
     assets
-        .string(CIVILIAN_LEGEND_GROUP, index + 1)
+        .string(StringGroup::new(CIVILIAN_LEGEND_GROUP as u16).entry((index + 1) as u16))
         .expect("retail civilian legend string must load")
 }
 

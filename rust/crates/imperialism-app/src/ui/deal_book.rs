@@ -4,6 +4,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
+use super::retail_resources::ResourceKindRetailResources;
 use super::retail::{RetailPressedOverlay, RetailTree};
 use super::retail_raster::IndexedRasterExt;
 use super::session::{apply_turn_stop, clear_return_to};
@@ -15,6 +16,7 @@ use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;
+use super::hover_help::retail_string;
 
 const HISTORY_BACKGROUND: i16 = 0x2260;
 const CATEGORY_BACKGROUND: i16 = 0x2263;
@@ -576,10 +578,10 @@ fn project_history(
     set_picture(pictures, background, screen.pictures.history.clone());
     commands.entity(history).insert(InteractionDisabled);
     let sold_title = assets
-        .string(0x2740, 0x19)
+        .string(StringGroup::new(0x2740).entry(0x19))
         .expect("retail deal-book sold title must load");
     let bought_title = assets
-        .string(0x2740, 0x1a)
+        .string(StringGroup::new(0x2740).entry(0x1a))
         .expect("retail deal-book bought title must load");
     set_text(
         texts,
@@ -650,8 +652,8 @@ fn project_category(
     );
     set_picture(pictures, background, screen.pictures.category.clone());
     commands.entity(history).remove::<InteractionDisabled>();
-    let template = get_string(assets, 0x2741, 3);
-    let commodity_name = get_string(assets, 0x2711, i16::from(commodity.resource().retail()));
+    let template = retail_string(assets, StringGroup::new(0x2741).offset(3));
+    let commodity_name = retail_string(assets, commodity.resource().name_string());
     set_text(
         texts,
         deal_book_title(titles, DealBookTitle::Left),
@@ -749,7 +751,7 @@ fn spawn_history_rows(
                     0.0,
                     PAGE_WIDTH,
                     true,
-                    get_string(assets, 0x2741, 7),
+                    retail_string(assets, StringGroup::new(0x2741).offset(7)),
                 );
                 y += LINE_HEIGHT;
             }
@@ -810,7 +812,7 @@ fn spawn_category_rows(
                     0.0,
                     PAGE_WIDTH,
                     true,
-                    get_string(assets, 0x2741, group),
+                    retail_string(assets, StringGroup::new(0x2741).offset((group) as u16)),
                 );
             }
             DealBookCategoryRow::FallbackHeader => {
@@ -822,7 +824,7 @@ fn spawn_category_rows(
                     0.0,
                     PAGE_WIDTH,
                     true,
-                    get_string(assets, 0x2741, 4),
+                    retail_string(assets, StringGroup::new(0x2741).offset(4)),
                 );
             }
             DealBookCategoryRow::Offer(offer) => {
@@ -845,7 +847,7 @@ fn spawn_commodity_header(
     resource: ResourceKind,
     market_price: i32,
 ) {
-    let name = get_string(assets, 0x2711, i16::from(resource.retail()));
+    let name = retail_string(assets, resource.name_string());
     spawn_icon(
         commands,
         screen.pictures.commodities[resource].clone(),
@@ -877,10 +879,10 @@ fn spawn_offer_row(
 ) {
     let name = nation_name(state, offer.nation);
     let text = if offer.amount == 1 {
-        fill_brackets(&get_string(assets, 0x2740, 7), &[&name])
+        fill_brackets(&retail_string(assets, StringGroup::new(0x2740).offset(7)), &[&name])
     } else {
         fill_brackets(
-            &get_string(assets, 0x2740, 8),
+            &retail_string(assets, StringGroup::new(0x2740).offset(8)),
             &[&name, &offer.amount.to_string()],
         )
     };
@@ -942,7 +944,7 @@ fn spawn_totals(
         y + 4.0,
         PAGE_WIDTH - 16.0,
         true,
-        get_string(assets, 0x2740, 0x17),
+        retail_string(assets, StringGroup::new(0x2740).offset(0x17)),
     );
     spawn_totals_line(
         commands,
@@ -987,7 +989,7 @@ fn spawn_totals(
     let mut value_y = 66.0;
     if totals.pressure_counter > 0 {
         value_y = 78.0;
-        let template = get_string(assets, 0x2740, 0x1c);
+        let template = retail_string(assets, StringGroup::new(0x2740).offset(0x1c));
         spawn_text_at(
             commands,
             screen,
@@ -1042,7 +1044,7 @@ fn spawn_totals(
         y + balance_y,
         116.0,
         false,
-        fill_brackets(&get_string(assets, 0x2740, 0x1b), &[""]),
+        fill_brackets(&retail_string(assets, StringGroup::new(0x2740).offset(0x1b)), &[""]),
     );
     spawn_text_at(
         commands,
@@ -1075,7 +1077,7 @@ fn spawn_totals_line(
         y,
         116.0,
         false,
-        get_string(assets, 0x2740, string_index),
+        retail_string(assets, StringGroup::new(0x2740).offset((string_index) as u16)),
     );
     let x = if shift_negative {
         totals_value_x(value)
@@ -1196,23 +1198,15 @@ fn format_deal_line(
     deal: DealBookDealLine,
 ) -> String {
     let counterparty = nation_name(state, deal.counterparty);
-    let commodity = get_string(
-        assets,
-        0x2711,
-        i16::from(deal.commodity.resource().retail()),
-    );
+    let commodity = retail_string(assets, deal.commodity.resource().name_string());
     if deal.amount != 0 {
         let amount = deal.amount.to_string();
         if deal.unit_price != deal.market_price {
-            let template = get_string(
-                assets,
-                0x2740,
-                if deal.kind == DealBookEntryKind::Offer {
+            let template = retail_string(assets, StringGroup::new(0x2740).offset((if deal.kind == DealBookEntryKind::Offer {
                     0x12
                 } else {
                     0x13
-                },
-            );
+                }) as u16));
             fill_brackets(
                 &template,
                 &[
@@ -1223,43 +1217,37 @@ fn format_deal_line(
                 ],
             )
         } else {
-            let template = get_string(
-                assets,
-                0x2740,
-                if deal.kind == DealBookEntryKind::Offer {
+            let template = retail_string(assets, StringGroup::new(0x2740).offset((if deal.kind == DealBookEntryKind::Offer {
                     0x14
                 } else {
                     0x15
-                },
-            );
+                }) as u16));
             fill_brackets(&template, &[&amount, &commodity, &counterparty])
         }
     } else if deal.uses_navy_status_text() {
-        let mut text = fill_brackets(&get_string(assets, 0x2740, 0x1f), &[&counterparty]);
+        let mut text = fill_brackets(&retail_string(assets, StringGroup::new(0x2740).offset(0x1f)), &[&counterparty]);
         let status = match deal.unit_price {
             -123_456 => 0x21,
             -123_457 => 0x20,
             _ => 0x23,
         };
         text.push(' ');
-        text.push_str(&get_string(assets, 0x2740, status));
+        text.push_str(&retail_string(assets, StringGroup::new(0x2740).offset((status) as u16)));
         text
     } else {
         fill_brackets(
-            &get_string(assets, 0x2740, 0x16),
+            &retail_string(assets, StringGroup::new(0x2740).offset(0x16)),
             &[&counterparty, &commodity],
         )
     }
 }
 
-fn get_string(assets: &RetailUiAssets, group: i16, offset: i16) -> String {
-    assets
-        .string(group, offset + 1)
-        .unwrap_or_else(|_| panic!("retail string {group:#x}:{offset} must load"))
-}
 
 fn category_date(assets: &RetailUiAssets, economic_turn: i32) -> String {
-    let season = get_string(assets, 10_000, (economic_turn % 4) as i16);
+    let season = retail_string(
+        assets,
+        StringGroup::new(10_000).offset((economic_turn % 4) as u16),
+    );
     format!("{season} {}", 1815 + economic_turn / 4)
 }
 

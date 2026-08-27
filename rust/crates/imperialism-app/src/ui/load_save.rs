@@ -1,7 +1,7 @@
 use crate::RetailAssetsResource;
 use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
-use crate::ui::hover_help::get_string;
+use crate::ui::hover_help::retail_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
@@ -23,7 +23,7 @@ use imperialism_formats::{
     NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy, PictureId, SAVE_LABEL_MAX_CHARS,
     SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, fourcc, list_save_slots,
     load_game_from_bytes, normalize_save_label, peek_save_header, peek_save_preview_owners,
-    retail_save_path, write_game_state, write_save_file,
+    retail_save_path, write_game_state, write_save_file, StringGroup,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -308,7 +308,7 @@ fn bind_load_save(
     bind_load_save_actions(&mut commands, root_entity, &tree, mode);
     let listing = list_save_slots(&save_dir.0);
     let empty_label = assets
-        .string(EMPTY_SLOT_STRING_GROUP, EMPTY_SLOT_STRING_INDEX)
+        .string(StringGroup::new((EMPTY_SLOT_STRING_GROUP) as u16).entry((EMPTY_SLOT_STRING_INDEX) as u16))
         .unwrap_or_default();
     let presentation = presentation_from_listing(&listing, &empty_label, &assets);
     populate_load_save_slots(&mut commands, root_entity, &tree, mode, &presentation);
@@ -384,10 +384,9 @@ fn presentation_from_listing(
 
 fn slot_presentation(header: &SaveHeaderInfo, assets: &RetailUiAssets) -> SlotPresentation {
     let difficulty = assets
-        .string(
-            DIFFICULTY_STRING_GROUP,
-            DIFFICULTY_STRING_BASE + i16::from(header.difficulty),
-        )
+        .string(StringGroup::new(DIFFICULTY_STRING_GROUP as u16).entry(
+            (DIFFICULTY_STRING_BASE + i16::from(header.difficulty)) as u16,
+        ))
         .unwrap_or_default();
     SlotPresentation {
         label: header.label.clone(),
@@ -811,8 +810,8 @@ fn apply_save(
 
 fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> String {
     let retail = match error {
-        LoadGameError::InvalidMagic | LoadGameError::Truncated => assets.string(0x2737, 7).ok(),
-        LoadGameError::UnsupportedVersion(_) => assets.string(0x2737, 8).ok(),
+        LoadGameError::InvalidMagic | LoadGameError::Truncated => assets.string(StringGroup::new(0x2737).entry(7)).ok(),
+        LoadGameError::UnsupportedVersion(_) => assets.string(StringGroup::new(0x2737).entry(8)).ok(),
         _ => None,
     };
     retail.unwrap_or_else(|| error.to_string())
@@ -832,10 +831,10 @@ fn bind_load_save_notice(
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     let body = match notice {
         LoadSaveNotice::PickSlot => assets
-            .string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
+            .string(StringGroup::new((PICK_SLOT_STRING_GROUP) as u16).entry((PICK_SLOT_STRING_INDEX) as u16))
             .unwrap_or_default(),
         LoadSaveNotice::ConfirmLoad => assets
-            .string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX)
+            .string(StringGroup::new((CONFIRM_LOAD_STRING_GROUP) as u16).entry((CONFIRM_LOAD_STRING_INDEX) as u16))
             .unwrap_or_default(),
         LoadSaveNotice::Error(body) => body.clone(),
     };
@@ -919,7 +918,7 @@ fn bind_flag_menu(
         } else {
             (0x28, 0xd2)
         };
-        let caption = get_string(&assets, FLAG_MENU_STRING_GROUP, index as i16);
+        let caption = retail_string(&assets, StringGroup::new((FLAG_MENU_STRING_GROUP) as u16).offset((index) as u16));
         commands.entity(entity).insert((
             Text::new(caption.clone()),
             Label,
@@ -1017,7 +1016,7 @@ fn bind_flag_menu_prompt(
         FlagMenuPending::Quit => 0x2a,
     };
     let body = assets
-        .string(0x2737, index)
+        .string(StringGroup::new(0x2737).entry((index) as u16))
         .expect("retail flag-menu confirm string");
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_body(&mut commands, &mut assets, body);

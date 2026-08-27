@@ -276,8 +276,8 @@ pub(in crate::ui::city) fn render_population(
 ) {
     let major = session.game.nations().major(nation);
     let city = &major.city;
-    let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
-    let province_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x1d);
+    let capacity_template = city_text(assets, 0x10);
+    let province_template = city_text(assets, 0x1d);
     render_rail(session, nation, &view.rail, ui);
     ui.visible(view.food, city.stockpile[ResourceKind::Food] >= 1);
     ui.visible(view.clothing, city.stockpile[ResourceKind::Clothing] >= 1);

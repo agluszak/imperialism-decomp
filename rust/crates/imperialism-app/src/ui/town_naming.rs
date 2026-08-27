@@ -9,7 +9,7 @@ use bevy::prelude::*;
 use bevy::text::EditableText;
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::ResourceTable;
-use imperialism_formats::{PictureId, fourcc};
+use imperialism_formats::{PictureId, fourcc, StringGroup};
 
 const ROW_HEIGHT: i32 = 0x20;
 const ICON_PICTURE_BASE: i16 = 700;
@@ -67,10 +67,9 @@ fn bind_town_naming(
         return;
     };
     let suggestion = retail_assets
-        .string(
-            0x1c52,
-            i16::from(session.game.roll_pending_town_name_suggestion()),
-        )
+        .string(StringGroup::new(0x1c52).entry(u16::from(
+            session.game.roll_pending_town_name_suggestion(),
+        )))
         .expect("retail town-name string");
     let yields = session.game.nations().major(nation).towns[&tile].resource_yield_by_type;
     let visible = yields.values().filter(|&&amount| amount != 0).count() as i32;

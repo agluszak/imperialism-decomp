@@ -168,13 +168,13 @@ pub(in crate::ui::city) fn render_university(
     ui.text(
         view.unit,
         assets
-            .string(0x2718, i16::from(kind.retail()) + 1)
+            .string(kind.name_string())
             .expect("civilian name"),
     );
     ui.text(
         view.description,
         assets
-            .string(0x2751, i16::from(kind.retail()) + 1)
+            .string(kind.description_string())
             .expect("civilian desc"),
     );
     let values = [

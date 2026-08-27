@@ -7,7 +7,7 @@ use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
+    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, retail_string,
 };
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
@@ -27,7 +27,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::TurnAlert;
-use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
+use imperialism_formats::{FourCc, PictureId, TRADE, fourcc, StringGroup};
 use std::collections::VecDeque;
 
 #[derive(Component)]
@@ -270,8 +270,8 @@ fn bind_strategic_hover(
     );
     let civilian_seas = format!(
         "{}, {}",
-        get_string(assets, 0x2730, 0x12),
-        get_string(assets, 0x2730, 8)
+        retail_string(assets, StringGroup::new(0x2730).offset(0x12)),
+        retail_string(assets, StringGroup::new(0x2730).offset(8))
     );
     bind_hover_help_texts(
         commands,
@@ -301,7 +301,7 @@ fn on_ocean_toggle(
         let body = if tag.is_empty() {
             String::from("Imperialism")
         } else {
-            crate::ui::fill_brackets(&get_string(&assets, 0x273f, 1), &[tag])
+            crate::ui::fill_brackets(&retail_string(&assets, StringGroup::new(0x273f).offset(1)), &[tag])
         };
         spawn_linger_dialog(
             &mut commands,
@@ -402,7 +402,7 @@ fn render_game_status(
     let nation = session.active_major_nation();
     let date = {
         let season = retail
-            .string(10_000, (session.game.turn().economic_turn % 4) as i16)
+            .string(StringGroup::new(10_000).entry((session.game.turn().economic_turn % 4) as u16))
             .expect("retail season name must load");
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
@@ -457,12 +457,12 @@ fn sync_status_date_hover(
         return;
     }
     let help = if matches!(map.selection, StrategicSelection::Army(_)) {
-        get_string(&assets, 0x2732, 0x11)
+        retail_string(&assets, StringGroup::new(0x2732).offset(0x11))
     } else {
         format!(
             "{}, {}",
-            get_string(&assets, 0x2730, 0x12),
-            get_string(&assets, 0x2730, 8)
+            retail_string(&assets, StringGroup::new(0x2730).offset(0x12)),
+            retail_string(&assets, StringGroup::new(0x2730).offset(8))
         )
     };
     for view in &mut views {
@@ -576,10 +576,10 @@ fn bind_turn_alert_notice(
         TurnAlert::Starvation => (0x20, 0x21),
     };
     let title = assets
-        .string(0x2753, title_index)
+        .string(StringGroup::new(0x2753).entry((title_index) as u16))
         .expect("retail turn-alert title must load");
     let body = assets
-        .string(0x2753, body_index)
+        .string(StringGroup::new(0x2753).entry((body_index) as u16))
         .expect("retail turn-alert body must load");
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);

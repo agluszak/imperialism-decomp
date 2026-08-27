@@ -1,9 +1,7 @@
 use crate::ui::RetailUiAssets;
 use crate::ui::fill_brackets;
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string, ui_string,
-};
+use crate::ui::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, retail_string};
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
@@ -20,7 +18,7 @@ use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, fourcc, StringGroup};
 
 const PLACE_CITY_STRING_GROUP: i16 = 0x273f;
 const BAD_CITY_SITE_STRING_GROUP: i16 = 0x273b;
@@ -146,9 +144,9 @@ fn bind_city_site_controls(
             (fourcc!("DLOG"), String::new()),
             (
                 fourcc!("canc"),
-                ui_string(assets, PLACE_CITY_STRING_GROUP, 9),
+                retail_string(assets, StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).entry(9)),
             ),
-            (fourcc!("quer"), ui_string(assets, 0x2730, 3)),
+            (fourcc!("quer"), retail_string(assets, StringGroup::new(0x2730).entry(3))),
         ],
     );
 }
@@ -171,11 +169,11 @@ fn bind_city_site_intro(
         return;
     }
     let nation = session.active_major_nation();
-    let minister = get_string(&assets, MINISTER_STRING_GROUP, 2);
-    let mut title = fill_brackets(&get_string(&assets, MINISTER_STRING_GROUP, 4), &[&minister]);
+    let minister = retail_string(&assets, StringGroup::new((MINISTER_STRING_GROUP) as u16).offset(2));
+    let mut title = fill_brackets(&retail_string(&assets, StringGroup::new((MINISTER_STRING_GROUP) as u16).offset(4)), &[&minister]);
     title.push_str("\n\n");
-    title.push_str(&get_string(&assets, PLACE_CITY_STRING_GROUP, 3));
-    let body = get_string(&assets, PLACE_CITY_STRING_GROUP, 4);
+    title.push_str(&retail_string(&assets, StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(3)));
+    let body = retail_string(&assets, StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(4));
     stuff_minister_dialog(
         &mut commands,
         root,
@@ -274,11 +272,7 @@ fn on_city_site_map_click(
     match validate_capital_site_selection(&session.game, nation, tile) {
         Ok(site) => open_new_city_dialog(&mut commands, site),
         Err(error) => {
-            let body = get_string(
-                &assets,
-                BAD_CITY_SITE_STRING_GROUP,
-                error.message_offset(&session.game, tile),
-            );
+            let body = retail_string(&assets, StringGroup::new((BAD_CITY_SITE_STRING_GROUP) as u16).offset((error.message_offset(&session.game, tile)) as u16));
             open_city_site_notice(&mut commands, body);
         }
     }
@@ -378,7 +372,7 @@ fn stuff_new_city_dialog(
         }
     }
 
-    let title = get_string(assets, PLACE_CITY_STRING_GROUP, 7);
+    let title = retail_string(assets, StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(7));
     set_text(
         commands,
         tree.find(root, fourcc!("titl")),
@@ -387,7 +381,7 @@ fn stuff_new_city_dialog(
         0x5c,
     );
     let summary = fill_brackets(
-        &get_string(assets, PLACE_CITY_STRING_GROUP, 5),
+        &retail_string(assets, StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(5)),
         &[
             &report.sustainable_population.to_string(),
             &report.total_food.to_string(),

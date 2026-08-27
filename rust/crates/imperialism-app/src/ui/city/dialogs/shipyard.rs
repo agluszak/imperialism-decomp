@@ -3,6 +3,7 @@ use crate::RetailFonts;
 use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
 use crate::ui::retail_raster_text::RetailRasterTextPainter;
+use imperialism_formats::StringGroup;
 
 const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Fabric,
@@ -149,19 +150,19 @@ pub(in crate::ui::city) fn render_shipyard(
     ui.text(
         view.ship_name,
         assets
-            .string(0x2716, i16::from(ship_type.retail()) + 1)
+            .string(ship_type.name_string())
             .expect("ship name"),
     );
     ui.text(
         view.description,
         assets
-            .string(0x2752, i16::from(ship_type.retail()))
+            .string(ship_type.description_string())
             .expect("ship desc"),
     );
     ui.image(
         view.picture,
         assets
-            .picture(PictureId::new(9834 + i16::from(ship_type.retail())))
+            .picture(ship_type.detail_picture())
             .expect("detail pic"),
     );
     let mut picture = assets
@@ -189,7 +190,7 @@ pub(in crate::ui::city) fn render_shipyard(
     {
         let text_x = 0x3a + column as i32 * 0x28;
         let material = assets
-            .indexed_picture(PictureId::new(700 + i16::from(resource.retail())))
+            .indexed_picture(resource.material_picture())
             .expect("material");
         picture.blit_keyed_at(&material, IVec2::new(text_x - 0x20, 0x98), 0x10);
         picture.blit_keyed_at(&material, IVec2::new(text_x - 0x20, 0xcc), 0x10);
@@ -221,7 +222,9 @@ pub(in crate::ui::city) fn render_shipyard(
         text.draw(
             &mut picture,
             origin,
-            &city_string(assets, 0x2736, 0x10 + index as i16),
+            &assets
+                .string(StringGroup::new(0x2736).offset(0x10 + index as u16))
+                .expect("shipyard stat label"),
             0xd2,
         );
         text.draw(
