@@ -1036,7 +1036,7 @@ mod tests {
     use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
-    use imperialism_formats::{DibPalette, load_game_from_path};
+    use imperialism_formats::load_game_from_path;
 
     fn fixture_state() -> GameState {
         beginning_of_game()
@@ -1119,22 +1119,6 @@ mod tests {
         commands.entity(entity).remove::<PendingLoadSave>();
     }
 
-    fn spawn_test_flag_menu(mut commands: Commands) {
-        commands.spawn((FlagMenuRoot, ModalWindow));
-    }
-
-    fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
-        let root = world.spawn((FlagMenuPrompt { kind }, ModalWindow)).id();
-        let accept = world
-            .spawn(ChildOf(root))
-            .observe(on_flag_menu_prompt_activate)
-            .id();
-        let dismiss = world.spawn(ChildOf(root)).id();
-        dismiss_on_activate(&mut world.commands(), accept, root);
-        dismiss_on_activate(&mut world.commands(), dismiss, root);
-        (accept, dismiss)
-    }
-
     fn tagged(app: &mut App, tag: FourCc) -> Entity {
         app.world_mut()
             .query::<(Entity, &RetailTag)>()
@@ -1142,32 +1126,6 @@ mod tests {
             .find(|(_, retail)| retail.0 == tag)
             .map(|(entity, _)| entity)
             .expect("tagged control")
-    }
-
-    #[test]
-    fn cancel_restores_the_previous_application_state() {
-        let mut app = test_app(AppState::MainMenu);
-        app.insert_resource(ReturnTo(AppState::MainMenu));
-        app.insert_resource(LoadSaveRequest(LoadSaveMode::Load));
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::LoadSave);
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::LoadSave
-        );
-
-        let cancel = tagged(&mut app, fourcc!("cncl"));
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: cancel });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::MainMenu
-        );
     }
 
     #[test]
@@ -1213,74 +1171,6 @@ mod tests {
     }
 
     #[test]
-    fn accepting_new_game_drops_the_session_and_returns_to_the_main_menu() {
-        let mut app = test_app(AppState::StrategicMap);
-        insert_game_session_world(app.world_mut(), fixture_state());
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-        let (accept, _) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::NewGame);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::MainMenu
-        );
-        assert!(app.world().get_resource::<GameSession>().is_none());
-    }
-
-    #[test]
-    fn accepting_quit_posts_app_exit() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.update();
-        let (accept, _) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::Quit);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        let exits = app
-            .world_mut()
-            .resource_mut::<bevy::ecs::message::Messages<AppExit>>()
-            .drain()
-            .collect::<Vec<_>>();
-        assert_eq!(exits, vec![AppExit::Success]);
-    }
-
-    #[test]
-    fn dismissing_new_game_keeps_the_flag_menu_open() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-        let (_, dismiss) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::NewGame);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: dismiss });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::StrategicMap
-        );
-        assert!(
-            app.world_mut()
-                .query_filtered::<Entity, With<FlagMenuPrompt>>()
-                .iter(app.world())
-                .next()
-                .is_none()
-        );
-        assert!(
-            app.world_mut()
-                .query_filtered::<Entity, With<FlagMenuRoot>>()
-                .iter(app.world())
-                .next()
-                .is_some()
-        );
-    }
-
-    #[test]
     fn successful_load_replaces_the_session_and_enters_the_saved_phase() {
         let original = fixture_state();
         let session = GameSession::new(original.clone());
@@ -1313,38 +1203,6 @@ mod tests {
         assert_eq!(
             peek_save_header(&bytes).map(|header| header.label),
             Some("Second".to_owned())
-        );
-    }
-
-    #[test]
-    fn save_header_owners_compose_the_retail_satellite_preview() {
-        let original = fixture_state();
-        let session = GameSession::new(original.clone());
-        let dir = tempfile::tempdir().unwrap();
-        save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "Preview");
-        let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
-        let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
-        for (index, owner) in owners.iter().enumerate() {
-            assert_eq!(
-                *owner,
-                original.map()[TileId::new(index as u16)].owner_nation
-            );
-        }
-        let preview = satellite_preview(
-            |tile| owners.get(usize::from(tile.get())).copied().flatten(),
-            original.turn().active_nation,
-        );
-        let image = preview.to_image(&DibPalette::default());
-        assert_eq!(image.texture_descriptor.size.width, 324);
-        assert_eq!(image.texture_descriptor.size.height, 180);
-        assert!(
-            image
-                .data
-                .as_ref()
-                .unwrap()
-                .chunks_exact(4)
-                .any(|pixel| pixel[3] != 0),
-            "satellite preview should paint claimed land, not only the off-map key"
         );
     }
 

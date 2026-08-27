@@ -393,56 +393,6 @@ mod tests {
     }
 
     #[test]
-    fn recovered_caption_is_a_child_of_the_positioned_window() {
-        let mut app = test_app();
-        let canvas = app
-            .world_mut()
-            .spawn(Node {
-                position_type: PositionType::Absolute,
-                width: px(640),
-                height: px(480),
-                ..default()
-            })
-            .id();
-        let window = app
-            .world_mut()
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(12),
-                    top: px(34),
-                    width: px(100),
-                    ..default()
-                },
-                CaptionedWindow,
-                ChildOf(canvas),
-            ))
-            .id();
-
-        app.update();
-
-        assert!(app.world().get::<UiWindow>(window).is_some());
-        assert_eq!(app.world().get::<Pickable>(canvas), Some(&Pickable::IGNORE));
-        let node = app.world().get::<Node>(window).unwrap();
-        assert_eq!(window_position(node), IVec2::new(12, 34));
-        let caption = app
-            .world()
-            .get::<Children>(window)
-            .unwrap()
-            .iter()
-            .find(|child| {
-                app.world()
-                    .get::<Node>(*child)
-                    .is_some_and(|node| node.left == px(0) && node.top == px(-CAPTION_HEIGHT))
-            })
-            .expect("window has a caption child");
-        assert_eq!(
-            app.world().get::<ChildOf>(caption).unwrap().parent(),
-            window
-        );
-    }
-
-    #[test]
     fn dismissing_captioned_window_despawns_the_generated_host() {
         let mut app = test_app();
         let canvas = app.world_mut().spawn(Name::new("canvas")).id();

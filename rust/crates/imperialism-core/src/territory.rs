@@ -265,16 +265,6 @@ impl ProvinceState {
     pub(crate) fn set_owner(&mut self, new_owner: Option<NationId>) {
         self.owner = new_owner;
     }
-
-    #[cfg(test)]
-    pub(crate) fn set_adjacency(&mut self, adjacency: Vec<ProvinceId>) {
-        self.adjacency = adjacency;
-    }
-
-    #[cfg(test)]
-    pub(crate) fn set_city_tile(&mut self, city_tile: Option<TileId>) {
-        self.city_tile = city_tile;
-    }
 }
 
 fn deserialize_required_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
