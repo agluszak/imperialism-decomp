@@ -1119,6 +1119,30 @@ mod tests {
         commands.entity(entity).remove::<PendingLoadSave>();
     }
 
+    fn populate_test_save_labels(
+        mut commands: Commands,
+        root: Single<Entity, With<LoadSaveRoot>>,
+        tree: RetailTree,
+    ) {
+        let presentation = LoadSavePresentation {
+            slots: std::array::from_fn(|index| {
+                (index == 0).then(|| SlotPresentation {
+                    label: "England".to_owned(),
+                    info: "1815, Easy".to_owned(),
+                })
+            }),
+            autosave: None,
+            empty_label: "Empty Slot".to_owned(),
+        };
+        populate_load_save_slots(
+            &mut commands,
+            *root,
+            &tree,
+            LoadSaveMode::Load,
+            &presentation,
+        );
+    }
+
     fn tagged(app: &mut App, tag: FourCc) -> Entity {
         app.world_mut()
             .query::<(Entity, &RetailTag)>()
@@ -1168,6 +1192,30 @@ mod tests {
             .expect("clicking okay writes the selected save slot");
         let loaded = load_game_from_bytes(&bytes, runtime_context_for_load(Some(&game))).unwrap();
         assert_eq!(loaded.game, game);
+    }
+
+    #[test]
+    fn populated_save_slot_displays_its_header_label() {
+        let mut app = test_app(AppState::MainMenu);
+        app.insert_resource(LoadSaveRequest(LoadSaveMode::Load));
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::LoadSave);
+        app.update();
+
+        app.add_systems(Update, populate_test_save_labels);
+        app.update();
+
+        let slot = tagged(&mut app, fourcc!("slt0"));
+        assert_eq!(app.world().get::<Text>(slot).unwrap().0, "England");
+        for (index, tag) in SLOT_TAGS.iter().copied().enumerate().skip(1) {
+            let entity = tagged(&mut app, tag);
+            assert_eq!(
+                app.world().get::<Text>(entity).unwrap().0,
+                "",
+                "empty load slot {index} keeps an empty caption"
+            );
+        }
     }
 
     #[test]
