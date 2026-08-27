@@ -24,8 +24,8 @@ pub(in crate::ui::city) struct UniversityUi {
     details: Entity,
 }
 
-pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
-    match kind {
+pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> PictureId {
+    PictureId::new(match kind {
         CivilianUnitKind::Miner => 402,
         CivilianUnitKind::Prospector => 403,
         CivilianUnitKind::Farmer => 401,
@@ -35,7 +35,7 @@ pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKi
         CivilianUnitKind::Fisherman => 405,
         CivilianUnitKind::Developer => 404,
         CivilianUnitKind::Driller => 408,
-    }
+    })
 }
 
 pub(in crate::ui::city) fn bind_university(
@@ -210,7 +210,7 @@ pub(in crate::ui::city) fn render_university(
         .indexed_picture(PictureId::new(9900))
         .expect("dialog pic");
     let preview = assets
-        .indexed_picture(PictureId::new(university_preview_picture(kind)))
+        .indexed_picture(university_preview_picture(kind))
         .expect("preview pic");
     picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
     let icons = assets.indexed_picture(PictureId::new(750)).expect("icons");

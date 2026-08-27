@@ -43,10 +43,10 @@ const PREFERENCE_ROWS: [(
 const SLIDER_SPLIT_PAD: i16 = 0x0c;
 const MUSIC_SLIDER_SCALE: i16 = 0xff;
 const SOUND_SLIDER_SCALE: i16 = 100;
-const MUSIC_PICTURE_BASE: i16 = 0x1036;
-const SOUND_PICTURE_BASE: i16 = 0x1038;
-const TACTICAL_BATTLE_ON_PICTURE: i16 = 4158;
-const TACTICAL_BATTLE_OFF_PICTURE: i16 = 4160;
+const MUSIC_PICTURE_BASE: PictureId = PictureId::new(0x1036);
+const SOUND_PICTURE_BASE: PictureId = PictureId::new(0x1038);
+const TACTICAL_BATTLE_ON_PICTURE: PictureId = PictureId::new(4158);
+const TACTICAL_BATTLE_OFF_PICTURE: PictureId = PictureId::new(4160);
 
 /// Retail `TSimMgr::preferenceValues[14]`.
 #[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
@@ -212,10 +212,10 @@ fn bind_preferences(
             .remove::<InteractionDisabled>();
         if row == 4 {
             let idle = assets
-                .picture(PictureId::new(TACTICAL_BATTLE_OFF_PICTURE))
+                .picture(TACTICAL_BATTLE_OFF_PICTURE)
                 .expect("tactical-battle preference off picture");
             let on = assets
-                .picture(PictureId::new(TACTICAL_BATTLE_ON_PICTURE))
+                .picture(TACTICAL_BATTLE_ON_PICTURE)
                 .expect("tactical-battle preference on picture");
             entity.remove::<Button>().insert((
                 Checkbox,
@@ -278,17 +278,17 @@ fn bind_volume_slider(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     slider: Entity,
-    picture_base: i16,
+    picture_base: PictureId,
     slot: PreferenceSlot,
     scale: i16,
     value: i16,
     hover: String,
 ) {
     let upper = assets
-        .indexed_picture(PictureId::new(picture_base))
+        .indexed_picture(picture_base)
         .expect("preference slider upper picture");
     let lower = assets
-        .indexed_picture(PictureId::new(picture_base + 1))
+        .indexed_picture(picture_base.offset(1))
         .expect("preference slider lower picture");
     let image = assets.add_image(upper.to_image(assets.default_dib_palette()));
     commands

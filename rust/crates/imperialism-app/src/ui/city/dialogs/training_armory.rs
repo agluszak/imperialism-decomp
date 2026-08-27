@@ -69,8 +69,8 @@ const fn armory_picture_variant(unit: MilitaryUnitKind) -> i16 {
 }
 
 const fn armory_row_pictures(unit: MilitaryUnitKind) -> [PictureId; 2] {
-    let base = 0x1d60 + 2 * armory_picture_variant(unit);
-    [PictureId::new(base), PictureId::new(base + 1)]
+    let base = PictureId::new(0x1d60).offset(2 * armory_picture_variant(unit));
+    [base, base.offset(1)]
 }
 
 pub(in crate::ui::city) fn bind_training(
@@ -349,7 +349,7 @@ pub(in crate::ui::city) fn render_armory(
     ui.image(
         view.placard,
         assets
-            .picture(PictureId::new(0x1d9c + i16::from(order.unit_kind.retail())))
+            .picture(order.unit_kind.armory_placard_picture())
             .expect("placard"),
     );
     ui.visible(view.costs[2], secondary.is_some());

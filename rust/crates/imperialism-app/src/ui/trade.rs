@@ -85,18 +85,16 @@ const TRADE_ADVISORIES: [(FourCc, TradeAdvisory); 10] = [
 /// Retail picture for a trade card state.
 fn trade_card_picture(commodity: TradeCommodity, kind: TradeCardKind, active: bool) -> PictureId {
     let base = if commodity == TradeCommodity::Clothing {
-        2125
+        PictureId::new(2125)
     } else {
-        2111
+        PictureId::new(2111)
     };
-    PictureId::new(
-        base + match (kind, active) {
-            (TradeCardKind::Bid, true) => 0,
-            (TradeCardKind::Bid, false) => 1,
-            (TradeCardKind::Offer, true) => 2,
-            (TradeCardKind::Offer, false) => 3,
-        },
-    )
+    base.offset(match (kind, active) {
+        (TradeCardKind::Bid, true) => 0,
+        (TradeCardKind::Bid, false) => 1,
+        (TradeCardKind::Offer, true) => 2,
+        (TradeCardKind::Offer, false) => 3,
+    })
 }
 
 #[derive(Component)]

@@ -110,15 +110,15 @@ fn shipyard_queue_pictures(
     let palette = *assets.default_dib_palette();
     let source_left = i32::from(ship_type.retail() - 1) * 0x50;
     let source = IRect::new(source_left, 0, source_left + 0x50, 0x2d);
-    let mut compose = |picture_id| {
+    let mut compose = |picture_id: PictureId| {
         let mut picture = assets
-            .indexed_picture(PictureId::new(picture_id))
+            .indexed_picture(picture_id)
             .expect("queue button");
         picture.blit_keyed(queue_icons, source, IVec2::new(overlay_left, 0x0c), 0x10);
         assets.add_image(picture.to_image(&palette))
     };
-    let idle_id = 9808 + i16::from(slot as u8) * 2;
-    (compose(idle_id), compose(idle_id + 1))
+    let idle_id = PictureId::new(9808).offset(i16::from(slot as u8) * 2);
+    (compose(idle_id), compose(idle_id.offset(1)))
 }
 
 pub(in crate::ui::city) fn render_shipyard(

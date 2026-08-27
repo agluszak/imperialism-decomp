@@ -39,8 +39,8 @@ const SLOT_TAGS: [FourCc; NUMBERED_SAVE_SLOT_COUNT as usize] = [
     fourcc!("slt7"),
 ];
 const AUTOSAVE_SESSION_SLOT: i32 = 0xa1;
-const LOAD_OKAY_IDLE_PICTURE: i16 = 4524;
-const LOAD_OKAY_ACTIVE_PICTURE: i16 = 4525;
+const LOAD_OKAY_IDLE_PICTURE: PictureId = PictureId::new(4524);
+const LOAD_OKAY_ACTIVE_PICTURE: PictureId = PictureId::new(4525);
 const EMPTY_SLOT_STRING_GROUP: i16 = 0x2737;
 const EMPTY_SLOT_STRING_INDEX: i16 = 0xd;
 const DIFFICULTY_STRING_GROUP: i16 = 0x2737;
@@ -440,14 +440,14 @@ fn apply_load_okay_pictures(
     tree: &RetailTree,
 ) {
     let okay = tree.find(root, fourcc!("okay"));
-    let idle = match assets.picture(PictureId::new(LOAD_OKAY_IDLE_PICTURE)) {
+    let idle = match assets.picture(LOAD_OKAY_IDLE_PICTURE) {
         Ok(handle) => handle,
         Err(error) => {
             warn!("could not load Load Game okay picture: {error}");
             return;
         }
     };
-    let active = match assets.picture(PictureId::new(LOAD_OKAY_ACTIVE_PICTURE)) {
+    let active = match assets.picture(LOAD_OKAY_ACTIVE_PICTURE) {
         Ok(handle) => handle,
         Err(error) => {
             warn!("could not load Load Game okay pressed picture: {error}");

@@ -271,7 +271,7 @@ fn bind_construction_dialog(
         tree,
         BuildingChangePresentation {
             slot,
-            picture: PictureId::new(9250 + i16::from(slot as u8) * 5),
+            picture: slot.construction_picture(0),
             name: assets.string(slot.name_string()).expect("city building name"),
             capacity,
             cost: city_text(assets, 0x14),
@@ -306,7 +306,7 @@ fn bind_expansion_dialog(
         tree,
         BuildingChangePresentation {
             slot,
-            picture: PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level)),
+            picture: slot.construction_picture(next_level),
             name: assets.string(slot.name_string()).expect("city building name"),
             capacity: format_retail_number(
                 &city_text(assets, 0x10),

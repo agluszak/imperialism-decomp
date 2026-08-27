@@ -1,5 +1,6 @@
 use crate::ui::generated;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
+use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::session::apply_turn_stop;
 use crate::ui::window::{ModalWindow, bind_modal_keys};
 use crate::ui::{GameSession, RetailUiAssets};
@@ -9,10 +10,9 @@ use bevy::prelude::*;
 use bevy::text::EditableText;
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::ResourceTable;
-use imperialism_formats::{PictureId, fourcc, StringGroup};
+use imperialism_formats::{fourcc, StringGroup};
 
 const ROW_HEIGHT: i32 = 0x20;
-const ICON_PICTURE_BASE: i16 = 700;
 
 #[derive(Component)]
 struct TownNamingRoot;
@@ -132,10 +132,7 @@ fn spawn_resource_rows(
             continue;
         }
         let icon = assets
-            .transparent_picture(
-                PictureId::new(ICON_PICTURE_BASE + i16::from(resource.retail())),
-                0x10,
-            )
+            .transparent_picture(resource.material_picture(), 0x10)
             .expect("retail town resource icon");
         commands
             .spawn_scene(town_resource_row(row, icon, amount))

@@ -3,6 +3,7 @@
 use super::super::retail::{RetailTree, RetailUiAssets};
 use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::spawn_navy_roster;
+use crate::ui::retail_resources::ShipTypeRetailResources;
 use crate::AppState;
 use crate::ui::GameSession;
 use bevy::prelude::*;
@@ -14,7 +15,7 @@ use imperialism_formats::*;
 const PAGE_TAG: FourCc = fourcc!("unav");
 const NAVY_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x90 as f32);
 const PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const ARROW_ATLAS: i16 = 804;
+const ARROW_ATLAS: PictureId = PictureId::new(804);
 const TRANSPARENT_INDEX: u8 = 0x10;
 
 #[derive(Component)]
@@ -67,7 +68,7 @@ pub(crate) fn bind_navy_toolbar(
         },
     ));
     let arrow_atlas = assets
-        .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
+        .transparent_picture(ARROW_ATLAS, TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
     const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
         (NavyToolbarClass::Class0, fourcc!("cls0")),
@@ -175,7 +176,7 @@ fn sync_navy_toolbar(
         let picture = session
             .game
             .navy_toolbar_class_ship_type(class.0)
-            .map(|ship_type| i16::from(ship_type.retail()) + 0x5e6);
+            .map(|ship_type| ship_type.navy_toolbar_picture());
         for (child_of, mut image, mut visibility) in &mut ships {
             if child_of.parent() != entity {
                 continue;
@@ -183,7 +184,7 @@ fn sync_navy_toolbar(
             if available > 0 {
                 if let Some(picture_id) = picture {
                     image.image = assets
-                        .picture(PictureId::new(picture_id))
+                        .picture(picture_id)
                         .expect("retail navy class picture must load");
                 }
                 *visibility = Visibility::Visible;

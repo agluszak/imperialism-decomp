@@ -14,7 +14,7 @@ use imperialism_formats::{FourCc, PictureId, fourcc};
 const MAP_TAG: FourCc = fourcc!("map ");
 const COAT_TAG: FourCc = fourcc!("coat");
 const FLAG_TAG: FourCc = fourcc!("flag");
-const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
+const FIRST_MAJOR_NATION_COAT_PICTURE: PictureId = PictureId::new(0x11c6);
 const FLAG_ATLAS_PICTURE: PictureId = PictureId::new(8699);
 const FLAG_WIDTH: usize = 32;
 const FLAG_HEIGHT: usize = 24;
@@ -102,7 +102,7 @@ fn sync_random_setup_coat(
 }
 
 fn coat_picture_id(nation: MajorNationId) -> PictureId {
-    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + i16::from(nation.get()))
+    FIRST_MAJOR_NATION_COAT_PICTURE.offset(i16::from(nation.get()))
 }
 
 fn sync_random_setup_flag(

@@ -19,11 +19,10 @@ const PORTRAIT_TAG: FourCc = fourcc!("unit");
 const LEGEND_TAG: FourCc = fourcc!("back");
 const CIVILIAN_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x8f as f32);
 const CIVILIAN_PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const PORTRAIT_PICTURE_BASE: i16 = 0x438;
 const CIVILIAN_LEGEND_GROUP: i16 = 0x272d;
-const RESOURCE_ICON_ATLAS: i16 = 750;
-const DEVELOPMENT_STRIP_ATLAS: i16 = 751;
-const TERRAIN_ICON_ATLAS: i16 = 801;
+const RESOURCE_ICON_ATLAS: PictureId = PictureId::new(750);
+const DEVELOPMENT_STRIP_ATLAS: PictureId = PictureId::new(751);
+const TERRAIN_ICON_ATLAS: PictureId = PictureId::new(801);
 const RESOURCE_ICON_SIZE: Vec2 = Vec2::new(20.0, 24.0);
 const TERRAIN_ICON_SIZE: Vec2 = Vec2::new(20.0, 20.0);
 const DEVELOPMENT_FRAME_SIZE: Vec2 = Vec2::new(38.0, 26.0);
@@ -216,7 +215,7 @@ fn sync_civilian_toolbar(
         match unit {
             Some((_, unit)) => {
                 let picture = assets
-                    .picture(PictureId::new(portrait_picture_id(unit.unit_type())))
+                    .picture(unit.unit_type().portrait_picture())
                     .expect("retail civilian toolbar portrait must load");
                 commands
                     .entity(portrait)
@@ -242,10 +241,6 @@ fn sync_civilian_toolbar(
         unit,
         atlases.clone(),
     );
-}
-
-fn portrait_picture_id(kind: CivilianUnitKind) -> i16 {
-    PORTRAIT_PICTURE_BASE + i16::from(kind.retail())
 }
 
 fn civilian_legend_target_counts(state: &GameState, unit: &CivilianUnitState) -> [i16; 5] {
@@ -760,9 +755,9 @@ fn spawn_atlas_icon(
     ));
 }
 
-fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: i16) -> Handle<Image> {
+fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: PictureId) -> Handle<Image> {
     assets
-        .transparent_picture(PictureId::new(picture_id), TRANSPARENT_INDEX)
+        .transparent_picture(picture_id, TRANSPARENT_INDEX)
         .expect("retail civilian legend atlas must load")
 }
 

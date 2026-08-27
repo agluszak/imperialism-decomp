@@ -19,7 +19,7 @@ const MAP_LEFT: f32 = 49.0;
 const MAP_TOP: f32 = 45.0;
 const MAP_WIDTH: f32 = 540.0;
 const MAP_HEIGHT: f32 = 300.0;
-const MARKER_ATLAS: i16 = 803;
+const MARKER_ATLAS: PictureId = PictureId::new(803);
 const MARKER_CELL: f32 = 18.0;
 
 #[derive(Component)]
@@ -94,7 +94,7 @@ fn bind_battle_report(
     let root = *root;
     let main = tree.find(root, fourcc!("main"));
     let marker_atlas = assets
-        .transparent_picture(PictureId::new(MARKER_ATLAS), 0x24)
+        .transparent_picture(MARKER_ATLAS, 0x24)
         .expect("retail battle-report marker atlas must load");
     commands
         .spawn((

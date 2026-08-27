@@ -14,7 +14,7 @@ use imperialism_formats::*;
 const PAGE_TAG: FourCc = fourcc!("uarm");
 const ARMY_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x92 as f32);
 const PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const ARROW_ATLAS: i16 = 804;
+const ARROW_ATLAS: PictureId = PictureId::new(804);
 const TRANSPARENT_INDEX: u8 = 0x10;
 const COUNT_PALETTE: u8 = 0x28;
 const COUNT_SHADOW_PALETTE: u8 = 0xd2;
@@ -24,11 +24,11 @@ fn placard_picture_id(
     nation: MajorNationId,
     state: &GameState,
     category: ArmyUnitCategory,
-) -> i16 {
+) -> PictureId {
     let kind = state.technology().selected_capability_slots[nation][category];
-    let mut picture = 0x4c4 + i16::from(kind.retail());
+    let mut picture = PictureId::new(0x4c4).offset(i16::from(kind.retail()));
     if counts.totals[category] <= 0 {
-        picture += 0x1e;
+        picture = picture.offset(0x1e);
     }
     picture
 }
@@ -79,7 +79,7 @@ pub(crate) fn bind_army_toolbar(
         },
     ));
     let arrow_atlas = assets
-        .transparent_picture(PictureId::new(ARROW_ATLAS), TRANSPARENT_INDEX)
+        .transparent_picture(ARROW_ATLAS, TRANSPARENT_INDEX)
         .expect("retail numbered-arrow atlas 804 must load");
     for category in ArmyUnitCategory::all() {
         let pic = tree.child(page, placard_tag(category));
@@ -168,7 +168,7 @@ fn sync_army_toolbar(
     for (entity, placard, mut image) in &mut placards {
         let picture_id = placard_picture_id(counts_state, nation, &session.game, placard.0);
         image.image = assets
-            .picture(PictureId::new(picture_id))
+            .picture(picture_id)
             .expect("retail army placard picture must load");
         set_count_text(
             entity,
@@ -220,7 +220,7 @@ fn hide_empty_toolbar(
     for (entity, placard, mut image) in placards.iter_mut() {
         let picture_id = placard_picture_id(empty, nation, state, placard.0);
         image.image = assets
-            .picture(PictureId::new(picture_id))
+            .picture(picture_id)
             .expect("retail army placard picture must load");
         set_count_text(entity, counts, None);
     }

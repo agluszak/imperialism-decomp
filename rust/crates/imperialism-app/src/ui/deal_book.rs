@@ -18,11 +18,10 @@ use imperialism_core::*;
 use imperialism_formats::*;
 use super::hover_help::retail_string;
 
-const HISTORY_BACKGROUND: i16 = 0x2260;
-const CATEGORY_BACKGROUND: i16 = 0x2263;
-const TAB_STRIP_BASE: i16 = 0x2266;
-const FLAG_ATLAS: i16 = 0x21fb;
-const COMMODITY_ICON_BASE: i16 = 700;
+const HISTORY_BACKGROUND: PictureId = PictureId::new(0x2260);
+const CATEGORY_BACKGROUND: PictureId = PictureId::new(0x2263);
+const TAB_STRIP_BASE: PictureId = PictureId::new(0x2266);
+const FLAG_ATLAS: PictureId = PictureId::new(0x21fb);
 const PAGE_LEFT: f32 = 65.0;
 const PAGE_RIGHT: f32 = 314.0;
 const PAGE_TOP: f32 = 89.0;
@@ -146,29 +145,30 @@ fn bind_deal_book(
     let root = *root;
     let advanced_production_unlocked = session.game.technology().advanced_production_unlocked();
     let tab_base = if advanced_production_unlocked {
-        TAB_STRIP_BASE + 1
+        TAB_STRIP_BASE.offset(1)
     } else {
         TAB_STRIP_BASE
     };
     let empty_tabs = assets
-        .indexed_picture(PictureId::new(tab_base + 4))
+        .indexed_picture(tab_base.offset(4))
         .expect("retail deal-book empty tab strip must load");
     let filled_tabs = assets
-        .indexed_picture(PictureId::new(tab_base))
+        .indexed_picture(tab_base)
         .expect("retail deal-book filled tab strip must load");
     let pictures = DealBookPictures {
         history: assets
-            .picture(PictureId::new(HISTORY_BACKGROUND))
+            .picture(HISTORY_BACKGROUND)
             .expect("retail deal-book history background must load"),
         category: assets
-            .picture(PictureId::new(CATEGORY_BACKGROUND))
+            .picture(CATEGORY_BACKGROUND)
             .expect("retail deal-book category background must load"),
         flags: assets
-            .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
+            .transparent_picture(FLAG_ATLAS, 0x10)
             .expect("retail deal-book flag atlas must load"),
         commodities: ResourceTable::from_array(std::array::from_fn(|index| {
+            let kind = ResourceKind::from_index(index as u8).expect("resource table index");
             assets
-                .transparent_picture(PictureId::new(COMMODITY_ICON_BASE + index as i16), 0x10)
+                .transparent_picture(kind.material_picture(), 0x10)
                 .expect("retail deal-book commodity icon must load")
         })),
     };

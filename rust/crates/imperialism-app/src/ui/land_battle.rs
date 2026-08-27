@@ -14,6 +14,7 @@ use super::tactical_viewport::{
     BATTLEFIELD_WIDTH_PX, TACTICAL_TILE_ROW_HEIGHT_PX, TACTICAL_TILE_WIDTH_PX, TacticalViewport,
     battlefield_cursor_pixel, rect_xywh,
 };
+use super::retail_resources::MilitaryUnitKindRetailResources;
 use crate::AppState;
 use crate::media::MusicDirector;
 use bevy::picking::events::{Click, Pointer};
@@ -29,14 +30,14 @@ const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
 const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
 const TACTICAL_UNIT_CELL_PX: i32 = 0x32;
 const FORT_STRIP_WIDTH_PX: i32 = 0x11e;
-const TACTICAL_COMPOSITION_PICTURE_BASE: i16 = 0xf0a;
-const TACTICAL_FORT_STRIP_PICTURE: i16 = 0xf0e;
-const TACTICAL_UNIT_ATLAS_PICTURE: i16 = 0xee2;
-const TACTICAL_FORT_ATLAS_BASE: i16 = 0xee6;
-const TACTICAL_NO_FORT_ATLAS_PICTURE: i16 = 0xee7;
-const TACTICAL_EFFECT_ATLAS_PICTURE: i16 = 0xeeb;
-const TACTICAL_EXPERIENCE_STRIP_PICTURE: i16 = 800;
-const TACTICAL_UNIT_STATUS_ATLAS_PICTURE: i16 = 0x244;
+const TACTICAL_COMPOSITION_PICTURE_BASE: PictureId = PictureId::new(0xf0a);
+const TACTICAL_FORT_STRIP_PICTURE: PictureId = PictureId::new(0xf0e);
+const TACTICAL_UNIT_ATLAS_PICTURE: PictureId = PictureId::new(0xee2);
+const TACTICAL_FORT_ATLAS_BASE: PictureId = PictureId::new(0xee6);
+const TACTICAL_NO_FORT_ATLAS_PICTURE: PictureId = PictureId::new(0xee7);
+const TACTICAL_EFFECT_ATLAS_PICTURE: PictureId = PictureId::new(0xeeb);
+const TACTICAL_EXPERIENCE_STRIP_PICTURE: PictureId = PictureId::new(800);
+const TACTICAL_UNIT_STATUS_ATLAS_PICTURE: PictureId = PictureId::new(0x244);
 // `TTacArmyView` passes `0x24` to the legacy blitter after selecting palette
 // `0x10`. `RetailAssets::indexed_picture` exposes the resulting DIB indices,
 // where that keyed magenta is index `0x10` (the 0xee2 atlas confirms this).
@@ -248,7 +249,7 @@ struct LandBattleRetreatPrompt;
 
 #[derive(Component)]
 struct LandBattleEffect {
-    base_picture: i16,
+    base_picture: PictureId,
     frame_count: u8,
     frame: u8,
     next_tick: u128,
@@ -527,47 +528,47 @@ fn insert_land_battle_visuals(
     assets: &mut RetailUiAssets,
 ) {
     let composition_class = battle.composition_class();
-    let picture = i16::try_from(composition_class)
-        .expect("retail tactical composition class fits i16")
-        + TACTICAL_COMPOSITION_PICTURE_BASE;
+    let picture = TACTICAL_COMPOSITION_PICTURE_BASE.offset(
+        i16::try_from(composition_class).expect("retail tactical composition class fits i16"),
+    );
     let visuals = LandBattleVisuals {
         composition_class,
         backdrop: assets
-            .picture(PictureId::new(picture))
+            .picture(picture)
             .expect("retail tactical composition backdrop must load"),
         fort_strip: assets
-            .picture(PictureId::new(TACTICAL_FORT_STRIP_PICTURE))
+            .picture(TACTICAL_FORT_STRIP_PICTURE)
             .expect("retail tactical fort strip must load"),
         unit_atlas: assets
             .transparent_picture(
-                PictureId::new(TACTICAL_UNIT_ATLAS_PICTURE),
+                TACTICAL_UNIT_ATLAS_PICTURE,
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical unit atlas must load"),
         fort_atlas: assets
             .transparent_picture(
-                PictureId::new(if battle.fort_level() == FortLevel::None {
+                if battle.fort_level() == FortLevel::None {
                     TACTICAL_NO_FORT_ATLAS_PICTURE
                 } else {
-                    TACTICAL_FORT_ATLAS_BASE + i16::from(battle.fort_level().retail())
-                }),
+                    TACTICAL_FORT_ATLAS_BASE.offset(i16::from(battle.fort_level().retail()))
+                },
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical fort atlas must load"),
         effect_atlas: assets
             .transparent_picture(
-                PictureId::new(TACTICAL_EFFECT_ATLAS_PICTURE),
+                TACTICAL_EFFECT_ATLAS_PICTURE,
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical effect atlas must load"),
         experience_strip: assets
             .transparent_picture(
-                PictureId::new(TACTICAL_EXPERIENCE_STRIP_PICTURE),
+                TACTICAL_EXPERIENCE_STRIP_PICTURE,
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical experience strip must load"),
         unit_status_atlas: assets
-            .transparent_picture(PictureId::new(TACTICAL_UNIT_STATUS_ATLAS_PICTURE), 0)
+            .transparent_picture(TACTICAL_UNIT_STATUS_ATLAS_PICTURE, 0)
             .expect("retail tactical unit-status atlas must load"),
         selection_color: assets.palette_color(0x13),
         inset_color: assets.palette_color(0),
@@ -1103,7 +1104,7 @@ fn spawn_tactical_effect(
     field: Entity,
     map: &TacticalViewport,
     target: TacticalHex,
-    base_picture: i16,
+    base_picture: PictureId,
     frame_count: u8,
     now: u128,
     unit_sized: bool,
@@ -1114,7 +1115,7 @@ fn spawn_tactical_effect(
         hex_cell_xywh(map, target)
     };
     let image = assets
-        .transparent_picture(PictureId::new(base_picture), TACTICAL_TRANSPARENT_INDEX)
+        .transparent_picture(base_picture, TACTICAL_TRANSPARENT_INDEX)
         .expect("retail tactical effect frame");
     commands.spawn((
         LandBattleEffect {
@@ -1230,7 +1231,7 @@ fn animate_land_battle_actions(
         }
         image.image = assets
             .transparent_picture(
-                PictureId::new(effect.base_picture + i16::from(effect.frame)),
+                effect.base_picture.offset(i16::from(effect.frame)),
                 TACTICAL_TRANSPARENT_INDEX,
             )
             .expect("retail tactical effect frame");
@@ -1337,7 +1338,7 @@ fn animate_land_battle_actions(
                         field_entity,
                         &map,
                         target,
-                        base,
+                        PictureId::new(base),
                         frames,
                         now,
                         true,
@@ -1352,7 +1353,7 @@ fn animate_land_battle_actions(
                         field_entity,
                         &map,
                         target,
-                        0xf98,
+                        PictureId::new(0xf98),
                         6,
                         now,
                         false,
@@ -1590,14 +1591,9 @@ fn project_land_battle_toolbar(
             continue;
         };
         *visibility = Visibility::Inherited;
-        let side = match unit.side {
-            BattleSide::Attacker => 0,
-            BattleSide::Defender => 1,
-        };
+        let defender_side = matches!(unit.side, BattleSide::Defender);
         image.image = assets
-            .picture(PictureId::new(
-                0xf1e + i16::from(unit.unit_type.retail()) * 2 + side,
-            ))
+            .picture(unit.unit_type.tactical_portrait_picture(defender_side))
             .expect("retail tactical unit portrait");
         let experience = session
             .game
@@ -1630,9 +1626,7 @@ fn project_land_battle_toolbar(
         }
     }
     let coat = assets
-        .picture(PictureId::new(
-            0xea6 + i16::from(battle.nation(battle.active_side()).get()),
-        ))
+        .picture(PictureId::new(0xea6).offset(i16::from(battle.nation(battle.active_side()).get())))
         .expect("retail tactical current-player coat");
     for mut image in &mut coats {
         image.image = coat.clone();

@@ -2,19 +2,14 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::hover_help::retail_string;
 use super::retail::{RetailTree, RetailUiAssets};
+use super::retail_resources::TechnologyRetailResources;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, fourcc};
-use super::retail_resources::TechnologyRetailResources;
-
-const ABILITY_STATUS_PICTURE_INDEX: TechnologyTable<i16> = TechnologyTable::from_array([
-    0, 1, 3, 2, 7, 5, 6, 9, 10, 4, 8, 16, 12, 19, 22, 11, 17, 13, 14, 21, 15, 18, 26, 20, 23, 28,
-    24, 25, 27,
-]);
+use imperialism_formats::fourcc;
 
 #[derive(Component)]
 struct TechnologyAdvanceRoot;
@@ -82,9 +77,8 @@ fn render_technology_advance(
     let Some(tech) = session.game.current_technology_report() else {
         return;
     };
-    let picture_id = PictureId::new(ABILITY_STATUS_PICTURE_INDEX[tech] + 0x897);
     let picture = assets
-        .picture(picture_id)
+        .picture(tech.status_picture())
         .expect("technology status picture must load");
     let status = retail_string(&assets, tech.name_string());
     let prefix = retail_string(&assets, tech.description_string());

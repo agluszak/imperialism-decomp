@@ -194,10 +194,10 @@ fn spawn_technology_row(
 ) -> Entity {
     let y = (row % TECHNOLOGIES_PER_PAGE) as f32 * 63.0;
     let picture = assets
-        .picture(PictureId::new(0x08ff + i16::from(technology.retail()) * 2))
+        .picture(technology.store_idle_picture())
         .expect("retail technology illustration");
     let active_picture = assets
-        .picture(PictureId::new(0x0900 + i16::from(technology.retail()) * 2))
+        .picture(technology.store_active_picture())
         .unwrap_or_else(|_| picture.clone());
     let name = assets
         .string(technology.name_string())
@@ -427,7 +427,7 @@ fn bind_technology_modals(
             TextColor(Color::BLACK),
         ));
         let picture = assets
-            .picture(PictureId::new(0x0944 + i16::from(technology.retail())))
+            .picture(technology.history_picture())
             .expect("retail technology-history picture");
         commands
             .entity(view.find(fourcc!("pict")))

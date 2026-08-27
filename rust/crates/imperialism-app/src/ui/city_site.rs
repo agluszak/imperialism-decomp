@@ -19,6 +19,7 @@ use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
 use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, fourcc, StringGroup};
+use crate::ui::retail_resources::ResourceKindRetailResources;
 
 const PLACE_CITY_STRING_GROUP: i16 = 0x273f;
 const BAD_CITY_SITE_STRING_GROUP: i16 = 0x273b;
@@ -26,9 +27,8 @@ const MINISTER_STRING_GROUP: i16 = 0x2749;
 const NEW_CITY_DIALOG_WIDTH: i32 = 328;
 const RESOURCE_ITEM_WIDTH: i32 = 0x2c;
 const RESOURCE_ITEM_HEIGHT: i32 = 0x20;
-const COMMODITY_ICON_PICTURE_BASE: i16 = 700;
-const CITY_SITE_INTRO_GOLD_PICTURE: i16 = 0x24d1;
-const COAT_PICTURE_BASE: i16 = 9500;
+const CITY_SITE_INTRO_GOLD_PICTURE: PictureId = PictureId::new(0x24d1);
+const COAT_PICTURE_BASE: PictureId = PictureId::new(9500);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum CitySiteAction {
@@ -182,7 +182,7 @@ fn bind_city_site_intro(
         &title,
         &body,
         Some(CITY_SITE_INTRO_GOLD_PICTURE),
-        Some(COAT_PICTURE_BASE + i16::from(nation.get())),
+        Some(COAT_PICTURE_BASE.offset(i16::from(nation.get()))),
         true,
     );
     let okay = tree.find(root, OKAY);
@@ -412,7 +412,7 @@ fn stuff_new_city_dialog(
             x = 0x10;
             y += RESOURCE_ITEM_HEIGHT;
         }
-        spawn_numbered_resource_item(commands, assets, dlog, x, y, index as i16, count);
+        spawn_numbered_resource_item(commands, assets, dlog, x, y, resource, count);
     }
 }
 
@@ -422,10 +422,10 @@ fn spawn_numbered_resource_item(
     parent: Entity,
     x: i32,
     y: i32,
-    resource_index: i16,
+    resource: ResourceKind,
     count: i16,
 ) {
-    let icon = commodity_icon(assets, resource_index);
+    let icon = commodity_icon(assets, resource);
     commands
         .spawn_scene(numbered_resource_item_scene(x, y, icon, count))
         .insert(ChildOf(parent));
@@ -491,7 +491,7 @@ fn bind_city_site_notice(
         "",
         &notice.0,
         None,
-        Some(COAT_PICTURE_BASE + i16::from(nation.get())),
+        Some(COAT_PICTURE_BASE.offset(i16::from(nation.get()))),
         true,
     );
     let okay = tree.find(root, OKAY);
@@ -520,21 +520,21 @@ fn stuff_minister_dialog(
     assets: &mut RetailUiAssets,
     title: &str,
     body: &str,
-    gold_picture: Option<i16>,
-    coat_picture: Option<i16>,
+    gold_picture: Option<PictureId>,
+    coat_picture: Option<PictureId>,
     hide_cancel: bool,
 ) {
     let linger = bind_linger_dialog(commands, root, tree);
     if let Some(picture) = gold_picture {
         let gold = assets
-            .picture(PictureId::new(picture))
+            .picture(picture)
             .expect("retail minister gold picture must load");
         commands
             .entity(tree.find(root, fourcc!("DLOG")))
             .insert(ImageNode::new(gold));
     }
     if let Some(picture) = coat_picture {
-        if let Ok(image) = assets.picture(PictureId::new(picture)) {
+        if let Ok(image) = assets.picture(picture) {
             commands.entity(linger.coat).insert(ImageNode::new(image));
         }
     } else {
@@ -592,10 +592,9 @@ fn scene_has_children(root: Entity, children: &Query<&Children>) -> bool {
         .is_ok_and(|children| !children.is_empty())
 }
 
-fn commodity_icon(assets: &mut RetailUiAssets, resource_index: i16) -> Handle<Image> {
-    let picture_id = PictureId::new(COMMODITY_ICON_PICTURE_BASE + resource_index);
+fn commodity_icon(assets: &mut RetailUiAssets, resource: ResourceKind) -> Handle<Image> {
     assets
-        .transparent_picture(picture_id, 0x10)
+        .transparent_picture(resource.material_picture(), 0x10)
         .expect("retail commodity icon must load")
 }
 

@@ -110,10 +110,10 @@ pub(crate) fn bind_strategic_base_terrain(
     let terrain_pictures = load_strategic_terrain_pictures(assets);
     let river_masks = load_strategic_river_masks(assets);
     let improvement_pictures = load_strategic_improvement_pictures(assets);
-    let resource_icons = load_picture(assets, 750);
-    let resource_overlays = load_picture(assets, 751);
-    let survey_feedback = load_picture(assets, 801);
-    let order_markers = load_picture(assets, 806);
+    let resource_icons = load_picture(assets, PictureId::new(750));
+    let resource_overlays = load_picture(assets, PictureId::new(751));
+    let survey_feedback = load_picture(assets, PictureId::new(801));
+    let order_markers = load_picture(assets, PictureId::new(806));
     let selected_civilian = state
         .first_idle_civilian(state.turn().active_nation)
         .map(|(id, _)| id);
@@ -319,19 +319,18 @@ fn load_strategic_improvement_pictures(assets: &RetailUiAssets) -> Vec<IndexedPi
         .collect()
 }
 
-fn load_picture(assets: &RetailUiAssets, id: i16) -> IndexedPicture {
-    let picture_id = PictureId::new(id);
+fn load_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedPicture {
     assets.indexed_picture(picture_id).unwrap_or_else(|error| {
         panic!("retail strategic map picture {picture_id} must load: {error}")
     })
 }
 
-fn load_tile_picture(assets: &RetailUiAssets, id: i16) -> IndexedPicture {
-    let picture = load_picture(assets, id);
+fn load_tile_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedPicture {
+    let picture = load_picture(assets, picture_id);
     assert_eq!(
         (picture.width, picture.height),
         (TILE_SIZE as u32, TILE_SIZE as u32),
-        "retail strategic map picture {id} must be 64x64"
+        "retail strategic map picture {picture_id} must be 64x64"
     );
     picture
 }

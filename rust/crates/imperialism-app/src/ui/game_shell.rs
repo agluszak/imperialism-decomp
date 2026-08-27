@@ -321,17 +321,17 @@ fn bind_strategic_map_management_pictures(
 ) {
     let toolbar = tree.find(root, fourcc!("tool"));
     for (tag, idle_id) in [
-        (fourcc!("dipl"), 0x24d9),
-        (fourcc!("trad"), 0x24db),
-        (fourcc!("city"), 0x24dd),
-        (fourcc!("tran"), 0x24df),
+        (fourcc!("dipl"), PictureId::new(0x24d9)),
+        (fourcc!("trad"), PictureId::new(0x24db)),
+        (fourcc!("city"), PictureId::new(0x24dd)),
+        (fourcc!("tran"), PictureId::new(0x24df)),
     ] {
         let entity = tree.find(toolbar, tag);
         let idle = assets
-            .picture(PictureId::new(idle_id))
+            .picture(idle_id)
             .expect("retail strategic management button must load");
         let active = assets
-            .picture(PictureId::new(idle_id + 1))
+            .picture(idle_id.offset(1))
             .expect("retail strategic management pressed button must load");
         commands.entity(entity).insert((
             ImageNode::new(idle.clone()),

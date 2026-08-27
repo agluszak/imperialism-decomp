@@ -14,9 +14,8 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc, StringGroup};
+use imperialism_formats::{RetailTextStylePreset, fourcc, StringGroup};
 
-const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
 
 #[derive(Component)]
@@ -284,10 +283,8 @@ fn render_offer_sheet(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    if let Ok(icon) = assets.transparent_picture(
-        PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
-        0x10,
-    ) {
+    if let Ok(icon) = assets.transparent_picture(offer.commodity.resource().material_picture(), 0x10)
+    {
         commands.entity(view.icon).insert(ImageNode::new(icon));
     }
 
