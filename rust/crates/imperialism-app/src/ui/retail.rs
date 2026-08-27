@@ -17,7 +17,7 @@ pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow
 pub use super::retail_placard::{
     PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
 };
-pub use super::retail_slider::retail_two_pic_slider;
+pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_transport_gauge::{
     TransportGaugeParts, retail_transport_capacity_gauge, retail_transport_gauge,
     transport_gauge_width,
