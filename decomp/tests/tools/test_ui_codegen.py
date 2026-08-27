@@ -105,6 +105,20 @@ class UiCodegenTests(unittest.TestCase):
             (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
         )
 
+    def test_generated_rust_ui_omits_handwritten_city_tables(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        for marker in (
+            "CITY_BUILDINGS",
+            "CITY_BUILDING_ACTIONS",
+            "spawn_city_dialog",
+            "INDUSTRY_PAGE_CONTROLS",
+            "ARMORY_ROW_CONTROLS",
+            "WAREHOUSE_STOCK_TAGS",
+        ):
+            self.assertNotIn(marker, rendered)
+
     def test_transport_gauge_emits_retail_helper(self) -> None:
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources

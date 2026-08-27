@@ -53,7 +53,7 @@ pub(in crate::ui::city) fn open_city_dialog(
     slot: CityFacilitySlot,
     saved_position: Option<IVec2>,
 ) {
-    let root = generated::spawn_city_dialog(commands, slot);
+    let root = spawn_city_dialog(commands, slot);
     commands.entity(root).insert((
         CityBuildingDialog {
             slot,
