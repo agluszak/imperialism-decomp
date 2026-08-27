@@ -212,8 +212,7 @@ struct LandBattleFortStrip;
 struct LandBattleTileOverlay;
 
 #[derive(Component, Clone, Copy)]
-#[allow(dead_code)]
-struct LandBattleUnit(ArmyUnitId);
+struct LandBattleUnit;
 
 #[derive(Component, Clone, Copy)]
 struct LandBattleHover;
@@ -819,7 +818,7 @@ fn project_land_battle(
                 y += dy;
             }
             let mut entity = commands.spawn((
-                LandBattleUnit(unit.id),
+                LandBattleUnit,
                 ChildOf(field),
                 Node {
                     position_type: PositionType::Absolute,
@@ -2473,6 +2472,11 @@ mod tests {
             });
         app.update();
         app.update();
+        let static_before = app
+            .world_mut()
+            .query::<&LandBattleUnit>()
+            .iter(app.world())
+            .count();
         app.world_mut().spawn(LandBattleGlide {
             unit,
             path: vec![hex, hex],
@@ -2481,12 +2485,12 @@ mod tests {
             next_tick: 0,
         });
         app.update();
-        assert!(
-            app.world_mut()
-                .query::<&LandBattleUnit>()
-                .iter(app.world())
-                .all(|projected| projected.0 != unit)
-        );
+        let static_after = app
+            .world_mut()
+            .query::<&LandBattleUnit>()
+            .iter(app.world())
+            .count();
+        assert_eq!(static_after, static_before - 1);
     }
 
     #[test]
@@ -2538,7 +2542,7 @@ mod tests {
                     &land_viewport(probe.army_battle().unwrap().column_count(), 0),
                     hex,
                 );
-                Some((unit.id, x, y))
+                Some((x, y))
             })
             .collect();
         assert_eq!(
@@ -2554,14 +2558,11 @@ mod tests {
             .world_mut()
             .query::<(&LandBattleUnit, &Node)>()
             .iter(app.world())
-            .map(|(unit, node)| {
-                let (left, top) = node_left_top(node);
-                (unit.0, left, top)
-            })
+            .map(|(_, node)| node_left_top(node))
             .collect();
-        projected.sort_by_key(|(id, _, _)| id.source().get());
+        projected.sort();
         let mut expected = expected;
-        expected.sort_by_key(|(id, _, _)| id.source().get());
+        expected.sort();
         assert_eq!(projected, expected);
     }
 

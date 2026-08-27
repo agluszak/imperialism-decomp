@@ -47,7 +47,7 @@ struct OceanLabelAnchor {
     offset: Vec2,
 }
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         (sync_ocean_view_frames, sync_ocean_canvas, sync_ocean_labels)
@@ -56,7 +56,7 @@ pub(crate) fn register(app: &mut App) {
     );
 }
 
-pub(crate) fn bind_ocean_view(
+pub(super) fn bind_ocean_view(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -152,12 +152,10 @@ fn spawn_ocean_labels(
     canvas: Entity,
     session: &GameSession,
 ) {
-    let (zone_font, zone_layout, zone_line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 2, 12, 1))
-        .expect("retail ocean-zone text style");
-    let (nation_font, nation_layout, nation_line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 1, 12, 1))
-        .expect("retail ocean-nation text style");
+    let (zone_font, zone_layout, zone_line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 2, 12, 1));
+    let (nation_font, nation_layout, nation_line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 1, 12, 1));
     let palette = *assets.default_dib_palette();
 
     commands.entity(canvas).with_children(|parent| {

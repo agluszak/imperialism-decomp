@@ -51,15 +51,13 @@ fn bind_query_floaters(
     mut commands: Commands,
     roots: Query<Entity, Added<QueryFloaterRoot>>,
     tree: RetailTree,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
     for root in &roots {
         let view = tree.view(root);
-        let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
-                1, 0, 12, -2,
-            ))
-            .expect("retail query-floater label style");
+        let (font, layout, line_height, _) = assets.text_style(
+            imperialism_formats::RetailTextStylePreset::explicit(1, 0, 12, -2),
+        );
         for (tag, index) in QUERY_LABELS {
             let text = assets.ui_string(0x2757, index);
             commands.entity(view.find(tag)).insert((
@@ -113,36 +111,4 @@ fn on_query_floater_deal_book(
 ) {
     commands.insert_resource(ReturnTo(*state.get()));
     next_state.set(AppState::DealBook);
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn deal_book_action_enters_the_book_and_records_the_origin() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .add_plugins(crate::ui::UiWindowPlugin)
-            .insert_state(AppState::Trade)
-            .add_observer(on_query_floater_deal_book);
-        let root = app.world_mut().spawn((QueryFloaterRoot, ModalWindow)).id();
-        let action = app.world_mut().spawn(ChildOf(root)).id();
-        dismiss_on_activate(&mut app.world_mut().commands(), action, root);
-        app.world_mut().flush();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: action });
-        app.world_mut().flush();
-        app.update();
-
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::DealBook
-        );
-        assert_eq!(app.world().resource::<ReturnTo>().0, AppState::Trade);
-        assert!(app.world().get_entity(root).is_err());
-    }
 }

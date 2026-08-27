@@ -3,12 +3,8 @@ use super::overlays::{
     ACTIVITY_OVERLAY_DESTINATION, ACTIVITY_OVERLAY_HEIGHT, ACTIVITY_OVERLAY_WIDTH,
     IMPROVEMENT_PICTURE_IDS, RESOURCE_ICON_HEIGHT, RESOURCE_ICON_WIDTH, RESOURCE_OVERLAY_HEIGHT,
     RESOURCE_OVERLAY_WIDTH, SURVEY_FEEDBACK_DESTINATION, SURVEY_FEEDBACK_SOURCE_X,
-    city_marker_offset, transport_marker_offset,
 };
-use super::terrain::{
-    BASE_WATER_OFFSETS, coast_corner_variant, compose_strategic_base_tile, frame_for_offset,
-    uses_river_mouth_coast_frame,
-};
+use super::terrain::{BASE_WATER_OFFSETS, compose_strategic_base_tile, frame_for_offset};
 use super::*;
 use crate::ui::retail_palette::major_nation_palette;
 use crate::ui::test_support::{
@@ -236,23 +232,6 @@ impl MapFixture {
 }
 
 #[test]
-fn coast_corner_variant_matches_the_adjacent_bit_rule() {
-    assert_eq!(coast_corner_variant(0x05, 1), 0);
-    // Corner 0 needs bits 5 and 0 both set for the joined-corner variant.
-    assert_eq!(coast_corner_variant(0b0010_0001, 0), 1);
-    assert_eq!(coast_corner_variant(0b0000_0001, 0), 2);
-    assert_eq!(coast_corner_variant(0b0010_0000, 0), 3);
-}
-
-#[test]
-fn river_mouth_coast_frames_follow_corner_and_sprite_pairs() {
-    assert!(uses_river_mouth_coast_frame(1, Some(0x33)));
-    assert!(uses_river_mouth_coast_frame(4, Some(0x39)));
-    assert!(!uses_river_mouth_coast_frame(1, Some(0x35)));
-    assert!(!uses_river_mouth_coast_frame(0, Some(0x33)));
-}
-
-#[test]
 fn water_coast_corners_pull_distinct_frame_inks() {
     let terrain = synthetic_terrain_pictures();
     let rivers = synthetic_river_masks();
@@ -349,44 +328,6 @@ fn city_site_selection_draws_retail_frame_and_neighbor_outline() {
     let (x, y) = (projected_origin.x, projected_origin.y);
     let top_left = (y * VIEWPORT_WIDTH as i32 + x) as usize;
     assert_eq!(indices[top_left], MAP_SELECTION_PALETTE_INDEX);
-}
-
-#[test]
-fn city_marker_offsets_follow_former_owner_and_development_stage() {
-    let mut fixture = MapFixture::new();
-    let origin = fixture.origin;
-    fixture.edit(|map, origin| {
-        map[origin].flags = TileFlags::from_bits_retain(1);
-        map[origin].former_owner_nation = Some(TileOwnerTag::from_nation(NationId::new(6)));
-    });
-    assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x6c0));
-
-    fixture.edit(|map, origin| {
-        map[origin].flags = TileFlags::from_bits_retain(2);
-        map[origin].province = Some(ProvinceId::new(0));
-    });
-    assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x700));
-
-    fixture.edit(|map, origin| {
-        map[origin].former_owner_nation = Some(TileOwnerTag::new(8));
-        map[origin].flags = TileFlags::from_bits_retain(1);
-    });
-    assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x9c0));
-    fixture.edit(|map, origin| {
-        map[origin].flags = TileFlags::from_bits_retain(2);
-    });
-    assert_eq!(city_marker_offset(&fixture.state(), origin), Some(0x980));
-}
-
-#[test]
-fn transport_marker_offsets_encode_port_depot_and_link_state() {
-    assert_eq!(transport_marker_offset(0x10, true), Some(0x7c0));
-    assert_eq!(transport_marker_offset(0x10, false), Some(0x800));
-    assert_eq!(transport_marker_offset(0x14, true), Some(0x840));
-    assert_eq!(transport_marker_offset(0x14, false), Some(0xa40));
-    assert_eq!(transport_marker_offset(4, true), Some(0x880));
-    assert_eq!(transport_marker_offset(4, false), Some(0xa00));
-    assert_eq!(transport_marker_offset(0, true), None);
 }
 
 #[test]

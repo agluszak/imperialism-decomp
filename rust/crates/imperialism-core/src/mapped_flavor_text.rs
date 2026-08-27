@@ -3003,7 +3003,7 @@ fn should_retry_mapped_flavor_text(text: &str) -> bool {
     BANNED.iter().any(|banned| text.contains(banned))
 }
 
-pub(crate) fn generate_english_name(rng: &mut RetailLcg) -> String {
+pub fn generate_english_name(rng: &mut RetailLcg) -> String {
     generate_variant(rng, 2)
 }
 

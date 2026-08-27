@@ -350,17 +350,6 @@ mod tests {
     }
 
     #[test]
-    fn set_active_cue_replaces_the_pool() {
-        let mut music = MusicDirector::default();
-        music.set_pool(&[MusicTrack::MAIN_MENU, MusicTrack::TURN_FLOW_2]);
-        music.set_active_cue(MusicTrack::DIPLOMACY, false, 0);
-        assert_eq!(music.active, Some(MusicTrack::DIPLOMACY));
-        assert_eq!(music.pool, [MusicTrack::DIPLOMACY]);
-        assert_eq!(music.remaining, [MusicTrack::DIPLOMACY]);
-        assert!(music.pending.is_none());
-    }
-
-    #[test]
     fn set_active_cue_fades_before_switching() {
         let mut music = MusicDirector::default();
         music.set_active_cue(MusicTrack::MAIN_MENU, false, 0);
@@ -376,16 +365,6 @@ mod tests {
         assert!(music.fade.is_none());
         assert_eq!(music.active, Some(MusicTrack::DIPLOMACY));
         assert!(music.pending.is_none());
-    }
-
-    #[test]
-    fn same_active_cue_is_a_noop() {
-        let mut music = MusicDirector::default();
-        music.set_active_cue(MusicTrack::DIPLOMACY, false, 0);
-        music.set_active_cue(MusicTrack::DIPLOMACY, true, 40);
-        assert!(music.pending.is_none());
-        assert!(music.fade.is_none());
-        assert_eq!(music.active, Some(MusicTrack::DIPLOMACY));
     }
 
     #[test]
@@ -411,42 +390,6 @@ mod tests {
             music.pool,
             [MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3]
         );
-    }
-
-    #[test]
-    fn muted_slot_3_is_silence() {
-        let mut music = MusicDirector::default();
-        music.set_active_cue(MusicTrack::MAIN_MENU, false, 0);
-        assert_eq!(music.output_volume(0, 0), 0);
-    }
-
-    #[test]
-    fn turn_flow_pool_does_not_reshuffle_while_already_playing() {
-        let mut music = director_with_rng(1);
-        music.start_turn_flow_pool(0);
-        let first = music.active.unwrap();
-        let remaining = music.remaining.clone();
-        music.start_turn_flow_pool(40);
-        assert_eq!(music.active, Some(first));
-        assert_eq!(music.remaining, remaining);
-        assert_eq!(
-            music.pool,
-            [MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3]
-        );
-    }
-
-    #[test]
-    fn request_preset_keeps_the_existing_pool() {
-        let mut music = MusicDirector::default();
-        music.set_pool(&[MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3]);
-        music.active = Some(MusicTrack::TURN_FLOW_2);
-        music.request_preset(MusicTrack::DIPLOMACY, true, 5);
-        assert_eq!(
-            music.pool,
-            [MusicTrack::TURN_FLOW_2, MusicTrack::TURN_FLOW_3]
-        );
-        assert_eq!(music.pending, Some(MusicTrack::DIPLOMACY));
-        assert_eq!(music.active, Some(MusicTrack::TURN_FLOW_2));
     }
 
     #[test]

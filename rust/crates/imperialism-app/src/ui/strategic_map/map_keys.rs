@@ -8,7 +8,7 @@ use crate::ui::GameSession;
 use crate::ui::window::no_modal;
 use bevy::prelude::*;
 
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         map_hotkeys.run_if(in_state(AppState::StrategicMap).and_then(no_modal)),

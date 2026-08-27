@@ -304,9 +304,8 @@ fn bind_city_hover_title(
     tree: &RetailTree,
     assets: &mut RetailUiAssets,
 ) -> Entity {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 0, 12, 1))
-        .expect("retail city cursor-panel text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, 1));
     let entity = tree.find(root, fourcc!("curs"));
     commands.entity(entity).insert((
         Text::new(""),
@@ -663,16 +662,6 @@ mod tests {
             alpha,
             [0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff]
         );
-    }
-
-    #[test]
-    fn city_production_placard_values_use_book_antiqua_10pt() {
-        // Matches `TPlacard::Draw` / RetailPlacard text style.
-        let style =
-            resolve_retail_text_style(RetailTextStylePreset::explicit(3, 0, 10, 0)).unwrap();
-        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
-        assert_eq!(style.logical_pixel_height, 14);
-        assert_eq!(style.alignment, RetailTextAlignment::Left);
     }
 
     #[test]

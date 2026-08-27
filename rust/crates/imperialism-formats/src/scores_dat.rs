@@ -4,8 +4,6 @@
 //! nation's `GenerateGameScore` total at the first index where `score > stored`.
 //! Equal scores rank lower.
 
-use std::io::{self, Read, Write};
-
 pub const HIGH_SCORE_COUNT: usize = 10;
 pub const HIGH_SCORE_NAME_LENGTH: usize = 0x20;
 
@@ -52,16 +50,6 @@ pub fn write_scores_dat(table: &HighScoreTable) -> Vec<u8> {
         bytes.extend_from_slice(&name);
     }
     bytes
-}
-
-pub fn read_scores_dat_from<R: Read>(mut reader: R) -> io::Result<HighScoreTable> {
-    let mut bytes = Vec::new();
-    reader.read_to_end(&mut bytes)?;
-    Ok(read_scores_dat(&bytes))
-}
-
-pub fn write_scores_dat_to<W: Write>(mut writer: W, table: &HighScoreTable) -> io::Result<()> {
-    writer.write_all(&write_scores_dat(table))
 }
 
 /// Insert `score`/`name` at the first index where `score > stored`. Equals rank lower.

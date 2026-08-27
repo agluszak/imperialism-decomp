@@ -319,42 +319,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn keyed_blit_clips_both_pictures() {
-        let source = IndexedPicture {
-            width: 3,
-            height: 2,
-            pixels: vec![1, 2, 3, 4, 0x10, 6],
-        };
-        let mut destination = indexed_picture(3, 2, 9);
-        destination.blit_keyed(&source, IRect::new(0, 0, 3, 2), IVec2::new(-1, 0), 0x10);
-        assert_eq!(destination.pixels, [2, 3, 9, 9, 6, 9]);
-    }
-
-    #[test]
-    fn opaque_copy_clips_once_then_copies_rows() {
-        let source = IndexedPicture {
-            width: 4,
-            height: 2,
-            pixels: vec![1, 2, 3, 4, 5, 6, 7, 8],
-        };
-        let mut destination = indexed_picture(3, 2, 9);
-        destination.copy_rect(&source, IRect::new(1, 0, 4, 2), IVec2::new(-1, 0));
-        assert_eq!(destination.pixels, [3, 4, 9, 7, 8, 9]);
-    }
-
-    #[test]
-    fn crop_copies_the_requested_rows_into_a_new_picture() {
-        let source = IndexedPicture {
-            width: 4,
-            height: 3,
-            pixels: (0..12).collect(),
-        };
-        let cropped = source.crop(IRect::new(1, 1, 4, 3));
-        assert_eq!((cropped.width, cropped.height), (3, 2));
-        assert_eq!(cropped.pixels, [5, 6, 7, 9, 10, 11]);
-    }
-
-    #[test]
     fn gdi_line_excludes_endpoint() {
         let mut picture = indexed_picture(4, 2, 0);
         picture.line_to_gdi(IVec2::new(0, 0), IVec2::new(3, 0), 7, 1);

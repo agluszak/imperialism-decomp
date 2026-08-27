@@ -248,6 +248,7 @@ impl<'de, T: Deserialize<'de>> Deserialize<'de> for ProvinceTable<T> {
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
 )]
+#[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum PendingActionKind {
     NavyGrowthReward,
@@ -268,21 +269,7 @@ impl PendingActionKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::NavyGrowthReward => 0,
-            Self::ArmyGrowthReward => 1,
-            Self::OverseasDeveloperReward => 2,
-            Self::VillageDevelopment => 3,
-            Self::TownDevelopment => 4,
-            Self::ShipyardIronworkingUpgrade => 5,
-            Self::ConqueredCapitalArmoryUpgrade => 6,
-            Self::UniversityExpansion => 7,
-            Self::RailyardExpansion => 8,
-            Self::AnnexedGreatPowerCapitalExpansion => 9,
-            Self::ColonyMonumentMerchantCapacity => 10,
-            Self::CouncilLeadMonument => 11,
-            Self::ConquestMonumentArmory => 12,
-        }
+        self as u8
     }
 }
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;

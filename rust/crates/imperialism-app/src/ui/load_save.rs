@@ -117,20 +117,11 @@ struct LoadSaveRoot {
     mode: LoadSaveMode,
     selected: Option<SaveSlot>,
     renaming: bool,
+    info: Entity,
+    map: Entity,
+    name_field: Option<Entity>,
+    presentation: LoadSavePresentation,
 }
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum LoadSaveAction {
-    SelectSlot(SaveSlot),
-    Okay,
-    Cancel,
-}
-
-#[derive(Component)]
-struct SaveNameField;
-
-#[derive(Component)]
-struct LoadSaveInfo;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum LoadSavePreviewKey {
@@ -149,11 +140,27 @@ struct SlotPresentation {
     info: String,
 }
 
-#[derive(Component, Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct LoadSavePresentation {
     slots: [Option<SlotPresentation>; NUMBERED_SAVE_SLOT_COUNT as usize],
     autosave: Option<SlotPresentation>,
     empty_label: String,
+}
+
+fn empty_root(mode: LoadSaveMode) -> LoadSaveRoot {
+    LoadSaveRoot {
+        mode,
+        selected: None,
+        renaming: false,
+        info: Entity::PLACEHOLDER,
+        map: Entity::PLACEHOLDER,
+        name_field: None,
+        presentation: LoadSavePresentation {
+            slots: std::array::from_fn(|_| None),
+            autosave: None,
+            empty_label: String::new(),
+        },
+    }
 }
 
 #[derive(Component)]
@@ -286,14 +293,9 @@ fn loaded_game_destination(game: &GameState) -> AppState {
 
 fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
     let root = commands.spawn_scene(generated::linger_1502()).id();
-    commands.entity(root).insert((
-        LoadSaveRoot {
-            mode: request.0,
-            selected: None,
-            renaming: false,
-        },
-        DespawnOnExit(AppState::LoadSave),
-    ));
+    commands
+        .entity(root)
+        .insert((empty_root(request.0), DespawnOnExit(AppState::LoadSave)));
 }
 
 fn bind_load_save(
@@ -305,6 +307,8 @@ fn bind_load_save(
 ) {
     let (root_entity, screen) = root.into_inner();
     let mode = screen.mode;
+    let info = tree.find(root_entity, fourcc!("info"));
+    let map = tree.find(root_entity, fourcc!("map "));
     bind_load_save_actions(&mut commands, root_entity, &tree, mode);
     let listing = list_save_slots(&save_dir.0);
     let empty_label = assets.ui_string(EMPTY_SLOT_STRING_GROUP, EMPTY_SLOT_STRING_INDEX);
@@ -316,13 +320,13 @@ fn bind_load_save(
             .entity(tree.find(root_entity, fourcc!("otto")))
             .remove::<InteractionDisabled>();
     }
-    commands
-        .entity(tree.find(root_entity, fourcc!("info")))
-        .insert(Text::new(String::new()));
-    commands
-        .entity(tree.find(root_entity, fourcc!("map ")))
-        .insert(LoadSaveMapPreview::default());
-    commands.entity(root_entity).insert(presentation);
+    commands.entity(info).insert(Text::new(String::new()));
+    commands.entity(map).insert(LoadSaveMapPreview::default());
+    let mut root = empty_root(mode);
+    root.info = info;
+    root.map = map;
+    root.presentation = presentation;
+    commands.entity(root_entity).insert(root);
 }
 
 fn bind_load_save_actions(
@@ -334,31 +338,40 @@ fn bind_load_save_actions(
     for (index, tag) in SLOT_TAGS.iter().copied().enumerate() {
         let entity = tree.find(root, tag);
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
-        commands
-            .entity(entity)
-            .insert((Button, LoadSaveAction::SelectSlot(slot)))
-            .observe(on_load_save_activate);
+        commands.entity(entity).insert(Button);
+        observe_select_slot(commands, entity, slot);
     }
-    commands
-        .entity(tree.find(root, fourcc!("info")))
-        .insert(LoadSaveInfo);
     commands
         .entity(tree.find(root, fourcc!("okay")))
-        .insert(LoadSaveAction::Okay)
         .remove::<InteractionDisabled>()
-        .observe(on_load_save_activate);
+        .observe(on_okay);
     commands
         .entity(tree.find(root, fourcc!("cncl")))
-        .insert(LoadSaveAction::Cancel)
         .remove::<InteractionDisabled>()
-        .observe(on_load_save_activate);
+        .observe(on_cancel);
     let otto = tree.find(root, fourcc!("otto"));
-    let mut otto_commands = commands.entity(otto);
-    otto_commands.insert(LoadSaveAction::SelectSlot(SaveSlot::Autosave));
-    otto_commands.observe(on_load_save_activate);
+    observe_select_slot(commands, otto, SaveSlot::Autosave);
     if mode == LoadSaveMode::Save {
-        otto_commands.insert(InteractionDisabled);
+        commands.entity(otto).insert(InteractionDisabled);
     }
+}
+
+fn observe_select_slot(commands: &mut Commands, entity: Entity, slot: SaveSlot) {
+    commands.entity(entity).observe(
+        move |activate: On<Activate>,
+              notices: Query<(), With<LoadSaveNotice>>,
+              mut roots: Query<&mut LoadSaveRoot>,
+              mut texts: Query<&mut Text>,
+              mut commands: Commands| {
+            if !notices.is_empty() {
+                return;
+            }
+            let Ok(mut root) = roots.single_mut() else {
+                return;
+            };
+            select_slot(&mut commands, &mut root, activate.entity, slot, &mut texts);
+        },
+    );
 }
 
 fn presentation_from_listing(
@@ -477,14 +490,14 @@ fn sync_load_save_preview(
     mut commands: Commands,
     mut assets: RetailUiAssets,
     roots: Query<&LoadSaveRoot>,
-    mut maps: Query<(Entity, Option<&ImageNode>, &mut LoadSaveMapPreview)>,
+    mut maps: Query<(Option<&ImageNode>, &mut LoadSaveMapPreview)>,
     save_dir: Res<SaveDirectory>,
     session: Option<Res<GameSession>>,
 ) {
     let Ok(root) = roots.single() else {
         return;
     };
-    let Ok((entity, image_node, mut preview)) = maps.single_mut() else {
+    let Ok((image_node, mut preview)) = maps.get_mut(root.map) else {
         return;
     };
     let key = match root.mode {
@@ -505,7 +518,7 @@ fn sync_load_save_preview(
             };
             let selected = session.game.turn().active_nation;
             let preview = satellite_preview(|tile| session.game.map()[tile].owner_nation, selected);
-            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &preview);
+            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
         }
         LoadSavePreviewKey::Slot(slot) => {
             let path = retail_save_path(&save_dir.0, slot);
@@ -524,20 +537,29 @@ fn sync_load_save_preview(
                 |tile| owners.get(usize::from(tile.get())).copied().flatten(),
                 selected,
             );
-            apply_satellite_preview(&mut commands, &mut assets, entity, image_node, &preview);
+            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
         }
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn on_load_save_activate(
-    activate: On<Activate>,
-    actions: Query<&LoadSaveAction>,
+fn on_cancel(
+    _activate: On<Activate>,
     notices: Query<(), With<LoadSaveNotice>>,
-    mut roots: Query<(&mut LoadSaveRoot, Option<&LoadSavePresentation>)>,
-    names: Query<&EditableText, With<SaveNameField>>,
-    mut texts: Query<&mut Text>,
-    info: Query<Entity, With<LoadSaveInfo>>,
+    returning: Res<ReturnTo>,
+    mut next_state: ResMut<NextState<AppState>>,
+) {
+    if !notices.is_empty() {
+        return;
+    }
+    next_state.set(returning.0);
+}
+
+#[allow(clippy::too_many_arguments)]
+fn on_okay(
+    _activate: On<Activate>,
+    notices: Query<(), With<LoadSaveNotice>>,
+    roots: Query<&LoadSaveRoot>,
+    editables: Query<&EditableText>,
     save_dir: Option<Res<SaveDirectory>>,
     returning: Res<ReturnTo>,
     session: Option<Res<GameSession>>,
@@ -551,56 +573,33 @@ fn on_load_save_activate(
     if !notices.is_empty() {
         return;
     }
-    let Ok(action) = actions.get(activate.entity) else {
+    let Ok(root) = roots.single() else {
         return;
     };
-    let Ok((mut root, presentation)) = roots.single_mut() else {
+    let Some(save_dir) = save_dir else {
         return;
     };
-    match *action {
-        LoadSaveAction::Cancel => {
-            next_state.set(returning.0);
-        }
-        LoadSaveAction::SelectSlot(slot) => select_slot(
-            &mut commands,
-            &mut root,
-            activate.entity,
-            slot,
-            presentation,
-            &mut texts,
-            info.single().ok(),
-        ),
-        LoadSaveAction::Okay => {
-            let Some(save_dir) = save_dir else {
-                return;
-            };
-            confirm_or_apply(
-                &mut commands,
-                &root,
-                &names,
-                presentation,
-                &save_dir.0,
-                session.as_deref(),
-                map.as_deref(),
-                city_windows.as_deref(),
-                battle_reports.as_deref(),
-                assets.as_ref(),
-                returning.0,
-                &mut next_state,
-            );
-        }
-    }
+    confirm_or_apply(
+        &mut commands,
+        root,
+        &editables,
+        &save_dir.0,
+        session.as_deref(),
+        map.as_deref(),
+        city_windows.as_deref(),
+        battle_reports.as_deref(),
+        assets.as_ref(),
+        returning.0,
+        &mut next_state,
+    );
 }
 
-#[allow(clippy::too_many_arguments)]
 fn select_slot(
     commands: &mut Commands,
     root: &mut LoadSaveRoot,
     entity: Entity,
     slot: SaveSlot,
-    presentation: Option<&LoadSavePresentation>,
     texts: &mut Query<&mut Text>,
-    info: Option<Entity>,
 ) {
     if root.selected == Some(slot) {
         return;
@@ -610,9 +609,8 @@ fn select_slot(
     }
     root.selected = Some(slot);
     if root.mode == LoadSaveMode::Load {
-        if let Some(caption) = presentation.and_then(|listing| slot_info(listing, slot))
-            && let Some(info) = info
-            && let Ok(mut text) = texts.get_mut(info)
+        if let Some(caption) = slot_info(&root.presentation, slot)
+            && let Ok(mut text) = texts.get_mut(root.info)
         {
             text.0 = caption.to_owned();
         }
@@ -626,7 +624,6 @@ fn select_slot(
         .map(|text| text.0.clone())
         .unwrap_or_default();
     commands.entity(entity).insert((
-        SaveNameField,
         SelectAllOnFocus,
         AutoFocus,
         TextCursorStyle::default(),
@@ -637,6 +634,7 @@ fn select_slot(
             ..EditableText::new(caption)
         },
     ));
+    root.name_field = Some(entity);
     root.renaming = true;
 }
 
@@ -656,8 +654,7 @@ fn slot_info(presentation: &LoadSavePresentation, slot: SaveSlot) -> Option<&str
 fn confirm_or_apply(
     commands: &mut Commands,
     root: &LoadSaveRoot,
-    names: &Query<&EditableText, With<SaveNameField>>,
-    presentation: Option<&LoadSavePresentation>,
+    editables: &Query<&EditableText>,
     save_dir: &Path,
     session: Option<&GameSession>,
     map: Option<&StrategicMapSession>,
@@ -692,15 +689,13 @@ fn confirm_or_apply(
             let Some(session) = session else {
                 return;
             };
-            let typed = names
-                .single()
+            let typed = root
+                .name_field
+                .and_then(|entity| editables.get(entity).ok())
                 .map(|editable| editable.value().to_string())
                 .unwrap_or_default();
-            let empty_label = presentation
-                .map(|listing| listing.empty_label.as_str())
-                .unwrap_or_default();
             let label = if typed.is_empty() {
-                empty_label.to_owned()
+                root.presentation.empty_label.clone()
             } else {
                 typed
             };
@@ -721,7 +716,6 @@ fn confirm_or_apply(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 fn apply_load(
     commands: &mut Commands,
     save_dir: &Path,
@@ -891,19 +885,18 @@ fn bind_flag_menu(
     mut commands: Commands,
     root: Single<Entity, Added<FlagMenuRoot>>,
     tree: RetailTree,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
 ) {
     let root = *root;
     for (index, (label_tag, control, action)) in FLAG_MENU_ROWS.iter().copied().enumerate() {
         let entity = tree.find(root, label_tag);
-        let (font, layout, line_height, _) = assets
-            .text_style(imperialism_formats::RetailTextStylePreset::explicit(
+        let (font, layout, line_height, _) =
+            assets.text_style(imperialism_formats::RetailTextStylePreset::explicit(
                 1,
                 0,
                 if index == 0 { 12 } else { 14 },
                 if index > 1 { -2 } else { 1 },
-            ))
-            .expect("retail flag-menu label style");
+            ));
         let (text_palette, shadow_palette) = if index == 0 {
             (0x5c, 0x28)
         } else {
@@ -1088,11 +1081,7 @@ mod tests {
     fn spawn_test_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
         let root = commands
             .spawn((
-                LoadSaveRoot {
-                    mode: request.0,
-                    selected: None,
-                    renaming: false,
-                },
+                empty_root(request.0),
                 Node::default(),
                 DespawnOnExit(AppState::LoadSave),
             ))
@@ -1105,7 +1094,6 @@ mod tests {
         commands.spawn((RetailTag(fourcc!("otto")), Node::default(), ChildOf(root)));
         commands.spawn((
             RetailTag(fourcc!("info")),
-            LoadSaveInfo,
             Text::new(String::new()),
             ChildOf(root),
         ));
@@ -1117,7 +1105,12 @@ mod tests {
         tree: RetailTree,
     ) {
         let (entity, screen) = root.into_inner();
+        let info = tree.find(entity, fourcc!("info"));
         bind_load_save_actions(&mut commands, entity, &tree, screen.mode);
+        let mut root = empty_root(screen.mode);
+        root.info = info;
+        root.map = info;
+        commands.entity(entity).insert(root);
     }
 
     fn spawn_test_flag_menu(mut commands: Commands) {
@@ -1136,6 +1129,15 @@ mod tests {
         (accept, dismiss)
     }
 
+    fn tagged(app: &mut App, tag: FourCc) -> Entity {
+        app.world_mut()
+            .query::<(Entity, &RetailTag)>()
+            .iter(app.world())
+            .find(|(_, retail)| retail.0 == tag)
+            .map(|(entity, _)| entity)
+            .expect("tagged control")
+    }
+
     #[test]
     fn cancel_restores_the_previous_application_state() {
         let mut app = test_app(AppState::MainMenu);
@@ -1150,14 +1152,7 @@ mod tests {
             &AppState::LoadSave
         );
 
-        let cancel = app
-            .world_mut()
-            .query_filtered::<Entity, With<LoadSaveAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<LoadSaveAction>(*entity) == Some(&LoadSaveAction::Cancel)
-            })
-            .unwrap();
+        let cancel = tagged(&mut app, fourcc!("cncl"));
         app.world_mut()
             .commands()
             .trigger(Activate { entity: cancel });
@@ -1182,16 +1177,7 @@ mod tests {
             .set(AppState::LoadSave);
         app.update();
 
-        let slot = app
-            .world_mut()
-            .query_filtered::<Entity, With<LoadSaveAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<LoadSaveAction>(*entity)
-                    == Some(&LoadSaveAction::SelectSlot(SaveSlot::Numbered(0)))
-            })
-            .unwrap();
-
+        let slot = tagged(&mut app, fourcc!("slt0"));
         app.world_mut()
             .commands()
             .trigger(Activate { entity: slot });
@@ -1204,16 +1190,10 @@ mod tests {
             .unwrap();
         assert_eq!(root.selected, Some(SaveSlot::Numbered(0)));
         assert!(root.renaming);
-        assert!(app.world().get::<SaveNameField>(slot).is_some());
+        assert_eq!(root.name_field, Some(slot));
+        assert!(app.world().get::<EditableText>(slot).is_some());
 
-        let okay = app
-            .world_mut()
-            .query_filtered::<Entity, With<LoadSaveAction>>()
-            .iter(app.world())
-            .find(|entity| {
-                app.world().get::<LoadSaveAction>(*entity) == Some(&LoadSaveAction::Okay)
-            })
-            .unwrap();
+        let okay = tagged(&mut app, fourcc!("okay"));
         app.world_mut()
             .commands()
             .trigger(Activate { entity: okay });

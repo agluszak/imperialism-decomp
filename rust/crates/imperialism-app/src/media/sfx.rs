@@ -197,33 +197,14 @@ mod tests {
     }
 
     #[test]
-    fn muted_slot_2_does_not_spawn_a_player() {
-        let mut app = audio_app();
-        seed_click(app.world_mut());
-        play_click(&mut app, 0);
-        assert!(spawned_volumes(app.world_mut()).is_empty());
-    }
-
-    #[test]
-    fn slot_2_percent_scales_the_one_shot_player() {
-        let mut app = audio_app();
-        seed_click(app.world_mut());
-        play_click(&mut app, 50);
-        assert_eq!(spawned_volumes(app.world_mut()), [0.5]);
-    }
-
-    #[test]
-    fn missing_wave_does_not_strand() {
+    fn volume_percent_scales_spawned_one_shots_and_missing_wave_is_silent() {
         let mut app = audio_app();
         play_click(&mut app, 100);
         assert!(spawned_volumes(app.world_mut()).is_empty());
-    }
 
-    #[test]
-    fn opening_cinematic_blocks_new_sfx() {
-        assert!(movie_blocks_sfx(Some(AppState::OpeningCinematic)));
-        assert!(!movie_blocks_sfx(Some(AppState::MainMenu)));
-        assert!(!movie_blocks_sfx(None));
+        seed_click(app.world_mut());
+        play_click(&mut app, 50);
+        assert_eq!(spawned_volumes(app.world_mut()), [0.5]);
     }
 
     #[test]

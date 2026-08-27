@@ -1880,11 +1880,12 @@ def _rust_presentation_owns_children(presentation: str | None) -> bool:
 def _rust_transport_gauge_shell_and_children(
     picture_id: int, track_left_expr: str, capacity: bool
 ) -> tuple[list[str], list[list[str]]]:
-    """Root components + synthetic child BSN nodes for a merged transport gauge.
+    """Root components + synthetic child BSN nodes for a transport gauge.
 
     Used when the recovered `TTransportPicture` already has resource children so
     codegen emits exactly one `Children` owner. Geometry lives in
-    `retail_transport_gauge.rs` helpers referenced here.
+    `retail_transport_gauge.rs` helpers referenced here. Always emit the shell so
+    there is one `Children` owner even when the recovered node has no resource kids.
     """
 
     fill_helper = (
@@ -2378,19 +2379,10 @@ def _render_bsn_node(
     elif presentation == "transport_gauge":
         track_left_expr = f"transport_gauge_track_left({int(node.geometry[0])})"
         capacity = node.tag == "tota"
-        if recovered_children:
-            # One Children owner: merge synthetic remainder/fill/limit with recovered kids.
-            shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
-                int(picture_id), track_left_expr, capacity
-            )
-            lines.extend(shell)
-        else:
-            helper = (
-                "retail_transport_capacity_gauge"
-                if capacity
-                else "retail_transport_gauge"
-            )
-            lines.append(f"    {helper}({int(picture_id)}, {track_left_expr})")
+        shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
+            int(picture_id), track_left_expr, capacity
+        )
+        lines.extend(shell)
     elif presentation == "pressed_overlay":
         lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
     elif presentation == "madness":

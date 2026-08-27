@@ -6,7 +6,7 @@ use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::{RetailTree, ancestor_with};
+use crate::ui::retail::RetailTree;
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use crate::ui::retail_resources::EngineerConstructionChoiceRetailResources;
 use crate::ui::retail_resources::ResourceKindRetailResources;
@@ -50,7 +50,6 @@ struct CivilianLedgerRow {
 enum CivilianLedgerAction {
     Previous,
     Next,
-    Select(TileId),
 }
 
 #[derive(Component)]
@@ -114,25 +113,7 @@ enum GarrisonRowAction {
     Toggle(MilitaryUnitId),
 }
 
-#[derive(Clone, Copy, Component)]
-enum ArmyRosterRowAction {
-    Select(ProvinceId),
-}
-
-#[derive(Clone, Copy, Component)]
-enum NavyRosterRowAction {
-    Select {
-        zone: OceanZoneId,
-        force: Option<TaskForceId>,
-    },
-    Toggle {
-        force: TaskForceId,
-        ship: ShipId,
-        selected: bool,
-    },
-}
-
-pub(crate) fn register(app: &mut App) {
+pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
         (
@@ -253,7 +234,7 @@ fn bind_added_civilian_ledgers(
     mut commands: Commands,
     added: Query<Entity, Added<CivilianLedger>>,
     tree: RetailTree,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     for root in &added {
@@ -272,9 +253,8 @@ fn bind_added_civilian_ledgers(
             last_column,
         });
 
-        let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(3, 0, 12, -2))
-            .expect("retail civilian-ledger text style");
+        let (font, layout, line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(3, 0, 12, -2));
         let title = commands
             .spawn((
                 Node {
@@ -306,7 +286,6 @@ fn bind_added_civilian_ledgers(
                         column,
                         row: row_in_column,
                     },
-                    CivilianLedgerAction::Select(tile),
                     Button,
                     Node {
                         position_type: PositionType::Absolute,
@@ -328,7 +307,37 @@ fn bind_added_civilian_ledgers(
                         Visibility::Hidden
                     },
                 ))
-                .observe(on_civilian_ledger_action)
+                .observe(
+                    move |_: On<Activate>,
+                          mut map: ResMut<StrategicMapSession>,
+                          mut session: ResMut<GameSession>,
+                          mut commands: Commands,
+                          mut audio: RetailAudioAssets| {
+                        map.apply(&mut session.game, MapAction::Center(tile));
+                        let nation = session.game.turn().active_nation;
+                        let selectable = session
+                            .game
+                            .civilian_on_tile_for_nation(tile, nation)
+                            .and_then(|(unit, state)| {
+                                matches!(
+                                    state.order(),
+                                    CivilianWorkOrder::Idle
+                                        | CivilianWorkOrder::Sleep
+                                        | CivilianWorkOrder::Later
+                                )
+                                .then_some(unit)
+                            });
+                        if let Some(unit) = selectable {
+                            map.apply(
+                                &mut session.game,
+                                MapAction::Select(StrategicSelection::Civilian(Some(unit))),
+                            );
+                            session.game.activate_civilian_selection(unit);
+                            audio.play(&mut commands, SoundId::new(0x2338));
+                        }
+                        commands.entity(root).try_despawn();
+                    },
+                )
                 .id();
             commands.entity(page).add_child(row);
         }
@@ -348,12 +357,27 @@ fn bind_added_civilian_ledgers(
                         {
                             Visibility::Inherited
                         }
-                        CivilianLedgerAction::Next | CivilianLedgerAction::Select(_) => {
-                            Visibility::Hidden
-                        }
+                        CivilianLedgerAction::Next => Visibility::Hidden,
                     },
                 ))
-                .observe(on_civilian_ledger_action);
+                .observe(
+                    move |_: On<Activate>, mut ledgers: Query<&mut CivilianLedger>| {
+                        let mut ledger =
+                            ledgers.get_mut(root).expect("civilian ledger action root");
+                        match action {
+                            CivilianLedgerAction::Previous => {
+                                ledger.current_column = ledger
+                                    .current_column
+                                    .saturating_sub(CIVILIAN_LEDGER_VISIBLE_COLUMNS);
+                            }
+                            CivilianLedgerAction::Next => {
+                                ledger.current_column = (ledger.current_column
+                                    + CIVILIAN_LEDGER_VISIBLE_COLUMNS)
+                                    .min(ledger.last_column);
+                            }
+                        }
+                    },
+                );
         }
     }
 }
@@ -386,71 +410,12 @@ fn project_civilian_ledger(
             CivilianLedgerAction::Next => {
                 ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS <= ledger.last_column
             }
-            CivilianLedgerAction::Select(_) => continue,
         };
         *visibility = if visible {
             Visibility::Inherited
         } else {
             Visibility::Hidden
         };
-    }
-}
-
-#[allow(clippy::too_many_arguments)]
-fn on_civilian_ledger_action(
-    activate: On<Activate>,
-    actions: Query<&CivilianLedgerAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<CivilianLedger>>,
-    mut ledgers: Query<&mut CivilianLedger>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-    mut audio: RetailAudioAssets,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    match action {
-        CivilianLedgerAction::Previous => {
-            let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
-            ledger.current_column = ledger
-                .current_column
-                .saturating_sub(CIVILIAN_LEDGER_VISIBLE_COLUMNS);
-        }
-        CivilianLedgerAction::Next => {
-            let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
-            ledger.current_column =
-                (ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS).min(ledger.last_column);
-        }
-        CivilianLedgerAction::Select(tile) => {
-            map.apply(&mut session.game, MapAction::Center(tile));
-            let nation = session.game.turn().active_nation;
-            let selectable = session
-                .game
-                .civilian_on_tile_for_nation(tile, nation)
-                .and_then(|(unit, state)| {
-                    matches!(
-                        state.order(),
-                        CivilianWorkOrder::Idle
-                            | CivilianWorkOrder::Sleep
-                            | CivilianWorkOrder::Later
-                    )
-                    .then_some(unit)
-                });
-            if let Some(unit) = selectable {
-                map.apply(
-                    &mut session.game,
-                    MapAction::Select(StrategicSelection::Civilian(Some(unit))),
-                );
-                session.game.activate_civilian_selection(unit);
-                audio.play(&mut commands, SoundId::new(0x2338));
-            }
-            commands.entity(root).try_despawn();
-        }
     }
 }
 
@@ -828,9 +793,8 @@ fn insert_retail_text(
     text: &str,
     point_size: i32,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, 1))
-        .expect("retail civilian modal text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, point_size, 1));
     commands.entity(entity).insert((
         Text::new(text.to_owned()),
         font,
@@ -1064,6 +1028,7 @@ fn bind_added_army_rosters(
         for (index, row) in model.units.iter().enumerate() {
             let column = index / MINI_ROSTER_PER_COLUMN;
             let row_in_column = index % MINI_ROSTER_PER_COLUMN;
+            let province = row.province;
             spawn_roster_row(
                 &mut commands,
                 page,
@@ -1078,8 +1043,23 @@ fn bind_added_army_rosters(
                 layout,
                 line_height,
             )
-            .insert((Button, ArmyRosterRowAction::Select(row.province)))
-            .observe(on_army_roster_row_action);
+            .insert(Button)
+            .observe(
+                move |_: On<Activate>,
+                      mut map: ResMut<StrategicMapSession>,
+                      mut session: ResMut<GameSession>,
+                      mut commands: Commands| {
+                    map.apply(
+                        &mut session.game,
+                        MapAction::Select(StrategicSelection::Army(Some(province))),
+                    );
+                    session.game.apply_army_province_selection(Some(province));
+                    if let Some(tile) = session.game.map().provinces[province].city_tile() {
+                        map.apply(&mut session.game, MapAction::Center(tile));
+                    }
+                    commands.entity(root).try_despawn();
+                },
+            );
         }
     }
 }
@@ -1264,26 +1244,35 @@ fn bind_added_navy_rosters(
             );
             match kind {
                 NavyRosterKind::Nation => {
-                    entity.insert((
-                        Button,
-                        NavyRosterRowAction::Select {
-                            zone: row.location,
-                            force: row.force,
+                    let zone = row.location;
+                    let force = row.force;
+                    entity.insert(Button).observe(
+                        move |_: On<Activate>,
+                              mut map: ResMut<StrategicMapSession>,
+                              mut session: ResMut<GameSession>,
+                              mut commands: Commands| {
+                            map.select_navy(&mut session.game, zone, force);
+                            commands.entity(root).try_despawn();
                         },
-                    ));
+                    );
                 }
                 NavyRosterKind::TaskForce(force) => {
-                    entity.insert((
-                        Button,
-                        NavyRosterRowAction::Toggle {
-                            force: *force,
-                            ship: row.ship,
-                            selected: row.selected,
+                    let force = *force;
+                    let ship = row.ship;
+                    let selected = row.selected;
+                    entity.insert(Button).observe(
+                        move |_: On<Activate>,
+                              mut session: ResMut<GameSession>,
+                              mut commands: Commands| {
+                            session
+                                .game
+                                .set_task_force_ship_selected(force, ship, !selected);
+                            commands.entity(root).try_despawn();
+                            spawn_navy_roster(&mut commands, NavyRosterKind::TaskForce(force));
                         },
-                    ));
+                    );
                 }
             }
-            entity.observe(on_navy_roster_row_action);
         }
     }
 }
@@ -1332,17 +1321,25 @@ fn bind_roster_page(
             }
             RosterPageAction::Next => Visibility::Hidden,
         };
+        let mut entity_commands = commands.entity(entity);
         if triangular_page_corners {
-            commands
-                .entity(entity)
-                .insert((action, visibility))
-                .observe(on_roster_page_action);
+            entity_commands.insert((action, visibility));
         } else {
-            commands
-                .entity(entity)
-                .insert((Button, action, visibility))
-                .observe(on_roster_page_action);
+            entity_commands.insert((Button, action, visibility));
         }
+        entity_commands.observe(move |_: On<Activate>, mut pages: Query<&mut RosterPage>| {
+            let mut page = pages.get_mut(root).expect("roster page action root");
+            match action {
+                RosterPageAction::Previous => {
+                    page.current_column =
+                        page.current_column.saturating_sub(ROSTER_VISIBLE_COLUMNS);
+                }
+                RosterPageAction::Next => {
+                    page.current_column =
+                        (page.current_column + ROSTER_VISIBLE_COLUMNS).min(page.last_column);
+                }
+            }
+        });
     }
 }
 
@@ -1353,9 +1350,8 @@ fn spawn_roster_title(
     group: u16,
     offset: u16,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, 12, -2))
-        .expect("retail roster title text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, 12, -2));
     let title = commands
         .spawn((
             Node {
@@ -1419,9 +1415,8 @@ fn roster_text_style(
     assets: &mut RetailUiAssets,
     point_size: i32,
 ) -> (TextFont, TextLayout, LineHeight) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, -2))
-        .expect("retail roster row text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, point_size, -2));
     (font, layout, line_height)
 }
 
@@ -1461,31 +1456,6 @@ fn project_roster_pages(
     }
 }
 
-fn on_roster_page_action(
-    activate: On<Activate>,
-    actions: Query<&RosterPageAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<RosterPage>>,
-    mut pages: Query<&mut RosterPage>,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    let mut page = pages.get_mut(root).expect("roster page action root");
-    match action {
-        RosterPageAction::Previous => {
-            page.current_column = page.current_column.saturating_sub(ROSTER_VISIBLE_COLUMNS);
-        }
-        RosterPageAction::Next => {
-            page.current_column =
-                (page.current_column + ROSTER_VISIBLE_COLUMNS).min(page.last_column);
-        }
-    }
-}
-
 fn on_garrison_row_action(
     activate: On<Activate>,
     actions: Query<&GarrisonRowAction>,
@@ -1503,66 +1473,6 @@ fn on_garrison_row_action(
     let kind = garrison_order_text(&assets, state.order().code());
     if let Ok(mut text) = texts.get_mut(activate.entity) {
         text.0 = format!("{}\n{kind}", state.name());
-    }
-}
-
-fn on_army_roster_row_action(
-    activate: On<Activate>,
-    actions: Query<&ArmyRosterRowAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<ArmyRosterDialog>>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-) {
-    let Ok(ArmyRosterRowAction::Select(province)) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    map.apply(
-        &mut session.game,
-        MapAction::Select(StrategicSelection::Army(Some(province))),
-    );
-    session.game.apply_army_province_selection(Some(province));
-    if let Some(tile) = session.game.map().provinces[province].city_tile() {
-        map.apply(&mut session.game, MapAction::Center(tile));
-    }
-    commands.entity(root).try_despawn();
-}
-
-fn on_navy_roster_row_action(
-    activate: On<Activate>,
-    actions: Query<&NavyRosterRowAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<NavyRosterDialog>>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    match action {
-        NavyRosterRowAction::Select { zone, force } => {
-            map.select_navy(&mut session.game, zone, force);
-            commands.entity(root).try_despawn();
-        }
-        NavyRosterRowAction::Toggle {
-            force,
-            ship,
-            selected,
-        } => {
-            session
-                .game
-                .set_task_force_ship_selected(force, ship, !selected);
-            commands.entity(root).try_despawn();
-            spawn_navy_roster(&mut commands, NavyRosterKind::TaskForce(force));
-        }
     }
 }
 
@@ -1674,9 +1584,8 @@ fn insert_styled_text(
     point_size: i32,
     alignment: i32,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, alignment))
-        .expect("retail army/navy report text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, point_size, alignment));
     commands.entity(entity).insert((
         Text::new(text.to_owned()),
         font,

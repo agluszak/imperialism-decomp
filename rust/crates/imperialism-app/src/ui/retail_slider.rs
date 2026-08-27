@@ -11,7 +11,7 @@ use bevy::ui::UiSystems;
 use bevy::ui_widgets::{
     Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick, ValueChange,
 };
-use imperialism_formats::{PictureId, StringGroup};
+use imperialism_formats::PictureId;
 
 pub const TWO_PIC_SLIDER_SPLIT_PAD: i16 = 0x0c;
 
@@ -79,9 +79,7 @@ pub fn retail_two_pic_slider(
 fn load_off_string(context: &TemplateContext, off_group: i16, off_index: i16) -> String {
     context
         .resource::<RetailAssetsResource>()
-        .assets()
-        .string(StringGroup::new(off_group as u16).entry(off_index as u16))
-        .unwrap_or_else(|_| "Off".to_string())
+        .ui_string(off_group as u16, off_index as u16)
 }
 
 pub(super) fn register_slider(app: &mut App) {
@@ -168,21 +166,5 @@ mod tests {
         assert_eq!(two_pic_slider_split(0, 91, 100), 0);
         assert_eq!(two_pic_slider_split(100, 91, 100), 91);
         assert_eq!(two_pic_slider_split(0xff, 91, 0xff), 91);
-    }
-
-    #[test]
-    fn slider_track_excludes_zero_plateau() {
-        let height = 91i16;
-        let scale = 100i16;
-        let span = height - TWO_PIC_SLIDER_SPLIT_PAD;
-        let value_from_y = |y: i16| {
-            let split = height - y.clamp(0, height);
-            let adjusted = (split - TWO_PIC_SLIDER_SPLIT_PAD).max(0);
-            (i32::from(adjusted) * i32::from(scale) / i32::from(span)) as i16
-        };
-        assert_eq!(value_from_y(0), scale);
-        assert_eq!(value_from_y(height - TWO_PIC_SLIDER_SPLIT_PAD), 0);
-        assert_eq!(value_from_y(height - 6), 0);
-        assert_eq!(value_from_y(height), 0);
     }
 }

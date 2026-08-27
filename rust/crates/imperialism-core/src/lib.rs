@@ -5,7 +5,6 @@ mod ai;
 mod ai_civilian;
 mod army_orders;
 mod battle_report;
-mod calendar;
 mod city;
 mod city_economy;
 mod city_industry;
@@ -46,7 +45,6 @@ mod population;
 mod random_map;
 mod random_map_terrain;
 mod random_map_water_merge;
-mod random_setup_name;
 mod recruitment;
 mod resources;
 mod rng;
@@ -76,7 +74,6 @@ pub use battle_report::{
     BattleReportLocation, BattleReportSide, BattleReportSideSlot, BattleReportSideTable,
     BattleReportUnit, BattleReportUnitKind,
 };
-pub use calendar::TurnCalendar;
 pub(crate) use city::EXPANSION_INPUTS;
 pub use city::{
     CIVILIAN_RESOURCE_SPECIALTIES, CityFacilitySlot, CityOrderId, CityOrderUpdate, CityOrders,
@@ -174,8 +171,8 @@ pub use random_map_terrain::{
     RandomSetupPreviewError, generate_random_map, generate_random_setup_preview,
     generate_random_setup_preview_with_clock_seed,
 };
-pub use random_setup_name::{COUNTRY_NAME_MAX_CHARS, generate_english_random_setup_name};
 
+pub use mapped_flavor_text::generate_english_name;
 pub(crate) use resources::all_resources;
 pub use resources::{ResourceKind, ResourceTable};
 pub use rng::{RetailCrtRng, RetailLcg, RngState, hash_retail_scenario_tag};

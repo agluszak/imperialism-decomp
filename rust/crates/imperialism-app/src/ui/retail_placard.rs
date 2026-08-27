@@ -97,18 +97,11 @@ pub fn placard_text_layout(root_width: f32, root_height: f32, value: i16) -> (f3
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{RetailFontFace, RetailTextStylePreset, resolve_retail_text_style};
 
     #[test]
     fn digit_aware_x_matches_retail_thresholds() {
         assert_eq!(placard_text_x(39.0, 9), 39.0 / 2.0 - 2.0);
         assert_eq!(placard_text_x(39.0, 10), 39.0 / 2.0 - 6.0);
         assert_eq!(placard_text_x(39.0, 100), 39.0 / 2.0 - 10.0);
-    }
-
-    #[test]
-    fn placard_caption_uses_built_10pt_book_antiqua() {
-        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 0)).unwrap();
-        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
     }
 }

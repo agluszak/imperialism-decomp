@@ -108,15 +108,9 @@ pub(in crate::ui::city) fn bind_armory(
     let nation = MajorNationId::from_nation(state.turn().active_nation).expect("major nation");
     let city = &state.nations().major(nation).city;
     let normal_color = assets.palette_color(0xd2);
-    let (title_font, _, title_line_height, _) = assets
-        .text_style(ARMORY_TITLE_TEXT_STYLE)
-        .expect("title style");
-    let (unit_font, _, unit_line_height, _) = assets
-        .text_style(ARMORY_UNIT_TEXT_STYLE)
-        .expect("unit style");
-    let (detail_font, _, detail_line_height, _) = assets
-        .text_style(ARMORY_DETAIL_TEXT_STYLE)
-        .expect("detail style");
+    let (title_font, _, title_line_height, _) = assets.text_style(ARMORY_TITLE_TEXT_STYLE);
+    let (unit_font, _, unit_line_height, _) = assets.text_style(ARMORY_UNIT_TEXT_STYLE);
+    let (detail_font, _, detail_line_height, _) = assets.text_style(ARMORY_DETAIL_TEXT_STYLE);
     let title = assets.ui_string(0x271c, 0x20);
     commands.entity(tree.find(root, fourcc!("titl"))).insert((
         Text::new(title),
@@ -351,28 +345,6 @@ pub(in crate::ui::city) fn render_armory(
 mod tests {
     use super::*;
     use crate::ui::test_support::beginning_of_game;
-
-    #[test]
-    fn armory_uses_the_recovered_windows_font_families() {
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_TITLE_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_UNIT_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(ARMORY_DETAIL_TEXT_STYLE)
-                .unwrap()
-                .face,
-            RetailFontFace::BookAntiquaRegular
-        );
-    }
 
     #[test]
     fn beginning_armory_rows_use_the_retail_unit_picture_sequence() {

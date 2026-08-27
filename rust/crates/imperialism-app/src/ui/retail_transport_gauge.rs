@@ -1,11 +1,10 @@
 //! Recovered `TTransportPicture` gauge overlays as structure-only scene helpers.
 //!
 //! Screens write fill/limit via bind-time handles. Allocation vs capacity is a binder concern.
-//! When a recovered transport node also has resource children, codegen merges synthetic
-//! remainder/fill/limit children from these helpers with recovered row children into one
-//! `Children` list.
+//! Codegen merges synthetic remainder/fill/limit children from these helpers with recovered row
+//! children into one `Children` list.
 
-use super::retail::{retail_background_color, retail_picture};
+use super::retail::retail_background_color;
 use bevy::prelude::*;
 
 pub const TRACK_WIDTH: f32 = 113.0;
@@ -99,44 +98,6 @@ pub fn transport_gauge_limit(track_left: i16) -> impl Scene {
         retail_background_color(TRANSPORT_GAUGE_PARTIAL_PALETTE)
         Visibility::Hidden
         Pickable::IGNORE
-    }
-}
-
-/// Leaf construction when the recovered node has no resource children.
-#[allow(dead_code)]
-#[rustfmt::skip]
-pub fn retail_transport_gauge(picture_id: i16, track_left: i16) -> impl Scene {
-    bsn! {
-        retail_picture(picture_id)
-        TransportGaugeParts { fill: #Fill, limit: #Limit }
-        Children [
-            (transport_gauge_remainder(track_left)),
-            (
-                #Fill
-                transport_gauge_allocation_fill(track_left)
-            ),
-            (
-                #Limit
-                transport_gauge_limit(track_left)
-            ),
-        ]
-    }
-}
-
-/// Capacity (`tota`) leaf helper when the recovered node has no resource children.
-#[allow(dead_code)]
-#[rustfmt::skip]
-pub fn retail_transport_capacity_gauge(picture_id: i16, track_left: i16) -> impl Scene {
-    bsn! {
-        retail_picture(picture_id)
-        TransportGaugeParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
-        Children [
-            (transport_gauge_remainder(track_left)),
-            (
-                #Fill
-                transport_gauge_capacity_fill(track_left)
-            ),
-        ]
     }
 }
 
