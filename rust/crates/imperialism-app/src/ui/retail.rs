@@ -1,7 +1,6 @@
 use super::retail_raster::IndexedRasterExt;
 use crate::{RetailAssetsResource, RetailFont, RetailFonts};
 use bevy::asset::RenderAssetUsages;
-use bevy::ecs::query::{QueryData, QueryFilter};
 use bevy::ecs::system::SystemParam;
 use bevy::ecs::template::TemplateContext;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
@@ -756,16 +755,6 @@ impl RetailView<'_, '_, '_> {
     pub fn child(&self, tag: FourCc) -> Entity {
         self.tree.child(self.root, tag)
     }
-}
-
-pub fn ancestor_with<D: QueryData, F: QueryFilter>(
-    entity: Entity,
-    parents: &Query<&ChildOf>,
-    query: &Query<D, F>,
-) -> Option<Entity> {
-    std::iter::once(entity)
-        .chain(parents.iter_ancestors(entity))
-        .find(|&entity| query.contains(entity))
 }
 
 #[cfg(test)]

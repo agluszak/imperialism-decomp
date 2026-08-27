@@ -7,7 +7,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{RetailTree, ancestor_with};
+use super::retail::RetailTree;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::satellite_preview::nation_owner_palette;
 use super::session::apply_turn_stop;
@@ -1049,40 +1049,29 @@ fn bind_diplomacy_entanglement_notice(
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     let source = session.active_major_nation();
+    let target = notice.target;
+    let policy = notice.policy;
     commands.entity(linger.coat).insert(ImageNode::new(
         assets.picture(diplomacy_coat_picture(source)),
     ));
     commands
         .entity(linger.okay)
         .remove::<InteractionDisabled>()
-        .observe(on_diplomacy_entanglement_activate);
+        .observe(
+            move |_: On<Activate>, mut session: ResMut<GameSession>, mut commands: Commands| {
+                let source = session.active_major_nation();
+                if let Some(rejection) = player_diplomacy_rejection(
+                    session
+                        .game
+                        .toggle_player_diplomacy_policy(source, target, policy, true),
+                ) {
+                    commands.trigger(OpenDiplomacyRejectionNotice { rejection });
+                }
+            },
+        );
     commands
         .entity(linger.cancel)
         .remove::<InteractionDisabled>();
-}
-
-fn on_diplomacy_entanglement_activate(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    notices: Query<(Entity, &DiplomacyEntanglementNotice)>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-) {
-    let root = ancestor_with(activate.entity, &parents, &notices)
-        .expect("diplomacy entanglement close belongs to its dialog");
-    let (_, notice) = notices
-        .get(root)
-        .expect("diplomacy entanglement close belongs to its dialog");
-    let target = notice.target;
-    let policy = notice.policy;
-    let source = session.active_major_nation();
-    if let Some(rejection) = player_diplomacy_rejection(
-        session
-            .game
-            .toggle_player_diplomacy_policy(source, target, policy, true),
-    ) {
-        commands.trigger(OpenDiplomacyRejectionNotice { rejection });
-    }
 }
 
 fn diplomacy_entanglement_body(
