@@ -245,7 +245,7 @@ fn bind_volume_slider(
     hover: String,
     slot: PreferenceSlot,
 ) {
-    // Slider + retained two-pic presentation come from codegen for TTwoPicSlider.
+    // Two-pic presentation + retail pointer→value mapping come from codegen for TTwoPicSlider.
     let mut entity = commands.entity(slider);
     entity
         .insert((SliderValue(f32::from(value)), HoverHelpText(hover)))
