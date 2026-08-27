@@ -10,7 +10,7 @@ use crate::AppState;
 use crate::ui::GameSession;
 use bevy::prelude::*;
 use bevy::ui::Checked;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::ActivateOnPress;
 use imperialism_core::{NavalAggression, NavyRosterKind, NavyToolbarClass};
 use imperialism_formats::*;
 
@@ -23,9 +23,11 @@ const NAVY_CLASS_ORDER: [NavyToolbarClass; 4] = [
     NavyToolbarClass::Class2,
     NavyToolbarClass::Class3,
 ];
-
-#[derive(Component)]
-pub(super) struct NavyToolbarPage;
+const AGGRESSION_LEVELS: [NavalAggression; 3] = [
+    NavalAggression::Cautious,
+    NavalAggression::Balanced,
+    NavalAggression::Aggressive,
+];
 
 #[derive(Clone, Copy)]
 struct NavyClassView {
@@ -37,15 +39,6 @@ struct NavyClassView {
 struct NavyToolbarView {
     classes: [NavyClassView; 4],
     aggression: [Entity; 3],
-}
-
-#[derive(Component, Clone, Copy)]
-enum NavyCommand {
-    Defend,
-    Done,
-    Next,
-    Bomb,
-    Aggression(NavalAggression),
 }
 
 pub(crate) fn register(app: &mut App) {
@@ -107,7 +100,6 @@ pub(crate) fn bind_navy_toolbar(
         tree.child(page, fourcc!("agr2")),
     ];
     commands.entity(page).insert((
-        NavyToolbarPage,
         NavyToolbarView {
             classes,
             aggression,
@@ -121,29 +113,79 @@ pub(crate) fn bind_navy_toolbar(
             ..default()
         },
     ));
-    for (tag, command) in [
-        (fourcc!("dfnd"), NavyCommand::Defend),
-        (fourcc!("done"), NavyCommand::Done),
-        (fourcc!("next"), NavyCommand::Next),
-        (fourcc!("bomb"), NavyCommand::Bomb),
-        (
-            fourcc!("agr0"),
-            NavyCommand::Aggression(NavalAggression::Cautious),
-        ),
-        (
-            fourcc!("agr1"),
-            NavyCommand::Aggression(NavalAggression::Balanced),
-        ),
-        (
-            fourcc!("agr2"),
-            NavyCommand::Aggression(NavalAggression::Aggressive),
-        ),
+    for (tag, level) in [
+        (fourcc!("agr0"), NavalAggression::Cautious),
+        (fourcc!("agr1"), NavalAggression::Balanced),
+        (fourcc!("agr2"), NavalAggression::Aggressive),
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert((command, ActivateOnPress))
-            .observe(on_navy_command);
+            .insert(ActivateOnPress)
+            .observe(
+                move |_: On<bevy::ui_widgets::Activate>,
+                      mut session: ResMut<GameSession>,
+                      map: Res<StrategicMapSession>| {
+                    if let Some(force) = map.selection.navy_force() {
+                        session.game.set_task_force_aggression(force, level);
+                    }
+                },
+            );
     }
+    commands
+        .entity(tree.child(page, fourcc!("dfnd")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<bevy::ui_widgets::Activate>,
+             mut session: ResMut<GameSession>,
+             mut map: ResMut<StrategicMapSession>| {
+                if let Some(force) = map.selection.navy_force() {
+                    session.game.drop_task_force_ships(force, false);
+                }
+                map.cycle_selection(&mut session.game);
+            },
+        );
+    commands
+        .entity(tree.child(page, fourcc!("done")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<bevy::ui_widgets::Activate>,
+             mut session: ResMut<GameSession>,
+             mut map: ResMut<StrategicMapSession>| {
+                if let Some(force) = map.selection.navy_force() {
+                    session.game.drop_task_force_ships(force, true);
+                }
+                map.cycle_selection(&mut session.game);
+            },
+        );
+    commands
+        .entity(tree.child(page, fourcc!("next")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<bevy::ui_widgets::Activate>,
+             mut session: ResMut<GameSession>,
+             mut map: ResMut<StrategicMapSession>| {
+                map.cycle_selection(&mut session.game);
+            },
+        );
+    commands
+        .entity(tree.child(page, fourcc!("bomb")))
+        .insert(ActivateOnPress)
+        .observe(
+            |_: On<bevy::ui_widgets::Activate>,
+             keys: Res<ButtonInput<KeyCode>>,
+             mut commands: Commands,
+             map: Res<StrategicMapSession>| {
+                let roster =
+                    if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                        NavyRosterKind::Nation
+                    } else if let Some(force) = map.selection.navy_force() {
+                        NavyRosterKind::TaskForce(force)
+                    } else {
+                        return;
+                    };
+                spawn_navy_roster(&mut commands, roster);
+            },
+        );
 }
 
 pub(crate) fn navy_page_position(selection: StrategicSelection) -> Vec2 {
@@ -158,7 +200,7 @@ fn sync_navy_toolbar(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     mut assets: RetailUiAssets,
-    mut pages: Query<(&mut Node, &NavyToolbarView), With<NavyToolbarPage>>,
+    mut pages: Query<(&mut Node, &NavyToolbarView)>,
     mut images: Query<&mut ImageNode>,
     mut visibility: Query<&mut Visibility>,
     mut arrows: Query<&mut NumberedArrowValue>,
@@ -217,8 +259,7 @@ fn sync_navy_toolbar(
 fn sync_navy_aggression(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
-    pages: Query<&NavyToolbarView, With<NavyToolbarPage>>,
-    commands_query: Query<&NavyCommand>,
+    pages: Query<&NavyToolbarView>,
     mut commands: Commands,
 ) {
     if !session.is_changed() && !map.is_changed() {
@@ -229,60 +270,11 @@ fn sync_navy_aggression(
     };
     let force = map.selection.navy_force();
     let aggression = force.and_then(|id| session.game.task_force(id).map(|f| f.aggression));
-    for &entity in &view.aggression {
-        let Ok(NavyCommand::Aggression(level)) = commands_query.get(entity) else {
-            continue;
-        };
-        if aggression == Some(*level) {
+    for (&entity, &level) in view.aggression.iter().zip(AGGRESSION_LEVELS.iter()) {
+        if aggression == Some(level) {
             commands.entity(entity).insert(Checked);
         } else {
             commands.entity(entity).remove::<Checked>();
-        }
-    }
-}
-
-fn on_navy_command(
-    activate: On<Activate>,
-    commands_query: Query<&NavyCommand>,
-    keys: Res<ButtonInput<KeyCode>>,
-    mut commands: Commands,
-    mut session: ResMut<GameSession>,
-    mut map: ResMut<StrategicMapSession>,
-) {
-    let Ok(command) = commands_query.get(activate.entity) else {
-        return;
-    };
-    match *command {
-        NavyCommand::Aggression(level) => {
-            if let Some(force) = map.selection.navy_force() {
-                session.game.set_task_force_aggression(force, level);
-            }
-        }
-        NavyCommand::Defend => {
-            if let Some(force) = map.selection.navy_force() {
-                session.game.drop_task_force_ships(force, false);
-            }
-            map.cycle_selection(&mut session.game);
-        }
-        NavyCommand::Done => {
-            if let Some(force) = map.selection.navy_force() {
-                session.game.drop_task_force_ships(force, true);
-            }
-            map.cycle_selection(&mut session.game);
-        }
-        NavyCommand::Next => {
-            map.cycle_selection(&mut session.game);
-        }
-        NavyCommand::Bomb => {
-            let roster =
-                if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
-                    NavyRosterKind::Nation
-                } else if let Some(force) = map.selection.navy_force() {
-                    NavyRosterKind::TaskForce(force)
-                } else {
-                    return;
-                };
-            spawn_navy_roster(&mut commands, roster);
         }
     }
 }
@@ -363,28 +355,16 @@ mod tests {
             .insert_resource(GameSession::new(state))
             .add_systems(Update, sync_navy_aggression);
 
-        let agr0 = app
-            .world_mut()
-            .spawn(NavyCommand::Aggression(NavalAggression::Cautious))
-            .id();
-        let agr1 = app
-            .world_mut()
-            .spawn(NavyCommand::Aggression(NavalAggression::Balanced))
-            .id();
-        let agr2 = app
-            .world_mut()
-            .spawn(NavyCommand::Aggression(NavalAggression::Aggressive))
-            .id();
-        app.world_mut().spawn((
-            NavyToolbarPage,
-            NavyToolbarView {
-                classes: [NavyClassView {
-                    ship: Entity::PLACEHOLDER,
-                    arrow: Entity::PLACEHOLDER,
-                }; 4],
-                aggression: [agr0, agr1, agr2],
-            },
-        ));
+        let agr0 = app.world_mut().spawn_empty().id();
+        let agr1 = app.world_mut().spawn_empty().id();
+        let agr2 = app.world_mut().spawn_empty().id();
+        app.world_mut().spawn(NavyToolbarView {
+            classes: [NavyClassView {
+                ship: Entity::PLACEHOLDER,
+                arrow: Entity::PLACEHOLDER,
+            }; 4],
+            aggression: [agr0, agr1, agr2],
+        });
         app.insert_resource(StrategicMapSession {
             selection: StrategicSelection::Navy {
                 zone: None,

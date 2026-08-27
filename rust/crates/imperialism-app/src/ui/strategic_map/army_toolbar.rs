@@ -32,21 +32,10 @@ fn placard_picture_id(
 }
 
 #[derive(Component)]
-pub(super) struct ArmyToolbarPage;
-
-#[derive(Component)]
 struct ArmyToolbarView {
     placards: ArmyCategoryTable<Entity>,
     arrows: ArmyCategoryTable<Entity>,
     garrison: Entity,
-}
-
-#[derive(Component, Clone, Copy)]
-enum ArmyCommand {
-    Defend,
-    Later,
-    Done,
-    Garrison,
 }
 
 pub(crate) fn register(app: &mut App) {
@@ -96,7 +85,6 @@ pub(crate) fn bind_army_toolbar(
     }
     let garrison = tree.child(page, fourcc!("garr"));
     commands.entity(page).insert((
-        ArmyToolbarPage,
         ArmyToolbarView {
             placards,
             arrows,
@@ -111,24 +99,50 @@ pub(crate) fn bind_army_toolbar(
             ..default()
         },
     ));
-    for (tag, command) in [
-        (fourcc!("dfnd"), ArmyCommand::Defend),
-        (fourcc!("latr"), ArmyCommand::Later),
-        (fourcc!("done"), ArmyCommand::Done),
-        (fourcc!("garr"), ArmyCommand::Garrison),
+    for (tag, mode) in [
+        (fourcc!("dfnd"), ArmyIdleOrderMode::Sleep),
+        (fourcc!("latr"), ArmyIdleOrderMode::Latr),
+        (fourcc!("done"), ArmyIdleOrderMode::Done),
     ] {
         commands
             .entity(tree.child(page, tag))
-            .insert((command, ActivateOnPress))
-            .observe(on_army_command);
+            .insert(ActivateOnPress)
+            .observe(
+                move |_: On<bevy::ui_widgets::Activate>,
+                      mut session: ResMut<GameSession>,
+                      mut map: ResMut<StrategicMapSession>| {
+                    let Some(province) = map.selection.army() else {
+                        return;
+                    };
+                    session
+                        .game
+                        .set_idle_unit_orders_on_province(province, mode);
+                    map.cycle_selection(&mut session.game);
+                },
+            );
     }
+    commands.entity(garrison).insert(ActivateOnPress).observe(
+        |_: On<bevy::ui_widgets::Activate>,
+         keys: Res<ButtonInput<KeyCode>>,
+         mut commands: Commands,
+         map: Res<StrategicMapSession>| {
+            let Some(province) = map.selection.army() else {
+                return;
+            };
+            if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                spawn_army_roster(&mut commands);
+            } else {
+                spawn_garrison(&mut commands, province);
+            }
+        },
+    );
 }
 
 fn sync_army_toolbar(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     mut assets: RetailUiAssets,
-    mut pages: Query<(&mut Node, &ArmyToolbarView), With<ArmyToolbarPage>>,
+    mut pages: Query<(&mut Node, &ArmyToolbarView)>,
     mut images: Query<&mut ImageNode>,
     mut visibility: Query<&mut Visibility>,
     mut counts: Query<&mut ArmyPlacardValue>,
@@ -233,49 +247,6 @@ fn hide_empty_toolbar(
             .get_mut(view.arrows[category])
             .expect("army arrow value")
             .set_if_neq(NumberedArrowValue(None));
-    }
-}
-
-fn on_army_command(
-    activate: On<bevy::ui_widgets::Activate>,
-    command_query: Query<&ArmyCommand>,
-    keys: Res<ButtonInput<KeyCode>>,
-    mut commands: Commands,
-    mut session: ResMut<GameSession>,
-    mut map: ResMut<StrategicMapSession>,
-) {
-    let Ok(command) = command_query.get(activate.entity) else {
-        return;
-    };
-    let Some(province) = map.selection.army() else {
-        return;
-    };
-    match *command {
-        ArmyCommand::Defend => {
-            session
-                .game
-                .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Sleep);
-            map.cycle_selection(&mut session.game);
-        }
-        ArmyCommand::Later => {
-            session
-                .game
-                .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Latr);
-            map.cycle_selection(&mut session.game);
-        }
-        ArmyCommand::Done => {
-            session
-                .game
-                .set_idle_unit_orders_on_province(province, ArmyIdleOrderMode::Done);
-            map.cycle_selection(&mut session.game);
-        }
-        ArmyCommand::Garrison => {
-            if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
-                spawn_army_roster(&mut commands);
-            } else {
-                spawn_garrison(&mut commands, province);
-            }
-        }
     }
 }
 
