@@ -1,7 +1,5 @@
 use super::*;
-use crate::RetailFonts;
 use crate::ui::retail_raster::IndexedRasterExt;
-use crate::ui::retail_raster_text::RetailRasterTextPainter;
 
 const UNIVERSITY_KINDS: [CivilianUnitKind; 7] = [
     CivilianUnitKind::Miner,
@@ -12,6 +10,9 @@ const UNIVERSITY_KINDS: [CivilianUnitKind; 7] = [
     CivilianUnitKind::Rancher,
     CivilianUnitKind::Driller,
 ];
+
+#[derive(Component)]
+pub(in crate::ui::city) struct UniversityYieldText;
 
 pub(in crate::ui::city) struct UniversityUi {
     pub(in crate::ui::city) selected: CivilianUnitKind,
@@ -108,9 +109,9 @@ pub(in crate::ui::city) fn bind_university(
         bind_text(fourcc!("trea")),
     ];
     let tier_labels = [
-        tree.find(root, fourcc!("fix2")),
-        tree.find(root, fourcc!("fix3")),
-        tree.find(root, fourcc!("fix4")),
+        tree.find(root, fourcc!("lvl2")),
+        tree.find(root, fourcc!("lvl3")),
+        tree.find(root, fourcc!("lvl4")),
     ];
     for entity in &tier_labels {
         commands.entity(*entity).insert(Visibility::Hidden);
@@ -131,9 +132,8 @@ pub(in crate::ui::city) fn render_university(
     view: &UniversityUi,
     session: &GameSession,
     assets: &mut RetailUiAssets,
-    fonts: &RetailFonts,
-    font_assets: &Assets<Font>,
     ui: &mut CityUi,
+    yield_texts: &Query<Entity, With<UniversityYieldText>>,
 ) {
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
@@ -214,17 +214,12 @@ pub(in crate::ui::city) fn render_university(
         .expect("preview pic");
     picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
     let icons = assets.indexed_picture(PictureId::new(750)).expect("icons");
-    let mut text = RetailRasterTextPainter::from_preset(
-        fonts,
-        font_assets,
-        RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -2,
-        },
-    )
-    .expect("text style");
+    for entity in yield_texts.iter() {
+        ui.commands.entity(entity).despawn();
+    }
+    let (font, layout, line_height, _) = assets
+        .text_style(RetailTextStylePreset::explicit(3, 0, 10, -2))
+        .expect("university yield text style");
     let mut running_max = UniversityRequirementLevel::None;
     for (row_index, resource) in specialties.into_iter().enumerate() {
         let Some(resource) = resource else {
@@ -239,12 +234,22 @@ pub(in crate::ui::city) fn render_university(
         );
         running_max = running_max.max(levels[resource]);
         for level in 1..=running_max.retail() {
-            text.draw(
-                &mut picture,
-                IVec2::new(i32::from(level) * 40 + 39, row_index as i32 * 25 + 289),
-                &resource_development_yield(resource, level).to_string(),
-                0xd2,
-            );
+            ui.commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(i32::from(level) * 40 + 39),
+                    top: px(row_index as i32 * 25 + 289 - 11),
+                    ..default()
+                },
+                Text::new(resource_development_yield(resource, level).to_string()),
+                font.clone(),
+                layout,
+                line_height,
+                TextColor(normal_color),
+                Pickable::IGNORE,
+                UniversityYieldText,
+                ChildOf(view.details),
+            ));
         }
     }
     let image = ui.images.get_mut(view.details).expect("details");

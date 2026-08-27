@@ -71,12 +71,7 @@ fn insert_linger_text(
     alignment: i32,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 0, 12, alignment))
         .expect("retail linger dialog text style");
     commands.entity(entity).insert((
         Text::new(text.to_owned()),

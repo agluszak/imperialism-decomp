@@ -264,7 +264,7 @@ fn country_dto(
         unit_name_counter: common.unit_name_counter,
         treasury: common.treasury,
         home_tile: option_i32(common.home_tile.map(TileId::get)),
-        overlay_anchor_tile: -1,
+        overlay_anchor_tile: option_i32(common.overlay_anchor_tile.map(TileId::get)),
         need_level_by_nation: nation_i16_table(&common.trade_policy_by_nation, |score| {
             score.get() as i16
         }),
@@ -1342,7 +1342,7 @@ fn army_reports_from_state(
                 .participant
                 .map(BattleReportSideSlot::retail)
                 .unwrap_or(u8::MAX),
-            displayed_participant: BattleReportSideSlot::Left.retail(),
+            displayed_participant: report.displayed_side.retail(),
             kind: report.kind.retail(),
             node_id: match report.location {
                 BattleReportLocation::Province(province) => province.get() as i16,

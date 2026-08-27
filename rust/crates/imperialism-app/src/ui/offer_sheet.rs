@@ -13,7 +13,7 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, fourcc};
+use imperialism_formats::{PictureId, fourcc};
 
 const COMMODITY_ICON_BASE: i16 = 700;
 const OFFER_STRING_GROUP: i16 = 0x2740;
@@ -115,66 +115,9 @@ fn bind_offer_sheet_text(
     root: Entity,
     tree: &RetailTree,
 ) {
-    let text_style = |assets: &mut RetailUiAssets, alignment| {
-        assets
-            .text_style(RetailTextStylePreset {
-                font_family: 0,
-                face_flags: 0,
-                point_size: 12,
-                alignment,
-            })
-            .expect("retail offer-sheet text style")
-    };
-    let (body, center, body_height, _) = text_style(assets, 1);
-    commands.entity(tree.find(root, fourcc!("offe"))).insert((
-        body.clone(),
-        center,
-        body_height,
-        TextColor(Color::BLACK),
-    ));
-    let (body, right, body_height, _) = text_style(assets, -1);
-    commands.entity(tree.find(root, fourcc!("purT"))).insert((
-        body.clone(),
-        right,
-        body_height,
-        TextColor(Color::BLACK),
-    ));
-    let (body, left, body_height, _) = text_style(assets, -2);
-    for tag in [fourcc!("unit"), fourcc!("noof")] {
-        commands.entity(tree.find(root, tag)).insert((
-            body.clone(),
-            left,
-            body_height,
-            TextColor(Color::BLACK),
-        ));
-    }
-    let (number, center, number_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 1,
-        })
-        .expect("retail offer-sheet number text style");
-    for tag in [fourcc!("purc"), fourcc!("mCap")] {
-        commands.entity(tree.find(root, tag)).insert((
-            number.clone(),
-            center,
-            number_height,
-            TextColor(Color::BLACK),
-        ));
-    }
-    commands.entity(tree.find(root, fourcc!("info"))).insert((
-        Text::new(get_string(assets, OFFER_STRING_GROUP, 9)),
-        body,
-        TextLayout::justify(Justify::Center),
-        body_height,
-        TextColor(assets.palette_color(0x28)),
-        TextShadow {
-            offset: Vec2::new(1.0, 1.0),
-            color: assets.palette_color(0xd2),
-        },
-    ));
+    commands
+        .entity(tree.find(root, fourcc!("info")))
+        .insert(Text::new(get_string(assets, OFFER_STRING_GROUP, 9)));
 }
 
 fn bind_offer_sheet_controls(
@@ -287,7 +230,7 @@ fn render_offer_sheet(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    if let Ok(icon) = assets.transparent_picture(
+    if let Ok(icon) = assets.keyed_picture(
         PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
         0x10,
     ) {

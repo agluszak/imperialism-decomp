@@ -19,10 +19,55 @@ pub enum RetailTextAlignment {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RetailTextStylePreset {
-    pub font_family: i32,
-    pub face_flags: i32,
-    pub point_size: i32,
-    pub alignment: i32,
+    font_family: i32,
+    face_flags: i32,
+    point_size: i32,
+    alignment: i32,
+}
+
+impl RetailTextStylePreset {
+    /// `BuildUiTextStyleDescriptor`: its family argument is dead. Retail derives the
+    /// family from the point size alone — family 3 (Book Antiqua) below 12pt,
+    /// family 1 (Belwe) from 12pt upward — and clears the face flags.
+    pub const fn built(point_size: i32, alignment: i32) -> Self {
+        Self {
+            font_family: if point_size >= 12 { 1 } else { 3 },
+            face_flags: 0,
+            point_size,
+            alignment,
+        }
+    }
+
+    /// `InitializeUiTextStyleDescriptor`: an explicitly selected font family.
+    pub const fn explicit(
+        font_family: i32,
+        face_flags: i32,
+        point_size: i32,
+        alignment: i32,
+    ) -> Self {
+        Self {
+            font_family,
+            face_flags,
+            point_size,
+            alignment,
+        }
+    }
+
+    pub(crate) fn family(self) -> i32 {
+        self.font_family
+    }
+
+    pub(crate) fn face_flags(self) -> i32 {
+        self.face_flags
+    }
+
+    pub(crate) fn point_size(self) -> i32 {
+        self.point_size
+    }
+
+    pub(crate) fn alignment(self) -> i32 {
+        self.alignment
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -52,26 +97,26 @@ pub enum RetailTextStyleError {
 pub fn resolve_retail_text_style(
     preset: RetailTextStylePreset,
 ) -> Result<ResolvedRetailTextStyle, RetailTextStyleError> {
-    let effective_family = if (1..=4).contains(&preset.font_family) {
-        preset.font_family
+    let effective_family = if (1..=4).contains(&preset.family()) {
+        preset.family()
     } else {
         0
     };
-    let logical_pixel_height = retail_logical_font_height(preset.font_family, preset.point_size)?;
+    let logical_pixel_height = retail_logical_font_height(preset.family(), preset.point_size())?;
     let face = match effective_family {
         0 => RetailFontFace::System,
         1 => RetailFontFace::BelweBold,
-        2 | 3 if preset.face_flags & 1 != 0 => RetailFontFace::BookAntiquaBold,
+        2 | 3 if preset.face_flags() & 1 != 0 => RetailFontFace::BookAntiquaBold,
         2 | 3 => RetailFontFace::BookAntiquaRegular,
         4 => {
             return Err(RetailTextStyleError::UnresolvedFontFamily {
-                requested_family: preset.font_family,
+                requested_family: preset.family(),
                 effective_family,
             });
         }
         _ => unreachable!("font family was normalized above"),
     };
-    let alignment = match preset.alignment {
+    let alignment = match preset.alignment() {
         -1 => RetailTextAlignment::Right,
         1 => RetailTextAlignment::Center,
         _ => RetailTextAlignment::Left,
@@ -80,8 +125,8 @@ pub fn resolve_retail_text_style(
         face,
         logical_pixel_height,
         alignment,
-        italic: preset.face_flags & 2 != 0,
-        underline: preset.face_flags & 4 != 0,
+        italic: preset.face_flags() & 2 != 0,
+        underline: preset.face_flags() & 4 != 0,
     })
 }
 
@@ -184,12 +229,114 @@ mod tests {
     use super::*;
 
     fn preset(family: i32, flags: i32, size: i32, alignment: i32) -> RetailTextStylePreset {
-        RetailTextStylePreset {
-            font_family: family,
-            face_flags: flags,
-            point_size: size,
-            alignment,
-        }
+        RetailTextStylePreset::explicit(family, flags, size, alignment)
+    }
+
+    #[test]
+    fn built_derives_the_family_from_the_point_size_threshold() {
+        assert_eq!(RetailTextStylePreset::built(10, -1).family(), 3);
+        assert_eq!(RetailTextStylePreset::built(11, -1).family(), 3);
+        assert_eq!(RetailTextStylePreset::built(12, 1).family(), 1);
+        assert_eq!(RetailTextStylePreset::built(14, 1).family(), 1);
+        assert_eq!(RetailTextStylePreset::built(18, 1).family(), 1);
+        assert_eq!(RetailTextStylePreset::built(10, -1).face_flags(), 0);
+    }
+
+    #[test]
+    fn explicit_preserves_the_requested_family_and_flags() {
+        assert_eq!(RetailTextStylePreset::explicit(2, 0, 14, -1).family(), 2);
+        assert_eq!(RetailTextStylePreset::explicit(3, 0, 12, 0).family(), 3);
+        assert_eq!(RetailTextStylePreset::explicit(0, 0, 12, 1).family(), 0);
+        assert_eq!(RetailTextStylePreset::explicit(3, 2, 12, 1).face_flags(), 2);
+    }
+
+    #[test]
+    fn screen_styles_follow_the_recovered_windows_provenance() {
+        // Offer Sheet body/numbers: BuildUiTextStyleDescriptor at 12/14pt -> Belwe.
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(12, 1))
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
+        );
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(14, 1))
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
+        );
+        // Deal Book transaction rows: Build at 10pt -> Book Antiqua; commodity
+        // headings: Build at 14pt -> Belwe.
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(10, -1))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(14, -1))
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
+        );
+        // Battle report: resu/loca Build 14 -> Belwe, fadm/eadm Build 12 -> Belwe,
+        // fshp/eshp Build 10 -> Book Antiqua.
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(14, 0))
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
+        );
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(12, 0))
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
+        );
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(10, 0))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+        // Army/navy toolbar counts and diplomacy-map nation labels: Build 10.
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(10, 1))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+    }
+
+    #[test]
+    fn explicit_family_counterexamples_stay_distinct_from_built() {
+        // Trade price/stock cells: InitializeUiTextStyleDescriptor(..., 0xe, ..., 2).
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::explicit(2, 0, 14, -1))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+        // Help body: explicit family 3 at 12pt must NOT become Belwe.
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::explicit(3, 0, 12, 0))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+        // Newspaper headline/body: explicit family 2 at 12/14pt.
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::explicit(2, 0, 12, 2))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::explicit(2, 1, 14, 2))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaBold
+        );
     }
 
     #[test]

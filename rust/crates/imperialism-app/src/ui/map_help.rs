@@ -358,12 +358,7 @@ fn set_text(
     color: Color,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family,
-            face_flags: 0,
-            point_size: size,
-            alignment: -2,
-        })
+        .text_style(RetailTextStylePreset::explicit(font_family, 0, size, -2))
         .expect("retail map-help text style");
     commands
         .entity(entity)

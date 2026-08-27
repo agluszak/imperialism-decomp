@@ -183,12 +183,7 @@ fn bind_trade_screen(
     let advisories = TRADE_ADVISORIES.map(|(tag, _)| tree.find(root, tag));
     let advanced = session.game.technology().advanced_production_unlocked();
     let text_style = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 14,
-            alignment: -1,
-        })
+        .text_style(RetailTextStylePreset::explicit(2, 0, 14, -1))
         .expect("retail Trade row text style");
     let text_color = assets.palette_color(0x13);
     let gauge_color = assets.palette_color(TRADE_BAR_FILL);
