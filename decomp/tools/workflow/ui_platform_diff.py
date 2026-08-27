@@ -10,13 +10,10 @@ from pathlib import Path
 import yaml
 
 from tools.ui_codegen import (
-    CLASS_ALIASES,
     DEFAULT_CLASSES,
     _render_factory_with_map,
     apply_case_windows_overrides,
-    load_city_building_action_visuals,
-    load_city_building_visuals,
-    load_city_dialog_controls,
+    load_class_substitutions,
     load_windows_child_node_patches,
     load_recipes,
     load_text_resources,
@@ -37,10 +34,11 @@ def _load_delta_config(repo_root: Path) -> dict:
         "class_substitutions",
         "functional_parity_cases",
         "node_property_patches",
+        "two_pic_slider_instances",
         "windows_child_nodes",
+        "runtime_input_semantics",
         "city_buildings",
         "city_building_actions",
-        "city_dialog_controls",
     }
     unknown = sorted(set(data) - allowed)
     if unknown:
@@ -77,26 +75,14 @@ def _semantic_snapshot(node) -> dict:
 def build_report(repo_root: Path) -> tuple[dict, list[str]]:
     config = _load_delta_config(repo_root)
     child_node_patches = load_windows_child_node_patches(repo_root)
-    load_city_building_visuals(repo_root)
-    load_city_building_action_visuals(repo_root)
-    load_city_dialog_controls(repo_root)
     recipes = load_recipes(repo_root)
     raw_views = load_ui_views(repo_root)
     text_resources = load_text_resources(repo_root)
     windows_views = load_windows_views(repo_root)
     declared_substitutions = config["class_substitutions"]
     declared_parity = config["functional_parity_cases"]
+    class_substitutions = load_class_substitutions(repo_root)
     errors: list[str] = []
-
-    configured_aliases = {
-        mac_class: str(row["windows_class"])
-        for mac_class, row in declared_substitutions.items()
-    }
-    if configured_aliases != CLASS_ALIASES:
-        errors.append(
-            f"{DELTA_CONFIG_PATH}: class substitutions {configured_aliases!r} "
-            f"do not exactly match generator aliases {CLASS_ALIASES!r}"
-        )
 
     observed_parity: set[str] = set()
     observed_substitutions: set[str] = set()
@@ -135,7 +121,7 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
             if case.resource is not None:
                 raw_view = raw_views[case.resource]
                 mac_semantic_view = normalize_resource_view(
-                    case.resource, raw_view, text_resources
+                    case.resource, raw_view, text_resources, class_substitutions
                 )
                 semantic_view = apply_case_windows_overrides(
                     recipe, case, mac_semantic_view
@@ -272,7 +258,9 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
         for node in view.get("nodes", [])
     }
     missing_alias_evidence = sorted(
-        alias for alias in CLASS_ALIASES if alias in used_aliases and alias not in observed_substitutions
+        alias
+        for alias in class_substitutions
+        if alias in used_aliases and alias not in observed_substitutions
     )
     # Aliases used only by currently unmapped Mac resources remain declared but
     # cannot appear as generated-node deltas yet.

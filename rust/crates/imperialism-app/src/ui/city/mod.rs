@@ -25,11 +25,14 @@ use imperialism_core::*;
 use imperialism_formats::*;
 use std::time::Duration;
 
+mod building_layout_generated;
 mod building_visuals;
+mod control_tags;
 mod dialogs;
 mod lifecycle;
+use building_layout_generated::{CITY_BUILDING_ACTIONS, CITY_BUILDINGS, spawn_city_dialog};
 use building_visuals::*;
-pub(super) use building_visuals::{CityBuildingActionVisual, CityBuildingVisual};
+use control_tags::resource_control_tag;
 use dialogs::*;
 use lifecycle::*;
 

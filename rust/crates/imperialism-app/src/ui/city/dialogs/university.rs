@@ -1,14 +1,18 @@
 use super::*;
 use crate::ui::retail_raster::IndexedRasterExt;
 
-const UNIVERSITY_KINDS: [CivilianUnitKind; 7] = [
-    CivilianUnitKind::Miner,
-    CivilianUnitKind::Prospector,
-    CivilianUnitKind::Farmer,
-    CivilianUnitKind::Forester,
-    CivilianUnitKind::Engineer,
-    CivilianUnitKind::Rancher,
-    CivilianUnitKind::Driller,
+const UNIVERSITY_ROWS: [(CivilianUnitKind, FourCc, FourCc); 7] = [
+    (CivilianUnitKind::Miner, fourcc!("clu0"), fourcc!("civ0")),
+    (
+        CivilianUnitKind::Prospector,
+        fourcc!("clu1"),
+        fourcc!("civ1"),
+    ),
+    (CivilianUnitKind::Farmer, fourcc!("clu2"), fourcc!("civ2")),
+    (CivilianUnitKind::Forester, fourcc!("clu3"), fourcc!("civ3")),
+    (CivilianUnitKind::Engineer, fourcc!("clu4"), fourcc!("civ4")),
+    (CivilianUnitKind::Rancher, fourcc!("clu5"), fourcc!("civ5")),
+    (CivilianUnitKind::Driller, fourcc!("clu8"), fourcc!("civ8")),
 ];
 
 pub(in crate::ui::city) struct UniversityUi {
@@ -35,8 +39,7 @@ pub(in crate::ui::city) fn bind_university(
         .university
         .available;
     let rows = std::array::from_fn(|index| {
-        let kind = UNIVERSITY_KINDS[index];
-        let (order_tag, button_tag) = generated::UNIVERSITY_ROW_CONTROLS[index];
+        let (kind, order_tag, button_tag) = UNIVERSITY_ROWS[index];
         let bound = bind_recruitment_order_row(
             commands,
             root,

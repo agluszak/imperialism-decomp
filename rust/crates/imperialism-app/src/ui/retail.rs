@@ -20,9 +20,7 @@ pub use super::retail_placard::{
 pub use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite, Step};
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_transport_gauge::{
-    TransportGaugeParts, transport_gauge_allocation_fill, transport_gauge_capacity_fill,
-    transport_gauge_limit, transport_gauge_remainder, transport_gauge_track_left,
-    transport_gauge_width,
+    TransportGaugeParts, retail_transport_gauge, transport_gauge_width,
 };
 
 /// Provenance tag recovered from the retail View resource.

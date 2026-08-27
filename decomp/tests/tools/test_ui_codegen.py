@@ -5,11 +5,13 @@ from pathlib import Path
 
 from tools.source_model import build_model
 from tools.ui_codegen import (
+    RUST_CITY_LAYOUT_PATH,
     RUST_UI_PATH,
     load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
+    render_city_building_layout,
     render_rust_ui,
     validate,
 )
@@ -58,7 +60,42 @@ class UiCodegenTests(unittest.TestCase):
             (REPO_ROOT / RUST_UI_PATH).read_text(encoding="utf-8"),
         )
 
-    def test_transport_gauge_uses_rust_structure_helpers(self) -> None:
+    def test_generated_city_building_layout_is_current(self) -> None:
+        rendered = render_city_building_layout(REPO_ROOT)
+        self.assertEqual(
+            rendered,
+            (REPO_ROOT / RUST_CITY_LAYOUT_PATH).read_text(encoding="utf-8"),
+        )
+
+    def test_generated_rust_ui_omits_handwritten_city_tables(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        for marker in (
+            "CITY_BUILDINGS",
+            "CITY_BUILDING_ACTIONS",
+            "spawn_city_dialog",
+            "INDUSTRY_PAGE_CONTROLS",
+            "ARMORY_ROW_CONTROLS",
+            "WAREHOUSE_STOCK_TAGS",
+        ):
+            self.assertNotIn(marker, rendered)
+
+    def test_generated_city_layout_includes_spawn_city_dialog(self) -> None:
+        rendered = render_city_building_layout(REPO_ROOT)
+        self.assertIn("pub(in crate::ui::city) fn spawn_city_dialog(", rendered)
+        self.assertIn("generated::citydlog_9200()", rendered)
+        self.assertIn("generated::shipyard_9207()", rendered)
+
+    def test_transport_gauge_emits_retail_helper(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertIn("retail_transport_gauge(", rendered)
+        self.assertNotIn("#TransportFill", rendered)
+        self.assertNotIn("TransportGaugeParts {", rendered)
+
+    def test_transport_arrows_use_right_left_view_not_hilite(self) -> None:
         rendered = render_rust_ui(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
@@ -66,14 +103,11 @@ class UiCodegenTests(unittest.TestCase):
         next_fn = transport.find("\npub fn ", 1)
         if next_fn != -1:
             transport = transport[:next_fn]
-        self.assertIn("transport_gauge_track_left(", transport)
-        self.assertIn("transport_gauge_remainder(", transport)
-        self.assertNotIn("width: px(113.", transport)
         fish = transport[transport.index('retail_node(fourcc!("fish")') :]
         fish = fish[: fish.index('retail_node(fourcc!("prod")')]
         self.assertIn("RetailSidewaysArrow", fish)
         self.assertNotIn("RetailSidewaysArrowHilite", fish)
-        self.assertEqual(fish.count("Children ["), 1)
+        self.assertNotIn("Button", fish)
 
     def test_generated_sideways_arrows_use_press_repeat_not_release_button(self) -> None:
         rendered = render_rust_ui(

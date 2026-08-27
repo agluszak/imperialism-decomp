@@ -15,6 +15,7 @@ import hashlib
 import json
 import re
 from dataclasses import dataclass, replace
+from enum import Enum, auto
 from pathlib import Path
 from typing import Iterable
 
@@ -31,7 +32,12 @@ STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 WINDOWS_VIEW_PATH = "config/ui_factory_windows_views.yml"
 WINDOWS_DELTA_PATH = "config/ui_platform_deltas.yml"
+
+RUST_FONT_FAMILY_FALLBACKS = {0: 1}
 RUST_UI_PATH = "../rust/crates/imperialism-app/src/ui/generated.rs"
+RUST_CITY_LAYOUT_PATH = (
+    "../rust/crates/imperialism-app/src/ui/city/building_layout_generated.rs"
+)
 
 DEFAULT_CLASSES = {
     "view": "TView",
@@ -46,19 +52,6 @@ DEFAULT_CLASSES = {
     "chkb": "TCzechBox",
     "wind": "TWindow",
     "fwnd": "TFloatWindow",
-}
-
-CLASS_ALIASES = {
-    "TBookView": "TBook",
-    "TDefenseNotesView": "TBook",
-    "TExportsView": "TBook",
-    "TForeignNotesView": "TBook",
-    "TInteriorNotesView": "TBook",
-    "TMerchantMarineView": "TBook",
-    "TMiniDealBookView": "TBook",
-    "TToolbarCluster": "TToolBarCluster",
-    "TTreasuriesView": "TBook",
-    "TMyWindow": "TWindow",
 }
 
 LAYOUT_FAMILIES = frozenset(
@@ -77,12 +70,6 @@ MAC_FONT_FAMILY_IDS = {
     "helvetica": 21,
     "palatino": 16,
 }
-
-# The Mac View IR's family 0 is the retail System face (or an inherited System
-# style). Bevy cannot render the shipped bitmap-only System face through its
-# outline text path, so generated Rust uses the renderable Belwe face while the
-# C++/retail semantic payload remains family 0.
-RUST_FONT_FAMILY_FALLBACKS = {0: 1}
 
 
 @dataclass(frozen=True)
@@ -212,6 +199,37 @@ class UiSemanticFamily:
     two_pic_slider: UiTwoPicSliderPayload | None = None
 
 
+class WidgetKind(Enum):
+    """Single Rust BSN widget classification for one recovered node."""
+
+    CONTAINER = auto()
+    TEXT = auto()
+    PICTURE = auto()
+    BUTTON = auto()
+    CHECKBOX = auto()
+    RADIO_BUTTON = auto()
+    RADIO_GROUP = auto()
+    TEXT_EDIT = auto()
+    SCROLL_AREA = auto()
+    POINTER_CANVAS = auto()
+    PICTURE_SWAP = auto()
+    PRESSED_OVERLAY = auto()
+    MADNESS_BUTTON = auto()
+    PLACARD = auto()
+    ARMY_PLACARD = auto()
+    SHIP_PLACARD = auto()
+    PRODUCTION_AMOUNT_BAR = auto()
+    TRADE_AMOUNT_BAR = auto()
+    NUMBERED_ARROW = auto()
+    TRANSPORT_GAUGE = auto()
+    TWO_PIC_SLIDER = auto()
+    RADIO_TEXT_FILL = auto()
+    HOVER_HELP_BAR = auto()
+    SIDEWAYS_ARROW = auto()
+    RIGHT_LEFT_VIEW = auto()
+    PAGE_CORNER = auto()
+
+
 @dataclass(frozen=True)
 class UiSemanticNode:
     node_id: str
@@ -327,41 +345,6 @@ class CityBuildingActionVisual:
 class CityBuildingActionVisuals:
     view: UiResourceKey
     actions: tuple[CityBuildingActionVisual, ...]
-
-
-@dataclass(frozen=True)
-class CityRowControls:
-    cluster: str
-    button: str
-
-
-@dataclass(frozen=True)
-class CityShipyardRowControls:
-    cluster: str
-    button: str
-    overlay_left: int
-
-
-@dataclass(frozen=True)
-class CityIndustryPageControls:
-    slot: str
-    order_tags: tuple[str, ...]
-    stocks: tuple[tuple[str, int], ...]
-
-
-@dataclass(frozen=True)
-class CityDialogControls:
-    armory_rows: tuple[CityRowControls, ...]
-    university_rows: tuple[CityRowControls, ...]
-    shipyard_rows: tuple[CityShipyardRowControls, ...]
-    shipyard_stat_origins: tuple[tuple[int, int], ...]
-    training_orders: tuple[str, ...]
-    food_order: str
-    power_order: str
-    transport_order: str
-    population_order: str
-    warehouse_stocks: tuple[str, ...]
-    industry: tuple[CityIndustryPageControls, ...]
 
 
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
@@ -784,6 +767,23 @@ def apply_two_pic_slider_instances(
     return replace(view, nodes=tuple(nodes))
 
 
+def load_class_substitutions(repo_root: Path) -> dict[str, str]:
+    """Mac resource class name -> Windows source model class from platform deltas."""
+
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    context = f"{WINDOWS_DELTA_PATH}: class_substitutions"
+    rows = _mapping(data.get("class_substitutions") or {}, context)
+    substitutions: dict[str, str] = {}
+    for mac_class, raw_row in rows.items():
+        row = _mapping(raw_row, f"{context}/{mac_class}")
+        if set(row) != {"windows_class", "reason", "evidence"}:
+            raise ValueError(f"{context}/{mac_class}: expected windows_class, reason, evidence")
+        if not all(str(row[key]).strip() for key in row):
+            raise ValueError(f"{context}/{mac_class}: empty class substitution evidence")
+        substitutions[str(mac_class)] = str(row["windows_class"])
+    return substitutions
+
+
 def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, ...]:
     data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
     rows = data.get("windows_child_nodes", [])
@@ -944,58 +944,10 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
     if not str(section["evidence"]).strip():
         raise ValueError(f"{context}: evidence is required")
 
-    expected_picture_ids = (
-        15000,
-        15003,
-        15004,
-        15006,
-        15010,
-        15013,
-        15014,
-        15016,
-        15017,
-        15020,
-        15021,
-        15023,
-        15024,
-        15026,
-        15027,
-        15028,
-        15030,
-        15031,
-        15033,
-        15034,
-        15036,
-        15037,
-        15040,
-        15041,
-        15043,
-        15044,
-        15045,
-        15046,
-        15047,
-        15050,
-        15051,
-        15053,
-        15056,
-        15057,
-        15058,
-        15060,
-        15070,
-    )
-    slots_by_group = (
-        "textile_mill",
-        "clothing_factory",
-        "steel_mill",
-        "metalworks",
-        "lumber_mill",
-        "furniture_factory",
-        "oil_refinery",
-        "power_plant",
-    )
-    rows = _sequence(
-        section["actions"], len(expected_picture_ids), f"{context}/actions"
-    )
+    actions_raw = section["actions"]
+    if not isinstance(actions_raw, list) or not actions_raw:
+        raise ValueError(f"{context}/actions: expected a non-empty list")
+    rows = actions_raw
     actions: list[CityBuildingActionVisual] = []
     for index, raw_row in enumerate(rows):
         row_context = f"{context}/actions[{index}]"
@@ -1011,15 +963,10 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
         if set(row) != expected_fields:
             raise ValueError(f"{row_context}: malformed city building action visual")
         picture_id = int(row["picture_id"])
-        if picture_id != expected_picture_ids[index]:
-            raise ValueError(
-                f"{row_context}: expected recovered picture id {expected_picture_ids[index]}"
-            )
-        group = (picture_id - 15000) // 10
-        level = (picture_id % 10) // 3 + 1
         slot = str(row["slot"])
-        if slot != slots_by_group[group] or int(row["level"]) != level:
-            raise ValueError(f"{row_context}: slot or level does not match picture id")
+        level = int(row["level"])
+        if not 1 <= level <= 3:
+            raise ValueError(f"{row_context}: level must be 1 through 3")
         frame_count = int(row["frame_count"])
         if not 0 < frame_count <= 255:
             raise ValueError(f"{row_context}: frame count must fit a nonzero byte")
@@ -1049,147 +996,6 @@ def load_city_building_action_visuals(repo_root: Path) -> CityBuildingActionVisu
     return CityBuildingActionVisuals(
         view=UiResourceKey.parse(str(section["view"])),
         actions=tuple(actions),
-    )
-
-
-def _load_row_controls(
-    rows: object, length: int, context: str
-) -> tuple[CityRowControls, ...]:
-    loaded: list[CityRowControls] = []
-    for index, raw_row in enumerate(_sequence(rows, length, context)):
-        row_context = f"{context}[{index}]"
-        row = _mapping(raw_row, row_context)
-        if set(row) != {"cluster", "button"}:
-            raise ValueError(f"{row_context}: expected cluster and button")
-        loaded.append(
-            CityRowControls(
-                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
-                button=_fourcc(row["button"], f"{row_context}/button"),
-            )
-        )
-    return tuple(loaded)
-
-
-def load_city_dialog_controls(repo_root: Path) -> CityDialogControls:
-    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
-    context = f"{WINDOWS_DELTA_PATH}: city_dialog_controls"
-    section = _mapping(data.get("city_dialog_controls"), context)
-    expected = {
-        "evidence",
-        "armory_rows",
-        "university_rows",
-        "shipyard_rows",
-        "shipyard_stat_origins",
-        "training_orders",
-        "food_order",
-        "power_order",
-        "transport_order",
-        "population_order",
-        "warehouse_stocks",
-        "industry",
-    }
-    if set(section) != expected:
-        raise ValueError(f"{context}: unexpected keys")
-    if not str(section["evidence"]).strip():
-        raise ValueError(f"{context}: evidence is required")
-
-    shipyard_rows: list[CityShipyardRowControls] = []
-    for index, raw_row in enumerate(
-        _sequence(section["shipyard_rows"], 8, f"{context}/shipyard_rows")
-    ):
-        row_context = f"{context}/shipyard_rows[{index}]"
-        row = _mapping(raw_row, row_context)
-        if set(row) != {"cluster", "button", "overlay_left"}:
-            raise ValueError(f"{row_context}: malformed shipyard row")
-        overlay_left = int(row["overlay_left"])
-        if overlay_left < 0:
-            raise ValueError(f"{row_context}: overlay_left must be non-negative")
-        shipyard_rows.append(
-            CityShipyardRowControls(
-                cluster=_fourcc(row["cluster"], f"{row_context}/cluster"),
-                button=_fourcc(row["button"], f"{row_context}/button"),
-                overlay_left=overlay_left,
-            )
-        )
-
-    origins: list[tuple[int, int]] = []
-    for index, raw_origin in enumerate(
-        _sequence(section["shipyard_stat_origins"], 6, f"{context}/shipyard_stat_origins")
-    ):
-        origin = _sequence(raw_origin, 2, f"{context}/shipyard_stat_origins[{index}]")
-        origins.append((int(origin[0]), int(origin[1])))
-
-    industry_slots = (
-        "textile_mill",
-        "clothing_factory",
-        "steel_mill",
-        "metalworks",
-        "lumber_mill",
-        "furniture_factory",
-        "oil_refinery",
-    )
-    industry: list[CityIndustryPageControls] = []
-    for index, raw_page in enumerate(
-        _sequence(section["industry"], 7, f"{context}/industry")
-    ):
-        page_context = f"{context}/industry[{index}]"
-        page = _mapping(raw_page, page_context)
-        if set(page) != {"slot", "orders", "stocks"}:
-            raise ValueError(f"{page_context}: malformed industry page")
-        slot = str(page["slot"])
-        if slot != industry_slots[index]:
-            raise ValueError(f"{page_context}: expected slot {industry_slots[index]}")
-        orders = tuple(
-            _fourcc(tag, f"{page_context}/orders[{order_index}]")
-            for order_index, tag in enumerate(page["orders"])
-        )
-        if not orders:
-            raise ValueError(f"{page_context}: orders must not be empty")
-        stocks: list[tuple[str, int]] = []
-        raw_stocks = page["stocks"]
-        if not isinstance(raw_stocks, list) or not raw_stocks:
-            raise ValueError(f"{page_context}/stocks: expected a non-empty list")
-        for stock_index, raw_stock in enumerate(raw_stocks):
-            stock_context = f"{page_context}/stocks[{stock_index}]"
-            stock = _mapping(raw_stock, stock_context)
-            if set(stock) != {"tag", "columns"}:
-                raise ValueError(f"{stock_context}: expected tag and columns")
-            columns = int(stock["columns"])
-            if columns not in (1, 2):
-                raise ValueError(f"{stock_context}: columns must be 1 or 2")
-            stocks.append((_fourcc(stock["tag"], f"{stock_context}/tag"), columns))
-        industry.append(
-            CityIndustryPageControls(slot, orders, tuple(stocks))
-        )
-
-    warehouse = tuple(
-        _fourcc(tag, f"{context}/warehouse_stocks[{index}]")
-        for index, tag in enumerate(
-            _sequence(section["warehouse_stocks"], 20, f"{context}/warehouse_stocks")
-        )
-    )
-    training = tuple(
-        _fourcc(tag, f"{context}/training_orders[{index}]")
-        for index, tag in enumerate(
-            _sequence(section["training_orders"], 2, f"{context}/training_orders")
-        )
-    )
-    return CityDialogControls(
-        armory_rows=_load_row_controls(section["armory_rows"], 8, f"{context}/armory_rows"),
-        university_rows=_load_row_controls(
-            section["university_rows"], 7, f"{context}/university_rows"
-        ),
-        shipyard_rows=tuple(shipyard_rows),
-        shipyard_stat_origins=tuple(origins),
-        training_orders=training,
-        food_order=_fourcc(section["food_order"], f"{context}/food_order"),
-        power_order=_fourcc(section["power_order"], f"{context}/power_order"),
-        transport_order=_fourcc(section["transport_order"], f"{context}/transport_order"),
-        population_order=_fourcc(
-            section["population_order"], f"{context}/population_order"
-        ),
-        warehouse_stocks=warehouse,
-        industry=tuple(industry),
     )
 
 
@@ -1546,10 +1352,10 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
     return views
 
 
-def _resolved_class(node: dict) -> str:
+def _resolved_class(node: dict, class_substitutions: dict[str, str]) -> str:
     class_name = str(node.get("class_name") or "")
     if class_name:
-        return CLASS_ALIASES.get(class_name, class_name)
+        return class_substitutions.get(class_name, class_name)
     try:
         return DEFAULT_CLASSES[str(node["type_code"])]
     except KeyError as exc:
@@ -1612,13 +1418,16 @@ def _normalize_mac_window_payload(type_code: str, raw_family: dict) -> UiWindowP
 
 
 def normalize_resource_view(
-    key: UiResourceKey, view: dict, text_resources: TextResources
+    key: UiResourceKey,
+    view: dict,
+    text_resources: TextResources,
+    class_substitutions: dict[str, str],
 ) -> UiSemanticView:
     nodes: list[UiSemanticNode] = []
     for row in view.get("nodes", []):
         offset = int(row["offset"])
         type_code = str(row["type_code"])
-        class_name = _resolved_class(row)
+        class_name = _resolved_class(row, class_substitutions)
         raw_family = row.get("family", {})
         frame_style: int | None = None
         content_insets: tuple[int, int, int, int] | None = None
@@ -1809,14 +1618,6 @@ def apply_case_windows_overrides(
     return replace(view, nodes=tuple(nodes))
 
 
-def _rust_amount_bar_style(node: UiSemanticNode) -> str | None:
-    """Map recovered TAmtBar subclasses to AmountBarStyle (behavior, not C++ taxonomy)."""
-    return {
-        "TIndustryAmtBar": "Production",
-        "TRailAmtBar": "Production",
-        "TTraderAmtBar": "Trade",
-    }.get(node.class_name)
-
 
 def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | None:
     """Read recovered TTwoPicSlider instance facts from platform deltas."""
@@ -1832,216 +1633,137 @@ def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | No
     )
 
 
-def _rust_input_semantics(
+_CLASS_WIDGET_KIND: dict[str, WidgetKind] = {
+    "T2PictureButton": WidgetKind.BUTTON,
+    "TArmyPlacard": WidgetKind.ARMY_PLACARD,
+    "TCityProductionView": WidgetKind.POINTER_CANVAS,
+    "TCitySiteView": WidgetKind.POINTER_CANVAS,
+    "TClickZone": WidgetKind.BUTTON,
+    "TControl": WidgetKind.BUTTON,
+    "TCzechBox": WidgetKind.CHECKBOX,
+    "TDealTabControl": WidgetKind.BUTTON,
+    "TDropShadowNumberText": WidgetKind.BUTTON,
+    "TEditText": WidgetKind.TEXT_EDIT,
+    "TInfoBarText": WidgetKind.HOVER_HELP_BAR,
+    "TMadnessButton": WidgetKind.MADNESS_BUTTON,
+    "TMapPreviewView": WidgetKind.POINTER_CANVAS,
+    "TMyNumberText": WidgetKind.BUTTON,
+    "TNumberText": WidgetKind.BUTTON,
+    "TNumberedArrowButton": WidgetKind.NUMBERED_ARROW,
+    "TOverlayRadioButton": WidgetKind.RADIO_BUTTON,
+    "TPictureButton": WidgetKind.PRESSED_OVERLAY,
+    "TPictureNumberText": WidgetKind.BUTTON,
+    "TPlacard": WidgetKind.PLACARD,
+    "TRadioPictureButton": WidgetKind.RADIO_BUTTON,
+    "TRadioText": WidgetKind.RADIO_TEXT_FILL,
+    "TRadioTextCluster": WidgetKind.RADIO_GROUP,
+    "TScrollView": WidgetKind.SCROLL_AREA,
+    "TShipPlacard": WidgetKind.SHIP_PLACARD,
+    "TTextPictureButton": WidgetKind.PICTURE_SWAP,
+    "TToggleButton": WidgetKind.CHECKBOX,
+    "TTransportPicture": WidgetKind.TRANSPORT_GAUGE,
+    "TTwoPicSlider": WidgetKind.TWO_PIC_SLIDER,
+    "TUpDownPictureButton": WidgetKind.PICTURE_SWAP,
+    "TCivilianButton": WidgetKind.RADIO_BUTTON,
+    "TIndustryAmtBar": WidgetKind.PRODUCTION_AMOUNT_BAR,
+    "TRailAmtBar": WidgetKind.PRODUCTION_AMOUNT_BAR,
+    "TTraderAmtBar": WidgetKind.TRADE_AMOUNT_BAR,
+}
+
+_CONTAINER_TYPE_CODES = frozenset({"clus", "view", "wind", "fwnd"})
+_TEXT_TYPE_CODES = frozenset({"stat", "tevw"})
+
+
+def classify_widget(
     key: UiResourceKey | None,
     node: UiSemanticNode,
     runtime_semantics: dict[tuple[UiResourceKey, str], str] | None = None,
-) -> str:
-    """Interaction role for Button / Checkbox / ScrollArea / etc. emission.
+) -> WidgetKind:
+    """Classify one normalized recovered node for Rust BSN emission."""
 
-    Values: passive, activate, checkbox, toggle, radio_button, radio_group,
-    slider, scroll_area, pointer_canvas, text_edit, sideways_arrow,
-    right_left_view, page_corner.
-
-    The generator is the one place where recovered type/class evidence decides
-    whether a static-text-looking control is a radio, a picture is an activate
-    button, or a canvas takes pointer input. The generated BSN carries the
-    resulting native Bevy component, not those C++ class details.
-    """
+    if key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob":
+        return WidgetKind.BUTTON
 
     if key is not None and runtime_semantics is not None:
         override = runtime_semantics.get((key, node.class_name))
-        if override is not None:
-            return override
+        if override == "right_left_view":
+            return WidgetKind.RIGHT_LEFT_VIEW
 
-    class_name = node.class_name.casefold()
-    # Generic `clus` records are layout groups (TIndustryCluster, TToolBarCluster,
-    # the random-setup `stuf` panel). Only TRadioTextCluster is a mutually
-    # exclusive option group.
-    if node.class_name == "TRadioTextCluster":
-        return "radio_group"
-    if node.type_code == "radb" or "radio" in class_name:
-        return "radio_button"
-    # TMadnessButton is a TCzechBox pictured as `pict`; input is Checkbox, not Button.
-    if node.class_name == "TMadnessButton":
-        return "checkbox"
-    if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
-        return "checkbox"
-    if node.type_code == "pict" and "toggle" in class_name:
-        return "toggle"
-    if node.type_code == "edit":
-        return "text_edit"
-    if node.class_name == "TTwoPicSlider":
-        return "slider"
-    # `tevw` is the TTEView resource family (TDeluxeText, TDialogTEView, …), not
-    # evidence of scrolling. Only recovered TScrollView becomes a ScrollArea.
-    if node.class_name == "TScrollView":
-        return "scroll_area"
-    if node.class_name in ("TMapPreviewView", "TCitySiteView", "TCityProductionView"):
-        return "pointer_canvas"
-    # SceneComponent owns two stock Buttons; recovered root is not itself a Button.
-    if node.class_name == "TNumberedArrowButton":
-        return "passive"
     if node.class_name == "TSidewaysArrow":
-        return "sideways_arrow"
-    if node.tag in ("lcor", "rcor"):
-        if node.class_name == "TPageCorner":
-            return "page_corner"
-        return "activate"
-    if node.class_name == "TPageCorner":
-        return "page_corner"
-    if (
-        node.type_code in ("cntl", "nmbr")
-        or (node.type_code == "pict" and "button" in class_name)
-        # TSetupRandomMapPicture::DoEvent handles this otherwise passive
-        # TNoHilitePicture as the random-map regeneration action.
-        or (key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob")
-    ) and node.class_name != "TTwoPicSlider":
-        return "activate"
-    return "passive"
+        return WidgetKind.SIDEWAYS_ARROW
+
+    if node.class_name == "TPageCorner" and node.tag in ("lcor", "rcor"):
+        return WidgetKind.PAGE_CORNER
+
+    kind = _CLASS_WIDGET_KIND.get(node.class_name)
+    if kind is not None:
+        return kind
+
+    if node.type_code in _TEXT_TYPE_CODES:
+        return WidgetKind.TEXT
+
+    if node.type_code in _CONTAINER_TYPE_CODES:
+        return WidgetKind.CONTAINER
+
+    if node.type_code == "pict" and node.family.picture_id is not None:
+        return WidgetKind.PICTURE
+
+    raise ValueError(
+        f"unsupported recovered class for Rust UI: {node.class_name} "
+        f"(type={node.type_code!r}, tag={node.tag!r})"
+    )
 
 
 def _rust_picture_swap_ids(node: UiSemanticNode, picture_id: int) -> tuple[int, int]:
-    """Idle/active picture IDs for `picture_swap` presentation.
+    """Idle/active picture IDs for picture-swap widgets."""
 
-    Evidence:
-    - TUpDownPictureButton / TRadioPictureButton / TTextPictureButton:
-      HiliteState swaps to glyphBase84 +/- 1 (immutable resting ID + 1 when active).
-    - TCzechBox: CheckTheLook uses odd ID when checked or pressed, even when idle.
-    """
-
-    folded = node.class_name.casefold()
-    if node.type_code == "chkb" or "czechbox" in folded:
+    if node.class_name == "TCzechBox" or node.type_code == "chkb":
         return int(picture_id) & ~1, int(picture_id) | 1
     return int(picture_id), int(picture_id) + 1
 
 
-def _rust_presentation_owns_children(presentation: str | None) -> bool:
-    """True when the Rust helper for this presentation emits its own `Children` list."""
-
-    return presentation in {
-        "placard",
-        "army_placard",
-        "ship_placard",
-        "transport_gauge",
-        "numbered_arrow",
-        "amount_bar",
-        "two_pic_slider",
+_ATOMIC_WIDGET_KINDS = frozenset(
+    {
+        WidgetKind.PLACARD,
+        WidgetKind.ARMY_PLACARD,
+        WidgetKind.SHIP_PLACARD,
+        WidgetKind.NUMBERED_ARROW,
+        WidgetKind.PRODUCTION_AMOUNT_BAR,
+        WidgetKind.TRADE_AMOUNT_BAR,
+        WidgetKind.TWO_PIC_SLIDER,
     }
+)
 
 
-def _rust_transport_gauge_shell_and_children(
-    picture_id: int, track_left_expr: str, capacity: bool
-) -> tuple[list[str], list[list[str]]]:
-    """Root components + synthetic child BSN nodes for a transport gauge.
+_INTERACTIVE_WIDGET_KINDS = frozenset(
+    {
+        WidgetKind.BUTTON,
+        WidgetKind.CHECKBOX,
+        WidgetKind.RADIO_BUTTON,
+        WidgetKind.RADIO_GROUP,
+        WidgetKind.RADIO_TEXT_FILL,
+        WidgetKind.TEXT_EDIT,
+        WidgetKind.SCROLL_AREA,
+        WidgetKind.POINTER_CANVAS,
+        WidgetKind.PICTURE_SWAP,
+        WidgetKind.PRESSED_OVERLAY,
+        WidgetKind.MADNESS_BUTTON,
+        WidgetKind.TWO_PIC_SLIDER,
+        WidgetKind.SIDEWAYS_ARROW,
+        WidgetKind.RIGHT_LEFT_VIEW,
+        WidgetKind.PAGE_CORNER,
+    }
+)
 
-    Used when the recovered `TTransportPicture` already has resource children so
-    codegen emits exactly one `Children` owner. Geometry lives in
-    `retail_transport_gauge.rs` helpers referenced here. Always emit the shell so
-    there is one `Children` owner even when the recovered node has no resource kids.
-    """
-
-    fill_helper = (
-        "transport_gauge_capacity_fill"
-        if capacity
-        else "transport_gauge_allocation_fill"
-    )
-    shell = [
-        f"    retail_picture({picture_id})",
-    ]
-    if capacity:
-        shell.append(
-            "    TransportGaugeParts { fill: #TransportFill, limit: {Entity::PLACEHOLDER} }"
-        )
-    else:
-        shell.append(
-            "    TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }"
-        )
-    children: list[list[str]] = [
-        [
-            "(",
-            f"    transport_gauge_remainder({track_left_expr})",
-            ")",
-        ],
-        [
-            "(",
-            "    #TransportFill",
-            f"    {fill_helper}({track_left_expr})",
-            ")",
-        ],
-    ]
-    if not capacity:
-        children.append(
-            [
-                "(",
-                "    #TransportLimit",
-                f"    transport_gauge_limit({track_left_expr})",
-                ")",
-            ]
-        )
-    return shell, children
-
-
-def _rust_presentation(node: UiSemanticNode) -> str | None:
-    """Which visual helper to emit for this recovered node.
-
-    Values: hover_help_bar, placard, army_placard, ship_placard, transport_gauge,
-    numbered_arrow, amount_bar, two_pic_slider, madness, pressed_overlay,
-    picture_swap, static_picture, radio_text_fill; None when the node has no
-    dedicated presentation helper.
-    """
-
-    class_name = node.class_name
-    folded = class_name.casefold()
-    if class_name == "TInfoBarText":
-        return "hover_help_bar"
-    if class_name == "TPlacard":
-        return "placard"
-    if class_name == "TArmyPlacard":
-        return "army_placard"
-    if class_name == "TShipPlacard":
-        return "ship_placard"
-    if class_name == "TTransportPicture":
-        return "transport_gauge"
-    if class_name == "TNumberedArrowButton":
-        return "numbered_arrow"
-    if class_name == "TTwoPicSlider":
-        return "two_pic_slider"
-    if _rust_amount_bar_style(node) is not None:
-        return "amount_bar"
-
-    picture_id = node.family.picture_id
-    if picture_id is not None:
-        if class_name == "TMadnessButton":
-            return "madness"
-        if class_name == "TPictureButton":
-            return "pressed_overlay"
-        if node.type_code == "chkb" or "czechbox" in folded:
-            return "picture_swap"
-        if (
-            node.type_code == "radb"
-            or class_name
-            in (
-                "TUpDownPictureButton",
-                "TRadioPictureButton",
-                "TTextPictureButton",
-                "TSidewaysArrow",
-                "TCivilianButton",
-                "TOverlayRadioButton",
-            )
-            or "updownpicture" in folded
-            or "radiopicture" in folded
-        ):
-            return "picture_swap"
-        return "static_picture"
-
-    # TRadioText has no picture; Draw fills the selected/pressed option.
-    # TRadioTextCluster is radio_group input only (checked above via class table).
-    if class_name != "TRadioTextCluster" and (
-        node.type_code == "radb" or "radio" in folded
-    ):
-        return "radio_text_fill"
-    return None
+_CHECKED_WIDGET_KINDS = frozenset(
+    {
+        WidgetKind.CHECKBOX,
+        WidgetKind.MADNESS_BUTTON,
+        WidgetKind.RADIO_BUTTON,
+        WidgetKind.RADIO_TEXT_FILL,
+        WidgetKind.PAGE_CORNER,
+    }
+)
 
 
 def _case_for_resource(
@@ -2122,32 +1844,11 @@ def apply_windows_child_node_patches(
     return replace(semantic_view, nodes=tuple(nodes))
 
 
-def _rust_ui_semantic_views(
-    repo_root: Path,
-    recipes: Iterable[UiFactoryRecipe],
-    views: dict[UiResourceKey, dict],
-    text_resources: TextResources,
-) -> tuple[
-    list[tuple[UiResourceKey | str, UiSemanticView]],
-    CityBuildingVisuals,
-    CityBuildingActionVisuals,
-]:
-    recipe_list = list(recipes)
-    text_property_patches = load_windows_text_property_patches(repo_root)
-    child_node_patches = load_windows_child_node_patches(repo_root)
-    two_pic_sliders = load_two_pic_slider_instances(repo_root)
-    city_buildings = load_city_building_visuals(repo_root)
-    city_building_actions = load_city_building_action_visuals(repo_root)
-    scene_keys = set(resource_backed_scene_keys(recipe_list))
-    unknown_child_views = sorted(
-        {patch.resource for patch in child_node_patches} - scene_keys,
-        key=lambda item: (item.resource_file, item.view_id),
-    )
-    if unknown_child_views:
-        raise ValueError(
-            f"{WINDOWS_DELTA_PATH}: child-node views are not in the native Rust UI: "
-            + ", ".join(key.text() for key in unknown_child_views)
-        )
+def validate_city_layout(
+    city_buildings: CityBuildingVisuals,
+    city_building_actions: CityBuildingActionVisuals,
+    scene_keys: set[UiResourceKey],
+) -> None:
     if city_buildings.view not in scene_keys:
         raise ValueError(
             f"{WINDOWS_DELTA_PATH}: city building view "
@@ -2164,22 +1865,38 @@ def _rust_ui_semantic_views(
                 f"{WINDOWS_DELTA_PATH}: city building dialog "
                 f"{visual.dialog.text()} is not in the native Rust UI"
             )
-    for index, visual in enumerate(city_buildings.visuals):
-        expected_dialogs = [
-            key for key in scene_keys if key.view_id == 9200 + index
-        ]
-        if len(expected_dialogs) != 1 or visual.dialog != expected_dialogs[0]:
-            raise ValueError(
-                f"{WINDOWS_DELTA_PATH}: city building {visual.slot} dialog "
-                "does not match the recovered factory case"
-            )
+
+
+def _rust_ui_semantic_views(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> list[tuple[UiResourceKey | str, UiSemanticView]]:
+    recipe_list = list(recipes)
+    text_property_patches = load_windows_text_property_patches(repo_root)
+    child_node_patches = load_windows_child_node_patches(repo_root)
+    two_pic_sliders = load_two_pic_slider_instances(repo_root)
+    class_substitutions = load_class_substitutions(repo_root)
+    scene_keys = set(resource_backed_scene_keys(recipe_list))
+    unknown_child_views = sorted(
+        {patch.resource for patch in child_node_patches} - scene_keys,
+        key=lambda item: (item.resource_file, item.view_id),
+    )
+    if unknown_child_views:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: child-node views are not in the native Rust UI: "
+            + ", ".join(key.text() for key in unknown_child_views)
+        )
     scene_views: list[tuple[UiResourceKey | str, UiSemanticView]] = []
     for key in sorted(scene_keys, key=lambda item: (item.resource_file, item.view_id)):
         raw_view = views.get(key)
         if raw_view is None:
             raise ValueError(f"{key.text()}: missing committed Mac View IR")
         recipe, case = _case_for_resource(recipe_list, key)
-        semantic_view = normalize_resource_view(key, raw_view, text_resources)
+        semantic_view = normalize_resource_view(
+            key, raw_view, text_resources, class_substitutions
+        )
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches, text_resources
@@ -2204,7 +1921,7 @@ def _rust_ui_semantic_views(
                 )
             scene_views.append((case.windows_view, semantic_view))
             emitted_windows.add(case.windows_view)
-    return scene_views, city_buildings, city_building_actions
+    return scene_views
 
 
 def report_unsupported_ui_roles(
@@ -2217,6 +1934,7 @@ def report_unsupported_ui_roles(
 
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
+    class_substitutions = load_class_substitutions(repo_root)
     lines: list[str] = []
     for key in resource_backed_scene_keys(recipe_list):
         raw_view = views.get(key)
@@ -2224,22 +1942,23 @@ def report_unsupported_ui_roles(
             lines.append(f"{key.text()}: missing Mac View IR")
             continue
         recipe, case = _case_for_resource(recipe_list, key)
-        semantic_view = normalize_resource_view(key, raw_view, text_resources)
+        semantic_view = normalize_resource_view(
+            key, raw_view, text_resources, class_substitutions
+        )
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches, text_resources
         )
         unsupported: list[str] = []
         for node in semantic_view.nodes:
-            semantics = _rust_input_semantics(key, node)
-            presentation = _rust_presentation(node)
+            kind = classify_widget(key, node)
             notes: list[str] = []
-            # Recovered `cntl` nodes without a dedicated presentation still need
+            # Recovered `cntl` nodes without a dedicated retail helper still need
             # hand-authored visuals (TClickZone / TDealTabControl / TControl).
-            if node.type_code == "cntl" and presentation is None:
+            if node.type_code == "cntl" and kind == WidgetKind.BUTTON:
                 notes.append("kind=specialized")
-            if semantics in ("scroll_area",):
-                notes.append(f"behavior={semantics}")
+            if kind == WidgetKind.SCROLL_AREA:
+                notes.append("behavior=scroll_area")
             if notes:
                 unsupported.append(
                     f"  {node.tag!r} ({node.class_name}): " + ", ".join(notes)
@@ -2345,49 +2064,63 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    semantics = _rust_input_semantics(key, node, runtime_semantics)
-    lines.extend(
-        {
-            "activate": ["    Button"],
-            "sideways_arrow": [
-                "    RetailSidewaysArrow",
-                "    RetailSidewaysArrowHilite",
-                "    Pickable",
-            ],
-            "right_left_view": [
-                "    RetailSidewaysArrow",
-                "    Pickable",
-            ],
-            "checkbox": ["    Checkbox"],
-            "toggle": ["    Checkbox"],
-            "radio_group": ["    RadioGroup"],
-            "radio_button": ["    RadioButton"],
-            "pointer_canvas": ["    RelativeCursorPosition"],
-            "scroll_area": [
-                "    ScrollArea",
-                "    ScrollPosition::default()",
-                "    Node {",
-                "        overflow: Overflow::scroll_y(),",
-                "    }",
-                "    Pickable",
-            ],
-        }.get(str(semantics), [])
-    )
-    if semantics == "page_corner":
-        corner = "Left" if node.tag == "lcor" else "Right"
-        lines.append(f"    template(|_context| Ok(RetailPageCorner::{corner}))")
-        lines.append("    Pickable { should_block_lower: false, is_hoverable: true }")
-        lines.append("    Button")
-    if bool(node.state) and semantics in ("checkbox", "toggle", "radio_button"):
+    kind = classify_widget(key, node, runtime_semantics)
+    picture_id = node.family.picture_id
+
+    match kind:
+        case WidgetKind.BUTTON | WidgetKind.PRESSED_OVERLAY:
+            lines.append("    Button")
+        case WidgetKind.PICTURE_SWAP | WidgetKind.RADIO_BUTTON:
+            lines.append("    Button")
+        case WidgetKind.SIDEWAYS_ARROW:
+            lines.extend(
+                [
+                    "    RetailSidewaysArrow",
+                    "    RetailSidewaysArrowHilite",
+                    "    Pickable",
+                ]
+            )
+        case WidgetKind.RIGHT_LEFT_VIEW:
+            lines.extend(["    RetailSidewaysArrow", "    Pickable"])
+        case WidgetKind.PAGE_CORNER:
+            corner = "Left" if node.tag == "lcor" else "Right"
+            lines.append(f"    template(|_context| Ok(RetailPageCorner::{corner}))")
+            lines.append("    Pickable { should_block_lower: false, is_hoverable: true }")
+            lines.append("    Button")
+        case WidgetKind.CHECKBOX | WidgetKind.MADNESS_BUTTON:
+            lines.append("    Checkbox")
+        case WidgetKind.RADIO_BUTTON | WidgetKind.RADIO_TEXT_FILL:
+            lines.append("    RadioButton")
+        case WidgetKind.RADIO_GROUP:
+            lines.append("    RadioGroup")
+        case WidgetKind.POINTER_CANVAS:
+            lines.append("    RelativeCursorPosition")
+        case WidgetKind.SCROLL_AREA:
+            lines.extend(
+                [
+                    "    ScrollArea",
+                    "    ScrollPosition::default()",
+                    "    Node {",
+                    "        overflow: Overflow::scroll_y(),",
+                    "    }",
+                    "    Pickable",
+                ]
+            )
+        case _:
+            pass
+
+    if bool(node.state) and kind in _CHECKED_WIDGET_KINDS:
         lines.append("    Checked")
-    if semantics != "passive" and (not node.enabled or not node.input_gate):
+    if kind in _INTERACTIVE_WIDGET_KINDS | {
+        WidgetKind.SIDEWAYS_ARROW,
+        WidgetKind.RIGHT_LEFT_VIEW,
+        WidgetKind.PAGE_CORNER,
+    } and (not node.enabled or not node.input_gate):
         lines.append("    InteractionDisabled")
 
-    presentation = _rust_presentation(node)
     recovered_children = children_by_parent.get(node.node_id, [])
-    merged_synthetic_children: list[list[str]] = []
 
-    if presentation == "hover_help_bar":
+    if kind == WidgetKind.HOVER_HELP_BAR:
         lines.append("    template(|_context| Ok(HoverHelpBar))")
         # Empty text until hover systems write; style comes from Windows deltas.
         if text is None:
@@ -2406,7 +2139,7 @@ def _render_bsn_node(
     if text is not None:
         font_family = _rust_font_family(text)
         value = _rust_string(text.value or "")
-        if semantics == "text_edit":
+        if kind == WidgetKind.TEXT_EDIT:
             max_chars = node.family.max_chars
             if max_chars is not None and max_chars < 0:
                 max_chars = None
@@ -2436,66 +2169,68 @@ def _render_bsn_node(
                 f"{height}, {insets[1]})"
             )
 
-    picture_id = node.family.picture_id
-    if presentation == "placard":
-        lines.append(f"    retail_placard({int(picture_id)})")
-    elif presentation == "army_placard":
-        lines.append(f"    retail_army_placard({int(picture_id)})")
-    elif presentation == "ship_placard":
-        lines.append(f"    retail_ship_placard({int(picture_id)})")
-    elif presentation == "transport_gauge":
-        track_left_expr = f"transport_gauge_track_left({int(node.geometry[0])})"
-        capacity = node.tag == "tota"
-        shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
-            int(picture_id), track_left_expr, capacity
-        )
-        lines.extend(shell)
-    elif presentation == "pressed_overlay":
-        lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
-    elif presentation == "madness":
-        lines.append(f"    retail_madness_picture({int(picture_id)})")
-    elif presentation == "static_picture":
-        lines.append(f"    retail_picture({int(picture_id)})")
-    elif presentation == "picture_swap":
-        idle_id, active_id = _rust_picture_swap_ids(node, int(picture_id))
-        lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
-    elif presentation == "numbered_arrow":
-        lines.append("    retail_numbered_arrow()")
-    elif presentation == "radio_text_fill":
-        lines.append("    retail_radio_text_fill()")
-    elif presentation == "amount_bar":
-        amount_bar_style = _rust_amount_bar_style(node)
-        assert amount_bar_style is not None
-        lines.append(f"    retail_amount_bar(AmountBarStyle::{amount_bar_style})")
-    elif presentation == "two_pic_slider":
-        slider = _rust_two_pic_slider(node)
-        if slider is None:
-            raise ValueError(
-                f"{node.tag}: TTwoPicSlider missing two_pic_slider_instances facts"
+    if picture_id is not None:
+        match kind:
+            case WidgetKind.PLACARD:
+                lines.append(f"    retail_placard({int(picture_id)})")
+            case WidgetKind.ARMY_PLACARD:
+                lines.append(f"    retail_army_placard({int(picture_id)})")
+            case WidgetKind.SHIP_PLACARD:
+                lines.append(f"    retail_ship_placard({int(picture_id)})")
+            case WidgetKind.PRESSED_OVERLAY:
+                lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
+            case WidgetKind.MADNESS_BUTTON:
+                lines.append(f"    retail_madness_picture({int(picture_id)})")
+            case WidgetKind.PICTURE | WidgetKind.POINTER_CANVAS | WidgetKind.BUTTON | WidgetKind.TRANSPORT_GAUGE:
+                lines.append(f"    retail_picture({int(picture_id)})")
+            case WidgetKind.CHECKBOX:
+                if node.class_name == "TToggleButton":
+                    lines.append(f"    retail_picture({int(picture_id)})")
+                else:
+                    idle_id, active_id = _rust_picture_swap_ids(node, int(picture_id))
+                    lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+            case WidgetKind.PICTURE_SWAP | WidgetKind.RADIO_BUTTON | WidgetKind.SIDEWAYS_ARROW | WidgetKind.RIGHT_LEFT_VIEW:
+                idle_id, active_id = _rust_picture_swap_ids(node, int(picture_id))
+                lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
+            case _:
+                pass
+
+    match kind:
+        case WidgetKind.TRANSPORT_GAUGE:
+            owner_left = int(node.geometry[0])
+            capacity = node.tag == "tota"
+            lines.append(
+                f"    retail_transport_gauge({owner_left}, {str(capacity).lower()})"
             )
-        picture_base, scale, off_group, off_index = slider
-        lines.append(
-            "    retail_two_pic_slider("
-            f"{picture_base}, {scale}, {off_group}, {off_index})"
-        )
+        case WidgetKind.NUMBERED_ARROW:
+            lines.append("    retail_numbered_arrow()")
+        case WidgetKind.RADIO_TEXT_FILL:
+            lines.append("    retail_radio_text_fill()")
+        case WidgetKind.PRODUCTION_AMOUNT_BAR:
+            lines.append("    retail_amount_bar(AmountBarStyle::Production)")
+        case WidgetKind.TRADE_AMOUNT_BAR:
+            lines.append("    retail_amount_bar(AmountBarStyle::Trade)")
+        case WidgetKind.TWO_PIC_SLIDER:
+            slider = _rust_two_pic_slider(node)
+            if slider is None:
+                raise ValueError(
+                    f"{node.tag}: TTwoPicSlider missing two_pic_slider_instances facts"
+                )
+            picture_base, scale, off_group, off_index = slider
+            lines.append(
+                "    retail_two_pic_slider("
+                f"{picture_base}, {scale}, {off_group}, {off_index})"
+            )
+        case _:
+            pass
 
-    if (
-        _rust_presentation_owns_children(presentation)
-        and recovered_children
-        and not merged_synthetic_children
-    ):
+    if kind in _ATOMIC_WIDGET_KINDS and recovered_children:
         raise ValueError(
-            f"{node.tag}: presentation {presentation!r} owns Children but the recovered "
-            "node also has children; merge synthetic + recovered into one Children list "
-            "(see transport_gauge) rather than emitting two child owners"
+            f"{node.tag}: atomic widget {kind.name} cannot have recovered children"
         )
 
-    if merged_synthetic_children or recovered_children:
+    if recovered_children:
         lines.append("    Children [")
-        for child_lines in merged_synthetic_children:
-            child_lines = list(child_lines)
-            child_lines[-1] += ","
-            lines.extend(_indent(child_lines, 8))
         for child in recovered_children:
             rendered = _render_bsn_node(
                 key, child, children_by_parent, runtime_semantics
@@ -2507,122 +2242,23 @@ def _render_bsn_node(
     return lines
 
 
-def _render_city_dialog_controls(
-    city_buildings: CityBuildingVisuals,
-    controls: CityDialogControls,
-) -> list[str]:
-    def row_array(name: str, rows: tuple[CityRowControls, ...]) -> list[str]:
-        lines = [f"pub const {name}: [(FourCc, FourCc); {len(rows)}] = ["]
-        for row in rows:
-            lines.append(
-                f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}),"
-            )
-        lines.extend(["];", ""])
-        return lines
-
-    lines: list[str] = []
-    lines.extend(row_array("ARMORY_ROW_CONTROLS", controls.armory_rows))
-    lines.extend(row_array("UNIVERSITY_ROW_CONTROLS", controls.university_rows))
-    lines.append(
-        f"pub const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); {len(controls.shipyard_rows)}] = ["
-    )
-    for row in controls.shipyard_rows:
-        lines.append(
-            f"    ({_rust_fourcc(row.cluster)}, {_rust_fourcc(row.button)}, {row.overlay_left}),"
-        )
-    lines.extend(["];", ""])
-    lines.append(
-        f"pub const SHIPYARD_STAT_ORIGINS: [(i32, i32); {len(controls.shipyard_stat_origins)}] = ["
-    )
-    for left, top in controls.shipyard_stat_origins:
-        lines.append(f"    ({left}, {top}),")
-    lines.extend(["];", ""])
-    training = ", ".join(_rust_fourcc(tag) for tag in controls.training_orders)
-    lines.append(f"pub const TRAINING_ORDER_TAGS: [FourCc; 2] = [{training}];")
-    lines.append(f"pub const FOOD_ORDER_TAG: FourCc = {_rust_fourcc(controls.food_order)};")
-    lines.append(f"pub const POWER_ORDER_TAG: FourCc = {_rust_fourcc(controls.power_order)};")
-    lines.append(
-        f"pub const TRANSPORT_ORDER_TAG: FourCc = {_rust_fourcc(controls.transport_order)};"
-    )
-    lines.append(
-        f"pub const POPULATION_ORDER_TAG: FourCc = {_rust_fourcc(controls.population_order)};"
-    )
-    lines.extend(
-        [
-            "pub const WAREHOUSE_STOCK_TAGS: [FourCc; 20] = [",
-        ]
-    )
-    for tag in controls.warehouse_stocks:
-        lines.append(f"    {_rust_fourcc(tag)},")
-    lines.extend(
-        [
-            "];",
-            "",
-            "pub struct IndustryPageControls {",
-            "    pub slot: CityFacilitySlot,",
-            "    pub order_tags: &'static [FourCc],",
-            "    pub stocks: &'static [(FourCc, i16)],",
-            "}",
-            "",
-            "pub const INDUSTRY_PAGE_CONTROLS: [IndustryPageControls; 7] = [",
-        ]
-    )
-    for page in controls.industry:
-        order_tags = ", ".join(_rust_fourcc(tag) for tag in page.order_tags)
-        stocks = ", ".join(
-            f"({_rust_fourcc(tag)}, {columns})" for tag, columns in page.stocks
-        )
-        lines.extend(
-            [
-                "    IndustryPageControls {",
-                f"        slot: CityFacilitySlot::{_rust_enum_variant(page.slot)},",
-                f"        order_tags: &[{order_tags}],",
-                f"        stocks: &[{stocks}],",
-                "    },",
-            ]
-        )
-    lines.extend(["];", ""])
-    lines.append("pub fn spawn_city_dialog(commands: &mut Commands, slot: CityFacilitySlot) -> Entity {")
-    lines.append("    match slot {")
-    for visual in city_buildings.visuals:
-        function = _rust_function_name(visual.dialog.resource_file, visual.dialog.view_id)
-        variant = _rust_enum_variant(visual.slot)
-        lines.append(
-            f"        CityFacilitySlot::{variant} => commands.spawn_scene({function}()).id(),"
-        )
-    lines.extend(["    }", "}"])
-    return lines
-
-
-def render_rust_ui(
-    repo_root: Path,
-    recipes: Iterable[UiFactoryRecipe],
-    views: dict[UiResourceKey, dict],
-    text_resources: TextResources,
-) -> str:
-    scene_views, city_buildings, city_building_actions = _rust_ui_semantic_views(
-        repo_root, recipes, views, text_resources
-    )
-    runtime_semantics = load_runtime_input_semantics(repo_root)
-    dialog_controls = load_city_dialog_controls(repo_root)
+def render_city_building_layout(repo_root: Path) -> str:
+    recipes = load_recipes(repo_root)
+    scene_keys = set(resource_backed_scene_keys(recipes))
+    city_buildings = load_city_building_visuals(repo_root)
+    city_building_actions = load_city_building_action_visuals(repo_root)
+    validate_city_layout(city_buildings, city_building_actions, scene_keys)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
-        "#![allow(dead_code, clippy::identity_op)]",
         "",
-        "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
-        "use super::hover_help::HoverHelpBar;",
-        "use super::retail::*;",
-        "use super::window::CaptionedWindow;",
+        "use super::building_visuals::{CityBuildingActionVisual, CityBuildingVisual};",
+        "use crate::ui::generated;",
         "use bevy::prelude::*;",
-        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};",
-        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};",
         "use imperialism_core::CityFacilitySlot;",
-        "use imperialism_formats::{FourCc, PictureId, fourcc};",
+        "use imperialism_formats::PictureId;",
         "",
-        "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
-        "",
+        "pub(in crate::ui::city) const CITY_BUILDINGS: &[CityBuildingVisual] = &[",
     ]
-    lines.extend(["pub const CITY_BUILDINGS: &[CityBuildingVisual] = &["])
     for visual in city_buildings.visuals:
         lines.extend(
             [
@@ -2633,7 +2269,7 @@ def render_rust_ui(
                 "    },",
             ]
         )
-    lines.extend(["];", "", "pub const CITY_BUILDING_ACTIONS: &[CityBuildingActionVisual] = &["])
+    lines.extend(["];", "", "pub(in crate::ui::city) const CITY_BUILDING_ACTIONS: &[CityBuildingActionVisual] = &["])
     for action in city_building_actions.actions:
         lines.extend(
             [
@@ -2647,9 +2283,55 @@ def render_rust_ui(
                 "    },",
             ]
         )
-    lines.extend(["];", ""])
-    lines.extend(_render_city_dialog_controls(city_buildings, dialog_controls))
-    lines.append("")
+    lines.extend(
+        [
+            "];",
+            "",
+            "#[rustfmt::skip]",
+            "pub(in crate::ui::city) fn spawn_city_dialog(",
+            "    commands: &mut Commands,",
+            "    slot: CityFacilitySlot,",
+            ") -> Entity {",
+            "    match slot {",
+        ]
+    )
+    for visual in city_buildings.visuals:
+        function = _rust_function_name(
+            visual.dialog.resource_file, visual.dialog.view_id
+        )
+        lines.append(
+            f"        CityFacilitySlot::{_rust_enum_variant(visual.slot)} => "
+            f"commands.spawn_scene(generated::{function}()).id(),"
+        )
+    lines.extend(["    }", "}", ""])
+    return "\n".join(lines)
+
+
+def render_rust_ui(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> str:
+    scene_views = _rust_ui_semantic_views(
+        repo_root, recipes, views, text_resources
+    )
+    runtime_semantics = load_runtime_input_semantics(repo_root)
+    lines = [
+        "// @generated by tools.ui_codegen. Do not edit by hand.",
+        "#![allow(dead_code, clippy::identity_op)]",
+        "",
+        "use super::hover_help::HoverHelpBar;",
+        "use super::retail::*;",
+        "use super::window::CaptionedWindow;",
+        "use bevy::prelude::*;",
+        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};",
+        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};",
+        "use imperialism_formats::fourcc;",
+        "",
+        "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];",
+        "",
+    ]
     for view_id, semantic_view in scene_views:
         if isinstance(view_id, UiResourceKey):
             function = _rust_function_name(view_id.resource_file, view_id.view_id)
@@ -2675,7 +2357,9 @@ def render_rust_ui(
             ]
         )
         for node in roots:
-            rendered = _render_bsn_node(key, node, children_by_parent, runtime_semantics)
+            rendered = _render_bsn_node(
+                key, node, children_by_parent, runtime_semantics
+            )
             rendered[-1] += ","
             lines.extend(_indent(rendered, 12))
         lines.extend(["        ]", "    }", "}", ""])
@@ -2696,6 +2380,13 @@ def write_rust_ui(
     return path
 
 
+def write_city_building_layout(repo_root: Path) -> Path:
+    path = repo_root / RUST_CITY_LAYOUT_PATH
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _write_if_changed(path, render_city_building_layout(repo_root))
+    return path
+
+
 def rust_ui_is_current(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -2705,6 +2396,13 @@ def rust_ui_is_current(
     path = repo_root / RUST_UI_PATH
     return path.is_file() and path.read_text(encoding="utf-8") == render_rust_ui(
         repo_root, recipes, views, text_resources
+    )
+
+
+def city_building_layout_is_current(repo_root: Path) -> bool:
+    path = repo_root / RUST_CITY_LAYOUT_PATH
+    return path.is_file() and path.read_text(encoding="utf-8") == render_city_building_layout(
+        repo_root
     )
 
 
@@ -2763,6 +2461,7 @@ def validate(
     windows_views: dict[str, UiSemanticView],
 ) -> list[str]:
     recipe_list = list(recipes)
+    class_substitutions = load_class_substitutions(repo_root)
     errors: list[str] = []
     referenced_windows: set[str] = set()
     declarations = _squash_ws(
@@ -2797,7 +2496,7 @@ def validate(
                 errors.extend(validate_view_structure(raw_view, require_cluster_counts=True))
                 try:
                     view = normalize_resource_view(
-                        case.resource, raw_view, text_resources
+                        case.resource, raw_view, text_resources, class_substitutions
                     )
                 except (KeyError, ValueError) as exc:
                     errors.append(f"{context}: {exc}")
@@ -3001,6 +2700,9 @@ def _render_factory_with_map(
     vocabulary_by_event, _ = load_turn_event_vocabulary(
         repo_root_from_file(__file__, levels_up=1)
     )
+    class_substitutions = load_class_substitutions(
+        repo_root_from_file(__file__, levels_up=1)
+    )
     body: list[str] = []
     classes: set[str] = set()
     case_maps: dict[str, object] = {}
@@ -3026,7 +2728,10 @@ def _render_factory_with_map(
             body.append(f"{indent}// FUNCTIONAL_PARITY: {case.evidence}.")
         if case.resource is not None:
             view = normalize_resource_view(
-                case.resource, views[case.resource], text_resources
+                case.resource,
+                views[case.resource],
+                text_resources,
+                class_substitutions,
             )
         elif case.windows_view is not None:
             view = windows_views[case.windows_view]
@@ -3322,7 +3027,9 @@ def main() -> int:
         path = write_rust_ui(
             repo_root, recipes, views, text_resources
         )
+        layout_path = write_city_building_layout(repo_root)
         print(f"Wrote native Bevy UI scenes to {path}")
+        print(f"Wrote city building layout to {layout_path}")
         return 0
     if args.report_unsupported_roles:
         for line in report_unsupported_ui_roles(
@@ -3342,6 +3049,12 @@ def main() -> int:
         ):
             print(
                 f"UI codegen check failed: {RUST_UI_PATH} is stale; "
+                "run with --write-rust-ui"
+            )
+            return 1
+        if not city_building_layout_is_current(repo_root):
+            print(
+                f"UI codegen check failed: {RUST_CITY_LAYOUT_PATH} is stale; "
                 "run with --write-rust-ui"
             )
             return 1

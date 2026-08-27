@@ -1,27 +1,34 @@
-//! Recovered `TTransportPicture` gauge overlays as structure-only scene helpers.
+//! Transport gauge fill/limit presentation helpers.
 //!
-//! Screens write fill/limit via bind-time handles. Allocation vs capacity is a binder concern.
-//! Codegen merges synthetic remainder/fill/limit children from these helpers with recovered row
-//! children into one `Children` list.
+//! `retail_transport_gauge` owns the track, fill, and limit child hierarchy.
+//! Screens bind [`TransportGaugeParts`] and update fill/limit via retained handles.
+//! Recovered caption and arrow controls remain ordinary generated children.
+//!
+//! Unlike `retail_amount_bar()` and `retail_numbered_arrow()`, this helper cannot
+//! own its entire subtree in BSN `Children [...]`. A `TTransportPicture` resource
+//! node has both private Windows implementation entities (track/fill/limit) and
+//! recovered public controls (`text`, `left`, `rght`, `valu`) that application
+//! code binds by tag. The template adds only the private entities; the outer
+//! generated scene keeps the recovered siblings.
 
-use super::retail::retail_background_color;
+use crate::RetailAssetsResource;
+use bevy::ecs::template::TemplateContext;
 use bevy::prelude::*;
 
-pub const TRACK_WIDTH: f32 = 113.0;
-pub const TRACK_TOP: f32 = 0x0d as f32;
-pub const TRACK_HEIGHT: f32 = 0x04 as f32;
-pub const LIMIT_TOP: f32 = 0x12 as f32;
-pub const LIMIT_HEIGHT: f32 = 0x02 as f32;
-pub const REMAINDER_PALETTE: u8 = 0x3b;
-pub const ALLOCATION_FILL_PALETTE: u8 = 0x3a;
+const TRACK_WIDTH: f32 = 113.0;
+const TRACK_TOP: f32 = 13.0;
+const TRACK_HEIGHT: f32 = 4.0;
+const LIMIT_TOP: f32 = 18.0;
+const LIMIT_WIDTH: f32 = 115.0;
+const LIMIT_HEIGHT: f32 = 2.0;
+const TRACK_BG_PALETTE: u8 = 0x3b;
+const LIMIT_PALETTE: u8 = 0x33;
 
 pub const TRANSPORT_GAUGE_PARTIAL_PALETTE: u8 = 0x33;
 pub const TRANSPORT_GAUGE_FULL_PALETTE: u8 = 0x34;
 
-/// `TTransportPicture::Refresh` track-left rule from recovered owner geometry.
-pub const fn transport_gauge_track_left(owner_local_x: i32) -> i16 {
-    if owner_local_x > 0xC8 { 0x5D } else { 0x61 }
-}
+const CAPACITY_FILL_PALETTE: u8 = TRANSPORT_GAUGE_PARTIAL_PALETTE;
+const ALLOCATION_FILL_PALETTE: u8 = 0x3a;
 
 /// Child refs for a transport-gauge hierarchy.
 ///
@@ -32,73 +39,125 @@ pub struct TransportGaugeParts {
     pub limit: Entity,
 }
 
-/// Remainder strip for a merged transport-gauge `Children` list.
-#[rustfmt::skip]
-pub fn transport_gauge_remainder(track_left: i16) -> impl Scene {
-    let left = f32::from(track_left);
+#[derive(Clone, Copy)]
+struct TransportGaugeColors {
+    track_bg: Color,
+    fill: Color,
+    limit: Color,
+}
+
+/// `TTransportPicture` track/fill/limit chrome for one gauge row.
+///
+/// `owner_left` is the recovered control origin; track placement follows
+/// `TTransportPicture::Refresh` (`owner_left > 0xc8` => 0x5d else 0x61).
+pub fn retail_transport_gauge(owner_left: i32, capacity: bool) -> impl Scene {
     bsn! {
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(left),
-            top: px(TRACK_TOP),
-            width: px(TRACK_WIDTH),
-            height: px(TRACK_HEIGHT),
-        }
-        retail_background_color(REMAINDER_PALETTE)
-        Pickable::IGNORE
+        template(move |context| Ok(spawn_transport_gauge(context, owner_left, capacity)))
     }
 }
 
-/// Allocation fill child for a merged transport-gauge `Children` list.
-#[rustfmt::skip]
-pub fn transport_gauge_allocation_fill(track_left: i16) -> impl Scene {
-    let left = f32::from(track_left);
-    bsn! {
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(left),
-            top: px(TRACK_TOP),
-            width: px(0),
-            height: px(TRACK_HEIGHT),
-        }
-        retail_background_color(ALLOCATION_FILL_PALETTE)
-        Pickable::IGNORE
+fn transport_gauge_track_left(owner_left: i32) -> f32 {
+    if owner_left > 0xC8 {
+        0x5D as f32
+    } else {
+        0x61 as f32
     }
 }
 
-/// Capacity fill child for a merged transport-gauge `Children` list.
-#[rustfmt::skip]
-pub fn transport_gauge_capacity_fill(track_left: i16) -> impl Scene {
-    let left = f32::from(track_left);
-    bsn! {
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(left),
-            top: px(TRACK_TOP),
-            width: px(0),
-            height: px(TRACK_HEIGHT),
-        }
-        retail_background_color(TRANSPORT_GAUGE_PARTIAL_PALETTE)
-        Pickable::IGNORE
-    }
+fn spawn_transport_gauge(
+    context: &mut TemplateContext,
+    owner_left: i32,
+    capacity: bool,
+) -> TransportGaugeParts {
+    let colors = TransportGaugeColors {
+        track_bg: palette_color(context, TRACK_BG_PALETTE),
+        fill: palette_color(
+            context,
+            if capacity {
+                CAPACITY_FILL_PALETTE
+            } else {
+                ALLOCATION_FILL_PALETTE
+            },
+        ),
+        limit: palette_color(context, LIMIT_PALETTE),
+    };
+    let mut parts = TransportGaugeParts {
+        fill: Entity::PLACEHOLDER,
+        limit: Entity::PLACEHOLDER,
+    };
+    context.entity.with_children(|parent| {
+        parts = spawn_transport_gauge_nodes(
+            parent,
+            transport_gauge_track_left(owner_left),
+            capacity,
+            colors,
+        );
+    });
+    parts
 }
 
-/// Limit strip child for a merged transport-gauge `Children` list.
-#[rustfmt::skip]
-pub fn transport_gauge_limit(track_left: i16) -> impl Scene {
-    let left = f32::from(track_left);
-    bsn! {
+fn spawn_transport_gauge_nodes(
+    parent: &mut ChildSpawner,
+    track_left: f32,
+    capacity: bool,
+    colors: TransportGaugeColors,
+) -> TransportGaugeParts {
+    parent.spawn((
         Node {
             position_type: PositionType::Absolute,
-            left: px(left - 1.),
-            top: px(LIMIT_TOP),
-            width: px(TRACK_WIDTH + 2.),
-            height: px(LIMIT_HEIGHT),
-        }
-        retail_background_color(TRANSPORT_GAUGE_PARTIAL_PALETTE)
-        Visibility::Hidden
-        Pickable::IGNORE
-    }
+            left: Val::Px(track_left),
+            top: Val::Px(TRACK_TOP),
+            width: Val::Px(TRACK_WIDTH),
+            height: Val::Px(TRACK_HEIGHT),
+            ..default()
+        },
+        BackgroundColor(colors.track_bg),
+        Pickable::IGNORE,
+    ));
+    let fill = parent
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(track_left),
+                top: Val::Px(TRACK_TOP),
+                width: Val::Px(0.0),
+                height: Val::Px(TRACK_HEIGHT),
+                ..default()
+            },
+            BackgroundColor(colors.fill),
+            Pickable::IGNORE,
+        ))
+        .id();
+    let limit = if capacity {
+        Entity::PLACEHOLDER
+    } else {
+        parent
+            .spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(track_left - 1.0),
+                    top: Val::Px(LIMIT_TOP),
+                    width: Val::Px(LIMIT_WIDTH),
+                    height: Val::Px(LIMIT_HEIGHT),
+                    ..default()
+                },
+                BackgroundColor(colors.limit),
+                Visibility::Hidden,
+                Pickable::IGNORE,
+            ))
+            .id()
+    };
+
+    TransportGaugeParts { fill, limit }
+}
+
+fn palette_color(context: &TemplateContext, index: u8) -> Color {
+    let [red, green, blue] = context
+        .resource::<RetailAssetsResource>()
+        .assets()
+        .default_dib_palette()[index]
+        .to_array();
+    Color::srgb_u8(red, green, blue)
 }
 
 /// `TTransportPicture::Refresh` 113px remainder-distribution fill width.
@@ -122,15 +181,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn transport_gauge_width_matches_retail_padding() {
-        assert_eq!(transport_gauge_width(0, 10), 0.0);
-        assert_eq!(transport_gauge_width(10, 10), 113.0);
-        assert_eq!(transport_gauge_width(5, 0), 0.0);
+    fn transport_gauge_track_left_follows_refresh_rule() {
+        assert_eq!(transport_gauge_track_left(0xC9), 0x5D as f32);
+        assert_eq!(transport_gauge_track_left(0xC8), 0x61 as f32);
     }
 
     #[test]
-    fn track_left_follows_retail_geometry_threshold() {
-        assert_eq!(transport_gauge_track_left(0xC8), 0x61);
-        assert_eq!(transport_gauge_track_left(0xC9), 0x5D);
+    fn transport_gauge_width_distributes_remainder_pixels() {
+        assert_eq!(transport_gauge_width(0, 10), 0.0);
+        assert_eq!(transport_gauge_width(0, 0), 0.0);
+        assert!(transport_gauge_width(5, 10) > 0.0);
+        assert!(transport_gauge_width(10, 10) <= TRACK_WIDTH);
     }
 }

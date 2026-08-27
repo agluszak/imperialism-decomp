@@ -2,6 +2,28 @@ use super::*;
 use crate::ui::retail::RetailPictureSwap;
 use crate::ui::retail_raster::IndexedRasterExt;
 
+// Recovered TShipyardView row overlay offsets (left nudge for queue icon placement).
+const SHIPYARD_ROW_CONTROLS: [(FourCc, FourCc, i32); 8] = [
+    (fourcc!("clu0"), fourcc!("but0"), 4),
+    (fourcc!("clu1"), fourcc!("but1"), 4),
+    (fourcc!("clu2"), fourcc!("but2"), 3),
+    (fourcc!("clu3"), fourcc!("but3"), 2),
+    (fourcc!("clu4"), fourcc!("but4"), 4),
+    (fourcc!("clu5"), fourcc!("but5"), 4),
+    (fourcc!("clu6"), fourcc!("but6"), 3),
+    (fourcc!("clu7"), fourcc!("but7"), 2),
+];
+
+// Recovered TShipyardView stat caption origins (two columns x three rows).
+const SHIPYARD_STAT_ORIGINS: [(i32, i32); 6] = [
+    (28, 86),
+    (28, 102),
+    (28, 118),
+    (120, 86),
+    (120, 102),
+    (120, 118),
+];
+
 const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Fabric,
     ResourceKind::Lumber,
@@ -32,7 +54,7 @@ pub(in crate::ui::city) fn bind_shipyard(
     let nation = MajorNationId::from_nation(state.turn().active_nation).expect("major nation");
     let city = &state.nations().major(nation).city;
     let queue_icons = assets.indexed_picture(PictureId::new(9807));
-    let rows = ShipOrderTable::from_array(generated::SHIPYARD_ROW_CONTROLS).map(
+    let rows = ShipOrderTable::from_array(SHIPYARD_ROW_CONTROLS).map(
         |slot, (order_tag, button_tag, overlay_left)| {
             let ship_type = city.orders.ships[slot].ship_type;
             let available = ship_type != ShipType::NoShip;
@@ -218,7 +240,7 @@ pub(in crate::ui::city) fn render_shipyard(
         capabilities.navy_priority_weight,
         capabilities.resource_weight,
     ];
-    for (index, &(left, baseline)) in generated::SHIPYARD_STAT_ORIGINS.iter().enumerate() {
+    for (index, &(left, baseline)) in SHIPYARD_STAT_ORIGINS.iter().enumerate() {
         for (x, value) in [
             (left, assets.get_string(0x2736, 0x10 + index as u16)),
             (left + 0x3c, values[index].to_string()),

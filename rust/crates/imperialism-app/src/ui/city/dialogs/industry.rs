@@ -1,5 +1,36 @@
 use super::*;
 use crate::ui::retail::AmountBarParts;
+use std::collections::BTreeMap;
+
+fn industry_items(slot: CityFacilitySlot) -> Vec<ManufacturedItem> {
+    ManufacturedItem::ALL
+        .into_iter()
+        .filter(|item| item.facility() == slot)
+        .collect()
+}
+
+fn industry_input_requirements(items: &[ManufacturedItem]) -> Vec<(ResourceKind, i16)> {
+    let mut requirements: BTreeMap<ResourceKind, i16> = BTreeMap::new();
+    for item in items {
+        match item.inputs() {
+            ItemInputs::Double(resource) => {
+                requirements
+                    .entry(resource)
+                    .and_modify(|minimum| *minimum = (*minimum).min(2))
+                    .or_insert(2);
+            }
+            ItemInputs::Both(a, b) | ItemInputs::Either(a, b) => {
+                for resource in [a, b] {
+                    requirements
+                        .entry(resource)
+                        .and_modify(|minimum| *minimum = (*minimum).min(1))
+                        .or_insert(1);
+                }
+            }
+        }
+    }
+    requirements.into_iter().collect()
+}
 
 #[derive(Clone, Copy)]
 pub(in crate::ui::city) struct IndustryOrderUi {
@@ -26,12 +57,12 @@ fn bind_industry_orders(
     tree: &RetailTree,
     amount_bars: &Query<&AmountBarParts>,
     items: &[ManufacturedItem],
-    order_tags: &[FourCc],
 ) -> Vec<IndustryOrderUi> {
     items
         .iter()
-        .zip(order_tags)
-        .map(|(&item, &tag)| {
+        .copied()
+        .map(|item| {
+            let tag = resource_control_tag(item.resource());
             let bound = bind_industry_order_row(
                 commands,
                 root,
@@ -57,27 +88,8 @@ pub(in crate::ui::city) fn bind_industry(
     amount_bars: &Query<&AmountBarParts>,
     slot: CityFacilitySlot,
 ) -> IndustryUi {
-    let page = generated::INDUSTRY_PAGE_CONTROLS
-        .iter()
-        .find(|page| page.slot == slot)
-        .expect("industry page");
-    let items: Vec<_> = ManufacturedItem::ALL
-        .into_iter()
-        .filter(|item| item.facility() == slot)
-        .collect();
-    debug_assert_eq!(items.len(), page.order_tags.len());
-
-    let mut inputs: Vec<_> = items
-        .iter()
-        .flat_map(|item| match item.inputs() {
-            ItemInputs::Double(a) => [Some(a), None],
-            ItemInputs::Both(a, b) | ItemInputs::Either(a, b) => [Some(a), Some(b)],
-        })
-        .flatten()
-        .collect();
-    inputs.sort_unstable();
-    inputs.dedup();
-    debug_assert_eq!(inputs.len(), page.stocks.len());
+    let items = industry_items(slot);
+    let input_requirements = industry_input_requirements(&items);
 
     commands
         .entity(tree.find(root, fourcc!("name")))
@@ -85,12 +97,14 @@ pub(in crate::ui::city) fn bind_industry(
     let capacity = tree.find(root, fourcc!("capT"));
     let labor = tree.find(root, fourcc!("labV"));
     commands.entity(labor).insert(Text::new("X"));
-    let stocks = inputs
-        .iter()
-        .zip(page.stocks)
-        .map(|(&resource, &(tag, minimum))| (tree.find(root, tag), resource, minimum))
+    let stocks = input_requirements
+        .into_iter()
+        .map(|(resource, minimum)| {
+            let tag = resource_control_tag(resource);
+            (tree.find(root, tag), resource, minimum)
+        })
         .collect();
-    let orders = bind_industry_orders(commands, root, tree, amount_bars, &items, page.order_tags);
+    let orders = bind_industry_orders(commands, root, tree, amount_bars, &items);
     commands.entity(tree.find(root, fourcc!("expa"))).observe(
         move |_: On<Activate>, session: Res<GameSession>, mut commands: Commands| {
             open_city_expansion_dialog(&mut commands, &session, slot);
@@ -163,5 +177,56 @@ pub(in crate::ui::city) fn bind_rail(
     let counter = bind_industry_order_row(commands, root, tree, amount_bars, order, tag, step);
     RailUi {
         bar: counter.bar.expect("rail amount bar"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn industry_order_tags_match_retail_controls() {
+        assert_eq!(
+            industry_items(CityFacilitySlot::TextileMill)
+                .into_iter()
+                .map(|item| resource_control_tag(item.resource()))
+                .collect::<Vec<_>>(),
+            vec![fourcc!("fabr")]
+        );
+        assert_eq!(
+            industry_items(CityFacilitySlot::Metalworks)
+                .into_iter()
+                .map(|item| resource_control_tag(item.resource()))
+                .collect::<Vec<_>>(),
+            vec![fourcc!("hard"), fourcc!("arma")]
+        );
+        assert_eq!(
+            industry_items(CityFacilitySlot::LumberMill)
+                .into_iter()
+                .map(|item| resource_control_tag(item.resource()))
+                .collect::<Vec<_>>(),
+            vec![fourcc!("lumb"), fourcc!("pape")]
+        );
+    }
+
+    #[test]
+    fn industry_stock_indicators_follow_input_resources() {
+        let textile = industry_items(CityFacilitySlot::TextileMill);
+        assert_eq!(
+            industry_input_requirements(&textile)
+                .into_iter()
+                .map(|(resource, minimum)| (resource_control_tag(resource), minimum))
+                .collect::<Vec<_>>(),
+            vec![(fourcc!("cott"), 1), (fourcc!("wool"), 1)]
+        );
+
+        let metalworks = industry_items(CityFacilitySlot::Metalworks);
+        assert_eq!(
+            industry_input_requirements(&metalworks)
+                .into_iter()
+                .map(|(resource, minimum)| (resource_control_tag(resource), minimum))
+                .collect::<Vec<_>>(),
+            vec![(fourcc!("stee"), 2)]
+        );
     }
 }
