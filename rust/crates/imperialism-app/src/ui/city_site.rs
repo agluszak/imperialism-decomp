@@ -563,12 +563,7 @@ fn set_styled_text(
     palette: u8,
 ) {
     let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size,
-            alignment,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 0, point_size, alignment))
         .expect("retail city-site text style");
     commands.entity(entity).insert((
         Text::new(retail_lines(value.as_ref())),
@@ -588,7 +583,7 @@ fn scene_has_children(root: Entity, children: &Query<&Children>) -> bool {
 fn commodity_icon(assets: &mut RetailUiAssets, resource_index: i16) -> Handle<Image> {
     let picture_id = PictureId::new(COMMODITY_ICON_PICTURE_BASE + resource_index);
     assets
-        .transparent_picture(picture_id, 0x10)
+        .keyed_picture(picture_id, 0x10)
         .expect("retail commodity icon must load")
 }
 

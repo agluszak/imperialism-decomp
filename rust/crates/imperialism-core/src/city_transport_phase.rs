@@ -193,9 +193,8 @@ impl GameState {
             owner_nation: nation_id,
             roster_id: 0,
             registered: false,
-            next_on_tile: None,
         };
-        self.civilian_units.insert(id, unit);
+        self.insert_civilian_unit(id, unit);
     }
 
     fn name_units(&mut self, nation: MajorNationId) {

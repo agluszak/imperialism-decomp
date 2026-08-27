@@ -171,12 +171,7 @@ fn bind_transport_screen(
     // recovered Transport DoPostCreate delta lands (same InitializeMapHint pair as prefs).
     let curs = tree.find(*root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 1,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(1, 0, 12, 1))
         .expect("retail transport cursor text style");
     commands.entity(curs).insert((
         cursor_font,

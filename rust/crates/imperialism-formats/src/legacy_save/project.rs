@@ -672,7 +672,6 @@ impl LegacyTerrainTile {
             water_adjacency_mask: self.water_adjacency_mask,
             province: optional_province_id(self.city_record_index),
             gate: self.gate,
-            recruit_search_visited: self.recruit_search_visited,
             per_tile_visited: self.per_tile_visited,
             tile_action_ordinal: self.tile_action_ordinal,
             development: TileDevelopment {
@@ -714,7 +713,6 @@ impl LegacyMapState {
             self.province_states(),
         );
         map.map_data_ready = self.map_data_ready != 0;
-        map.recruit_search_active = self.recruit_search_active != 0;
         map.city_score_total = self.city_score_total;
         map.scenario_tag.clone_from(&self.scenario_tag);
         map.pending_river_mouth_tile = optional_tile_id(i32::from(self.pending_river_mouth_tile));
@@ -1702,6 +1700,7 @@ fn country_common(country: &LegacyCountryBase) -> NationCommonState {
                 .map(|score| TradePolicyScore::new(i32::from(score))),
         ),
     );
+    common.overlay_anchor_tile = optional_tile_id(country.overlay_anchor_tile);
     common.unit_name_ordinal_by_type =
         MilitaryUnitTable::from_array(country.unit_name_ordinal_by_type);
     common.unit_name_counter = country.unit_name_counter;
@@ -1721,6 +1720,8 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
             let [left, right] = &report.sides;
             Some(BattleReport {
                 participant: BattleReportSideSlot::from_retail(report.participant_index),
+                displayed_side: BattleReportSideSlot::from_retail(report.displayed_participant)
+                    .unwrap_or(BattleReportSideSlot::Left),
                 kind,
                 location,
                 sides: BattleReportSideTable::from_array([left, right].map(|side| {
@@ -1765,6 +1766,8 @@ fn battle_reports(reports: &[LegacyBattleReport]) -> Vec<BattleReport> {
                                 detail_identity: child.detail_identity,
                             })
                             .collect(),
+                        // Loaded saves use captured presentation text for overlays.
+                        task_force_order: None,
                     }
                 })),
             })

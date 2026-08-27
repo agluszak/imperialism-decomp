@@ -3623,7 +3623,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("resu"), 24, 360, 286, 20)
                                         Text("")
-                                        retail_text_style(0, 0, 0, -2)
+                                        retail_text_style(1, 0, 14, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3633,7 +3633,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("fadm"), 63, 382, 224, 22)
                                         Text("")
-                                        retail_text_style(0, 0, 0, 0)
+                                        retail_text_style(1, 0, 12, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -3643,25 +3643,25 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("eadm"), 391, 382, 239, 23)
                                         Text("")
-                                        retail_text_style(0, 0, 0, 0)
+                                        retail_text_style(1, 0, 12, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("loca"), 331, 360, 288, 20)
                                         Text("")
-                                        retail_text_style(0, 0, 0, -1)
+                                        retail_text_style(1, 0, 14, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("fshp"), 29, 407, 257, 65)
                                         Text("")
-                                        retail_text_style(0, 0, 0, 0)
+                                        retail_text_style(3, 0, 10, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("eshp"), 357, 407, 272, 65)
                                         Text("")
-                                        retail_text_style(0, 0, 0, 0)
+                                        retail_text_style(3, 0, 10, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -4554,7 +4554,7 @@ pub fn flagview_8500() -> impl Scene {
                                         retail_node(fourcc!("mCap"), 411, 284, 37, 15)
                                         Button
                                         Text("")
-                                        retail_text_style(0, 0, 14, 1)
+                                        retail_text_style(1, 0, 14, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -4569,7 +4569,7 @@ pub fn flagview_8500() -> impl Scene {
                                         }
                                         Button
                                         Text("")
-                                        retail_text_style(0, 0, 14, 1)
+                                        retail_text_style(1, 0, 14, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
@@ -4597,26 +4597,26 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
                                         Text("")
-                                        retail_text_style(0, 0, 12, 1)
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, 1)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("purT"), 12, 200, 100, 19)
                                         Text("")
-                                        retail_text_style(0, 0, 12, -1)
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, -1)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("noof"), 63, 224, 145, 14)
                                         Text("")
-                                        retail_text_style(0, 0, 12, -2)
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, -2)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("unit"), 157, 200, 58, 20)
                                         Text("")
-                                        retail_text_style(0, 0, 12, -2)
-                                        TextColor(Color::BLACK)
+                                        retail_text_style(1, 0, 12, -2)
+                                        retail_text_color(210)
                                     ),
                                     (
                                         retail_node(fourcc!("icon"), 97, 68, 32, 24)
@@ -4628,9 +4628,9 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("info"), 349, 4, 153, 249)
                                         Text("Trade Book")
-                                        retail_text_style(0, 0, 12, 1)
-                                        retail_text_color(40)
-                                        retail_text_shadow(210, 1, 1)
+                                        retail_text_style(1, 0, 12, 1)
+                                        retail_text_color(210)
+                                        retail_text_shadow(40, -1, -1)
                                     ),
                                 ]
                             ),
@@ -15238,13 +15238,13 @@ pub fn univ_9210() -> impl Scene {
                             (
                                 retail_node(fourcc!("titl"), 105, 12, 161, 30)
                                 Text("University")
-                                retail_text_style(3, 0, 24, 1)
+                                retail_text_style(1, 0, 24, 1)
                                 retail_text_color(210)
                             ),
                             (
                                 retail_node(fourcc!("unit"), 28, 60, 153, 16)
                                 Text("")
-                                retail_text_style(3, 0, 12, 1)
+                                retail_text_style(1, 0, 12, 1)
                                 retail_text_color(210)
                             ),
                             (

@@ -959,8 +959,7 @@ impl GameState {
         tile: TileId,
         nation: MajorNationId,
     ) -> Option<CivilianUnitId> {
-        self.civilians_on_tile_chain(tile)
-            .into_iter()
+        self.civilians_on_tile(tile)
             .find(|&id| self.civilian_units[&id].owner_nation == nation.nation())
     }
 

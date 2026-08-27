@@ -134,28 +134,13 @@ fn fill_newspaper_stories(
     };
     let main = tree.find(root, fourcc!("main"));
     let (feature_font, feature_layout, feature_line, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 14,
-            alignment: 2,
-        })
+        .text_style(RetailTextStylePreset::explicit(2, 0, 14, 2))
         .expect("newspaper feature headline style");
     let (event_font, event_layout, event_line, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 1,
-            point_size: 14,
-            alignment: 2,
-        })
+        .text_style(RetailTextStylePreset::explicit(2, 1, 14, 2))
         .expect("newspaper event headline style");
     let (body_font, body_layout, body_line, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 2,
-            face_flags: 0,
-            point_size: 12,
-            alignment: 2,
-        })
+        .text_style(RetailTextStylePreset::explicit(2, 0, 12, 2))
         .expect("newspaper body style");
 
     let columns = COLUMN_X.map(|left| {

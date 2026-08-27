@@ -119,7 +119,7 @@ fn sync_random_setup_flag(
     let handle = if let Some(handle) = transparent_atlas.clone() {
         handle
     } else {
-        match pictures.transparent_picture(FLAG_ATLAS_PICTURE, OFF_MAP_PALETTE) {
+        match pictures.keyed_picture(FLAG_ATLAS_PICTURE, OFF_MAP_PALETTE) {
             Ok(handle) => {
                 *transparent_atlas = Some(handle.clone());
                 handle

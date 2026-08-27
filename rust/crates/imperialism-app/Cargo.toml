@@ -17,7 +17,6 @@ gstreamer-app = "0.24"
 gstreamer-video = "0.24"
 imperialism-core = { path = "../imperialism-core" }
 imperialism-formats = { path = "../imperialism-formats" }
-swash.workspace = true
 thiserror.workspace = true
 
 [dev-dependencies]

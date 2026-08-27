@@ -179,36 +179,12 @@ const fn fort_cost(level: FortLevel) -> i32 {
 }
 
 impl GameState {
-    /// `TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler`.
-    ///
-    /// The retail map stores the current selected civilian's eligible targets in
-    /// `recruitSearchVisited0e`; both click dispatch and cursor selection consume it.
-    pub fn prepare_civilian_order_targets(&mut self, unit: CivilianUnitId) {
-        let Some(unit) = self.civilian_units.get(&unit) else {
-            return;
-        };
-        let kind = unit.unit_type;
-        let nation = MajorNationId::from_nation(unit.owner_nation)
-            .expect("civilian orders belong to major nations");
-        let origin = unit.location.tile();
-        for index in 0..STRATEGIC_TILE_COUNT {
-            let tile = TileId::new(index as u16);
-            self.map[tile].recruit_search_visited =
-                u8::from(!self.civilian_target_eligible(kind, nation, origin, tile));
-        }
-    }
-
     /// `TCivMgr::SetActiveCivilianSelection`: move the selected entry to the
-    /// head of its tile chain, then refresh its eligible order targets.
+    /// front of the global stack order.
     pub fn activate_civilian_selection(&mut self, unit: CivilianUnitId) {
-        let tile = self
-            .civilian_units
-            .get(&unit)
-            .and_then(|unit| unit.location.tile());
-        if let Some(tile) = tile {
-            self.move_civilian_to(unit, tile);
+        if self.civilian_units.contains_key(&unit) {
+            self.bring_civilian_to_front(unit);
         }
-        self.prepare_civilian_order_targets(unit);
     }
 
     /// `TCivMgr::ResolveCivilianTileOrderActionCode` for a selected civilian.
@@ -229,7 +205,7 @@ impl GameState {
                 CivilianTileAction::ShowOrderReport
             };
         }
-        if self.map[tile].recruit_search_visited != 0 {
+        if !self.is_civilian_target_eligible(unit, tile) {
             if let Some((_, state)) = self.civilian_on_tile_for_nation(tile, selected.owner_nation)
             {
                 return if idle_selectable(&state.order) {
@@ -596,6 +572,16 @@ impl GameState {
         (major.common.treasury + major.economy.diplomacy_budget_base / 100).max(0)
     }
 
+    pub fn is_civilian_target_eligible(&self, unit: CivilianUnitId, tile: TileId) -> bool {
+        let Some(state) = self.civilian_units.get(&unit) else {
+            return false;
+        };
+        let Some(nation) = MajorNationId::from_nation(state.owner_nation) else {
+            return false;
+        };
+        self.civilian_target_eligible(state.unit_type, nation, state.location.tile(), tile)
+    }
+
     fn civilian_target_eligible(
         &self,
         kind: CivilianUnitKind,
@@ -851,7 +837,7 @@ impl GameState {
         tile: TileId,
         nation: NationId,
     ) -> Option<CivilianUnitId> {
-        self.civilians_on_tile_chain(tile).into_iter().find(|id| {
+        self.civilians_on_tile(tile).find(|id| {
             let unit = &self.civilian_units[id];
             unit.owner_nation() == nation && idle_selectable(unit.order())
         })
@@ -863,12 +849,10 @@ impl GameState {
         tile: TileId,
         nation: NationId,
     ) -> Option<(CivilianUnitId, &CivilianUnitState)> {
-        self.civilians_on_tile_chain(tile)
-            .into_iter()
-            .find_map(|id| {
-                let unit = &self.civilian_units[&id];
-                (unit.owner_nation() == nation).then_some((id, unit))
-            })
+        self.civilians_on_tile(tile).find_map(|id| {
+            let unit = &self.civilian_units[&id];
+            (unit.owner_nation() == nation).then_some((id, unit))
+        })
     }
 
     /// `TCivMgr::ClearNationCivilianActionModesAndCycleSelection` unit walk (cycle is app-side).
@@ -911,12 +895,9 @@ impl GameState {
         let Some(unit) = self.civilian_units.get(&id) else {
             return false;
         };
-        let tile = unit.location.tile();
         let kind = unit.unit_type;
         let nation = unit.owner_nation;
-        if let Some(tile) = tile {
-            self.unlink_civilian_from_tile_chain(id, tile);
-        }
+        self.civilian_stack_order.retain(|&other| other != id);
         self.civilian_units.shift_remove(&id);
         if kind == CivilianUnitKind::Developer {
             let audience = MajorNationId::from_nation(self.turn.active_nation);
@@ -979,7 +960,7 @@ impl GameState {
 
     /// Retail `TSimMgr::DoCivilians`.
     pub fn do_civilians(&mut self) {
-        self.rebuild_civilian_tile_chains();
+        self.rebuild_civilian_stack_order();
         self.resolve_civilian_disputes();
         for nation in MajorNationId::all() {
             if !self.civilian_nation_is_eligible(nation) {
@@ -1130,7 +1111,7 @@ impl GameState {
     fn resolve_civilian_disputes(&mut self) {
         for tile_index in 0..STRATEGIC_TILE_COUNT {
             let tile = TileId::new(tile_index as u16);
-            let on_tile = self.civilians_on_tile_chain(tile);
+            let on_tile: Vec<CivilianUnitId> = self.civilians_on_tile(tile).collect();
             if on_tile.len() < 2 {
                 continue;
             }
@@ -1507,100 +1488,55 @@ impl GameState {
         }
     }
 
+    pub(crate) fn bring_civilian_to_front(&mut self, id: CivilianUnitId) {
+        self.civilian_stack_order.retain(|&other| other != id);
+        self.civilian_stack_order.insert(0, id);
+    }
+
     pub(crate) fn move_civilian_to(&mut self, id: CivilianUnitId, tile: TileId) {
-        if let Some(old) = self.civilian_units[&id].location.tile() {
-            self.unlink_civilian_from_tile_chain(id, old);
-        }
         self.civilian_units
             .get_mut(&id)
             .expect("civilian remains present")
             .location = CivilianLocation::OnMap(tile);
-        self.prepend_civilian_to_tile_chain(id, tile);
+        self.bring_civilian_to_front(id);
     }
 
-    pub(crate) fn rebuild_civilian_tile_chains(&mut self) {
-        for unit in self.civilian_units.values_mut() {
-            unit.next_on_tile = None;
-        }
-        let mut heads = vec![None; STRATEGIC_TILE_COUNT];
-        let locations: Vec<_> = self
-            .civilian_units
-            .iter()
-            .filter_map(|(&id, unit)| unit.location.tile().map(|tile| (id, tile)))
-            .collect();
-        for (id, tile) in locations {
-            let Some(unit) = self.civilian_units.get_mut(&id) else {
-                continue;
-            };
-            unit.next_on_tile = heads[usize::from(tile.get())];
-            heads[usize::from(tile.get())] = Some(id);
-        }
-    }
-
-    fn unlink_civilian_from_tile_chain(&mut self, id: CivilianUnitId, tile: TileId) {
-        let next = self
-            .civilian_units
-            .get(&id)
-            .and_then(|unit| unit.next_on_tile);
-        let previous = self.civilian_units.iter().find_map(|(&candidate, unit)| {
-            (candidate != id && unit.location.tile() == Some(tile) && unit.next_on_tile == Some(id))
-                .then_some(candidate)
-        });
-        if let Some(previous) = previous {
-            self.civilian_units
-                .get_mut(&previous)
-                .expect("chain predecessor remains present")
-                .next_on_tile = next;
-        }
-        if let Some(unit) = self.civilian_units.get_mut(&id) {
-            unit.next_on_tile = None;
-        }
-    }
-
-    fn prepend_civilian_to_tile_chain(&mut self, id: CivilianUnitId, tile: TileId) {
-        let head = self.chain_head_on_tile(tile).filter(|&head| head != id);
-        self.civilian_units
-            .get_mut(&id)
-            .expect("civilian remains present")
-            .next_on_tile = head;
+    pub(crate) fn rebuild_civilian_stack_order(&mut self) {
+        self.civilian_stack_order = self.civilian_units.keys().rev().copied().collect();
     }
 
     pub(crate) fn chain_head_on_tile(&self, tile: TileId) -> Option<CivilianUnitId> {
-        let on_tile: Vec<CivilianUnitId> = self
-            .civilian_units
-            .iter()
-            .filter(|(_, unit)| unit.location.tile() == Some(tile))
-            .map(|(&id, _)| id)
-            .collect();
-        let pointed: Vec<CivilianUnitId> = on_tile
-            .iter()
-            .filter_map(|id| {
-                self.civilian_units
-                    .get(id)
-                    .and_then(|unit| unit.next_on_tile)
-            })
-            .collect();
-        on_tile.into_iter().find(|id| !pointed.contains(id))
+        self.civilian_stack_order.iter().copied().find(|id| {
+            self.civilian_units
+                .get(id)
+                .is_some_and(|unit| unit.location.tile() == Some(tile))
+        })
     }
 
     pub fn civilian_chain_head_on_tile(&self, tile: TileId) -> Option<CivilianUnitId> {
         self.chain_head_on_tile(tile)
     }
 
-    pub(crate) fn civilians_on_tile_chain(&self, tile: TileId) -> Vec<CivilianUnitId> {
-        let mut chain = Vec::new();
-        let mut current = self.chain_head_on_tile(tile);
-        while let Some(id) = current {
-            if chain.contains(&id) {
-                break;
-            }
-            chain.push(id);
-            current = self
-                .civilian_units
-                .get(&id)
-                .and_then(|unit| unit.next_on_tile);
-        }
-        chain
+    pub(crate) fn civilians_on_tile(
+        &self,
+        tile: TileId,
+    ) -> impl Iterator<Item = CivilianUnitId> + '_ {
+        self.civilian_stack_order.iter().copied().filter(move |id| {
+            self.civilian_units
+                .get(id)
+                .is_some_and(|unit| unit.location.tile() == Some(tile))
+        })
+    }
+
+    pub(crate) fn insert_civilian_unit(&mut self, id: CivilianUnitId, state: CivilianUnitState) {
+        self.civilian_units.insert(id, state);
+        self.bring_civilian_to_front(id);
+    }
+
+    pub(crate) fn remove_civilian_unit(&mut self, id: CivilianUnitId) -> Option<CivilianUnitState> {
+        let removed = self.civilian_units.shift_remove(&id);
+        self.civilian_stack_order.retain(|&other| other != id);
+        removed
     }
 
     pub(crate) fn set_civilian_work_order(&mut self, id: CivilianUnitId, order: CivilianWorkOrder) {
@@ -1700,7 +1636,7 @@ mod tests {
         state.map[destination].owner_nation = owner;
         state.map[destination].terrain = TerrainKind::Plains;
         let id = CivilianUnitId::new(1);
-        state.civilian_units.insert(
+        state.insert_civilian_unit(
             id,
             CivilianUnitState::new(
                 nation,
@@ -2140,7 +2076,7 @@ mod tests {
     ) -> CivilianUnitId {
         state.map[tile].owner_nation = Some(TileOwnerTag::from_nation(nation));
         let id = CivilianUnitId::new(id);
-        state.civilian_units.insert(
+        state.insert_civilian_unit(
             id,
             CivilianUnitState::new(
                 nation,
@@ -2475,7 +2411,7 @@ mod tests {
 
         assert!(state.disband_civilian(unit));
         assert!(state.civilian_unit(unit).is_none());
-        assert!(!state.civilians_on_tile_chain(tile).contains(&unit));
+        assert!(!state.civilians_on_tile(tile).any(|id| id == unit));
         let after = &state.nations.city(major).population;
         assert_eq!(after.count(), before.count() + 1);
         assert_eq!(after.strength(), before.strength() + 4);

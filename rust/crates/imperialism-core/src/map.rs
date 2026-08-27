@@ -18,7 +18,6 @@ pub(crate) enum BorderInfluenceMode {
 pub struct MapMgr {
     pub topology: MapTopology,
     pub map_data_ready: bool,
-    pub recruit_search_active: bool,
     pub city_score_total: i32,
     pub scenario_tag: String,
     #[serde(
@@ -100,7 +99,6 @@ impl MapMgr {
         Self {
             topology,
             map_data_ready: false,
-            recruit_search_active: false,
             city_score_total: 0,
             scenario_tag: String::new(),
             tiles,
@@ -513,8 +511,6 @@ pub struct TileState {
     pub province: Option<ProvinceId>,
     /// Retail `TTerrainStateRecord::gateFlag`.
     pub gate: i8,
-    /// Retail `TTerrainStateRecord::recruitSearchVisited0e`.
-    pub recruit_search_visited: u8,
     /// Retail `TTerrainStateRecord::perTileVisitedFlag0f`.
     pub per_tile_visited: i8,
     /// Retail `TTerrainStateRecord::tileActionOrdinal1a`.
@@ -899,7 +895,6 @@ impl Default for TileState {
             water_adjacency_mask: 0,
             province: None,
             gate: 0,
-            recruit_search_visited: 0,
             per_tile_visited: 0,
             tile_action_ordinal: -1,
             development: TileDevelopment::default(),
@@ -1137,5 +1132,38 @@ mod tests {
                 .row_column(bounded.viewport_origin_from_upper_left(107, 0)),
             (0, 101)
         );
+    }
+
+    /// `TCountry::GetOrComputeOverlayAnchorTileIndex` caches the anchor after the
+    /// first lookup: later territorial changes must not move it, because retail
+    /// serializes the cached tile rather than recomputing it every frame.
+    #[test]
+    fn overlay_anchor_is_cached_after_first_lookup() {
+        let mut state = crate::test_support::game_state();
+        let nation = NationId::new(0);
+        let owner = TileOwnerTag::from_nation(nation);
+        state
+            .nations
+            .major_mut(MajorNationId::new(0))
+            .common
+            .home_tile = Some(TileId::new(1));
+        let home = TileId::new(1);
+        state.map[home].province = Some(ProvinceId::new(0));
+        state.map.provinces[ProvinceId::new(0)].region_class = Some(1);
+        for tile in [TileId::new(1), TileId::new(2), TileId::new(3)] {
+            state.map[tile].owner_nation = Some(owner);
+            state.map[tile].province = Some(ProvinceId::new(0));
+        }
+        let cached = state
+            .overlay_anchor_for_nation(nation)
+            .expect("nation 0 has an overlay anchor");
+
+        // A second, far-away owned tile in the same home region would shift a
+        // fresh representative-tile average; the cached anchor must stay put.
+        let far = TileId::new(400);
+        state.map[far].owner_nation = Some(owner);
+        state.map[far].province = Some(ProvinceId::new(0));
+        assert_eq!(state.overlay_anchor_for_nation(nation), Some(cached));
+        assert_ne!(cached, far);
     }
 }

@@ -762,6 +762,7 @@ mod tests {
             nations: Nations::new(majors, IndexMap::new()),
             military_units: Default::default(),
             civilian_units: Default::default(),
+            civilian_stack_order: Vec::new(),
             object_ids: crate::ObjectIdAllocator::default(),
             ships: Default::default(),
             admirals: Default::default(),

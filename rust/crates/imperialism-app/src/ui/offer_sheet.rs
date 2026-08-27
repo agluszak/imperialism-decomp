@@ -209,7 +209,7 @@ fn render_offer_sheet(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    if let Ok(icon) = assets.transparent_picture(
+    if let Ok(icon) = assets.keyed_picture(
         PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
         0x10,
     ) {

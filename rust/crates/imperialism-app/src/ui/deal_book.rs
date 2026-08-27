@@ -161,29 +161,19 @@ fn bind_deal_book(
             .picture(PictureId::new(CATEGORY_BACKGROUND))
             .expect("retail deal-book category background must load"),
         flags: assets
-            .transparent_picture(PictureId::new(FLAG_ATLAS), 0x10)
+            .keyed_picture(PictureId::new(FLAG_ATLAS), 0x10)
             .expect("retail deal-book flag atlas must load"),
         commodities: ResourceTable::from_array(std::array::from_fn(|index| {
             assets
-                .transparent_picture(PictureId::new(COMMODITY_ICON_BASE + index as i16), 0x10)
+                .keyed_picture(PictureId::new(COMMODITY_ICON_BASE + index as i16), 0x10)
                 .expect("retail deal-book commodity icon must load")
         })),
     };
     let (body, body_layout, body_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 10,
-            alignment: -1,
-        })
+        .text_style(RetailTextStylePreset::built(10, -1))
         .expect("retail deal-book body text style");
     let (heading, heading_layout, heading_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 3,
-            face_flags: 0,
-            point_size: 14,
-            alignment: -1,
-        })
+        .text_style(RetailTextStylePreset::built(14, -1))
         .expect("retail deal-book heading text style");
     let fonts = DealBookFonts {
         body,
@@ -201,12 +191,7 @@ fn bind_deal_book(
     // Mac titL is family 0 / 18pt. The generator only emits shipped fonts (modes 1-3),
     // and TDealBookPicture::Startup does not restyle titL on Windows.
     let (title_font, title_layout, title_line_height, _) = assets
-        .text_style(RetailTextStylePreset {
-            font_family: 0,
-            face_flags: 0,
-            point_size: 18,
-            alignment: 1,
-        })
+        .text_style(RetailTextStylePreset::explicit(0, 0, 18, 1))
         .expect("retail deal-book title text style");
     commands.entity(tree.find(root, fourcc!("titL"))).insert((
         title_font,

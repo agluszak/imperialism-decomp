@@ -10,7 +10,7 @@ use super::window::{
     window_position,
 };
 use super::{CityWindows, GameSession};
-use crate::{AppState, RetailAssetsResource, RetailFonts};
+use crate::{AppState, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Pointer};
@@ -203,8 +203,8 @@ fn render_city_dialogs(
     dialogs: Query<(&CityBuildingDialog, Ref<CityDialogView>)>,
     mut ui: CityUi,
     mut assets: RetailUiAssets,
-    fonts: Res<RetailFonts>,
-    font_assets: Res<Assets<Font>>,
+    shipyard_detail_texts: Query<Entity, With<ShipyardDetailText>>,
+    university_yield_texts: Query<Entity, With<UniversityYieldText>>,
 ) {
     let nation = session.active_major_nation();
     let game_changed = session.is_changed();
@@ -217,10 +217,10 @@ fn render_city_dialogs(
             CityDialogView::Training(v) => render_training(v, &session, nation, &mut ui),
             CityDialogView::Armory(v) => render_armory(v, &session, &mut assets, &mut ui),
             CityDialogView::University(v) if expensive => {
-                render_university(v, &session, &mut assets, &fonts, &font_assets, &mut ui)
+                render_university(v, &session, &mut assets, &mut ui, &university_yield_texts)
             }
             CityDialogView::Shipyard(v) if expensive => {
-                render_shipyard(v, &session, &mut assets, &fonts, &font_assets, &mut ui)
+                render_shipyard(v, &session, &mut assets, &mut ui, &shipyard_detail_texts)
             }
             CityDialogView::Warehouse(v) => render_warehouse(v, &session, &mut ui),
             CityDialogView::Food(v) => render_food(v, &session, nation, &mut ui),
