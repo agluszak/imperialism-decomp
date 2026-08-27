@@ -254,9 +254,9 @@ fn render_battle_report(
     let participant = report.participant.unwrap_or(BattleReportSideSlot::Left);
     let other = other_side(participant);
     for (flag, side) in [(view.friendly_flag, participant), (view.enemy_flag, other)] {
-        flags.get_mut(flag).expect("bound battle-report flag").image = assets.picture(PictureId::new(
-                0x1130 + i16::from(report.sides[side].nation.get()),
-            ));
+        flags.get_mut(flag).expect("bound battle-report flag").image = assets.picture(
+            PictureId::new(0x1130 + i16::from(report.sides[side].nation.get())),
+        );
     }
 }
 

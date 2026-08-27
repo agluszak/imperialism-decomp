@@ -344,6 +344,9 @@ impl RetailUiAssets<'_> {
         Ok(self.images.add(image))
     }
 
+    /// Infallible transform of a retail picture. Prefer this over [`Self::try_transformed_picture`]
+    /// when a missing asset is a programming error rather than an expected soft miss.
+    #[allow(dead_code)]
     pub fn transformed_picture(
         &mut self,
         picture_id: PictureId,

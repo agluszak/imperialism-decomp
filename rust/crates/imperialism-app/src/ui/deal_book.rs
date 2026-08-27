@@ -6,6 +6,7 @@ use super::game_shell::bind_game_status_display;
 use super::generated;
 use super::retail::{RetailPressedOverlay, RetailTree};
 use super::retail_raster::IndexedRasterExt;
+use super::retail_resources::DealBookEntryKindRetailResources;
 use super::retail_resources::ResourceKindRetailResources;
 use super::session::{apply_turn_stop, clear_return_to};
 use crate::{AppState, RetailAssetsResource, ReturnTo};
@@ -21,7 +22,6 @@ const HISTORY_BACKGROUND: PictureId = PictureId::new(0x2260);
 const CATEGORY_BACKGROUND: PictureId = PictureId::new(0x2263);
 const TAB_STRIP_BASE: PictureId = PictureId::new(0x2266);
 const FLAG_ATLAS: PictureId = PictureId::new(0x21fb);
-const DEAL_BOOK_STRINGS: StringGroup = StringGroup::new(0x2740);
 const PAGE_LEFT: f32 = 65.0;
 const PAGE_RIGHT: f32 = 314.0;
 const PAGE_TOP: f32 = 89.0;
@@ -863,10 +863,7 @@ fn spawn_offer_row(
 ) {
     let name = nation_name(state, offer.nation);
     let text = if offer.amount == 1 {
-        fill_brackets(
-            &assets.get_string(0x2740, 7),
-            &[&name],
-        )
+        fill_brackets(&assets.get_string(0x2740, 7), &[&name])
     } else {
         fill_brackets(
             &assets.get_string(0x2740, 8),
@@ -1031,10 +1028,7 @@ fn spawn_totals(
         y + balance_y,
         116.0,
         false,
-        fill_brackets(
-            &assets.get_string(0x2740, 0x1b),
-            &[""],
-        ),
+        fill_brackets(&assets.get_string(0x2740, 0x1b), &[""]),
     );
     spawn_text_at(
         commands,
@@ -1066,7 +1060,8 @@ fn spawn_totals_line(
         8.0,
         y,
         116.0,
-        false, assets.get_string(0x2740, string_index as u16),
+        false,
+        assets.get_string(0x2740, string_index as u16),
     );
     let x = if shift_negative {
         totals_value_x(value)
@@ -1206,10 +1201,7 @@ fn format_deal_line(
             fill_brackets(&template, &[&amount, &commodity, &counterparty])
         }
     } else if deal.uses_navy_status_text() {
-        let mut text = fill_brackets(
-            &assets.get_string(0x2740, 0x1f),
-            &[&counterparty],
-        );
+        let mut text = fill_brackets(&assets.get_string(0x2740, 0x1f), &[&counterparty]);
         let status = match deal.unit_price {
             -123_456 => 0x21,
             -123_457 => 0x20,
@@ -1223,29 +1215,6 @@ fn format_deal_line(
             &assets.get_string(0x2740, 0x16),
             &[&counterparty, &commodity],
         )
-    }
-}
-
-/// App-local deal-book string templates. Private trait because orphan rules
-/// block an inherent `impl` on `imperialism_core::DealBookEntryKind`.
-trait DealBookEntryKindRetailResources {
-    fn priced_template_string(self) -> StringResourceId;
-    fn market_price_template_string(self) -> StringResourceId;
-}
-
-impl DealBookEntryKindRetailResources for DealBookEntryKind {
-    fn priced_template_string(self) -> StringResourceId {
-        DEAL_BOOK_STRINGS.offset(match self {
-            Self::Offer => 0x12,
-            Self::Accept => 0x13,
-        })
-    }
-
-    fn market_price_template_string(self) -> StringResourceId {
-        DEAL_BOOK_STRINGS.offset(match self {
-            Self::Offer => 0x14,
-            Self::Accept => 0x15,
-        })
     }
 }
 

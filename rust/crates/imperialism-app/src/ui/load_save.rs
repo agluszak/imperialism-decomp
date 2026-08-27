@@ -20,9 +20,9 @@ use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
     NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy, PictureId, SAVE_LABEL_MAX_CHARS,
-    SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, fourcc,
-    list_save_slots, load_game_from_bytes, normalize_save_label, peek_save_header,
-    peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
+    SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, fourcc, list_save_slots,
+    load_game_from_bytes, normalize_save_label, peek_save_header, peek_save_preview_owners,
+    retail_save_path, write_game_state, write_save_file,
 };
 use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -806,9 +806,7 @@ fn apply_save(
 
 fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> String {
     let retail = match error {
-        LoadGameError::InvalidMagic | LoadGameError::Truncated => {
-            Some(assets.ui_string(0x2737, 7))
-        }
+        LoadGameError::InvalidMagic | LoadGameError::Truncated => Some(assets.ui_string(0x2737, 7)),
         LoadGameError::UnsupportedVersion(_) => Some(assets.ui_string(0x2737, 8)),
         _ => None,
     };
@@ -828,8 +826,12 @@ fn bind_load_save_notice(
     let (root, notice) = notice.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     let body = match notice {
-        LoadSaveNotice::PickSlot => assets.ui_string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX),
-        LoadSaveNotice::ConfirmLoad => assets.ui_string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX),
+        LoadSaveNotice::PickSlot => {
+            assets.ui_string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX)
+        }
+        LoadSaveNotice::ConfirmLoad => {
+            assets.ui_string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX)
+        }
         LoadSaveNotice::Error(body) => body.clone(),
     };
     linger.set_body(&mut commands, &mut assets, &body);

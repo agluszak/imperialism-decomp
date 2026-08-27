@@ -1179,10 +1179,7 @@ fn diplomacy_entanglement_body(
     } else {
         4
     };
-    let intro = fill_brackets(
-        &assets.get_string(0x275d, intro_index),
-        &[target_name],
-    );
+    let intro = fill_brackets(&assets.get_string(0x275d, intro_index), &[target_name]);
     let mut names = String::new();
     for major in MajorNationId::all() {
         if state.diplomacy().relationships[target][major.nation()] != DiplomaticRelationship::War {
@@ -1307,10 +1304,7 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
             [&minor, &enemy, &minor, &minor],
         ),
     };
-    Some(fill_brackets(
-        &assets.get_string(0x2729, index),
-        &args,
-    ))
+    Some(fill_brackets(&assets.get_string(0x2729, index), &args))
 }
 
 fn draw_diplomacy_text(
@@ -2031,10 +2025,7 @@ fn council_panel_text(state: &GameState, assets: &RetailAssetsResource) -> Counc
     if let (Some(chairman), Some(counterpart)) = (congress.chairman, congress.counterpart) {
         let decade = (state.turn().economic_turn / 4) / 10 * 10 + 1815;
         CouncilPanelText {
-            title: fill_brackets(
-                &assets.get_string(0x2733, 0x35),
-                &[&decade.to_string()],
-            ),
+            title: fill_brackets(&assets.get_string(0x2733, 0x35), &[&decade.to_string()]),
             rows: Some([
                 (
                     format!(

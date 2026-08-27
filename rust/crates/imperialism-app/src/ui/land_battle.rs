@@ -389,26 +389,11 @@ fn bind_land_battle(
         *root,
         &tree,
         [
-            (
-                fourcc!("help"),
-                assets.ui_string(0x273d, 0x20),
-            ),
-            (
-                fourcc!("targ"),
-                assets.ui_string(0x273d, 0x21),
-            ),
-            (
-                fourcc!("done"),
-                assets.ui_string(0x273d, 0x22),
-            ),
-            (
-                fourcc!("retr"),
-                assets.ui_string(0x273d, 0x23),
-            ),
-            (
-                fourcc!("auto"),
-                assets.ui_string(0x273d, 0x24),
-            ),
+            (fourcc!("help"), assets.ui_string(0x273d, 0x20)),
+            (fourcc!("targ"), assets.ui_string(0x273d, 0x21)),
+            (fourcc!("done"), assets.ui_string(0x273d, 0x22)),
+            (fourcc!("retr"), assets.ui_string(0x273d, 0x23)),
+            (fourcc!("auto"), assets.ui_string(0x273d, 0x24)),
             (fourcc!("DLOG"), String::new()),
         ],
     );
@@ -550,20 +535,22 @@ fn insert_land_battle_visuals(
         composition_class,
         backdrop: assets.picture(picture),
         fort_strip: assets.picture(TACTICAL_FORT_STRIP_PICTURE),
-        unit_atlas: assets.transparent_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+        unit_atlas: assets
+            .transparent_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
         fort_atlas: assets.transparent_picture(
-                if battle.fort_level() == FortLevel::None {
-                    TACTICAL_NO_FORT_ATLAS_PICTURE
-                } else {
-                    TACTICAL_FORT_ATLAS_BASE.offset(i16::from(battle.fort_level().retail()))
-                },
-                TACTICAL_TRANSPARENT_INDEX,
-            ),
-        effect_atlas: assets.transparent_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+            if battle.fort_level() == FortLevel::None {
+                TACTICAL_NO_FORT_ATLAS_PICTURE
+            } else {
+                TACTICAL_FORT_ATLAS_BASE.offset(i16::from(battle.fort_level().retail()))
+            },
+            TACTICAL_TRANSPARENT_INDEX,
+        ),
+        effect_atlas: assets
+            .transparent_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
         experience_strip: assets.transparent_picture(
-                TACTICAL_EXPERIENCE_STRIP_PICTURE,
-                TACTICAL_TRANSPARENT_INDEX,
-            ),
+            TACTICAL_EXPERIENCE_STRIP_PICTURE,
+            TACTICAL_TRANSPARENT_INDEX,
+        ),
         unit_status_atlas: assets.transparent_picture(TACTICAL_UNIT_STATUS_ATLAS_PICTURE, 0),
         selection_color: assets.palette_color(0x13),
         inset_color: assets.palette_color(0),
@@ -1223,9 +1210,9 @@ fn animate_land_battle_actions(
             continue;
         }
         image.image = assets.transparent_picture(
-                effect.base_picture.offset(i16::from(effect.frame)),
-                TACTICAL_TRANSPARENT_INDEX,
-            );
+            effect.base_picture.offset(i16::from(effect.frame)),
+            TACTICAL_TRANSPARENT_INDEX,
+        );
     }
     let Ok((field_entity, mut field, visuals, queue, deferred)) = fields.single_mut() else {
         return;
@@ -1618,7 +1605,9 @@ fn project_land_battle_toolbar(
             ));
         }
     }
-    let coat = assets.picture(PictureId::new(0xea6).offset(i16::from(battle.nation(battle.active_side()).get())));
+    let coat = assets.picture(
+        PictureId::new(0xea6).offset(i16::from(battle.nation(battle.active_side()).get())),
+    );
     for mut image in &mut coats {
         image.image = coat.clone();
     }

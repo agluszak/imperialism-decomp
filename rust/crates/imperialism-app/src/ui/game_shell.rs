@@ -302,10 +302,7 @@ fn on_ocean_toggle(
         let body = if tag.is_empty() {
             String::from("Imperialism")
         } else {
-            crate::ui::fill_brackets(
-                &assets.get_string(0x273f, 1),
-                &[tag],
-            )
+            crate::ui::fill_brackets(&assets.get_string(0x273f, 1), &[tag])
         };
         spawn_linger_dialog(
             &mut commands,

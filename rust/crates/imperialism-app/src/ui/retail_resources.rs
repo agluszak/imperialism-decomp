@@ -4,9 +4,10 @@
 use enum_map::Enum;
 use imperialism_core::{
     ArmyUnitCategory, CityFacilitySlot, CitySiteError, CivilianUnitKind, CivilianUnitTable,
-    EngineerConstructionChoice, FortLevel, GameState, MilitaryOrderCode, MilitaryUnitKind,
-    NavalAggression, PlayerDiplomacyRejection, ResourceKind, ShipType, TaskForceOrder, Technology,
-    TechnologyTable, TerrainKind, TileId, TurnAlert, supports_city_site_terrain,
+    DealBookEntryKind, EngineerConstructionChoice, FortLevel, GameState, MilitaryOrderCode,
+    MilitaryUnitKind, NavalAggression, PlayerDiplomacyRejection, ResourceKind, ShipType,
+    TaskForceOrder, Technology, TechnologyTable, TerrainKind, TileId, TurnAlert,
+    supports_city_site_terrain,
 };
 use imperialism_formats::{PictureId, SoundId, StringGroup, StringResourceId};
 
@@ -387,7 +388,7 @@ pub(crate) trait DealBookEntryKindRetailResources {
     fn market_price_template_string(self) -> StringResourceId;
 }
 
-impl DealBookEntryKindRetailResources for imperialism_core::DealBookEntryKind {
+impl DealBookEntryKindRetailResources for DealBookEntryKind {
     fn priced_template_string(self) -> StringResourceId {
         DEAL_BOOK.offset(match self {
             Self::Offer => 0x12,
@@ -528,6 +529,23 @@ mod tests {
         assert_eq!(
             EngineerConstructionChoice::Port.label_string(FortLevel::One),
             StringGroup::new(0x1c20).offset(2)
+        );
+    }
+
+    #[test]
+    fn navy_roster_status_uses_sparse_ship_type_table() {
+        assert_eq!(ShipType::Clipper.navy_roster_status_string(), None);
+        assert_eq!(
+            ShipType::Frigate.navy_roster_status_string(),
+            Some(StringGroup::new(0x2760).offset(0))
+        );
+        assert_eq!(
+            ShipType::Raider.navy_roster_status_string(),
+            Some(StringGroup::new(0x2760).offset(2))
+        );
+        assert_eq!(
+            ShipType::Battlecruiser.navy_roster_status_string(),
+            Some(StringGroup::new(0x2760).offset(7))
         );
     }
 }

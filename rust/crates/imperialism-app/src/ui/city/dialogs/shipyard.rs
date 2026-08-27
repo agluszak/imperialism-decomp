@@ -140,18 +140,12 @@ pub(in crate::ui::city) fn render_shipyard(
     if ship_type == ShipType::NoShip {
         return;
     }
-    ui.text(
-        view.ship_name,
-        assets.string(ship_type.name_string()),
-    );
+    ui.text(view.ship_name, assets.string(ship_type.name_string()));
     ui.text(
         view.description,
         assets.string(ship_type.description_string()),
     );
-    ui.image(
-        view.picture,
-        assets.picture(ship_type.detail_picture()),
-    );
+    ui.image(view.picture, assets.picture(ship_type.detail_picture()));
     let mut picture = assets.indexed_picture(PictureId::new(9800));
     let mut text = RetailRasterTextPainter::from_preset(
         fonts,

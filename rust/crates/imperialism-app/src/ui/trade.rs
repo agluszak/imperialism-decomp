@@ -390,10 +390,10 @@ fn render_trade(
         render_trade_card(
             row.bid,
             assets.picture(trade_card_picture(
-                    commodity,
-                    TradeCardKind::Bid,
-                    bid_active,
-                )),
+                commodity,
+                TradeCardKind::Bid,
+                bid_active,
+            )),
             TradeCardKind::Bid,
             bid_active,
             &mut images,
@@ -402,10 +402,10 @@ fn render_trade(
         render_trade_card(
             row.offer,
             assets.picture(trade_card_picture(
-                    commodity,
-                    TradeCardKind::Offer,
-                    offer_active,
-                )),
+                commodity,
+                TradeCardKind::Offer,
+                offer_active,
+            )),
             TradeCardKind::Offer,
             offer_active,
             &mut images,

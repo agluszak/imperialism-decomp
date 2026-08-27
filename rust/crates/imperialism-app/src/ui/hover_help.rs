@@ -127,7 +127,6 @@ pub(crate) fn bind_hover_help_texts(
     }
 }
 
-
 #[allow(clippy::type_complexity)]
 fn sync_hover_help_bar(
     sources: Query<(&HoverHelpText, &DirectlyHovered)>,

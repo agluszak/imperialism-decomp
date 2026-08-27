@@ -242,13 +242,9 @@ fn apply_action(
             state.topic = Some(topic);
             commands
                 .entity(view.find(fourcc!("subj")))
-                .insert(Text::new(
-                    assets.ui_string(group as u16, topic as u16 + 2),
-                ));
+                .insert(Text::new(assets.ui_string(group as u16, topic as u16 + 2)));
             commands.entity(view.find(fourcc!("swin"))).insert((
-                Text::new(
-                    assets.text(group as u16 + topic as u16 + 1),
-                ),
+                Text::new(assets.text(group as u16 + topic as u16 + 1)),
                 TextColor(Color::BLACK),
                 Visibility::Visible,
             ));
@@ -298,17 +294,13 @@ fn show_topic_list_raw(
     let group = context.sets()[set];
     commands
         .entity(view.find(fourcc!("subj")))
-        .insert(Text::new(
-            assets.ui_string(group as u16, 1),
-        ));
+        .insert(Text::new(assets.ui_string(group as u16, 1)));
     commands
         .entity(view.find(fourcc!("swin")))
         .insert(Visibility::Hidden);
     for (index, tag) in TOPICS.into_iter().enumerate() {
         commands.entity(view.find(tag)).insert((
-            Text::new(
-                assets.ui_string(group as u16, index as u16 + 2),
-            ),
+            Text::new(assets.ui_string(group as u16, index as u16 + 2)),
             TextColor(LINK_BLUE),
             Underline,
             if index < context.topic_count(set) {
@@ -323,9 +315,7 @@ fn show_topic_list_raw(
         (fourcc!("next"), 15, set + 1 < context.sets().len()),
     ] {
         commands.entity(view.find(tag)).insert((
-            Text::new(
-                assets.ui_string(0x2749, index),
-            ),
+            Text::new(assets.ui_string(0x2749, index)),
             TextColor(LINK_BLUE),
             Underline,
             if visible {

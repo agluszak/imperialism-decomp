@@ -189,14 +189,8 @@ fn bind_preferences(
         root,
         &tree,
         [
-            (
-                fourcc!("okay"),
-                assets.ui_string(0x2743, 0x25),
-            ),
-            (
-                fourcc!("quer"),
-                assets.ui_string(0x2730, 3),
-            ),
+            (fourcc!("okay"), assets.ui_string(0x2743, 0x25)),
+            (fourcc!("quer"), assets.ui_string(0x2730, 3)),
         ],
     );
 

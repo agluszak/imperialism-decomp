@@ -254,7 +254,9 @@ fn render_offer_sheet(
     commands
         .entity(view.purchase_title)
         .insert(Text::new(assets.get_string(OFFER_STRING_GROUP, 0xe)));
-    commands.entity(view.unit).insert(Text::new(assets.get_string(OFFER_STRING_GROUP, 0xf)));
+    commands
+        .entity(view.unit)
+        .insert(Text::new(assets.get_string(OFFER_STRING_GROUP, 0xf)));
     commands
         .entity(view.no_offer)
         .insert(Text::new(fill_brackets(
@@ -317,13 +319,15 @@ fn bind_offer_answer(commands: &mut Commands, button: Entity, accept: bool) {
                     .and_then(|editable| editable.value().to_string().parse::<i16>().ok())
                 else {
                     spawn_offer_quantity_error(
-                        &mut commands, assets.get_string(OFFER_STRING_GROUP, 0x10),
+                        &mut commands,
+                        assets.get_string(OFFER_STRING_GROUP, 0x10),
                     );
                     return;
                 };
                 if amount < 0 || amount > offer.amount {
                     spawn_offer_quantity_error(
-                        &mut commands, assets.get_string(OFFER_STRING_GROUP, 0x10),
+                        &mut commands,
+                        assets.get_string(OFFER_STRING_GROUP, 0x10),
                     );
                     return;
                 }

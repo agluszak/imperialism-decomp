@@ -198,9 +198,7 @@ pub(in crate::ui::city) fn bind_armory(
     ] {
         let entity = tree.find(root, tag);
         commands.entity(entity).insert((
-            Text::new(
-                assets.ui_string(0x271c, string_index),
-            ),
+            Text::new(assets.ui_string(0x271c, string_index)),
             detail_font.clone(),
             detail_line_height,
             TextColor(normal_color),
@@ -286,11 +284,14 @@ pub(in crate::ui::city) fn render_armory(
     let unit_index = usize::from(order.unit_kind.retail());
     let unit_name = assets.string(order.unit_kind.name_string());
     let description = assets.string(order.unit_kind.description_string());
-    let static_text = assets.ui_string(0x271c, if ARMORY_STATIC[unit_index] {
-                0x22
-            } else {
-                0x21
-            });
+    let static_text = assets.ui_string(
+        0x271c,
+        if ARMORY_STATIC[unit_index] {
+            0x22
+        } else {
+            0x21
+        },
+    );
     let workforce_available = workforce.min(strength / strength_divisor);
     let primary_available = city.stockpile[spec.primary.resource];
     let secondary_available = secondary.map(|item| city.stockpile[item.resource]);

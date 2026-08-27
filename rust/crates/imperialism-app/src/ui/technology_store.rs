@@ -408,9 +408,7 @@ fn bind_technology_modals(
             })
             .expect("retail technology-history title style");
         commands.entity(view.find(fourcc!("titl"))).insert((
-            Text::new(
-                assets.string(technology.name_string()),
-            ),
+            Text::new(assets.string(technology.name_string())),
             title_font,
             title_layout,
             title_line_height,
@@ -442,9 +440,7 @@ fn bind_technology_modals(
                 width: percent(100),
                 ..default()
             },
-            Text::new(
-                retail.text(technology.history_text_id()),
-            ),
+            Text::new(retail.text(technology.history_text_id())),
             body_font,
             body_layout,
             body_line_height,
@@ -506,9 +502,7 @@ fn project_technology_status(
                 let names = missing
                     .into_iter()
                     .flatten()
-                    .map(|prerequisite| {
-                        retail.string(prerequisite.name_string())
-                    })
+                    .map(|prerequisite| retail.string(prerequisite.name_string()))
                     .collect::<Vec<_>>();
                 let template = retail.ui_string(0x274f, if names.len() == 1 { 3 } else { 2 });
                 fill_brackets(

@@ -294,9 +294,7 @@ fn bind_added_civilian_ledgers(
                     height: Val::Px(18.0),
                     ..default()
                 },
-                Text::new(
-                    assets.ui_string(0x2746, 11),
-                ),
+                Text::new(assets.ui_string(0x2746, 11)),
                 font.clone(),
                 layout,
                 line_height,
@@ -542,13 +540,7 @@ fn bind_engineer_dialog(
 ) {
     let dialog = tree.find(root, fourcc!("DLOG"));
     let title = tree.find(root, fourcc!("titl"));
-    insert_retail_text(
-        commands,
-        assets,
-        title,
-        &assets.get_string(0x1c20, 6),
-        14,
-    );
+    insert_retail_text(commands, assets, title, &assets.get_string(0x1c20, 6), 14);
     let options = state.engineer_construction_options(unit);
     let tile = state
         .civilian_unit(unit)
@@ -612,9 +604,7 @@ fn bind_engineer_dialog(
                 ..default()
             },
             Button,
-            ImageNode::new(
-                assets.picture(PictureId::new(0x24c4)),
-            ),
+            ImageNode::new(assets.picture(PictureId::new(0x24c4))),
             ActivateOnPress,
             ChildOf(dialog),
         ))
@@ -679,9 +669,7 @@ fn spawn_engineer_background(
             height: px(height),
             ..default()
         },
-        ImageNode::new(
-            assets.picture(picture),
-        ),
+        ImageNode::new(assets.picture(picture)),
         ZIndex(-1),
         Pickable::IGNORE,
         ChildOf(parent),
@@ -776,32 +764,14 @@ fn civilian_report_text(
         .expect("reported civilian is on the strategic map");
     let kind = assets.string(civilian.unit_type().name_string());
     let city = city_name(state, tile);
-    let mut report = fill_brackets(
-        &assets.get_string(0x2724, 0),
-        &[&kind, &city],
-    );
+    let mut report = fill_brackets(&assets.get_string(0x2724, 0), &[&kind, &city]);
     report.push('\n');
     let (line, turns) = match civilian.order() {
-        CivilianWorkOrder::Redeploy { .. } => (
-            assets.get_string(0x2724, 8),
-            None,
-        ),
-        CivilianWorkOrder::LayRail { turns, .. } => (
-            assets.get_string(0x2724, 1),
-            Some(*turns),
-        ),
-        CivilianWorkOrder::BuildDepot { turns, .. } => (
-            assets.get_string(0x2724, 2),
-            Some(*turns),
-        ),
-        CivilianWorkOrder::BuildPort { turns, .. } => (
-            assets.get_string(0x2724, 3),
-            Some(*turns),
-        ),
-        CivilianWorkOrder::Prospect { turns, .. } => (
-            assets.get_string(0x2724, 4),
-            Some(*turns),
-        ),
+        CivilianWorkOrder::Redeploy { .. } => (assets.get_string(0x2724, 8), None),
+        CivilianWorkOrder::LayRail { turns, .. } => (assets.get_string(0x2724, 1), Some(*turns)),
+        CivilianWorkOrder::BuildDepot { turns, .. } => (assets.get_string(0x2724, 2), Some(*turns)),
+        CivilianWorkOrder::BuildPort { turns, .. } => (assets.get_string(0x2724, 3), Some(*turns)),
+        CivilianWorkOrder::Prospect { turns, .. } => (assets.get_string(0x2724, 4), Some(*turns)),
         CivilianWorkOrder::DevelopResource { turns, .. } => {
             if civilian.unit_type() == CivilianUnitKind::Miner
                 && state.map()[tile].development.extractive.get() == 0
@@ -840,8 +810,7 @@ fn civilian_report_text(
                 (line, Some(*turns))
             } else {
                 let action = assets.string(civilian.unit_type().work_action_string());
-                let template =
-                    assets.string(civilian.unit_type().work_report_template_string());
+                let template = assets.string(civilian.unit_type().work_report_template_string());
                 (fill_brackets(&template, &[&action]), Some(*turns))
             }
         }
@@ -923,10 +892,8 @@ fn on_civilian_modal_action(
                         .find(|option| option.choice == choice)
                         .map(|option| option.cost)
                         .unwrap_or(0);
-                    let body = fill_brackets(
-                        &assets.get_string(0x2745, 8),
-                        &[&format_currency(cost)],
-                    );
+                    let body =
+                        fill_brackets(&assets.get_string(0x2745, 8), &[&format_currency(cost)]);
                     spawn_notice(&mut commands, String::new(), body);
                 }
                 Err(_) => {}
@@ -989,7 +956,8 @@ fn bind_added_army_reports(
         let lab2 = assets.get_string(0x2744, 0xc);
         let lab3 = assets.get_string(0x2744, 0xd);
         let composition = army_composition_text(&assets, &report.composition);
-        let order_template = assets.get_string(0x2744, if report.owned_by_viewer { 0xa } else { 0xe });
+        let order_template =
+            assets.get_string(0x2744, if report.owned_by_viewer { 0xa } else { 0xe });
         let orders = fill_brackets(&order_template, &[&report.city_name]);
         insert_styled_text(
             &mut commands,
@@ -1652,15 +1620,9 @@ fn garrison_order_text(assets: &RetailUiAssets, order: MilitaryOrderCode) -> Str
 }
 
 fn navy_roster_type_label(assets: &RetailUiAssets, ship_type: ShipType) -> String {
-    const STATUS_INDEX: [i16; 14] = [-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7];
-    let index = STATUS_INDEX[usize::from(ship_type.retail())];
-    if index < 0 {
-        String::new()
-    } else {
-        format!(
-            "{} ",
-            assets.get_string(0x2760, index as u16)
-        )
+    match ship_type.navy_roster_status_string() {
+        Some(id) => format!("{} ", assets.string(id)),
+        None => String::new(),
     }
 }
 
@@ -1677,10 +1639,10 @@ fn army_composition_text(
 fn ship_composition_text(assets: &RetailUiAssets, composition: &[(ShipType, i32)]) -> String {
     join_counted_labels(composition.iter().map(|(kind, count)| {
         let name = assets.string(if *count < 2 {
-                kind.name_string()
-            } else {
-                kind.plural_name_string()
-            });
+            kind.name_string()
+        } else {
+            kind.plural_name_string()
+        });
         (*count, name)
     }))
 }
@@ -1722,10 +1684,7 @@ fn fleet_authority_text(assets: &RetailUiAssets, authority: &FleetAuthority) -> 
             &assets.get_string(0x2762, 0xe),
             &[&format!("Adm. {admiral}"), ship],
         ),
-        (None, Some(ship)) => fill_brackets(
-            &assets.get_string(0x2762, 0xf),
-            &[ship],
-        ),
+        (None, Some(ship)) => fill_brackets(&assets.get_string(0x2762, 0xf), &[ship]),
         (Some(admiral), None) => format!("Adm. {admiral}"),
     }
 }

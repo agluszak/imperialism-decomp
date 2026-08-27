@@ -185,10 +185,10 @@ fn sync_army_toolbar(
     for (command, mut image) in &mut garrisons {
         if matches!(*command, ArmyCommand::Garrison) {
             image.image = assets.picture(if counts_state.can_upgrade {
-                    PictureId::new(0x24d5)
-                } else {
-                    PictureId::new(0x04b5)
-                });
+                PictureId::new(0x24d5)
+            } else {
+                PictureId::new(0x04b5)
+            });
         }
     }
 }

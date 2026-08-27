@@ -1,7 +1,5 @@
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts,
-};
+use crate::ui::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts};
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
@@ -295,10 +293,9 @@ fn bind_random_setup_labels(
         (fourcc!("dif4"), 0x2737, 0x12),
     ] {
         let entity = tree.find(root, tag);
-        commands.entity(entity).insert((
-            Text::new(assets.ui_string(group, index)),
-            Label,
-        ));
+        commands
+            .entity(entity)
+            .insert((Text::new(assets.ui_string(group, index)), Label));
     }
     let title_color = TextColor(assets.palette_color(0x5c));
     let title_shadow = TextShadow {
@@ -365,40 +362,16 @@ fn bind_random_setup_hover_help(
             (fourcc!("main"), String::new()),
             (fourcc!("key "), String::new()),
             (fourcc!("stuf"), String::new()),
-            (
-                fourcc!("name"),
-                assets.ui_string(0x2758, 0x1e),
-            ),
-            (
-                fourcc!("glob"),
-                assets.ui_string(0x2737, 0x13),
-            ),
+            (fourcc!("name"), assets.ui_string(0x2758, 0x1e)),
+            (fourcc!("glob"), assets.ui_string(0x2737, 0x13)),
             (fourcc!("canc"), cancel.clone()),
             (fourcc!("cncl"), cancel),
-            (
-                OKAY,
-                assets.ui_string(0x2737, 0x15),
-            ),
-            (
-                fourcc!("map "),
-                assets.ui_string(0x2758, 0x13),
-            ),
-            (
-                fourcc!("diff"),
-                assets.ui_string(0x2737, 0x17),
-            ),
-            (
-                fourcc!("coun"),
-                assets.ui_string(0x2737, 0x1a),
-            ),
-            (
-                fourcc!("flag"),
-                assets.ui_string(0x2737, 0x1b),
-            ),
-            (
-                fourcc!("coat"),
-                assets.ui_string(0x2737, 0x1c),
-            ),
+            (OKAY, assets.ui_string(0x2737, 0x15)),
+            (fourcc!("map "), assets.ui_string(0x2758, 0x13)),
+            (fourcc!("diff"), assets.ui_string(0x2737, 0x17)),
+            (fourcc!("coun"), assets.ui_string(0x2737, 0x1a)),
+            (fourcc!("flag"), assets.ui_string(0x2737, 0x1b)),
+            (fourcc!("coat"), assets.ui_string(0x2737, 0x1c)),
         ],
     );
 }

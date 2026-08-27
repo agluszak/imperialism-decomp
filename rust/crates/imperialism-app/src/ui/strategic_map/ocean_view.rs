@@ -65,9 +65,7 @@ pub(crate) fn bind_ocean_view(
 ) -> Entity {
     let land = tree.find(root, fourcc!("DLOG"));
     commands.entity(land).insert(LandMapFrame);
-    let ocean_assets = OceanRenderAssets::load(|id| {
-        assets.indexed_picture(id)
-    });
+    let ocean_assets = OceanRenderAssets::load(|id| assets.indexed_picture(id));
 
     let ocean = tree.find(root, fourcc!("DOOG"));
     let palette = *assets.default_dib_palette();

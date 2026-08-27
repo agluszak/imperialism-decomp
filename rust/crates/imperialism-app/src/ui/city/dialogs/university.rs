@@ -149,14 +149,8 @@ pub(in crate::ui::city) fn render_university(
         .map(|resource| levels[*resource])
         .max()
         .unwrap_or(UniversityRequirementLevel::None);
-    ui.text(
-        view.unit,
-        assets.string(kind.name_string()),
-    );
-    ui.text(
-        view.description,
-        assets.string(kind.description_string()),
-    );
+    ui.text(view.unit, assets.string(kind.name_string()));
+    ui.text(view.description, assets.string(kind.description_string()));
     let values = [
         1.to_string(),
         spec.primary.per_unit().to_string(),

@@ -66,7 +66,10 @@ fn bind_town_naming(
     let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
         return;
     };
-    let suggestion = retail_assets.ui_string(0x1c52, u16::from(session.game.roll_pending_town_name_suggestion()));
+    let suggestion = retail_assets.ui_string(
+        0x1c52,
+        u16::from(session.game.roll_pending_town_name_suggestion()),
+    );
     let yields = session.game.nations().major(nation).towns[&tile].resource_yield_by_type;
     let visible = yields.values().filter(|&&amount| amount != 0).count() as i32;
     let extra_height = visible * ROW_HEIGHT;
