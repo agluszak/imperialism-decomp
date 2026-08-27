@@ -170,13 +170,10 @@ fn bind_trade_screen(
         fourcc!("topB"),
         Some(fourcc!("tool")),
         true,
+        AppState::Trade,
     );
     bind_game_status_display(&mut commands, &mut assets, root, &tree);
 
-    let selected = tree.find(root, fourcc!("trad"));
-    commands
-        .entity(selected)
-        .insert((Checked, InteractionDisabled));
     let capacity = tree.find(root, fourcc!("mCap"));
     commands.entity(capacity).insert(InteractionDisabled);
     let advisories = TRADE_ADVISORIES.map(|(tag, _)| tree.find(root, tag));

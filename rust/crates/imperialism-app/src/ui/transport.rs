@@ -12,7 +12,7 @@ use super::retail_transport_gauge::{
 };
 use crate::AppState;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::*;
@@ -161,6 +161,7 @@ fn bind_transport_screen(
         fourcc!("topB"),
         Some(fourcc!("tool")),
         true,
+        AppState::Transport,
     );
 
     let nation = session.active_major_nation();
@@ -207,10 +208,6 @@ fn bind_transport_view(
     tree: &RetailTree,
     gauges: &Query<&TransportGaugeParts>,
 ) -> TransportView {
-    let selected = tree.find(root, fourcc!("tran"));
-    commands
-        .entity(selected)
-        .insert((Checked, InteractionDisabled));
     let capacity = bind_gauge_view(tree, gauges, tree.find(root, fourcc!("tota")));
     let rows = std::array::from_fn(|index| {
         let binding = TRANSPORT_ROWS[index];
