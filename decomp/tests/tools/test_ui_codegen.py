@@ -151,34 +151,23 @@ class UiCodegenTests(unittest.TestCase):
                 "pub fn citydlog_9201()"
             )
         ]
-        self.assertIn(
-            "retail_amount_bar(RetailAmountBarKind::Industry)", industry
-        )
-        self.assertIn(
-            "retail_amount_selector(RetailAmountSelectorKind::Industry)", industry
-        )
-        self.assertIn("#Left", industry)
-        self.assertIn("#Right", industry)
-        self.assertIn("#Value", industry)
-        self.assertIn("#Bar", industry)
+        self.assertIn("retail_amount_bar(AmountBarStyle::Production)", industry)
+        self.assertNotIn("retail_amount_selector", industry)
+        self.assertNotIn("#Left", industry)
         food = rendered[
             rendered.index("pub fn citydlog_9209()") : rendered.index(
                 "pub fn citydlog_9211()"
             )
         ]
-        self.assertIn("retail_amount_bar(RetailAmountBarKind::Rail)", food)
-        self.assertIn(
-            "retail_amount_selector(RetailAmountSelectorKind::Rail)", food
-        )
+        self.assertIn("retail_amount_bar(AmountBarStyle::Production)", food)
+        self.assertNotIn("retail_amount_selector", food)
         trade = rendered[
             rendered.index("pub fn trade_2009()") : rendered.index(
                 "pub fn trade_2010()"
             )
         ]
-        self.assertIn("retail_amount_bar(RetailAmountBarKind::Trader)", trade)
-        self.assertIn(
-            "retail_amount_selector(RetailAmountSelectorKind::Trader)", trade
-        )
+        self.assertIn("retail_amount_bar(AmountBarStyle::Trade)", trade)
+        self.assertNotIn("retail_amount_selector", trade)
         self.assertIn("retail_placard(6013)", rendered)
         self.assertIn("retail_placard(6001)", rendered)
         self.assertIn("retail_army_placard(", rendered)

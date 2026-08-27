@@ -1644,35 +1644,21 @@ def apply_case_windows_overrides(
     return replace(view, nodes=tuple(nodes))
 
 
-def _rust_amount_bar_kind(node: UiSemanticNode) -> str | None:
-    """Map recovered TAmtBar subclasses to RetailAmountBarKind variants."""
+def _rust_amount_bar_style(node: UiSemanticNode) -> str | None:
+    """Map recovered TAmtBar subclasses to AmountBarStyle (behavior, not C++ taxonomy)."""
     return {
-        "TIndustryAmtBar": "Industry",
-        "TRailAmtBar": "Rail",
-        "TTraderAmtBar": "Trader",
+        "TIndustryAmtBar": "Production",
+        "TRailAmtBar": "Production",
+        "TTraderAmtBar": "Trade",
     }.get(node.class_name)
-
-
-def _rust_amount_selector_kind(node: UiSemanticNode) -> str | None:
-    return {
-        "TIndustryCluster": "Industry",
-        "TRailCluster": "Rail",
-        "TTradeCluster": "Trader",
-    }.get(node.class_name)
-
-
-def _rust_amount_selector_child_name(tag: str) -> str | None:
-    return {
-        "left": "Left",
-        "rght": "Right",
-        "move": "Value",
-        "Sell": "Value",
-        "bar ": "Bar",
-    }.get(tag)
 
 
 def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | None:
-    """Windows DoPostCreate picture base + scale + Off string for TTwoPicSlider."""
+    """Windows DoPostCreate picture base + scale + Off string for TTwoPicSlider.
+
+    Instance facts belong in platform deltas long-term; until those fields are
+    modeled, the recovered Preferences tags are the only known sources.
+    """
 
     if node.class_name != "TTwoPicSlider":
         return None
@@ -1759,9 +1745,9 @@ def _rust_presentation(node: UiSemanticNode) -> str | None:
     """Which visual helper to emit for this recovered node.
 
     Values: hover_help_bar, placard, army_placard, ship_placard, transport_gauge,
-    numbered_arrow, amount_bar, amount_selector, two_pic_slider, madness,
-    pressed_overlay, picture_swap, static_picture, radio_text_fill; None when
-    the node has no dedicated presentation helper.
+    numbered_arrow, amount_bar, two_pic_slider, madness, pressed_overlay,
+    picture_swap, static_picture, radio_text_fill; None when the node has no
+    dedicated presentation helper.
     """
 
     class_name = node.class_name
@@ -1780,10 +1766,8 @@ def _rust_presentation(node: UiSemanticNode) -> str | None:
         return "numbered_arrow"
     if class_name == "TTwoPicSlider":
         return "two_pic_slider"
-    if _rust_amount_bar_kind(node) is not None:
+    if _rust_amount_bar_style(node) is not None:
         return "amount_bar"
-    if _rust_amount_selector_kind(node) is not None:
-        return "amount_selector"
 
     picture_id = node.family.picture_id
     if picture_id is not None:
@@ -2215,16 +2199,8 @@ def _render_bsn_node(
     elif presentation == "radio_text_fill":
         lines.append("    retail_radio_text_fill()")
     elif presentation == "amount_bar":
-        # Recovered TAmtBar subclass -> RetailAmountBar widget.
-        amount_bar_kind = _rust_amount_bar_kind(node)
-        lines.append(
-            f"    retail_amount_bar(RetailAmountBarKind::{amount_bar_kind})"
-        )
-    elif presentation == "amount_selector":
-        selector_kind = _rust_amount_selector_kind(node)
-        lines.append(
-            f"    retail_amount_selector(RetailAmountSelectorKind::{selector_kind})"
-        )
+        amount_bar_style = _rust_amount_bar_style(node)
+        lines.append(f"    retail_amount_bar(AmountBarStyle::{amount_bar_style})")
     elif presentation == "two_pic_slider":
         slider = _rust_two_pic_slider(node)
         if slider is not None:
@@ -2239,14 +2215,6 @@ def _render_bsn_node(
         lines.append("    Children [")
         for child in children:
             rendered = _render_bsn_node(key, child, children_by_parent)
-            child_name = (
-                _rust_amount_selector_child_name(child.tag)
-                if presentation == "amount_selector"
-                else None
-            )
-            if child_name is not None:
-                # Name recovered cluster children for RetailAmountSelector refs.
-                rendered.insert(1, f"    #{child_name}")
             rendered[-1] += ","
             lines.extend(_indent(rendered, 8))
         lines.append("    ]")
