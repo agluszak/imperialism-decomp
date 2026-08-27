@@ -24,17 +24,7 @@ impl CivilianUnitKind {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::Miner => 0,
-            Self::Prospector => 1,
-            Self::Farmer => 2,
-            Self::Forester => 3,
-            Self::Engineer => 4,
-            Self::Rancher => 5,
-            Self::Fisherman => 6,
-            Self::Developer => 7,
-            Self::Driller => 8,
-        }
+        self as u8
     }
 }
 
@@ -118,38 +108,7 @@ pub type MilitaryUnitTable<T> = EnumMap<MilitaryUnitKind, T>;
 
 impl MilitaryUnitKind {
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::Minutemen => 0,
-            Self::Skirmishers => 1,
-            Self::Regulars => 2,
-            Self::Grenadiers => 3,
-            Self::Hussars => 4,
-            Self::Cuirassiers => 5,
-            Self::LightArtillery => 6,
-            Self::Artillery => 7,
-            Self::Militia => 8,
-            Self::Sharpshooters => 9,
-            Self::RifleInfantry => 10,
-            Self::Guards => 11,
-            Self::Scouts => 12,
-            Self::CarbineCavalry => 13,
-            Self::FieldArtillery => 14,
-            Self::SiegeArtillery => 15,
-            Self::Conscripts => 16,
-            Self::Rangers => 17,
-            Self::Infantry => 18,
-            Self::MachineGunners => 19,
-            Self::MechanizedInfantry => 20,
-            Self::Armor => 21,
-            Self::MobileArtillery => 22,
-            Self::RailroadGuns => 23,
-            Self::Sappers => 24,
-            Self::CombatEngineers => 25,
-            Self::Saboteurs => 26,
-            Self::GeneralEra1 => 27,
-            Self::GeneralEra2 => 28,
-            Self::GeneralEra3 => 29,
-        }
+        self as u8
     }
 }
 
