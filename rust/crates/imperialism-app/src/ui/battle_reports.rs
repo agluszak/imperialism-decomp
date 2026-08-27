@@ -642,21 +642,18 @@ fn battle_report_result_string_index(state: &GameState, report: &BattleReport) -
 fn battle_report_tile(state: &GameState, report: &BattleReport) -> Option<TileId> {
     match report.location {
         BattleReportLocation::Province(province) => state.map().provinces[province].city_tile(),
+        // Retail places Battle Report markers on `TZone::tileOrTerrainId0c`,
+        // which projects to `target_tile` (not `active_tile`).
         BattleReportLocation::Zone(zone) => state
             .ocean()
             .zones
             .get(usize::from(zone.get()))
-            .and_then(|zone| {
-                zone_report_marker_tile(zone.zone().target_tile, zone.zone().active_tile)
-            }),
+            .and_then(|zone| zone_report_marker_tile(zone.zone().target_tile)),
     }
 }
 
-/// Sea-report map markers use the zone's `target_tile` only (not `active_tile`).
-fn zone_report_marker_tile(
-    target_tile: Option<TileId>,
-    _active_tile: Option<TileId>,
-) -> Option<TileId> {
+/// Sea-report map markers use the zone's `target_tile` only.
+fn zone_report_marker_tile(target_tile: Option<TileId>) -> Option<TileId> {
     target_tile
 }
 
@@ -1845,12 +1842,7 @@ mod tests {
     #[test]
     fn battle_report_tile_zone_prefers_target_tile() {
         let target = TileId::new(42);
-        let active = TileId::new(99);
-        assert_eq!(
-            zone_report_marker_tile(Some(target), Some(active)),
-            Some(target)
-        );
-        assert_eq!(zone_report_marker_tile(None, Some(active)), None);
-        assert_eq!(zone_report_marker_tile(Some(target), None), Some(target));
+        assert_eq!(zone_report_marker_tile(Some(target)), Some(target));
+        assert_eq!(zone_report_marker_tile(None), None);
     }
 }
