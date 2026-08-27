@@ -837,6 +837,41 @@ def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, 
     return tuple(patches)
 
 
+def load_runtime_input_semantics(
+    repo_root: Path,
+) -> dict[tuple[UiResourceKey, str], str]:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    rows = data.get("runtime_input_semantics", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{WINDOWS_DELTA_PATH}: runtime_input_semantics must be a list")
+    semantics: dict[tuple[UiResourceKey, str], str] = {}
+    for index, raw_row in enumerate(rows):
+        context = f"{WINDOWS_DELTA_PATH}: runtime_input_semantics[{index}]"
+        row = _mapping(raw_row, context)
+        expected = {"view", "mac_class", "semantics", "evidence"}
+        if set(row) != expected:
+            raise ValueError(f"{context}: expected {sorted(expected)!r}")
+        resource = UiResourceKey.parse(str(row["view"]))
+        mac_class = str(row["mac_class"])
+        semantics_name = str(row["semantics"])
+        if semantics_name not in ("right_left_view",):
+            raise ValueError(
+                f"{context}: unsupported semantics {semantics_name!r}; "
+                "expected right_left_view"
+            )
+        evidence = str(row["evidence"]).strip()
+        if not evidence:
+            raise ValueError(f"{context}: evidence is required")
+        identity = (resource, mac_class)
+        if identity in semantics:
+            raise ValueError(
+                f"{context}: duplicate runtime semantics for "
+                f"{resource.text()} {mac_class}"
+            )
+        semantics[identity] = semantics_name
+    return semantics
+
+
 def load_city_building_visuals(repo_root: Path) -> CityBuildingVisuals:
     data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
     context = f"{WINDOWS_DELTA_PATH}: city_buildings"
@@ -1798,18 +1833,26 @@ def _rust_two_pic_slider(node: UiSemanticNode) -> tuple[int, int, int, int] | No
 
 
 def _rust_input_semantics(
-    key: UiResourceKey | None, node: UiSemanticNode
+    key: UiResourceKey | None,
+    node: UiSemanticNode,
+    runtime_semantics: dict[tuple[UiResourceKey, str], str] | None = None,
 ) -> str:
     """Interaction role for Button / Checkbox / ScrollArea / etc. emission.
 
     Values: passive, activate, checkbox, toggle, radio_button, radio_group,
-    slider, scroll_area, pointer_canvas, text_edit.
+    slider, scroll_area, pointer_canvas, text_edit, sideways_arrow,
+    right_left_view, page_corner.
 
     The generator is the one place where recovered type/class evidence decides
     whether a static-text-looking control is a radio, a picture is an activate
     button, or a canvas takes pointer input. The generated BSN carries the
     resulting native Bevy component, not those C++ class details.
     """
+
+    if key is not None and runtime_semantics is not None:
+        override = runtime_semantics.get((key, node.class_name))
+        if override is not None:
+            return override
 
     class_name = node.class_name.casefold()
     # Generic `clus` records are layout groups (TIndustryCluster, TToolBarCluster,
@@ -1839,9 +1882,16 @@ def _rust_input_semantics(
     # SceneComponent owns two stock Buttons; recovered root is not itself a Button.
     if node.class_name == "TNumberedArrowButton":
         return "passive"
+    if node.class_name == "TSidewaysArrow":
+        return "sideways_arrow"
+    if node.tag in ("lcor", "rcor"):
+        if node.class_name == "TPageCorner":
+            return "page_corner"
+        return "activate"
+    if node.class_name == "TPageCorner":
+        return "page_corner"
     if (
         node.type_code in ("cntl", "nmbr")
-        or node.class_name == "TSidewaysArrow"
         or (node.type_code == "pict" and "button" in class_name)
         # TSetupRandomMapPicture::DoEvent handles this otherwise passive
         # TNoHilitePicture as the random-map regeneration action.
@@ -1881,15 +1931,21 @@ def _rust_presentation_owns_children(presentation: str | None) -> bool:
 
 
 def _rust_transport_gauge_shell_and_children(
-    picture_id: int, track_left: int, capacity: bool
+    picture_id: int, track_left_expr: str, capacity: bool
 ) -> tuple[list[str], list[list[str]]]:
     """Root components + synthetic child BSN nodes for a transport gauge.
 
-    Always used for transport_gauge presentation so codegen emits exactly one
-    `Children` owner (synthetic remainder/fill/limit merged with any recovered kids).
+    Used when the recovered `TTransportPicture` already has resource children so
+    codegen emits exactly one `Children` owner. Geometry lives in
+    `retail_transport_gauge.rs` helpers referenced here. Always emit the shell so
+    there is one `Children` owner even when the recovered node has no resource kids.
     """
 
-    fill_palette = 0x33 if capacity else 0x3A
+    fill_helper = (
+        "transport_gauge_capacity_fill"
+        if capacity
+        else "transport_gauge_allocation_fill"
+    )
     shell = [
         f"    retail_picture({picture_id})",
     ]
@@ -1904,25 +1960,13 @@ def _rust_transport_gauge_shell_and_children(
     children: list[list[str]] = [
         [
             "(",
-            (
-                f"    Node {{ position_type: PositionType::Absolute, "
-                f"left: px({float(track_left)}), top: px({float(0x0D)}), "
-                f"width: px(113.), height: px({float(0x04)}) }}"
-            ),
-            "    retail_background_color(0x3b)",
-            "    Pickable::IGNORE",
+            f"    transport_gauge_remainder({track_left_expr})",
             ")",
         ],
         [
             "(",
             "    #TransportFill",
-            (
-                f"    Node {{ position_type: PositionType::Absolute, "
-                f"left: px({float(track_left)}), top: px({float(0x0D)}), "
-                f"width: px(0), height: px({float(0x04)}) }}"
-            ),
-            f"    retail_background_color({fill_palette})",
-            "    Pickable::IGNORE",
+            f"    {fill_helper}({track_left_expr})",
             ")",
         ],
     ]
@@ -1931,14 +1975,7 @@ def _rust_transport_gauge_shell_and_children(
             [
                 "(",
                 "    #TransportLimit",
-                (
-                    f"    Node {{ position_type: PositionType::Absolute, "
-                    f"left: px({float(track_left - 1)}), top: px({float(0x12)}), "
-                    f"width: px(115.), height: px({float(0x02)}) }}"
-                ),
-                "    retail_background_color(0x33)",
-                "    Visibility::Hidden",
-                "    Pickable::IGNORE",
+                f"    transport_gauge_limit({track_left_expr})",
                 ")",
             ]
         )
@@ -2280,6 +2317,7 @@ def _render_bsn_node(
     key: UiResourceKey | None,
     node: UiSemanticNode,
     children_by_parent: dict[str | None, list[UiSemanticNode]],
+    runtime_semantics: dict[tuple[UiResourceKey, str], str] | None = None,
 ) -> list[str]:
     x, y, width, height = node.geometry
     insets = node.family.content_insets or (0, 0, 0, 0)
@@ -2307,10 +2345,19 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    semantics = _rust_input_semantics(key, node)
+    semantics = _rust_input_semantics(key, node, runtime_semantics)
     lines.extend(
         {
             "activate": ["    Button"],
+            "sideways_arrow": [
+                "    RetailSidewaysArrow",
+                "    RetailSidewaysArrowHilite",
+                "    Pickable",
+            ],
+            "right_left_view": [
+                "    RetailSidewaysArrow",
+                "    Pickable",
+            ],
             "checkbox": ["    Checkbox"],
             "toggle": ["    Checkbox"],
             "radio_group": ["    RadioGroup"],
@@ -2326,6 +2373,11 @@ def _render_bsn_node(
             ],
         }.get(str(semantics), [])
     )
+    if semantics == "page_corner":
+        corner = "Left" if node.tag == "lcor" else "Right"
+        lines.append(f"    template(|_context| Ok(RetailPageCorner::{corner}))")
+        lines.append("    Pickable { should_block_lower: false, is_hoverable: true }")
+        lines.append("    Button")
     if bool(node.state) and semantics in ("checkbox", "toggle", "radio_button"):
         lines.append("    Checked")
     if semantics != "passive" and (not node.enabled or not node.input_gate):
@@ -2392,13 +2444,10 @@ def _render_bsn_node(
     elif presentation == "ship_placard":
         lines.append(f"    retail_ship_placard({int(picture_id)})")
     elif presentation == "transport_gauge":
-        # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
-        # Always emit shell + synthetic children so there is one Children owner
-        # even when the recovered node has no resource kids.
-        track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
+        track_left_expr = f"transport_gauge_track_left({int(node.geometry[0])})"
         capacity = node.tag == "tota"
         shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
-            int(picture_id), track_left, capacity
+            int(picture_id), track_left_expr, capacity
         )
         lines.extend(shell)
     elif presentation == "pressed_overlay":
@@ -2448,7 +2497,9 @@ def _render_bsn_node(
             child_lines[-1] += ","
             lines.extend(_indent(child_lines, 8))
         for child in recovered_children:
-            rendered = _render_bsn_node(key, child, children_by_parent)
+            rendered = _render_bsn_node(
+                key, child, children_by_parent, runtime_semantics
+            )
             rendered[-1] += ","
             lines.extend(_indent(rendered, 8))
         lines.append("    ]")
@@ -2552,6 +2603,7 @@ def render_rust_ui(
     scene_views, city_buildings, city_building_actions = _rust_ui_semantic_views(
         repo_root, recipes, views, text_resources
     )
+    runtime_semantics = load_runtime_input_semantics(repo_root)
     dialog_controls = load_city_dialog_controls(repo_root)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
@@ -2623,7 +2675,7 @@ def render_rust_ui(
             ]
         )
         for node in roots:
-            rendered = _render_bsn_node(key, node, children_by_parent)
+            rendered = _render_bsn_node(key, node, children_by_parent, runtime_semantics)
             rendered[-1] += ","
             lines.extend(_indent(rendered, 12))
         lines.extend(["        ]", "    }", "}", ""])

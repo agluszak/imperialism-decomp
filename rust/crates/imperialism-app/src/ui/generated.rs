@@ -1131,12 +1131,16 @@ pub fn citydlog_9200() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1226,12 +1230,16 @@ pub fn citydlog_9201() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 3, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1309,12 +1317,16 @@ pub fn citydlog_9202() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1398,12 +1410,16 @@ pub fn citydlog_9203() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1424,12 +1440,16 @@ pub fn citydlog_9203() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1513,12 +1533,16 @@ pub fn citydlog_9204() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1539,12 +1563,16 @@ pub fn citydlog_9204() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1628,12 +1656,16 @@ pub fn citydlog_9205() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1711,12 +1743,16 @@ pub fn citydlog_9206() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1785,12 +1821,16 @@ pub fn citydlog_9209() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1811,12 +1851,16 @@ pub fn citydlog_9209() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1930,12 +1974,16 @@ pub fn citydlog_9211() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1998,12 +2046,16 @@ pub fn citydlog_9212() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -2444,12 +2496,16 @@ pub fn citydlog_9214() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -2524,12 +2580,16 @@ pub fn citydlog_9215() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -2988,10 +3048,18 @@ pub fn diplo_1352() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("lcor"), 12, 387, 37, 35)
+                                template(|_context| Ok(RetailPageCorner::Left))
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
+                                InteractionDisabled
                                 retail_picture(4068)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 387, 40, 35)
+                                template(|_context| Ok(RetailPageCorner::Right))
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
+                                InteractionDisabled
                                 retail_picture(4069)
                             ),
                             (
@@ -3957,10 +4025,12 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("lcor"), -1, 392, 38, 34)
+                                        Button
                                         retail_picture(8801)
                                     ),
                                     (
                                         retail_node(fourcc!("rcor"), 462, 390, 41, 36)
+                                        Button
                                         retail_picture(8802)
                                     ),
                                     (
@@ -4052,10 +4122,12 @@ pub fn flagview_8800() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rcor"), 520, 435, 41, 36)
+                                                Button
                                                 retail_picture(8802)
                                             ),
                                             (
                                                 retail_node(fourcc!("lcor"), 57, 437, 38, 34)
+                                                Button
                                                 retail_picture(8801)
                                             ),
                                             (
@@ -5852,10 +5924,16 @@ pub fn mapview_3500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
+                                template(|_context| Ok(RetailPageCorner::Left))
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 356, 41, 36)
+                                template(|_context| Ok(RetailPageCorner::Right))
+                                Pickable { should_block_lower: false, is_hoverable: true }
+                                Button
                                 retail_picture(3505)
                             ),
                             (
@@ -7143,10 +7221,12 @@ pub fn mapview_9478() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
+                                Button
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 432, 356, 41, 36)
+                                Button
                                 retail_picture(3505)
                             ),
                         ]
@@ -9388,10 +9468,12 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 17, 445, 32, 30)
+                                Button
                                 retail_picture(2361)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 590, 445, 32, 30)
+                                Button
                                 retail_picture(2362)
                             ),
                             (
@@ -9597,12 +9679,16 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9656,12 +9742,16 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9711,12 +9801,16 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9766,12 +9860,16 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9817,7 +9915,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9826,7 +9926,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9872,7 +9974,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9881,7 +9985,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9927,7 +10033,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9936,7 +10044,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -9982,7 +10092,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -9991,7 +10103,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10037,7 +10151,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10046,7 +10162,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10092,7 +10210,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10101,7 +10221,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10147,7 +10269,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10156,7 +10280,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10202,7 +10328,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10211,7 +10339,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10257,7 +10387,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10266,7 +10398,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10312,7 +10446,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10321,7 +10457,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10367,7 +10505,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10376,7 +10516,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10422,7 +10564,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10431,7 +10575,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10477,7 +10623,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -10486,7 +10634,9 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        Button
+                                        RetailSidewaysArrow
+                                        RetailSidewaysArrowHilite
+                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -10672,12 +10822,16 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10731,12 +10885,16 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10786,12 +10944,16 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10841,12 +11003,16 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10892,7 +11058,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10901,7 +11069,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -10947,7 +11117,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -10956,7 +11128,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11002,7 +11176,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11011,7 +11187,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11057,7 +11235,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11066,7 +11246,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11112,7 +11294,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11121,7 +11305,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11167,7 +11353,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11176,7 +11364,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11222,7 +11412,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11231,7 +11423,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11277,7 +11471,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11286,7 +11482,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11332,7 +11530,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11341,7 +11541,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11387,7 +11589,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11396,7 +11600,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11442,7 +11648,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11451,7 +11659,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11497,7 +11707,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11506,7 +11718,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11552,7 +11766,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -11561,7 +11777,9 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                Button
+                                                RetailSidewaysArrow
+                                                RetailSidewaysArrowHilite
+                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -11805,15 +12023,11 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: {Entity::PLACEHOLDER} }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(51)
-                                        Pickable::IGNORE
+                                        transport_gauge_capacity_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
@@ -11829,22 +12043,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11854,12 +12061,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11870,22 +12079,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11895,12 +12097,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11911,22 +12115,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11936,12 +12133,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11952,22 +12151,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -11977,12 +12169,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -11993,22 +12187,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12018,12 +12205,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -12034,22 +12223,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12059,12 +12241,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -12075,22 +12259,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12100,12 +12277,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -12116,22 +12295,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12141,12 +12313,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -12157,22 +12331,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12182,12 +12349,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -12198,22 +12367,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(97.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(70))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(96.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(70))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12223,12 +12385,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                 ]
@@ -12239,22 +12403,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12264,12 +12421,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -12280,22 +12439,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12305,12 +12457,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -12321,22 +12475,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12346,12 +12493,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -12362,22 +12511,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12387,12 +12529,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -12403,22 +12547,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12428,12 +12565,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -12444,22 +12583,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12469,12 +12601,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -12485,22 +12619,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12516,12 +12643,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]
@@ -12532,22 +12661,15 @@ pub fn transport_2014() -> impl Scene {
                                 TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }
                                 Children [
                                     (
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(113.), height: px(4.0) }
-                                        retail_background_color(0x3b)
-                                        Pickable::IGNORE
+                                        transport_gauge_remainder(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportFill
-                                        Node { position_type: PositionType::Absolute, left: px(93.0), top: px(13.0), width: px(0), height: px(4.0) }
-                                        retail_background_color(58)
-                                        Pickable::IGNORE
+                                        transport_gauge_allocation_fill(transport_gauge_track_left(325))
                                     ),
                                     (
                                         #TransportLimit
-                                        Node { position_type: PositionType::Absolute, left: px(92.0), top: px(18.0), width: px(115.), height: px(2.0) }
-                                        retail_background_color(0x33)
-                                        Visibility::Hidden
-                                        Pickable::IGNORE
+                                        transport_gauge_limit(transport_gauge_track_left(325))
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -12563,12 +12685,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        Button
+                                        RetailSidewaysArrow
+                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                 ]

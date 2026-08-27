@@ -3,7 +3,7 @@ use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{AmountBarParts, AmountBarStyle, RetailTree};
+use super::retail::{AmountBarParts, AmountBarStyle, RetailTree, Step};
 use super::retail_amount_bar::{
     amount_bar_geometry, amount_bar_x_from_normalized, trade_amount_bar_click_value,
 };
@@ -221,10 +221,10 @@ fn bind_trade_row(
     let [decrease, increase] = [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
         let step = tree.find(row, tag);
         commands.entity(step).observe(
-            move |activate: On<Activate>,
+            move |step_event: On<Step>,
                   disabled: Query<Has<InteractionDisabled>>,
                   mut session: ResMut<GameSession>| {
-                if disabled.get(activate.entity).unwrap_or(false) {
+                if disabled.get(step_event.entity).unwrap_or(false) {
                     return;
                 }
                 let nation = session.active_major_nation();
@@ -587,8 +587,9 @@ const fn trade_offer_tab_visible(capacity: i16, active: bool, stockpile: i16) ->
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
+    use super::super::retail::{RetailSidewaysArrow, RetailTag, Step};
     use super::*;
+    use crate::ui::RetailUiPlugin;
     use crate::ui::test_support::beginning_of_game;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
@@ -628,14 +629,26 @@ mod tests {
             world.spawn((RetailTag(fourcc!("Sell")), Text::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("card")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("offr")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
+            world.spawn((
+                RetailTag(fourcc!("left")),
+                RetailSidewaysArrow,
+                Pickable::default(),
+                Node::default(),
+                ChildOf(row),
+            ));
             world.spawn((
                 RetailTag(fourcc!("gree")),
                 ImageNode::default(),
                 Node::default(),
                 ChildOf(row),
             ));
-            world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
+            world.spawn((
+                RetailTag(fourcc!("rght")),
+                RetailSidewaysArrow,
+                Pickable::default(),
+                Node::default(),
+                ChildOf(row),
+            ));
             let fill = world.spawn(Node::default()).id();
             let limit = world.spawn(Node::default()).id();
             world.spawn((
@@ -692,6 +705,12 @@ mod tests {
         app.update();
     }
 
+    fn step(app: &mut App, entity: Entity) {
+        app.world_mut().commands().trigger(Step { entity });
+        app.world_mut().flush();
+        app.update();
+    }
+
     #[test]
     fn trade_cards_and_arrows_update_the_player_order() {
         let state = fixture_state();
@@ -712,6 +731,7 @@ mod tests {
             AssetPlugin::default(),
             ScenePlugin,
             StatesPlugin,
+            RetailUiPlugin,
         ))
         .insert_state(AppState::Trade)
         .insert_resource(GameSession::new(state))
@@ -761,7 +781,7 @@ mod tests {
         };
         assert!(quantity > 1);
 
-        activate(&mut app, row.decrease);
+        step(&mut app, row.decrease);
         assert_eq!(
             app.world()
                 .resource::<GameSession>()
@@ -806,6 +826,7 @@ mod tests {
             AssetPlugin::default(),
             ScenePlugin,
             StatesPlugin,
+            RetailUiPlugin,
         ))
         .insert_state(AppState::Trade)
         .insert_resource(GameSession::new(state))
