@@ -21,7 +21,7 @@ impl GameData {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct GameState {
     pub(crate) turn: TurnState,
     pub(crate) unit_ids: UnitIdAllocator,
@@ -46,9 +46,10 @@ pub struct GameState {
     /// `TArmyMgr::mapContextActionRecordList04`. Marker fields are omitted from `.imp`.
     #[serde(default)]
     pub(crate) battle_reports: Vec<crate::BattleReport>,
-    /// Live interruptible-phase resume state. Not written to `.imp`.
+    /// Blocking external interaction (`Some`) or a running turn driver (`None`).
+    /// Included in semantic `GameState` serialization; not written to `.imp`.
     #[serde(default)]
-    pub(crate) continuation: crate::turn_flow::TurnContinuation,
+    pub(crate) stop: Option<crate::turn_flow::TurnStop>,
     /// Immutable catalogs for this session. Restored from retail data on load.
     #[serde(skip)]
     pub(crate) data: GameData,
@@ -79,7 +80,6 @@ pub struct GameStateParts {
     pub news: NewsState,
     pub pending: PendingWorkState,
     pub battle_reports: Vec<crate::BattleReport>,
-    pub continuation: crate::turn_flow::TurnContinuation,
 }
 
 impl GameState {
@@ -106,7 +106,7 @@ impl GameState {
             news: parts.news,
             pending: parts.pending,
             battle_reports: parts.battle_reports,
-            continuation: parts.continuation,
+            stop: None,
             data: GameData::default(),
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
@@ -116,6 +116,25 @@ impl GameState {
         }
         state.rebuild_civilian_stack_order();
         state
+    }
+
+    /// Why simulation is currently blocked. Externally observable games are halted.
+    pub fn stop(&self) -> &crate::turn_flow::TurnStop {
+        self.stop
+            .as_ref()
+            .expect("externally observable game must be halted")
+    }
+
+    /// Applies a captured runtime stop after assembling state from a retail save.
+    ///
+    /// `.imp` files never contain a stop. Oracle overlays and session entry points
+    /// restore it here rather than through [`GameStateParts`].
+    pub fn restore_captured_stop(&mut self, stop: Option<crate::turn_flow::TurnStop>) {
+        assert!(
+            self.stop.is_none(),
+            "captured stop restore requires a freshly assembled game"
+        );
+        self.stop = stop;
     }
 
     pub const fn game_data(&self) -> &GameData {

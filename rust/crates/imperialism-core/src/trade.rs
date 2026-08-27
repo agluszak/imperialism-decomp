@@ -771,7 +771,7 @@ mod tests {
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
             battle_reports: Vec::new(),
-            continuation: crate::turn_flow::TurnContinuation::None,
+            stop: None,
             data: GameData::default(),
         }
     }
@@ -1005,7 +1005,7 @@ mod tests {
             Some(recurring_ten_thousand)
         );
 
-        let before_rejected = game.clone();
+        let before_rejected = serde_json::to_value(&game).expect("pre-reject snapshot");
         assert!(!game.set_diplomacy_grant(
             nation,
             NationId::new(9),
@@ -1014,7 +1014,10 @@ mod tests {
                 recurring: false,
             }),
         ));
-        assert_eq!(game, before_rejected);
+        assert_eq!(
+            serde_json::to_value(&game).expect("post-reject snapshot"),
+            before_rejected
+        );
 
         assert!(game.set_diplomacy_grant(
             nation,

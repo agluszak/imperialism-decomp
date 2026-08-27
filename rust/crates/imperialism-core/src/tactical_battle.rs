@@ -153,9 +153,9 @@ pub enum ArmyBattleEvent {
     Rally,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ArmyBattleProgress {
-    pub stop: Option<TurnStop>,
+    pub ended: bool,
     pub events: Vec<ArmyBattleEvent>,
 }
 
@@ -1014,17 +1014,12 @@ impl GameState {
 
     /// Applies retail's tactical-battle preference and participant watch flags.
     /// Unwatched battles run headlessly until the next observable turn stop.
-    pub fn apply_land_battle_watch_policy(
-        &mut self,
-        mut stop: TurnStop,
-        tactical_battles_enabled: bool,
-    ) -> TurnStop {
-        while stop == TurnStop::LandBattle
+    pub fn apply_land_battle_watch_policy(&mut self, tactical_battles_enabled: bool) {
+        while matches!(self.stop.as_ref(), Some(TurnStop::LandBattle(_)))
             && !self.pending_land_battle_is_watched(tactical_battles_enabled)
         {
-            stop = self.auto_resolve_land_battle();
+            self.auto_resolve_land_battle();
         }
-        stop
     }
 
     fn pending_land_battle_is_watched(&self, tactical_battles_enabled: bool) -> bool {
@@ -1042,8 +1037,8 @@ impl GameState {
 
     /// Headless retail Auto: TArmyPlayer auto-deploy + Auto turn pump + ApplyChanges
     /// + ApplyPostBattleStackOutcomeAndGrowUnitMeters, then remaining combat-moves.
-    pub fn auto_resolve_land_battle(&mut self) -> TurnStop {
-        let crate::turn_flow::TurnContinuation::LandBattle(_) = &self.continuation else {
+    pub fn auto_resolve_land_battle(&mut self) {
+        let Some(crate::turn_flow::TurnStop::LandBattle(_)) = &self.stop else {
             panic!("land-battle auto-resolve requires a combat-moves continuation");
         };
         let mut battle = match self.take_army_battle() {
@@ -1076,12 +1071,12 @@ impl GameState {
                 break;
             }
         }
-        self.resume_after_land_battle()
+        self.resume_after_land_battle();
     }
 
     pub fn army_battle(&self) -> Option<&ArmyBattle> {
-        match &self.continuation {
-            crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
+        match &self.stop {
+            Some(crate::turn_flow::TurnStop::LandBattle(continuation)) => {
                 continuation.army_battle.as_deref()
             }
             _ => None,
@@ -1090,8 +1085,8 @@ impl GameState {
 
     #[cfg(test)]
     fn army_battle_mut(&mut self) -> Option<&mut ArmyBattle> {
-        match &mut self.continuation {
-            crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
+        match &mut self.stop {
+            Some(crate::turn_flow::TurnStop::LandBattle(continuation)) => {
                 continuation.army_battle.as_deref_mut()
             }
             _ => None,
@@ -1100,11 +1095,11 @@ impl GameState {
 
     /// Opens the pending land battle and pumps to local deployment or live input.
     pub fn ensure_army_battle(&mut self) -> &ArmyBattle {
-        let stop = self
+        let ended = self
             .synchronize_army_battle()
-            .and_then(|progress| progress.stop);
+            .is_some_and(|progress| progress.ended);
         assert!(
-            stop.is_none(),
+            !ended,
             "interactive army battle ended before reaching local input"
         );
         self.army_battle()
@@ -1119,21 +1114,25 @@ impl GameState {
         if self.army_battle().is_some() {
             return None;
         }
-        let crate::turn_flow::TurnContinuation::LandBattle(_) = &self.continuation else {
+        let Some(crate::turn_flow::TurnStop::LandBattle(_)) = &self.stop else {
             return None;
         };
         let mut inner = Battle::init(self);
         inner.start(self);
         if inner.live && inner.pump_until_active_input(self) {
             let events = std::mem::take(&mut inner.events);
+            self.resume_after_land_battle();
             return Some(ArmyBattleProgress {
-                stop: Some(self.resume_after_land_battle()),
+                ended: true,
                 events,
             });
         }
         let events = std::mem::take(&mut inner.events);
         self.store_army_battle(ArmyBattle { inner });
-        Some(ArmyBattleProgress { stop: None, events })
+        Some(ArmyBattleProgress {
+            ended: false,
+            events,
+        })
     }
 
     pub fn selected_army_unit(&self) -> Option<ArmyUnitView> {
@@ -1171,7 +1170,13 @@ impl GameState {
             if !battle.inner.live {
                 let events = std::mem::take(&mut battle.inner.events);
                 self.store_army_battle(battle);
-                return Ok((result, ArmyBattleProgress { stop: None, events }));
+                return Ok((
+                    result,
+                    ArmyBattleProgress {
+                        ended: false,
+                        events,
+                    },
+                ));
             }
         }
         let progress = self.finish_interactive_army_action(battle);
@@ -1195,7 +1200,10 @@ impl GameState {
             battle.inner.clear_move_costs();
             let events = std::mem::take(&mut battle.inner.events);
             self.store_army_battle(battle);
-            return Ok(ArmyBattleProgress { stop: None, events });
+            return Ok(ArmyBattleProgress {
+                ended: false,
+                events,
+            });
         }
         battle.inner.finish_action();
         Ok(self.finish_interactive_army_action(battle))
@@ -1230,7 +1238,10 @@ impl GameState {
             if !battle.inner.live {
                 let events = std::mem::take(&mut battle.inner.events);
                 self.store_army_battle(battle);
-                return Ok(ArmyBattleProgress { stop: None, events });
+                return Ok(ArmyBattleProgress {
+                    ended: false,
+                    events,
+                });
             }
         } else {
             battle.inner.select_and_apply_cursor_mode(self, side);
@@ -1257,7 +1268,10 @@ impl GameState {
         {
             let events = std::mem::take(&mut battle.inner.events);
             self.store_army_battle(battle);
-            return Ok(ArmyBattleProgress { stop: None, events });
+            return Ok(ArmyBattleProgress {
+                ended: false,
+                events,
+            });
         }
         battle.inner.sides[battle.inner.current_side].field20 = true;
         battle.inner.finish_action();
@@ -1278,7 +1292,10 @@ impl GameState {
             if !battle.inner.live {
                 let events = std::mem::take(&mut battle.inner.events);
                 self.store_army_battle(battle);
-                return Ok(ArmyBattleProgress { stop: None, events });
+                return Ok(ArmyBattleProgress {
+                    ended: false,
+                    events,
+                });
             }
             return Ok(self.finish_interactive_army_action(battle));
         }
@@ -1294,18 +1311,17 @@ impl GameState {
     fn finish_interactive_army_action(&mut self, mut battle: ArmyBattle) -> ArmyBattleProgress {
         let ended = battle.inner.pump_until_active_input(self);
         let events = std::mem::take(&mut battle.inner.events);
-        let stop = if ended {
-            Some(self.resume_after_land_battle())
+        if ended {
+            self.resume_after_land_battle();
         } else {
             self.store_army_battle(battle);
-            None
-        };
-        ArmyBattleProgress { stop, events }
+        }
+        ArmyBattleProgress { ended, events }
     }
 
     fn take_army_battle(&mut self) -> Option<ArmyBattle> {
-        match &mut self.continuation {
-            crate::turn_flow::TurnContinuation::LandBattle(continuation) => {
+        match &mut self.stop {
+            Some(crate::turn_flow::TurnStop::LandBattle(continuation)) => {
                 continuation.army_battle.take().map(|battle| *battle)
             }
             _ => None,
@@ -1313,8 +1329,7 @@ impl GameState {
     }
 
     fn store_army_battle(&mut self, battle: ArmyBattle) {
-        let crate::turn_flow::TurnContinuation::LandBattle(continuation) = &mut self.continuation
-        else {
+        let Some(crate::turn_flow::TurnStop::LandBattle(continuation)) = &mut self.stop else {
             panic!("interactive army battle requires a combat-moves continuation");
         };
         continuation.army_battle = Some(Box::new(battle));
@@ -4012,7 +4027,7 @@ impl Battle {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_support::game_state;
+    use crate::test_support::{game_state, start_phase};
 
     fn side(is_our: bool) -> Side {
         Side {
@@ -4178,7 +4193,7 @@ mod tests {
     fn pending_regulars_vs_militia() -> (GameState, MilitaryUnitId, MilitaryUnitId) {
         let mut state = game_state();
         state.turn.economic_turn = 3;
-        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        start_phase(&mut state, crate::PhaseCode::COMBAT_MOVES);
         seed_province(&mut state, 1, 0, &[2]);
         seed_province(&mut state, 2, 1, &[1]);
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
@@ -4187,7 +4202,8 @@ mod tests {
             DiplomaticRelationship::War;
         state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
             DiplomaticRelationship::War;
-        assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
+        state.advance_turn();
+        assert!(matches!(state.stop(), crate::TurnStop::LandBattle(_)));
         (state, attacker, defender)
     }
 
@@ -4195,7 +4211,7 @@ mod tests {
     fn deploy_hover_classifies_deploy_invalid_undeploy_and_wait() {
         let mut state = game_state();
         state.turn.economic_turn = 3;
-        state.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        start_phase(&mut state, crate::PhaseCode::COMBAT_MOVES);
         seed_province(&mut state, 1, 0, &[2]);
         seed_province(&mut state, 2, 1, &[1]);
         push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
@@ -4205,7 +4221,8 @@ mod tests {
             DiplomaticRelationship::War;
         state.diplomacy.relationships[NationId::new(1)][NationId::new(0)] =
             DiplomaticRelationship::War;
-        assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
+        state.advance_turn();
+        assert!(matches!(state.stop(), crate::TurnStop::LandBattle(_)));
         state.ensure_army_battle();
         let nation = state.turn.active_nation;
         let deploy = state
@@ -4357,7 +4374,7 @@ mod tests {
         let (mut state, attacker, _) = pending_regulars_vs_militia();
         state.ensure_army_battle();
 
-        assert_eq!(state.finish_selected_army_unit_action().unwrap().stop, None);
+        assert!(!state.finish_selected_army_unit_action().unwrap().ended);
         let selected = state
             .selected_army_unit()
             .expect("deployment selection remains");
@@ -4379,7 +4396,7 @@ mod tests {
             BattleSide::Defender
         );
 
-        assert_eq!(state.retreat_from_army_battle().unwrap().stop, None);
+        assert!(!state.retreat_from_army_battle().unwrap().ended);
 
         let battle = state.army_battle().expect("deployment remains interactive");
         assert_eq!(battle.stage(), ArmyBattleStage::Deploying);
@@ -4420,7 +4437,7 @@ mod tests {
         let ArmyAction::Move(moved) = action else {
             panic!("reachable empty hex moves the selected unit");
         };
-        assert_eq!(stop.stop, None);
+        assert!(!stop.ended);
         assert_eq!(moved.from, origin);
         let after = state
             .army_battle()
@@ -4565,7 +4582,7 @@ mod tests {
         let (_, stop) = state
             .army_action_at(destination)
             .expect("destination remains reachable at the exact action-point budget");
-        assert_eq!(stop.stop, None);
+        assert!(!stop.ended);
         assert_ne!(before, expected);
         assert_eq!(
             state.selected_army_unit().map(|unit| unit.id),
@@ -4591,7 +4608,7 @@ mod tests {
                 .expect("another tactical unit follows")
         };
 
-        assert_eq!(state.finish_selected_army_unit_action().unwrap().stop, None);
+        assert!(!state.finish_selected_army_unit_action().unwrap().ended);
         assert_eq!(
             state.selected_army_unit().map(|unit| unit.id),
             Some(expected)
@@ -4605,14 +4622,11 @@ mod tests {
         let active_nation = state.turn.active_nation;
         let reports_before = state.battle_reports().len();
 
-        let stop = state
+        let progress = state
             .retreat_from_army_battle()
             .expect("active tactical player may retreat");
 
-        assert!(
-            stop.stop.is_some(),
-            "retreat auto-runs until the battle ends"
-        );
+        assert!(progress.ended, "retreat auto-runs until the battle ends");
         assert_eq!(state.battle_reports().len(), reports_before + 1);
         let report = state.battle_reports().last().expect("battle was committed");
         assert_ne!(
@@ -4628,14 +4642,12 @@ mod tests {
 
     #[test]
     fn interactive_initialization_then_auto_matches_direct_auto_and_rng() {
-        let (state, _, _) = pending_regulars_vs_militia();
-        let mut direct = state.clone();
-        let direct_stop = direct.auto_resolve_land_battle();
-        let mut interactive = state;
+        let mut direct = pending_regulars_vs_militia().0;
+        direct.auto_resolve_land_battle();
+        let mut interactive = pending_regulars_vs_militia().0;
         interactive.ensure_army_battle();
-        let interactive_stop = interactive.auto_resolve_land_battle();
+        interactive.auto_resolve_land_battle();
 
-        assert_eq!(interactive_stop, direct_stop);
         assert_eq!(interactive.rng(), direct.rng());
         assert_eq!(interactive, direct);
     }

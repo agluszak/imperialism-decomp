@@ -48,7 +48,8 @@ struct TradeBoundaryResult {
 #[ignore = "requires the native C++ oracle"]
 fn deal_book_dispatch_precedes_the_quarter_gate() {
     compare_native("turn_stop_deal_book", |state, (): ()| {
-        stop_name(state.advance_turn())
+        state.advance_turn();
+        stop_name(state.stop())
     })
     .unwrap();
 }
@@ -73,7 +74,8 @@ fn newspaper_dispatch_precedes_return_to_map() {
     let mut actual = load_save_backed_state(native.before).unwrap();
     let expected = load_save_backed_state(native.after).unwrap();
     actual.set_game_data(GameData::from_news_story_ids(native.case.story_ids));
-    assert_eq!(stop_name(actual.advance_turn()), native.result);
+    actual.advance_turn();
+    assert_eq!(stop_name(actual.stop()), native.result);
     assert_game_state_eq(&expected, &actual).unwrap();
 }
 
@@ -86,30 +88,21 @@ fn second_turn_sequence_returns_through_deal_book_and_newspaper() {
             state.set_game_data(GameData::from_news_story_ids(case.story_ids));
             let mut stops = Vec::new();
             let mut rng_states = Vec::new();
-            let mut stop = state.finish_player_orders(false);
-            while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
-                stop = match stop {
-                    TurnStop::DiplomacyOffer => state.answer_current_diplomacy_offer(false),
-                    TurnStop::DiplomacyWarJoin => state.answer_current_diplomacy_war_join(false),
-                    _ => unreachable!(),
-                };
-            }
-            while stop == TurnStop::TradeOffer {
-                stop = state.answer_trade_offer(0, false);
-            }
-            assert_eq!(stop, TurnStop::DealBook);
+            play_one_turn(state);
+            assert!(matches!(state.stop(), TurnStop::DealBook));
             stops.push("deal_book".to_owned());
             rng_states.push(state.rng().crt_rand.state());
 
-            stop = state.close_turn_deal_book();
-            while stop == TurnStop::TechnologyAdvance {
-                stop = state.acknowledge_technology_report();
+            state.close_turn_deal_book();
+            while matches!(state.stop(), TurnStop::TechnologyReport(_)) {
+                state.acknowledge_technology_report();
             }
-            assert_eq!(stop, TurnStop::Newspaper);
+            assert!(matches!(state.stop(), TurnStop::Newspaper));
             stops.push("newspaper".to_owned());
             rng_states.push(state.rng().crt_rand.state());
 
-            assert_eq!(state.close_newspaper(true), TurnStop::PlayerOrders);
+            state.close_newspaper(true);
+            assert!(matches!(state.stop(), TurnStop::PlayerOrders));
             stops.push("player_orders".to_owned());
             rng_states.push(state.rng().crt_rand.state());
             SecondTurnSequenceResult {
@@ -136,30 +129,21 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
     let mut rng_states = Vec::new();
     let mut economic_turns = Vec::new();
     for _ in 0..12 {
-        let mut stop = state.finish_player_orders(false);
-        while matches!(stop, TurnStop::DiplomacyOffer | TurnStop::DiplomacyWarJoin) {
-            stop = match stop {
-                TurnStop::DiplomacyOffer => state.answer_current_diplomacy_offer(false),
-                TurnStop::DiplomacyWarJoin => state.answer_current_diplomacy_war_join(false),
-                _ => unreachable!(),
-            };
-        }
-        while stop == TurnStop::TradeOffer {
-            stop = state.answer_trade_offer(0, false);
-        }
-        assert_eq!(stop, TurnStop::DealBook);
+        play_one_turn(&mut state);
+        assert!(matches!(state.stop(), TurnStop::DealBook));
         stops.push("deal_book".to_owned());
         rng_states.push(state.rng().crt_rand.state());
 
-        stop = state.close_turn_deal_book();
-        while stop == TurnStop::TechnologyAdvance {
-            stop = state.acknowledge_technology_report();
+        state.close_turn_deal_book();
+        while matches!(state.stop(), TurnStop::TechnologyReport(_)) {
+            state.acknowledge_technology_report();
         }
-        assert_eq!(stop, TurnStop::Newspaper);
+        assert!(matches!(state.stop(), TurnStop::Newspaper));
         stops.push("newspaper".to_owned());
         rng_states.push(state.rng().crt_rand.state());
 
-        assert_eq!(state.close_newspaper(true), TurnStop::PlayerOrders);
+        state.close_newspaper(true);
+        assert!(matches!(state.stop(), TurnStop::PlayerOrders));
         stops.push("player_orders".to_owned());
         rng_states.push(state.rng().crt_rand.state());
         economic_turns.push(state.turn().economic_turn);
@@ -179,7 +163,8 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
 #[ignore = "requires the native C++ oracle"]
 fn technology_report_dispatch_precedes_newspaper() {
     compare_native("turn_stop_technology", |state, (): ()| {
-        stop_name(state.advance_turn())
+        state.advance_turn();
+        stop_name(state.stop())
     })
     .unwrap();
 }
@@ -191,7 +176,8 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
     let mut actual = load_save_backed_state(native.before).unwrap();
     let expected = load_save_backed_state(native.after).unwrap();
 
-    assert_eq!(actual.advance_turn(), TurnStop::TradeOffer);
+    actual.advance_turn();
+    assert!(matches!(actual.stop(), TurnStop::Trade(_)));
     let pending = actual
         .pending_trade_offer()
         .expect("trade stop requires a pending offer");
@@ -216,19 +202,34 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
 fn assert_state_except_continuation(expected: &GameState, actual: &GameState) {
     let mut expected = serde_json::to_value(expected).unwrap();
     let mut actual = serde_json::to_value(actual).unwrap();
-    expected.as_object_mut().unwrap().remove("continuation");
-    actual.as_object_mut().unwrap().remove("continuation");
+    expected.as_object_mut().unwrap().remove("stop");
+    actual.as_object_mut().unwrap().remove("stop");
     assert_eq!(
         first_serialized_difference(&expected, &actual).unwrap(),
         None
     );
 }
 
-fn stop_name(stop: TurnStop) -> String {
+fn play_one_turn(state: &mut GameState) {
+    state.finish_player_orders(false);
+    loop {
+        if matches!(state.stop(), TurnStop::DiplomacyOffer { .. }) {
+            state.answer_current_diplomacy_offer(false);
+        } else if matches!(state.stop(), TurnStop::DiplomacyWarJoin(_)) {
+            state.answer_current_diplomacy_war_join(false);
+        } else if matches!(state.stop(), TurnStop::Trade(_)) {
+            state.answer_trade_offer(0, false);
+        } else {
+            break;
+        }
+    }
+}
+
+fn stop_name(stop: &TurnStop) -> String {
     match stop {
         TurnStop::Newspaper => "newspaper",
         TurnStop::DealBook => "deal_book",
-        TurnStop::TechnologyAdvance => "technology_advance",
+        TurnStop::TechnologyReport(_) => "technology_advance",
         _ => panic!("unexpected turn stop {stop:?}"),
     }
     .to_owned()

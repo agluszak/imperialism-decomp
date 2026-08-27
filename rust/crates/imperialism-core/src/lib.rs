@@ -201,7 +201,7 @@ pub use territory::{
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
 pub use turn_flow::{
-    CinematicKind, Decade, DecadeTable, PhaseCode, ScenarioMapId, TurnContinuation, TurnState,
+    CinematicKind, Decade, DecadeTable, PendingTownNaming, PhaseCode, ScenarioMapId, TurnState,
     TurnStop,
 };
 pub use turn_tail::{EliminationOutcome, QuarterGateResult, TurnAlert};

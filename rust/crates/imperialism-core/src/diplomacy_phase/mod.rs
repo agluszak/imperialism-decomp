@@ -58,27 +58,27 @@ impl GameState {
         self.record_diplomacy_result(result)
     }
 
-    /// Accepts or rejects the offer stored in the current continuation, then
+    /// Accepts or rejects the offer stored in the current stop, then
     /// continues the remaining replies.
     pub(crate) fn resolve_diplomacy_offer(&mut self, accept: bool) -> DiplomacyPhaseResult {
-        let crate::turn_flow::TurnContinuation::DiplomacyOffer { nation, index } =
-            self.continuation
+        let Some(crate::turn_flow::TurnStop::DiplomacyOffer { nation, index }) =
+            std::mem::take(&mut self.stop)
         else {
-            panic!("diplomacy offer reply requires an active offer continuation");
+            panic!("diplomacy offer reply requires an active offer stop");
         };
-        self.continuation = crate::turn_flow::TurnContinuation::None;
         self.apply_human_offer_decision(nation, usize::from(index), accept);
         let result = self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1);
         self.record_diplomacy_result(result)
     }
 
-    /// Accepts or rejects the war-join dialog stored in the current continuation,
+    /// Accepts or rejects the war-join dialog stored in the current stop,
     /// then finishes the remaining reactions for that one war.
     pub(crate) fn resolve_diplomacy_war_join(&mut self, accept: bool) -> DiplomacyPhaseResult {
-        let crate::turn_flow::TurnContinuation::DiplomacyWarJoin(prompt) = self.continuation else {
-            panic!("diplomacy war-join reply requires an active war-join continuation");
+        let Some(crate::turn_flow::TurnStop::DiplomacyWarJoin(prompt)) =
+            std::mem::take(&mut self.stop)
+        else {
+            panic!("diplomacy war-join reply requires an active war-join stop");
         };
-        self.continuation = crate::turn_flow::TurnContinuation::None;
         self.apply_war_join_decision(prompt, accept);
         let result =
             self.continue_war_reactions(prompt.pair_first, prompt.pair_second, prompt.cursor);
@@ -86,18 +86,18 @@ impl GameState {
     }
 
     fn record_diplomacy_result(&mut self, result: DiplomacyPhaseResult) -> DiplomacyPhaseResult {
-        self.continuation = match result {
-            DiplomacyPhaseResult::Resolved => crate::turn_flow::TurnContinuation::None,
+        match result {
+            DiplomacyPhaseResult::Resolved => {}
             DiplomacyPhaseResult::Offer(prompt) => {
-                crate::turn_flow::TurnContinuation::DiplomacyOffer {
+                self.halt(crate::turn_flow::TurnStop::DiplomacyOffer {
                     nation: prompt.nation,
                     index: prompt.index,
-                }
+                })
             }
             DiplomacyPhaseResult::WarJoin(prompt) => {
-                crate::turn_flow::TurnContinuation::DiplomacyWarJoin(prompt)
+                self.halt(crate::turn_flow::TurnStop::DiplomacyWarJoin(prompt))
             }
-        };
+        }
         result
     }
 

@@ -1198,10 +1198,10 @@ fn eliminated_minor_slot_stays_absent_through_save_and_load() {
 #[test]
 fn failed_load_leaves_an_existing_game_state_untouched() {
     let original = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
-    let mut current = original.clone();
+    let current = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
     let error = load_game_from_bytes(b"not a save file!!", game_context()).unwrap_err();
     assert!(matches!(error, LoadGameError::InvalidMagic));
     assert_eq!(current, original);
-    current = original.clone();
+    let current = LegacySaveV62::parse(RETAIL_FIXTURE).game_state(game_context());
     assert_eq!(current, original);
 }

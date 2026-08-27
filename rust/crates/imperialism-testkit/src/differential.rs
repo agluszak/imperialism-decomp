@@ -3,7 +3,7 @@
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
     Difficulty, GameState, MajorNationId, NationId, NewsState, PendingWorkState, PhaseCode,
-    RngState, ScenarioMapId, Technology, TurnContinuation, TurnState, UnitIdAllocator,
+    RngState, ScenarioMapId, Technology, TurnState, TurnStop, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::de::{DeserializeOwned, Error};
@@ -34,8 +34,12 @@ struct EphemeralGameState {
     pending: PendingWorkState,
     #[serde(default)]
     last_processed_nation: Option<MajorNationId>,
-    #[serde(default, deserialize_with = "deserialize_native_continuation")]
-    continuation: TurnContinuation,
+    #[serde(
+        default,
+        rename = "continuation",
+        deserialize_with = "deserialize_native_stop"
+    )]
+    stop: Option<TurnStop>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -73,11 +77,16 @@ impl NativeTurnState {
     }
 }
 
-fn deserialize_native_continuation<'de, D>(deserializer: D) -> Result<TurnContinuation, D::Error>
+/// The native oracle stores its transient resume state under the legacy
+/// `continuation` key and encodes the technology id as a bare number.
+fn deserialize_native_stop<'de, D>(deserializer: D) -> Result<Option<TurnStop>, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
-    let value = serde_json::Value::deserialize(deserializer)?;
+    let value = Option::<serde_json::Value>::deserialize(deserializer)?;
+    let Some(value) = value else {
+        return Ok(None);
+    };
     if let Some(technology) = value
         .get("TechnologyReport")
         .and_then(serde_json::Value::as_u64)
@@ -86,7 +95,7 @@ where
             .ok()
             .and_then(Technology::from_index)
             .ok_or_else(|| D::Error::custom("invalid C++ technology report id"))?;
-        return Ok(TurnContinuation::TechnologyReport(technology));
+        return Ok(Some(TurnStop::TechnologyReport(technology)));
     }
     serde_json::from_value(value).map_err(D::Error::custom)
 }
@@ -195,8 +204,15 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
     parts.diplomacy.last_processed_nation = capture.ephemeral.last_processed_nation;
-    parts.continuation = capture.ephemeral.continuation;
-    Ok(GameState::from_parts(parts))
+    let mut state = GameState::from_parts(parts);
+    match capture.ephemeral.stop {
+        Some(stop) => state.restore_captured_stop(Some(stop)),
+        None if state.turn().phase() == PhaseCode::STRATEGIC_MAP => {
+            state.restore_captured_stop(Some(TurnStop::PlayerOrders));
+        }
+        None => {}
+    }
+    Ok(state)
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {

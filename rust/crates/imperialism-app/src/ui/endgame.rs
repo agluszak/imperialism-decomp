@@ -176,12 +176,12 @@ fn finish_opening_cinematic(
         next_state.set(AppState::MainMenu);
         return;
     };
-    let stop = session.game.close_opening_cinematic();
-    if stop == TurnStop::SessionEnded {
+    session.game.close_opening_cinematic();
+    if matches!(session.game.stop(), TurnStop::SessionEnded) {
         remove_game_session(commands);
         next_state.set(AppState::MainMenu);
     } else {
-        apply_turn_stop(stop, next_state);
+        apply_turn_stop(session.game.stop(), next_state);
     }
 }
 
@@ -231,7 +231,8 @@ fn on_council_close(
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    apply_turn_stop(session.game.close_council_of_governors(), &mut next_state);
+    session.game.close_council_of_governors();
+    apply_turn_stop(session.game.stop(), &mut next_state);
 }
 
 fn spawn_game_score(mut commands: Commands) {
@@ -286,7 +287,8 @@ fn on_game_score_close(
     if let Some(nation) = MajorNationId::from_nation(session.game.turn().active_nation) {
         persist_high_score(&session.game, nation, &save_dir.0);
     }
-    apply_turn_stop(session.game.close_game_score(), &mut next_state);
+    session.game.close_game_score();
+    apply_turn_stop(session.game.stop(), &mut next_state);
 }
 
 fn persist_high_score(state: &GameState, nation: MajorNationId, directory: &std::path::Path) {
@@ -344,7 +346,7 @@ fn on_high_score_close(
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     if let Some(session) = session.as_mut() {
-        let _ = session.game.close_high_scores();
+        session.game.close_high_scores();
     }
     remove_game_session(&mut commands);
     next_state.set(AppState::MainMenu);

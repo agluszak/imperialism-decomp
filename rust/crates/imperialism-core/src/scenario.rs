@@ -240,14 +240,14 @@ impl GameState {
             }
             ScenarioInstruction::BuildDepot { tile } => {
                 let nation = scenario_tile_major(&self.map, *tile);
-                self.queue_depot_construction(*tile, nation);
+                self.queue_depot_construction(*tile, nation, &mut Vec::new());
                 if !self.nations.major(nation).economy.diplomacy_eligible {
                     self.nations.major_mut(nation).common.treasury += 2_000;
                 }
             }
             ScenarioInstruction::BuildPort { tile } => {
                 let nation = scenario_tile_major(&self.map, *tile);
-                self.queue_port_construction(*tile, nation);
+                self.queue_port_construction(*tile, nation, &mut Vec::new());
                 if !self.nations.major(nation).economy.diplomacy_eligible {
                     self.nations.major_mut(nation).common.treasury += 3_000;
                 }

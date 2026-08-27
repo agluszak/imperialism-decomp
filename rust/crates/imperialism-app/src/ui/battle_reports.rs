@@ -691,7 +691,8 @@ fn on_battle_report_close(
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     reports.0.clear();
-    apply_turn_stop(session.game.close_post_combat_reports(), &mut next_state);
+    session.game.close_post_combat_reports();
+    apply_turn_stop(session.game.stop(), &mut next_state);
 }
 
 fn on_battle_report_detail(
