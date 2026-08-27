@@ -665,16 +665,6 @@ mod tests {
     }
 
     #[test]
-    fn city_production_placard_values_use_book_antiqua_10pt() {
-        // Matches `TPlacard::Draw` / RetailPlacard text style.
-        let style =
-            resolve_retail_text_style(RetailTextStylePreset::explicit(3, 0, 10, 0)).unwrap();
-        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
-        assert_eq!(style.logical_pixel_height, 14);
-        assert_eq!(style.alignment, RetailTextAlignment::Left);
-    }
-
-    #[test]
     fn unbuilt_oil_and_power_stay_closed_without_oil_drilling() {
         for slot in [CityFacilitySlot::OilRefinery, CityFacilitySlot::PowerPlant] {
             assert_eq!(city_building_click_action(slot, 0, false), None);

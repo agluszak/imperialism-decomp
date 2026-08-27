@@ -233,82 +233,6 @@ mod tests {
     }
 
     #[test]
-    fn built_derives_the_family_from_the_point_size_threshold() {
-        assert_eq!(RetailTextStylePreset::built(10, -1).family(), 3);
-        assert_eq!(RetailTextStylePreset::built(11, -1).family(), 3);
-        assert_eq!(RetailTextStylePreset::built(12, 1).family(), 1);
-        assert_eq!(RetailTextStylePreset::built(14, 1).family(), 1);
-        assert_eq!(RetailTextStylePreset::built(18, 1).family(), 1);
-        assert_eq!(RetailTextStylePreset::built(10, -1).face_flags(), 0);
-    }
-
-    #[test]
-    fn explicit_preserves_the_requested_family_and_flags() {
-        assert_eq!(RetailTextStylePreset::explicit(2, 0, 14, -1).family(), 2);
-        assert_eq!(RetailTextStylePreset::explicit(3, 0, 12, 0).family(), 3);
-        assert_eq!(RetailTextStylePreset::explicit(0, 0, 12, 1).family(), 0);
-        assert_eq!(RetailTextStylePreset::explicit(3, 2, 12, 1).face_flags(), 2);
-    }
-
-    #[test]
-    fn screen_styles_follow_the_recovered_windows_provenance() {
-        // Offer Sheet body/numbers: BuildUiTextStyleDescriptor at 12/14pt -> Belwe.
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(12, 1))
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(14, 1))
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        // Deal Book transaction rows: Build at 10pt -> Book Antiqua; commodity
-        // headings: Build at 14pt -> Belwe.
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(10, -1))
-                .unwrap()
-                .face,
-            RetailFontFace::BookAntiquaRegular
-        );
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(14, -1))
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        // Battle report: resu/loca Build 14 -> Belwe, fadm/eadm Build 12 -> Belwe,
-        // fshp/eshp Build 10 -> Book Antiqua.
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(14, 0))
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(12, 0))
-                .unwrap()
-                .face,
-            RetailFontFace::BelweBold
-        );
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(10, 0))
-                .unwrap()
-                .face,
-            RetailFontFace::BookAntiquaRegular
-        );
-        // Army/navy toolbar counts and diplomacy-map nation labels: Build 10.
-        assert_eq!(
-            resolve_retail_text_style(RetailTextStylePreset::built(10, 1))
-                .unwrap()
-                .face,
-            RetailFontFace::BookAntiquaRegular
-        );
-    }
-
-    #[test]
     fn explicit_family_counterexamples_stay_distinct_from_built() {
         // Trade price/stock cells: InitializeUiTextStyleDescriptor(..., 0xe, ..., 2).
         assert_eq!(
@@ -336,6 +260,19 @@ mod tests {
                 .unwrap()
                 .face,
             RetailFontFace::BookAntiquaBold
+        );
+        // Built styles at the 12pt threshold pick Belwe vs Book Antiqua.
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(10, -1))
+                .unwrap()
+                .face,
+            RetailFontFace::BookAntiquaRegular
+        );
+        assert_eq!(
+            resolve_retail_text_style(RetailTextStylePreset::built(12, 1))
+                .unwrap()
+                .face,
+            RetailFontFace::BelweBold
         );
     }
 

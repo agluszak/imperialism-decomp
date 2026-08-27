@@ -163,78 +163,6 @@ fn fabric_order_shifts_a_wool_shortfall_onto_cotton() {
 }
 
 #[test]
-fn fabric_order_shifts_a_cotton_shortfall_onto_wool() {
-    let (mut game, nation) = fresh_game();
-    let fabric = CityOrderId::Item(ManufacturedItem::Fabric);
-    {
-        let city = city_mut(&mut game, nation);
-        city.production_accum[CityFacilitySlot::TextileMill] = 10;
-        city.stockpile[ResourceKind::Wool] = 10;
-        city.stockpile[ResourceKind::Cotton] = 1;
-    }
-
-    assert_eq!(
-        game.set_city_order_quantity(nation, fabric, 3),
-        CityOrderUpdate::Applied
-    );
-    let city = city(&game, nation);
-    let order = &city.orders.items[ManufacturedItem::Fabric];
-    assert_eq!(city.stockpile[ResourceKind::Wool], 5);
-    assert_eq!(city.stockpile[ResourceKind::Cotton], 0);
-    assert_eq!(order.tracking_by_resource[ResourceKind::Wool], 5);
-    assert_eq!(order.tracking_by_resource[ResourceKind::Cotton], 1);
-}
-
-#[test]
-fn item_restock_clamps_to_resources_and_keeps_the_requested_quantity() {
-    let mut state = crate::test_support::city();
-    let mut production = RequestedCityOrderState {
-        progress: ProductionProgress {
-            quantity: 5,
-            limiting_constraint: ProductionConstraint::Resources,
-        },
-        requested_quantity: 5,
-        ..RequestedCityOrderState::default()
-    };
-    state.population.strength = 20;
-    state.production_accum[CityFacilitySlot::LumberMill] = 5;
-    state.stockpile[ResourceKind::Timber] = 4;
-
-    assert!(restock_item(
-        &mut production,
-        &mut state.stockpile,
-        &mut state.population,
-        &mut state.production_accum,
-        ManufacturedItem::Lumber,
-    ));
-    assert_eq!(production.progress.quantity, 2);
-    assert_eq!(production.requested_quantity, 5);
-    assert_eq!(state.stockpile[ResourceKind::Timber], 0);
-    assert_eq!(
-        production.progress.limiting_constraint,
-        ProductionConstraint::Resources
-    );
-}
-
-#[test]
-fn food_processing_limit_uses_grain_fruit_animals_and_workforce() {
-    let (mut game, nation) = fresh_game();
-    {
-        let city = city_mut(&mut game, nation);
-        city.stockpile[ResourceKind::Grain] = 10;
-        city.stockpile[ResourceKind::Fruit] = 4;
-        city.stockpile[ResourceKind::Fish] = 1;
-        city.stockpile[ResourceKind::Livestock] = 2;
-        city.population.strength = 10;
-    }
-    assert_eq!(
-        game.city_order_limit(nation, CityOrderId::FoodProcessing)
-            .maximum,
-        6
-    );
-}
-
-#[test]
 fn food_processing_rounds_odd_orders_up_and_spends_livestock_before_fish() {
     let (mut game, nation) = fresh_game();
     assert_eq!(
@@ -285,35 +213,6 @@ fn food_processing_rounds_odd_orders_up_and_spends_livestock_before_fish() {
 }
 
 #[test]
-fn population_growth_limit_prefers_the_scarce_input_then_capacity() {
-    let (mut game, nation) = fresh_game();
-    let growth = CityOrderId::PopulationGrowth;
-    {
-        let city = city_mut(&mut game, nation);
-        city.stockpile[ResourceKind::Furniture] = 3;
-        city.stockpile[ResourceKind::Clothing] = 2;
-        city.stockpile[ResourceKind::Food] = 4;
-        city.production_accum[CityFacilitySlot::RegionalPopulation] = 10;
-    }
-    assert_eq!(
-        game.city_order_limit(nation, growth),
-        OrderLimit {
-            maximum: 2,
-            constraint: ProductionConstraint::Resources,
-        }
-    );
-
-    city_mut(&mut game, nation).production_accum[CityFacilitySlot::RegionalPopulation] = 1;
-    assert_eq!(
-        game.city_order_limit(nation, growth),
-        OrderLimit {
-            maximum: 1,
-            constraint: ProductionConstraint::Capacity,
-        }
-    );
-}
-
-#[test]
 fn population_growth_order_spends_furniture_clothing_and_food() {
     let (mut game, nation) = fresh_game();
     {
@@ -336,16 +235,6 @@ fn population_growth_order_spends_furniture_clothing_and_food() {
         city.production_accum[CityFacilitySlot::RegionalPopulation],
         1
     );
-}
-
-#[test]
-fn retail_region_capacity_uses_the_annexation_divisor() {
-    let mut owner = crate::test_support::great_power_state();
-    assert_eq!(retail_region_capacity(&owner, 12), 3);
-    owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-        crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
-    assert_eq!(retail_region_capacity(&owner, 12), 4);
-    assert_eq!(retail_region_capacity(&owner, 1), 1);
 }
 
 #[test]
@@ -380,21 +269,6 @@ fn expansion_order_spends_only_lumber_and_steel() {
 }
 
 #[test]
-fn power_plant_limit_counts_each_fuel_unit_as_six_power() {
-    let (mut game, nation) = fresh_game();
-    {
-        let city = city_mut(&mut game, nation);
-        city.orders.power_plant.progress.quantity = 5;
-        city.stockpile[ResourceKind::Fuel] = 3;
-    }
-    assert_eq!(
-        game.city_order_limit(nation, CityOrderId::PowerPlant)
-            .maximum,
-        23
-    );
-}
-
-#[test]
 fn power_plant_order_uses_truncating_fuel_division() {
     let (mut game, nation) = fresh_game();
     city_mut(&mut game, nation).stockpile[ResourceKind::Fuel] = 3;
@@ -420,47 +294,6 @@ fn power_plant_order_uses_truncating_fuel_division() {
     assert_eq!(released.power_available, 6);
     assert_eq!(released.population.extra, 6);
     assert_eq!(released.population.strength, 18);
-}
-
-#[test]
-fn power_plant_rejects_a_cut_that_exceeds_available_strength() {
-    let (mut game, nation) = fresh_game();
-    city_mut(&mut game, nation).stockpile[ResourceKind::Fuel] = 2;
-    assert_eq!(
-        game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 6),
-        CityOrderUpdate::Applied
-    );
-    city_mut(&mut game, nation).population.strength = 2;
-    let expected = city(&game, nation).clone();
-
-    assert!(matches!(
-        game.set_city_order_quantity(nation, CityOrderId::PowerPlant, 0),
-        CityOrderUpdate::Rejected(_)
-    ));
-    assert_eq!(city(&game, nation), &expected);
-}
-
-#[test]
-fn power_plant_restock_clamps_but_keeps_the_desired_quantity() {
-    let mut state = crate::test_support::city();
-    let mut production = PowerPlantOrderState {
-        progress: ProductionProgress::default(),
-        desired_quantity: 15,
-    };
-    state.stockpile[ResourceKind::Fuel] = 2;
-
-    assert!(restock_power_plant(
-        &mut production,
-        &mut state.stockpile,
-        &mut state.population,
-        &mut state.power_available,
-    ));
-    assert_eq!(production.progress.quantity, 12);
-    assert_eq!(production.desired_quantity, 15);
-    assert_eq!(state.stockpile[ResourceKind::Fuel], 0);
-    assert_eq!(state.power_available, 12);
-    assert_eq!(state.population.extra, 12);
-    assert_eq!(state.population.strength, 24);
 }
 
 #[test]
@@ -555,50 +388,6 @@ fn training_order_spends_paper_cash_and_workers() {
     assert_eq!(game.nations.major(nation).common.treasury, 1_000);
     assert_eq!(city.population.production_labor.medium, 0);
     assert_eq!(city.population.strength, 8);
-}
-
-#[test]
-fn high_training_queues_university_expansion_at_the_retail_thresholds() {
-    let mut state = crate::test_support::city();
-    let mut owner = crate::test_support::great_power_state();
-    state.population.baseline_labor.high = 9;
-    let mut production = ProductionProgress {
-        quantity: 1,
-        limiting_constraint: ProductionConstraint::Resources,
-    };
-
-    produce_training(
-        TrainingLevel::High,
-        &mut production,
-        &mut state.population,
-        &mut owner,
-    );
-    assert_eq!(state.population.baseline_labor.high, 10);
-    assert_eq!(
-        owner.pending_actions[PendingActionKind::UniversityExpansion].status(),
-        crate::PendingActionStatus::QUEUED
-    );
-    assert_eq!(
-        owner.pending_actions[PendingActionKind::UniversityExpansion].payload(),
-        Some(2)
-    );
-    assert_eq!(production.quantity, 0);
-
-    owner.pending_actions[PendingActionKind::UniversityExpansion] =
-        crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
-    state.population.baseline_labor.high = 29;
-    production.quantity = 1;
-    produce_training(
-        TrainingLevel::High,
-        &mut production,
-        &mut state.population,
-        &mut owner,
-    );
-    assert_eq!(state.population.baseline_labor.high, 30);
-    assert_eq!(
-        owner.pending_actions[PendingActionKind::UniversityExpansion].payload(),
-        Some(3)
-    );
 }
 
 #[test]

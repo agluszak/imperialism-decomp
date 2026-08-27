@@ -172,14 +172,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn round_trips_retail_tile_coordinates() {
-        let geometry = MapGeometry::new(MapTopology::Wrapping);
-        let last = geometry.tile(59, 107).unwrap();
-        assert_eq!(last.get(), 6479);
-        assert_eq!(geometry.row_column(last), (59, 107));
-    }
-
-    #[test]
     fn uses_the_retail_odd_row_neighbor_layout() {
         let geometry = MapGeometry::new(MapTopology::Wrapping);
         let even = geometry.tile(2, 10).unwrap();

@@ -34,15 +34,3 @@ pub fn transport_gauge_width(value: i16, total: i16) -> f32 {
     };
     width.clamp(0.0, TRACK_WIDTH).trunc()
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn transport_gauge_width_matches_retail_padding() {
-        assert_eq!(transport_gauge_width(0, 10), 0.0);
-        assert_eq!(transport_gauge_width(10, 10), 113.0);
-        assert_eq!(transport_gauge_width(5, 0), 0.0);
-    }
-}

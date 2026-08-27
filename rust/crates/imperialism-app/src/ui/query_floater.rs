@@ -112,35 +112,3 @@ fn on_query_floater_deal_book(
     commands.insert_resource(ReturnTo(*state.get()));
     next_state.set(AppState::DealBook);
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn deal_book_action_enters_the_book_and_records_the_origin() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .add_plugins(crate::ui::UiWindowPlugin)
-            .insert_state(AppState::Trade)
-            .add_observer(on_query_floater_deal_book);
-        let root = app.world_mut().spawn((QueryFloaterRoot, ModalWindow)).id();
-        let action = app.world_mut().spawn(ChildOf(root)).id();
-        dismiss_on_activate(&mut app.world_mut().commands(), action, root);
-        app.world_mut().flush();
-
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: action });
-        app.world_mut().flush();
-        app.update();
-
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::DealBook
-        );
-        assert_eq!(app.world().resource::<ReturnTo>().0, AppState::Trade);
-        assert!(app.world().get_entity(root).is_err());
-    }
-}

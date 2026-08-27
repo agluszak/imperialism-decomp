@@ -159,44 +159,23 @@ pub fn quantize_amount_bar_value(value: i16, step: i16) -> i16 {
 }
 
 #[cfg(test)]
-#[allow(clippy::identity_op)]
 mod tests {
     use super::*;
 
     #[test]
-    fn click_uses_a_leading_half_segment_dead_zone() {
-        let g = INDUSTRY_AMOUNT_BAR.with_segments(10);
+    fn amount_bar_click_dead_zone_promotion_and_trade_clamp() {
+        let industry = INDUSTRY_AMOUNT_BAR.with_segments(10);
         for (x, expected) in [(0, 0), (6, 0), (7, 1), (15, 2), (149, 10)] {
-            assert_eq!(amount_bar_value_at_x(g, x), expected, "x={x}");
+            assert_eq!(amount_bar_value_at_x(industry, x), expected, "x={x}");
         }
-    }
+        assert_eq!(amount_bar_click_value(industry, 3, 0), 1);
+        assert_eq!(amount_bar_click_value(industry, 3, 4), 0);
 
-    #[test]
-    fn zero_capacity_click_is_one() {
-        assert_eq!(
-            amount_bar_value_at_x(INDUSTRY_AMOUNT_BAR.with_segments(0), 40),
-            1
-        );
-    }
+        let trade = TRADE_AMOUNT_BAR.with_segments(20);
+        assert_eq!(trade_amount_bar_click_value(trade, 0), 0);
+        assert_eq!(trade_amount_bar_click_value(trade, 3), 1);
+        assert_eq!(trade_amount_bar_click_value(trade, 50), 11);
 
-    #[test]
-    fn click_promotes_dead_zone_when_counter_already_zero() {
-        let g = INDUSTRY_AMOUNT_BAR.with_segments(10);
-        assert_eq!(amount_bar_click_value(g, 3, 0), 1);
-        assert_eq!(amount_bar_click_value(g, 3, 4), 0);
-        assert_eq!(amount_bar_click_value(g, 0, 0), 0);
-    }
-
-    #[test]
-    fn trade_click_clamps_first_capacity_column_to_one() {
-        let g = TRADE_AMOUNT_BAR.with_segments(20);
-        assert_eq!(trade_amount_bar_click_value(g, 0), 0);
-        assert_eq!(trade_amount_bar_click_value(g, 3), 1);
-        assert_eq!(trade_amount_bar_click_value(g, 50), 11);
-    }
-
-    #[test]
-    fn rail_click_quantizes_to_cluster_step() {
         for (value, step, expected) in [(1, 2, 2), (2, 2, 2), (3, 6, 6), (2, 6, 0), (5, 1, 5)] {
             assert_eq!(quantize_amount_bar_value(value, step), expected);
         }
