@@ -13,8 +13,8 @@ const UNIVERSITY_KINDS: [CivilianUnitKind; 7] = [
     CivilianUnitKind::Driller,
 ];
 
-pub(crate) struct UniversityUi {
-    pub(crate) selected: CivilianUnitKind,
+pub(in crate::ui::city) struct UniversityUi {
+    pub(in crate::ui::city) selected: CivilianUnitKind,
     rows: [(CivilianUnitKind, SelectionRow); 7],
     unit: Entity,
     description: Entity,
@@ -24,7 +24,7 @@ pub(crate) struct UniversityUi {
     details: Entity,
 }
 
-pub(crate) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
+pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
     match kind {
         CivilianUnitKind::Miner => 402,
         CivilianUnitKind::Prospector => 403,
@@ -38,7 +38,7 @@ pub(crate) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
     }
 }
 
-pub(crate) fn bind_university(
+pub(in crate::ui::city) fn bind_university(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -127,7 +127,7 @@ pub(crate) fn bind_university(
     }
 }
 
-pub(crate) fn render_university(
+pub(in crate::ui::city) fn render_university(
     view: &UniversityUi,
     session: &GameSession,
     assets: &mut RetailUiAssets,

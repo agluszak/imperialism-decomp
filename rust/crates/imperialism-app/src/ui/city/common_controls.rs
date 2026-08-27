@@ -5,45 +5,47 @@ use crate::ui::retail_amount_bar::{
 };
 
 #[derive(Clone, Copy)]
-pub(crate) struct AmountBarUi {
-    pub(crate) track: Entity,
-    pub(crate) quantity: Entity,
-    pub(crate) fill: Entity,
-    pub(crate) limit: Entity,
+pub(in crate::ui::city) struct AmountBarUi {
+    pub(in crate::ui::city) track: Entity,
+    pub(in crate::ui::city) quantity: Entity,
+    pub(in crate::ui::city) fill: Entity,
+    pub(in crate::ui::city) limit: Entity,
 }
 
 #[derive(Clone, Copy)]
-pub(crate) struct IndustryOrderUi {
-    pub(crate) item: ManufacturedItem,
-    pub(crate) bar: AmountBarUi,
+pub(in crate::ui::city) struct IndustryOrderUi {
+    pub(in crate::ui::city) item: ManufacturedItem,
+    pub(in crate::ui::city) bar: AmountBarUi,
 }
 
 #[derive(Clone, Copy)]
-pub(crate) struct RailUi {
-    pub(crate) order: CityOrderId,
-    pub(crate) bar: AmountBarUi,
+pub(in crate::ui::city) struct RailUi {
+    pub(in crate::ui::city) order: CityOrderId,
+    pub(in crate::ui::city) bar: AmountBarUi,
 }
 
-pub(crate) struct IndustryUi {
-    pub(crate) slot: CityFacilitySlot,
+pub(in crate::ui::city) struct IndustryUi {
     capacity: Entity,
     labor: Entity,
     stocks: Vec<(Entity, ResourceKind, i16)>,
     expansion: Entity,
-    pub(crate) orders: Vec<IndustryOrderUi>,
+    pub(in crate::ui::city) orders: Vec<IndustryOrderUi>,
 }
 
-pub(crate) fn city_building_name(assets: &RetailUiAssets, slot: CityFacilitySlot) -> String {
+pub(in crate::ui::city) fn city_building_name(
+    assets: &RetailUiAssets,
+    slot: CityFacilitySlot,
+) -> String {
     city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail()))
 }
 
-pub(crate) struct CityOrderRow {
-    pub(crate) row: Entity,
-    pub(crate) quantity: Entity,
+pub(in crate::ui::city) struct CityOrderRow {
+    pub(in crate::ui::city) row: Entity,
+    pub(in crate::ui::city) quantity: Entity,
 }
 
 impl CityOrderRow {
-    pub(crate) fn set_available(&self, commands: &mut Commands, available: bool) {
+    pub(in crate::ui::city) fn set_available(&self, commands: &mut Commands, available: bool) {
         commands.entity(self.row).insert(if available {
             Visibility::Visible
         } else {
@@ -80,7 +82,7 @@ fn bind_city_order_row(
     CityOrderRow { row, quantity }
 }
 
-pub(crate) fn bind_industry_order_row(
+pub(in crate::ui::city) fn bind_industry_order_row(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
@@ -101,7 +103,7 @@ pub(crate) fn bind_industry_order_row(
     )
 }
 
-pub(crate) fn bind_recruitment_order_row(
+pub(in crate::ui::city) fn bind_recruitment_order_row(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
@@ -165,7 +167,6 @@ fn bind_industry_orders(
                 bind_industry_order_row(commands, root, tree, CityOrderId::Item(item), tag, 1);
             let track = tree.find(bound.row, fourcc!("bar "));
             let (fill, limit) = bind_amount_bar_visual(commands, assets, track);
-            let order = CityOrderId::Item(item);
             commands.entity(track).observe(
                 move |mut click: On<Pointer<Click>>, mut session: ResMut<GameSession>| {
                     let Some(position) = click.hit.position else {
@@ -175,16 +176,13 @@ fn bind_industry_orders(
                     let nation = session.active_major_nation();
                     let city = &session.game.nations().major(nation).city;
                     let capacity = city.production_orders[slot];
-                    let previous = match order {
-                        CityOrderId::Item(output) => city.orders.items[output].progress.quantity,
-                        _ => unreachable!("industry amount bar has an item order"),
-                    };
+                    let previous = city.orders.items[item].progress.quantity;
                     let geometry = INDUSTRY_AMOUNT_BAR.with_segments(capacity);
                     let x = amount_bar_x_from_normalized(geometry, position.x);
                     let quantity = amount_bar_click_value(geometry, x, previous);
                     session
                         .game
-                        .set_city_order_quantity(nation, order, quantity);
+                        .set_city_order_quantity(nation, CityOrderId::Item(item), quantity);
                 },
             );
             IndustryOrderUi {
@@ -200,7 +198,7 @@ fn bind_industry_orders(
         .collect()
 }
 
-pub(crate) fn bind_industry(
+pub(in crate::ui::city) fn bind_industry(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -242,15 +240,11 @@ pub(crate) fn bind_industry(
         .collect();
     let orders = bind_industry_orders(commands, assets, root, tree, slot, &items, page.order_tags);
     commands.entity(tree.find(root, fourcc!("expa"))).observe(
-        move |_: On<Activate>,
-              session: Res<GameSession>,
-              mut commands: Commands,
-              assets: RetailUiAssets| {
-            open_city_expansion_dialog(&mut commands, &assets, &session, slot);
+        move |_: On<Activate>, session: Res<GameSession>, mut commands: Commands| {
+            open_city_expansion_dialog(&mut commands, &session, slot);
         },
     );
     IndustryUi {
-        slot,
         capacity,
         labor,
         stocks,
@@ -259,7 +253,7 @@ pub(crate) fn bind_industry(
     }
 }
 
-pub(crate) fn render_amount_bar(
+pub(in crate::ui::city) fn render_amount_bar(
     ui: &mut CityUi,
     bar: &AmountBarUi,
     geometry: AmountBarGeometry,
@@ -279,7 +273,8 @@ pub(crate) fn render_amount_bar(
     counter.top = px(bar_top + 6.0);
 }
 
-pub(crate) fn render_industry(
+pub(in crate::ui::city) fn render_industry(
+    slot: CityFacilitySlot,
     view: &IndustryUi,
     session: &GameSession,
     nation: MajorNationId,
@@ -290,18 +285,18 @@ pub(crate) fn render_industry(
     let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
     ui.text(
         view.capacity,
-        format_retail_number(&capacity_template, city.production_orders[view.slot]),
+        format_retail_number(&capacity_template, city.production_orders[slot]),
     );
     ui.visible(view.labor, city.population.strength() >= 2);
     for &(entity, resource, minimum) in &view.stocks {
         ui.visible(entity, city.stockpile[resource] < minimum);
     }
-    ui.visible(view.expansion, city_is_expanding(city, view.slot));
+    ui.visible(view.expansion, city_is_expanding(city, slot));
+    let geometry = INDUSTRY_AMOUNT_BAR.with_segments(city.production_orders[slot]);
     for order in &view.orders {
         let quantity = session
             .game
             .city_order_quantity(nation, CityOrderId::Item(order.item));
-        let geometry = INDUSTRY_AMOUNT_BAR.with_segments(city.production_orders[view.slot]);
         let maximum = session
             .game
             .city_order_limit(nation, CityOrderId::Item(order.item))
@@ -310,7 +305,7 @@ pub(crate) fn render_industry(
     }
 }
 
-pub(crate) fn rail_bar_capacity(
+pub(in crate::ui::city) fn rail_bar_capacity(
     city: &CityState,
     order: CityOrderId,
     nation: MajorNationId,
@@ -325,7 +320,7 @@ pub(crate) fn rail_bar_capacity(
     }
 }
 
-pub(crate) fn render_rail(
+pub(in crate::ui::city) fn render_rail(
     session: &GameSession,
     nation: MajorNationId,
     rail: &RailUi,
@@ -344,7 +339,7 @@ pub(crate) fn render_rail(
     );
 }
 
-pub(crate) fn bind_rail_bar_click(
+pub(in crate::ui::city) fn bind_rail_bar_click(
     commands: &mut Commands,
     bar: Entity,
     order: CityOrderId,
@@ -371,19 +366,19 @@ pub(crate) fn bind_rail_bar_click(
     );
 }
 
-pub(crate) fn bind_rail(
+pub(in crate::ui::city) fn bind_rail(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
-    building_name: String,
+    slot: CityFacilitySlot,
     order: CityOrderId,
     tag: FourCc,
     step: i16,
 ) -> RailUi {
     commands
         .entity(tree.find(root, fourcc!("name")))
-        .insert(Text::new(building_name));
+        .insert(Text::new(city_building_name(assets, slot)));
     let counter = bind_industry_order_row(commands, root, tree, order, tag, step);
     let track = tree.find(counter.row, fourcc!("bar "));
     let (fill, limit) = bind_amount_bar_visual(commands, assets, track);

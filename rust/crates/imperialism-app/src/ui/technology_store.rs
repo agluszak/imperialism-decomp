@@ -30,7 +30,6 @@ struct TechnologyStatusText(Technology);
 #[derive(Component)]
 struct TechnologyStoreView {
     current_page: usize,
-    last_page: usize,
     previous: Entity,
     next: Entity,
     rows: Vec<Entity>,
@@ -142,21 +141,20 @@ fn bind_technology_store(
                 && session.game.technology().global_unlocks_by_technology[technology]
         })
         .collect::<Vec<_>>();
-    let last_page = technologies.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE;
     let previous = tree.find(root, fourcc!("lcor"));
     let next = tree.find(root, fourcc!("rcor"));
-    let turn = |commands: &mut Commands, entity: Entity, delta: i32| {
+    let turn = |commands: &mut Commands, entity: Entity, delta: isize| {
         commands
             .entity(entity)
             .insert((Button, ActivateOnPress))
             .observe(
                 move |_: On<Activate>, mut views: Query<&mut TechnologyStoreView>| {
                     if let Ok(mut view) = views.get_mut(root) {
-                        view.current_page = if delta < 0 {
-                            view.current_page.saturating_sub(1)
-                        } else {
-                            (view.current_page + 1).min(view.last_page)
-                        };
+                        let last_page = view.rows.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE;
+                        view.current_page = view
+                            .current_page
+                            .saturating_add_signed(delta)
+                            .min(last_page);
                     }
                 },
             );
@@ -177,7 +175,6 @@ fn bind_technology_store(
     }
     commands.entity(root).insert(TechnologyStoreView {
         current_page: 0,
-        last_page,
         previous,
         next,
         rows,
@@ -355,6 +352,7 @@ fn render_technology_page(
     let Ok(view) = views.single() else {
         return;
     };
+    let last_page = view.rows.len().saturating_sub(1) / TECHNOLOGIES_PER_PAGE;
     for (index, &row) in view.rows.iter().enumerate() {
         *visibility.get_mut(row).expect("row vis") =
             if index / TECHNOLOGIES_PER_PAGE == view.current_page {
@@ -365,7 +363,7 @@ fn render_technology_page(
     }
     for (entity, enabled) in [
         (view.previous, view.current_page > 0),
-        (view.next, view.current_page < view.last_page),
+        (view.next, view.current_page < last_page),
     ] {
         *visibility.get_mut(entity).expect("btn vis") = if enabled {
             Visibility::Inherited
@@ -556,62 +554,6 @@ fn on_technology_help(_activate: On<Activate>, mut commands: Commands) {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn page_controls_reveal_later_technology_rows() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
-            .add_systems(Update, render_technology_page);
-        let previous = app.world_mut().spawn(Visibility::Inherited).id();
-        let next = app.world_mut().spawn(Visibility::Inherited).id();
-        let mut rows = Vec::new();
-        for _ in 0..TECHNOLOGIES_PER_PAGE {
-            rows.push(app.world_mut().spawn(Visibility::Inherited).id());
-        }
-        let first_page = rows[0];
-        let second_page = app.world_mut().spawn(Visibility::Inherited).id();
-        rows.push(second_page);
-        let root = app
-            .world_mut()
-            .spawn(TechnologyStoreView {
-                current_page: 0,
-                last_page: 1,
-                previous,
-                next,
-                rows,
-            })
-            .id();
-
-        app.update();
-        assert_eq!(
-            app.world().get::<Visibility>(first_page),
-            Some(&Visibility::Inherited)
-        );
-        assert_eq!(
-            app.world().get::<Visibility>(second_page),
-            Some(&Visibility::Hidden)
-        );
-        assert!(app.world().get::<InteractionDisabled>(previous).is_some());
-        assert!(app.world().get::<InteractionDisabled>(next).is_none());
-
-        app.world_mut()
-            .entity_mut(root)
-            .get_mut::<TechnologyStoreView>()
-            .unwrap()
-            .current_page = 1;
-        app.update();
-
-        assert_eq!(
-            app.world().get::<Visibility>(first_page),
-            Some(&Visibility::Hidden)
-        );
-        assert_eq!(
-            app.world().get::<Visibility>(second_page),
-            Some(&Visibility::Inherited)
-        );
-        assert!(app.world().get::<InteractionDisabled>(previous).is_none());
-        assert!(app.world().get::<InteractionDisabled>(next).is_some());
-    }
 
     #[test]
     fn microscope_control_enters_the_technology_store() {

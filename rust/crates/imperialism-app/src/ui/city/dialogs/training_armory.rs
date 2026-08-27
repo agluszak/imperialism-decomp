@@ -1,7 +1,7 @@
 use super::*;
 use crate::ui::retail::RetailPictureSwap;
 
-pub(crate) struct TrainingUi {
+pub(in crate::ui::city) struct TrainingUi {
     quantities: TrainingOrderTable<Entity>,
     paper_one: Entity,
     paper_two: Entity,
@@ -11,8 +11,8 @@ pub(crate) struct TrainingUi {
     trained_available: Entity,
 }
 
-pub(crate) struct ArmoryUi {
-    pub(crate) selected: MilitaryRecruitmentCategory,
+pub(in crate::ui::city) struct ArmoryUi {
+    pub(in crate::ui::city) selected: MilitaryRecruitmentCategory,
     rows: MilitaryRecruitOrderTable<SelectionRow>,
     unit: Entity,
     costs: [Entity; 4],
@@ -72,7 +72,7 @@ const fn armory_row_pictures(unit: MilitaryUnitKind) -> [PictureId; 2] {
     [PictureId::new(base), PictureId::new(base + 1)]
 }
 
-pub(crate) fn bind_training(
+pub(in crate::ui::city) fn bind_training(
     commands: &mut Commands,
     assets: &RetailUiAssets,
     root: Entity,
@@ -101,7 +101,7 @@ pub(crate) fn bind_training(
     }
 }
 
-pub(crate) fn bind_armory(
+pub(in crate::ui::city) fn bind_armory(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -216,7 +216,7 @@ pub(crate) fn bind_armory(
     }
 }
 
-pub(crate) fn render_training(
+pub(in crate::ui::city) fn render_training(
     view: &TrainingUi,
     session: &GameSession,
     nation: MajorNationId,
@@ -249,7 +249,7 @@ pub(crate) fn render_training(
     );
 }
 
-pub(crate) fn render_armory(
+pub(in crate::ui::city) fn render_armory(
     view: &ArmoryUi,
     session: &GameSession,
     assets: &mut RetailUiAssets,

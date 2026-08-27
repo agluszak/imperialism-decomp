@@ -17,19 +17,19 @@ pub(crate) struct CityBuildingActionVisual {
     pub(crate) frame_size: [i32; 2],
 }
 
-pub(crate) struct CityBuildingHitRegion {
-    pub(crate) origin: IVec2,
-    pub(crate) slot: CityFacilitySlot,
-    pub(crate) mask: CityBuildingHitMask,
+pub(in crate::ui::city) struct CityBuildingHitRegion {
+    pub(in crate::ui::city) origin: IVec2,
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+    pub(in crate::ui::city) mask: CityBuildingHitMask,
 }
 
 #[derive(Component)]
-pub(crate) struct CityCanvas {
-    pub(crate) buildings: Vec<CityBuildingHitRegion>,
+pub(in crate::ui::city) struct CityCanvas {
+    pub(in crate::ui::city) buildings: Vec<CityBuildingHitRegion>,
 }
 
 #[derive(Component)]
-pub(crate) struct CitySceneRoot;
+pub(in crate::ui::city) struct CitySceneRoot;
 
 #[derive(Clone, Copy)]
 struct PlacardUi(Entity, Entity);
@@ -43,37 +43,37 @@ struct CitySummaryUi {
 }
 
 #[derive(Component)]
-pub(crate) struct CityScreenView {
+pub(in crate::ui::city) struct CityScreenView {
     summary: CitySummaryUi,
     hover_title: Entity,
 }
 
 #[derive(Component)]
-pub(crate) struct CityBuildingSprite {
+pub(in crate::ui::city) struct CityBuildingSprite {
     slot: CityFacilitySlot,
     picture: Option<PictureId>,
 }
 
 #[derive(Component)]
-pub(crate) struct CityBuildingActionAnimation {
-    pub(crate) slot: CityFacilitySlot,
-    pub(crate) frame_count: u8,
-    pub(crate) frame_size: [i32; 2],
-    pub(crate) frame: u8,
-    pub(crate) timer: Timer,
+pub(in crate::ui::city) struct CityBuildingActionAnimation {
+    pub(in crate::ui::city) slot: CityFacilitySlot,
+    pub(in crate::ui::city) frame_count: u8,
+    pub(in crate::ui::city) frame_size: [i32; 2],
+    pub(in crate::ui::city) frame: u8,
+    pub(in crate::ui::city) timer: Timer,
 }
 
-pub(crate) const CITY_WIDTH: f32 = 640.0;
-pub(crate) const CITY_HEIGHT: f32 = 480.0;
+pub(in crate::ui::city) const CITY_WIDTH: f32 = 640.0;
+pub(in crate::ui::city) const CITY_HEIGHT: f32 = 480.0;
 
-pub(crate) struct CityBuildingHitMask {
-    pub(crate) width: i32,
-    pub(crate) height: i32,
-    pub(crate) polygon: Vec<IVec2>,
+pub(in crate::ui::city) struct CityBuildingHitMask {
+    pub(in crate::ui::city) width: i32,
+    pub(in crate::ui::city) height: i32,
+    pub(in crate::ui::city) polygon: Vec<IVec2>,
 }
 
 impl CityBuildingHitMask {
-    pub(crate) fn from_indexed_picture(image: &IndexedPicture) -> Option<Self> {
+    pub(in crate::ui::city) fn from_indexed_picture(image: &IndexedPicture) -> Option<Self> {
         let width = image.width as usize;
         let height = image.height as usize;
         if width == 0 || height == 0 || image.pixels.len() != width * height {
@@ -108,7 +108,7 @@ impl CityBuildingHitMask {
         })
     }
 
-    pub(crate) fn contains(&self, point: IVec2) -> bool {
+    pub(in crate::ui::city) fn contains(&self, point: IVec2) -> bool {
         if point.x < 0 || point.y < 0 || point.x >= self.width || point.y >= self.height {
             return false;
         }
@@ -149,7 +149,7 @@ fn city_oil_industry_unlocked(
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum CityBuildingClick {
+pub(in crate::ui::city) enum CityBuildingClick {
     Construction,
     Production,
 }
@@ -166,7 +166,7 @@ fn city_building_click_action(
     Some(CityBuildingClick::Production)
 }
 
-pub(crate) fn city_building_click(
+pub(in crate::ui::city) fn city_building_click(
     state: &GameState,
     nation: MajorNationId,
     slot: CityFacilitySlot,
@@ -181,7 +181,7 @@ pub(crate) fn city_building_click(
     )
 }
 
-pub(crate) fn city_building_level(
+pub(in crate::ui::city) fn city_building_level(
     state: &GameState,
     nation: MajorNationId,
     slot: CityFacilitySlot,
@@ -195,12 +195,12 @@ pub(crate) fn city_building_level(
     )
 }
 
-pub(crate) fn city_is_expanding(city: &CityState, slot: CityFacilitySlot) -> bool {
+pub(in crate::ui::city) fn city_is_expanding(city: &CityState, slot: CityFacilitySlot) -> bool {
     ExpandableFacility::try_from_slot(slot)
         .is_some_and(|facility| city.orders.expansions[facility].progress.quantity > 0)
 }
 
-pub(crate) fn city_building_picture(
+pub(in crate::ui::city) fn city_building_picture(
     city: &CityState,
     slot: CityFacilitySlot,
     level: i16,
@@ -226,14 +226,14 @@ pub(crate) fn city_building_picture(
     ))
 }
 
-pub(crate) fn enter_city_screen(mut commands: Commands) {
+pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands) {
     let root = commands.spawn_scene(generated::citymain_2011()).id();
     commands
         .entity(root)
         .insert((CitySceneRoot, DespawnOnExit(AppState::City)));
 }
 
-pub(crate) fn bind_city_screen(
+pub(in crate::ui::city) fn bind_city_screen(
     mut commands: Commands,
     root: Single<Entity, Added<CitySceneRoot>>,
     tree: RetailTree,
@@ -381,7 +381,7 @@ fn bind_city_hover_title(
     entity
 }
 
-pub(crate) fn spawn_city_buildings(
+pub(in crate::ui::city) fn spawn_city_buildings(
     commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
@@ -455,7 +455,7 @@ pub(crate) fn spawn_city_buildings(
     spawn_city_building_actions(commands, main, actions, state, nation, assets);
 }
 
-pub(crate) fn apply_city_action_transparency(
+pub(in crate::ui::city) fn apply_city_action_transparency(
     image: &mut Image,
     indexed: &IndexedPicture,
     frame_size: [i32; 2],
@@ -475,7 +475,10 @@ pub(crate) fn apply_city_action_transparency(
     apply_index_transparency(image, &mask, 0x10);
 }
 
-pub(crate) fn city_building_action_enabled(city: &CityState, slot: CityFacilitySlot) -> bool {
+pub(in crate::ui::city) fn city_building_action_enabled(
+    city: &CityState,
+    slot: CityFacilitySlot,
+) -> bool {
     if slot == CityFacilitySlot::PowerPlant {
         !city.power_plant_upgrade_queued && city.orders.power_plant.progress.quantity > 0
     } else {
@@ -487,7 +490,7 @@ pub(crate) fn city_building_action_enabled(city: &CityState, slot: CityFacilityS
     }
 }
 
-pub(crate) fn spawn_city_building_actions(
+pub(in crate::ui::city) fn spawn_city_building_actions(
     commands: &mut Commands,
     main: Entity,
     actions: &[CityBuildingActionVisual],
@@ -595,7 +598,7 @@ pub(crate) fn spawn_city_building_actions(
     }
 }
 
-pub(crate) fn animate_city_building_actions(
+pub(in crate::ui::city) fn animate_city_building_actions(
     time: Res<Time>,
     mut actions: Query<(&mut CityBuildingActionAnimation, &mut ImageNode)>,
 ) {
@@ -625,7 +628,7 @@ fn render_placard(ui: &mut CityUi, placard: PlacardUi, value: String) {
     ui.text(placard.1, value);
 }
 
-pub(crate) fn render_city_screen(
+pub(in crate::ui::city) fn render_city_screen(
     session: Res<GameSession>,
     screen: Option<Single<&CityScreenView>>,
     canvas: Option<Single<(&RelativeCursorPosition, &CityCanvas)>>,
@@ -694,7 +697,7 @@ pub(crate) fn render_city_screen(
     ui.text(screen.hover_title, text);
 }
 
-pub(crate) fn render_city_buildings(
+pub(in crate::ui::city) fn render_city_buildings(
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
     mut pictures: Query<(&mut CityBuildingSprite, &mut ImageNode, &mut Visibility)>,
@@ -702,12 +705,7 @@ pub(crate) fn render_city_buildings(
         (&CityBuildingActionAnimation, &mut Visibility),
         Without<CityBuildingSprite>,
     >,
-    added_sprites: Query<(), Added<CityBuildingSprite>>,
-    added_actions: Query<(), Added<CityBuildingActionAnimation>>,
 ) {
-    if !session.is_changed() && added_sprites.is_empty() && added_actions.is_empty() {
-        return;
-    }
     let nation = session.active_major_nation();
     let city = &session.game.nations().major(nation).city;
     for (mut sprite, mut image, mut visibility) in &mut pictures {

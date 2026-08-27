@@ -13,8 +13,8 @@ const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
     ResourceKind::Fuel,
 ];
 
-pub(crate) struct ShipyardUi {
-    pub(crate) selected: ShipOrderSlot,
+pub(in crate::ui::city) struct ShipyardUi {
+    pub(in crate::ui::city) selected: ShipOrderSlot,
     rows: ShipOrderTable<SelectionRow>,
     ship_name: Entity,
     description: Entity,
@@ -22,7 +22,7 @@ pub(crate) struct ShipyardUi {
     details: Entity,
 }
 
-pub(crate) fn bind_shipyard(
+pub(in crate::ui::city) fn bind_shipyard(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -120,7 +120,7 @@ fn shipyard_queue_pictures(
     (compose(idle_id), compose(idle_id + 1))
 }
 
-pub(crate) fn render_shipyard(
+pub(in crate::ui::city) fn render_shipyard(
     view: &ShipyardUi,
     session: &GameSession,
     assets: &mut RetailUiAssets,

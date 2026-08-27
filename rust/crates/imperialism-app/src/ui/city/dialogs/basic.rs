@@ -1,12 +1,12 @@
 use super::*;
 
-pub(crate) struct WarehouseUi {
+pub(in crate::ui::city) struct WarehouseUi {
     stocks: Vec<(Entity, ResourceKind)>,
     labor: Entity,
     power: Entity,
 }
 
-pub(crate) struct FoodUi {
+pub(in crate::ui::city) struct FoodUi {
     rail: RailUi,
     labor: Entity,
     grain: Entity,
@@ -14,14 +14,14 @@ pub(crate) struct FoodUi {
     fish_and_livestock: Entity,
 }
 
-pub(crate) struct TransportUi {
+pub(in crate::ui::city) struct TransportUi {
     rail: RailUi,
     labor: Entity,
     lumber: Entity,
     steel: Entity,
 }
 
-pub(crate) struct PopulationUi {
+pub(in crate::ui::city) struct PopulationUi {
     rail: RailUi,
     food: Entity,
     clothing: Entity,
@@ -30,7 +30,7 @@ pub(crate) struct PopulationUi {
     provinces: Entity,
 }
 
-pub(crate) fn bind_warehouse(
+pub(in crate::ui::city) fn bind_warehouse(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
@@ -108,19 +108,18 @@ pub(crate) fn bind_warehouse(
     }
 }
 
-pub(crate) fn bind_food(
+pub(in crate::ui::city) fn bind_food(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
 ) -> FoodUi {
-    let building_name = city_building_name(assets, CityFacilitySlot::FoodProcessing);
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
-        building_name,
+        CityFacilitySlot::FoodProcessing,
         CityOrderId::FoodProcessing,
         generated::FOOD_ORDER_TAG,
         2,
@@ -134,19 +133,18 @@ pub(crate) fn bind_food(
     }
 }
 
-pub(crate) fn bind_power(
+pub(in crate::ui::city) fn bind_power(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
 ) -> RailUi {
-    let building_name = city_building_name(assets, CityFacilitySlot::PowerPlant);
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
-        building_name,
+        CityFacilitySlot::PowerPlant,
         CityOrderId::PowerPlant,
         generated::POWER_ORDER_TAG,
         6,
@@ -158,19 +156,18 @@ pub(crate) fn bind_power(
     rail
 }
 
-pub(crate) fn bind_transport(
+pub(in crate::ui::city) fn bind_transport(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
 ) -> TransportUi {
-    let building_name = city_building_name(assets, CityFacilitySlot::Transport);
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
-        building_name,
+        CityFacilitySlot::Transport,
         CityOrderId::TransportCapacity,
         generated::TRANSPORT_ORDER_TAG,
         1,
@@ -183,19 +180,18 @@ pub(crate) fn bind_transport(
     }
 }
 
-pub(crate) fn bind_population(
+pub(in crate::ui::city) fn bind_population(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
 ) -> PopulationUi {
-    let building_name = city_building_name(assets, CityFacilitySlot::RegionalPopulation);
     let rail = bind_rail(
         commands,
         assets,
         root,
         tree,
-        building_name,
+        CityFacilitySlot::RegionalPopulation,
         CityOrderId::PopulationGrowth,
         generated::POPULATION_ORDER_TAG,
         1,
@@ -210,7 +206,11 @@ pub(crate) fn bind_population(
     }
 }
 
-pub(crate) fn render_warehouse(view: &WarehouseUi, session: &GameSession, ui: &mut CityUi) {
+pub(in crate::ui::city) fn render_warehouse(
+    view: &WarehouseUi,
+    session: &GameSession,
+    ui: &mut CityUi,
+) {
     let city = &session
         .game
         .nations()
@@ -228,7 +228,7 @@ pub(crate) fn render_warehouse(view: &WarehouseUi, session: &GameSession, ui: &m
     ui.text(view.power, city.power_available.to_string());
 }
 
-pub(crate) fn render_food(
+pub(in crate::ui::city) fn render_food(
     view: &FoodUi,
     session: &GameSession,
     nation: MajorNationId,
@@ -245,7 +245,7 @@ pub(crate) fn render_food(
     );
 }
 
-pub(crate) fn render_power(
+pub(in crate::ui::city) fn render_power(
     view: &RailUi,
     session: &GameSession,
     nation: MajorNationId,
@@ -254,7 +254,7 @@ pub(crate) fn render_power(
     render_rail(session, nation, view, ui);
 }
 
-pub(crate) fn render_transport(
+pub(in crate::ui::city) fn render_transport(
     view: &TransportUi,
     session: &GameSession,
     nation: MajorNationId,
@@ -267,7 +267,7 @@ pub(crate) fn render_transport(
     ui.visible(view.steel, city.stockpile[ResourceKind::Steel] < 1);
 }
 
-pub(crate) fn render_population(
+pub(in crate::ui::city) fn render_population(
     view: &PopulationUi,
     session: &GameSession,
     nation: MajorNationId,

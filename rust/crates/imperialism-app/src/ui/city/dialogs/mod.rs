@@ -6,8 +6,8 @@ mod shipyard;
 mod training_armory;
 mod university;
 
-pub(crate) use basic::*;
-pub(crate) use construction::*;
-pub(crate) use shipyard::*;
-pub(crate) use training_armory::*;
-pub(crate) use university::*;
+pub(in crate::ui::city) use basic::*;
+pub(in crate::ui::city) use construction::*;
+pub(in crate::ui::city) use shipyard::*;
+pub(in crate::ui::city) use training_armory::*;
+pub(in crate::ui::city) use university::*;

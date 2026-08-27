@@ -78,8 +78,6 @@ pub(crate) use transport::TransportPlugin;
 pub(crate) use viewport::RetailViewportPlugin;
 pub(crate) use window::UiWindowPlugin;
 
-use bevy::prelude::*;
-
 pub(in crate::ui) fn format_currency(value: i32) -> String {
     let negative = value < 0;
     let digits = i64::from(value).abs().to_string();

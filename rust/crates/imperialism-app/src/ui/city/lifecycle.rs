@@ -1,12 +1,12 @@
 use super::*;
 
 #[derive(Component)]
-pub(crate) struct CityBuildingDialog {
-    pub(crate) slot: CityFacilitySlot,
+pub(in crate::ui::city) struct CityBuildingDialog {
+    pub(in crate::ui::city) slot: CityFacilitySlot,
     saved_position: Option<IVec2>,
 }
 
-pub(crate) fn on_city_canvas_click(
+pub(in crate::ui::city) fn on_city_canvas_click(
     click: On<Pointer<Click>>,
     canvases: Query<(&RelativeCursorPosition, &CityCanvas)>,
     dialogs: Query<&CityBuildingDialog>,
@@ -47,7 +47,7 @@ pub(crate) fn on_city_canvas_click(
     }
 }
 
-pub(crate) fn open_city_dialog(
+pub(in crate::ui::city) fn open_city_dialog(
     commands: &mut Commands,
     slot: CityFacilitySlot,
     saved_position: Option<IVec2>,
@@ -62,7 +62,7 @@ pub(crate) fn open_city_dialog(
     ));
 }
 
-pub(crate) fn bind_city_dialogs(
+pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
     windows: Query<(), With<CaptionedWindow>>,
@@ -144,7 +144,7 @@ pub(crate) fn bind_city_dialogs(
     }
 }
 
-pub(crate) fn restore_city_dialogs(
+pub(in crate::ui::city) fn restore_city_dialogs(
     roots: Query<(), Added<CityScreenView>>,
     session: Res<GameSession>,
     windows: Res<CityWindows>,
@@ -170,7 +170,7 @@ pub(crate) fn restore_city_dialogs(
     }
 }
 
-pub(crate) fn leave_city_screen(
+pub(in crate::ui::city) fn leave_city_screen(
     session: Res<GameSession>,
     mut windows: ResMut<CityWindows>,
     dialogs: Query<(&CityBuildingDialog, &Children)>,

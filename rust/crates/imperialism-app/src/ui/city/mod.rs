@@ -174,7 +174,7 @@ impl Plugin for CityPlugin {
 
 fn render_city_dialogs(
     session: Res<GameSession>,
-    dialogs: Query<Ref<CityDialogView>>,
+    dialogs: Query<(&CityBuildingDialog, Ref<CityDialogView>)>,
     mut ui: CityUi,
     mut assets: RetailUiAssets,
     fonts: Res<RetailFonts>,
@@ -182,10 +182,12 @@ fn render_city_dialogs(
 ) {
     let nation = session.active_major_nation();
     let game_changed = session.is_changed();
-    for dialog in &dialogs {
-        let expensive = game_changed || dialog.is_added() || dialog.is_changed();
-        match &*dialog {
-            CityDialogView::Industry(v) => render_industry(v, &session, nation, &assets, &mut ui),
+    for (dialog, view) in &dialogs {
+        let expensive = game_changed || view.is_added() || view.is_changed();
+        match &*view {
+            CityDialogView::Industry(v) => {
+                render_industry(dialog.slot, v, &session, nation, &assets, &mut ui)
+            }
             CityDialogView::Training(v) => render_training(v, &session, nation, &mut ui),
             CityDialogView::Armory(v) => render_armory(v, &session, &mut assets, &mut ui),
             CityDialogView::University(v) if expensive => {

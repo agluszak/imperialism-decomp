@@ -22,7 +22,7 @@ use imperialism_formats::{MusicTrack, fourcc};
 #[derive(Component)]
 struct NavalBattleRoot;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum NavalBattleAction {
     Done,
     Auto,
@@ -162,9 +162,20 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
     ] {
         commands
             .entity(tree.find(root, tag))
-            .insert((action, ActivateOnPress))
-            .observe(on_naval_battle_activate)
-            .remove::<InteractionDisabled>();
+            .insert(ActivateOnPress)
+            .remove::<InteractionDisabled>()
+            .observe(
+                move |_: On<Activate>,
+                      mut session: ResMut<GameSession>,
+                      mut next_state: ResMut<NextState<AppState>>,
+                      mut music: Option<ResMut<MusicDirector>>,
+                      time: Option<Res<Time>>| {
+                    apply_naval_battle_action(action, &mut session, &mut next_state);
+                    if let Some(music) = music.as_mut() {
+                        cue_tactical_result(&session.game, music, time.as_deref());
+                    }
+                },
+            );
     }
     let field = tree.find(root, fourcc!("DLOG"));
     commands
@@ -186,23 +197,6 @@ fn bind_naval_battle_controls(commands: &mut Commands, root: Entity, tree: &Reta
     commands
         .entity(root)
         .insert(NavalBattleView { caption, field });
-}
-
-fn on_naval_battle_activate(
-    activate: On<Activate>,
-    actions: Query<&NavalBattleAction>,
-    mut session: ResMut<GameSession>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut music: Option<ResMut<MusicDirector>>,
-    time: Option<Res<Time>>,
-) {
-    let Ok(&action) = actions.get(activate.entity) else {
-        return;
-    };
-    apply_naval_battle_action(action, &mut session, &mut next_state);
-    if let Some(music) = music.as_mut() {
-        cue_tactical_result(&session.game, music, time.as_deref());
-    }
 }
 
 #[allow(clippy::type_complexity)]

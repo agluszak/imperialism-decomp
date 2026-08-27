@@ -39,11 +39,6 @@ This is an independent Cargo workspace. Follow `../AGENTS.md` plus these Rust in
 
 - Follow `docs/ui-architecture.md` for the bind-time identity, semantic-view ownership, one-way data
   flow, component, rendering, and migration contract.
-- Static recovered UI is bound once. Store only the dynamic controls needed by handwritten code in a
-  root-owned screen/dialog view and render directly from authoritative state. Do not introduce
-  per-control projection components, generated entity-identity structs, manual dirty/invalidation
-  layers, or hierarchy caches merely to avoid bind-time FourCC lookup. `Added<T>` is for lifecycle
-  binding; components are for owning state or independently behaving runtime entities.
 - Recovered UI definitions come from committed recovery evidence and the existing generator. Change
   that evidence or generator and regenerate; do not maintain parallel handwritten screen trees.
 - Generated output is native Bevy/BSN hierarchy. Handwritten app code wires presentation behavior to

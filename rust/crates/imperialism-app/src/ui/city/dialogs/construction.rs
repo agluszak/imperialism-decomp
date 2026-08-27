@@ -1,7 +1,7 @@
 use super::*;
 
 #[derive(Component)]
-pub(crate) enum BuildingChangeDialog {
+pub(in crate::ui::city) enum BuildingChangeDialog {
     Construction {
         slot: CityFacilitySlot,
         capacity: String,
@@ -9,14 +9,13 @@ pub(crate) enum BuildingChangeDialog {
     },
     Expansion {
         slot: CityFacilitySlot,
-        building_name: String,
         next_capacity: i16,
         next_level: u8,
         can_reserve: bool,
     },
 }
 
-pub(crate) fn open_city_construction_dialog(
+pub(in crate::ui::city) fn open_city_construction_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     session: &mut GameSession,
@@ -66,9 +65,8 @@ pub(crate) fn open_city_construction_dialog(
     ));
 }
 
-pub(crate) fn open_city_expansion_dialog(
+pub(in crate::ui::city) fn open_city_expansion_dialog(
     commands: &mut Commands,
-    assets: &RetailUiAssets,
     session: &GameSession,
     slot: CityFacilitySlot,
 ) {
@@ -91,11 +89,9 @@ pub(crate) fn open_city_expansion_dialog(
     );
     let can_reserve = needed <= session.game.city_order_limit(nation, order).maximum;
     let root = commands.spawn_scene(generated::citydlog_9221()).id();
-    let building_name = city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail()));
     commands.entity(root).insert((
         BuildingChangeDialog::Expansion {
             slot,
-            building_name,
             next_capacity,
             next_level,
             can_reserve,
@@ -185,19 +181,19 @@ fn bind_building_change_common(
         },
     ));
     let okay = tree.find(root, fourcc!("okay"));
-    let mut okay_commands = commands.entity(okay);
-    okay_commands.observe(move |_: On<Activate>, mut session: ResMut<GameSession>| {
-        apply_building_change(&mut session, slot, true);
-    });
-    if !can_reserve {
-        okay_commands.insert((InteractionDisabled, Visibility::Hidden));
-    }
     let cancel = tree.find(root, fourcc!("cncl"));
-    commands
-        .entity(cancel)
-        .observe(move |_: On<Activate>, mut session: ResMut<GameSession>| {
-            apply_building_change(&mut session, slot, false);
-        });
+    for (button, accept) in [(okay, true), (cancel, false)] {
+        commands.entity(button).observe(
+            move |_: On<Activate>, mut session: ResMut<GameSession>| {
+                apply_building_change(&mut session, slot, accept);
+            },
+        );
+    }
+    if !can_reserve {
+        commands
+            .entity(okay)
+            .insert((InteractionDisabled, Visibility::Hidden));
+    }
     dismiss_on_activate(commands, okay, root);
     dismiss_on_activate(commands, cancel, root);
     bind_modal_keys(commands, root, Some(okay), Some(cancel));
@@ -299,7 +295,6 @@ fn bind_expansion_dialog(
     root: Entity,
     tree: &RetailTree,
     slot: CityFacilitySlot,
-    building_name: String,
     next_capacity: i16,
     next_level: u8,
     can_reserve: bool,
@@ -312,7 +307,7 @@ fn bind_expansion_dialog(
         BuildingChangePresentation {
             slot,
             picture: PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level)),
-            name: building_name,
+            name: city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail())),
             capacity: format_retail_number(
                 &city_string(assets, CITY_TEXT_STRING_GROUP, 0x10),
                 next_capacity,
@@ -325,7 +320,7 @@ fn bind_expansion_dialog(
     );
 }
 
-pub(crate) fn bind_building_change_dialogs(
+pub(in crate::ui::city) fn bind_building_change_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &BuildingChangeDialog), Added<BuildingChangeDialog>>,
     tree: RetailTree,
@@ -348,7 +343,6 @@ pub(crate) fn bind_building_change_dialogs(
             ),
             BuildingChangeDialog::Expansion {
                 slot,
-                building_name,
                 next_capacity,
                 next_level,
                 can_reserve,
@@ -358,7 +352,6 @@ pub(crate) fn bind_building_change_dialogs(
                 root,
                 &tree,
                 *slot,
-                building_name.clone(),
                 *next_capacity,
                 *next_level,
                 *can_reserve,
