@@ -1,7 +1,5 @@
 use crate::ui::generated;
-use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, get_string,
-};
+use crate::ui::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts};
 use crate::ui::load_save::{LoadSaveMode, open_load_save};
 use crate::ui::retail::{RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
@@ -92,13 +90,13 @@ fn bind_main_menu_hover_help(
         &tree,
         [
             (fourcc!("main"), String::new()),
-            (fourcc!("rand"), get_string(&assets, 0x2737, 0)),
-            (fourcc!("load"), get_string(&assets, 0x2737, 1)),
-            (fourcc!("mult"), get_string(&assets, 0x2737, 2)),
-            (fourcc!("high"), get_string(&assets, 0x2737, 3)),
-            (fourcc!("scen"), get_string(&assets, 0x2737, 4)),
-            (fourcc!("quit"), get_string(&assets, 0x2737, 9)),
-            (fourcc!("pref"), get_string(&assets, 0x2743, 8)),
+            (fourcc!("rand"), assets.get_string(0x2737, 0)),
+            (fourcc!("load"), assets.get_string(0x2737, 1)),
+            (fourcc!("mult"), assets.get_string(0x2737, 2)),
+            (fourcc!("high"), assets.get_string(0x2737, 3)),
+            (fourcc!("scen"), assets.get_string(0x2737, 4)),
+            (fourcc!("quit"), assets.get_string(0x2737, 9)),
+            (fourcc!("pref"), assets.get_string(0x2743, 8)),
         ],
     );
 }

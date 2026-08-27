@@ -31,10 +31,7 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
                 .economy
                 .available_diplomacy_budget(major.common.treasury)
                 >= 5_000;
-            (
-                city_string(assets, CITY_TEXT_STRING_GROUP, 0x15),
-                can_reserve,
-            )
+            (city_text(assets, 0x15), can_reserve)
         }
         _ => {
             let (next_capacity, needed) = {
@@ -155,13 +152,9 @@ fn bind_building_change_common(
         warning_color,
         can_reserve,
     } = presentation;
-    match assets.picture(picture) {
-        Ok(handle) => {
-            let dialog = tree.find(root, fourcc!("DLOG"));
-            commands.entity(dialog).insert(ImageNode::new(handle));
-        }
-        Err(error) => warn!("could not load building-change picture {picture}: {error}"),
-    }
+    commands
+        .entity(tree.find(root, fourcc!("DLOG")))
+        .insert(ImageNode::new(assets.picture(picture)));
     for (tag, text) in [
         (fourcc!("name"), name),
         (fourcc!("capT"), capacity),
@@ -208,13 +201,8 @@ fn bind_construction_dialog(
     capacity_value: &str,
     can_reserve: bool,
 ) {
-    let capacity = fill_brackets(
-        &city_string(assets, CITY_TEXT_STRING_GROUP, 0x10),
-        &[capacity_value],
-    );
-    let headline = assets
-        .string(0x2422 + i16::from(slot as u8), 1)
-        .expect("headline");
+    let capacity = fill_brackets(&city_text(assets, 0x10), &[capacity_value]);
+    let headline = assets.string(slot.construction_headline_string());
     commands
         .entity(tree.find(root, fourcc!("tex1")))
         .insert(Text::new(headline));
@@ -239,7 +227,7 @@ fn bind_construction_dialog(
         _ => None,
     };
     if let Some(left) = connective_left {
-        let connective_text = city_string(assets, CITY_TEXT_STRING_GROUP, 0x11);
+        let connective_text = city_text(assets, 0x11);
         let mut connective_commands = commands.entity(connective);
         connective_commands.insert((Text::new(connective_text), Visibility::Visible));
         connective_commands
@@ -270,13 +258,12 @@ fn bind_construction_dialog(
         tree,
         BuildingChangePresentation {
             slot,
-            picture: PictureId::new(9250 + i16::from(slot as u8) * 5),
-            name: city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail())),
+            picture: slot.construction_picture(0),
+            name: assets.string(slot.name_string()),
             capacity,
-            cost: city_string(assets, CITY_TEXT_STRING_GROUP, 0x14),
-            warning_text: city_string(
+            cost: city_text(assets, 0x14),
+            warning_text: city_text(
                 assets,
-                CITY_TEXT_STRING_GROUP,
                 if slot == CityFacilitySlot::PowerPlant {
                     0x16
                 } else {
@@ -306,14 +293,11 @@ fn bind_expansion_dialog(
         tree,
         BuildingChangePresentation {
             slot,
-            picture: PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level)),
-            name: city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail())),
-            capacity: format_retail_number(
-                &city_string(assets, CITY_TEXT_STRING_GROUP, 0x10),
-                next_capacity,
-            ),
-            cost: city_string(assets, CITY_TEXT_STRING_GROUP, 0x14),
-            warning_text: city_string(assets, CITY_TEXT_STRING_GROUP, 0x17),
+            picture: slot.construction_picture(next_level),
+            name: assets.string(slot.name_string()),
+            capacity: format_retail_number(&city_text(assets, 0x10), next_capacity),
+            cost: city_text(assets, 0x14),
+            warning_text: city_text(assets, 0x17),
             warning_color: assets.palette_color(0xcb),
             can_reserve,
         },

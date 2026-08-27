@@ -5,6 +5,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::RetailTree;
+use super::retail_resources::ResourceKindRetailResources;
 use crate::AppState;
 use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
@@ -506,9 +507,7 @@ fn transport_hover_text(
     } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
         transport_string(assets, 3)
     } else {
-        assets
-            .string(0x2711, i16::from(resource.retail()) + 1)
-            .expect("retail transport commodity name must load")
+        assets.string(resource.name_string())
     };
 
     if allocation == TransportAllocation::GOLD || allocation == TransportAllocation::GEMS {
@@ -541,9 +540,7 @@ fn transport_hover_text(
 }
 
 fn transport_string(assets: &RetailUiAssets, offset: i16) -> String {
-    assets
-        .string(0x2735, offset + 1)
-        .expect("retail transport string must load")
+    assets.get_string(0x2735, offset as u16)
 }
 
 fn allocation_amount(

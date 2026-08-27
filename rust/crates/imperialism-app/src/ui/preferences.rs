@@ -1,7 +1,6 @@
 use super::generated;
 use super::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
-    ui_string,
+    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts,
 };
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailPictureSwap, RetailTag, RetailTree, RetailUiAssets};
@@ -45,10 +44,10 @@ const PREFERENCE_ROWS: [(
 const SLIDER_SPLIT_PAD: i16 = 0x0c;
 const MUSIC_SLIDER_SCALE: i16 = 0xff;
 const SOUND_SLIDER_SCALE: i16 = 100;
-const MUSIC_PICTURE_BASE: i16 = 0x1036;
-const SOUND_PICTURE_BASE: i16 = 0x1038;
-const TACTICAL_BATTLE_ON_PICTURE: i16 = 4158;
-const TACTICAL_BATTLE_OFF_PICTURE: i16 = 4160;
+const MUSIC_PICTURE_BASE: PictureId = PictureId::new(0x1036);
+const SOUND_PICTURE_BASE: PictureId = PictureId::new(0x1038);
+const TACTICAL_BATTLE_ON_PICTURE: PictureId = PictureId::new(4158);
+const TACTICAL_BATTLE_OFF_PICTURE: PictureId = PictureId::new(4160);
 
 /// Retail `TSimMgr::preferenceValues[14]`.
 #[derive(Clone, Copy, Debug, Enum, Eq, PartialEq)]
@@ -192,8 +191,8 @@ fn bind_preferences(
         root,
         &tree,
         [
-            (fourcc!("okay"), ui_string(&assets, 0x2743, 0x25)),
-            (fourcc!("quer"), ui_string(&assets, 0x2730, 3)),
+            (fourcc!("okay"), assets.ui_string(0x2743, 0x25)),
+            (fourcc!("quer"), assets.ui_string(0x2730, 3)),
         ],
     );
 
@@ -208,7 +207,7 @@ fn bind_preferences(
         let Some(checkbox) = checkbox else {
             continue;
         };
-        let hover = ui_string(&assets, 0x2743, row as i16 + 0x26);
+        let hover = assets.ui_string(0x2743, row as u16 + 0x26);
         let mut entity = commands.entity(checkbox);
         entity
             .insert((PreferenceRow { ui_row: row, slot }, HoverHelpText(hover)))
@@ -216,12 +215,8 @@ fn bind_preferences(
             .observe(on_preference_checked::<Remove, Checked>)
             .remove::<InteractionDisabled>();
         if row == 4 {
-            let idle = assets
-                .picture(PictureId::new(TACTICAL_BATTLE_OFF_PICTURE))
-                .expect("tactical-battle preference off picture");
-            let on = assets
-                .picture(PictureId::new(TACTICAL_BATTLE_ON_PICTURE))
-                .expect("tactical-battle preference on picture");
+            let idle = assets.picture(TACTICAL_BATTLE_OFF_PICTURE);
+            let on = assets.picture(TACTICAL_BATTLE_ON_PICTURE);
             entity.remove::<Button>().insert((
                 Checkbox,
                 RetailPictureSwap {
@@ -238,8 +233,8 @@ fn bind_preferences(
         }
     }
 
-    let music_hover = ui_string(&assets, 0x2743, 0x27);
-    let sound_hover = ui_string(&assets, 0x2743, 0x26);
+    let music_hover = assets.ui_string(0x2743, 0x27);
+    let sound_hover = assets.ui_string(0x2743, 0x26);
     bind_volume_slider(
         &mut commands,
         &mut assets,
@@ -283,20 +278,16 @@ fn bind_volume_slider(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
     slider: Entity,
-    picture_base: i16,
+    picture_base: PictureId,
     slot: PreferenceSlot,
     scale: i16,
     value: i16,
     hover: String,
 ) {
-    let upper = assets
-        .indexed_picture(PictureId::new(picture_base))
-        .expect("preference slider upper picture");
-    let lower = assets
-        .indexed_picture(PictureId::new(picture_base + 1))
-        .expect("preference slider lower picture");
+    let upper = assets.indexed_picture(picture_base);
+    let lower = assets.indexed_picture(picture_base.offset(1));
     let image = assets.add_image(upper.to_image(assets.default_dib_palette()));
-    let off = get_string(assets, 0x2743, 0x3b);
+    let off = assets.get_string(0x2743, 0x3b);
     commands
         .entity(slider)
         .insert((
@@ -342,7 +333,7 @@ fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {
 }
 
 fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> String {
-    get_string(assets, 0x2743, row as i16 * 2 + 0x10 + i16::from(!is_on))
+    assets.get_string(0x2743, row as u16 * 2 + 0x10 + u16::from(!is_on))
 }
 
 fn slider_split_from_value(value: i16, height: i16, scale: i16) -> i16 {

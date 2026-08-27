@@ -59,30 +59,6 @@ impl CapitalSiteReport {
     }
 }
 
-impl CitySiteError {
-    /// `TSimMgr::GetString` offset into group `0x273b` for a rejected map click.
-    pub fn message_offset(self, state: &GameState, tile: TileId) -> i16 {
-        match self {
-            Self::NotOwned => {
-                if state.map()[tile].terrain == TerrainKind::Water {
-                    3
-                } else {
-                    0
-                }
-            }
-            Self::UnsupportedTerrain | Self::InvalidHomeSite => {
-                if supports_city_site_terrain(state.map()[tile].terrain)
-                    && state.can_build_port_at_tile(tile)
-                {
-                    2
-                } else {
-                    1
-                }
-            }
-        }
-    }
-}
-
 /// Retail difficulties that dispatch the city-site selector (`difficultyLevel > 1`).
 pub const fn requires_capital_site_selection(difficulty: Difficulty) -> bool {
     matches!(

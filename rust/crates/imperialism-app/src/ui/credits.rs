@@ -1,11 +1,10 @@
 use super::generated;
-use super::hover_help::ui_string;
 use super::retail::{RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
-use imperialism_formats::{RetailTextStylePreset, fourcc};
+use imperialism_formats::{RetailTextStylePreset, StringResourceId, fourcc};
 
 #[derive(Component)]
 struct CreditsRoot {
@@ -98,8 +97,8 @@ fn fill_credits_page(
 }
 
 fn string_from_id(assets: &RetailUiAssets, string_id: i16) -> String {
-    // `LoadUiStringResourceById` is LoadStringA(id); group/index form is id = group*100+index.
-    ui_string(assets, string_id / 100, string_id % 100)
+    // `LoadUiStringResourceById` is LoadStringA(id); the flat id is the final resource id.
+    assets.string(StringResourceId::new(string_id as u16))
 }
 
 fn on_credits_activate(

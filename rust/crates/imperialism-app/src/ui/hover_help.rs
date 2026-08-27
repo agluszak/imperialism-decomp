@@ -127,20 +127,6 @@ pub(crate) fn bind_hover_help_texts(
     }
 }
 
-/// `TSimMgr::GetString`: adds one before the direct `LoadStringA` lookup.
-pub(crate) fn get_string(assets: &RetailUiAssets, group: i16, offset: i16) -> String {
-    assets
-        .string(group, offset + 1)
-        .expect("retail hover-help string")
-}
-
-/// `LoadUiStringResourceByGroupAndIndex`: direct `LoadStringA` group/index.
-pub(crate) fn ui_string(assets: &RetailUiAssets, group: i16, index: i16) -> String {
-    assets
-        .string(group, index)
-        .expect("retail hover-help string")
-}
-
 #[allow(clippy::type_complexity)]
 fn sync_hover_help_bar(
     sources: Query<(&HoverHelpText, &DirectlyHovered)>,

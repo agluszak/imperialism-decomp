@@ -10,6 +10,7 @@ use super::StrategicMapSession;
 use super::map_projection::DetailedMapProjection;
 use super::{TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
+use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use enum_map::Enum;
 use imperialism_core::*;
@@ -22,19 +23,40 @@ const UNIT_TRANSPARENT_INDEX: u8 = 0x10;
 const FOREIGN_CIVILIAN_FRAME_INDEX: u8 = 0x13;
 const STRATEGIC_NAVAL_FRAME_COUNT: i16 = 18;
 const OCEAN_ATLAS_FRAME_COUNT: i16 = 19;
-const CIVILIAN_IDLE_PICTURE_BASE: i16 = 400;
-const CIVILIAN_WORKING_PICTURE_BASE: i16 = 418;
-const ARMY_COUNT_PICTURE_IDS: [i16; 4] = [570, 572, 574, 576];
-const SELECTED_ARMY_COUNT_PICTURE_IDS: [i16; 4] = [571, 573, 575, 577];
-const OWNER_FLAG_PICTURE_ID: i16 = 580;
-const FORT_PICTURE_IDS: [i16; 3] = [560, 561, 562];
-const ORDER_MARKER_PICTURE_ID: i16 = 806;
-const FLEET_ATLAS_PICTURE_BASE: i16 = 1_380;
-const CIVILIAN_SPRITE_CLASS: CivilianUnitTable<u8> =
-    CivilianUnitTable::from_array([2, 3, 1, 6, 0, 7, 5, 4, 8]);
-const CIVILIAN_ANIMATION_PICTURE_IDS: CivilianUnitTable<i16> = CivilianUnitTable::from_array([
-    14_000, 14_005, 14_011, 14_015, 14_021, 14_026, 14_030, 14_035, 14_040,
-]);
+const CIVILIAN_IDLE_PICTURE_BASE: PictureId = PictureId::new(400);
+const CIVILIAN_WORKING_PICTURE_BASE: PictureId = PictureId::new(418);
+const ARMY_COUNT_PICTURE_IDS: [PictureId; 4] = [
+    PictureId::new(570),
+    PictureId::new(572),
+    PictureId::new(574),
+    PictureId::new(576),
+];
+const SELECTED_ARMY_COUNT_PICTURE_IDS: [PictureId; 4] = [
+    PictureId::new(571),
+    PictureId::new(573),
+    PictureId::new(575),
+    PictureId::new(577),
+];
+const OWNER_FLAG_PICTURE_ID: PictureId = PictureId::new(580);
+const FORT_PICTURE_IDS: [PictureId; 3] = [
+    PictureId::new(560),
+    PictureId::new(561),
+    PictureId::new(562),
+];
+const ORDER_MARKER_PICTURE_ID: PictureId = PictureId::new(806);
+const FLEET_ATLAS_PICTURE_BASE: PictureId = PictureId::new(1_380);
+const CIVILIAN_ANIMATION_PICTURE_IDS: CivilianUnitTable<PictureId> =
+    CivilianUnitTable::from_array([
+        PictureId::new(14_000),
+        PictureId::new(14_005),
+        PictureId::new(14_011),
+        PictureId::new(14_015),
+        PictureId::new(14_021),
+        PictureId::new(14_026),
+        PictureId::new(14_030),
+        PictureId::new(14_035),
+        PictureId::new(14_040),
+    ]);
 const CIVILIAN_ANIMATION_FRAME_COUNTS: CivilianUnitTable<u8> =
     CivilianUnitTable::from_array([5, 4, 2, 4, 3, 2, 3, 3, 2]);
 const CIVILIAN_ANIMATION_LOGICAL_COUNTS: CivilianUnitTable<u8> =
@@ -105,7 +127,7 @@ struct VisibleStrategicUnit {
 struct StrategicUnitProjectKey {
     view_origin: TileId,
     active_nation: NationId,
-    fleet_atlas: i16,
+    fleet_atlas: PictureId,
     visible: u64,
 }
 
@@ -169,7 +191,7 @@ pub(crate) struct StrategicUnitSprites {
     forts: [IndexedPicture; 3],
     order_markers: IndexedPicture,
     fleet_frames: Vec<IndexedPicture>,
-    fleet_atlas_id: i16,
+    fleet_atlas_id: PictureId,
     composed: HashMap<StrategicUnitSprite, Handle<Image>>,
 }
 
@@ -240,7 +262,7 @@ pub(crate) fn sync_strategic_units(
         let selected_civilian = map.selection.civilian();
         let selected_army = map.selection.army();
         let selected_navy = map.selection.navy_zone();
-        let fleet_id = fleet_atlas_picture_id(state).get();
+        let fleet_id = fleet_atlas_picture_id(state);
         if sprites.fleet_atlas_id != fleet_id {
             sprites.fleet_frames = load_fleet_frames(&assets, state);
             sprites.fleet_atlas_id = fleet_id;
@@ -470,7 +492,7 @@ fn load_strategic_unit_sprites(assets: &RetailUiAssets, state: &GameState) -> St
     let owner_flags = load_required_picture(assets, OWNER_FLAG_PICTURE_ID);
     let forts = FORT_PICTURE_IDS.map(|id| load_required_picture(assets, id));
     let order_markers = load_required_picture(assets, ORDER_MARKER_PICTURE_ID);
-    let fleet_atlas_id = fleet_atlas_picture_id(state).get();
+    let fleet_atlas_id = fleet_atlas_picture_id(state);
     let fleet_frames = load_fleet_frames(assets, state);
     StrategicUnitSprites {
         civilians,
@@ -495,39 +517,38 @@ fn load_civilian_pictures(
         return (0..CIVILIAN_ANIMATION_FRAME_COUNTS[kind])
             .map(|frame| {
                 assets
-                    .indexed_picture(PictureId::new(picture_id + i16::from(frame)))
+                    .try_indexed_picture(picture_id.offset(i16::from(frame)))
                     .ok()
                     .map(first_tile_frame)
             })
             .collect();
     }
-    if let Ok(picture) = assets.indexed_picture(PictureId::new(picture_id)) {
+    if let Ok(picture) = assets.try_indexed_picture(picture_id) {
         return Some(vec![first_tile_frame(picture)]);
     }
     assets
-        .indexed_picture(PictureId::new(civilian_picture_id(
-            kind,
-            CivilianPose::Animated,
-        )))
+        .try_indexed_picture(civilian_picture_id(kind, CivilianPose::Animated))
         .ok()
         .map(|picture| vec![first_tile_frame(picture)])
 }
 
-fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> i16 {
+fn civilian_picture_id(kind: CivilianUnitKind, pose: CivilianPose) -> PictureId {
     match pose {
-        CivilianPose::Idle => CIVILIAN_IDLE_PICTURE_BASE + i16::from(civilian_sprite_class(kind)),
+        CivilianPose::Idle => {
+            CIVILIAN_IDLE_PICTURE_BASE.offset(i16::from(civilian_sprite_class(kind)))
+        }
         CivilianPose::Selected => {
-            CIVILIAN_IDLE_PICTURE_BASE + 9 + i16::from(civilian_sprite_class(kind))
+            CIVILIAN_IDLE_PICTURE_BASE.offset(9 + i16::from(civilian_sprite_class(kind)))
         }
         CivilianPose::Working => {
-            CIVILIAN_WORKING_PICTURE_BASE + i16::from(civilian_sprite_class(kind))
+            CIVILIAN_WORKING_PICTURE_BASE.offset(i16::from(civilian_sprite_class(kind)))
         }
         CivilianPose::Animated => CIVILIAN_ANIMATION_PICTURE_IDS[kind],
     }
 }
 
 fn load_fleet_frames(assets: &RetailUiAssets, state: &GameState) -> Vec<IndexedPicture> {
-    let atlas = load_required_picture(assets, fleet_atlas_picture_id(state).get());
+    let atlas = load_required_picture(assets, fleet_atlas_picture_id(state));
     (0..OCEAN_ATLAS_FRAME_COUNT as u32)
         .filter_map(|frame| {
             let x = frame * TILE_SIZE as u32;
@@ -537,11 +558,8 @@ fn load_fleet_frames(assets: &RetailUiAssets, state: &GameState) -> Vec<IndexedP
         .collect()
 }
 
-fn load_required_picture(assets: &RetailUiAssets, id: i16) -> IndexedPicture {
-    let picture_id = PictureId::new(id);
-    assets.indexed_picture(picture_id).unwrap_or_else(|error| {
-        panic!("retail strategic unit picture {picture_id} must load: {error}")
-    })
+fn load_required_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedPicture {
+    assets.indexed_picture(picture_id)
 }
 
 fn first_tile_frame(picture: IndexedPicture) -> IndexedPicture {
@@ -676,7 +694,7 @@ fn strategic_unit_project_key(
     StrategicUnitProjectKey {
         view_origin,
         active_nation: state.turn().active_nation,
-        fleet_atlas: fleet_atlas_picture_id(state).get(),
+        fleet_atlas: fleet_atlas_picture_id(state),
         visible: hasher.finish(),
     }
 }
@@ -689,7 +707,7 @@ fn fleet_atlas_picture_id(state: &GameState) -> PictureId {
         status[Technology::AdvancedIronWorking],
         status[Technology::MarineEngineering],
     );
-    PictureId::new(FLEET_ATLAS_PICTURE_BASE + i16::from(nation.get()) + variant * 7)
+    FLEET_ATLAS_PICTURE_BASE.offset(i16::from(nation.get()) + variant * 7)
 }
 
 fn fleet_atlas_variant(
@@ -940,7 +958,7 @@ fn civilian_uses_work_animation(order: &CivilianWorkOrder) -> bool {
 }
 
 fn civilian_sprite_class(kind: CivilianUnitKind) -> u8 {
-    CIVILIAN_SPRITE_CLASS[kind]
+    kind.sprite_class()
 }
 
 fn civilian_tile_is_visible(owner: Option<TileOwnerTag>, active: NationId) -> bool {
@@ -1068,7 +1086,7 @@ mod tests {
         );
         assert_eq!(
             civilian_picture_id(CivilianUnitKind::Engineer, CivilianPose::Selected),
-            409
+            PictureId::new(409)
         );
     }
 
@@ -1295,7 +1313,7 @@ mod tests {
             forts: std::array::from_fn(|_| indexed_picture(TILE_SIZE, TILE_SIZE, 0x10)),
             order_markers: indexed_picture(TILE_SIZE, TILE_SIZE, 0x10),
             fleet_frames: Vec::new(),
-            fleet_atlas_id: 0,
+            fleet_atlas_id: PictureId::new(0),
             composed: HashMap::new(),
         };
 
@@ -1337,7 +1355,7 @@ mod tests {
             forts: std::array::from_fn(|_| fort.clone()),
             order_markers: marker,
             fleet_frames: Vec::new(),
-            fleet_atlas_id: 0,
+            fleet_atlas_id: PictureId::new(0),
             composed: HashMap::new(),
         };
 
@@ -1393,7 +1411,7 @@ mod tests {
             forts: std::array::from_fn(|_| fort.clone()),
             order_markers: marker,
             fleet_frames: Vec::new(),
-            fleet_atlas_id: 0,
+            fleet_atlas_id: PictureId::new(0),
             composed: HashMap::new(),
         };
         let sprite = StrategicUnitSprite::Army {
@@ -1448,7 +1466,7 @@ mod tests {
             forts: std::array::from_fn(|_| indexed_picture(1, 1, 0)),
             order_markers: indexed_picture(1, 1, 0),
             fleet_frames: Vec::new(),
-            fleet_atlas_id: 0,
+            fleet_atlas_id: PictureId::new(0),
             composed: HashMap::new(),
         };
 
@@ -1536,7 +1554,7 @@ mod tests {
             fleet_frames: (0..OCEAN_ATLAS_FRAME_COUNT)
                 .map(|frame| indexed_picture(1, 1, frame as u8))
                 .collect(),
-            fleet_atlas_id: 0,
+            fleet_atlas_id: PictureId::new(0),
             composed: HashMap::new(),
         };
         let selected = naval_selection_sprite(

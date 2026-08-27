@@ -1,5 +1,6 @@
 use crate::ui::generated;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
+use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::session::apply_turn_stop;
 use crate::ui::window::{ModalWindow, bind_modal_keys};
 use crate::ui::{GameSession, RetailUiAssets};
@@ -9,10 +10,9 @@ use bevy::prelude::*;
 use bevy::text::EditableText;
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::ResourceTable;
-use imperialism_formats::{PictureId, fourcc};
+use imperialism_formats::fourcc;
 
 const ROW_HEIGHT: i32 = 0x20;
-const ICON_PICTURE_BASE: i16 = 700;
 
 #[derive(Component)]
 struct TownNamingRoot;
@@ -66,12 +66,10 @@ fn bind_town_naming(
     let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
         return;
     };
-    let suggestion = retail_assets
-        .string(
-            0x1c52,
-            i16::from(session.game.roll_pending_town_name_suggestion()),
-        )
-        .expect("retail town-name string");
+    let suggestion = retail_assets.ui_string(
+        0x1c52,
+        u16::from(session.game.roll_pending_town_name_suggestion()),
+    );
     let yields = session.game.nations().major(nation).towns[&tile].resource_yield_by_type;
     let visible = yields.values().filter(|&&amount| amount != 0).count() as i32;
     let extra_height = visible * ROW_HEIGHT;
@@ -132,12 +130,7 @@ fn spawn_resource_rows(
         if amount == 0 {
             continue;
         }
-        let icon = assets
-            .keyed_picture(
-                PictureId::new(ICON_PICTURE_BASE + i16::from(resource.retail())),
-                0x10,
-            )
-            .expect("retail town resource icon");
+        let icon = assets.keyed_picture(resource.material_picture(), 0x10);
         commands
             .spawn_scene(town_resource_row(row, icon, amount))
             .insert(ChildOf(parent));

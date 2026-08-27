@@ -159,8 +159,8 @@ impl Default for CityTechnologyCapabilities {
     }
 }
 
-/// The 29 retail technology slots. Numeric discriminants match save/oracle IDs;
-/// string group `0x2712` uses the same order via `GetString` (offset + 1).
+/// The 29 retail technology slots. Numeric discriminants match save/oracle IDs
+/// and the retail technology table ordinal.
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
 )]

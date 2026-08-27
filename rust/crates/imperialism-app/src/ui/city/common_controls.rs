@@ -36,7 +36,7 @@ pub(in crate::ui::city) fn city_building_name(
     assets: &RetailUiAssets,
     slot: CityFacilitySlot,
 ) -> String {
-    city_string(assets, CITY_BUILDING_STRING_GROUP, i16::from(slot.retail()))
+    assets.string(slot.name_string())
 }
 
 pub(in crate::ui::city) struct CityOrderRow {
@@ -282,7 +282,7 @@ pub(in crate::ui::city) fn render_industry(
     ui: &mut CityUi,
 ) {
     let city = &session.game.nations().major(nation).city;
-    let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
+    let capacity_template = city_text(assets, 0x10);
     ui.text(
         view.capacity,
         format_retail_number(&capacity_template, city.production_orders[slot]),
@@ -391,26 +391,5 @@ pub(in crate::ui::city) fn bind_rail(
             fill,
             limit,
         },
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {
-        assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::OilRefinery.retail())),
-            7
-        );
-        assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::Shipyard.retail())),
-            8
-        );
-        assert_eq!(
-            city_string_index(i16::from(CityFacilitySlot::Armory.retail())),
-            9
-        );
     }
 }

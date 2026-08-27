@@ -61,12 +61,9 @@ pub(in crate::ui::city) fn bind_warehouse(
     if advanced_production_unlocked {
         let picture = PictureId::new(9215);
         let dialog = tree.find(root, fourcc!("DLOG"));
-        match assets.picture(picture) {
-            Ok(handle) => {
-                commands.entity(dialog).insert(ImageNode::new(handle));
-            }
-            Err(error) => warn!("could not load Warehouse picture {picture}: {error}"),
-        }
+        commands
+            .entity(dialog)
+            .insert(ImageNode::new(assets.picture(picture)));
         commands
             .entity(dialog)
             .entry::<Node>()
@@ -276,8 +273,8 @@ pub(in crate::ui::city) fn render_population(
 ) {
     let major = session.game.nations().major(nation);
     let city = &major.city;
-    let capacity_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x10);
-    let province_template = city_string(assets, CITY_TEXT_STRING_GROUP, 0x1d);
+    let capacity_template = city_text(assets, 0x10);
+    let province_template = city_text(assets, 0x1d);
     render_rail(session, nation, &view.rail, ui);
     ui.visible(view.food, city.stockpile[ResourceKind::Food] >= 1);
     ui.visible(view.clothing, city.stockpile[ResourceKind::Clothing] >= 1);

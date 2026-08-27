@@ -213,17 +213,13 @@ pub(in crate::ui::city) fn city_building_picture(
         return None;
     }
     if slot == CityFacilitySlot::PowerPlant {
-        return Some(PictureId::new(if city.power_plant_upgrade_queued {
-            7011
+        return Some(if city.power_plant_upgrade_queued {
+            PictureId::new(7011)
         } else {
-            7027
-        }));
+            PictureId::new(7027)
+        });
     }
-    let offset = i16::from(slot.retail());
-    let normal = level == 0 || offset > 5 || !expanding || !slot.is_capacity_center();
-    Some(PictureId::new(
-        (if normal { 7000 } else { 7300 }) + level * 16 + offset,
-    ))
+    Some(slot.city_view_picture(level, expanding))
 }
 
 pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands) {
@@ -388,20 +384,11 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     let mut hit_regions = Vec::new();
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
-        let offset = i16::from(visual.slot as u8);
-        let mask_picture = PictureId::new(7100 + level * 16 + offset);
-        let mask = match assets.indexed_picture(mask_picture) {
-            Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(&indexed) {
-                Some(mask) => mask,
-                None => {
-                    warn!("city building mask {mask_picture} has no usable silhouette");
-                    continue;
-                }
-            },
-            Err(error) => {
-                warn!("could not decode city building mask {mask_picture}: {error}");
-                continue;
-            }
+        let mask_picture = visual.slot.city_hit_mask_picture(level);
+        let indexed = assets.indexed_picture(mask_picture);
+        let Some(mask) = CityBuildingHitMask::from_indexed_picture(&indexed) else {
+            warn!("city building mask {mask_picture} has no usable silhouette");
+            continue;
         };
         commands.spawn((
             Node {
@@ -496,16 +483,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
         .filter(|action| city_building_level(state, nation, action.slot) == i16::from(action.level))
         .collect();
     for (draw_order, action) in active_actions.iter().enumerate() {
-        let indexed = match assets.indexed_picture(action.picture_id) {
-            Ok(indexed) => indexed,
-            Err(error) => {
-                warn!(
-                    "could not decode city action strip {}: {error}",
-                    action.picture_id
-                );
-                continue;
-            }
-        };
+        let indexed = assets.indexed_picture(action.picture_id);
         let strip_width = u32::try_from(action.frame_size[0] * i32::from(action.frame_count))
             .expect("generated city action strip has a positive width");
         let frame_height = u32::try_from(action.frame_size[1])
@@ -534,7 +512,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
                 ]);
             }
         }
-        let handle = match assets.transformed_picture(action.picture_id, |image| {
+        let handle = assets.transformed_picture(action.picture_id, |image| {
             apply_city_action_transparency(
                 image,
                 &indexed,
@@ -542,16 +520,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
                 action.frame_count,
                 &occlusions,
             );
-        }) {
-            Ok(handle) => handle,
-            Err(error) => {
-                warn!(
-                    "could not prepare city action strip {}: {error}",
-                    action.picture_id
-                );
-                continue;
-            }
-        };
+        });
         let frame_width = action.frame_size[0] as f32;
         let frame_height = action.frame_size[1] as f32;
         commands.spawn((
@@ -677,12 +646,7 @@ pub(in crate::ui::city) fn render_city_screen(
         });
     let text = hovered.map_or_else(String::new, |building| {
         if city_oil_industry_unlocked(&session.game, nation, building.slot) {
-            assets
-                .string(
-                    CITY_BUILDING_STRING_GROUP,
-                    city_string_index(i16::from(building.slot.retail())),
-                )
-                .expect("retail English City string")
+            assets.string(building.slot.name_string())
         } else {
             String::new()
         }
@@ -712,28 +676,17 @@ pub(in crate::ui::city) fn render_city_buildings(
             *visibility = Visibility::Visible;
             continue;
         }
-        let indexed = match assets.indexed_picture(picture) {
-            Ok(indexed) => indexed,
-            Err(error) => {
-                warn!("could not decode indexed city building picture {picture}: {error}");
-                continue;
-            }
-        };
+        let indexed = assets.indexed_picture(picture);
         if indexed.width == 0 || indexed.height == 0 {
             warn!("city building picture {picture} has no pixels");
             continue;
         }
         let transparent = indexed.pixels[(indexed.height as usize - 1) * indexed.width as usize];
-        match assets.transformed_picture(picture, |picture_image| {
+        image.image = assets.transformed_picture(picture, |picture_image| {
             apply_index_transparency(picture_image, &indexed, transparent);
-        }) {
-            Ok(handle) => {
-                image.image = handle;
-                sprite.picture = Some(picture);
-                *visibility = Visibility::Visible;
-            }
-            Err(error) => warn!("could not load city building picture {picture}: {error}"),
-        }
+        });
+        sprite.picture = Some(picture);
+        *visibility = Visibility::Visible;
     }
     for (action, mut visibility) in &mut actions {
         *visibility = if city_building_action_enabled(city, action.slot) {

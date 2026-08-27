@@ -2,9 +2,10 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar, get_string};
+use super::hover_help::{HoverHelpBarStyle, bind_hover_help_bar};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, RetailUiAssets};
+use super::retail_resources::ResourceKindRetailResources;
 use super::session::{GameSession, apply_turn_stop};
 use crate::AppState;
 use bevy::input_focus::AutoFocus;
@@ -13,10 +14,8 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::*;
-use imperialism_formats::{PictureId, fourcc};
-
-const COMMODITY_ICON_BASE: i16 = 700;
-const OFFER_STRING_GROUP: i16 = 0x2740;
+use imperialism_formats::{RetailTextStylePreset, fourcc};
+const OFFER_STRING_GROUP: u16 = 0x2740;
 
 #[derive(Component)]
 struct OfferSheetRoot;
@@ -115,9 +114,56 @@ fn bind_offer_sheet_text(
     root: Entity,
     tree: &RetailTree,
 ) {
-    commands
-        .entity(tree.find(root, fourcc!("info")))
-        .insert(Text::new(get_string(assets, OFFER_STRING_GROUP, 9)));
+    let text_style = |assets: &mut RetailUiAssets, alignment| {
+        assets
+            .text_style(RetailTextStylePreset::explicit(0, 0, 12, alignment))
+            .expect("retail offer-sheet text style")
+    };
+    let (body, center, body_height, _) = text_style(assets, 1);
+    commands.entity(tree.find(root, fourcc!("offe"))).insert((
+        body.clone(),
+        center,
+        body_height,
+        TextColor(Color::BLACK),
+    ));
+    let (body, right, body_height, _) = text_style(assets, -1);
+    commands.entity(tree.find(root, fourcc!("purT"))).insert((
+        body.clone(),
+        right,
+        body_height,
+        TextColor(Color::BLACK),
+    ));
+    let (body, left, body_height, _) = text_style(assets, -2);
+    for tag in [fourcc!("unit"), fourcc!("noof")] {
+        commands.entity(tree.find(root, tag)).insert((
+            body.clone(),
+            left,
+            body_height,
+            TextColor(Color::BLACK),
+        ));
+    }
+    let (number, center, number_height, _) = assets
+        .text_style(RetailTextStylePreset::explicit(0, 0, 14, 1))
+        .expect("retail offer-sheet number text style");
+    for tag in [fourcc!("purc"), fourcc!("mCap")] {
+        commands.entity(tree.find(root, tag)).insert((
+            number.clone(),
+            center,
+            number_height,
+            TextColor(Color::BLACK),
+        ));
+    }
+    commands.entity(tree.find(root, fourcc!("info"))).insert((
+        Text::new(assets.get_string(OFFER_STRING_GROUP, 9)),
+        body,
+        TextLayout::justify(Justify::Center),
+        body_height,
+        TextColor(assets.palette_color(0x28)),
+        TextShadow {
+            offset: Vec2::new(1.0, 1.0),
+            color: assets.palette_color(0xd2),
+        },
+    ));
 }
 
 fn bind_offer_sheet_controls(
@@ -187,27 +233,23 @@ fn render_offer_sheet(
         .display_name(offer.seller)
         .unwrap_or("")
         .to_owned();
-    let commodity = get_string(
-        &assets,
-        0x2711,
-        i16::from(offer.commodity.resource().retail()),
-    );
+    let commodity = assets.string(offer.commodity.resource().name_string());
     let amount = offer.amount.to_string();
     let price = format_currency(i32::from(offer.price));
     commands.entity(view.offer).insert(Text::new(fill_brackets(
-        &get_string(&assets, OFFER_STRING_GROUP, 0xc),
+        &assets.get_string(OFFER_STRING_GROUP, 0xc),
         &[&offering, &amount, &commodity, &price],
     )));
     commands
         .entity(view.purchase_title)
-        .insert(Text::new(get_string(&assets, OFFER_STRING_GROUP, 0xe)));
+        .insert(Text::new(assets.get_string(OFFER_STRING_GROUP, 0xe)));
     commands
         .entity(view.unit)
-        .insert(Text::new(get_string(&assets, OFFER_STRING_GROUP, 0xf)));
+        .insert(Text::new(assets.get_string(OFFER_STRING_GROUP, 0xf)));
     commands
         .entity(view.no_offer)
         .insert(Text::new(fill_brackets(
-            &get_string(&assets, OFFER_STRING_GROUP, 0xf),
+            &assets.get_string(OFFER_STRING_GROUP, 0xf),
             &[&commodity],
         )));
 
@@ -230,12 +272,8 @@ fn render_offer_sheet(
             ..EditableText::new(offer.amount.to_string())
         };
     }
-    if let Ok(icon) = assets.keyed_picture(
-        PictureId::new(COMMODITY_ICON_BASE + i16::from(offer.commodity.resource().retail())),
-        0x10,
-    ) {
-        commands.entity(view.icon).insert(ImageNode::new(icon));
-    }
+    let icon = assets.keyed_picture(offer.commodity.resource().material_picture(), 0x10);
+    commands.entity(view.icon).insert(ImageNode::new(icon));
 
     commands.entity(view.stop_buying).remove::<Checked>();
 }
@@ -271,14 +309,14 @@ fn bind_offer_answer(commands: &mut Commands, button: Entity, accept: bool) {
                 else {
                     spawn_offer_quantity_error(
                         &mut commands,
-                        get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                        assets.get_string(OFFER_STRING_GROUP, 0x10),
                     );
                     return;
                 };
                 if amount < 0 || amount > offer.amount {
                     spawn_offer_quantity_error(
                         &mut commands,
-                        get_string(&assets, OFFER_STRING_GROUP, 0x10),
+                        assets.get_string(OFFER_STRING_GROUP, 0x10),
                     );
                     return;
                 }

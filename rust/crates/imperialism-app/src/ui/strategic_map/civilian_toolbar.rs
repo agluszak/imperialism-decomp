@@ -7,6 +7,7 @@ use super::map_interaction::StrategicSelection;
 use super::map_modals::{spawn_civilian_disband, spawn_civilian_roster};
 use crate::AppState;
 use crate::ui::GameSession;
+use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -18,12 +19,10 @@ const PORTRAIT_TAG: FourCc = fourcc!("unit");
 const LEGEND_TAG: FourCc = fourcc!("back");
 const CIVILIAN_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x8f as f32);
 const CIVILIAN_PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const PORTRAIT_PICTURE_BASE: i16 = 0x438;
-const CIVILIAN_NAME_GROUP: i16 = 0x2718;
-const CIVILIAN_LEGEND_GROUP: i16 = 0x272d;
-const RESOURCE_ICON_ATLAS: i16 = 750;
-const DEVELOPMENT_STRIP_ATLAS: i16 = 751;
-const TERRAIN_ICON_ATLAS: i16 = 801;
+const CIVILIAN_LEGEND_GROUP: u16 = 0x272d;
+const RESOURCE_ICON_ATLAS: PictureId = PictureId::new(750);
+const DEVELOPMENT_STRIP_ATLAS: PictureId = PictureId::new(751);
+const TERRAIN_ICON_ATLAS: PictureId = PictureId::new(801);
 const RESOURCE_ICON_SIZE: Vec2 = Vec2::new(20.0, 24.0);
 const TERRAIN_ICON_SIZE: Vec2 = Vec2::new(20.0, 20.0);
 const DEVELOPMENT_FRAME_SIZE: Vec2 = Vec2::new(38.0, 26.0);
@@ -215,9 +214,7 @@ fn sync_civilian_toolbar(
     if let Ok(portrait) = portraits.single() {
         match unit {
             Some((_, unit)) => {
-                let picture = assets
-                    .picture(PictureId::new(portrait_picture_id(unit.unit_type())))
-                    .expect("retail civilian toolbar portrait must load");
+                let picture = assets.picture(unit.unit_type().portrait_picture());
                 commands
                     .entity(portrait)
                     .insert((ImageNode::new(picture), Visibility::Visible));
@@ -243,10 +240,6 @@ fn sync_civilian_toolbar(
         unit,
         atlases.clone(),
     );
-}
-
-fn portrait_picture_id(kind: CivilianUnitKind) -> i16 {
-    PORTRAIT_PICTURE_BASE + i16::from(kind.retail())
 }
 
 fn civilian_legend_target_counts(
@@ -295,9 +288,7 @@ fn spawn_civilian_legend(
     atlases: LegendAtlases,
 ) {
     let kind = unit.unit_type();
-    let name = assets
-        .string(CIVILIAN_NAME_GROUP, i16::from(kind.retail()) + 1)
-        .expect("retail civilian class name must load");
+    let name = assets.string(kind.name_string());
     let (name_font, name_layout, name_line_height, _) = assets
         .text_style(RetailTextStylePreset::built(12, 1))
         .expect("retail civilian name text style");
@@ -680,9 +671,7 @@ fn spawn_developer_legend(
 }
 
 fn legend_string(assets: &RetailUiAssets, index: i16) -> String {
-    assets
-        .string(CIVILIAN_LEGEND_GROUP, index + 1)
-        .expect("retail civilian legend string must load")
+    assets.ui_string(CIVILIAN_LEGEND_GROUP, (index + 1) as u16)
 }
 
 fn legend_text_style(
@@ -758,10 +747,8 @@ fn spawn_atlas_icon(
     ));
 }
 
-fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: i16) -> Handle<Image> {
-    assets
-        .keyed_picture(PictureId::new(picture_id), TRANSPARENT_INDEX)
-        .expect("retail civilian legend atlas must load")
+fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: PictureId) -> Handle<Image> {
+    assets.keyed_picture(picture_id, TRANSPARENT_INDEX)
 }
 
 fn despawn_legend_items(

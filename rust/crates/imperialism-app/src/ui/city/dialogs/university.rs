@@ -25,20 +25,6 @@ pub(in crate::ui::city) struct UniversityUi {
     details: Entity,
 }
 
-pub(in crate::ui::city) const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
-    match kind {
-        CivilianUnitKind::Miner => 402,
-        CivilianUnitKind::Prospector => 403,
-        CivilianUnitKind::Farmer => 401,
-        CivilianUnitKind::Forester => 406,
-        CivilianUnitKind::Engineer => 400,
-        CivilianUnitKind::Rancher => 407,
-        CivilianUnitKind::Fisherman => 405,
-        CivilianUnitKind::Developer => 404,
-        CivilianUnitKind::Driller => 408,
-    }
-}
-
 pub(in crate::ui::city) fn bind_university(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
@@ -85,9 +71,7 @@ pub(in crate::ui::city) fn bind_university(
         (kind, SelectionRow(button, bound.quantity))
     });
     let dlog = tree.find(root, fourcc!("DLOG"));
-    let details_base = assets
-        .indexed_picture(PictureId::new(9900))
-        .expect("dialog pic");
+    let details_base = assets.indexed_picture(PictureId::new(9900));
     commands.entity(dlog).insert(ImageNode::new(
         assets.add_image(details_base.to_image(assets.default_dib_palette())),
     ));
@@ -165,18 +149,8 @@ pub(in crate::ui::city) fn render_university(
         .map(|resource| levels[*resource])
         .max()
         .unwrap_or(UniversityRequirementLevel::None);
-    ui.text(
-        view.unit,
-        assets
-            .string(0x2718, i16::from(kind.retail()) + 1)
-            .expect("civilian name"),
-    );
-    ui.text(
-        view.description,
-        assets
-            .string(0x2751, i16::from(kind.retail()) + 1)
-            .expect("civilian desc"),
-    );
+    ui.text(view.unit, assets.string(kind.name_string()));
+    ui.text(view.description, assets.string(kind.description_string()));
     let values = [
         1.to_string(),
         spec.primary.per_unit().to_string(),
@@ -206,14 +180,10 @@ pub(in crate::ui::city) fn render_university(
     for (entity, index) in view.tier_labels.iter().zip(0..3) {
         ui.visible(*entity, (index as u8) < maximum.retail());
     }
-    let mut picture = assets
-        .indexed_picture(PictureId::new(9900))
-        .expect("dialog pic");
-    let preview = assets
-        .indexed_picture(PictureId::new(university_preview_picture(kind)))
-        .expect("preview pic");
+    let mut picture = assets.indexed_picture(PictureId::new(9900));
+    let preview = assets.indexed_picture(kind.university_preview_picture());
     picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
-    let icons = assets.indexed_picture(PictureId::new(750)).expect("icons");
+    let icons = assets.indexed_picture(PictureId::new(750));
     for entity in yield_texts.iter() {
         ui.commands.entity(entity).despawn();
     }
