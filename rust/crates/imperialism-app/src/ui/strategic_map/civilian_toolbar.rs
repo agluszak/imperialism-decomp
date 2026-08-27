@@ -267,9 +267,8 @@ fn spawn_civilian_legend(
 ) {
     let kind = unit.unit_type();
     let name = assets.string(kind.name_string());
-    let (name_font, name_layout, name_line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(12, 1))
-        .expect("retail civilian name text style");
+    let (name_font, name_layout, name_line_height, _) =
+        assets.text_style(RetailTextStylePreset::built(12, 1));
     spawn_legend_text(
         commands,
         legend,
@@ -655,9 +654,7 @@ fn legend_string(assets: &RetailUiAssets, index: i16) -> String {
 fn legend_text_style(
     assets: &mut RetailUiAssets,
 ) -> (TextFont, TextLayout, bevy::text::LineHeight, bool) {
-    assets
-        .text_style(RetailTextStylePreset::built(10, -2))
-        .expect("retail civilian legend text style")
+    assets.text_style(RetailTextStylePreset::built(10, -2))
 }
 
 #[allow(clippy::too_many_arguments)]

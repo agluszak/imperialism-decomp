@@ -1,7 +1,6 @@
 use super::retail_raster::IndexedRasterExt;
 use crate::{RetailAssetsResource, RetailFont, RetailFonts};
 use bevy::asset::RenderAssetUsages;
-use bevy::ecs::query::{QueryData, QueryFilter};
 use bevy::ecs::system::SystemParam;
 use bevy::ecs::template::TemplateContext;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
@@ -86,13 +85,7 @@ pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
     bsn! {
         template(move |context| {
             let idle = load_template_picture(context, PictureId::new(idle))?;
-            let active = match load_template_picture(context, PictureId::new(active)) {
-                Ok(active) => active,
-                Err(error) => {
-                    warn!("could not preload active retail picture {active}: {error}");
-                    idle.clone()
-                }
-            };
+            let active = load_template_picture(context, PictureId::new(active))?;
             // Generated radios/checkboxes often already have `Checked` (or `Pressed`)
             // before this template runs; observers on `Add<Checked>` would miss it.
             let initial = if context.entity.get::<Pressed>().is_some()
@@ -127,14 +120,9 @@ pub fn retail_madness_picture(base: i16) -> impl Scene {
         template(move |context| {
             let frames = std::array::from_fn(|index| {
                 let id = base + index as i16;
-                match load_template_picture(context, PictureId::new(id)) {
-                    Ok(handle) => handle,
-                    Err(error) => {
-                        warn!("could not preload madness picture {id}: {error}");
-                        load_template_picture(context, PictureId::new(base))
-                            .unwrap_or_else(|_| Handle::default())
-                    }
-                }
+                load_template_picture(context, PictureId::new(id)).unwrap_or_else(|error| {
+                    panic!("retail madness picture {id} must load: {error}")
+                })
             });
             // Derive the opening frame from components already on the entity;
             // do not rely on a later `Add` observer to correct construction.
@@ -393,7 +381,7 @@ impl RetailUiAssets<'_> {
     }
 
     /// Soft-fail picture load for cases where retail itself tolerates a missing bitmap.
-    pub fn try_picture(
+    fn try_picture(
         &mut self,
         picture_id: PictureId,
     ) -> Result<Handle<Image>, RetailPictureError> {
@@ -456,14 +444,13 @@ impl RetailUiAssets<'_> {
     }
 
     pub fn text_style(
-        &mut self,
+        &self,
         preset: RetailTextStylePreset,
-    ) -> Result<(TextFont, TextLayout, LineHeight, bool), RetailTextStyleError> {
-        let style = resolve_retail_text_style(preset)?;
-        Ok(retail_text_components(
-            style,
-            self.retail_fonts.get(style.face),
-        ))
+    ) -> (TextFont, TextLayout, LineHeight, bool) {
+        let style = resolve_retail_text_style(preset).unwrap_or_else(|error| {
+            panic!("retail text style {preset:?} must resolve: {error}")
+        });
+        retail_text_components(style, self.retail_fonts.get(style.face))
     }
 }
 
@@ -756,16 +743,6 @@ impl RetailView<'_, '_, '_> {
     pub fn child(&self, tag: FourCc) -> Entity {
         self.tree.child(self.root, tag)
     }
-}
-
-pub fn ancestor_with<D: QueryData, F: QueryFilter>(
-    entity: Entity,
-    parents: &Query<&ChildOf>,
-    query: &Query<D, F>,
-) -> Option<Entity> {
-    std::iter::once(entity)
-        .chain(parents.iter_ancestors(entity))
-        .find(|&entity| query.contains(entity))
 }
 
 #[cfg(test)]

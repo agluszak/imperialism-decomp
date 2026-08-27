@@ -7,7 +7,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
-use super::retail::{RetailTree, ancestor_with};
+use super::retail::RetailTree;
 use super::retail_raster::{IndexedRasterExt, indexed_picture};
 use super::satellite_preview::nation_owner_palette;
 use super::session::apply_turn_stop;
@@ -437,9 +437,8 @@ fn bind_diplomacy_screen(
         grants: assets.picture(PictureId::new(5004)),
         trade: assets.picture(PictureId::new(5005)),
     };
-    let (map_font, map_layout, map_line_height, _) = assets
-        .text_style(RetailTextStylePreset::built(10, 1))
-        .expect("retail diplomacy map label style");
+    let (map_font, map_layout, map_line_height, _) =
+        assets.text_style(RetailTextStylePreset::built(10, 1));
     let styles = DiplomacyTextStyles {
         map_font,
         map_layout,
@@ -1144,37 +1143,26 @@ fn bind_diplomacy_entanglement_notice(
     commands.entity(linger.coat).insert(ImageNode::new(
         assets.picture(diplomacy_coat_picture(source)),
     ));
+    let target = notice.target;
+    let policy = notice.policy;
     commands
         .entity(linger.okay)
         .remove::<InteractionDisabled>()
-        .observe(on_diplomacy_entanglement_activate);
+        .observe(
+            move |_: On<Activate>, mut session: ResMut<GameSession>, mut commands: Commands| {
+                let source = session.active_major_nation();
+                if let Some(rejection) = player_diplomacy_rejection(
+                    session
+                        .game
+                        .toggle_player_diplomacy_policy(source, target, policy, true),
+                ) {
+                    commands.trigger(OpenDiplomacyRejectionNotice { rejection });
+                }
+            },
+        );
     commands
         .entity(linger.cancel)
         .remove::<InteractionDisabled>();
-}
-
-fn on_diplomacy_entanglement_activate(
-    activate: On<Activate>,
-    parents: Query<&ChildOf>,
-    notices: Query<(Entity, &DiplomacyEntanglementNotice)>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-) {
-    let root = ancestor_with(activate.entity, &parents, &notices)
-        .expect("diplomacy entanglement close belongs to its dialog");
-    let (_, notice) = notices
-        .get(root)
-        .expect("diplomacy entanglement close belongs to its dialog");
-    let target = notice.target;
-    let policy = notice.policy;
-    let source = session.active_major_nation();
-    if let Some(rejection) = player_diplomacy_rejection(
-        session
-            .game
-            .toggle_player_diplomacy_policy(source, target, policy, true),
-    ) {
-        commands.trigger(OpenDiplomacyRejectionNotice { rejection });
-    }
 }
 
 fn diplomacy_entanglement_body(
@@ -1336,9 +1324,7 @@ fn spawn_panel_text(
     preset: RetailTextStylePreset,
     alignment: Justify,
 ) {
-    let (font, _layout, line_height, _) = assets
-        .text_style(preset)
-        .expect("retail diplomacy panel text style");
+    let (font, _layout, line_height, _) = assets.text_style(preset);
     let logical_height = resolve_retail_text_style(preset)
         .map(|style| style.logical_pixel_height)
         .unwrap_or(14);

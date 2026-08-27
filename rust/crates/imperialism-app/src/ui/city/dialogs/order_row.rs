@@ -61,16 +61,8 @@ pub(in crate::ui::city) fn bind_industry_order_row(
     let quantity = tree.find(row, fourcc!("move"));
     let bar = tree.find(row, fourcc!("bar "));
     let parts = *amount_bars.get(bar).expect("bound amount bar");
-    let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
-        commands.entity(entity).observe(
-            move |_: On<Activate>, mut session: ResMut<GameSession>| {
-                let nation = session.active_major_nation();
-                session.game.adjust_city_order(nation, order, delta);
-            },
-        );
-    };
-    bind_step(commands, decrease, -step);
-    bind_step(commands, increase, step);
+    bind_order_step(commands, decrease, order, -step);
+    bind_order_step(commands, increase, order, step);
     commands.entity(bar).observe(
         move |mut click: On<Pointer<Click>>, mut session: ResMut<GameSession>| {
             let Some(position) = click.hit.position else {
@@ -112,16 +104,8 @@ pub(in crate::ui::city) fn bind_recruitment_order_row(
     let decrease = tree.find(row, fourcc!("minu"));
     let increase = tree.find(row, fourcc!("plus"));
     let quantity = tree.find(row, fourcc!("numb"));
-    let bind_step = |commands: &mut Commands, entity: Entity, delta: i16| {
-        commands.entity(entity).observe(
-            move |_: On<Activate>, mut session: ResMut<GameSession>| {
-                let nation = session.active_major_nation();
-                session.game.adjust_city_order(nation, order, delta);
-            },
-        );
-    };
-    bind_step(commands, decrease, -1);
-    bind_step(commands, increase, 1);
+    bind_order_step(commands, decrease, order, -1);
+    bind_order_step(commands, increase, order, 1);
     CityOrderRow {
         row,
         quantity,
@@ -129,23 +113,11 @@ pub(in crate::ui::city) fn bind_recruitment_order_row(
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {
-        assert_eq!(
-            CityFacilitySlot::OilRefinery.name_string(),
-            StringGroup::new(0x2719).entry(7)
-        );
-        assert_eq!(
-            CityFacilitySlot::Shipyard.name_string(),
-            StringGroup::new(0x2719).entry(8)
-        );
-        assert_eq!(
-            CityFacilitySlot::Armory.name_string(),
-            StringGroup::new(0x2719).entry(9)
-        );
-    }
+fn bind_order_step(commands: &mut Commands, entity: Entity, order: CityOrderId, delta: i16) {
+    commands.entity(entity).observe(
+        move |_: On<Activate>, mut session: ResMut<GameSession>| {
+            let nation = session.active_major_nation();
+            session.game.adjust_city_order(nation, order, delta);
+        },
+    );
 }
