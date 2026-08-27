@@ -215,32 +215,21 @@ fn bind_transport_view(
         commands.entity(row).insert(HoverHelpText(String::new()));
         let decrease = tree.find(row, fourcc!("left"));
         let increase = tree.find(row, fourcc!("rght"));
-        commands.entity(decrease).observe(
-            move |activate: On<Activate>,
-                  disabled: Query<Has<InteractionDisabled>>,
-                  mut session: ResMut<GameSession>| {
-                if disabled.get(activate.entity).unwrap_or(false) {
-                    return;
-                }
-                let nation = session.active_major_nation();
-                session
-                    .game
-                    .step_transport_allocation(nation, binding.allocation, -1);
-            },
-        );
-        commands.entity(increase).observe(
-            move |activate: On<Activate>,
-                  disabled: Query<Has<InteractionDisabled>>,
-                  mut session: ResMut<GameSession>| {
-                if disabled.get(activate.entity).unwrap_or(false) {
-                    return;
-                }
-                let nation = session.active_major_nation();
-                session
-                    .game
-                    .step_transport_allocation(nation, binding.allocation, 1);
-            },
-        );
+        for (entity, delta) in [(decrease, -1), (increase, 1)] {
+            commands.entity(entity).observe(
+                move |activate: On<Activate>,
+                      disabled: Query<Has<InteractionDisabled>>,
+                      mut session: ResMut<GameSession>| {
+                    if disabled.get(activate.entity).unwrap_or(false) {
+                        return;
+                    }
+                    let nation = session.active_major_nation();
+                    session
+                        .game
+                        .step_transport_allocation(nation, binding.allocation, delta);
+                },
+            );
+        }
         let money = match binding.allocation {
             TransportAllocation::GOLD | TransportAllocation::GEMS => {
                 Some(tree.find(row, fourcc!("valu")))
@@ -539,6 +528,7 @@ mod tests {
                 ChildOf(root),
             ))
             .id();
+        world.entity_mut(fill).insert(ChildOf(total));
         world.spawn((
             RetailTag(fourcc!("text")),
             Node::default(),
@@ -556,6 +546,8 @@ mod tests {
                     ChildOf(root),
                 ))
                 .id();
+            world.entity_mut(fill).insert(ChildOf(row));
+            world.entity_mut(limit).insert(ChildOf(row));
             world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
             world.spawn((
@@ -637,5 +629,42 @@ mod tests {
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
+    }
+
+    #[test]
+    fn transport_gauge_overlays_are_children_of_their_row() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin));
+        let root = spawn_transport_hierarchy(app.world_mut());
+        app.update();
+
+        let fish = app
+            .world_mut()
+            .query::<(Entity, &RetailTag, &TransportGaugeParts)>()
+            .iter(app.world())
+            .find(|(_, tag, _)| tag.0 == fourcc!("fish"))
+            .map(|(entity, _, parts)| (entity, *parts))
+            .expect("fish row");
+        let (row, parts) = fish;
+        assert_eq!(
+            app.world().get::<ChildOf>(parts.fill).map(|c| c.0),
+            Some(row),
+            "fill must be a child of the transport row for inherited visibility"
+        );
+        assert_eq!(
+            app.world().get::<ChildOf>(parts.limit).map(|c| c.0),
+            Some(row),
+            "limit strip must be a child of the transport row for inherited visibility"
+        );
+        assert_ne!(parts.limit, Entity::PLACEHOLDER);
+
+        // Hiding the row must not leave orphan gauge overlays elsewhere in the tree.
+        app.world_mut().entity_mut(row).insert(Visibility::Hidden);
+        assert!(
+            app.world()
+                .get::<ChildOf>(parts.limit)
+                .is_some_and(|c| c.0 == row)
+        );
+        let _ = root;
     }
 }

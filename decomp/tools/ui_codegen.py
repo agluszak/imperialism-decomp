@@ -1860,6 +1860,85 @@ def _rust_picture_swap_ids(node: UiSemanticNode, picture_id: int) -> tuple[int, 
     return int(picture_id), int(picture_id) + 1
 
 
+def _rust_presentation_owns_children(presentation: str | None) -> bool:
+    """True when the Rust helper for this presentation emits its own `Children` list."""
+
+    return presentation in {
+        "placard",
+        "army_placard",
+        "ship_placard",
+        "transport_gauge",
+        "numbered_arrow",
+        "amount_bar",
+        "two_pic_slider",
+    }
+
+
+def _rust_transport_gauge_shell_and_children(
+    picture_id: int, track_left: int, capacity: bool
+) -> tuple[list[str], list[list[str]]]:
+    """Root components + synthetic child BSN nodes for a merged transport gauge.
+
+    Used when the recovered `TTransportPicture` already has resource children so
+    codegen emits exactly one `Children` owner.
+    """
+
+    fill_palette = 0x33 if capacity else 0x3A
+    shell = [
+        f"    retail_picture({picture_id})",
+    ]
+    if capacity:
+        shell.append(
+            "    TransportGaugeParts { fill: #TransportFill, limit: {Entity::PLACEHOLDER} }"
+        )
+    else:
+        shell.append(
+            "    TransportGaugeParts { fill: #TransportFill, limit: #TransportLimit }"
+        )
+    children: list[list[str]] = [
+        [
+            "(",
+            (
+                f"    Node {{ position_type: PositionType::Absolute, "
+                f"left: px({float(track_left)}), top: px({float(0x0D)}), "
+                f"width: px(113.), height: px({float(0x04)}) }}"
+            ),
+            "    retail_background_color(0x3b)",
+            "    Pickable::IGNORE",
+            ")",
+        ],
+        [
+            "(",
+            "    #TransportFill",
+            (
+                f"    Node {{ position_type: PositionType::Absolute, "
+                f"left: px({float(track_left)}), top: px({float(0x0D)}), "
+                f"width: px(0), height: px({float(0x04)}) }}"
+            ),
+            f"    retail_background_color({fill_palette})",
+            "    Pickable::IGNORE",
+            ")",
+        ],
+    ]
+    if not capacity:
+        children.append(
+            [
+                "(",
+                "    #TransportLimit",
+                (
+                    f"    Node {{ position_type: PositionType::Absolute, "
+                    f"left: px({float(track_left - 1)}), top: px({float(0x12)}), "
+                    f"width: px(115.), height: px({float(0x02)}) }}"
+                ),
+                "    retail_background_color(0x33)",
+                "    Visibility::Hidden",
+                "    Pickable::IGNORE",
+                ")",
+            ]
+        )
+    return shell, children
+
+
 def _rust_presentation(node: UiSemanticNode) -> str | None:
     """Which visual helper to emit for this recovered node.
 
@@ -2244,6 +2323,9 @@ def _render_bsn_node(
         lines.append("    InteractionDisabled")
 
     presentation = _rust_presentation(node)
+    recovered_children = children_by_parent.get(node.node_id, [])
+    merged_synthetic_children: list[list[str]] = []
+
     if presentation == "hover_help_bar":
         lines.append("    template(|_context| Ok(HoverHelpBar))")
         # Empty text until hover systems write; style comes from Windows deltas.
@@ -2302,12 +2384,20 @@ def _render_bsn_node(
     elif presentation == "transport_gauge":
         # track_left mirrors Refresh: ownerLocalX > 0xc8 => 0x5d else 0x61.
         track_left = 0x5D if int(node.geometry[0]) > 0xC8 else 0x61
-        helper = (
-            "retail_transport_capacity_gauge"
-            if node.tag == "tota"
-            else "retail_transport_gauge"
-        )
-        lines.append(f"    {helper}({int(picture_id)}, {track_left})")
+        capacity = node.tag == "tota"
+        if recovered_children:
+            # One Children owner: merge synthetic remainder/fill/limit with recovered kids.
+            shell, merged_synthetic_children = _rust_transport_gauge_shell_and_children(
+                int(picture_id), track_left, capacity
+            )
+            lines.extend(shell)
+        else:
+            helper = (
+                "retail_transport_capacity_gauge"
+                if capacity
+                else "retail_transport_gauge"
+            )
+            lines.append(f"    {helper}({int(picture_id)}, {track_left})")
     elif presentation == "pressed_overlay":
         lines.append(f"    retail_pressed_overlay_picture({int(picture_id)})")
     elif presentation == "madness":
@@ -2337,10 +2427,24 @@ def _render_bsn_node(
             f"{picture_base}, {scale}, {off_group}, {off_index})"
         )
 
-    children = children_by_parent.get(node.node_id, [])
-    if children:
+    if (
+        _rust_presentation_owns_children(presentation)
+        and recovered_children
+        and not merged_synthetic_children
+    ):
+        raise ValueError(
+            f"{node.tag}: presentation {presentation!r} owns Children but the recovered "
+            "node also has children; merge synthetic + recovered into one Children list "
+            "(see transport_gauge) rather than emitting two child owners"
+        )
+
+    if merged_synthetic_children or recovered_children:
         lines.append("    Children [")
-        for child in children:
+        for child_lines in merged_synthetic_children:
+            child_lines = list(child_lines)
+            child_lines[-1] += ","
+            lines.extend(_indent(child_lines, 8))
+        for child in recovered_children:
             rendered = _render_bsn_node(key, child, children_by_parent)
             rendered[-1] += ","
             lines.extend(_indent(rendered, 8))

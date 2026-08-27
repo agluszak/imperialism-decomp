@@ -586,6 +586,7 @@ fn on_turn_alert_dismiss(_activate: On<Activate>, mut queue: ResMut<TurnAlertQue
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ui::retail::RetailTag;
 
     #[test]
     fn strategic_scroll_uses_retail_dialog_edges_not_map_child_edges() {
@@ -632,6 +633,83 @@ mod tests {
         assert_eq!(
             strategic_edge_scroll_mask(Vec2::new(620.0, 120.0), dialog),
             MapEdges::empty()
+        );
+    }
+
+    #[test]
+    fn management_nav_marks_only_the_current_screen_checked() {
+        #[derive(Component)]
+        struct TestNavRoot;
+
+        fn bind_city_nav(
+            mut commands: Commands,
+            root: Single<Entity, Added<TestNavRoot>>,
+            tree: RetailTree,
+        ) {
+            bind_native_game_screen_nav(
+                &mut commands,
+                *root,
+                &tree,
+                fourcc!("topB"),
+                None,
+                false,
+                AppState::City,
+            );
+        }
+
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_systems(Update, bind_city_nav);
+        let root = app.world_mut().spawn((TestNavRoot, Node::default())).id();
+        let toolbar = app
+            .world_mut()
+            .spawn((RetailTag(fourcc!("topB")), Node::default(), ChildOf(root)))
+            .id();
+        for tag in [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")] {
+            app.world_mut()
+                .spawn((RetailTag(tag), Node::default(), ChildOf(toolbar)));
+        }
+        app.update();
+
+        let mut checked = Vec::new();
+        let mut enabled = Vec::new();
+        let nav_tags = [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")];
+        for (tag, has_checked, disabled) in app
+            .world_mut()
+            .query::<(&RetailTag, Has<Checked>, Has<InteractionDisabled>)>()
+            .iter(app.world())
+        {
+            if !nav_tags.contains(&tag.0) {
+                continue;
+            }
+            if has_checked {
+                checked.push(tag.0);
+            }
+            if !disabled {
+                enabled.push(tag.0);
+            }
+        }
+        assert_eq!(checked, vec![fourcc!("city")]);
+        assert_eq!(enabled.len(), 3);
+        assert!(!enabled.contains(&fourcc!("city")));
+    }
+
+    #[test]
+    fn ordinary_shell_buttons_do_not_use_press_time_activation() {
+        let source = include_str!("game_shell.rs");
+        let binder = source
+            .split("pub(crate) fn bind_native_game_screen_nav")
+            .nth(1)
+            .and_then(|rest| rest.split("#[derive(Component)]").next())
+            .expect("nav binder");
+        let end_turn = source
+            .split("fn bind_strategic_map")
+            .nth(1)
+            .and_then(|rest| rest.split("fn on_end_turn").next())
+            .expect("strategic bind");
+        assert!(
+            !binder.contains("OnPress") && !end_turn.contains("OnPress"),
+            "DONE/nav/leave must activate on release"
         );
     }
 }

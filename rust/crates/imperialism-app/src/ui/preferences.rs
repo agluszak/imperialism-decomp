@@ -1,7 +1,7 @@
 use super::generated;
 use super::hover_help::{HoverHelpText, bind_hover_help_texts};
 use super::query_floater::bind_query_floater_control;
-use super::retail::{RetailTree, RetailUiAssets};
+use super::retail::{RetailTree, RetailTwoPicSliderParts, RetailUiAssets};
 use crate::media::RetailAudioAssets;
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
@@ -144,6 +144,7 @@ fn bind_preferences(
     tree: RetailTree,
     prefs: Res<GamePreferences>,
     assets: RetailUiAssets,
+    slider_parts: Query<&RetailTwoPicSliderParts>,
 ) {
     let root = *root;
     bind_query_floater_control(&mut commands, root, &tree);
@@ -199,10 +200,19 @@ fn bind_preferences(
 
     let music_hover = assets.ui_string(0x2743, 0x27);
     let sound_hover = assets.ui_string(0x2743, 0x26);
-    let music = tree.find(root, fourcc!("musi"));
-    let sound = tree.find(root, fourcc!("soun"));
+    let music_root = tree.find(root, fourcc!("musi"));
+    let sound_root = tree.find(root, fourcc!("soun"));
+    let music = slider_parts
+        .get(music_root)
+        .expect("bound music two-pic slider")
+        .input;
+    let sound = slider_parts
+        .get(sound_root)
+        .expect("bound sound two-pic slider")
+        .input;
     bind_volume_slider(
         &mut commands,
+        music_root,
         music,
         prefs.values[PreferenceSlot::MusicVolume],
         music_hover,
@@ -210,6 +220,7 @@ fn bind_preferences(
     );
     bind_volume_slider(
         &mut commands,
+        sound_root,
         sound,
         prefs.values[PreferenceSlot::SoundVolume],
         sound_hover,
@@ -240,45 +251,36 @@ fn bind_preferences(
 
 fn bind_volume_slider(
     commands: &mut Commands,
-    slider: Entity,
+    root: Entity,
+    input: Entity,
     value: i16,
     hover: String,
     slot: PreferenceSlot,
 ) {
-    // Slider + retained two-pic presentation come from codegen for TTwoPicSlider.
-    let mut entity = commands.entity(slider);
+    // Stock Slider lives on the height-12 track child; hover stays on the recovered root.
+    commands
+        .entity(root)
+        .insert(HoverHelpText(hover))
+        .remove::<InteractionDisabled>();
+    let mut entity = commands.entity(input);
     entity
-        .insert((SliderValue(f32::from(value)), HoverHelpText(hover)))
+        .insert(SliderValue(f32::from(value)))
         .observe(slider_self_update)
         .remove::<InteractionDisabled>();
-    match slot {
-        PreferenceSlot::MusicVolume => {
-            entity.observe(
-                |change: On<ValueChange<f32>>, mut prefs: ResMut<GamePreferences>| {
-                    prefs.values[PreferenceSlot::MusicVolume] = change.value as i16;
-                },
-            );
-        }
-        PreferenceSlot::SoundVolume => {
-            entity.observe(
-                |change: On<ValueChange<f32>>, mut prefs: ResMut<GamePreferences>| {
-                    if change.is_final {
-                        prefs.values[PreferenceSlot::SoundVolume] = change.value as i16;
-                    }
-                },
-            );
-            entity.observe(
-                |change: On<ValueChange<f32>>,
-                 mut commands: Commands,
-                 mut audio: RetailAudioAssets| {
-                    if change.is_final {
-                        audio.play(&mut commands, SoundId::UI_CLICK);
-                    }
-                },
-            );
-        }
-        _ => {}
-    }
+    let write_on_drag = matches!(slot, PreferenceSlot::MusicVolume);
+    entity.observe(
+        move |change: On<ValueChange<f32>>,
+              mut prefs: ResMut<GamePreferences>,
+              mut commands: Commands,
+              mut audio: RetailAudioAssets| {
+            if write_on_drag || change.is_final {
+                prefs.values[slot] = change.value as i16;
+            }
+            if matches!(slot, PreferenceSlot::SoundVolume) && change.is_final {
+                audio.play(&mut commands, SoundId::UI_CLICK);
+            }
+        },
+    );
 }
 
 fn preference_row_is_on(prefs: &GamePreferences, row: usize) -> bool {

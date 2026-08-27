@@ -11,7 +11,7 @@ use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
-use bevy::ui::{Checked, InteractionDisabled};
+use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_core::*;
 use imperialism_formats::*;

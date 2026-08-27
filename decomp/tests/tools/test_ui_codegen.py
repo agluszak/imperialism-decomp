@@ -218,14 +218,23 @@ class UiCodegenTests(unittest.TestCase):
         next_fn = transport.find("\npub fn ", 1)
         if next_fn != -1:
             transport = transport[:next_fn]
-        self.assertIn("retail_transport_capacity_gauge(", transport)
-        self.assertIn("retail_transport_gauge(", transport)
+        self.assertIn("retail_picture(", transport)
+        self.assertIn("TransportGaugeParts", transport)
         self.assertNotIn("RetailTransportGaugeKind", transport)
-        self.assertNotIn("TransportGaugeParts", transport)
-        self.assertIn(", 93)", transport)
-        self.assertIn(", 97)", transport)
-        self.assertEqual(transport.count("retail_transport_gauge("), 18)
-        self.assertEqual(transport.count("retail_transport_capacity_gauge("), 1)
+        self.assertNotIn("retail_transport_gauge(", transport)
+        self.assertNotIn("retail_transport_capacity_gauge(", transport)
+        # Merged Children: synthetic fill/limit share one list with recovered text/arrows.
+        self.assertIn("#TransportFill", transport)
+        self.assertIn("#TransportLimit", transport)
+        self.assertEqual(transport.count("TransportGaugeParts"), 19)
+        fish = transport[transport.index('retail_node(fourcc!("fish")') :]
+        fish = fish[: fish.index('retail_node(fourcc!("prod")')]
+        self.assertIn("#TransportFill", fish)
+        self.assertIn("#TransportLimit", fish)
+        self.assertIn('retail_node(fourcc!("text")', fish)
+        self.assertIn('retail_node(fourcc!("left")', fish)
+        # Exactly one Children owner on the fish row.
+        self.assertEqual(fish.count("Children ["), 1)
 
     def test_trade_sell_uses_windows_post_create_style_and_geometry(self) -> None:
         rendered = render_rust_ui(
