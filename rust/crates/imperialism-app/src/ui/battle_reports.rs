@@ -177,12 +177,30 @@ fn bind_battle_report(
         labels,
     );
     for (tag, preset) in [
-        (fourcc!("resu"), RetailTextStylePreset::explicit(0, 0, 14, -1)),
-        (fourcc!("loca"), RetailTextStylePreset::explicit(2, 0, 14, -1)),
-        (fourcc!("fadm"), RetailTextStylePreset::explicit(0, 0, 12, -1)),
-        (fourcc!("eadm"), RetailTextStylePreset::explicit(0, 0, 12, -1)),
-        (fourcc!("fshp"), RetailTextStylePreset::explicit(0, 0, 10, -1)),
-        (fourcc!("eshp"), RetailTextStylePreset::explicit(0, 0, 10, -1)),
+        (
+            fourcc!("resu"),
+            RetailTextStylePreset::explicit(0, 0, 14, -1),
+        ),
+        (
+            fourcc!("loca"),
+            RetailTextStylePreset::explicit(2, 0, 14, -1),
+        ),
+        (
+            fourcc!("fadm"),
+            RetailTextStylePreset::explicit(0, 0, 12, -1),
+        ),
+        (
+            fourcc!("eadm"),
+            RetailTextStylePreset::explicit(0, 0, 12, -1),
+        ),
+        (
+            fourcc!("fshp"),
+            RetailTextStylePreset::explicit(0, 0, 10, -1),
+        ),
+        (
+            fourcc!("eshp"),
+            RetailTextStylePreset::explicit(0, 0, 10, -1),
+        ),
     ] {
         let (font, layout, line_height, _) = assets
             .text_style(preset)
@@ -245,7 +263,7 @@ fn bind_battle_report(
 fn render_battle_report(
     mut commands: Commands,
     session: Res<GameSession>,
-    reports: Res<BattleReportPresentation>,
+    mut reports: ResMut<BattleReportPresentation>,
     views: Query<Ref<BattleReportView>>,
     mut assets: super::RetailUiAssets,
     mut texts: Query<&mut Text>,
@@ -257,6 +275,10 @@ fn render_battle_report(
     if !session.is_changed() && !view.is_added() && !view.is_changed() && !reports.is_changed() {
         return;
     }
+    // Retail serializes name/overlay buffers on every report. Ensure live-generated
+    // reports materialize those strings into the presentation resource so a later
+    // save does not fall back to empty buffers.
+    ensure_battle_report_presentation(&mut assets, &session, &mut reports.0);
     let reports_game = session.game.battle_reports();
     let Some(report) = reports_game.get(view.selected) else {
         for entity in [
@@ -709,9 +731,11 @@ fn on_battle_report_detail(
 
 fn spawn_detail(commands: &mut Commands) {
     let root = commands.spawn_scene(generated::diplo_1352()).id();
-    commands
-        .entity(root)
-        .insert((DetailBookRoot, ModalWindow, DespawnOnExit(AppState::BattleReport)));
+    commands.entity(root).insert((
+        DetailBookRoot,
+        ModalWindow,
+        DespawnOnExit(AppState::BattleReport),
+    ));
 }
 
 /// Marker on the diplo_1352 detail book so `bind_detail` does not claim other modals.
@@ -962,8 +986,12 @@ fn spawn_detail_row(
         ))
         .id();
     match row.detail_identity {
-        BATTLE_REPORT_ARMY_IDENTITY => spawn_army_detail_row(commands, assets, detail, container, row),
-        BATTLE_REPORT_NAVY_IDENTITY => spawn_navy_detail_row(commands, assets, detail, container, row),
+        BATTLE_REPORT_ARMY_IDENTITY => {
+            spawn_army_detail_row(commands, assets, detail, container, row)
+        }
+        BATTLE_REPORT_NAVY_IDENTITY => {
+            spawn_navy_detail_row(commands, assets, detail, container, row)
+        }
         BATTLE_REPORT_MERC_IDENTITY => {
             spawn_merchant_detail_row(commands, assets, detail, container, row)
         }
@@ -1067,7 +1095,12 @@ fn spawn_army_detail_row(
             },
             ImageNode {
                 image: detail.experience_strip.clone(),
-                rect: Some(Rect::new(0.0, row_y as f32, width as f32, (row_y + 7) as f32)),
+                rect: Some(Rect::new(
+                    0.0,
+                    row_y as f32,
+                    width as f32,
+                    (row_y + 7) as f32,
+                )),
                 ..default()
             },
             Pickable::IGNORE,
@@ -1178,7 +1211,12 @@ fn spawn_navy_detail_row(
             },
             ImageNode {
                 image: detail.experience_strip.clone(),
-                rect: Some(Rect::new(0.0, row_y as f32, width as f32, (row_y + 7) as f32)),
+                rect: Some(Rect::new(
+                    0.0,
+                    row_y as f32,
+                    width as f32,
+                    (row_y + 7) as f32,
+                )),
                 ..default()
             },
             Pickable::IGNORE,
@@ -1300,6 +1338,22 @@ pub(crate) fn battle_report_texts_for_save(
         .collect()
 }
 
+/// Fill missing presentation entries so every live report has name/overlay
+/// buffers before UI projection or save serialization.
+fn ensure_battle_report_presentation(
+    assets: &mut super::RetailUiAssets,
+    session: &GameSession,
+    captured: &mut Vec<BattleReportText>,
+) {
+    let count = session.game.battle_reports().len();
+    if captured.len() >= count {
+        return;
+    }
+    for index in captured.len()..count {
+        captured.push(battle_report_text(Some(assets), session, captured, index));
+    }
+}
+
 fn battle_report_text(
     assets: Option<&super::RetailUiAssets>,
     session: &GameSession,
@@ -1309,10 +1363,36 @@ fn battle_report_text(
     if let Some(text) = captured.get(index) {
         return text.clone();
     }
-    let assets = assets.expect("generating battle-report presentation requires retail assets");
     let report = &session.game.battle_reports()[index];
+    let Some(assets) = assets else {
+        // Unit-test / asset-free save paths still emit one entry per report so
+        // the legacy writer does not drop the parallel presentation slot.
+        return BattleReportText::from_array([
+            BattleReportSideText {
+                name: session
+                    .game
+                    .nation(report.sides[BattleReportSideSlot::Left].nation)
+                    .map(|nation| nation.display_name.clone())
+                    .unwrap_or_default(),
+                overlay: String::new(),
+            },
+            BattleReportSideText {
+                name: session
+                    .game
+                    .nation(report.sides[BattleReportSideSlot::Right].nation)
+                    .map(|nation| nation.display_name.clone())
+                    .unwrap_or_default(),
+                overlay: String::new(),
+            },
+        ]);
+    };
     BattleReportText::from_array([
-        generated_battle_report_side_text(assets, &session.game, report, BattleReportSideSlot::Left),
+        generated_battle_report_side_text(
+            assets,
+            &session.game,
+            report,
+            BattleReportSideSlot::Left,
+        ),
         generated_battle_report_side_text(
             assets,
             &session.game,
@@ -1396,11 +1476,7 @@ fn generated_sea_overlay(
     nation_name: &str,
 ) -> String {
     let child_count = side.children.len();
-    let template = ui_string(
-        assets,
-        0x2762,
-        i16::from(child_count != 1) + 0x11,
-    );
+    let template = ui_string(assets, 0x2762, i16::from(child_count != 1) + 0x11);
     let zone_name = match report.location {
         BattleReportLocation::Zone(id) => state
             .ocean()
