@@ -1673,6 +1673,10 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
         return "transport_gauge"
     if node.class_name == "TNumberedArrowButton":
         return "numbered_arrow"
+    if node.class_name == "TScrollView":
+        return "scroll_view"
+    if node.class_name == "TInfoBarText":
+        return "hover_help_bar"
     if _rust_amount_bar_kind(node) is not None:
         return "amount_bar"
     if node.type_code == "pict":
@@ -1723,6 +1727,11 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "toggle"
     if node.type_code == "edit":
         return "text_edit"
+    if node.class_name == "TScrollView":
+        return "scroll_area"
+    # TInfoBarText is tevw but not a scroll area; hover-help presentation only.
+    if node.class_name == "TInfoBarText":
+        return "passive"
     if node.type_code == "tevw":
         return "scroll_area"
     if node.class_name in ("TMapPreviewView", "TCitySiteView", "TCityProductionView"):
@@ -2003,7 +2012,8 @@ def _rust_enum_variant(value: str) -> str:
 
 
 def _rust_has_shipped_font(text: UiTextPayload) -> bool:
-    return text.mode in (1, 2, 3)
+    # 0 = system face; 1..=3 = Belwe / Book Antiqua (see resolve_retail_text_style).
+    return text.mode in (0, 1, 2, 3)
 
 
 def _rust_window_is_captioned(node: UiSemanticNode) -> bool:
@@ -2078,12 +2088,36 @@ def _render_bsn_node(
             "radio_group": ["    RadioGroup"],
             "radio_button": ["    RadioButton"],
             "pointer_canvas": ["    RelativeCursorPosition"],
+            "scroll_area": [
+                "    ScrollArea",
+                "    ScrollPosition::default()",
+                "    Node {",
+                "        overflow: Overflow::scroll_y(),",
+                "    }",
+                "    Pickable",
+            ],
         }.get(str(behavior), [])
     )
     if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
         lines.append("    Checked")
     if behavior != "passive" and (not node.enabled or not node.input_gate):
         lines.append("    InteractionDisabled")
+
+    if node.class_name == "TInfoBarText":
+        lines.append("    template(|_context| Ok(HoverHelpBar))")
+        # Empty text until hover systems write; style comes from Windows deltas.
+        if text is None:
+            lines.append('    Text("")')
+        # Vertically center the help caption inside the recovered info-bar bounds.
+        lines.extend(
+            [
+                "    Node {",
+                "        flex_direction: FlexDirection::Column,",
+                "        justify_content: JustifyContent::Center,",
+                "        overflow: Overflow::clip(),",
+                "    }",
+            ]
+        )
 
     if text is not None:
         value = _rust_string(text.value or "")
@@ -2277,11 +2311,12 @@ def render_rust_ui(
         "#![allow(dead_code, clippy::identity_op)]",
         "",
         "use super::city::{CityBuildingActionVisual, CityBuildingVisual};",
+        "use super::hover_help::HoverHelpBar;",
         "use super::retail::*;",
         "use super::window::CaptionedWindow;",
         "use bevy::prelude::*;",
-        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};",
-        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup};",
+        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};",
+        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};",
         "use imperialism_core::CityFacilitySlot;",
         "use imperialism_formats::{FourCc, PictureId, fourcc};",
         "",

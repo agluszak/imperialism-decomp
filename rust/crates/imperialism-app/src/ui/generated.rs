@@ -7,7 +7,7 @@ use super::retail::*;
 use super::window::CaptionedWindow;
 use bevy::prelude::*;
 use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};
-use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea, Slider};
+use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};
 use imperialism_core::CityFacilitySlot;
 use imperialism_formats::{FourCc, PictureId, fourcc};
 
@@ -1128,22 +1128,18 @@ pub fn citydlog_9200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 19, 87, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1151,7 +1147,6 @@ pub fn citydlog_9200() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1228,22 +1223,18 @@ pub fn citydlog_9201() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("clot"), 19, 87, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 3, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1251,7 +1242,6 @@ pub fn citydlog_9201() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1316,22 +1306,18 @@ pub fn citydlog_9202() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stee"), 19, 87, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1339,7 +1325,6 @@ pub fn citydlog_9202() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1410,22 +1395,18 @@ pub fn citydlog_9203() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hard"), 19, 92, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
@@ -1433,7 +1414,6 @@ pub fn citydlog_9203() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1441,22 +1421,18 @@ pub fn citydlog_9203() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("arma"), 19, 122, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 59, 17, 21, 11)
                                         Button
                                         Text("")
@@ -1464,7 +1440,6 @@ pub fn citydlog_9203() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1535,22 +1510,18 @@ pub fn citydlog_9204() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 19, 92, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
@@ -1558,7 +1529,6 @@ pub fn citydlog_9204() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1566,22 +1536,18 @@ pub fn citydlog_9204() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("pape"), 19, 122, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
                                         Button
                                         Text("")
@@ -1589,7 +1555,6 @@ pub fn citydlog_9204() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1660,22 +1625,18 @@ pub fn citydlog_9205() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("furn"), 19, 87, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1683,7 +1644,6 @@ pub fn citydlog_9205() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1748,22 +1708,18 @@ pub fn citydlog_9206() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 19, 87, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Industry)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
                                         Button
                                         Text("")
@@ -1771,7 +1727,6 @@ pub fn citydlog_9206() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Industry)
                                     ),
@@ -1827,22 +1782,18 @@ pub fn citydlog_9209() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("trai"), 20, 152, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -1850,7 +1801,6 @@ pub fn citydlog_9209() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -1858,22 +1808,18 @@ pub fn citydlog_9209() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prof"), 20, 233, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -1881,7 +1827,6 @@ pub fn citydlog_9209() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -1982,22 +1927,18 @@ pub fn citydlog_9211() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("powe"), 19, 81, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
                                         Text("")
@@ -2005,7 +1946,6 @@ pub fn citydlog_9211() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -2055,22 +1995,18 @@ pub fn citydlog_9212() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("food"), 20, 121, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
                                         Button
                                         Text("")
@@ -2078,7 +2014,6 @@ pub fn citydlog_9212() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -2506,22 +2441,18 @@ pub fn citydlog_9214() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("rail"), 19, 87, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 211, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -2529,7 +2460,6 @@ pub fn citydlog_9214() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -2591,22 +2521,18 @@ pub fn citydlog_9215() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("popu"), 25, 85, 239, 36)
-                                retail_amount_selector(RetailAmountSelectorKind::Rail)
                                 Children [
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         Button
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
-                                        #Value
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
                                         Button
                                         Text("")
@@ -2614,7 +2540,6 @@ pub fn citydlog_9215() -> impl Scene {
                                         TextColor(Color::BLACK)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
                                         retail_amount_bar(RetailAmountBarKind::Rail)
                                     ),
@@ -4992,7 +4917,7 @@ pub fn linger_4150() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_two_pic_slider(4152, 100, 10051, 60)
+                                Button
                             ),
                             (
                                 retail_node(fourcc!("musi"), 194, 92, 102, 91)
@@ -5004,7 +4929,7 @@ pub fn linger_4150() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_two_pic_slider(4150, 255, 10051, 60)
+                                Button
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
@@ -9775,10 +9700,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                         Node {
                                             padding: UiRect {
@@ -9803,13 +9726,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2128)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
@@ -9819,7 +9740,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9835,10 +9755,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -9867,19 +9785,16 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9895,10 +9810,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node {
                                             padding: UiRect {
@@ -9927,19 +9840,16 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -9955,10 +9865,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -9987,19 +9895,16 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10015,10 +9920,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node {
                                             padding: UiRect {
@@ -10043,7 +9946,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10053,13 +9955,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10075,10 +9975,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -10103,7 +10001,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10113,13 +10010,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10135,10 +10030,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -10163,7 +10056,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10173,13 +10065,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10195,10 +10085,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node {
                                             padding: UiRect {
@@ -10223,7 +10111,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2114)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10233,13 +10120,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10255,10 +10140,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10283,7 +10166,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10293,13 +10175,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10315,10 +10195,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10343,7 +10221,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10353,13 +10230,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10375,10 +10250,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10403,7 +10276,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10413,13 +10285,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10435,10 +10305,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10463,7 +10331,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10473,13 +10340,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10495,10 +10360,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10523,7 +10386,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10533,13 +10395,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10555,10 +10415,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10583,7 +10441,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10593,13 +10450,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10615,10 +10470,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10643,7 +10496,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10653,13 +10505,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10675,10 +10525,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10703,7 +10551,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10713,13 +10560,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10735,10 +10580,8 @@ pub fn trade_2009() -> impl Scene {
                                         bottom: px(0),
                                     },
                                 }
-                                retail_amount_selector(RetailAmountSelectorKind::Trader)
                                 Children [
                                     (
-                                        #Value
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node {
                                             padding: UiRect {
@@ -10763,7 +10606,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2113)
                                     ),
                                     (
-                                        #Left
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         Button
                                         retail_picture_swap(2121, 2122)
@@ -10773,13 +10615,11 @@ pub fn trade_2009() -> impl Scene {
                                         retail_picture(2120)
                                     ),
                                     (
-                                        #Right
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         Button
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
-                                        #Bar
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                         retail_amount_bar(RetailAmountBarKind::Trader)
                                     ),
@@ -10935,10 +10775,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -10963,13 +10801,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2128)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
@@ -10979,7 +10815,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -10995,10 +10830,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11027,19 +10860,16 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11055,10 +10885,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11087,19 +10915,16 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11115,10 +10940,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11147,19 +10970,16 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11175,10 +10995,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11203,7 +11021,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11213,13 +11030,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11235,10 +11050,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11263,7 +11076,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11273,13 +11085,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11295,10 +11105,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11323,7 +11131,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11333,13 +11140,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11355,10 +11160,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11383,7 +11186,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2114)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11393,13 +11195,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11415,10 +11215,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11443,7 +11241,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11453,13 +11250,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11475,10 +11270,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11503,7 +11296,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11513,13 +11305,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11535,10 +11325,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11563,7 +11351,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11573,13 +11360,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11595,10 +11380,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11623,7 +11406,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11633,13 +11415,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11655,10 +11435,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11683,7 +11461,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11693,13 +11470,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11715,10 +11490,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11743,7 +11516,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11753,13 +11525,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11775,10 +11545,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11803,7 +11571,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11813,13 +11580,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11835,10 +11600,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11863,7 +11626,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11873,13 +11635,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),
@@ -11895,10 +11655,8 @@ pub fn trade_2010() -> impl Scene {
                                                 bottom: px(0),
                                             },
                                         }
-                                        retail_amount_selector(RetailAmountSelectorKind::Trader)
                                         Children [
                                             (
-                                                #Value
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node {
                                                     padding: UiRect {
@@ -11923,7 +11681,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2113)
                                             ),
                                             (
-                                                #Left
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 Button
                                                 retail_picture_swap(2121, 2122)
@@ -11933,13 +11690,11 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_picture(2120)
                                             ),
                                             (
-                                                #Right
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 Button
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
-                                                #Bar
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
                                                 retail_amount_bar(RetailAmountBarKind::Trader)
                                             ),

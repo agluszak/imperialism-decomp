@@ -1,8 +1,5 @@
 use super::generated;
-use super::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, get_string,
-    ui_string,
-};
+use super::hover_help::{HoverHelpText, bind_hover_help_texts, get_string, ui_string};
 use super::query_floater::bind_query_floater_control;
 use super::retail::{RetailTree, RetailTwoPicSliderVisual, RetailUiAssets};
 use super::retail_raster::IndexedRasterExt;
@@ -151,20 +148,12 @@ fn bind_preferences(
     mut commands: Commands,
     root: Single<Entity, Added<PreferencesRoot>>,
     tree: RetailTree,
-    mut nodes: Query<&mut Node>,
     prefs: Res<GamePreferences>,
     mut assets: RetailUiAssets,
 ) {
     let root = *root;
     bind_query_floater_control(&mut commands, root, &tree);
-    let curs = tree.find(root, fourcc!("curs"));
-    bind_hover_help_bar(
-        &mut commands,
-        &mut assets,
-        curs,
-        &mut nodes.get_mut(curs).expect("preferences curs has Node"),
-        HoverHelpBarStyle::PREFERENCES,
-    );
+    // HoverHelpBar + recovered curs style come from codegen / Windows deltas.
     bind_hover_help_texts(
         &mut commands,
         root,

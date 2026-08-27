@@ -396,6 +396,26 @@ node_property_patches:
 # Child controls created by recovered Windows post-create code after the Mac
 # resource tree is loaded. Each row is a complete semantic node patch; the
 # generator has no screen- or widget-specific child construction rules.
+
+  # Hover-help bars (TInfoBarText): recovered InitializeMapHintTextStyleAndThemeFlags /
+  # HandleTurnEventDialogFactorySlotF8 styles used by bind-time HoverHelpBarStyle.
+  - {view: Startup.rsrc:1500, node: 0x02c5, tag: curs, properties: {text: &hover_help_main_menu {font_family: 1, face_flags: 0, point_size: 14, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [1, 1]}}, evidence: &hover_help_main_menu_evidence "TViewMgr::HandleTurnEventDialogFactorySlotF8 restyles curs to 14pt theme 0x2b6c (palette 0x28) with shadow theme 0x2b6b (palette 0xd2)"}
+  - {view: FlagView.rsrc:8500, node: 0x0d80, tag: curs, properties: {text: *hover_help_main_menu}, evidence: *hover_help_main_menu_evidence}
+  - {view: Startup.rsrc:1501, node: 0x00f4, tag: "hot!", properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0xd2, shadow_color_index: 0x28, shadow_offset: [1, 1]}}, evidence: "TSetupRandomMapPicture::DoPostCreate restyles hot! through InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c): 12pt, text palette 0xd2, shadow palette 0x28"}
+  - {view: Startup.rsrc:952, node: 0x02ff, tag: curs, properties: {text: &hover_help_city_site {font_family: 1, face_flags: 0, point_size: 12, alignment: -1, color_index: 0x28, shadow_color_index: 0, shadow_offset: [1, 1]}}, evidence: &hover_help_city_site_evidence "TCitySiteView::DoPostCreate restyles curs through InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67): 12pt right-aligned, text palette 0x28, shadow palette 0"}
+  - {view: Tactical.rsrc:3800, node: 0x00f0, tag: curs, properties: {text: *hover_help_city_site}, evidence: "TTacticalBattleView::DoPostCreate uses the recovered 12pt right-aligned InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67) style"}
+  - {view: MapView.rsrc:2013, node: 0x1efd, tag: curs, properties: {text: *hover_help_city_site}, evidence: *hover_help_city_site_evidence}
+  - {view: Linger.rsrc:4150, node: 0x0994, tag: curs, properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0, shadow_offset: [1, 1]}}, evidence: "TGamePreferencesPicture::DoPostCreate restyles curs through InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67): 12pt, text palette 0x28, shadow palette 0"}
+
+  # Offer Sheet (FlagView 8500): recovered TOffer* DrawString / bind_offer_sheet_text styles.
+  - {view: FlagView.rsrc:8500, node: 0x05d5, tag: offe, properties: {text: {font_family: 0, face_flags: 0, point_size: 12, alignment: 1}}, evidence: "TOfferSheetPicture bind installs 12pt centered system font on offe"}
+  - {view: FlagView.rsrc:8500, node: 0x0648, tag: purT, properties: {text: {font_family: 0, face_flags: 0, point_size: 12, alignment: -1}}, evidence: "TOfferSheetPicture bind installs 12pt right-aligned system font on purT"}
+  - {view: FlagView.rsrc:8500, node: 0x072e, tag: unit, properties: {text: {font_family: 0, face_flags: 0, point_size: 12, alignment: -2}}, evidence: "TOfferSheetPicture bind installs 12pt left-aligned system font on unit"}
+  - {view: FlagView.rsrc:8500, node: 0x06bb, tag: noof, properties: {text: {font_family: 0, face_flags: 0, point_size: 12, alignment: -2}}, evidence: "TOfferSheetPicture bind installs 12pt left-aligned system font on noof"}
+  - {view: FlagView.rsrc:8500, node: 0x0370, tag: purc, properties: {text: {font_family: 0, face_flags: 0, point_size: 14, alignment: 1}}, evidence: "TOfferSheetPicture bind installs 14pt centered system font on purc"}
+  - {view: FlagView.rsrc:8500, node: 0x02e3, tag: mCap, properties: {text: {font_family: 0, face_flags: 0, point_size: 14, alignment: 1}}, evidence: "TOfferSheetPicture bind installs 14pt centered system font on mCap"}
+  - {view: FlagView.rsrc:8500, node: 0x0855, tag: info, properties: {text: {font_family: 0, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0xd2, shadow_offset: [1, 1], resource_file: Strings.rsrc, resource_id: 0x2740, resource_index: 10}}, evidence: "TOfferSheetPicture bind installs 12pt centered drop-shadow info caption from STR# 0x2740 index 10 (GetString offset 9)"}
+
 windows_child_nodes:
   - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam0, class: TDeluxeText, geometry: [44, 19, 70, 25], family: &diplomacy_map_key_text {text: {resource_id: 0, resource_index: -1, source: g_szEmptyString, mode: 3, flags: 0, point_size: 10, theme: 0, color_index: 0xd2, shadow_color_index: 0x13, shadow_offset: [1, 1], center_vertically: true}}, evidence: &diplomacy_map_key_evidence TMapKey::DoPostCreate at 0x004fcac0 creates nam0 through nam6 under mkey from the recovered legend coordinate tables}
   - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam1, class: TDeluxeText, geometry: [44, 44, 70, 25], family: *diplomacy_map_key_text, evidence: *diplomacy_map_key_evidence}
