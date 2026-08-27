@@ -12,17 +12,21 @@ use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
 
+#[allow(unused_imports)] // barrel re-exports for binders and generated screens
 pub use super::retail_amount_bar::{
     AmountBarParts, AmountBarStyle, amount_bar_fill_widths, amount_bar_geometry,
     apply_amount_bar_fill, retail_amount_bar,
 };
 pub use super::retail_army_placard::{ArmyPlacardParts, retail_army_placard};
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
+#[allow(unused_imports)] // barrel re-exports for binders and generated screens
 pub use super::retail_placard::{
     PlacardParts, placard_text_layout, placard_text_x, retail_placard,
 };
 pub use super::retail_ship_placard::{ShipPlacardParts, retail_ship_placard};
+#[allow(unused_imports)] // barrel re-exports for binders and generated screens
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
+#[allow(unused_imports)] // barrel re-exports for binders and generated screens
 pub use super::retail_transport_gauge::{
     RetailTransportGaugeKind, TransportGaugeParts, apply_transport_gauge, retail_transport_gauge,
     transport_gauge_width,

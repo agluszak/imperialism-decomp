@@ -2,11 +2,7 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{
-    AmountBarParts, AmountBarStyle, PlacardParts, RetailTree, RetailUiAssets, apply_amount_bar_fill,
-    placard_text_layout,
-};
-use super::retail_amount_bar::{amount_bar_counter_offset, amount_bar_geometry};
+use super::retail::{AmountBarParts, PlacardParts, RetailTree, RetailUiAssets, placard_text_layout};
 use super::window::{
     CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
     window_position,

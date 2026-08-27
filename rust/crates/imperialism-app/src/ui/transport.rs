@@ -5,9 +5,7 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::hover_help::HoverHelpText;
-use super::retail::{
-    RetailTree, RetailTransportGaugeKind, TransportGaugeParts, apply_transport_gauge,
-};
+use super::retail::{RetailTree, TransportGaugeParts, apply_transport_gauge};
 use super::retail_transport_gauge::{
     TRANSPORT_GAUGE_FULL_PALETTE, TRANSPORT_GAUGE_PARTIAL_PALETTE,
 };
@@ -395,7 +393,7 @@ fn allocation_amount(
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
+    use super::super::retail::{RetailTag, RetailTransportGaugeKind};
     use super::*;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;

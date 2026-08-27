@@ -39,8 +39,6 @@ struct PlacardBinding {
 #[derive(Clone, Copy)]
 struct ArrowBinding {
     root: Entity,
-    upper: Entity,
-    lower: Entity,
     count: Entity,
 }
 
@@ -74,8 +72,6 @@ pub(crate) fn bind_army_toolbar(
         }; ArmyUnitCategory::LENGTH]);
     let mut arrows = ArmyCategoryTable::from_array([ArrowBinding {
         root: Entity::PLACEHOLDER,
-        upper: Entity::PLACEHOLDER,
-        lower: Entity::PLACEHOLDER,
         count: Entity::PLACEHOLDER,
     }; ArmyUnitCategory::LENGTH]);
     for category in ArmyUnitCategory::all() {
@@ -96,8 +92,6 @@ pub(crate) fn bind_army_toolbar(
             .clone();
         arrows[category] = ArrowBinding {
             root: arrow,
-            upper,
-            lower,
             count,
         };
         let category_capture = category;

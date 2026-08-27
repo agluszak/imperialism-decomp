@@ -31,8 +31,6 @@ const AGGRESSION_LEVELS: [NavalAggression; 3] = [
 #[derive(Clone, Copy)]
 struct ArrowBinding {
     root: Entity,
-    upper: Entity,
-    lower: Entity,
     count: Entity,
 }
 
@@ -76,8 +74,6 @@ pub(crate) fn bind_navy_toolbar(
         ship_text: Entity::PLACEHOLDER,
         arrow: ArrowBinding {
             root: Entity::PLACEHOLDER,
-            upper: Entity::PLACEHOLDER,
-            lower: Entity::PLACEHOLDER,
             count: Entity::PLACEHOLDER,
         },
     }; 4];
@@ -103,8 +99,6 @@ pub(crate) fn bind_navy_toolbar(
             ship_text,
             arrow: ArrowBinding {
                 root: arrow,
-                upper,
-                lower,
                 count,
             },
         };
@@ -397,8 +391,6 @@ mod tests {
                 ship_text: Entity::PLACEHOLDER,
                 arrow: ArrowBinding {
                     root: Entity::PLACEHOLDER,
-                    upper: Entity::PLACEHOLDER,
-                    lower: Entity::PLACEHOLDER,
                     count: Entity::PLACEHOLDER,
                 },
             }; 4],
