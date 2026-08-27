@@ -1,13 +1,15 @@
 //! Recovered `TTransportPicture` gauge overlays as a BSN SceneComponent.
 //!
 //! The retail picture is the static art; this widget owns the 113px fill track,
-//! remainder band, optional limit strip, and capacity fill colouring.
+//! remainder band, optional limit strip, capacity fill colouring, and the
+//! generated `text` child caption (`"{current}  /  {total}"`).
 
-use super::retail::retail_picture;
+use super::retail::{RetailTag, retail_picture};
 use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
 use bevy::prelude::*;
 use bevy::ui::UiSystems;
+use imperialism_formats::fourcc;
 
 const TRACK_WIDTH: f32 = 113.0;
 const TRACK_TOP: f32 = 0x0d as f32;
@@ -34,6 +36,8 @@ pub struct RetailTransportGauge {
     pub kind: RetailTransportGaugeKind,
     pub fill: Entity,
     pub limit: Entity,
+    /// Generated `text` child; wired on `Add` once the scene children exist.
+    pub caption: Entity,
 }
 
 /// Static construction props for [`RetailTransportGauge`].
@@ -65,6 +69,7 @@ impl RetailTransportGauge {
                 kind: {props.kind},
                 fill: #Fill,
                 limit: #Limit,
+                caption: {Entity::PLACEHOLDER},
             }
             TransportGaugeValue
             Children [
@@ -131,7 +136,28 @@ pub fn retail_transport_gauge(
 }
 
 pub(super) fn register_transport_gauge(app: &mut App) {
-    app.add_systems(PostUpdate, draw_transport_gauges.before(UiSystems::Prepare));
+    app.add_systems(PostUpdate, draw_transport_gauges.before(UiSystems::Prepare))
+        .add_observer(on_transport_gauge_added);
+}
+
+fn on_transport_gauge_added(
+    event: On<Add, RetailTransportGauge>,
+    children: Query<&Children>,
+    tags: Query<&RetailTag>,
+    mut gauges: Query<&mut RetailTransportGauge>,
+) {
+    let Ok(mut gauge) = gauges.get_mut(event.entity) else {
+        return;
+    };
+    let Ok(kids) = children.get(event.entity) else {
+        return;
+    };
+    for child in kids.iter() {
+        if tags.get(child).is_ok_and(|tag| tag.0 == fourcc!("text")) {
+            gauge.caption = child;
+            return;
+        }
+    }
 }
 
 /// `TTransportPicture::Refresh` 113px remainder-distribution fill width.
@@ -163,6 +189,7 @@ fn draw_transport_gauges(
     gauges: Query<(&RetailTransportGauge, &TransportGaugeValue), Changed<TransportGaugeValue>>,
     mut nodes: Query<&mut Node>,
     mut backgrounds: Query<&mut BackgroundColor>,
+    mut texts: Query<&mut Text>,
     mut commands: Commands,
     assets: Option<Res<RetailAssetsResource>>,
 ) {
@@ -176,6 +203,12 @@ fn draw_transport_gauges(
             .get_mut(gauge.fill)
             .expect("RetailTransportGauge fill child")
             .width = Val::Px(transport_gauge_width(value.current, value.total));
+        if gauge.caption != Entity::PLACEHOLDER {
+            texts
+                .get_mut(gauge.caption)
+                .expect("RetailTransportGauge caption child")
+                .0 = format!("{}  /  {}", value.current, value.total);
+        }
         match gauge.kind {
             RetailTransportGaugeKind::Allocation => match value.limit {
                 Some(limit) => {

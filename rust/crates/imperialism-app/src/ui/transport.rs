@@ -4,11 +4,10 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
+use super::hover_help::HoverHelpText;
 use super::retail::{RetailTree, TransportGaugeValue};
 use crate::AppState;
-use bevy::picking::hover::Hovered;
 use bevy::prelude::*;
-use bevy::text::LineHeight;
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
@@ -101,7 +100,6 @@ struct TransportScreen;
 #[derive(Clone, Copy)]
 struct TransportRowView {
     row: Entity,
-    caption: Entity,
     decrease: Entity,
     increase: Entity,
     gauge: Entity,
@@ -110,9 +108,7 @@ struct TransportRowView {
 
 #[derive(Component)]
 struct TransportView {
-    cursor: Entity,
     capacity: Entity,
-    capacity_caption: Entity,
     rows: [TransportRowView; TRANSPORT_ROWS.len()],
 }
 
@@ -126,7 +122,7 @@ impl Plugin for TransportPlugin {
         )
         .add_systems(
             Update,
-            (render_transport, render_transport_cursor).run_if(in_state(AppState::Transport)),
+            render_transport.run_if(in_state(AppState::Transport)),
         );
     }
 }
@@ -157,6 +153,9 @@ fn bind_transport_screen(
     let nation = session.active_major_nation();
     session.game.rebuild_nation_resource_yields(nation);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
+    // HoverHelpBar comes from codegen; curs text style is still binder-owned until a
+    // recovered Transport DoPostCreate delta lands (same InitializeMapHint pair as prefs).
+    let curs = tree.find(*root, fourcc!("curs"));
     let (cursor_font, cursor_layout, cursor_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -165,47 +164,30 @@ fn bind_transport_screen(
             alignment: 1,
         })
         .expect("retail transport cursor text style");
-    let cursor_style = (
+    commands.entity(curs).insert((
         cursor_font,
         cursor_layout,
         cursor_line_height,
-        assets.palette_color(0x28),
-        assets.palette_color(0),
-    );
-    let view = bind_transport_view(&mut commands, *root, &tree, cursor_style);
+        TextColor(assets.palette_color(0x28)),
+        TextShadow {
+            offset: Vec2::ONE,
+            color: assets.palette_color(0),
+        },
+    ));
+    let view = bind_transport_view(&mut commands, *root, &tree);
     commands.entity(*root).insert(view);
 }
 
-fn bind_transport_view(
-    commands: &mut Commands,
-    root: Entity,
-    tree: &RetailTree,
-    cursor_style: (TextFont, TextLayout, LineHeight, Color, Color),
-) -> TransportView {
+fn bind_transport_view(commands: &mut Commands, root: Entity, tree: &RetailTree) -> TransportView {
     let selected = tree.find(root, fourcc!("tran"));
     commands
         .entity(selected)
         .insert((Checked, InteractionDisabled));
-    let (cursor_font, cursor_layout, cursor_line_height, cursor_color, cursor_shadow) =
-        cursor_style;
-    let cursor = tree.find(root, fourcc!("curs"));
-    commands.entity(cursor).insert((
-        Text::new(""),
-        cursor_font,
-        cursor_layout,
-        cursor_line_height,
-        TextColor(cursor_color),
-        TextShadow {
-            offset: Vec2::ONE,
-            color: cursor_shadow,
-        },
-    ));
     let capacity = tree.find(root, fourcc!("tota"));
-    let capacity_caption = tree.find(capacity, fourcc!("text"));
     let rows = std::array::from_fn(|index| {
         let binding = TRANSPORT_ROWS[index];
         let row = tree.find(root, binding.tag);
-        commands.entity(row).insert(Hovered::default());
+        commands.entity(row).insert(HoverHelpText(String::new()));
         let decrease = tree.find(row, fourcc!("left"));
         let increase = tree.find(row, fourcc!("rght"));
         commands.entity(decrease).observe(
@@ -234,7 +216,6 @@ fn bind_transport_view(
                     .step_transport_allocation(nation, binding.allocation, 1);
             },
         );
-        let caption = tree.find(row, fourcc!("text"));
         let money = match binding.allocation {
             TransportAllocation::GOLD | TransportAllocation::GEMS => {
                 Some(tree.find(row, fourcc!("valu")))
@@ -243,19 +224,13 @@ fn bind_transport_view(
         };
         TransportRowView {
             row,
-            caption,
             decrease,
             increase,
             gauge: row,
             money,
         }
     });
-    TransportView {
-        cursor,
-        capacity,
-        capacity_caption,
-        rows,
-    }
+    TransportView { capacity, rows }
 }
 
 fn render_transport(
@@ -263,7 +238,9 @@ fn render_transport(
     view: Single<Ref<TransportView>>,
     mut commands: Commands,
     mut texts: Query<&mut Text>,
+    mut help: Query<&mut HoverHelpText>,
     mut gauges: Query<&mut TransportGaugeValue>,
+    assets: RetailUiAssets,
 ) {
     if !session.is_changed() && !view.is_added() {
         return;
@@ -275,10 +252,9 @@ fn render_transport(
         let status = session
             .game
             .transport_row_status(nation, binding.allocation);
-        texts
-            .get_mut(row.caption)
-            .expect("bound transport caption must exist")
-            .0 = format!("{}  /  {}", status.allocated, status.available);
+        help.get_mut(row.row)
+            .expect("bound transport hover help must exist")
+            .0 = transport_hover_text(&assets, &session.game, nation, binding.allocation);
         if let Some(money) = row.money {
             let (resource, unit_value) = match binding.allocation {
                 TransportAllocation::GOLD => (ResourceKind::Gold, 200),
@@ -304,13 +280,6 @@ fn render_transport(
             });
     }
     let capacities = economy.capacities;
-    texts
-        .get_mut(view.capacity_caption)
-        .expect("bound transport capacity caption must exist")
-        .0 = format!(
-        "{}  /  {}",
-        capacities.reserved_transport, capacities.transport
-    );
     gauges
         .get_mut(view.capacity)
         .expect("bound transport capacity gauge must exist")
@@ -335,49 +304,6 @@ fn set_transport_enabled(commands: &mut Commands, entity: Entity, enabled: bool)
     } else {
         commands.entity(entity).insert(InteractionDisabled);
     }
-}
-
-fn render_transport_cursor(
-    session: Res<GameSession>,
-    views: Query<Ref<TransportView>>,
-    hovered: Query<Ref<Hovered>>,
-    assets: RetailUiAssets,
-    mut cursor: Query<&mut Text>,
-) {
-    let Ok(view) = views.single() else {
-        return;
-    };
-    if !session.is_changed()
-        && !view.is_added()
-        && !view.rows.iter().any(|row| {
-            hovered
-                .get(row.row)
-                .is_ok_and(|hovered| hovered.is_changed())
-        })
-    {
-        return;
-    }
-    let nation = session.active_major_nation();
-    let Some(allocation) = TRANSPORT_ROWS
-        .iter()
-        .zip(&view.rows)
-        .find_map(|(binding, row)| {
-            hovered
-                .get(row.row)
-                .is_ok_and(|hovered| hovered.get())
-                .then_some(binding.allocation)
-        })
-    else {
-        cursor
-            .get_mut(view.cursor)
-            .expect("bound transport cursor text must exist")
-            .0 = String::new();
-        return;
-    };
-    cursor
-        .get_mut(view.cursor)
-        .expect("bound transport cursor text must exist")
-        .0 = transport_hover_text(&assets, &session.game, nation, allocation);
 }
 
 fn transport_hover_text(
@@ -505,7 +431,12 @@ mod tests {
             world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
         }
         let total = world
-            .spawn((RetailTag(fourcc!("tota")), Node::default(), ChildOf(root)))
+            .spawn((
+                RetailTag(fourcc!("tota")),
+                Node::default(),
+                TransportGaugeValue::default(),
+                ChildOf(root),
+            ))
             .id();
         world.spawn((
             RetailTag(fourcc!("text")),
@@ -515,7 +446,12 @@ mod tests {
         ));
         for binding in TRANSPORT_ROWS {
             let row = world
-                .spawn((RetailTag(binding.tag), Node::default(), ChildOf(root)))
+                .spawn((
+                    RetailTag(binding.tag),
+                    Node::default(),
+                    TransportGaugeValue::default(),
+                    ChildOf(root),
+                ))
                 .id();
             world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
@@ -545,18 +481,7 @@ mod tests {
         root: Single<Entity, Added<TestTransportRoot>>,
         tree: RetailTree,
     ) {
-        let view = bind_transport_view(
-            &mut commands,
-            *root,
-            &tree,
-            (
-                TextFont::default(),
-                TextLayout::default(),
-                LineHeight::default(),
-                Color::WHITE,
-                Color::BLACK,
-            ),
-        );
+        let view = bind_transport_view(&mut commands, *root, &tree);
         commands.entity(*root).insert(view);
     }
 
