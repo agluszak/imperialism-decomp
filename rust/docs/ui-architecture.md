@@ -131,13 +131,15 @@ capture it (for example a trade card captures its `TradeCommodity` and `TradeCar
 a component only when other independent systems need to query it.
 
 Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPressedOverlay`,
-`RetailMadnessPicture`, and `RetailTwoPicSliderVisual` remain appropriate when they own interactive
-skin or widget-local operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`,
-`Checkbox`, `RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a skin
-or a genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
+and `RetailMadnessPicture` remain appropriate when they own interactive skin or widget-local
+operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`, `Checkbox`,
+`RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a skin or a
+genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`, `TTwoPicSlider`'s
+12px zero plateau via a shorter stock `Slider` track).
 
 Recovered hierarchical retail widgets are structure-only BSN Parts
-(`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `TransportGaugeParts`).
+(`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `TransportGaugeParts`,
+`RetailTwoPicSliderParts`).
 They spawn private children atomically with the scene. They are not a port of the C++
 class hierarchy and must not carry `FooValue` projection components or `FooValue`→
 `draw_foo` PostUpdate systems for passive displays. Coarse screen/dialog renderers write
@@ -173,10 +175,11 @@ game / screen semantics    -> handwritten binder (FourCC find, domain observers,
 ```
 
 Split input behavior from presentation in the generator when a class has both (for example
-`TTwoPicSlider` → stock `Slider` + retained lower-clip / Off presentation). Do not invent a
-generic widget framework (`RetailWidget<T>`, `Binding<T>`, lenses); port concrete recovered
-reusable behavior only. Custom widgets must not know `GameSession`, domain IDs, or FourCC
-application meaning. When a widget consumes a pointer event, stop propagation.
+`TTwoPicSlider` → stock `Slider` on a `height - 12` track + retained lower-clip / Off
+presentation). Do not invent a generic widget framework (`RetailWidget<T>`, `Binding<T>`, lenses);
+port concrete recovered reusable behavior only. Custom widgets must not know `GameSession`,
+domain IDs, or FourCC application meaning. When a widget consumes a pointer event, stop
+propagation.
 
 Do not create custom ECS state merely to represent a value that the coarse renderer could write
 directly to final Bevy presentation components.
