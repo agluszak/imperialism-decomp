@@ -1,6 +1,8 @@
-//! Recovered `TSidewaysArrow` / `TRightLeftView` press-and-repeat input.
+//! Shared press-and-repeat timing for recovered quantity arrows.
 //!
-//! Screens observe [`Step`]; this module owns retail timing and [`Pressed`] visuals.
+//! [`RetailSidewaysArrow`] and runtime `TRightLeftView` share the same repeat-deadline
+//! algorithm. Only [`TSidewaysArrow`] also hilites via `TUpDownPictureButton`; mark that
+//! path with [`RetailSidewaysArrowHilite`].
 
 use bevy::picking::PickingSystems;
 use bevy::picking::events::{Cancel, DragEnd, Pointer, Press, Release};
@@ -9,13 +11,19 @@ use bevy::picking::pointer::{PointerButton, PointerId};
 use bevy::prelude::*;
 use bevy::ui::{InteractionDisabled, Pressed};
 
-/// Marker for quantity arrows that act on press and repeat while held.
+/// Marker for controls that use retail sideways repeat-step input.
 #[derive(Component, Clone, Copy, Debug, Default, Reflect)]
 #[reflect(Component)]
 pub struct RetailSidewaysArrow;
 
+/// `TSidewaysArrow` hilite while held; omit on [`TRightLeftView`] replacements.
+#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
+#[reflect(Component)]
+pub struct RetailSidewaysArrowHilite;
+
 /// Retail `repeatDeadlineTick` survives mouse releases on the control.
-#[derive(Component, Clone, Copy, Debug, Default)]
+#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
+#[reflect(Component)]
 struct RetailSidewaysArrowRepeat {
     repeat_deadline_tick: u32,
 }
@@ -55,7 +63,7 @@ fn on_sideways_arrow_added(add: On<Add, RetailSidewaysArrow>, mut commands: Comm
         .insert(RetailSidewaysArrowRepeat::default());
 }
 
-fn retail_tick(time: &Time) -> u32 {
+fn retail_tick(time: &Time<Real>) -> u32 {
     (time.elapsed().as_millis() / 16) as u32
 }
 
@@ -66,50 +74,57 @@ fn pointer_inside(entity: Entity, pointer_id: PointerId, hover_map: &HoverMap) -
         .is_some_and(|hits| hits.contains_key(&entity))
 }
 
-fn advance_repeat_deadline(deadline: &mut u32, tick: u32, initial_hold: bool) -> bool {
-    if tick < deadline.saturating_add(TICKS_PER_REPEAT) {
+/// Mirrors retail `TrackMouse` gating: five-tick hold-off, ten-tick begin deferral.
+pub fn poll_repeat_deadline(deadline: &mut u32, now: u32, begin: bool) -> bool {
+    if now < deadline.saturating_add(TICKS_PER_REPEAT) {
         return false;
     }
-    *deadline = tick;
-    if initial_hold {
-        *deadline = tick.saturating_add(INITIAL_REPEAT_DELAY);
-    }
+    *deadline = if begin {
+        now.saturating_add(INITIAL_REPEAT_DELAY)
+    } else {
+        now
+    };
     true
 }
 
 fn on_sideways_arrow_press(
     mut press: On<Pointer<Press>>,
-    time: Res<Time>,
+    time: Res<Time<Real>>,
     disabled: Query<Has<InteractionDisabled>>,
     tracking: Query<(), With<RetailSidewaysArrowTracking>>,
-    mut repeats: Query<&mut RetailSidewaysArrowRepeat>,
+    hilite: Query<(), With<RetailSidewaysArrowHilite>>,
+    mut repeats: Query<&mut RetailSidewaysArrowRepeat, With<RetailSidewaysArrow>>,
     mut commands: Commands,
 ) {
     if press.event.button != PointerButton::Primary {
         return;
     }
     let entity = press.entity;
+    let Ok(mut repeat) = repeats.get_mut(entity) else {
+        return;
+    };
     if disabled.get(entity).unwrap_or(false) || tracking.get(entity).is_ok() {
         return;
     }
-    press.propagate(false);
     let tick = retail_tick(time.as_ref());
-    if let Ok(mut repeat) = repeats.get_mut(entity) {
-        repeat.repeat_deadline_tick = tick.saturating_add(INITIAL_REPEAT_DELAY);
+    if !poll_repeat_deadline(&mut repeat.repeat_deadline_tick, tick, true) {
+        return;
     }
-    commands.entity(entity).insert((
-        Pressed,
-        RetailSidewaysArrowTracking {
-            pointer_id: press.pointer_id,
-        },
-    ));
+    press.propagate(false);
+    if hilite.get(entity).is_ok() {
+        commands.entity(entity).insert(Pressed);
+    }
+    commands.entity(entity).insert(RetailSidewaysArrowTracking {
+        pointer_id: press.pointer_id,
+    });
     commands.trigger(Step { entity });
 }
 
 fn clear_sideways_arrow_hold(
     entity: Entity,
     pointer_id: PointerId,
-    tracking: &Query<&RetailSidewaysArrowTracking>,
+    hilite: &Query<(), With<RetailSidewaysArrowHilite>>,
+    tracking: &Query<&RetailSidewaysArrowTracking, With<RetailSidewaysArrow>>,
     commands: &mut Commands,
 ) -> bool {
     let Ok(state) = tracking.get(entity) else {
@@ -120,38 +135,57 @@ fn clear_sideways_arrow_hold(
     }
     commands
         .entity(entity)
-        .remove::<(Pressed, RetailSidewaysArrowTracking)>();
+        .remove::<RetailSidewaysArrowTracking>();
+    if hilite.get(entity).is_ok() {
+        commands.entity(entity).remove::<Pressed>();
+    }
     true
 }
 
 fn on_sideways_arrow_release(
     mut release: On<Pointer<Release>>,
-    tracking: Query<&RetailSidewaysArrowTracking>,
+    hilite: Query<(), With<RetailSidewaysArrowHilite>>,
+    tracking: Query<&RetailSidewaysArrowTracking, With<RetailSidewaysArrow>>,
     mut commands: Commands,
 ) {
-    if clear_sideways_arrow_hold(release.entity, release.pointer_id, &tracking, &mut commands) {
+    if clear_sideways_arrow_hold(
+        release.entity,
+        release.pointer_id,
+        &hilite,
+        &tracking,
+        &mut commands,
+    ) {
         release.propagate(false);
     }
 }
 
 fn on_sideways_arrow_cancel(
     mut cancel: On<Pointer<Cancel>>,
-    tracking: Query<&RetailSidewaysArrowTracking>,
+    hilite: Query<(), With<RetailSidewaysArrowHilite>>,
+    tracking: Query<&RetailSidewaysArrowTracking, With<RetailSidewaysArrow>>,
     mut commands: Commands,
 ) {
-    if clear_sideways_arrow_hold(cancel.entity, cancel.pointer_id, &tracking, &mut commands) {
+    if clear_sideways_arrow_hold(
+        cancel.entity,
+        cancel.pointer_id,
+        &hilite,
+        &tracking,
+        &mut commands,
+    ) {
         cancel.propagate(false);
     }
 }
 
 fn on_sideways_arrow_drag_end(
     mut drag_end: On<Pointer<DragEnd>>,
-    tracking: Query<&RetailSidewaysArrowTracking>,
+    hilite: Query<(), With<RetailSidewaysArrowHilite>>,
+    tracking: Query<&RetailSidewaysArrowTracking, With<RetailSidewaysArrow>>,
     mut commands: Commands,
 ) {
     if clear_sideways_arrow_hold(
         drag_end.entity,
         drag_end.pointer_id,
+        &hilite,
         &tracking,
         &mut commands,
     ) {
@@ -161,7 +195,7 @@ fn on_sideways_arrow_drag_end(
 
 fn sync_sideways_arrow_pressed(
     hover_map: Option<Res<HoverMap>>,
-    tracking: Query<(Entity, &RetailSidewaysArrowTracking)>,
+    tracking: Query<(Entity, &RetailSidewaysArrowTracking), With<RetailSidewaysArrowHilite>>,
     disabled: Query<Has<InteractionDisabled>>,
     pressed: Query<Has<Pressed>>,
     mut commands: Commands,
@@ -184,14 +218,17 @@ fn sync_sideways_arrow_pressed(
 }
 
 fn repeat_sideways_arrows(
-    time: Res<Time>,
+    time: Res<Time<Real>>,
     hover_map: Option<Res<HoverMap>>,
     disabled: Query<Has<InteractionDisabled>>,
-    mut tracking: Query<(
-        Entity,
-        &RetailSidewaysArrowTracking,
-        &mut RetailSidewaysArrowRepeat,
-    )>,
+    mut tracking: Query<
+        (
+            Entity,
+            &RetailSidewaysArrowTracking,
+            &mut RetailSidewaysArrowRepeat,
+        ),
+        With<RetailSidewaysArrow>,
+    >,
     mut commands: Commands,
 ) {
     let Some(hover_map) = hover_map else {
@@ -202,15 +239,17 @@ fn repeat_sideways_arrows(
         if disabled.get(entity).unwrap_or(false) {
             commands
                 .entity(entity)
-                .remove::<(Pressed, RetailSidewaysArrowTracking)>();
+                .remove::<RetailSidewaysArrowTracking>();
+            commands.entity(entity).remove::<Pressed>();
+            continue;
+        }
+        if !poll_repeat_deadline(&mut repeat.repeat_deadline_tick, tick, false) {
             continue;
         }
         if !pointer_inside(entity, state.pointer_id, hover_map.as_ref()) {
             continue;
         }
-        if advance_repeat_deadline(&mut repeat.repeat_deadline_tick, tick, false) {
-            commands.trigger(Step { entity });
-        }
+        commands.trigger(Step { entity });
     }
 }
 
@@ -223,7 +262,8 @@ mod tests {
     use bevy::picking::events::{Pointer, Press, Release};
     use bevy::picking::hover::HoverMap;
     use bevy::picking::pointer::{PointerButton, PointerId};
-    use bevy::ui_widgets::ButtonPlugin;
+    use bevy::ui_widgets::{Button, ButtonPlugin};
+    use std::time::Duration;
 
     #[derive(Resource, Default)]
     struct StepCount(u32);
@@ -240,16 +280,20 @@ mod tests {
         HitData::new(Entity::from_bits(1), 0.0, None, None)
     }
 
+    fn pointer_location() -> bevy::picking::pointer::Location {
+        bevy::picking::pointer::Location {
+            target: bevy::camera::NormalizedRenderTarget::None {
+                width: 1,
+                height: 1,
+            },
+            position: Vec2::ZERO,
+        }
+    }
+
     fn press(entity: Entity, app: &mut App) {
         app.world_mut().trigger(Pointer::new(
             PointerId::Mouse,
-            bevy::picking::pointer::Location {
-                target: bevy::camera::NormalizedRenderTarget::None {
-                    width: 1,
-                    height: 1,
-                },
-                position: Vec2::ZERO,
-            },
+            pointer_location(),
             Press {
                 button: PointerButton::Primary,
                 hit: dummy_hit(),
@@ -262,38 +306,13 @@ mod tests {
     fn release(entity: Entity, app: &mut App) {
         app.world_mut().trigger(Pointer::new(
             PointerId::Mouse,
-            bevy::picking::pointer::Location {
-                target: bevy::camera::NormalizedRenderTarget::None {
-                    width: 1,
-                    height: 1,
-                },
-                position: Vec2::ZERO,
-            },
+            pointer_location(),
             Release {
                 button: PointerButton::Primary,
                 hit: dummy_hit(),
             },
             entity,
         ));
-    }
-
-    #[test]
-    fn repeat_timing_matches_retail_gate() {
-        let mut deadline = 0;
-        let tick = 20;
-        assert!(advance_repeat_deadline(&mut deadline, tick, true));
-        assert_eq!(deadline, tick + INITIAL_REPEAT_DELAY);
-        assert!(!advance_repeat_deadline(
-            &mut deadline,
-            tick + INITIAL_REPEAT_DELAY + TICKS_PER_REPEAT - 1,
-            false
-        ));
-        assert!(advance_repeat_deadline(
-            &mut deadline,
-            tick + INITIAL_REPEAT_DELAY + TICKS_PER_REPEAT,
-            false
-        ));
-        assert_eq!(deadline, tick + INITIAL_REPEAT_DELAY + TICKS_PER_REPEAT);
     }
 
     fn set_hovered(app: &mut App, entity: Entity) {
@@ -306,13 +325,54 @@ mod tests {
             .insert(PointerId::Mouse, hover);
     }
 
+    fn advance_time(app: &mut App, ms: u64) {
+        app.world_mut()
+            .resource_mut::<Time<Real>>()
+            .advance_by(Duration::from_millis(ms));
+    }
+
     #[test]
-    fn press_emits_step_and_release_does_not_emit_another() {
+    fn poll_matches_retail_begin_and_repeat_gates() {
+        let mut deadline = 0;
+        assert!(poll_repeat_deadline(&mut deadline, 100, true));
+        assert_eq!(deadline, 110);
+        assert!(!poll_repeat_deadline(&mut deadline, 114, false));
+        assert!(poll_repeat_deadline(&mut deadline, 115, false));
+        assert_eq!(deadline, 115);
+    }
+
+    #[test]
+    fn ordinary_button_is_untouched_by_global_sideways_observers() {
+        let mut app = test_app();
+        let button = app.world_mut().spawn(Button).id();
+        app.init_resource::<StepCount>();
+        app.world_mut()
+            .add_observer(|_: On<Step>, mut count: ResMut<StepCount>| count.0 += 1);
+
+        press(button, &mut app);
+        app.update();
+
+        assert_eq!(app.world().resource::<StepCount>().0, 0);
+        assert!(
+            app.world()
+                .get::<RetailSidewaysArrowTracking>(button)
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn rapid_second_press_respects_persisted_deadline() {
         let mut app = test_app();
         let entity = app
             .world_mut()
-            .spawn((RetailSidewaysArrow, Pickable::default()))
+            .spawn((
+                RetailSidewaysArrow,
+                RetailSidewaysArrowRepeat::default(),
+                RetailSidewaysArrowHilite,
+                Pickable::default(),
+            ))
             .id();
+        app.update();
         app.init_resource::<StepCount>();
         app.world_mut()
             .add_observer(move |step: On<Step>, mut count: ResMut<StepCount>| {
@@ -321,6 +381,131 @@ mod tests {
                 }
             });
         set_hovered(&mut app, entity);
+        advance_time(&mut app, 100 * 16);
+        app.update();
+
+        press(entity, &mut app);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+
+        release(entity, &mut app);
+        app.update();
+
+        advance_time(&mut app, 2 * 16);
+        press(entity, &mut app);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+
+        advance_time(&mut app, 4 * 16);
+        press(entity, &mut app);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+
+        advance_time(&mut app, 12 * 16);
+        press(entity, &mut app);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 2);
+    }
+
+    #[test]
+    fn held_outside_advances_deadline_without_stepping() {
+        let mut app = test_app();
+        let entity = app
+            .world_mut()
+            .spawn((
+                RetailSidewaysArrow,
+                RetailSidewaysArrowRepeat::default(),
+                RetailSidewaysArrowHilite,
+                Pickable::default(),
+            ))
+            .id();
+        app.update();
+        app.init_resource::<StepCount>();
+        app.world_mut()
+            .add_observer(move |step: On<Step>, mut count: ResMut<StepCount>| {
+                if step.entity == entity {
+                    count.0 += 1;
+                }
+            });
+        set_hovered(&mut app, entity);
+        advance_time(&mut app, 100 * 16);
+        app.update();
+
+        press(entity, &mut app);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+
+        app.world_mut().resource_mut::<HoverMap>().0.clear();
+        advance_time(&mut app, 20 * 16);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+
+        set_hovered(&mut app, entity);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+
+        advance_time(&mut app, 5 * 16);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 2);
+    }
+
+    #[test]
+    fn right_left_view_repeats_without_pressed_hilite() {
+        let mut app = test_app();
+        let entity = app
+            .world_mut()
+            .spawn((
+                RetailSidewaysArrow,
+                RetailSidewaysArrowRepeat::default(),
+                Pickable::default(),
+            ))
+            .id();
+        app.update();
+        app.init_resource::<StepCount>();
+        app.world_mut()
+            .add_observer(move |step: On<Step>, mut count: ResMut<StepCount>| {
+                if step.entity == entity {
+                    count.0 += 1;
+                }
+            });
+        set_hovered(&mut app, entity);
+        advance_time(&mut app, 100 * 16);
+        app.update();
+
+        press(entity, &mut app);
+        app.update();
+
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+        assert!(app.world().get::<Pressed>(entity).is_none());
+        assert!(
+            app.world()
+                .get::<RetailSidewaysArrowTracking>(entity)
+                .is_some()
+        );
+    }
+
+    #[test]
+    fn press_emits_step_and_release_does_not_emit_another() {
+        let mut app = test_app();
+        let entity = app
+            .world_mut()
+            .spawn((
+                RetailSidewaysArrow,
+                RetailSidewaysArrowRepeat::default(),
+                RetailSidewaysArrowHilite,
+                Pickable::default(),
+            ))
+            .id();
+        app.update();
+        app.init_resource::<StepCount>();
+        app.world_mut()
+            .add_observer(move |step: On<Step>, mut count: ResMut<StepCount>| {
+                if step.entity == entity {
+                    count.0 += 1;
+                }
+            });
+        set_hovered(&mut app, entity);
+        advance_time(&mut app, 100 * 16);
         app.update();
 
         press(entity, &mut app);
@@ -337,39 +522,5 @@ mod tests {
                 .get::<RetailSidewaysArrowRepeat>(entity)
                 .is_some()
         );
-    }
-
-    #[test]
-    fn held_outside_unhighlights_and_stops_repeat_until_reenter() {
-        let mut app = test_app();
-        let entity = app
-            .world_mut()
-            .spawn((RetailSidewaysArrow, Pickable::default()))
-            .id();
-        app.update();
-        set_hovered(&mut app, entity);
-
-        press(entity, &mut app);
-        app.update();
-        assert!(app.world().get::<Pressed>(entity).is_some());
-
-        app.world_mut().resource_mut::<HoverMap>().0.clear();
-        app.update();
-        assert!(app.world().get::<Pressed>(entity).is_none());
-        assert!(
-            app.world()
-                .get::<RetailSidewaysArrowTracking>(entity)
-                .is_some()
-        );
-
-        let camera = app.world_mut().spawn(Camera::default()).id();
-        let mut hover = EntityHashMap::default();
-        hover.insert(entity, HitData::new(camera, 0.0, Some(Vec3::ZERO), None));
-        app.world_mut()
-            .resource_mut::<HoverMap>()
-            .0
-            .insert(PointerId::Mouse, hover);
-        app.update();
-        assert!(app.world().get::<Pressed>(entity).is_some());
     }
 }
