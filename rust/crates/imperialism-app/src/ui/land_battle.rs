@@ -1,9 +1,7 @@
 use super::RetailUiAssets;
 use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use super::generated;
-use super::hover_help::{
-    HoverHelpText, bind_hover_help_texts, ui_string,
-};
+use super::hover_help::{HoverHelpText, bind_hover_help_texts, ui_string};
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
 use super::retail_palette::view_mgr_color;

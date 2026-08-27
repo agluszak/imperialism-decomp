@@ -3,14 +3,19 @@
 //! Bevy owns press/click on the transparent halves. This widget owns atlas
 //! presentation from child `Pressed` state and the count overlay. Atlas 804 is
 //! loaded inside the scene (keyed transparency), not passed as a binder prop.
+//!
+//! Hit testing matches retail `TrackMouse`: for a 41px control, integer
+//! `height/2 == 20` leaves `y == 0` and `y == 20` dead. Activation is release-
+//! based (stock `Button`), not `ActivateOnPress`. The count caption is drawn
+//! outside the 11px frame, so the root opts out of the generated clip.
 
 use super::retail::{
     load_template_transparent_picture, retail_text_color, retail_text_shadow, retail_text_style,
 };
 use bevy::prelude::*;
 use bevy::reflect::Is;
-use bevy::ui::{Pressed, UiSystems};
-use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
+use bevy::ui::{Overflow, Pressed, UiSystems};
+use bevy::ui_widgets::{Activate, Button};
 use imperialism_formats::PictureId;
 
 const ARROW_ATLAS: i16 = 804;
@@ -19,6 +24,14 @@ const HALF_HEIGHT: f32 = 16.0;
 const LOWER_TOP: f32 = 25.0;
 const WIDTH: f32 = 11.0;
 const HEIGHT: f32 = 41.0;
+/// Integer `frameHeight / 2` as recovered in `TNumberedArrowButton::TrackMouse`.
+const MIDPOINT: f32 = 20.0;
+/// Upper hit: `y > 0 && y < height/2` → `[1, 20)`.
+const UPPER_HIT_TOP: f32 = 1.0;
+const UPPER_HIT_HEIGHT: f32 = MIDPOINT - UPPER_HIT_TOP;
+/// Lower hit: `y > height/2 && y < height` → `[21, 41)`.
+const LOWER_HIT_TOP: f32 = MIDPOINT + 1.0;
+const LOWER_HIT_HEIGHT: f32 = HEIGHT - LOWER_HIT_TOP;
 
 /// Top half idle/pressed and bottom half idle/pressed atlas crops (atlas 804).
 const TOP_IDLE: Rect = Rect {
@@ -75,6 +88,10 @@ impl RetailNumberedArrow {
         bsn! {
             #Root
             Pickable::IGNORE
+            // Caption at x=7 extends past the 11px hit frame; retail paints outside.
+            Node {
+                overflow: Overflow::visible(),
+            }
             NumberedArrowValue(None)
             RetailNumberedArrow {
                 upper_image: #UpperImage,
@@ -130,12 +147,11 @@ impl RetailNumberedArrow {
                     Node {
                         position_type: PositionType::Absolute,
                         left: px(0),
-                        top: px(0),
+                        top: px(UPPER_HIT_TOP),
                         width: px(WIDTH),
-                        height: px(HEIGHT / 2.0),
+                        height: px(UPPER_HIT_HEIGHT),
                     }
                     Button
-                    ActivateOnPress
                     NumberedArrowHalf {
                         root: #Root,
                         upper: true,
@@ -146,12 +162,11 @@ impl RetailNumberedArrow {
                     Node {
                         position_type: PositionType::Absolute,
                         left: px(0),
-                        top: px(HEIGHT / 2.0),
+                        top: px(LOWER_HIT_TOP),
                         width: px(WIDTH),
-                        height: px(HEIGHT / 2.0),
+                        height: px(LOWER_HIT_HEIGHT),
                     }
                     Button
-                    ActivateOnPress
                     NumberedArrowHalf {
                         root: #Root,
                         upper: false,
@@ -164,13 +179,13 @@ impl RetailNumberedArrow {
                         position_type: PositionType::Absolute,
                         left: px(7),
                         top: px(0),
-                        width: px(11),
+                        width: px(20),
                         height: px(16),
                     }
                     Text("")
                     retail_text_style(0, 0, 10, 1)
                     retail_text_color(0x28)
-                    retail_text_shadow(0xd2, -1, -1)
+                    retail_text_shadow(0, 1, 1)
                     Pickable::IGNORE
                 ),
             ]
@@ -246,8 +261,6 @@ fn on_numbered_arrow_half_activate(
     let Ok(half) = halves.get(activate.entity) else {
         return;
     };
-    // Pointer propagation is already stopped by `ActivateOnPress` on the half button.
-    // `Activate` itself is not a propagating entity event in Bevy 0.19.
     let action = if half.upper {
         NumberedArrowAction::Upper
     } else {
@@ -257,4 +270,19 @@ fn on_numbered_arrow_half_activate(
         entity: half.root,
         action,
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn hit_rects_leave_retail_dead_pixels() {
+        assert_eq!(UPPER_HIT_TOP, 1.0);
+        assert_eq!(UPPER_HIT_HEIGHT, 19.0);
+        assert_eq!(LOWER_HIT_TOP, 21.0);
+        assert_eq!(LOWER_HIT_HEIGHT, 20.0);
+        assert_eq!(UPPER_HIT_TOP + UPPER_HIT_HEIGHT, MIDPOINT);
+        assert_eq!(LOWER_HIT_TOP + LOWER_HIT_HEIGHT, HEIGHT);
+    }
 }
