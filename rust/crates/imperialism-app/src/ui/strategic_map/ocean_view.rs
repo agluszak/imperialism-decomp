@@ -152,12 +152,10 @@ fn spawn_ocean_labels(
     canvas: Entity,
     session: &GameSession,
 ) {
-    let (zone_font, zone_layout, zone_line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 2, 12, 1))
-        .expect("retail ocean-zone text style");
-    let (nation_font, nation_layout, nation_line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 1, 12, 1))
-        .expect("retail ocean-nation text style");
+    let (zone_font, zone_layout, zone_line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 2, 12, 1));
+    let (nation_font, nation_layout, nation_line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 1, 12, 1));
     let palette = *assets.default_dib_palette();
 
     commands.entity(canvas).with_children(|parent| {

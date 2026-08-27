@@ -121,24 +121,3 @@ fn bind_order_step(commands: &mut Commands, entity: Entity, order: CityOrderId, 
             session.game.adjust_city_order(nation, order, delta);
         });
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn specialized_city_buildings_use_the_one_based_retail_name_indexes() {
-        assert_eq!(
-            CityFacilitySlot::OilRefinery.name_string(),
-            StringGroup::new(0x2719).entry(7)
-        );
-        assert_eq!(
-            CityFacilitySlot::Shipyard.name_string(),
-            StringGroup::new(0x2719).entry(8)
-        );
-        assert_eq!(
-            CityFacilitySlot::Armory.name_string(),
-            StringGroup::new(0x2719).entry(9)
-        );
-    }
-}

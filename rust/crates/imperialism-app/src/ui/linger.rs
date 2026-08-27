@@ -70,9 +70,8 @@ fn insert_linger_text(
     text: &str,
     alignment: i32,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 0, 12, alignment))
-        .expect("retail linger dialog text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, alignment));
     commands.entity(entity).insert((
         Text::new(text.to_owned()),
         Label,

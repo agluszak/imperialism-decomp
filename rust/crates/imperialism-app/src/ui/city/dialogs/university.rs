@@ -187,9 +187,8 @@ pub(in crate::ui::city) fn render_university(
     for entity in yield_texts.iter() {
         ui.commands.entity(entity).despawn();
     }
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, 10, -2))
-        .expect("university yield text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, 10, -2));
     let mut running_max = UniversityRequirementLevel::None;
     for (row_index, resource) in specialties.into_iter().enumerate() {
         let Some(resource) = resource else {

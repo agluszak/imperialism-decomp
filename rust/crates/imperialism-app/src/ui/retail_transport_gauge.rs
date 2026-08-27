@@ -1,8 +1,7 @@
-//! Recovered `TTransportPicture` gauge overlays.
+//! Transport gauge fill/limit presentation helpers.
 //!
-//! Screens write fill/limit via bind-time handles. Codegen emits merged synthetic
-//! remainder/fill/limit children directly into one `Children` list with recovered
-//! resource kids — see `_rust_transport_gauge_shell_and_children` in ui_codegen.
+//! Hierarchy construction lives in codegen (`TransportGaugeParts` on generated nodes).
+//! Screens update fill/limit widths via bind-time handles.
 
 use bevy::prelude::*;
 

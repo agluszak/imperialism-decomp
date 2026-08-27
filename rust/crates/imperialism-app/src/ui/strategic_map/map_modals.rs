@@ -6,7 +6,7 @@ use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
-use crate::ui::retail::{RetailTree, ancestor_with};
+use crate::ui::retail::RetailTree;
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use crate::ui::retail_resources::EngineerConstructionChoiceRetailResources;
 use crate::ui::retail_resources::ResourceKindRetailResources;
@@ -253,7 +253,7 @@ fn bind_added_civilian_ledgers(
     mut commands: Commands,
     added: Query<Entity, Added<CivilianLedger>>,
     tree: RetailTree,
-    mut assets: RetailUiAssets,
+    assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     for root in &added {
@@ -272,9 +272,8 @@ fn bind_added_civilian_ledgers(
             last_column,
         });
 
-        let (font, layout, line_height, _) = assets
-            .text_style(RetailTextStylePreset::explicit(3, 0, 12, -2))
-            .expect("retail civilian-ledger text style");
+        let (font, layout, line_height, _) =
+            assets.text_style(RetailTextStylePreset::explicit(3, 0, 12, -2));
         let title = commands
             .spawn((
                 Node {
@@ -300,60 +299,58 @@ fn bind_added_civilian_ledgers(
             let row_in_column = index % CIVILIANS_PER_COLUMN;
             let name = assets.string(kind.name_string());
             let location = city_name(&session.game, tile);
-            let row = commands
-                .spawn((
-                    CivilianLedgerRow {
-                        column,
-                        row: row_in_column,
-                    },
-                    CivilianLedgerAction::Select(tile),
-                    Button,
-                    Node {
-                        position_type: PositionType::Absolute,
-                        left: Val::Px(column as f32 * 229.0),
-                        top: Val::Px(row_in_column as f32 * 64.0),
-                        width: Val::Px(229.0),
-                        height: Val::Px(64.0),
-                        padding: UiRect::all(Val::Px(4.0)),
-                        ..default()
-                    },
-                    Text::new(format!("{name}\n{location}")),
-                    font.clone(),
-                    layout,
-                    line_height,
-                    TextColor(Color::BLACK),
-                    if column < CIVILIAN_LEDGER_VISIBLE_COLUMNS {
-                        Visibility::Inherited
-                    } else {
-                        Visibility::Hidden
-                    },
-                ))
-                .observe(on_civilian_ledger_action)
-                .id();
+            let mut row = commands.spawn((
+                CivilianLedgerRow {
+                    column,
+                    row: row_in_column,
+                },
+                CivilianLedgerAction::Select(tile),
+                Button,
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(column as f32 * 229.0),
+                    top: Val::Px(row_in_column as f32 * 64.0),
+                    width: Val::Px(229.0),
+                    height: Val::Px(64.0),
+                    padding: UiRect::all(Val::Px(4.0)),
+                    ..default()
+                },
+                Text::new(format!("{name}\n{location}")),
+                font.clone(),
+                layout,
+                line_height,
+                TextColor(Color::BLACK),
+                if column < CIVILIAN_LEDGER_VISIBLE_COLUMNS {
+                    Visibility::Inherited
+                } else {
+                    Visibility::Hidden
+                },
+            ));
+            observe_civilian_ledger_action(&mut row, root);
+            let row = row.id();
             commands.entity(page).add_child(row);
         }
         for (tag, action) in [
             (fourcc!("lcor"), CivilianLedgerAction::Previous),
             (fourcc!("rcor"), CivilianLedgerAction::Next),
         ] {
-            commands
-                .entity(view.find(tag))
-                .insert((
-                    Button,
-                    action,
-                    match action {
-                        CivilianLedgerAction::Previous => Visibility::Hidden,
-                        CivilianLedgerAction::Next
-                            if CIVILIAN_LEDGER_VISIBLE_COLUMNS <= last_column =>
-                        {
-                            Visibility::Inherited
-                        }
-                        CivilianLedgerAction::Next | CivilianLedgerAction::Select(_) => {
-                            Visibility::Hidden
-                        }
-                    },
-                ))
-                .observe(on_civilian_ledger_action);
+            let mut entity = commands.entity(view.find(tag));
+            entity.insert((
+                Button,
+                action,
+                match action {
+                    CivilianLedgerAction::Previous => Visibility::Hidden,
+                    CivilianLedgerAction::Next
+                        if CIVILIAN_LEDGER_VISIBLE_COLUMNS <= last_column =>
+                    {
+                        Visibility::Inherited
+                    }
+                    CivilianLedgerAction::Next | CivilianLedgerAction::Select(_) => {
+                        Visibility::Hidden
+                    }
+                },
+            ));
+            observe_civilian_ledger_action(&mut entity, root);
         }
     }
 }
@@ -396,62 +393,59 @@ fn project_civilian_ledger(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
-fn on_civilian_ledger_action(
-    activate: On<Activate>,
-    actions: Query<&CivilianLedgerAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<CivilianLedger>>,
-    mut ledgers: Query<&mut CivilianLedger>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-    mut audio: RetailAudioAssets,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    match action {
-        CivilianLedgerAction::Previous => {
-            let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
-            ledger.current_column = ledger
-                .current_column
-                .saturating_sub(CIVILIAN_LEDGER_VISIBLE_COLUMNS);
-        }
-        CivilianLedgerAction::Next => {
-            let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
-            ledger.current_column =
-                (ledger.current_column + CIVILIAN_LEDGER_VISIBLE_COLUMNS).min(ledger.last_column);
-        }
-        CivilianLedgerAction::Select(tile) => {
-            map.apply(&mut session.game, MapAction::Center(tile));
-            let nation = session.game.turn().active_nation;
-            let selectable = session
-                .game
-                .civilian_on_tile_for_nation(tile, nation)
-                .and_then(|(unit, state)| {
-                    matches!(
-                        state.order(),
-                        CivilianWorkOrder::Idle
-                            | CivilianWorkOrder::Sleep
-                            | CivilianWorkOrder::Later
-                    )
-                    .then_some(unit)
-                });
-            if let Some(unit) = selectable {
-                map.apply(
-                    &mut session.game,
-                    MapAction::Select(StrategicSelection::Civilian(Some(unit))),
-                );
-                session.game.activate_civilian_selection(unit);
-                audio.play(&mut commands, SoundId::new(0x2338));
+fn observe_civilian_ledger_action(entity: &mut EntityCommands, root: Entity) {
+    entity.observe(
+        move |activate: On<Activate>,
+              actions: Query<&CivilianLedgerAction>,
+              mut ledgers: Query<&mut CivilianLedger>,
+              mut map: ResMut<StrategicMapSession>,
+              mut session: ResMut<GameSession>,
+              mut commands: Commands,
+              mut audio: RetailAudioAssets| {
+            let Ok(action) = actions.get(activate.entity).copied() else {
+                return;
+            };
+            match action {
+                CivilianLedgerAction::Previous => {
+                    let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
+                    ledger.current_column = ledger
+                        .current_column
+                        .saturating_sub(CIVILIAN_LEDGER_VISIBLE_COLUMNS);
+                }
+                CivilianLedgerAction::Next => {
+                    let mut ledger = ledgers.get_mut(root).expect("civilian ledger action root");
+                    ledger.current_column = (ledger.current_column
+                        + CIVILIAN_LEDGER_VISIBLE_COLUMNS)
+                        .min(ledger.last_column);
+                }
+                CivilianLedgerAction::Select(tile) => {
+                    map.apply(&mut session.game, MapAction::Center(tile));
+                    let nation = session.game.turn().active_nation;
+                    let selectable = session
+                        .game
+                        .civilian_on_tile_for_nation(tile, nation)
+                        .and_then(|(unit, state)| {
+                            matches!(
+                                state.order(),
+                                CivilianWorkOrder::Idle
+                                    | CivilianWorkOrder::Sleep
+                                    | CivilianWorkOrder::Later
+                            )
+                            .then_some(unit)
+                        });
+                    if let Some(unit) = selectable {
+                        map.apply(
+                            &mut session.game,
+                            MapAction::Select(StrategicSelection::Civilian(Some(unit))),
+                        );
+                        session.game.activate_civilian_selection(unit);
+                        audio.play(&mut commands, SoundId::new(0x2338));
+                    }
+                    commands.entity(root).try_despawn();
+                }
             }
-            commands.entity(root).try_despawn();
-        }
-    }
+        },
+    );
 }
 
 fn bind_added_civilian_modals(
@@ -828,9 +822,8 @@ fn insert_retail_text(
     text: &str,
     point_size: i32,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, 1))
-        .expect("retail civilian modal text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, point_size, 1));
     commands.entity(entity).insert((
         Text::new(text.to_owned()),
         font,
@@ -1062,7 +1055,7 @@ fn bind_added_army_rosters(
         for (index, row) in model.units.iter().enumerate() {
             let column = index / MINI_ROSTER_PER_COLUMN;
             let row_in_column = index % MINI_ROSTER_PER_COLUMN;
-            spawn_roster_row(
+            let mut entity = spawn_roster_row(
                 &mut commands,
                 page,
                 RosterRow {
@@ -1075,9 +1068,9 @@ fn bind_added_army_rosters(
                 font.clone(),
                 layout,
                 line_height,
-            )
-            .insert((Button, ArmyRosterRowAction::Select(row.province)))
-            .observe(on_army_roster_row_action);
+            );
+            entity.insert((Button, ArmyRosterRowAction::Select(row.province)));
+            observe_army_roster_row_action(&mut entity, root);
         }
     }
 }
@@ -1280,7 +1273,7 @@ fn bind_added_navy_rosters(
                     ));
                 }
             }
-            entity.observe(on_navy_roster_row_action);
+            observe_navy_roster_row_action(&mut entity, root);
         }
     }
 }
@@ -1320,20 +1313,19 @@ fn bind_roster_page(
         (fourcc!("lcor"), RosterPageAction::Previous),
         (fourcc!("rcor"), RosterPageAction::Next),
     ] {
-        commands
-            .entity(view.find(tag))
-            .insert((
-                Button,
-                action,
-                match action {
-                    RosterPageAction::Previous => Visibility::Hidden,
-                    RosterPageAction::Next if ROSTER_VISIBLE_COLUMNS <= last_column => {
-                        Visibility::Inherited
-                    }
-                    RosterPageAction::Next => Visibility::Hidden,
-                },
-            ))
-            .observe(on_roster_page_action);
+        let mut entity = commands.entity(view.find(tag));
+        entity.insert((
+            Button,
+            action,
+            match action {
+                RosterPageAction::Previous => Visibility::Hidden,
+                RosterPageAction::Next if ROSTER_VISIBLE_COLUMNS <= last_column => {
+                    Visibility::Inherited
+                }
+                RosterPageAction::Next => Visibility::Hidden,
+            },
+        ));
+        observe_roster_page_action(&mut entity, root);
     }
 }
 
@@ -1344,9 +1336,8 @@ fn spawn_roster_title(
     group: u16,
     offset: u16,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, 12, -2))
-        .expect("retail roster title text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, 12, -2));
     let title = commands
         .spawn((
             Node {
@@ -1410,9 +1401,8 @@ fn roster_text_style(
     assets: &mut RetailUiAssets,
     point_size: i32,
 ) -> (TextFont, TextLayout, LineHeight) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, -2))
-        .expect("retail roster row text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, point_size, -2));
     (font, layout, line_height)
 }
 
@@ -1452,29 +1442,27 @@ fn project_roster_pages(
     }
 }
 
-fn on_roster_page_action(
-    activate: On<Activate>,
-    actions: Query<&RosterPageAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<RosterPage>>,
-    mut pages: Query<&mut RosterPage>,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    let mut page = pages.get_mut(root).expect("roster page action root");
-    match action {
-        RosterPageAction::Previous => {
-            page.current_column = page.current_column.saturating_sub(ROSTER_VISIBLE_COLUMNS);
-        }
-        RosterPageAction::Next => {
-            page.current_column =
-                (page.current_column + ROSTER_VISIBLE_COLUMNS).min(page.last_column);
-        }
-    }
+fn observe_roster_page_action(entity: &mut EntityCommands, root: Entity) {
+    entity.observe(
+        move |activate: On<Activate>,
+              actions: Query<&RosterPageAction>,
+              mut pages: Query<&mut RosterPage>| {
+            let Ok(action) = actions.get(activate.entity).copied() else {
+                return;
+            };
+            let mut page = pages.get_mut(root).expect("roster page action root");
+            match action {
+                RosterPageAction::Previous => {
+                    page.current_column =
+                        page.current_column.saturating_sub(ROSTER_VISIBLE_COLUMNS);
+                }
+                RosterPageAction::Next => {
+                    page.current_column =
+                        (page.current_column + ROSTER_VISIBLE_COLUMNS).min(page.last_column);
+                }
+            }
+        },
+    );
 }
 
 fn on_garrison_row_action(
@@ -1497,64 +1485,59 @@ fn on_garrison_row_action(
     }
 }
 
-fn on_army_roster_row_action(
-    activate: On<Activate>,
-    actions: Query<&ArmyRosterRowAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<ArmyRosterDialog>>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-) {
-    let Ok(ArmyRosterRowAction::Select(province)) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    map.apply(
-        &mut session.game,
-        MapAction::Select(StrategicSelection::Army(Some(province))),
+fn observe_army_roster_row_action(entity: &mut EntityCommands, root: Entity) {
+    entity.observe(
+        move |activate: On<Activate>,
+              actions: Query<&ArmyRosterRowAction>,
+              mut map: ResMut<StrategicMapSession>,
+              mut session: ResMut<GameSession>,
+              mut commands: Commands| {
+            let Ok(ArmyRosterRowAction::Select(province)) = actions.get(activate.entity).copied()
+            else {
+                return;
+            };
+            map.apply(
+                &mut session.game,
+                MapAction::Select(StrategicSelection::Army(Some(province))),
+            );
+            session.game.apply_army_province_selection(Some(province));
+            if let Some(tile) = session.game.map().provinces[province].city_tile() {
+                map.apply(&mut session.game, MapAction::Center(tile));
+            }
+            commands.entity(root).try_despawn();
+        },
     );
-    session.game.apply_army_province_selection(Some(province));
-    if let Some(tile) = session.game.map().provinces[province].city_tile() {
-        map.apply(&mut session.game, MapAction::Center(tile));
-    }
-    commands.entity(root).try_despawn();
 }
 
-fn on_navy_roster_row_action(
-    activate: On<Activate>,
-    actions: Query<&NavyRosterRowAction>,
-    parents: Query<&ChildOf>,
-    roots: Query<(), With<NavyRosterDialog>>,
-    mut map: ResMut<StrategicMapSession>,
-    mut session: ResMut<GameSession>,
-    mut commands: Commands,
-) {
-    let Ok(action) = actions.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(root) = ancestor_with(activate.entity, &parents, &roots) else {
-        return;
-    };
-    match action {
-        NavyRosterRowAction::Select { zone, force } => {
-            map.select_navy(&mut session.game, zone, force);
-            commands.entity(root).try_despawn();
-        }
-        NavyRosterRowAction::Toggle {
-            force,
-            ship,
-            selected,
-        } => {
-            session
-                .game
-                .set_task_force_ship_selected(force, ship, !selected);
-            commands.entity(root).try_despawn();
-            spawn_navy_roster(&mut commands, NavyRosterKind::TaskForce(force));
-        }
-    }
+fn observe_navy_roster_row_action(entity: &mut EntityCommands, root: Entity) {
+    entity.observe(
+        move |activate: On<Activate>,
+              actions: Query<&NavyRosterRowAction>,
+              mut map: ResMut<StrategicMapSession>,
+              mut session: ResMut<GameSession>,
+              mut commands: Commands| {
+            let Ok(action) = actions.get(activate.entity).copied() else {
+                return;
+            };
+            match action {
+                NavyRosterRowAction::Select { zone, force } => {
+                    map.select_navy(&mut session.game, zone, force);
+                    commands.entity(root).try_despawn();
+                }
+                NavyRosterRowAction::Toggle {
+                    force,
+                    ship,
+                    selected,
+                } => {
+                    session
+                        .game
+                        .set_task_force_ship_selected(force, ship, !selected);
+                    commands.entity(root).try_despawn();
+                    spawn_navy_roster(&mut commands, NavyRosterKind::TaskForce(force));
+                }
+            }
+        },
+    );
 }
 
 fn on_cancel_fleet_orders(
@@ -1665,9 +1648,8 @@ fn insert_styled_text(
     point_size: i32,
     alignment: i32,
 ) {
-    let (font, layout, line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(3, 0, point_size, alignment))
-        .expect("retail army/navy report text style");
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(3, 0, point_size, alignment));
     commands.entity(entity).insert((
         Text::new(text.to_owned()),
         font,

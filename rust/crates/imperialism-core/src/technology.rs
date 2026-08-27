@@ -49,6 +49,7 @@ pub struct UniversityTechnologyState {
 #[derive(
     Clone, Copy, Debug, Default, Deserialize, Enum, Eq, Ord, PartialEq, PartialOrd, Serialize,
 )]
+#[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum UniversityRequirementLevel {
     #[default]
@@ -70,12 +71,7 @@ impl UniversityRequirementLevel {
     }
 
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::None => 0,
-            Self::One => 1,
-            Self::Two => 2,
-            Self::Three => 3,
-        }
+        self as u8
     }
 }
 
@@ -202,37 +198,7 @@ impl Technology {
     pub const LENGTH: usize = enum_map::enum_len::<Self>();
 
     pub const fn retail(self) -> u8 {
-        match self {
-            Self::ScientistsHaveDiscovered => 0,
-            Self::HighPressureSteamEngine => 1,
-            Self::SeedDrill => 2,
-            Self::CottonGin => 3,
-            Self::StreamlinedHulls => 4,
-            Self::SquareSetTimbering => 5,
-            Self::IronRailroadBridge => 6,
-            Self::FeedGrasses => 7,
-            Self::SpinningJenny => 8,
-            Self::Paddlewheels => 9,
-            Self::SteelPlows => 10,
-            Self::BessemerConverter => 11,
-            Self::CompoundSteamEngine => 12,
-            Self::RifledArtillery => 13,
-            Self::BreechLoadingRifles => 14,
-            Self::AdvancedIronWorking => 15,
-            Self::PowerLoom => 16,
-            Self::MechanicalReaper => 17,
-            Self::CommercialFertilizer => 18,
-            Self::OilDrilling => 19,
-            Self::BarbedWire => 20,
-            Self::SteelArmorPlate => 21,
-            Self::LargeArtillery => 22,
-            Self::Dynamite => 23,
-            Self::MarineEngineering => 24,
-            Self::MachineGuns => 25,
-            Self::Chemistry => 26,
-            Self::ImprovedRangeFinding => 27,
-            Self::InternalCombustion => 28,
-        }
+        self as u8
     }
 
     pub fn from_index(index: u8) -> Option<Self> {

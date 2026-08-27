@@ -170,9 +170,8 @@ fn bind_transport_screen(
     // HoverHelpBar comes from codegen; curs text style is still binder-owned until a
     // recovered Transport DoPostCreate delta lands (same InitializeMapHint pair as prefs).
     let curs = tree.find(*root, fourcc!("curs"));
-    let (cursor_font, cursor_layout, cursor_line_height, _) = assets
-        .text_style(RetailTextStylePreset::explicit(1, 0, 12, 1))
-        .expect("retail transport cursor text style");
+    let (cursor_font, cursor_layout, cursor_line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, 1));
     commands.entity(curs).insert((
         cursor_font,
         cursor_layout,
