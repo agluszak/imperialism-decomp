@@ -216,18 +216,13 @@ class WidgetKind(Enum):
     PLACARD = auto()
     ARMY_PLACARD = auto()
     SHIP_PLACARD = auto()
-    AMOUNT_BAR = auto()
+    PRODUCTION_AMOUNT_BAR = auto()
+    TRADE_AMOUNT_BAR = auto()
     NUMBERED_ARROW = auto()
     TRANSPORT_GAUGE = auto()
     TWO_PIC_SLIDER = auto()
     RADIO_TEXT_FILL = auto()
     HOVER_HELP_BAR = auto()
-
-
-@dataclass(frozen=True)
-class WidgetSpec:
-    kind: WidgetKind
-    amount_bar_style: str | None = None
 
 
 @dataclass(frozen=True)
@@ -1631,12 +1626,9 @@ _CLASS_WIDGET_KIND: dict[str, WidgetKind] = {
     "TTwoPicSlider": WidgetKind.TWO_PIC_SLIDER,
     "TUpDownPictureButton": WidgetKind.PICTURE_SWAP,
     "TCivilianButton": WidgetKind.RADIO_BUTTON,
-}
-
-_AMOUNT_BAR_CLASS_STYLE: dict[str, str] = {
-    "TIndustryAmtBar": "Production",
-    "TRailAmtBar": "Production",
-    "TTraderAmtBar": "Trade",
+    "TIndustryAmtBar": WidgetKind.PRODUCTION_AMOUNT_BAR,
+    "TRailAmtBar": WidgetKind.PRODUCTION_AMOUNT_BAR,
+    "TTraderAmtBar": WidgetKind.TRADE_AMOUNT_BAR,
 }
 
 _CONTAINER_TYPE_CODES = frozenset({"clus", "view", "wind", "fwnd"})
@@ -1645,28 +1637,24 @@ _TEXT_TYPE_CODES = frozenset({"stat", "tevw"})
 
 def classify_widget(
     key: UiResourceKey | None, node: UiSemanticNode
-) -> WidgetSpec:
+) -> WidgetKind:
     """Classify one normalized recovered node for Rust BSN emission."""
 
     if key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob":
-        return WidgetSpec(WidgetKind.BUTTON)
-
-    amount_bar_style = _AMOUNT_BAR_CLASS_STYLE.get(node.class_name)
-    if amount_bar_style is not None:
-        return WidgetSpec(WidgetKind.AMOUNT_BAR, amount_bar_style=amount_bar_style)
+        return WidgetKind.BUTTON
 
     kind = _CLASS_WIDGET_KIND.get(node.class_name)
     if kind is not None:
-        return WidgetSpec(kind)
+        return kind
 
     if node.type_code in _TEXT_TYPE_CODES:
-        return WidgetSpec(WidgetKind.TEXT)
+        return WidgetKind.TEXT
 
     if node.type_code in _CONTAINER_TYPE_CODES:
-        return WidgetSpec(WidgetKind.CONTAINER)
+        return WidgetKind.CONTAINER
 
     if node.type_code == "pict" and node.family.picture_id is not None:
-        return WidgetSpec(WidgetKind.PICTURE)
+        return WidgetKind.PICTURE
 
     raise ValueError(
         f"unsupported recovered class for Rust UI: {node.class_name} "
@@ -1688,7 +1676,8 @@ _ATOMIC_WIDGET_KINDS = frozenset(
         WidgetKind.ARMY_PLACARD,
         WidgetKind.SHIP_PLACARD,
         WidgetKind.NUMBERED_ARROW,
-        WidgetKind.AMOUNT_BAR,
+        WidgetKind.PRODUCTION_AMOUNT_BAR,
+        WidgetKind.TRADE_AMOUNT_BAR,
         WidgetKind.TWO_PIC_SLIDER,
     }
 )
@@ -1799,29 +1788,11 @@ def apply_windows_child_node_patches(
     return replace(semantic_view, nodes=tuple(nodes))
 
 
-def _rust_ui_semantic_views(
-    repo_root: Path,
-    recipes: Iterable[UiFactoryRecipe],
-    views: dict[UiResourceKey, dict],
-    text_resources: TextResources,
-) -> list[tuple[UiResourceKey | str, UiSemanticView]]:
-    recipe_list = list(recipes)
-    text_property_patches = load_windows_text_property_patches(repo_root)
-    child_node_patches = load_windows_child_node_patches(repo_root)
-    two_pic_sliders = load_two_pic_slider_instances(repo_root)
-    class_substitutions = load_class_substitutions(repo_root)
-    city_buildings = load_city_building_visuals(repo_root)
-    city_building_actions = load_city_building_action_visuals(repo_root)
-    scene_keys = set(resource_backed_scene_keys(recipe_list))
-    unknown_child_views = sorted(
-        {patch.resource for patch in child_node_patches} - scene_keys,
-        key=lambda item: (item.resource_file, item.view_id),
-    )
-    if unknown_child_views:
-        raise ValueError(
-            f"{WINDOWS_DELTA_PATH}: child-node views are not in the native Rust UI: "
-            + ", ".join(key.text() for key in unknown_child_views)
-        )
+def validate_city_layout(
+    city_buildings: CityBuildingVisuals,
+    city_building_actions: CityBuildingActionVisuals,
+    scene_keys: set[UiResourceKey],
+) -> None:
     if city_buildings.view not in scene_keys:
         raise ValueError(
             f"{WINDOWS_DELTA_PATH}: city building view "
@@ -1838,6 +1809,29 @@ def _rust_ui_semantic_views(
                 f"{WINDOWS_DELTA_PATH}: city building dialog "
                 f"{visual.dialog.text()} is not in the native Rust UI"
             )
+
+
+def _rust_ui_semantic_views(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> list[tuple[UiResourceKey | str, UiSemanticView]]:
+    recipe_list = list(recipes)
+    text_property_patches = load_windows_text_property_patches(repo_root)
+    child_node_patches = load_windows_child_node_patches(repo_root)
+    two_pic_sliders = load_two_pic_slider_instances(repo_root)
+    class_substitutions = load_class_substitutions(repo_root)
+    scene_keys = set(resource_backed_scene_keys(recipe_list))
+    unknown_child_views = sorted(
+        {patch.resource for patch in child_node_patches} - scene_keys,
+        key=lambda item: (item.resource_file, item.view_id),
+    )
+    if unknown_child_views:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: child-node views are not in the native Rust UI: "
+            + ", ".join(key.text() for key in unknown_child_views)
+        )
     scene_views: list[tuple[UiResourceKey | str, UiSemanticView]] = []
     for key in sorted(scene_keys, key=lambda item: (item.resource_file, item.view_id)):
         raw_view = views.get(key)
@@ -1901,13 +1895,13 @@ def report_unsupported_ui_roles(
         )
         unsupported: list[str] = []
         for node in semantic_view.nodes:
-            widget = classify_widget(key, node)
+            kind = classify_widget(key, node)
             notes: list[str] = []
             # Recovered `cntl` nodes without a dedicated retail helper still need
             # hand-authored visuals (TClickZone / TDealTabControl / TControl).
-            if node.type_code == "cntl" and widget.kind == WidgetKind.BUTTON:
+            if node.type_code == "cntl" and kind == WidgetKind.BUTTON:
                 notes.append("kind=specialized")
-            if widget.kind == WidgetKind.SCROLL_AREA:
+            if kind == WidgetKind.SCROLL_AREA:
                 notes.append("behavior=scroll_area")
             if notes:
                 unsupported.append(
@@ -2010,8 +2004,7 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    widget = classify_widget(key, node)
-    kind = widget.kind
+    kind = classify_widget(key, node)
     picture_id = node.family.picture_id
 
     match kind:
@@ -2131,11 +2124,10 @@ def _render_bsn_node(
             lines.append("    retail_numbered_arrow()")
         case WidgetKind.RADIO_TEXT_FILL:
             lines.append("    retail_radio_text_fill()")
-        case WidgetKind.AMOUNT_BAR:
-            assert widget.amount_bar_style is not None
-            lines.append(
-                f"    retail_amount_bar(AmountBarStyle::{widget.amount_bar_style})"
-            )
+        case WidgetKind.PRODUCTION_AMOUNT_BAR:
+            lines.append("    retail_amount_bar(AmountBarStyle::Production)")
+        case WidgetKind.TRADE_AMOUNT_BAR:
+            lines.append("    retail_amount_bar(AmountBarStyle::Trade)")
         case WidgetKind.TWO_PIC_SLIDER:
             slider = _rust_two_pic_slider(node)
             if slider is None:
@@ -2167,8 +2159,11 @@ def _render_bsn_node(
 
 
 def render_city_building_layout(repo_root: Path) -> str:
+    recipes = load_recipes(repo_root)
+    scene_keys = set(resource_backed_scene_keys(recipes))
     city_buildings = load_city_building_visuals(repo_root)
     city_building_actions = load_city_building_action_visuals(repo_root)
+    validate_city_layout(city_buildings, city_building_actions, scene_keys)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
         "",

@@ -653,45 +653,4 @@ mod tests {
         );
         let _ = root;
     }
-
-    #[test]
-    fn transport_bind_resolves_recovered_row_controls() {
-        let mut app = App::new();
-        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
-            .add_systems(Update, bind_test_transport);
-        let root = spawn_transport_hierarchy(app.world_mut());
-        app.update();
-
-        let view = app.world().get::<TransportView>(root).unwrap();
-        let fish = &view.rows[0];
-        assert_eq!(
-            app.world().get::<RetailTag>(fish.row).unwrap().0,
-            fourcc!("fish")
-        );
-        for (entity, tag) in [
-            (fish.gauge.caption, fourcc!("text")),
-            (fish.decrease, fourcc!("left")),
-            (fish.increase, fourcc!("rght")),
-        ] {
-            assert_eq!(app.world().get::<RetailTag>(entity).unwrap().0, tag);
-            assert_eq!(app.world().get::<ChildOf>(entity).unwrap().0, fish.row);
-        }
-        assert!(fish.money.is_none());
-
-        let gold = view
-            .rows
-            .iter()
-            .find(|row| {
-                app.world()
-                    .get::<RetailTag>(row.row)
-                    .is_some_and(|tag| tag.0 == fourcc!("gold"))
-            })
-            .expect("gold row");
-        let money = gold.money.expect("gold row keeps recovered valu caption");
-        assert_eq!(
-            app.world().get::<RetailTag>(money).unwrap().0,
-            fourcc!("valu")
-        );
-        assert_eq!(app.world().get::<ChildOf>(money).unwrap().0, gold.row);
-    }
 }

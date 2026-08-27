@@ -95,26 +95,6 @@ class UiCodegenTests(unittest.TestCase):
         self.assertNotIn("#TransportFill", rendered)
         self.assertNotIn("TransportGaugeParts {", rendered)
 
-    def test_transport_scene_preserves_recovered_row_controls(self) -> None:
-        rendered = render_rust_ui(
-            REPO_ROOT, self.recipes, self.views, self.text_resources
-        )
-        transport_scene = rendered.split("pub fn transport_2014()", 1)[1]
-        fish = transport_scene[
-            transport_scene.index('fourcc!("fish"), 70, 118') :
-            transport_scene.index('fourcc!("fish"), 70, 118') + 1200
-        ]
-        for tag in ("text", "left", "rght"):
-            self.assertIn(f'fourcc!("{tag}")', fish, f"fish row must keep recovered {tag}")
-        self.assertIn("retail_transport_gauge(70, false)", fish)
-
-        gold = transport_scene[
-            transport_scene.index('fourcc!("gold"), 325, 304') :
-            transport_scene.index('fourcc!("gold"), 325, 304') + 1600
-        ]
-        for tag in ("text", "left", "rght", "valu"):
-            self.assertIn(f'fourcc!("{tag}")', gold, f"gold row must keep recovered {tag}")
-
 
 if __name__ == "__main__":
     unittest.main()

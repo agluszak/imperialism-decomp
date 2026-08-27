@@ -3,6 +3,13 @@
 //! `retail_transport_gauge` owns the track, fill, and limit child hierarchy.
 //! Screens bind [`TransportGaugeParts`] and update fill/limit via retained handles.
 //! Recovered caption and arrow controls remain ordinary generated children.
+//!
+//! Unlike `retail_amount_bar()` and `retail_numbered_arrow()`, this helper cannot
+//! own its entire subtree in BSN `Children [...]`. A `TTransportPicture` resource
+//! node has both private Windows implementation entities (track/fill/limit) and
+//! recovered public controls (`text`, `left`, `rght`, `valu`) that application
+//! code binds by tag. The template adds only the private entities; the outer
+//! generated scene keeps the recovered siblings.
 
 use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
