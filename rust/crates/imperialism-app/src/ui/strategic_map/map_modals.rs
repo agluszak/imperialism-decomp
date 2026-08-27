@@ -113,7 +113,6 @@ enum GarrisonRowAction {
     Toggle(MilitaryUnitId),
 }
 
-
 pub(super) fn register(app: &mut App) {
     app.add_systems(
         Update,
