@@ -15,9 +15,6 @@ const UNIVERSITY_ROWS: [(CivilianUnitKind, FourCc, FourCc); 7] = [
     (CivilianUnitKind::Driller, fourcc!("clu8"), fourcc!("civ8")),
 ];
 
-#[derive(Component)]
-pub(in crate::ui::city) struct UniversityYieldText;
-
 pub(in crate::ui::city) struct UniversityUi {
     pub(in crate::ui::city) selected: CivilianUnitKind,
     rows: [(CivilianUnitKind, SelectionRow); 7],
@@ -27,6 +24,7 @@ pub(in crate::ui::city) struct UniversityUi {
     available: [Entity; 3],
     tier_labels: [Entity; 3],
     details: Entity,
+    details_text_root: Entity,
 }
 
 pub(in crate::ui::city) fn bind_university(
@@ -103,6 +101,20 @@ pub(in crate::ui::city) fn bind_university(
     for entity in &tier_labels {
         commands.entity(*entity).insert(Visibility::Hidden);
     }
+    let details_text_root = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(0),
+                top: px(0),
+                width: percent(100),
+                height: percent(100),
+                ..default()
+            },
+            Pickable::IGNORE,
+            ChildOf(dlog),
+        ))
+        .id();
     UniversityUi {
         selected: CivilianUnitKind::Miner,
         rows,
@@ -112,6 +124,7 @@ pub(in crate::ui::city) fn bind_university(
         available,
         tier_labels,
         details: dlog,
+        details_text_root,
     }
 }
 
@@ -120,7 +133,6 @@ pub(in crate::ui::city) fn render_university(
     session: &GameSession,
     assets: &mut RetailUiAssets,
     ui: &mut CityUi,
-    yield_texts: &Query<Entity, With<UniversityYieldText>>,
 ) {
     let normal_color = assets.palette_color(0xd2);
     let warning_color = assets.palette_color(0xcb);
@@ -187,9 +199,9 @@ pub(in crate::ui::city) fn render_university(
     let preview = assets.indexed_picture(kind.university_preview_picture());
     picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
     let icons = assets.indexed_picture(PictureId::new(750));
-    for entity in yield_texts.iter() {
-        ui.commands.entity(entity).despawn();
-    }
+    ui.commands
+        .entity(view.details_text_root)
+        .despawn_children();
     let (font, layout, line_height, _) =
         assets.text_style(RetailTextStylePreset::explicit(3, 0, 10, -2));
     let mut running_max = UniversityRequirementLevel::None;
@@ -219,8 +231,7 @@ pub(in crate::ui::city) fn render_university(
                 line_height,
                 TextColor(normal_color),
                 Pickable::IGNORE,
-                UniversityYieldText,
-                ChildOf(view.details),
+                ChildOf(view.details_text_root),
             ));
         }
     }

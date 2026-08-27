@@ -32,6 +32,8 @@ STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 WINDOWS_VIEW_PATH = "config/ui_factory_windows_views.yml"
 WINDOWS_DELTA_PATH = "config/ui_platform_deltas.yml"
+
+RUST_FONT_FAMILY_FALLBACKS = {0: 1}
 RUST_UI_PATH = "../rust/crates/imperialism-app/src/ui/generated.rs"
 RUST_CITY_LAYOUT_PATH = (
     "../rust/crates/imperialism-app/src/ui/city/building_layout_generated.rs"
@@ -223,6 +225,9 @@ class WidgetKind(Enum):
     TWO_PIC_SLIDER = auto()
     RADIO_TEXT_FILL = auto()
     HOVER_HELP_BAR = auto()
+    SIDEWAYS_ARROW = auto()
+    RIGHT_LEFT_VIEW = auto()
+    PAGE_CORNER = auto()
 
 
 @dataclass(frozen=True)
@@ -830,6 +835,41 @@ def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, 
             )
         )
     return tuple(patches)
+
+
+def load_runtime_input_semantics(
+    repo_root: Path,
+) -> dict[tuple[UiResourceKey, str], str]:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    rows = data.get("runtime_input_semantics", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{WINDOWS_DELTA_PATH}: runtime_input_semantics must be a list")
+    semantics: dict[tuple[UiResourceKey, str], str] = {}
+    for index, raw_row in enumerate(rows):
+        context = f"{WINDOWS_DELTA_PATH}: runtime_input_semantics[{index}]"
+        row = _mapping(raw_row, context)
+        expected = {"view", "mac_class", "semantics", "evidence"}
+        if set(row) != expected:
+            raise ValueError(f"{context}: expected {sorted(expected)!r}")
+        resource = UiResourceKey.parse(str(row["view"]))
+        mac_class = str(row["mac_class"])
+        semantics_name = str(row["semantics"])
+        if semantics_name not in ("right_left_view",):
+            raise ValueError(
+                f"{context}: unsupported semantics {semantics_name!r}; "
+                "expected right_left_view"
+            )
+        evidence = str(row["evidence"]).strip()
+        if not evidence:
+            raise ValueError(f"{context}: evidence is required")
+        identity = (resource, mac_class)
+        if identity in semantics:
+            raise ValueError(
+                f"{context}: duplicate runtime semantics for "
+                f"{resource.text()} {mac_class}"
+            )
+        semantics[identity] = semantics_name
+    return semantics
 
 
 def load_city_building_visuals(repo_root: Path) -> CityBuildingVisuals:
@@ -1619,7 +1659,6 @@ _CLASS_WIDGET_KIND: dict[str, WidgetKind] = {
     "TRadioTextCluster": WidgetKind.RADIO_GROUP,
     "TScrollView": WidgetKind.SCROLL_AREA,
     "TShipPlacard": WidgetKind.SHIP_PLACARD,
-    "TSidewaysArrow": WidgetKind.PICTURE_SWAP,
     "TTextPictureButton": WidgetKind.PICTURE_SWAP,
     "TToggleButton": WidgetKind.CHECKBOX,
     "TTransportPicture": WidgetKind.TRANSPORT_GAUGE,
@@ -1636,12 +1675,25 @@ _TEXT_TYPE_CODES = frozenset({"stat", "tevw"})
 
 
 def classify_widget(
-    key: UiResourceKey | None, node: UiSemanticNode
+    key: UiResourceKey | None,
+    node: UiSemanticNode,
+    runtime_semantics: dict[tuple[UiResourceKey, str], str] | None = None,
 ) -> WidgetKind:
     """Classify one normalized recovered node for Rust BSN emission."""
 
     if key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob":
         return WidgetKind.BUTTON
+
+    if key is not None and runtime_semantics is not None:
+        override = runtime_semantics.get((key, node.class_name))
+        if override == "right_left_view":
+            return WidgetKind.RIGHT_LEFT_VIEW
+
+    if node.class_name == "TSidewaysArrow":
+        return WidgetKind.SIDEWAYS_ARROW
+
+    if node.class_name == "TPageCorner" and node.tag in ("lcor", "rcor"):
+        return WidgetKind.PAGE_CORNER
 
     kind = _CLASS_WIDGET_KIND.get(node.class_name)
     if kind is not None:
@@ -1697,6 +1749,9 @@ _INTERACTIVE_WIDGET_KINDS = frozenset(
         WidgetKind.PRESSED_OVERLAY,
         WidgetKind.MADNESS_BUTTON,
         WidgetKind.TWO_PIC_SLIDER,
+        WidgetKind.SIDEWAYS_ARROW,
+        WidgetKind.RIGHT_LEFT_VIEW,
+        WidgetKind.PAGE_CORNER,
     }
 )
 
@@ -1706,6 +1761,7 @@ _CHECKED_WIDGET_KINDS = frozenset(
         WidgetKind.MADNESS_BUTTON,
         WidgetKind.RADIO_BUTTON,
         WidgetKind.RADIO_TEXT_FILL,
+        WidgetKind.PAGE_CORNER,
     }
 )
 
@@ -1936,9 +1992,12 @@ def _rust_enum_variant(value: str) -> str:
     return "".join(part.capitalize() for part in value.split("_"))
 
 
+def _rust_font_family(text: UiTextPayload) -> int:
+    return RUST_FONT_FAMILY_FALLBACKS.get(text.mode, text.mode)
+
+
 def _rust_has_shipped_font(text: UiTextPayload) -> bool:
-    # 0 = system face; 1..=3 = Belwe / Book Antiqua (see resolve_retail_text_style).
-    return text.mode in (0, 1, 2, 3)
+    return _rust_font_family(text) in (1, 2, 3)
 
 
 def _rust_window_is_captioned(node: UiSemanticNode) -> bool:
@@ -1977,6 +2036,7 @@ def _render_bsn_node(
     key: UiResourceKey | None,
     node: UiSemanticNode,
     children_by_parent: dict[str | None, list[UiSemanticNode]],
+    runtime_semantics: dict[tuple[UiResourceKey, str], str] | None = None,
 ) -> list[str]:
     x, y, width, height = node.geometry
     insets = node.family.content_insets or (0, 0, 0, 0)
@@ -2004,11 +2064,28 @@ def _render_bsn_node(
                 "    }",
             ]
         )
-    kind = classify_widget(key, node)
+    kind = classify_widget(key, node, runtime_semantics)
     picture_id = node.family.picture_id
 
     match kind:
-        case WidgetKind.BUTTON | WidgetKind.PICTURE_SWAP | WidgetKind.PRESSED_OVERLAY:
+        case WidgetKind.BUTTON | WidgetKind.PRESSED_OVERLAY:
+            lines.append("    Button")
+        case WidgetKind.PICTURE_SWAP | WidgetKind.RADIO_BUTTON:
+            lines.append("    Button")
+        case WidgetKind.SIDEWAYS_ARROW:
+            lines.extend(
+                [
+                    "    RetailSidewaysArrow",
+                    "    RetailSidewaysArrowHilite",
+                    "    Pickable",
+                ]
+            )
+        case WidgetKind.RIGHT_LEFT_VIEW:
+            lines.extend(["    RetailSidewaysArrow", "    Pickable"])
+        case WidgetKind.PAGE_CORNER:
+            corner = "Left" if node.tag == "lcor" else "Right"
+            lines.append(f"    template(|_context| Ok(RetailPageCorner::{corner}))")
+            lines.append("    Pickable { should_block_lower: false, is_hoverable: true }")
             lines.append("    Button")
         case WidgetKind.CHECKBOX | WidgetKind.MADNESS_BUTTON:
             lines.append("    Checkbox")
@@ -2034,7 +2111,11 @@ def _render_bsn_node(
 
     if bool(node.state) and kind in _CHECKED_WIDGET_KINDS:
         lines.append("    Checked")
-    if kind in _INTERACTIVE_WIDGET_KINDS and (not node.enabled or not node.input_gate):
+    if kind in _INTERACTIVE_WIDGET_KINDS | {
+        WidgetKind.SIDEWAYS_ARROW,
+        WidgetKind.RIGHT_LEFT_VIEW,
+        WidgetKind.PAGE_CORNER,
+    } and (not node.enabled or not node.input_gate):
         lines.append("    InteractionDisabled")
 
     recovered_children = children_by_parent.get(node.node_id, [])
@@ -2056,6 +2137,7 @@ def _render_bsn_node(
         )
 
     if text is not None:
+        font_family = _rust_font_family(text)
         value = _rust_string(text.value or "")
         if kind == WidgetKind.TEXT_EDIT:
             max_chars = node.family.max_chars
@@ -2069,7 +2151,7 @@ def _render_bsn_node(
         if render_text_style:
             lines.append(
                 "    retail_text_style("
-                f"{text.mode}, {text.flags}, {text.point_size}, {text.theme})"
+                f"{font_family}, {text.flags}, {text.point_size}, {text.theme})"
             )
         if text.color_index is None:
             lines.append("    TextColor(Color::BLACK)")
@@ -2083,7 +2165,7 @@ def _render_bsn_node(
         if render_text_style and text.center_vertically:
             lines.append(
                 "    retail_centered_text_padding("
-                f"{text.mode}, {text.flags}, {text.point_size}, "
+                f"{font_family}, {text.flags}, {text.point_size}, "
                 f"{height}, {insets[1]})"
             )
 
@@ -2107,7 +2189,7 @@ def _render_bsn_node(
                 else:
                     idle_id, active_id = _rust_picture_swap_ids(node, int(picture_id))
                     lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
-            case WidgetKind.PICTURE_SWAP | WidgetKind.RADIO_BUTTON:
+            case WidgetKind.PICTURE_SWAP | WidgetKind.RADIO_BUTTON | WidgetKind.SIDEWAYS_ARROW | WidgetKind.RIGHT_LEFT_VIEW:
                 idle_id, active_id = _rust_picture_swap_ids(node, int(picture_id))
                 lines.append(f"    retail_picture_swap({idle_id}, {active_id})")
             case _:
@@ -2150,7 +2232,9 @@ def _render_bsn_node(
     if recovered_children:
         lines.append("    Children [")
         for child in recovered_children:
-            rendered = _render_bsn_node(key, child, children_by_parent)
+            rendered = _render_bsn_node(
+                key, child, children_by_parent, runtime_semantics
+            )
             rendered[-1] += ","
             lines.extend(_indent(rendered, 8))
         lines.append("    ]")
@@ -2232,6 +2316,7 @@ def render_rust_ui(
     scene_views = _rust_ui_semantic_views(
         repo_root, recipes, views, text_resources
     )
+    runtime_semantics = load_runtime_input_semantics(repo_root)
     lines = [
         "// @generated by tools.ui_codegen. Do not edit by hand.",
         "#![allow(dead_code, clippy::identity_op)]",
@@ -2272,7 +2357,9 @@ def render_rust_ui(
             ]
         )
         for node in roots:
-            rendered = _render_bsn_node(key, node, children_by_parent)
+            rendered = _render_bsn_node(
+                key, node, children_by_parent, runtime_semantics
+            )
             rendered[-1] += ","
             lines.extend(_indent(rendered, 12))
         lines.extend(["        ]", "    }", "}", ""])

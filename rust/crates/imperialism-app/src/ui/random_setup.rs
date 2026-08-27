@@ -90,13 +90,6 @@ impl Default for RandomSetupClockSeed {
     }
 }
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-enum RandomSetupAction {
-    Accept,
-    Cancel,
-    OpenPlanetSeed,
-}
-
 #[derive(Component)]
 struct RandomSetupGlobe;
 
@@ -249,24 +242,38 @@ fn bind_random_setup_controls(
         .observe(on_country_name_edited);
 
     let okay = tree.find(root, OKAY);
-    // Retail rebuilds this screen from the main menu and keeps the draft when
-    // capital selection cancels back into setup.
     commands
         .entity(okay)
-        .insert(RandomSetupAction::Accept)
         .remove::<InteractionDisabled>()
-        .observe(on_random_setup_activate);
+        .observe(
+            |_: On<Activate>,
+             setup: Res<RandomGameSetup>,
+             preview: Res<RandomSetupPreview>,
+             names: Res<RandomGameNamesResource>,
+             retail: Res<RetailAssetsResource>,
+             mut next_state: ResMut<NextState<AppState>>,
+             mut commands: Commands| {
+                accept_random_setup(
+                    &setup,
+                    &preview,
+                    &names.0,
+                    retail.assets(),
+                    &mut commands,
+                    &mut next_state,
+                );
+            },
+        );
 
-    for (tag, action) in [
-        (fourcc!("cncl"), RandomSetupAction::Cancel),
-        (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
-    ] {
-        let entity = tree.find(root, tag);
-        commands
-            .entity(entity)
-            .insert(action)
-            .observe(on_random_setup_activate);
-    }
+    commands.entity(tree.find(root, fourcc!("cncl"))).observe(
+        |_: On<Activate>, mut next_state: ResMut<NextState<AppState>>| {
+            next_state.set(AppState::MainMenu);
+        },
+    );
+    commands.entity(tree.find(root, fourcc!("key "))).observe(
+        |_: On<Activate>, mut commands: Commands| {
+            open_planet_seed_dialog(&mut commands);
+        },
+    );
     commands
         .entity(tree.find(root, fourcc!("glob")))
         .insert(RandomSetupGlobe)
@@ -418,40 +425,6 @@ fn sync_country_name_from_setup(
                 allow_newlines: false,
                 ..EditableText::new(setup.country_name.clone())
             };
-        }
-    }
-}
-
-#[derive(SystemParam)]
-struct RandomSetupActivation<'w, 's> {
-    actions: Query<'w, 's, &'static RandomSetupAction>,
-    setup: ResMut<'w, RandomGameSetup>,
-    preview: ResMut<'w, RandomSetupPreview>,
-    names: Res<'w, RandomGameNamesResource>,
-    retail: Res<'w, RetailAssetsResource>,
-    next_state: ResMut<'w, NextState<AppState>>,
-    commands: Commands<'w, 's>,
-}
-
-fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetupActivation) {
-    let action = random_setup
-        .actions
-        .get(activate.entity)
-        .expect("random-setup Activate is bound on a RandomSetupAction control");
-    match *action {
-        RandomSetupAction::Accept => {
-            accept_random_setup(
-                &random_setup.setup,
-                &random_setup.preview,
-                &random_setup.names.0,
-                random_setup.retail.assets(),
-                &mut random_setup.commands,
-                &mut random_setup.next_state,
-            );
-        }
-        RandomSetupAction::Cancel => random_setup.next_state.set(AppState::MainMenu),
-        RandomSetupAction::OpenPlanetSeed => {
-            open_planet_seed_dialog(&mut random_setup.commands);
         }
     }
 }

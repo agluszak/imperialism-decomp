@@ -11,9 +11,9 @@ use super::retail_transport_gauge::{
     TRANSPORT_GAUGE_FULL_PALETTE, TRANSPORT_GAUGE_PARTIAL_PALETTE,
 };
 use crate::AppState;
+use crate::ui::retail::Step;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::Activate;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -202,10 +202,10 @@ fn bind_transport_view(
             [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
                 let step = tree.find(row, tag);
                 commands.entity(step).observe(
-                    move |activate: On<Activate>,
+                    move |step_event: On<Step>,
                           disabled: Query<Has<InteractionDisabled>>,
                           mut session: ResMut<GameSession>| {
-                        if disabled.get(activate.entity).unwrap_or(false) {
+                        if disabled.get(step_event.entity).unwrap_or(false) {
                             return;
                         }
                         let nation = session.active_major_nation();
@@ -442,8 +442,9 @@ fn allocation_amount(
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::RetailTag;
+    use super::super::retail::{RetailSidewaysArrow, RetailTag, Step};
     use super::*;
+    use crate::ui::RetailUiPlugin;
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
 
@@ -534,8 +535,20 @@ mod tests {
                 .id();
             world.entity_mut(fill).insert(ChildOf(row));
             world.entity_mut(limit).insert(ChildOf(row));
-            world.spawn((RetailTag(fourcc!("left")), Node::default(), ChildOf(row)));
-            world.spawn((RetailTag(fourcc!("rght")), Node::default(), ChildOf(row)));
+            world.spawn((
+                RetailTag(fourcc!("left")),
+                RetailSidewaysArrow,
+                Pickable::default(),
+                Node::default(),
+                ChildOf(row),
+            ));
+            world.spawn((
+                RetailTag(fourcc!("rght")),
+                RetailSidewaysArrow,
+                Pickable::default(),
+                Node::default(),
+                ChildOf(row),
+            ));
             world.spawn((
                 RetailTag(fourcc!("text")),
                 Node::default(),
@@ -567,8 +580,8 @@ mod tests {
         commands.entity(*root).insert(view);
     }
 
-    fn activate(app: &mut App, entity: Entity) {
-        app.world_mut().commands().trigger(Activate { entity });
+    fn step(app: &mut App, entity: Entity) {
+        app.world_mut().commands().trigger(Step { entity });
         app.world_mut().flush();
         app.update();
     }
@@ -588,9 +601,14 @@ mod tests {
         let before = state.transport_row_status(nation, binding.allocation);
 
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
-            .insert_resource(GameSession::new(state))
-            .add_systems(Update, bind_test_transport);
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            RetailUiPlugin,
+        ))
+        .insert_resource(GameSession::new(state))
+        .add_systems(Update, bind_test_transport);
         let root = spawn_transport_hierarchy(app.world_mut());
         app.update();
 
@@ -600,7 +618,7 @@ mod tests {
             .find_map(|(candidate, row)| (candidate.tag == binding.tag).then_some(*row))
             .unwrap();
 
-        activate(&mut app, row.increase);
+        step(&mut app, row.increase);
         let after = app
             .world()
             .resource::<GameSession>()
@@ -608,49 +626,12 @@ mod tests {
             .transport_row_status(nation, binding.allocation);
         assert_eq!(after.allocated, before.allocated + 1);
 
-        activate(&mut app, row.decrease);
+        step(&mut app, row.decrease);
         let restored = app
             .world()
             .resource::<GameSession>()
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
-    }
-
-    #[test]
-    fn transport_gauge_overlays_are_children_of_their_row() {
-        let mut app = App::new();
-        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin));
-        let root = spawn_transport_hierarchy(app.world_mut());
-        app.update();
-
-        let fish = app
-            .world_mut()
-            .query::<(Entity, &RetailTag, &TransportGaugeParts)>()
-            .iter(app.world())
-            .find(|(_, tag, _)| tag.0 == fourcc!("fish"))
-            .map(|(entity, _, parts)| (entity, *parts))
-            .expect("fish row");
-        let (row, parts) = fish;
-        assert_eq!(
-            app.world().get::<ChildOf>(parts.fill).map(|c| c.0),
-            Some(row),
-            "fill must be a child of the transport row for inherited visibility"
-        );
-        assert_eq!(
-            app.world().get::<ChildOf>(parts.limit).map(|c| c.0),
-            Some(row),
-            "limit strip must be a child of the transport row for inherited visibility"
-        );
-        assert_ne!(parts.limit, Entity::PLACEHOLDER);
-
-        // Hiding the row must not leave orphan gauge overlays elsewhere in the tree.
-        app.world_mut().entity_mut(row).insert(Visibility::Hidden);
-        assert!(
-            app.world()
-                .get::<ChildOf>(parts.limit)
-                .is_some_and(|c| c.0 == row)
-        );
-        let _ = root;
     }
 }

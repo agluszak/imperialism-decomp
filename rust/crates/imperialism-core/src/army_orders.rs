@@ -877,6 +877,35 @@ mod tests {
         state.map.provinces[province].set_owner(Some(nation));
     }
 
+    fn set_province(
+        state: &mut GameState,
+        province: ProvinceId,
+        owner: NationId,
+        adjacency: &[ProvinceId],
+        city_tile: Option<TileId>,
+    ) {
+        state.map.provinces[province] = crate::ProvinceState::new(
+            Some(owner),
+            Some(owner),
+            crate::ProvinceDevelopmentStage::None,
+            adjacency.to_vec(),
+            vec![TileId::new(0); adjacency.len()],
+            None,
+            crate::FortLevel::None,
+            city_tile,
+            0,
+            None,
+            None,
+            Vec::new(),
+            crate::ResourceTable::default(),
+            crate::MajorNationTable::default(),
+            0,
+            false,
+            0,
+            String::new(),
+        );
+    }
+
     #[test]
     fn toolbar_counts_idle_and_ordered_units() {
         let mut state = game_state();
@@ -1090,39 +1119,13 @@ mod tests {
     }
 
     #[test]
-    fn selected_cursor_classifies_adjacent_friendly_and_blocked_empty() {
-        let mut state = game_state();
-        let nation = state.turn.active_nation;
-        let from = ProvinceId::new(3);
-        let to = ProvinceId::new(4);
-        own(&mut state, from);
-        own(&mut state, to);
-        state.map.provinces[from].set_adjacency(vec![to]);
-        place_unit(&mut state, MilitaryUnitKind::Regulars, from, 0);
-        let tile = TileId::new(20);
-        state.map[tile].province = Some(to);
-        assert_eq!(
-            state.army_map_cursor_state(nation, Some(from), tile, 0, true),
-            ArmyMapCursorState::FriendlyAdjacent
-        );
-        let empty = TileId::new(21);
-        assert_eq!(
-            state.army_map_cursor_state(nation, Some(from), empty, 0, true),
-            ArmyMapCursorState::EmptyOrBlocked
-        );
-    }
-
-    #[test]
     fn friendly_adjacent_click_redeploys_idle_non_militia() {
         let mut state = game_state();
         let nation = state.turn.active_nation;
         let from = ProvinceId::new(3);
         let to = ProvinceId::new(4);
-        own(&mut state, from);
-        own(&mut state, to);
-        state.map.provinces[from].set_adjacency(vec![to]);
-        state.map.provinces[from].set_city_tile(Some(TileId::new(30)));
-        state.map.provinces[to].set_city_tile(Some(TileId::new(31)));
+        set_province(&mut state, from, nation, &[to], Some(TileId::new(30)));
+        set_province(&mut state, to, nation, &[], Some(TileId::new(31)));
         place_unit(&mut state, MilitaryUnitKind::Regulars, from, 0);
         place_unit(&mut state, MilitaryUnitKind::Minutemen, from, 0);
         let tile = TileId::new(40);

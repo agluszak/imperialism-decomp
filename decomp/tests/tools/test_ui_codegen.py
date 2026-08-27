@@ -95,6 +95,60 @@ class UiCodegenTests(unittest.TestCase):
         self.assertNotIn("#TransportFill", rendered)
         self.assertNotIn("TransportGaugeParts {", rendered)
 
+    def test_transport_arrows_use_right_left_view_not_hilite(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        transport = rendered[rendered.index("pub fn transport_2014()") :]
+        next_fn = transport.find("\npub fn ", 1)
+        if next_fn != -1:
+            transport = transport[:next_fn]
+        fish = transport[transport.index('retail_node(fourcc!("fish")') :]
+        fish = fish[: fish.index('retail_node(fourcc!("prod")')]
+        self.assertIn("RetailSidewaysArrow", fish)
+        self.assertNotIn("RetailSidewaysArrowHilite", fish)
+        self.assertNotIn("Button", fish)
+
+    def test_generated_sideways_arrows_use_press_repeat_not_release_button(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        trade = rendered[rendered.index("pub fn trade_2009()") : rendered.index(
+            "pub fn trade_2010()"
+        )]
+        left = trade[
+            trade.index('retail_node(fourcc!("left")') : trade.index(
+                'retail_node(fourcc!("rght")'
+            )
+        ]
+        self.assertIn("RetailSidewaysArrowHilite", left)
+        self.assertNotIn("Button", left)
+
+    def test_generated_page_corners_use_triangular_picking(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        detail = rendered[rendered.index("pub fn diplo_1352()") :]
+        next_fn = detail.find("\npub fn ", 1)
+        if next_fn != -1:
+            detail = detail[:next_fn]
+        self.assertIn("template(|_context| Ok(RetailPageCorner::Left)", detail)
+        self.assertIn("template(|_context| Ok(RetailPageCorner::Right)", detail)
+        lcor = detail[
+            detail.index('retail_node(fourcc!("lcor")') : detail.index(
+                'retail_node(fourcc!("rcor")'
+            )
+        ]
+        self.assertIn("Button", lcor)
+        self.assertIn("should_block_lower: false", lcor)
+
+    def test_generated_rust_ui_replaces_system_family_with_renderable_face(self) -> None:
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertNotIn("retail_text_style(0,", rendered)
+        self.assertIn("retail_text_style(1, 0, 0, 0)", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()

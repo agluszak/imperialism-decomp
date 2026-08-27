@@ -36,6 +36,7 @@ def _load_delta_config(repo_root: Path) -> dict:
         "node_property_patches",
         "two_pic_slider_instances",
         "windows_child_nodes",
+        "runtime_input_semantics",
         "city_buildings",
         "city_building_actions",
     }

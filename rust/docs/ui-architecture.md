@@ -137,8 +137,10 @@ operation state. Prefer stock Bevy headless widgets (`Slider`, `Button`, `Checkb
 genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`, `TTwoPicSlider`'s
 12px zero plateau via a shorter stock `Slider` track).
 
-Stock `Button` matches ordinary retail `TControl::TrackMouse` (action on release). Do not attach
-`ActivateOnPress` unless recovered C++ proves press-time / hold / repeat semantics.
+Stock `Button` matches ordinary retail `TControl::TrackMouse` (action on release). Recovered
+`TSidewaysArrow` / `TRightLeftView` use [`RetailSidewaysArrow`] + [`Step`] (press with hold-repeat).
+Triangular [`TPageCorner`] controls use [`RetailPageCorner`] + [`Activate`] on valid triangle hits.
+Do not attach `ActivateOnPress` for sideways arrows; it fixes only the first step and loses repeat.
 
 Recovered hierarchical retail widgets are structure-only BSN Parts
 (`PlacardParts`, `AmountBarParts`, `NumberedArrowParts`, `TransportGaugeParts`,

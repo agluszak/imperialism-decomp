@@ -231,16 +231,6 @@ impl DiplomacyMode {
         }
     }
 
-    fn selected_radio(self) -> Option<DiplomacyAction> {
-        match self {
-            Self::Grant { amount, recurring } => Some(DiplomacyAction::Grant { amount, recurring }),
-            Self::Trade(choice) => Some(DiplomacyAction::Trade(choice)),
-            Self::Treaty(policy) => Some(DiplomacyAction::Treaty(policy)),
-            Self::Information { overlay } => Some(DiplomacyAction::Overlay(overlay)),
-            Self::Council | Self::Offers => None,
-        }
-    }
-
     fn cursor_offset(self) -> usize {
         match self {
             Self::Grant { amount, .. } => GRANT_AMOUNTS
@@ -274,14 +264,6 @@ impl DiplomacyScreen {
     fn map_action(&self) -> DiplomacyMapAction {
         self.mode.map_action()
     }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum DiplomacyAction {
-    Grant { amount: i32, recurring: bool },
-    Trade(TradePolicyChoice),
-    Treaty(DiplomacyPolicy),
-    Overlay(DiplomacyInformationOverlay),
 }
 
 #[derive(Component)]
@@ -388,7 +370,7 @@ impl Plugin for DiplomacyPlugin {
                 bind_diplomacy_entanglement_notice,
                 pose_diplomacy_from_session,
                 render_diplomacy_chrome,
-                render_diplomacy_panels,
+                sync_diplomacy_panel_text,
                 layout_diplomacy_panel_text,
                 sync_diplomacy_information,
                 render_diplomacy_map,
@@ -447,7 +429,192 @@ fn bind_diplomacy_screen(
         &mut assets,
         &mut session,
     );
-    commands.entity(*root).insert(view);
+    let panel_content = bind_diplomacy_panel_text(&mut commands, &mut assets, &view);
+    commands.entity(*root).insert((view, panel_content));
+}
+
+fn bind_diplomacy_panel_text(
+    commands: &mut Commands,
+    assets: &mut RetailUiAssets,
+    view: &DiplomacyView,
+) -> DiplomacyPanelContent {
+    let title = RetailTextStylePreset::built(14, 0);
+    let row = RetailTextStylePreset::built(12, 0);
+    let small = RetailTextStylePreset::explicit(1, 0, 10, 0);
+    let council = RetailTextStylePreset::built(18, 0);
+
+    spawn_panel_text(
+        commands,
+        assets,
+        view.information,
+        assets.get_string(0x2733, 0),
+        IVec2::new(15, 13),
+        title,
+        Justify::Left,
+    );
+    let information_name = spawn_panel_text(
+        commands,
+        assets,
+        view.information,
+        String::new(),
+        IVec2::new(110, 13),
+        title,
+        Justify::Left,
+    );
+    let information_labels = [54, 71, 88].map(|baseline| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.information,
+            String::new(),
+            IVec2::new(15, baseline),
+            row,
+            Justify::Left,
+        )
+    });
+    let information_values = [54, 71, 88].map(|baseline| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.information,
+            String::new(),
+            IVec2::new(110, baseline),
+            row,
+            Justify::Left,
+        )
+    });
+
+    spawn_panel_text(
+        commands,
+        assets,
+        view.treaties,
+        assets.get_string(0x2733, 0x20),
+        IVec2::new(74, 15),
+        title,
+        Justify::Center,
+    );
+    for (index, (center, baseline)) in TREATY_LABEL_CENTERS.into_iter().enumerate() {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.treaties,
+            assets.get_string(0x2733, index as u16 + 6),
+            IVec2::new(center as i32, baseline as i32),
+            small,
+            Justify::Center,
+        );
+    }
+
+    for (index, origin, is_title) in [
+        (0x21, IVec2::new(15, 13), true),
+        (0x22, IVec2::new(174, 13), false),
+        (0x23, IVec2::new(276, 30), false),
+        (0x24, IVec2::new(440, 30), false),
+        (0x26, IVec2::new(37, 115), false),
+        (0x27, IVec2::new(175, 115), false),
+        (0x28, IVec2::new(314, 115), false),
+        (0x29, IVec2::new(446, 115), false),
+    ] {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.grants,
+            assets.get_string(0x2733, index),
+            origin,
+            if is_title { title } else { row },
+            Justify::Left,
+        );
+    }
+    let grants_total = spawn_panel_text(
+        commands,
+        assets,
+        view.grants,
+        String::new(),
+        IVec2::new(15, 37),
+        row,
+        Justify::Left,
+    );
+
+    spawn_panel_text(
+        commands,
+        assets,
+        view.trade,
+        assets.get_string(0x2733, 0x2a),
+        IVec2::new(15, 13),
+        title,
+        Justify::Left,
+    );
+    for (index, origin) in [
+        (0x2b, IVec2::new(25, 85)),
+        (0x2c, IVec2::new(74, 34)),
+        (0x2d, IVec2::new(125, 85)),
+        (0x2e, IVec2::new(177, 34)),
+        (0x2f, IVec2::new(228, 85)),
+        (0x30, IVec2::new(275, 34)),
+    ] {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.trade,
+            assets.get_string(0x2733, index),
+            origin,
+            row,
+            Justify::Left,
+        );
+    }
+    for (index, center) in [(0x31, 156), (0x32, 380), (0x33, 473)] {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.trade,
+            assets.get_string(0x2733, index),
+            IVec2::new(center, 108),
+            row,
+            Justify::Center,
+        );
+    }
+
+    let council_title = spawn_panel_text(
+        commands,
+        assets,
+        view.council,
+        String::new(),
+        IVec2::new(259, 36),
+        council,
+        Justify::Center,
+    );
+    let council_labels = std::array::from_fn(|row| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.council,
+            String::new(),
+            IVec2::new(259, 60 + row as i32 * 16),
+            title,
+            Justify::Right,
+        )
+    });
+    let council_values = std::array::from_fn(|row| {
+        spawn_panel_text(
+            commands,
+            assets,
+            view.council,
+            String::new(),
+            IVec2::new(263, 60 + row as i32 * 16),
+            title,
+            Justify::Left,
+        )
+    });
+
+    DiplomacyPanelContent {
+        information_name,
+        information_labels,
+        information_values,
+        grants_total,
+        council_title,
+        council_labels,
+        council_values,
+    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -523,7 +690,7 @@ fn bind_diplomacy_controls(
         control
     });
 
-    let start_radio = DiplomacyMode::from_topic(DiplomacyTopic::Information).selected_radio();
+    let start_mode = DiplomacyMode::from_topic(DiplomacyTopic::Information);
     let grant_radios = [
         fourcc!("doc0"),
         fourcc!("doc1"),
@@ -537,11 +704,12 @@ fn bind_diplomacy_controls(
     .into_iter()
     .enumerate()
     .map(|(index, tag)| {
-        let action = DiplomacyAction::Grant {
-            amount: GRANT_AMOUNTS[index / 2],
-            recurring: index % 2 != 0,
-        };
-        bind_diplomacy_radio(commands, tree.find(root, tag), action, start_radio)
+        bind_diplomacy_radio(
+            commands,
+            tree.find(root, tag),
+            diplomacy_grant_mode(index),
+            start_mode,
+        )
     })
     .collect::<Vec<_>>()
     .try_into()
@@ -559,8 +727,12 @@ fn bind_diplomacy_controls(
             fourcc!("trag"),
         ])
         .map(|(score, tag)| {
-            let action = DiplomacyAction::Trade(TradePolicyChoice::Policy(score));
-            bind_diplomacy_radio(commands, tree.find(trade_cluster, tag), action, start_radio)
+            bind_diplomacy_radio(
+                commands,
+                tree.find(trade_cluster, tag),
+                DiplomacyMode::Trade(TradePolicyChoice::Policy(score)),
+                start_mode,
+            )
         })
         .collect::<Vec<_>>()
         .try_into()
@@ -579,10 +751,14 @@ fn bind_diplomacy_controls(
         ),
     ]
     .map(|(overlay, tag)| {
-        let action = DiplomacyAction::Overlay(overlay);
         let control = tree.find(root, tag);
         commands.entity(control).remove::<InteractionDisabled>();
-        bind_diplomacy_radio(commands, control, action, start_radio)
+        bind_diplomacy_radio(
+            commands,
+            control,
+            DiplomacyMode::Information { overlay },
+            start_mode,
+        )
     });
 
     let treaty_radios = TREATY_POLICIES
@@ -597,10 +773,9 @@ fn bind_diplomacy_controls(
             fourcc!("scr6"),
         ])
         .map(|(policy, tag)| {
-            let action = DiplomacyAction::Treaty(policy);
             let control = tree.find(root, tag);
             commands.entity(control).remove::<InteractionDisabled>();
-            bind_diplomacy_radio(commands, control, action, start_radio)
+            bind_diplomacy_radio(commands, control, DiplomacyMode::Treaty(policy), start_mode)
         })
         .collect::<Vec<_>>()
         .try_into()
@@ -614,8 +789,8 @@ fn bind_diplomacy_controls(
     bind_diplomacy_radio(
         commands,
         colony_boycott,
-        DiplomacyAction::Trade(TradePolicyChoice::ColonyBoycott),
-        start_radio,
+        DiplomacyMode::Trade(TradePolicyChoice::ColonyBoycott),
+        start_mode,
     );
 
     let accept = tree.find(root, fourcc!("acce"));
@@ -717,11 +892,18 @@ fn bind_diplomacy_controls(
     }
 }
 
+fn diplomacy_grant_mode(index: usize) -> DiplomacyMode {
+    DiplomacyMode::Grant {
+        amount: GRANT_AMOUNTS[index / 2],
+        recurring: !index.is_multiple_of(2),
+    }
+}
+
 fn bind_diplomacy_radio(
     commands: &mut Commands,
     control: Entity,
-    action: DiplomacyAction,
-    start_radio: Option<DiplomacyAction>,
+    mode: DiplomacyMode,
+    start_mode: DiplomacyMode,
 ) -> Entity {
     let mut entity = commands.entity(control);
     entity.observe(
@@ -732,10 +914,10 @@ fn bind_diplomacy_radio(
             let mut screen = screens
                 .single_mut()
                 .expect("Diplomacy control has one open Diplomacy screen");
-            apply_diplomacy_radio_action(action, &mut screen);
+            select_diplomacy_radio_mode(mode, &mut screen);
         },
     );
-    if start_radio == Some(action) {
+    if start_mode == mode {
         entity.insert(Checked);
     } else {
         entity.remove::<Checked>();
@@ -784,15 +966,9 @@ fn select_diplomacy_topic(
     screen.framed_nation = session.active_major_nation().nation();
 }
 
-fn apply_diplomacy_radio_action(action: DiplomacyAction, screen: &mut DiplomacyScreen) {
-    let next = match action {
-        DiplomacyAction::Grant { amount, recurring } => DiplomacyMode::Grant { amount, recurring },
-        DiplomacyAction::Trade(choice) => DiplomacyMode::Trade(choice),
-        DiplomacyAction::Treaty(policy) => DiplomacyMode::Treaty(policy),
-        DiplomacyAction::Overlay(overlay) => DiplomacyMode::Information { overlay },
-    };
-    if screen.topic() == next.topic() {
-        screen.mode = next;
+fn select_diplomacy_radio_mode(mode: DiplomacyMode, screen: &mut DiplomacyScreen) {
+    if screen.topic() == mode.topic() {
+        screen.mode = mode;
     }
 }
 
@@ -1214,9 +1390,20 @@ fn diplomacy_war_join_message(state: &GameState, assets: &RetailAssetsResource) 
     Some(fill_brackets(&assets.get_string(0x2729, index), &args))
 }
 
-/// One text child of a diplomacy topic panel (Information/Treaties/Grants/Trade/
-/// Council). Panels composite only the transparent base; their text is ordinary
-/// Bevy text positioned by `render_diplomacy_panels`.
+/// Dynamic diplomacy panel text updated by [`sync_diplomacy_panel_text`].
+#[derive(Component)]
+struct DiplomacyPanelContent {
+    information_name: Entity,
+    information_labels: [Entity; 3],
+    information_values: [Entity; 3],
+    grants_total: Entity,
+    council_title: Entity,
+    council_labels: [Entity; 3],
+    council_values: [Entity; 3],
+}
+
+/// Bevy text positioned at bind time. Centered/right-aligned labels keep
+/// [`DiplomacyPanelText`] so [`layout_diplomacy_panel_text`] can adjust origin.
 #[derive(Component)]
 struct DiplomacyPanelText {
     origin: IVec2,
@@ -1232,12 +1419,12 @@ fn spawn_panel_text(
     origin: IVec2,
     preset: RetailTextStylePreset,
     alignment: Justify,
-) {
+) -> Entity {
     let (font, _layout, line_height, _) = assets.text_style(preset);
     let logical_height = resolve_retail_text_style(preset)
         .map(|style| style.logical_pixel_height)
         .unwrap_or(14);
-    commands.spawn((
+    let mut entity = commands.spawn((
         Node {
             position_type: PositionType::Absolute,
             left: px(origin.x),
@@ -1254,9 +1441,12 @@ fn spawn_panel_text(
             color: assets.palette_color(0x13),
         },
         Pickable::IGNORE,
-        DiplomacyPanelText { origin, alignment },
         ChildOf(panel),
     ));
+    if matches!(alignment, Justify::Center | Justify::Right) {
+        entity.insert(DiplomacyPanelText { origin, alignment });
+    }
+    entity.id()
 }
 
 /// Retail draws a single intrinsic string at its measured origin.  Bevy needs
@@ -1277,227 +1467,81 @@ fn layout_diplomacy_panel_text(mut labels: Query<(&DiplomacyPanelText, &Computed
     }
 }
 
-fn render_diplomacy_panels(
-    mut commands: Commands,
+fn sync_diplomacy_panel_text(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    view: Single<Ref<DiplomacyView>>,
-    mut assets: RetailUiAssets,
-    panel_texts: Query<Entity, With<DiplomacyPanelText>>,
+    panels: Single<Ref<DiplomacyPanelContent>>,
+    mut texts: Query<&mut Text>,
+    mut visibilities: Query<&mut Visibility>,
+    assets: RetailUiAssets,
 ) {
     let screen = screens
         .single()
         .expect("Diplomacy state has one Diplomacy screen");
-    if !session.is_changed() && !screen.is_added() && !screen.is_changed() && !view.is_added() {
+    if !session.is_changed() && !screen.is_added() && !screen.is_changed() && !panels.is_added() {
         return;
     }
-    let view = view.into_inner();
-    for entity in &panel_texts {
-        commands.entity(entity).despawn();
-    }
+    let panels = panels.into_inner();
     let state = &session.game;
     let source = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
     let major = state.nations().major(source);
-    let title = RetailTextStylePreset::built(14, 0);
-    let row = RetailTextStylePreset::built(12, 0);
-    let small = RetailTextStylePreset::explicit(1, 0, 10, 0);
-    let council = RetailTextStylePreset::built(18, 0);
-    let strings = |assets: &RetailUiAssets, index: u16| assets.get_string(0x2733, index);
     let (name, labels, values) = diplomacy_information(state, screen.framed_nation);
-    let council_data = council_panel_text(state, &assets);
+    texts
+        .get_mut(panels.information_name)
+        .expect("bound diplomacy information name")
+        .0 = name;
+    for (entity, label) in panels.information_labels.into_iter().zip(labels) {
+        texts
+            .get_mut(entity)
+            .expect("bound diplomacy information label")
+            .0 = label;
+    }
+    for (entity, value) in panels.information_values.into_iter().zip(values) {
+        texts
+            .get_mut(entity)
+            .expect("bound diplomacy information value")
+            .0 = value;
+    }
+    texts
+        .get_mut(panels.grants_total)
+        .expect("bound diplomacy grants total")
+        .0 = format!(
+        "{} {}",
+        assets.get_string(0x2733, 0x25),
+        format_currency(major.economy.grant_total_cost)
+    );
 
-    for topic in [
-        DiplomacyTopic::Information,
-        DiplomacyTopic::Treaties,
-        DiplomacyTopic::Grants,
-        DiplomacyTopic::Trade,
-        DiplomacyTopic::Council,
-    ] {
-        let panel = view.panel(topic);
-        match topic {
-            DiplomacyTopic::Information => {
-                let panel_text = strings(&assets, 0);
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(15, 13),
-                    title,
-                    Justify::Left,
-                );
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    name.clone(),
-                    IVec2::new(110, 13),
-                    title,
-                    Justify::Left,
-                );
-                for (index, baseline) in [54, 71, 88].into_iter().enumerate() {
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        labels[index].clone(),
-                        IVec2::new(15, baseline),
-                        row,
-                        Justify::Left,
-                    );
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        values[index].clone(),
-                        IVec2::new(110, baseline),
-                        row,
-                        Justify::Left,
-                    );
-                }
-            }
-            DiplomacyTopic::Treaties => {
-                let panel_text = strings(&assets, 0x20);
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(74, 15),
-                    title,
-                    Justify::Center,
-                );
-                for (index, (center, baseline)) in TREATY_LABEL_CENTERS.into_iter().enumerate() {
-                    let panel_text = strings(&assets, index as u16 + 6);
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        panel_text,
-                        IVec2::new(center as i32, baseline as i32),
-                        small,
-                        Justify::Center,
-                    );
-                }
-            }
-            DiplomacyTopic::Grants => {
-                for (text, origin, is_title) in [
-                    (strings(&assets, 0x21), IVec2::new(15, 13), true),
-                    (strings(&assets, 0x22), IVec2::new(174, 13), false),
-                    (strings(&assets, 0x23), IVec2::new(276, 30), false),
-                    (strings(&assets, 0x24), IVec2::new(440, 30), false),
-                    (strings(&assets, 0x26), IVec2::new(37, 115), false),
-                    (strings(&assets, 0x27), IVec2::new(175, 115), false),
-                    (strings(&assets, 0x28), IVec2::new(314, 115), false),
-                    (strings(&assets, 0x29), IVec2::new(446, 115), false),
-                ] {
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        text,
-                        origin,
-                        if is_title { title } else { row },
-                        Justify::Left,
-                    );
-                }
-                let panel_text = format!(
-                    "{} {}",
-                    strings(&assets, 0x25),
-                    format_currency(major.economy.grant_total_cost)
-                );
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(15, 37),
-                    row,
-                    Justify::Left,
-                );
-            }
-            DiplomacyTopic::Trade => {
-                let panel_text = strings(&assets, 0x2a);
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    panel_text,
-                    IVec2::new(15, 13),
-                    title,
-                    Justify::Left,
-                );
-                for (index, origin) in [
-                    IVec2::new(25, 85),
-                    IVec2::new(74, 34),
-                    IVec2::new(125, 85),
-                    IVec2::new(177, 34),
-                    IVec2::new(228, 85),
-                    IVec2::new(275, 34),
-                ]
-                .into_iter()
-                .enumerate()
-                {
-                    let panel_text = strings(&assets, index as u16 + 0x2b);
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        panel_text,
-                        origin,
-                        row,
-                        Justify::Left,
-                    );
-                }
-                for (index, center) in [156, 380, 473].into_iter().enumerate() {
-                    let panel_text = strings(&assets, index as u16 + 0x31);
-                    spawn_panel_text(
-                        &mut commands,
-                        &mut assets,
-                        panel,
-                        panel_text,
-                        IVec2::new(center, 108),
-                        row,
-                        Justify::Center,
-                    );
-                }
-            }
-            DiplomacyTopic::Council => {
-                spawn_panel_text(
-                    &mut commands,
-                    &mut assets,
-                    panel,
-                    council_data.title.clone(),
-                    IVec2::new(259, 36),
-                    council,
-                    Justify::Center,
-                );
-                if let Some(rows) = &council_data.rows {
-                    for (row, (label, value)) in rows.iter().enumerate() {
-                        let baseline = 60 + row as i32 * 16;
-                        spawn_panel_text(
-                            &mut commands,
-                            &mut assets,
-                            panel,
-                            label.clone(),
-                            IVec2::new(259, baseline),
-                            title,
-                            Justify::Right,
-                        );
-                        spawn_panel_text(
-                            &mut commands,
-                            &mut assets,
-                            panel,
-                            value.clone(),
-                            IVec2::new(263, baseline),
-                            title,
-                            Justify::Left,
-                        );
-                    }
-                }
-            }
-            DiplomacyTopic::Offers => {}
+    let council_data = council_panel_text(state, &assets);
+    texts
+        .get_mut(panels.council_title)
+        .expect("bound diplomacy council title")
+        .0 = council_data.title;
+    if let Some(rows) = council_data.rows {
+        for (row, (label, value)) in rows.into_iter().enumerate() {
+            *visibilities
+                .get_mut(panels.council_labels[row])
+                .expect("bound diplomacy council label") = Visibility::Inherited;
+            *visibilities
+                .get_mut(panels.council_values[row])
+                .expect("bound diplomacy council value") = Visibility::Inherited;
+            texts
+                .get_mut(panels.council_labels[row])
+                .expect("bound diplomacy council label")
+                .0 = label;
+            texts
+                .get_mut(panels.council_values[row])
+                .expect("bound diplomacy council value")
+                .0 = value;
+        }
+    } else {
+        for row in 0..3 {
+            *visibilities
+                .get_mut(panels.council_labels[row])
+                .expect("bound diplomacy council label") = Visibility::Hidden;
+            *visibilities
+                .get_mut(panels.council_values[row])
+                .expect("bound diplomacy council value") = Visibility::Hidden;
         }
     }
 }
@@ -1567,33 +1611,28 @@ fn render_diplomacy_chrome(
         });
     }
 
-    let selected = screen.mode.selected_radio();
+    let mode = screen.mode;
     for (index, entity) in view.grant_radios.into_iter().enumerate() {
-        let action = DiplomacyAction::Grant {
-            amount: GRANT_AMOUNTS[index / 2],
-            recurring: index % 2 != 0,
-        };
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == diplomacy_grant_mode(index),
         );
     }
     for (score, entity) in TRADE_POLICY_SCORES.into_iter().zip(view.trade_radios) {
-        let action = DiplomacyAction::Trade(TradePolicyChoice::Policy(score));
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == DiplomacyMode::Trade(TradePolicyChoice::Policy(score)),
         );
     }
     set_checked(
         &mut commands,
         view.colony_boycott,
         checked.contains(view.colony_boycott),
-        selected == Some(DiplomacyAction::Trade(TradePolicyChoice::ColonyBoycott)),
+        mode == DiplomacyMode::Trade(TradePolicyChoice::ColonyBoycott),
     );
     for (overlay, entity) in [
         DiplomacyInformationOverlay::Owner,
@@ -1604,21 +1643,19 @@ fn render_diplomacy_chrome(
     .into_iter()
     .zip(view.overlay_radios)
     {
-        let action = DiplomacyAction::Overlay(overlay);
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == DiplomacyMode::Information { overlay },
         );
     }
     for (policy, entity) in TREATY_POLICIES.into_iter().zip(view.treaty_radios) {
-        let action = DiplomacyAction::Treaty(policy);
         set_checked(
             &mut commands,
             entity,
             checked.contains(entity),
-            selected == Some(action),
+            mode == DiplomacyMode::Treaty(policy),
         );
     }
 
@@ -2173,26 +2210,21 @@ mod tests {
     #[test]
     fn treaty_radio_value_change_selects_that_pact() {
         let mut app = App::new();
-        app.world_mut().spawn(DiplomacyScreen {
+        let screen = app.world_mut().spawn(DiplomacyScreen {
             framed_nation: NationId::new(0),
             mode: DiplomacyMode::Treaty(DiplomacyPolicy::BuildConsulate),
         });
-        let action = DiplomacyAction::Treaty(DiplomacyPolicy::NonAggressionPact);
-        let radio = app
-            .world_mut()
-            .spawn_empty()
-            .observe(
-                move |change: On<ValueChange<bool>>, mut screens: Query<&mut DiplomacyScreen>| {
-                    if !change.value {
-                        return;
-                    }
-                    let mut screen = screens
-                        .single_mut()
-                        .expect("Diplomacy control has one open Diplomacy screen");
-                    apply_diplomacy_radio_action(action, &mut screen);
-                },
+        let screen_id = screen.id();
+        let mode = DiplomacyMode::Treaty(DiplomacyPolicy::NonAggressionPact);
+        let radio = {
+            let mut commands = app.world_mut().commands();
+            bind_diplomacy_radio(
+                &mut commands,
+                screen_id,
+                mode,
+                DiplomacyMode::Treaty(DiplomacyPolicy::BuildConsulate),
             )
-            .id();
+        };
         app.world_mut().commands().trigger(ValueChange {
             source: radio,
             value: true,
@@ -2200,8 +2232,11 @@ mod tests {
         });
         app.world_mut().flush();
 
-        let mut screens = app.world_mut().query::<&DiplomacyScreen>();
-        let screen = screens.single(app.world()).unwrap();
+        let screen = app
+            .world()
+            .entity(screen_id)
+            .get::<DiplomacyScreen>()
+            .unwrap();
         assert_eq!(
             screen.mode,
             DiplomacyMode::Treaty(DiplomacyPolicy::NonAggressionPact)

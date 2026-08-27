@@ -13,9 +13,11 @@ use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{AmountBarParts, AmountBarStyle, retail_amount_bar};
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
+pub use super::retail_page_corner::RetailPageCorner;
 pub use super::retail_placard::{
     PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
 };
+pub use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite, Step};
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_transport_gauge::{
     TransportGaugeParts, retail_transport_gauge, transport_gauge_width,
@@ -476,6 +478,8 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_radio_text_fill_state::<Add, RetailRadioTextFill>);
         super::retail_slider::register_slider(app);
         super::retail_numbered_arrow::register_numbered_arrow(app);
+        super::retail_sideways_arrow::register_sideways_arrow(app);
+        super::retail_page_corner::register_page_corner(app);
         super::hover_help::register_hover_help(app);
     }
 }

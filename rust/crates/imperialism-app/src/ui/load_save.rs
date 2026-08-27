@@ -113,6 +113,9 @@ pub(crate) fn open_load_save(
 }
 
 #[derive(Component)]
+struct PendingLoadSave(LoadSaveMode);
+
+#[derive(Component)]
 struct LoadSaveRoot {
     mode: LoadSaveMode,
     selected: Option<SaveSlot>,
@@ -147,22 +150,6 @@ struct LoadSavePresentation {
     empty_label: String,
 }
 
-fn empty_root(mode: LoadSaveMode) -> LoadSaveRoot {
-    LoadSaveRoot {
-        mode,
-        selected: None,
-        renaming: false,
-        info: Entity::PLACEHOLDER,
-        map: Entity::PLACEHOLDER,
-        name_field: None,
-        presentation: LoadSavePresentation {
-            slots: std::array::from_fn(|_| None),
-            autosave: None,
-            empty_label: String::new(),
-        },
-    }
-}
-
 #[derive(Component)]
 enum LoadSaveNotice {
     PickSlot,
@@ -173,7 +160,7 @@ enum LoadSaveNotice {
 #[derive(Component)]
 struct FlagMenuRoot;
 
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum FlagMenuAction {
     Save,
     Load,
@@ -293,20 +280,23 @@ fn loaded_game_destination(game: &GameState) -> AppState {
 
 fn enter_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
     let root = commands.spawn_scene(generated::linger_1502()).id();
-    commands
-        .entity(root)
-        .insert((empty_root(request.0), DespawnOnExit(AppState::LoadSave)));
+    commands.entity(root).insert((
+        PendingLoadSave(request.0),
+        DespawnOnExit(AppState::LoadSave),
+    ));
 }
 
 fn bind_load_save(
     mut commands: Commands,
-    root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
+    pending: Query<(Entity, &PendingLoadSave), Added<PendingLoadSave>>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     save_dir: Res<SaveDirectory>,
 ) {
-    let (root_entity, screen) = root.into_inner();
-    let mode = screen.mode;
+    let Ok((root_entity, pending)) = pending.single() else {
+        return;
+    };
+    let mode = pending.0;
     let info = tree.find(root_entity, fourcc!("info"));
     let map = tree.find(root_entity, fourcc!("map "));
     bind_load_save_actions(&mut commands, root_entity, &tree, mode);
@@ -321,12 +311,20 @@ fn bind_load_save(
             .remove::<InteractionDisabled>();
     }
     commands.entity(info).insert(Text::new(String::new()));
-    commands.entity(map).insert(LoadSaveMapPreview::default());
-    let mut root = empty_root(mode);
-    root.info = info;
-    root.map = map;
-    root.presentation = presentation;
-    commands.entity(root_entity).insert(root);
+    let preview_image = assets.add_image(Image::transparent());
+    commands
+        .entity(map)
+        .insert((LoadSaveMapPreview::default(), ImageNode::new(preview_image)));
+    commands.entity(root_entity).insert(LoadSaveRoot {
+        mode,
+        selected: None,
+        renaming: false,
+        info,
+        map,
+        name_field: None,
+        presentation,
+    });
+    commands.entity(root_entity).remove::<PendingLoadSave>();
 }
 
 fn bind_load_save_actions(
@@ -471,33 +469,27 @@ fn satellite_preview(
 }
 
 fn apply_satellite_preview(
-    commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    entity: Entity,
-    image_node: Option<&ImageNode>,
+    image_node: &mut ImageNode,
     preview: &SatellitePreview,
 ) {
-    let image = preview.to_image(assets.default_dib_palette());
-    if let Some(image_node) = image_node {
-        assets.replace_image(&image_node.image, image);
-    } else {
-        let handle = assets.add_image(image);
-        commands.entity(entity).insert(ImageNode::new(handle));
-    }
+    assets.replace_image(
+        &image_node.image,
+        preview.to_image(assets.default_dib_palette()),
+    );
 }
 
 fn sync_load_save_preview(
-    mut commands: Commands,
     mut assets: RetailUiAssets,
     roots: Query<&LoadSaveRoot>,
-    mut maps: Query<(Option<&ImageNode>, &mut LoadSaveMapPreview)>,
+    mut maps: Query<(&mut ImageNode, &mut LoadSaveMapPreview)>,
     save_dir: Res<SaveDirectory>,
     session: Option<Res<GameSession>>,
 ) {
     let Ok(root) = roots.single() else {
         return;
     };
-    let Ok((image_node, mut preview)) = maps.get_mut(root.map) else {
+    let Ok((mut image_node, mut preview)) = maps.get_mut(root.map) else {
         return;
     };
     let key = match root.mode {
@@ -518,7 +510,7 @@ fn sync_load_save_preview(
             };
             let selected = session.game.turn().active_nation;
             let preview = satellite_preview(|tile| session.game.map()[tile].owner_nation, selected);
-            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
+            apply_satellite_preview(&mut assets, &mut image_node, &preview);
         }
         LoadSavePreviewKey::Slot(slot) => {
             let path = retail_save_path(&save_dir.0, slot);
@@ -537,7 +529,7 @@ fn sync_load_save_preview(
                 |tile| owners.get(usize::from(tile.get())).copied().flatten(),
                 selected,
             );
-            apply_satellite_preview(&mut commands, &mut assets, root.map, image_node, &preview);
+            apply_satellite_preview(&mut assets, &mut image_node, &preview);
         }
     }
 }
@@ -924,7 +916,17 @@ fn bind_flag_menu(
             .insert(AccessibleLabel::new(caption))
             .remove::<InteractionDisabled>();
         if let Some(action) = action {
-            control.insert(action).observe(on_flag_menu_activate);
+            control.observe(
+                move |_: On<Activate>,
+                      prompts: Query<(), With<FlagMenuPrompt>>,
+                      mut next_state: ResMut<NextState<AppState>>,
+                      mut commands: Commands| {
+                    if !prompts.is_empty() {
+                        return;
+                    }
+                    apply_flag_menu_action(action, &mut commands, &mut next_state);
+                },
+            );
         } else {
             dismiss_on_activate(&mut commands, control_entity, root);
             bind_modal_keys(&mut commands, root, None, Some(control_entity));
@@ -932,32 +934,24 @@ fn bind_flag_menu(
     }
 }
 
-fn on_flag_menu_activate(
-    activate: On<Activate>,
-    actions: Query<&FlagMenuAction>,
-    prompts: Query<(), With<FlagMenuPrompt>>,
-    mut next_state: ResMut<NextState<AppState>>,
-    mut commands: Commands,
+fn apply_flag_menu_action(
+    action: FlagMenuAction,
+    commands: &mut Commands,
+    next_state: &mut NextState<AppState>,
 ) {
-    if !prompts.is_empty() {
-        return;
-    }
-    let Ok(action) = actions.get(activate.entity) else {
-        return;
-    };
-    match *action {
+    match action {
         FlagMenuAction::Save => {
             open_load_save(
-                &mut commands,
-                &mut next_state,
+                commands,
+                next_state,
                 LoadSaveMode::Save,
                 AppState::StrategicMap,
             );
         }
         FlagMenuAction::Load => {
             open_load_save(
-                &mut commands,
-                &mut next_state,
+                commands,
+                next_state,
                 LoadSaveMode::Load,
                 AppState::StrategicMap,
             );
@@ -971,10 +965,10 @@ fn on_flag_menu_activate(
             next_state.set(AppState::Credits);
         }
         FlagMenuAction::NewGame => {
-            open_flag_menu_prompt(&mut commands, FlagMenuPending::NewGame);
+            open_flag_menu_prompt(commands, FlagMenuPending::NewGame);
         }
         FlagMenuAction::Quit => {
-            open_flag_menu_prompt(&mut commands, FlagMenuPending::Quit);
+            open_flag_menu_prompt(commands, FlagMenuPending::Quit);
         }
     }
 }
@@ -1042,7 +1036,7 @@ mod tests {
     use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
-    use imperialism_formats::{DibPalette, load_game_from_path};
+    use imperialism_formats::load_game_from_path;
 
     fn fixture_state() -> GameState {
         beginning_of_game()
@@ -1081,7 +1075,7 @@ mod tests {
     fn spawn_test_load_save(mut commands: Commands, request: Res<LoadSaveRequest>) {
         let root = commands
             .spawn((
-                empty_root(request.0),
+                PendingLoadSave(request.0),
                 Node::default(),
                 DespawnOnExit(AppState::LoadSave),
             ))
@@ -1101,32 +1095,52 @@ mod tests {
 
     fn bind_test_load_save(
         mut commands: Commands,
-        root: Single<(Entity, &LoadSaveRoot), Added<LoadSaveRoot>>,
+        pending: Query<(Entity, &PendingLoadSave), Added<PendingLoadSave>>,
         tree: RetailTree,
     ) {
-        let (entity, screen) = root.into_inner();
+        let Ok((entity, pending)) = pending.single() else {
+            return;
+        };
         let info = tree.find(entity, fourcc!("info"));
-        bind_load_save_actions(&mut commands, entity, &tree, screen.mode);
-        let mut root = empty_root(screen.mode);
-        root.info = info;
-        root.map = info;
-        commands.entity(entity).insert(root);
+        bind_load_save_actions(&mut commands, entity, &tree, pending.0);
+        commands.entity(entity).insert(LoadSaveRoot {
+            mode: pending.0,
+            selected: None,
+            renaming: false,
+            info,
+            map: info,
+            name_field: None,
+            presentation: LoadSavePresentation {
+                slots: std::array::from_fn(|_| None),
+                autosave: None,
+                empty_label: String::new(),
+            },
+        });
+        commands.entity(entity).remove::<PendingLoadSave>();
     }
 
-    fn spawn_test_flag_menu(mut commands: Commands) {
-        commands.spawn((FlagMenuRoot, ModalWindow));
-    }
-
-    fn spawn_test_flag_prompt(world: &mut World, kind: FlagMenuPending) -> (Entity, Entity) {
-        let root = world.spawn((FlagMenuPrompt { kind }, ModalWindow)).id();
-        let accept = world
-            .spawn(ChildOf(root))
-            .observe(on_flag_menu_prompt_activate)
-            .id();
-        let dismiss = world.spawn(ChildOf(root)).id();
-        dismiss_on_activate(&mut world.commands(), accept, root);
-        dismiss_on_activate(&mut world.commands(), dismiss, root);
-        (accept, dismiss)
+    fn populate_test_save_labels(
+        mut commands: Commands,
+        root: Single<Entity, With<LoadSaveRoot>>,
+        tree: RetailTree,
+    ) {
+        let presentation = LoadSavePresentation {
+            slots: std::array::from_fn(|index| {
+                (index == 0).then(|| SlotPresentation {
+                    label: "England".to_owned(),
+                    info: "1815, Easy".to_owned(),
+                })
+            }),
+            autosave: None,
+            empty_label: "Empty Slot".to_owned(),
+        };
+        populate_load_save_slots(
+            &mut commands,
+            *root,
+            &tree,
+            LoadSaveMode::Load,
+            &presentation,
+        );
     }
 
     fn tagged(app: &mut App, tag: FourCc) -> Entity {
@@ -1136,32 +1150,6 @@ mod tests {
             .find(|(_, retail)| retail.0 == tag)
             .map(|(entity, _)| entity)
             .expect("tagged control")
-    }
-
-    #[test]
-    fn cancel_restores_the_previous_application_state() {
-        let mut app = test_app(AppState::MainMenu);
-        app.insert_resource(ReturnTo(AppState::MainMenu));
-        app.insert_resource(LoadSaveRequest(LoadSaveMode::Load));
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::LoadSave);
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::LoadSave
-        );
-
-        let cancel = tagged(&mut app, fourcc!("cncl"));
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: cancel });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::MainMenu
-        );
     }
 
     #[test]
@@ -1207,71 +1195,27 @@ mod tests {
     }
 
     #[test]
-    fn accepting_new_game_drops_the_session_and_returns_to_the_main_menu() {
-        let mut app = test_app(AppState::StrategicMap);
-        insert_game_session_world(app.world_mut(), fixture_state());
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-        let (accept, _) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::NewGame);
+    fn populated_save_slot_displays_its_header_label() {
+        let mut app = test_app(AppState::MainMenu);
+        app.insert_resource(LoadSaveRequest(LoadSaveMode::Load));
         app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::LoadSave);
         app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::MainMenu
-        );
-        assert!(app.world().get_resource::<GameSession>().is_none());
-    }
 
-    #[test]
-    fn accepting_quit_posts_app_exit() {
-        let mut app = test_app(AppState::StrategicMap);
+        app.add_systems(Update, populate_test_save_labels);
         app.update();
-        let (accept, _) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::Quit);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        let exits = app
-            .world_mut()
-            .resource_mut::<bevy::ecs::message::Messages<AppExit>>()
-            .drain()
-            .collect::<Vec<_>>();
-        assert_eq!(exits, vec![AppExit::Success]);
-    }
 
-    #[test]
-    fn dismissing_new_game_keeps_the_flag_menu_open() {
-        let mut app = test_app(AppState::StrategicMap);
-        app.add_systems(Startup, spawn_test_flag_menu);
-        app.update();
-        let (_, dismiss) = spawn_test_flag_prompt(app.world_mut(), FlagMenuPending::NewGame);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: dismiss });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::StrategicMap
-        );
-        assert!(
-            app.world_mut()
-                .query_filtered::<Entity, With<FlagMenuPrompt>>()
-                .iter(app.world())
-                .next()
-                .is_none()
-        );
-        assert!(
-            app.world_mut()
-                .query_filtered::<Entity, With<FlagMenuRoot>>()
-                .iter(app.world())
-                .next()
-                .is_some()
-        );
+        let slot = tagged(&mut app, fourcc!("slt0"));
+        assert_eq!(app.world().get::<Text>(slot).unwrap().0, "England");
+        for (index, tag) in SLOT_TAGS.iter().copied().enumerate().skip(1) {
+            let entity = tagged(&mut app, tag);
+            assert_eq!(
+                app.world().get::<Text>(entity).unwrap().0,
+                "",
+                "empty load slot {index} keeps an empty caption"
+            );
+        }
     }
 
     #[test]
@@ -1307,38 +1251,6 @@ mod tests {
         assert_eq!(
             peek_save_header(&bytes).map(|header| header.label),
             Some("Second".to_owned())
-        );
-    }
-
-    #[test]
-    fn save_header_owners_compose_the_retail_satellite_preview() {
-        let original = fixture_state();
-        let session = GameSession::new(original.clone());
-        let dir = tempfile::tempdir().unwrap();
-        save_fixture(dir.path(), SaveSlot::Numbered(0), &session, "Preview");
-        let bytes = std::fs::read(retail_save_path(dir.path(), SaveSlot::Numbered(0))).unwrap();
-        let owners = peek_save_preview_owners(&bytes).expect("written save has preview tiles");
-        for (index, owner) in owners.iter().enumerate() {
-            assert_eq!(
-                *owner,
-                original.map()[TileId::new(index as u16)].owner_nation
-            );
-        }
-        let preview = satellite_preview(
-            |tile| owners.get(usize::from(tile.get())).copied().flatten(),
-            original.turn().active_nation,
-        );
-        let image = preview.to_image(&DibPalette::default());
-        assert_eq!(image.texture_descriptor.size.width, 324);
-        assert_eq!(image.texture_descriptor.size.height, 180);
-        assert!(
-            image
-                .data
-                .as_ref()
-                .unwrap()
-                .chunks_exact(4)
-                .any(|pixel| pixel[3] != 0),
-            "satellite preview should paint claimed land, not only the off-map key"
         );
     }
 

@@ -546,6 +546,15 @@ city_building_actions:
     - {slot: oil_refinery, level: 1, picture_id: 15060, frame_count: 7, origin: [491, 187], frame_size: [22, 18]}
     - {slot: power_plant, level: 1, picture_id: 15070, frame_count: 13, origin: [514, 165], frame_size: [24, 23]}
 
+# Windows post-create input roles that replace the Mac resource class on specific
+# views. Each row maps a recovered Mac class on one view to the runtime semantics
+# emitted in generated UI.
+runtime_input_semantics:
+  - view: Transport.rsrc:2014
+    mac_class: TSidewaysArrow
+    semantics: right_left_view
+    evidence: "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 Free()s placeholder left/rght TSidewaysArrow controls and replaces them with TRightLeftView instances that repeat without TUpDownPictureButton hilite"
+
 # Explicit semantic differences between the Mac resource class name and the
 # Windows source model. These are not ABI claims.
 class_substitutions:
