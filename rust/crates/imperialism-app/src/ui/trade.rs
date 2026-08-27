@@ -249,7 +249,6 @@ fn bind_trade_row(
             let Some(position) = click.hit.position else {
                 return;
             };
-            click.propagate(false);
             let nation = session.active_major_nation();
             if !matches!(
                 session.game.player_trade_order(nation, commodity),
@@ -267,6 +266,7 @@ fn bind_trade_row(
             if capacity <= 0 {
                 return;
             }
+            click.propagate(false);
             let geometry = amount_bar_geometry(AmountBarStyle::Trade, capacity);
             let x = amount_bar_x_from_normalized(geometry, position.x);
             let quantity = trade_amount_bar_click_value(geometry, x);

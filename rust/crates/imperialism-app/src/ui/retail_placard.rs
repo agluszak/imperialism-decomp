@@ -2,7 +2,9 @@
 //!
 //! Structure only: screens write caption via bind-time child handles.
 
-use super::retail::{retail_picture, retail_text_color, retail_text_shadow, retail_text_style};
+use super::retail::{
+    retail_built_text_style, retail_picture, retail_text_color, retail_text_shadow,
+};
 use bevy::prelude::*;
 
 const SYSTEM_10PT_HEIGHT: f32 = 12.0;
@@ -14,26 +16,47 @@ pub struct PlacardParts {
 }
 
 pub fn retail_placard(picture_id: i16) -> impl Scene {
-    placard_scene(picture_id, 3, 0, Val::Px(0.), Val::Px(0.), Val::Px(20.), Val::Px(14.), Val::Auto, true)
+    placard_scene(
+        picture_id,
+        0,
+        Val::Px(0.),
+        Val::Px(0.),
+        Val::Px(20.),
+        Val::Px(14.),
+        Val::Auto,
+        true,
+    )
 }
 
 pub fn retail_army_placard(picture_id: i16) -> impl Scene {
     placard_scene(
-        picture_id, 0, -1, Val::Auto, Val::Px(53. - 3. - SYSTEM_10PT_HEIGHT),
-        Val::Px(42.), Val::Px(SYSTEM_10PT_HEIGHT), Val::Px(0.), false,
+        picture_id,
+        -1,
+        Val::Auto,
+        Val::Px(53. - 3. - SYSTEM_10PT_HEIGHT),
+        Val::Px(42.),
+        Val::Px(SYSTEM_10PT_HEIGHT),
+        Val::Px(0.),
+        false,
     )
 }
 
 pub fn retail_ship_placard(picture_id: i16) -> impl Scene {
     placard_scene(
-        picture_id, 0, 1, Val::Px(0x50 as f32 - 20.), Val::Px(0x2e as f32 - SYSTEM_10PT_HEIGHT),
-        Val::Px(40.), Val::Px(SYSTEM_10PT_HEIGHT), Val::Auto, false,
+        picture_id,
+        1,
+        Val::Px(0x50 as f32 - 20.),
+        Val::Px(0x2e as f32 - SYSTEM_10PT_HEIGHT),
+        Val::Px(40.),
+        Val::Px(SYSTEM_10PT_HEIGHT),
+        Val::Auto,
+        false,
     )
 }
 
 #[rustfmt::skip]
 fn placard_scene(
-    picture_id: i16, family: i32, align: i32,
+    picture_id: i16, align: i32,
     left: Val, top: Val, width: Val, height: Val, right: Val, hidden: bool,
 ) -> impl Scene {
     let root_hidden = hidden.then(|| bsn! { Visibility::Hidden });
@@ -45,7 +68,7 @@ fn placard_scene(
             #Caption
             Node { position_type: PositionType::Absolute, left: {left}, right: {right}, top: {top}, width: {width}, height: {height} }
             Text("")
-            retail_text_style(family, 0, 10, align)
+            retail_built_text_style(10, align)
             retail_text_color(0x28)
             retail_text_shadow(0, 1, 1)
             Pickable::IGNORE
@@ -74,11 +97,18 @@ pub fn placard_text_layout(root_width: f32, root_height: f32, value: i16) -> (f3
 #[cfg(test)]
 mod tests {
     use super::*;
+    use imperialism_formats::{RetailFontFace, RetailTextStylePreset, resolve_retail_text_style};
 
     #[test]
     fn digit_aware_x_matches_retail_thresholds() {
         assert_eq!(placard_text_x(39.0, 9), 39.0 / 2.0 - 2.0);
         assert_eq!(placard_text_x(39.0, 10), 39.0 / 2.0 - 6.0);
         assert_eq!(placard_text_x(39.0, 100), 39.0 / 2.0 - 10.0);
+    }
+
+    #[test]
+    fn placard_caption_uses_built_10pt_book_antiqua() {
+        let style = resolve_retail_text_style(RetailTextStylePreset::built(10, 0)).unwrap();
+        assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
     }
 }

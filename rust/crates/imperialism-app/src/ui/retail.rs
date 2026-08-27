@@ -12,13 +12,10 @@ use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
 
-pub use super::retail_amount_bar::{
-    AmountBarParts, AmountBarStyle, retail_amount_bar,
-};
+pub use super::retail_amount_bar::{AmountBarParts, AmountBarStyle, retail_amount_bar};
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
 pub use super::retail_placard::{
-    PlacardParts, placard_text_layout, retail_army_placard, retail_placard,
-    retail_ship_placard,
+    PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
 };
 pub use super::retail_slider::retail_two_pic_slider;
 pub use super::retail_transport_gauge::{
@@ -162,13 +159,22 @@ pub fn retail_text_style(
     point_size: i32,
     alignment: i32,
 ) -> impl Scene {
-    let style = resolve_retail_text_style(RetailTextStylePreset::explicit(
+    retail_text_style_preset(RetailTextStylePreset::explicit(
         font_family,
         face_flags,
         point_size,
         alignment,
     ))
-    .expect("generated retail text style must resolve");
+}
+
+/// `BuildUiTextStyleDescriptor`: family derives from point size (Book Antiqua below 12pt).
+pub fn retail_built_text_style(point_size: i32, alignment: i32) -> impl Scene {
+    retail_text_style_preset(RetailTextStylePreset::built(point_size, alignment))
+}
+
+fn retail_text_style_preset(preset: RetailTextStylePreset) -> impl Scene {
+    let style =
+        resolve_retail_text_style(preset).expect("generated retail text style must resolve");
     let underline = style.underline.then(|| bsn! { Underline });
     let line_height = LineHeight::Px(style.logical_pixel_height as f32);
     bsn! {

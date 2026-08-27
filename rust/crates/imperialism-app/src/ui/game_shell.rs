@@ -199,22 +199,8 @@ fn bind_strategic_map(
         map.view.detailed_origin(&session.game),
     );
     bind_civilian_toolbar(&mut commands, &mut assets, *root, &tree);
-    bind_army_toolbar(
-        &mut commands,
-        &mut assets,
-        *root,
-        &tree,
-        &arrow_parts,
-        &placard_parts,
-    );
-    bind_navy_toolbar(
-        &mut commands,
-        &mut assets,
-        *root,
-        &tree,
-        &arrow_parts,
-        &placard_parts,
-    );
+    bind_army_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
+    bind_navy_toolbar(&mut commands, *root, &tree, &arrow_parts, &placard_parts);
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
     bind_strategic_hover(&mut commands, &mut assets, *root, &tree);
 }

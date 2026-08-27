@@ -28,7 +28,12 @@ impl CityOrderRow {
     }
 }
 
-fn amount_bar_range_for_order(game: &GameState, nation: MajorNationId, order: CityOrderId) -> i16 {
+/// Shared production/rail amount-bar segment count for render and click math.
+pub(in crate::ui::city) fn amount_bar_range(
+    game: &GameState,
+    nation: MajorNationId,
+    order: CityOrderId,
+) -> i16 {
     let city = &game.nations().major(nation).city;
     match order {
         CityOrderId::Item(item) => city.production_orders[item.facility()],
@@ -74,7 +79,7 @@ pub(in crate::ui::city) fn bind_industry_order_row(
             click.propagate(false);
             let nation = session.active_major_nation();
             let previous = session.game.city_order_quantity(nation, order);
-            let range = amount_bar_range_for_order(&session.game, nation, order);
+            let range = amount_bar_range(&session.game, nation, order);
             let geometry = amount_bar_geometry(AmountBarStyle::Production, range);
             let x = amount_bar_x_from_normalized(geometry, position.x);
             let value = amount_bar_click_value(geometry, x, previous);

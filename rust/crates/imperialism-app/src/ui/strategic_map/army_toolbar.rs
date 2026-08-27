@@ -8,6 +8,7 @@ use crate::ui::GameSession;
 use crate::ui::retail_resources::MilitaryUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
+use enum_map::Enum;
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -53,36 +54,25 @@ pub(crate) fn register(app: &mut App) {
 
 pub(crate) fn bind_army_toolbar(
     commands: &mut Commands,
-    _assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
     arrow_parts: &Query<&NumberedArrowParts>,
     placard_parts: &Query<&PlacardParts>,
 ) {
     let page = tree.find(root, PAGE_TAG);
-    let mut placards = ArmyCategoryTable::from_array(
-        [PlacardBinding {
-            root: Entity::PLACEHOLDER,
-            text: Entity::PLACEHOLDER,
-        }; ArmyUnitCategory::LENGTH],
-    );
-    let mut arrows = ArmyCategoryTable::from_array(
-        [ArrowBinding {
-            root: Entity::PLACEHOLDER,
-            count: Entity::PLACEHOLDER,
-        }; ArmyUnitCategory::LENGTH],
-    );
+    let mut placard_slots = [None; ArmyUnitCategory::LENGTH];
+    let mut arrow_slots = [None; ArmyUnitCategory::LENGTH];
     for category in ArmyUnitCategory::all() {
         let pic = tree.child(page, placard_tag(category));
         let PlacardParts { text } = *placard_parts.get(pic).expect("army placard parts");
-        placards[category] = PlacardBinding { root: pic, text };
+        placard_slots[category.into_usize()] = Some(PlacardBinding { root: pic, text });
         let arrow = tree.child(page, arrow_tag(category));
         let NumberedArrowParts {
             upper,
             lower,
             count,
         } = *arrow_parts.get(arrow).expect("army arrow parts");
-        arrows[category] = ArrowBinding { root: arrow, count };
+        arrow_slots[category.into_usize()] = Some(ArrowBinding { root: arrow, count });
         let category_capture = category;
         commands.entity(arrow).insert(Visibility::Hidden);
         commands.entity(upper).observe(
@@ -111,6 +101,12 @@ pub(crate) fn bind_army_toolbar(
         );
     }
     let garrison = tree.child(page, fourcc!("garr"));
+    let placards = ArmyCategoryTable::from_array(
+        placard_slots.map(|slot| slot.expect("every army placard is bound")),
+    );
+    let arrows = ArmyCategoryTable::from_array(
+        arrow_slots.map(|slot| slot.expect("every army arrow is bound")),
+    );
     commands.entity(page).insert((
         ArmyToolbarView {
             placards,

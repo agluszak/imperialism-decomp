@@ -15,11 +15,11 @@ use imperialism_formats::*;
 const PAGE_TAG: FourCc = fourcc!("unav");
 const NAVY_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x90 as f32);
 const PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const NAVY_CLASS_ORDER: [NavyToolbarClass; 4] = [
-    NavyToolbarClass::Class0,
-    NavyToolbarClass::Class1,
-    NavyToolbarClass::Class2,
-    NavyToolbarClass::Class3,
+const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
+    (NavyToolbarClass::Class0, fourcc!("cls0")),
+    (NavyToolbarClass::Class1, fourcc!("cls1")),
+    (NavyToolbarClass::Class2, fourcc!("cls2")),
+    (NavyToolbarClass::Class3, fourcc!("cls3")),
 ];
 const AGGRESSION_LEVELS: [NavalAggression; 3] = [
     NavalAggression::Cautious,
@@ -55,27 +55,13 @@ pub(crate) fn register(app: &mut App) {
 
 pub(crate) fn bind_navy_toolbar(
     commands: &mut Commands,
-    _assets: &mut RetailUiAssets,
     root: Entity,
     tree: &RetailTree,
     arrow_parts: &Query<&NumberedArrowParts>,
     ship_parts: &Query<&PlacardParts>,
 ) {
     let page = tree.find(root, PAGE_TAG);
-    const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
-        (NavyToolbarClass::Class0, fourcc!("cls0")),
-        (NavyToolbarClass::Class1, fourcc!("cls1")),
-        (NavyToolbarClass::Class2, fourcc!("cls2")),
-        (NavyToolbarClass::Class3, fourcc!("cls3")),
-    ];
-    let mut classes = [NavyClassView {
-        ship_root: Entity::PLACEHOLDER,
-        ship_text: Entity::PLACEHOLDER,
-        arrow: ArrowBinding {
-            root: Entity::PLACEHOLDER,
-            count: Entity::PLACEHOLDER,
-        },
-    }; 4];
+    let mut classes = [None; 4];
     for (index, (class, tag)) in CLASS_TAGS.into_iter().enumerate() {
         let cluster = tree.child(page, tag);
         let ship = tree.child(cluster, fourcc!("ship"));
@@ -88,11 +74,11 @@ pub(crate) fn bind_navy_toolbar(
             lower,
             count,
         } = *arrow_parts.get(arrow).expect("navy arrow parts");
-        classes[index] = NavyClassView {
+        classes[index] = Some(NavyClassView {
             ship_root: ship,
             ship_text,
             arrow: ArrowBinding { root: arrow, count },
-        };
+        });
         let class_capture = class;
         commands.entity(arrow).insert(Visibility::Hidden);
         commands.entity(upper).observe(
@@ -120,6 +106,7 @@ pub(crate) fn bind_navy_toolbar(
             },
         );
     }
+    let classes = classes.map(|row| row.expect("every navy class row is bound"));
     let aggression = [
         tree.child(page, fourcc!("agr0")),
         tree.child(page, fourcc!("agr1")),
@@ -242,7 +229,7 @@ fn sync_navy_toolbar(
     page.top = Val::Px(position.y);
     let force = map.selection.navy_force();
     let toolbar = session.game.navy_toolbar_counts(force);
-    for (index, class) in NAVY_CLASS_ORDER.into_iter().enumerate() {
+    for (index, (class, _)) in CLASS_TAGS.into_iter().enumerate() {
         let available = toolbar.available[class];
         let selected = toolbar.selected[class];
         let picture = session

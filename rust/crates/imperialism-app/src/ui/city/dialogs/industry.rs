@@ -124,31 +124,12 @@ pub(in crate::ui::city) fn render_industry(
         ui.visible(entity, city.stockpile[resource] < minimum);
     }
     ui.visible(view.expansion, city_is_expanding(city, slot));
-    let range = city.production_orders[slot];
     for order in &view.orders {
-        let quantity = session
-            .game
-            .city_order_quantity(nation, CityOrderId::Item(order.item));
-        let maximum = session
-            .game
-            .city_order_limit(nation, CityOrderId::Item(order.item))
-            .maximum;
+        let order_id = CityOrderId::Item(order.item);
+        let quantity = session.game.city_order_quantity(nation, order_id);
+        let range = amount_bar_range(&session.game, nation, order_id);
+        let maximum = session.game.city_order_limit(nation, order_id).maximum;
         ui.amount_bar(order.bar, quantity, range, maximum);
-    }
-}
-
-fn rail_bar_capacity(
-    city: &CityState,
-    order: CityOrderId,
-    nation: MajorNationId,
-    game: &GameState,
-) -> i16 {
-    match order {
-        CityOrderId::FoodProcessing | CityOrderId::TransportCapacity => {
-            let labor = city.population.production_labor();
-            ((labor.high * 2 + labor.medium) * 2 + city.population.extra() + labor.low) / 2
-        }
-        _ => game.city_order_limit(nation, order).maximum,
     }
 }
 
@@ -159,9 +140,8 @@ pub(in crate::ui::city) fn render_rail(
     rail: &RailUi,
     ui: &mut CityUi,
 ) {
-    let city = &session.game.nations().major(nation).city;
     let quantity = session.game.city_order_quantity(nation, order);
-    let range = rail_bar_capacity(city, order, nation, &session.game);
+    let range = amount_bar_range(&session.game, nation, order);
     let maximum = session.game.city_order_limit(nation, order).maximum;
     ui.amount_bar(rail.bar, quantity, range, maximum);
 }
