@@ -130,11 +130,17 @@ If a fixed control's semantic argument is known at binding and only its handler 
 capture it (for example a trade card captures its `TradeCommodity` and `TradeCardKind`). Store it as
 a component only when other independent systems need to query it.
 
-Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPlacard`,
-`RetailAmountBar`, `RetailTwoPicSliderVisual`, `RetailNumberedArrow`, and `RetailCountedPicture`
-remain appropriate. Prefer stock Bevy headless widgets (`Slider`, `Button`, `Checkbox`,
-`RadioButton`, `ScrollArea`) for input semantics; custom retail code is usually a skin or a
-genuinely non-standard interaction (`TAmtBar`, triangular `TPageCorner`).
+Reusable autonomous presentation components such as `RetailPictureSwap`, `RetailPlacard` /
+`PlacardValue`, `RetailAmountBar` / `RetailAmountBarState`, `RetailTwoPicSliderVisual`,
+`RetailNumberedArrow`, and `RetailCountedPicture` remain appropriate. Prefer stock Bevy headless
+widgets (`Slider`, `Button`, `Checkbox`, `RadioButton`, `ScrollArea`) for input semantics; custom
+retail code is usually a skin or a genuinely non-standard interaction (`TAmtBar`, triangular
+`TPageCorner`).
+
+Hierarchical retail widgets are BSN `SceneComponent`s: structure and private children are spawned
+atomically with the scene; mutable presentation lives in a small separate state component
+(`PlacardValue`, `RetailAmountBarState`). Screens project with `set_if_neq` so `Changed<…>` stays
+meaningful. Widget draw systems run in `PostUpdate` before `UiSystems::Prepare`.
 
 They represent recovered retail widget *semantics*, not a port of the C++ class hierarchy. The
 criterion is meaningful state, behavior, lifecycle, or relationship on that entity, not a blanket
@@ -188,9 +194,9 @@ root knows its default and cancel controls. Each is established once at binding:
 keyboard, and activation events propagate to those observers, whose closures capture the invariant
 targets.
 
-Generated BSN remains the structure mechanism for recovered screens. `SceneComponent` may be used
-for a genuinely reusable semantic widget authored by this project, but recovered screens do not get
-a second handcrafted scene merely to wrap their generated hierarchy.
+Generated BSN remains the structure mechanism for recovered screens. Reusable hierarchical widgets
+authored by this project use Rust BSN `SceneComponent`s (not `.bsn` asset files). Recovered screens
+do not get a second handcrafted scene merely to wrap their generated hierarchy.
 
 ## Tests
 

@@ -1,13 +1,13 @@
-//! Recovered `TAmtBar` family as a reusable Bevy widget.
+//! Recovered `TAmtBar` family as a BSN SceneComponent.
 //!
-//! `RetailAmountBar` owns fill/limit children, click-to-value (`TAmtBar::DoMouseCommand`),
-//! and kind-specific drawing. Screens attach domain observers to `ValueChange<i16>` and
-//! write `value` / `range` / `maximum` from authoritative state.
+//! Structure (`RetailAmountBar` + fill/limit children) is spawned atomically.
+//! Screens project [`RetailAmountBarState`] and observe `ValueChange<i16>`.
 
 use super::retail_raster::IndexedRasterExt;
 use crate::RetailAssetsResource;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::ui::UiSystems;
 use bevy::ui_widgets::ValueChange;
 use imperialism_formats::IndexedPicture;
 
@@ -28,16 +28,26 @@ pub const INDUSTRY_BAR_FILL: u8 = 0x16;
 // `TViewMgr::GetColor` to palette 0xbd rather than using 0x37 as a DIB index.
 pub const TRADE_BAR_FILL: u8 = 0xbd;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub enum RetailAmountBarKind {
+    #[default]
     Industry,
     Rail,
     Trader,
 }
 
-/// Immutable recovered amount-bar specialization.
-#[derive(Component, Clone, Copy, Debug)]
+/// Immutable recovered amount-bar specialization plus private child refs.
+#[derive(SceneComponent, FromTemplate, Clone)]
+#[scene(RetailAmountBarProps)]
 pub struct RetailAmountBar {
+    pub kind: RetailAmountBarKind,
+    pub fill: Entity,
+    pub limit: Entity,
+}
+
+/// Static construction props for [`RetailAmountBar`].
+#[derive(Default, Clone, Copy)]
+pub struct RetailAmountBarProps {
     pub kind: RetailAmountBarKind,
 }
 
@@ -45,38 +55,85 @@ pub struct RetailAmountBar {
 #[derive(Component, Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RetailAmountBarState {
     pub value: i16,
-    pub limit: i16,
-    pub segments: i16,
+    pub range: i16,
+    pub maximum: i16,
 }
 
 impl RetailAmountBar {
-    pub const fn new(kind: RetailAmountBarKind) -> Self {
-        Self { kind }
-    }
-
-    pub fn geometry(self, state: RetailAmountBarState) -> AmountBarGeometry {
+    pub fn geometry(&self, state: RetailAmountBarState) -> AmountBarGeometry {
         match self.kind {
             RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
-                INDUSTRY_AMOUNT_BAR.with_segments(state.segments)
+                INDUSTRY_AMOUNT_BAR.with_segments(state.range)
             }
-            RetailAmountBarKind::Trader => TRADE_AMOUNT_BAR.with_segments(state.segments),
+            RetailAmountBarKind::Trader => TRADE_AMOUNT_BAR.with_segments(state.range),
+        }
+    }
+
+    fn scene(props: RetailAmountBarProps) -> impl Scene {
+        let fill_index = match props.kind {
+            RetailAmountBarKind::Trader => TRADE_BAR_FILL,
+            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => INDUSTRY_BAR_FILL,
+        };
+        let (fill_top, fill_height) = match props.kind {
+            RetailAmountBarKind::Trader => (Val::Px(0.0), Val::Percent(100.0)),
+            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
+                (Val::Px(1.0), Val::Px(4.0))
+            }
+        };
+        let limit_visibility = match props.kind {
+            RetailAmountBarKind::Trader => Visibility::Hidden,
+            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => Visibility::Inherited,
+        };
+        bsn! {
+            RetailAmountBar {
+                kind: {props.kind},
+                fill: #Fill,
+                limit: #Limit,
+            }
+            RetailAmountBarState
+            on(on_amount_bar_click)
+            Children [
+                (
+                    #Fill
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: {fill_top},
+                        width: px(0),
+                        height: {fill_height},
+                    }
+                    template(move |context| {
+                        Ok(BackgroundColor(template_palette_color(context, fill_index)))
+                    })
+                    Pickable::IGNORE
+                ),
+                (
+                    #Limit
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(0),
+                        width: px(1),
+                        height: px(5),
+                    }
+                    template(move |context| {
+                        Ok(BackgroundColor(template_palette_color(context, 0)))
+                    })
+                    template_value(limit_visibility)
+                    Pickable::IGNORE
+                ),
+            ]
         }
     }
 }
 
-impl RetailAmountBarState {
-    pub fn set(&mut self, value: i16, segments: i16, limit: i16) {
-        self.value = value;
-        self.segments = segments;
-        self.limit = limit;
+/// BSN helper used by generated screens.
+pub fn retail_amount_bar(kind: RetailAmountBarKind) -> impl Scene {
+    bsn! {
+        @RetailAmountBar {
+            @kind: kind,
+        }
     }
-}
-
-/// Internal fill / limit tick entities. Not screen semantic identity.
-#[derive(Component, Clone, Copy, Debug)]
-struct AmountBarParts {
-    fill: Entity,
-    limit: Option<Entity>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -113,105 +170,35 @@ pub fn amount_bar_counter_offset(geometry: AmountBarGeometry, value: i16) -> Vec
     Vec2::new(f32::from(span) - 2.0, 6.0)
 }
 
-/// BSN helper: attach a recovered amount-bar widget to the generated track node.
-pub fn retail_amount_bar(kind: RetailAmountBarKind) -> impl Scene {
-    bsn! {
-        template(move |context| {
-            context.entity.insert(RetailAmountBarState::default());
-            Ok(RetailAmountBar::new(kind))
-        })
-    }
-}
-
 pub(super) fn register_amount_bar(app: &mut App) {
-    app.add_systems(
-        PostUpdate,
-        (spawn_amount_bar_parts, draw_amount_bars).chain(),
-    )
-    .add_observer(on_amount_bar_click);
+    app.add_systems(PostUpdate, draw_amount_bars.before(UiSystems::Prepare));
 }
 
-fn palette_color(assets: &RetailAssetsResource, index: u8) -> Color {
-    let [red, green, blue] = assets.assets().default_dib_palette()[index].to_array();
+fn template_palette_color(context: &bevy::ecs::template::TemplateContext, index: u8) -> Color {
+    let [red, green, blue] = context
+        .resource::<RetailAssetsResource>()
+        .assets()
+        .default_dib_palette()[index]
+        .to_array();
     Color::srgb_u8(red, green, blue)
 }
 
-#[allow(clippy::type_complexity)]
-fn spawn_amount_bar_parts(
-    mut commands: Commands,
-    bars: Query<(Entity, &RetailAmountBar), (Added<RetailAmountBar>, Without<AmountBarParts>)>,
-    assets: Res<RetailAssetsResource>,
-) {
-    for (entity, bar) in &bars {
-        let fill_index = match bar.kind {
-            RetailAmountBarKind::Trader => TRADE_BAR_FILL,
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => INDUSTRY_BAR_FILL,
-        };
-        let (fill_top, fill_height) = match bar.kind {
-            RetailAmountBarKind::Trader => (Val::Px(0.0), Val::Percent(100.0)),
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => {
-                (Val::Px(1.0), Val::Px(4.0))
-            }
-        };
-        let fill = commands
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(0.0),
-                    top: fill_top,
-                    width: Val::Px(0.0),
-                    height: fill_height,
-                    ..default()
-                },
-                BackgroundColor(palette_color(&assets, fill_index)),
-                Pickable::IGNORE,
-                ChildOf(entity),
-            ))
-            .id();
-        let limit = match bar.kind {
-            RetailAmountBarKind::Trader => None,
-            RetailAmountBarKind::Industry | RetailAmountBarKind::Rail => Some(
-                commands
-                    .spawn((
-                        Node {
-                            position_type: PositionType::Absolute,
-                            left: Val::Px(0.0),
-                            top: Val::Px(0.0),
-                            width: Val::Px(1.0),
-                            height: Val::Px(5.0),
-                            ..default()
-                        },
-                        BackgroundColor(palette_color(&assets, 0)),
-                        Pickable::IGNORE,
-                        ChildOf(entity),
-                    ))
-                    .id(),
-            ),
-        };
-        commands
-            .entity(entity)
-            .insert(AmountBarParts { fill, limit });
-    }
-}
-
-#[allow(clippy::type_complexity)]
 fn draw_amount_bars(
-    bars: Query<
-        (&RetailAmountBar, &RetailAmountBarState, &AmountBarParts),
-        Or<(Changed<RetailAmountBarState>, Added<AmountBarParts>)>,
-    >,
+    bars: Query<(&RetailAmountBar, &RetailAmountBarState), Changed<RetailAmountBarState>>,
     mut nodes: Query<&mut Node>,
 ) {
-    for (bar, state, parts) in &bars {
+    for (bar, state) in &bars {
         let geometry = bar.geometry(*state);
         let span = geometry.span(state.value);
-        if let Ok(mut fill) = nodes.get_mut(parts.fill) {
-            fill.width = Val::Px(f32::from(span));
-        }
-        if let Some(limit) = parts.limit
-            && let Ok(mut limit_node) = nodes.get_mut(limit)
-        {
-            limit_node.left = Val::Px(f32::from(geometry.span(state.limit)));
+        nodes
+            .get_mut(bar.fill)
+            .expect("RetailAmountBar fill child")
+            .width = Val::Px(f32::from(span));
+        if !matches!(bar.kind, RetailAmountBarKind::Trader) {
+            nodes
+                .get_mut(bar.limit)
+                .expect("RetailAmountBar limit child")
+                .left = Val::Px(f32::from(geometry.span(state.maximum)));
         }
     }
 }

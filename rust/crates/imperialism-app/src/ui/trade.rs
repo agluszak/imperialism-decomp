@@ -420,7 +420,11 @@ fn render_trade(
         amount_bars
             .get_mut(row.gauge)
             .expect("bound trade amount bar must exist")
-            .set(quantity, capacity, 0);
+            .set_if_neq(RetailAmountBarState {
+                value: quantity,
+                range: capacity,
+                maximum: 0,
+            });
         texts
             .get_mut(row.price)
             .expect("bound trade price text must exist")
@@ -576,7 +580,6 @@ const fn trade_offer_tab_visible(capacity: i16, active: bool, stockpile: i16) ->
 #[cfg(test)]
 mod tests {
     use super::super::retail::RetailTag;
-    use super::super::retail_amount_bar::{RetailAmountBar, RetailAmountBarKind};
     use super::*;
     use crate::ui::test_support::beginning_of_game;
     use bevy::asset::AssetPlugin;
@@ -628,7 +631,6 @@ mod tests {
             world.spawn((
                 RetailTag(fourcc!("bar ")),
                 Node::default(),
-                RetailAmountBar::new(RetailAmountBarKind::Trader),
                 RetailAmountBarState::default(),
                 ChildOf(row),
             ));

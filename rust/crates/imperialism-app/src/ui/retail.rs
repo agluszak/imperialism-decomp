@@ -17,7 +17,7 @@ pub use super::retail_counted_picture::RetailCountedPicture;
 pub use super::retail_numbered_arrow::{
     NumberedArrowAction, NumberedArrowClick, RetailNumberedArrow, install_numbered_arrow,
 };
-pub use super::retail_placard::RetailPlacard;
+pub use super::retail_placard::{PlacardValue, retail_placard};
 pub use super::retail_slider::RetailTwoPicSliderVisual;
 
 /// Provenance tag recovered from the retail View resource.
@@ -72,19 +72,6 @@ pub fn retail_picture(id: i16) -> impl Scene {
                 context,
                 PictureId::new(id),
             )?))
-        })
-    }
-}
-
-/// Recovered `TPlacard`: picture art plus autonomous numeric value widget.
-pub fn retail_placard(picture_id: i16) -> impl Scene {
-    bsn! {
-        template(move |context| {
-            let image = load_template_picture(context, PictureId::new(picture_id))?;
-            context
-                .entity
-                .insert(super::retail_placard::RetailPlacard(0));
-            Ok(ImageNode::new(image))
         })
     }
 }

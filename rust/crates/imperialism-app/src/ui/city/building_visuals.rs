@@ -710,12 +710,12 @@ mod tests {
             font_family: 3,
             face_flags: 0,
             point_size: 10,
-            alignment: 1,
+            alignment: 0,
         })
         .unwrap();
         assert_eq!(style.face, RetailFontFace::BookAntiquaRegular);
         assert_eq!(style.logical_pixel_height, 14);
-        assert_eq!(style.alignment, RetailTextAlignment::Center);
+        assert_eq!(style.alignment, RetailTextAlignment::Left);
     }
 
     #[test]

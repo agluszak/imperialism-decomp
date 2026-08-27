@@ -123,7 +123,11 @@ fn render_amount_bar(
     ui.amount_bars
         .get_mut(bar)
         .expect("bound amount bar")
-        .set(value, range, maximum);
+        .set_if_neq(crate::ui::retail_amount_bar::RetailAmountBarState {
+            value,
+            range,
+            maximum,
+        });
     ui.text(quantity, value.to_string());
     let geometry = INDUSTRY_AMOUNT_BAR.with_segments(range);
     let offset = amount_bar_counter_offset(geometry, value);
