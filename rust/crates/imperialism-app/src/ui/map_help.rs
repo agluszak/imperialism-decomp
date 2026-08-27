@@ -276,9 +276,7 @@ fn show_topic(
     for entity in [view.previous, view.next] {
         commands.entity(entity).insert(Visibility::Hidden);
     }
-    commands
-        .entity(view.toggle)
-        .insert(Visibility::Visible);
+    commands.entity(view.toggle).insert(Visibility::Visible);
 }
 
 fn show_topic_list(view: &MapHelpView, assets: &RetailAssetsResource, commands: &mut Commands) {
@@ -286,9 +284,7 @@ fn show_topic_list(view: &MapHelpView, assets: &RetailAssetsResource, commands: 
     commands
         .entity(view.subject)
         .insert(Text::new(assets.ui_string(group as u16, 1)));
-    commands
-        .entity(view.body)
-        .insert(Visibility::Hidden);
+    commands.entity(view.body).insert(Visibility::Hidden);
     for (index, entity) in view.topics.into_iter().enumerate() {
         commands.entity(entity).insert((
             Text::new(assets.ui_string(group as u16, index as u16 + 2)),
@@ -316,9 +312,7 @@ fn show_topic_list(view: &MapHelpView, assets: &RetailAssetsResource, commands: 
             },
         ));
     }
-    commands
-        .entity(view.toggle)
-        .insert(Visibility::Hidden);
+    commands.entity(view.toggle).insert(Visibility::Hidden);
 }
 
 fn set_text(
