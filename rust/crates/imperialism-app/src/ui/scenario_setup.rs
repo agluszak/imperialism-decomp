@@ -6,7 +6,7 @@ use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
 use imperialism_core::{
     MajorNationId, MapMgr, ScenarioInstruction, create_scenario_game,
     enter_strategic_map_without_capital_selection,

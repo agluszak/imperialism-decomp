@@ -15,7 +15,7 @@ use bevy::input_focus::AutoFocus;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, SelectAllOnFocus};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button, SelectAllOnFocus};
 use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
@@ -336,7 +336,7 @@ fn bind_load_save_actions(
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
         commands
             .entity(entity)
-            .insert((Button, LoadSaveAction::SelectSlot(slot)))
+            .insert((Button, ActivateOnPress, LoadSaveAction::SelectSlot(slot)))
             .observe(on_load_save_activate);
     }
     commands
@@ -344,17 +344,20 @@ fn bind_load_save_actions(
         .insert(LoadSaveInfo);
     commands
         .entity(tree.find(root, fourcc!("okay")))
-        .insert(LoadSaveAction::Okay)
+        .insert((ActivateOnPress, LoadSaveAction::Okay))
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
     commands
         .entity(tree.find(root, fourcc!("cncl")))
-        .insert(LoadSaveAction::Cancel)
+        .insert((ActivateOnPress, LoadSaveAction::Cancel))
         .remove::<InteractionDisabled>()
         .observe(on_load_save_activate);
     let otto = tree.find(root, fourcc!("otto"));
     let mut otto_commands = commands.entity(otto);
-    otto_commands.insert(LoadSaveAction::SelectSlot(SaveSlot::Autosave));
+    otto_commands.insert((
+        ActivateOnPress,
+        LoadSaveAction::SelectSlot(SaveSlot::Autosave),
+    ));
     otto_commands.observe(on_load_save_activate);
     if mode == LoadSaveMode::Save {
         otto_commands.insert(InteractionDisabled);
@@ -1049,6 +1052,10 @@ mod tests {
     use crate::ui::insert_game_session_world;
     use crate::ui::retail::RetailTag;
     use crate::ui::test_support::beginning_of_game;
+    use bevy::camera::NormalizedRenderTarget;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::events::{Pointer, Press};
+    use bevy::picking::pointer::{Location, PointerButton, PointerId};
     use imperialism_formats::{DibPalette, load_game_from_path};
 
     fn fixture_state() -> GameState {
@@ -1073,6 +1080,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_plugins(bevy::state::app::StatesPlugin)
+            .add_plugins(bevy::ui_widgets::ButtonPlugin)
             .add_plugins(crate::ui::UiWindowPlugin)
             .add_message::<AppExit>()
             .insert_state(initial)
@@ -1166,6 +1174,83 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::MainMenu
         );
+    }
+
+    #[test]
+    fn selecting_a_save_slot_starts_editing_its_label_and_saves() {
+        let mut app = test_app(AppState::StrategicMap);
+        let game = fixture_state();
+        let directory = tempfile::tempdir().unwrap();
+        insert_game_session_world(app.world_mut(), game.clone());
+        app.insert_resource(SaveDirectory(directory.path().to_owned()));
+        app.insert_resource(LoadSaveRequest(LoadSaveMode::Save));
+        app.world_mut()
+            .resource_mut::<NextState<AppState>>()
+            .set(AppState::LoadSave);
+        app.update();
+
+        let slot = app
+            .world_mut()
+            .query_filtered::<Entity, With<LoadSaveAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<LoadSaveAction>(*entity)
+                    == Some(&LoadSaveAction::SelectSlot(SaveSlot::Numbered(0)))
+            })
+            .unwrap();
+        assert!(app.world().get::<ActivateOnPress>(slot).is_some());
+
+        app.world_mut().trigger(Pointer::new(
+            PointerId::Mouse,
+            Location {
+                target: NormalizedRenderTarget::None {
+                    width: 1,
+                    height: 1,
+                },
+                position: Vec2::ZERO,
+            },
+            Press {
+                button: PointerButton::Primary,
+                hit: HitData {
+                    camera: Entity::PLACEHOLDER,
+                    depth: 0.0,
+                    position: None,
+                    normal: None,
+                    extra: None,
+                },
+                count: 1,
+            },
+            slot,
+        ));
+        app.world_mut().flush();
+
+        let root = app
+            .world_mut()
+            .query::<&LoadSaveRoot>()
+            .single(app.world())
+            .unwrap();
+        assert_eq!(root.selected, Some(SaveSlot::Numbered(0)));
+        assert!(root.renaming);
+        assert!(app.world().get::<SaveNameField>(slot).is_some());
+
+        let okay = app
+            .world_mut()
+            .query_filtered::<Entity, With<LoadSaveAction>>()
+            .iter(app.world())
+            .find(|entity| {
+                app.world().get::<LoadSaveAction>(*entity) == Some(&LoadSaveAction::Okay)
+            })
+            .unwrap();
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: okay });
+        app.world_mut().flush();
+        app.update();
+
+        let bytes = std::fs::read(retail_save_path(directory.path(), SaveSlot::Numbered(0)))
+            .expect("clicking okay writes the selected save slot");
+        let loaded = load_game_from_bytes(&bytes, runtime_context_for_load(Some(&game))).unwrap();
+        assert_eq!(loaded.game, game);
     }
 
     #[test]

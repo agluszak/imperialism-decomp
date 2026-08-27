@@ -3,7 +3,7 @@ use super::retail::{RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, ActivateOnPress};
+use bevy::ui_widgets::{Activate, ActivateOnPress, Button};
 use imperialism_formats::{RetailTextStylePreset, StringResourceId, fourcc};
 
 #[derive(Component)]
