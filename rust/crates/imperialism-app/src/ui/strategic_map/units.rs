@@ -518,17 +518,17 @@ fn load_civilian_pictures(
         return (0..CIVILIAN_ANIMATION_FRAME_COUNTS[kind])
             .map(|frame| {
                 assets
-                    .indexed_picture(picture_id.offset(i16::from(frame)))
+                    .try_indexed_picture(picture_id.offset(i16::from(frame)))
                     .ok()
                     .map(first_tile_frame)
             })
             .collect();
     }
-    if let Ok(picture) = assets.indexed_picture(picture_id) {
+    if let Ok(picture) = assets.try_indexed_picture(picture_id) {
         return Some(vec![first_tile_frame(picture)]);
     }
     assets
-        .indexed_picture(civilian_picture_id(kind, CivilianPose::Animated))
+        .try_indexed_picture(civilian_picture_id(kind, CivilianPose::Animated))
         .ok()
         .map(|picture| vec![first_tile_frame(picture)])
 }
@@ -560,9 +560,7 @@ fn load_fleet_frames(assets: &RetailUiAssets, state: &GameState) -> Vec<IndexedP
 }
 
 fn load_required_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedPicture {
-    assets.indexed_picture(picture_id).unwrap_or_else(|error| {
-        panic!("retail strategic unit picture {picture_id} must load: {error}")
-    })
+    assets.indexed_picture(picture_id)
 }
 
 fn first_tile_frame(picture: IndexedPicture) -> IndexedPicture {

@@ -70,9 +70,7 @@ pub(in crate::ui::city) fn bind_university(
         (kind, SelectionRow(button, bound.quantity))
     });
     let dlog = tree.find(root, fourcc!("DLOG"));
-    let details_base = assets
-        .indexed_picture(PictureId::new(9900))
-        .expect("dialog pic");
+    let details_base = assets.indexed_picture(PictureId::new(9900));
     commands.entity(dlog).insert(ImageNode::new(
         assets.add_image(details_base.to_image(assets.default_dib_palette())),
     ));
@@ -153,13 +151,11 @@ pub(in crate::ui::city) fn render_university(
         .unwrap_or(UniversityRequirementLevel::None);
     ui.text(
         view.unit,
-        assets.string(kind.name_string()).expect("civilian name"),
+        assets.string(kind.name_string()),
     );
     ui.text(
         view.description,
-        assets
-            .string(kind.description_string())
-            .expect("civilian desc"),
+        assets.string(kind.description_string()),
     );
     let values = [
         1.to_string(),
@@ -190,14 +186,10 @@ pub(in crate::ui::city) fn render_university(
     for (entity, index) in view.tier_labels.iter().zip(0..3) {
         ui.visible(*entity, (index as u8) < maximum.retail());
     }
-    let mut picture = assets
-        .indexed_picture(PictureId::new(9900))
-        .expect("dialog pic");
-    let preview = assets
-        .indexed_picture(kind.university_preview_picture())
-        .expect("preview pic");
+    let mut picture = assets.indexed_picture(PictureId::new(9900));
+    let preview = assets.indexed_picture(kind.university_preview_picture());
     picture.blit_keyed_at(&preview, IVec2::new(0x7c, 0x5c), 0x10);
-    let icons = assets.indexed_picture(PictureId::new(750)).expect("icons");
+    let icons = assets.indexed_picture(PictureId::new(750));
     let mut text = RetailRasterTextPainter::from_preset(
         fonts,
         font_assets,

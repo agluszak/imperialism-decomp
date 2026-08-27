@@ -1,6 +1,5 @@
 use super::game_shell::bind_game_status_display;
 use super::generated;
-use super::hover_help::retail_string;
 use super::retail::{RetailTree, RetailUiAssets};
 use super::retail_resources::TechnologyRetailResources;
 use super::session::{GameSession, apply_turn_stop};
@@ -77,11 +76,9 @@ fn render_technology_advance(
     let Some(tech) = session.game.current_technology_report() else {
         return;
     };
-    let picture = assets
-        .picture(tech.status_picture())
-        .expect("technology status picture must load");
-    let status = retail_string(&assets, tech.name_string());
-    let prefix = retail_string(&assets, tech.description_string());
+    let picture = assets.picture(tech.status_picture());
+    let status = assets.string(tech.name_string());
+    let prefix = assets.string(tech.description_string());
     let body = format!("{status}\n\n{prefix}");
     pictures
         .get_mut(view.picture)

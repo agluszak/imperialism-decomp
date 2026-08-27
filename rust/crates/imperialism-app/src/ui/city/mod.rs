@@ -35,12 +35,10 @@ use common_controls::*;
 use dialogs::*;
 use lifecycle::*;
 
-const CITY_TEXT_STRING_GROUP: StringGroup = StringGroup::new(0x2738);
+const CITY_TEXT_STRING_GROUP: u16 = 0x2738;
 
 fn city_text(assets: &RetailUiAssets, zero_based_index: u16) -> String {
-    assets
-        .string(CITY_TEXT_STRING_GROUP.offset(zero_based_index))
-        .expect("city string")
+    assets.get_string(CITY_TEXT_STRING_GROUP, zero_based_index)
 }
 
 fn format_retail_number(template: &str, value: i16) -> String {

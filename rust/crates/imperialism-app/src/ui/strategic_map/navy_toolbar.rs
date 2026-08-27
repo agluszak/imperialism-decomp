@@ -67,9 +67,7 @@ pub(crate) fn bind_navy_toolbar(
             ..default()
         },
     ));
-    let arrow_atlas = assets
-        .transparent_picture(ARROW_ATLAS, TRANSPARENT_INDEX)
-        .expect("retail numbered-arrow atlas 804 must load");
+    let arrow_atlas = assets.transparent_picture(ARROW_ATLAS, TRANSPARENT_INDEX);
     const CLASS_TAGS: [(NavyToolbarClass, FourCc); 4] = [
         (NavyToolbarClass::Class0, fourcc!("cls0")),
         (NavyToolbarClass::Class1, fourcc!("cls1")),
@@ -183,9 +181,7 @@ fn sync_navy_toolbar(
             }
             if available > 0 {
                 if let Some(picture_id) = picture {
-                    image.image = assets
-                        .picture(picture_id)
-                        .expect("retail navy class picture must load");
+                    image.image = assets.picture(picture_id);
                 }
                 *visibility = Visibility::Visible;
             } else {

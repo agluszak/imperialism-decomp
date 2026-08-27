@@ -75,9 +75,7 @@ pub(crate) fn bind_army_toolbar(
             ..default()
         },
     ));
-    let arrow_atlas = assets
-        .transparent_picture(ARROW_ATLAS, TRANSPARENT_INDEX)
-        .expect("retail numbered-arrow atlas 804 must load");
+    let arrow_atlas = assets.transparent_picture(ARROW_ATLAS, TRANSPARENT_INDEX);
     for category in ArmyUnitCategory::all() {
         let pic = tree.child(page, placard_tag(category));
         commands.entity(pic).insert(ArmyPlacard(category));
@@ -164,9 +162,7 @@ fn sync_army_toolbar(
     let counts_state = session.game.army_toolbar_counts(province);
     for (entity, placard, mut image) in &mut placards {
         let picture_id = placard_picture_id(counts_state, nation, &session.game, placard.0);
-        image.image = assets
-            .picture(picture_id)
-            .expect("retail army placard picture must load");
+        image.image = assets.picture(picture_id);
         set_count_text(
             entity,
             &mut counts,
@@ -188,13 +184,11 @@ fn sync_army_toolbar(
     }
     for (command, mut image) in &mut garrisons {
         if matches!(*command, ArmyCommand::Garrison) {
-            image.image = assets
-                .picture(if counts_state.can_upgrade {
+            image.image = assets.picture(if counts_state.can_upgrade {
                     PictureId::new(0x24d5)
                 } else {
                     PictureId::new(0x04b5)
-                })
-                .expect("retail garrison picture must load");
+                });
         }
     }
 }
@@ -216,9 +210,7 @@ fn hide_empty_toolbar(
     let empty = ArmyToolbarCounts::default();
     for (entity, placard, mut image) in placards.iter_mut() {
         let picture_id = placard_picture_id(empty, nation, state, placard.0);
-        image.image = assets
-            .picture(picture_id)
-            .expect("retail army placard picture must load");
+        image.image = assets.picture(picture_id);
         set_count_text(entity, counts, None);
     }
     for (entity, _, _, mut visibility) in arrows.iter_mut() {

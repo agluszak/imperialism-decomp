@@ -1,7 +1,6 @@
 use super::GamePreferences;
 use super::fill_brackets;
 use super::generated;
-use super::hover_help::retail_string;
 use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
 use crate::{AppState, RetailAssetsResource};
@@ -9,7 +8,7 @@ use bevy::prelude::*;
 use bevy::text::LineHeight;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{NewsTable, RetailTextStylePreset, StringGroup, fourcc};
+use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
 
 const COLUMN_X: [f32; 3] = [24.0, 226.0, 428.0];
 const COLUMN_WIDTH: f32 = 188.0;
@@ -70,10 +69,7 @@ fn bind_newspaper(
 }
 
 fn project_newspaper_date(assets: &RetailUiAssets, economic_turn: i32) -> String {
-    let season = retail_string(
-        assets,
-        StringGroup::new(10_000).offset((economic_turn % 4) as u16),
-    );
+    let season = assets.get_string(10_000, (economic_turn % 4) as u16);
     format!("{season}, {}", 1815 + economic_turn / 4)
 }
 
@@ -82,7 +78,7 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
         .expect("newspaper requires an active major nation");
     let (template, value) = match state.turn().economic_turn % 4 {
         0 => (
-            retail_string(assets, StringGroup::new(0x275e).offset(0)),
+            assets.get_string(0x275e, 0),
             state
                 .nations()
                 .major(nation)
@@ -101,7 +97,7 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
                 .sum::<i32>();
             let change = sum / TradeCommodity::LENGTH as i32;
             (
-                retail_string(assets, StringGroup::new(0x275e).offset(1)),
+                assets.get_string(0x275e, 1),
                 if change > 0 {
                     format!("+{change}")
                 } else {
@@ -110,11 +106,11 @@ fn newspaper_spec_text(assets: &RetailUiAssets, state: &GameState) -> String {
             )
         }
         2 => (
-            retail_string(assets, StringGroup::new(0x275e).offset(2)),
+            assets.get_string(0x275e, 2),
             state.newspaper_commodity_power(nation).to_string(),
         ),
         3 => (
-            retail_string(assets, StringGroup::new(0x275e).offset(3)),
+            assets.get_string(0x275e, 3),
             state.newspaper_military_power(nation).to_string(),
         ),
         _ => unreachable!("economic turn modulo four is in range"),
@@ -264,10 +260,7 @@ fn format_nation_names(
             continue;
         }
         if string_group {
-            names.push(retail_string(
-                assets,
-                StringGroup::new(0x2711).offset(u16::from(nation.get())),
-            ));
+            names.push(assets.get_string(0x2711, u16::from(nation.get())));
         } else if let Some(name) = state.nations().display_name(nation) {
             names.push(name.to_owned());
         }
@@ -283,7 +276,7 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
             let conjunction = if list_and {
                 " and ".to_owned()
             } else {
-                retail_string(assets, StringGroup::new(0x275e).offset(4))
+                assets.get_string(0x275e, 4)
             };
             format!("{}{}{}", names[0], conjunction, names[1])
         }
@@ -291,7 +284,7 @@ fn join_with_conjunction(assets: &RetailUiAssets, names: &[String], list_and: bo
             let conjunction = if list_and {
                 " and ".to_owned()
             } else {
-                retail_string(assets, StringGroup::new(0x275e).offset(4))
+                assets.get_string(0x275e, 4)
             };
             let mut out = String::new();
             for (index, name) in names.iter().enumerate() {

@@ -129,7 +129,7 @@ impl ResourceKindRetailResources for ResourceKind {
 pub(crate) trait TechnologyRetailResources {
     fn name_string(self) -> StringResourceId;
     fn description_string(self) -> StringResourceId;
-    fn history_body_string(self) -> StringResourceId;
+    fn history_text_id(self) -> u16;
     fn store_idle_picture(self) -> PictureId;
     fn store_active_picture(self) -> PictureId;
     fn history_picture(self) -> PictureId;
@@ -145,8 +145,8 @@ impl TechnologyRetailResources for Technology {
         TECHNOLOGY_DESCRIPTIONS.entry(u16::from(self.retail()))
     }
 
-    fn history_body_string(self) -> StringResourceId {
-        StringResourceId::new(u32::from(self.retail()) + 0x08fc)
+    fn history_text_id(self) -> u16 {
+        u16::from(self.retail()) + 0x08fc
     }
 
     fn store_idle_picture(self) -> PictureId {
@@ -391,8 +391,8 @@ mod tests {
             StringGroup::new(0x271a).entry(7)
         );
         assert_eq!(
-            Technology::CottonGin.history_body_string(),
-            StringResourceId::new(3 + 0x08fc)
+            Technology::CottonGin.history_text_id(),
+            3 + 0x08fc
         );
     }
 }

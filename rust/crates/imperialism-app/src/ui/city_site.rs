@@ -2,7 +2,7 @@ use crate::ui::RetailUiAssets;
 use crate::ui::fill_brackets;
 use crate::ui::generated;
 use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, retail_string,
+    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts,
 };
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::query_floater::bind_query_floater_control;
@@ -21,11 +21,11 @@ use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, StringGroup, fourcc};
+use imperialism_formats::{OKAY, PictureId, RetailTextStylePreset, fourcc};
 
-const PLACE_CITY_STRING_GROUP: i16 = 0x273f;
-const BAD_CITY_SITE_STRING_GROUP: i16 = 0x273b;
-const MINISTER_STRING_GROUP: i16 = 0x2749;
+const PLACE_CITY_STRING_GROUP: u16 = 0x273f;
+const BAD_CITY_SITE_STRING_GROUP: u16 = 0x273b;
+const MINISTER_STRING_GROUP: u16 = 0x2749;
 const NEW_CITY_DIALOG_WIDTH: i32 = 328;
 const RESOURCE_ITEM_WIDTH: i32 = 0x2c;
 const RESOURCE_ITEM_HEIGHT: i32 = 0x20;
@@ -145,15 +145,11 @@ fn bind_city_site_controls(
             (fourcc!("main"), String::new()),
             (fourcc!("DLOG"), String::new()),
             (
-                fourcc!("canc"),
-                retail_string(
-                    assets,
-                    StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).entry(9),
-                ),
+                fourcc!("canc"), assets.ui_string(PLACE_CITY_STRING_GROUP, 9),
             ),
             (
                 fourcc!("quer"),
-                retail_string(assets, StringGroup::new(0x2730).entry(3)),
+                assets.ui_string(0x2730, 3),
             ),
         ],
     );
@@ -177,26 +173,14 @@ fn bind_city_site_intro(
         return;
     }
     let nation = session.active_major_nation();
-    let minister = retail_string(
-        &assets,
-        StringGroup::new((MINISTER_STRING_GROUP) as u16).offset(2),
-    );
+    let minister = assets.get_string(MINISTER_STRING_GROUP, 2);
     let mut title = fill_brackets(
-        &retail_string(
-            &assets,
-            StringGroup::new((MINISTER_STRING_GROUP) as u16).offset(4),
-        ),
+        &assets.get_string(MINISTER_STRING_GROUP, 4),
         &[&minister],
     );
     title.push_str("\n\n");
-    title.push_str(&retail_string(
-        &assets,
-        StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(3),
-    ));
-    let body = retail_string(
-        &assets,
-        StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(4),
-    );
+    title.push_str(&assets.get_string(PLACE_CITY_STRING_GROUP, 3));
+    let body = assets.get_string(PLACE_CITY_STRING_GROUP, 4);
     stuff_minister_dialog(
         &mut commands,
         root,
@@ -295,10 +279,9 @@ fn on_city_site_map_click(
     match validate_capital_site_selection(&session.game, nation, tile) {
         Ok(site) => open_new_city_dialog(&mut commands, site),
         Err(error) => {
-            let body = retail_string(
-                &assets,
-                StringGroup::new((BAD_CITY_SITE_STRING_GROUP) as u16)
-                    .offset((error.message_offset(&session.game, tile)) as u16),
+            let body = assets.get_string(
+                BAD_CITY_SITE_STRING_GROUP,
+                error.message_offset(&session.game, tile) as u16,
             );
             open_city_site_notice(&mut commands, body);
         }
@@ -399,10 +382,7 @@ fn stuff_new_city_dialog(
         }
     }
 
-    let title = retail_string(
-        assets,
-        StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(7),
-    );
+    let title = assets.get_string(PLACE_CITY_STRING_GROUP, 7);
     set_text(
         commands,
         tree.find(root, fourcc!("titl")),
@@ -411,10 +391,7 @@ fn stuff_new_city_dialog(
         0x5c,
     );
     let summary = fill_brackets(
-        &retail_string(
-            assets,
-            StringGroup::new((PLACE_CITY_STRING_GROUP) as u16).offset(5),
-        ),
+        &assets.get_string(PLACE_CITY_STRING_GROUP, 5),
         &[
             &report.sustainable_population.to_string(),
             &report.total_food.to_string(),
@@ -559,15 +536,13 @@ fn stuff_minister_dialog(
 ) {
     let linger = bind_linger_dialog(commands, root, tree);
     if let Some(picture) = gold_picture {
-        let gold = assets
-            .picture(picture)
-            .expect("retail minister gold picture must load");
+        let gold = assets.picture(picture);
         commands
             .entity(tree.find(root, fourcc!("DLOG")))
             .insert(ImageNode::new(gold));
     }
     if let Some(picture) = coat_picture {
-        if let Ok(image) = assets.picture(picture) {
+        if let Ok(image) = assets.try_picture(picture) {
             commands.entity(linger.coat).insert(ImageNode::new(image));
         }
     } else {
@@ -626,9 +601,7 @@ fn scene_has_children(root: Entity, children: &Query<&Children>) -> bool {
 }
 
 fn commodity_icon(assets: &mut RetailUiAssets, resource: ResourceKind) -> Handle<Image> {
-    assets
-        .transparent_picture(resource.material_picture(), 0x10)
-        .expect("retail commodity icon must load")
+    assets.transparent_picture(resource.material_picture(), 0x10)
 }
 
 fn retail_lines(text: &str) -> String {

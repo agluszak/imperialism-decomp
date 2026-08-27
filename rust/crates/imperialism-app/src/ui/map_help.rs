@@ -4,7 +4,7 @@ use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui_widgets::{Activate, ActivateOnPress, Button as UiButton};
-use imperialism_formats::{FourCc, RetailTextStylePreset, StringGroup, StringResourceId, fourcc};
+use imperialism_formats::{FourCc, RetailTextStylePreset, fourcc};
 
 const TERRAIN_HELP_SETS: [i16; 5] = [0x0bc2, 0x0bcc, 0x0c94, 0x0c9e, 0x0ca8];
 const CITY_HELP_SETS: [i16; 3] = [0x0bd6, 0x0c44, 0x0c4e];
@@ -148,12 +148,8 @@ fn bind_added_help(
         let view = tree.view(root);
         let context = state.context;
         let title = fill_brackets(
-            &retail
-                .string(StringGroup::new(0x2749).offset(6))
-                .expect("retail string"),
-            &[&retail
-                .string(StringGroup::new(0x2749).offset((context.event_code()) as u16))
-                .expect("retail string")],
+            &retail.get_string(0x2749, 6),
+            &[&retail.get_string(0x2749, context.event_code() as u16)],
         );
         set_text(
             &mut commands,
@@ -195,9 +191,7 @@ fn bind_added_help(
         commands
             .entity(view.find(fourcc!("more")))
             .insert(Visibility::Hidden);
-        let topics_label = assets
-            .string(StringGroup::new(0x2749).entry(9))
-            .expect("retail show-topics label");
+        let topics_label = assets.ui_string(0x2749, 9);
         set_text(
             &mut commands,
             &mut assets,
@@ -249,17 +243,11 @@ fn apply_action(
             commands
                 .entity(view.find(fourcc!("subj")))
                 .insert(Text::new(
-                    assets
-                        .string(StringGroup::new((group) as u16).entry((topic as i16 + 2) as u16))
-                        .expect("retail map-help topic"),
+                    assets.ui_string(group as u16, topic as u16 + 2),
                 ));
             commands.entity(view.find(fourcc!("swin"))).insert((
                 Text::new(
-                    assets
-                        .text(StringResourceId::new(
-                            (group as u16 + topic as u16 + 1) as u32,
-                        ))
-                        .expect("retail map-help body"),
+                    assets.text(group as u16 + topic as u16 + 1),
                 ),
                 TextColor(Color::BLACK),
                 Visibility::Visible,
@@ -311,9 +299,7 @@ fn show_topic_list_raw(
     commands
         .entity(view.find(fourcc!("subj")))
         .insert(Text::new(
-            assets
-                .string(StringGroup::new((group) as u16).entry(1))
-                .expect("retail map-help subject"),
+            assets.ui_string(group as u16, 1),
         ));
     commands
         .entity(view.find(fourcc!("swin")))
@@ -321,9 +307,7 @@ fn show_topic_list_raw(
     for (index, tag) in TOPICS.into_iter().enumerate() {
         commands.entity(view.find(tag)).insert((
             Text::new(
-                assets
-                    .string(StringGroup::new((group) as u16).entry((index as i16 + 2) as u16))
-                    .expect("retail map-help topic"),
+                assets.ui_string(group as u16, index as u16 + 2),
             ),
             TextColor(LINK_BLUE),
             Underline,
@@ -340,9 +324,7 @@ fn show_topic_list_raw(
     ] {
         commands.entity(view.find(tag)).insert((
             Text::new(
-                assets
-                    .string(StringGroup::new(0x2749).entry((index) as u16))
-                    .expect("retail map-help navigation label"),
+                assets.ui_string(0x2749, index),
             ),
             TextColor(LINK_BLUE),
             Underline,

@@ -389,13 +389,11 @@ fn render_trade(
         let offer_active = matches!(order, PlayerTradeOrder::Sell(_));
         render_trade_card(
             row.bid,
-            assets
-                .picture(trade_card_picture(
+            assets.picture(trade_card_picture(
                     commodity,
                     TradeCardKind::Bid,
                     bid_active,
-                ))
-                .expect("retail trade bid picture"),
+                )),
             TradeCardKind::Bid,
             bid_active,
             &mut images,
@@ -403,13 +401,11 @@ fn render_trade(
         );
         render_trade_card(
             row.offer,
-            assets
-                .picture(trade_card_picture(
+            assets.picture(trade_card_picture(
                     commodity,
                     TradeCardKind::Offer,
                     offer_active,
-                ))
-                .expect("retail trade offer picture"),
+                )),
             TradeCardKind::Offer,
             offer_active,
             &mut images,

@@ -1,6 +1,6 @@
 use crate::ui::generated;
 use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, retail_string,
+    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts,
 };
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
@@ -17,7 +17,7 @@ use bevy::text::{EditableText, TextEditChange};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus, ValueChange};
 use imperialism_core::*;
-use imperialism_formats::{OKAY, StringGroup, fourcc};
+use imperialism_formats::{OKAY, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const PLANET_SEED_MAX_CHARS: usize = 32;
@@ -296,10 +296,7 @@ fn bind_random_setup_labels(
     ] {
         let entity = tree.find(root, tag);
         commands.entity(entity).insert((
-            Text::new(retail_string(
-                assets,
-                StringGroup::new(group as u16).entry(index as u16),
-            )),
+            Text::new(assets.ui_string(group, index)),
             Label,
         ));
     }
@@ -359,7 +356,7 @@ fn bind_random_setup_hover_help(
             .expect("random-setup hover-help bar has Node"),
         HoverHelpBarStyle::RANDOM_SETUP,
     );
-    let cancel = retail_string(assets, StringGroup::new(0x2737).entry(0x14));
+    let cancel = assets.ui_string(0x2737, 0x14);
     bind_hover_help_texts(
         commands,
         root,
@@ -370,37 +367,37 @@ fn bind_random_setup_hover_help(
             (fourcc!("stuf"), String::new()),
             (
                 fourcc!("name"),
-                retail_string(assets, StringGroup::new(0x2758).entry(0x1e)),
+                assets.ui_string(0x2758, 0x1e),
             ),
             (
                 fourcc!("glob"),
-                retail_string(assets, StringGroup::new(0x2737).entry(0x13)),
+                assets.ui_string(0x2737, 0x13),
             ),
             (fourcc!("canc"), cancel.clone()),
             (fourcc!("cncl"), cancel),
             (
                 OKAY,
-                retail_string(assets, StringGroup::new(0x2737).entry(0x15)),
+                assets.ui_string(0x2737, 0x15),
             ),
             (
                 fourcc!("map "),
-                retail_string(assets, StringGroup::new(0x2758).entry(0x13)),
+                assets.ui_string(0x2758, 0x13),
             ),
             (
                 fourcc!("diff"),
-                retail_string(assets, StringGroup::new(0x2737).entry(0x17)),
+                assets.ui_string(0x2737, 0x17),
             ),
             (
                 fourcc!("coun"),
-                retail_string(assets, StringGroup::new(0x2737).entry(0x1a)),
+                assets.ui_string(0x2737, 0x1a),
             ),
             (
                 fourcc!("flag"),
-                retail_string(assets, StringGroup::new(0x2737).entry(0x1b)),
+                assets.ui_string(0x2737, 0x1b),
             ),
             (
                 fourcc!("coat"),
-                retail_string(assets, StringGroup::new(0x2737).entry(0x1c)),
+                assets.ui_string(0x2737, 0x1c),
             ),
         ],
     );

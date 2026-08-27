@@ -295,11 +295,27 @@ impl RetailUiAssets<'_> {
         Color::srgb_u8(red, green, blue)
     }
 
-    pub fn string(&self, id: StringResourceId) -> Result<String, RetailAssetError> {
-        self.retail_assets.assets().string(id)
+    pub fn string(&self, id: StringResourceId) -> String {
+        self.retail_assets
+            .assets()
+            .string(id)
+            .unwrap_or_else(|error| panic!("retail string {id} must load: {error}"))
     }
 
-    pub fn picture(&mut self, picture_id: PictureId) -> Result<Handle<Image>, RetailPictureError> {
+    /// `TSimMgr::GetString`: zero-based offset (adds one before the direct lookup).
+    pub fn get_string(&self, group: u16, offset: u16) -> String {
+        self.string(StringGroup::new(group).offset(offset))
+    }
+
+    /// Direct `LoadUiStringResourceByGroupAndIndex` / `LoadStringA` group/index.
+    pub fn ui_string(&self, group: u16, index: u16) -> String {
+        self.string(StringGroup::new(group).entry(index))
+    }
+
+    pub fn try_picture(
+        &mut self,
+        picture_id: PictureId,
+    ) -> Result<Handle<Image>, RetailPictureError> {
         load_retail_picture(
             picture_id,
             &self.retail_assets,
@@ -308,12 +324,17 @@ impl RetailUiAssets<'_> {
         )
     }
 
-    pub fn transformed_picture(
+    pub fn picture(&mut self, picture_id: PictureId) -> Handle<Image> {
+        self.try_picture(picture_id)
+            .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
+    }
+
+    pub fn try_transformed_picture(
         &mut self,
         picture_id: PictureId,
         transform: impl FnOnce(&mut Image),
     ) -> Result<Handle<Image>, RetailPictureError> {
-        let handle = self.picture(picture_id)?;
+        let handle = self.try_picture(picture_id)?;
         let mut image = self
             .images
             .get(&handle)
@@ -323,24 +344,38 @@ impl RetailUiAssets<'_> {
         Ok(self.images.add(image))
     }
 
+    pub fn transformed_picture(
+        &mut self,
+        picture_id: PictureId,
+        transform: impl FnOnce(&mut Image),
+    ) -> Handle<Image> {
+        self.try_transformed_picture(picture_id, transform)
+            .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
+    }
+
     pub fn transparent_picture(
         &mut self,
         picture_id: PictureId,
         palette_index: u8,
-    ) -> Result<Handle<Image>, RetailPictureError> {
-        let indexed = self.indexed_picture(picture_id)?;
+    ) -> Handle<Image> {
+        let indexed = self.indexed_picture(picture_id);
         // Decode the indexed DIB once into the UI image instead of applying an
         // alpha mask to Bevy's BMP decoder output. The latter has a distinct
         // scanline layout for some retail DIBs, so its index rows can diverge
         // from the visible RGBA rows (notably atlas 0xee2).
-        Ok(self.add_image(indexed.to_keyed_image(self.default_dib_palette(), palette_index)))
+        self.add_image(indexed.to_keyed_image(self.default_dib_palette(), palette_index))
     }
 
-    pub fn indexed_picture(
+    pub fn try_indexed_picture(
         &self,
         picture_id: PictureId,
     ) -> Result<IndexedPicture, RetailAssetError> {
         self.retail_assets.assets().indexed_picture(picture_id)
+    }
+
+    pub fn indexed_picture(&self, picture_id: PictureId) -> IndexedPicture {
+        self.try_indexed_picture(picture_id)
+            .unwrap_or_else(|error| panic!("retail picture {picture_id} must load: {error}"))
     }
 
     pub fn fonts(&self) -> &RetailFonts {

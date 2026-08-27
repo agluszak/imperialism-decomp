@@ -10,7 +10,7 @@ use bevy::prelude::*;
 use bevy::text::EditableText;
 use bevy::ui_widgets::{Activate, ActivateOnPress, SelectAllOnFocus};
 use imperialism_core::ResourceTable;
-use imperialism_formats::{StringGroup, fourcc};
+use imperialism_formats::fourcc;
 
 const ROW_HEIGHT: i32 = 0x20;
 
@@ -66,12 +66,7 @@ fn bind_town_naming(
     let Some((nation, tile)) = session.game.prepare_pending_town_naming() else {
         return;
     };
-    let suggestion = retail_assets
-        .string(
-            StringGroup::new(0x1c52)
-                .entry(u16::from(session.game.roll_pending_town_name_suggestion())),
-        )
-        .expect("retail town-name string");
+    let suggestion = retail_assets.ui_string(0x1c52, u16::from(session.game.roll_pending_town_name_suggestion()));
     let yields = session.game.nations().major(nation).towns[&tile].resource_yield_by_type;
     let visible = yields.values().filter(|&&amount| amount != 0).count() as i32;
     let extra_height = visible * ROW_HEIGHT;
@@ -132,9 +127,7 @@ fn spawn_resource_rows(
         if amount == 0 {
             continue;
         }
-        let icon = assets
-            .transparent_picture(resource.material_picture(), 0x10)
-            .expect("retail town resource icon");
+        let icon = assets.transparent_picture(resource.material_picture(), 0x10);
         commands
             .spawn_scene(town_resource_row(row, icon, amount))
             .insert(ChildOf(parent));

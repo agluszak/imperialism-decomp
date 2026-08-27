@@ -2,7 +2,7 @@ use super::RetailUiAssets;
 use super::cursor::{RequestedCursor, request_arrow_cursor, request_turn_event_cursor};
 use super::generated;
 use super::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, retail_string,
+    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts,
 };
 use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailPictureSwap, RetailTree};
@@ -24,7 +24,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use imperialism_core::*;
-use imperialism_formats::{MusicTrack, PictureId, SoundId, StringGroup, fourcc};
+use imperialism_formats::{MusicTrack, PictureId, SoundId, fourcc};
 
 const TACTICAL_SURFACE_WIDTH_PX: i32 = 0x5dc;
 const TACTICAL_SURFACE_HEIGHT_PX: i32 = 0x1c2;
@@ -391,23 +391,23 @@ fn bind_land_battle(
         [
             (
                 fourcc!("help"),
-                retail_string(&assets, StringGroup::new(0x273d).entry(0x20)),
+                assets.ui_string(0x273d, 0x20),
             ),
             (
                 fourcc!("targ"),
-                retail_string(&assets, StringGroup::new(0x273d).entry(0x21)),
+                assets.ui_string(0x273d, 0x21),
             ),
             (
                 fourcc!("done"),
-                retail_string(&assets, StringGroup::new(0x273d).entry(0x22)),
+                assets.ui_string(0x273d, 0x22),
             ),
             (
                 fourcc!("retr"),
-                retail_string(&assets, StringGroup::new(0x273d).entry(0x23)),
+                assets.ui_string(0x273d, 0x23),
             ),
             (
                 fourcc!("auto"),
-                retail_string(&assets, StringGroup::new(0x273d).entry(0x24)),
+                assets.ui_string(0x273d, 0x24),
             ),
             (fourcc!("DLOG"), String::new()),
         ],
@@ -470,7 +470,7 @@ fn bind_land_battle_retreat_prompt(
 ) {
     for root in &prompts {
         let linger = bind_linger_dialog(&mut commands, root, &tree);
-        let body = retail_string(&assets, StringGroup::new(0x273d).entry(0x32));
+        let body = assets.ui_string(0x273d, 0x32);
         linger.set_body(&mut commands, &mut assets, body);
         commands
             .entity(linger.okay)
@@ -548,37 +548,23 @@ fn insert_land_battle_visuals(
     );
     let visuals = LandBattleVisuals {
         composition_class,
-        backdrop: assets
-            .picture(picture)
-            .expect("retail tactical composition backdrop must load"),
-        fort_strip: assets
-            .picture(TACTICAL_FORT_STRIP_PICTURE)
-            .expect("retail tactical fort strip must load"),
-        unit_atlas: assets
-            .transparent_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX)
-            .expect("retail tactical unit atlas must load"),
-        fort_atlas: assets
-            .transparent_picture(
+        backdrop: assets.picture(picture),
+        fort_strip: assets.picture(TACTICAL_FORT_STRIP_PICTURE),
+        unit_atlas: assets.transparent_picture(TACTICAL_UNIT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+        fort_atlas: assets.transparent_picture(
                 if battle.fort_level() == FortLevel::None {
                     TACTICAL_NO_FORT_ATLAS_PICTURE
                 } else {
                     TACTICAL_FORT_ATLAS_BASE.offset(i16::from(battle.fort_level().retail()))
                 },
                 TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical fort atlas must load"),
-        effect_atlas: assets
-            .transparent_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX)
-            .expect("retail tactical effect atlas must load"),
-        experience_strip: assets
-            .transparent_picture(
+            ),
+        effect_atlas: assets.transparent_picture(TACTICAL_EFFECT_ATLAS_PICTURE, TACTICAL_TRANSPARENT_INDEX),
+        experience_strip: assets.transparent_picture(
                 TACTICAL_EXPERIENCE_STRIP_PICTURE,
                 TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical experience strip must load"),
-        unit_status_atlas: assets
-            .transparent_picture(TACTICAL_UNIT_STATUS_ATLAS_PICTURE, 0)
-            .expect("retail tactical unit-status atlas must load"),
+            ),
+        unit_status_atlas: assets.transparent_picture(TACTICAL_UNIT_STATUS_ATLAS_PICTURE, 0),
         selection_color: assets.palette_color(0x13),
         inset_color: assets.palette_color(0),
         stat_background: assets.palette_color(view_mgr_color(0x33)),
@@ -1123,9 +1109,7 @@ fn spawn_tactical_effect(
     } else {
         hex_cell_xywh(map, target)
     };
-    let image = assets
-        .transparent_picture(base_picture, TACTICAL_TRANSPARENT_INDEX)
-        .expect("retail tactical effect frame");
+    let image = assets.transparent_picture(base_picture, TACTICAL_TRANSPARENT_INDEX);
     commands.spawn((
         LandBattleEffect {
             base_picture,
@@ -1238,12 +1222,10 @@ fn animate_land_battle_actions(
             commands.entity(entity).despawn();
             continue;
         }
-        image.image = assets
-            .transparent_picture(
+        image.image = assets.transparent_picture(
                 effect.base_picture.offset(i16::from(effect.frame)),
                 TACTICAL_TRANSPARENT_INDEX,
-            )
-            .expect("retail tactical effect frame");
+            );
     }
     let Ok((field_entity, mut field, visuals, queue, deferred)) = fields.single_mut() else {
         return;
@@ -1567,12 +1549,8 @@ fn project_land_battle_toolbar(
             }
             _ => continue,
         };
-        let idle = assets
-            .picture(idle_id)
-            .expect("retail tactical toolbar picture");
-        let active = assets
-            .picture(active_id)
-            .expect("retail tactical toolbar pressed picture");
+        let idle = assets.picture(idle_id);
+        let active = assets.picture(active_id);
         if let Some(mut image) = image {
             image.image = idle.clone();
         }
@@ -1581,7 +1559,7 @@ fn project_land_battle_toolbar(
             swap.active = active;
         }
         if let Some(mut help) = help {
-            help.0 = retail_string(&assets, StringGroup::new(0x273d).entry((help_index) as u16));
+            help.0 = assets.ui_string(0x273d, help_index);
         }
     }
 
@@ -1609,9 +1587,7 @@ fn project_land_battle_toolbar(
         };
         *visibility = Visibility::Inherited;
         let defender_side = matches!(unit.side, BattleSide::Defender);
-        image.image = assets
-            .picture(unit.unit_type.tactical_portrait_picture(defender_side))
-            .expect("retail tactical unit portrait");
+        image.image = assets.picture(unit.unit_type.tactical_portrait_picture(defender_side));
         let experience = session
             .game
             .military_unit(unit.id.source())
@@ -1642,9 +1618,7 @@ fn project_land_battle_toolbar(
             ));
         }
     }
-    let coat = assets
-        .picture(PictureId::new(0xea6).offset(i16::from(battle.nation(battle.active_side()).get())))
-        .expect("retail tactical current-player coat");
+    let coat = assets.picture(PictureId::new(0xea6).offset(i16::from(battle.nation(battle.active_side()).get())));
     for mut image in &mut coats {
         image.image = coat.clone();
     }

@@ -271,9 +271,7 @@ fn load_strategic_terrain_pictures(assets: &RetailUiAssets) -> Vec<IndexedPictur
     (0..TERRAIN_ATLAS_FRAME_COUNT)
         .map(|frame| {
             let picture_id = strategic_terrain_picture_id(frame);
-            let picture = assets.indexed_picture(picture_id).unwrap_or_else(|error| {
-                panic!("retail strategic terrain picture {picture_id} must load: {error}")
-            });
+            let picture = assets.indexed_picture(picture_id);
             assert_eq!(
                 (picture.width, picture.height),
                 (TILE_SIZE as u32, TILE_SIZE as u32),
@@ -288,9 +286,7 @@ fn load_strategic_river_masks(assets: &RetailUiAssets) -> Vec<IndexedPicture> {
     (0..RIVER_MASK_PICTURE_COUNT)
         .map(|mask| {
             let picture_id = river_mask_picture_id(mask);
-            let picture = assets.indexed_picture(picture_id).unwrap_or_else(|error| {
-                panic!("retail strategic river mask {picture_id} must load: {error}")
-            });
+            let picture = assets.indexed_picture(picture_id);
             assert_eq!(
                 (picture.width, picture.height),
                 (TILE_SIZE as u32, TILE_SIZE as u32),
@@ -319,9 +315,7 @@ fn load_strategic_improvement_pictures(assets: &RetailUiAssets) -> Vec<IndexedPi
 }
 
 fn load_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedPicture {
-    assets.indexed_picture(picture_id).unwrap_or_else(|error| {
-        panic!("retail strategic map picture {picture_id} must load: {error}")
-    })
+    assets.indexed_picture(picture_id)
 }
 
 fn load_tile_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedPicture {

@@ -1,6 +1,6 @@
 use crate::ui::generated;
 use crate::ui::hover_help::{
-    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts, retail_string,
+    HoverHelpBarStyle, bind_hover_help_bar, bind_hover_help_texts,
 };
 use crate::ui::load_save::{LoadSaveMode, open_load_save};
 use crate::ui::retail::{RetailTree, RetailUiAssets};
@@ -9,7 +9,7 @@ use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::{StringGroup, fourcc};
+use imperialism_formats::fourcc;
 
 #[derive(Component)]
 struct MainMenuRoot;
@@ -94,31 +94,31 @@ fn bind_main_menu_hover_help(
             (fourcc!("main"), String::new()),
             (
                 fourcc!("rand"),
-                retail_string(&assets, StringGroup::new(0x2737).offset(0)),
+                assets.get_string(0x2737, 0),
             ),
             (
                 fourcc!("load"),
-                retail_string(&assets, StringGroup::new(0x2737).offset(1)),
+                assets.get_string(0x2737, 1),
             ),
             (
                 fourcc!("mult"),
-                retail_string(&assets, StringGroup::new(0x2737).offset(2)),
+                assets.get_string(0x2737, 2),
             ),
             (
                 fourcc!("high"),
-                retail_string(&assets, StringGroup::new(0x2737).offset(3)),
+                assets.get_string(0x2737, 3),
             ),
             (
                 fourcc!("scen"),
-                retail_string(&assets, StringGroup::new(0x2737).offset(4)),
+                assets.get_string(0x2737, 4),
             ),
             (
                 fourcc!("quit"),
-                retail_string(&assets, StringGroup::new(0x2737).offset(9)),
+                assets.get_string(0x2737, 9),
             ),
             (
                 fourcc!("pref"),
-                retail_string(&assets, StringGroup::new(0x2743).offset(8)),
+                assets.get_string(0x2743, 8),
             ),
         ],
     );

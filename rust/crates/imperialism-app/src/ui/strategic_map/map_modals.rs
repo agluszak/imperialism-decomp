@@ -5,7 +5,6 @@ use crate::AppState;
 use crate::media::RetailAudioAssets;
 use crate::ui::GameSession;
 use crate::ui::generated;
-use crate::ui::hover_help::retail_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailTree, ancestor_with};
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
@@ -20,7 +19,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use enum_map::Enum;
 use imperialism_core::*;
-use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, StringGroup, fourcc};
+use imperialism_formats::{PictureId, RetailTextStylePreset, SoundId, fourcc};
 
 #[derive(Component)]
 struct MapModal;
@@ -292,9 +291,7 @@ fn bind_added_civilian_ledgers(
                     ..default()
                 },
                 Text::new(
-                    assets
-                        .string(StringGroup::new(0x2746).entry(11))
-                        .expect("retail civilian-ledger title"),
+                    assets.ui_string(0x2746, 11),
                 ),
                 font.clone(),
                 layout,
@@ -308,9 +305,7 @@ fn bind_added_civilian_ledgers(
         for (index, (kind, tile)) in civilians.into_iter().enumerate() {
             let column = index / CIVILIANS_PER_COLUMN;
             let row_in_column = index % CIVILIANS_PER_COLUMN;
-            let name = assets
-                .string(kind.name_string())
-                .expect("retail civilian class name");
+            let name = assets.string(kind.name_string());
             let location = city_name(&session.game, tile);
             let row = commands
                 .spawn((
@@ -509,17 +504,12 @@ fn bind_added_civilian_modals(
                     .civilian_unit(*unit)
                     .expect("disband dialog retains its civilian")
                     .unit_type();
-                let title = retail_string(&assets, StringGroup::new(0x274d).offset(3));
-                let body = retail_string(
-                    &assets,
-                    StringGroup::new(0x274d).offset(
-                        (if kind == CivilianUnitKind::Developer {
+                let title = assets.get_string(0x274d, 3);
+                let body = assets.get_string(0x274d, if kind == CivilianUnitKind::Developer {
                             5
                         } else {
                             4
-                        }) as u16,
-                    ),
-                );
+                        });
                 linger.set_title(&mut commands, &mut assets, title);
                 linger.set_body(&mut commands, &mut assets, body);
                 commands
@@ -556,7 +546,7 @@ fn bind_engineer_dialog(
         commands,
         assets,
         title,
-        &retail_string(assets, StringGroup::new(0x1c20).offset(6)),
+        &assets.get_string(0x1c20, 6),
         14,
     );
     let options = state.engineer_construction_options(unit);
@@ -587,9 +577,7 @@ fn bind_engineer_dialog(
                 },
                 Button,
                 ImageNode::new(
-                    assets
-                        .picture(picture)
-                        .expect("retail engineer option picture"),
+                    assets.picture(picture),
                 ),
                 ActivateOnPress,
                 CivilianModalAction::Engineer(unit, option.choice),
@@ -615,10 +603,7 @@ fn bind_engineer_dialog(
             commands,
             assets,
             label,
-            &retail_string(
-                assets,
-                StringGroup::new(0x1c20).offset((label_offset) as u16),
-            ),
+            &assets.get_string(0x1c20, label_offset as u16),
             10,
         );
         y += 42.0;
@@ -635,9 +620,7 @@ fn bind_engineer_dialog(
             },
             Button,
             ImageNode::new(
-                assets
-                    .picture(PictureId::new(0x24c4))
-                    .expect("retail cancel picture"),
+                assets.picture(PictureId::new(0x24c4)),
             ),
             ActivateOnPress,
             ChildOf(dialog),
@@ -704,9 +687,7 @@ fn spawn_engineer_background(
             ..default()
         },
         ImageNode::new(
-            assets
-                .picture(picture)
-                .expect("retail engineer dialog strip"),
+            assets.picture(picture),
         ),
         ZIndex(-1),
         Pickable::IGNORE,
@@ -724,15 +705,12 @@ fn bind_purchase_dialog(
     state: &GameState,
 ) {
     let linger = bind_linger_dialog(commands, root, tree);
-    let title = retail_string(assets, StringGroup::new(0x274d).offset(0));
+    let title = assets.get_string(0x274d, 0);
     let city = city_name(state, tile);
     let cost = format_currency(state.developer_tile_purchase_cost(tile));
     let affordable = state.can_afford_developer_tile_purchase(unit, tile);
     let body = fill_brackets(
-        &retail_string(
-            assets,
-            StringGroup::new(0x274d).offset((if affordable { 1 } else { 2 }) as u16),
-        ),
+        &assets.get_string(0x274d, if affordable { 1 } else { 2 }),
         &[&city, &cost],
     );
     linger.set_title(commands, assets, title);
@@ -768,9 +746,7 @@ fn bind_civilian_report(
             commands,
             assets,
             tree.find(root, tag),
-            &assets
-                .string(StringGroup::new(0x2724).entry((offset) as u16))
-                .expect("retail civilian report title string"),
+            &assets.ui_string(0x2724, offset),
             point_size,
         );
     }
@@ -805,32 +781,32 @@ fn civilian_report_text(
         .location()
         .tile()
         .expect("reported civilian is on the strategic map");
-    let kind = retail_string(assets, civilian.unit_type().name_string());
+    let kind = assets.string(civilian.unit_type().name_string());
     let city = city_name(state, tile);
     let mut report = fill_brackets(
-        &retail_string(assets, StringGroup::new(0x2724).offset(0)),
+        &assets.get_string(0x2724, 0),
         &[&kind, &city],
     );
     report.push('\n');
     let (line, turns) = match civilian.order() {
         CivilianWorkOrder::Redeploy { .. } => (
-            retail_string(assets, StringGroup::new(0x2724).offset(8)),
+            assets.get_string(0x2724, 8),
             None,
         ),
         CivilianWorkOrder::LayRail { turns, .. } => (
-            retail_string(assets, StringGroup::new(0x2724).offset(1)),
+            assets.get_string(0x2724, 1),
             Some(*turns),
         ),
         CivilianWorkOrder::BuildDepot { turns, .. } => (
-            retail_string(assets, StringGroup::new(0x2724).offset(2)),
+            assets.get_string(0x2724, 2),
             Some(*turns),
         ),
         CivilianWorkOrder::BuildPort { turns, .. } => (
-            retail_string(assets, StringGroup::new(0x2724).offset(3)),
+            assets.get_string(0x2724, 3),
             Some(*turns),
         ),
         CivilianWorkOrder::Prospect { turns, .. } => (
-            retail_string(assets, StringGroup::new(0x2724).offset(4)),
+            assets.get_string(0x2724, 4),
             Some(*turns),
         ),
         CivilianWorkOrder::DevelopResource { turns, .. } => {
@@ -854,7 +830,7 @@ fn civilian_report_text(
                     ) {
                         continue;
                     }
-                    let name = retail_string(assets, resource.name_string());
+                    let name = assets.string(resource.name_string());
                     if edge == 0 {
                         primary = name;
                     } else {
@@ -862,10 +838,7 @@ fn civilian_report_text(
                     }
                     count += 1;
                 }
-                let template = retail_string(
-                    assets,
-                    StringGroup::new(0x2724).offset((if count > 1 { 6 } else { 10 }) as u16),
-                );
+                let template = assets.get_string(0x2724, if count > 1 { 6 } else { 10 });
                 let line = if count > 1 {
                     fill_brackets(&template, &[&primary, &secondary])
                 } else {
@@ -873,17 +846,12 @@ fn civilian_report_text(
                 };
                 (line, Some(*turns))
             } else {
-                let action = retail_string(assets, civilian.unit_type().work_action_string());
-                let template = retail_string(
-                    assets,
-                    StringGroup::new(0x2724).offset(
-                        (if civilian.unit_type() == CivilianUnitKind::Developer {
+                let action = assets.string(civilian.unit_type().work_action_string());
+                let template = assets.get_string(0x2724, if civilian.unit_type() == CivilianUnitKind::Developer {
                             5
                         } else {
                             7
-                        }) as u16,
-                    ),
-                );
+                        });
                 (fill_brackets(&template, &[&action]), Some(*turns))
             }
         }
@@ -898,7 +866,7 @@ fn civilian_report_text(
     if let Some(turns) = turns {
         report.push('\n');
         report.push_str(&fill_brackets(
-            &retail_string(assets, StringGroup::new(0x2724).offset(9)),
+            &assets.get_string(0x2724, 9),
             &[&(turns * 3).to_string()],
         ));
     }
@@ -973,7 +941,7 @@ fn on_civilian_modal_action(
                         .map(|option| option.cost)
                         .unwrap_or(0);
                     let body = fill_brackets(
-                        &retail_string(&assets, StringGroup::new(0x2745).offset(8)),
+                        &assets.get_string(0x2745, 8),
                         &[&format_currency(cost)],
                     );
                     spawn_notice(&mut commands, String::new(), body);
@@ -1034,15 +1002,11 @@ fn bind_added_army_reports(
     for (root, ArmyReportDialog(province)) in &added {
         let report = session.game.army_report_model(*province);
         let view = tree.view(root);
-        let title = retail_string(&assets, StringGroup::new(0x2744).offset(0xb));
-        let lab2 = retail_string(&assets, StringGroup::new(0x2744).offset(0xc));
-        let lab3 = retail_string(&assets, StringGroup::new(0x2744).offset(0xd));
+        let title = assets.get_string(0x2744, 0xb);
+        let lab2 = assets.get_string(0x2744, 0xc);
+        let lab3 = assets.get_string(0x2744, 0xd);
         let composition = army_composition_text(&assets, &report.composition);
-        let order_template = retail_string(
-            &assets,
-            StringGroup::new(0x2744)
-                .offset((if report.owned_by_viewer { 0xa } else { 0xe }) as u16),
-        );
+        let order_template = assets.get_string(0x2744, if report.owned_by_viewer { 0xa } else { 0xe });
         let orders = fill_brackets(&order_template, &[&report.city_name]);
         insert_styled_text(
             &mut commands,
@@ -1226,18 +1190,15 @@ fn bind_friendly_fleet_report(
     report: &FriendlyFleetReport,
 ) {
     let view = tree.view(root);
-    let title = retail_string(assets, StringGroup::new(0x2762).offset(7));
-    let lab1 = retail_string(assets, StringGroup::new(0x2762).offset(8));
-    let lab2 = retail_string(assets, StringGroup::new(0x2762).offset(9));
-    let lab3 = retail_string(assets, StringGroup::new(0x2762).offset(0xa));
+    let title = assets.get_string(0x2762, 7);
+    let lab1 = assets.get_string(0x2762, 8);
+    let lab2 = assets.get_string(0x2762, 9);
+    let lab3 = assets.get_string(0x2762, 0xa);
     let composition = ship_composition_text(assets, &report.composition);
     let orders = friendly_orders_text(assets, report);
-    let agro = retail_string(
-        assets,
-        StringGroup::new(0x2762).offset((report.aggression.retail() as i16 + 4) as u16),
-    );
+    let agro = assets.get_string(0x2762, report.aggression.retail() as u16 + 4);
     let authority = fill_brackets(
-        &retail_string(assets, StringGroup::new(0x2762).offset(0)),
+        &assets.get_string(0x2762, 0),
         &[&fleet_authority_text(assets, &report.authority)],
     );
     insert_styled_text(commands, assets, view.find(fourcc!("titl")), &title, 14, 1);
@@ -1288,30 +1249,15 @@ fn bind_enemy_fleet_report(
 ) {
     let view = tree.view(root);
     let mut string_index = 0x29;
-    let title = retail_string(
-        assets,
-        StringGroup::new(0x2762).offset((string_index) as u16),
-    );
+    let title = assets.get_string(0x2762, string_index);
     string_index += 1;
-    let lab1 = retail_string(
-        assets,
-        StringGroup::new(0x2762).offset((string_index) as u16),
-    );
+    let lab1 = assets.get_string(0x2762, string_index);
     string_index += 1;
-    let lab2 = retail_string(
-        assets,
-        StringGroup::new(0x2762).offset((string_index) as u16),
-    );
+    let lab2 = assets.get_string(0x2762, string_index);
     string_index += 1;
-    let lab3 = retail_string(
-        assets,
-        StringGroup::new(0x2762).offset((string_index) as u16),
-    );
+    let lab3 = assets.get_string(0x2762, string_index);
     string_index += 1;
-    let lab4 = retail_string(
-        assets,
-        StringGroup::new(0x2762).offset((string_index) as u16),
-    );
+    let lab4 = assets.get_string(0x2762, string_index);
     let composition = ship_composition_text(assets, &report.composition);
     let source = intelligence_source_text(assets, &report.authority);
     insert_styled_text(commands, assets, view.find(fourcc!("titl")), &title, 14, 1);
@@ -1424,7 +1370,7 @@ fn bind_roster_page(
     root: Entity,
     tree: &RetailTree,
     assets: &mut RetailUiAssets,
-    title: Option<(i16, i16)>,
+    title: Option<(u16, u16)>,
     count: usize,
     rows_per_column: usize,
     row_height: f32,
@@ -1475,8 +1421,8 @@ fn spawn_roster_title(
     commands: &mut Commands,
     dialog: Entity,
     assets: &mut RetailUiAssets,
-    group: i16,
-    offset: i16,
+    group: u16,
+    offset: u16,
 ) {
     let (font, layout, line_height, _) = assets
         .text_style(RetailTextStylePreset {
@@ -1496,10 +1442,7 @@ fn spawn_roster_title(
                 height: Val::Px(18.0),
                 ..default()
             },
-            Text::new(retail_string(
-                assets,
-                StringGroup::new((group) as u16).offset((offset) as u16),
-            )),
+            Text::new(assets.get_string(group, offset)),
             font,
             layout,
             line_height,
@@ -1722,10 +1665,7 @@ fn on_cancel_fleet_orders(
 }
 
 fn garrison_order_text(assets: &RetailUiAssets, order: MilitaryOrderCode) -> String {
-    retail_string(
-        assets,
-        StringGroup::new(0x272c).offset((order.get() as i16) as u16),
-    )
+    assets.get_string(0x272c, order.get() as u16)
 }
 
 fn navy_roster_type_label(assets: &RetailUiAssets, ship_type: ShipType) -> String {
@@ -1736,7 +1676,7 @@ fn navy_roster_type_label(assets: &RetailUiAssets, ship_type: ShipType) -> Strin
     } else {
         format!(
             "{} ",
-            retail_string(assets, StringGroup::new(0x2760).offset((index) as u16))
+            assets.get_string(0x2760, index as u16)
         )
     }
 }
@@ -1746,24 +1686,18 @@ fn army_composition_text(
     composition: &[(ArmyUnitCategory, i32)],
 ) -> String {
     join_counted_labels(composition.iter().map(|(category, count)| {
-        let name = retail_string(
-            assets,
-            StringGroup::new(0x2726).offset((category.into_usize() as i16) as u16),
-        );
+        let name = assets.get_string(0x2726, category.into_usize() as u16);
         (*count, name)
     }))
 }
 
 fn ship_composition_text(assets: &RetailUiAssets, composition: &[(ShipType, i32)]) -> String {
     join_counted_labels(composition.iter().map(|(kind, count)| {
-        let name = retail_string(
-            assets,
-            if *count < 2 {
+        let name = assets.string(if *count < 2 {
                 kind.name_string()
             } else {
                 kind.plural_name_string()
-            },
-        );
+            });
         (*count, name)
     }))
 }
@@ -1784,31 +1718,31 @@ fn join_counted_labels(items: impl Iterator<Item = (i32, String)>) -> String {
 fn friendly_orders_text(assets: &RetailUiAssets, report: &FriendlyFleetReport) -> String {
     match report.order {
         TaskForceOrder::Sail => fill_brackets(
-            &retail_string(assets, StringGroup::new(0x2762).offset(0xb)),
+            &assets.get_string(0x2762, 0xb),
             &[report.target_name.as_deref().unwrap_or("")],
         ),
         TaskForceOrder::Patrol => fill_brackets(
-            &retail_string(assets, StringGroup::new(0x2762).offset(1)),
+            &assets.get_string(0x2762, 1),
             &[report.target_name.as_deref().unwrap_or(&report.zone_name)],
         ),
-        TaskForceOrder::Marines => retail_string(assets, StringGroup::new(0x2762).offset(2)),
+        TaskForceOrder::Marines => assets.get_string(0x2762, 2),
         TaskForceOrder::Blockade => fill_brackets(
-            &retail_string(assets, StringGroup::new(0x2762).offset(0x39)),
+            &assets.get_string(0x2762, 0x39),
             &[report.target_name.as_deref().unwrap_or("")],
         ),
-        _ => retail_string(assets, StringGroup::new(0x2762).offset(3)),
+        _ => assets.get_string(0x2762, 3),
     }
 }
 
 fn fleet_authority_text(assets: &RetailUiAssets, authority: &FleetAuthority) -> String {
     match (&authority.admiral, &authority.ship) {
-        (None, None) => retail_string(assets, StringGroup::new(0x2762).offset(0xd)),
+        (None, None) => assets.get_string(0x2762, 0xd),
         (Some(admiral), Some(ship)) => fill_brackets(
-            &retail_string(assets, StringGroup::new(0x2762).offset(0xe)),
+            &assets.get_string(0x2762, 0xe),
             &[&format!("Adm. {admiral}"), ship],
         ),
         (None, Some(ship)) => fill_brackets(
-            &retail_string(assets, StringGroup::new(0x2762).offset(0xf)),
+            &assets.get_string(0x2762, 0xf),
             &[ship],
         ),
         (Some(admiral), None) => format!("Adm. {admiral}"),
@@ -1817,7 +1751,7 @@ fn fleet_authority_text(assets: &RetailUiAssets, authority: &FleetAuthority) -> 
 
 fn intelligence_source_text(assets: &RetailUiAssets, authority: &FleetAuthority) -> String {
     match (&authority.admiral, &authority.ship) {
-        (None, None) => retail_string(assets, StringGroup::new(0x2762).offset(0x10)),
+        (None, None) => assets.get_string(0x2762, 0x10),
         _ => fleet_authority_text(assets, authority),
     }
 }

@@ -93,9 +93,7 @@ fn bind_battle_report(
 ) {
     let root = *root;
     let main = tree.find(root, fourcc!("main"));
-    let marker_atlas = assets
-        .transparent_picture(MARKER_ATLAS, 0x24)
-        .expect("retail battle-report marker atlas must load");
+    let marker_atlas = assets.transparent_picture(MARKER_ATLAS, 0x24);
     commands
         .spawn((
             Node {
@@ -256,11 +254,9 @@ fn render_battle_report(
     let participant = report.participant.unwrap_or(BattleReportSideSlot::Left);
     let other = other_side(participant);
     for (flag, side) in [(view.friendly_flag, participant), (view.enemy_flag, other)] {
-        flags.get_mut(flag).expect("bound battle-report flag").image = assets
-            .picture(PictureId::new(
+        flags.get_mut(flag).expect("bound battle-report flag").image = assets.picture(PictureId::new(
                 0x1130 + i16::from(report.sides[side].nation.get()),
-            ))
-            .expect("retail battle-report flag picture must load");
+            ));
     }
 }
 

@@ -36,9 +36,7 @@ pub(in crate::ui::city) fn city_building_name(
     assets: &RetailUiAssets,
     slot: CityFacilitySlot,
 ) -> String {
-    assets
-        .string(slot.name_string())
-        .expect("city building name")
+    assets.string(slot.name_string())
 }
 
 pub(in crate::ui::city) struct CityOrderRow {

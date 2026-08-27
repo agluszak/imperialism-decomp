@@ -152,7 +152,7 @@ fn bind_building_change_common(
         warning_color,
         can_reserve,
     } = presentation;
-    match assets.picture(picture) {
+    match assets.try_picture(picture) {
         Ok(handle) => {
             let dialog = tree.find(root, fourcc!("DLOG"));
             commands.entity(dialog).insert(ImageNode::new(handle));
@@ -206,9 +206,7 @@ fn bind_construction_dialog(
     can_reserve: bool,
 ) {
     let capacity = fill_brackets(&city_text(assets, 0x10), &[capacity_value]);
-    let headline = assets
-        .string(slot.construction_headline_string())
-        .expect("headline");
+    let headline = assets.string(slot.construction_headline_string());
     commands
         .entity(tree.find(root, fourcc!("tex1")))
         .insert(Text::new(headline));
@@ -265,9 +263,7 @@ fn bind_construction_dialog(
         BuildingChangePresentation {
             slot,
             picture: slot.construction_picture(0),
-            name: assets
-                .string(slot.name_string())
-                .expect("city building name"),
+            name: assets.string(slot.name_string()),
             capacity,
             cost: city_text(assets, 0x14),
             warning_text: city_text(
@@ -302,9 +298,7 @@ fn bind_expansion_dialog(
         BuildingChangePresentation {
             slot,
             picture: slot.construction_picture(next_level),
-            name: assets
-                .string(slot.name_string())
-                .expect("city building name"),
+            name: assets.string(slot.name_string()),
             capacity: format_retail_number(&city_text(assets, 0x10), next_capacity),
             cost: city_text(assets, 0x14),
             warning_text: city_text(assets, 0x17),

@@ -19,7 +19,7 @@ const PORTRAIT_TAG: FourCc = fourcc!("unit");
 const LEGEND_TAG: FourCc = fourcc!("back");
 const CIVILIAN_PAGE_VISIBLE: Vec2 = Vec2::new(0.0, 0x8f as f32);
 const CIVILIAN_PAGE_PARKED: Vec2 = Vec2::new(-1000.0, -1000.0);
-const CIVILIAN_LEGEND_GROUP: i16 = 0x272d;
+const CIVILIAN_LEGEND_GROUP: u16 = 0x272d;
 const RESOURCE_ICON_ATLAS: PictureId = PictureId::new(750);
 const DEVELOPMENT_STRIP_ATLAS: PictureId = PictureId::new(751);
 const TERRAIN_ICON_ATLAS: PictureId = PictureId::new(801);
@@ -214,9 +214,7 @@ fn sync_civilian_toolbar(
     if let Ok(portrait) = portraits.single() {
         match unit {
             Some((_, unit)) => {
-                let picture = assets
-                    .picture(unit.unit_type().portrait_picture())
-                    .expect("retail civilian toolbar portrait must load");
+                let picture = assets.picture(unit.unit_type().portrait_picture());
                 commands
                     .entity(portrait)
                     .insert((ImageNode::new(picture), Visibility::Visible));
@@ -284,9 +282,7 @@ fn spawn_civilian_legend(
     atlases: LegendAtlases,
 ) {
     let kind = unit.unit_type();
-    let name = assets
-        .string(kind.name_string())
-        .expect("retail civilian class name must load");
+    let name = assets.string(kind.name_string());
     let (name_font, name_layout, name_line_height, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 1,
@@ -672,9 +668,7 @@ fn spawn_developer_legend(
 }
 
 fn legend_string(assets: &RetailUiAssets, index: i16) -> String {
-    assets
-        .string(StringGroup::new(CIVILIAN_LEGEND_GROUP as u16).entry((index + 1) as u16))
-        .expect("retail civilian legend string must load")
+    assets.ui_string(CIVILIAN_LEGEND_GROUP, (index + 1) as u16)
 }
 
 fn legend_text_style(
@@ -756,9 +750,7 @@ fn spawn_atlas_icon(
 }
 
 fn transparent_atlas(assets: &mut RetailUiAssets, picture_id: PictureId) -> Handle<Image> {
-    assets
-        .transparent_picture(picture_id, TRANSPARENT_INDEX)
-        .expect("retail civilian legend atlas must load")
+    assets.transparent_picture(picture_id, TRANSPARENT_INDEX)
 }
 
 fn despawn_legend_items(

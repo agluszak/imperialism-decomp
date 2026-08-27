@@ -60,18 +60,26 @@ impl RetailAssetsResource {
         &self.0
     }
 
-    pub(crate) fn string(
-        &self,
-        id: imperialism_formats::StringResourceId,
-    ) -> Result<String, imperialism_formats::RetailAssetError> {
-        self.0.string(id)
+    pub(crate) fn string(&self, id: imperialism_formats::StringResourceId) -> String {
+        self.0
+            .string(id)
+            .unwrap_or_else(|error| panic!("retail string {id} must load: {error}"))
     }
 
-    pub(crate) fn text(
-        &self,
-        id: imperialism_formats::StringResourceId,
-    ) -> Result<String, imperialism_formats::RetailAssetError> {
-        self.0.text(id)
+    /// `TSimMgr::GetString`: zero-based offset (adds one before the direct lookup).
+    pub(crate) fn get_string(&self, group: u16, offset: u16) -> String {
+        self.string(imperialism_formats::StringGroup::new(group).offset(offset))
+    }
+
+    /// Direct `LoadUiStringResourceByGroupAndIndex` / `LoadStringA` group/index.
+    pub(crate) fn ui_string(&self, group: u16, index: u16) -> String {
+        self.string(imperialism_formats::StringGroup::new(group).entry(index))
+    }
+
+    pub(crate) fn text(&self, resource_id: u16) -> String {
+        self.0
+            .text(resource_id)
+            .unwrap_or_else(|error| panic!("retail TEXT {resource_id} must load: {error}"))
     }
 }
 

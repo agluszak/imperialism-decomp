@@ -512,9 +512,7 @@ fn transport_hover_text(
     } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
         transport_string(assets, 3)
     } else {
-        assets
-            .string(resource.name_string())
-            .expect("retail transport commodity name must load")
+        assets.string(resource.name_string())
     };
 
     if allocation == TransportAllocation::GOLD || allocation == TransportAllocation::GEMS {
@@ -547,9 +545,7 @@ fn transport_hover_text(
 }
 
 fn transport_string(assets: &RetailUiAssets, offset: i16) -> String {
-    assets
-        .string(StringGroup::new(0x2735).offset(offset as u16))
-        .expect("retail transport string must load")
+    assets.get_string(0x2735, offset as u16)
 }
 
 fn allocation_amount(

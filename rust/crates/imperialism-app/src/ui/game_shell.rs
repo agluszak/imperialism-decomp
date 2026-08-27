@@ -7,7 +7,7 @@ use crate::ui::RetailUiAssets;
 use crate::ui::format_currency;
 use crate::ui::generated;
 use crate::ui::hover_help::{
-    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts, retail_string,
+    HoverHelpBarStyle, HoverHelpText, bind_hover_help_bar, bind_hover_help_texts,
 };
 use crate::ui::load_save::bind_open_flag_menu;
 use crate::ui::map_help;
@@ -27,7 +27,7 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
 use bevy::window::PrimaryWindow;
 use imperialism_core::TurnAlert;
-use imperialism_formats::{FourCc, PictureId, StringGroup, TRADE, fourcc};
+use imperialism_formats::{FourCc, PictureId, TRADE, fourcc};
 use std::collections::VecDeque;
 
 #[derive(Component)]
@@ -270,8 +270,8 @@ fn bind_strategic_hover(
     );
     let civilian_seas = format!(
         "{}, {}",
-        retail_string(assets, StringGroup::new(0x2730).offset(0x12)),
-        retail_string(assets, StringGroup::new(0x2730).offset(8))
+        assets.get_string(0x2730, 0x12),
+        assets.get_string(0x2730, 8)
     );
     bind_hover_help_texts(
         commands,
@@ -302,7 +302,7 @@ fn on_ocean_toggle(
             String::from("Imperialism")
         } else {
             crate::ui::fill_brackets(
-                &retail_string(&assets, StringGroup::new(0x273f).offset(1)),
+                &assets.get_string(0x273f, 1),
                 &[tag],
             )
         };
@@ -330,12 +330,8 @@ fn bind_strategic_map_management_pictures(
         (fourcc!("tran"), PictureId::new(0x24df)),
     ] {
         let entity = tree.find(toolbar, tag);
-        let idle = assets
-            .picture(idle_id)
-            .expect("retail strategic management button must load");
-        let active = assets
-            .picture(idle_id.offset(1))
-            .expect("retail strategic management pressed button must load");
+        let idle = assets.picture(idle_id);
+        let active = assets.picture(idle_id.offset(1));
         commands.entity(entity).insert((
             ImageNode::new(idle.clone()),
             RetailPictureSwap { idle, active },
@@ -404,9 +400,7 @@ fn render_game_status(
 ) {
     let nation = session.active_major_nation();
     let date = {
-        let season = retail
-            .string(StringGroup::new(10_000).entry((session.game.turn().economic_turn % 4) as u16))
-            .expect("retail season name must load");
+        let season = retail.ui_string(10_000, (session.game.turn().economic_turn % 4) as u16);
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
     let treasury = format_currency(session.game.nations().major(nation).common.treasury);
@@ -460,12 +454,12 @@ fn sync_status_date_hover(
         return;
     }
     let help = if matches!(map.selection, StrategicSelection::Army(_)) {
-        retail_string(&assets, StringGroup::new(0x2732).offset(0x11))
+        assets.get_string(0x2732, 0x11)
     } else {
         format!(
             "{}, {}",
-            retail_string(&assets, StringGroup::new(0x2730).offset(0x12)),
-            retail_string(&assets, StringGroup::new(0x2730).offset(8))
+            assets.get_string(0x2730, 0x12),
+            assets.get_string(0x2730, 8)
         )
     };
     for view in &mut views {
@@ -570,20 +564,16 @@ fn bind_turn_alert_notice(
     };
     let (root, notice) = root.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
-    let (title_index, body_index) = match notice.0 {
+    let (title_index, body_index): (u16, u16) = match notice.0 {
         TurnAlert::LandCapitolThreatened => (0x28, 0x29),
         TurnAlert::NavalCapitolThreatened => (0x2a, 0x2b),
-        TurnAlert::Treasury { prompt_code } => (prompt_code - 1, prompt_code),
+        TurnAlert::Treasury { prompt_code } => ((prompt_code - 1) as u16, prompt_code as u16),
         TurnAlert::CommodityShortage => (0x46, 0x47),
         TurnAlert::TransportShortage => (0x22, 0x23),
         TurnAlert::Starvation => (0x20, 0x21),
     };
-    let title = assets
-        .string(StringGroup::new(0x2753).entry((title_index) as u16))
-        .expect("retail turn-alert title must load");
-    let body = assets
-        .string(StringGroup::new(0x2753).entry((body_index) as u16))
-        .expect("retail turn-alert body must load");
+    let title = assets.ui_string(0x2753, title_index);
+    let body = assets.ui_string(0x2753, body_index);
     linger.set_title(&mut commands, &mut assets, title);
     linger.set_body(&mut commands, &mut assets, body);
     commands

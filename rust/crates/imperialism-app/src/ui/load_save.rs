@@ -1,7 +1,6 @@
 use crate::RetailAssetsResource;
 use crate::ui::battle_reports::battle_report_texts_for_save;
 use crate::ui::generated;
-use crate::ui::hover_help::retail_string;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
@@ -21,7 +20,7 @@ use imperialism_core::{GameState, NationId, PhaseCode, TileId, TileOwnerTag};
 use imperialism_formats::{
     BattleReportText, CityWindowLayout, FourCc, LegacyGameStateContext, LoadGameError,
     NUMBERED_SAVE_SLOT_COUNT, OverwritePolicy, PictureId, SAVE_LABEL_MAX_CHARS,
-    SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, StringGroup, fourcc,
+    SaveDirectoryListing, SaveFileError, SaveHeaderInfo, SaveSlot, fourcc,
     list_save_slots, load_game_from_bytes, normalize_save_label, peek_save_header,
     peek_save_preview_owners, retail_save_path, write_game_state, write_save_file,
 };
@@ -41,15 +40,15 @@ const SLOT_TAGS: [FourCc; NUMBERED_SAVE_SLOT_COUNT as usize] = [
 const AUTOSAVE_SESSION_SLOT: i32 = 0xa1;
 const LOAD_OKAY_IDLE_PICTURE: PictureId = PictureId::new(4524);
 const LOAD_OKAY_ACTIVE_PICTURE: PictureId = PictureId::new(4525);
-const EMPTY_SLOT_STRING_GROUP: i16 = 0x2737;
-const EMPTY_SLOT_STRING_INDEX: i16 = 0xd;
-const DIFFICULTY_STRING_GROUP: i16 = 0x2737;
-const DIFFICULTY_STRING_BASE: i16 = 0xd;
-const CONFIRM_LOAD_STRING_GROUP: i16 = 0x2737;
-const CONFIRM_LOAD_STRING_INDEX: i16 = 0x33;
-const PICK_SLOT_STRING_GROUP: i16 = 0x2758;
-const PICK_SLOT_STRING_INDEX: i16 = 0x17;
-const FLAG_MENU_STRING_GROUP: i16 = 0x2743;
+const EMPTY_SLOT_STRING_GROUP: u16 = 0x2737;
+const EMPTY_SLOT_STRING_INDEX: u16 = 0xd;
+const DIFFICULTY_STRING_GROUP: u16 = 0x2737;
+const DIFFICULTY_STRING_BASE: u16 = 0xd;
+const CONFIRM_LOAD_STRING_GROUP: u16 = 0x2737;
+const CONFIRM_LOAD_STRING_INDEX: u16 = 0x33;
+const PICK_SLOT_STRING_GROUP: u16 = 0x2758;
+const PICK_SLOT_STRING_INDEX: u16 = 0x17;
+const FLAG_MENU_STRING_GROUP: u16 = 0x2743;
 const FLAG_MENU_ROWS: [(FourCc, Option<FourCc>, Option<FlagMenuAction>); 8] = [
     (fourcc!("txt0"), None, None),
     (
@@ -307,12 +306,7 @@ fn bind_load_save(
     let mode = screen.mode;
     bind_load_save_actions(&mut commands, root_entity, &tree, mode);
     let listing = list_save_slots(&save_dir.0);
-    let empty_label = assets
-        .string(
-            StringGroup::new((EMPTY_SLOT_STRING_GROUP) as u16)
-                .entry((EMPTY_SLOT_STRING_INDEX) as u16),
-        )
-        .unwrap_or_default();
+    let empty_label = assets.ui_string(EMPTY_SLOT_STRING_GROUP, EMPTY_SLOT_STRING_INDEX);
     let presentation = presentation_from_listing(&listing, &empty_label, &assets);
     populate_load_save_slots(&mut commands, root_entity, &tree, mode, &presentation);
     if mode == LoadSaveMode::Load {
@@ -386,12 +380,10 @@ fn presentation_from_listing(
 }
 
 fn slot_presentation(header: &SaveHeaderInfo, assets: &RetailUiAssets) -> SlotPresentation {
-    let difficulty = assets
-        .string(
-            StringGroup::new(DIFFICULTY_STRING_GROUP as u16)
-                .entry((DIFFICULTY_STRING_BASE + i16::from(header.difficulty)) as u16),
-        )
-        .unwrap_or_default();
+    let difficulty = assets.ui_string(
+        DIFFICULTY_STRING_GROUP,
+        DIFFICULTY_STRING_BASE + u16::from(header.difficulty),
+    );
     SlotPresentation {
         label: header.label.clone(),
         info: format!(
@@ -444,14 +436,14 @@ fn apply_load_okay_pictures(
     tree: &RetailTree,
 ) {
     let okay = tree.find(root, fourcc!("okay"));
-    let idle = match assets.picture(LOAD_OKAY_IDLE_PICTURE) {
+    let idle = match assets.try_picture(LOAD_OKAY_IDLE_PICTURE) {
         Ok(handle) => handle,
         Err(error) => {
             warn!("could not load Load Game okay picture: {error}");
             return;
         }
     };
-    let active = match assets.picture(LOAD_OKAY_ACTIVE_PICTURE) {
+    let active = match assets.try_picture(LOAD_OKAY_ACTIVE_PICTURE) {
         Ok(handle) => handle,
         Err(error) => {
             warn!("could not load Load Game okay pressed picture: {error}");
@@ -815,11 +807,9 @@ fn apply_save(
 fn load_error_text(assets: &RetailAssetsResource, error: &LoadGameError) -> String {
     let retail = match error {
         LoadGameError::InvalidMagic | LoadGameError::Truncated => {
-            assets.string(StringGroup::new(0x2737).entry(7)).ok()
+            Some(assets.ui_string(0x2737, 7))
         }
-        LoadGameError::UnsupportedVersion(_) => {
-            assets.string(StringGroup::new(0x2737).entry(8)).ok()
-        }
+        LoadGameError::UnsupportedVersion(_) => Some(assets.ui_string(0x2737, 8)),
         _ => None,
     };
     retail.unwrap_or_else(|| error.to_string())
@@ -838,18 +828,8 @@ fn bind_load_save_notice(
     let (root, notice) = notice.into_inner();
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     let body = match notice {
-        LoadSaveNotice::PickSlot => assets
-            .string(
-                StringGroup::new((PICK_SLOT_STRING_GROUP) as u16)
-                    .entry((PICK_SLOT_STRING_INDEX) as u16),
-            )
-            .unwrap_or_default(),
-        LoadSaveNotice::ConfirmLoad => assets
-            .string(
-                StringGroup::new((CONFIRM_LOAD_STRING_GROUP) as u16)
-                    .entry((CONFIRM_LOAD_STRING_INDEX) as u16),
-            )
-            .unwrap_or_default(),
+        LoadSaveNotice::PickSlot => assets.ui_string(PICK_SLOT_STRING_GROUP, PICK_SLOT_STRING_INDEX),
+        LoadSaveNotice::ConfirmLoad => assets.ui_string(CONFIRM_LOAD_STRING_GROUP, CONFIRM_LOAD_STRING_INDEX),
         LoadSaveNotice::Error(body) => body.clone(),
     };
     linger.set_body(&mut commands, &mut assets, &body);
@@ -932,10 +912,7 @@ fn bind_flag_menu(
         } else {
             (0x28, 0xd2)
         };
-        let caption = retail_string(
-            &assets,
-            StringGroup::new((FLAG_MENU_STRING_GROUP) as u16).offset((index) as u16),
-        );
+        let caption = assets.get_string(FLAG_MENU_STRING_GROUP, index as u16);
         commands.entity(entity).insert((
             Text::new(caption.clone()),
             Label,
@@ -1032,9 +1009,7 @@ fn bind_flag_menu_prompt(
         FlagMenuPending::NewGame => 0x2b,
         FlagMenuPending::Quit => 0x2a,
     };
-    let body = assets
-        .string(StringGroup::new(0x2737).entry((index) as u16))
-        .expect("retail flag-menu confirm string");
+    let body = assets.ui_string(0x2737, index);
     let linger = bind_linger_dialog(&mut commands, root, &tree);
     linger.set_body(&mut commands, &mut assets, body);
     commands

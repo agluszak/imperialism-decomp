@@ -392,7 +392,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
         let mask_picture = visual.slot.city_hit_mask_picture(level);
-        let mask = match assets.indexed_picture(mask_picture) {
+        let mask = match assets.try_indexed_picture(mask_picture) {
             Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(&indexed) {
                 Some(mask) => mask,
                 None => {
@@ -498,7 +498,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
         .filter(|action| city_building_level(state, nation, action.slot) == i16::from(action.level))
         .collect();
     for (draw_order, action) in active_actions.iter().enumerate() {
-        let indexed = match assets.indexed_picture(action.picture_id) {
+        let indexed = match assets.try_indexed_picture(action.picture_id) {
             Ok(indexed) => indexed,
             Err(error) => {
                 warn!(
@@ -536,7 +536,7 @@ pub(in crate::ui::city) fn spawn_city_building_actions(
                 ]);
             }
         }
-        let handle = match assets.transformed_picture(action.picture_id, |image| {
+        let handle = match assets.try_transformed_picture(action.picture_id, |image| {
             apply_city_action_transparency(
                 image,
                 &indexed,
@@ -679,9 +679,7 @@ pub(in crate::ui::city) fn render_city_screen(
         });
     let text = hovered.map_or_else(String::new, |building| {
         if city_oil_industry_unlocked(&session.game, nation, building.slot) {
-            assets
-                .string(building.slot.name_string())
-                .expect("retail English City string")
+            assets.string(building.slot.name_string())
         } else {
             String::new()
         }
@@ -711,7 +709,7 @@ pub(in crate::ui::city) fn render_city_buildings(
             *visibility = Visibility::Visible;
             continue;
         }
-        let indexed = match assets.indexed_picture(picture) {
+        let indexed = match assets.try_indexed_picture(picture) {
             Ok(indexed) => indexed,
             Err(error) => {
                 warn!("could not decode indexed city building picture {picture}: {error}");
@@ -723,7 +721,7 @@ pub(in crate::ui::city) fn render_city_buildings(
             continue;
         }
         let transparent = indexed.pixels[(indexed.height as usize - 1) * indexed.width as usize];
-        match assets.transformed_picture(picture, |picture_image| {
+        match assets.try_transformed_picture(picture, |picture_image| {
             apply_index_transparency(picture_image, &indexed, transparent);
         }) {
             Ok(handle) => {

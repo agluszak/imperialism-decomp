@@ -1,5 +1,4 @@
 use super::generated;
-use super::hover_help::retail_string;
 use super::retail::{RetailTree, RetailUiAssets};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
@@ -104,7 +103,7 @@ fn fill_credits_page(
 
 fn string_from_id(assets: &RetailUiAssets, string_id: i16) -> String {
     // `LoadUiStringResourceById` is LoadStringA(id); the flat id is the final resource id.
-    retail_string(assets, StringResourceId::new(string_id as u32))
+    assets.string(StringResourceId::new(string_id as u32))
 }
 
 fn on_credits_activate(

@@ -210,12 +210,21 @@ impl RetailAssets {
         decode_string_table_entry(&self.strings.path, block, slot)
     }
 
-    /// Loads one long-form help `TEXT` resource.
+    /// Loads one long-form help `TEXT` resource by its raw PE resource ID.
     ///
-    /// Retail assigned these the same numeric identifiers as the Windows string
-    /// library entries they paraphrase, so they share [`StringResourceId`].
-    pub fn text(&self, id: StringResourceId) -> Result<String, RetailAssetError> {
-        self.string(id)
+    /// These are a separate retail namespace from [`StringResourceId`] / `RT_STRING`,
+    /// even when individual numeric values coincide with string-table entries.
+    pub fn text(&self, resource_id: u16) -> Result<String, RetailAssetError> {
+        let block_id = u32::from((resource_id >> 4) + 1);
+        let slot = usize::from(resource_id & 0xf);
+        let block = self
+            .strings
+            .find(
+                ResourceName::Id(STRING_RESOURCE_TYPE),
+                ResourceName::Id(block_id),
+            )
+            .ok_or(RetailAssetError::TextNotFound(resource_id))?;
+        decode_string_table_entry(&self.strings.path, block, slot)
     }
 
     /// Materializes the localized STR# inputs used by random-game province and ocean naming.
@@ -589,6 +598,8 @@ pub enum RetailAssetError {
     CursorNotFound { resource_id: u16 },
     #[error("no English string resource {0} is available")]
     StringNotFound(StringResourceId),
+    #[error("no English TEXT resource {0} is available")]
+    TextNotFound(u16),
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
     DefaultDibPaletteNotFound,
     #[error("news.tab / news.tex are unavailable in Data/tabsenu.gob or as Data files")]

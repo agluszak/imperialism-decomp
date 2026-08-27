@@ -86,7 +86,7 @@ fn sync_random_setup_coat(
             continue;
         }
         let picture_id = coat_picture_id(setup.nation);
-        let handle = match pictures.picture(picture_id) {
+        let handle = match pictures.try_picture(picture_id) {
             Ok(handle) => handle,
             Err(error) => {
                 warn!(
@@ -119,19 +119,9 @@ fn sync_random_setup_flag(
     let handle = if let Some(handle) = transparent_atlas.clone() {
         handle
     } else {
-        match pictures.transparent_picture(FLAG_ATLAS_PICTURE, OFF_MAP_PALETTE) {
-            Ok(handle) => {
-                *transparent_atlas = Some(handle.clone());
-                handle
-            }
-            Err(error) => {
-                warn!(
-                    "could not apply transparency to retail setup flag atlas {:?}: {error}",
-                    FLAG_ATLAS_PICTURE
-                );
-                return;
-            }
-        }
+        let handle = pictures.transparent_picture(FLAG_ATLAS_PICTURE, OFF_MAP_PALETTE);
+        *transparent_atlas = Some(handle.clone());
+        handle
     };
 
     for (entity, mut flag, image_node) in &mut flags {

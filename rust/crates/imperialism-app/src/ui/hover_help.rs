@@ -1,7 +1,7 @@
 use super::retail::{RetailTree, RetailUiAssets};
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
-use imperialism_formats::{FourCc, RetailTextStylePreset, StringResourceId};
+use imperialism_formats::{FourCc, RetailTextStylePreset};
 
 /// Hover-help string shown in the screen's info bar while this control is the cursor hit.
 ///
@@ -127,10 +127,6 @@ pub(crate) fn bind_hover_help_texts(
     }
 }
 
-/// Load a typed retail string resource, panicking if the archive entry is missing.
-pub(crate) fn retail_string(assets: &RetailUiAssets, id: StringResourceId) -> String {
-    assets.string(id).expect("retail string")
-}
 
 #[allow(clippy::type_complexity)]
 fn sync_hover_help_bar(
