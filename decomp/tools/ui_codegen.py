@@ -110,6 +110,7 @@ class WindowsNodeOverride:
     node_id: str
     enabled: int | None
     control_value: int | None
+    picture_id: int | None
     content_insets: tuple[int, int, int, int] | None
     style_word: int | None
     packed_color: int | None
@@ -444,6 +445,7 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                 allowed_override_fields = {
                     "enabled",
                     "control_value",
+                    "picture_id",
                     "content_insets",
                     "style",
                     "text_source",
@@ -458,6 +460,11 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                 control_value = (
                     int(override["control_value"])
                     if "control_value" in override
+                    else None
+                )
+                picture_id = (
+                    int(override["picture_id"])
+                    if "picture_id" in override
                     else None
                 )
                 content_insets = None
@@ -489,6 +496,7 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                 if (
                     enabled is None
                     and control_value is None
+                    and picture_id is None
                     and content_insets is None
                     and style is None
                     and text_source is None
@@ -503,6 +511,7 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                         f"0x{int(raw_node_id):04x}",
                         enabled,
                         control_value,
+                        picture_id,
                         content_insets,
                         style_word,
                         packed_color,
@@ -1730,6 +1739,13 @@ def apply_case_windows_overrides(
             nodes.append(node)
             continue
         family = node.family
+        if override.picture_id is not None:
+            if family.picture_id is None:
+                raise ValueError(
+                    f"{MANIFEST_PATH}: 0x{recipe.address:08x}/0x{case.event:x}/"
+                    f"{node.node_id} overrides missing picture"
+                )
+            family = replace(family, picture_id=override.picture_id)
         if override.content_insets is not None:
             if family.content_insets is None:
                 raise ValueError(

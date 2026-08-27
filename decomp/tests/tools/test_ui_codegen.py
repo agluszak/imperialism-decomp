@@ -343,6 +343,28 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("node_flag, 0x3e, 8, 0x19, 0x23, 1, 0,", map_factory)
         self.assertIn("node_quer, 0x5b, 8, 0x19, 0x23, 1, 0,", map_factory)
 
+    def test_strategic_map_toolbar_uses_windows_picture_pairs(self) -> None:
+        map_factory = self.rendered[0x0043DBC0]
+        for picture_id in (0x24D9, 0x24DB, 0x24DD, 0x24DF):
+            self.assertIn(
+                f"SetUiResourceContextPictureId(0x{picture_id:x});",
+                map_factory,
+            )
+
+        rendered = render_rust_ui(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        strategic_map = rendered[
+            rendered.index("pub fn mapview_2013()") : rendered.index(
+                "pub fn mapview_3012()"
+            )
+        ]
+        for idle, active in ((9433, 9434), (9435, 9436), (9437, 9438), (9439, 9440)):
+            self.assertIn(
+                f"retail_picture_swap({idle}, {active})",
+                strategic_map,
+            )
+
     def test_city_building_floaters_keep_retail_captioned_window_descriptor(self) -> None:
         city_factory = self.rendered[0x0041B6D0]
         oil_case = city_factory[

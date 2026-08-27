@@ -89,6 +89,10 @@ functions:
         windows_overrides:
           0x01fc: {enabled: 0, evidence: "original builder 0x0043e5c3-0x0043e624"}
           0x02de: {enabled: 0, evidence: "original builder 0x0043e6d3-0x0043e734"}
+          0x034c: {picture_id: 0x24db, evidence: "TViewMgr::ShowTerrainMap at 0x005da360 assigns the Windows Trade Up picture 0x24db"}
+          0x03c0: {picture_id: 0x24df, evidence: "TViewMgr::ShowTerrainMap at 0x005da360 assigns the Windows Trans Up picture 0x24df"}
+          0x0434: {picture_id: 0x24dd, evidence: "TViewMgr::ShowTerrainMap at 0x005da360 assigns the Windows City Up picture 0x24dd"}
+          0x04a8: {picture_id: 0x24d9, evidence: "TViewMgr::ShowTerrainMap at 0x005da360 assigns the Windows Dip Up picture 0x24d9"}
       - {event: 0x0bc4, resource: MapView.rsrc:3012}
       - {event: 0x0c1c, resource: MapView.rsrc:3100}
       - {event: 0x0dac, resource: MapView.rsrc:3500}

@@ -5292,22 +5292,22 @@ pub fn mapview_2013() -> impl Scene {
                                     (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
                                         Button
-                                        retail_picture_swap(1109, 1110)
+                                        retail_picture_swap(9435, 9436)
                                     ),
                                     (
                                         retail_node(fourcc!("tran"), 4, 119, 25, 25)
                                         Button
-                                        retail_picture_swap(1111, 1112)
+                                        retail_picture_swap(9439, 9440)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 33, 119, 25, 25)
                                         Button
-                                        retail_picture_swap(1110, 1111)
+                                        retail_picture_swap(9437, 9438)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 91, 119, 25, 25)
                                         Button
-                                        retail_picture_swap(1108, 1109)
+                                        retail_picture_swap(9433, 9434)
                                     ),
                                     (
                                         retail_node(fourcc!("unav"), 128, 144, 123, 308)
