@@ -67,7 +67,7 @@ pub(crate) fn bind_ocean_view(
     commands.entity(land).insert(LandMapFrame);
     let ocean_assets = OceanRenderAssets::load(|id| {
         assets
-            .indexed_picture(PictureId::new(id))
+            .indexed_picture(id)
             .unwrap_or_else(|error| panic!("retail ocean picture {id} must load: {error}"))
     });
 

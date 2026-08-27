@@ -5,6 +5,7 @@ use super::map_interaction::{StrategicMapSession, StrategicSelection};
 use super::map_modals::{spawn_army_roster, spawn_garrison};
 use crate::AppState;
 use crate::ui::GameSession;
+use crate::ui::retail_resources::MilitaryUnitKindRetailResources;
 use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::{Activate, ActivateOnPress};
@@ -26,11 +27,7 @@ fn placard_picture_id(
     category: ArmyUnitCategory,
 ) -> PictureId {
     let kind = state.technology().selected_capability_slots[nation][category];
-    let mut picture = PictureId::new(0x4c4).offset(i16::from(kind.retail()));
-    if counts.totals[category] <= 0 {
-        picture = picture.offset(0x1e);
-    }
-    picture
+    kind.army_toolbar_placard_picture(counts.totals[category] <= 0)
 }
 
 #[derive(Component)]
@@ -192,11 +189,11 @@ fn sync_army_toolbar(
     for (command, mut image) in &mut garrisons {
         if matches!(*command, ArmyCommand::Garrison) {
             image.image = assets
-                .picture(PictureId::new(if counts_state.can_upgrade {
-                    0x24d5
+                .picture(if counts_state.can_upgrade {
+                    PictureId::new(0x24d5)
                 } else {
-                    0x04b5
-                }))
+                    PictureId::new(0x04b5)
+                })
                 .expect("retail garrison picture must load");
         }
     }

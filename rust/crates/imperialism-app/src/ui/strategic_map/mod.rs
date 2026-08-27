@@ -302,14 +302,13 @@ fn load_strategic_river_masks(assets: &RetailUiAssets) -> Vec<IndexedPicture> {
 }
 
 fn strategic_terrain_picture_id(frame: usize) -> PictureId {
-    let id = match frame {
-        0..=41 => 10_000 + frame as i16,
-        42..=45 => 10_094 + (frame - 42) as i16,
-        46..=49 => 10_100 + (frame - 46) as i16,
-        50 => 10_110,
+    match frame {
+        0..=41 => PictureId::new(10_000).offset(frame as i16),
+        42..=45 => PictureId::new(10_094).offset((frame - 42) as i16),
+        46..=49 => PictureId::new(10_100).offset((frame - 46) as i16),
+        50 => PictureId::new(10_110),
         _ => panic!("strategic terrain atlas frame {frame} is out of range"),
-    };
-    PictureId::new(id)
+    }
 }
 
 fn load_strategic_improvement_pictures(assets: &RetailUiAssets) -> Vec<IndexedPicture> {
@@ -336,14 +335,13 @@ fn load_tile_picture(assets: &RetailUiAssets, picture_id: PictureId) -> IndexedP
 }
 
 fn river_mask_picture_id(mask: usize) -> PictureId {
-    let id = match mask {
-        0..=15 => 10_048 + mask as i16,
-        16..=23 => 10_086 + (mask - 16) as i16,
-        24..=29 => 10_042 + (mask - 24) as i16,
-        30..=35 => 10_080 + (mask - 30) as i16,
+    match mask {
+        0..=15 => PictureId::new(10_048).offset(mask as i16),
+        16..=23 => PictureId::new(10_086).offset((mask - 16) as i16),
+        24..=29 => PictureId::new(10_042).offset((mask - 24) as i16),
+        30..=35 => PictureId::new(10_080).offset((mask - 30) as i16),
         _ => panic!("strategic river mask {mask} is out of range"),
-    };
-    PictureId::new(id)
+    }
 }
 
 fn compose_strategic_map(

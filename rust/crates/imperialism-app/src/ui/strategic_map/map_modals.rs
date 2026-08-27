@@ -10,6 +10,7 @@ use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailTree, ancestor_with};
 use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use crate::ui::retail_resources::ResourceKindRetailResources;
+use crate::ui::retail_resources::ShipTypeRetailResources;
 use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::ecs::system::EntityCommands;
@@ -872,10 +873,7 @@ fn civilian_report_text(
                 };
                 (line, Some(*turns))
             } else {
-                let action = retail_string(
-                    assets,
-                    StringGroup::new(0x2725).offset(u16::from(civilian.unit_type().retail())),
-                );
+                let action = retail_string(assets, civilian.unit_type().work_action_string());
                 let template = retail_string(
                     assets,
                     StringGroup::new(0x2724).offset(
@@ -1758,10 +1756,13 @@ fn army_composition_text(
 
 fn ship_composition_text(assets: &RetailUiAssets, composition: &[(ShipType, i32)]) -> String {
     join_counted_labels(composition.iter().map(|(kind, count)| {
-        let group = if *count < 2 { 0x2716 } else { 0x271a };
         let name = retail_string(
             assets,
-            StringGroup::new((group) as u16).offset((i16::from(kind.retail())) as u16),
+            if *count < 2 {
+                kind.name_string()
+            } else {
+                kind.plural_name_string()
+            },
         );
         (*count, name)
     }))

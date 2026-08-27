@@ -1,5 +1,4 @@
 use super::*;
-use imperialism_formats::StringGroup;
 
 #[derive(Component)]
 pub(in crate::ui::city) enum BuildingChangeDialog {
@@ -208,7 +207,7 @@ fn bind_construction_dialog(
 ) {
     let capacity = fill_brackets(&city_text(assets, 0x10), &[capacity_value]);
     let headline = assets
-        .string(StringGroup::new(0x2422 + u16::from(slot as u8)).entry(1))
+        .string(slot.construction_headline_string())
         .expect("headline");
     commands
         .entity(tree.find(root, fourcc!("tex1")))

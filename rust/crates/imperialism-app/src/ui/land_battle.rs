@@ -1335,11 +1335,11 @@ fn animate_land_battle_actions(
                         SoundId::new(TACTICAL_FIRE_SFX[unit_type.retail() as usize]),
                     );
                     let (base, frames) = if fort_target {
-                        (0xf98, 6)
+                        (PictureId::new(0xf98), 6)
                     } else if matches!(unit_type.retail(), 6 | 7 | 14 | 15 | 21 | 22 | 23) {
-                        (0xf6e, 6)
+                        (PictureId::new(0xf6e), 6)
                     } else {
-                        (0xf78, 3)
+                        (PictureId::new(0xf78), 3)
                     };
                     spawn_tactical_effect(
                         &mut commands,
@@ -1347,7 +1347,7 @@ fn animate_land_battle_actions(
                         field_entity,
                         &map,
                         target,
-                        PictureId::new(base),
+                        base,
                         frames,
                         now,
                         true,
@@ -1553,17 +1553,25 @@ fn project_land_battle_toolbar(
             commands.entity(entity).remove::<InteractionDisabled>();
         }
         let (idle_id, active_id, help_index) = match (*action, stage) {
-            (LandBattleAction::Done, ArmyBattleStage::Deploying) => (0xed4, 0xed5, 0x2e),
-            (LandBattleAction::Retreat, ArmyBattleStage::Deploying) => (0xed2, 0xed3, 0x2f),
-            (LandBattleAction::Done, ArmyBattleStage::Live) => (0xece, 0xecf, 0x22),
-            (LandBattleAction::Retreat, ArmyBattleStage::Live) => (0xed0, 0xed1, 0x23),
+            (LandBattleAction::Done, ArmyBattleStage::Deploying) => {
+                (PictureId::new(0xed4), PictureId::new(0xed5), 0x2e)
+            }
+            (LandBattleAction::Retreat, ArmyBattleStage::Deploying) => {
+                (PictureId::new(0xed2), PictureId::new(0xed3), 0x2f)
+            }
+            (LandBattleAction::Done, ArmyBattleStage::Live) => {
+                (PictureId::new(0xece), PictureId::new(0xecf), 0x22)
+            }
+            (LandBattleAction::Retreat, ArmyBattleStage::Live) => {
+                (PictureId::new(0xed0), PictureId::new(0xed1), 0x23)
+            }
             _ => continue,
         };
         let idle = assets
-            .picture(PictureId::new(idle_id))
+            .picture(idle_id)
             .expect("retail tactical toolbar picture");
         let active = assets
-            .picture(PictureId::new(active_id))
+            .picture(active_id)
             .expect("retail tactical toolbar pressed picture");
         if let Some(mut image) = image {
             image.image = idle.clone();

@@ -213,20 +213,13 @@ pub(in crate::ui::city) fn city_building_picture(
         return None;
     }
     if slot == CityFacilitySlot::PowerPlant {
-        return Some(PictureId::new(if city.power_plant_upgrade_queued {
-            7011
+        return Some(if city.power_plant_upgrade_queued {
+            PictureId::new(7011)
         } else {
-            7027
-        }));
+            PictureId::new(7027)
+        });
     }
-    let offset = i16::from(slot.retail());
-    let normal = level == 0 || offset > 5 || !expanding || !slot.is_capacity_center();
-    let base = if normal {
-        PictureId::new(7000)
-    } else {
-        PictureId::new(7300)
-    };
-    Some(base.offset(level * 16 + offset))
+    Some(slot.city_view_picture(level, expanding))
 }
 
 pub(in crate::ui::city) fn enter_city_screen(mut commands: Commands) {
@@ -398,8 +391,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
     let mut hit_regions = Vec::new();
     for visual in visuals {
         let level = city_building_level(state, nation, visual.slot);
-        let offset = i16::from(visual.slot.retail());
-        let mask_picture = PictureId::new(7100).offset(level * 16 + offset);
+        let mask_picture = visual.slot.city_hit_mask_picture(level);
         let mask = match assets.indexed_picture(mask_picture) {
             Ok(indexed) => match CityBuildingHitMask::from_indexed_picture(&indexed) {
                 Some(mask) => mask,

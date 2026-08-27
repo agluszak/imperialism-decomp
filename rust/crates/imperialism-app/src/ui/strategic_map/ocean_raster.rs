@@ -5,7 +5,7 @@ use super::map_projection::{OCEAN_CELL_SIZE, OceanCell, OceanProjection, Project
 use super::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 use bevy::prelude::{IRect, IVec2};
 use imperialism_core::*;
-use imperialism_formats::IndexedPicture;
+use imperialism_formats::{IndexedPicture, PictureId};
 
 use crate::ui::retail_raster::{IndexedRasterExt, indexed_picture};
 
@@ -38,12 +38,14 @@ pub(super) struct OceanRenderAssets {
 }
 
 impl OceanRenderAssets {
-    pub(super) fn load(mut picture: impl FnMut(i16) -> IndexedPicture) -> Self {
+    pub(super) fn load(mut picture: impl FnMut(PictureId) -> IndexedPicture) -> Self {
         Self {
-            base_a: picture(1422),
-            base_b: picture(1423),
-            visited: picture(807),
-            active: (0..21).map(|offset| picture(1401 + offset)).collect(),
+            base_a: picture(PictureId::new(1422)),
+            base_b: picture(PictureId::new(1423)),
+            visited: picture(PictureId::new(807)),
+            active: (0..21)
+                .map(|offset| picture(PictureId::new(1401).offset(offset)))
+                .collect(),
         }
     }
 

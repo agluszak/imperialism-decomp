@@ -15,9 +15,7 @@ use bevy::ui_widgets::{Activate, ActivateOnPress, ScrollArea};
 use imperialism_core::{
     CountryStatus, MajorNationId, Technology, TechnologyResearchRejection, TechnologyResearchStatus,
 };
-use imperialism_formats::{
-    PictureId, RetailTextStylePreset, StringGroup, StringResourceId, fourcc,
-};
+use imperialism_formats::{PictureId, RetailTextStylePreset, StringGroup, fourcc};
 
 const TECHNOLOGIES_PER_PAGE: usize = 6;
 
@@ -458,9 +456,7 @@ fn bind_technology_modals(
             },
             Text::new(
                 retail
-                    .text(StringResourceId::new(
-                        u32::from(technology.retail()) + 0x08fc,
-                    ))
+                    .text(technology.history_body_string())
                     .expect("retail technology-history body"),
             ),
             body_font,
