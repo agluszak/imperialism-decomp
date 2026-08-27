@@ -1,5 +1,4 @@
-//! Recovered `TTwoPicSlider`: full visual root; stock `Slider` on `height - 12`;
-//! zero-strip for the bottom plateau; lower-clip / Off synced from input `SliderValue`.
+//! Recovered `TTwoPicSlider` over stock `Slider` (`height - 12` track + zero strip).
 
 use super::retail::{
     load_template_picture, retail_text_color, retail_text_shadow, retail_text_style,
@@ -16,7 +15,6 @@ use imperialism_formats::{PictureId, StringGroup};
 
 pub const TWO_PIC_SLIDER_SPLIT_PAD: i16 = 0x0c;
 
-/// Private child refs; binders read/write [`SliderValue`] on `input`.
 #[derive(Component, FromTemplate, Clone, Copy)]
 pub struct RetailTwoPicSliderParts {
     pub input: Entity,
@@ -45,11 +43,7 @@ pub fn retail_two_pic_slider(
         Children [
             (
                 #Input
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0), top: px(0), right: px(0),
-                    bottom: px(TWO_PIC_SLIDER_SPLIT_PAD as f32),
-                }
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(0), right: px(0), bottom: px(TWO_PIC_SLIDER_SPLIT_PAD as f32) }
                 Slider { track_click: TrackClick::Snap, orientation: SliderOrientation::Vertical }
                 SliderValue(0.0)
                 SliderRange::new(0.0, scale as f32)
@@ -57,35 +51,20 @@ pub fn retail_two_pic_slider(
             ),
             (
                 #Zero
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0), right: px(0), bottom: px(0),
-                    height: px(TWO_PIC_SLIDER_SPLIT_PAD as f32),
-                }
+                Node { position_type: PositionType::Absolute, left: px(0), right: px(0), bottom: px(0), height: px(TWO_PIC_SLIDER_SPLIT_PAD as f32) }
                 TwoPicSliderZeroStrip { input: #Input }
             ),
             (
                 #Lower
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0), bottom: px(0), width: percent(100), height: px(0),
-                    overflow: Overflow::clip(),
-                }
+                Node { position_type: PositionType::Absolute, left: px(0), bottom: px(0), width: percent(100), height: px(0), overflow: Overflow::clip() }
                 template(move |context| {
-                    Ok(ImageNode::new(load_template_picture(
-                        context, PictureId::new(picture_base + 1),
-                    )?))
+                    Ok(ImageNode::new(load_template_picture(context, PictureId::new(picture_base + 1))?))
                 })
                 Pickable::IGNORE
             ),
             (
                 #Off
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: px(0), top: px(0), width: percent(100), height: percent(100),
-                    justify_content: JustifyContent::Center,
-                    align_items: AlignItems::Center,
-                }
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(0), width: percent(100), height: percent(100), justify_content: JustifyContent::Center, align_items: AlignItems::Center }
                 template(move |context| Ok(Text(load_off_string(context, off_group, off_index))))
                 retail_text_style(1, 0, 14, 1)
                 retail_text_color(0x28)
@@ -133,8 +112,10 @@ fn two_pic_slider_split(value: i16, height: i16, scale: i16) -> i16 {
     if span <= 0 || scale == 0 {
         return 0;
     }
-    let split = value * span / scale;
-    if split == 0 { 0 } else { split + TWO_PIC_SLIDER_SPLIT_PAD }
+    match value * span / scale {
+        0 => 0,
+        split => split + TWO_PIC_SLIDER_SPLIT_PAD,
+    }
 }
 
 fn sync_two_pic_slider_visuals(
@@ -153,7 +134,11 @@ fn sync_two_pic_slider_visuals(
         };
         let height = height as i16;
         let split = two_pic_slider_split(value.0 as i16, height, range.end() as i16);
-        let fill = if split < TWO_PIC_SLIDER_SPLIT_PAD { 0 } else { split };
+        let fill = if split < TWO_PIC_SLIDER_SPLIT_PAD {
+            0
+        } else {
+            split
+        };
         if let Ok(mut n) = nodes.get_mut(parts.lower) {
             n.height = Val::Px(f32::from(fill));
         }
