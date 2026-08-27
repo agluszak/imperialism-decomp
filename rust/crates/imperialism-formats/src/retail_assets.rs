@@ -757,14 +757,6 @@ fn decode_string_table_entry(
 mod tests {
     use super::*;
     use std::collections::BTreeMap;
-    use tempfile::TempDir;
-
-    const PE_OFFSET: usize = 0x80;
-    const OPTIONAL_OFFSET: usize = PE_OFFSET + 24;
-    const SECTION_OFFSET: usize = OPTIONAL_OFFSET + 224;
-    const RESOURCE_OFFSET: usize = 0x200;
-    const RESOURCE_RVA: u32 = 0x1000;
-    const RESOURCE_SIZE: usize = 0x10000;
 
     #[test]
     fn news_text_discards_the_retail_c_string_terminator() {
@@ -775,499 +767,67 @@ mod tests {
         );
     }
 
-    #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-    enum TestName {
-        Id(u32),
-        Text(String),
-    }
-
-    impl TestName {
-        fn id(value: u32) -> Self {
-            Self::Id(value)
-        }
-
-        fn text(value: &str) -> Self {
-            Self::Text(value.to_owned())
-        }
-    }
-
-    struct TestResource {
-        resource_type: TestName,
-        name: TestName,
-        bytes: Vec<u8>,
-    }
-
-    impl TestResource {
-        fn new(resource_type: TestName, name: TestName, bytes: Vec<u8>) -> Self {
-            Self {
-                resource_type,
-                name,
-                bytes,
-            }
-        }
-    }
-
-    enum TestNode {
-        Directory(Vec<(TestName, TestNode)>),
-        Data(Vec<u8>),
-    }
-
     #[test]
-    fn opens_only_current_runtime_files() {
-        let root = synthetic_retail_install();
-        for unused in [
-            "Data/pictwv1.gob",
-            "Data/pictwv2.gob",
-            "Data/pictwv3.gob",
-            "Data/wave.gob",
-            "MUSIC/Track06.ogg",
-        ] {
-            assert!(!root.path().join(unused).exists());
-        }
-        let assets = RetailAssets::open(root.path()).unwrap();
-
-        assert_eq!(assets.read_font(RetailFontFace::System).unwrap(), None);
+    fn pelite_indexes_a_minimal_english_resource_directory() {
+        let path = Path::new("fixture.gob");
+        let bytes = std::fs::read(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/tests/fixtures/minimal_resource.pe"
+        ))
+        .expect("checked-in minimal PE fixture");
+        assert_eq!(bytes.len(), 66_048);
+        let index = index_english_resources(path, &bytes).unwrap();
+        let key = ResourceKey {
+            resource_type: ResourceName::Id(STRING_RESOURCE_TYPE),
+            name: ResourceName::Id(1117),
+        };
+        let range = index.get(&key).expect("RT_STRING block 1117");
+        let block = &bytes[range.clone()];
         assert_eq!(
-            assets
-                .read_font(RetailFontFace::BelweBold)
-                .unwrap()
-                .as_deref(),
-            Some(b"not a font".as_slice())
-        );
-        assert_eq!(
-            assets.string(StringGroup::new(0x2719).entry(1)).unwrap(),
+            decode_string_table_entry(path, block, 5).unwrap(),
             "Textile Mill"
         );
-        assert_eq!(
-            assets.string(StringGroup::new(0x2752).entry(1)).unwrap(),
-            "Clipper description"
-        );
-        assert_eq!(assets.news_table().story_ids()[0], 42);
-        assert_eq!(assets.news_table().headline(0), "Title");
-        assert_eq!(assets.news_table().body(0), "Body");
-
-        let bitmap = assets.picture(PictureId::new(4500)).unwrap();
-        assert_eq!(bitmap[bitmap.len() - 4], 0x22);
-        assert_eq!(
-            assets.default_dib_palette()[0x16],
-            crate::Rgb::new(0x57, 0x8b, 0xa6)
-        );
-        let idle = assets.turn_event_cursor(0x41b).unwrap();
-        assert_eq!(idle.width, 32);
-        assert_eq!(idle.height, 32);
-        assert_eq!(idle.rgba.len(), 32 * 32 * 4);
     }
 
     #[test]
-    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
-    fn opens_the_english_gog_installation_directly() {
-        let root = PathBuf::from(
-            std::env::var_os("IMPERIALISM_RETAIL_DIR")
-                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
+    fn resource_archive_find_resolves_indexed_bytes() {
+        let payload = b"payload";
+        let mut index = BTreeMap::new();
+        index.insert(
+            ResourceKey {
+                resource_type: ResourceName::Text(WAVE_RESOURCE_TYPE.to_owned()),
+                name: ResourceName::Id(7000),
+            },
+            0..payload.len(),
         );
-        let assets = RetailAssets::open(&root).unwrap();
-
+        let archive = ResourceArchive {
+            path: PathBuf::from("test.gob"),
+            bytes: payload.to_vec(),
+            english_resources: index,
+        };
         assert_eq!(
-            assets.string(StringGroup::new(0x2719).entry(1)).unwrap(),
-            "Textile Mill"
-        );
-        assert_eq!(
-            assets.string(StringGroup::new(0x2724).entry(12)).unwrap(),
-            "Civilian Report"
-        );
-        assert_eq!(
-            assets.string(StringGroup::new(0x2724).entry(13)).unwrap(),
-            "Rescind Orders"
-        );
-        assert_eq!(
-            assets.string(StringGroup::new(0x2724).entry(14)).unwrap(),
-            "Confirm Orders"
-        );
-        let names = assets.random_game_names().unwrap();
-        assert_eq!(names.localized_nation_names[NationId::new(0)], "Zimm");
-        assert_eq!(names.localized_nation_names[NationId::new(22)], "Sindel");
-        assert_eq!(
-            names.province_names_by_nation[NationId::new(0)][0],
-            "Bergen"
-        );
-        assert_eq!(
-            names.province_names_by_nation[NationId::new(22)][0],
-            "Vershire"
-        );
-        assert_eq!(names.zone_headline_templates[0], "[1] Lake");
-        assert_eq!(names.fallback_ocean_names[0], "Red");
-        assert!(
-            assets
-                .picture(PictureId::new(4500))
-                .unwrap()
-                .starts_with(b"BM")
-        );
-        let palette = assets.default_dib_palette();
-        assert_eq!(palette[0x13], crate::Rgb::new(0xff, 0xff, 0xff));
-        assert_eq!(palette[0x16], crate::Rgb::new(0x57, 0x8b, 0xa6));
-        let peace = assets
-            .turn_event_cursor(1028)
-            .expect("diplomacy peace cursor ~C1028");
-        assert_eq!(peace.width, 32);
-        assert_eq!(peace.height, 32);
-        assert_eq!(peace.rgba.len(), 32 * 32 * 4);
-        assert!(assets.chrome_backdrop().unwrap().starts_with(b"BM"));
-    }
-
-    #[test]
-    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
-    fn decodes_every_shipped_scenario_map_and_script() {
-        let root = PathBuf::from(
-            std::env::var_os("IMPERIALISM_RETAIL_DIR")
-                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
-        );
-        let assets = RetailAssets::open(&root).unwrap();
-        let single_player = assets.single_player_scenarios().unwrap();
-        assert_eq!(single_player.len(), 7);
-        assert_eq!(single_player[0].scenario, ScenarioMapId::new(9));
-        for index in [0, 1, 3, 9, 10, 11, 12, 13, 14, 15] {
-            let scenario = ScenarioMapId::new(index);
-            assert_eq!(
-                assets.scenario_map(scenario).unwrap().tiles.len(),
-                imperialism_core::STRATEGIC_TILE_COUNT
-            );
-            assert!(!assets.scenario_script(scenario).unwrap().is_empty());
-        }
-
-        let tutorial = ScenarioMapId::new(9);
-        let game = imperialism_core::create_scenario_game(
-            assets.scenario_map(tutorial).unwrap(),
-            tutorial,
-            &assets.scenario_script(tutorial).unwrap(),
-            MajorNationId::new(2),
-            imperialism_core::Difficulty::Easy,
-            1,
-        );
-        assert_eq!(game.turn().scenario_map, Some(tutorial));
-        assert_eq!(game.turn().economic_turn, 44);
-    }
-
-    #[test]
-    fn discovers_media_paths_without_requiring_wave_or_music_at_open() {
-        let root = synthetic_retail_install();
-        write_retail_file(root.path(), "MUSIC/Track06.ogg", b"not a real ogg");
-        let assets = RetailAssets::open(root.path()).unwrap();
-
-        assert_eq!(
-            assets.movie_path(MovieId::Open),
-            root.path().join("Movies/open.avi")
-        );
-        assert_eq!(
-            assets.movie_path(MovieId::Vote),
-            root.path().join("Movies/vote.avi")
-        );
-        assert!(!assets.movie_path(MovieId::Open).exists());
-        assert_eq!(
-            assets.music_track_path(MusicTrack::MAIN_MENU).unwrap(),
-            root.path().join("MUSIC/Track06.ogg")
-        );
-        assert!(matches!(
-            assets.music_track_path(MusicTrack::DIPLOMACY),
-            Err(RetailAssetError::MusicTrackNotFound(_))
-        ));
-        assert!(matches!(
-            assets.sound(SoundId::UI_CLICK),
-            Err(RetailAssetError::WaveArchiveNotFound)
-        ));
-        assert!(assets.sound_ids().is_empty());
-        assert!(assets.chrome_backdrop().unwrap().starts_with(b"BM"));
-    }
-
-    #[test]
-    fn loads_wave_resources_from_wave_gob() {
-        let root = synthetic_retail_install();
-        write_retail_file(
-            root.path(),
-            WAVE_ARCHIVE_PATH,
-            &synthetic_pe(vec![TestResource::new(
-                TestName::text(WAVE_RESOURCE_TYPE),
-                TestName::id(u32::from(SoundId::UI_CLICK.get())),
-                pcm_wav(),
-            )]),
-        );
-        let assets = RetailAssets::open(root.path()).unwrap();
-        let wave = assets.sound(SoundId::UI_CLICK).unwrap();
-        assert!(wave.starts_with(b"RIFF"));
-        assert_eq!(assets.sound_ids(), vec![SoundId::UI_CLICK]);
-    }
-
-    #[test]
-    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
-    fn inventories_gog_movies_music_and_wave_resources() {
-        let root = PathBuf::from(
-            std::env::var_os("IMPERIALISM_RETAIL_DIR")
-                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
-        );
-        let assets = RetailAssets::open(&root).unwrap();
-        for movie in [MovieId::Open, MovieId::Vote, MovieId::Win, MovieId::Lose] {
-            let path = assets.movie_path(movie);
-            assert!(
-                path.is_file(),
-                "expected GOG cinematic {} at {}",
-                movie.file_stem(),
-                path.display()
-            );
-        }
-        let menu = assets
-            .music_track_path(MusicTrack::MAIN_MENU)
-            .expect("GOG MUSIC/Track06.* replacement for CD cue 6");
-        assert!(menu.is_file(), "{}", menu.display());
-        assert!(
-            !assets.sound_ids().is_empty(),
-            "Data/wave.gob should expose WAVE resources"
-        );
-        assert!(
-            assets
-                .sound(SoundId::UI_CLICK)
-                .expect("WAVE 7000")
-                .starts_with(b"RIFF")
-        );
-        let backdrop = assets.chrome_backdrop().unwrap();
-        assert!(backdrop.starts_with(b"BM"));
-    }
-
-    #[test]
-    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
-    fn loads_recovered_civilian_order_sounds() {
-        let root = PathBuf::from(
-            std::env::var_os("IMPERIALISM_RETAIL_DIR")
-                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
-        );
-        let assets = RetailAssets::open(&root).unwrap();
-        for id in [
-            0x2328, 0x2329, 0x232a, 0x232b, 0x232c, 0x232d, 0x232e, 0x2331, 0x2332, 0x2333, 0x2335,
-            0x2338, 0x2339,
-        ] {
-            assert!(
-                assets
-                    .sound(SoundId::new(id))
-                    .unwrap_or_else(|_| panic!("civilian WAVE {id}"))
-                    .starts_with(b"RIFF")
-            );
-        }
-    }
-
-    fn temporary_root() -> TempDir {
-        tempfile::tempdir().unwrap()
-    }
-
-    fn synthetic_retail_install() -> TempDir {
-        let root = temporary_root();
-        for (index, relative) in PICTURE_ARCHIVE_PATHS.iter().enumerate() {
-            let mut resources = Vec::new();
-            if index == 0 {
-                resources.push(TestResource::new(
-                    TestName::id(2),
-                    TestName::id(4500),
-                    one_pixel_dib(0x11),
-                ));
-                resources.push(TestResource::new(
-                    TestName::id(2),
-                    TestName::text("4500.BMP"),
-                    one_pixel_dib(0x22),
-                ));
-                resources.push(TestResource::new(
-                    TestName::id(2),
-                    TestName::text("950.BMP"),
-                    default_palette_dib(),
-                ));
-            }
-            if index == 3 {
-                resources.push(TestResource::new(
-                    TestName::id(2),
-                    TestName::text("4500.BMP"),
-                    one_pixel_dib(0x33),
-                ));
-            }
-            write_retail_file(root.path(), relative, &synthetic_pe(resources));
-        }
-        write_retail_file(
-            root.path(),
-            STRINGS_ARCHIVE_PATH,
-            &synthetic_pe(vec![
-                TestResource::new(
-                    TestName::id(STRING_RESOURCE_TYPE),
-                    // Win32 LoadString uses LOWORD(group*100+index) for the block id.
-                    // 0x2719*100+1 -> LOWORD 0x45c5 -> block 1117, slot 5.
-                    TestName::id(1117),
-                    string_table_block(5, "Textile Mill"),
-                ),
-                TestResource::new(
-                    TestName::id(STRING_RESOURCE_TYPE),
-                    // 0x2752*100+1 -> LOWORD 0x5c09 -> block 1473, slot 9.
-                    TestName::id(1473),
-                    string_table_block(9, "Clipper description"),
-                ),
-            ]),
-        );
-
-        for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
-            write_retail_file(root.path(), relative, b"not a font");
-        }
-        let mut news_tab = vec![0; NEWS_TEMPLATE_COUNT * NEWS_ROW_BYTES];
-        news_tab[0..4].copy_from_slice(&42_i32.to_be_bytes());
-        news_tab[8..12].copy_from_slice(&5_i32.to_be_bytes());
-        news_tab[12..16].copy_from_slice(&5_i32.to_be_bytes());
-        news_tab[16..20].copy_from_slice(&4_i32.to_be_bytes());
-        write_retail_file(
-            root.path(),
-            TABLE_ARCHIVE_PATH,
-            &synthetic_pe(vec![
-                TestResource::new(
-                    TestName::text("TABLE"),
-                    TestName::text("NEWS.TAB"),
-                    news_tab,
-                ),
-                TestResource::new(
-                    TestName::text("TABLE"),
-                    TestName::text("NEWS.TEX"),
-                    b"TitleBody".to_vec(),
-                ),
-            ]),
-        );
-        write_retail_file(
-            root.path(),
-            EXE_PATH,
-            &synthetic_pe(turn_event_cursor_resources()),
-        );
-        root
-    }
-
-    fn turn_event_cursor_resources() -> Vec<TestResource> {
-        let cursor = one_bit_cursor_resource();
-        let group = group_cursor_directory(cursor.len() as u32, 7);
-        let mut resources = vec![
-            TestResource::new(TestName::id(CURSOR_RESOURCE_TYPE), TestName::id(7), cursor),
-            TestResource::new(
-                TestName::id(BITMAP_RESOURCE_TYPE),
-                TestName::id(CHROME_BACKDROP_BITMAP_ID),
-                default_palette_dib(),
+            archive.find(
+                ResourceName::Text(WAVE_RESOURCE_TYPE.to_owned()),
+                ResourceName::Id(7000),
             ),
-        ];
-        for index in 0..RetailAssets::TURN_EVENT_CURSOR_COUNT {
-            let id = RetailAssets::TURN_EVENT_CURSOR_BASE + index as u16;
-            resources.push(TestResource::new(
-                TestName::id(GROUP_CURSOR_RESOURCE_TYPE),
-                TestName::text(&format!("~C{id}")),
-                group.clone(),
-            ));
-        }
-        resources
+            Some(b"payload".as_slice())
+        );
+        assert!(
+            archive
+                .find(
+                    ResourceName::Text(WAVE_RESOURCE_TYPE.to_owned()),
+                    ResourceName::Id(7001),
+                )
+                .is_none()
+        );
     }
 
-    fn one_bit_cursor_resource() -> Vec<u8> {
-        let mut blob = Vec::new();
-        blob.extend_from_slice(&0u16.to_le_bytes());
-        blob.extend_from_slice(&0u16.to_le_bytes());
-        blob.extend_from_slice(&40u32.to_le_bytes());
-        blob.extend_from_slice(&32i32.to_le_bytes());
-        blob.extend_from_slice(&64i32.to_le_bytes());
-        blob.extend_from_slice(&1u16.to_le_bytes());
-        blob.extend_from_slice(&1u16.to_le_bytes());
-        blob.extend_from_slice(&0u32.to_le_bytes());
-        blob.extend_from_slice(&256u32.to_le_bytes());
-        blob.extend_from_slice(&0i32.to_le_bytes());
-        blob.extend_from_slice(&0i32.to_le_bytes());
-        blob.extend_from_slice(&2u32.to_le_bytes());
-        blob.extend_from_slice(&0u32.to_le_bytes());
-        blob.extend_from_slice(&[0, 0, 0, 0, 0xff, 0xff, 0xff, 0]);
-        blob.extend_from_slice(&[0u8; 128]);
-        blob.extend_from_slice(&[0xffu8; 128]);
-        blob
-    }
-
-    fn group_cursor_directory(resource_size: u32, resource_id: u16) -> Vec<u8> {
-        let mut group = Vec::new();
-        group.extend_from_slice(&0u16.to_le_bytes());
-        group.extend_from_slice(&2u16.to_le_bytes());
-        group.extend_from_slice(&1u16.to_le_bytes());
-        group.extend_from_slice(&32u16.to_le_bytes());
-        group.extend_from_slice(&64u16.to_le_bytes());
-        group.extend_from_slice(&1u16.to_le_bytes());
-        group.extend_from_slice(&1u16.to_le_bytes());
-        group.extend_from_slice(&resource_size.to_le_bytes());
-        group.extend_from_slice(&resource_id.to_le_bytes());
-        group
-    }
-
-    fn write_retail_file(root: &Path, relative: &str, bytes: &[u8]) {
-        let path = root.join(relative);
-        fs::create_dir_all(path.parent().unwrap()).unwrap();
-        fs::write(path, bytes).unwrap();
-    }
-
-    fn pcm_wav() -> Vec<u8> {
-        let mut wav = Vec::new();
-        wav.extend_from_slice(b"RIFF");
-        wav.extend_from_slice(&36u32.to_le_bytes());
-        wav.extend_from_slice(b"WAVE");
-        wav.extend_from_slice(b"fmt ");
-        wav.extend_from_slice(&16u32.to_le_bytes());
-        wav.extend_from_slice(&1u16.to_le_bytes());
-        wav.extend_from_slice(&1u16.to_le_bytes());
-        wav.extend_from_slice(&8000u32.to_le_bytes());
-        wav.extend_from_slice(&16000u32.to_le_bytes());
-        wav.extend_from_slice(&2u16.to_le_bytes());
-        wav.extend_from_slice(&16u16.to_le_bytes());
-        wav.extend_from_slice(b"data");
-        wav.extend_from_slice(&4u32.to_le_bytes());
-        wav.extend_from_slice(&[0, 0, 0, 0]);
-        wav
-    }
-
-    fn one_pixel_dib(marker: u8) -> Vec<u8> {
-        let mut dib = Vec::new();
-        dib.extend_from_slice(&40u32.to_le_bytes());
-        dib.extend_from_slice(&1i32.to_le_bytes());
-        dib.extend_from_slice(&1i32.to_le_bytes());
-        dib.extend_from_slice(&1u16.to_le_bytes());
-        dib.extend_from_slice(&24u16.to_le_bytes());
-        dib.extend_from_slice(&0u32.to_le_bytes());
-        dib.extend_from_slice(&4u32.to_le_bytes());
-        dib.extend_from_slice(&0i32.to_le_bytes());
-        dib.extend_from_slice(&0i32.to_le_bytes());
-        dib.extend_from_slice(&0u32.to_le_bytes());
-        dib.extend_from_slice(&0u32.to_le_bytes());
-        dib.extend_from_slice(&[marker, 0, 0, 0]);
-        dib
-    }
-
-    fn default_palette_dib() -> Vec<u8> {
-        let mut dib = Vec::new();
-        dib.extend_from_slice(&40u32.to_le_bytes());
-        dib.extend_from_slice(&1i32.to_le_bytes());
-        dib.extend_from_slice(&1i32.to_le_bytes());
-        dib.extend_from_slice(&1u16.to_le_bytes());
-        dib.extend_from_slice(&8u16.to_le_bytes());
-        dib.extend_from_slice(&0u32.to_le_bytes());
-        dib.extend_from_slice(&4u32.to_le_bytes());
-        dib.extend_from_slice(&0i32.to_le_bytes());
-        dib.extend_from_slice(&0i32.to_le_bytes());
-        dib.extend_from_slice(&0u32.to_le_bytes());
-        dib.extend_from_slice(&0u32.to_le_bytes());
-        for index in 0..256u16 {
-            let value = index as u8;
-            let rgb = if value == 0x16 {
-                [0x57, 0x8b, 0xa6]
-            } else {
-                [value, value, value]
-            };
-            dib.extend_from_slice(&[rgb[2], rgb[1], rgb[0], 0]);
-        }
-        dib.extend_from_slice(&[0, 0, 0, 0]);
-        dib
-    }
-
-    fn string_table_block(slot: usize, text: &str) -> Vec<u8> {
+    #[test]
+    fn decode_string_table_entry_reads_the_requested_slot() {
         let mut block = Vec::new();
-        for current_slot in 0..16 {
-            let words = if current_slot == slot {
-                text.encode_utf16().collect::<Vec<_>>()
+        for slot in 0..16 {
+            let words = if slot == 9 {
+                "Clipper description".encode_utf16().collect::<Vec<_>>()
             } else {
                 Vec::new()
             };
@@ -1276,134 +836,9 @@ mod tests {
                 block.extend_from_slice(&word.to_le_bytes());
             }
         }
-        block
-    }
-
-    fn synthetic_pe(resources: Vec<TestResource>) -> Vec<u8> {
-        let mut types = BTreeMap::<TestName, BTreeMap<TestName, Vec<u8>>>::new();
-        for resource in resources {
-            types
-                .entry(resource.resource_type)
-                .or_default()
-                .insert(resource.name, resource.bytes);
-        }
-        let root = TestNode::Directory(
-            types
-                .into_iter()
-                .map(|(resource_type, names)| {
-                    let names = names
-                        .into_iter()
-                        .map(|(name, bytes)| {
-                            (
-                                name,
-                                TestNode::Directory(vec![(
-                                    TestName::id(ENGLISH_LANGUAGE),
-                                    TestNode::Data(bytes),
-                                )]),
-                            )
-                        })
-                        .collect();
-                    (resource_type, TestNode::Directory(names))
-                })
-                .collect(),
+        assert_eq!(
+            decode_string_table_entry(Path::new("strings.gob"), &block, 9).unwrap(),
+            "Clipper description"
         );
-
-        let mut bytes = vec![0u8; RESOURCE_OFFSET + RESOURCE_SIZE];
-        bytes[..2].copy_from_slice(b"MZ");
-        write_u32(&mut bytes, 0x3c, PE_OFFSET as u32);
-        bytes[PE_OFFSET..PE_OFFSET + 4].copy_from_slice(b"PE\0\0");
-        write_u16(&mut bytes, PE_OFFSET + 4, 0x14c);
-        write_u16(&mut bytes, PE_OFFSET + 6, 1);
-        write_u16(&mut bytes, PE_OFFSET + 20, 224);
-        write_u16(&mut bytes, OPTIONAL_OFFSET, 0x10b);
-        write_u32(&mut bytes, OPTIONAL_OFFSET + 32, 0x1000);
-        write_u32(&mut bytes, OPTIONAL_OFFSET + 36, 0x200);
-        write_u32(&mut bytes, OPTIONAL_OFFSET + 56, 0x5000);
-        write_u32(&mut bytes, OPTIONAL_OFFSET + 60, RESOURCE_OFFSET as u32);
-        write_u32(&mut bytes, OPTIONAL_OFFSET + 92, 16);
-        write_u32(&mut bytes, OPTIONAL_OFFSET + 112, RESOURCE_RVA);
-        write_u32(&mut bytes, OPTIONAL_OFFSET + 116, RESOURCE_SIZE as u32);
-        bytes[SECTION_OFFSET..SECTION_OFFSET + 8].copy_from_slice(b".rsrc\0\0\0");
-        write_u32(&mut bytes, SECTION_OFFSET + 8, RESOURCE_SIZE as u32);
-        write_u32(&mut bytes, SECTION_OFFSET + 12, RESOURCE_RVA);
-        write_u32(&mut bytes, SECTION_OFFSET + 16, RESOURCE_SIZE as u32);
-        write_u32(&mut bytes, SECTION_OFFSET + 20, RESOURCE_OFFSET as u32);
-
-        let mut cursor = 0usize;
-        let (root_offset, root_is_directory) = write_node(&mut bytes, &mut cursor, &root);
-        assert_eq!(root_offset, 0);
-        assert!(root_is_directory);
-        bytes
-    }
-
-    fn write_node(bytes: &mut [u8], cursor: &mut usize, node: &TestNode) -> (u32, bool) {
-        match node {
-            TestNode::Data(payload) => {
-                let data_entry = allocate(cursor, 16, 4);
-                let data = allocate(cursor, payload.len(), 1);
-                let base = RESOURCE_OFFSET;
-                bytes[base + data..base + data + payload.len()].copy_from_slice(payload);
-                write_u32(bytes, base + data_entry, RESOURCE_RVA + data as u32);
-                write_u32(bytes, base + data_entry + 4, payload.len() as u32);
-                (data_entry as u32, false)
-            }
-            TestNode::Directory(entries) => {
-                let directory = allocate(cursor, 16 + entries.len() * 8, 4);
-                let mut ordered = entries.iter().collect::<Vec<_>>();
-                ordered.sort_by(|(left, _), (right, _)| {
-                    let left_kind = matches!(left, TestName::Text(_));
-                    let right_kind = matches!(right, TestName::Text(_));
-                    right_kind.cmp(&left_kind).then_with(|| left.cmp(right))
-                });
-                let named = ordered
-                    .iter()
-                    .filter(|(name, _)| matches!(name, TestName::Text(_)))
-                    .count();
-                let base = RESOURCE_OFFSET;
-                write_u16(bytes, base + directory + 12, named as u16);
-                write_u16(bytes, base + directory + 14, (ordered.len() - named) as u16);
-                for (index, (name, child)) in ordered.into_iter().enumerate() {
-                    let raw_name = write_name(bytes, cursor, name);
-                    let (child_offset, child_is_directory) = write_node(bytes, cursor, child);
-                    let target = child_offset | if child_is_directory { 0x8000_0000 } else { 0 };
-                    let entry = base + directory + 16 + index * 8;
-                    write_u32(bytes, entry, raw_name);
-                    write_u32(bytes, entry + 4, target);
-                }
-                (directory as u32, true)
-            }
-        }
-    }
-
-    fn write_name(bytes: &mut [u8], cursor: &mut usize, name: &TestName) -> u32 {
-        match name {
-            TestName::Id(value) => *value,
-            TestName::Text(text) => {
-                let encoded = text.encode_utf16().collect::<Vec<_>>();
-                let offset = allocate(cursor, 2 + encoded.len() * 2, 2);
-                let base = RESOURCE_OFFSET + offset;
-                write_u16(bytes, base, encoded.len() as u16);
-                for (index, unit) in encoded.into_iter().enumerate() {
-                    write_u16(bytes, base + 2 + index * 2, unit);
-                }
-                0x8000_0000 | offset as u32
-            }
-        }
-    }
-
-    fn allocate(cursor: &mut usize, size: usize, alignment: usize) -> usize {
-        *cursor = (*cursor + alignment - 1) & !(alignment - 1);
-        let offset = *cursor;
-        *cursor += size;
-        assert!(*cursor <= RESOURCE_SIZE);
-        offset
-    }
-
-    fn write_u16(bytes: &mut [u8], offset: usize, value: u16) {
-        bytes[offset..offset + 2].copy_from_slice(&value.to_le_bytes());
-    }
-
-    fn write_u32(bytes: &mut [u8], offset: usize, value: u32) {
-        bytes[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
     }
 }
