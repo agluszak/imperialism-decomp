@@ -106,10 +106,6 @@ fn on_sideways_arrow_press(
     if disabled.get(entity).unwrap_or(false) || tracking.get(entity).is_ok() {
         return;
     }
-    let tick = retail_tick(time.as_ref());
-    if !poll_repeat_deadline(&mut repeat.repeat_deadline_tick, tick, true) {
-        return;
-    }
     press.propagate(false);
     if hilite.get(entity).is_ok() {
         commands.entity(entity).insert(Pressed);
@@ -117,7 +113,10 @@ fn on_sideways_arrow_press(
     commands.entity(entity).insert(RetailSidewaysArrowTracking {
         pointer_id: press.pointer_id,
     });
-    commands.trigger(Step { entity });
+    let tick = retail_tick(time.as_ref());
+    if poll_repeat_deadline(&mut repeat.repeat_deadline_tick, tick, true) {
+        commands.trigger(Step { entity });
+    }
 }
 
 fn clear_sideways_arrow_hold(
@@ -358,6 +357,53 @@ mod tests {
                 .get::<RetailSidewaysArrowTracking>(button)
                 .is_none()
         );
+    }
+
+    #[test]
+    fn gated_repress_tracks_and_repeats_while_held() {
+        let mut app = test_app();
+        let entity = app
+            .world_mut()
+            .spawn((
+                RetailSidewaysArrow,
+                RetailSidewaysArrowRepeat::default(),
+                RetailSidewaysArrowHilite,
+                Pickable::default(),
+            ))
+            .id();
+        app.update();
+        app.init_resource::<StepCount>();
+        app.world_mut()
+            .add_observer(move |step: On<Step>, mut count: ResMut<StepCount>| {
+                if step.entity == entity {
+                    count.0 += 1;
+                }
+            });
+        set_hovered(&mut app, entity);
+        advance_time(&mut app, 100 * 16);
+        app.update();
+
+        press(entity, &mut app);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+
+        release(entity, &mut app);
+        app.update();
+
+        advance_time(&mut app, 2 * 16);
+        press(entity, &mut app);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 1);
+        assert!(
+            app.world()
+                .get::<RetailSidewaysArrowTracking>(entity)
+                .is_some()
+        );
+        assert!(app.world().get::<Pressed>(entity).is_some());
+
+        advance_time(&mut app, 13 * 16);
+        app.update();
+        assert_eq!(app.world().resource::<StepCount>().0, 2);
     }
 
     #[test]
