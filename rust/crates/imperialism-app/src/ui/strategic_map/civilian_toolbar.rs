@@ -66,9 +66,6 @@ const DEVELOPER_ROW_ICON_X: [i16; 12] =
 const LEGEND_WINDOW_ORIGIN: IVec2 = IVec2::new(517, 182);
 
 #[derive(Component)]
-struct CivilianToolbarPage;
-
-#[derive(Component)]
 struct CivilianToolbarView {
     portrait: Entity,
     legend: Entity,
@@ -78,14 +75,6 @@ struct CivilianToolbarView {
 
 #[derive(Component)]
 struct CivilianLegendItem;
-
-#[derive(Component, Clone, Copy)]
-enum CivilianCommand {
-    Defend,
-    Later,
-    Done,
-    Disband,
-}
 
 #[derive(Clone)]
 struct LegendAtlases {
@@ -118,11 +107,10 @@ pub(crate) fn bind_civilian_toolbar(
         terrain: transparent_atlas(assets, TERRAIN_ICON_ATLAS),
     };
     let mut command_entities = [Entity::PLACEHOLDER; 4];
-    for (index, (tag, command)) in [
-        (fourcc!("dfnd"), CivilianCommand::Defend),
-        (fourcc!("latr"), CivilianCommand::Later),
-        (fourcc!("done"), CivilianCommand::Done),
-        (fourcc!("garr"), CivilianCommand::Disband),
+    for (index, (tag, mode)) in [
+        (fourcc!("dfnd"), CivilianIdleOrderMode::Sleep),
+        (fourcc!("latr"), CivilianIdleOrderMode::Later),
+        (fourcc!("done"), CivilianIdleOrderMode::Done),
     ]
     .into_iter()
     .enumerate()
@@ -131,52 +119,46 @@ pub(crate) fn bind_civilian_toolbar(
         command_entities[index] = entity;
         commands
             .entity(entity)
-            .insert((command, ActivateOnPress, InteractionDisabled))
-            .observe(on_civilian_command);
+            .insert((ActivateOnPress, InteractionDisabled))
+            .observe(
+                move |_: On<Activate>,
+                      mut session: ResMut<GameSession>,
+                      mut map: ResMut<StrategicMapSession>| {
+                    let Some(unit) = map.selection.civilian() else {
+                        return;
+                    };
+                    if session.game.set_civilian_idle_order(unit, mode) {
+                        map.cycle_selection(&mut session.game);
+                    }
+                },
+            );
     }
-    commands.entity(page).insert((
-        CivilianToolbarPage,
-        CivilianToolbarView {
-            portrait,
-            legend,
-            commands: command_entities,
-            atlases,
-        },
-    ));
-}
-
-fn on_civilian_command(
-    activate: On<Activate>,
-    commands_query: Query<&CivilianCommand>,
-    mut commands: Commands,
-    mut session: ResMut<GameSession>,
-    mut map: ResMut<StrategicMapSession>,
-    keys: Res<ButtonInput<KeyCode>>,
-) {
-    let Ok(command) = commands_query.get(activate.entity).copied() else {
-        return;
-    };
-    let Some(unit) = map.selection.civilian() else {
-        return;
-    };
-    let mode = match command {
-        CivilianCommand::Defend => Some(CivilianIdleOrderMode::Sleep),
-        CivilianCommand::Later => Some(CivilianIdleOrderMode::Later),
-        CivilianCommand::Done => Some(CivilianIdleOrderMode::Done),
-        CivilianCommand::Disband => {
-            if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
-                spawn_civilian_roster(&mut commands);
-            } else {
-                spawn_civilian_disband(&mut commands, unit);
-            }
-            None
-        }
-    };
-    if let Some(mode) = mode
-        && session.game.set_civilian_idle_order(unit, mode)
-    {
-        map.cycle_selection(&mut session.game);
-    }
+    let disband = tree.child(page, fourcc!("garr"));
+    command_entities[3] = disband;
+    commands
+        .entity(disband)
+        .insert((ActivateOnPress, InteractionDisabled))
+        .observe(
+            |_: On<Activate>,
+             keys: Res<ButtonInput<KeyCode>>,
+             mut commands: Commands,
+             map: Res<StrategicMapSession>| {
+                let Some(unit) = map.selection.civilian() else {
+                    return;
+                };
+                if keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight) {
+                    spawn_civilian_roster(&mut commands);
+                } else {
+                    spawn_civilian_disband(&mut commands, unit);
+                }
+            },
+        );
+    commands.entity(page).insert(CivilianToolbarView {
+        portrait,
+        legend,
+        commands: command_entities,
+        atlases,
+    });
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -184,7 +166,7 @@ fn sync_civilian_toolbar(
     session: Res<GameSession>,
     map: Res<StrategicMapSession>,
     mut commands: Commands,
-    mut pages: Query<(&mut Node, &CivilianToolbarView), With<CivilianToolbarPage>>,
+    mut pages: Query<(&mut Node, &CivilianToolbarView)>,
     items: Query<Entity, With<CivilianLegendItem>>,
     children: Query<&Children>,
     mut assets: RetailUiAssets,
