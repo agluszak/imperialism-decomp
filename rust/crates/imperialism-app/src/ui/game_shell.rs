@@ -362,16 +362,20 @@ pub(crate) fn bind_game_status_display(
 fn render_game_status(
     session: Res<GameSession>,
     retail: Res<RetailAssetsResource>,
-    views: Query<&GameStatusView>,
+    views: Query<Ref<GameStatusView>>,
     mut texts: Query<&mut Text>,
 ) {
-    let nation = session.active_major_nation();
+    let session_changed = session.is_changed();
     let date = {
         let season = retail.ui_string(10_000, (session.game.turn().economic_turn % 4) as u16);
         format!("{season}, {}", 1815 + session.game.turn().economic_turn / 4)
     };
+    let nation = session.active_major_nation();
     let treasury = format_currency(session.game.nations().major(nation).common.treasury);
     for view in &views {
+        if !session_changed && !view.is_added() {
+            continue;
+        }
         texts
             .get_mut(view.date)
             .expect("bound status date text")
