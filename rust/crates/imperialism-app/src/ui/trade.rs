@@ -867,11 +867,13 @@ mod tests {
                 .player_trade_order(nation, commodity)
                 == PlayerTradeOrder::Buy;
             let visible = trade_bid_tab_visible(capacity, active, bid_count);
-            app.world_mut().entity_mut(bid(commodity)).insert(if visible {
-                Visibility::Visible
-            } else {
-                Visibility::Hidden
-            });
+            app.world_mut()
+                .entity_mut(bid(commodity))
+                .insert(if visible {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                });
         }
 
         assert_eq!(
@@ -905,11 +907,13 @@ mod tests {
                 .player_trade_order(nation, commodity)
                 == PlayerTradeOrder::Buy;
             let visible = trade_bid_tab_visible(capacity, active, bid_count);
-            app.world_mut().entity_mut(bid(commodity)).insert(if visible {
-                Visibility::Visible
-            } else {
-                Visibility::Hidden
-            });
+            app.world_mut()
+                .entity_mut(bid(commodity))
+                .insert(if visible {
+                    Visibility::Visible
+                } else {
+                    Visibility::Hidden
+                });
         }
         assert_eq!(
             app.world().get::<Visibility>(bid(other)),
