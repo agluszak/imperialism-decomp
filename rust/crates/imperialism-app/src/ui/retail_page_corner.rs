@@ -11,13 +11,24 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui::picking_backend::ui_picking;
 
 /// Which half of a page-corner control accepts clicks.
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq, Reflect)]
+#[derive(Component, Clone, Copy, Debug, Default, Eq, PartialEq, Reflect)]
 #[reflect(Component)]
 pub enum RetailPageCorner {
     /// `lcor`: accept when local `x < y`.
+    #[default]
     Left,
     /// `rcor`: accept when `height - y < x`.
     Right,
+}
+
+pub fn retail_page_corner_left() -> impl Scene {
+    bsn! { RetailPageCorner }
+}
+
+pub fn retail_page_corner_right() -> impl Scene {
+    bsn! {
+        template(|_context| Ok(RetailPageCorner::Right))
+    }
 }
 
 pub(super) fn register_page_corner(app: &mut App) {

@@ -1,19 +1,13 @@
 //! Transport gauge fill/limit presentation helpers.
 //!
-//! `retail_transport_*_gauge` owns the track, fill, and limit child hierarchy.
-//! Screens bind [`TransportGaugeParts`] and update fill/limit via retained handles.
-//! Recovered caption and arrow controls remain ordinary generated children.
-//!
-//! Unlike `retail_numbered_arrow()`, these helpers cannot own their entire subtree
-//! in BSN `Children [...]`. A `TTransportPicture` resource node has both private
-//! Windows implementation entities (track/fill/limit) and recovered public controls
-//! (`text`, `left`, `rght`, `valu`) that application code binds by tag. The
-//! template adds only the private entities; the outer generated scene keeps the
-//! recovered siblings.
+//! Private track/fill/limit entities are declared in BSN via [`transport_gauge_capacity_children`]
+//! and [`transport_gauge_allocation_children`]. Screens bind [`TransportGaugeParts`] and update
+//! fill/limit via retained handles. Recovered caption and arrow controls remain ordinary
+//! generated children.
 
-use crate::RetailAssetsResource;
-use bevy::ecs::template::TemplateContext;
+use super::retail::retail_background_color;
 use bevy::prelude::*;
+use bevy::scene::SceneList;
 
 const TRACK_WIDTH: f32 = 113.0;
 const TRACK_TOP: f32 = 13.0;
@@ -39,25 +33,91 @@ pub struct TransportGaugeParts {
     pub limit: Entity,
 }
 
-#[derive(Clone, Copy)]
-struct TransportGaugeColors {
-    track_bg: Color,
-    fill: Color,
-    limit: Color,
-}
-
-/// Total-capacity row (`tota`): partial fill palette, no limit marker.
-pub fn retail_transport_capacity_gauge(owner_left: i32) -> impl Scene {
+/// Retained child refs for a capacity (`tota`) gauge row.
+pub fn transport_gauge_capacity_parts() -> impl Scene {
     bsn! {
-        template(move |context| Ok(spawn_transport_gauge(context, owner_left, true)))
+        TransportGaugeParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
     }
 }
 
-/// Per-resource allocation row: allocation fill palette with limit marker.
-pub fn retail_transport_allocation_gauge(owner_left: i32) -> impl Scene {
+/// Retained child refs for an allocation gauge row.
+pub fn transport_gauge_allocation_parts() -> impl Scene {
     bsn! {
-        template(move |context| Ok(spawn_transport_gauge(context, owner_left, false)))
+        TransportGaugeParts { fill: #Fill, limit: #Limit }
     }
+}
+
+/// Private gauge entities for a capacity row's `Children [ ... ]`.
+pub fn transport_gauge_capacity_children(owner_left: i32) -> impl SceneList {
+    let track_left = transport_gauge_track_left(owner_left);
+    bsn_list! [
+        (
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(track_left),
+                top: px(TRACK_TOP),
+                width: px(TRACK_WIDTH),
+                height: px(TRACK_HEIGHT),
+            }
+            retail_background_color(TRACK_BG_PALETTE)
+            Pickable::IGNORE
+        ),
+        (
+            #Fill
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(track_left),
+                top: px(TRACK_TOP),
+                width: px(0.0),
+                height: px(TRACK_HEIGHT),
+            }
+            retail_background_color(CAPACITY_FILL_PALETTE)
+            Pickable::IGNORE
+        ),
+    ]
+}
+
+/// Private gauge entities for an allocation row's `Children [ ... ]`.
+pub fn transport_gauge_allocation_children(owner_left: i32) -> impl SceneList {
+    let track_left = transport_gauge_track_left(owner_left);
+    bsn_list! [
+        (
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(track_left),
+                top: px(TRACK_TOP),
+                width: px(TRACK_WIDTH),
+                height: px(TRACK_HEIGHT),
+            }
+            retail_background_color(TRACK_BG_PALETTE)
+            Pickable::IGNORE
+        ),
+        (
+            #Fill
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(track_left),
+                top: px(TRACK_TOP),
+                width: px(0.0),
+                height: px(TRACK_HEIGHT),
+            }
+            retail_background_color(ALLOCATION_FILL_PALETTE)
+            Pickable::IGNORE
+        ),
+        (
+            #Limit
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(track_left - 1.0),
+                top: px(LIMIT_TOP),
+                width: px(LIMIT_WIDTH),
+                height: px(LIMIT_HEIGHT),
+            }
+            retail_background_color(LIMIT_PALETTE)
+            Visibility::Hidden
+            Pickable::IGNORE
+        ),
+    ]
 }
 
 fn transport_gauge_track_left(owner_left: i32) -> f32 {
@@ -66,102 +126,6 @@ fn transport_gauge_track_left(owner_left: i32) -> f32 {
     } else {
         0x61 as f32
     }
-}
-
-fn spawn_transport_gauge(
-    context: &mut TemplateContext,
-    owner_left: i32,
-    capacity: bool,
-) -> TransportGaugeParts {
-    let colors = TransportGaugeColors {
-        track_bg: palette_color(context, TRACK_BG_PALETTE),
-        fill: palette_color(
-            context,
-            if capacity {
-                CAPACITY_FILL_PALETTE
-            } else {
-                ALLOCATION_FILL_PALETTE
-            },
-        ),
-        limit: palette_color(context, LIMIT_PALETTE),
-    };
-    let mut parts = TransportGaugeParts {
-        fill: Entity::PLACEHOLDER,
-        limit: Entity::PLACEHOLDER,
-    };
-    context.entity.with_children(|parent| {
-        parts = spawn_transport_gauge_nodes(
-            parent,
-            transport_gauge_track_left(owner_left),
-            capacity,
-            colors,
-        );
-    });
-    parts
-}
-
-fn spawn_transport_gauge_nodes(
-    parent: &mut ChildSpawner,
-    track_left: f32,
-    capacity: bool,
-    colors: TransportGaugeColors,
-) -> TransportGaugeParts {
-    parent.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(track_left),
-            top: Val::Px(TRACK_TOP),
-            width: Val::Px(TRACK_WIDTH),
-            height: Val::Px(TRACK_HEIGHT),
-            ..default()
-        },
-        BackgroundColor(colors.track_bg),
-        Pickable::IGNORE,
-    ));
-    let fill = parent
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(track_left),
-                top: Val::Px(TRACK_TOP),
-                width: Val::Px(0.0),
-                height: Val::Px(TRACK_HEIGHT),
-                ..default()
-            },
-            BackgroundColor(colors.fill),
-            Pickable::IGNORE,
-        ))
-        .id();
-    let limit = if capacity {
-        Entity::PLACEHOLDER
-    } else {
-        parent
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(track_left - 1.0),
-                    top: Val::Px(LIMIT_TOP),
-                    width: Val::Px(LIMIT_WIDTH),
-                    height: Val::Px(LIMIT_HEIGHT),
-                    ..default()
-                },
-                BackgroundColor(colors.limit),
-                Visibility::Hidden,
-                Pickable::IGNORE,
-            ))
-            .id()
-    };
-
-    TransportGaugeParts { fill, limit }
-}
-
-fn palette_color(context: &TemplateContext, index: u8) -> Color {
-    let [red, green, blue] = context
-        .resource::<RetailAssetsResource>()
-        .assets()
-        .default_dib_palette()[index]
-        .to_array();
-    Color::srgb_u8(red, green, blue)
 }
 
 /// `TTransportPicture::Refresh` 113px remainder-distribution fill width.

@@ -14,6 +14,7 @@ use bevy::ui::{InteractionDisabled, Pressed};
 /// Marker for controls that use retail sideways repeat-step input.
 #[derive(Component, Clone, Copy, Debug, Default, Reflect)]
 #[reflect(Component)]
+#[require(Pickable, RetailSidewaysArrowRepeat)]
 pub struct RetailSidewaysArrow;
 
 /// `TSidewaysArrow` hilite while held; omit on [`TRightLeftView`] replacements.
@@ -44,8 +45,7 @@ const TICKS_PER_REPEAT: u32 = 5;
 const INITIAL_REPEAT_DELAY: u32 = 10;
 
 pub(super) fn register_sideways_arrow(app: &mut App) {
-    app.add_observer(on_sideways_arrow_added)
-        .add_observer(on_sideways_arrow_press)
+    app.add_observer(on_sideways_arrow_press)
         .add_observer(on_sideways_arrow_release)
         .add_observer(on_sideways_arrow_cancel)
         .add_observer(on_sideways_arrow_drag_end)
@@ -55,12 +55,6 @@ pub(super) fn register_sideways_arrow(app: &mut App) {
                 .chain()
                 .after(PickingSystems::Hover),
         );
-}
-
-fn on_sideways_arrow_added(add: On<Add, RetailSidewaysArrow>, mut commands: Commands) {
-    commands
-        .entity(add.entity)
-        .insert(RetailSidewaysArrowRepeat::default());
 }
 
 fn retail_tick(time: &Time<Real>) -> u32 {

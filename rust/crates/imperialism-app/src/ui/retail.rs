@@ -21,8 +21,8 @@ pub use super::retail_placard::{
 pub use super::retail_sideways_arrow::Step;
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_transport_gauge::{
-    TransportGaugeParts, retail_transport_allocation_gauge, retail_transport_capacity_gauge,
-    transport_gauge_width,
+    TransportGaugeParts, transport_gauge_allocation_children, transport_gauge_allocation_parts,
+    transport_gauge_capacity_children, transport_gauge_capacity_parts, transport_gauge_width,
 };
 
 /// Provenance tag recovered from the retail View resource.
@@ -37,7 +37,7 @@ pub struct RetailPictureSwap {
 }
 
 /// A `TPictureButton` down-state bitmap drawn only while the control is pressed.
-#[derive(Component, Debug, Default)]
+#[derive(Component, Debug, Default, Clone)]
 pub struct RetailPressedOverlay;
 
 /// `TMadnessButton::CheckTheLook` bitmap frames: base+0..=4 from checked/pressed/disabled.
@@ -92,31 +92,34 @@ pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
         template(move |context| {
             let idle = load_template_picture(context, PictureId::new(idle))?;
             let active = load_template_picture(context, PictureId::new(active))?;
-            // Generated radios/checkboxes often already have `Checked` (or `Pressed`)
-            // before this template runs; observers on `Add<Checked>` would miss it.
-            let initial = if context.entity.get::<Pressed>().is_some()
-                || context.entity.get::<Checked>().is_some()
-            {
-                active.clone()
-            } else {
-                idle.clone()
-            };
-            context.entity.insert(RetailPictureSwap { idle, active });
-            Ok(ImageNode::new(initial))
+            Ok(RetailPictureSwap { idle, active })
+        })
+        template(move |context| {
+            Ok(ImageNode::new(load_template_picture(
+                context,
+                PictureId::new(idle),
+            )?))
         })
     }
 }
 
-/// `TPictureButton` hilite bitmap: present but fully transparent until `Pressed`.
-pub fn retail_pressed_overlay_picture(id: i16) -> impl Scene {
+/// `TPictureButton` base art plus a child overlay shown only while pressed.
+pub fn retail_picture_button(idle: i16, overlay: i16) -> impl Scene {
     bsn! {
-        template(move |context| {
-            let image = load_template_picture(context, PictureId::new(id))?;
-            context.entity.insert(RetailPressedOverlay);
-            let mut node = ImageNode::new(image);
-            node.color.set_alpha(0.0);
-            Ok(node)
-        })
+        retail_picture(idle)
+        Children [
+            (
+                #PressedOverlay
+                template(move |context| {
+                    let image = load_template_picture(context, PictureId::new(overlay))?;
+                    let mut node = ImageNode::new(image);
+                    node.color.set_alpha(0.0);
+                    Ok(node)
+                })
+                RetailPressedOverlay
+                Pickable::IGNORE
+            )
+        ]
     }
 }
 
@@ -124,22 +127,14 @@ pub fn retail_pressed_overlay_picture(id: i16) -> impl Scene {
 pub fn retail_madness_picture(base: i16) -> impl Scene {
     bsn! {
         template(move |context| {
-            let frames = std::array::from_fn(|index| {
-                let id = base + index as i16;
-                load_template_picture(context, PictureId::new(id)).unwrap_or_else(|error| {
-                    panic!("retail madness picture {id} must load: {error}")
-                })
-            });
-            // Derive the opening frame from components already on the entity;
-            // do not rely on a later `Add` observer to correct construction.
-            let initial = frames[madness_frame_index(
-                context.entity.get::<Checked>().is_some(),
-                context.entity.get::<Pressed>().is_some(),
-                context.entity.get::<InteractionDisabled>().is_some(),
-            )]
-            .clone();
-            context.entity.insert(RetailMadnessPicture { frames });
-            Ok(ImageNode::new(initial))
+            Ok(RetailMadnessPicture {
+                frames: load_madness_frames(context, base),
+            })
+        })
+        template(move |context| {
+            Ok(ImageNode::new(
+                load_madness_frames(context, base)[0].clone(),
+            ))
         })
     }
 }
@@ -252,22 +247,12 @@ pub struct RetailRadioTextFill {
 pub fn retail_radio_text_fill() -> impl Scene {
     bsn! {
         template(move |context| {
-            let fill = RetailRadioTextFill {
+            Ok(RetailRadioTextFill {
                 selected: template_palette_color(context, RADIO_TEXT_SELECTED_PALETTE),
                 pressed: template_palette_color(context, RADIO_TEXT_PRESSED_PALETTE),
-            };
-            // Generated radios often already have `Checked` before this template
-            // runs; observers on `Add<Checked>` would have missed the fill.
-            let background = if context.entity.get::<Pressed>().is_some() {
-                fill.pressed
-            } else if context.entity.get::<Checked>().is_some() {
-                fill.selected
-            } else {
-                Color::NONE
-            };
-            context.entity.insert(fill);
-            Ok(BackgroundColor(background))
+            })
         })
+        BackgroundColor(Color::NONE)
     }
 }
 
@@ -462,12 +447,14 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
+            .add_observer(on_retail_picture_swap_state::<Add, RetailPictureSwap>)
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
             .add_observer(on_retail_picture_swap_state::<Remove, Checked>)
             .add_observer(on_retail_pressed_overlay_state::<Add>)
             .add_observer(on_retail_pressed_overlay_state::<Remove>)
+            .add_observer(on_retail_madness_picture_state::<Add, RetailMadnessPicture>)
             .add_observer(on_retail_madness_picture_state::<Add, Pressed>)
             .add_observer(on_retail_madness_picture_state::<Remove, Pressed>)
             .add_observer(on_retail_madness_picture_state::<Add, Checked>)
@@ -496,6 +483,15 @@ fn on_retail_pressed_overlay_state<E: EntityEvent>(
     };
     let pressed = pressed && !E::is::<Remove>();
     image.color.set_alpha(if pressed { 1.0 } else { 0.0 });
+}
+
+fn load_madness_frames(context: &mut TemplateContext, base: i16) -> [Handle<Image>; 5] {
+    std::array::from_fn(|index| {
+        let id = base + index as i16;
+        load_template_picture(context, PictureId::new(id)).unwrap_or_else(|error| {
+            panic!("retail madness picture {id} must load: {error}")
+        })
+    })
 }
 
 fn madness_frame_index(checked: bool, pressed: bool, disabled: bool) -> usize {
