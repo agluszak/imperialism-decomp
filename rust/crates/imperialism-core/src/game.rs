@@ -46,11 +46,8 @@ pub struct GameState {
     /// `TArmyMgr::mapContextActionRecordList04`. Marker fields are omitted from `.imp`.
     #[serde(default)]
     pub(crate) battle_reports: Vec<crate::BattleReport>,
-    /// Live interruptible-phase resume state. Not written to `.imp`.
-    #[serde(default)]
-    pub(crate) continuation: crate::turn_flow::TurnContinuation,
-    /// Authoritative runtime turn control for migrated phases. Not written to `.imp`.
-    #[serde(default)]
+    /// Live interrupt/resume state for the turn driver. Not written to `.imp`.
+    #[serde(default, rename = "continuation")]
     pub(crate) turn_flow: crate::turn_flow::TurnFlow,
     /// Immutable catalogs for this session. Restored from retail data on load.
     #[serde(skip)]
@@ -82,8 +79,6 @@ pub struct GameStateParts {
     pub news: NewsState,
     pub pending: PendingWorkState,
     pub battle_reports: Vec<crate::BattleReport>,
-    pub continuation: crate::turn_flow::TurnContinuation,
-    pub turn_flow: crate::turn_flow::TurnFlow,
 }
 
 impl GameState {
@@ -110,8 +105,7 @@ impl GameState {
             news: parts.news,
             pending: parts.pending,
             battle_reports: parts.battle_reports,
-            continuation: parts.continuation,
-            turn_flow: parts.turn_flow,
+            turn_flow: TurnFlow::Running,
             data: GameData::default(),
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
@@ -135,8 +129,10 @@ impl GameState {
         &self.turn
     }
 
-    pub const fn turn_flow(&self) -> &crate::turn_flow::TurnFlow {
-        &self.turn_flow
+    /// Restores runtime turn-flow state from the native oracle ephemeral overlay.
+    #[doc(hidden)]
+    pub fn restore_native_turn_flow(&mut self, flow: TurnFlow) {
+        self.turn_flow = flow;
     }
 
     pub const fn unit_ids(&self) -> &UnitIdAllocator {

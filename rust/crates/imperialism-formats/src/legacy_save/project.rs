@@ -1096,8 +1096,6 @@ impl LegacySaveV62 {
             news: NewsState::default(),
             pending,
             battle_reports: battle_reports(&self.army_reports),
-            continuation: TurnContinuation::default(),
-            turn_flow: TurnFlow::default(),
         }
     }
 

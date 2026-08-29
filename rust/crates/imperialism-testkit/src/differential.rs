@@ -3,7 +3,7 @@
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
     Difficulty, GameState, MajorNationId, NationId, NewsState, PendingWorkState, PhaseCode,
-    RngState, ScenarioMapId, Technology, TurnContinuation, TurnState, UnitIdAllocator,
+    RngState, ScenarioMapId, Technology, TurnFlow, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::de::{DeserializeOwned, Error};
@@ -35,7 +35,7 @@ struct EphemeralGameState {
     #[serde(default)]
     last_processed_nation: Option<MajorNationId>,
     #[serde(default, deserialize_with = "deserialize_native_continuation")]
-    continuation: TurnContinuation,
+    continuation: TurnFlow,
 }
 
 #[derive(Debug, Deserialize)]
@@ -71,7 +71,7 @@ impl NativeTurnState {
     }
 }
 
-fn deserialize_native_continuation<'de, D>(deserializer: D) -> Result<TurnContinuation, D::Error>
+fn deserialize_native_continuation<'de, D>(deserializer: D) -> Result<TurnFlow, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
@@ -84,7 +84,7 @@ where
             .ok()
             .and_then(Technology::from_index)
             .ok_or_else(|| D::Error::custom("invalid C++ technology report id"))?;
-        return Ok(TurnContinuation::TechnologyReport(technology));
+        return Ok(TurnFlow::TechnologyReport(technology));
     }
     serde_json::from_value(value).map_err(D::Error::custom)
 }
@@ -193,8 +193,9 @@ pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
     parts.diplomacy.last_processed_nation = capture.ephemeral.last_processed_nation;
-    parts.continuation = capture.ephemeral.continuation;
-    Ok(GameState::from_parts(parts))
+    let mut state = GameState::from_parts(parts);
+    state.restore_native_turn_flow(capture.ephemeral.continuation);
+    Ok(state)
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {

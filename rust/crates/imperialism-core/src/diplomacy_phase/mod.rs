@@ -61,12 +61,10 @@ impl GameState {
     /// Accepts or rejects the offer stored in the current continuation, then
     /// continues the remaining replies.
     pub(crate) fn resolve_diplomacy_offer(&mut self, accept: bool) -> DiplomacyPhaseResult {
-        let crate::turn_flow::TurnContinuation::DiplomacyOffer { nation, index } =
-            self.continuation
-        else {
+        let crate::turn_flow::TurnFlow::DiplomacyOffer { nation, index } = self.turn_flow else {
             panic!("diplomacy offer reply requires an active offer continuation");
         };
-        self.continuation = crate::turn_flow::TurnContinuation::None;
+        self.turn_flow = crate::turn_flow::TurnFlow::Running;
         self.apply_human_offer_decision(nation, usize::from(index), accept);
         let result = self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1);
         self.record_diplomacy_result(result)
@@ -75,10 +73,10 @@ impl GameState {
     /// Accepts or rejects the war-join dialog stored in the current continuation,
     /// then finishes the remaining reactions for that one war.
     pub(crate) fn resolve_diplomacy_war_join(&mut self, accept: bool) -> DiplomacyPhaseResult {
-        let crate::turn_flow::TurnContinuation::DiplomacyWarJoin(prompt) = self.continuation else {
+        let crate::turn_flow::TurnFlow::DiplomacyWarJoin(prompt) = self.turn_flow else {
             panic!("diplomacy war-join reply requires an active war-join continuation");
         };
-        self.continuation = crate::turn_flow::TurnContinuation::None;
+        self.turn_flow = crate::turn_flow::TurnFlow::Running;
         self.apply_war_join_decision(prompt, accept);
         let result =
             self.continue_war_reactions(prompt.pair_first, prompt.pair_second, prompt.cursor);
@@ -86,16 +84,14 @@ impl GameState {
     }
 
     fn record_diplomacy_result(&mut self, result: DiplomacyPhaseResult) -> DiplomacyPhaseResult {
-        self.continuation = match result {
-            DiplomacyPhaseResult::Resolved => crate::turn_flow::TurnContinuation::None,
-            DiplomacyPhaseResult::Offer(prompt) => {
-                crate::turn_flow::TurnContinuation::DiplomacyOffer {
-                    nation: prompt.nation,
-                    index: prompt.index,
-                }
-            }
+        self.turn_flow = match result {
+            DiplomacyPhaseResult::Resolved => crate::turn_flow::TurnFlow::Running,
+            DiplomacyPhaseResult::Offer(prompt) => crate::turn_flow::TurnFlow::DiplomacyOffer {
+                nation: prompt.nation,
+                index: prompt.index,
+            },
             DiplomacyPhaseResult::WarJoin(prompt) => {
-                crate::turn_flow::TurnContinuation::DiplomacyWarJoin(prompt)
+                crate::turn_flow::TurnFlow::DiplomacyWarJoin(prompt)
             }
         };
         result

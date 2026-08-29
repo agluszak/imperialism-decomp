@@ -67,12 +67,6 @@ pub struct PendingTradeOffer {
     pub commodity: TradeCommodity,
 }
 
-/// Progress of `TTradeMgr::StartDeals` / `NextTradeDeal`.
-///
-/// Returns `true` when the phase stops on a human Offer Sheet. The pending offer
-/// is owned by [`crate::TurnFlow`], not this return value.
-pub type TradePhaseBlocked = bool;
-
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(super) struct RankedDeal {
     pub(super) buyer: NationId,
@@ -146,7 +140,8 @@ impl GameState {
     ///
     /// Human buyers still in the market stop the turn driver. The following
     /// civilian phase is not started and [`PhaseCode::TRADE`] remains authoritative.
-    pub fn begin_trade_phase(&mut self) -> TradePhaseBlocked {
+    pub(crate) fn begin_trade_phase(&mut self) {
+        assert_eq!(self.turn.phase(), PhaseCode::TRADE);
         self.select_priority_nations_for_minor_relations();
         let mut phase = TradePhase::new();
         self.initialize_deal_books();
@@ -162,18 +157,20 @@ impl GameState {
             entry_ordinal: 1,
         };
         session.skip_empty_categories();
-        self.resume_trade_deals(session)
+        self.resume_trade_deals(session);
     }
 
     /// Applies the player's Offer Sheet answer and resumes `TTradeMgr::NextTradeDeal`.
     ///
     /// `amount` is the purchased quantity (`0` rejects). `stop_buying` is the `nomo`
     /// checkbox and becomes `SetDealResults` shortfall.
-    pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) -> TradePhaseBlocked {
-        let crate::turn_flow::TurnFlow::Trade(state) = std::mem::take(&mut self.turn_flow) else {
-            panic!("Offer Sheet reply requires an active trade flow");
+    pub(crate) fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) {
+        let crate::turn_flow::TurnFlow::AwaitingTradeOffer { session, offer } =
+            std::mem::replace(&mut self.turn_flow, crate::turn_flow::TurnFlow::Running)
+        else {
+            panic!("Offer Sheet reply requires an awaiting trade offer");
         };
-        let crate::turn_flow::TradeFlowState::AwaitingOffer { mut session, offer } = *state;
+        let mut session = *session;
         self.set_deal_results(
             offer.buyer,
             offer.seller,
@@ -183,23 +180,36 @@ impl GameState {
             stop_buying,
             &mut session.phase,
         );
-        self.resume_trade_deals(session)
+        self.resume_trade_deals(session);
+    }
+
+    /// Positions the game on a human Offer Sheet interrupt for UI tests.
+    #[doc(hidden)]
+    pub fn pose_human_trade_offer(&mut self) {
+        self.turn.phase = PhaseCode::TRADE;
+        self.begin_trade_phase();
+    }
+
+    /// Native-oracle helper: settle every ranked deal, auto-accepting human offers.
+    #[doc(hidden)]
+    pub fn drain_trade_offers_auto_accepting_human(&mut self) {
+        self.begin_trade_phase();
+        while let Some(offer) = self.pending_trade_offer() {
+            self.reply_to_trade_offer(offer.amount, false);
+        }
     }
 
     pub fn pending_trade_offer(&self) -> Option<PendingTradeOffer> {
         match &self.turn_flow {
-            crate::turn_flow::TurnFlow::Trade(state) => match state.as_ref() {
-                crate::turn_flow::TradeFlowState::AwaitingOffer { offer, .. } => Some(*offer),
-            },
-            crate::turn_flow::TurnFlow::Driving => None,
+            crate::turn_flow::TurnFlow::AwaitingTradeOffer { offer, .. } => Some(*offer),
+            _ => None,
         }
     }
 
     pub fn pending_trade_offer_cursor(&self) -> Option<(usize, usize)> {
-        let crate::turn_flow::TurnFlow::Trade(state) = &self.turn_flow else {
+        let crate::turn_flow::TurnFlow::AwaitingTradeOffer { session, .. } = &self.turn_flow else {
             return None;
         };
-        let crate::turn_flow::TradeFlowState::AwaitingOffer { session, .. } = state.as_ref();
         let category = session.category?;
         let category_index = DEAL_CATEGORY_ORDER
             .iter()
@@ -208,18 +218,20 @@ impl GameState {
         Some((category_index, session.entry_ordinal))
     }
 
-    fn resume_trade_deals(&mut self, session: TradeSession) -> TradePhaseBlocked {
+    fn resume_trade_deals(&mut self, session: TradeSession) {
         let mut session = session;
         if let Some(offer) = self.continue_trade_deals(&mut session) {
-            self.turn.phase = crate::PhaseCode::TRADE;
-            self.turn_flow = crate::turn_flow::TurnFlow::Trade(Box::new(
-                crate::turn_flow::TradeFlowState::AwaitingOffer { session, offer },
-            ));
-            true
+            debug_assert_eq!(self.turn.phase(), PhaseCode::TRADE);
+            self.turn_flow = crate::turn_flow::TurnFlow::AwaitingTradeOffer {
+                session: Box::new(session),
+                offer,
+            };
         } else {
-            self.turn_flow = crate::turn_flow::TurnFlow::Driving;
-            false
+            self.turn_flow = crate::turn_flow::TurnFlow::Running;
+            self.turn.phase = PhaseCode::CIVILIANS;
         }
+        self.turn_flow
+            .debug_assert_phase_consistency(self.turn.phase());
     }
 
     fn continue_trade_deals(&mut self, session: &mut TradeSession) -> Option<PendingTradeOffer> {
@@ -632,22 +644,23 @@ mod tests {
         state.nations.majors[&seller]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
+        state.turn.phase = PhaseCode::TRADE;
         state
     }
 
     #[test]
     fn begin_trade_phase_interrupts_for_a_human_buyer() {
         let mut state = human_clothing_offer_state();
-        assert!(state.begin_trade_phase());
+        state.begin_trade_phase();
         let offer = state.pending_trade_offer().expect("human buyer offer");
         assert_eq!(offer.buyer, NationId::new(0));
         assert_eq!(offer.seller, NationId::new(1));
         assert_eq!(offer.commodity, TradeCommodity::Clothing);
         assert!(offer.amount > 0);
-        assert_eq!(state.turn().phase(), crate::PhaseCode::TRADE);
+        assert_eq!(state.turn().phase(), PhaseCode::TRADE);
         assert!(matches!(
             state.turn_flow,
-            crate::turn_flow::TurnFlow::Trade(_)
+            crate::turn_flow::TurnFlow::AwaitingTradeOffer { .. }
         ));
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]
@@ -660,13 +673,14 @@ mod tests {
     #[test]
     fn rejecting_a_human_offer_resumes_and_can_complete() {
         let mut state = human_clothing_offer_state();
-        assert!(state.begin_trade_phase());
-        assert!(!state.reply_to_trade_offer(0, false));
+        state.begin_trade_phase();
+        state.reply_to_trade_offer(0, false);
         assert_eq!(state.pending_trade_offer(), None);
         assert!(matches!(
             state.turn_flow,
-            crate::turn_flow::TurnFlow::Driving
+            crate::turn_flow::TurnFlow::Running
         ));
+        assert_eq!(state.turn().phase(), PhaseCode::CIVILIANS);
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]
                 .economy
@@ -678,10 +692,11 @@ mod tests {
     #[test]
     fn accepting_the_posed_amount_settles_then_completes() {
         let mut state = human_clothing_offer_state();
-        assert!(state.begin_trade_phase());
+        state.begin_trade_phase();
         let offer = state.pending_trade_offer().expect("human buyer offer");
-        assert!(!state.reply_to_trade_offer(offer.amount, false));
+        state.reply_to_trade_offer(offer.amount, false);
         assert_eq!(state.pending_trade_offer(), None);
+        assert_eq!(state.turn().phase(), PhaseCode::CIVILIANS);
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]
                 .economy

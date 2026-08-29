@@ -495,11 +495,11 @@ mod tests {
             parts.turn.difficulty,
             player,
         );
-        parts.continuation = TurnContinuation::NavalBattle(
+        let mut state = GameState::from_parts(parts);
+        state.restore_native_turn_flow(TurnFlow::NavalBattle(
             NavyOrdersContinuation::player_encounter(attacker_force, defender_force),
-        );
-
-        GameState::from_parts(parts)
+        ));
+        state
     }
 
     fn test_app(state: GameState) -> App {

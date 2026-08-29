@@ -220,8 +220,6 @@ fn assert_state_except_ephemeral_turn_state(expected: &GameState, actual: &GameS
     let actual_object = actual.as_object_mut().unwrap();
     expected_object.remove("continuation");
     actual_object.remove("continuation");
-    expected_object.remove("turn_flow");
-    actual_object.remove("turn_flow");
     assert_eq!(
         first_serialized_difference(&expected, &actual).unwrap(),
         None
