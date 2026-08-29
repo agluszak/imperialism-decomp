@@ -309,48 +309,6 @@ impl GameState {
             || self.ocean.context_containing_province(province).is_some()
     }
 
-    /// Retail `TGreatPower::LoseProvince` / `TMinor::LoseProvince` after any
-    /// `TAutoGreatPower` pre-dispatch work has run.
-    pub(crate) fn lose_province(&mut self, nation: NationId, province: ProvinceId) {
-        if let Some(major) = MajorNationId::from_nation(nation) {
-            self.nations.majors[&major].common.lose_province(province);
-
-            // `KillUnitsIn` first pass: tracked civilian orders whose tile is in the lost
-            // province. Military `tileIndex06` is a province id and is not used here.
-            self.civilian_units.retain(|_, unit| {
-                unit.nation != nation
-                    || unit
-                        .location
-                        .tile()
-                        .is_none_or(|tile| self.map[tile].province != Some(province))
-            });
-
-            // Second pass frees already-detached military units (`tileIndex06 == -1`).
-            // Units still stationed in the lost province stay on the map.
-            self.military_units
-                .retain(|_, unit| unit.nation != nation || unit.stationed_province.is_some());
-            for mission in self.missions.values_mut() {
-                if mission.nation != nation {
-                    continue;
-                }
-                let army = match &mut mission.data {
-                    MissionData::DefendProvince { army, .. } => army,
-                    MissionData::AttackProvince(attack) => &mut attack.army,
-                    MissionData::Invade { attack, .. } => &mut attack.army,
-                    _ => continue,
-                };
-                army.units.retain(|id| self.military_units.contains_key(id));
-            }
-        } else {
-            let minor = MinorNationId::new(nation.get());
-            self.nations
-                .minors
-                .get_mut(&minor)
-                .expect("owned province requires its minor nation to be present")
-                .lose_province(province);
-        }
-    }
-
     /// Retail `TMapMgr::ChangeProvinceOwner` and its ordered virtual country dispatch.
     pub fn change_province_owner(&mut self, province: ProvinceId, new_owner: NationId) {
         self.nations
@@ -382,7 +340,14 @@ impl GameState {
                 }
                 auto.province_targets[province] = AiTargetState::Unmarked;
             }
-            self.lose_province(old_owner.nation(), province);
+            self.nations.majors[&old_owner].lose_province(
+                old_owner,
+                province,
+                &self.map,
+                &mut self.civilian_units,
+                &mut self.military_units,
+                &mut self.missions,
+            );
         } else {
             let old_owner = MinorNationId::new(old_owner.get());
             self.nations
