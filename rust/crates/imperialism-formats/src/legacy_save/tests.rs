@@ -925,7 +925,7 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
         .major(MajorNationId::new(0))
         .economy
         .pending_actions[PendingActionKind::NavyGrowthReward];
-    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
+    assert_eq!(pending.progress(), PendingActionProgress::RewardLevel(1));
     assert_eq!(pending.growth_reward_level(), Some(1));
     assert_eq!(pending.payload(), Some(1));
 
@@ -946,7 +946,7 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
         .major(MajorNationId::new(0))
         .economy
         .pending_actions[PendingActionKind::NavyGrowthReward];
-    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
+    assert_eq!(pending.progress(), PendingActionProgress::RewardLevel(1));
     assert_eq!(pending.growth_reward_level(), Some(1));
 
     let mut save = LegacySaveV62::parse(&bytes);
@@ -962,7 +962,7 @@ fn navy_growth_handled_reward_levels_round_trip_through_retail_save() {
         .major(MajorNationId::new(0))
         .economy
         .pending_actions[PendingActionKind::NavyGrowthReward];
-    assert_eq!(pending.status(), PendingActionStatus::from_retail(0x39));
+    assert_eq!(pending.progress(), PendingActionProgress::RewardLevel(6));
     assert_eq!(pending.growth_reward_level(), Some(6));
 }
 

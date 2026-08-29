@@ -224,8 +224,8 @@ impl GameState {
             } else if self.event_eligible(leader.nation())
                 && self.nations.majors[&leader].economy.pending_actions
                     [PendingActionKind::CouncilLeadMonument]
-                    .status()
-                    < PendingActionStatus::HANDLED
+                    .progress()
+                    < PendingActionProgress::Handled
             {
                 self.nations.majors[&leader].economy.pending_actions
                     [PendingActionKind::CouncilLeadMonument]

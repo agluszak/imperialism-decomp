@@ -90,13 +90,13 @@ pub(crate) fn produce_training(
             let new_level = i32::from(baseline.high) + i32::from(progress.quantity);
             if new_level >= 10 {
                 let payload = if owner.pending_actions[PendingActionKind::UniversityExpansion]
-                    .status()
-                    < crate::PendingActionStatus::QUEUED
+                    .progress()
+                    < crate::PendingActionProgress::Queued
                 {
                     Some(2)
                 } else if new_level >= 30
-                    && owner.pending_actions[PendingActionKind::UniversityExpansion].status()
-                        <= crate::PendingActionStatus::HANDLED
+                    && owner.pending_actions[PendingActionKind::UniversityExpansion].progress()
+                        <= crate::PendingActionProgress::Handled
                 {
                     Some(3)
                 } else {

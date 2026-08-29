@@ -779,7 +779,7 @@ mod tests {
         destination.auto = Some(AutoGreatPowerState::default());
         destination.economy.pending_actions
             [crate::PendingActionKind::ConqueredCapitalArmoryUpgrade] =
-            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, None);
+            crate::PendingActionState::new(crate::PendingActionProgress::Handled, None);
         state.insert_civilian_unit(
             crate::CivilianUnitId::new(1),
             crate::CivilianUnitState::new(
@@ -816,7 +816,7 @@ mod tests {
         let reward = state.nations.majors[&MajorNationId::new(1)]
             .economy
             .pending_actions[crate::PendingActionKind::ConquestMonumentArmory];
-        assert_eq!(reward.status(), crate::PendingActionStatus::QUEUED);
+        assert_eq!(reward.progress(), crate::PendingActionProgress::Queued);
         assert_eq!(reward.payload(), None);
         assert_eq!(
             state.nations.majors[&MajorNationId::new(1)]

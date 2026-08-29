@@ -359,13 +359,13 @@ mod tests {
         state.queue_navy_growth_pending(nation);
         let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
+        assert_eq!(pending.progress(), PendingActionProgress::Queued);
         assert_eq!(pending.payload(), Some(1));
 
         state.mark_all_pending_status_flags_handled();
         let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x34));
+        assert_eq!(pending.progress(), PendingActionProgress::RewardLevel(1));
         assert_eq!(pending.growth_reward_level(), Some(1));
 
         for _ in 0..12 {
@@ -374,13 +374,13 @@ mod tests {
         state.queue_navy_growth_pending(nation);
         let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::QUEUED);
+        assert_eq!(pending.progress(), PendingActionProgress::Queued);
         assert_eq!(pending.payload(), Some(2));
 
         state.mark_all_pending_status_flags_handled();
         let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x35));
+        assert_eq!(pending.progress(), PendingActionProgress::RewardLevel(2));
         assert_eq!(pending.growth_reward_level(), Some(2));
 
         for _ in 0..25 {
@@ -390,7 +390,7 @@ mod tests {
         state.mark_all_pending_status_flags_handled();
         let pending = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::NavyGrowthReward];
-        assert_eq!(pending.status(), PendingActionStatus::from_retail(0x36));
+        assert_eq!(pending.progress(), PendingActionProgress::RewardLevel(3));
         assert_eq!(pending.growth_reward_level(), Some(3));
     }
 }

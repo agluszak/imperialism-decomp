@@ -298,8 +298,8 @@ fn accepted_join_empire_makes_the_subject_a_colony() {
     assert_eq!(
         state.nations.majors[&source].economy.pending_actions
             [PendingActionKind::ColonyMonumentMerchantCapacity]
-            .status(),
-        PendingActionStatus::QUEUED
+            .progress(),
+        PendingActionProgress::Queued
     );
     assert!(
         state.pending.newspaper_events.iter().any(|event| matches!(
@@ -339,8 +339,8 @@ fn accepted_great_power_join_empire_is_a_colony_not_a_protectorate() {
     assert_eq!(
         state.nations.majors[&major(1)].economy.pending_actions
             [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
-            .status(),
-        PendingActionStatus::QUEUED
+            .progress(),
+        PendingActionProgress::Queued
     );
     assert_eq!(
         state

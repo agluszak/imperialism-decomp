@@ -194,11 +194,11 @@ impl MajorNation {
         self.common.add_province(province);
         if self.common.owned_regions.len() >= 9
             && self.economy.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade]
-                .status()
-                .has_reached(PendingActionStatus::HANDLED)
+                .progress()
+                .has_reached(PendingActionProgress::Handled)
             && !self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory]
-                .status()
-                .has_reached(PendingActionStatus::HANDLED)
+                .progress()
+                .has_reached(PendingActionProgress::Handled)
         {
             self.economy.pending_actions[PendingActionKind::ConquestMonumentArmory].queue();
         }
