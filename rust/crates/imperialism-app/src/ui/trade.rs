@@ -587,7 +587,8 @@ const fn trade_offer_tab_visible(capacity: i16, active: bool, stockpile: i16) ->
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::{RetailSidewaysArrow, RetailTag, Step};
+    use super::super::retail::{RetailTag, Step};
+    use super::super::retail_sideways_arrow::RetailSidewaysArrow;
     use super::*;
     use crate::ui::RetailUiPlugin;
     use crate::ui::test_support::beginning_of_game;

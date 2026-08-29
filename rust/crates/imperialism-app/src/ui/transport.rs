@@ -442,7 +442,8 @@ fn allocation_amount(
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::{RetailSidewaysArrow, RetailTag, Step};
+    use super::super::retail::{RetailTag, Step};
+    use super::super::retail_sideways_arrow::RetailSidewaysArrow;
     use super::*;
     use crate::ui::RetailUiPlugin;
     use bevy::asset::AssetPlugin;
