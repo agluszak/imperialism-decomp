@@ -189,47 +189,6 @@ impl MajorNation {
         }
     }
 
-    /// Retail `TGreatPower::LoseProvince` after any `TAutoGreatPower`
-    /// pre-dispatch work has run.
-    pub(crate) fn lose_province(
-        &mut self,
-        nation: MajorNationId,
-        province: ProvinceId,
-        map: &MapMgr,
-        civilian_units: &mut IndexMap<CivilianUnitId, CivilianUnitState>,
-        military_units: &mut IndexMap<MilitaryUnitId, MilitaryUnitState>,
-        missions: &mut IndexMap<MissionId, MissionState>,
-    ) {
-        self.common.lose_province(province);
-
-        let nation = nation.nation();
-        // `KillUnitsIn` first pass: tracked civilian orders whose tile is in the lost
-        // province. Military `tileIndex06` is a province id and is not used here.
-        civilian_units.retain(|_, unit| {
-            unit.nation != nation
-                || unit
-                    .location
-                    .tile()
-                    .is_none_or(|tile| map[tile].province != Some(province))
-        });
-
-        // Second pass frees already-detached military units (`tileIndex06 == -1`).
-        // Units still stationed in the lost province stay on the map.
-        military_units.retain(|_, unit| unit.nation != nation || unit.stationed_province.is_some());
-        for mission in missions.values_mut() {
-            if mission.nation != nation {
-                continue;
-            }
-            let army = match &mut mission.data {
-                MissionData::DefendProvince { army, .. } => army,
-                MissionData::AttackProvince(attack) => &mut attack.army,
-                MissionData::Invade { attack, .. } => &mut attack.army,
-                _ => continue,
-            };
-            army.units.retain(|id| military_units.contains_key(id));
-        }
-    }
-
     /// Retail `TGreatPower::AddProvince`.
     pub(crate) fn add_province(&mut self, province: ProvinceId) {
         self.common.add_province(province);
@@ -317,7 +276,7 @@ impl NationCommonState {
         self.owned_regions.len()
     }
 
-    fn lose_province(&mut self, province: ProvinceId) {
+    pub(crate) fn lose_province(&mut self, province: ProvinceId) {
         let position = self
             .owned_regions
             .iter()
