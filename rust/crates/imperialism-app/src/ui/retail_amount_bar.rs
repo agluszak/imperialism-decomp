@@ -19,14 +19,6 @@ pub const INDUSTRY_BAR_FILL: u8 = 0x16;
 // `TTraderAmtBar` calls `ApplyLegendSplitSlot34(0x37)` → palette 0xbd via GetColor.
 pub const TRADE_BAR_FILL: u8 = 0xbd;
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub enum AmountBarStyle {
-    #[default]
-    Production,
-    Trade,
-}
-
-/// Private child refs for an amount-bar hierarchy.
 ///
 /// Trade bars leave [`Self::limit`] as [`Entity::PLACEHOLDER`] (no limit child).
 #[derive(Component, FromTemplate, Clone, Copy)]
@@ -99,11 +91,12 @@ impl AmountBarGeometry {
     }
 }
 
-pub fn amount_bar_geometry(style: AmountBarStyle, segments: i16) -> AmountBarGeometry {
-    match style {
-        AmountBarStyle::Production => INDUSTRY_AMOUNT_BAR.with_segments(segments),
-        AmountBarStyle::Trade => TRADE_AMOUNT_BAR.with_segments(segments),
-    }
+pub fn production_amount_bar_geometry(segments: i16) -> AmountBarGeometry {
+    INDUSTRY_AMOUNT_BAR.with_segments(segments)
+}
+
+pub fn trade_amount_bar_geometry(segments: i16) -> AmountBarGeometry {
+    TRADE_AMOUNT_BAR.with_segments(segments)
 }
 
 /// Counter offset relative to the bar's top-left for industry/rail quantity markers.

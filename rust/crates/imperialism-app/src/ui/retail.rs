@@ -12,7 +12,7 @@ use imperialism_formats::*;
 use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{
-    AmountBarParts, AmountBarStyle, retail_production_amount_bar, retail_trade_amount_bar,
+    AmountBarParts, retail_production_amount_bar, retail_trade_amount_bar,
 };
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
 pub use super::retail_placard::{

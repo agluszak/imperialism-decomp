@@ -2,8 +2,8 @@ use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{AmountBarStyle, RetailTree, RetailUiAssets, placard_text_layout};
-use super::retail_amount_bar::{amount_bar_counter_offset, amount_bar_geometry};
+use super::retail::{RetailTree, RetailUiAssets, placard_text_layout};
+use super::retail_amount_bar::{amount_bar_counter_offset, production_amount_bar_geometry};
 use super::retail_resources::{
     CityFacilityRetailResources, CivilianUnitKindRetailResources, MilitaryUnitKindRetailResources,
     ResourceKindRetailResources, ShipTypeRetailResources,
@@ -25,6 +25,7 @@ use imperialism_core::*;
 use imperialism_formats::*;
 use std::time::Duration;
 
+mod building_layout_generated;
 mod building_visuals;
 mod control_tags;
 mod dialogs;
@@ -127,7 +128,7 @@ impl CityUi<'_, '_> {
     ///
     /// Trade-style bars leave [`AmountBarView::limit`] as [`Entity::PLACEHOLDER`].
     fn amount_bar(&mut self, view: AmountBarView, value: i16, range: i16, maximum: i16) {
-        let geometry = amount_bar_geometry(AmountBarStyle::Production, range);
+        let geometry = production_amount_bar_geometry(range);
         self.nodes
             .get_mut(view.fill)
             .expect("amount bar fill")

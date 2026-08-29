@@ -1,7 +1,7 @@
 use super::*;
 use crate::ui::retail::{AmountBarParts, Step};
 use crate::ui::retail_amount_bar::{
-    AmountBarStyle, amount_bar_click_value, amount_bar_geometry, amount_bar_x_from_normalized,
+    amount_bar_click_value, amount_bar_x_from_normalized, production_amount_bar_geometry,
     quantize_amount_bar_value,
 };
 use bevy::ui_widgets::Activate;
@@ -73,7 +73,7 @@ pub(in crate::ui::city) fn bind_industry_order_row(
             let nation = session.active_major_nation();
             let previous = session.game.city_order_quantity(nation, order);
             let range = amount_bar_range(&session.game, nation, order);
-            let geometry = amount_bar_geometry(AmountBarStyle::Production, range);
+            let geometry = production_amount_bar_geometry(range);
             let x = amount_bar_x_from_normalized(geometry, position.x);
             let value = amount_bar_click_value(geometry, x, previous);
             let quantity = quantize_amount_bar_value(value, step);
