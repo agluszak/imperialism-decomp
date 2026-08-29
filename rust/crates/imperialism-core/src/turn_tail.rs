@@ -213,26 +213,34 @@ impl GameState {
     }
 
     /// Turn-machine case `0x0e` decade check after any congress-result rewrite.
+    ///
+    /// On [`QuarterGateResult::Continue`] the next phase is written immediately.
+    /// On [`QuarterGateResult::DecadeCinematic`] phase stays [`PhaseCode::QUARTER_GATE`]
+    /// until the cinematic/council path resumes and calls [`Self::apply_phase_after_quarter_gate`].
     pub fn quarter_gate(&mut self) -> QuarterGateResult {
-        if let Some(last) = self.diplomacy.last_processed_nation {
-            self.turn.phase = if last.nation() == self.turn.active_nation {
-                PhaseCode::TOP_TEN_SCORES
-            } else {
-                PhaseCode::OPENING_CINEMATIC
-            };
-        } else {
-            self.turn.phase = PhaseCode::SEASON_ADVANCE;
-        }
-
         let tick = self.turn.economic_turn;
         let decade = Decade::for_economic_turn(tick);
         if tick % 40 != 0
             || !matches!(decade, Some(decade) if self.turn.phase_state_by_decade[decade as usize] != 0)
         {
+            self.apply_phase_after_quarter_gate();
             QuarterGateResult::Continue
         } else {
             QuarterGateResult::DecadeCinematic
         }
+    }
+
+    /// Next linear phase after the quarter gate, matching retail's case `0x0e` write.
+    pub(crate) fn apply_phase_after_quarter_gate(&mut self) {
+        self.turn.phase = if let Some(last) = self.diplomacy.last_processed_nation {
+            if last.nation() == self.turn.active_nation {
+                PhaseCode::TOP_TEN_SCORES
+            } else {
+                PhaseCode::OPENING_CINEMATIC
+            }
+        } else {
+            PhaseCode::SEASON_ADVANCE
+        };
     }
 
     /// Turn-machine case `0x10`: clear turn-flow flags, advance the season, and

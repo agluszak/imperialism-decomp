@@ -242,11 +242,26 @@ impl TurnFlow {
                     "post-combat reports require phase DIPLOMACY_OFFER"
                 );
             }
-            Self::PlayerEliminated | Self::Victory => {
+            Self::DecadeCinematic => {
                 debug_assert_eq!(
                     phase,
-                    PhaseCode::ELIMINATION,
-                    "elimination outcome requires phase ELIMINATION"
+                    PhaseCode::QUARTER_GATE,
+                    "decade cinematic requires phase QUARTER_GATE"
+                );
+            }
+            Self::PlayerEliminated => {
+                debug_assert!(
+                    matches!(
+                        phase,
+                        PhaseCode::ELIMINATION | PhaseCode::OPENING_CINEMATIC
+                    ),
+                    "player-eliminated stop requires ELIMINATION or OPENING_CINEMATIC, got {phase:?}"
+                );
+            }
+            Self::Victory => {
+                debug_assert!(
+                    matches!(phase, PhaseCode::ELIMINATION | PhaseCode::TOP_TEN_SCORES),
+                    "victory stop requires ELIMINATION or TOP_TEN_SCORES, got {phase:?}"
                 );
             }
             _ => {}
@@ -258,7 +273,12 @@ impl TurnFlow {
     /// With honest internal phases this matches [`PhaseCode`] stored on [`TurnState`].
     pub fn retail_phase_code(&self, linear_phase: PhaseCode) -> PhaseCode {
         match self {
-            Self::Running => linear_phase,
+            Self::Running
+            | Self::DecadeCinematic
+            | Self::CouncilOfGovernors
+            | Self::GameScore
+            | Self::PlayerEliminated
+            | Self::Victory => linear_phase,
             Self::AwaitingTradeOffer { .. } => PhaseCode::TRADE,
             Self::DiplomacyOffer { .. } | Self::DiplomacyWarJoin(_) => PhaseCode::DIPLOMACY,
             Self::NavalBattle(_) => PhaseCode::MILITARY,
@@ -266,8 +286,6 @@ impl TurnFlow {
             Self::TechnologyReport(_) => PhaseCode::TECHNOLOGY_ADVANCES,
             Self::GreatPowerLoss => PhaseCode::GREAT_POWER_PRESSURE,
             Self::PostCombatReports => PhaseCode::DIPLOMACY_OFFER,
-            Self::PlayerEliminated | Self::Victory => PhaseCode::ELIMINATION,
-            Self::DecadeCinematic | Self::CouncilOfGovernors | Self::GameScore => linear_phase,
         }
     }
 }
@@ -440,6 +458,9 @@ impl GameState {
     pub fn close_opening_cinematic(&mut self) -> TurnStop {
         match &self.turn_flow {
             TurnFlow::DecadeCinematic => {
+                // Retail writes the post-gate phase before the movie; we defer that write
+                // until the interrupt clears so QUARTER_GATE stays honest while blocked.
+                self.apply_phase_after_quarter_gate();
                 self.turn_flow = TurnFlow::CouncilOfGovernors;
                 TurnStop::CouncilOfGovernors
             }
@@ -656,6 +677,9 @@ impl GameState {
                     }
                 }
                 PhaseCode::QUARTER_GATE => {
+                    if matches!(self.turn_flow, TurnFlow::DecadeCinematic) {
+                        return TurnStop::DecadeCinematic;
+                    }
                     if self.quarter_gate() == QuarterGateResult::DecadeCinematic {
                         self.turn_flow = TurnFlow::DecadeCinematic;
                         return TurnStop::DecadeCinematic;
@@ -1120,7 +1144,7 @@ mod tests {
         state.turn.phase_state_by_decade[crate::Decade::Second as usize] = 1;
         state.turn.phase = crate::PhaseCode::QUARTER_GATE;
         assert_eq!(state.advance_turn(), crate::TurnStop::DecadeCinematic);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::SEASON_ADVANCE);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
     }
 
     #[test]
@@ -1181,6 +1205,7 @@ mod tests {
     #[test]
     fn decade_cinematic_close_enters_council() {
         let mut state = game_state();
+        state.turn.phase = crate::PhaseCode::QUARTER_GATE;
         state.turn_flow = crate::TurnFlow::DecadeCinematic;
         assert_eq!(
             state.close_opening_cinematic(),
@@ -1190,6 +1215,7 @@ mod tests {
             state.turn_flow,
             crate::TurnFlow::CouncilOfGovernors
         ));
+        assert_eq!(state.turn.phase(), crate::PhaseCode::SEASON_ADVANCE);
     }
 
     #[test]
