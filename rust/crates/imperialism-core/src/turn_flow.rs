@@ -267,27 +267,6 @@ impl TurnFlow {
             _ => {}
         }
     }
-
-    /// Retail `TSimMgr::turnStateCode` projected from runtime flow.
-    ///
-    /// With honest internal phases this matches [`PhaseCode`] stored on [`TurnState`].
-    pub fn retail_phase_code(&self, linear_phase: PhaseCode) -> PhaseCode {
-        match self {
-            Self::Running
-            | Self::DecadeCinematic
-            | Self::CouncilOfGovernors
-            | Self::GameScore
-            | Self::PlayerEliminated
-            | Self::Victory => linear_phase,
-            Self::AwaitingTradeOffer { .. } => PhaseCode::TRADE,
-            Self::DiplomacyOffer { .. } | Self::DiplomacyWarJoin(_) => PhaseCode::DIPLOMACY,
-            Self::NavalBattle(_) => PhaseCode::MILITARY,
-            Self::LandBattle(_) => PhaseCode::COMBAT_MOVES,
-            Self::TechnologyReport(_) => PhaseCode::TECHNOLOGY_ADVANCES,
-            Self::GreatPowerLoss => PhaseCode::GREAT_POWER_PRESSURE,
-            Self::PostCombatReports => PhaseCode::DIPLOMACY_OFFER,
-        }
-    }
 }
 
 /// External interaction required before the core turn driver can continue.
@@ -344,17 +323,6 @@ impl GameState {
         self.turn.phase = PhaseCode::STRATEGIC_MAP;
     }
 
-    /// Retail `TSimMgr::turnStateCode` for the current turn boundary.
-    pub fn retail_phase_code(&self) -> PhaseCode {
-        let projected = self.turn_flow.retail_phase_code(self.turn.phase());
-        debug_assert_eq!(
-            projected,
-            self.turn.phase(),
-            "runtime phase must match retail projection"
-        );
-        projected
-    }
-
     /// Ends player orders on the strategic map and runs the turn until the next stop.
     pub fn finish_player_orders(&mut self, turn_alerts_enabled: bool) -> TurnStop {
         assert_eq!(self.turn.phase(), PhaseCode::STRATEGIC_MAP);
@@ -409,8 +377,7 @@ impl GameState {
     /// Dismisses the newspaper and returns to player orders. Retail's map-entry
     /// music selection consumes the process-global CRT stream when music is enabled.
     pub fn close_newspaper(&mut self, music_enabled: bool) -> TurnStop {
-        assert_eq!(self.turn.phase(), PhaseCode::NEWSPAPER);
-        self.turn.phase = PhaseCode::RETURN_TO_MAP;
+        assert_eq!(self.turn.phase(), PhaseCode::RETURN_TO_MAP);
         self.return_to_map();
         if let Some((unit, _)) = self.first_idle_civilian(self.turn.active_nation) {
             self.activate_civilian_selection(unit);
@@ -712,6 +679,7 @@ impl GameState {
                     }
                 }
                 PhaseCode::NEWSPAPER => {
+                    self.turn.phase = PhaseCode::RETURN_TO_MAP;
                     self.construct_newspaper_pages();
                     self.mark_all_pending_status_flags_handled();
                     return TurnStop::Newspaper;
@@ -884,7 +852,7 @@ mod tests {
             stop = state.acknowledge_technology_report();
         }
         assert_eq!(stop, crate::TurnStop::Newspaper);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::NEWSPAPER);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::RETURN_TO_MAP);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
         assert_eq!(state.close_newspaper(false), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn.phase(), crate::PhaseCode::STRATEGIC_MAP);
@@ -1042,7 +1010,7 @@ mod tests {
         );
         assert_eq!(state.turn.economic_turn, 1);
         if stop == crate::TurnStop::Newspaper {
-            assert_eq!(state.turn.phase(), crate::PhaseCode::NEWSPAPER);
+            assert_eq!(state.turn.phase(), crate::PhaseCode::RETURN_TO_MAP);
             assert!(state.pending.newspaper_events.is_empty());
         } else {
             assert_eq!(state.turn.phase(), crate::PhaseCode::NEWSPAPER);
@@ -1064,7 +1032,7 @@ mod tests {
         state.set_game_data(crate::GameData::from_news_story_ids(story_ids));
         let stop = state.advance_turn();
         assert_eq!(stop, crate::TurnStop::Newspaper);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::NEWSPAPER);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::RETURN_TO_MAP);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
     }
@@ -1075,14 +1043,14 @@ mod tests {
         let nation = MajorNationId::new(0);
         state.nations.majors[&nation].economy.pending_actions
             [crate::PendingActionKind::NavyGrowthReward] =
-            crate::PendingActionState::new(crate::PendingActionProgress::Queued, Some(1));
+            crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, Some(1));
         state.turn.phase = crate::PhaseCode::NEWSPAPER;
         assert_eq!(state.advance_turn(), crate::TurnStop::Newspaper);
         assert_eq!(
             state.nations.majors[&nation].economy.pending_actions
                 [crate::PendingActionKind::NavyGrowthReward]
-                .progress(),
-            crate::PendingActionProgress::RewardLevel(1)
+                .status(),
+            crate::PendingActionStatus::from_retail(0x34)
         );
     }
 
@@ -1123,7 +1091,10 @@ mod tests {
         );
         eliminated.turn.phase = crate::PhaseCode::ELIMINATION;
         assert_eq!(eliminated.advance_turn(), crate::TurnStop::PlayerEliminated);
-        assert_eq!(eliminated.turn.phase(), crate::PhaseCode::ELIMINATION);
+        assert_eq!(
+            eliminated.turn.phase(),
+            crate::PhaseCode::ELIMINATION
+        );
 
         let mut victory = game_state();
         let survivor = MajorNationId::new(0);

@@ -122,7 +122,7 @@ impl LegacySaveV62 {
             language_code: 0,
             economic_turn: turn.economic_turn as i16,
             active_nation: i16::from(turn.active_nation.get()),
-            turn_state_code: state.retail_phase_code().retail() as i16,
+            turn_state_code: turn.phase().retail() as i16,
             mode: 0,
             previous_turn_state_code: 0,
             previous_mode: 0,
@@ -344,12 +344,14 @@ fn great_power_prefix_dto(
             resource_i32(&economy.aid_allocation_by_minor_nation[id])
         }),
         pending_action_status: std::array::from_fn(|index| {
-            pending_action_to_retail(economy.pending_actions[PendingActionKind::from_usize(index)])
-                .0
+            economy.pending_actions[PendingActionKind::from_usize(index)]
+                .status()
+                .retail()
         }),
         pending_action_payload_by_action: std::array::from_fn(|index| {
-            pending_action_to_retail(economy.pending_actions[PendingActionKind::from_usize(index)])
-                .1
+            economy.pending_actions[PendingActionKind::from_usize(index)]
+                .payload()
+                .unwrap_or(-1)
         }),
         turn_event_queue: notices_to_records(&pending.turn_events),
         proposal_queue: proposals_to_records(&pending.proposals),

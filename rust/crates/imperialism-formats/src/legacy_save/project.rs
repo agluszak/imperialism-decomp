@@ -1560,6 +1560,13 @@ fn interior_civilian_state(minister: &LegacyInteriorMinisterState) -> InteriorCi
     )
 }
 
+fn pending_action_from_retail(status: i8, payload: i16) -> PendingActionState {
+    PendingActionState::new(
+        PendingActionStatus::from_retail(status),
+        (payload != -1).then_some(payload),
+    )
+}
+
 fn diplomacy_grants_from_retail_entries(
     entries: [i16; NATION_COUNT],
 ) -> NationTable<Option<DiplomacyGrant>> {

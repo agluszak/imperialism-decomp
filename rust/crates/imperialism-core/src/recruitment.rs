@@ -394,10 +394,10 @@ impl GameState {
                 .province
                 .expect("military recruit production requires the home town's province");
             let action_6 =
-                major.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].progress();
+                major.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].status();
             Some((
                 province,
-                action_6.has_reached(crate::PendingActionProgress::Handled),
+                action_6.has_reached(crate::PendingActionStatus::HANDLED),
             ))
         } else {
             None
@@ -735,8 +735,8 @@ mod tests {
         assert!(state.military_units.contains_key(&MilitaryUnitId::new(56)));
         let major = &state.nations.major(MajorNationId::new(0)).economy;
         assert_eq!(
-            major.pending_actions[PendingActionKind::ArmyGrowthReward].progress(),
-            crate::PendingActionProgress::Queued
+            major.pending_actions[PendingActionKind::ArmyGrowthReward].status(),
+            crate::PendingActionStatus::QUEUED
         );
         assert_eq!(
             major.pending_actions[PendingActionKind::ArmyGrowthReward].payload(),
@@ -764,7 +764,7 @@ mod tests {
             .major_mut(MajorNationId::new(0))
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward] =
-            crate::PendingActionState::new(crate::PendingActionProgress::Handled, Some(6));
+            crate::PendingActionState::new(crate::PendingActionStatus::HANDLED, Some(6));
         state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 1);
 
         let pending = state
@@ -772,7 +772,7 @@ mod tests {
             .major(MajorNationId::new(0))
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward];
-        assert_eq!(pending.progress(), crate::PendingActionProgress::Queued);
+        assert_eq!(pending.status(), crate::PendingActionStatus::QUEUED);
         assert_eq!(pending.payload(), Some(1));
     }
 

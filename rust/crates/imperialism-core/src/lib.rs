@@ -157,7 +157,7 @@ pub use news::{
     PendingWorkState, TurnStartEvent, TurnSummary, WarTransition,
 };
 pub use ocean::{Ocean, OceanRoute, PortZone, Zone, ZoneKind};
-pub use pending::{PendingActionProgress, PendingActionState};
+pub use pending::{PendingActionState, PendingActionStatus};
 pub use population::{
     FoodOutcome, LaborPool, PopulationAccumulator, PopulationState, SkillBand, StrikePhase,
 };

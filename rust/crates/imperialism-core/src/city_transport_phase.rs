@@ -93,24 +93,24 @@ impl GameState {
 
         let army_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::ArmyGrowthReward]
-            .progress()
-            == PendingActionProgress::Queued;
+            .status()
+            == PendingActionStatus::QUEUED;
         if army_queued {
             self.spawn_pending_army_growth_unit(nation);
         }
 
         let navy_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::NavyGrowthReward]
-            .progress()
-            == PendingActionProgress::Queued;
+            .status()
+            == PendingActionStatus::QUEUED;
         if navy_queued {
             self.spawn_pending_navy_growth_unit(nation);
         }
 
         let overseas = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::OverseasDeveloperReward]
-            .progress();
-        if overseas < PendingActionProgress::Handled && self.needs_overseas_developer(nation) {
+            .status();
+        if overseas < PendingActionStatus::HANDLED && self.needs_overseas_developer(nation) {
             self.spawn_pending_overseas_developer(nation);
             self.nations.majors[&nation].economy.pending_actions
                 [PendingActionKind::OverseasDeveloperReward]
@@ -119,8 +119,8 @@ impl GameState {
 
         let monument_queued = self.nations.major(nation).economy.pending_actions
             [PendingActionKind::ColonyMonumentMerchantCapacity]
-            .progress()
-            == PendingActionProgress::Queued;
+            .status()
+            == PendingActionStatus::QUEUED;
         if monument_queued {
             let count =
                 &mut self.nations.city_mut(nation).ship_order_count_by_type[ShipType::Clipper];
@@ -342,8 +342,8 @@ impl GameState {
                     .queue_with_payload(province_id.get() as i16);
                 if self.nations.majors[&nation].economy.pending_actions
                     [PendingActionKind::RailyardExpansion]
-                    .progress()
-                    < PendingActionProgress::Handled
+                    .status()
+                    < PendingActionStatus::HANDLED
                 {
                     self.nations.majors[&nation].economy.pending_actions
                         [PendingActionKind::RailyardExpansion]
@@ -531,11 +531,11 @@ mod tests {
         );
         let village = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::VillageDevelopment];
-        assert_eq!(village.progress(), PendingActionProgress::Queued);
+        assert_eq!(village.status(), PendingActionStatus::QUEUED);
         assert_eq!(village.payload(), Some(1));
         let railyard = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::RailyardExpansion];
-        assert_eq!(railyard.progress(), PendingActionProgress::Queued);
+        assert_eq!(railyard.status(), PendingActionStatus::QUEUED);
         assert_eq!(railyard.payload(), None);
     }
 
@@ -571,7 +571,7 @@ mod tests {
         );
         let town = state.nations.majors[&nation].economy.pending_actions
             [PendingActionKind::TownDevelopment];
-        assert_eq!(town.progress(), PendingActionProgress::Queued);
+        assert_eq!(town.status(), PendingActionStatus::QUEUED);
         assert_eq!(town.payload(), Some(1));
     }
 

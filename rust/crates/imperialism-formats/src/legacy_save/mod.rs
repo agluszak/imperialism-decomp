@@ -2,13 +2,10 @@ mod conversions;
 mod from_game_state;
 mod model;
 mod parse;
-mod pending_action;
 mod project;
 mod scenario_map;
 mod slots;
 mod write;
-
-pub(crate) use pending_action::{pending_action_from_retail, pending_action_to_retail};
 
 pub(crate) use scenario_map::decode_scenario_map;
 
