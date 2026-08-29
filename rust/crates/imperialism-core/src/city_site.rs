@@ -467,8 +467,8 @@ mod tests {
             (stop, state.turn.phase),
             (
                 crate::TurnStop::TechnologyAdvance,
-                crate::PhaseCode::TECHNOLOGY_ADVANCES
-            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::NEWSPAPER)
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
@@ -570,8 +570,8 @@ mod tests {
             (stop, state.turn.phase),
             (
                 crate::TurnStop::TechnologyAdvance,
-                crate::PhaseCode::TECHNOLOGY_ADVANCES
-            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::NEWSPAPER)
+                crate::PhaseCode::NEWSPAPER
+            ) | (crate::TurnStop::Newspaper, crate::PhaseCode::RETURN_TO_MAP)
         ));
         assert_eq!(state.turn.economic_turn, 1);
         assert_eq!(
