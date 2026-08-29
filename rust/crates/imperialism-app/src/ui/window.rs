@@ -5,6 +5,7 @@ use bevy::input_focus::{AutoFocus, FocusCause, FocusedInput, InputFocus};
 use bevy::picking::events::{Drag, Pointer, Press};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
+use bevy::scene::SceneComponent;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button};
 
@@ -16,10 +17,66 @@ const CLOSE_SIZE: f32 = 14.0;
 #[require(GlobalZIndex)]
 struct UiWindow;
 
+/// Retained child refs for a captioned window hierarchy.
+#[derive(Component, FromTemplate, Clone, Copy)]
+struct CaptionedWindowParts {
+    close: Entity,
+}
+
 /// A movable window with a generated caption and close control.
-#[derive(Component, Debug, Default)]
+#[derive(SceneComponent, Default, Clone)]
 #[require(UiWindow, Pickable)]
 pub struct CaptionedWindow;
+
+impl CaptionedWindow {
+    fn scene() -> impl Scene {
+        bsn! {
+            Node { overflow: Overflow::visible() }
+            CaptionedWindowParts { close: #Close }
+            on(on_window_press_raise)
+            Children [
+                (
+                    #Caption
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(-CAPTION_HEIGHT),
+                        width: Val::Percent(100.0),
+                        height: px(CAPTION_HEIGHT),
+                    }
+                    BackgroundColor(Color::srgb_u8(0, 0, 128))
+                    Pickable::default()
+                    on(on_caption_drag)
+                    Children [
+                        (
+                            #Close
+                            Button
+                            Node {
+                                position_type: PositionType::Absolute,
+                                right: px(2),
+                                top: px(2),
+                                width: px(CLOSE_SIZE),
+                                height: px(CLOSE_SIZE),
+                                align_items: AlignItems::Center,
+                                justify_content: JustifyContent::Center,
+                            }
+                            BackgroundColor(Color::srgb_u8(192, 192, 192))
+                            ZIndex(1)
+                            Children [
+                                (
+                                    Text("\u{00d7}")
+                                    template(|_| Ok(TextFont::from_font_size(12.0)))
+                                    TextColor(Color::BLACK)
+                                    Pickable::IGNORE
+                                )
+                            ]
+                        )
+                    ]
+                )
+            ]
+        }
+    }
+}
 
 /// Full-viewport pointer barrier, modal tab group, and restore-on-dismiss focus.
 #[derive(Component, Debug, Default)]
@@ -39,7 +96,7 @@ impl Plugin for UiWindowPlugin {
         app.init_resource::<InputFocus>()
             .add_observer(on_window_added)
             .add_observer(on_modal_removed)
-            .add_systems(Update, bind_recovered_window_hosts);
+            .add_systems(Update, bind_captioned_window_hosts);
     }
 }
 
@@ -135,18 +192,12 @@ fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex),
         .0 = next;
 }
 
-fn bind_recovered_window_hosts(
+fn bind_captioned_window_hosts(
     mut commands: Commands,
-    contents: Query<(Entity, &Node, Option<&ChildOf>), Added<CaptionedWindow>>,
+    added: Query<(Entity, &CaptionedWindowParts, Option<&ChildOf>), Added<CaptionedWindow>>,
     windows: Query<(), With<UiWindow>>,
 ) {
-    for (window, node, parent) in &contents {
-        commands
-            .entity(window)
-            .entry::<Node>()
-            .and_modify(|mut node| {
-                node.overflow = Overflow::visible();
-            });
+    for (window, parts, parent) in &added {
         if let Some(parent) = parent {
             commands.entity(parent.parent()).insert(Pickable::IGNORE);
         }
@@ -156,71 +207,35 @@ fn bind_recovered_window_hosts(
             .map(ChildOf::parent)
             .filter(|parent| !windows.contains(*parent))
             .unwrap_or(window);
-        commands.entity(window).observe(on_window_press_raise);
-        spawn_caption(&mut commands, window, despawn, node.width);
+        commands
+            .entity(parts.close)
+            .observe(move |_: On<Activate>, mut commands: Commands| {
+                commands.entity(despawn).try_despawn();
+            });
     }
 }
 
-fn spawn_caption(commands: &mut Commands, window: Entity, despawn: Entity, width: Val) {
-    let caption = commands
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(0),
-                top: px(-CAPTION_HEIGHT),
-                width,
-                height: px(CAPTION_HEIGHT),
-                ..default()
-            },
-            BackgroundColor(Color::srgb_u8(0, 0, 128)),
-            Pickable::default(),
-            ChildOf(window),
-        ))
-        .observe(
-            move |drag: On<Pointer<Drag>>, mut nodes: Query<&mut Node, With<UiWindow>>| {
-                if drag.event.button != PointerButton::Primary {
-                    return;
-                }
-                let mut node = nodes.get_mut(window).expect("movable window has a Node");
-                let position = window_position(&node)
-                    + IVec2::new(
-                        drag.event.delta.x.round() as i32,
-                        drag.event.delta.y.round() as i32,
-                    );
-                set_window_position(&mut node, position);
-            },
-        )
-        .id();
-    commands.entity(caption).with_children(|parent| {
-        parent
-            .spawn((
-                Button,
-                Node {
-                    position_type: PositionType::Absolute,
-                    right: px(2),
-                    top: px(2),
-                    width: px(CLOSE_SIZE),
-                    height: px(CLOSE_SIZE),
-                    align_items: AlignItems::Center,
-                    justify_content: JustifyContent::Center,
-                    ..default()
-                },
-                BackgroundColor(Color::srgb_u8(192, 192, 192)),
-                ZIndex(1),
-            ))
-            .observe(move |_: On<Activate>, mut commands: Commands| {
-                commands.entity(despawn).try_despawn();
-            })
-            .with_child((
-                Text::new("×"),
-                TextFont {
-                    font_size: FontSize::Px(12.0),
-                    ..default()
-                },
-                TextColor(Color::BLACK),
-                Pickable::IGNORE,
-            ));
-    });
+fn on_caption_drag(
+    drag: On<Pointer<Drag>>,
+    captions: Query<&ChildOf>,
+    mut windows: Query<&mut Node, With<CaptionedWindow>>,
+) {
+    if drag.event.button != PointerButton::Primary {
+        return;
+    }
+    let Ok(parent) = captions.get(drag.entity) else {
+        return;
+    };
+    let window = parent.parent();
+    let Ok(mut node) = windows.get_mut(window) else {
+        return;
+    };
+    let position = window_position(&node)
+        + IVec2::new(
+            drag.event.delta.x.round() as i32,
+            drag.event.delta.y.round() as i32,
+        );
+    set_window_position(&mut node, position);
 }
 
 fn on_window_press_raise(
@@ -243,8 +258,10 @@ fn px_coord(value: Val) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use bevy::asset::AssetPlugin;
     use bevy::input::keyboard::{Key, NativeKey};
     use bevy::input_focus::{InputFocusPlugin, dispatch_focused_input};
+    use bevy::scene::ScenePlugin;
     use bevy::window::PrimaryWindow;
 
     #[derive(Resource, Default)]
@@ -255,7 +272,7 @@ mod tests {
 
     fn test_app() -> App {
         let mut app = App::new();
-        app.add_plugins(MinimalPlugins)
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
             .add_message::<KeyboardInput>()
             .add_plugins(InputFocusPlugin)
             .add_systems(PreUpdate, dispatch_focused_input::<KeyboardInput>)
@@ -289,7 +306,11 @@ mod tests {
     #[test]
     fn windows_derive_structure_order_and_modal_focus_from_components() {
         let mut app = test_app();
-        let floating = app.world_mut().spawn(CaptionedWindow).id();
+        let floating = app
+            .world_mut()
+            .spawn_scene(bsn! { @CaptionedWindow })
+            .expect("captioned window scene")
+            .id();
         let first = app.world_mut().spawn(ModalWindow).id();
         let second = app.world_mut().spawn(ModalWindow).id();
 
@@ -396,17 +417,20 @@ mod tests {
     fn dismissing_captioned_window_despawns_the_generated_host() {
         let mut app = test_app();
         let canvas = app.world_mut().spawn(Name::new("canvas")).id();
-        app.world_mut().spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: px(8),
-                top: px(16),
-                width: px(64),
-                ..default()
-            },
-            CaptionedWindow,
-            ChildOf(canvas),
-        ));
+        let window = app
+            .world_mut()
+            .spawn_scene(bsn! {
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(8),
+                    top: px(16),
+                    width: px(64),
+                }
+                @CaptionedWindow
+            })
+            .expect("captioned window scene")
+            .id();
+        app.world_mut().entity_mut(window).insert(ChildOf(canvas));
         app.update();
 
         let close = app

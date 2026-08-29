@@ -72,17 +72,17 @@ class-vtable-dump *args: _require-ghidra-install
 [private]
 [group('ghidra-inspect')]
 ui-resource-show resource:
-  uv run python -m tools.ui_codegen --view "{{resource}}"
+  uv run python -m tools.ui_cpp_codegen --view "{{resource}}"
 
 [private]
 [group('ghidra-inspect')]
 ui-codegen-explain *args:
-  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --explain {{args}}
+  uv run python -m tools.ui_cpp_codegen --gen-dir "{{build_dir}}/generated/ui" --explain {{args}}
 
 [private]
 [group('ghidra-inspect')]
 ui-codegen-triage function:
-  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --triage-map "{{function}}"
+  uv run python -m tools.ui_cpp_codegen --gen-dir "{{build_dir}}/generated/ui" --triage-map "{{function}}"
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/original_entities.csv __cdecl rows).

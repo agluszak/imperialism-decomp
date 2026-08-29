@@ -1,3 +1,5 @@
+use super::building_layout_generated::{CITY_BUILDING_ACTIONS, CITY_BUILDINGS};
+use super::generated;
 use super::*;
 use crate::ui::retail::PlacardParts;
 use crate::ui::retail::apply_index_transparency;
@@ -6,7 +8,6 @@ use crate::ui::retail_raster::IndexedRasterExt;
 pub(crate) struct CityBuildingVisual {
     pub(crate) slot: CityFacilitySlot,
     pub(crate) origin: [i32; 2],
-    pub(crate) draw_order: u8,
 }
 
 pub(crate) struct CityBuildingActionVisual {
@@ -299,26 +300,12 @@ fn bind_city_summary_values(
 }
 
 fn bind_city_hover_title(
-    commands: &mut Commands,
+    _commands: &mut Commands,
     root: Entity,
     tree: &RetailTree,
-    assets: &mut RetailUiAssets,
+    _assets: &mut RetailUiAssets,
 ) -> Entity {
-    let (font, layout, line_height, _) =
-        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, 1));
-    let entity = tree.find(root, fourcc!("curs"));
-    commands.entity(entity).insert((
-        Text::new(""),
-        font,
-        layout,
-        line_height,
-        TextColor(assets.palette_color(0x28)),
-        TextShadow {
-            offset: Vec2::ONE,
-            color: assets.palette_color(0),
-        },
-    ));
-    entity
+    tree.find(root, fourcc!("curs"))
 }
 
 pub(in crate::ui::city) fn spawn_city_buildings(
@@ -333,7 +320,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
 ) {
     let main = tree.find(root, fourcc!("main"));
     let mut hit_regions = Vec::new();
-    for visual in visuals {
+    for (draw_order, visual) in visuals.iter().enumerate() {
         let level = city_building_level(state, nation, visual.slot);
         let mask_picture = visual.slot.city_hit_mask_picture(level);
         let indexed = assets.indexed_picture(mask_picture);
@@ -352,7 +339,7 @@ pub(in crate::ui::city) fn spawn_city_buildings(
             },
             ImageNode::default(),
             Visibility::Hidden,
-            ZIndex(visual.draw_order as i32),
+            ZIndex(draw_order as i32),
             Pickable::IGNORE,
             ChildOf(main),
             CityBuildingSprite {
@@ -361,24 +348,17 @@ pub(in crate::ui::city) fn spawn_city_buildings(
             },
             Name::new(format!("city-building:{:?}", visual.slot)),
         ));
-        hit_regions.push((
-            visual.draw_order,
-            CityBuildingHitRegion {
-                origin: IVec2::from_array(visual.origin),
-                slot: visual.slot,
-                mask,
-            },
-        ));
+        hit_regions.push(CityBuildingHitRegion {
+            origin: IVec2::from_array(visual.origin),
+            slot: visual.slot,
+            mask,
+        });
     }
-    hit_regions.sort_by_key(|(draw_order, _)| *draw_order);
     commands
         .entity(main)
         .insert((
             CityCanvas {
-                buildings: hit_regions
-                    .into_iter()
-                    .map(|(_, building)| building)
-                    .collect(),
+                buildings: hit_regions,
             },
             RelativeCursorPosition::default(),
         ))
@@ -632,6 +612,31 @@ pub(in crate::ui::city) fn render_city_buildings(
         } else {
             Visibility::Hidden
         };
+    }
+}
+
+#[rustfmt::skip]
+pub(in crate::ui::city) fn spawn_city_dialog(
+    commands: &mut Commands,
+    slot: CityFacilitySlot,
+) -> Entity {
+    match slot {
+        CityFacilitySlot::TextileMill => commands.spawn_scene(generated::citydlog_9200()).id(),
+        CityFacilitySlot::ClothingFactory => commands.spawn_scene(generated::citydlog_9201()).id(),
+        CityFacilitySlot::SteelMill => commands.spawn_scene(generated::citydlog_9202()).id(),
+        CityFacilitySlot::Metalworks => commands.spawn_scene(generated::citydlog_9203()).id(),
+        CityFacilitySlot::LumberMill => commands.spawn_scene(generated::citydlog_9204()).id(),
+        CityFacilitySlot::FurnitureFactory => commands.spawn_scene(generated::citydlog_9205()).id(),
+        CityFacilitySlot::OilRefinery => commands.spawn_scene(generated::citydlog_9206()).id(),
+        CityFacilitySlot::Shipyard => commands.spawn_scene(generated::shipyard_9207()).id(),
+        CityFacilitySlot::Armory => commands.spawn_scene(generated::armory_9208()).id(),
+        CityFacilitySlot::TradeSchool => commands.spawn_scene(generated::citydlog_9209()).id(),
+        CityFacilitySlot::University => commands.spawn_scene(generated::univ_9210()).id(),
+        CityFacilitySlot::PowerPlant => commands.spawn_scene(generated::citydlog_9211()).id(),
+        CityFacilitySlot::FoodProcessing => commands.spawn_scene(generated::citydlog_9212()).id(),
+        CityFacilitySlot::Warehouse => commands.spawn_scene(generated::citydlog_9213()).id(),
+        CityFacilitySlot::Transport => commands.spawn_scene(generated::citydlog_9214()).id(),
+        CityFacilitySlot::RegionalPopulation => commands.spawn_scene(generated::citydlog_9215()).id(),
     }
 }
 

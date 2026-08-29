@@ -3,9 +3,9 @@ use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
-use super::retail::{AmountBarParts, AmountBarStyle, RetailTree, Step};
+use super::retail::{AmountBarParts, RetailTree, Step};
 use super::retail_amount_bar::{
-    amount_bar_geometry, amount_bar_x_from_normalized, trade_amount_bar_click_value,
+    amount_bar_x_from_normalized, trade_amount_bar_click_value, trade_amount_bar_geometry,
 };
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
@@ -262,7 +262,7 @@ fn bind_trade_row(
                 return;
             }
             click.propagate(false);
-            let geometry = amount_bar_geometry(AmountBarStyle::Trade, capacity);
+            let geometry = trade_amount_bar_geometry(capacity);
             let x = amount_bar_x_from_normalized(geometry, position.x);
             let quantity = trade_amount_bar_click_value(geometry, x);
             if quantity == 0 {
@@ -425,8 +425,7 @@ fn render_trade(
         set_trade_visibility(&mut commands, row.quantity, selling);
         set_trade_visibility(&mut commands, row.offer_indicator, selling);
         set_trade_visibility(&mut commands, row.gauge, selling);
-        let fill_width =
-            f32::from(amount_bar_geometry(AmountBarStyle::Trade, capacity).span(quantity));
+        let fill_width = f32::from(trade_amount_bar_geometry(capacity).span(quantity));
         nodes
             .get_mut(row.gauge_fill)
             .expect("bound trade amount bar fill")
@@ -587,7 +586,8 @@ const fn trade_offer_tab_visible(capacity: i16, active: bool, stockpile: i16) ->
 
 #[cfg(test)]
 mod tests {
-    use super::super::retail::{RetailSidewaysArrow, RetailTag, Step};
+    use super::super::retail::{RetailTag, Step};
+    use super::super::retail_sideways_arrow::RetailSidewaysArrow;
     use super::*;
     use crate::ui::RetailUiPlugin;
     use crate::ui::test_support::beginning_of_game;

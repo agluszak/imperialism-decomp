@@ -16,7 +16,7 @@ Generator commands run from `decomp/`; Rust commands run from `rust/`.
 
    ```sh
    just ui-resource-show FILE:VIEW_ID
-   just ui-codegen --write-rust-ui
+   (cd ../decomp && uv run python -m tools.ui_rust_codegen --write)
    just ui-codegen-check
    just build
    ```

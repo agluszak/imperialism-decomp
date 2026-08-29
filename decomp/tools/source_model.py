@@ -196,7 +196,7 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
 
     generated_manifest = repo_root / "config" / "ui_factory_codegen.yml"
     if target.upper() == "IMPERIALISM" and generated_manifest.is_file():
-        from tools.ui_codegen import generated_claim_rows
+        from tools.ui_cpp_codegen import generated_claim_rows
 
         for row in generated_claim_rows(repo_root):
             claim = Claim(**row)

@@ -88,8 +88,9 @@ process-derived and must not be replaced with a fixture-wide default.
 The existing UI generator emits deterministic native Bevy scenes into `imperialism-app`:
 
 ```sh
-(cd ../decomp && uv run python -m tools.ui_codegen --check)
-(cd ../decomp && uv run python -m tools.ui_codegen --write-rust-ui)
+(cd ../decomp && uv run python -m tools.ui_cpp_codegen --check)
+(cd ../decomp && uv run python -m tools.ui_rust_codegen --check)
+(cd ../decomp && uv run python -m tools.ui_rust_codegen --write)
 ```
 
 The generated source is compiled from the committed Mac View IR plus declared Windows deltas. It

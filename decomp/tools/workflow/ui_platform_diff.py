@@ -9,7 +9,7 @@ from pathlib import Path
 
 import yaml
 
-from tools.ui_codegen import (
+from tools.ui_cpp_codegen import (
     DEFAULT_CLASSES,
     _render_factory_with_map,
     apply_case_windows_overrides,
@@ -33,12 +33,10 @@ def _load_delta_config(repo_root: Path) -> dict:
     allowed = {
         "class_substitutions",
         "functional_parity_cases",
+        "node_class_substitutions",
         "node_property_patches",
         "two_pic_slider_instances",
         "windows_child_nodes",
-        "runtime_input_semantics",
-        "city_buildings",
-        "city_building_actions",
     }
     unknown = sorted(set(data) - allowed)
     if unknown:

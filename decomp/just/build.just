@@ -139,7 +139,7 @@ resource-check:
 [doc('Generate resource-driven turn-event factory TUs into the build tree')]
 [group('build')]
 ui-codegen *args:
-  uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" {{args}}
+  uv run python -m tools.ui_cpp_codegen --gen-dir "{{build_dir}}/generated/ui" {{args}}
 
 # Regression proof: enabling the fixture must make the real project lint gate fail.
 # Its dedicated cache stays enabled, so neither this test nor normal lint invalidates

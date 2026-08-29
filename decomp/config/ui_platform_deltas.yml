@@ -1,4 +1,3 @@
-
 # Post-create presentation changes made by the recovered Windows controllers.
 # Text-style patches and controller-induced geometry deltas live here. Mac View
 # IR still owns resource hierarchy and the baseline rectangles.
@@ -444,6 +443,7 @@ node_property_patches:
   - {view: Tactical.rsrc:3800, node: 0x00f0, tag: curs, properties: {text: *hover_help_city_site}, evidence: "TTacticalBattleView::DoPostCreate uses the recovered 12pt right-aligned InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67) style"}
   - {view: MapView.rsrc:2013, node: 0x1efd, tag: curs, properties: {text: *hover_help_city_site}, evidence: *hover_help_city_site_evidence}
   - {view: Linger.rsrc:4150, node: 0x0994, tag: curs, properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0, shadow_offset: [1, 1]}}, evidence: "TGamePreferencesPicture::DoPostCreate restyles curs through InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67): 12pt, text palette 0x28, shadow palette 0"}
+  - {view: Citymain.rsrc:2011, node: 0x0b22, tag: curs, properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: 0x28, shadow_color_index: 0, shadow_offset: [1, 1]}}, evidence: "TViewMgr city dialog path restyles curs through InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67): 12pt, text palette 0x28, shadow palette 0"}
 
 windows_child_nodes:
   - {view: Diplo.rsrc:2008, parent: {node: 0x0141, tag: mkey}, type: stat, tag: nam0, class: TDeluxeText, geometry: [44, 19, 70, 25], family: &diplomacy_map_key_text {text: {resource_id: 0, resource_index: -1, source: g_szEmptyString, mode: 3, flags: 0, point_size: 10, theme: 0, color_index: 0xd2, shadow_color_index: 0x13, shadow_offset: [1, 1], center_vertically: true}}, evidence: &diplomacy_map_key_evidence TMapKey::DoPostCreate at 0x004fcac0 creates nam0 through nam6 under mkey from the recovered legend coordinate tables}
@@ -476,34 +476,36 @@ windows_child_nodes:
   - {view: Transport.rsrc:2014, parent: {node: 0x1c1f, tag: gems}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
   - {view: Transport.rsrc:2014, parent: {node: 0x1c1f, tag: gems}, type: stat, tag: valu, class: TMyStaticText, geometry: [0x32, 0x14, 0x3c, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
 
+node_class_substitutions:
+  - view: Transport.rsrc:2014
+    mac_class: TSidewaysArrow
+    windows_class: TRightLeftView
+    evidence: "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 Free()s placeholder left/rght TSidewaysArrow controls and replaces them with TRightLeftView instances that repeat without TUpDownPictureButton hilite"
+
 # TCityProductionView draws and hit-tests these buildings dynamically rather
-# than constructing sixteen resource-backed child controls. Keep this one
-# recovered table attached to Citymain instead of creating a general scene DSL.
+# than constructing sixteen resource-backed child controls. Array order is paint
+# order (former draw_order 0..=15).
 city_buildings:
   view: Citymain.rsrc:2011
   evidence: TCityProductionView.cpp and g_anCityBuildingSlotOrder/g_anCityBuildingSlotCoords at 0x00696178/0x00696198
   visuals:
-    - {slot: textile_mill, origin: [200, 235], draw_order: 12, dialog: Citydlog.rsrc:9200}
-    - {slot: clothing_factory, origin: [340, 300], draw_order: 13, dialog: Citydlog.rsrc:9201}
-    - {slot: steel_mill, origin: [281, 184], draw_order: 9, dialog: Citydlog.rsrc:9202}
-    - {slot: metalworks, origin: [340, 266], draw_order: 10, dialog: Citydlog.rsrc:9203}
-    - {slot: lumber_mill, origin: [87, 286], draw_order: 14, dialog: Citydlog.rsrc:9204}
-    - {slot: furniture_factory, origin: [230, 310], draw_order: 15, dialog: Citydlog.rsrc:9205}
-    - {slot: oil_refinery, origin: [340, 139], draw_order: 7, dialog: Citydlog.rsrc:9206}
-    - {slot: shipyard, origin: [240, 35], draw_order: 2, dialog: Shipyard.rsrc:9207}
-    - {slot: armory, origin: [50, 220], draw_order: 11, dialog: Armory.rsrc:9208}
-    - {slot: trade_school, origin: [50, 107], draw_order: 6, dialog: Citydlog.rsrc:9209}
-    - {slot: university, origin: [50, 35], draw_order: 3, dialog: Univ.rsrc:9210}
-    - {slot: power_plant, origin: [340, 139], draw_order: 8, dialog: Citydlog.rsrc:9211}
-    - {slot: food_processing, origin: [82, 35], draw_order: 0, dialog: Citydlog.rsrc:9212}
-    - {slot: warehouse, origin: [300, 35], draw_order: 1, dialog: Citydlog.rsrc:9213}
-    - {slot: transport, origin: [340, 44], draw_order: 4, dialog: Citydlog.rsrc:9214}
-    - {slot: regional_population, origin: [150, 95], draw_order: 5, dialog: Citydlog.rsrc:9215}
+    - {slot: food_processing, origin: [82, 35], dialog: Citydlog.rsrc:9212}
+    - {slot: warehouse, origin: [300, 35], dialog: Citydlog.rsrc:9213}
+    - {slot: shipyard, origin: [240, 35], dialog: Shipyard.rsrc:9207}
+    - {slot: university, origin: [50, 35], dialog: Univ.rsrc:9210}
+    - {slot: transport, origin: [340, 44], dialog: Citydlog.rsrc:9214}
+    - {slot: regional_population, origin: [150, 95], dialog: Citydlog.rsrc:9215}
+    - {slot: trade_school, origin: [50, 107], dialog: Citydlog.rsrc:9209}
+    - {slot: oil_refinery, origin: [340, 139], dialog: Citydlog.rsrc:9206}
+    - {slot: power_plant, origin: [340, 139], dialog: Citydlog.rsrc:9211}
+    - {slot: steel_mill, origin: [281, 184], dialog: Citydlog.rsrc:9202}
+    - {slot: metalworks, origin: [340, 266], dialog: Citydlog.rsrc:9203}
+    - {slot: armory, origin: [50, 220], dialog: Armory.rsrc:9208}
+    - {slot: textile_mill, origin: [200, 235], dialog: Citydlog.rsrc:9200}
+    - {slot: clothing_factory, origin: [340, 300], dialog: Citydlog.rsrc:9201}
+    - {slot: lumber_mill, origin: [87, 286], dialog: Citydlog.rsrc:9204}
+    - {slot: furniture_factory, origin: [230, 310], dialog: Citydlog.rsrc:9205}
 
-# TCityProductionView constructs these horizontal action strips directly from
-# the recovered frame-count and layout tables. Coordinates include the view's
-# (50, 35) action-animation offset. This is City-specific presentation evidence,
-# not a generic animation description language.
 city_building_actions:
   view: Citymain.rsrc:2011
   evidence: TCityProductionView::DoPostCreate with g_awCityBuildingActionResourceIds at 0x0064fad0 and g_aCityBuildingLayoutRects at 0x006a24e8
@@ -545,15 +547,6 @@ city_building_actions:
     - {slot: furniture_factory, level: 3, picture_id: 15058, frame_count: 11, origin: [390, 397], frame_size: [20, 19]}
     - {slot: oil_refinery, level: 1, picture_id: 15060, frame_count: 7, origin: [491, 187], frame_size: [22, 18]}
     - {slot: power_plant, level: 1, picture_id: 15070, frame_count: 13, origin: [514, 165], frame_size: [24, 23]}
-
-# Windows post-create input roles that replace the Mac resource class on specific
-# views. Each row maps a recovered Mac class on one view to the runtime semantics
-# emitted in generated UI.
-runtime_input_semantics:
-  - view: Transport.rsrc:2014
-    mac_class: TSidewaysArrow
-    semantics: right_left_view
-    evidence: "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 Free()s placeholder left/rght TSidewaysArrow controls and replaces them with TRightLeftView instances that repeat without TUpDownPictureButton hilite"
 
 # Explicit semantic differences between the Mac resource class name and the
 # Windows source model. These are not ABI claims.

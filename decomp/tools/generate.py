@@ -7,7 +7,7 @@ through every generator — no re-scan, no re-parse, no serialization contract
 between steps:
 
   1. tools.source_model  -> <gen-dir>/source_model.json (+ duplicate validation)
-  2. tools.ui_codegen    -> <gen-dir>/ui/*.cpp (+ _manifest.json)
+  2. tools.ui_cpp_codegen -> <gen-dir>/ui/*.cpp (+ _manifest.json)
   3. tools.generate_symbols -> <gen-dir>/symbols.csv (raw inventory + overlays)
   4. tools.stubgen       -> <gen-dir>/stubs/*.cpp (+ _manifest.json)
 
@@ -29,14 +29,14 @@ from tools.reccmp.crt_startup_oracle import recover_from_image
 from tools.ghidra.merge_curated_symbols import write_symbols_csv
 from tools.source_model import build_model, model_to_json
 from tools.stubgen import write_stubs
-from tools.ui_codegen import (
+from tools.ui_cpp_codegen import (
     load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
     validate as validate_ui_codegen,
 )
-from tools.ui_codegen import write_generated as write_generated_ui
+from tools.ui_cpp_codegen import write_generated as write_generated_ui
 
 
 def main() -> int:

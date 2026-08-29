@@ -1,19 +1,12 @@
 //! Transport gauge fill/limit presentation helpers.
 //!
-//! `retail_transport_gauge` owns the track, fill, and limit child hierarchy.
-//! Screens bind [`TransportGaugeParts`] and update fill/limit via retained handles.
-//! Recovered caption and arrow controls remain ordinary generated children.
-//!
-//! Unlike `retail_amount_bar()` and `retail_numbered_arrow()`, this helper cannot
-//! own its entire subtree in BSN `Children [...]`. A `TTransportPicture` resource
-//! node has both private Windows implementation entities (track/fill/limit) and
-//! recovered public controls (`text`, `left`, `rght`, `valu`) that application
-//! code binds by tag. The template adds only the private entities; the outer
-//! generated scene keeps the recovered siblings.
+//! [`transport_capacity_gauge`] and [`transport_allocation_gauge`] declare
+//! [`TransportGaugeParts`] and private track/fill/limit entities in one BSN scope,
+//! then merge recovered sibling controls through [`SceneList`] composition.
 
-use crate::RetailAssetsResource;
-use bevy::ecs::template::TemplateContext;
+use super::retail::retail_background_color;
 use bevy::prelude::*;
+use bevy::scene::SceneList;
 
 const TRACK_WIDTH: f32 = 113.0;
 const TRACK_TOP: f32 = 13.0;
@@ -39,20 +32,84 @@ pub struct TransportGaugeParts {
     pub limit: Entity,
 }
 
-#[derive(Clone, Copy)]
-struct TransportGaugeColors {
-    track_bg: Color,
-    fill: Color,
-    limit: Color,
+/// Capacity (`tota`) gauge row: parts, private track/fill, then recovered siblings.
+pub fn transport_capacity_gauge(owner_left: i32, recovered: impl SceneList) -> impl Scene {
+    let track_left = transport_gauge_track_left(owner_left);
+    bsn! {
+        TransportGaugeParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(track_left),
+                    top: px(TRACK_TOP),
+                    width: px(TRACK_WIDTH),
+                    height: px(TRACK_HEIGHT),
+                }
+                retail_background_color(TRACK_BG_PALETTE)
+                Pickable::IGNORE
+            ),
+            (
+                #Fill
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(track_left),
+                    top: px(TRACK_TOP),
+                    width: px(0.0),
+                    height: px(TRACK_HEIGHT),
+                }
+                retail_background_color(CAPACITY_FILL_PALETTE)
+                Pickable::IGNORE
+            ),
+            {recovered},
+        ]
+    }
 }
 
-/// `TTransportPicture` track/fill/limit chrome for one gauge row.
-///
-/// `owner_left` is the recovered control origin; track placement follows
-/// `TTransportPicture::Refresh` (`owner_left > 0xc8` => 0x5d else 0x61).
-pub fn retail_transport_gauge(owner_left: i32, capacity: bool) -> impl Scene {
+/// Allocation gauge row: parts, private track/fill/limit, then recovered siblings.
+pub fn transport_allocation_gauge(owner_left: i32, recovered: impl SceneList) -> impl Scene {
+    let track_left = transport_gauge_track_left(owner_left);
     bsn! {
-        template(move |context| Ok(spawn_transport_gauge(context, owner_left, capacity)))
+        TransportGaugeParts { fill: #Fill, limit: #Limit }
+        Children [
+            (
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(track_left),
+                    top: px(TRACK_TOP),
+                    width: px(TRACK_WIDTH),
+                    height: px(TRACK_HEIGHT),
+                }
+                retail_background_color(TRACK_BG_PALETTE)
+                Pickable::IGNORE
+            ),
+            (
+                #Fill
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(track_left),
+                    top: px(TRACK_TOP),
+                    width: px(0.0),
+                    height: px(TRACK_HEIGHT),
+                }
+                retail_background_color(ALLOCATION_FILL_PALETTE)
+                Pickable::IGNORE
+            ),
+            (
+                #Limit
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(track_left - 1.0),
+                    top: px(LIMIT_TOP),
+                    width: px(LIMIT_WIDTH),
+                    height: px(LIMIT_HEIGHT),
+                }
+                retail_background_color(LIMIT_PALETTE)
+                Visibility::Hidden
+                Pickable::IGNORE
+            ),
+            {recovered},
+        ]
     }
 }
 
@@ -62,102 +119,6 @@ fn transport_gauge_track_left(owner_left: i32) -> f32 {
     } else {
         0x61 as f32
     }
-}
-
-fn spawn_transport_gauge(
-    context: &mut TemplateContext,
-    owner_left: i32,
-    capacity: bool,
-) -> TransportGaugeParts {
-    let colors = TransportGaugeColors {
-        track_bg: palette_color(context, TRACK_BG_PALETTE),
-        fill: palette_color(
-            context,
-            if capacity {
-                CAPACITY_FILL_PALETTE
-            } else {
-                ALLOCATION_FILL_PALETTE
-            },
-        ),
-        limit: palette_color(context, LIMIT_PALETTE),
-    };
-    let mut parts = TransportGaugeParts {
-        fill: Entity::PLACEHOLDER,
-        limit: Entity::PLACEHOLDER,
-    };
-    context.entity.with_children(|parent| {
-        parts = spawn_transport_gauge_nodes(
-            parent,
-            transport_gauge_track_left(owner_left),
-            capacity,
-            colors,
-        );
-    });
-    parts
-}
-
-fn spawn_transport_gauge_nodes(
-    parent: &mut ChildSpawner,
-    track_left: f32,
-    capacity: bool,
-    colors: TransportGaugeColors,
-) -> TransportGaugeParts {
-    parent.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            left: Val::Px(track_left),
-            top: Val::Px(TRACK_TOP),
-            width: Val::Px(TRACK_WIDTH),
-            height: Val::Px(TRACK_HEIGHT),
-            ..default()
-        },
-        BackgroundColor(colors.track_bg),
-        Pickable::IGNORE,
-    ));
-    let fill = parent
-        .spawn((
-            Node {
-                position_type: PositionType::Absolute,
-                left: Val::Px(track_left),
-                top: Val::Px(TRACK_TOP),
-                width: Val::Px(0.0),
-                height: Val::Px(TRACK_HEIGHT),
-                ..default()
-            },
-            BackgroundColor(colors.fill),
-            Pickable::IGNORE,
-        ))
-        .id();
-    let limit = if capacity {
-        Entity::PLACEHOLDER
-    } else {
-        parent
-            .spawn((
-                Node {
-                    position_type: PositionType::Absolute,
-                    left: Val::Px(track_left - 1.0),
-                    top: Val::Px(LIMIT_TOP),
-                    width: Val::Px(LIMIT_WIDTH),
-                    height: Val::Px(LIMIT_HEIGHT),
-                    ..default()
-                },
-                BackgroundColor(colors.limit),
-                Visibility::Hidden,
-                Pickable::IGNORE,
-            ))
-            .id()
-    };
-
-    TransportGaugeParts { fill, limit }
-}
-
-fn palette_color(context: &TemplateContext, index: u8) -> Color {
-    let [red, green, blue] = context
-        .resource::<RetailAssetsResource>()
-        .assets()
-        .default_dib_palette()[index]
-        .to_array();
-    Color::srgb_u8(red, green, blue)
 }
 
 /// `TTransportPicture::Refresh` 113px remainder-distribution fill width.
@@ -179,6 +140,14 @@ pub fn transport_gauge_width(value: i16, total: i16) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use bevy::asset::AssetPlugin;
+    use bevy::scene::ScenePlugin;
+
+    fn scene_app() -> App {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin));
+        app
+    }
 
     #[test]
     fn transport_gauge_track_left_follows_refresh_rule() {
@@ -192,5 +161,107 @@ mod tests {
         assert_eq!(transport_gauge_width(0, 0), 0.0);
         assert!(transport_gauge_width(5, 10) > 0.0);
         assert!(transport_gauge_width(10, 10) <= TRACK_WIDTH);
+    }
+
+    #[test]
+    fn capacity_gauge_binds_fill_in_the_same_scene_scope() {
+        let mut app = scene_app();
+        let track_left = transport_gauge_track_left(325);
+        let row = app
+            .world_mut()
+            .spawn_scene(bsn! {
+                TransportGaugeParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
+                Children [
+                    (
+                        Node {
+                            position_type: PositionType::Absolute,
+                            left: px(track_left),
+                            top: px(TRACK_TOP),
+                            width: px(TRACK_WIDTH),
+                            height: px(TRACK_HEIGHT),
+                        }
+                        BackgroundColor(Color::WHITE)
+                    ),
+                    (
+                        #Fill
+                        Node {
+                            position_type: PositionType::Absolute,
+                            left: px(track_left),
+                            top: px(TRACK_TOP),
+                            width: px(0.0),
+                            height: px(TRACK_HEIGHT),
+                        }
+                        BackgroundColor(Color::WHITE)
+                    ),
+                ]
+            })
+            .expect("capacity gauge scene")
+            .id();
+        app.update();
+
+        let parts = app
+            .world()
+            .get::<TransportGaugeParts>(row)
+            .expect("transport row has gauge parts");
+        assert_ne!(parts.fill, Entity::PLACEHOLDER);
+        assert!(app.world().get_entity(parts.fill).is_ok());
+    }
+
+    #[test]
+    fn allocation_gauge_binds_fill_and_limit_in_the_same_scene_scope() {
+        let mut app = scene_app();
+        let track_left = transport_gauge_track_left(70);
+        let row = app
+            .world_mut()
+            .spawn_scene(bsn! {
+                TransportGaugeParts { fill: #Fill, limit: #Limit }
+                Children [
+                    (
+                        Node {
+                            position_type: PositionType::Absolute,
+                            left: px(track_left),
+                            top: px(TRACK_TOP),
+                            width: px(TRACK_WIDTH),
+                            height: px(TRACK_HEIGHT),
+                        }
+                        BackgroundColor(Color::WHITE)
+                    ),
+                    (
+                        #Fill
+                        Node {
+                            position_type: PositionType::Absolute,
+                            left: px(track_left),
+                            top: px(TRACK_TOP),
+                            width: px(0.0),
+                            height: px(TRACK_HEIGHT),
+                        }
+                        BackgroundColor(Color::WHITE)
+                    ),
+                    (
+                        #Limit
+                        Node {
+                            position_type: PositionType::Absolute,
+                            left: px(track_left - 1.0),
+                            top: px(LIMIT_TOP),
+                            width: px(LIMIT_WIDTH),
+                            height: px(LIMIT_HEIGHT),
+                        }
+                        BackgroundColor(Color::WHITE)
+                        Visibility::Hidden
+                    ),
+                ]
+            })
+            .expect("allocation gauge scene")
+            .id();
+        app.update();
+
+        let parts = app
+            .world()
+            .get::<TransportGaugeParts>(row)
+            .expect("transport row has gauge parts");
+        assert_ne!(parts.fill, Entity::PLACEHOLDER);
+        assert_ne!(parts.limit, Entity::PLACEHOLDER);
+        assert!(app.world().get_entity(parts.fill).is_ok());
+        assert!(app.world().get_entity(parts.limit).is_ok());
     }
 }

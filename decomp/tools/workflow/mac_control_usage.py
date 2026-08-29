@@ -17,7 +17,7 @@ from typing import Iterable
 
 from tools.common.file_scan import iter_files
 from tools.common.symbols import names_by_address
-from tools.ui_codegen import IR_PATH, load_recipes, load_ui_views
+from tools.ui_cpp_codegen import IR_PATH, load_recipes, load_ui_views
 
 
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"

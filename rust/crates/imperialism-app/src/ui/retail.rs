@@ -11,16 +11,18 @@ use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
 
-pub use super::retail_amount_bar::{AmountBarParts, AmountBarStyle, retail_amount_bar};
+pub use super::retail_amount_bar::{
+    AmountBarParts, retail_production_amount_bar, retail_trade_amount_bar,
+};
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
-pub use super::retail_page_corner::RetailPageCorner;
 pub use super::retail_placard::{
     PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
 };
-pub use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite, Step};
+pub use super::retail_sideways_arrow::Step;
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_transport_gauge::{
-    TransportGaugeParts, retail_transport_gauge, transport_gauge_width,
+    TransportGaugeParts, transport_allocation_gauge, transport_capacity_gauge,
+    transport_gauge_width,
 };
 
 /// Provenance tag recovered from the retail View resource.
@@ -35,8 +37,14 @@ pub struct RetailPictureSwap {
 }
 
 /// A `TPictureButton` down-state bitmap drawn only while the control is pressed.
-#[derive(Component, Debug, Default)]
+#[derive(Component, Debug, Default, Clone)]
 pub struct RetailPressedOverlay;
+
+/// Retained overlay child for a [`retail_picture_button`] hierarchy.
+#[derive(Component, FromTemplate, Clone, Copy)]
+struct PictureButtonParts {
+    overlay: Entity,
+}
 
 /// `TMadnessButton::CheckTheLook` bitmap frames: base+0..=4 from checked/pressed/disabled.
 #[derive(Component, Clone, Debug)]
@@ -88,33 +96,37 @@ pub fn retail_picture(id: i16) -> impl Scene {
 pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
     bsn! {
         template(move |context| {
+            Ok(ImageNode::new(load_template_picture(
+                context,
+                PictureId::new(idle),
+            )?))
+        })
+        template(move |context| {
             let idle = load_template_picture(context, PictureId::new(idle))?;
             let active = load_template_picture(context, PictureId::new(active))?;
-            // Generated radios/checkboxes often already have `Checked` (or `Pressed`)
-            // before this template runs; observers on `Add<Checked>` would miss it.
-            let initial = if context.entity.get::<Pressed>().is_some()
-                || context.entity.get::<Checked>().is_some()
-            {
-                active.clone()
-            } else {
-                idle.clone()
-            };
-            context.entity.insert(RetailPictureSwap { idle, active });
-            Ok(ImageNode::new(initial))
+            Ok(RetailPictureSwap { idle, active })
         })
     }
 }
 
-/// `TPictureButton` hilite bitmap: present but fully transparent until `Pressed`.
-pub fn retail_pressed_overlay_picture(id: i16) -> impl Scene {
+/// `TPictureButton` base art plus a child overlay shown only while pressed.
+pub fn retail_picture_button(idle: i16, overlay: i16) -> impl Scene {
     bsn! {
-        template(move |context| {
-            let image = load_template_picture(context, PictureId::new(id))?;
-            context.entity.insert(RetailPressedOverlay);
-            let mut node = ImageNode::new(image);
-            node.color.set_alpha(0.0);
-            Ok(node)
-        })
+        PictureButtonParts { overlay: #Overlay }
+        retail_picture(idle)
+        Children [
+            (
+                #Overlay
+                template(move |context| {
+                    let image = load_template_picture(context, PictureId::new(overlay))?;
+                    let mut node = ImageNode::new(image);
+                    node.color.set_alpha(0.0);
+                    Ok(node)
+                })
+                RetailPressedOverlay
+                Pickable::IGNORE
+            )
+        ]
     }
 }
 
@@ -122,22 +134,14 @@ pub fn retail_pressed_overlay_picture(id: i16) -> impl Scene {
 pub fn retail_madness_picture(base: i16) -> impl Scene {
     bsn! {
         template(move |context| {
-            let frames = std::array::from_fn(|index| {
-                let id = base + index as i16;
-                load_template_picture(context, PictureId::new(id)).unwrap_or_else(|error| {
-                    panic!("retail madness picture {id} must load: {error}")
-                })
-            });
-            // Derive the opening frame from components already on the entity;
-            // do not rely on a later `Add` observer to correct construction.
-            let initial = frames[madness_frame_index(
-                context.entity.get::<Checked>().is_some(),
-                context.entity.get::<Pressed>().is_some(),
-                context.entity.get::<InteractionDisabled>().is_some(),
-            )]
-            .clone();
-            context.entity.insert(RetailMadnessPicture { frames });
-            Ok(ImageNode::new(initial))
+            Ok(ImageNode::new(
+                load_madness_frames(context, base)[0].clone(),
+            ))
+        })
+        template(move |context| {
+            Ok(RetailMadnessPicture {
+                frames: load_madness_frames(context, base),
+            })
         })
     }
 }
@@ -249,26 +253,17 @@ pub struct RetailRadioTextFill {
 
 pub fn retail_radio_text_fill() -> impl Scene {
     bsn! {
+        BackgroundColor(Color::NONE)
         template(move |context| {
-            let fill = RetailRadioTextFill {
+            Ok(RetailRadioTextFill {
                 selected: template_palette_color(context, RADIO_TEXT_SELECTED_PALETTE),
                 pressed: template_palette_color(context, RADIO_TEXT_PRESSED_PALETTE),
-            };
-            // Generated radios often already have `Checked` before this template
-            // runs; observers on `Add<Checked>` would have missed the fill.
-            let background = if context.entity.get::<Pressed>().is_some() {
-                fill.pressed
-            } else if context.entity.get::<Checked>().is_some() {
-                fill.selected
-            } else {
-                Color::NONE
-            };
-            context.entity.insert(fill);
-            Ok(BackgroundColor(background))
+            })
         })
     }
 }
 
+/// Vertically center a caption inside recovered control bounds.
 pub fn retail_centered_text_padding(
     font_family: i32,
     face_flags: i32,
@@ -459,12 +454,14 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
+            .add_observer(on_retail_picture_swap_state::<Add, RetailPictureSwap>)
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
             .add_observer(on_retail_picture_swap_state::<Remove, Checked>)
             .add_observer(on_retail_pressed_overlay_state::<Add>)
             .add_observer(on_retail_pressed_overlay_state::<Remove>)
+            .add_observer(on_retail_madness_picture_state::<Add, RetailMadnessPicture>)
             .add_observer(on_retail_madness_picture_state::<Add, Pressed>)
             .add_observer(on_retail_madness_picture_state::<Remove, Pressed>)
             .add_observer(on_retail_madness_picture_state::<Add, Checked>)
@@ -486,13 +483,25 @@ impl Plugin for RetailUiPlugin {
 
 fn on_retail_pressed_overlay_state<E: EntityEvent>(
     event: On<E, Pressed>,
-    mut nodes: Query<(&mut ImageNode, Has<Pressed>), With<RetailPressedOverlay>>,
+    buttons: Query<(&PictureButtonParts, Has<Pressed>)>,
+    mut overlays: Query<&mut ImageNode, With<RetailPressedOverlay>>,
 ) {
-    let Ok((mut image, pressed)) = nodes.get_mut(event.event_target()) else {
+    let Ok((parts, pressed)) = buttons.get(event.event_target()) else {
+        return;
+    };
+    let Ok(mut image) = overlays.get_mut(parts.overlay) else {
         return;
     };
     let pressed = pressed && !E::is::<Remove>();
     image.color.set_alpha(if pressed { 1.0 } else { 0.0 });
+}
+
+fn load_madness_frames(context: &mut TemplateContext, base: i16) -> [Handle<Image>; 5] {
+    std::array::from_fn(|index| {
+        let id = base + index as i16;
+        load_template_picture(context, PictureId::new(id))
+            .unwrap_or_else(|error| panic!("retail madness picture {id} must load: {error}"))
+    })
 }
 
 fn madness_frame_index(checked: bool, pressed: bool, disabled: bool) -> usize {
@@ -779,79 +788,159 @@ mod tests {
         assert_eq!(image.data.as_ref().unwrap()[7], 0xff);
     }
 
-    #[test]
-    fn picture_swap_selects_preloaded_idle_and_active_handles() {
+    fn scene_app() -> App {
         let mut app = App::new();
         app.init_resource::<Assets<Image>>()
+            .add_plugins((
+                MinimalPlugins,
+                AssetPlugin::default(),
+                bevy::scene::ScenePlugin,
+            ))
             .add_plugins(RetailUiPlugin);
+        app
+    }
+
+    #[test]
+    fn picture_swap_initializes_checked_state_when_spawned_from_scene() {
+        let mut app = scene_app();
         let (idle, active) = {
             let mut images = app.world_mut().resource_mut::<Assets<Image>>();
             (images.add(Image::default()), images.add(Image::default()))
         };
+        let idle_for_swap = idle.clone();
+        let active_for_assert = active.clone();
         let entity = app
             .world_mut()
-            .spawn((
-                ImageNode::new(idle.clone()),
-                RetailPictureSwap {
-                    idle: idle.clone(),
-                    active: active.clone(),
-                },
-            ))
+            .spawn_scene(bsn! {
+                template(move |_| Ok(ImageNode::new(idle.clone())))
+                template(move |_| {
+                    Ok(RetailPictureSwap {
+                        idle: idle_for_swap.clone(),
+                        active: active.clone(),
+                    })
+                })
+                Checked
+            })
+            .expect("picture swap scene")
             .id();
+        app.update();
 
-        assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, idle);
-
-        app.world_mut().entity_mut(entity).insert(Pressed);
-        assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, active);
-
-        app.world_mut().entity_mut(entity).insert(Checked);
-        app.world_mut().entity_mut(entity).remove::<Pressed>();
-        assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, active);
-
-        app.world_mut().entity_mut(entity).remove::<Checked>();
-        assert_eq!(app.world().get::<ImageNode>(entity).unwrap().image, idle);
+        assert_eq!(
+            app.world().get::<ImageNode>(entity).unwrap().image,
+            active_for_assert
+        );
     }
 
     #[test]
-    fn picture_button_overlay_is_visible_only_while_pressed() {
-        let mut app = App::new();
-        app.add_plugins(RetailUiPlugin);
+    fn madness_picture_initializes_unchecked_frame_when_spawned_from_scene() {
+        let mut app = scene_app();
+        let frames: [Handle<Image>; 5] = {
+            let mut images = app.world_mut().resource_mut::<Assets<Image>>();
+            std::array::from_fn(|_| images.add(Image::default()))
+        };
+        let expected = frames[madness_frame_index(false, false, false)].clone();
+        let frames_for_skin = frames.clone();
         let entity = app
             .world_mut()
-            .spawn((ImageNode::default(), RetailPressedOverlay))
+            .spawn_scene(bsn! {
+                template(move |_| Ok(ImageNode::new(frames[0].clone())))
+                template(move |_| Ok(RetailMadnessPicture { frames: frames_for_skin.clone() }))
+            })
+            .expect("madness picture scene")
             .id();
-        app.world_mut()
-            .get_mut::<ImageNode>(entity)
-            .unwrap()
-            .color
-            .set_alpha(0.0);
+        app.update();
 
-        app.world_mut().entity_mut(entity).insert(Pressed);
         assert_eq!(
-            app.world().get::<ImageNode>(entity).unwrap().color.alpha(),
+            app.world().get::<ImageNode>(entity).unwrap().image,
+            expected
+        );
+    }
+
+    #[test]
+    fn picture_button_overlay_is_visible_only_while_parent_is_pressed() {
+        let mut app = scene_app();
+        let button = app
+            .world_mut()
+            .spawn_scene(bsn! {
+                PictureButtonParts { overlay: #Overlay }
+                ImageNode::default()
+                Children [
+                    (
+                        #Overlay
+                        template(|_| {
+                            let mut node = ImageNode::default();
+                            node.color.set_alpha(0.0);
+                            Ok(node)
+                        })
+                        RetailPressedOverlay
+                    )
+                ]
+            })
+            .expect("picture button scene")
+            .id();
+        app.update();
+
+        let overlay = app
+            .world()
+            .get::<PictureButtonParts>(button)
+            .expect("picture button retains overlay child")
+            .overlay;
+        assert_eq!(
+            app.world().get::<ImageNode>(overlay).unwrap().color.alpha(),
+            0.0
+        );
+
+        app.world_mut().entity_mut(button).insert(Pressed);
+        app.update();
+        assert_eq!(
+            app.world().get::<ImageNode>(overlay).unwrap().color.alpha(),
             1.0
         );
 
-        app.world_mut().entity_mut(entity).remove::<Pressed>();
+        app.world_mut().entity_mut(button).remove::<Pressed>();
+        app.update();
         assert_eq!(
-            app.world().get::<ImageNode>(entity).unwrap().color.alpha(),
+            app.world().get::<ImageNode>(overlay).unwrap().color.alpha(),
             0.0
         );
     }
 
     #[test]
-    fn radio_text_fill_follows_pressed_and_checked() {
-        let mut app = App::new();
-        app.add_plugins(RetailUiPlugin);
+    fn radio_text_fill_initializes_checked_state_when_spawned_from_scene() {
+        let mut app = scene_app();
         let selected = Color::srgb(1.0, 0.0, 0.0);
         let pressed = Color::srgb(0.0, 1.0, 0.0);
         let entity = app
             .world_mut()
-            .spawn((
-                BackgroundColor(Color::NONE),
-                RetailRadioTextFill { selected, pressed },
-            ))
+            .spawn_scene(bsn! {
+                BackgroundColor(Color::NONE)
+                template(move |_| Ok(RetailRadioTextFill { selected, pressed }))
+                Checked
+            })
+            .expect("radio text fill scene")
             .id();
+        app.update();
+
+        assert_eq!(
+            app.world().get::<BackgroundColor>(entity).unwrap().0,
+            selected
+        );
+    }
+
+    #[test]
+    fn radio_text_fill_follows_pressed_and_checked() {
+        let mut app = scene_app();
+        let selected = Color::srgb(1.0, 0.0, 0.0);
+        let pressed = Color::srgb(0.0, 1.0, 0.0);
+        let entity = app
+            .world_mut()
+            .spawn_scene(bsn! {
+                BackgroundColor(Color::NONE)
+                template(move |_| Ok(RetailRadioTextFill { selected, pressed }))
+            })
+            .expect("radio text fill scene")
+            .id();
+        app.update();
 
         assert_eq!(
             app.world().get::<BackgroundColor>(entity).unwrap().0,
@@ -859,24 +948,28 @@ mod tests {
         );
 
         app.world_mut().entity_mut(entity).insert(Checked);
+        app.update();
         assert_eq!(
             app.world().get::<BackgroundColor>(entity).unwrap().0,
             selected
         );
 
         app.world_mut().entity_mut(entity).insert(Pressed);
+        app.update();
         assert_eq!(
             app.world().get::<BackgroundColor>(entity).unwrap().0,
             pressed
         );
 
         app.world_mut().entity_mut(entity).remove::<Pressed>();
+        app.update();
         assert_eq!(
             app.world().get::<BackgroundColor>(entity).unwrap().0,
             selected
         );
 
         app.world_mut().entity_mut(entity).remove::<Checked>();
+        app.update();
         assert_eq!(
             app.world().get::<BackgroundColor>(entity).unwrap().0,
             Color::NONE
