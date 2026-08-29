@@ -228,6 +228,27 @@ impl TurnFlow {
                     "technology report requires phase TECHNOLOGY_ADVANCES"
                 );
             }
+            Self::GreatPowerLoss => {
+                debug_assert_eq!(
+                    phase,
+                    PhaseCode::GREAT_POWER_PRESSURE,
+                    "great-power loss requires phase GREAT_POWER_PRESSURE"
+                );
+            }
+            Self::PostCombatReports => {
+                debug_assert_eq!(
+                    phase,
+                    PhaseCode::DIPLOMACY_OFFER,
+                    "post-combat reports require phase DIPLOMACY_OFFER"
+                );
+            }
+            Self::PlayerEliminated | Self::Victory => {
+                debug_assert_eq!(
+                    phase,
+                    PhaseCode::ELIMINATION,
+                    "elimination outcome requires phase ELIMINATION"
+                );
+            }
             _ => {}
         }
     }
@@ -318,7 +339,8 @@ impl GameState {
 
     /// Closes the Deal Book opened by the turn driver and continues the turn.
     pub fn close_turn_deal_book(&mut self) -> TurnStop {
-        assert_eq!(self.turn.phase(), PhaseCode::QUARTER_GATE);
+        assert_eq!(self.turn.phase(), PhaseCode::DEAL_BOOK);
+        self.turn.phase = PhaseCode::QUARTER_GATE;
         self.advance_turn()
     }
 
@@ -372,13 +394,14 @@ impl GameState {
     }
 
     /// Closes `TBattleReportView`. Reports stay until the next military phase's
-    /// `CleanUpStacks`; phase is already `ELIMINATION`.
+    /// `CleanUpStacks`; phase remains `DIPLOMACY_OFFER` until dismissed.
     pub fn close_post_combat_reports(&mut self) -> TurnStop {
         assert!(
             matches!(self.turn_flow, TurnFlow::PostCombatReports),
             "post-combat report resume requires a post-combat continuation"
         );
         self.turn_flow = TurnFlow::Running;
+        self.turn.phase = PhaseCode::ELIMINATION;
         self.advance_turn()
     }
 
@@ -548,38 +571,57 @@ impl GameState {
                 }
                 PhaseCode::CITY_AND_TRANSPORT => self.apply_city_and_transport_case(),
                 PhaseCode::GREAT_POWER_PRESSURE => {
-                    self.turn.phase = PhaseCode::DEAL_BOOK;
-                    if self.do_great_power_pressure_phase() {
-                        // `mode` is still `0x0b`; movie factory default is `"lose"`, then
-                        // `ReinitializeGameFlow` — not the council path.
-                        self.turn_flow = TurnFlow::GreatPowerLoss;
+                    if matches!(self.turn_flow, TurnFlow::GreatPowerLoss) {
                         return TurnStop::GreatPowerLoss;
+                    }
+                    if self.turn.phase() == PhaseCode::GREAT_POWER_PRESSURE {
+                        if self.do_great_power_pressure_phase() {
+                            // `mode` is still `0x0b`; movie factory default is `"lose"`, then
+                            // `ReinitializeGameFlow` — not the council path.
+                            self.turn_flow = TurnFlow::GreatPowerLoss;
+                            return TurnStop::GreatPowerLoss;
+                        }
+                        self.turn.phase = PhaseCode::DEAL_BOOK;
                     }
                 }
                 PhaseCode::DEAL_BOOK => {
-                    self.turn.phase = PhaseCode::QUARTER_GATE;
                     if self.event_eligible(self.turn.active_nation) {
                         return TurnStop::DealBook;
                     }
+                    self.turn.phase = PhaseCode::QUARTER_GATE;
                 }
                 PhaseCode::DIPLOMACY_OFFER => {
-                    self.turn.phase = PhaseCode::ELIMINATION;
-                    if self.diplomacy_offer_gate() {
-                        self.turn_flow = TurnFlow::PostCombatReports;
+                    if matches!(self.turn_flow, TurnFlow::PostCombatReports) {
                         return TurnStop::PostCombatReports;
+                    }
+                    if self.turn.phase() == PhaseCode::DIPLOMACY_OFFER {
+                        if self.diplomacy_offer_gate() {
+                            self.turn_flow = TurnFlow::PostCombatReports;
+                            return TurnStop::PostCombatReports;
+                        }
+                        self.turn.phase = PhaseCode::ELIMINATION;
                     }
                 }
                 PhaseCode::ELIMINATION => {
-                    self.turn.phase = PhaseCode::CITY_AND_TRANSPORT;
-                    match self.do_elimination_phase() {
-                        EliminationOutcome::Continue => {}
-                        EliminationOutcome::PlayerEliminated => {
-                            self.turn_flow = TurnFlow::PlayerEliminated;
-                            return TurnStop::PlayerEliminated;
-                        }
-                        EliminationOutcome::Victory => {
-                            self.turn_flow = TurnFlow::Victory;
-                            return TurnStop::Victory;
+                    if matches!(
+                        self.turn_flow,
+                        TurnFlow::PlayerEliminated | TurnFlow::Victory
+                    ) {
+                        return self.interrupt_stop().expect("elimination flow is blocked");
+                    }
+                    if self.turn.phase() == PhaseCode::ELIMINATION {
+                        match self.do_elimination_phase() {
+                            EliminationOutcome::Continue => {
+                                self.turn.phase = PhaseCode::CITY_AND_TRANSPORT;
+                            }
+                            EliminationOutcome::PlayerEliminated => {
+                                self.turn_flow = TurnFlow::PlayerEliminated;
+                                return TurnStop::PlayerEliminated;
+                            }
+                            EliminationOutcome::Victory => {
+                                self.turn_flow = TurnFlow::Victory;
+                                return TurnStop::Victory;
+                            }
                         }
                     }
                 }
@@ -754,7 +796,7 @@ mod tests {
         state.turn.phase = crate::PhaseCode::CITY_AND_TRANSPORT;
         let stop = state.advance_turn();
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
     }
 
     #[test]
@@ -847,7 +889,7 @@ mod tests {
             }
         }
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
         assert!(state.pending_trade_offer().is_none());
         assert!(state.pending_land_battle().is_none());
     }
@@ -899,7 +941,7 @@ mod tests {
         }
         assert!(state.pending_trade_offer().is_none());
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
     }
 
     #[test]
@@ -1015,7 +1057,7 @@ mod tests {
         });
         state.turn.phase = crate::PhaseCode::DIPLOMACY_OFFER;
         assert_eq!(state.advance_turn(), crate::TurnStop::PostCombatReports);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::ELIMINATION);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DIPLOMACY_OFFER);
     }
 
     #[test]
@@ -1030,7 +1072,7 @@ mod tests {
         assert_eq!(eliminated.advance_turn(), crate::TurnStop::PlayerEliminated);
         assert_eq!(
             eliminated.turn.phase(),
-            crate::PhaseCode::CITY_AND_TRANSPORT
+            crate::PhaseCode::ELIMINATION
         );
 
         let mut victory = game_state();
@@ -1041,7 +1083,7 @@ mod tests {
             .append_owned_region_during_construction(survivor.nation(), crate::ProvinceId::new(0));
         victory.turn.phase = crate::PhaseCode::ELIMINATION;
         assert_eq!(victory.advance_turn(), crate::TurnStop::Victory);
-        assert_eq!(victory.turn.phase(), crate::PhaseCode::CITY_AND_TRANSPORT);
+        assert_eq!(victory.turn.phase(), crate::PhaseCode::ELIMINATION);
     }
 
     #[test]
@@ -1061,7 +1103,7 @@ mod tests {
         seed_town_tiles(&mut state);
         let stop = state.finish_player_orders(true);
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn.phase(), crate::PhaseCode::QUARTER_GATE);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DEAL_BOOK);
         let start_turn = state.turn.economic_turn;
         let mut stop = state.close_turn_deal_book();
         while let crate::TurnStop::TechnologyAdvance = stop {
