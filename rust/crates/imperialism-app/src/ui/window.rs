@@ -11,7 +11,6 @@ use bevy::ui_widgets::{Activate, Button};
 
 const CAPTION_HEIGHT: f32 = 18.0;
 const CLOSE_SIZE: f32 = 14.0;
-const CLOSE_GLYPH: &str = "\u{00d7}";
 
 /// A positioned, z-ordered, focusable window.
 #[derive(Component, Debug, Default)]
@@ -65,13 +64,8 @@ impl CaptionedWindow {
                             ZIndex(1)
                             Children [
                                 (
-                                    template(|_context| Ok(Text(CLOSE_GLYPH.to_owned())))
-                                    template(|_context| {
-                                        Ok(TextFont {
-                                            font_size: FontSize::Px(12.0),
-                                            ..Default::default()
-                                        })
-                                    })
+                                    Text("\u{00d7}")
+                                    template(|_| Ok(TextFont::from_font_size(12.0)))
                                     TextColor(Color::BLACK)
                                     Pickable::IGNORE
                                 )
