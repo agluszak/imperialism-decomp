@@ -2,7 +2,8 @@
 [doc('Validate committed UI semantics, structural invariants, and class bindings')]
 [group('gates')]
 ui-codegen-check:
-  uv run python -m tools.ui_codegen --check
+  uv run python -m tools.ui_cpp_codegen --check
+  uv run python -m tools.ui_rust_codegen --check
 
 # The complete repository verification sequence in one local command. It includes
 # the checks that formerly lived in hosted automation: the lint rejection fixture,

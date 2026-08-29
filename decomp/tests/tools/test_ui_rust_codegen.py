@@ -5,7 +5,6 @@ from pathlib import Path
 
 from tools.ui_rust_codegen import (
     RUST_OUT,
-    CLASS_RENDERERS,
     class_has_renderer,
     encountered_classes,
     is_current,

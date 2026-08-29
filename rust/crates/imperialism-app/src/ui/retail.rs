@@ -16,8 +16,8 @@ pub use super::retail_controls::{
     retail_captioned_window, retail_checkbox, retail_hover_help_bar, retail_interaction_state,
     retail_madness_checkbox, retail_page_corner, retail_picture_button,
     retail_picture_button_overlay, retail_picture_swap_button, retail_pointer_canvas,
-    retail_radio_cluster, retail_radio_picture_button, retail_radio_text,
-    retail_right_left_arrow, retail_scroll_area, retail_sideways_arrow, retail_toggle_picture,
+    retail_radio_cluster, retail_radio_picture_button, retail_radio_text, retail_right_left_arrow,
+    retail_scroll_area, retail_sideways_arrow, retail_toggle_picture,
 };
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
 pub use super::retail_page_corner::RetailPageCorner;
@@ -26,7 +26,7 @@ pub use super::retail_placard::{
 };
 pub use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite, Step};
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
-pub use super::retail_text::{RetailTextSpec, retail_font_family, retail_text, retail_text_field};
+pub use super::retail_text::{RetailTextSpec, retail_text, retail_text_field};
 pub use super::retail_transport_gauge::{
     TransportGaugeParts, retail_transport_gauge, transport_gauge_width,
 };
@@ -277,6 +277,8 @@ pub fn retail_radio_text_fill() -> impl Scene {
     }
 }
 
+/// Vertically center a caption inside recovered control bounds.
+#[allow(dead_code)]
 pub fn retail_centered_text_padding(
     font_family: i32,
     face_flags: i32,

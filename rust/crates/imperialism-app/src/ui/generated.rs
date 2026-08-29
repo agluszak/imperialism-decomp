@@ -1631,6 +1631,7 @@ pub fn citymain_2011() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),
@@ -1658,6 +1659,7 @@ pub fn diplo_1351() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("curs"), 434, 7, 201, 21)
+                                        retail_hover_help_bar()
                                     ),
 (
                                         retail_node(fourcc!("prev"), 294, 381, 22, 22)
@@ -2114,6 +2116,7 @@ pub fn diplo_2008() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("tool"), 3, 6, 218, 29)
@@ -2229,11 +2232,11 @@ pub fn diplo_2016() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("coa0"), 64, 385, 56, 84)
-                                retail_picture(4357)
+                                retail_picture_button(4357, 4358)
                             ),
 (
                                 retail_node(fourcc!("coa1"), 511, 385, 56, 84)
-                                retail_picture(4357)
+                                retail_picture_button(4357, 4358)
                             ),
 (
                                 retail_node(fourcc!("titl"), 48, 6, 338, 30)
@@ -2241,6 +2244,7 @@ pub fn diplo_2016() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("sco1"), 455, 402, 54, 39)
@@ -2479,6 +2483,7 @@ pub fn flagview_8500() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 273, 7, 318, 25)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("tbr2"), 608, 39, 30, 40)
@@ -2590,6 +2595,7 @@ pub fn flagview_8800() -> impl Scene {
                     ),
 (
                         retail_node(fourcc!("curs"), 245, 7, 365, 21)
+                        retail_hover_help_bar()
                     ),
                 ]
             ),
@@ -2607,7 +2613,7 @@ pub fn linger_950() -> impl Scene {
                 Children [
 (
                         retail_node(fourcc!("okay"), 0, 0, 550, 350)
-                        retail_picture(950)
+                        retail_picture_button(950, 951)
                     ),
                 ]
             ),
@@ -2630,15 +2636,18 @@ pub fn linger_954() -> impl Scene {
 (
                                 retail_node(fourcc!("1or2"), 39, 110, 175, 20)
                                 retail_interaction_state(false, true)
+                                retail_radio_cluster()
                                 Children [
 (
                                         retail_node(fourcc!("one1"), 2, 2, 85, 16)
                                         retail_interaction_state(true, false)
+                                        retail_radio_text()
                                         retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 16, 0)
                                     ),
 (
                                         retail_node(fourcc!("two2"), 88, 2, 85, 16)
                                         retail_interaction_state(true, false)
+                                        retail_radio_text()
                                         retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 16, 0)
                                     ),
                                 ]
@@ -2740,6 +2749,7 @@ pub fn linger_1502() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("map "), 12, 13, 324, 180)
+                                        retail_pointer_canvas()
                                     ),
 (
                                         retail_node(fourcc!("info"), 20, 197, 205, 43)
@@ -2754,6 +2764,7 @@ pub fn linger_1502() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 49, 19, 201, 30)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),
@@ -2842,6 +2853,7 @@ pub fn linger_3000() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("swin"), 21, 146, 363, 163)
+                                retail_scroll_area()
                             ),
 (
                                 retail_node(fourcc!("nam1"), 15, 187, 244, 15)
@@ -3214,15 +3226,18 @@ pub fn linger_4150() -> impl Scene {
 (
                                 retail_node(fourcc!("opca"), 370, 429, 195, 20)
                                 retail_interaction_state(false, true)
+                                retail_radio_cluster()
                                 Children [
 (
                                         retail_node(fourcc!("yess"), 2, 2, 95, 16)
                                         retail_interaction_state(true, false)
+                                        retail_radio_text()
                                         retail_text(RetailTextSpec { text: "Enabled", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(92), shadow_offset: (1, 1), center_vertically: false }, 16, 0)
                                     ),
 (
                                         retail_node(fourcc!("nooo"), 98, 2, 95, 16)
                                         retail_interaction_state(true, false)
+                                        retail_radio_text()
                                         retail_text(RetailTextSpec { text: "Disabled", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(92), shadow_offset: (1, 1), center_vertically: false }, 16, 0)
                                     ),
                                 ]
@@ -3242,6 +3257,7 @@ pub fn linger_4150() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),
@@ -3300,46 +3316,56 @@ pub fn linger_4300() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("tab0"), 13, 134, 60, 56)
-                                retail_picture(4301)
+                                retail_picture_button(4301, 4302)
                             ),
 (
                                 retail_node(fourcc!("tab1"), 13, 190, 60, 56)
-                                retail_picture(4302)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4302, 4303)
                             ),
 (
                                 retail_node(fourcc!("tab2"), 13, 245, 60, 56)
-                                retail_picture(4303)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4303, 4304)
                             ),
 (
                                 retail_node(fourcc!("tab3"), 13, 300, 60, 56)
-                                retail_picture(4304)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4304, 4305)
                             ),
 (
                                 retail_node(fourcc!("tab4"), 13, 356, 60, 56)
-                                retail_picture(4305)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4305, 4306)
                             ),
 (
                                 retail_node(fourcc!("tab5"), 567, 134, 60, 56)
-                                retail_picture(4306)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4306, 4307)
                             ),
 (
                                 retail_node(fourcc!("tab6"), 567, 190, 60, 56)
-                                retail_picture(4307)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4307, 4308)
                             ),
 (
                                 retail_node(fourcc!("tab7"), 567, 245, 60, 56)
-                                retail_picture(4308)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4308, 4309)
                             ),
 (
                                 retail_node(fourcc!("tab8"), 567, 300, 60, 56)
-                                retail_picture(4309)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4309, 4310)
                             ),
 (
                                 retail_node(fourcc!("tab9"), 567, 356, 60, 56)
-                                retail_picture(4310)
+                                retail_interaction_state(false, true)
+                                retail_picture_button(4310, 4311)
                             ),
 (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
@@ -3512,7 +3538,7 @@ pub fn mapview_2013() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("back"), 4, 34, 112, 269)
-                                                retail_picture(1534)
+                                                retail_picture_button(1534, 1535)
                                             ),
 (
                                                 retail_node(fourcc!("dfnd"), 91, 9, 25, 25)
@@ -3723,7 +3749,8 @@ pub fn mapview_2013() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("unit"), 33, 39, 54, 68)
-                                                retail_picture(1080)
+                                                retail_interaction_state(false, true)
+                                                retail_picture_button(1080, 1081)
                                             ),
 (
                                                 retail_node(fourcc!("back"), 0, 39, 123, 260)
@@ -3772,6 +3799,7 @@ pub fn mapview_2013() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
@@ -4706,6 +4734,7 @@ pub fn multiplayer_1507() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("game"), 18, 97, 270, 181)
+                                retail_radio_cluster()
                             ),
 (
                                 retail_node(fourcc!("okay"), 210, 287, 61, 24)
@@ -4747,59 +4776,59 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("rad0"), 289, 298, 25, 36)
-                                retail_picture(4606)
+                                retail_picture_button(4606, 4607)
                             ),
 (
                                 retail_node(fourcc!("rad1"), 289, 337, 25, 36)
-                                retail_picture(4607)
+                                retail_picture_button(4607, 4608)
                             ),
 (
                                 retail_node(fourcc!("rad2"), 289, 376, 25, 36)
-                                retail_picture(4608)
+                                retail_picture_button(4608, 4609)
                             ),
 (
                                 retail_node(fourcc!("rad3"), 289, 415, 25, 36)
-                                retail_picture(4609)
+                                retail_picture_button(4609, 4610)
                             ),
 (
                                 retail_node(fourcc!("rad4"), 511, 298, 25, 36)
-                                retail_picture(4609)
+                                retail_picture_button(4609, 4610)
                             ),
 (
                                 retail_node(fourcc!("rad5"), 511, 337, 25, 36)
-                                retail_picture(4608)
+                                retail_picture_button(4608, 4609)
                             ),
 (
                                 retail_node(fourcc!("rad6"), 511, 376, 25, 36)
-                                retail_picture(4607)
+                                retail_picture_button(4607, 4608)
                             ),
 (
                                 retail_node(fourcc!("pik0"), 108, 307, 26, 20)
-                                retail_picture(4611)
+                                retail_picture_button(4611, 4612)
                             ),
 (
                                 retail_node(fourcc!("pik1"), 108, 345, 26, 20)
-                                retail_picture(4612)
+                                retail_picture_button(4612, 4613)
                             ),
 (
                                 retail_node(fourcc!("pik2"), 108, 384, 26, 20)
-                                retail_picture(4613)
+                                retail_picture_button(4613, 4614)
                             ),
 (
                                 retail_node(fourcc!("pik3"), 108, 422, 26, 20)
-                                retail_picture(4614)
+                                retail_picture_button(4614, 4615)
                             ),
 (
                                 retail_node(fourcc!("pik4"), 329, 307, 26, 20)
-                                retail_picture(4615)
+                                retail_picture_button(4615, 4616)
                             ),
 (
                                 retail_node(fourcc!("pik5"), 329, 345, 26, 20)
-                                retail_picture(4616)
+                                retail_picture_button(4616, 4617)
                             ),
 (
                                 retail_node(fourcc!("pik6"), 329, 384, 26, 20)
-                                retail_picture(4617)
+                                retail_picture_button(4617, 4618)
                             ),
 (
                                 retail_node(fourcc!("nam0"), 136, 310, 142, 18)
@@ -4835,6 +4864,7 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("map "), 302, 14, 324, 180)
+                                retail_pointer_canvas()
                             ),
 (
                                 retail_node(fourcc!("send"), 230, 204, 55, 60)
@@ -4862,6 +4892,7 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("labl"), 33, 26, 234, 18)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),
@@ -5201,6 +5232,7 @@ pub fn startup_952() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("DLOG"), 5, 27, 512, 448)
+                                retail_pointer_canvas()
                             ),
 (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
@@ -5209,6 +5241,7 @@ pub fn startup_952() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),
@@ -5276,6 +5309,7 @@ pub fn startup_966() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("form"), 18, 52, 290, 85)
+                                retail_radio_cluster()
                             ),
 (
                                 retail_node(fourcc!("okay"), 255, 139, 61, 24)
@@ -5329,6 +5363,7 @@ pub fn startup_1500() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 180, 424, 274, 52)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("quit"), 221, 102, 195, 195)
@@ -5363,12 +5398,14 @@ pub fn startup_1501() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("hot!"), 36, 22, 238, 27)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("stuf"), 288, 4, 345, 466)
                                 Children [
 (
                                         retail_node(fourcc!("map "), 14, 10, 324, 180)
+                                        retail_pointer_canvas()
                                     ),
 (
                                         retail_node(fourcc!("tcou"), 66, 230, 144, 16)
@@ -5388,30 +5425,36 @@ pub fn startup_1501() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("diff"), 25, 298, 302, 84)
+                                        retail_radio_cluster()
                                         Children [
 (
                                                 retail_node(fourcc!("dif0"), 2, 2, 298, 16)
                                                 retail_interaction_state(true, false)
+                                                retail_radio_text()
                                                 retail_text(RetailTextSpec { text: "Introductory", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif1"), 2, 18, 298, 16)
                                                 retail_interaction_state(true, false)
+                                                retail_radio_text()
                                                 retail_text(RetailTextSpec { text: "Easy", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif2"), 2, 34, 298, 16)
                                                 retail_interaction_state(true, false)
+                                                retail_radio_text()
                                                 retail_text(RetailTextSpec { text: "Normal", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif3"), 2, 50, 298, 16)
                                                 retail_interaction_state(true, false)
+                                                retail_radio_text()
                                                 retail_text(RetailTextSpec { text: "Hard", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif4"), 2, 66, 298, 16)
                                                 retail_interaction_state(true, false)
+                                                retail_radio_text()
                                                 retail_text(RetailTextSpec { text: "Nigh-On Impossible", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
                                         ]
@@ -5426,15 +5469,18 @@ pub fn startup_1501() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("name"), 91, 390, 235, 20)
+                                        retail_radio_cluster()
                                         Children [
 (
                                                 retail_node(fourcc!("hist"), 2, 2, 115, 16)
                                                 retail_interaction_state(true, false)
+                                                retail_radio_text()
                                                 retail_text(RetailTextSpec { text: "Historical", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("rand"), 118, 2, 115, 16)
                                                 retail_interaction_state(true, false)
+                                                retail_radio_text()
                                                 retail_text(RetailTextSpec { text: "Random", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
                                         ]
@@ -5495,6 +5541,7 @@ pub fn startup_1503() -> impl Scene {
 (
                                         retail_node(fourcc!("pmap"), 302, 14, 324, 180)
                                         retail_interaction_state(false, true)
+                                        retail_pointer_canvas()
                                     ),
 (
                                         retail_node(fourcc!("star"), 416, 422, 96, 30)
@@ -5516,6 +5563,7 @@ pub fn startup_1503() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("curs"), 50, 17, 214, 30)
+                                        retail_hover_help_bar()
                                     ),
 (
                                         retail_node(fourcc!("more"), 40, 176, 242, 20)
@@ -5650,6 +5698,7 @@ pub fn startup_1506() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("labl"), 21, 67, 200, 21)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),
@@ -5694,6 +5743,7 @@ pub fn startup_1509() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 34, 18, 233, 33)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("name"), 245, 381, 165, 19)
@@ -5701,6 +5751,7 @@ pub fn startup_1509() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("prot"), 163, 88, 256, 175)
+                                retail_radio_cluster()
                             ),
 (
                                 retail_node(fourcc!("join"), 29, 282, 160, 152)
@@ -5920,6 +5971,7 @@ pub fn tactical_3800() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("curs"), 221, 4, 360, 20)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("DLOG"), 5, 25, 575, 450)
@@ -6018,6 +6070,7 @@ pub fn tactical_3865() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("pmap"), 59, 5, 324, 180)
+                                retail_pointer_canvas()
                             ),
 (
                                 retail_node(fourcc!("okay"), 369, 261, 61, 24)
@@ -6090,6 +6143,7 @@ pub fn tech_2200() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 247, 7, 341, 17)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("patc"), 584, 35, 52, 72)
@@ -6168,11 +6222,11 @@ pub fn techstore_2300() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("lcor"), 17, 445, 32, 30)
-                                retail_picture(2361)
+                                retail_picture_button(2361, 2362)
                             ),
 (
                                 retail_node(fourcc!("rcor"), 590, 445, 32, 30)
-                                retail_picture(2362)
+                                retail_picture_button(2362, 2363)
                             ),
 (
                                 retail_node(fourcc!("ttl1"), 67, 40, 128, 16)
@@ -6188,6 +6242,7 @@ pub fn techstore_2300() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),
@@ -6222,6 +6277,7 @@ pub fn techstore_2370() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("scvw"), 9, 76, 342, 175)
+                                        retail_scroll_area()
                                     ),
 (
                                         retail_node(fourcc!("okay"), 281, 260, 61, 24)
@@ -6955,6 +7011,7 @@ pub fn trade_2009() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                retail_hover_help_bar()
                             ),
 (
                                 retail_node(fourcc!("timb"), 5, 231, 42, 24)
@@ -7745,6 +7802,7 @@ pub fn trade_2010() -> impl Scene {
                     ),
 (
                         retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                        retail_hover_help_bar()
                     ),
                 ]
             ),
@@ -8182,6 +8240,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)
+                                retail_hover_help_bar()
                             ),
                         ]
                     ),

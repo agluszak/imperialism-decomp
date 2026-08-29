@@ -91,9 +91,9 @@ generation consumes committed evidence only and never reads either retail binary
 ```sh
 just ui-codegen-check
 just ui-codegen
-uv run python -m tools.ui_codegen --view Startup.rsrc:1500
-uv run python -m tools.ui_codegen --gen-dir build-msvc500/generated/ui --explain 0x43dbc0 0x07dd tool
-uv run python -m tools.ui_codegen --gen-dir build-msvc500/generated/ui --triage-map 0x43dbc0
+uv run python -m tools.ui_cpp_codegen --view Startup.rsrc:1500
+uv run python -m tools.ui_cpp_codegen --gen-dir build-msvc500/generated/ui --explain 0x43dbc0 0x07dd tool
+uv run python -m tools.ui_cpp_codegen --gen-dir build-msvc500/generated/ui --triage-map 0x43dbc0
 just build
 ```
 

@@ -1,10 +1,13 @@
 //! Semantic Bevy scene helpers for recovered retail control classes.
+//! Referenced from generated BSN scenes via `retail::*` glob imports.
 
+#![allow(dead_code)]
+
+use super::hover_help::HoverHelpBar;
 use super::retail::{
     retail_madness_picture, retail_picture, retail_picture_swap, retail_pressed_overlay_picture,
     retail_radio_text_fill,
 };
-use super::hover_help::HoverHelpBar;
 use super::retail_page_corner::RetailPageCorner;
 use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};
 use super::window::CaptionedWindow;

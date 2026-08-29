@@ -20,6 +20,7 @@ pub struct RetailTextSpec {
 }
 
 impl RetailTextSpec {
+    #[allow(dead_code)]
     pub fn plain(
         text: &'static str,
         font_family: i32,
@@ -47,7 +48,7 @@ pub fn retail_font_family(family: i32) -> i32 {
 }
 
 fn shipped_font(family: i32) -> bool {
-    matches!(retail_font_family(family), 1 | 2 | 3)
+    matches!(retail_font_family(family), 1..=3)
 }
 
 fn palette_color(context: &bevy::ecs::template::TemplateContext, index: u8) -> Color {

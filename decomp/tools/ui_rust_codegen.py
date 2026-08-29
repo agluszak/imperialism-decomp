@@ -54,6 +54,7 @@ CLASS_RENDERERS: dict[str, tuple[str, ...]] = {
     "TInfoBarText": ("retail_hover_help_bar()",),
     "TMadnessButton": ("retail_madness_checkbox({picture_id})",),
     "TMapPreviewView": ("retail_pointer_canvas()",),
+    "TNoHilitePicture": _BTN,
     "TNumberedArrowButton": ("retail_numbered_arrow()",),
     "TPictureButton": ("retail_picture_button_overlay({idle}, {overlay})",),
     "TPlacard": ("retail_placard({picture_id})",),
@@ -323,9 +324,6 @@ def class_has_renderer(class_name: str, type_code: str) -> bool:
 
 
 def _class_lines(node: Node, parent: Node | None, view_name: str) -> list[str]:
-    if view_name == "Startup.rsrc:1501" and node.tag == "glob":
-        i, a = _swap_ids(node)
-        return [f"retail_picture_button({i}, {a})"]
     if node.class_name == "TSidewaysArrow":
         i, a = _swap_ids(node)
         fn = "retail_right_left_arrow" if parent and parent.class_name == "TTransportPicture" else "retail_sideways_arrow"
@@ -337,7 +335,9 @@ def _class_lines(node: Node, parent: Node | None, view_name: str) -> list[str]:
         return [f"retail_picture({c['picture_id']})", f"retail_transport_gauge({c['owner_left']}, {c['capacity']})"]
     if node.class_name in CLASS_RENDERERS:
         tpl = CLASS_RENDERERS[node.class_name]
-        if tpl and node.picture_id is None and node.class_name not in ATOMIC_CLASSES:
+        if tpl and node.picture_id is None and node.class_name not in ATOMIC_CLASSES and any(
+            "{picture_id}" in t or "{idle}" in t for t in tpl
+        ):
             return []
         return [t.format(**_ctx(node)) for t in tpl]
     if node.type_code in CONTAINER_TYPES | TEXT_TYPES:
