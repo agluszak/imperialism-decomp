@@ -196,10 +196,10 @@ pub use territory::{
     CountryStatus, FortLevel, FortLevelTable, ProvinceDevelopmentStage, ProvinceState,
 };
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
-pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
+pub use trade_phase::{PendingTradeOffer, TradePhaseBlocked, TradeSession};
 pub use turn_flow::{
-    CinematicKind, Decade, DecadeTable, PhaseCode, ScenarioMapId, TurnContinuation, TurnState,
-    TurnStop,
+    CinematicKind, Decade, DecadeTable, PhaseCode, ScenarioMapId, TradeFlowState, TurnContinuation,
+    TurnFlow, TurnState, TurnStop,
 };
 pub use turn_tail::{EliminationOutcome, QuarterGateResult, TurnAlert};
 pub use units::{

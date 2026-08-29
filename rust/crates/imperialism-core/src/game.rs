@@ -49,6 +49,9 @@ pub struct GameState {
     /// Live interruptible-phase resume state. Not written to `.imp`.
     #[serde(default)]
     pub(crate) continuation: crate::turn_flow::TurnContinuation,
+    /// Authoritative runtime turn control for migrated phases. Not written to `.imp`.
+    #[serde(default)]
+    pub(crate) turn_flow: crate::turn_flow::TurnFlow,
     /// Immutable catalogs for this session. Restored from retail data on load.
     #[serde(skip)]
     pub(crate) data: GameData,
@@ -80,6 +83,7 @@ pub struct GameStateParts {
     pub pending: PendingWorkState,
     pub battle_reports: Vec<crate::BattleReport>,
     pub continuation: crate::turn_flow::TurnContinuation,
+    pub turn_flow: crate::turn_flow::TurnFlow,
 }
 
 impl GameState {
@@ -107,6 +111,7 @@ impl GameState {
             pending: parts.pending,
             battle_reports: parts.battle_reports,
             continuation: parts.continuation,
+            turn_flow: parts.turn_flow,
             data: GameData::default(),
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
@@ -128,6 +133,10 @@ impl GameState {
 
     pub const fn turn(&self) -> &TurnState {
         &self.turn
+    }
+
+    pub const fn turn_flow(&self) -> &crate::turn_flow::TurnFlow {
+        &self.turn_flow
     }
 
     pub const fn unit_ids(&self) -> &UnitIdAllocator {

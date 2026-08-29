@@ -188,6 +188,7 @@ pub(crate) fn game_state() -> GameState {
         pending: crate::PendingWorkState::default(),
         battle_reports: Vec::new(),
         continuation: crate::turn_flow::TurnContinuation::None,
+        turn_flow: crate::turn_flow::TurnFlow::Driving,
         data: GameData::default(),
     };
     // Town markers must sit on owned land. The turn loop reaches city/transport

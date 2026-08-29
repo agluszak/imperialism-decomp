@@ -1,7 +1,7 @@
 use crate::{
     Difficulty, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyWarJoinPrompt,
-    EliminationOutcome, GameState, MajorNationId, NationId, QuarterGateResult, Technology,
-    TradeProgress,
+    EliminationOutcome, GameState, MajorNationId, NationId, PendingTradeOffer, QuarterGateResult,
+    Technology, TradeSession,
 };
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
@@ -163,6 +163,39 @@ impl PhaseCode {
     }
 }
 
+/// Authoritative runtime control for phases migrated off lying `PhaseCode` plus
+/// `TurnContinuation`. Trade is the first migration; other interruptible phases
+/// still use `continuation` until they move here.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub enum TurnFlow {
+    #[default]
+    Driving,
+    Trade(Box<TradeFlowState>),
+}
+
+/// Resume state for retail `TSimMgr::DoTrade` / `TTradeMgr::NextTradeDeal`.
+///
+/// Exactly one variant means exactly one state: a pending human offer lives in
+/// `AwaitingOffer`, not in a separate result enum or continuation slot.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub enum TradeFlowState {
+    AwaitingOffer {
+        session: TradeSession,
+        offer: PendingTradeOffer,
+    },
+}
+
+impl TurnFlow {
+    pub fn trade_awaiting_offer(&self) -> Option<&PendingTradeOffer> {
+        match self {
+            Self::Trade(state) => match state.as_ref() {
+                TradeFlowState::AwaitingOffer { offer, .. } => Some(offer),
+            },
+            Self::Driving => None,
+        }
+    }
+}
+
 /// External interaction required before the core turn driver can continue.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum TurnStop {
@@ -211,7 +244,6 @@ pub enum TurnContinuation {
         index: u8,
     },
     DiplomacyWarJoin(DiplomacyWarJoinPrompt),
-    Trade(crate::TradeSession),
     LandBattle(crate::CombatMovesContinuation),
     NavalBattle(crate::NavyOrdersContinuation),
     TechnologyReport(Technology),
@@ -275,9 +307,10 @@ impl GameState {
 
     /// Applies the Offer Sheet decision and resumes ranked trade deals.
     pub fn answer_trade_offer(&mut self, quantity: i16, stop_buying: bool) -> TurnStop {
-        match self.reply_to_trade_offer(quantity, stop_buying) {
-            TradeProgress::Offer(_) => TurnStop::TradeOffer,
-            TradeProgress::Complete => self.advance_turn(),
+        if self.reply_to_trade_offer(quantity, stop_buying) {
+            TurnStop::TradeOffer
+        } else {
+            self.advance_turn()
         }
     }
 
@@ -440,7 +473,7 @@ impl GameState {
             if self.pending_town_naming().is_some() {
                 return TurnStop::TownNaming;
             }
-            if let Some(stop) = self.continuation_stop() {
+            if let Some(stop) = self.interrupt_stop() {
                 return stop;
             }
             match self.turn.phase() {
@@ -463,11 +496,10 @@ impl GameState {
                     }
                 }
                 PhaseCode::TRADE => {
-                    self.turn.phase = PhaseCode::CIVILIANS;
-                    match self.begin_trade_phase() {
-                        TradeProgress::Offer(_) => return TurnStop::TradeOffer,
-                        TradeProgress::Complete => {}
+                    if self.begin_trade_phase() {
+                        return TurnStop::TradeOffer;
                     }
+                    self.turn.phase = PhaseCode::CIVILIANS;
                 }
                 PhaseCode::CIVILIANS => {
                     self.turn.phase = PhaseCode::MILITARY;
@@ -567,12 +599,18 @@ impl GameState {
         }
     }
 
+    fn interrupt_stop(&self) -> Option<TurnStop> {
+        if matches!(self.turn_flow, TurnFlow::Trade(_)) {
+            return Some(TurnStop::TradeOffer);
+        }
+        self.continuation_stop()
+    }
+
     fn continuation_stop(&self) -> Option<TurnStop> {
         match self.continuation {
             TurnContinuation::None => None,
             TurnContinuation::DiplomacyOffer { .. } => Some(TurnStop::DiplomacyOffer),
             TurnContinuation::DiplomacyWarJoin(_) => Some(TurnStop::DiplomacyWarJoin),
-            TurnContinuation::Trade(_) => Some(TurnStop::TradeOffer),
             TurnContinuation::LandBattle(_) => Some(TurnStop::LandBattle),
             TurnContinuation::NavalBattle(_) => Some(TurnStop::NavalBattle),
             TurnContinuation::TechnologyReport(_) => Some(TurnStop::TechnologyAdvance),
@@ -643,7 +681,7 @@ mod tests {
         AutoGreatPowerState, BattleReport, BattleReportKind, BattleReportLocation,
         BattleReportSide, BattleReportSideSlot, BattleReportSideTable, DiplomacyPolicy,
         DiplomaticRelationship, MajorNationId, NationId, ProvinceId, ResourceKind, ShipType,
-        TileId, TileOwnerTag, TradeProgress,
+        TileId, TileOwnerTag,
     };
 
     fn seed_town_tiles(state: &mut crate::GameState) {
@@ -794,7 +832,7 @@ mod tests {
 
         let mut stop = state.answer_current_diplomacy_offer(true);
         if let crate::TurnStop::TradeOffer = stop {
-            assert_eq!(state.turn.phase(), crate::PhaseCode::CIVILIANS);
+            assert_eq!(state.turn.phase(), crate::PhaseCode::TRADE);
             while let crate::TurnStop::TradeOffer = stop {
                 stop = state.answer_trade_offer(0, false);
             }
@@ -820,7 +858,7 @@ mod tests {
     }
 
     #[test]
-    fn semantic_state_round_trips_a_trade_continuation() {
+    fn semantic_state_round_trips_a_trade_flow() {
         let mut state = game_state();
         let buyer = MajorNationId::new(0);
         let seller = MajorNationId::new(1);
@@ -842,12 +880,11 @@ mod tests {
         state.nations.majors[&seller]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
-        let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            panic!("game_state clothing-offer fixture must produce a pending trade offer");
-        };
+        assert!(state.begin_trade_phase());
         let encoded = serde_json::to_vec(&state).expect("serialize");
         let restored: crate::GameState = serde_json::from_slice(&encoded).expect("deserialize");
         assert_eq!(restored.pending_trade_offer(), state.pending_trade_offer());
+        assert_eq!(restored.turn_flow(), state.turn_flow());
     }
 
     #[test]

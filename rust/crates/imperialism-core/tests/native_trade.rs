@@ -177,8 +177,9 @@ fn second_turn_trade_phase() {
 }
 
 fn drain_ranked_deals_with_human_auto_accept(state: &mut GameState) {
-    let mut progress = state.begin_trade_phase();
-    while let TradeProgress::Offer(offer) = progress {
-        progress = state.reply_to_trade_offer(offer.amount, false);
+    let mut blocked = state.begin_trade_phase();
+    while blocked {
+        let offer = state.pending_trade_offer().expect("trade offer");
+        blocked = state.reply_to_trade_offer(offer.amount, false);
     }
 }

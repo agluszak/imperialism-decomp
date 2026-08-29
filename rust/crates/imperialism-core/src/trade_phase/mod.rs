@@ -68,11 +68,10 @@ pub struct PendingTradeOffer {
 }
 
 /// Progress of `TTradeMgr::StartDeals` / `NextTradeDeal`.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum TradeProgress {
-    Offer(PendingTradeOffer),
-    Complete,
-}
+///
+/// Returns `true` when the phase stops on a human Offer Sheet. The pending offer
+/// is owned by [`crate::TurnFlow`], not this return value.
+pub type TradePhaseBlocked = bool;
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(super) struct RankedDeal {
@@ -110,7 +109,6 @@ pub struct TradeSession {
     phase: TradePhase,
     category: Option<TradeCommodity>,
     entry_ordinal: usize,
-    pending: Option<PendingTradeOffer>,
 }
 
 impl TradeSession {
@@ -146,9 +144,9 @@ fn next_deal_commodity(current: TradeCommodity) -> Option<TradeCommodity> {
 impl GameState {
     /// Starts retail `TSimMgr::DoTrade` through `TTradeMgr::StartDeals`.
     ///
-    /// Human buyers still in the market return [`TradeProgress::Offer`] instead of
-    /// settling. The following civilian phase is not started.
-    pub fn begin_trade_phase(&mut self) -> TradeProgress {
+    /// Human buyers still in the market stop the turn driver. The following
+    /// civilian phase is not started and [`PhaseCode::TRADE`] remains authoritative.
+    pub fn begin_trade_phase(&mut self) -> TradePhaseBlocked {
         self.select_priority_nations_for_minor_relations();
         let mut phase = TradePhase::new();
         self.initialize_deal_books();
@@ -162,59 +160,46 @@ impl GameState {
             phase,
             category: DEAL_CATEGORY_ORDER.first().copied(),
             entry_ordinal: 1,
-            pending: None,
         };
         session.skip_empty_categories();
-        let progress = self.continue_trade_deals(&mut session);
-        if matches!(progress, TradeProgress::Offer(_)) {
-            self.continuation = crate::turn_flow::TurnContinuation::Trade(session);
-        }
-        progress
+        self.resume_trade_deals(session)
     }
 
     /// Applies the player's Offer Sheet answer and resumes `TTradeMgr::NextTradeDeal`.
     ///
     /// `amount` is the purchased quantity (`0` rejects). `stop_buying` is the `nomo`
     /// checkbox and becomes `SetDealResults` shortfall.
-    pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) -> TradeProgress {
-        let mut session = match std::mem::take(&mut self.continuation) {
-            crate::turn_flow::TurnContinuation::Trade(session) => session,
-            other => {
-                self.continuation = other;
-                panic!("Offer Sheet reply requires an active trade session");
-            }
+    pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) -> TradePhaseBlocked {
+        let crate::turn_flow::TurnFlow::Trade(state) = std::mem::take(&mut self.turn_flow) else {
+            panic!("Offer Sheet reply requires an active trade flow");
         };
-        let pending = session
-            .pending
-            .take()
-            .expect("Offer Sheet reply requires a pending trade offer");
+        let crate::turn_flow::TradeFlowState::AwaitingOffer { mut session, offer } = *state;
         self.set_deal_results(
-            pending.buyer,
-            pending.seller,
+            offer.buyer,
+            offer.seller,
             amount,
-            pending.price,
-            pending.commodity,
+            offer.price,
+            offer.commodity,
             stop_buying,
             &mut session.phase,
         );
-        let progress = self.continue_trade_deals(&mut session);
-        if matches!(progress, TradeProgress::Offer(_)) {
-            self.continuation = crate::turn_flow::TurnContinuation::Trade(session);
-        }
-        progress
+        self.resume_trade_deals(session)
     }
 
     pub fn pending_trade_offer(&self) -> Option<PendingTradeOffer> {
-        match &self.continuation {
-            crate::turn_flow::TurnContinuation::Trade(session) => session.pending,
-            _ => None,
+        match &self.turn_flow {
+            crate::turn_flow::TurnFlow::Trade(state) => match state.as_ref() {
+                crate::turn_flow::TradeFlowState::AwaitingOffer { offer, .. } => Some(*offer),
+            },
+            crate::turn_flow::TurnFlow::Driving => None,
         }
     }
 
     pub fn pending_trade_offer_cursor(&self) -> Option<(usize, usize)> {
-        let crate::turn_flow::TurnContinuation::Trade(session) = &self.continuation else {
+        let crate::turn_flow::TurnFlow::Trade(state) = &self.turn_flow else {
             return None;
         };
+        let crate::turn_flow::TradeFlowState::AwaitingOffer { session, .. } = state.as_ref();
         let category = session.category?;
         let category_index = DEAL_CATEGORY_ORDER
             .iter()
@@ -223,8 +208,22 @@ impl GameState {
         Some((category_index, session.entry_ordinal))
     }
 
-    fn continue_trade_deals(&mut self, session: &mut TradeSession) -> TradeProgress {
-        let mut blocked = false;
+    fn resume_trade_deals(&mut self, session: TradeSession) -> TradePhaseBlocked {
+        let mut session = session;
+        if let Some(offer) = self.continue_trade_deals(&mut session) {
+            self.turn.phase = crate::PhaseCode::TRADE;
+            self.turn_flow = crate::turn_flow::TurnFlow::Trade(Box::new(
+                crate::turn_flow::TradeFlowState::AwaitingOffer { session, offer },
+            ));
+            true
+        } else {
+            self.turn_flow = crate::turn_flow::TurnFlow::Driving;
+            false
+        }
+    }
+
+    fn continue_trade_deals(&mut self, session: &mut TradeSession) -> Option<PendingTradeOffer> {
+        let mut blocked_offer = None;
         while let Some(commodity) = session.category {
             let deal = session.phase.deals[commodity][session.entry_ordinal - 1];
             let mut transfer = self.amount_unsold(deal.seller, commodity.resource());
@@ -233,33 +232,28 @@ impl GameState {
             {
                 transfer = transfer.min(self.available_merchant(seller_major));
             }
-            if transfer > 0 {
-                blocked = self
-                    .settle_or_block_trade_offer(
-                        &mut session.phase,
-                        deal.buyer,
-                        deal.seller,
-                        transfer,
-                        deal.price as i16,
-                        commodity,
-                    )
-                    .inspect(|offer| session.pending = Some(*offer))
-                    .is_some();
+            if transfer > 0
+                && let Some(offer) = self.settle_or_block_trade_offer(
+                    &mut session.phase,
+                    deal.buyer,
+                    deal.seller,
+                    transfer,
+                    deal.price as i16,
+                    commodity,
+                )
+            {
+                blocked_offer = Some(offer);
             }
             session.advance_deal_cursor();
-            if blocked {
+            if blocked_offer.is_some() {
                 break;
             }
         }
-        if blocked {
-            TradeProgress::Offer(
-                session
-                    .pending
-                    .expect("a blocked trade deal leaves a pending offer"),
-            )
+        if let Some(offer) = blocked_offer {
+            Some(offer)
         } else {
             self.end_trade_offers();
-            TradeProgress::Complete
+            None
         }
     }
 
@@ -644,15 +638,17 @@ mod tests {
     #[test]
     fn begin_trade_phase_interrupts_for_a_human_buyer() {
         let mut state = human_clothing_offer_state();
-        let progress = state.begin_trade_phase();
-        let TradeProgress::Offer(offer) = progress else {
-            panic!("human buyer must be interrupted by the Offer Sheet, got {progress:?}");
-        };
+        assert!(state.begin_trade_phase());
+        let offer = state.pending_trade_offer().expect("human buyer offer");
         assert_eq!(offer.buyer, NationId::new(0));
         assert_eq!(offer.seller, NationId::new(1));
         assert_eq!(offer.commodity, TradeCommodity::Clothing);
         assert!(offer.amount > 0);
-        assert_eq!(state.pending_trade_offer(), Some(offer));
+        assert_eq!(state.turn().phase(), crate::PhaseCode::TRADE);
+        assert!(matches!(
+            state.turn_flow,
+            crate::turn_flow::TurnFlow::Trade(_)
+        ));
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]
                 .economy
@@ -664,17 +660,12 @@ mod tests {
     #[test]
     fn rejecting_a_human_offer_resumes_and_can_complete() {
         let mut state = human_clothing_offer_state();
-        let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            panic!("expected a pending human offer");
-        };
-        assert_eq!(
-            state.reply_to_trade_offer(0, false),
-            TradeProgress::Complete
-        );
+        assert!(state.begin_trade_phase());
+        assert!(!state.reply_to_trade_offer(0, false));
         assert_eq!(state.pending_trade_offer(), None);
-        assert!(!matches!(
-            state.continuation,
-            crate::turn_flow::TurnContinuation::Trade(_)
+        assert!(matches!(
+            state.turn_flow,
+            crate::turn_flow::TurnFlow::Driving
         ));
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]
@@ -687,13 +678,9 @@ mod tests {
     #[test]
     fn accepting_the_posed_amount_settles_then_completes() {
         let mut state = human_clothing_offer_state();
-        let TradeProgress::Offer(offer) = state.begin_trade_phase() else {
-            panic!("expected a pending human offer");
-        };
-        assert_eq!(
-            state.reply_to_trade_offer(offer.amount, false),
-            TradeProgress::Complete
-        );
+        assert!(state.begin_trade_phase());
+        let offer = state.pending_trade_offer().expect("human buyer offer");
+        assert!(!state.reply_to_trade_offer(offer.amount, false));
         assert_eq!(state.pending_trade_offer(), None);
         assert_eq!(
             state.nations.majors[&MajorNationId::new(0)]

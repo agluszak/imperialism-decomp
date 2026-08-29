@@ -772,6 +772,7 @@ mod tests {
             pending: crate::PendingWorkState::default(),
             battle_reports: Vec::new(),
             continuation: crate::turn_flow::TurnContinuation::None,
+            turn_flow: crate::turn_flow::TurnFlow::Driving,
             data: GameData::default(),
         }
     }

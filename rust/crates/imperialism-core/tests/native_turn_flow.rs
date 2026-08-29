@@ -210,14 +210,18 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
         commodity: pending.commodity.resource() as i16,
     };
     assert_eq!(result, native.result);
-    assert_state_except_continuation(&expected, &actual);
+    assert_state_except_ephemeral_turn_state(&expected, &actual);
 }
 
-fn assert_state_except_continuation(expected: &GameState, actual: &GameState) {
+fn assert_state_except_ephemeral_turn_state(expected: &GameState, actual: &GameState) {
     let mut expected = serde_json::to_value(expected).unwrap();
     let mut actual = serde_json::to_value(actual).unwrap();
-    expected.as_object_mut().unwrap().remove("continuation");
-    actual.as_object_mut().unwrap().remove("continuation");
+    let expected_object = expected.as_object_mut().unwrap();
+    let actual_object = actual.as_object_mut().unwrap();
+    expected_object.remove("continuation");
+    actual_object.remove("continuation");
+    expected_object.remove("turn_flow");
+    actual_object.remove("turn_flow");
     assert_eq!(
         first_serialized_difference(&expected, &actual).unwrap(),
         None
