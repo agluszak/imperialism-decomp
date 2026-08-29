@@ -488,9 +488,8 @@ fn on_retail_pressed_overlay_state<E: EntityEvent>(
 fn load_madness_frames(context: &mut TemplateContext, base: i16) -> [Handle<Image>; 5] {
     std::array::from_fn(|index| {
         let id = base + index as i16;
-        load_template_picture(context, PictureId::new(id)).unwrap_or_else(|error| {
-            panic!("retail madness picture {id} must load: {error}")
-        })
+        load_template_picture(context, PictureId::new(id))
+            .unwrap_or_else(|error| panic!("retail madness picture {id} must load: {error}"))
     })
 }
 

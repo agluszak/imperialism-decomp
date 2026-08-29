@@ -425,8 +425,7 @@ fn render_trade(
         set_trade_visibility(&mut commands, row.quantity, selling);
         set_trade_visibility(&mut commands, row.offer_indicator, selling);
         set_trade_visibility(&mut commands, row.gauge, selling);
-        let fill_width =
-            f32::from(trade_amount_bar_geometry(capacity).span(quantity));
+        let fill_width = f32::from(trade_amount_bar_geometry(capacity).span(quantity));
         nodes
             .get_mut(row.gauge_fill)
             .expect("bound trade amount bar fill")

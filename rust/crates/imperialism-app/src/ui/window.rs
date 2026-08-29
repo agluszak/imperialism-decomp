@@ -213,11 +213,11 @@ fn bind_captioned_window_hosts(
             .map(ChildOf::parent)
             .filter(|parent| !windows.contains(*parent))
             .unwrap_or(window);
-        commands.entity(parts.close).observe(
-            move |_: On<Activate>, mut commands: Commands| {
+        commands
+            .entity(parts.close)
+            .observe(move |_: On<Activate>, mut commands: Commands| {
                 commands.entity(despawn).try_despawn();
-            },
-        );
+            });
     }
 }
 
@@ -278,11 +278,7 @@ mod tests {
 
     fn test_app() -> App {
         let mut app = App::new();
-        app.add_plugins((
-            MinimalPlugins,
-            AssetPlugin::default(),
-            ScenePlugin,
-        ))
+        app.add_plugins((MinimalPlugins, AssetPlugin::default(), ScenePlugin))
             .add_message::<KeyboardInput>()
             .add_plugins(InputFocusPlugin)
             .add_systems(PreUpdate, dispatch_focused_input::<KeyboardInput>)
