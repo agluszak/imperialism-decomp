@@ -66,8 +66,8 @@ pub struct NumberedArrowParts {
 }
 
 #[rustfmt::skip]
-pub fn retail_numbered_arrow(enabled: bool, input_gate: bool) -> impl Scene {
-    let disabled = (!enabled || !input_gate).then(|| bsn! { InteractionDisabled });
+pub fn retail_numbered_arrow(enabled: bool) -> impl Scene {
+    let disabled = (!enabled).then(|| bsn! { InteractionDisabled });
     bsn! {
         Pickable::IGNORE
         {disabled}

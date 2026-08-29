@@ -11,9 +11,11 @@
 //! code binds by tag. The template adds only the private entities; the outer
 //! generated scene keeps the recovered siblings.
 
+use super::retail::RetailTag;
 use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
 use bevy::prelude::*;
+use imperialism_formats::{FourCc, fourcc};
 
 const TRACK_WIDTH: f32 = 113.0;
 const TRACK_TOP: f32 = 13.0;
@@ -46,13 +48,23 @@ struct TransportGaugeColors {
     limit: Color,
 }
 
+const TRANSPORT_CAPACITY_TAG: FourCc = fourcc!("tota");
+
 /// `TTransportPicture` track/fill/limit chrome for one gauge row.
 ///
 /// `owner_left` is the recovered control origin; track placement follows
-/// `TTransportPicture::Refresh` (`owner_left > 0xc8` => 0x5d else 0x61).
-pub fn retail_transport_gauge(owner_left: i32, capacity: bool) -> impl Scene {
+/// `TTransportPicture::Refresh` (`owner_left > 0xc8` => 0x5d else 0x61`).
+/// Capacity vs allocation fill is derived from the node's recovered `RetailTag`
+/// (`tota` rows use the capacity palette and omit the limit marker).
+pub fn retail_transport_gauge(owner_left: i32) -> impl Scene {
     bsn! {
-        template(move |context| Ok(spawn_transport_gauge(context, owner_left, capacity)))
+        template(move |context| {
+            let capacity = context
+                .entity
+                .get::<RetailTag>()
+                .is_some_and(|tag| tag.0 == TRANSPORT_CAPACITY_TAG);
+            Ok(spawn_transport_gauge(context, owner_left, capacity))
+        })
     }
 }
 

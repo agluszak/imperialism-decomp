@@ -37,10 +37,10 @@ pub struct AmountBarParts {
 }
 
 /// Generated helper: production bars include a limit marker; trade bars are fill-only.
-pub fn retail_amount_bar(style: AmountBarStyle, enabled: bool, input_gate: bool) -> impl Scene {
+pub fn retail_amount_bar(style: AmountBarStyle, enabled: bool) -> impl Scene {
     let production = (style == AmountBarStyle::Production).then(production_amount_bar);
     let trade = (style == AmountBarStyle::Trade).then(trade_amount_bar);
-    let disabled = (!enabled || !input_gate).then(|| bsn! { InteractionDisabled });
+    let disabled = (!enabled).then(|| bsn! { InteractionDisabled });
     bsn! {
         {production}
         {trade}

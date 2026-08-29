@@ -34,9 +34,8 @@ pub fn retail_two_pic_slider(
     off_group: i16,
     off_index: i16,
     enabled: bool,
-    input_gate: bool,
 ) -> impl Scene {
-    let disabled = (!enabled || !input_gate).then(|| bsn! { InteractionDisabled });
+    let disabled = (!enabled).then(|| bsn! { InteractionDisabled });
     bsn! {
         Pickable::IGNORE
         {disabled}

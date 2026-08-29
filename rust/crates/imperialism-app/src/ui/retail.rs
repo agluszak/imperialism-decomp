@@ -13,9 +13,9 @@ use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{AmountBarParts, AmountBarStyle, retail_amount_bar};
 pub use super::retail_controls::{
-    retail_captioned_window, retail_checkbox, retail_hover_help_bar, retail_madness_checkbox,
-    retail_page_corner, retail_picture_button, retail_picture_button_overlay,
-    retail_picture_swap_button, retail_pointer_canvas, retail_radio_cluster,
+    retail_captioned_window, retail_checkbox, retail_disabled, retail_hover_help_bar,
+    retail_madness_checkbox, retail_page_corner, retail_picture_button,
+    retail_picture_button_overlay, retail_pointer_canvas, retail_radio_cluster,
     retail_radio_picture_button, retail_radio_text, retail_right_left_arrow, retail_scroll_area,
     retail_sideways_arrow, retail_toggle_picture, retail_transport_picture,
 };
@@ -26,7 +26,6 @@ pub use super::retail_placard::{
 };
 pub use super::retail_sideways_arrow::Step;
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
-pub use super::retail_text::{RetailTextSpec, retail_number_text, retail_text, retail_text_field};
 pub use super::retail_transport_gauge::{TransportGaugeParts, transport_gauge_width};
 
 /// Provenance tag recovered from the retail View resource.
@@ -276,7 +275,6 @@ pub fn retail_radio_text_fill() -> impl Scene {
 }
 
 /// Vertically center a caption inside recovered control bounds.
-#[allow(dead_code)]
 pub fn retail_centered_text_padding(
     font_family: i32,
     face_flags: i32,
