@@ -24,7 +24,6 @@ mod random_setup;
 mod random_setup_map;
 mod retail;
 mod retail_amount_bar;
-mod retail_controls;
 mod retail_numbered_arrow;
 mod retail_page_corner;
 mod retail_palette;

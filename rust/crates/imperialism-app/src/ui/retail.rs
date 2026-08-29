@@ -12,21 +12,15 @@ use imperialism_formats::*;
 use std::collections::HashMap;
 
 pub use super::retail_amount_bar::{AmountBarParts, AmountBarStyle, retail_amount_bar};
-pub use super::retail_controls::{
-    retail_captioned_window, retail_checkbox, retail_disabled, retail_hover_help_bar,
-    retail_madness_checkbox, retail_page_corner, retail_picture_button,
-    retail_picture_button_overlay, retail_pointer_canvas, retail_radio_cluster,
-    retail_radio_picture_button, retail_radio_text, retail_right_left_arrow, retail_scroll_area,
-    retail_sideways_arrow, retail_toggle_picture, retail_transport_picture,
-};
 pub use super::retail_numbered_arrow::{NumberedArrowParts, retail_numbered_arrow};
-pub use super::retail_page_corner::RetailPageCorner;
 pub use super::retail_placard::{
     PlacardParts, placard_text_layout, retail_army_placard, retail_placard, retail_ship_placard,
 };
 pub use super::retail_sideways_arrow::Step;
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
-pub use super::retail_transport_gauge::{TransportGaugeParts, transport_gauge_width};
+pub use super::retail_transport_gauge::{
+    TransportGaugeParts, retail_transport_gauge, transport_gauge_width,
+};
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]

@@ -36,41 +36,18 @@ ATOMIC_CLASSES = frozenset(
     ("TPlacard", "TArmyPlacard", "TShipPlacard", "TNumberedArrowButton",
      "TIndustryAmtBar", "TRailAmtBar", "TTraderAmtBar", "TTwoPicSlider")
 )
-SPECIAL_RENDERERS: dict[str, str] = {
-    "T2PictureButton": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TArmyPlacard": "retail_army_placard({picture_id})",
-    "TCityProductionView": "retail_pointer_canvas({enabled})",
-    "TCitySiteView": "retail_pointer_canvas({enabled})",
-    "TClickZone": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TControl": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TCzechBox": "retail_checkbox({picture_id}, {state}, {enabled})",
-    "TDealTabControl": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TIndustryAmtBar": "retail_amount_bar(AmountBarStyle::Production, {enabled})",
-    "TInfoBarText": "retail_hover_help_bar()",
-    "TMadnessButton": "retail_madness_checkbox({picture_id}, {state}, {enabled})",
-    "TMapPreviewView": "retail_pointer_canvas({enabled})",
-    "TNoHilitePicture": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TNumberedArrowButton": "retail_numbered_arrow({enabled})",
-    "TOverlayRadioButton": "retail_radio_picture_button({picture_id}, {state}, {enabled})",
-    "TPictureButton": "retail_picture_button_overlay({picture_id}, {state}, {enabled})",
-    "TPictureNumberText": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TPlacard": "retail_placard({picture_id})",
-    "TRadioPictureButton": "retail_radio_picture_button({picture_id}, {state}, {enabled})",
-    "TRadioText": "retail_radio_text({state}, {enabled})",
-    "TRadioTextCluster": "retail_radio_cluster()",
-    "TRailAmtBar": "retail_amount_bar(AmountBarStyle::Production, {enabled})",
-    "TRightLeftView": "retail_right_left_arrow({picture_id}, {enabled})",
-    "TScrollView": "retail_scroll_area({enabled})",
-    "TShipPlacard": "retail_ship_placard({picture_id})",
-    "TSidewaysArrow": "retail_sideways_arrow({picture_id}, {enabled})",
-    "TTextPictureButton": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TToggleButton": "retail_toggle_picture({picture_id}, {state}, {enabled})",
-    "TTraderAmtBar": "retail_amount_bar(AmountBarStyle::Trade, {enabled})",
-    "TTransportPicture": "retail_transport_picture({picture_id}, {owner_left}, {enabled})",
-    "TTwoPicSlider": "retail_two_pic_slider({pic_base}, {scale}, {off_group}, {off_index}, {enabled})",
-    "TUpDownPictureButton": "retail_picture_button({picture_id}, {state}, {enabled})",
-    "TCivilianButton": "retail_radio_picture_button({picture_id}, {state}, {enabled})",
-}
+CHECKED_CLASSES = frozenset(
+    ("TCzechBox", "TToggleButton", "TMadnessButton", "TRadioPictureButton",
+     "TOverlayRadioButton", "TCivilianButton", "TRadioText", "TPageCorner")
+)
+CHECKBOX_CLASSES = frozenset(("TCzechBox", "TToggleButton", "TMadnessButton"))
+RADIO_CLASSES = frozenset(("TRadioPictureButton", "TOverlayRadioButton", "TCivilianButton", "TRadioText"))
+BUTTON_CLASSES = frozenset(
+    ("T2PictureButton", "TClickZone", "TControl", "TDealTabControl", "TNoHilitePicture",
+     "TPictureNumberText", "TTextPictureButton", "TUpDownPictureButton", "TPictureButton")
+)
+PICTURE_OVERLAY_CLASSES = frozenset(("TPictureButton",))
+CHECKBOX_SWAP_CLASSES = frozenset(("TCzechBox",))
 
 
 @dataclass(frozen=True)
@@ -216,14 +193,6 @@ def _resolved_class_name(
     return node_class_subs.get((key.text(), class_name), class_name)
 
 
-def _assert_input_gate(node: Node) -> None:
-    if node.input_gate != 1:
-        raise ValueError(
-            f"{node.tag!r} ({node.class_name}): unexpected input_gate={node.input_gate}; "
-            "reintroduce input_gate in generated helpers only when retail evidence requires it"
-        )
-
-
 def _parse_mac_node(row: dict, key: ResourceKey, ev: dict[str, Any]) -> Node:
     type_code, family = str(row["type_code"]), row.get("family", {})
     class_name = _resolved_class_name(
@@ -252,12 +221,10 @@ def _parse_mac_node(row: dict, key: ResourceKey, ev: dict[str, Any]) -> Node:
     window = None
     if type_code in ("wind", "fwnd"):
         window = (0x80, 0x1F40, 1, 1, 1, 1, 0, 1) if type_code == "fwnd" and family.get("window_flags") == 0x1F40 else (8, 2, 0, 1, 1, 0, 0, 1)
-    node = Node(f"0x{int(row['offset']):04x}", type_code, str(row["tag"]), class_name,
+    return Node(f"0x{int(row['offset']):04x}", type_code, str(row["tag"]), class_name,
                 f"0x{int(row['parent_offset']):04x}" if row.get("parent_offset") is not None else None,
                 (int(geom["x"]), int(geom["y"]), int(geom["width"]), int(geom["height"])),
                 int(row["state"]), int(row["enabled"]), int(row["input_gate"]), insets, picture_id, text, max_chars, window)
-    _assert_input_gate(node)
-    return node
 
 
 def _apply_patches(flat: dict[str, Node], order: list[str], key: ResourceKey, ev: dict[str, Any]) -> None:
@@ -326,24 +293,99 @@ def resolve_scenes(evidence: dict[str, Any]) -> list[tuple[str, str, Node]]:
     for name in evidence["win_names"]:
         raw_nodes = evidence["windows_views"][name]
         flat = {raw["node_id"]: Node(**raw) for raw in raw_nodes}
-        for node in flat.values():
-            _assert_input_gate(node)
         scenes.append((name, name, _build_tree(flat, [raw["node_id"] for raw in raw_nodes])))
     return scenes
 
 
-def _emit_ctx(node: Node) -> dict[str, str]:
-    s = node.slider or (0, 0, 0, 0)
-    return {
-        "picture_id": str(int(node.picture_id or 0)),
-        "pic_base": str(s[0]),
-        "scale": str(s[1]),
-        "off_group": str(s[2]),
-        "off_index": str(s[3]),
-        "owner_left": str(node.geometry[0]),
-        "state": str(bool(node.state)).lower(),
-        "enabled": str(bool(node.enabled)).lower(),
-    }
+def _interaction_disabled(node: Node) -> bool:
+    return not node.enabled or not node.input_gate
+
+
+def _picture_swap_ids(node: Node) -> tuple[int, int]:
+    pic = int(node.picture_id or 0)
+    if node.class_name in CHECKBOX_SWAP_CLASSES or node.type_code == "chkb":
+        return pic & ~1, pic | 1
+    return pic, pic + 1
+
+
+def _emit_checked(node: Node) -> list[str]:
+    if node.state and node.class_name in CHECKED_CLASSES:
+        return ["Checked"]
+    return []
+
+
+def _emit_interaction_disabled(node: Node) -> list[str]:
+    if _interaction_disabled(node):
+        return ["InteractionDisabled"]
+    return []
+
+
+def _emit_picture_art(node: Node) -> list[str]:
+    if node.picture_id is None:
+        return []
+    pic = int(node.picture_id)
+    if node.class_name == "TMadnessButton":
+        return [f"retail_madness_picture({pic})"]
+    if node.class_name == "TToggleButton":
+        return [f"retail_picture({pic})"]
+    if node.class_name in PICTURE_OVERLAY_CLASSES:
+        idle, overlay = _picture_swap_ids(node)
+        return [f"retail_picture({idle})", f"retail_pressed_overlay_picture({overlay})"]
+    idle, active = _picture_swap_ids(node)
+    return [f"retail_picture_swap({idle}, {active})"]
+
+
+def _emit_hover_help_bar() -> list[str]:
+    return [
+        "template(|_context| Ok(HoverHelpBar))",
+        'Text("")',
+        "Node {",
+        "    flex_direction: FlexDirection::Column,",
+        "    justify_content: JustifyContent::Center,",
+        "    overflow: Overflow::clip(),",
+        "}",
+    ]
+
+
+def _emit_captioned_window() -> list[str]:
+    return ["template(|_context| Ok(CaptionedWindow))"]
+
+
+def _emit_scroll_area() -> list[str]:
+    return [
+        "ScrollArea",
+        "ScrollPosition::default()",
+        "Node { overflow: Overflow::scroll_y() }",
+        "Pickable",
+    ]
+
+
+def _emit_page_corner(node: Node) -> list[str]:
+    if node.tag == "lcor":
+        corner = "RetailPageCorner::Left"
+    elif node.tag == "rcor":
+        corner = "RetailPageCorner::Right"
+    else:
+        raise ValueError(f"unsupported page corner tag {node.tag!r}")
+    lines = [
+        f"template(|_context| Ok({corner}))",
+        "Pickable { should_block_lower: false, is_hoverable: true }",
+        "Button",
+    ]
+    lines.extend(_emit_checked(node))
+    lines.extend(_emit_interaction_disabled(node))
+    return lines
+
+
+def _emit_sideways_arrow(node: Node, *, hilite: bool) -> list[str]:
+    idle, active = _picture_swap_ids(node)
+    lines = ["RetailSidewaysArrow"]
+    if hilite:
+        lines.append("RetailSidewaysArrowHilite")
+    lines.append("Pickable")
+    lines.extend(_emit_interaction_disabled(node))
+    lines.append(f"retail_picture_swap({idle}, {active})")
+    return lines
 
 
 def _emit_font_family(family: int) -> str:
@@ -383,41 +425,99 @@ def _emit_text_lines(node: Node, pad: str, *, field: bool) -> list[str]:
             f"{pad}    retail_centered_text_padding({_emit_font_family(family)}, {face}, {size}, "
             f"{node.geometry[3]}, {inset_top})"
         )
-    if not node.enabled and (field or node.type_code == "nmbr"):
-        lines.append(f"{pad}    retail_disabled({str(bool(node.enabled)).lower()})")
+    if _interaction_disabled(node) and (field or node.type_code == "nmbr"):
+        lines.append(f"{pad}    InteractionDisabled")
     return lines
 
 
 def _class_lines(node: Node) -> list[str]:
-    if node.class_name == "TPageCorner":
-        ctx = _emit_ctx(node)
-        if node.tag == "lcor":
-            return [f"retail_page_corner(RetailPageCorner::Left, {ctx['state']}, {ctx['enabled']})"]
-        if node.tag == "rcor":
-            return [f"retail_page_corner(RetailPageCorner::Right, {ctx['state']}, {ctx['enabled']})"]
-        raise ValueError(f"unsupported page corner tag {node.tag!r}")
-    template = SPECIAL_RENDERERS.get(node.class_name)
-    if template is not None:
-        if node.picture_id is None and node.class_name not in ATOMIC_CLASSES and "{picture_id}" in template:
-            return []
-        return [template.format(**_emit_ctx(node))]
+    cls = node.class_name
+    if cls == "TPageCorner":
+        return _emit_page_corner(node)
+    if cls == "TInfoBarText":
+        return _emit_hover_help_bar()
+    if cls == "TRadioTextCluster":
+        return ["RadioGroup"]
+    if cls == "TScrollView":
+        lines = _emit_scroll_area()
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls in ("TCityProductionView", "TCitySiteView", "TMapPreviewView"):
+        lines = ["RelativeCursorPosition"]
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls == "TSidewaysArrow":
+        return _emit_sideways_arrow(node, hilite=True)
+    if cls == "TRightLeftView":
+        return _emit_sideways_arrow(node, hilite=False)
+    if cls == "TArmyPlacard":
+        return [f"retail_army_placard({int(node.picture_id or 0)})"]
+    if cls == "TShipPlacard":
+        return [f"retail_ship_placard({int(node.picture_id or 0)})"]
+    if cls == "TPlacard":
+        return [f"retail_placard({int(node.picture_id or 0)})"]
+    if cls == "TIndustryAmtBar":
+        lines = [f"retail_amount_bar(AmountBarStyle::Production)"]
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls == "TRailAmtBar":
+        lines = [f"retail_amount_bar(AmountBarStyle::Production)"]
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls == "TTraderAmtBar":
+        lines = [f"retail_amount_bar(AmountBarStyle::Trade)"]
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls == "TNumberedArrowButton":
+        lines = ["retail_numbered_arrow()"]
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls == "TTwoPicSlider":
+        s = node.slider or (0, 0, 0, 0)
+        lines = [f"retail_two_pic_slider({s[0]}, {s[1]}, {s[2]}, {s[3]})"]
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls == "TTransportPicture":
+        lines = [
+            f"retail_picture({int(node.picture_id or 0)})",
+            f"retail_transport_gauge({node.geometry[0]})",
+        ]
+        lines.extend(_emit_interaction_disabled(node))
+        return lines
+    if cls in CHECKBOX_CLASSES:
+        lines = ["Checkbox"]
+        lines.extend(_emit_checked(node))
+        lines.extend(_emit_interaction_disabled(node))
+        lines.extend(_emit_picture_art(node))
+        return lines
+    if cls in RADIO_CLASSES:
+        lines = ["RadioButton"]
+        if cls == "TRadioText":
+            lines.append("retail_radio_text_fill()")
+        lines.extend(_emit_checked(node))
+        lines.extend(_emit_interaction_disabled(node))
+        if cls != "TRadioText":
+            lines.extend(_emit_picture_art(node))
+        return lines
+    if cls in BUTTON_CLASSES or (node.type_code == "cntl" and cls == DEFAULT_CLASSES["cntl"]):
+        lines = ["Button"]
+        lines.extend(_emit_interaction_disabled(node))
+        lines.extend(_emit_picture_art(node))
+        return lines
     if node.type_code in CONTAINER_TYPES | TEXT_TYPES:
         return []
     if node.type_code == "pict":
         if node.picture_id is None:
             raise ValueError(f"picture node {node.tag!r} missing picture_id")
         return [f"retail_picture({node.picture_id})"]
-    if node.type_code == "cntl":
-        ctx = _emit_ctx(node)
-        return [f"retail_picture_button({ctx['picture_id']}, {ctx['state']}, {ctx['enabled']})"]
-    raise ValueError(f"unsupported node class {node.class_name} type={node.type_code!r} tag={node.tag!r}")
+    raise ValueError(f"unsupported node class {cls} type={node.type_code!r} tag={node.tag!r}")
 
 
 def _emit_node(node: Node, indent: int) -> list[str]:
     pad, x, y, w, h = " " * indent, *node.geometry
     lines = [f"{pad}(", f"{pad}    retail_node(fourcc!({_rust_str(node.tag)}), {x}, {y}, {w}, {h})"]
     if node.window == (0x80, 0x1F40, 1, 1, 1, 1, 0, 1):
-        lines.append(f"{pad}    retail_captioned_window()")
+        lines.extend(f"{pad}    {line}" for line in _emit_captioned_window())
     ins = node.insets or (0, 0, 0, 0)
     if any(ins):
         lines += [f"{pad}    Node {{ padding: UiRect {{ left: px({ins[0]}), top: px({ins[1]}), "
@@ -441,10 +541,20 @@ def _emit_node(node: Node, indent: int) -> list[str]:
 
 
 def render(scenes: list[tuple[str, str, Node]]) -> str:
-    header = ("// @generated by tools.ui_rust_codegen. Do not edit by hand.\n"
-              "#![allow(dead_code, clippy::identity_op)]\n\nuse super::retail::*;\n"
-              "use bevy::prelude::*;\nuse imperialism_formats::fourcc;\n\n"
-              "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];\n\n")
+    header = (
+        "// @generated by tools.ui_rust_codegen. Do not edit by hand.\n"
+        "#![allow(dead_code, clippy::identity_op)]\n\n"
+        "use super::hover_help::HoverHelpBar;\n"
+        "use super::retail::*;\n"
+        "use super::retail_page_corner::RetailPageCorner;\n"
+        "use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};\n"
+        "use super::window::CaptionedWindow;\n"
+        "use bevy::prelude::*;\n"
+        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};\n"
+        "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};\n"
+        "use imperialism_formats::fourcc;\n\n"
+        "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];\n\n"
+    )
     body = []
     for fn, view_name, root in scenes:
         body += ["#[rustfmt::skip]", f"pub fn {fn}() -> impl Scene {{", "    bsn! {",
