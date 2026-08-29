@@ -66,19 +66,15 @@ pub(in crate::ui::city) fn open_city_dialog(
 pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
-    windows: Query<(), With<CaptionedWindow>>,
     tree: RetailTree,
     amount_bars: Query<&AmountBarParts>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     for (root, dialog) in &dialogs {
-        if let Some(position) = dialog.saved_position
-            && let Ok(children) = tree.children.get(root)
-            && let Some(window) = children.iter().find(|child| windows.contains(*child))
-        {
+        if let Some(position) = dialog.saved_position {
             commands
-                .entity(window)
+                .entity(root)
                 .entry::<Node>()
                 .and_modify(move |mut node| set_window_position(&mut node, position));
         }
@@ -189,16 +185,11 @@ pub(in crate::ui::city) fn restore_city_dialogs(
 pub(in crate::ui::city) fn leave_city_screen(
     session: Res<GameSession>,
     mut windows: ResMut<CityWindows>,
-    dialogs: Query<(&CityBuildingDialog, &Children)>,
-    nodes: Query<&Node, With<CaptionedWindow>>,
+    dialogs: Query<(&CityBuildingDialog, &Node), With<CaptionedWindow>>,
 ) {
     let nation = session.active_major_nation();
     let mut positions = ProductionTable::default();
-    for (dialog, children) in &dialogs {
-        let node = children
-            .iter()
-            .find_map(|child| nodes.get(child).ok())
-            .expect("captioned window");
+    for (dialog, node) in &dialogs {
         let position = window_position(node);
         positions[dialog.slot] = Some(CityWindowPosition {
             left: i16::try_from(position.x).expect("window x"),

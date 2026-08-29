@@ -85,7 +85,7 @@ class UiRustCodegenTests(unittest.TestCase):
         curs_start = startup.index('retail_node(fourcc!("curs")')
         curs_end = startup.index('retail_node(fourcc!("', curs_start + 1)
         block = startup[curs_start:curs_end]
-        self.assertIn("@HoverHelpBar", block)
+        self.assertIn("hover_help_bar()", block)
         self.assertIn("retail_text_style(1, 0, 14, 1)", block)
         self.assertIn("retail_text_color(0x28)", block)
         self.assertIn("retail_text_shadow(0xd2, 1, 1)", block)

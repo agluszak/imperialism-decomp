@@ -5,7 +5,6 @@ use bevy::input_focus::{AutoFocus, FocusCause, FocusedInput, InputFocus};
 use bevy::picking::events::{Drag, Pointer, Press};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
-use bevy::scene::SceneComponent;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button};
 
@@ -23,58 +22,59 @@ struct CaptionedWindowParts {
     close: Entity,
 }
 
-/// A movable window with a generated caption and close control.
-#[derive(SceneComponent, Default, Clone)]
+/// Recovered captioned dialog/window root marker.
+#[derive(Component, Debug, Default, Clone, Copy)]
 #[require(UiWindow, Pickable)]
 pub struct CaptionedWindow;
 
-impl CaptionedWindow {
-    fn scene() -> impl Scene {
-        bsn! {
-            Node { overflow: Overflow::visible() }
-            CaptionedWindowParts { close: #Close }
-            on(on_window_press_raise)
-            Children [
-                (
-                    #Caption
-                    Node {
-                        position_type: PositionType::Absolute,
-                        left: px(0),
-                        top: px(-CAPTION_HEIGHT),
-                        width: Val::Percent(100.0),
-                        height: px(CAPTION_HEIGHT),
-                    }
-                    BackgroundColor(Color::srgb_u8(0, 0, 128))
-                    Pickable::default()
-                    on(on_caption_drag)
-                    Children [
-                        (
-                            #Close
-                            Button
-                            Node {
-                                position_type: PositionType::Absolute,
-                                right: px(2),
-                                top: px(2),
-                                width: px(CLOSE_SIZE),
-                                height: px(CLOSE_SIZE),
-                                align_items: AlignItems::Center,
-                                justify_content: JustifyContent::Center,
-                            }
-                            BackgroundColor(Color::srgb_u8(192, 192, 192))
-                            ZIndex(1)
-                            Children [
-                                (
-                                    Text("\u{00d7}")
-                                    template(|_| Ok(TextFont::from_font_size(12.0)))
-                                    TextColor(Color::BLACK)
-                                    Pickable::IGNORE
-                                )
-                            ]
-                        )
-                    ]
-                )
-            ]
-        }
+/// Caption bar, close control, and window chrome on the recovered window root.
+pub fn captioned_window() -> impl Scene {
+    bsn! {
+        CaptionedWindow
+        Node { overflow: Overflow::visible() }
+        CaptionedWindowParts { close: #Close }
+        on(on_window_press_raise)
+        Children [
+            (
+                #Caption
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: px(0),
+                    top: px(-CAPTION_HEIGHT),
+                    width: Val::Percent(100.0),
+                    height: px(CAPTION_HEIGHT),
+                }
+                BackgroundColor(Color::srgb_u8(0, 0, 128))
+                Pickable::default()
+                on(on_caption_drag)
+                Children [
+                    (
+                        #Close
+                        Button
+                        Node {
+                            position_type: PositionType::Absolute,
+                            right: px(2),
+                            top: px(2),
+                            width: px(CLOSE_SIZE),
+                            height: px(CLOSE_SIZE),
+                            align_items: AlignItems::Center,
+                            justify_content: JustifyContent::Center,
+                        }
+                        BackgroundColor(Color::srgb_u8(192, 192, 192))
+                        ZIndex(1)
+                        on(on_captioned_window_close)
+                        Children [
+                            (
+                                Text("\u{00d7}")
+                                template(|_| Ok(TextFont::from_font_size(12.0)))
+                                TextColor(Color::BLACK)
+                                Pickable::IGNORE
+                            )
+                        ]
+                    )
+                ]
+            )
+        ]
     }
 }
 
@@ -95,8 +95,7 @@ impl Plugin for UiWindowPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<InputFocus>()
             .add_observer(on_window_added)
-            .add_observer(on_modal_removed)
-            .add_systems(Update, bind_captioned_window_hosts);
+            .add_observer(on_modal_removed);
     }
 }
 
@@ -192,26 +191,16 @@ fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex),
         .0 = next;
 }
 
-fn bind_captioned_window_hosts(
+fn on_captioned_window_close(
+    activate: On<Activate>,
+    windows: Query<(Entity, &CaptionedWindowParts), With<CaptionedWindow>>,
     mut commands: Commands,
-    added: Query<(Entity, &CaptionedWindowParts, Option<&ChildOf>), Added<CaptionedWindow>>,
-    windows: Query<(), With<UiWindow>>,
 ) {
-    for (window, parts, parent) in &added {
-        if let Some(parent) = parent {
-            commands.entity(parent.parent()).insert(Pickable::IGNORE);
+    for (window, parts) in &windows {
+        if parts.close == activate.entity {
+            commands.entity(window).try_despawn();
+            return;
         }
-        // A parent that is itself a window is never the close target; despawn
-        // the generated host instead.
-        let despawn = parent
-            .map(ChildOf::parent)
-            .filter(|parent| !windows.contains(*parent))
-            .unwrap_or(window);
-        commands
-            .entity(parts.close)
-            .observe(move |_: On<Activate>, mut commands: Commands| {
-                commands.entity(despawn).try_despawn();
-            });
     }
 }
 
@@ -308,13 +297,15 @@ mod tests {
         let mut app = test_app();
         let floating = app
             .world_mut()
-            .spawn_scene(bsn! { @CaptionedWindow })
+            .spawn_scene(captioned_window())
             .expect("captioned window scene")
             .id();
         let first = app.world_mut().spawn(ModalWindow).id();
         let second = app.world_mut().spawn(ModalWindow).id();
 
         assert!(app.world().get::<UiWindow>(floating).is_some());
+        assert!(app.world().get::<CaptionedWindow>(floating).is_some());
+        assert!(app.world().get::<Node>(floating).is_some());
         assert!(app.world().get::<UiWindow>(first).is_some());
         assert!(app.world().get::<TabGroup>(first).unwrap().modal);
         assert!(app.world().get::<Pickable>(first).is_some());
@@ -414,7 +405,7 @@ mod tests {
     }
 
     #[test]
-    fn dismissing_captioned_window_despawns_the_generated_host() {
+    fn dismissing_captioned_window_despawns_the_window_and_leaves_canvas_alive() {
         let mut app = test_app();
         let canvas = app.world_mut().spawn(Name::new("canvas")).id();
         let window = app
@@ -425,25 +416,39 @@ mod tests {
                     left: px(8),
                     top: px(16),
                     width: px(64),
+                    height: px(48),
                 }
-                @CaptionedWindow
+                captioned_window()
             })
             .expect("captioned window scene")
             .id();
         app.world_mut().entity_mut(window).insert(ChildOf(canvas));
         app.update();
 
+        assert!(app.world().get::<CaptionedWindow>(window).is_some());
+        assert!(app.world().get::<UiWindow>(window).is_some());
+        assert!(app.world().get::<Node>(window).is_some());
+
         let close = app
-            .world_mut()
-            .query_filtered::<Entity, With<Button>>()
-            .single(app.world())
-            .expect("window has a close button");
+            .world()
+            .get::<CaptionedWindowParts>(window)
+            .expect("window retains close ref")
+            .close;
+        let caption = app
+            .world()
+            .get::<ChildOf>(close)
+            .expect("close has caption parent")
+            .parent();
+
         app.world_mut()
             .commands()
             .trigger(Activate { entity: close });
         app.world_mut().flush();
         app.update();
 
-        assert!(app.world().get_entity(canvas).is_err());
+        assert!(app.world().get_entity(canvas).is_ok());
+        assert!(app.world().get_entity(window).is_err());
+        assert!(app.world().get_entity(caption).is_err());
+        assert!(app.world().get_entity(close).is_err());
     }
 }

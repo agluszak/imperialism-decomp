@@ -1,7 +1,6 @@
 use super::retail::RetailTree;
 use bevy::picking::hover::DirectlyHovered;
 use bevy::prelude::*;
-use bevy::scene::SceneComponent;
 use imperialism_formats::FourCc;
 
 /// Hover-help string shown in the screen's info bar while this control is the cursor hit.
@@ -12,10 +11,8 @@ use imperialism_formats::FourCc;
 #[require(DirectlyHovered)]
 pub(crate) struct HoverHelpText(pub String);
 
-/// The retail `curs` / `hot!` info-bar control that displays hover-help text.
-///
-/// Attached by codegen for `TInfoBarText`; recovered text styles come from Windows deltas.
-#[derive(SceneComponent, Default, Clone)]
+/// Marker for the retail `curs` / `hot!` info-bar control that displays hover-help text.
+#[derive(Component, Default, Clone, Copy)]
 pub(crate) struct HoverHelpBar;
 
 type ChangedHoverHelp = (
@@ -33,6 +30,19 @@ impl HoverHelpBar {
             }
             Text("")
         }
+        Text("")
+    }
+}
+
+pub(crate) fn hover_help_bar() -> impl Scene {
+    bsn! {
+        HoverHelpBar
+        Node {
+            flex_direction: FlexDirection::Column,
+            justify_content: JustifyContent::Center,
+            overflow: Overflow::clip(),
+        }
+        Text("")
     }
 }
 
@@ -109,7 +119,7 @@ mod tests {
     fn spawn_bar_and_source(app: &mut App, text: &str) -> (Entity, Entity) {
         let bar = app
             .world_mut()
-            .spawn_scene(bsn! { @HoverHelpBar })
+            .spawn_scene(hover_help_bar())
             .expect("hover help bar scene")
             .id();
         let source = app.world_mut().spawn(HoverHelpText(text.to_owned())).id();
