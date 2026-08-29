@@ -27,9 +27,7 @@ pub use super::retail_placard::{
 pub use super::retail_sideways_arrow::Step;
 pub use super::retail_slider::{RetailTwoPicSliderParts, retail_two_pic_slider};
 pub use super::retail_text::{RetailTextSpec, retail_number_text, retail_text, retail_text_field};
-pub use super::retail_transport_gauge::{
-    TransportGaugeParts, transport_gauge_width,
-};
+pub use super::retail_transport_gauge::{TransportGaugeParts, transport_gauge_width};
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
