@@ -456,16 +456,12 @@ def _class_lines(node: Node) -> list[str]:
         return [f"retail_ship_placard({int(node.picture_id or 0)})"]
     if cls == "TPlacard":
         return [f"retail_placard({int(node.picture_id or 0)})"]
-    if cls == "TIndustryAmtBar":
-        lines = [f"retail_amount_bar(AmountBarStyle::Production)"]
-        lines.extend(_emit_interaction_disabled(node))
-        return lines
-    if cls == "TRailAmtBar":
-        lines = [f"retail_amount_bar(AmountBarStyle::Production)"]
+    if cls in ("TIndustryAmtBar", "TRailAmtBar"):
+        lines = ["retail_production_amount_bar()"]
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls == "TTraderAmtBar":
-        lines = [f"retail_amount_bar(AmountBarStyle::Trade)"]
+        lines = ["retail_trade_amount_bar()"]
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls == "TNumberedArrowButton":
@@ -478,9 +474,14 @@ def _class_lines(node: Node) -> list[str]:
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls == "TTransportPicture":
+        gauge = (
+            "retail_transport_capacity_gauge"
+            if node.tag == "tota"
+            else "retail_transport_allocation_gauge"
+        )
         lines = [
             f"retail_picture({int(node.picture_id or 0)})",
-            f"retail_transport_gauge({node.geometry[0]})",
+            f"{gauge}({node.geometry[0]})",
         ]
         lines.extend(_emit_interaction_disabled(node))
         return lines

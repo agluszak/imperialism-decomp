@@ -35,14 +35,14 @@ pub struct AmountBarParts {
     pub limit: Entity,
 }
 
-/// Generated helper: production bars include a limit marker; trade bars are fill-only.
-pub fn retail_amount_bar(style: AmountBarStyle) -> impl Scene {
-    let production = (style == AmountBarStyle::Production).then(production_amount_bar);
-    let trade = (style == AmountBarStyle::Trade).then(trade_amount_bar);
-    bsn! {
-        {production}
-        {trade}
-    }
+/// Production amount bar with fill and limit marker children.
+pub fn retail_production_amount_bar() -> impl Scene {
+    production_amount_bar()
+}
+
+/// Trade amount bar with fill-only chrome.
+pub fn retail_trade_amount_bar() -> impl Scene {
+    trade_amount_bar()
 }
 
 #[rustfmt::skip]

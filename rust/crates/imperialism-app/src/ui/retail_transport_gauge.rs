@@ -1,21 +1,19 @@
 //! Transport gauge fill/limit presentation helpers.
 //!
-//! `retail_transport_gauge` owns the track, fill, and limit child hierarchy.
+//! `retail_transport_*_gauge` owns the track, fill, and limit child hierarchy.
 //! Screens bind [`TransportGaugeParts`] and update fill/limit via retained handles.
 //! Recovered caption and arrow controls remain ordinary generated children.
 //!
-//! Unlike `retail_amount_bar()` and `retail_numbered_arrow()`, this helper cannot
-//! own its entire subtree in BSN `Children [...]`. A `TTransportPicture` resource
-//! node has both private Windows implementation entities (track/fill/limit) and
-//! recovered public controls (`text`, `left`, `rght`, `valu`) that application
-//! code binds by tag. The template adds only the private entities; the outer
-//! generated scene keeps the recovered siblings.
+//! Unlike `retail_numbered_arrow()`, these helpers cannot own their entire subtree
+//! in BSN `Children [...]`. A `TTransportPicture` resource node has both private
+//! Windows implementation entities (track/fill/limit) and recovered public controls
+//! (`text`, `left`, `rght`, `valu`) that application code binds by tag. The
+//! template adds only the private entities; the outer generated scene keeps the
+//! recovered siblings.
 
-use super::retail::RetailTag;
 use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
 use bevy::prelude::*;
-use imperialism_formats::{FourCc, fourcc};
 
 const TRACK_WIDTH: f32 = 113.0;
 const TRACK_TOP: f32 = 13.0;
@@ -48,23 +46,17 @@ struct TransportGaugeColors {
     limit: Color,
 }
 
-const TRANSPORT_CAPACITY_TAG: FourCc = fourcc!("tota");
-
-/// `TTransportPicture` track/fill/limit chrome for one gauge row.
-///
-/// `owner_left` is the recovered control origin; track placement follows
-/// `TTransportPicture::Refresh` (`owner_left > 0xc8` => 0x5d else 0x61`).
-/// Capacity vs allocation fill is derived from the node's recovered `RetailTag`
-/// (`tota` rows use the capacity palette and omit the limit marker).
-pub fn retail_transport_gauge(owner_left: i32) -> impl Scene {
+/// Total-capacity row (`tota`): partial fill palette, no limit marker.
+pub fn retail_transport_capacity_gauge(owner_left: i32) -> impl Scene {
     bsn! {
-        template(move |context| {
-            let capacity = context
-                .entity
-                .get::<RetailTag>()
-                .is_some_and(|tag| tag.0 == TRANSPORT_CAPACITY_TAG);
-            Ok(spawn_transport_gauge(context, owner_left, capacity))
-        })
+        template(move |context| Ok(spawn_transport_gauge(context, owner_left, true)))
+    }
+}
+
+/// Per-resource allocation row: allocation fill palette with limit marker.
+pub fn retail_transport_allocation_gauge(owner_left: i32) -> impl Scene {
+    bsn! {
+        template(move |context| Ok(spawn_transport_gauge(context, owner_left, false)))
     }
 }
 
