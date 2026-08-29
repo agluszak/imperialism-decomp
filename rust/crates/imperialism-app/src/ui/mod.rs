@@ -32,6 +32,8 @@ mod retail_raster;
 mod retail_resources;
 mod retail_sideways_arrow;
 mod retail_slider;
+mod retail_controls;
+mod retail_text;
 mod retail_transport_gauge;
 mod satellite_preview;
 mod scenario_setup;
