@@ -636,99 +636,7 @@ pub(in crate::ui::city) fn render_city_buildings(
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use imperialism_formats::DibPalette;
 
-    #[test]
-    fn action_occlusions_clear_the_same_rectangle_in_every_frame() {
-        let indexed = IndexedPicture {
-            width: 6,
-            height: 2,
-            pixels: vec![1; 12],
-        };
-        let mut image = indexed.to_image(&DibPalette::default());
-
-        apply_city_action_transparency(&mut image, &indexed, [3, 2], 2, &[[1, 0, 2, 2]]);
-
-        let alpha = image
-            .data
-            .as_ref()
-            .unwrap()
-            .chunks_exact(4)
-            .map(|pixel| pixel[3])
-            .collect::<Vec<_>>();
-        assert_eq!(
-            alpha,
-            [0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff]
-        );
-    }
-
-    #[test]
-    fn unbuilt_oil_and_power_stay_closed_without_oil_drilling() {
-        for slot in [CityFacilitySlot::OilRefinery, CityFacilitySlot::PowerPlant] {
-            assert_eq!(city_building_click_action(slot, 0, false), None);
-            assert!(!city_oil_industry_unlocked_for(slot, false));
-        }
-    }
-
-    #[test]
-    fn unbuilt_oil_and_power_open_construction_after_oil_drilling() {
-        for slot in [CityFacilitySlot::OilRefinery, CityFacilitySlot::PowerPlant] {
-            assert_eq!(
-                city_building_click_action(slot, 0, true),
-                Some(CityBuildingClick::Construction)
-            );
-            assert!(city_oil_industry_unlocked_for(slot, true));
-        }
-    }
-
-    #[test]
-    fn built_oil_and_power_open_production_even_without_oil_drilling() {
-        for slot in [CityFacilitySlot::OilRefinery, CityFacilitySlot::PowerPlant] {
-            assert_eq!(
-                city_building_click_action(slot, 1, false),
-                Some(CityBuildingClick::Production)
-            );
-        }
-    }
-
-    #[test]
-    fn other_unbuilt_capacity_centers_open_construction() {
-        assert_eq!(
-            city_building_click_action(CityFacilitySlot::TextileMill, 0, false),
-            Some(CityBuildingClick::Construction)
-        );
-        assert_eq!(
-            city_building_click_action(CityFacilitySlot::Shipyard, 0, false),
-            Some(CityBuildingClick::Production)
-        );
-    }
-
-    #[test]
-    fn beginning_of_game_does_not_open_unbuilt_oil_or_power() {
-        let state = crate::ui::test_support::beginning_of_game();
-        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
-        assert_eq!(
-            city_building_click(&state, nation, CityFacilitySlot::OilRefinery),
-            None
-        );
-        assert_eq!(
-            city_building_click(&state, nation, CityFacilitySlot::PowerPlant),
-            None
-        );
-        assert!(!city_oil_industry_unlocked(
-            &state,
-            nation,
-            CityFacilitySlot::OilRefinery
-        ));
-        assert_eq!(
-            city_building_click(&state, nation, CityFacilitySlot::TextileMill),
-            Some(CityBuildingClick::Production)
-        );
-    }
-}
 pub(in crate::ui::city) const CITY_BUILDINGS: &[CityBuildingVisual] = &[
     CityBuildingVisual {
         slot: CityFacilitySlot::TextileMill,
@@ -1133,5 +1041,99 @@ pub(in crate::ui::city) fn spawn_city_dialog(
         CityFacilitySlot::Warehouse => commands.spawn_scene(generated::citydlog_9213()).id(),
         CityFacilitySlot::Transport => commands.spawn_scene(generated::citydlog_9214()).id(),
         CityFacilitySlot::RegionalPopulation => commands.spawn_scene(generated::citydlog_9215()).id(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use imperialism_formats::DibPalette;
+
+    #[test]
+    fn action_occlusions_clear_the_same_rectangle_in_every_frame() {
+        let indexed = IndexedPicture {
+            width: 6,
+            height: 2,
+            pixels: vec![1; 12],
+        };
+        let mut image = indexed.to_image(&DibPalette::default());
+
+        apply_city_action_transparency(&mut image, &indexed, [3, 2], 2, &[[1, 0, 2, 2]]);
+
+        let alpha = image
+            .data
+            .as_ref()
+            .unwrap()
+            .chunks_exact(4)
+            .map(|pixel| pixel[3])
+            .collect::<Vec<_>>();
+        assert_eq!(
+            alpha,
+            [0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff, 0xff, 0, 0xff]
+        );
+    }
+
+    #[test]
+    fn unbuilt_oil_and_power_stay_closed_without_oil_drilling() {
+        for slot in [CityFacilitySlot::OilRefinery, CityFacilitySlot::PowerPlant] {
+            assert_eq!(city_building_click_action(slot, 0, false), None);
+            assert!(!city_oil_industry_unlocked_for(slot, false));
+        }
+    }
+
+    #[test]
+    fn unbuilt_oil_and_power_open_construction_after_oil_drilling() {
+        for slot in [CityFacilitySlot::OilRefinery, CityFacilitySlot::PowerPlant] {
+            assert_eq!(
+                city_building_click_action(slot, 0, true),
+                Some(CityBuildingClick::Construction)
+            );
+            assert!(city_oil_industry_unlocked_for(slot, true));
+        }
+    }
+
+    #[test]
+    fn built_oil_and_power_open_production_even_without_oil_drilling() {
+        for slot in [CityFacilitySlot::OilRefinery, CityFacilitySlot::PowerPlant] {
+            assert_eq!(
+                city_building_click_action(slot, 1, false),
+                Some(CityBuildingClick::Production)
+            );
+        }
+    }
+
+    #[test]
+    fn other_unbuilt_capacity_centers_open_construction() {
+        assert_eq!(
+            city_building_click_action(CityFacilitySlot::TextileMill, 0, false),
+            Some(CityBuildingClick::Construction)
+        );
+        assert_eq!(
+            city_building_click_action(CityFacilitySlot::Shipyard, 0, false),
+            Some(CityBuildingClick::Production)
+        );
+    }
+
+    #[test]
+    fn beginning_of_game_does_not_open_unbuilt_oil_or_power() {
+        let state = crate::ui::test_support::beginning_of_game();
+        let nation = MajorNationId::from_nation(state.turn().active_nation).unwrap();
+        assert_eq!(
+            city_building_click(&state, nation, CityFacilitySlot::OilRefinery),
+            None
+        );
+        assert_eq!(
+            city_building_click(&state, nation, CityFacilitySlot::PowerPlant),
+            None
+        );
+        assert!(!city_oil_industry_unlocked(
+            &state,
+            nation,
+            CityFacilitySlot::OilRefinery
+        ));
+        assert_eq!(
+            city_building_click(&state, nation, CityFacilitySlot::TextileMill),
+            Some(CityBuildingClick::Production)
+        );
     }
 }
