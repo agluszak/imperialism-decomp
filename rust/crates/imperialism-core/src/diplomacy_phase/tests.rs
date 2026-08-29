@@ -31,33 +31,28 @@ fn computer_major() -> MajorNation {
 }
 
 fn run_diplomacy(state: &mut GameState) {
-    state.turn.phase = PhaseCode::DIPLOMACY;
+    state.turn_flow = TurnFlow::Diplomacy(DiplomacyFlow::Running);
     state.do_diplomacy();
 }
 
 fn assert_diplomacy_completed(state: &GameState) {
-    assert!(matches!(
-        state.turn_flow,
-        crate::turn_flow::TurnFlow::Running
-    ));
-    assert_eq!(state.turn.phase(), PhaseCode::TRADE);
+    assert_eq!(state.turn_flow, TurnFlow::Trade(TradeFlow::Running));
+    assert_eq!(state.phase(), PhaseCode::TRADE);
 }
 
 fn assert_diplomacy_offer_blocked(state: &GameState) -> DiplomacyOfferPrompt {
     assert!(matches!(
         state.turn_flow,
-        crate::turn_flow::TurnFlow::DiplomacyOffer { .. }
+        TurnFlow::Diplomacy(DiplomacyFlow::Offer { .. })
     ));
-    assert_eq!(state.turn.phase(), PhaseCode::DIPLOMACY);
     state.current_diplomacy_offer().expect("diplomacy offer")
 }
 
 fn assert_diplomacy_war_join_blocked(state: &GameState) -> DiplomacyWarJoinPrompt {
     assert!(matches!(
         state.turn_flow,
-        crate::turn_flow::TurnFlow::DiplomacyWarJoin(_)
+        TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(_))
     ));
-    assert_eq!(state.turn.phase(), PhaseCode::DIPLOMACY);
     state
         .current_diplomacy_war_join()
         .expect("diplomacy war join")

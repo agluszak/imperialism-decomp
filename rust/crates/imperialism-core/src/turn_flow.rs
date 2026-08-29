@@ -210,7 +210,10 @@ pub enum TurnFlow {
 pub enum DiplomacyFlow {
     Running,
     /// Human reply pending for proposal `index` posted to `nation`.
-    Offer { nation: MajorNationId, index: u8 },
+    Offer {
+        nation: MajorNationId,
+        index: u8,
+    },
     WarJoin(DiplomacyWarJoinPrompt),
 }
 
@@ -341,9 +344,7 @@ impl TurnFlow {
             }
             // Case 0x14 wrote 0x15 before `ResolveNextMove` reached the land battle.
             Self::CombatMoves(_) | Self::MilitaryCleanup => PhaseCode::MILITARY_CLEANUP,
-            Self::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running) => {
-                PhaseCode::DIPLOMACY_OFFER
-            }
+            Self::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running) => PhaseCode::DIPLOMACY_OFFER,
             // Case 0x0d wrote 0x19 before posing `TBattleReportView`.
             Self::DiplomacyOfferGate(_) | Self::Elimination(EliminationFlow::Running) => {
                 PhaseCode::ELIMINATION
@@ -646,11 +647,11 @@ impl GameState {
 
     pub fn advance_turn(&mut self) -> TurnStop {
         loop {
-            if self.pending_town_naming().is_some() {
-                return TurnStop::TownNaming;
-            }
             if let Some(stop) = self.interrupt_stop() {
                 return stop;
+            }
+            if self.pending_town_naming().is_some() {
+                return TurnStop::TownNaming;
             }
             match self.turn_flow {
                 TurnFlow::StrategicMap => return TurnStop::PlayerOrders,
@@ -846,8 +847,9 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 #[cfg(test)]
 mod tests {
     use super::{
-        DealBookFlow, DiplomacyOfferGateFlow, EliminationFlow, GreatPowerPressureFlow,
-        NewspaperFlow, PostQuarterGate, QuarterGateFlow, TechnologyFlow, TradeFlow, TurnFlow,
+        DealBookFlow, DiplomacyFlow, DiplomacyOfferGateFlow, EliminationFlow,
+        GreatPowerPressureFlow, NewspaperFlow, PostQuarterGate, QuarterGateFlow, TechnologyFlow,
+        TradeFlow, TurnFlow,
     };
     use crate::test_support::game_state;
     use crate::{
@@ -919,7 +921,8 @@ mod tests {
         let stop = state.advance_turn();
         assert_eq!(stop, crate::TurnStop::DealBook);
         assert_eq!(state.turn_flow, TurnFlow::DealBook(DealBookFlow::Open));
-        assert_eq!(state.phase(), crate::PhaseCode::DEAL_BOOK);
+        // Retail case 0x0c wrote the quarter gate before posing the Deal Book.
+        assert_eq!(state.phase(), crate::PhaseCode::QUARTER_GATE);
     }
 
     #[test]
@@ -973,7 +976,8 @@ mod tests {
         let prompt = state
             .current_diplomacy_offer()
             .expect("diplomacy offer flow");
-        assert_eq!(state.phase(), crate::PhaseCode::DIPLOMACY);
+        // Retail case 6 wrote the trade phase before `ReplyToDiplomacyOffers` posed this.
+        assert_eq!(state.phase(), crate::PhaseCode::TRADE);
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
         let stop = state.answer_current_diplomacy_offer(true);
         assert!(state.current_diplomacy_offer().is_none());
@@ -1002,7 +1006,10 @@ mod tests {
         let prompt = state
             .current_diplomacy_offer()
             .expect("diplomacy offer flow");
-        assert_eq!(state.phase(), crate::PhaseCode::DIPLOMACY);
+        assert!(matches!(
+            state.turn_flow,
+            TurnFlow::Diplomacy(DiplomacyFlow::Offer { .. })
+        ));
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
 
         let mut stop = state.answer_current_diplomacy_offer(true);
@@ -1202,7 +1209,8 @@ mod tests {
             state.turn_flow,
             TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::PostCombatReports)
         );
-        assert_eq!(state.phase(), crate::PhaseCode::DIPLOMACY_OFFER);
+        // Retail case 0x0d wrote elimination before posing `TBattleReportView`.
+        assert_eq!(state.phase(), crate::PhaseCode::ELIMINATION);
     }
 
     #[test]
@@ -1248,7 +1256,8 @@ mod tests {
                 PostQuarterGate::SeasonAdvance
             ))
         );
-        assert_eq!(state.phase(), crate::PhaseCode::QUARTER_GATE);
+        // Retail case 0x0e wrote the post-gate phase before the `"vote"` movie.
+        assert_eq!(state.phase(), crate::PhaseCode::SEASON_ADVANCE);
     }
 
     #[test]

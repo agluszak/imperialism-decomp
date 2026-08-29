@@ -130,12 +130,6 @@ impl GameState {
         &self.turn
     }
 
-    /// Replaces authoritative turn control with an oracle-captured or fixture flow.
-    #[doc(hidden)]
-    pub fn restore_native_turn_flow(&mut self, flow: TurnFlow) {
-        self.turn_flow = flow;
-    }
-
     pub const fn unit_ids(&self) -> &UnitIdAllocator {
         &self.unit_ids
     }

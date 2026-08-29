@@ -381,7 +381,7 @@ mod tests {
     #[test]
     fn entering_the_offer_sheet_binds_a_pending_offer() {
         let mut state = fixture_state();
-        state.pose_human_trade_offer();
+        state.begin_trade_phase();
         assert!(state.pending_trade_offer().is_some());
         let mut app = test_app(state);
         app.update();

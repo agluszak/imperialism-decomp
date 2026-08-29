@@ -80,8 +80,8 @@ impl GameState {
                     DiplomacyWarJoinKind::DefendMinor
                 };
                 if self.nations.majors[&favorite].auto.is_none() {
-                    self.turn_flow = TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(
-                        DiplomacyWarJoinPrompt {
+                    self.turn_flow =
+                        TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(DiplomacyWarJoinPrompt {
                             nation: favorite,
                             target: second,
                             source: first,
@@ -89,8 +89,7 @@ impl GameState {
                             pair_first: first,
                             pair_second: second,
                             cursor: 1,
-                        },
-                    ));
+                        }));
                     return;
                 }
                 self.ai_handle_minor_war(favorite, second, first);
@@ -110,8 +109,8 @@ impl GameState {
                 continue;
             }
             if self.nations.majors[&other].auto.is_none() {
-                self.turn_flow = TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(
-                    DiplomacyWarJoinPrompt {
+                self.turn_flow =
+                    TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(DiplomacyWarJoinPrompt {
                         nation: other,
                         target: second,
                         source: first,
@@ -119,8 +118,7 @@ impl GameState {
                         pair_first: first,
                         pair_second: second,
                         cursor,
-                    },
-                ));
+                    }));
                 return;
             }
             self.ai_handle_role_swap(other, second, first, false);
@@ -135,8 +133,8 @@ impl GameState {
                 continue;
             }
             if self.nations.majors[&other].auto.is_none() {
-                self.turn_flow = TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(
-                    DiplomacyWarJoinPrompt {
+                self.turn_flow =
+                    TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(DiplomacyWarJoinPrompt {
                         nation: other,
                         target: second,
                         source: first,
@@ -144,8 +142,7 @@ impl GameState {
                         pair_first: first,
                         pair_second: second,
                         cursor,
-                    },
-                ));
+                    }));
                 return;
             }
             self.ai_handle_role_swap(other, second, first, true);

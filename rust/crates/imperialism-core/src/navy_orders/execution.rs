@@ -1698,7 +1698,7 @@ mod tests {
         let continuation = state.carry_out_navy_orders().expect("player encounter");
         assert_eq!(continuation.battle.attacker, attacker_force);
         assert_eq!(continuation.battle.defender, defender_force);
-        state.turn_flow = crate::turn_flow::TurnFlow::NavalBattle(continuation);
+        state.turn_flow = TurnFlow::Military(MilitaryFlow::NavalBattle(continuation));
 
         let mut expected_rng = state.rng;
         expected_rng.next_crt_rand();

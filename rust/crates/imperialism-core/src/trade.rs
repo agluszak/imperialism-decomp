@@ -733,7 +733,6 @@ mod tests {
                 economic_turn: 1,
                 diplomacy_year_term_raw: 1914,
                 selected_asset_set: 0,
-                phase: crate::PhaseCode::STRATEGIC_MAP,
                 turn_flow_status_flags: 0,
                 phase_state_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                 difficulty: Difficulty::Easy,
@@ -771,7 +770,7 @@ mod tests {
             news: crate::NewsState::default(),
             pending: crate::PendingWorkState::default(),
             battle_reports: Vec::new(),
-            turn_flow: crate::turn_flow::TurnFlow::Running,
+            turn_flow: crate::turn_flow::TurnFlow::StrategicMap,
             data: GameData::default(),
         }
     }

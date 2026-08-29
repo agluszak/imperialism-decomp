@@ -140,7 +140,8 @@ impl GameState {
     ///
     /// Human buyers still in the market stop the turn driver, leaving
     /// [`TradeFlow::AwaitingOffer`]; the civilian phase is not started.
-    pub(crate) fn begin_trade_phase(&mut self) {
+    pub fn begin_trade_phase(&mut self) {
+        self.turn_flow = TurnFlow::Trade(TradeFlow::Running);
         self.select_priority_nations_for_minor_relations();
         let mut phase = TradePhase::new();
         self.initialize_deal_books();
@@ -163,11 +164,10 @@ impl GameState {
     ///
     /// `amount` is the purchased quantity (`0` rejects). `stop_buying` is the `nomo`
     /// checkbox and becomes `SetDealResults` shortfall.
-    pub(crate) fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) {
-        let TurnFlow::Trade(TradeFlow::AwaitingOffer { session, offer }) = std::mem::replace(
-            &mut self.turn_flow,
-            TurnFlow::Trade(TradeFlow::Running),
-        ) else {
+    pub fn reply_to_trade_offer(&mut self, amount: i16, stop_buying: bool) {
+        let TurnFlow::Trade(TradeFlow::AwaitingOffer { session, offer }) =
+            std::mem::replace(&mut self.turn_flow, TurnFlow::Trade(TradeFlow::Running))
+        else {
             panic!("Offer Sheet reply requires an awaiting trade offer");
         };
         let mut session = *session;
@@ -181,23 +181,6 @@ impl GameState {
             &mut session.phase,
         );
         self.resume_trade_deals(session);
-    }
-
-    /// Positions the game on a human Offer Sheet interrupt for UI tests.
-    #[doc(hidden)]
-    pub fn pose_human_trade_offer(&mut self) {
-        self.turn_flow = TurnFlow::Trade(TradeFlow::Running);
-        self.begin_trade_phase();
-    }
-
-    /// Native-oracle helper: settle every ranked deal, auto-accepting human offers.
-    #[doc(hidden)]
-    pub fn drain_trade_offers_auto_accepting_human(&mut self) {
-        self.turn_flow = TurnFlow::Trade(TradeFlow::Running);
-        self.begin_trade_phase();
-        while let Some(offer) = self.pending_trade_offer() {
-            self.reply_to_trade_offer(offer.amount, false);
-        }
     }
 
     pub fn pending_trade_offer(&self) -> Option<PendingTradeOffer> {

@@ -1,9 +1,8 @@
 //! Native interruption-boundary differentials for the outer turn state machine.
 
-use imperialism_core::{GameData, GameState, TurnStop};
+use imperialism_core::{GameData, TurnStop};
 use imperialism_testkit::{
-    assert_game_state_eq, compare_native, first_serialized_difference, load_save_backed_state,
-    run_native,
+    assert_game_state_eq, compare_native, load_save_backed_state, run_native,
 };
 use serde::Deserialize;
 
@@ -29,6 +28,12 @@ struct ConsecutiveTurnSequenceResult {
     stops: Vec<String>,
     rng_states: Vec<u32>,
     economic_turns: Vec<i32>,
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq)]
+struct TechnologyBoundaryResult {
+    stop: String,
+    technology: u8,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq)]
@@ -58,7 +63,7 @@ fn deal_book_dispatch_precedes_the_quarter_gate() {
 fn city_and_transport_writes_the_resume_phase_before_the_body() {
     compare_native("turn_stop_city_and_transport", |state, (): ()| {
         assert_eq!(
-            state.turn().phase(),
+            state.phase(),
             imperialism_core::PhaseCode::CITY_AND_TRANSPORT
         );
         state.apply_city_and_transport_case();
@@ -179,7 +184,13 @@ fn twelve_consecutive_turns_return_through_deal_book_and_newspaper() {
 #[ignore = "requires the native C++ oracle"]
 fn technology_report_dispatch_precedes_newspaper() {
     compare_native("turn_stop_technology", |state, (): ()| {
-        stop_name(state.advance_turn())
+        let stop = stop_name(state.advance_turn());
+        TechnologyBoundaryResult {
+            stop,
+            technology: state
+                .current_technology_report()
+                .expect("the technology stop poses one report") as u8,
+        }
     })
     .unwrap();
 }
@@ -200,7 +211,7 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
         .expect("trade stop requires an active deal cursor");
     let result = TradeBoundaryResult {
         stop: "trade_offer".to_owned(),
-        phase: actual.turn().phase().retail(),
+        phase: actual.phase().retail(),
         category_index,
         entry_ordinal,
         buyer: pending.buyer.get(),
@@ -210,20 +221,7 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
         commodity: pending.commodity.resource() as i16,
     };
     assert_eq!(result, native.result);
-    assert_state_except_ephemeral_turn_state(&expected, &actual);
-}
-
-fn assert_state_except_ephemeral_turn_state(expected: &GameState, actual: &GameState) {
-    let mut expected = serde_json::to_value(expected).unwrap();
-    let mut actual = serde_json::to_value(actual).unwrap();
-    let expected_object = expected.as_object_mut().unwrap();
-    let actual_object = actual.as_object_mut().unwrap();
-    expected_object.remove("continuation");
-    actual_object.remove("continuation");
-    assert_eq!(
-        first_serialized_difference(&expected, &actual).unwrap(),
-        None
-    );
+    assert_game_state_eq(&expected, &actual).unwrap();
 }
 
 fn stop_name(stop: TurnStop) -> String {

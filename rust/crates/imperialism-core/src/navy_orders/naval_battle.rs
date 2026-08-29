@@ -1294,7 +1294,8 @@ impl GameState {
     }
 
     fn store_navy_battle(&mut self, battle: NavyBattle) {
-        let TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) = &mut self.turn_flow else {
+        let TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) = &mut self.turn_flow
+        else {
             panic!("navy battle storage requires a pending encounter")
         };
         continuation.navy_battle = Some(Box::new(battle));
