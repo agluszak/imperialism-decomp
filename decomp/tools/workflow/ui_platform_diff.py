@@ -9,7 +9,7 @@ from pathlib import Path
 
 import yaml
 
-from tools.ui_codegen import (
+from tools.ui_cpp_codegen import (
     DEFAULT_CLASSES,
     _render_factory_with_map,
     apply_case_windows_overrides,
