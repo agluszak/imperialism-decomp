@@ -7,7 +7,7 @@ use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
 use bevy::picking::events::{Pointer, Press};
 use bevy::prelude::*;
-use bevy::ui::UiSystems;
+use bevy::ui::{InteractionDisabled, UiSystems};
 use bevy::ui_widgets::{
     Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick, ValueChange,
 };
@@ -33,9 +33,13 @@ pub fn retail_two_pic_slider(
     scale: i16,
     off_group: i16,
     off_index: i16,
+    enabled: bool,
+    input_gate: bool,
 ) -> impl Scene {
+    let disabled = (!enabled || !input_gate).then(|| bsn! { InteractionDisabled });
     bsn! {
         Pickable::IGNORE
+        {disabled}
         RetailTwoPicSliderParts { input: #Input, lower: #Lower, off: #Off }
         template(move |context| {
             Ok(ImageNode::new(load_template_picture(context, PictureId::new(picture_base))?))

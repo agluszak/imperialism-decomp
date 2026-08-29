@@ -3,6 +3,7 @@
 use super::retail::{retail_edit_field, retail_editable_text, retail_text_style};
 use crate::RetailAssetsResource;
 use bevy::prelude::*;
+use bevy::ui::InteractionDisabled;
 use imperialism_formats::RetailTextStylePreset;
 
 /// Recovered caption/style facts for one generated text node.
@@ -60,28 +61,36 @@ fn palette_color(context: &bevy::ecs::template::TemplateContext, index: u8) -> C
     Color::srgb_u8(red, green, blue)
 }
 
-/// Static caption with recovered style, color, shadow, and optional vertical centering.
-pub fn retail_text(spec: RetailTextSpec, height: i32, inset_top: i32) -> impl Scene {
-    let family = retail_font_family(spec.font_family);
-    bsn! {
+/// Shared recovered color, shadow, and optional vertical-centering presentation.
+fn retail_text_presentation(
+    spec: RetailTextSpec,
+    vertical_layout: Option<(i32, i32)>,
+) -> impl Scene {
+    let color = bsn! {
         template(move |context| {
-            context.entity.insert(TextColor(
+            Ok(TextColor(
                 spec.color_index
                     .map(|index| palette_color(context, index))
                     .unwrap_or(Color::BLACK),
-            ));
-            if let Some(index) = spec.shadow_color_index {
-                context.entity.insert(TextShadow {
-                    offset: Vec2::new(
-                        spec.shadow_offset.0 as f32,
-                        spec.shadow_offset.1 as f32,
-                    ),
+            ))
+        })
+    };
+    let shadow = spec.shadow_color_index.map(|index| {
+        let offset = spec.shadow_offset;
+        bsn! {
+            template(move |context| {
+                Ok(TextShadow {
+                    offset: Vec2::new(offset.0 as f32, offset.1 as f32),
                     color: palette_color(context, index),
-                });
-            }
-            if spec.center_vertically && shipped_font(spec.font_family) {
+                })
+            })
+        }
+    });
+    let vertical = vertical_layout.map(|(height, inset_top)| {
+        bsn! {
+            template(move |_context| {
                 let preset = RetailTextStylePreset::explicit(
-                    family,
+                    retail_font_family(spec.font_family),
                     spec.face_flags,
                     spec.point_size,
                     spec.alignment,
@@ -89,26 +98,78 @@ pub fn retail_text(spec: RetailTextSpec, height: i32, inset_top: i32) -> impl Sc
                 let style = imperialism_formats::resolve_retail_text_style(preset)
                     .expect("generated retail text style must resolve");
                 let text_height = style.logical_pixel_height;
-                context.entity.insert(Node {
+                Ok(Node {
                     padding: UiRect {
                         top: Val::Px((inset_top + (height - text_height).max(0) / 2) as f32),
                         ..default()
                     },
                     ..default()
-                });
-            }
-            Ok(Text::new(spec.text))
-        })
+                })
+            })
+        }
+    });
+    bsn! {
+        {color}
+        {shadow}
+        {vertical}
+    }
+}
+
+fn retail_text_disabled(enabled: bool, input_gate: bool) -> impl Scene {
+    let disabled = (!enabled || !input_gate).then(|| bsn! { InteractionDisabled });
+    bsn! {
+        {disabled}
+    }
+}
+
+/// Static caption with recovered style, color, shadow, and optional vertical centering.
+pub fn retail_text(spec: RetailTextSpec, height: i32, inset_top: i32) -> impl Scene {
+    let family = retail_font_family(spec.font_family);
+    let vertical = spec
+        .center_vertically
+        .then_some((height, inset_top))
+        .filter(|_| shipped_font(spec.font_family));
+    bsn! {
+        template(move |_context| Ok(Text::new(spec.text)))
+        retail_text_presentation(spec, vertical)
         retail_text_style(family, spec.face_flags, spec.point_size, spec.alignment)
     }
 }
 
-/// Editable field with recovered style and optional character limit.
-pub fn retail_text_field(spec: RetailTextSpec, max_characters: Option<usize>) -> impl Scene {
+/// Number field with the same recovered presentation as static text plus input gating.
+pub fn retail_number_text(
+    spec: RetailTextSpec,
+    height: i32,
+    inset_top: i32,
+    enabled: bool,
+    input_gate: bool,
+) -> impl Scene {
+    let family = retail_font_family(spec.font_family);
+    let vertical = spec
+        .center_vertically
+        .then_some((height, inset_top))
+        .filter(|_| shipped_font(spec.font_family));
+    bsn! {
+        template(move |_context| Ok(Text::new(spec.text)))
+        retail_text_presentation(spec, vertical)
+        retail_text_style(family, spec.face_flags, spec.point_size, spec.alignment)
+        retail_text_disabled(enabled, input_gate)
+    }
+}
+
+/// Editable field with recovered style, presentation, and optional character limit.
+pub fn retail_text_field(
+    spec: RetailTextSpec,
+    max_characters: Option<usize>,
+    enabled: bool,
+    input_gate: bool,
+) -> impl Scene {
     let family = retail_font_family(spec.font_family);
     bsn! {
         retail_edit_field()
         retail_editable_text(spec.text, max_characters)
+        retail_text_presentation(spec, None)
         retail_text_style(family, spec.face_flags, spec.point_size, spec.alignment)
+        retail_text_disabled(enabled, input_gate)
     }
 }

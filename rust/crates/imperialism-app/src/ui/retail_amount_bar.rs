@@ -4,6 +4,7 @@
 
 use super::retail::retail_background_color;
 use bevy::prelude::*;
+use bevy::ui::InteractionDisabled;
 
 pub const INDUSTRY_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
     width: 150,
@@ -36,10 +37,15 @@ pub struct AmountBarParts {
 }
 
 /// Generated helper: production bars include a limit marker; trade bars are fill-only.
-pub fn retail_amount_bar(style: AmountBarStyle) -> impl Scene {
+pub fn retail_amount_bar(style: AmountBarStyle, enabled: bool, input_gate: bool) -> impl Scene {
     let production = (style == AmountBarStyle::Production).then(production_amount_bar);
     let trade = (style == AmountBarStyle::Trade).then(trade_amount_bar);
-    bsn! { {production} {trade} }
+    let disabled = (!enabled || !input_gate).then(|| bsn! { InteractionDisabled });
+    bsn! {
+        {production}
+        {trade}
+        {disabled}
+    }
 }
 
 #[rustfmt::skip]

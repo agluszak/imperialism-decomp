@@ -14,7 +14,7 @@ use super::retail::{
 };
 use bevy::prelude::*;
 use bevy::reflect::Is;
-use bevy::ui::{Overflow, Pressed};
+use bevy::ui::{InteractionDisabled, Overflow, Pressed};
 use bevy::ui_widgets::Button;
 use imperialism_formats::PictureId;
 
@@ -66,9 +66,11 @@ pub struct NumberedArrowParts {
 }
 
 #[rustfmt::skip]
-pub fn retail_numbered_arrow() -> impl Scene {
+pub fn retail_numbered_arrow(enabled: bool, input_gate: bool) -> impl Scene {
+    let disabled = (!enabled || !input_gate).then(|| bsn! { InteractionDisabled });
     bsn! {
         Pickable::IGNORE
+        {disabled}
         Node { overflow: Overflow::visible() }
         NumberedArrowParts { upper: #Upper, lower: #Lower, count: #Count }
         Children [
