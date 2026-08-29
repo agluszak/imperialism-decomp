@@ -37,24 +37,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ4"), 94, 92, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu6"), 91, 260, 64, 76)
@@ -66,24 +65,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ6"), 94, 260, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu3"), 91, 8, 64, 76)
@@ -95,24 +93,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ3"), 94, 9, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu5"), 91, 176, 64, 76)
@@ -124,24 +121,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ5"), 94, 176, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu2"), 12, 176, 64, 76)
@@ -153,24 +149,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ2"), 15, 176, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu7"), 12, 260, 64, 76)
@@ -182,24 +177,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ7"), 15, 260, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu1"), 12, 92, 64, 76)
@@ -211,24 +205,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ1"), 15, 92, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu0"), 12, 8, 64, 76)
@@ -240,24 +233,23 @@ pub fn armory_9208() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 9, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 3, 56, 20, 20)
-                                                retail_picture_swap_button(7503, 7504)
+                                                retail_picture_swap_button(7503, 7504, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 42, 56, 20, 20)
-                                                retail_picture_swap_button(7505, 7506)
+                                                retail_picture_swap_button(7505, 7506, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ0"), 15, 8, 60, 56)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(7522, 7523)
+                                        retail_radio_picture_button(7522, 7523, true, true, true)
                                     ),
                                 ]
                             ),
@@ -268,32 +260,32 @@ pub fn armory_9208() -> impl Scene {
 (
                                         retail_node(fourcc!("cos0"), -3, 113, 43, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("cos1"), 48, 113, 43, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("cos2"), 92, 113, 43, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("ava0"), -3, 164, 43, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("ava1"), 48, 164, 43, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("ava2"), 92, 164, 43, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("cost"), 3, 84, 73, 16)
@@ -306,7 +298,7 @@ pub fn armory_9208() -> impl Scene {
 (
                                         retail_node(fourcc!("sta0"), 75, 5, 36, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("cos3"), 127, 96, 51, 16)
@@ -323,12 +315,12 @@ pub fn armory_9208() -> impl Scene {
 (
                                         retail_node(fourcc!("sta1"), 75, 24, 36, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("sta2"), 75, 43, 36, 18)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 12, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("lab0"), 3, 5, 71, 18)
@@ -389,25 +381,25 @@ pub fn citydlog_9200() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
-                                retail_picture_swap_button(9244, 9245)
+                                retail_picture_swap_button(9244, 9245, true, true)
                             ),
 (
                                 retail_node(fourcc!("flag"), 137, 6, 53, 29)
@@ -466,25 +458,25 @@ pub fn citydlog_9201() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 3, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
-                                retail_picture_swap_button(9244, 9245)
+                                retail_picture_swap_button(9244, 9245, true, true)
                             ),
 (
                                 retail_node(fourcc!("flag"), 137, 6, 53, 29)
@@ -535,25 +527,25 @@ pub fn citydlog_9202() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
-                                retail_picture_swap_button(9244, 9245)
+                                retail_picture_swap_button(9244, 9245, true, true)
                             ),
 (
                                 retail_node(fourcc!("flag"), 137, 6, 53, 29)
@@ -608,19 +600,19 @@ pub fn citydlog_9203() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -629,25 +621,25 @@ pub fn citydlog_9203() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 59, 17, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
-                                retail_picture_swap_button(9244, 9245)
+                                retail_picture_swap_button(9244, 9245, true, true)
                             ),
 (
                                 retail_node(fourcc!("flag"), 137, 6, 53, 29)
@@ -702,19 +694,19 @@ pub fn citydlog_9204() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -723,25 +715,25 @@ pub fn citydlog_9204() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 59, 18, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 12, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
-                                retail_picture_swap_button(9244, 9245)
+                                retail_picture_swap_button(9244, 9245, true, true)
                             ),
 (
                                 retail_node(fourcc!("flag"), 137, 6, 53, 29)
@@ -796,25 +788,25 @@ pub fn citydlog_9205() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
-                                retail_picture_swap_button(9244, 9245)
+                                retail_picture_swap_button(9244, 9245, true, true)
                             ),
 (
                                 retail_node(fourcc!("flag"), 137, 6, 53, 29)
@@ -865,25 +857,25 @@ pub fn citydlog_9206() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 14, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("expa"), 196, 9, 61, 24)
-                                retail_picture_swap_button(9244, 9245)
+                                retail_picture_swap_button(9244, 9245, true, true)
                             ),
 (
                                 retail_node(fourcc!("flag"), 137, 6, 53, 29)
@@ -927,19 +919,19 @@ pub fn citydlog_9209() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -948,19 +940,19 @@ pub fn citydlog_9209() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -1044,19 +1036,19 @@ pub fn citydlog_9211() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -1101,19 +1093,19 @@ pub fn citydlog_9212() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 20, 21, 11)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 11, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 14, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -1161,89 +1153,87 @@ pub fn citydlog_9213() -> impl Scene {
 (
                                 retail_node(fourcc!("fabr"), 84, 35, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("cott"), 23, 16, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("timb"), 23, 102, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("lumb"), 86, 115, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("coal"), 23, 179, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("stee"), 86, 173, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("arma"), 141, 180, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("clot"), 140, 35, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("wool"), 23, 49, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("pape"), 88, 86, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("furn"), 137, 102, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("iron"), 23, 153, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("hard"), 140, 156, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("hors"), 51, 279, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("food"), 131, 233, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("fuel"), 89, 214, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_interaction_state(false, true)
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, false, true)
                             ),
 (
                                 retail_node(fourcc!("oil "), 24, 212, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_interaction_state(false, true)
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, false, true)
                             ),
 (
                                 retail_node(fourcc!("name"), 5, 7, 165, 16)
@@ -1252,28 +1242,27 @@ pub fn citydlog_9213() -> impl Scene {
 (
                                 retail_node(fourcc!("labo"), 124, 279, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("powe"), 137, 214, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_interaction_state(false, true)
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, false, true)
                             ),
 (
                                 retail_node(fourcc!("live"), 72, 241, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("prod"), 23, 214, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("grai"), 72, 214, 36, 17)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(0), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                             ),
                         ]
                     ),
@@ -1308,19 +1297,19 @@ pub fn citydlog_9214() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -1373,19 +1362,19 @@ pub fn citydlog_9215() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
-                                        retail_sideways_arrow(9240, 9241)
+                                        retail_sideways_arrow(9240, 9241, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
-                                        retail_sideways_arrow(9242, 9243)
+                                        retail_sideways_arrow(9242, 9243, true, true)
                                     ),
 (
                                         retail_node(fourcc!("move"), 63, 15, 21, 13)
-                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 13, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 62, 8, 150, 6)
-                                        retail_amount_bar(AmountBarStyle::Production)
+                                        retail_amount_bar(AmountBarStyle::Production, true, true)
                                     ),
                                 ]
                             ),
@@ -1427,11 +1416,11 @@ pub fn citydlog_9220() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 246, 289, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 13, 289, 61, 23)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("tex1"), 20, 194, 281, 36)
@@ -1487,11 +1476,11 @@ pub fn citydlog_9221() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 243, 194, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 18, 194, 61, 23)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("name"), 14, 6, 290, 15)
@@ -1528,7 +1517,7 @@ pub fn citymain_2011() -> impl Scene {
 (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                        retail_pointer_canvas()
+                        retail_pointer_canvas(true, true)
                         Children [
 (
                                 retail_node(fourcc!("labP"), 6, 110, 39, 35)
@@ -1587,7 +1576,7 @@ pub fn citymain_2011() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
-                                        retail_picture_button_overlay(6021, 6022)
+                                        retail_picture_button_overlay(6021, 6022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -1604,19 +1593,19 @@ pub fn citymain_2011() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
-                                        retail_picture_swap_button(9455, 9456)
+                                        retail_picture_swap_button(9455, 9456, true, true)
                                     ),
 (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
-                                        retail_picture_swap_button(9453, 9454)
+                                        retail_picture_swap_button(9453, 9454, true, true)
                                     ),
 (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
-                                        retail_picture_swap_button(9451, 9452)
+                                        retail_picture_swap_button(9451, 9452, true, true)
                                     ),
 (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
-                                        retail_picture_swap_button(9449, 9450)
+                                        retail_picture_swap_button(9449, 9450, true, true)
                                     ),
                                 ]
                             ),
@@ -1625,7 +1614,7 @@ pub fn citymain_2011() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
-                                        retail_picture_button_overlay(6020, 6021)
+                                        retail_picture_button_overlay(6020, 6021, true, true)
                                     ),
                                 ]
                             ),
@@ -1663,19 +1652,19 @@ pub fn diplo_1351() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("prev"), 294, 381, 22, 22)
-                                        retail_picture_swap_button(4101, 4102)
+                                        retail_picture_swap_button(4101, 4102, true, true)
                                     ),
 (
                                         retail_node(fourcc!("next"), 325, 381, 22, 22)
-                                        retail_picture_swap_button(4103, 4104)
+                                        retail_picture_swap_button(4103, 4104, true, true)
                                     ),
 (
                                         retail_node(fourcc!("okay"), 8, 38, 31, 51)
-                                        retail_picture_button_overlay(4106, 4107)
+                                        retail_picture_button_overlay(4106, 4107, true, true)
                                     ),
 (
                                         retail_node(fourcc!("info"), 294, 412, 53, 57)
-                                        retail_picture_swap_button(4108, 4109)
+                                        retail_picture_swap_button(4108, 4109, true, true)
                                     ),
 (
                                         retail_node(fourcc!("resu"), 24, 360, 286, 20)
@@ -1714,7 +1703,7 @@ pub fn diplo_1351() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
-                                                retail_picture_button_overlay(4107, 4108)
+                                                retail_picture_button_overlay(4107, 4108, true, true)
                                             ),
                                         ]
                                     ),
@@ -1742,17 +1731,15 @@ pub fn diplo_1352() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("lcor"), 12, 387, 37, 35)
-                                retail_interaction_state(true, true)
-                                retail_page_corner(RetailPageCorner::Left)
+                                retail_page_corner(RetailPageCorner::Left, true, false, true)
                             ),
 (
                                 retail_node(fourcc!("rcor"), 431, 387, 40, 35)
-                                retail_interaction_state(true, true)
-                                retail_page_corner(RetailPageCorner::Right)
+                                retail_page_corner(RetailPageCorner::Right, true, false, true)
                             ),
 (
                                 retail_node(fourcc!("okay"), 27, 9, 33, 32)
-                                retail_picture_button_overlay(4070, 4071)
+                                retail_picture_button_overlay(4070, 4071, true, true)
                             ),
 (
                                 retail_node(fourcc!("flgR"), 408, 10, 64, 86)
@@ -1839,23 +1826,19 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("ovr2"), 6, 94, 25, 25)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5106, 5107)
+                                                retail_radio_picture_button(5106, 5107, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("ovr0"), 6, -1, 25, 45)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5100, 5101)
+                                                retail_radio_picture_button(5100, 5101, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("ovr4"), 6, 44, 25, 25)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5102, 5103)
+                                                retail_radio_picture_button(5102, 5103, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("ovr1"), 6, 69, 25, 25)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5104, 5105)
+                                                retail_radio_picture_button(5104, 5105, true, true, true)
                                             ),
                                         ]
                                     ),
@@ -1873,43 +1856,35 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("doc7"), 462, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5033, 5034)
+                                                retail_radio_picture_button(5033, 5034, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("doc6"), 418, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5031, 5032)
+                                                retail_radio_picture_button(5031, 5032, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("doc5"), 326, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5033, 5034)
+                                                retail_radio_picture_button(5033, 5034, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("doc4"), 282, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5031, 5032)
+                                                retail_radio_picture_button(5031, 5032, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("doc3"), 189, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5033, 5034)
+                                                retail_radio_picture_button(5033, 5034, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("doc2"), 145, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5031, 5032)
+                                                retail_radio_picture_button(5031, 5032, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("doc1"), 52, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5033, 5034)
+                                                retail_radio_picture_button(5033, 5034, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("doc0"), 8, 8, 42, 55)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5031, 5032)
+                                                retail_radio_picture_button(5031, 5032, true, true, true)
                                             ),
                                         ]
                                     ),
@@ -1923,38 +1898,31 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("scr6"), 341, 2, 75, 36)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5022, 5023)
+                                                retail_radio_picture_button(5022, 5023, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("scr5"), 222, 2, 75, 36)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5020, 5021)
+                                                retail_radio_picture_button(5020, 5021, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("scr3"), 26, 5, 75, 36)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5016, 5017)
+                                                retail_radio_picture_button(5016, 5017, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("scr4"), 26, 57, 75, 36)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5018, 5019)
+                                                retail_radio_picture_button(5018, 5019, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("scr2"), 171, 57, 75, 36)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5024, 5025)
+                                                retail_radio_picture_button(5024, 5025, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("scr1"), 280, 57, 75, 36)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5026, 5027)
+                                                retail_radio_picture_button(5026, 5027, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("scr0"), 385, 57, 75, 36)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5028, 5029)
+                                                retail_radio_picture_button(5028, 5029, true, true, true)
                                             ),
                                         ]
                                     ),
@@ -1968,43 +1936,35 @@ pub fn diplo_2008() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("traa"), 5, 18, 43, 50)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5035, 5036)
+                                                retail_radio_picture_button(5035, 5036, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("trab"), 56, 29, 43, 60)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5037, 5038)
+                                                retail_radio_picture_button(5037, 5038, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("trac"), 107, 18, 43, 50)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5039, 5040)
+                                                retail_radio_picture_button(5039, 5040, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("trad"), 158, 29, 43, 60)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5041, 5042)
+                                                retail_radio_picture_button(5041, 5042, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("trae"), 209, 18, 43, 50)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5043, 5044)
+                                                retail_radio_picture_button(5043, 5044, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("traf"), 260, 29, 43, 60)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5045, 5046)
+                                                retail_radio_picture_button(5045, 5046, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("trag"), 358, 33, 43, 44)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5047, 5048)
+                                                retail_radio_picture_button(5047, 5048, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("link"), 451, 33, 52, 44)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(5049, 5050)
+                                                retail_radio_picture_button(5049, 5050, true, true, true)
                                             ),
                                         ]
                                     ),
@@ -2021,11 +1981,11 @@ pub fn diplo_2008() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("reje"), 12, 26, 75, 70)
-                                                retail_picture_swap_button(8408, 8409)
+                                                retail_picture_swap_button(8408, 8409, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("acce"), 423, 26, 75, 70)
-                                                retail_picture_swap_button(8406, 8407)
+                                                retail_picture_swap_button(8406, 8407, true, true)
                                             ),
                                         ]
                                     ),
@@ -2044,7 +2004,7 @@ pub fn diplo_2008() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
-                                        retail_picture_button_overlay(5052, 5053)
+                                        retail_picture_button_overlay(5052, 5053, true, true)
                                     ),
                                 ]
                             ),
@@ -2059,27 +2019,22 @@ pub fn diplo_2008() -> impl Scene {
 (
                                 retail_node(fourcc!("inft"), 16, 372, 39, 42)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("cout"), 15, 416, 39, 42)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("trtt"), 589, 359, 28, 37)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("grat"), 589, 396, 28, 37)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("trat"), 589, 433, 28, 37)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("coun"), 57, 800, 518, 122)
@@ -2089,7 +2044,7 @@ pub fn diplo_2008() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
-                                        retail_picture_button_overlay(5051, 5052)
+                                        retail_picture_button_overlay(5051, 5052, true, true)
                                     ),
                                 ]
                             ),
@@ -2098,19 +2053,19 @@ pub fn diplo_2008() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
-                                        retail_picture_swap_button(9455, 9456)
+                                        retail_picture_swap_button(9455, 9456, true, true)
                                     ),
 (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
-                                        retail_picture_swap_button(9453, 9454)
+                                        retail_picture_swap_button(9453, 9454, true, true)
                                     ),
 (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
-                                        retail_picture_swap_button(9451, 9452)
+                                        retail_picture_swap_button(9451, 9452, true, true)
                                     ),
 (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
-                                        retail_picture_swap_button(9449, 9450)
+                                        retail_picture_swap_button(9449, 9450, true, true)
                                     ),
                                 ]
                             ),
@@ -2157,7 +2112,7 @@ pub fn diplo_2016() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
-                                        retail_picture_button_overlay(4140, 4141)
+                                        retail_picture_button_overlay(4140, 4141, true, true)
                                     ),
                                 ]
                             ),
@@ -2166,7 +2121,7 @@ pub fn diplo_2016() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
-                                        retail_picture_button_overlay(4141, 4142)
+                                        retail_picture_button_overlay(4141, 4142, true, true)
                                     ),
                                 ]
                             ),
@@ -2232,11 +2187,11 @@ pub fn diplo_2016() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("coa0"), 64, 385, 56, 84)
-                                retail_picture_button(4357, 4358)
+                                retail_picture_button(4357, 4358, true, true)
                             ),
 (
                                 retail_node(fourcc!("coa1"), 511, 385, 56, 84)
-                                retail_picture_button(4357, 4358)
+                                retail_picture_button(4357, 4358, true, true)
                             ),
 (
                                 retail_node(fourcc!("titl"), 48, 6, 338, 30)
@@ -2312,7 +2267,7 @@ pub fn flagview_8451() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
-                                        retail_picture_button_overlay(8454, 8455)
+                                        retail_picture_button_overlay(8454, 8455, true, true)
                                     ),
                                 ]
                             ),
@@ -2321,7 +2276,7 @@ pub fn flagview_8451() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
-                                        retail_picture_button_overlay(8456, 8457)
+                                        retail_picture_button_overlay(8456, 8457, true, true)
                                     ),
                                 ]
                             ),
@@ -2379,30 +2334,29 @@ pub fn flagview_8500() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("mCap"), 411, 284, 37, 15)
-                                        retail_text(RetailTextSpec { text: "", font_family: 1, face_flags: 0, point_size: 14, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 15, 0)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 1, face_flags: 0, point_size: 14, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 15, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("purc"), 119, 201, 33, 19)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text(RetailTextSpec { text: "", font_family: 1, face_flags: 0, point_size: 14, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 19, 3)
+                                        retail_number_text(RetailTextSpec { text: "", font_family: 1, face_flags: 0, point_size: 14, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 19, 3, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clus"), 30, 221, 33, 17)
                                         Children [
 (
                                                 retail_node(fourcc!("nomo"), 9, 4, 18, 11)
-                                                retail_interaction_state(true, true)
-                                                retail_toggle_picture(8501)
+                                                retail_toggle_picture(8501, true, false, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
-                                        retail_picture_button_overlay(8533, 8534)
+                                        retail_picture_button_overlay(8533, 8534, true, true)
                                     ),
 (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
-                                        retail_picture_button_overlay(8532, 8533)
+                                        retail_picture_button_overlay(8532, 8533, true, true)
                                     ),
 (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
@@ -2490,13 +2444,13 @@ pub fn flagview_8500() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
-                                        retail_picture_button_overlay(8404, 8405)
+                                        retail_picture_button_overlay(8404, 8405, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
-                                retail_picture_button_overlay(8825, 8826)
+                                retail_picture_button_overlay(8825, 8826, true, true)
                             ),
                         ]
                     ),
@@ -2529,7 +2483,7 @@ pub fn flagview_8800() -> impl Scene {
                                                 Children [
 (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
-                                                        retail_picture_button_overlay(8814, 8815)
+                                                        retail_picture_button_overlay(8814, 8815, true, true)
                                                     ),
 (
                                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -2575,15 +2529,14 @@ pub fn flagview_8800() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("mark"), 8, 136, 40, 53)
-                                                retail_interaction_state(false, true)
-                                                retail_picture_button_overlay(8812, 8813)
+                                                retail_picture_button_overlay(8812, 8813, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("tbr2"), 608, 40, 22, 37)
                                                 Children [
 (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
-                                                        retail_picture_button_overlay(8816, 8817)
+                                                        retail_picture_button_overlay(8816, 8817, true, true)
                                                     ),
                                                 ]
                                             ),
@@ -2613,7 +2566,7 @@ pub fn linger_950() -> impl Scene {
                 Children [
 (
                         retail_node(fourcc!("okay"), 0, 0, 550, 350)
-                        retail_picture_button(950, 951)
+                        retail_picture_button(950, 951, true, true)
                     ),
                 ]
             ),
@@ -2635,19 +2588,16 @@ pub fn linger_954() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("1or2"), 39, 110, 175, 20)
-                                retail_interaction_state(false, true)
                                 retail_radio_cluster()
                                 Children [
 (
                                         retail_node(fourcc!("one1"), 2, 2, 85, 16)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_text()
+                                        retail_radio_text(true, true, true)
                                         retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 16, 0)
                                     ),
 (
                                         retail_node(fourcc!("two2"), 88, 2, 85, 16)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_text()
+                                        retail_radio_text(true, true, true)
                                         retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 16, 0)
                                     ),
                                 ]
@@ -2659,16 +2609,15 @@ pub fn linger_954() -> impl Scene {
 (
                                 retail_node(fourcc!("plan"), 40, 79, 175, 23)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(32))
+                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(32), true, true)
                             ),
 (
                                 retail_node(fourcc!("okay"), 158, 138, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("canc"), 33, 138, 61, 24)
-                                retail_interaction_state(false, true)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, false, true)
                             ),
                         ]
                     ),
@@ -2737,7 +2686,6 @@ pub fn linger_1502() -> impl Scene {
 (
                                 retail_node(fourcc!("cncl"), 2, 221, 67, 252)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("plat"), 290, 1, 350, 255)
@@ -2745,11 +2693,11 @@ pub fn linger_1502() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("okay"), 233, 205, 96, 30)
-                                        retail_picture_swap_button(4522, 4523)
+                                        retail_picture_swap_button(4522, 4523, true, true)
                                     ),
 (
                                         retail_node(fourcc!("map "), 12, 13, 324, 180)
-                                        retail_pointer_canvas()
+                                        retail_pointer_canvas(true, true)
                                     ),
 (
                                         retail_node(fourcc!("info"), 20, 197, 205, 43)
@@ -2760,7 +2708,6 @@ pub fn linger_1502() -> impl Scene {
 (
                                 retail_node(fourcc!("otto"), 71, 80, 188, 49)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("curs"), 49, 19, 201, 30)
@@ -2816,12 +2763,11 @@ pub fn linger_2020() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("okay"), 310, 248, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 17, 248, 61, 24)
-                                retail_interaction_state(false, true)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, false, true)
                             ),
 (
                                 retail_node(fourcc!("coat"), 295, 12, 84, 125)
@@ -2853,7 +2799,7 @@ pub fn linger_3000() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("swin"), 21, 146, 363, 163)
-                                retail_scroll_area()
+                                retail_scroll_area(true, true)
                             ),
 (
                                 retail_node(fourcc!("nam1"), 15, 187, 244, 15)
@@ -3011,31 +2957,31 @@ pub fn linger_4122() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("advi"), 113, 65, 97, 37)
-                                retail_picture_button_overlay(4123, 4124)
+                                retail_picture_button_overlay(4123, 4124, true, true)
                             ),
 (
                                 retail_node(fourcc!("oref"), 11, 150, 65, 27)
-                                retail_picture_button(4124, 4125)
+                                retail_picture_button(4124, 4125, true, true)
                             ),
 (
                                 retail_node(fourcc!("news"), 11, 187, 65, 27)
-                                retail_picture_button(4125, 4126)
+                                retail_picture_button(4125, 4126, true, true)
                             ),
 (
                                 retail_node(fourcc!("deal"), 11, 224, 65, 27)
-                                retail_picture_button(4126, 4127)
+                                retail_picture_button(4126, 4127, true, true)
                             ),
 (
                                 retail_node(fourcc!("batt"), 11, 261, 65, 27)
-                                retail_picture_button(4127, 4128)
+                                retail_picture_button(4127, 4128, true, true)
                             ),
 (
                                 retail_node(fourcc!("char"), 12, 298, 65, 27)
-                                retail_picture_button(4128, 4129)
+                                retail_picture_button(4128, 4129, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 10, 335, 65, 27)
-                                retail_picture_button_overlay(4129, 4130)
+                                retail_picture_button_overlay(4129, 4130, true, true)
                             ),
 (
                                 retail_node(fourcc!("titl"), 101, 22, 126, 16)
@@ -3119,31 +3065,31 @@ pub fn linger_4140() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("save"), 112, 65, 97, 37)
-                                retail_picture_button_overlay(1331, 1332)
+                                retail_picture_button_overlay(1331, 1332, true, true)
                             ),
 (
                                 retail_node(fourcc!("newg"), 10, 149, 65, 27)
-                                retail_picture_button_overlay(1332, 1333)
+                                retail_picture_button_overlay(1332, 1333, true, true)
                             ),
 (
                                 retail_node(fourcc!("load"), 10, 186, 65, 27)
-                                retail_picture_button_overlay(1333, 1334)
+                                retail_picture_button_overlay(1333, 1334, true, true)
                             ),
 (
                                 retail_node(fourcc!("pref"), 10, 223, 65, 27)
-                                retail_picture_button_overlay(1334, 1335)
+                                retail_picture_button_overlay(1334, 1335, true, true)
                             ),
 (
                                 retail_node(fourcc!("cred"), 10, 260, 65, 27)
-                                retail_picture_button_overlay(1335, 1336)
+                                retail_picture_button_overlay(1335, 1336, true, true)
                             ),
 (
                                 retail_node(fourcc!("quit"), 10, 297, 65, 27)
-                                retail_picture_button_overlay(1336, 1337)
+                                retail_picture_button_overlay(1336, 1337, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 11, 335, 65, 27)
-                                retail_picture_button_overlay(1337, 1338)
+                                retail_picture_button_overlay(1337, 1338, true, true)
                             ),
 (
                                 retail_node(fourcc!("txt7"), 84, 340, 126, 18)
@@ -3171,35 +3117,32 @@ pub fn linger_4150() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("optc"), 54, 295, 102, 91)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4154, 4155)
+                                retail_checkbox(4154, 4155, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("optd"), 194, 295, 102, 91)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4156, 4157)
+                                retail_checkbox(4156, 4157, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("opte"), 390, 156, 160, 160)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4158)
+                                retail_madness_checkbox(4158, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("soun"), 54, 92, 102, 91)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_two_pic_slider(4152, 100, 10051, 60)
+                                retail_two_pic_slider(4152, 100, 10051, 60, true, true)
                             ),
 (
                                 retail_node(fourcc!("musi"), 194, 92, 102, 91)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_two_pic_slider(4150, 255, 10051, 60)
+                                retail_two_pic_slider(4150, 255, 10051, 60, true, true)
                             ),
 (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
-                                        retail_picture_button_overlay(4145, 4146)
+                                        retail_picture_button_overlay(4145, 4146, true, true)
                                     ),
                                 ]
                             ),
@@ -3225,19 +3168,16 @@ pub fn linger_4150() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("opca"), 370, 429, 195, 20)
-                                retail_interaction_state(false, true)
                                 retail_radio_cluster()
                                 Children [
 (
                                         retail_node(fourcc!("yess"), 2, 2, 95, 16)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_text()
+                                        retail_radio_text(true, true, true)
                                         retail_text(RetailTextSpec { text: "Enabled", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(92), shadow_offset: (1, 1), center_vertically: false }, 16, 0)
                                     ),
 (
                                         retail_node(fourcc!("nooo"), 98, 2, 95, 16)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_text()
+                                        retail_radio_text(true, true, true)
                                         retail_text(RetailTextSpec { text: "Disabled", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(92), shadow_offset: (1, 1), center_vertically: false }, 16, 0)
                                     ),
                                 ]
@@ -3251,7 +3191,7 @@ pub fn linger_4150() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
-                                        retail_picture_button_overlay(4146, 4147)
+                                        retail_picture_button_overlay(4146, 4147, true, true)
                                     ),
                                 ]
                             ),
@@ -3310,7 +3250,7 @@ pub fn linger_4300() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
-                                        retail_picture_button_overlay(4325, 4326)
+                                        retail_picture_button_overlay(4325, 4326, true, true)
                                     ),
                                 ]
                             ),
@@ -3320,59 +3260,50 @@ pub fn linger_4300() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("tab0"), 13, 134, 60, 56)
-                                retail_picture_button(4301, 4302)
+                                retail_picture_button(4301, 4302, true, true)
                             ),
 (
                                 retail_node(fourcc!("tab1"), 13, 190, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4302, 4303)
+                                retail_picture_button(4302, 4303, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab2"), 13, 245, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4303, 4304)
+                                retail_picture_button(4303, 4304, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab3"), 13, 300, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4304, 4305)
+                                retail_picture_button(4304, 4305, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab4"), 13, 356, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4305, 4306)
+                                retail_picture_button(4305, 4306, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab5"), 567, 134, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4306, 4307)
+                                retail_picture_button(4306, 4307, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab6"), 567, 190, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4307, 4308)
+                                retail_picture_button(4307, 4308, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab7"), 567, 245, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4308, 4309)
+                                retail_picture_button(4308, 4309, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab8"), 567, 300, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4309, 4310)
+                                retail_picture_button(4309, 4310, false, true)
                             ),
 (
                                 retail_node(fourcc!("tab9"), 567, 356, 60, 56)
-                                retail_interaction_state(false, true)
-                                retail_picture_button(4310, 4311)
+                                retail_picture_button(4310, 4311, false, true)
                             ),
 (
                                 retail_node(fourcc!("tbr2"), 602, 36, 40, 46)
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
-                                        retail_picture_button_overlay(4145, 4146)
+                                        retail_picture_button_overlay(4145, 4146, true, true)
                                     ),
                                 ]
                             ),
@@ -3435,11 +3366,11 @@ pub fn mapview_1350() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("next"), 157, 335, 69, 19)
-                                retail_picture_swap_button(3506, 3507)
+                                retail_picture_swap_button(3506, 3507, true, true)
                             ),
 (
                                 retail_node(fourcc!("end "), 3, 336, 69, 19)
-                                retail_picture_swap_button(3506, 3507)
+                                retail_picture_swap_button(3506, 3507, true, true)
                             ),
 (
                                 retail_node(fourcc!("port"), 4, 4, 222, 151)
@@ -3505,56 +3436,54 @@ pub fn mapview_2013() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("Flag"), 62, 8, 25, 35)
-                                        retail_interaction_state(false, true)
-                                        retail_picture_button_overlay(1300, 1301)
+                                        retail_picture_button_overlay(1300, 1301, false, true)
                                     ),
 (
                                         retail_node(fourcc!("mmap"), 33, 8, 25, 35)
-                                        retail_picture_swap_button(1049, 1050)
+                                        retail_picture_swap_button(1049, 1050, true, true)
                                     ),
 (
                                         retail_node(fourcc!("quer"), 91, 8, 25, 35)
-                                        retail_interaction_state(false, true)
-                                        retail_picture_button_overlay(1307, 1308)
+                                        retail_picture_button_overlay(1307, 1308, false, true)
                                     ),
 (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
-                                        retail_picture_swap_button(1109, 1110)
+                                        retail_picture_swap_button(1109, 1110, true, true)
                                     ),
 (
                                         retail_node(fourcc!("tran"), 4, 119, 25, 25)
-                                        retail_picture_swap_button(1111, 1112)
+                                        retail_picture_swap_button(1111, 1112, true, true)
                                     ),
 (
                                         retail_node(fourcc!("city"), 33, 119, 25, 25)
-                                        retail_picture_swap_button(1110, 1111)
+                                        retail_picture_swap_button(1110, 1111, true, true)
                                     ),
 (
                                         retail_node(fourcc!("dipl"), 91, 119, 25, 25)
-                                        retail_picture_swap_button(1108, 1109)
+                                        retail_picture_swap_button(1108, 1109, true, true)
                                     ),
 (
                                         retail_node(fourcc!("unav"), 128, 144, 123, 308)
                                         Children [
 (
                                                 retail_node(fourcc!("back"), 4, 34, 112, 269)
-                                                retail_picture_button(1534, 1535)
+                                                retail_picture_button(1534, 1535, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("dfnd"), 91, 9, 25, 25)
-                                                retail_picture_swap_button(1201, 1202)
+                                                retail_picture_swap_button(1201, 1202, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("done"), 62, 9, 25, 25)
-                                                retail_picture_swap_button(1203, 1204)
+                                                retail_picture_swap_button(1203, 1204, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bomb"), 4, 9, 25, 25)
-                                                retail_picture_swap_button(1205, 1206)
+                                                retail_picture_swap_button(1205, 1206, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("next"), 33, 9, 25, 25)
-                                                retail_picture_swap_button(1199, 1200)
+                                                retail_picture_swap_button(1199, 1200, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("cls0"), 4, 72, 113, 57)
@@ -3566,7 +3495,7 @@ pub fn mapview_2013() -> impl Scene {
 (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        retail_numbered_arrow(true, true)
                                                     ),
                                                 ]
                                             ),
@@ -3580,7 +3509,7 @@ pub fn mapview_2013() -> impl Scene {
 (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        retail_numbered_arrow(true, true)
                                                     ),
                                                 ]
                                             ),
@@ -3594,7 +3523,7 @@ pub fn mapview_2013() -> impl Scene {
 (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        retail_numbered_arrow(true, true)
                                                     ),
                                                 ]
                                             ),
@@ -3608,24 +3537,21 @@ pub fn mapview_2013() -> impl Scene {
 (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        retail_numbered_arrow(true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("agr0"), 4, 43, 35, 25)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(1550, 1551)
+                                                retail_radio_picture_button(1550, 1551, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("agr1"), 43, 43, 34, 25)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(1552, 1553)
+                                                retail_radio_picture_button(1552, 1553, true, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("agr2"), 81, 43, 35, 25)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_picture_button(1554, 1555)
+                                                retail_radio_picture_button(1554, 1555, true, true, true)
                                             ),
                                         ]
                                     ),
@@ -3635,68 +3561,68 @@ pub fn mapview_2013() -> impl Scene {
 (
                                                 retail_node(fourcc!("arr0"), 46, 36, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr1"), 46, 89, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr2"), 46, 142, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr3"), 46, 195, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr4"), 104, 36, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr5"), 104, 89, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr6"), 104, 142, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr7"), 104, 195, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr8"), 46, 248, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("arr9"), 104, 248, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                retail_numbered_arrow(true, true)
                                             ),
 (
                                                 retail_node(fourcc!("dfnd"), 91, 7, 25, 25)
-                                                retail_picture_swap_button(1201, 1202)
+                                                retail_picture_swap_button(1201, 1202, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("done"), 62, 7, 25, 25)
-                                                retail_picture_swap_button(1203, 1204)
+                                                retail_picture_swap_button(1203, 1204, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("garr"), 4, 7, 25, 25)
-                                                retail_picture_swap_button(1205, 1206)
+                                                retail_picture_swap_button(1205, 1206, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("latr"), 33, 7, 25, 25)
-                                                retail_picture_swap_button(1199, 1200)
+                                                retail_picture_swap_button(1199, 1200, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("pic0"), 4, 36, 42, 53)
@@ -3742,34 +3668,33 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
-                                        retail_picture_button_overlay(1011, 1012)
+                                        retail_picture_button_overlay(1011, 1012, true, true)
                                     ),
 (
                                         retail_node(fourcc!("uciv"), 128, 143, 126, 306)
                                         Children [
 (
                                                 retail_node(fourcc!("unit"), 33, 39, 54, 68)
-                                                retail_interaction_state(false, true)
-                                                retail_picture_button(1080, 1081)
+                                                retail_picture_button(1080, 1081, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("back"), 0, 39, 123, 260)
                                             ),
 (
                                                 retail_node(fourcc!("dfnd"), 91, 10, 25, 25)
-                                                retail_picture_swap_button(1211, 1212)
+                                                retail_picture_swap_button(1211, 1212, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("done"), 62, 10, 25, 25)
-                                                retail_picture_swap_button(1203, 1204)
+                                                retail_picture_swap_button(1203, 1204, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("garr"), 4, 10, 25, 25)
-                                                retail_picture_swap_button(1209, 1210)
+                                                retail_picture_swap_button(1209, 1210, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("latr"), 33, 10, 25, 25)
-                                                retail_picture_swap_button(1199, 1200)
+                                                retail_picture_swap_button(1199, 1200, true, true)
                                             ),
                                         ]
                                     ),
@@ -3778,7 +3703,7 @@ pub fn mapview_2013() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
-                                                retail_picture_button_overlay(1113, 1114)
+                                                retail_picture_button_overlay(1113, 1114, true, true)
                                             ),
                                         ]
                                     ),
@@ -3803,8 +3728,7 @@ pub fn mapview_2013() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
-                                retail_interaction_state(false, true)
-                                retail_picture_swap_button(9457, 9458)
+                                retail_picture_swap_button(9457, 9458, false, true)
                             ),
                         ]
                     ),
@@ -3832,11 +3756,11 @@ pub fn mapview_3012() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
-                                retail_picture_button_overlay(3014, 3015)
+                                retail_picture_button_overlay(3014, 3015, true, true)
                             ),
 (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
-                                retail_picture_button_overlay(3013, 3014)
+                                retail_picture_button_overlay(3013, 3014, true, true)
                             ),
 (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
@@ -3887,11 +3811,11 @@ pub fn mapview_3100() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("canc"), 187, 213, 61, 23)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("okay"), 268, 213, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("lab2"), 17, 84, 146, 18)
@@ -3926,17 +3850,15 @@ pub fn mapview_3500() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
-                                retail_interaction_state(true, false)
-                                retail_page_corner(RetailPageCorner::Left)
+                                retail_page_corner(RetailPageCorner::Left, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("rcor"), 431, 356, 41, 36)
-                                retail_interaction_state(true, false)
-                                retail_page_corner(RetailPageCorner::Right)
+                                retail_page_corner(RetailPageCorner::Right, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
-                                retail_picture_button_overlay(3507, 3508)
+                                retail_picture_button_overlay(3507, 3508, true, true)
                             ),
                         ]
                     ),
@@ -3960,16 +3882,16 @@ pub fn mapview_3508() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("cncl"), 16, 68, 61, 23)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("okay"), 185, 67, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("name"), 25, 35, 204, 25)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(16))
+                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(16), true, true)
                             ),
 (
                                 retail_node(fourcc!("titl"), 28, 12, 201, 15)
@@ -4021,7 +3943,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numa"), 136, 21, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nama"), 10, 24, 110, 15)
@@ -4034,7 +3956,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numb"), 136, 44, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namc"), 10, 70, 110, 15)
@@ -4043,12 +3965,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numc"), 136, 67, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numd"), 136, 90, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namd"), 10, 93, 110, 15)
@@ -4061,12 +3983,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numg"), 136, 159, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numh"), 136, 182, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namh"), 10, 185, 110, 15)
@@ -4079,12 +4001,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numf"), 136, 136, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nume"), 136, 113, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("name"), 10, 116, 110, 15)
@@ -4097,12 +4019,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numi"), 318, 22, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numj"), 318, 45, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namj"), 192, 48, 110, 15)
@@ -4115,12 +4037,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numk"), 318, 68, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numl"), 318, 91, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("naml"), 192, 94, 110, 15)
@@ -4133,12 +4055,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numm"), 318, 114, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numn"), 318, 137, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namn"), 192, 140, 110, 15)
@@ -4151,12 +4073,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numo"), 318, 160, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nump"), 318, 183, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namp"), 192, 186, 110, 15)
@@ -4169,12 +4091,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numq"), 493, 22, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numr"), 493, 45, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namr"), 367, 48, 110, 15)
@@ -4187,12 +4109,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("nums"), 493, 68, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numt"), 493, 91, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namt"), 367, 94, 110, 15)
@@ -4205,12 +4127,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numu"), 493, 114, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numv"), 493, 137, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namv"), 367, 140, 110, 15)
@@ -4223,12 +4145,12 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numw"), 493, 160, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numy"), 136, 205, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namy"), 10, 208, 110, 15)
@@ -4236,12 +4158,12 @@ pub fn mapview_9460() -> impl Scene {
                     ),
 (
                         retail_node(fourcc!("    "), 450, 239, 61, 24)
-                        retail_picture_swap_button(9410, 9411)
+                        retail_picture_swap_button(9410, 9411, true, true)
                     ),
 (
                         retail_node(fourcc!("numx"), 493, 183, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namx"), 367, 186, 110, 15)
@@ -4254,7 +4176,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numz"), 318, 206, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namx"), 367, 209, 110, 15)
@@ -4263,7 +4185,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("numx"), 493, 206, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nam{"), 10, 231, 110, 15)
@@ -4272,7 +4194,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("num{"), 136, 228, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nam|"), 191, 232, 110, 15)
@@ -4281,7 +4203,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("num|"), 318, 229, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nam~"), 191, 256, 110, 15)
@@ -4290,7 +4212,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("num~"), 318, 253, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nam}"), 9, 257, 110, 15)
@@ -4299,7 +4221,7 @@ pub fn mapview_9460() -> impl Scene {
 (
                         retail_node(fourcc!("num}"), 136, 254, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
                 ]
             ),
@@ -4322,7 +4244,7 @@ pub fn mapview_9462() -> impl Scene {
 (
                         retail_node(fourcc!("numd"), 341, 34, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namd"), 215, 37, 110, 15)
@@ -4335,7 +4257,7 @@ pub fn mapview_9462() -> impl Scene {
 (
                         retail_node(fourcc!("nume"), 341, 57, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namh"), 215, 83, 110, 15)
@@ -4344,12 +4266,12 @@ pub fn mapview_9462() -> impl Scene {
 (
                         retail_node(fourcc!("numh"), 341, 80, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numi"), 341, 103, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("nami"), 215, 106, 110, 15)
@@ -4362,7 +4284,7 @@ pub fn mapview_9462() -> impl Scene {
 (
                         retail_node(fourcc!("owne"), 403, 221, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("naml"), 215, 152, 110, 15)
@@ -4371,12 +4293,12 @@ pub fn mapview_9462() -> impl Scene {
 (
                         retail_node(fourcc!("numl"), 341, 149, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("numj"), 341, 126, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
 (
                         retail_node(fourcc!("namj"), 215, 129, 110, 15)
@@ -4384,12 +4306,12 @@ pub fn mapview_9462() -> impl Scene {
                     ),
 (
                         retail_node(fourcc!("    "), 287, 240, 61, 24)
-                        retail_picture_swap_button(9410, 9411)
+                        retail_picture_swap_button(9410, 9411, true, true)
                     ),
 (
                         retail_node(fourcc!("numm"), 341, 172, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                        retail_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3)
+                        retail_number_text(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 22, 3, true, true)
                     ),
                 ]
             ),
@@ -4411,7 +4333,7 @@ pub fn mapview_9465() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("    "), 198, 221, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
                         ]
                     ),
@@ -4459,11 +4381,11 @@ pub fn mapview_9474() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("canc"), 187, 213, 61, 23)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("okay"), 268, 213, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("lab2"), 17, 84, 146, 18)
@@ -4511,7 +4433,7 @@ pub fn mapview_9475() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("okay"), 275, 216, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("ship"), 15, 133, 320, 67)
@@ -4571,7 +4493,7 @@ pub fn mapview_9477() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("okay"), 275, 240, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("vess"), 190, 191, 140, 43)
@@ -4651,7 +4573,7 @@ pub fn mapview_9478() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
-                                retail_picture_button_overlay(3507, 3508)
+                                retail_picture_button_overlay(3507, 3508, true, true)
                             ),
 (
                                 retail_node(fourcc!("page"), 13, 46, 458, 310)
@@ -4686,7 +4608,7 @@ pub fn minister_9480() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 310, 248, 61, 23)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("rewa"), 112, 18, 167, 109)
@@ -4726,7 +4648,7 @@ pub fn multiplayer_1507() -> impl Scene {
 (
                                 retail_node(fourcc!("name"), 18, 39, 270, 21)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(30))
+                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(30), true, true)
                             ),
 (
                                 retail_node(fourcc!("tgam"), 18, 76, 270, 18)
@@ -4738,11 +4660,11 @@ pub fn multiplayer_1507() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("okay"), 210, 287, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("canc"), 36, 287, 61, 24)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
                         ]
                     ),
@@ -4767,8 +4689,7 @@ pub fn multiplayer_1508() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 323, 415, 213, 36)
-                                retail_interaction_state(false, true)
-                                retail_picture_swap_button(4604, 4605)
+                                retail_picture_swap_button(4604, 4605, false, true)
                             ),
 (
                                 retail_node(fourcc!("mess"), 333, 425, 192, 19)
@@ -4776,59 +4697,59 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("rad0"), 289, 298, 25, 36)
-                                retail_picture_button(4606, 4607)
+                                retail_picture_button(4606, 4607, true, true)
                             ),
 (
                                 retail_node(fourcc!("rad1"), 289, 337, 25, 36)
-                                retail_picture_button(4607, 4608)
+                                retail_picture_button(4607, 4608, true, true)
                             ),
 (
                                 retail_node(fourcc!("rad2"), 289, 376, 25, 36)
-                                retail_picture_button(4608, 4609)
+                                retail_picture_button(4608, 4609, true, true)
                             ),
 (
                                 retail_node(fourcc!("rad3"), 289, 415, 25, 36)
-                                retail_picture_button(4609, 4610)
+                                retail_picture_button(4609, 4610, true, true)
                             ),
 (
                                 retail_node(fourcc!("rad4"), 511, 298, 25, 36)
-                                retail_picture_button(4609, 4610)
+                                retail_picture_button(4609, 4610, true, true)
                             ),
 (
                                 retail_node(fourcc!("rad5"), 511, 337, 25, 36)
-                                retail_picture_button(4608, 4609)
+                                retail_picture_button(4608, 4609, true, true)
                             ),
 (
                                 retail_node(fourcc!("rad6"), 511, 376, 25, 36)
-                                retail_picture_button(4607, 4608)
+                                retail_picture_button(4607, 4608, true, true)
                             ),
 (
                                 retail_node(fourcc!("pik0"), 108, 307, 26, 20)
-                                retail_picture_button(4611, 4612)
+                                retail_picture_button(4611, 4612, true, true)
                             ),
 (
                                 retail_node(fourcc!("pik1"), 108, 345, 26, 20)
-                                retail_picture_button(4612, 4613)
+                                retail_picture_button(4612, 4613, true, true)
                             ),
 (
                                 retail_node(fourcc!("pik2"), 108, 384, 26, 20)
-                                retail_picture_button(4613, 4614)
+                                retail_picture_button(4613, 4614, true, true)
                             ),
 (
                                 retail_node(fourcc!("pik3"), 108, 422, 26, 20)
-                                retail_picture_button(4614, 4615)
+                                retail_picture_button(4614, 4615, true, true)
                             ),
 (
                                 retail_node(fourcc!("pik4"), 329, 307, 26, 20)
-                                retail_picture_button(4615, 4616)
+                                retail_picture_button(4615, 4616, true, true)
                             ),
 (
                                 retail_node(fourcc!("pik5"), 329, 345, 26, 20)
-                                retail_picture_button(4616, 4617)
+                                retail_picture_button(4616, 4617, true, true)
                             ),
 (
                                 retail_node(fourcc!("pik6"), 329, 384, 26, 20)
-                                retail_picture_button(4617, 4618)
+                                retail_picture_button(4617, 4618, true, true)
                             ),
 (
                                 retail_node(fourcc!("nam0"), 136, 310, 142, 18)
@@ -4864,12 +4785,11 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("map "), 302, 14, 324, 180)
-                                retail_pointer_canvas()
+                                retail_pointer_canvas(true, true)
                             ),
 (
                                 retail_node(fourcc!("send"), 230, 204, 55, 60)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("coat"), 223, 69, 63, 94)
@@ -4878,17 +4798,14 @@ pub fn multiplayer_1508() -> impl Scene {
 (
                                 retail_node(fourcc!("cncl"), 40, 55, 152, 225)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("canc"), 40, 278, 55, 86)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("jedi"), 0, 396, 76, 47)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("labl"), 33, 26, 234, 18)
@@ -4916,51 +4833,44 @@ pub fn multiplayer_1510() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 249, 89, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 26, 90, 61, 24)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("mesg"), 7, 8, 322, 50)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(255))
+                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(255), true, true)
                             ),
 (
                                 retail_node(fourcc!("box0"), 29, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4651)
+                                retail_madness_checkbox(4651, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box1"), 70, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4656)
+                                retail_madness_checkbox(4656, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box2"), 111, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4661)
+                                retail_madness_checkbox(4661, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box3"), 152, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4666)
+                                retail_madness_checkbox(4666, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box4"), 193, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4671)
+                                retail_madness_checkbox(4671, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box5"), 234, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4676)
+                                retail_madness_checkbox(4676, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box6"), 275, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_madness_checkbox(4681)
+                                retail_madness_checkbox(4681, true, true, true)
                             ),
                         ]
                     ),
@@ -4988,8 +4898,7 @@ pub fn shipyard_9207() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("but0"), 8, 12, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9808, 9809)
+                                        retail_radio_picture_button(9808, 9809, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu0"), 12, 70, 83, 22)
@@ -4997,22 +4906,21 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("but1"), 97, 12, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9810, 9811)
+                                        retail_radio_picture_button(9810, 9811, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu1"), 101, 70, 80, 22)
@@ -5020,22 +4928,21 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("but2"), 186, 12, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9812, 9813)
+                                        retail_radio_picture_button(9812, 9813, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu2"), 189, 70, 80, 22)
@@ -5043,22 +4950,21 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("but3"), 275, 12, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9814, 9815)
+                                        retail_radio_picture_button(9814, 9815, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu3"), 276, 70, 80, 22)
@@ -5066,22 +4972,21 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("but4"), 8, 90, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9816, 9817)
+                                        retail_radio_picture_button(9816, 9817, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu4"), 12, 148, 80, 22)
@@ -5089,22 +4994,21 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("but5"), 97, 90, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9818, 9819)
+                                        retail_radio_picture_button(9818, 9819, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu5"), 101, 148, 80, 22)
@@ -5112,22 +5016,21 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("but6"), 186, 90, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9820, 9821)
+                                        retail_radio_picture_button(9820, 9821, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu6"), 189, 148, 80, 22)
@@ -5135,22 +5038,21 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("but7"), 275, 90, 89, 78)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9822, 9823)
+                                        retail_radio_picture_button(9822, 9823, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu7"), 276, 148, 80, 22)
@@ -5158,15 +5060,15 @@ pub fn shipyard_9207() -> impl Scene {
 (
                                                 retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3)
+                                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: 1, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 18, 3, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9802, 9803)
+                                                retail_picture_swap_button(9802, 9803, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 60, 0, 20, 20)
-                                                retail_picture_swap_button(9804, 9805)
+                                                retail_picture_swap_button(9804, 9805, true, true)
                                             ),
                                         ]
                                     ),
@@ -5222,22 +5124,21 @@ pub fn startup_952() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
-                                        retail_picture_button_overlay(1017, 1018)
+                                        retail_picture_button_overlay(1017, 1018, true, true)
                                     ),
 (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
-                                        retail_picture_button_overlay(1018, 1019)
+                                        retail_picture_button_overlay(1018, 1019, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("DLOG"), 5, 27, 512, 448)
-                                retail_pointer_canvas()
+                                retail_pointer_canvas(true, true)
                             ),
 (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
-                                retail_interaction_state(false, true)
-                                retail_picture_swap_button(9457, 9458)
+                                retail_picture_swap_button(9457, 9458, false, true)
                             ),
 (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
@@ -5269,11 +5170,11 @@ pub fn startup_953() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("okay"), 255, 142, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 13, 142, 61, 23)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("    "), 17, 92, 168, 14)
@@ -5313,7 +5214,7 @@ pub fn startup_966() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("okay"), 255, 139, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
                         ]
                     ),
@@ -5339,27 +5240,22 @@ pub fn startup_1500() -> impl Scene {
 (
                                 retail_node(fourcc!("load"), 61, 111, 137, 84)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("rand"), 14, 209, 138, 171)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("mult"), 458, 258, 143, 140)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("high"), 448, 113, 164, 78)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("scen"), 1, 397, 156, 72)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("curs"), 180, 424, 274, 52)
@@ -5368,12 +5264,10 @@ pub fn startup_1500() -> impl Scene {
 (
                                 retail_node(fourcc!("quit"), 221, 102, 195, 195)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("pref"), 540, 399, 100, 73)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
                         ]
                     ),
@@ -5405,7 +5299,7 @@ pub fn startup_1501() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("map "), 14, 10, 324, 180)
-                                        retail_pointer_canvas()
+                                        retail_pointer_canvas(true, true)
                                     ),
 (
                                         retail_node(fourcc!("tcou"), 66, 230, 144, 16)
@@ -5417,11 +5311,11 @@ pub fn startup_1501() -> impl Scene {
 (
                                         retail_node(fourcc!("coun"), 23, 249, 306, 22)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                        retail_text_field(RetailTextSpec { text: "", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(30))
+                                        retail_text_field(RetailTextSpec { text: "", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(30), true, true)
                                     ),
 (
                                         retail_node(fourcc!("okay"), 128, 418, 96, 30)
-                                        retail_picture_swap_button(4512, 4513)
+                                        retail_picture_swap_button(4512, 4513, true, true)
                                     ),
 (
                                         retail_node(fourcc!("diff"), 25, 298, 302, 84)
@@ -5429,32 +5323,27 @@ pub fn startup_1501() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("dif0"), 2, 2, 298, 16)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_text()
+                                                retail_radio_text(true, true, true)
                                                 retail_text(RetailTextSpec { text: "Introductory", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif1"), 2, 18, 298, 16)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_text()
+                                                retail_radio_text(true, true, true)
                                                 retail_text(RetailTextSpec { text: "Easy", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif2"), 2, 34, 298, 16)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_text()
+                                                retail_radio_text(true, true, true)
                                                 retail_text(RetailTextSpec { text: "Normal", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif3"), 2, 50, 298, 16)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_text()
+                                                retail_radio_text(true, true, true)
                                                 retail_text(RetailTextSpec { text: "Hard", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("dif4"), 2, 66, 298, 16)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_text()
+                                                retail_radio_text(true, true, true)
                                                 retail_text(RetailTextSpec { text: "Nigh-On Impossible", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
                                         ]
@@ -5473,14 +5362,12 @@ pub fn startup_1501() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("hist"), 2, 2, 115, 16)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_text()
+                                                retail_radio_text(true, true, true)
                                                 retail_text(RetailTextSpec { text: "Historical", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
 (
                                                 retail_node(fourcc!("rand"), 118, 2, 115, 16)
-                                                retail_interaction_state(true, false)
-                                                retail_radio_text()
+                                                retail_radio_text(true, true, true)
                                                 retail_text(RetailTextSpec { text: "Random", font_family: 1, face_flags: 0, point_size: 12, alignment: 1, color_index: Some(40), shadow_color_index: Some(210), shadow_offset: (-1, -1), center_vertically: false }, 16, 0)
                                             ),
                                         ]
@@ -5490,7 +5377,6 @@ pub fn startup_1501() -> impl Scene {
 (
                                 retail_node(fourcc!("key "), 265, 281, 14, 14)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("auto"), 217, 66, 65, 41)
@@ -5499,12 +5385,10 @@ pub fn startup_1501() -> impl Scene {
 (
                                 retail_node(fourcc!("canc"), 42, 55, 146, 78)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 42, 133, 104, 234)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("coat"), 173, 333, 70, 94)
@@ -5512,7 +5396,7 @@ pub fn startup_1501() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("glob"), 147, 134, 128, 128)
-                                retail_picture_button(4560, 4561)
+                                retail_picture_button(4560, 4561, true, true)
                             ),
                         ]
                     ),
@@ -5540,13 +5424,11 @@ pub fn startup_1503() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("pmap"), 302, 14, 324, 180)
-                                        retail_interaction_state(false, true)
-                                        retail_pointer_canvas()
+                                        retail_pointer_canvas(false, true)
                                     ),
 (
                                         retail_node(fourcc!("star"), 416, 422, 96, 30)
-                                        retail_interaction_state(false, true)
-                                        retail_picture_swap_button(4512, 4513)
+                                        retail_picture_swap_button(4512, 4513, false, true)
                                     ),
 (
                                         retail_node(fourcc!("cdes"), 309, 230, 310, 185)
@@ -5624,11 +5506,11 @@ pub fn startup_1506() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
-                                retail_picture_button_overlay(4510, 4511)
+                                retail_picture_button_overlay(4510, 4511, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
-                                retail_picture_button_overlay(4511, 4512)
+                                retail_picture_button_overlay(4511, 4512, true, true)
                             ),
 (
                                 retail_node(fourcc!("txt0"), 264, 171, 138, 18)
@@ -5651,41 +5533,37 @@ pub fn startup_1506() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("rad0"), 8, 61, 31, 27)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(4510, 4511)
+                                        retail_radio_picture_button(4510, 4511, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rad1"), 7, 97, 32, 24)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(4510, 4511)
+                                        retail_radio_picture_button(4510, 4511, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rad2"), 7, 128, 32, 26)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(4510, 4511)
+                                        retail_radio_picture_button(4510, 4511, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rad3"), 6, 161, 32, 26)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(4510, 4511)
+                                        retail_radio_picture_button(4510, 4511, true, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("set0"), 413, 170, 30, 24)
-                                retail_picture_swap_button(4510, 4511)
+                                retail_picture_swap_button(4510, 4511, true, true)
                             ),
 (
                                 retail_node(fourcc!("set1"), 412, 201, 30, 24)
-                                retail_picture_swap_button(4510, 4511)
+                                retail_picture_swap_button(4510, 4511, true, true)
                             ),
 (
                                 retail_node(fourcc!("set2"), 414, 234, 30, 24)
-                                retail_picture_swap_button(4510, 4511)
+                                retail_picture_swap_button(4510, 4511, true, true)
                             ),
 (
                                 retail_node(fourcc!("set3"), 412, 265, 30, 24)
-                                retail_picture_swap_button(4510, 4511)
+                                retail_picture_swap_button(4510, 4511, true, true)
                             ),
 (
                                 retail_node(fourcc!("tgam"), 21, 101, 98, 19)
@@ -5694,7 +5572,7 @@ pub fn startup_1506() -> impl Scene {
 (
                                 retail_node(fourcc!("game"), 41, 122, 289, 22)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(255))
+                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 0, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(255), true, true)
                             ),
 (
                                 retail_node(fourcc!("labl"), 21, 67, 200, 21)
@@ -5724,22 +5602,18 @@ pub fn startup_1509() -> impl Scene {
 (
                                 retail_node(fourcc!("load"), 464, 80, 147, 86)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("rand"), 442, 218, 138, 171)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("mult"), 12, 79, 130, 186)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("scen"), 296, 406, 156, 72)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("curs"), 34, 18, 233, 33)
@@ -5756,12 +5630,10 @@ pub fn startup_1509() -> impl Scene {
 (
                                 retail_node(fourcc!("join"), 29, 282, 160, 152)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
 (
                                 retail_node(fourcc!("spit"), 390, 256, 33, 53)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                retail_interaction_state(false, true)
                             ),
                         ]
                     ),
@@ -5893,7 +5765,7 @@ pub fn startup_1515() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
-                                        retail_picture_button_overlay(4596, 4597)
+                                        retail_picture_button_overlay(4596, 4597, true, true)
                                     ),
                                 ]
                             ),
@@ -5926,11 +5798,11 @@ pub fn startup_20000() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
-                                        retail_picture_button_overlay(20001, 20002)
+                                        retail_picture_button_overlay(20001, 20002, true, true)
                                     ),
 (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
-                                        retail_picture_button_overlay(20002, 20003)
+                                        retail_picture_button_overlay(20002, 20003, true, true)
                                     ),
 (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
@@ -5981,19 +5853,19 @@ pub fn tactical_3800() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("help"), 9, 8, 35, 44)
-                                        retail_picture_swap_button(3786, 3787)
+                                        retail_picture_swap_button(3786, 3787, true, true)
                                     ),
 (
                                         retail_node(fourcc!("targ"), 9, 151, 35, 34)
-                                        retail_picture_swap_button(3788, 3789)
+                                        retail_picture_swap_button(3788, 3789, true, true)
                                     ),
 (
                                         retail_node(fourcc!("done"), 9, 186, 35, 34)
-                                        retail_picture_swap_button(3790, 3791)
+                                        retail_picture_swap_button(3790, 3791, true, true)
                                     ),
 (
                                         retail_node(fourcc!("retr"), 9, 221, 35, 34)
-                                        retail_picture_swap_button(3792, 3793)
+                                        retail_picture_swap_button(3792, 3793, true, true)
                                     ),
 (
                                         retail_node(fourcc!("coat"), 0, 63, 52, 72)
@@ -6005,7 +5877,7 @@ pub fn tactical_3800() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
-                                        retail_picture_button_overlay(3798, 3799)
+                                        retail_picture_button_overlay(3798, 3799, true, true)
                                     ),
 (
                                         retail_node(fourcc!("tpic"), 2, 356, 50, 50)
@@ -6035,7 +5907,7 @@ pub fn tactical_3821() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 87, 314, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("info"), 13, 201, 210, 112)
@@ -6070,11 +5942,11 @@ pub fn tactical_3865() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("pmap"), 59, 5, 324, 180)
-                                retail_pointer_canvas()
+                                retail_pointer_canvas(true, true)
                             ),
 (
                                 retail_node(fourcc!("okay"), 369, 261, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("info"), 12, 197, 417, 59)
@@ -6089,7 +5961,7 @@ pub fn tactical_3865() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("cncl"), 12, 261, 61, 24)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("acoa"), 3, 18, 52, 72)
@@ -6128,8 +6000,7 @@ pub fn tech_2200() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
-                                        retail_interaction_state(false, true)
-                                        retail_picture_button_overlay(2228, 2229)
+                                        retail_picture_button_overlay(2228, 2229, false, true)
                                     ),
 (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -6175,7 +6046,7 @@ pub fn techstore_2300() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
-                                        retail_picture_button_overlay(2301, 2302)
+                                        retail_picture_button_overlay(2301, 2302, true, true)
                                     ),
 (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -6192,19 +6063,19 @@ pub fn techstore_2300() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
-                                        retail_picture_swap_button(9455, 9456)
+                                        retail_picture_swap_button(9455, 9456, true, true)
                                     ),
 (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
-                                        retail_picture_swap_button(9453, 9454)
+                                        retail_picture_swap_button(9453, 9454, true, true)
                                     ),
 (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
-                                        retail_picture_swap_button(9451, 9452)
+                                        retail_picture_swap_button(9451, 9452, true, true)
                                     ),
 (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
-                                        retail_picture_swap_button(9449, 9450)
+                                        retail_picture_swap_button(9449, 9450, true, true)
                                     ),
                                 ]
                             ),
@@ -6213,7 +6084,7 @@ pub fn techstore_2300() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
-                                        retail_picture_button_overlay(2302, 2303)
+                                        retail_picture_button_overlay(2302, 2303, true, true)
                                     ),
                                 ]
                             ),
@@ -6222,11 +6093,11 @@ pub fn techstore_2300() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("lcor"), 17, 445, 32, 30)
-                                retail_picture_button(2361, 2362)
+                                retail_picture_button(2361, 2362, true, true)
                             ),
 (
                                 retail_node(fourcc!("rcor"), 590, 445, 32, 30)
-                                retail_picture_button(2362, 2363)
+                                retail_picture_button(2362, 2363, true, true)
                             ),
 (
                                 retail_node(fourcc!("ttl1"), 67, 40, 128, 16)
@@ -6277,11 +6148,11 @@ pub fn techstore_2370() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("scvw"), 9, 76, 342, 175)
-                                        retail_scroll_area()
+                                        retail_scroll_area(true, true)
                                     ),
 (
                                         retail_node(fourcc!("okay"), 281, 260, 61, 24)
-                                        retail_picture_swap_button(9410, 9411)
+                                        retail_picture_swap_button(9410, 9411, true, true)
                                     ),
                                 ]
                             ),
@@ -6311,7 +6182,7 @@ pub fn trade_2009() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
-                                        retail_picture_button_overlay(6020, 6021)
+                                        retail_picture_button_overlay(6020, 6021, true, true)
                                     ),
                                 ]
                             ),
@@ -6335,7 +6206,7 @@ pub fn trade_2009() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
-                                        retail_picture_button_overlay(6021, 6022)
+                                        retail_picture_button_overlay(6021, 6022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -6350,7 +6221,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                 retail_node(fourcc!("mCap"), 594, 136, 40, 14)
                                 Node { padding: UiRect { left: px(0), top: px(0), right: px(3), bottom: px(0) } }
-                                retail_text(RetailTextSpec { text: "185", font_family: 21, face_flags: 1, point_size: 12, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 14, 0)
+                                retail_number_text(RetailTextSpec { text: "185", font_family: 21, face_flags: 1, point_size: 12, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 14, 0, true, true)
                             ),
 (
                                 retail_node(fourcc!("gd0 "), 51, 98, 519, 20)
@@ -6359,8 +6230,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 17, 20)
@@ -6372,11 +6242,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6384,7 +6254,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6395,8 +6265,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 17, 20)
@@ -6412,15 +6281,15 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6431,8 +6300,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6448,15 +6316,15 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6467,8 +6335,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6484,15 +6351,15 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6503,8 +6370,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6516,7 +6382,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6524,11 +6390,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6539,8 +6405,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6552,7 +6417,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6560,11 +6425,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6575,8 +6440,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6588,7 +6452,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6596,11 +6460,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6611,8 +6475,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6624,7 +6487,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6632,11 +6495,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6647,8 +6510,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6660,7 +6522,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6668,11 +6530,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6683,8 +6545,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6696,7 +6557,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6704,11 +6565,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6719,8 +6580,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6732,7 +6592,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6740,11 +6600,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6755,8 +6615,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6768,7 +6627,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6776,11 +6635,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6791,8 +6650,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6804,7 +6662,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6812,11 +6670,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6827,8 +6685,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6840,7 +6697,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6848,11 +6705,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6863,8 +6720,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6876,7 +6732,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6884,11 +6740,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6899,8 +6755,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6912,7 +6767,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6920,11 +6775,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6935,8 +6790,7 @@ pub fn trade_2009() -> impl Scene {
 (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                        retail_interaction_state(false, true)
-                                        retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                        retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                     ),
 (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -6948,7 +6802,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                        retail_sideways_arrow(2121, 2122)
+                                        retail_sideways_arrow(2121, 2122, true, true)
                                     ),
 (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -6956,11 +6810,11 @@ pub fn trade_2009() -> impl Scene {
                                     ),
 (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                        retail_sideways_arrow(2123, 2124)
+                                        retail_sideways_arrow(2123, 2124, true, true)
                                     ),
 (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                        retail_amount_bar(AmountBarStyle::Trade)
+                                        retail_amount_bar(AmountBarStyle::Trade, true, true)
                                     ),
                                 ]
                             ),
@@ -6993,19 +6847,19 @@ pub fn trade_2009() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
-                                        retail_picture_swap_button(9455, 9456)
+                                        retail_picture_swap_button(9455, 9456, true, true)
                                     ),
 (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
-                                        retail_picture_swap_button(9453, 9454)
+                                        retail_picture_swap_button(9453, 9454, true, true)
                                     ),
 (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
-                                        retail_picture_swap_button(9451, 9452)
+                                        retail_picture_swap_button(9451, 9452, true, true)
                                     ),
 (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
-                                        retail_picture_swap_button(9449, 9450)
+                                        retail_picture_swap_button(9449, 9450, true, true)
                                     ),
                                 ]
                             ),
@@ -7070,7 +6924,7 @@ pub fn trade_2010() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
-                                                retail_picture_button_overlay(6020, 6021)
+                                                retail_picture_button_overlay(6020, 6021, true, true)
                                             ),
                                         ]
                                     ),
@@ -7081,8 +6935,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 17, 20)
@@ -7094,11 +6947,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7106,7 +6959,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7117,8 +6970,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 17, 20)
@@ -7134,15 +6986,15 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7153,8 +7005,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7170,15 +7021,15 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7189,8 +7040,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7206,15 +7056,15 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7225,8 +7075,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7238,7 +7087,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7246,11 +7095,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7261,8 +7110,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7274,7 +7122,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7282,11 +7130,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7297,8 +7145,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7310,7 +7157,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7318,11 +7165,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7333,8 +7180,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7346,7 +7192,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7354,11 +7200,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7369,8 +7215,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7382,7 +7227,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7390,11 +7235,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7405,8 +7250,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7418,7 +7262,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7426,11 +7270,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7441,8 +7285,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7454,7 +7297,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7462,11 +7305,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7477,8 +7320,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7490,7 +7332,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7498,11 +7340,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7513,8 +7355,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7526,7 +7367,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7534,11 +7375,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7549,8 +7390,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7562,7 +7402,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7570,11 +7410,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7585,8 +7425,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7598,7 +7437,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7606,11 +7445,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7621,8 +7460,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7634,7 +7472,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7642,11 +7480,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7657,8 +7495,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_interaction_state(false, true)
-                                                retail_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0)
+                                                retail_number_text(RetailTextSpec { text: "0", font_family: 2, face_flags: 0, point_size: 14, alignment: -1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 0, false, true)
                                             ),
 (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
@@ -7670,7 +7507,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
-                                                retail_sideways_arrow(2121, 2122)
+                                                retail_sideways_arrow(2121, 2122, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7678,11 +7515,11 @@ pub fn trade_2010() -> impl Scene {
                                             ),
 (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
-                                                retail_sideways_arrow(2123, 2124)
+                                                retail_sideways_arrow(2123, 2124, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
-                                                retail_amount_bar(AmountBarStyle::Trade)
+                                                retail_amount_bar(AmountBarStyle::Trade, true, true)
                                             ),
                                         ]
                                     ),
@@ -7715,7 +7552,7 @@ pub fn trade_2010() -> impl Scene {
                                         Children [
 (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
-                                                retail_picture_button_overlay(6021, 6022)
+                                                retail_picture_button_overlay(6021, 6022, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -7733,7 +7570,7 @@ pub fn trade_2010() -> impl Scene {
 (
                                         retail_node(fourcc!("mCap"), 594, 136, 40, 14)
                                         Node { padding: UiRect { left: px(0), top: px(0), right: px(3), bottom: px(0) } }
-                                        retail_text(RetailTextSpec { text: "185", font_family: 21, face_flags: 1, point_size: 12, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 14, 0)
+                                        retail_number_text(RetailTextSpec { text: "185", font_family: 21, face_flags: 1, point_size: 12, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 14, 0, true, true)
                                     ),
 (
                                         retail_node(fourcc!("cott"), 5, 149, 42, 24)
@@ -7782,19 +7619,19 @@ pub fn trade_2010() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
-                                        retail_picture_swap_button(9455, 9456)
+                                        retail_picture_swap_button(9455, 9456, true, true)
                                     ),
 (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
-                                        retail_picture_swap_button(9453, 9454)
+                                        retail_picture_swap_button(9453, 9454, true, true)
                                     ),
 (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
-                                        retail_picture_swap_button(9451, 9452)
+                                        retail_picture_swap_button(9451, 9452, true, true)
                                     ),
 (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
-                                        retail_picture_swap_button(9449, 9450)
+                                        retail_picture_swap_button(9449, 9450, true, true)
                                     ),
                                 ]
                             ),
@@ -7827,19 +7664,19 @@ pub fn transport_2014() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
-                                        retail_picture_swap_button(9455, 9456)
+                                        retail_picture_swap_button(9455, 9456, true, true)
                                     ),
 (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
-                                        retail_picture_swap_button(9453, 9454)
+                                        retail_picture_swap_button(9453, 9454, true, true)
                                     ),
 (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
-                                        retail_picture_swap_button(9451, 9452)
+                                        retail_picture_swap_button(9451, 9452, true, true)
                                     ),
 (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
-                                        retail_picture_swap_button(9449, 9450)
+                                        retail_picture_swap_button(9449, 9450, true, true)
                                     ),
                                 ]
                             ),
@@ -7848,7 +7685,7 @@ pub fn transport_2014() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
-                                        retail_picture_button_overlay(4025, 4026)
+                                        retail_picture_button_overlay(4025, 4026, true, true)
                                     ),
                                 ]
                             ),
@@ -7857,7 +7694,7 @@ pub fn transport_2014() -> impl Scene {
                                 Children [
 (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
-                                        retail_picture_button_overlay(4024, 4025)
+                                        retail_picture_button_overlay(4024, 4025, true, true)
                                     ),
 (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -7871,8 +7708,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
-                                retail_picture(4019)
-                                retail_transport_gauge(325, true)
+                                retail_transport_picture(4019, 325, true, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
@@ -7882,16 +7718,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
-                                retail_picture(4001)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4001, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -7901,16 +7736,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
-                                retail_picture(4002)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4002, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -7920,16 +7754,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
-                                retail_picture(4003)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4003, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -7939,16 +7772,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
-                                retail_picture(4004)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4004, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -7958,16 +7790,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
-                                retail_picture(4005)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4005, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -7977,16 +7808,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
-                                retail_picture(4006)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4006, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -7996,16 +7826,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
-                                retail_picture(4007)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4007, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8015,16 +7844,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
-                                retail_picture(4008)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4008, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8034,16 +7862,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
-                                retail_picture(4009)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4009, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8053,16 +7880,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
-                                retail_picture(4010)
-                                retail_transport_gauge(70, false)
+                                retail_transport_picture(4010, 70, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
-                                        retail_right_left_arrow(4020, 4021)
+                                        retail_right_left_arrow(4020, 4021, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
-                                        retail_right_left_arrow(4021, 4022)
+                                        retail_right_left_arrow(4021, 4022, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8072,16 +7898,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
-                                retail_picture(4011)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4011, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8091,16 +7916,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
-                                retail_picture(4012)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4012, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8110,16 +7934,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
-                                retail_picture(4013)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4013, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8129,16 +7952,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
-                                retail_picture(4014)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4014, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8148,16 +7970,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
-                                retail_picture(4015)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4015, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8167,16 +7988,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
-                                retail_picture(4016)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4016, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8186,16 +8006,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
-                                retail_picture(4017)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4017, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8209,16 +8028,15 @@ pub fn transport_2014() -> impl Scene {
                             ),
 (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
-                                retail_picture(4018)
-                                retail_transport_gauge(325, false)
+                                retail_transport_picture(4018, 325, false, true, true)
                                 Children [
 (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
-                                        retail_right_left_arrow(4022, 4023)
+                                        retail_right_left_arrow(4022, 4023, true, true)
                                     ),
 (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
-                                        retail_right_left_arrow(4023, 4024)
+                                        retail_right_left_arrow(4023, 4024, true, true)
                                     ),
 (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -8266,12 +8084,12 @@ pub fn univ_9210() -> impl Scene {
 (
                                 retail_node(fourcc!("apap"), 96, 229, 23, 21)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("cpap"), 96, 186, 23, 21)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("fix1"), 16, 206, 73, 14)
@@ -8318,29 +8136,27 @@ pub fn univ_9210() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9901, 9902)
+                                                retail_picture_swap_button(9901, 9902, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
-                                                retail_picture_swap_button(9903, 9904)
+                                                retail_picture_swap_button(9903, 9904, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ0"), 9, 7, 64, 60)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9920, 9921)
+                                        retail_radio_picture_button(9920, 9921, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("civ1"), 88, 7, 64, 60)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9922, 9923)
+                                        retail_radio_picture_button(9922, 9923, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu1"), 90, 67, 61, 25)
@@ -8352,24 +8168,23 @@ pub fn univ_9210() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9901, 9902)
+                                                retail_picture_swap_button(9901, 9902, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
-                                                retail_picture_swap_button(9903, 9904)
+                                                retail_picture_swap_button(9903, 9904, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ2"), 9, 91, 64, 60)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9924, 9925)
+                                        retail_radio_picture_button(9924, 9925, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu2"), 11, 151, 61, 25)
@@ -8381,24 +8196,23 @@ pub fn univ_9210() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9901, 9902)
+                                                retail_picture_swap_button(9901, 9902, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
-                                                retail_picture_swap_button(9903, 9904)
+                                                retail_picture_swap_button(9903, 9904, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ3"), 88, 91, 64, 60)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9926, 9927)
+                                        retail_radio_picture_button(9926, 9927, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu3"), 90, 151, 61, 25)
@@ -8410,17 +8224,17 @@ pub fn univ_9210() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9901, 9902)
+                                                retail_picture_swap_button(9901, 9902, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
-                                                retail_picture_swap_button(9903, 9904)
+                                                retail_picture_swap_button(9903, 9904, true, true)
                                             ),
                                         ]
                                     ),
@@ -8434,29 +8248,27 @@ pub fn univ_9210() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9901, 9902)
+                                                retail_picture_swap_button(9901, 9902, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
-                                                retail_picture_swap_button(9903, 9904)
+                                                retail_picture_swap_button(9903, 9904, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ4"), 9, 175, 64, 60)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9928, 9929)
+                                        retail_radio_picture_button(9928, 9929, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("civ8"), 88, 259, 64, 60)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9936, 9937)
+                                        retail_radio_picture_button(9936, 9937, true, true, true)
                                     ),
 (
                                         retail_node(fourcc!("clu8"), 90, 319, 61, 25)
@@ -8468,17 +8280,17 @@ pub fn univ_9210() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9901, 9902)
+                                                retail_picture_swap_button(9901, 9902, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
-                                                retail_picture_swap_button(9903, 9904)
+                                                retail_picture_swap_button(9903, 9904, true, true)
                                             ),
                                         ]
                                     ),
@@ -8492,36 +8304,35 @@ pub fn univ_9210() -> impl Scene {
 (
                                                         retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                                        retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3)
+                                                        retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 17, 3, true, true)
                                                     ),
                                                 ]
                                             ),
 (
                                                 retail_node(fourcc!("minu"), 0, 0, 20, 20)
-                                                retail_picture_swap_button(9901, 9902)
+                                                retail_picture_swap_button(9901, 9902, true, true)
                                             ),
 (
                                                 retail_node(fourcc!("plus"), 40, 0, 20, 20)
-                                                retail_picture_swap_button(9903, 9904)
+                                                retail_picture_swap_button(9903, 9904, true, true)
                                             ),
                                         ]
                                     ),
 (
                                         retail_node(fourcc!("civ5"), 88, 175, 64, 60)
-                                        retail_interaction_state(true, false)
-                                        retail_radio_picture_button(9930, 9931)
+                                        retail_radio_picture_button(9930, 9931, true, true, true)
                                     ),
                                 ]
                             ),
 (
                                 retail_node(fourcc!("cexp"), 37, 186, 23, 21)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("aexp"), 37, 229, 23, 21)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3)
+                                retail_number_text(RetailTextSpec { text: "", font_family: 3, face_flags: 0, point_size: 10, alignment: -2, color_index: Some(210), shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, 21, 3, true, true)
                             ),
 (
                                 retail_node(fourcc!("fix3"), 101, 254, 36, 26)
@@ -8553,51 +8364,44 @@ pub fn join_selector_message() -> impl Scene {
                         Children [
 (
                                 retail_node(fourcc!("okay"), 249, 89, 61, 24)
-                                retail_picture_swap_button(9410, 9411)
+                                retail_picture_swap_button(9410, 9411, true, true)
                             ),
 (
                                 retail_node(fourcc!("cncl"), 26, 90, 61, 24)
-                                retail_picture_swap_button(9412, 9413)
+                                retail_picture_swap_button(9412, 9413, true, true)
                             ),
 (
                                 retail_node(fourcc!("mesg"), 7, 8, 322, 50)
                                 Node { padding: UiRect { left: px(3), top: px(3), right: px(3), bottom: px(3) } }
-                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(255))
+                                retail_text_field(RetailTextSpec { text: "", font_family: 0, face_flags: 0, point_size: 0, alignment: 1, color_index: None, shadow_color_index: None, shadow_offset: (0, 0), center_vertically: false }, Some(255), true, true)
                             ),
 (
                                 retail_node(fourcc!("box0"), 29, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4650, 4651)
+                                retail_checkbox(4650, 4651, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box1"), 70, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4656, 4657)
+                                retail_checkbox(4656, 4657, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box2"), 111, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4660, 4661)
+                                retail_checkbox(4660, 4661, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box3"), 152, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4666, 4667)
+                                retail_checkbox(4666, 4667, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box4"), 193, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4670, 4671)
+                                retail_checkbox(4670, 4671, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box5"), 234, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4676, 4677)
+                                retail_checkbox(4676, 4677, true, true, true)
                             ),
 (
                                 retail_node(fourcc!("box6"), 275, 62, 29, 22)
-                                retail_interaction_state(true, false)
-                                retail_checkbox(4680, 4681)
+                                retail_checkbox(4680, 4681, true, true, true)
                             ),
                         ]
                     ),

@@ -34,6 +34,7 @@ def _load_delta_config(repo_root: Path) -> dict:
         "class_substitutions",
         "functional_parity_cases",
         "node_property_patches",
+        "runtime_input_semantics",
         "two_pic_slider_instances",
         "windows_child_nodes",
     }

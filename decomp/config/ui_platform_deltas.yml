@@ -1,4 +1,3 @@
-
 # Post-create presentation changes made by the recovered Windows controllers.
 # Text-style patches and controller-induced geometry deltas live here. Mac View
 # IR still owns resource hierarchy and the baseline rectangles.
@@ -475,6 +474,12 @@ windows_child_nodes:
   - {view: Transport.rsrc:2014, parent: {node: 0x1ad2, tag: gold}, type: stat, tag: valu, class: TMyStaticText, geometry: [0x32, 0x14, 0x3c, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
   - {view: Transport.rsrc:2014, parent: {node: 0x1c1f, tag: gems}, type: stat, tag: text, class: TMyStaticText, geometry: [0x98, 0x12, 0x46, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
   - {view: Transport.rsrc:2014, parent: {node: 0x1c1f, tag: gems}, type: stat, tag: valu, class: TMyStaticText, geometry: [0x32, 0x14, 0x3c, 0x0b], family: *transport_caption_text, evidence: *transport_caption_evidence}
+
+runtime_input_semantics:
+  - view: Transport.rsrc:2014
+    mac_class: TSidewaysArrow
+    semantics: right_left_view
+    evidence: "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 Free()s placeholder left/rght TSidewaysArrow controls and replaces them with TRightLeftView instances that repeat without TUpDownPictureButton hilite"
 
 # TCityProductionView draws and hit-tests these buildings dynamically rather
 # than constructing sixteen resource-backed child controls. Keep this one

@@ -636,6 +636,8 @@ pub(in crate::ui::city) fn render_city_buildings(
     }
 }
 
+// Recovered from TCityProductionView::BuildBuildingImages and
+// g_anCityBuildingSlotOrder / g_anCityBuildingSlotCoords at 0x00696178 / 0x00696198.
 pub(in crate::ui::city) const CITY_BUILDINGS: &[CityBuildingVisual] = &[
     CityBuildingVisual {
         slot: CityFacilitySlot::TextileMill,
@@ -719,6 +721,8 @@ pub(in crate::ui::city) const CITY_BUILDINGS: &[CityBuildingVisual] = &[
     },
 ];
 
+// Recovered from TCityProductionView::DoPostCreate with g_awCityBuildingActionResourceIds
+// at 0x0064fad0 and g_aCityBuildingLayoutRects at 0x006a24e8.
 pub(in crate::ui::city) const CITY_BUILDING_ACTIONS: &[CityBuildingActionVisual] = &[
     CityBuildingActionVisual {
         slot: CityFacilitySlot::TextileMill,

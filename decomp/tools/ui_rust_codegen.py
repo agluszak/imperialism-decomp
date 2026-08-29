@@ -36,38 +36,60 @@ ATOMIC_CLASSES = frozenset(
     ("TPlacard", "TArmyPlacard", "TShipPlacard", "TNumberedArrowButton",
      "TIndustryAmtBar", "TRailAmtBar", "TTraderAmtBar", "TTwoPicSlider")
 )
-CHECKED_CLASSES = frozenset(
-    ("TCzechBox", "TToggleButton", "TMadnessButton", "TRadioPictureButton",
-     "TOverlayRadioButton", "TCivilianButton", "TRadioText", "TPageCorner")
+_PICTURE_SHELL = "retail_picture({picture_id})"
+PICTURE_SHELL_CLASSES = frozenset(
+    ("TArmoryView", "TArmyInfoView", "TBattleDetailBook", "TBattleReportView", "TBook",
+     "TBuildingConstructionView", "TBuildingExpansionView", "TCivReport", "TColorKeyPicture",
+     "TCombatReportView", "TCouncilView", "TCreditsPicture", "TDealBookPicture",
+     "TDiplomacyMapView", "TFlagOptionsPicture", "TGamePreferencesPicture", "TGameScorePicture",
+     "TGameSetupMultiplayerPicture", "TGameSetupPicture", "THelpPicture", "THighScoresPicture",
+     "TIndustryView", "TJoinSelectorDialog", "TLoadSavePicture", "TLoungeDialog", "TMapKey",
+     "TMapUberPicture", "TMovieView", "TMultiMessagePicture", "TNetSelectPicture", "TNewspaperView",
+     "TNominationView", "TOfferDeskPicture", "TPlaceCityDialog", "TQueryFloater", "TScenarioChooser",
+     "TSetupRandomMapPicture", "TShipyardView", "TSliderPicture", "TSpecialQuitPicture", "TStatusPicture",
+     "TTacMapUberPicture", "TTacticalAdiosPicture", "TTacticalHolaPicture", "TTerrainHelpPicture",
+     "TTradeOrderPicture", "TTradeSchoolView", "TTradeScreenPicture", "TUniversityView", "TWarehouseView")
 )
-_BTN = ("retail_picture_button({idle}, {active})",)
-_RADIO = ("retail_radio_picture_button({idle}, {active})",)
-_SWAP = ("retail_picture_swap_button({idle}, {active})",)
-CLASS_RENDERERS: dict[str, tuple[str, ...]] = {
-    **dict.fromkeys(("T2PictureButton", "TClickZone", "TControl", "TDealTabControl", "TPictureNumberText"), _BTN),
-    **dict.fromkeys(("TOverlayRadioButton", "TRadioPictureButton", "TCivilianButton"), _RADIO),
-    **dict.fromkeys(("TTextPictureButton", "TUpDownPictureButton"), _SWAP),
-    "TArmyPlacard": ("retail_army_placard({picture_id})",),
-    "TCityProductionView": ("retail_pointer_canvas()",), "TCitySiteView": ("retail_pointer_canvas()",),
-    "TCzechBox": ("retail_checkbox({idle}, {active})",),
-    "TDropShadowNumberText": (), "TEditText": (), "TMyNumberText": (), "TNumberText": (),
-    "TInfoBarText": ("retail_hover_help_bar()",),
-    "TMadnessButton": ("retail_madness_checkbox({picture_id})",),
-    "TMapPreviewView": ("retail_pointer_canvas()",),
-    "TNoHilitePicture": _BTN,
-    "TNumberedArrowButton": ("retail_numbered_arrow()",),
-    "TPictureButton": ("retail_picture_button_overlay({idle}, {overlay})",),
-    "TPlacard": ("retail_placard({picture_id})",),
-    "TRadioText": ("retail_radio_text()",), "TRadioTextCluster": ("retail_radio_cluster()",),
-    "TScrollView": ("retail_scroll_area()",),
-    "TShipPlacard": ("retail_ship_placard({picture_id})",),
-    "TToggleButton": ("retail_toggle_picture({picture_id})",),
-    "TTwoPicSlider": ("retail_two_pic_slider({pic_base}, {scale}, {off_group}, {off_index})",),
-    "TIndustryAmtBar": ("retail_amount_bar(AmountBarStyle::Production)",),
-    "TRailAmtBar": ("retail_amount_bar(AmountBarStyle::Production)",),
-    "TTraderAmtBar": ("retail_amount_bar(AmountBarStyle::Trade)",),
+CLASS_RENDERERS: dict[str, str] = {
+    "T2PictureButton": "retail_picture_button({idle}, {active}, {enabled}, {input_gate})",
+    "TArmyPlacard": "retail_army_placard({picture_id})",
+    "TCityProductionView": "retail_pointer_canvas({enabled}, {input_gate})",
+    "TCitySiteView": "retail_pointer_canvas({enabled}, {input_gate})",
+    "TCzechBox": "retail_checkbox({idle}, {active}, {state}, {enabled}, {input_gate})",
+    "TClickZone": "retail_picture_button({idle}, {active}, {enabled}, {input_gate})",
+    "TControl": "retail_picture_button({idle}, {active}, {enabled}, {input_gate})",
+    "TDealTabControl": "retail_picture_button({idle}, {active}, {enabled}, {input_gate})",
+    "TIndustryAmtBar": "retail_amount_bar(AmountBarStyle::Production, {enabled}, {input_gate})",
+    "TInfoBarText": "retail_hover_help_bar()",
+    "TMadnessButton": "retail_madness_checkbox({picture_id}, {state}, {enabled}, {input_gate})",
+    "TMapPreviewView": "retail_pointer_canvas({enabled}, {input_gate})",
+    "TNoHilitePicture": "retail_picture_button({idle}, {active}, {enabled}, {input_gate})",
+    "TNumberedArrowButton": "retail_numbered_arrow({enabled}, {input_gate})",
+    "TOverlayRadioButton": "retail_radio_picture_button({idle}, {active}, {state}, {enabled}, {input_gate})",
+    "TPictureButton": "retail_picture_button_overlay({idle}, {overlay}, {enabled}, {input_gate})",
+    "TPictureNumberText": "retail_picture_button({idle}, {active}, {enabled}, {input_gate})",
+    "TPlacard": "retail_placard({picture_id})",
+    "TRadioPictureButton": "retail_radio_picture_button({idle}, {active}, {state}, {enabled}, {input_gate})",
+    "TRadioText": "retail_radio_text({state}, {enabled}, {input_gate})",
+    "TRadioTextCluster": "retail_radio_cluster()",
+    "TRailAmtBar": "retail_amount_bar(AmountBarStyle::Production, {enabled}, {input_gate})",
+    "TScrollView": "retail_scroll_area({enabled}, {input_gate})",
+    "TShipPlacard": "retail_ship_placard({picture_id})",
+    "TSidewaysArrow": "retail_sideways_arrow({idle}, {active}, {enabled}, {input_gate})",
+    "TTextPictureButton": "retail_picture_swap_button({idle}, {active}, {enabled}, {input_gate})",
+    "TToggleButton": "retail_toggle_picture({picture_id}, {state}, {enabled}, {input_gate})",
+    "TTraderAmtBar": "retail_amount_bar(AmountBarStyle::Trade, {enabled}, {input_gate})",
+    "TTransportPicture": "retail_transport_picture({picture_id}, {owner_left}, {capacity}, {enabled}, {input_gate})",
+    "TTwoPicSlider": "retail_two_pic_slider({pic_base}, {scale}, {off_group}, {off_index}, {enabled}, {input_gate})",
+    "TUpDownPictureButton": "retail_picture_swap_button({idle}, {active}, {enabled}, {input_gate})",
+    "TCivilianButton": "retail_radio_picture_button({idle}, {active}, {state}, {enabled}, {input_gate})",
+    "TDropShadowNumberText": "",
+    "TEditText": "",
+    "TMyNumberText": "",
+    "TNumberText": "",
+    **dict.fromkeys(PICTURE_SHELL_CLASSES, _PICTURE_SHELL),
 }
-INTERACTIVE_CLASSES = frozenset(CLASS_RENDERERS) | {"TSidewaysArrow", "TPageCorner", "TTransportPicture"}
+RUNTIME_INPUT_RENDERERS: dict[tuple[str, str], str] = {}
 
 
 @dataclass(frozen=True)
@@ -122,6 +144,22 @@ def _fixed24(value: int) -> int:
     return value // 0x100
 
 
+def _load_runtime_input_renderers(rows: list[dict[str, Any]]) -> dict[tuple[str, str], str]:
+    renderers = dict(RUNTIME_INPUT_RENDERERS)
+    for index, row in enumerate(rows):
+        view = str(row["view"])
+        mac_class = str(row["mac_class"])
+        semantics = str(row["semantics"])
+        evidence = str(row.get("evidence", "")).strip()
+        if not evidence:
+            raise ValueError(f"{DELTAS_PATH}: runtime_input_semantics[{index}] missing evidence")
+        if semantics == "right_left_view":
+            renderers[(view, mac_class)] = "retail_right_left_arrow({idle}, {active}, {enabled}, {input_gate})"
+        else:
+            raise ValueError(f"{DELTAS_PATH}: unknown runtime semantics {semantics!r}")
+    return renderers
+
+
 def _load_evidence(root: Path) -> dict[str, Any]:
     with (root / STRINGS_PATH).open(encoding="utf-8", newline="") as stream:
         strings = {(r["resource_file"], int(r["group_id"]), int(r["string_index"])): r["text"]
@@ -162,6 +200,9 @@ def _load_evidence(root: Path) -> dict[str, Any]:
                           "text": fam.get("text"), "max_chars": int(fam["max_chars"]) if "max_chars" in fam else None,
                           "window": fam.get("window")})
         windows_views[view_id] = nodes
+    runtime_rows = deltas.get("runtime_input_semantics") or []
+    if not isinstance(runtime_rows, list):
+        raise ValueError(f"{DELTAS_PATH}: runtime_input_semantics must be a list")
     return {
         "strings": strings, "styles": styles, "views": views,
         "keys": sorted(set(keys), key=lambda k: (k.resource_file, k.view_id)),
@@ -170,6 +211,7 @@ def _load_evidence(root: Path) -> dict[str, Any]:
         "text_patches": deltas.get("node_property_patches") or [],
         "child_patches": deltas.get("windows_child_nodes") or [],
         "slider_patches": deltas.get("two_pic_slider_instances") or [],
+        "runtime_renderers": _load_runtime_input_renderers(runtime_rows),
         "windows_views": windows_views,
     }
 
@@ -298,7 +340,10 @@ def _ctx(node: Node) -> dict[str, Any]:
     s = node.slider or (0, 0, 0, 0)
     return {"idle": idle, "active": active, "overlay": idle + 1, "picture_id": int(node.picture_id or 0),
             "pic_base": s[0], "scale": s[1], "off_group": s[2], "off_index": s[3],
-            "owner_left": node.geometry[0], "capacity": str(node.tag == "tota").lower()}
+            "owner_left": node.geometry[0], "capacity": str(node.tag == "tota").lower(),
+            "state": str(bool(node.state)).lower(),
+            "enabled": str(bool(node.enabled)).lower(),
+            "input_gate": str(bool(node.input_gate)).lower()}
 
 
 def _retail_text(node: Node, field: bool) -> str:
@@ -311,45 +356,69 @@ def _retail_text(node: Node, field: bool) -> str:
             f"color_index: {opt('color_index')}, shadow_color_index: {opt('shadow_color_index')}, "
             f"shadow_offset: ({int(off[0])}, {int(off[1])}), "
             f"center_vertically: {str(bool(text.get('center_vertically'))).lower()} }}")
+    ctx = _ctx(node)
     if field:
         mc = node.max_chars
         mc = None if mc is not None and mc < 0 else mc
-        return f"retail_text_field({spec}, {'None' if mc is None else f'Some({mc})'})"
+        return f"retail_text_field({spec}, {'None' if mc is None else f'Some({mc})'}, {ctx['enabled']}, {ctx['input_gate']})"
+    if node.type_code == "nmbr":
+        return (f"retail_number_text({spec}, {node.geometry[3]}, "
+                f"{int((node.insets or (0, 0, 0, 0))[1])}, {ctx['enabled']}, {ctx['input_gate']})")
     return f"retail_text({spec}, {node.geometry[3]}, {int((node.insets or (0, 0, 0, 0))[1])})"
 
 
 def class_has_renderer(class_name: str, type_code: str) -> bool:
-    return (class_name in ("TSidewaysArrow", "TPageCorner", "TTransportPicture", *CLASS_RENDERERS)
-            or type_code in CONTAINER_TYPES | TEXT_TYPES or type_code == "pict" or type_code != "cntl")
+    if class_name in CLASS_RENDERERS:
+        return True
+    if class_name in ("TPageCorner",):
+        return True
+    if type_code in CONTAINER_TYPES | TEXT_TYPES:
+        return True
+    if type_code == "pict" and class_name == DEFAULT_CLASSES["pict"]:
+        return True
+    if type_code == "cntl" and class_name == DEFAULT_CLASSES["cntl"]:
+        return True
+    return False
 
 
-def _class_lines(node: Node, parent: Node | None, view_name: str) -> list[str]:
-    if node.class_name == "TSidewaysArrow":
-        i, a = _swap_ids(node)
-        fn = "retail_right_left_arrow" if parent and parent.class_name == "TTransportPicture" else "retail_sideways_arrow"
-        return [f"{fn}({i}, {a})"]
-    if node.class_name == "TPageCorner" and node.tag in ("lcor", "rcor"):
-        return [f"retail_page_corner(RetailPageCorner::{'Left' if node.tag == 'lcor' else 'Right'})"]
-    if node.class_name == "TTransportPicture":
-        c = _ctx(node)
-        return [f"retail_picture({c['picture_id']})", f"retail_transport_gauge({c['owner_left']}, {c['capacity']})"]
-    if node.class_name in CLASS_RENDERERS:
-        tpl = CLASS_RENDERERS[node.class_name]
-        if tpl and node.picture_id is None and node.class_name not in ATOMIC_CLASSES and any(
-            "{picture_id}" in t or "{idle}" in t for t in tpl
+def _renderer_template(node: Node, view_name: str, runtime_renderers: dict[tuple[str, str], str]) -> str | None:
+    return runtime_renderers.get((view_name, node.class_name), CLASS_RENDERERS.get(node.class_name))
+
+
+def _class_lines(node: Node, view_name: str, runtime_renderers: dict[tuple[str, str], str]) -> list[str]:
+    if node.class_name == "TPageCorner":
+        if node.tag == "lcor":
+            ctx = _ctx(node)
+            return [f"retail_page_corner(RetailPageCorner::Left, {ctx['state']}, {ctx['enabled']}, {ctx['input_gate']})"]
+        if node.tag == "rcor":
+            ctx = _ctx(node)
+            return [f"retail_page_corner(RetailPageCorner::Right, {ctx['state']}, {ctx['enabled']}, {ctx['input_gate']})"]
+        raise ValueError(f"unsupported page corner tag {node.tag!r}")
+    template = _renderer_template(node, view_name, runtime_renderers)
+    if template is not None:
+        if template and node.picture_id is None and node.class_name not in ATOMIC_CLASSES and (
+            "{picture_id}" in template or "{idle}" in template
         ):
             return []
-        return [t.format(**_ctx(node)) for t in tpl]
+        return [template.format(**_ctx(node))] if template else []
     if node.type_code in CONTAINER_TYPES | TEXT_TYPES:
         return []
-    if node.type_code == "pict" and node.picture_id is not None:
+    if node.type_code == "pict":
+        if node.picture_id is None:
+            raise ValueError(f"picture node {node.tag!r} missing picture_id")
+        if node.class_name != DEFAULT_CLASSES["pict"]:
+            raise ValueError(f"unsupported picture class {node.class_name} tag={node.tag!r}")
         return [f"retail_picture({node.picture_id})"]
     if node.type_code == "cntl":
-        raise ValueError(f"unsupported control class {node.class_name} tag={node.tag!r}")
-    return []
+        if node.class_name != DEFAULT_CLASSES["cntl"]:
+            raise ValueError(f"unsupported control class {node.class_name} tag={node.tag!r}")
+        idle, active = _swap_ids(node)
+        ctx = _ctx(node)
+        return [f"retail_picture_button({idle}, {active}, {ctx['enabled']}, {ctx['input_gate']})"]
+    raise ValueError(f"unsupported node class {node.class_name} type={node.type_code!r} tag={node.tag!r}")
 
 
-def _emit_node(node: Node, parent: Node | None, view_name: str, indent: int) -> list[str]:
+def _emit_node(node: Node, view_name: str, runtime_renderers: dict[tuple[str, str], str], indent: int) -> list[str]:
     pad, x, y, w, h = " " * indent, *node.geometry
     lines = ["(", f"{pad}    retail_node(fourcc!({_rust_str(node.tag)}), {x}, {y}, {w}, {h})"]
     if node.window == (0x80, 0x1F40, 1, 1, 1, 1, 0, 1):
@@ -358,11 +427,7 @@ def _emit_node(node: Node, parent: Node | None, view_name: str, indent: int) -> 
     if any(ins):
         lines += [f"{pad}    Node {{ padding: UiRect {{ left: px({ins[0]}), top: px({ins[1]}), "
                   f"right: px({ins[2]}), bottom: px({ins[3]}) }} }}"]
-    checked = bool(node.state) and node.class_name in CHECKED_CLASSES
-    disabled = (not node.enabled or not node.input_gate) and (node.class_name in INTERACTIVE_CLASSES or node.type_code in ("edit", "nmbr"))
-    if checked or disabled:
-        lines.append(f"{pad}    retail_interaction_state({str(checked).lower()}, {str(disabled).lower()})")
-    lines.extend(f"{pad}    {line}" for line in _class_lines(node, parent, view_name))
+    lines.extend(f"{pad}    {line}" for line in _class_lines(node, view_name, runtime_renderers))
     if node.text and node.type_code == "edit":
         lines.append(f"{pad}    {_retail_text(node, True)}")
     elif node.text and node.class_name != "TInfoBarText":
@@ -372,7 +437,7 @@ def _emit_node(node: Node, parent: Node | None, view_name: str, indent: int) -> 
     if node.children:
         lines.append(f"{pad}    Children [")
         for child in node.children:
-            chunk = _emit_node(child, node, view_name, indent + 8)
+            chunk = _emit_node(child, view_name, runtime_renderers, indent + 8)
             chunk[-1] += ","
             lines.extend(chunk)
         lines.append(f"{pad}    ]")
@@ -381,6 +446,8 @@ def _emit_node(node: Node, parent: Node | None, view_name: str, indent: int) -> 
 
 
 def render(root: Path) -> str:
+    ev = _load_evidence(root)
+    runtime_renderers = ev["runtime_renderers"]
     header = ("// @generated by tools.ui_rust_codegen. Do not edit by hand.\n"
               "#![allow(dead_code, clippy::identity_op)]\n\nuse super::retail::*;\n"
               "use bevy::prelude::*;\nuse imperialism_formats::fourcc;\n\n"
@@ -390,7 +457,7 @@ def render(root: Path) -> str:
         body += ["#[rustfmt::skip]", f"pub fn {fn}() -> impl Scene {{", "    bsn! {",
                  f"        retail_view({_rust_str(view_name)})", "        Children ["]
         for root_node in roots:
-            chunk = _emit_node(root_node, None, view_name, 12)
+            chunk = _emit_node(root_node, view_name, runtime_renderers, 12)
             chunk[-1] += ","
             body.extend(chunk)
         body += ["        ]", "    }", "}", ""]
