@@ -46,8 +46,7 @@ pub struct GameState {
     /// `TArmyMgr::mapContextActionRecordList04`. Marker fields are omitted from `.imp`.
     #[serde(default)]
     pub(crate) battle_reports: Vec<crate::BattleReport>,
-    /// Live interrupt/resume state for the turn driver. Not written to `.imp`.
-    #[serde(default, rename = "continuation")]
+    /// Authoritative turn control. The `.imp` stores only its [`PhaseCode`] projection.
     pub(crate) turn_flow: crate::turn_flow::TurnFlow,
     /// Immutable catalogs for this session. Restored from retail data on load.
     #[serde(skip)]
@@ -61,6 +60,8 @@ pub struct GameState {
 #[derive(Clone, Debug)]
 pub struct GameStateParts {
     pub turn: TurnState,
+    /// Turn control the loader recovered, normally [`TurnFlow::from_retail_phase`].
+    pub turn_flow: TurnFlow,
     pub unit_ids: UnitIdAllocator,
     pub map: MapMgr,
     pub ocean: Ocean,
@@ -105,7 +106,7 @@ impl GameState {
             news: parts.news,
             pending: parts.pending,
             battle_reports: parts.battle_reports,
-            turn_flow: TurnFlow::Running,
+            turn_flow: parts.turn_flow,
             data: GameData::default(),
         };
         for force in state.task_forces.keys().copied().collect::<Vec<_>>() {
@@ -129,7 +130,7 @@ impl GameState {
         &self.turn
     }
 
-    /// Restores runtime turn-flow state from the native oracle ephemeral overlay.
+    /// Replaces authoritative turn control with an oracle-captured or fixture flow.
     #[doc(hidden)]
     pub fn restore_native_turn_flow(&mut self, flow: TurnFlow) {
         self.turn_flow = flow;

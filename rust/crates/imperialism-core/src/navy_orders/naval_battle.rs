@@ -955,7 +955,7 @@ impl NavyUnit {
 impl GameState {
     pub fn navy_battle(&self) -> Option<&NavyBattle> {
         match &self.turn_flow {
-            crate::turn_flow::TurnFlow::NavalBattle(continuation) => {
+            TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) => {
                 continuation.navy_battle.as_deref()
             }
             _ => None,
@@ -979,7 +979,7 @@ impl GameState {
         {
             return None;
         }
-        let crate::turn_flow::TurnFlow::NavalBattle(_) = &self.turn_flow else {
+        let TurnFlow::Military(MilitaryFlow::NavalBattle(_)) = &self.turn_flow else {
             return None;
         };
         let mut battle = if let Some(battle) = self.take_navy_battle() {
@@ -1230,7 +1230,7 @@ impl GameState {
     /// Headless Auto: auto-deploy the current side if needed, then pump both
     /// sides until the battle commits and navy orders resume.
     pub fn auto_resolve_navy_battle(&mut self) -> crate::TurnStop {
-        let crate::turn_flow::TurnFlow::NavalBattle(_) = &self.turn_flow else {
+        let TurnFlow::Military(MilitaryFlow::NavalBattle(_)) = &self.turn_flow else {
             panic!("navy-battle auto-resolve requires a navy-orders continuation");
         };
         let mut battle = match self.take_navy_battle() {
@@ -1286,7 +1286,7 @@ impl GameState {
 
     fn take_navy_battle(&mut self) -> Option<NavyBattle> {
         match &mut self.turn_flow {
-            crate::turn_flow::TurnFlow::NavalBattle(continuation) => {
+            TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) => {
                 continuation.navy_battle.take().map(|battle| *battle)
             }
             _ => None,
@@ -1294,7 +1294,7 @@ impl GameState {
     }
 
     fn store_navy_battle(&mut self, battle: NavyBattle) {
-        let crate::turn_flow::TurnFlow::NavalBattle(continuation) = &mut self.turn_flow else {
+        let TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) = &mut self.turn_flow else {
             panic!("navy battle storage requires a pending encounter")
         };
         continuation.navy_battle = Some(Box::new(battle));
@@ -1673,12 +1673,12 @@ mod tests {
 
     fn attach_live_battle(state: &mut GameState, battle: NavyBattle) {
         state.turn.active_nation = NationId::new(0);
-        state.turn_flow = crate::turn_flow::TurnFlow::NavalBattle(
+        state.turn_flow = TurnFlow::Military(MilitaryFlow::NavalBattle(
             crate::NavyOrdersContinuation::player_encounter(
                 TaskForceId::new(1),
                 TaskForceId::new(2),
             ),
-        );
+        ));
         state.store_navy_battle(battle);
     }
 
@@ -1802,7 +1802,7 @@ mod tests {
             TaskForceOrder::Blockade,
         );
         let continuation = state.carry_out_navy_orders().expect("player encounter");
-        state.turn_flow = crate::turn_flow::TurnFlow::NavalBattle(continuation);
+        state.turn_flow = TurnFlow::Military(MilitaryFlow::NavalBattle(continuation));
         state.ensure_navy_battle();
         assert_eq!(
             state.navy_battle().map(NavyBattle::stage),

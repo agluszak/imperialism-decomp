@@ -69,7 +69,9 @@ impl NavyOrdersContinuation {
 impl GameState {
     pub fn pending_naval_battle(&self) -> Option<&PendingNavalBattle> {
         match &self.turn_flow {
-            crate::turn_flow::TurnFlow::NavalBattle(continuation) => Some(&continuation.battle),
+            TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) => {
+                Some(&continuation.battle)
+            }
             _ => None,
         }
     }
@@ -77,16 +79,16 @@ impl GameState {
     /// Continues the retained `CarryOutOrders` scan after the tactical naval
     /// battle has applied its outcome to the two authoritative task forces.
     pub fn resume_after_naval_battle(&mut self) -> crate::TurnStop {
-        let crate::turn_flow::TurnFlow::NavalBattle(continuation) =
-            std::mem::take(&mut self.turn_flow)
-        else {
+        let TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) = std::mem::replace(
+            &mut self.turn_flow,
+            TurnFlow::Military(MilitaryFlow::Running),
+        ) else {
             panic!("naval-battle resume requires a navy-orders continuation");
         };
-        if let Some(continuation) = self.resume_navy_orders(continuation) {
-            self.turn_flow = crate::turn_flow::TurnFlow::NavalBattle(continuation);
-            return crate::TurnStop::NavalBattle;
-        }
-        self.turn.phase = crate::PhaseCode::COMBAT_MOVES;
+        self.turn_flow = match self.resume_navy_orders(continuation) {
+            Some(continuation) => TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)),
+            None => TurnFlow::CombatMoves(CombatMovesFlow::Running),
+        };
         self.advance_turn()
     }
 

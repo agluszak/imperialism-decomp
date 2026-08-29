@@ -3,7 +3,7 @@
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
     Difficulty, GameState, MajorNationId, NationId, NewsState, PendingWorkState, PhaseCode,
-    RngState, ScenarioMapId, Technology, TurnFlow, TurnState, UnitIdAllocator,
+    RngState, ScenarioMapId, Technology, TechnologyFlow, TurnFlow, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use serde::de::{DeserializeOwned, Error};
@@ -34,8 +34,9 @@ struct EphemeralGameState {
     pending: PendingWorkState,
     #[serde(default)]
     last_processed_nation: Option<MajorNationId>,
-    #[serde(default, deserialize_with = "deserialize_native_continuation")]
-    continuation: TurnFlow,
+    /// Interrupt boundary the case reached, when it is not the save phase's running form.
+    #[serde(default, deserialize_with = "deserialize_native_turn_flow")]
+    turn_flow: Option<TurnFlow>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -60,7 +61,6 @@ impl NativeTurnState {
             self.economic_turn,
             self.diplomacy_year_term_raw,
             0,
-            self.phase,
             self.turn_flow_status_flags,
             phase_state_by_decade,
             self.difficulty,
@@ -71,20 +71,23 @@ impl NativeTurnState {
     }
 }
 
-fn deserialize_native_continuation<'de, D>(deserializer: D) -> Result<TurnFlow, D::Error>
+/// The oracle reports technology unlocks by retail id, not by Rust's [`Technology`] name.
+fn deserialize_native_turn_flow<'de, D>(deserializer: D) -> Result<Option<TurnFlow>, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
     let value = serde_json::Value::deserialize(deserializer)?;
     if let Some(technology) = value
-        .get("TechnologyReport")
+        .pointer("/TechnologyAdvances/Report")
         .and_then(serde_json::Value::as_u64)
     {
         let technology = u8::try_from(technology)
             .ok()
             .and_then(Technology::from_index)
             .ok_or_else(|| D::Error::custom("invalid C++ technology report id"))?;
-        return Ok(TurnFlow::TechnologyReport(technology));
+        return Ok(Some(TurnFlow::TechnologyAdvances(TechnologyFlow::Report(
+            technology,
+        ))));
     }
     serde_json::from_value(value).map_err(D::Error::custom)
 }
@@ -180,22 +183,24 @@ where
 }
 
 pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
-    let turn = capture.ephemeral.turn.into_core();
+    let native_phase = capture.ephemeral.turn.phase;
     let save = LegacySaveV62::parse(&capture.save);
     let mut parts = save.game_state_parts(LegacyGameStateContext {
         crt_rand_state: capture.ephemeral.rng.crt_rand.state(),
         map_generation_lcg: capture.ephemeral.rng.map_generation.state(),
         zone_status_lcg: capture.ephemeral.rng.zone_status.state(),
     });
-    parts.turn = turn;
+    parts.turn = capture.ephemeral.turn.into_core();
+    parts.turn_flow = capture
+        .ephemeral
+        .turn_flow
+        .unwrap_or_else(|| TurnFlow::from_retail_phase(native_phase));
     parts.unit_ids = capture.ephemeral.unit_ids;
     parts.rng = capture.ephemeral.rng;
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
     parts.diplomacy.last_processed_nation = capture.ephemeral.last_processed_nation;
-    let mut state = GameState::from_parts(parts);
-    state.restore_native_turn_flow(capture.ephemeral.continuation);
-    Ok(state)
+    Ok(GameState::from_parts(parts))
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {

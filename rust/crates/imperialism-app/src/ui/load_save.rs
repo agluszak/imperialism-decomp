@@ -269,7 +269,7 @@ pub(crate) fn save_current_game(
 }
 
 fn loaded_game_destination(game: &GameState) -> AppState {
-    match game.turn().phase() {
+    match game.phase() {
         PhaseCode::STRATEGIC_MAP => AppState::StrategicMap,
         PhaseCode::CAPITAL_SELECTION => AppState::CitySite,
         phase => {

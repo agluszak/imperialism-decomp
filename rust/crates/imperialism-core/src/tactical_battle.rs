@@ -1043,7 +1043,7 @@ impl GameState {
     /// Headless retail Auto: TArmyPlayer auto-deploy + Auto turn pump + ApplyChanges
     /// + ApplyPostBattleStackOutcomeAndGrowUnitMeters, then remaining combat-moves.
     pub fn auto_resolve_land_battle(&mut self) -> TurnStop {
-        let crate::turn_flow::TurnFlow::LandBattle(_) = &self.turn_flow else {
+        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(_)) = &self.turn_flow else {
             panic!("land-battle auto-resolve requires a combat-moves continuation");
         };
         let mut battle = match self.take_army_battle() {
@@ -1081,7 +1081,7 @@ impl GameState {
 
     pub fn army_battle(&self) -> Option<&ArmyBattle> {
         match &self.turn_flow {
-            crate::turn_flow::TurnFlow::LandBattle(continuation) => {
+            TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) => {
                 continuation.army_battle.as_deref()
             }
             _ => None,
@@ -1091,7 +1091,7 @@ impl GameState {
     #[cfg(test)]
     fn army_battle_mut(&mut self) -> Option<&mut ArmyBattle> {
         match &mut self.turn_flow {
-            crate::turn_flow::TurnFlow::LandBattle(continuation) => {
+            TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) => {
                 continuation.army_battle.as_deref_mut()
             }
             _ => None,
@@ -1119,7 +1119,7 @@ impl GameState {
         if self.army_battle().is_some() {
             return None;
         }
-        let crate::turn_flow::TurnFlow::LandBattle(_) = &self.turn_flow else {
+        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(_)) = &self.turn_flow else {
             return None;
         };
         let mut inner = Battle::init(self);
@@ -1305,7 +1305,7 @@ impl GameState {
 
     fn take_army_battle(&mut self) -> Option<ArmyBattle> {
         match &mut self.turn_flow {
-            crate::turn_flow::TurnFlow::LandBattle(continuation) => {
+            TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) => {
                 continuation.army_battle.take().map(|battle| *battle)
             }
             _ => None,
@@ -1313,7 +1313,7 @@ impl GameState {
     }
 
     fn store_army_battle(&mut self, battle: ArmyBattle) {
-        let crate::turn_flow::TurnFlow::LandBattle(continuation) = &mut self.turn_flow else {
+        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) = &mut self.turn_flow else {
             panic!("interactive army battle requires a combat-moves continuation");
         };
         continuation.army_battle = Some(Box::new(battle));

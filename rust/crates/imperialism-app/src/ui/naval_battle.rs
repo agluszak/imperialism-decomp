@@ -489,17 +489,15 @@ mod tests {
             parts.turn.economic_turn,
             parts.turn.diplomacy_year_term_raw,
             parts.turn.selected_asset_set,
-            PhaseCode::COMBAT_MOVES,
             parts.turn.turn_flow_status_flags,
             parts.turn.phase_state_by_decade,
             parts.turn.difficulty,
             player,
         );
-        let mut state = GameState::from_parts(parts);
-        state.restore_native_turn_flow(TurnFlow::NavalBattle(
+        parts.turn_flow = TurnFlow::Military(MilitaryFlow::NavalBattle(
             NavyOrdersContinuation::player_encounter(attacker_force, defender_force),
         ));
-        state
+        GameState::from_parts(parts)
     }
 
     fn test_app(state: GameState) -> App {

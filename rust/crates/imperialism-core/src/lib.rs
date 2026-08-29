@@ -197,7 +197,10 @@ pub use territory::{
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
 pub use trade_phase::PendingTradeOffer;
 pub use turn_flow::{
-    CinematicKind, Decade, DecadeTable, PhaseCode, ScenarioMapId, TurnFlow, TurnState, TurnStop,
+    CinematicKind, CombatMovesFlow, DealBookFlow, Decade, DecadeTable, DiplomacyFlow, DiplomacyOfferGateFlow,
+    EliminationFlow, GreatPowerPressureFlow, MilitaryFlow, NewspaperFlow, PhaseCode,
+    PostQuarterGate, QuarterGateFlow, ScenarioMapId, TechnologyFlow, TradeFlow, TurnFlow, TurnState,
+    TurnStop,
 };
 pub use turn_tail::{EliminationOutcome, QuarterGateResult, TurnAlert};
 pub use units::{

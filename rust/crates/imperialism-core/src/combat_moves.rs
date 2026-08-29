@@ -88,7 +88,9 @@ impl GameState {
 
     pub fn pending_land_battle(&self) -> Option<&PendingLandBattle> {
         match &self.turn_flow {
-            crate::turn_flow::TurnFlow::LandBattle(continuation) => Some(&continuation.battle),
+            TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) => {
+                Some(&continuation.battle)
+            }
             _ => None,
         }
     }
@@ -96,7 +98,8 @@ impl GameState {
     /// `TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters` without the trailing
     /// `ResolveNextMove`. Call [`Self::resume_after_land_battle`] to resume the cursor.
     pub fn resolve_land_battle(&mut self, attacker_won: bool) {
-        let crate::turn_flow::TurnFlow::LandBattle(continuation) = &self.turn_flow else {
+        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) = &self.turn_flow
+        else {
             panic!("land-battle resolve requires a combat-moves continuation");
         };
         assert!(
@@ -137,7 +140,9 @@ impl GameState {
             self.apply_uncontested_units(&mut stationed, &attacker_ids);
             self.grow_stack_experience(&attacker_ids, EXPERIENCE_WINNER);
             self.grow_stack_experience(&defender_ids, EXPERIENCE_LOSER);
-            let crate::turn_flow::TurnFlow::LandBattle(continuation) = &mut self.turn_flow else {
+            let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) =
+                &mut self.turn_flow
+            else {
                 unreachable!("continuation still holds the land battle");
             };
             continuation.owner_cache[battle.province] = Some(stack.owner);
@@ -150,21 +155,21 @@ impl GameState {
 
     /// Stores a `DoCombatMoves` land-battle continuation (same as `advance_turn`).
     pub fn enter_land_battle(&mut self, continuation: CombatMovesContinuation) {
-        self.turn_flow = crate::turn_flow::TurnFlow::LandBattle(continuation);
+        self.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation));
     }
 
     /// Continues `DoCombatMoves` after the current land battle has been resolved.
     pub fn resume_after_land_battle(&mut self) -> crate::TurnStop {
-        let crate::turn_flow::TurnFlow::LandBattle(continuation) =
-            std::mem::take(&mut self.turn_flow)
-        else {
+        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) = std::mem::replace(
+            &mut self.turn_flow,
+            TurnFlow::CombatMoves(CombatMovesFlow::Running),
+        ) else {
             panic!("land-battle resume requires a combat-moves continuation");
         };
-        if let Some(continuation) = self.resume_combat_moves(continuation) {
-            self.turn_flow = crate::turn_flow::TurnFlow::LandBattle(continuation);
-            return crate::TurnStop::LandBattle;
-        }
-        self.turn.phase = crate::PhaseCode::MILITARY_CLEANUP;
+        self.turn_flow = match self.resume_combat_moves(continuation) {
+            Some(continuation) => TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)),
+            None => TurnFlow::MilitaryCleanup,
+        };
         self.advance_turn()
     }
 

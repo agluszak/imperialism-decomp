@@ -202,11 +202,14 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
     return finished;
   }
 
-  JsonObject continuation;
-  continuation.Set("TechnologyReport", technologyId);
-  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
-                               continuation.Release()) != JSONSuccess) {
-    return RuntimeActionResult::Failure("technology continuation capture failed");
+  // The report dialog is an interrupt boundary phase 0x11 alone cannot express.
+  JsonObject report;
+  report.Set("Report", technologyId);
+  JsonObject turnFlow;
+  turnFlow.Set("TechnologyAdvances", report.Release());
+  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.turn_flow",
+                               turnFlow.Release()) != JSONSuccess) {
+    return RuntimeActionResult::Failure("technology turn-flow capture failed");
   }
   return finished;
 }

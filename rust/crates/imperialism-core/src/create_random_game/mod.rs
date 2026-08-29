@@ -262,7 +262,6 @@ pub fn create_random_game(
             economic_turn: 0,
             diplomacy_year_term_raw: 1914,
             selected_asset_set: 0,
-            phase: crate::PhaseCode::CAPITAL_SELECTION,
             turn_flow_status_flags: 0,
             phase_state_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty,
@@ -295,7 +294,7 @@ pub fn create_random_game(
         news: NewsState::default(),
         pending,
         battle_reports: Vec::new(),
-        turn_flow: crate::turn_flow::TurnFlow::Running,
+        turn_flow: TurnFlow::CapitalSelection,
         data: GameData::default(),
     }
 }
@@ -411,7 +410,6 @@ pub fn create_scenario_game(
             economic_turn: 0,
             diplomacy_year_term_raw: 1914,
             selected_asset_set: 1,
-            phase: PhaseCode::CAPITAL_SELECTION,
             turn_flow_status_flags: 0,
             phase_state_by_decade: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             difficulty,
@@ -445,7 +443,7 @@ pub fn create_scenario_game(
         news: NewsState::default(),
         pending: PendingWorkState::default(),
         battle_reports: Vec::new(),
-        turn_flow: TurnFlow::Running,
+        turn_flow: TurnFlow::CapitalSelection,
         data: GameData::default(),
     };
     // Nation reconstruction creates each fixed-map home port context before the scenario
