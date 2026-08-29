@@ -49,52 +49,63 @@ impl GameState {
     /// Applies posted diplomacy and replies to resulting offers.
     ///
     /// AI nations auto-reply. A human offer that retail would pose as a dialog
-    /// returns [`DiplomacyPhaseResult::Offer`]; [`Self::resolve_diplomacy_offer`]
+    /// blocks in [`crate::turn_flow::TurnFlow::DiplomacyOffer`]; [`Self::resolve_diplomacy_offer`]
     /// continues the same pass. After replies complete, one queued war is
-    /// processed and may return [`DiplomacyPhaseResult::WarJoin`].
-    pub fn do_diplomacy(&mut self) -> DiplomacyPhaseResult {
+    /// processed and may block in [`crate::turn_flow::TurnFlow::DiplomacyWarJoin`].
+    pub fn do_diplomacy(&mut self) {
+        assert_eq!(
+            self.turn.phase(),
+            PhaseCode::DIPLOMACY,
+            "diplomacy resolution requires phase DIPLOMACY"
+        );
         self.apply_diplomacy_inter_nation_states();
-        let result = self.reply_to_diplomacy_offers_from(0, 0);
-        self.record_diplomacy_result(result)
+        self.finish_diplomacy_from(0, 0);
     }
 
     /// Accepts or rejects the offer stored in the current continuation, then
     /// continues the remaining replies.
-    pub(crate) fn resolve_diplomacy_offer(&mut self, accept: bool) -> DiplomacyPhaseResult {
+    pub(crate) fn resolve_diplomacy_offer(&mut self, accept: bool) {
         let crate::turn_flow::TurnFlow::DiplomacyOffer { nation, index } = self.turn_flow else {
             panic!("diplomacy offer reply requires an active offer continuation");
         };
         self.turn_flow = crate::turn_flow::TurnFlow::Running;
         self.apply_human_offer_decision(nation, usize::from(index), accept);
-        let result = self.reply_to_diplomacy_offers_from(nation.get(), usize::from(index) + 1);
-        self.record_diplomacy_result(result)
+        self.finish_diplomacy_from(nation.get(), usize::from(index) + 1);
     }
 
     /// Accepts or rejects the war-join dialog stored in the current continuation,
     /// then finishes the remaining reactions for that one war.
-    pub(crate) fn resolve_diplomacy_war_join(&mut self, accept: bool) -> DiplomacyPhaseResult {
+    pub(crate) fn resolve_diplomacy_war_join(&mut self, accept: bool) {
         let crate::turn_flow::TurnFlow::DiplomacyWarJoin(prompt) = self.turn_flow else {
             panic!("diplomacy war-join reply requires an active war-join continuation");
         };
         self.turn_flow = crate::turn_flow::TurnFlow::Running;
         self.apply_war_join_decision(prompt, accept);
-        let result =
-            self.continue_war_reactions(prompt.pair_first, prompt.pair_second, prompt.cursor);
-        self.record_diplomacy_result(result)
+        self.finish_diplomacy_war_from(prompt.pair_first, prompt.pair_second, prompt.cursor);
     }
 
-    fn record_diplomacy_result(&mut self, result: DiplomacyPhaseResult) -> DiplomacyPhaseResult {
-        self.turn_flow = match result {
-            DiplomacyPhaseResult::Resolved => crate::turn_flow::TurnFlow::Running,
-            DiplomacyPhaseResult::Offer(prompt) => crate::turn_flow::TurnFlow::DiplomacyOffer {
-                nation: prompt.nation,
-                index: prompt.index,
-            },
-            DiplomacyPhaseResult::WarJoin(prompt) => {
-                crate::turn_flow::TurnFlow::DiplomacyWarJoin(prompt)
-            }
-        };
-        result
+    fn finish_diplomacy_from(&mut self, start_nation: u8, start_index: usize) {
+        if self.reply_to_diplomacy_offers_from(start_nation, start_index) {
+            self.turn_flow
+                .debug_assert_phase_consistency(self.turn.phase());
+            return;
+        }
+        self.turn_flow = crate::turn_flow::TurnFlow::Running;
+        self.turn.phase = PhaseCode::TRADE;
+        self.turn_flow
+            .debug_assert_phase_consistency(self.turn.phase());
+    }
+
+    fn finish_diplomacy_war_from(&mut self, first: NationId, second: NationId, start: u8) {
+        if self.continue_war_reactions(first, second, start) {
+            self.turn_flow
+                .debug_assert_phase_consistency(self.turn.phase());
+            return;
+        }
+        self.turn_flow = crate::turn_flow::TurnFlow::Running;
+        self.turn.phase = PhaseCode::TRADE;
+        self.turn_flow
+            .debug_assert_phase_consistency(self.turn.phase());
     }
 
     fn apply_diplomacy_inter_nation_states(&mut self) {

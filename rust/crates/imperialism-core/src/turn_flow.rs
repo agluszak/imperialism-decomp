@@ -1,8 +1,7 @@
 use crate::trade_phase::TradeSession;
 use crate::{
-    Difficulty, DiplomacyOfferPrompt, DiplomacyPhaseResult, DiplomacyWarJoinPrompt,
-    EliminationOutcome, GameState, MajorNationId, NationId, PendingTradeOffer, QuarterGateResult,
-    Technology,
+    Difficulty, DiplomacyOfferPrompt, DiplomacyWarJoinPrompt, EliminationOutcome, GameState,
+    MajorNationId, NationId, PendingTradeOffer, QuarterGateResult, Technology,
 };
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
@@ -197,8 +196,39 @@ pub enum TurnFlow {
 
 impl TurnFlow {
     pub(crate) fn debug_assert_phase_consistency(&self, phase: PhaseCode) {
-        if matches!(self, Self::AwaitingTradeOffer { .. }) {
-            debug_assert_eq!(phase, PhaseCode::TRADE, "trade offer requires phase TRADE");
+        match self {
+            Self::AwaitingTradeOffer { .. } => {
+                debug_assert_eq!(phase, PhaseCode::TRADE, "trade offer requires phase TRADE");
+            }
+            Self::DiplomacyOffer { .. } | Self::DiplomacyWarJoin(_) => {
+                debug_assert_eq!(
+                    phase,
+                    PhaseCode::DIPLOMACY,
+                    "diplomacy interrupt requires phase DIPLOMACY"
+                );
+            }
+            Self::NavalBattle(_) => {
+                debug_assert_eq!(
+                    phase,
+                    PhaseCode::MILITARY,
+                    "naval battle requires phase MILITARY"
+                );
+            }
+            Self::LandBattle(_) => {
+                debug_assert_eq!(
+                    phase,
+                    PhaseCode::COMBAT_MOVES,
+                    "land battle requires phase COMBAT_MOVES"
+                );
+            }
+            Self::TechnologyReport(_) => {
+                debug_assert_eq!(
+                    phase,
+                    PhaseCode::TECHNOLOGY_ADVANCES,
+                    "technology report requires phase TECHNOLOGY_ADVANCES"
+                );
+            }
+            _ => {}
         }
     }
 }
@@ -270,19 +300,13 @@ impl GameState {
 
     /// Accepts or rejects the diplomacy offer stored in the current continuation.
     pub fn answer_current_diplomacy_offer(&mut self, accept: bool) -> TurnStop {
-        let result = self.resolve_diplomacy_offer(accept);
-        if let Some(stop) = self.stop_from_diplomacy(result) {
-            return stop;
-        }
+        self.resolve_diplomacy_offer(accept);
         self.advance_turn()
     }
 
     /// Accepts or rejects the war-join dialog stored in the current continuation.
     pub fn answer_current_diplomacy_war_join(&mut self, accept: bool) -> TurnStop {
-        let result = self.resolve_diplomacy_war_join(accept);
-        if let Some(stop) = self.stop_from_diplomacy(result) {
-            return stop;
-        }
+        self.resolve_diplomacy_war_join(accept);
         self.advance_turn()
     }
 
@@ -309,6 +333,7 @@ impl GameState {
             self.turn_flow = TurnFlow::TechnologyReport(tech_id);
             return TurnStop::TechnologyAdvance;
         }
+        self.turn.phase = PhaseCode::NEWSPAPER;
         self.advance_turn()
     }
 
@@ -463,11 +488,19 @@ impl GameState {
                     self.turn.phase = PhaseCode::SEASON_ADVANCE;
                 }
                 PhaseCode::DIPLOMACY => {
-                    self.turn.phase = PhaseCode::TRADE;
-                    let result = self.do_diplomacy();
-                    if let Some(stop) = self.stop_from_diplomacy(result) {
-                        return stop;
+                    if matches!(
+                        self.turn_flow,
+                        TurnFlow::DiplomacyOffer { .. } | TurnFlow::DiplomacyWarJoin(_)
+                    ) {
+                        return self.interrupt_stop().expect("diplomacy flow is blocked");
                     }
+                    if self.turn.phase() == PhaseCode::DIPLOMACY {
+                        self.do_diplomacy();
+                        if let Some(stop) = self.interrupt_stop() {
+                            return stop;
+                        }
+                    }
+                    debug_assert_ne!(self.turn.phase(), PhaseCode::DIPLOMACY);
                 }
                 PhaseCode::TRADE => {
                     if matches!(self.turn_flow, TurnFlow::AwaitingTradeOffer { .. }) {
@@ -486,17 +519,27 @@ impl GameState {
                     self.do_civilians();
                 }
                 PhaseCode::MILITARY => {
-                    self.turn.phase = PhaseCode::COMBAT_MOVES;
-                    if let Some(continuation) = self.do_military() {
-                        self.turn_flow = TurnFlow::NavalBattle(continuation);
+                    if matches!(self.turn_flow, TurnFlow::NavalBattle(_)) {
                         return TurnStop::NavalBattle;
+                    }
+                    if self.turn.phase() == PhaseCode::MILITARY {
+                        if let Some(continuation) = self.do_military() {
+                            self.turn_flow = TurnFlow::NavalBattle(continuation);
+                            return TurnStop::NavalBattle;
+                        }
+                        self.turn.phase = PhaseCode::COMBAT_MOVES;
                     }
                 }
                 PhaseCode::COMBAT_MOVES => {
-                    self.turn.phase = PhaseCode::MILITARY_CLEANUP;
-                    if let Some(continuation) = self.do_combat_moves() {
-                        self.turn_flow = TurnFlow::LandBattle(continuation);
+                    if matches!(self.turn_flow, TurnFlow::LandBattle(_)) {
                         return TurnStop::LandBattle;
+                    }
+                    if self.turn.phase() == PhaseCode::COMBAT_MOVES {
+                        if let Some(continuation) = self.do_combat_moves() {
+                            self.turn_flow = TurnFlow::LandBattle(continuation);
+                            return TurnStop::LandBattle;
+                        }
+                        self.turn.phase = PhaseCode::MILITARY_CLEANUP;
                     }
                 }
                 PhaseCode::MILITARY_CLEANUP => {
@@ -560,9 +603,16 @@ impl GameState {
                     self.advance_season_phase();
                 }
                 PhaseCode::TECHNOLOGY_ADVANCES => {
-                    self.turn.phase = PhaseCode::NEWSPAPER;
-                    if let Some(stop) = self.run_technology_advances() {
-                        return stop;
+                    if matches!(self.turn_flow, TurnFlow::TechnologyReport(_)) {
+                        return TurnStop::TechnologyAdvance;
+                    }
+                    if self.turn.phase() == PhaseCode::TECHNOLOGY_ADVANCES {
+                        self.apply_technology_advances_phase();
+                        if let Some(tech_id) = self.consume_interactive_technology_unlock() {
+                            self.turn_flow = TurnFlow::TechnologyReport(tech_id);
+                            return TurnStop::TechnologyAdvance;
+                        }
+                        self.turn.phase = PhaseCode::NEWSPAPER;
                     }
                 }
                 PhaseCode::NEWSPAPER => {
@@ -596,21 +646,6 @@ impl GameState {
             TurnFlow::Victory => Some(TurnStop::Victory),
             TurnFlow::GameScore => Some(TurnStop::GameScore),
         }
-    }
-
-    fn stop_from_diplomacy(&self, result: DiplomacyPhaseResult) -> Option<TurnStop> {
-        match result {
-            DiplomacyPhaseResult::Resolved => None,
-            DiplomacyPhaseResult::Offer(_) => Some(TurnStop::DiplomacyOffer),
-            DiplomacyPhaseResult::WarJoin(_) => Some(TurnStop::DiplomacyWarJoin),
-        }
-    }
-
-    fn run_technology_advances(&mut self) -> Option<TurnStop> {
-        self.apply_technology_advances_phase();
-        let tech_id = self.consume_interactive_technology_unlock()?;
-        self.turn_flow = TurnFlow::TechnologyReport(tech_id);
-        Some(TurnStop::TechnologyAdvance)
     }
 
     /// Retail case 8 body: write the resume phase, then `DoCityAndTransport`.
@@ -772,7 +807,7 @@ mod tests {
         let prompt = state
             .current_diplomacy_offer()
             .expect("diplomacy offer continuation");
-        assert_eq!(state.turn.phase(), crate::PhaseCode::TRADE);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DIPLOMACY);
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
         let stop = state.answer_current_diplomacy_offer(true);
         assert!(state.current_diplomacy_offer().is_none());
@@ -801,7 +836,7 @@ mod tests {
         let prompt = state
             .current_diplomacy_offer()
             .expect("diplomacy offer continuation");
-        assert_eq!(state.turn.phase(), crate::PhaseCode::TRADE);
+        assert_eq!(state.turn.phase(), crate::PhaseCode::DIPLOMACY);
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
 
         let mut stop = state.answer_current_diplomacy_offer(true);

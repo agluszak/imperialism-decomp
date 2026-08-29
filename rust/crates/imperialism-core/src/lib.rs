@@ -107,10 +107,9 @@ pub use deal_book::{
 };
 pub use difficulty::{Difficulty, DifficultyTable};
 pub use diplomacy::{
-    DiplomacyGrant, DiplomacyMapAction, DiplomacyOfferPrompt, DiplomacyPhaseResult,
-    DiplomacyPolicy, DiplomacyState, DiplomacyWarJoinKind, DiplomacyWarJoinPrompt,
-    DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
-    PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
+    DiplomacyGrant, DiplomacyMapAction, DiplomacyOfferPrompt, DiplomacyPolicy, DiplomacyState,
+    DiplomacyWarJoinKind, DiplomacyWarJoinPrompt, DiplomaticCongressState, DiplomaticMissionLevel,
+    DiplomaticRelationship, PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
 };
 pub use game::{GameData, GameState, GameStateParts};
 pub use game_score::GameScore;

@@ -27,9 +27,9 @@ impl GameState {
         }
     }
 
-    pub(super) fn process_one_queued_war(&mut self) -> DiplomacyPhaseResult {
+    pub(super) fn process_one_queued_war(&mut self) -> bool {
         let Some(pair) = self.pending.war_transitions.first().copied() else {
-            return DiplomacyPhaseResult::Resolved;
+            return false;
         };
         self.pending.war_transitions.remove(0);
         if !self.at_war(pair.first, pair.second) {
@@ -69,7 +69,7 @@ impl GameState {
         first: NationId,
         second: NationId,
         start: u8,
-    ) -> DiplomacyPhaseResult {
+    ) -> bool {
         if MajorNationId::from_nation(second).is_none() {
             if start == 0
                 && self.is_independent(second)
@@ -81,19 +81,21 @@ impl GameState {
                     DiplomacyWarJoinKind::DefendMinor
                 };
                 if self.nations.majors[&favorite].auto.is_none() {
-                    return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
-                        nation: favorite,
-                        target: second,
-                        source: first,
-                        kind,
-                        pair_first: first,
-                        pair_second: second,
-                        cursor: 1,
-                    });
+                    self.turn_flow =
+                        crate::turn_flow::TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
+                            nation: favorite,
+                            target: second,
+                            source: first,
+                            kind,
+                            pair_first: first,
+                            pair_second: second,
+                            cursor: 1,
+                        });
+                    return true;
                 }
                 self.ai_handle_minor_war(favorite, second, first);
             }
-            return DiplomacyPhaseResult::Resolved;
+            return false;
         }
 
         let mut cursor = start;
@@ -107,15 +109,17 @@ impl GameState {
                 continue;
             }
             if self.nations.majors[&other].auto.is_none() {
-                return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
-                    nation: other,
-                    target: second,
-                    source: first,
-                    kind: DiplomacyWarJoinKind::JoinTargetAlly,
-                    pair_first: first,
-                    pair_second: second,
-                    cursor,
-                });
+                self.turn_flow =
+                    crate::turn_flow::TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
+                        nation: other,
+                        target: second,
+                        source: first,
+                        kind: DiplomacyWarJoinKind::JoinTargetAlly,
+                        pair_first: first,
+                        pair_second: second,
+                        cursor,
+                    });
+                return true;
             }
             self.ai_handle_role_swap(other, second, first, false);
         }
@@ -129,19 +133,21 @@ impl GameState {
                 continue;
             }
             if self.nations.majors[&other].auto.is_none() {
-                return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
-                    nation: other,
-                    target: second,
-                    source: first,
-                    kind: DiplomacyWarJoinKind::JoinSourceAlly,
-                    pair_first: first,
-                    pair_second: second,
-                    cursor,
-                });
+                self.turn_flow =
+                    crate::turn_flow::TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
+                        nation: other,
+                        target: second,
+                        source: first,
+                        kind: DiplomacyWarJoinKind::JoinSourceAlly,
+                        pair_first: first,
+                        pair_second: second,
+                        cursor,
+                    });
+                return true;
             }
             self.ai_handle_role_swap(other, second, first, true);
         }
-        DiplomacyPhaseResult::Resolved
+        false
     }
 
     pub(super) fn apply_war_join_decision(&mut self, prompt: DiplomacyWarJoinPrompt, accept: bool) {

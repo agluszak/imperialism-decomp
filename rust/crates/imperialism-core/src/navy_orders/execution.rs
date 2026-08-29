@@ -86,6 +86,7 @@ impl GameState {
             self.turn_flow = crate::turn_flow::TurnFlow::NavalBattle(continuation);
             return crate::TurnStop::NavalBattle;
         }
+        self.turn.phase = crate::PhaseCode::COMBAT_MOVES;
         self.advance_turn()
     }
 

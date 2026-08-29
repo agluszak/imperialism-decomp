@@ -147,7 +147,7 @@ impl GameState {
         &mut self,
         start_nation: u8,
         start_index: usize,
-    ) -> DiplomacyPhaseResult {
+    ) -> bool {
         for nation in MajorNationId::all().skip(usize::from(start_nation)) {
             let first = if nation.get() == start_nation {
                 start_index
@@ -157,7 +157,11 @@ impl GameState {
             let count = self.pending.nations[nation].proposals.len();
             for index in first..count {
                 if let Some(prompt) = self.reply_to_one_diplomacy_offer(nation, index) {
-                    return DiplomacyPhaseResult::Offer(prompt);
+                    self.turn_flow = crate::turn_flow::TurnFlow::DiplomacyOffer {
+                        nation: prompt.nation,
+                        index: prompt.index,
+                    };
+                    return true;
                 }
             }
             self.reset_diplomacy_commitments(nation);

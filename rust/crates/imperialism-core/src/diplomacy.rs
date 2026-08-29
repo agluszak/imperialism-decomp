@@ -311,18 +311,6 @@ impl DiplomacyPolicy {
     }
 }
 
-/// Outcome of one diplomacy-resolution pass.
-///
-/// Retail stops for a human offer dialog during replies, then later for a
-/// war-join dialog while processing the first queued war transition.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "kind", rename_all = "snake_case")]
-pub enum DiplomacyPhaseResult {
-    Resolved,
-    Offer(DiplomacyOfferPrompt),
-    WarJoin(DiplomacyWarJoinPrompt),
-}
-
 /// One human offer that retail would pose as a diplomacy-offer dialog.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct DiplomacyOfferPrompt {
