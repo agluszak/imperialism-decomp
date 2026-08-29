@@ -64,7 +64,7 @@ class UiRustCodegenTests(unittest.TestCase):
         curs_start = startup.index('retail_node(fourcc!("curs")')
         curs_end = startup.index('retail_node(fourcc!("', curs_start + 1)
         block = startup[curs_start:curs_end]
-        self.assertIn("HoverHelpBar", block)
+        self.assertIn("@HoverHelpBar", block)
         self.assertIn("retail_text_style(1, 0, 14, 1)", block)
         self.assertIn("retail_text_color(0x28)", block)
         self.assertIn("retail_text_shadow(0xd2, 1, 1)", block)
@@ -84,9 +84,12 @@ class UiRustCodegenTests(unittest.TestCase):
 
     def test_transport_gauge_specializations(self) -> None:
         transport = _scene_source("transport_2014")
-        self.assertIn("retail_transport_capacity_gauge(325)", transport)
-        self.assertIn("retail_transport_allocation_gauge(70)", transport)
-        self.assertNotIn("retail_transport_gauge(", transport)
+        self.assertIn("transport_gauge_capacity_parts()", transport)
+        self.assertIn("transport_gauge_allocation_parts()", transport)
+        self.assertIn("{transport_gauge_capacity_children(325)}", transport)
+        self.assertIn("{transport_gauge_allocation_children(70)}", transport)
+        self.assertNotIn("retail_transport_capacity_gauge(", transport)
+        self.assertNotIn("retail_transport_allocation_gauge(", transport)
 
     def test_transport_right_left_view_has_no_sideways_arrow_hilite(self) -> None:
         transport = _scene_source("transport_2014")

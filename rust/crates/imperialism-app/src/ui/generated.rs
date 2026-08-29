@@ -3,7 +3,7 @@
 
 use super::hover_help::HoverHelpBar;
 use super::retail::*;
-use super::retail_page_corner::RetailPageCorner;
+use super::retail_page_corner::{retail_page_corner_left, retail_page_corner_right};
 use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};
 use super::window::CaptionedWindow;
 use bevy::prelude::*;
@@ -20,7 +20,7 @@ pub fn armory_9208() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 60, 62, 370, 410)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
@@ -468,7 +468,7 @@ pub fn citydlog_9200() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 98, 166, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -490,14 +490,12 @@ pub fn citydlog_9200() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -566,7 +564,7 @@ pub fn citydlog_9201() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 297, 250, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -588,14 +586,12 @@ pub fn citydlog_9201() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 3, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 3, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -652,7 +648,7 @@ pub fn citydlog_9202() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 206, 98, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -674,14 +670,12 @@ pub fn citydlog_9202() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -744,7 +738,7 @@ pub fn citydlog_9203() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 280, 153, 270, 160)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
@@ -766,14 +760,12 @@ pub fn citydlog_9203() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -795,14 +787,12 @@ pub fn citydlog_9203() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -865,7 +855,7 @@ pub fn citydlog_9204() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 75, 164, 270, 160)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
@@ -887,14 +877,12 @@ pub fn citydlog_9204() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -916,14 +904,12 @@ pub fn citydlog_9204() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -986,7 +972,7 @@ pub fn citydlog_9205() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 245, 271, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1008,14 +994,12 @@ pub fn citydlog_9205() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1072,7 +1056,7 @@ pub fn citydlog_9206() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 198, 66, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1094,14 +1078,12 @@ pub fn citydlog_9206() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1158,7 +1140,7 @@ pub fn citydlog_9209() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 110, 57, 270, 270)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 270)
@@ -1171,14 +1153,12 @@ pub fn citydlog_9209() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1200,14 +1180,12 @@ pub fn citydlog_9209() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1306,7 +1284,7 @@ pub fn citydlog_9211() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 254, 98, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1322,14 +1300,12 @@ pub fn citydlog_9211() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1371,7 +1347,7 @@ pub fn citydlog_9212() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 136, 101, 270, 160)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
@@ -1393,14 +1369,12 @@ pub fn citydlog_9212() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 10, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1460,7 +1434,7 @@ pub fn citydlog_9213() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 71, 61, 176, 300)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 176, 300)
@@ -1669,7 +1643,7 @@ pub fn citydlog_9214() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 210, 90, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1691,14 +1665,12 @@ pub fn citydlog_9214() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -1746,7 +1718,7 @@ pub fn citydlog_9215() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 63, 236, 270, 120)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
@@ -1774,14 +1746,12 @@ pub fn citydlog_9215() -> impl Scene {
                                         retail_node(fourcc!("left"), 49, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9240, 9241)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(9242, 9243)
                                     ),
                                     (
@@ -2032,8 +2002,7 @@ pub fn citymain_2011() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(6021)
-                                        retail_pressed_overlay_picture(6022)
+                                        retail_picture_button(6021, 6022)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -2081,19 +2050,13 @@ pub fn citymain_2011() -> impl Scene {
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(6020)
-                                        retail_pressed_overlay_picture(6021)
+                                        retail_picture_button(6020, 6021)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -2125,12 +2088,7 @@ pub fn diplo_1351() -> impl Scene {
                                 Children [
                                     (
                                         retail_node(fourcc!("curs"), 434, 7, 201, 21)
-                                        template(|_context| Ok(HoverHelpBar))
-                                        Node {
-                                            flex_direction: FlexDirection::Column,
-                                            justify_content: JustifyContent::Center,
-                                            overflow: Overflow::clip(),
-                                        }
+                                        @HoverHelpBar
                                         Text("")
                                         retail_text_style(1, 0, 12, 1)
                                         retail_text_color(0x28)
@@ -2150,8 +2108,7 @@ pub fn diplo_1351() -> impl Scene {
                                         retail_node(fourcc!("okay"), 8, 38, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4106)
-                                        retail_pressed_overlay_picture(4107)
+                                        retail_picture_button(4106, 4107)
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 294, 412, 53, 57)
@@ -2209,8 +2166,7 @@ pub fn diplo_1351() -> impl Scene {
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
                                                 Button
                                                 InteractionDisabled
-                                                retail_picture(4107)
-                                                retail_pressed_overlay_picture(4108)
+                                                retail_picture_button(4107, 4108)
                                             ),
                                         ]
                                     ),
@@ -2238,14 +2194,14 @@ pub fn diplo_1352() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("lcor"), 12, 387, 37, 35)
-                                template(|_context| Ok(RetailPageCorner::Left))
+                                retail_page_corner_left()
                                 Pickable { should_block_lower: false, is_hoverable: true }
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 387, 40, 35)
-                                template(|_context| Ok(RetailPageCorner::Right))
+                                retail_page_corner_right()
                                 Pickable { should_block_lower: false, is_hoverable: true }
                                 Button
                                 InteractionDisabled
@@ -2254,8 +2210,7 @@ pub fn diplo_1352() -> impl Scene {
                                 retail_node(fourcc!("okay"), 27, 9, 33, 32)
                                 Button
                                 InteractionDisabled
-                                retail_picture(4070)
-                                retail_pressed_overlay_picture(4071)
+                                retail_picture_button(4070, 4071)
                             ),
                             (
                                 retail_node(fourcc!("flgR"), 408, 10, 64, 86)
@@ -2583,8 +2538,7 @@ pub fn diplo_2008() -> impl Scene {
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(5052)
-                                        retail_pressed_overlay_picture(5053)
+                                        retail_picture_button(5052, 5053)
                                     ),
                                 ]
                             ),
@@ -2636,8 +2590,7 @@ pub fn diplo_2008() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(5051)
-                                        retail_pressed_overlay_picture(5052)
+                                        retail_picture_button(5051, 5052)
                                     ),
                                 ]
                             ),
@@ -2668,12 +2621,7 @@ pub fn diplo_2008() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -2724,8 +2672,7 @@ pub fn diplo_2016() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4140)
-                                        retail_pressed_overlay_picture(4141)
+                                        retail_picture_button(4140, 4141)
                                     ),
                                 ]
                             ),
@@ -2736,8 +2683,7 @@ pub fn diplo_2016() -> impl Scene {
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4141)
-                                        retail_pressed_overlay_picture(4142)
+                                        retail_picture_button(4141, 4142)
                                     ),
                                 ]
                             ),
@@ -2849,12 +2795,7 @@ pub fn diplo_2016() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 396, 5, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -2938,8 +2879,7 @@ pub fn flagview_8451() -> impl Scene {
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(8454)
-                                        retail_pressed_overlay_picture(8455)
+                                        retail_picture_button(8454, 8455)
                                     ),
                                 ]
                             ),
@@ -2950,8 +2890,7 @@ pub fn flagview_8451() -> impl Scene {
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(8456)
-                                        retail_pressed_overlay_picture(8457)
+                                        retail_picture_button(8456, 8457)
                                     ),
                                 ]
                             ),
@@ -3044,15 +2983,13 @@ pub fn flagview_8500() -> impl Scene {
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(8533)
-                                        retail_pressed_overlay_picture(8534)
+                                        retail_picture_button(8533, 8534)
                                     ),
                                     (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(8532)
-                                        retail_pressed_overlay_picture(8533)
+                                        retail_picture_button(8532, 8533)
                                     ),
                                     (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
@@ -3151,12 +3088,7 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 273, 7, 318, 25)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 14, 1)
                                 retail_text_color(0x28)
@@ -3169,8 +3101,7 @@ pub fn flagview_8500() -> impl Scene {
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(8404)
-                                        retail_pressed_overlay_picture(8405)
+                                        retail_picture_button(8404, 8405)
                                     ),
                                 ]
                             ),
@@ -3178,8 +3109,7 @@ pub fn flagview_8500() -> impl Scene {
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
                                 Button
                                 InteractionDisabled
-                                retail_picture(8825)
-                                retail_pressed_overlay_picture(8826)
+                                retail_picture_button(8825, 8826)
                             ),
                         ]
                     ),
@@ -3214,8 +3144,7 @@ pub fn flagview_8800() -> impl Scene {
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
                                                         Button
                                                         InteractionDisabled
-                                                        retail_picture(8814)
-                                                        retail_pressed_overlay_picture(8815)
+                                                        retail_picture_button(8814, 8815)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -3273,8 +3202,7 @@ pub fn flagview_8800() -> impl Scene {
                                                 retail_node(fourcc!("mark"), 8, 136, 40, 53)
                                                 Button
                                                 InteractionDisabled
-                                                retail_picture(8812)
-                                                retail_pressed_overlay_picture(8813)
+                                                retail_picture_button(8812, 8813)
                                             ),
                                             (
                                                 retail_node(fourcc!("tbr2"), 608, 40, 22, 37)
@@ -3283,8 +3211,7 @@ pub fn flagview_8800() -> impl Scene {
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
                                                         Button
                                                         InteractionDisabled
-                                                        retail_picture(8816)
-                                                        retail_pressed_overlay_picture(8817)
+                                                        retail_picture_button(8816, 8817)
                                                     ),
                                                 ]
                                             ),
@@ -3296,12 +3223,7 @@ pub fn flagview_8800() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 245, 7, 365, 21)
-                        template(|_context| Ok(HoverHelpBar))
-                        Node {
-                            flex_direction: FlexDirection::Column,
-                            justify_content: JustifyContent::Center,
-                            overflow: Overflow::clip(),
-                        }
+                        @HoverHelpBar
                         Text("")
                         retail_text_style(1, 0, 12, 1)
                         retail_text_color(0x28)
@@ -3506,12 +3428,7 @@ pub fn linger_1502() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 49, 19, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -3600,7 +3517,7 @@ pub fn linger_3000() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 100, 100, 390, 315)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 390, 315)
@@ -3698,7 +3615,7 @@ pub fn linger_3005() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 100, 100, 390, 300)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 390, 300)
@@ -3821,8 +3738,7 @@ pub fn linger_4122() -> impl Scene {
                                 retail_node(fourcc!("advi"), 113, 65, 97, 37)
                                 Button
                                 InteractionDisabled
-                                retail_picture(4123)
-                                retail_pressed_overlay_picture(4124)
+                                retail_picture_button(4123, 4124)
                             ),
                             (
                                 retail_node(fourcc!("oref"), 11, 150, 65, 27)
@@ -3858,8 +3774,7 @@ pub fn linger_4122() -> impl Scene {
                                 retail_node(fourcc!("cncl"), 10, 335, 65, 27)
                                 Button
                                 InteractionDisabled
-                                retail_picture(4129)
-                                retail_pressed_overlay_picture(4130)
+                                retail_picture_button(4129, 4130)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 101, 22, 126, 16)
@@ -3975,50 +3890,43 @@ pub fn linger_4140() -> impl Scene {
                                 retail_node(fourcc!("save"), 112, 65, 97, 37)
                                 Button
                                 InteractionDisabled
-                                retail_picture(1331)
-                                retail_pressed_overlay_picture(1332)
+                                retail_picture_button(1331, 1332)
                             ),
                             (
                                 retail_node(fourcc!("newg"), 10, 149, 65, 27)
                                 Button
                                 InteractionDisabled
-                                retail_picture(1332)
-                                retail_pressed_overlay_picture(1333)
+                                retail_picture_button(1332, 1333)
                             ),
                             (
                                 retail_node(fourcc!("load"), 10, 186, 65, 27)
                                 Button
                                 InteractionDisabled
-                                retail_picture(1333)
-                                retail_pressed_overlay_picture(1334)
+                                retail_picture_button(1333, 1334)
                             ),
                             (
                                 retail_node(fourcc!("pref"), 10, 223, 65, 27)
                                 Button
                                 InteractionDisabled
-                                retail_picture(1334)
-                                retail_pressed_overlay_picture(1335)
+                                retail_picture_button(1334, 1335)
                             ),
                             (
                                 retail_node(fourcc!("cred"), 10, 260, 65, 27)
                                 Button
                                 InteractionDisabled
-                                retail_picture(1335)
-                                retail_pressed_overlay_picture(1336)
+                                retail_picture_button(1335, 1336)
                             ),
                             (
                                 retail_node(fourcc!("quit"), 10, 297, 65, 27)
                                 Button
                                 InteractionDisabled
-                                retail_picture(1336)
-                                retail_pressed_overlay_picture(1337)
+                                retail_picture_button(1336, 1337)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 11, 335, 65, 27)
                                 Button
                                 InteractionDisabled
-                                retail_picture(1337)
-                                retail_pressed_overlay_picture(1338)
+                                retail_picture_button(1337, 1338)
                             ),
                             (
                                 retail_node(fourcc!("txt7"), 84, 340, 126, 18)
@@ -4078,8 +3986,7 @@ pub fn linger_4150() -> impl Scene {
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4145)
-                                        retail_pressed_overlay_picture(4146)
+                                        retail_picture_button(4145, 4146)
                                     ),
                                 ]
                             ),
@@ -4150,19 +4057,13 @@ pub fn linger_4150() -> impl Scene {
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4146)
-                                        retail_pressed_overlay_picture(4147)
+                                        retail_picture_button(4146, 4147)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -4221,19 +4122,13 @@ pub fn linger_4300() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4325)
-                                        retail_pressed_overlay_picture(4326)
+                                        retail_picture_button(4325, 4326)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -4305,8 +4200,7 @@ pub fn linger_4300() -> impl Scene {
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4145)
-                                        retail_pressed_overlay_picture(4146)
+                                        retail_picture_button(4145, 4146)
                                     ),
                                 ]
                             ),
@@ -4453,8 +4347,7 @@ pub fn mapview_2013() -> impl Scene {
                                         retail_node(fourcc!("Flag"), 62, 8, 25, 35)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(1300)
-                                        retail_pressed_overlay_picture(1301)
+                                        retail_picture_button(1300, 1301)
                                     ),
                                     (
                                         retail_node(fourcc!("mmap"), 33, 8, 25, 35)
@@ -4465,8 +4358,7 @@ pub fn mapview_2013() -> impl Scene {
                                         retail_node(fourcc!("quer"), 91, 8, 25, 35)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(1307)
-                                        retail_pressed_overlay_picture(1308)
+                                        retail_picture_button(1307, 1308)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
@@ -4708,8 +4600,7 @@ pub fn mapview_2013() -> impl Scene {
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(1011)
-                                        retail_pressed_overlay_picture(1012)
+                                        retail_picture_button(1011, 1012)
                                     ),
                                     (
                                         retail_node(fourcc!("uciv"), 128, 143, 126, 306)
@@ -4752,8 +4643,7 @@ pub fn mapview_2013() -> impl Scene {
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
                                                 Button
                                                 InteractionDisabled
-                                                retail_picture(1113)
-                                                retail_pressed_overlay_picture(1114)
+                                                retail_picture_button(1113, 1114)
                                             ),
                                         ]
                                     ),
@@ -4778,12 +4668,7 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, -1)
                                 retail_text_color(0x28)
@@ -4825,15 +4710,13 @@ pub fn mapview_3012() -> impl Scene {
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
                                 Button
                                 InteractionDisabled
-                                retail_picture(3014)
-                                retail_pressed_overlay_picture(3015)
+                                retail_picture_button(3014, 3015)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
                                 Button
                                 InteractionDisabled
-                                retail_picture(3013)
-                                retail_pressed_overlay_picture(3014)
+                                retail_picture_button(3013, 3014)
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
@@ -4941,13 +4824,13 @@ pub fn mapview_3500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
-                                template(|_context| Ok(RetailPageCorner::Left))
+                                retail_page_corner_left()
                                 Pickable { should_block_lower: false, is_hoverable: true }
                                 Button
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 356, 41, 36)
-                                template(|_context| Ok(RetailPageCorner::Right))
+                                retail_page_corner_right()
                                 Pickable { should_block_lower: false, is_hoverable: true }
                                 Button
                             ),
@@ -4955,8 +4838,7 @@ pub fn mapview_3500() -> impl Scene {
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
                                 Button
                                 InteractionDisabled
-                                retail_picture(3507)
-                                retail_pressed_overlay_picture(3508)
+                                retail_picture_button(3507, 3508)
                             ),
                         ]
                     ),
@@ -5952,8 +5834,7 @@ pub fn mapview_9478() -> impl Scene {
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
                                 Button
                                 InteractionDisabled
-                                retail_picture(3507)
-                                retail_pressed_overlay_picture(3508)
+                                retail_picture_button(3507, 3508)
                             ),
                             (
                                 retail_node(fourcc!("page"), 13, 46, 458, 310)
@@ -6241,12 +6122,7 @@ pub fn multiplayer_1508() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("labl"), 33, 26, 234, 18)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -6340,7 +6216,7 @@ pub fn shipyard_9207() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 125, 62, 370, 410)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
@@ -6629,15 +6505,13 @@ pub fn startup_952() -> impl Scene {
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(1017)
-                                        retail_pressed_overlay_picture(1018)
+                                        retail_picture_button(1017, 1018)
                                     ),
                                     (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(1018)
-                                        retail_pressed_overlay_picture(1019)
+                                        retail_picture_button(1018, 1019)
                                     ),
                                 ]
                             ),
@@ -6653,12 +6527,7 @@ pub fn startup_952() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, -1)
                                 retail_text_color(0x28)
@@ -6800,12 +6669,7 @@ pub fn startup_1500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 180, 424, 274, 52)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 14, 1)
                                 retail_text_color(0x28)
@@ -6846,12 +6710,7 @@ pub fn startup_1501() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("hot!"), 36, 22, 238, 27)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0xd2)
@@ -7062,12 +6921,7 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("curs"), 50, 17, 214, 30)
-                                        template(|_context| Ok(HoverHelpBar))
-                                        Node {
-                                            flex_direction: FlexDirection::Column,
-                                            justify_content: JustifyContent::Center,
-                                            overflow: Overflow::clip(),
-                                        }
+                                        @HoverHelpBar
                                         Text("")
                                         retail_text_style(1, 0, 12, 1)
                                         retail_text_color(0x28)
@@ -7138,15 +6992,13 @@ pub fn startup_1506() -> impl Scene {
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
                                 Button
                                 InteractionDisabled
-                                retail_picture(4510)
-                                retail_pressed_overlay_picture(4511)
+                                retail_picture_button(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
                                 Button
                                 InteractionDisabled
-                                retail_picture(4511)
-                                retail_pressed_overlay_picture(4512)
+                                retail_picture_button(4511, 4512)
                             ),
                             (
                                 retail_node(fourcc!("txt0"), 264, 171, 138, 18)
@@ -7233,12 +7085,7 @@ pub fn startup_1506() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("labl"), 21, 67, 200, 21)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -7291,12 +7138,7 @@ pub fn startup_1509() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 34, 18, 233, 33)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -7508,8 +7350,7 @@ pub fn startup_1515() -> impl Scene {
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4596)
-                                        retail_pressed_overlay_picture(4597)
+                                        retail_picture_button(4596, 4597)
                                     ),
                                 ]
                             ),
@@ -7544,15 +7385,13 @@ pub fn startup_20000() -> impl Scene {
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(20001)
-                                        retail_pressed_overlay_picture(20002)
+                                        retail_picture_button(20001, 20002)
                                     ),
                                     (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(20002)
-                                        retail_pressed_overlay_picture(20003)
+                                        retail_picture_button(20002, 20003)
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
@@ -7597,12 +7436,7 @@ pub fn tactical_3800() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("curs"), 221, 4, 360, 20)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, -1)
                                 retail_text_color(0x28)
@@ -7646,8 +7480,7 @@ pub fn tactical_3800() -> impl Scene {
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(3798)
-                                        retail_pressed_overlay_picture(3799)
+                                        retail_picture_button(3798, 3799)
                                     ),
                                     (
                                         retail_node(fourcc!("tpic"), 2, 356, 50, 50)
@@ -7785,8 +7618,7 @@ pub fn tech_2200() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(2228)
-                                        retail_pressed_overlay_picture(2229)
+                                        retail_picture_button(2228, 2229)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -7804,12 +7636,7 @@ pub fn tech_2200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 247, 7, 341, 17)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -7847,8 +7674,7 @@ pub fn techstore_2300() -> impl Scene {
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(2301)
-                                        retail_pressed_overlay_picture(2302)
+                                        retail_picture_button(2301, 2302)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -7896,8 +7722,7 @@ pub fn techstore_2300() -> impl Scene {
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(2302)
-                                        retail_pressed_overlay_picture(2303)
+                                        retail_picture_button(2302, 2303)
                                     ),
                                 ]
                             ),
@@ -7934,12 +7759,7 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -8020,8 +7840,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(6020)
-                                        retail_pressed_overlay_picture(6021)
+                                        retail_picture_button(6020, 6021)
                                     ),
                                 ]
                             ),
@@ -8047,8 +7866,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(6021)
-                                        retail_pressed_overlay_picture(6022)
+                                        retail_picture_button(6021, 6022)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -8096,14 +7914,12 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8144,14 +7960,12 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8188,14 +8002,12 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8232,14 +8044,12 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8272,7 +8082,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8283,7 +8092,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8316,7 +8124,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8327,7 +8134,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8360,7 +8166,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8371,7 +8176,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8404,7 +8208,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8415,7 +8218,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8448,7 +8250,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8459,7 +8260,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8492,7 +8292,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8503,7 +8302,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8536,7 +8334,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8547,7 +8344,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8580,7 +8376,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8591,7 +8386,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8624,7 +8418,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8635,7 +8428,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8668,7 +8460,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8679,7 +8470,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8712,7 +8502,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8723,7 +8512,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8756,7 +8544,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8767,7 +8554,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8800,7 +8586,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2121, 2122)
                                     ),
                                     (
@@ -8811,7 +8596,6 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        Pickable
                                         retail_picture_swap(2123, 2124)
                                     ),
                                     (
@@ -8883,12 +8667,7 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -8953,8 +8732,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                                 Button
                                                 InteractionDisabled
-                                                retail_picture(6020)
-                                                retail_pressed_overlay_picture(6021)
+                                                retail_picture_button(6020, 6021)
                                             ),
                                         ]
                                     ),
@@ -8982,14 +8760,12 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9030,14 +8806,12 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9074,14 +8848,12 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9118,14 +8890,12 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9158,7 +8928,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9169,7 +8938,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9202,7 +8970,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9213,7 +8980,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9246,7 +9012,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9257,7 +9022,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9290,7 +9054,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9301,7 +9064,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9334,7 +9096,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9345,7 +9106,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9378,7 +9138,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9389,7 +9148,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9422,7 +9180,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9433,7 +9190,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9466,7 +9222,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9477,7 +9232,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9510,7 +9264,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9521,7 +9274,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9554,7 +9306,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9565,7 +9316,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9598,7 +9348,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9609,7 +9358,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9642,7 +9390,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9653,7 +9400,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9686,7 +9432,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2121, 2122)
                                             ),
                                             (
@@ -9697,7 +9442,6 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                Pickable
                                                 retail_picture_swap(2123, 2124)
                                             ),
                                             (
@@ -9749,8 +9493,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
                                                 Button
                                                 InteractionDisabled
-                                                retail_picture(6021)
-                                                retail_pressed_overlay_picture(6022)
+                                                retail_picture_button(6021, 6022)
                                             ),
                                             (
                                                 retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -9848,12 +9591,7 @@ pub fn trade_2010() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 386, 5, 201, 30)
-                        template(|_context| Ok(HoverHelpBar))
-                        Node {
-                            flex_direction: FlexDirection::Column,
-                            justify_content: JustifyContent::Center,
-                            overflow: Overflow::clip(),
-                        }
+                        @HoverHelpBar
                         Text("")
                         retail_text_style(1, 0, 12, 1)
                         retail_text_color(0x28)
@@ -9909,8 +9647,7 @@ pub fn transport_2014() -> impl Scene {
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4025)
-                                        retail_pressed_overlay_picture(4026)
+                                        retail_picture_button(4025, 4026)
                                     ),
                                 ]
                             ),
@@ -9921,8 +9658,7 @@ pub fn transport_2014() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture(4024)
-                                        retail_pressed_overlay_picture(4025)
+                                        retail_picture_button(4024, 4025)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -9941,8 +9677,9 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
                                 retail_picture(4019)
-                                retail_transport_capacity_gauge(325)
+                                transport_gauge_capacity_parts()
                                 Children [
+                                    {transport_gauge_capacity_children(325)},
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
                                         Text("")
@@ -9954,18 +9691,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
                                 retail_picture(4001)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -9979,18 +9715,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
                                 retail_picture(4002)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10004,18 +9739,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
                                 retail_picture(4003)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10029,18 +9763,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
                                 retail_picture(4004)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10054,18 +9787,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
                                 retail_picture(4005)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10079,18 +9811,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
                                 retail_picture(4006)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10104,18 +9835,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
                                 retail_picture(4007)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10129,18 +9859,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
                                 retail_picture(4008)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10154,18 +9883,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
                                 retail_picture(4009)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10179,18 +9907,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
                                 retail_picture(4010)
-                                retail_transport_allocation_gauge(70)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(70)},
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4020, 4021)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4021, 4022)
                                     ),
                                     (
@@ -10204,18 +9931,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
                                 retail_picture(4011)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10229,18 +9955,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
                                 retail_picture(4012)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10254,18 +9979,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
                                 retail_picture(4013)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10279,18 +10003,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
                                 retail_picture(4014)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10304,18 +10027,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
                                 retail_picture(4015)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10329,18 +10051,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
                                 retail_picture(4016)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10354,18 +10075,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
                                 retail_picture(4017)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10385,18 +10105,17 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
                                 retail_picture(4018)
-                                retail_transport_allocation_gauge(325)
+                                transport_gauge_allocation_parts()
                                 Children [
+                                    {transport_gauge_allocation_children(325)},
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4022, 4023)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        Pickable
                                         retail_picture_swap(4023, 4024)
                                     ),
                                     (
@@ -10429,12 +10148,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)
-                                template(|_context| Ok(HoverHelpBar))
-                                Node {
-                                    flex_direction: FlexDirection::Column,
-                                    justify_content: JustifyContent::Center,
-                                    overflow: Overflow::clip(),
-                                }
+                                @HoverHelpBar
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 retail_text_color(0x28)
@@ -10455,7 +10169,7 @@ pub fn univ_9210() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 51, 61, 370, 410)
-                template(|_context| Ok(CaptionedWindow))
+                @CaptionedWindow
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 370, 410)

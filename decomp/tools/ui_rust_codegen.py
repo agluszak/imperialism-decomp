@@ -450,24 +450,17 @@ def _emit_picture_art(node: Node) -> list[str]:
         return [f"retail_picture({pic})"]
     if node.class_name in PICTURE_OVERLAY_CLASSES:
         idle, overlay = _picture_swap_ids(node)
-        return [f"retail_picture({idle})", f"retail_pressed_overlay_picture({overlay})"]
+        return [f"retail_picture_button({idle}, {overlay})"]
     idle, active = _picture_swap_ids(node)
     return [f"retail_picture_swap({idle}, {active})"]
 
 
 def _emit_hover_help_bar() -> list[str]:
-    return [
-        "template(|_context| Ok(HoverHelpBar))",
-        "Node {",
-        "    flex_direction: FlexDirection::Column,",
-        "    justify_content: JustifyContent::Center,",
-        "    overflow: Overflow::clip(),",
-        "}",
-    ]
+    return ["@HoverHelpBar"]
 
 
 def _emit_captioned_window() -> list[str]:
-    return ["template(|_context| Ok(CaptionedWindow))"]
+    return ["@CaptionedWindow"]
 
 
 def _emit_scroll_area() -> list[str]:
@@ -481,13 +474,13 @@ def _emit_scroll_area() -> list[str]:
 
 def _emit_page_corner(node: Node) -> list[str]:
     if node.tag == "lcor":
-        corner = "RetailPageCorner::Left"
+        corner = "retail_page_corner_left()"
     elif node.tag == "rcor":
-        corner = "RetailPageCorner::Right"
+        corner = "retail_page_corner_right()"
     else:
         raise ValueError(f"unsupported page corner tag {node.tag!r}")
     lines = [
-        f"template(|_context| Ok({corner}))",
+        corner,
         "Pickable { should_block_lower: false, is_hoverable: true }",
         "Button",
     ]
@@ -500,7 +493,6 @@ def _emit_sideways_arrow(node: Node, *, hilite: bool) -> list[str]:
     lines = ["RetailSidewaysArrow"]
     if hilite:
         lines.append("RetailSidewaysArrowHilite")
-    lines.append("Pickable")
     lines.extend(_emit_interaction_disabled(node))
     lines.append(f"retail_picture_swap({idle}, {active})")
     return lines
@@ -592,14 +584,15 @@ def _class_lines(node: Node) -> list[str]:
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls == "TTransportPicture":
-        gauge = (
-            "retail_transport_capacity_gauge"
-            if node.tag == "tota"
-            else "retail_transport_allocation_gauge"
+        capacity = node.tag == "tota"
+        parts = (
+            "transport_gauge_capacity_parts()"
+            if capacity
+            else "transport_gauge_allocation_parts()"
         )
         lines = [
             f"retail_picture({_require_picture(node)})",
-            f"{gauge}({node.geometry[0]})",
+            parts,
         ]
         lines.extend(_emit_interaction_disabled(node))
         return lines
@@ -648,8 +641,18 @@ def _emit_node(node: Node, indent: int) -> list[str]:
         lines.extend(_emit_text_lines(node, pad, field=False))
     if node.class_name in ATOMIC_CLASSES and node.children:
         raise ValueError(f"{node.tag}: atomic class {node.class_name} cannot have children")
-    if node.children:
+    gauge_children = None
+    if node.class_name == "TTransportPicture":
+        capacity = node.tag == "tota"
+        gauge_children = (
+            f"{{transport_gauge_capacity_children({x})}},"
+            if capacity
+            else f"{{transport_gauge_allocation_children({x})}},"
+        )
+    if gauge_children is not None or node.children:
         lines.append(f"{pad}    Children [")
+        if gauge_children is not None:
+            lines.append(f"{pad}        {gauge_children}")
         for child in node.children:
             chunk = _emit_node(child, indent + 8)
             chunk[-1] += ","
@@ -665,7 +668,7 @@ def render(scenes: list[tuple[str, str, Node]]) -> str:
         "#![allow(dead_code, clippy::identity_op, unused_imports)]\n\n"
         "use super::hover_help::HoverHelpBar;\n"
         "use super::retail::*;\n"
-        "use super::retail_page_corner::RetailPageCorner;\n"
+        "use super::retail_page_corner::{retail_page_corner_left, retail_page_corner_right};\n"
         "use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};\n"
         "use super::window::CaptionedWindow;\n"
         "use bevy::prelude::*;\n"
