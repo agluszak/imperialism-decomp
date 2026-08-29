@@ -466,7 +466,6 @@ def _emit_captioned_window() -> list[str]:
 def _emit_scroll_area() -> list[str]:
     return [
         "ScrollArea",
-        "ScrollPosition::default()",
         "Node { overflow: Overflow::scroll_y() }",
         "Pickable",
     ]
@@ -474,16 +473,12 @@ def _emit_scroll_area() -> list[str]:
 
 def _emit_page_corner(node: Node) -> list[str]:
     if node.tag == "lcor":
-        corner = "retail_page_corner_left()"
+        corner = "RetailPageCornerLeft"
     elif node.tag == "rcor":
-        corner = "retail_page_corner_right()"
+        corner = "RetailPageCornerRight"
     else:
         raise ValueError(f"unsupported page corner tag {node.tag!r}")
-    lines = [
-        corner,
-        "Pickable { should_block_lower: false, is_hoverable: true }",
-        "Button",
-    ]
+    lines = [corner]
     lines.extend(_emit_interaction_disabled(node))
     return lines
 
@@ -584,16 +579,7 @@ def _class_lines(node: Node) -> list[str]:
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls == "TTransportPicture":
-        capacity = node.tag == "tota"
-        parts = (
-            "transport_gauge_capacity_parts()"
-            if capacity
-            else "transport_gauge_allocation_parts()"
-        )
-        lines = [
-            f"retail_picture({_require_picture(node)})",
-            parts,
-        ]
+        lines = [f"retail_picture({_require_picture(node)})"]
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls in CHECKBOX_CLASSES:
@@ -641,18 +627,17 @@ def _emit_node(node: Node, indent: int) -> list[str]:
         lines.extend(_emit_text_lines(node, pad, field=False))
     if node.class_name in ATOMIC_CLASSES and node.children:
         raise ValueError(f"{node.tag}: atomic class {node.class_name} cannot have children")
-    gauge_children = None
     if node.class_name == "TTransportPicture":
         capacity = node.tag == "tota"
-        gauge_children = (
-            f"{{transport_gauge_capacity_children({x})}},"
-            if capacity
-            else f"{{transport_gauge_allocation_children({x})}},"
-        )
-    if gauge_children is not None or node.children:
+        gauge_fn = "transport_capacity_gauge" if capacity else "transport_allocation_gauge"
+        lines.append(f"{pad}    {{{gauge_fn}({x}, bsn_list![")
+        for child in node.children:
+            chunk = _emit_node(child, indent + 8)
+            chunk[-1] += ","
+            lines.extend(chunk)
+        lines.append(f"{pad}    ])}}")
+    elif node.children:
         lines.append(f"{pad}    Children [")
-        if gauge_children is not None:
-            lines.append(f"{pad}        {gauge_children}")
         for child in node.children:
             chunk = _emit_node(child, indent + 8)
             chunk[-1] += ","
@@ -668,11 +653,11 @@ def render(scenes: list[tuple[str, str, Node]]) -> str:
         "#![allow(dead_code, clippy::identity_op, unused_imports)]\n\n"
         "use super::hover_help::HoverHelpBar;\n"
         "use super::retail::*;\n"
-        "use super::retail_page_corner::{retail_page_corner_left, retail_page_corner_right};\n"
+        "use super::retail_page_corner::{RetailPageCornerLeft, RetailPageCornerRight};\n"
         "use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};\n"
         "use super::window::CaptionedWindow;\n"
         "use bevy::prelude::*;\n"
-        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};\n"
+        "use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};\n"
         "use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};\n"
         "use imperialism_formats::fourcc;\n\n"
         "pub const LOGICAL_RESOLUTION: [u32; 2] = [640, 480];\n\n"

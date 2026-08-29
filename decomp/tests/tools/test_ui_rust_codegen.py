@@ -84,12 +84,19 @@ class UiRustCodegenTests(unittest.TestCase):
 
     def test_transport_gauge_specializations(self) -> None:
         transport = _scene_source("transport_2014")
-        self.assertIn("transport_gauge_capacity_parts()", transport)
-        self.assertIn("transport_gauge_allocation_parts()", transport)
-        self.assertIn("{transport_gauge_capacity_children(325)}", transport)
-        self.assertIn("{transport_gauge_allocation_children(70)}", transport)
-        self.assertNotIn("retail_transport_capacity_gauge(", transport)
-        self.assertNotIn("retail_transport_allocation_gauge(", transport)
+        self.assertIn("{transport_capacity_gauge(325, bsn_list![", transport)
+        self.assertIn("{transport_allocation_gauge(70, bsn_list![", transport)
+        self.assertNotIn("transport_gauge_capacity_parts()", transport)
+        self.assertNotIn("transport_gauge_allocation_parts()", transport)
+        self.assertNotIn("transport_gauge_capacity_children(", transport)
+        self.assertNotIn("transport_gauge_allocation_children(", transport)
+
+    def test_page_corner_emits_marker_components(self) -> None:
+        output, _ = generate(REPO_ROOT)
+        self.assertIn("RetailPageCornerLeft", output)
+        self.assertIn("RetailPageCornerRight", output)
+        self.assertNotIn("retail_page_corner_left()", output)
+        self.assertNotIn("retail_page_corner_right()", output)
 
     def test_transport_right_left_view_has_no_sideways_arrow_hilite(self) -> None:
         transport = _scene_source("transport_2014")

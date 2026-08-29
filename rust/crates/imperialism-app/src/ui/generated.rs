@@ -3,11 +3,11 @@
 
 use super::hover_help::HoverHelpBar;
 use super::retail::*;
-use super::retail_page_corner::{retail_page_corner_left, retail_page_corner_right};
+use super::retail_page_corner::{RetailPageCornerLeft, RetailPageCornerRight};
 use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};
 use super::window::CaptionedWindow;
 use bevy::prelude::*;
-use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition, ScrollPosition};
+use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Button, Checkbox, RadioButton, RadioGroup, ScrollArea};
 use imperialism_formats::fourcc;
 
@@ -2194,16 +2194,12 @@ pub fn diplo_1352() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("lcor"), 12, 387, 37, 35)
-                                retail_page_corner_left()
-                                Pickable { should_block_lower: false, is_hoverable: true }
-                                Button
+                                RetailPageCornerLeft
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 387, 40, 35)
-                                retail_page_corner_right()
-                                Pickable { should_block_lower: false, is_hoverable: true }
-                                Button
+                                RetailPageCornerRight
                                 InteractionDisabled
                             ),
                             (
@@ -3526,7 +3522,6 @@ pub fn linger_3000() -> impl Scene {
                             (
                                 retail_node(fourcc!("swin"), 21, 146, 363, 163)
                                 ScrollArea
-                                ScrollPosition::default()
                                 Node { overflow: Overflow::scroll_y() }
                                 Pickable
                             ),
@@ -4824,15 +4819,11 @@ pub fn mapview_3500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
-                                retail_page_corner_left()
-                                Pickable { should_block_lower: false, is_hoverable: true }
-                                Button
+                                RetailPageCornerLeft
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 356, 41, 36)
-                                retail_page_corner_right()
-                                Pickable { should_block_lower: false, is_hoverable: true }
-                                Button
+                                RetailPageCornerRight
                             ),
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
@@ -7801,7 +7792,6 @@ pub fn techstore_2370() -> impl Scene {
                                     (
                                         retail_node(fourcc!("scvw"), 9, 76, 342, 175)
                                         ScrollArea
-                                        ScrollPosition::default()
                                         Node { overflow: Overflow::scroll_y() }
                                         Pickable
                                     ),
@@ -9677,23 +9667,19 @@ pub fn transport_2014() -> impl Scene {
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
                                 retail_picture(4019)
-                                transport_gauge_capacity_parts()
-                                Children [
-                                    {transport_gauge_capacity_children(325)},
+                                {transport_capacity_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
                                 retail_picture(4001)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9710,14 +9696,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
                                 retail_picture(4002)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9734,14 +9718,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
                                 retail_picture(4003)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9758,14 +9740,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
                                 retail_picture(4004)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9782,14 +9762,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
                                 retail_picture(4005)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9806,14 +9784,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
                                 retail_picture(4006)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9830,14 +9806,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
                                 retail_picture(4007)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9854,14 +9828,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
                                 retail_picture(4008)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9878,14 +9850,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
                                 retail_picture(4009)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9902,14 +9872,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
                                 retail_picture(4010)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(70)},
+                                {transport_allocation_gauge(70, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9926,14 +9894,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
                                 retail_picture(4011)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9950,14 +9916,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
                                 retail_picture(4012)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9974,14 +9938,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
                                 retail_picture(4013)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -9998,14 +9960,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
                                 retail_picture(4014)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -10022,14 +9982,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
                                 retail_picture(4015)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -10046,14 +10004,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
                                 retail_picture(4016)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -10070,14 +10026,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
                                 retail_picture(4017)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -10100,14 +10054,12 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
                                 retail_picture(4018)
-                                transport_gauge_allocation_parts()
-                                Children [
-                                    {transport_gauge_allocation_children(325)},
+                                {transport_allocation_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
@@ -10130,7 +10082,7 @@ pub fn transport_2014() -> impl Scene {
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
-                                ]
+                                ])}
                             ),
                             (
                                 retail_node(fourcc!("titL"), 163, 81, 136, 20)
