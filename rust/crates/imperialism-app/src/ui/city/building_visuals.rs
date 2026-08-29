@@ -636,7 +636,6 @@ pub(in crate::ui::city) fn render_city_buildings(
     }
 }
 
-
 pub(in crate::ui::city) const CITY_BUILDINGS: &[CityBuildingVisual] = &[
     CityBuildingVisual {
         slot: CityFacilitySlot::TextileMill,
