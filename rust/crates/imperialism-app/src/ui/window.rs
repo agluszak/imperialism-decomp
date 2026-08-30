@@ -6,6 +6,7 @@ use bevy::picking::events::{Drag, Pointer, Press};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::scene::SceneList;
+use bevy::text::FontSize;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button};
 
@@ -77,6 +78,58 @@ pub fn captioned_window(content: impl SceneList) -> impl Scene {
             ),
             {content},
         ]
+    }
+}
+
+impl CaptionedWindow {
+    fn scene() -> impl Scene {
+        bsn! {
+            Node { overflow: Overflow::visible() }
+            CaptionedWindowParts { close: #Close }
+            on(on_window_press_raise)
+            Children [
+                (
+                    #Caption
+                    Node {
+                        position_type: PositionType::Absolute,
+                        left: px(0),
+                        top: px(-CAPTION_HEIGHT),
+                        width: Val::Percent(100.0),
+                        height: px(CAPTION_HEIGHT),
+                    }
+                    BackgroundColor(Color::srgb_u8(0, 0, 128))
+                    Pickable::default()
+                    on(on_caption_drag)
+                    Children [
+                        (
+                            #Close
+                            Button
+                            Node {
+                                position_type: PositionType::Absolute,
+                                right: px(2),
+                                top: px(2),
+                                width: px(CLOSE_SIZE),
+                                height: px(CLOSE_SIZE),
+                                align_items: AlignItems::Center,
+                                justify_content: JustifyContent::Center,
+                            }
+                            BackgroundColor(Color::srgb_u8(192, 192, 192))
+                            ZIndex(1)
+                            Children [
+                                (
+                                    Text("\u{00d7}")
+                                    TextFont {
+                                        font_size: FontSize::Px(12.0),
+                                    }
+                                    TextColor(Color::BLACK)
+                                    Pickable::IGNORE
+                                )
+                            ]
+                        )
+                    ]
+                )
+            ]
+        }
     }
 }
 

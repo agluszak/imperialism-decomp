@@ -3,7 +3,7 @@
 
 use super::hover_help::hover_help_bar;
 use super::retail::*;
-use super::retail_page_corner::{RetailPageCornerLeft, RetailPageCornerRight};
+use super::retail_page_corner::RetailPageCorner;
 use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};
 use super::window::captioned_window;
 use bevy::prelude::*;
@@ -2142,12 +2142,12 @@ pub fn diplo_1352() -> impl Scene {
                         Children [
                             (
                                 retail_node(fourcc!("lcor"), 12, 387, 37, 35)
-                                RetailPageCornerLeft
+                                RetailPageCorner::Left
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 387, 40, 35)
-                                RetailPageCornerRight
+                                RetailPageCorner::Right
                                 InteractionDisabled
                             ),
                             (
@@ -4790,11 +4790,11 @@ pub fn mapview_3500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
-                                RetailPageCornerLeft
+                                RetailPageCorner::Left
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 431, 356, 41, 36)
-                                RetailPageCornerRight
+                                RetailPageCorner::Right
                             ),
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)

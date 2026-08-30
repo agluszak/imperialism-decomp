@@ -5,6 +5,7 @@ use bevy::ecs::system::SystemParam;
 use bevy::ecs::template::TemplateContext;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
 use bevy::prelude::*;
+use bevy::scene::template_value;
 use bevy::reflect::Is;
 use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled, Pressed};
@@ -150,7 +151,7 @@ fn retail_text_style_preset(preset: RetailTextStylePreset) -> impl Scene {
                 retail_text_components(style, world.resource::<RetailFonts>().get(style.face)).0
             }))
         })
-        template(move |_context| Ok(line_height))
+        template_value(line_height)
         TextLayout::justify(match style.alignment {
             RetailTextAlignment::Left => Justify::Left,
             RetailTextAlignment::Center => Justify::Center,
