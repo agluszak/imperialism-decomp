@@ -353,3 +353,77 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::retail::{retail_node, retail_view};
+    use crate::ui::window::{ModalWindow, UiWindowPlugin, spawn_modal_window};
+    use bevy::asset::AssetPlugin;
+    use bevy::scene::ScenePlugin;
+
+    fn construction_mirror_scene() -> impl Scene {
+        bsn! {
+            retail_view("Citydlog.rsrc:9220")
+            Children [
+                (
+                    retail_node(fourcc!("WIND"), 147, 64, 320, 320)
+                    Children [
+                        (
+                            retail_node(fourcc!("DLOG"), 0, 0, 320, 320)
+                            Children [
+                                (
+                                    retail_node(fourcc!("okay"), 246, 289, 61, 24)
+                                    Button
+                                ),
+                                (
+                                    retail_node(fourcc!("cncl"), 170, 289, 61, 24)
+                                    Button
+                                ),
+                            ]
+                        )
+                    ]
+                )
+            ]
+        }
+    }
+
+    #[test]
+    fn generated_construction_dialog_stays_modal_wrapped_without_captioned_root() {
+        let generated = include_str!("../../generated.rs");
+        let scene = generated
+            .split("pub fn citydlog_9220()")
+            .nth(1)
+            .expect("generated construction scene");
+        let end = scene
+            .find("\npub fn ")
+            .expect("generated construction scene terminator");
+        assert!(scene[..end].contains("retail_view("));
+        assert!(!scene[..end].contains("captioned_window("));
+    }
+
+    #[test]
+    fn construction_modal_keeps_barrier_separate_from_scene_root() {
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            UiWindowPlugin,
+        ));
+        let (modal, scene_root) = spawn_modal_window(
+            &mut app.world_mut().commands(),
+            construction_mirror_scene(),
+        );
+        app.update();
+
+        assert!(app.world().get::<ModalWindow>(modal).is_some());
+        assert_eq!(app.world().get::<Node>(modal).unwrap().width, px(640));
+        assert_eq!(app.world().get::<Node>(modal).unwrap().height, px(480));
+        assert!(app.world().get::<ModalWindow>(scene_root).is_none());
+        assert_eq!(
+            app.world().get::<ChildOf>(scene_root).unwrap().parent(),
+            modal
+        );
+    }
+}
