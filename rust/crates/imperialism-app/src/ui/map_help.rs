@@ -330,3 +330,143 @@ fn set_text(
         .entity(entity)
         .insert((Text::new(text), font, layout, line_height, TextColor(color)));
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::ui::RetailUiPlugin;
+    use crate::ui::retail::retail_node;
+    use crate::ui::window::{UiWindowPlugin, captioned_close_in, captioned_window};
+    use bevy::asset::AssetPlugin;
+    use bevy::scene::ScenePlugin;
+    use bevy::ui_widgets::Activate;
+
+    fn test_app() -> App {
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            RetailUiPlugin,
+            UiWindowPlugin,
+        ));
+        app
+    }
+
+    /// Mirrors recovered `linger_3000` ownership: the WIND root carries `captioned_window`
+    /// and the semantic view, without relying on retail picture assets at spawn time.
+    fn map_help_lifecycle_scene() -> impl Scene {
+        bsn! {
+            (
+                retail_node(fourcc!("WIND"), 100, 100, 390, 315)
+                captioned_window()
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 390, 315)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("subj"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("swin"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("nam1"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("nam2"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("nam3"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("nam4"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("nam5"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("prev"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("next"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("togl"), 0, 0, 1, 1)
+                            ),
+                            (
+                                retail_node(fourcc!("more"), 0, 0, 1, 1)
+                            ),
+                        ]
+                    )
+                ]
+            )
+        }
+    }
+
+    #[test]
+    fn generated_linger_3000_is_a_floating_window_root() {
+        let generated = include_str!("generated.rs");
+        let scene = generated
+            .split("pub fn linger_3000()")
+            .nth(1)
+            .expect("generated map help scene");
+        let end = scene
+            .find("\npub fn ")
+            .expect("generated map help scene terminator");
+        assert!(
+            !scene[..end].contains("retail_view("),
+            "map help must bind semantic state to the recovered WIND root"
+        );
+    }
+
+    #[test]
+    fn closing_map_help_despawns_the_bound_semantic_root() {
+        let mut app = test_app();
+        let root = app
+            .world_mut()
+            .spawn_scene(map_help_lifecycle_scene())
+            .expect("map help lifecycle scene")
+            .id();
+
+        let mut tree_state = bevy::ecs::system::SystemState::<RetailTree>::new(app.world_mut());
+        let tree = tree_state.get(app.world()).expect("RetailTree");
+        let subject = tree.find(root, fourcc!("subj"));
+        let body = tree.find(root, fourcc!("swin"));
+        let topics = TOPIC_TAGS.map(|tag| tree.find(root, tag));
+        let previous = tree.find(root, fourcc!("prev"));
+        let next = tree.find(root, fourcc!("next"));
+        let toggle = tree.find(root, fourcc!("togl"));
+        tree_state.apply(app.world_mut());
+
+        app.world_mut().entity_mut(root).insert(MapHelpView {
+            context: HelpContext::TerrainMap,
+            set: 0,
+            topic: None,
+            subject,
+            body,
+            topics,
+            previous,
+            next,
+            toggle,
+        });
+        app.update();
+
+        let close = captioned_close_in(app.world_mut());
+
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: close });
+        app.update();
+
+        let world = app.world_mut();
+        assert!(world.query::<&MapHelpView>().iter(world).next().is_none());
+        assert!(app.world().get_entity(root).is_err());
+        assert!(app.world().get_entity(subject).is_err());
+        assert!(app.world().get_entity(body).is_err());
+        assert!(app.world().get_entity(close).is_err());
+    }
+}
