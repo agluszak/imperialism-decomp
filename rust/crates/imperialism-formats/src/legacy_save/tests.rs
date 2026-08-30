@@ -57,7 +57,7 @@ fn retail_manual_and_autosave_phases_resume_on_the_strategic_map() {
 
         let loaded = load_game_from_bytes(&save.to_bytes(), game_context()).unwrap();
 
-        assert_eq!(loaded.game.turn().phase(), PhaseCode::STRATEGIC_MAP);
+        assert_eq!(loaded.game.retail_phase(), PhaseCode::STRATEGIC_MAP);
     }
 }
 

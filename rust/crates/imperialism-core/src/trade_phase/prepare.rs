@@ -27,7 +27,7 @@ impl GameState {
             }
             if self.is_human(nation) {
                 if self.turn.difficulty == Difficulty::Introductory
-                    && self.turn.phase == PhaseCode::CAPITAL_SELECTION
+                    && self.turn_flow == TurnFlow::CapitalSelection
                 {
                     for resource in [
                         ResourceKind::Food,

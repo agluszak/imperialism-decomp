@@ -1411,6 +1411,9 @@ impl GameState {
 
     pub fn pending_town_naming(&self) -> Option<(MajorNationId, TileId)> {
         MajorNationId::all().find_map(|nation| {
+            if !self.nations.major_is_present(nation) {
+                return None;
+            }
             self.nations
                 .major(nation)
                 .towns

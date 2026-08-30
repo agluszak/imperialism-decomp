@@ -27,9 +27,11 @@ impl GameState {
         }
     }
 
-    pub(super) fn process_one_queued_war(&mut self) -> DiplomacyPhaseResult {
+    /// Applies the oldest queued war declaration, if any, and its reactions.
+    pub(super) fn process_one_queued_war(&mut self) {
         let Some(pair) = self.pending.war_transitions.first().copied() else {
-            return DiplomacyPhaseResult::Resolved;
+            self.finish_diplomacy_phase();
+            return;
         };
         self.pending.war_transitions.remove(0);
         if !self.at_war(pair.first, pair.second) {
@@ -61,15 +63,12 @@ impl GameState {
         {
             self.add_diplomacy_notice(source, pair.second, 0xc8);
         }
-        self.continue_war_reactions(pair.first, pair.second, 0)
+        self.continue_war_reactions(pair.first, pair.second, 0);
     }
 
-    pub(super) fn continue_war_reactions(
-        &mut self,
-        first: NationId,
-        second: NationId,
-        start: u8,
-    ) -> DiplomacyPhaseResult {
+    /// Walks the alliance reactions to one war from `start`, ending the diplomacy
+    /// phase unless a human ally must answer in [`TurnFlow::DiplomacyWarJoin`].
+    pub(super) fn continue_war_reactions(&mut self, first: NationId, second: NationId, start: u8) {
         if MajorNationId::from_nation(second).is_none() {
             if start == 0
                 && self.is_independent(second)
@@ -81,19 +80,22 @@ impl GameState {
                     DiplomacyWarJoinKind::DefendMinor
                 };
                 if self.nations.majors[&favorite].auto.is_none() {
-                    return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
-                        nation: favorite,
-                        target: second,
-                        source: first,
-                        kind,
-                        pair_first: first,
-                        pair_second: second,
-                        cursor: 1,
-                    });
+                    self.turn_flow =
+                        TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
+                            nation: favorite,
+                            target: second,
+                            source: first,
+                            kind,
+                            pair_first: first,
+                            pair_second: second,
+                            cursor: 1,
+                        });
+                    return;
                 }
                 self.ai_handle_minor_war(favorite, second, first);
             }
-            return DiplomacyPhaseResult::Resolved;
+            self.finish_diplomacy_phase();
+            return;
         }
 
         let mut cursor = start;
@@ -107,15 +109,17 @@ impl GameState {
                 continue;
             }
             if self.nations.majors[&other].auto.is_none() {
-                return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
-                    nation: other,
-                    target: second,
-                    source: first,
-                    kind: DiplomacyWarJoinKind::JoinTargetAlly,
-                    pair_first: first,
-                    pair_second: second,
-                    cursor,
-                });
+                self.turn_flow =
+                    TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
+                        nation: other,
+                        target: second,
+                        source: first,
+                        kind: DiplomacyWarJoinKind::JoinTargetAlly,
+                        pair_first: first,
+                        pair_second: second,
+                        cursor,
+                    });
+                return;
             }
             self.ai_handle_role_swap(other, second, first, false);
         }
@@ -129,19 +133,21 @@ impl GameState {
                 continue;
             }
             if self.nations.majors[&other].auto.is_none() {
-                return DiplomacyPhaseResult::WarJoin(DiplomacyWarJoinPrompt {
-                    nation: other,
-                    target: second,
-                    source: first,
-                    kind: DiplomacyWarJoinKind::JoinSourceAlly,
-                    pair_first: first,
-                    pair_second: second,
-                    cursor,
-                });
+                self.turn_flow =
+                    TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
+                        nation: other,
+                        target: second,
+                        source: first,
+                        kind: DiplomacyWarJoinKind::JoinSourceAlly,
+                        pair_first: first,
+                        pair_second: second,
+                        cursor,
+                    });
+                return;
             }
             self.ai_handle_role_swap(other, second, first, true);
         }
-        DiplomacyPhaseResult::Resolved
+        self.finish_diplomacy_phase();
     }
 
     pub(super) fn apply_war_join_decision(&mut self, prompt: DiplomacyWarJoinPrompt, accept: bool) {
