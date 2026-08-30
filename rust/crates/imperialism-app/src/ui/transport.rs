@@ -326,28 +326,19 @@ fn write_allocation_gauge(
         Entity::PLACEHOLDER,
         "allocation gauges retain a limit marker"
     );
+    let visible = total > 0;
+    set_transport_visibility(commands, gauge.track, visible);
+    set_transport_visibility(commands, gauge.fill, visible);
+    set_transport_visibility(commands, gauge.limit, visible && limit.is_some());
     match limit {
-        Some(limit) => {
-            commands.entity(gauge.limit).insert(Visibility::Visible);
+        Some(limit) if visible => {
             backgrounds
                 .get_mut(gauge.limit)
                 .expect("transport gauge limit")
                 .0 = if current < limit { partial } else { full };
         }
-        None => {
-            commands.entity(gauge.limit).insert(Visibility::Hidden);
-        }
+        _ => {}
     }
-    commands.entity(gauge.track).insert(if total > 0 {
-        Visibility::Visible
-    } else {
-        Visibility::Hidden
-    });
-    commands.entity(gauge.fill).insert(if total > 0 {
-        Visibility::Visible
-    } else {
-        Visibility::Hidden
-    });
 }
 
 fn write_capacity_gauge(
@@ -651,5 +642,17 @@ mod tests {
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
+    }
+
+    #[test]
+    fn zero_total_allocation_gauge_hides_all_chrome() {
+        fn limit_visible(total: i16, limit: Option<i16>) -> bool {
+            let visible = total > 0;
+            visible && limit.is_some()
+        }
+
+        assert!(!limit_visible(0, Some(5)));
+        assert!(limit_visible(10, Some(5)));
+        assert!(!limit_visible(10, None));
     }
 }

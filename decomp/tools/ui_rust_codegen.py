@@ -47,8 +47,13 @@ BUTTON_CLASSES = frozenset(
     ("T2PictureButton", "TClickZone", "TControl", "TDealTabControl", "TNoHilitePicture",
      "TPictureNumberText", "TTextPictureButton", "TUpDownPictureButton", "TPictureButton")
 )
-PICTURE_BUTTON_ENABLED_CLASSES = frozenset(("TPictureButton", "T2PictureButton"))
+PICTURE_BUTTON_ENABLED_CLASSES = frozenset(("T2PictureButton",))
+PICTURE_BUTTON_OVERLAY_CLASSES = frozenset(("TPictureButton",))
 CHECKBOX_SWAP_CLASSES = frozenset(("TCzechBox",))
+PICTURE_SWAP_BY_ADJACENCY_CLASSES = frozenset(
+    ("T2PictureButton", "TUpDownPictureButton", "TClickZone", "TDealTabControl",
+     "TNoHilitePicture", "TPictureNumberText", "TTextPictureButton", "TUpDownPictureButton")
+)
 
 
 @dataclass(frozen=True)
@@ -346,7 +351,13 @@ def _parse_mac_node(row: dict, key: ResourceKey, ev: dict[str, Any]) -> Node:
             shadow_offset=(1, 1),
             center_vertically=False,
         )
-    active_id = _catalog_picture_swap_id(picture_id, class_name, type_code, ev["pictures"])
+    active_id = (
+        _catalog_picture_swap_id(picture_id, class_name, type_code, ev["pictures"])
+        if class_name in PICTURE_SWAP_BY_ADJACENCY_CLASSES
+        or class_name in CHECKBOX_SWAP_CLASSES
+        or type_code == "chkb"
+        else None
+    )
     enabled = 1 if (
         class_name in PICTURE_BUTTON_ENABLED_CLASSES and int(row["state"]) != 0
     ) else int(row["enabled"])
@@ -451,7 +462,13 @@ def _node_from_raw(raw: dict[str, Any]) -> Node:
         WindowPresentation.from_mapping(raw["window"]) if raw.get("window") else None,
         raw.get("slider"), picture_active_id=(
             _default_picture_swap_id(picture_id, raw["class_name"], raw["type_code"])
-            if picture_id is not None else None
+            if picture_id is not None
+            and (
+                raw["class_name"] in PICTURE_SWAP_BY_ADJACENCY_CLASSES
+                or raw["class_name"] in CHECKBOX_SWAP_CLASSES
+                or raw["type_code"] == "chkb"
+            )
+            else None
         ),
     )
 
@@ -508,10 +525,15 @@ def _emit_picture_art(node: Node) -> list[str]:
         return [f"retail_madness_picture({pic})"]
     if node.class_name == "TToggleButton":
         return [f"retail_picture({pic})"]
+    if node.class_name in PICTURE_BUTTON_OVERLAY_CLASSES:
+        # `TPictureButton::HiliteState` toggles visibility on the pressed overlay;
+        # adjacent picture IDs are different controls (transport return vs query).
+        return [
+            f"retail_picture({pic})",
+            "Visibility::Hidden",
+            "RetailPictureButtonOverlay",
+        ]
     if node.class_name in PICTURE_BUTTON_ENABLED_CLASSES:
-        # `TPictureButton::HiliteState` changes visibility; it does not derive a
-        # pressed bitmap from the next resource ID. Adjacent picture IDs commonly
-        # belong to different controls (for example transport return/query).
         return [f"retail_picture({pic})"]
     idle, active = _picture_swap_ids(node)
     return [f"retail_picture_swap({idle}, {active})"]
@@ -568,12 +590,12 @@ def _emit_page_corner(node: Node) -> list[str]:
 
 
 def _emit_sideways_arrow(node: Node, *, hilite: bool) -> list[str]:
-    idle, active = _picture_swap_ids(node)
+    pic = _require_picture(node)
     lines = ["RetailSidewaysArrow"]
     if hilite:
         lines.append("RetailSidewaysArrowHilite")
     lines.extend(_emit_interaction_disabled(node))
-    lines.append(f"retail_picture_swap({idle}, {active})")
+    lines.append(f"retail_picture({pic})")
     return lines
 
 

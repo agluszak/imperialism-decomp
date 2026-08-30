@@ -18,7 +18,6 @@ pub const TRADE_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
 pub const INDUSTRY_BAR_FILL: u8 = 0x16;
 // `TTraderAmtBar` calls `ApplyLegendSplitSlot34(0x37)` → palette 0xbd via GetColor.
 pub const TRADE_BAR_FILL: u8 = 0xbd;
-pub const TRADE_BAR_HEIGHT: i16 = 7;
 
 ///
 /// Trade bars retain the stock-position and offer-limit markers.

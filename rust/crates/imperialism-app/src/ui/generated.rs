@@ -483,13 +483,13 @@ pub fn citydlog_9200() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
@@ -575,13 +575,13 @@ pub fn citydlog_9201() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 3, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 3, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
@@ -655,13 +655,13 @@ pub fn citydlog_9202() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
@@ -741,13 +741,13 @@ pub fn citydlog_9203() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 18, 21, 11)
@@ -768,13 +768,13 @@ pub fn citydlog_9203() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 17, 21, 11)
@@ -854,13 +854,13 @@ pub fn citydlog_9204() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 18, 21, 11)
@@ -881,13 +881,13 @@ pub fn citydlog_9204() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 8, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 18, 21, 11)
@@ -967,13 +967,13 @@ pub fn citydlog_9205() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
@@ -1047,13 +1047,13 @@ pub fn citydlog_9206() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
@@ -1118,13 +1118,13 @@ pub fn citydlog_9209() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
@@ -1145,13 +1145,13 @@ pub fn citydlog_9209() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
@@ -1261,13 +1261,13 @@ pub fn citydlog_9211() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 10, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 20, 21, 11)
@@ -1326,13 +1326,13 @@ pub fn citydlog_9212() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 10, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 10, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 20, 21, 11)
@@ -1614,13 +1614,13 @@ pub fn citydlog_9214() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 211, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
@@ -1691,13 +1691,13 @@ pub fn citydlog_9215() -> impl Scene {
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9240, 9241)
+                                    retail_picture(9240)
                                 ),
                                 (
                                     retail_node(fourcc!("rght"), 212, 4, 13, 13)
                                     RetailSidewaysArrow
                                     RetailSidewaysArrowHilite
-                                    retail_picture_swap(9242, 9243)
+                                    retail_picture(9242)
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
@@ -1945,7 +1945,10 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(6021)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -1992,7 +1995,10 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(6020)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -2049,7 +2055,10 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 8, 38, 31, 51)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4106)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 294, 412, 53, 57)
@@ -2106,7 +2115,10 @@ pub fn diplo_1351() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
                                                 Button
+                                                InteractionDisabled
                                                 retail_picture(4107)
+                                                Visibility::Hidden
+                                                RetailPictureButtonOverlay
                                             ),
                                         ]
                                     ),
@@ -2145,7 +2157,10 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 27, 9, 33, 32)
                                 Button
+                                InteractionDisabled
                                 retail_picture(4070)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("flgR"), 408, 10, 64, 86)
@@ -2472,7 +2487,10 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(5052)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -2523,7 +2541,10 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(5051)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -2604,7 +2625,10 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4140)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -2614,7 +2638,10 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4141)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -2809,7 +2836,10 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(8454)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -2819,7 +2849,10 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(8456)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -2911,12 +2944,18 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(8533)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(8532)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
@@ -3027,14 +3066,20 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(8404)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
                                 Button
+                                InteractionDisabled
                                 retail_picture(8825)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                         ]
                     ),
@@ -3068,7 +3113,10 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
                                                         Button
+                                                        InteractionDisabled
                                                         retail_picture(8814)
+                                                        Visibility::Hidden
+                                                        RetailPictureButtonOverlay
                                                     ),
                                                     (
                                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -3127,6 +3175,8 @@ pub fn flagview_8800() -> impl Scene {
                                                 Button
                                                 InteractionDisabled
                                                 retail_picture(8812)
+                                                Visibility::Hidden
+                                                RetailPictureButtonOverlay
                                             ),
                                             (
                                                 retail_node(fourcc!("tbr2"), 608, 40, 22, 37)
@@ -3134,7 +3184,10 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
                                                         Button
+                                                        InteractionDisabled
                                                         retail_picture(8816)
+                                                        Visibility::Hidden
+                                                        RetailPictureButtonOverlay
                                                     ),
                                                 ]
                                             ),
@@ -3651,7 +3704,10 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("advi"), 113, 65, 97, 37)
                                 Button
+                                InteractionDisabled
                                 retail_picture(4123)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("oref"), 11, 150, 65, 27)
@@ -3681,7 +3737,10 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("cncl"), 10, 335, 65, 27)
                                 Button
+                                InteractionDisabled
                                 retail_picture(4129)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("titl"), 101, 22, 126, 16)
@@ -3796,37 +3855,58 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("save"), 112, 65, 97, 37)
                                 Button
+                                InteractionDisabled
                                 retail_picture(1331)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("newg"), 10, 149, 65, 27)
                                 Button
+                                InteractionDisabled
                                 retail_picture(1332)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("load"), 10, 186, 65, 27)
                                 Button
+                                InteractionDisabled
                                 retail_picture(1333)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("pref"), 10, 223, 65, 27)
                                 Button
+                                InteractionDisabled
                                 retail_picture(1334)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("cred"), 10, 260, 65, 27)
                                 Button
+                                InteractionDisabled
                                 retail_picture(1335)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("quit"), 10, 297, 65, 27)
                                 Button
+                                InteractionDisabled
                                 retail_picture(1336)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 11, 335, 65, 27)
                                 Button
+                                InteractionDisabled
                                 retail_picture(1337)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("txt7"), 84, 340, 126, 18)
@@ -3885,7 +3965,10 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4145)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -3955,7 +4038,10 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4146)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -4019,7 +4105,10 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4325)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -4096,7 +4185,10 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4145)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -4244,6 +4336,8 @@ pub fn mapview_2013() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         retail_picture(1300)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("mmap"), 33, 8, 25, 35)
@@ -4255,6 +4349,8 @@ pub fn mapview_2013() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         retail_picture(1307)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
@@ -4495,7 +4591,10 @@ pub fn mapview_2013() -> impl Scene {
                                     (
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(1011)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("uciv"), 128, 143, 126, 306)
@@ -4537,7 +4636,10 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
                                                 Button
+                                                InteractionDisabled
                                                 retail_picture(1113)
+                                                Visibility::Hidden
+                                                RetailPictureButtonOverlay
                                             ),
                                         ]
                                     ),
@@ -4603,12 +4705,18 @@ pub fn mapview_3012() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
                                 Button
+                                InteractionDisabled
                                 retail_picture(3014)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
                                 Button
+                                InteractionDisabled
                                 retail_picture(3013)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
@@ -4725,7 +4833,10 @@ pub fn mapview_3500() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
                                 Button
+                                InteractionDisabled
                                 retail_picture(3507)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                         ]
                     ),
@@ -5720,7 +5831,10 @@ pub fn mapview_9478() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
                                 Button
+                                InteractionDisabled
                                 retail_picture(3507)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("page"), 13, 46, 458, 310)
@@ -6386,12 +6500,18 @@ pub fn startup_952() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(1017)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(1018)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -6871,12 +6991,18 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
                                 Button
+                                InteractionDisabled
                                 retail_picture(4510)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
                                 Button
+                                InteractionDisabled
                                 retail_picture(4511)
+                                Visibility::Hidden
+                                RetailPictureButtonOverlay
                             ),
                             (
                                 retail_node(fourcc!("txt0"), 264, 171, 138, 18)
@@ -7227,7 +7353,10 @@ pub fn startup_1515() -> impl Scene {
                                     (
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4596)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -7261,12 +7390,18 @@ pub fn startup_20000() -> impl Scene {
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(20001)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(20002)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
@@ -7354,7 +7489,10 @@ pub fn tactical_3800() -> impl Scene {
                                     (
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(3798)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("tpic"), 2, 356, 50, 50)
@@ -7493,6 +7631,8 @@ pub fn tech_2200() -> impl Scene {
                                         Button
                                         InteractionDisabled
                                         retail_picture(2228)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -7547,7 +7687,10 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(2301)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -7594,7 +7737,10 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(2302)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -7710,7 +7856,10 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(6020)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -7735,7 +7884,10 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(6021)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -7783,13 +7935,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7829,13 +7981,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -7871,13 +8023,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -7913,13 +8065,13 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -7951,7 +8103,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -7961,7 +8113,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -7993,7 +8145,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8003,7 +8155,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8035,7 +8187,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8045,7 +8197,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8077,7 +8229,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8087,7 +8239,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8119,7 +8271,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8129,7 +8281,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8161,7 +8313,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8171,7 +8323,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8203,7 +8355,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8213,7 +8365,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8245,7 +8397,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8255,7 +8407,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8287,7 +8439,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8297,7 +8449,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8329,7 +8481,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8339,7 +8491,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8371,7 +8523,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8381,7 +8533,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8413,7 +8565,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8423,7 +8575,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8455,7 +8607,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("left"), 383, 5, 16, 10)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2121, 2122)
+                                        retail_picture(2121)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8465,7 +8617,7 @@ pub fn trade_2009() -> impl Scene {
                                         retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                         RetailSidewaysArrow
                                         RetailSidewaysArrowHilite
-                                        retail_picture_swap(2123, 2124)
+                                        retail_picture(2123)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8600,7 +8752,10 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                                 Button
+                                                InteractionDisabled
                                                 retail_picture(6020)
+                                                Visibility::Hidden
+                                                RetailPictureButtonOverlay
                                             ),
                                         ]
                                     ),
@@ -8628,13 +8783,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8674,13 +8829,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8716,13 +8871,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8758,13 +8913,13 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8796,7 +8951,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8806,7 +8961,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8838,7 +8993,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8848,7 +9003,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8880,7 +9035,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8890,7 +9045,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8922,7 +9077,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8932,7 +9087,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -8964,7 +9119,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -8974,7 +9129,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9006,7 +9161,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9016,7 +9171,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9048,7 +9203,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9058,7 +9213,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9090,7 +9245,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9100,7 +9255,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9132,7 +9287,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9142,7 +9297,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9174,7 +9329,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9184,7 +9339,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9216,7 +9371,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9226,7 +9381,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9258,7 +9413,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9268,7 +9423,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9300,7 +9455,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("left"), 383, 5, 16, 10)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2121, 2122)
+                                                retail_picture(2121)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
@@ -9310,7 +9465,7 @@ pub fn trade_2010() -> impl Scene {
                                                 retail_node(fourcc!("rght"), 498, 5, 15, 11)
                                                 RetailSidewaysArrow
                                                 RetailSidewaysArrowHilite
-                                                retail_picture_swap(2123, 2124)
+                                                retail_picture(2123)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
@@ -9360,7 +9515,10 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
                                                 Button
+                                                InteractionDisabled
                                                 retail_picture(6021)
+                                                Visibility::Hidden
+                                                RetailPictureButtonOverlay
                                             ),
                                             (
                                                 retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -9513,7 +9671,10 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4025)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                 ]
                             ),
@@ -9523,7 +9684,10 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
+                                        InteractionDisabled
                                         retail_picture(4024)
+                                        Visibility::Hidden
+                                        RetailPictureButtonOverlay
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -9558,12 +9722,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9580,12 +9744,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9602,12 +9766,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9624,12 +9788,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9646,12 +9810,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9668,12 +9832,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9690,12 +9854,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9712,12 +9876,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9734,12 +9898,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9756,12 +9920,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 85, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4020, 4021)
+                                        retail_picture(4020)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 211, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4021, 4022)
+                                        retail_picture(4021)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9778,12 +9942,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9800,12 +9964,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9822,12 +9986,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9844,12 +10008,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9866,12 +10030,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9888,12 +10052,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9910,12 +10074,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
@@ -9938,12 +10102,12 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("left"), 81, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4022, 4023)
+                                        retail_picture(4022)
                                     ),
                                     (
                                         retail_node(fourcc!("rght"), 207, 8, 11, 12)
                                         RetailSidewaysArrow
-                                        retail_picture_swap(4023, 4024)
+                                        retail_picture(4023)
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)

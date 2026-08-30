@@ -47,9 +47,9 @@ class UiRustCodegenTests(unittest.TestCase):
         newspaper = _scene_source("flagview_8451")
         self.assertIn("retail_picture(8454)", newspaper)
         self.assertIn("retail_picture(8456)", newspaper)
-        self.assertNotIn("InteractionDisabled", newspaper)
-        self.assertNotIn("retail_picture_button(8454", newspaper)
-        self.assertNotIn("retail_picture_button(8456", newspaper)
+        self.assertIn("RetailPictureButtonOverlay", newspaper)
+        self.assertNotIn("retail_picture_button", newspaper)
+        self.assertNotIn("retail_picture_swap", newspaper)
 
     def test_picture_button_does_not_pair_the_transport_return_with_query_art(self) -> None:
         transport = _scene_source("transport_2014")
@@ -57,7 +57,19 @@ class UiRustCodegenTests(unittest.TestCase):
         return_end = transport.index('retail_node(fourcc!("seas")', return_start)
         return_button = transport[return_start:return_end]
         self.assertIn("retail_picture(4024)", return_button)
-        self.assertNotIn("retail_picture_button", return_button)
+        self.assertIn("Visibility::Hidden", return_button)
+        self.assertIn("RetailPictureButtonOverlay", return_button)
+        self.assertNotIn("4025", return_button)
+        self.assertNotIn("retail_picture_swap", return_button)
+
+    def test_transport_sideways_arrows_do_not_use_catalog_adjacency_swap(self) -> None:
+        transport = _scene_source("transport_2014")
+        fish_start = transport.index('retail_node(fourcc!("fish")')
+        fish_end = transport.index('retail_node(fourcc!("prod")', fish_start)
+        block = transport[fish_start:fish_end]
+        self.assertIn("retail_picture(4020)", block)
+        self.assertIn("retail_picture(4021)", block)
+        self.assertNotIn("retail_picture_swap", block)
 
     def test_strategic_transport_button_does_not_assume_missing_active_art(self) -> None:
         strategic_map = _scene_source("mapview_2013")
