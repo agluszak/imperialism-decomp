@@ -18,8 +18,7 @@ pub fn armory_9208() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 60, 62, 370, 410)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
                     retail_picture(7500)
@@ -453,7 +452,7 @@ pub fn armory_9208() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -463,8 +462,7 @@ pub fn citydlog_9200() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 98, 166, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9200)
@@ -546,7 +544,7 @@ pub fn citydlog_9200() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -556,8 +554,7 @@ pub fn citydlog_9201() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 297, 250, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9201)
@@ -627,7 +624,7 @@ pub fn citydlog_9201() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -637,8 +634,7 @@ pub fn citydlog_9202() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 206, 98, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9202)
@@ -714,7 +710,7 @@ pub fn citydlog_9202() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -724,8 +720,7 @@ pub fn citydlog_9203() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 280, 153, 270, 160)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
                     retail_picture(9203)
@@ -828,7 +823,7 @@ pub fn citydlog_9203() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -838,8 +833,7 @@ pub fn citydlog_9204() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 75, 164, 270, 160)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
                     retail_picture(9204)
@@ -942,7 +936,7 @@ pub fn citydlog_9204() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -952,8 +946,7 @@ pub fn citydlog_9205() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 245, 271, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9205)
@@ -1023,7 +1016,7 @@ pub fn citydlog_9205() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1033,8 +1026,7 @@ pub fn citydlog_9206() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 198, 66, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9206)
@@ -1104,7 +1096,7 @@ pub fn citydlog_9206() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1114,8 +1106,7 @@ pub fn citydlog_9209() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 110, 57, 270, 270)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 270)
                     retail_picture(9209)
@@ -1245,7 +1236,7 @@ pub fn citydlog_9209() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1255,8 +1246,7 @@ pub fn citydlog_9211() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 254, 98, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9211)
@@ -1305,7 +1295,7 @@ pub fn citydlog_9211() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1315,8 +1305,7 @@ pub fn citydlog_9212() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 136, 101, 270, 160)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
                     retail_picture(9212)
@@ -1389,7 +1378,7 @@ pub fn citydlog_9212() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1399,8 +1388,7 @@ pub fn citydlog_9213() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 71, 61, 176, 300)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 176, 300)
                     retail_picture(9213)
@@ -1595,7 +1583,7 @@ pub fn citydlog_9213() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1605,8 +1593,7 @@ pub fn citydlog_9214() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 210, 90, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9214)
@@ -1667,7 +1654,7 @@ pub fn citydlog_9214() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1677,8 +1664,7 @@ pub fn citydlog_9215() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 63, 236, 270, 120)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
                     retail_picture(9216)
@@ -1751,7 +1737,7 @@ pub fn citydlog_9215() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -1759,126 +1745,132 @@ pub fn citydlog_9215() -> impl Scene {
 #[rustfmt::skip]
 pub fn citydlog_9220() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 147, 64, 320, 320)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 320, 320)
-                    retail_picture(9270)
-                    Children [
-                        (
-                            retail_node(fourcc!("okay"), 246, 289, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 13, 289, 61, 23)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("tex1"), 20, 194, 281, 36)
-                            Text("")
-                            retail_text_style(1, 0, 0, -2)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex2"), 19, 257, 282, 30)
-                            Text("")
-                            retail_text_style(1, 0, 0, -2)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("warn"), 226, 283, 84, 32)
-                            Text("Insufficient\rMaterials")
-                            retail_text_style(1, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("name"), 14, 6, 290, 15)
-                            Text("")
-                            retail_text_style(1, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("cost"), 227, 47, 86, 35)
-                            Text("")
-                            retail_text_style(1, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("capT"), 14, 19, 290, 15)
-                            Text("")
-                            retail_text_style(1, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("or  "), 205, 235, 30, 15)
-                            Text("-or-")
-                            retail_text_style(1, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("buck"), 227, 92, 86, 35)
-                            Text("")
-                            retail_text_style(1, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Citydlog.rsrc:9220")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 147, 64, 320, 320)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 320, 320)
+                        retail_picture(9270)
+                        Children [
+                            (
+                                retail_node(fourcc!("okay"), 246, 289, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 13, 289, 61, 23)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("tex1"), 20, 194, 281, 36)
+                                Text("")
+                                retail_text_style(1, 0, 0, -2)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex2"), 19, 257, 282, 30)
+                                Text("")
+                                retail_text_style(1, 0, 0, -2)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("warn"), 226, 283, 84, 32)
+                                Text("Insufficient\rMaterials")
+                                retail_text_style(1, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("name"), 14, 6, 290, 15)
+                                Text("")
+                                retail_text_style(1, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("cost"), 227, 47, 86, 35)
+                                Text("")
+                                retail_text_style(1, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("capT"), 14, 19, 290, 15)
+                                Text("")
+                                retail_text_style(1, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("or  "), 205, 235, 30, 15)
+                                Text("-or-")
+                                retail_text_style(1, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("buck"), 227, 92, 86, 35)
+                                Text("")
+                                retail_text_style(1, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn citydlog_9221() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 159, 137, 320, 225)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 320, 225)
-                    retail_picture(9251)
-                    Children [
-                        (
-                            retail_node(fourcc!("okay"), 243, 194, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 18, 194, 61, 23)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("name"), 14, 6, 290, 15)
-                            Text("")
-                            retail_text_style(1, 0, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("capT"), 14, 19, 290, 15)
-                            Text("")
-                            retail_text_style(1, 0, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("cost"), 227, 47, 86, 35)
-                            Text("")
-                            retail_text_style(1, 0, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("warn"), 231, 190, 84, 32)
-                            Text("Insufficient\rMaterials")
-                            retail_text_style(1, 0, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Citydlog.rsrc:9221")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 159, 137, 320, 225)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 320, 225)
+                        retail_picture(9251)
+                        Children [
+                            (
+                                retail_node(fourcc!("okay"), 243, 194, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 18, 194, 61, 23)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("name"), 14, 6, 290, 15)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("capT"), 14, 19, 290, 15)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("cost"), 227, 47, 86, 35)
+                                Text("")
+                                retail_text_style(1, 0, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("warn"), 231, 190, 84, 32)
+                                Text("Insufficient\rMaterials")
+                                retail_text_style(1, 0, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -2131,58 +2123,61 @@ pub fn diplo_1351() -> impl Scene {
 #[rustfmt::skip]
 pub fn diplo_1352() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 27, 35, 480, 431)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 480, 431)
-                    retail_picture(4071)
-                    Children [
-                        (
-                            retail_node(fourcc!("lcor"), 12, 387, 37, 35)
-                            RetailPageCornerLeft
-                            InteractionDisabled
-                        ),
-                        (
-                            retail_node(fourcc!("rcor"), 431, 387, 40, 35)
-                            RetailPageCornerRight
-                            InteractionDisabled
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 27, 9, 33, 32)
-                            Button
-                            retail_picture(4070)
-                        ),
-                        (
-                            retail_node(fourcc!("flgR"), 408, 10, 64, 86)
-                            retail_picture(4424)
-                        ),
-                        (
-                            retail_node(fourcc!("flgL"), 174, 10, 64, 86)
-                            retail_picture(4423)
-                        ),
-                        (
-                            retail_node(fourcc!("natL"), 26, 40, 158, 38)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("natR"), 257, 40, 157, 36)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("page"), 14, 94, 227, 320)
-                        ),
-                        (
-                            retail_node(fourcc!("pagf"), 243, 94, 231, 319)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Diplo.rsrc:1352")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 27, 35, 480, 431)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 480, 431)
+                        retail_picture(4071)
+                        Children [
+                            (
+                                retail_node(fourcc!("lcor"), 12, 387, 37, 35)
+                                RetailPageCornerLeft
+                                InteractionDisabled
+                            ),
+                            (
+                                retail_node(fourcc!("rcor"), 431, 387, 40, 35)
+                                RetailPageCornerRight
+                                InteractionDisabled
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 27, 9, 33, 32)
+                                Button
+                                retail_picture(4070)
+                            ),
+                            (
+                                retail_node(fourcc!("flgR"), 408, 10, 64, 86)
+                                retail_picture(4424)
+                            ),
+                            (
+                                retail_node(fourcc!("flgL"), 174, 10, 64, 86)
+                                retail_picture(4423)
+                            ),
+                            (
+                                retail_node(fourcc!("natL"), 26, 40, 158, 38)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("natR"), 257, 40, 157, 36)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("page"), 14, 94, 227, 320)
+                            ),
+                            (
+                                retail_node(fourcc!("pagf"), 243, 94, 231, 319)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -3166,80 +3161,86 @@ pub fn flagview_8800() -> impl Scene {
 #[rustfmt::skip]
 pub fn linger_950() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 40, 40, 550, 350)
-            Children [
-                (
-                    retail_node(fourcc!("okay"), 0, 0, 550, 350)
-                    Button
-                    retail_picture_swap(950, 950)
-                ),
-            ]
-        )
+        retail_view("Linger.rsrc:950")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 40, 40, 550, 350)
+                Children [
+                    (
+                        retail_node(fourcc!("okay"), 0, 0, 550, 350)
+                        Button
+                        retail_picture_swap(950, 950)
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn linger_954() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 252, 177)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 252, 177)
-                    retail_picture(4535)
-                    Children [
-                        (
-                            retail_node(fourcc!("1or2"), 39, 110, 175, 20)
-                            RadioGroup
-                            Children [
-                                (
-                                    retail_node(fourcc!("one1"), 2, 2, 85, 16)
-                                    RadioButton
-                                    retail_radio_text_fill()
-                                    Text("")
-                                    retail_text_style(1, 0, 0, 1)
-                                    TextColor(Color::BLACK)
-                                ),
-                                (
-                                    retail_node(fourcc!("two2"), 88, 2, 85, 16)
-                                    RadioButton
-                                    retail_radio_text_fill()
-                                    Text("")
-                                    retail_text_style(1, 0, 0, 1)
-                                    TextColor(Color::BLACK)
-                                ),
-                            ]
-                        ),
-                        (
-                            retail_node(fourcc!("inst"), 37, 22, 182, 55)
-                            Text("Pick a planet")
-                            retail_text_style(3, 1, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("plan"), 40, 79, 175, 23)
-                            Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                            retail_edit_field()
-                            retail_editable_text("", Some(32))
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 158, 138, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("canc"), 33, 138, 61, 24)
-                            Button
-                            InteractionDisabled
-                            retail_picture_swap(9412, 9413)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Linger.rsrc:954")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 252, 177)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 252, 177)
+                        retail_picture(4535)
+                        Children [
+                            (
+                                retail_node(fourcc!("1or2"), 39, 110, 175, 20)
+                                RadioGroup
+                                Children [
+                                    (
+                                        retail_node(fourcc!("one1"), 2, 2, 85, 16)
+                                        RadioButton
+                                        retail_radio_text_fill()
+                                        Text("")
+                                        retail_text_style(1, 0, 0, 1)
+                                        TextColor(Color::BLACK)
+                                    ),
+                                    (
+                                        retail_node(fourcc!("two2"), 88, 2, 85, 16)
+                                        RadioButton
+                                        retail_radio_text_fill()
+                                        Text("")
+                                        retail_text_style(1, 0, 0, 1)
+                                        TextColor(Color::BLACK)
+                                    ),
+                                ]
+                            ),
+                            (
+                                retail_node(fourcc!("inst"), 37, 22, 182, 55)
+                                Text("Pick a planet")
+                                retail_text_style(3, 1, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("plan"), 40, 79, 175, 23)
+                                Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                retail_edit_field()
+                                retail_editable_text("", Some(32))
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 158, 138, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("canc"), 33, 138, 61, 24)
+                                Button
+                                InteractionDisabled
+                                retail_picture_swap(9412, 9413)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -3367,59 +3368,68 @@ pub fn linger_1502() -> impl Scene {
 #[rustfmt::skip]
 pub fn linger_2001() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 5, 50, 600, 400)
-        )
+        retail_view("Linger.rsrc:2001")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 5, 50, 600, 400)
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn linger_2002() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 0, 40, 640, 480)
-        )
+        retail_view("Linger.rsrc:2002")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 0, 40, 640, 480)
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn linger_2020() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 100, 80, 390, 282)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 390, 282)
-                    retail_picture(9421)
-                    Children [
-                        (
-                            retail_node(fourcc!("titl"), 111, 33, 170, 95)
-                            Text("")
-                            retail_text_style(3, 1, 14, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 310, 248, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 17, 248, 61, 24)
-                            Button
-                            InteractionDisabled
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("coat"), 295, 12, 84, 125)
-                            retail_picture(9500)
-                        ),
-                        (
-                            retail_node(fourcc!("info"), 17, 160, 354, 84)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Linger.rsrc:2020")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 100, 80, 390, 282)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 390, 282)
+                        retail_picture(9421)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 111, 33, 170, 95)
+                                Text("")
+                                retail_text_style(3, 1, 14, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 310, 248, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 17, 248, 61, 24)
+                                Button
+                                InteractionDisabled
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("coat"), 295, 12, 84, 125)
+                                retail_picture(9500)
+                            ),
+                            (
+                                retail_node(fourcc!("info"), 17, 160, 354, 84)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -3428,8 +3438,7 @@ pub fn linger_3000() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 100, 100, 390, 315)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 390, 315)
                     retail_picture(3000)
@@ -3512,7 +3521,7 @@ pub fn linger_3000() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -3522,8 +3531,7 @@ pub fn linger_3005() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 100, 100, 390, 300)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 390, 300)
                     retail_picture(3005)
@@ -3623,7 +3631,7 @@ pub fn linger_3005() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -3631,200 +3639,206 @@ pub fn linger_3005() -> impl Scene {
 #[rustfmt::skip]
 pub fn linger_4122() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 180, 63, 250, 375)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 250, 375)
-                    retail_picture(4122)
-                    Children [
-                        (
-                            retail_node(fourcc!("advi"), 113, 65, 97, 37)
-                            Button
-                            retail_picture(4123)
-                        ),
-                        (
-                            retail_node(fourcc!("oref"), 11, 150, 65, 27)
-                            Button
-                            retail_picture(4124)
-                        ),
-                        (
-                            retail_node(fourcc!("news"), 11, 187, 65, 27)
-                            Button
-                            retail_picture(4125)
-                        ),
-                        (
-                            retail_node(fourcc!("deal"), 11, 224, 65, 27)
-                            Button
-                            retail_picture(4126)
-                        ),
-                        (
-                            retail_node(fourcc!("batt"), 11, 261, 65, 27)
-                            Button
-                            retail_picture(4127)
-                        ),
-                        (
-                            retail_node(fourcc!("char"), 12, 298, 65, 27)
-                            Button
-                            retail_picture(4128)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 10, 335, 65, 27)
-                            Button
-                            retail_picture(4129)
-                        ),
-                        (
-                            retail_node(fourcc!("titl"), 101, 22, 126, 16)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex0"), 91, 156, 144, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex1"), 91, 192, 144, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex2"), 91, 230, 144, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex3"), 91, 266, 144, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex4"), 91, 304, 144, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex5"), 91, 340, 144, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tex6"), 89, 115, 144, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Linger.rsrc:4122")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 180, 63, 250, 375)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 250, 375)
+                        retail_picture(4122)
+                        Children [
+                            (
+                                retail_node(fourcc!("advi"), 113, 65, 97, 37)
+                                Button
+                                retail_picture(4123)
+                            ),
+                            (
+                                retail_node(fourcc!("oref"), 11, 150, 65, 27)
+                                Button
+                                retail_picture(4124)
+                            ),
+                            (
+                                retail_node(fourcc!("news"), 11, 187, 65, 27)
+                                Button
+                                retail_picture(4125)
+                            ),
+                            (
+                                retail_node(fourcc!("deal"), 11, 224, 65, 27)
+                                Button
+                                retail_picture(4126)
+                            ),
+                            (
+                                retail_node(fourcc!("batt"), 11, 261, 65, 27)
+                                Button
+                                retail_picture(4127)
+                            ),
+                            (
+                                retail_node(fourcc!("char"), 12, 298, 65, 27)
+                                Button
+                                retail_picture(4128)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 10, 335, 65, 27)
+                                Button
+                                retail_picture(4129)
+                            ),
+                            (
+                                retail_node(fourcc!("titl"), 101, 22, 126, 16)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex0"), 91, 156, 144, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex1"), 91, 192, 144, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex2"), 91, 230, 144, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex3"), 91, 266, 144, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex4"), 91, 304, 144, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex5"), 91, 340, 144, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tex6"), 89, 115, 144, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn linger_4140() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 102, 51, 250, 375)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 250, 375)
-                    retail_picture(1330)
-                    Children [
-                        (
-                            retail_node(fourcc!("txt0"), 98, 22, 129, 15)
-                            Text("")
-                            retail_text_style(1, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("txt1"), 104, 109, 116, 18)
-                            Text("")
-                            retail_text_style(1, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("txt2"), 85, 193, 119, 18)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("txt3"), 85, 154, 144, 19)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("txt4"), 85, 231, 138, 17)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("txt5"), 85, 268, 124, 15)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("txt6"), 85, 303, 126, 18)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("save"), 112, 65, 97, 37)
-                            Button
-                            retail_picture(1331)
-                        ),
-                        (
-                            retail_node(fourcc!("newg"), 10, 149, 65, 27)
-                            Button
-                            retail_picture(1332)
-                        ),
-                        (
-                            retail_node(fourcc!("load"), 10, 186, 65, 27)
-                            Button
-                            retail_picture(1333)
-                        ),
-                        (
-                            retail_node(fourcc!("pref"), 10, 223, 65, 27)
-                            Button
-                            retail_picture(1334)
-                        ),
-                        (
-                            retail_node(fourcc!("cred"), 10, 260, 65, 27)
-                            Button
-                            retail_picture(1335)
-                        ),
-                        (
-                            retail_node(fourcc!("quit"), 10, 297, 65, 27)
-                            Button
-                            retail_picture(1336)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 11, 335, 65, 27)
-                            Button
-                            retail_picture(1337)
-                        ),
-                        (
-                            retail_node(fourcc!("txt7"), 84, 340, 126, 18)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Linger.rsrc:4140")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 102, 51, 250, 375)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 250, 375)
+                        retail_picture(1330)
+                        Children [
+                            (
+                                retail_node(fourcc!("txt0"), 98, 22, 129, 15)
+                                Text("")
+                                retail_text_style(1, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("txt1"), 104, 109, 116, 18)
+                                Text("")
+                                retail_text_style(1, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("txt2"), 85, 193, 119, 18)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("txt3"), 85, 154, 144, 19)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("txt4"), 85, 231, 138, 17)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("txt5"), 85, 268, 124, 15)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("txt6"), 85, 303, 126, 18)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("save"), 112, 65, 97, 37)
+                                Button
+                                retail_picture(1331)
+                            ),
+                            (
+                                retail_node(fourcc!("newg"), 10, 149, 65, 27)
+                                Button
+                                retail_picture(1332)
+                            ),
+                            (
+                                retail_node(fourcc!("load"), 10, 186, 65, 27)
+                                Button
+                                retail_picture(1333)
+                            ),
+                            (
+                                retail_node(fourcc!("pref"), 10, 223, 65, 27)
+                                Button
+                                retail_picture(1334)
+                            ),
+                            (
+                                retail_node(fourcc!("cred"), 10, 260, 65, 27)
+                                Button
+                                retail_picture(1335)
+                            ),
+                            (
+                                retail_node(fourcc!("quit"), 10, 297, 65, 27)
+                                Button
+                                retail_picture(1336)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 11, 335, 65, 27)
+                                Button
+                                retail_picture(1337)
+                            ),
+                            (
+                                retail_node(fourcc!("txt7"), 84, 340, 126, 18)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -4122,78 +4136,84 @@ pub fn linger_4600() -> impl Scene {
 #[rustfmt::skip]
 pub fn linger_15000() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("wind"), 156, 56, 200, 200)
-        )
+        retail_view("Linger.rsrc:15000")
+        Children [
+            (
+                retail_node(fourcc!("wind"), 156, 56, 200, 200)
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_1350() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 23, 42, 230, 360)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 230, 360)
-                    retail_picture(3506)
-                    Children [
-                        (
-                            retail_node(fourcc!("next"), 157, 335, 69, 19)
-                            Button
-                            retail_picture_swap(3506, 3507)
-                        ),
-                        (
-                            retail_node(fourcc!("end "), 3, 336, 69, 19)
-                            Button
-                            retail_picture_swap(3506, 3507)
-                        ),
-                        (
-                            retail_node(fourcc!("port"), 4, 4, 222, 151)
-                            retail_picture(3506)
-                        ),
-                        (
-                            retail_node(fourcc!("pgup"), 4, 310, 24, 20)
-                            retail_picture(3506)
-                        ),
-                        (
-                            retail_node(fourcc!("pgdn"), 202, 310, 23, 20)
-                            retail_picture(3506)
-                        ),
-                        (
-                            retail_node(fourcc!("page"), 68, 313, 90, 16)
-                            Text("Page 14 of 14")
-                            retail_text_style(3, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("titl"), 6, 164, 217, 23)
-                            Text("Skirmish Report")
-                            retail_text_style(3, 4, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("repo"), 7, 191, 214, 62)
-                            Text("Haxaco's Powerful Legions\rannhilate\rOrdune's Pathetic Armies")
-                            retail_text_style(3, 1, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("orde"), 53, 298, 119, 14)
-                            Text("Order of Battle follows")
-                            retail_text_style(3, 0, 9, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("loss"), 57, 254, 112, 42)
-                            Text("Losses\rHaxaco:  light\rOrdune:  heavy")
-                            retail_text_style(3, 0, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:1350")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 23, 42, 230, 360)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 230, 360)
+                        retail_picture(3506)
+                        Children [
+                            (
+                                retail_node(fourcc!("next"), 157, 335, 69, 19)
+                                Button
+                                retail_picture_swap(3506, 3507)
+                            ),
+                            (
+                                retail_node(fourcc!("end "), 3, 336, 69, 19)
+                                Button
+                                retail_picture_swap(3506, 3507)
+                            ),
+                            (
+                                retail_node(fourcc!("port"), 4, 4, 222, 151)
+                                retail_picture(3506)
+                            ),
+                            (
+                                retail_node(fourcc!("pgup"), 4, 310, 24, 20)
+                                retail_picture(3506)
+                            ),
+                            (
+                                retail_node(fourcc!("pgdn"), 202, 310, 23, 20)
+                                retail_picture(3506)
+                            ),
+                            (
+                                retail_node(fourcc!("page"), 68, 313, 90, 16)
+                                Text("Page 14 of 14")
+                                retail_text_style(3, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("titl"), 6, 164, 217, 23)
+                                Text("Skirmish Report")
+                                retail_text_style(3, 4, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("repo"), 7, 191, 214, 62)
+                                Text("Haxaco's Powerful Legions\rannhilate\rOrdune's Pathetic Armies")
+                                retail_text_style(3, 1, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("orde"), 53, 298, 119, 14)
+                                Text("Order of Battle follows")
+                                retail_text_style(3, 0, 9, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("loss"), 57, 254, 112, 42)
+                                Text("Losses\rHaxaco:  light\rOrdune:  heavy")
+                                retail_text_style(3, 0, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -4565,1207 +4585,1249 @@ pub fn mapview_2013() -> impl Scene {
 #[rustfmt::skip]
 pub fn mapview_3012() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("main"), 171, 135, 300, 200)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 300, 200)
-                    retail_picture(3012)
-                    Children [
-                        (
-                            retail_node(fourcc!("ttl0"), 13, 12, 278, 19)
-                            Text("Civilian Report")
-                            retail_text_style(3, 1, 14, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 198, 136, 60, 35)
-                            Button
-                            retail_picture(3014)
-                        ),
-                        (
-                            retail_node(fourcc!("canc"), 46, 136, 60, 35)
-                            Button
-                            retail_picture(3013)
-                        ),
-                        (
-                            retail_node(fourcc!("info"), 7, 44, 287, 91)
-                        ),
-                        (
-                            retail_node(fourcc!("ttl1"), 10, 173, 131, 17)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("ttl2"), 164, 173, 130, 17)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:3012")
+        Children [
+            (
+                retail_node(fourcc!("main"), 171, 135, 300, 200)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 300, 200)
+                        retail_picture(3012)
+                        Children [
+                            (
+                                retail_node(fourcc!("ttl0"), 13, 12, 278, 19)
+                                Text("Civilian Report")
+                                retail_text_style(3, 1, 14, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 198, 136, 60, 35)
+                                Button
+                                retail_picture(3014)
+                            ),
+                            (
+                                retail_node(fourcc!("canc"), 46, 136, 60, 35)
+                                Button
+                                retail_picture(3013)
+                            ),
+                            (
+                                retail_node(fourcc!("info"), 7, 44, 287, 91)
+                            ),
+                            (
+                                retail_node(fourcc!("ttl1"), 10, 173, 131, 17)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("ttl2"), 164, 173, 130, 17)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_3100() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 350, 250)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
-                    retail_picture(1541)
-                    Children [
-                        (
-                            retail_node(fourcc!("titl"), 12, 27, 326, 23)
-                            Text("Army Report")
-                            retail_text_style(3, 1, 18, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("whom"), 16, 107, 150, 87)
-                            Text("One hen,\rtwo ducks, \rthree quacking geese.")
-                            retail_text_style(3, 0, 12, -2)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("lab3"), 184, 84, 146, 18)
-                            Text("Orders")
-                            retail_text_style(3, 5, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("ords"), 197, 108, 133, 69)
-                            Text("Patrol the waters\rof whereever")
-                            retail_text_style(3, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("canc"), 187, 213, 61, 23)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 268, 213, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("lab2"), 17, 84, 146, 18)
-                            Text("Composition")
-                            retail_text_style(3, 5, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("gene"), 15, 201, 151, 27)
-                            Text("Adm. Bob of the SS Minnow commanding")
-                            retail_text_style(3, 0, 10, -2)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:3100")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 350, 250)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
+                        retail_picture(1541)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 12, 27, 326, 23)
+                                Text("Army Report")
+                                retail_text_style(3, 1, 18, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("whom"), 16, 107, 150, 87)
+                                Text("One hen,\rtwo ducks, \rthree quacking geese.")
+                                retail_text_style(3, 0, 12, -2)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("lab3"), 184, 84, 146, 18)
+                                Text("Orders")
+                                retail_text_style(3, 5, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("ords"), 197, 108, 133, 69)
+                                Text("Patrol the waters\rof whereever")
+                                retail_text_style(3, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("canc"), 187, 213, 61, 23)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 268, 213, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("lab2"), 17, 84, 146, 18)
+                                Text("Composition")
+                                retail_text_style(3, 5, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("gene"), 15, 201, 151, 27)
+                                Text("Adm. Bob of the SS Minnow commanding")
+                                retail_text_style(3, 0, 10, -2)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_3500() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 17, 51, 480, 400)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 480, 400)
-                    retail_picture(3500)
-                    Children [
-                        (
-                            retail_node(fourcc!("page"), 13, 46, 458, 310)
-                        ),
-                        (
-                            retail_node(fourcc!("lcor"), 12, 356, 41, 36)
-                            RetailPageCornerLeft
-                        ),
-                        (
-                            retail_node(fourcc!("rcor"), 431, 356, 41, 36)
-                            RetailPageCornerRight
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 28, 11, 29, 29)
-                            Button
-                            retail_picture(3507)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:3500")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 17, 51, 480, 400)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 480, 400)
+                        retail_picture(3500)
+                        Children [
+                            (
+                                retail_node(fourcc!("page"), 13, 46, 458, 310)
+                            ),
+                            (
+                                retail_node(fourcc!("lcor"), 12, 356, 41, 36)
+                                RetailPageCornerLeft
+                            ),
+                            (
+                                retail_node(fourcc!("rcor"), 431, 356, 41, 36)
+                                RetailPageCornerRight
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 28, 11, 29, 29)
+                                Button
+                                retail_picture(3507)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_3508() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 260, 100)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 260, 100)
-                    retail_picture(3508)
-                    Children [
-                        (
-                            retail_node(fourcc!("cncl"), 16, 68, 61, 23)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 185, 67, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("name"), 25, 35, 204, 25)
-                            Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                            retail_edit_field()
-                            retail_editable_text("", Some(16))
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("titl"), 28, 12, 201, 15)
-                            Text("Static Text")
-                            retail_text_style(1, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:3508")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 260, 100)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 260, 100)
+                        retail_picture(3508)
+                        Children [
+                            (
+                                retail_node(fourcc!("cncl"), 16, 68, 61, 23)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 185, 67, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("name"), 25, 35, 204, 25)
+                                Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                retail_edit_field()
+                                retail_editable_text("", Some(16))
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("titl"), 28, 12, 201, 15)
+                                Text("Static Text")
+                                retail_text_style(1, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_7200() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 94, 99, 328, 70)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 1, 328, 70)
-                    Children [
-                        (
-                            retail_node(fourcc!("titl"), 40, 4, 240, 16)
-                            Text("Construction Options")
-                            retail_text_style(3, 1, 14, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:7200")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 94, 99, 328, 70)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 1, 328, 70)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 40, 4, 240, 16)
+                                Text("Construction Options")
+                                retail_text_style(3, 1, 14, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_9460() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 14, 59, 600, 300)
-            Children [
-                (
-                    retail_node(fourcc!("    "), 0, 0, 600, 300)
-                    retail_picture(9461)
-                ),
-                (
-                    retail_node(fourcc!("numa"), 136, 21, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nama"), 10, 24, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namb"), 10, 47, 110, 15)
-                    Text("Skirmishers")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numb"), 136, 44, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namc"), 10, 70, 110, 15)
-                    Text("Regulars")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numc"), 136, 67, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numd"), 136, 90, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namd"), 10, 93, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namg"), 10, 162, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numg"), 136, 159, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numh"), 136, 182, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namh"), 10, 185, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namf"), 10, 139, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numf"), 136, 136, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nume"), 136, 113, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("name"), 10, 116, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("nami"), 192, 25, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numi"), 318, 22, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numj"), 318, 45, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namj"), 192, 48, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namk"), 192, 71, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numk"), 318, 68, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numl"), 318, 91, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("naml"), 192, 94, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namm"), 192, 117, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numm"), 318, 114, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numn"), 318, 137, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namn"), 192, 140, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namo"), 192, 163, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numo"), 318, 160, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nump"), 318, 183, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namp"), 192, 186, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namq"), 367, 25, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numq"), 493, 22, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numr"), 493, 45, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namr"), 367, 48, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("nams"), 367, 71, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("nums"), 493, 68, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numt"), 493, 91, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namt"), 367, 94, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namu"), 367, 117, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numu"), 493, 114, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numv"), 493, 137, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namv"), 367, 140, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namw"), 367, 163, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numw"), 493, 160, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numy"), 136, 205, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namy"), 10, 208, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("    "), 450, 239, 61, 24)
-                    Button
-                    retail_picture_swap(9410, 9411)
-                ),
-                (
-                    retail_node(fourcc!("numx"), 493, 183, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namx"), 367, 186, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namz"), 191, 209, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numz"), 318, 206, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namx"), 367, 209, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numx"), 493, 206, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nam{"), 10, 231, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("num{"), 136, 228, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nam|"), 191, 232, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("num|"), 318, 229, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nam~"), 191, 256, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("num~"), 318, 253, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nam}"), 9, 257, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("num}"), 136, 254, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:9460")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 14, 59, 600, 300)
+                Children [
+                    (
+                        retail_node(fourcc!("    "), 0, 0, 600, 300)
+                        retail_picture(9461)
+                    ),
+                    (
+                        retail_node(fourcc!("numa"), 136, 21, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nama"), 10, 24, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namb"), 10, 47, 110, 15)
+                        Text("Skirmishers")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numb"), 136, 44, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namc"), 10, 70, 110, 15)
+                        Text("Regulars")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numc"), 136, 67, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numd"), 136, 90, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namd"), 10, 93, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namg"), 10, 162, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numg"), 136, 159, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numh"), 136, 182, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namh"), 10, 185, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namf"), 10, 139, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numf"), 136, 136, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nume"), 136, 113, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("name"), 10, 116, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("nami"), 192, 25, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numi"), 318, 22, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numj"), 318, 45, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namj"), 192, 48, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namk"), 192, 71, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numk"), 318, 68, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numl"), 318, 91, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("naml"), 192, 94, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namm"), 192, 117, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numm"), 318, 114, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numn"), 318, 137, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namn"), 192, 140, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namo"), 192, 163, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numo"), 318, 160, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nump"), 318, 183, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namp"), 192, 186, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namq"), 367, 25, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numq"), 493, 22, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numr"), 493, 45, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namr"), 367, 48, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("nams"), 367, 71, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("nums"), 493, 68, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numt"), 493, 91, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namt"), 367, 94, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namu"), 367, 117, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numu"), 493, 114, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numv"), 493, 137, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namv"), 367, 140, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namw"), 367, 163, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numw"), 493, 160, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numy"), 136, 205, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namy"), 10, 208, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("    "), 450, 239, 61, 24)
+                        Button
+                        retail_picture_swap(9410, 9411)
+                    ),
+                    (
+                        retail_node(fourcc!("numx"), 493, 183, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namx"), 367, 186, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namz"), 191, 209, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numz"), 318, 206, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namx"), 367, 209, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numx"), 493, 206, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nam{"), 10, 231, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("num{"), 136, 228, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nam|"), 191, 232, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("num|"), 318, 229, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nam~"), 191, 256, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("num~"), 318, 253, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nam}"), 9, 257, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("num}"), 136, 254, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_9462() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 14, 59, 600, 300)
-            Children [
-                (
-                    retail_node(fourcc!("    "), 0, 0, 600, 300)
-                    retail_picture(9461)
-                ),
-                (
-                    retail_node(fourcc!("numd"), 341, 34, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namd"), 215, 37, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("name"), 215, 60, 110, 15)
-                    Text("Skirmishers")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("nume"), 341, 57, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namh"), 215, 83, 110, 15)
-                    Text("Regulars")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numh"), 341, 80, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numi"), 341, 103, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("nami"), 215, 106, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("namm"), 215, 175, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("owne"), 403, 221, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("naml"), 215, 152, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("numl"), 341, 149, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("numj"), 341, 126, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-                (
-                    retail_node(fourcc!("namj"), 215, 129, 110, 15)
-                    Text("Minuteman")
-                    retail_text_style(1, 0, 0, -1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("    "), 287, 240, 61, 24)
-                    Button
-                    retail_picture_swap(9410, 9411)
-                ),
-                (
-                    retail_node(fourcc!("numm"), 341, 172, 36, 22)
-                    Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                    Text("")
-                    retail_text_style(1, 0, 0, 0)
-                    TextColor(Color::BLACK)
-                    retail_centered_text_padding(1, 0, 0, 22, 3)
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:9462")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 14, 59, 600, 300)
+                Children [
+                    (
+                        retail_node(fourcc!("    "), 0, 0, 600, 300)
+                        retail_picture(9461)
+                    ),
+                    (
+                        retail_node(fourcc!("numd"), 341, 34, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namd"), 215, 37, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("name"), 215, 60, 110, 15)
+                        Text("Skirmishers")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("nume"), 341, 57, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namh"), 215, 83, 110, 15)
+                        Text("Regulars")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numh"), 341, 80, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numi"), 341, 103, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("nami"), 215, 106, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("namm"), 215, 175, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("owne"), 403, 221, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("naml"), 215, 152, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("numl"), 341, 149, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("numj"), 341, 126, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                    (
+                        retail_node(fourcc!("namj"), 215, 129, 110, 15)
+                        Text("Minuteman")
+                        retail_text_style(1, 0, 0, -1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("    "), 287, 240, 61, 24)
+                        Button
+                        retail_picture_swap(9410, 9411)
+                    ),
+                    (
+                        retail_node(fourcc!("numm"), 341, 172, 36, 22)
+                        Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Text("")
+                        retail_text_style(1, 0, 0, 0)
+                        TextColor(Color::BLACK)
+                        retail_centered_text_padding(1, 0, 0, 22, 3)
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_9465() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 62, 37, 280, 259)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 280, 259)
-                    retail_picture(9465)
-                    Children [
-                        (
-                            retail_node(fourcc!("    "), 198, 221, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:9465")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 62, 37, 280, 259)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 280, 259)
+                        retail_picture(9465)
+                        Children [
+                            (
+                                retail_node(fourcc!("    "), 198, 221, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_9474() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 350, 250)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
-                    retail_picture(1541)
-                    Children [
-                        (
-                            retail_node(fourcc!("titl"), 12, 10, 326, 23)
-                            Text("Task Force Report")
-                            retail_text_style(3, 1, 18, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("lab1"), 20, 35, 307, 14)
-                            Text("Force currently located in the")
-                            retail_text_style(3, 0, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("whom"), 16, 107, 150, 87)
-                            Text("One hen,\rtwo ducks, \rthree quacking geese.")
-                            retail_text_style(3, 0, 12, -2)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("lab3"), 184, 84, 146, 18)
-                            Text("Orders")
-                            retail_text_style(3, 5, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("ords"), 197, 108, 135, 50)
-                            Text("Patrol the waters\rof whereever")
-                            retail_text_style(3, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("agro"), 198, 167, 131, 30)
-                            Text("Engage all floating objects")
-                            retail_text_style(3, 2, 10, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("canc"), 187, 213, 61, 23)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 268, 213, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("lab2"), 17, 84, 146, 18)
-                            Text("Composition")
-                            retail_text_style(3, 5, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("adam"), 15, 201, 151, 27)
-                            Text("Adm. Bob of the SS Minnow commanding")
-                            retail_text_style(3, 0, 10, -2)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("zone"), 11, 50, 328, 17)
-                            Text("Sea of Satanic Salamanders")
-                            retail_text_style(3, 1, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:9474")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 350, 250)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
+                        retail_picture(1541)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 12, 10, 326, 23)
+                                Text("Task Force Report")
+                                retail_text_style(3, 1, 18, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("lab1"), 20, 35, 307, 14)
+                                Text("Force currently located in the")
+                                retail_text_style(3, 0, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("whom"), 16, 107, 150, 87)
+                                Text("One hen,\rtwo ducks, \rthree quacking geese.")
+                                retail_text_style(3, 0, 12, -2)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("lab3"), 184, 84, 146, 18)
+                                Text("Orders")
+                                retail_text_style(3, 5, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("ords"), 197, 108, 135, 50)
+                                Text("Patrol the waters\rof whereever")
+                                retail_text_style(3, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("agro"), 198, 167, 131, 30)
+                                Text("Engage all floating objects")
+                                retail_text_style(3, 2, 10, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("canc"), 187, 213, 61, 23)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 268, 213, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("lab2"), 17, 84, 146, 18)
+                                Text("Composition")
+                                retail_text_style(3, 5, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("adam"), 15, 201, 151, 27)
+                                Text("Adm. Bob of the SS Minnow commanding")
+                                retail_text_style(3, 0, 10, -2)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("zone"), 11, 50, 328, 17)
+                                Text("Sea of Satanic Salamanders")
+                                retail_text_style(3, 1, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_9475() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 350, 250)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
-                    retail_picture(1542)
-                    Children [
-                        (
-                            retail_node(fourcc!("titl"), 5, 10, 340, 25)
-                            Text("Foreign Fleet Report")
-                            retail_text_style(3, 1, 18, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("gpee"), 5, 48, 340, 16)
-                            Text("Pont")
-                            retail_text_style(3, 1, 14, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("lab1"), 5, 34, 340, 15)
-                            Text("Report of the naval forces of")
-                            retail_text_style(3, 0, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 275, 216, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("ship"), 15, 133, 320, 67)
-                            Text("• Half a dozen Ships-of-the-Line\r2\r3\r4")
-                            retail_text_style(3, 0, 12, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("zone"), 5, 79, 340, 19)
-                            Text("Sea of Oblongata")
-                            retail_text_style(3, 1, 14, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("lab2"), 5, 66, 340, 13)
-                            Text("in the")
-                            retail_text_style(3, 0, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("adam"), 18, 225, 265, 13)
-                            Text(" Adm. James T. Kirk of the USS Enterprise")
-                            retail_text_style(3, 2, 10, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-                (
-                    retail_node(fourcc!("lab3"), 5, 112, 340, 18)
-                    Text("Foreign Shipping Observed")
-                    retail_text_style(3, 5, 12, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("lab4"), 23, 210, 244, 13)
-                    Text("as estimated by")
-                    retail_text_style(3, 2, 10, -2)
-                    TextColor(Color::BLACK)
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:9475")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 350, 250)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
+                        retail_picture(1542)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 5, 10, 340, 25)
+                                Text("Foreign Fleet Report")
+                                retail_text_style(3, 1, 18, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("gpee"), 5, 48, 340, 16)
+                                Text("Pont")
+                                retail_text_style(3, 1, 14, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("lab1"), 5, 34, 340, 15)
+                                Text("Report of the naval forces of")
+                                retail_text_style(3, 0, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 275, 216, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("ship"), 15, 133, 320, 67)
+                                Text("• Half a dozen Ships-of-the-Line\r2\r3\r4")
+                                retail_text_style(3, 0, 12, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("zone"), 5, 79, 340, 19)
+                                Text("Sea of Oblongata")
+                                retail_text_style(3, 1, 14, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("lab2"), 5, 66, 340, 13)
+                                Text("in the")
+                                retail_text_style(3, 0, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("adam"), 18, 225, 265, 13)
+                                Text(" Adm. James T. Kirk of the USS Enterprise")
+                                retail_text_style(3, 2, 10, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                    (
+                        retail_node(fourcc!("lab3"), 5, 112, 340, 18)
+                        Text("Foreign Shipping Observed")
+                        retail_text_style(3, 5, 12, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("lab4"), 23, 210, 244, 13)
+                        Text("as estimated by")
+                        retail_text_style(3, 2, 10, -2)
+                        TextColor(Color::BLACK)
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_9477() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 350, 275)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 350, 275)
-                    retail_picture(1541)
-                    Children [
-                        (
-                            retail_node(fourcc!("titl"), 41, 10, 267, 26)
-                            Text("Enemy Trade Interrupted")
-                            retail_text_style(3, 1, 18, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("miss"), 181, 105, 158, 16)
-                            Text("Blockade")
-                            retail_text_style(3, 1, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("lab1"), 180, 88, 159, 12)
-                            Text("A result of a successful")
-                            retail_text_style(3, 0, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 275, 240, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("vess"), 190, 191, 140, 43)
-                            Text("3 vessels")
-                            retail_text_style(3, 1, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("zone"), 16, 50, 322, 19)
-                            Text("Sea of Oblongata")
-                            retail_text_style(3, 1, 14, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("lab2"), 145, 35, 53, 12)
-                            Text("in the")
-                            retail_text_style(3, 0, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("adam"), 182, 143, 152, 26)
-                            Text(" Adm. James T. Kirk of the USS Enterprise")
-                            retail_text_style(3, 3, 10, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-                (
-                    retail_node(fourcc!("lab1"), 183, 125, 154, 16)
-                    Text("by a task force commanded by")
-                    retail_text_style(3, 0, 10, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("lab1"), 177, 174, 166, 15)
-                    Text("and consisting of")
-                    retail_text_style(3, 0, 10, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("lab1"), 7, 89, 166, 15)
-                    Text("Merchants belonging to")
-                    retail_text_style(3, 0, 10, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("ownr"), 41, 104, 97, 16)
-                    Text("ownr")
-                    retail_text_style(3, 1, 12, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("lab1"), 7, 122, 166, 15)
-                    Text("carrying a cargo of")
-                    retail_text_style(3, 0, 10, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("gpee"), 41, 141, 97, 16)
-                    Text("item")
-                    retail_text_style(3, 1, 12, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("lab1"), 7, 158, 166, 15)
-                    Text("to")
-                    retail_text_style(3, 0, 10, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("dest"), 41, 174, 97, 16)
-                    Text("Pokei")
-                    retail_text_style(3, 1, 12, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("what"), 9, 192, 161, 29)
-                    Text("were stopped from completing their trade")
-                    retail_text_style(3, 0, 10, 1)
-                    TextColor(Color::BLACK)
-                ),
-                (
-                    retail_node(fourcc!("siez"), 21, 219, 138, 36)
-                    Text("1 trader, 6 indiamen")
-                    retail_text_style(3, 1, 10, 1)
-                    TextColor(Color::BLACK)
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:9477")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 350, 275)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 350, 275)
+                        retail_picture(1541)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 41, 10, 267, 26)
+                                Text("Enemy Trade Interrupted")
+                                retail_text_style(3, 1, 18, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("miss"), 181, 105, 158, 16)
+                                Text("Blockade")
+                                retail_text_style(3, 1, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("lab1"), 180, 88, 159, 12)
+                                Text("A result of a successful")
+                                retail_text_style(3, 0, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 275, 240, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("vess"), 190, 191, 140, 43)
+                                Text("3 vessels")
+                                retail_text_style(3, 1, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("zone"), 16, 50, 322, 19)
+                                Text("Sea of Oblongata")
+                                retail_text_style(3, 1, 14, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("lab2"), 145, 35, 53, 12)
+                                Text("in the")
+                                retail_text_style(3, 0, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("adam"), 182, 143, 152, 26)
+                                Text(" Adm. James T. Kirk of the USS Enterprise")
+                                retail_text_style(3, 3, 10, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                    (
+                        retail_node(fourcc!("lab1"), 183, 125, 154, 16)
+                        Text("by a task force commanded by")
+                        retail_text_style(3, 0, 10, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("lab1"), 177, 174, 166, 15)
+                        Text("and consisting of")
+                        retail_text_style(3, 0, 10, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("lab1"), 7, 89, 166, 15)
+                        Text("Merchants belonging to")
+                        retail_text_style(3, 0, 10, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("ownr"), 41, 104, 97, 16)
+                        Text("ownr")
+                        retail_text_style(3, 1, 12, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("lab1"), 7, 122, 166, 15)
+                        Text("carrying a cargo of")
+                        retail_text_style(3, 0, 10, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("gpee"), 41, 141, 97, 16)
+                        Text("item")
+                        retail_text_style(3, 1, 12, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("lab1"), 7, 158, 166, 15)
+                        Text("to")
+                        retail_text_style(3, 0, 10, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("dest"), 41, 174, 97, 16)
+                        Text("Pokei")
+                        retail_text_style(3, 1, 12, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("what"), 9, 192, 161, 29)
+                        Text("were stopped from completing their trade")
+                        retail_text_style(3, 0, 10, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                    (
+                        retail_node(fourcc!("siez"), 21, 219, 138, 36)
+                        Text("1 trader, 6 indiamen")
+                        retail_text_style(3, 1, 10, 1)
+                        TextColor(Color::BLACK)
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn mapview_9478() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 17, 51, 480, 400)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 480, 400)
-                    retail_picture(3500)
-                    Children [
-                        (
-                            retail_node(fourcc!("okay"), 26, 11, 29, 29)
-                            Button
-                            retail_picture(3507)
-                        ),
-                        (
-                            retail_node(fourcc!("page"), 13, 46, 458, 310)
-                        ),
-                        (
-                            retail_node(fourcc!("lcor"), 12, 356, 41, 36)
-                            retail_picture(3506)
-                        ),
-                        (
-                            retail_node(fourcc!("rcor"), 432, 356, 41, 36)
-                            retail_picture(3505)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("MapView.rsrc:9478")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 17, 51, 480, 400)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 480, 400)
+                        retail_picture(3500)
+                        Children [
+                            (
+                                retail_node(fourcc!("okay"), 26, 11, 29, 29)
+                                Button
+                                retail_picture(3507)
+                            ),
+                            (
+                                retail_node(fourcc!("page"), 13, 46, 458, 310)
+                            ),
+                            (
+                                retail_node(fourcc!("lcor"), 12, 356, 41, 36)
+                                retail_picture(3506)
+                            ),
+                            (
+                                retail_node(fourcc!("rcor"), 432, 356, 41, 36)
+                                retail_picture(3505)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn minister_9480() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 100, 80, 390, 282)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 390, 282)
-                    retail_picture(9514)
-                    Children [
-                        (
-                            retail_node(fourcc!("okay"), 310, 248, 61, 23)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("rewa"), 112, 18, 167, 109)
-                            retail_picture(9480)
-                        ),
-                        (
-                            retail_node(fourcc!("coat"), 295, 12, 84, 125)
-                            retail_picture(9500)
-                        ),
-                        (
-                            retail_node(fourcc!("info"), 17, 160, 354, 84)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Minister.rsrc:9480")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 100, 80, 390, 282)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 390, 282)
+                        retail_picture(9514)
+                        Children [
+                            (
+                                retail_node(fourcc!("okay"), 310, 248, 61, 23)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("rewa"), 112, 18, 167, 109)
+                                retail_picture(9480)
+                            ),
+                            (
+                                retail_node(fourcc!("coat"), 295, 12, 84, 125)
+                                retail_picture(9500)
+                            ),
+                            (
+                                retail_node(fourcc!("info"), 17, 160, 354, 84)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn multiplayer_1507() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 110, 307, 324)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 307, 324)
-                    retail_picture(4640)
-                    Children [
-                        (
-                            retail_node(fourcc!("tnam"), 18, 18, 270, 18)
-                            Text("")
-                            retail_text_style(3, 1, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("name"), 18, 39, 270, 21)
-                            Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                            retail_edit_field()
-                            retail_editable_text("", Some(30))
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("tgam"), 18, 76, 270, 18)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("game"), 18, 97, 270, 181)
-                            RadioGroup
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 210, 287, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("canc"), 36, 287, 61, 24)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Multiplayer.rsrc:1507")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 110, 307, 324)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 307, 324)
+                        retail_picture(4640)
+                        Children [
+                            (
+                                retail_node(fourcc!("tnam"), 18, 18, 270, 18)
+                                Text("")
+                                retail_text_style(3, 1, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("name"), 18, 39, 270, 21)
+                                Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                retail_edit_field()
+                                retail_editable_text("", Some(30))
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("tgam"), 18, 76, 270, 18)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("game"), 18, 97, 270, 181)
+                                RadioGroup
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 210, 287, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("canc"), 36, 287, 61, 24)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -5963,70 +6025,73 @@ pub fn multiplayer_1508() -> impl Scene {
 #[rustfmt::skip]
 pub fn multiplayer_1510() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 100, 80, 336, 123)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 336, 123)
-                    retail_picture(4650)
-                    Children [
-                        (
-                            retail_node(fourcc!("okay"), 249, 89, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 26, 90, 61, 24)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("mesg"), 7, 8, 322, 50)
-                            Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
-                            retail_edit_field()
-                            retail_editable_text("", Some(255))
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("box0"), 29, 62, 29, 22)
-                            Checkbox
-                            retail_madness_picture(4651)
-                        ),
-                        (
-                            retail_node(fourcc!("box1"), 70, 62, 29, 22)
-                            Checkbox
-                            retail_madness_picture(4656)
-                        ),
-                        (
-                            retail_node(fourcc!("box2"), 111, 62, 29, 22)
-                            Checkbox
-                            retail_madness_picture(4661)
-                        ),
-                        (
-                            retail_node(fourcc!("box3"), 152, 62, 29, 22)
-                            Checkbox
-                            retail_madness_picture(4666)
-                        ),
-                        (
-                            retail_node(fourcc!("box4"), 193, 62, 29, 22)
-                            Checkbox
-                            retail_madness_picture(4671)
-                        ),
-                        (
-                            retail_node(fourcc!("box5"), 234, 62, 29, 22)
-                            Checkbox
-                            retail_madness_picture(4676)
-                        ),
-                        (
-                            retail_node(fourcc!("box6"), 275, 62, 29, 22)
-                            Checkbox
-                            retail_madness_picture(4681)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Multiplayer.rsrc:1510")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 100, 80, 336, 123)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 336, 123)
+                        retail_picture(4650)
+                        Children [
+                            (
+                                retail_node(fourcc!("okay"), 249, 89, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 26, 90, 61, 24)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("mesg"), 7, 8, 322, 50)
+                                Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                retail_edit_field()
+                                retail_editable_text("", Some(255))
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("box0"), 29, 62, 29, 22)
+                                Checkbox
+                                retail_madness_picture(4651)
+                            ),
+                            (
+                                retail_node(fourcc!("box1"), 70, 62, 29, 22)
+                                Checkbox
+                                retail_madness_picture(4656)
+                            ),
+                            (
+                                retail_node(fourcc!("box2"), 111, 62, 29, 22)
+                                Checkbox
+                                retail_madness_picture(4661)
+                            ),
+                            (
+                                retail_node(fourcc!("box3"), 152, 62, 29, 22)
+                                Checkbox
+                                retail_madness_picture(4666)
+                            ),
+                            (
+                                retail_node(fourcc!("box4"), 193, 62, 29, 22)
+                                Checkbox
+                                retail_madness_picture(4671)
+                            ),
+                            (
+                                retail_node(fourcc!("box5"), 234, 62, 29, 22)
+                                Checkbox
+                                retail_madness_picture(4676)
+                            ),
+                            (
+                                retail_node(fourcc!("box6"), 275, 62, 29, 22)
+                                Checkbox
+                                retail_madness_picture(4681)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -6035,8 +6100,7 @@ pub fn shipyard_9207() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 125, 62, 370, 410)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
                     retail_picture(9800)
@@ -6298,7 +6362,7 @@ pub fn shipyard_9207() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -6360,77 +6424,83 @@ pub fn startup_952() -> impl Scene {
 #[rustfmt::skip]
 pub fn startup_953() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 328, 175)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 328, 175)
-                    retail_picture(9420)
-                    Children [
-                        (
-                            retail_node(fourcc!("titl"), 46, 17, 238, 26)
-                            Text("")
-                            retail_text_style(3, 1, 14, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 255, 142, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 13, 142, 61, 23)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("    "), 17, 92, 168, 14)
-                            Text("")
-                            retail_text_style(3, 0, 0, -2)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("sust"), 14, 59, 299, 29)
-                            Text("")
-                            retail_text_style(3, 0, 0, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Startup.rsrc:953")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 328, 175)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 328, 175)
+                        retail_picture(9420)
+                        Children [
+                            (
+                                retail_node(fourcc!("titl"), 46, 17, 238, 26)
+                                Text("")
+                                retail_text_style(3, 1, 14, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 255, 142, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 13, 142, 61, 23)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("    "), 17, 92, 168, 14)
+                                Text("")
+                                retail_text_style(3, 0, 0, -2)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("sust"), 14, 59, 299, 29)
+                                Text("")
+                                retail_text_style(3, 0, 0, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn startup_966() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 160, 138, 328, 175)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 330, 175)
-                    retail_picture(4541)
-                    Children [
-                        (
-                            retail_node(fourcc!("ques"), 12, 14, 301, 33)
-                            Text("")
-                            retail_text_style(3, 1, 12, 1)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("form"), 18, 52, 290, 85)
-                            RadioGroup
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 255, 139, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Startup.rsrc:966")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 160, 138, 328, 175)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 330, 175)
+                        retail_picture(4541)
+                        Children [
+                            (
+                                retail_node(fourcc!("ques"), 12, 14, 301, 33)
+                                Text("")
+                                retail_text_style(3, 1, 12, 1)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("form"), 18, 52, 290, 85)
+                                RadioGroup
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 255, 139, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -7303,91 +7373,97 @@ pub fn tactical_3800() -> impl Scene {
 #[rustfmt::skip]
 pub fn tactical_3821() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 100, 80, 235, 350)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 235, 350)
-                    retail_picture(3821)
-                    Children [
-                        (
-                            retail_node(fourcc!("okay"), 87, 314, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("info"), 13, 201, 210, 112)
-                        ),
-                        (
-                            retail_node(fourcc!("titl"), 7, 163, 221, 19)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("loca"), 7, 182, 221, 19)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Tactical.rsrc:3821")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 100, 80, 235, 350)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 235, 350)
+                        retail_picture(3821)
+                        Children [
+                            (
+                                retail_node(fourcc!("okay"), 87, 314, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("info"), 13, 201, 210, 112)
+                            ),
+                            (
+                                retail_node(fourcc!("titl"), 7, 163, 221, 19)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("loca"), 7, 182, 221, 19)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
 #[rustfmt::skip]
 pub fn tactical_3865() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 80, 80, 442, 297)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 442, 297)
-                    retail_picture(3865)
-                    Children [
-                        (
-                            retail_node(fourcc!("pmap"), 59, 5, 324, 180)
-                            RelativeCursorPosition
-                        ),
-                        (
-                            retail_node(fourcc!("okay"), 369, 261, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("info"), 12, 197, 417, 59)
-                        ),
-                        (
-                            retail_node(fourcc!("titl"), 7, 163, 221, 19)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("loca"), 7, 182, 221, 19)
-                            Text("")
-                            retail_text_style(1, 0, 0, 0)
-                            TextColor(Color::BLACK)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 12, 261, 61, 24)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("acoa"), 3, 18, 52, 72)
-                            retail_picture(3757)
-                        ),
-                        (
-                            retail_node(fourcc!("dcoa"), 385, 18, 52, 72)
-                            retail_picture(3772)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("Tactical.rsrc:3865")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 80, 80, 442, 297)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 442, 297)
+                        retail_picture(3865)
+                        Children [
+                            (
+                                retail_node(fourcc!("pmap"), 59, 5, 324, 180)
+                                RelativeCursorPosition
+                            ),
+                            (
+                                retail_node(fourcc!("okay"), 369, 261, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("info"), 12, 197, 417, 59)
+                            ),
+                            (
+                                retail_node(fourcc!("titl"), 7, 163, 221, 19)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("loca"), 7, 182, 221, 19)
+                                Text("")
+                                retail_text_style(1, 0, 0, 0)
+                                TextColor(Color::BLACK)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 12, 261, 61, 24)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("acoa"), 3, 18, 52, 72)
+                                retail_picture(3757)
+                            ),
+                            (
+                                retail_node(fourcc!("dcoa"), 385, 18, 52, 72)
+                                retail_picture(3772)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -7572,43 +7648,46 @@ pub fn techstore_2300() -> impl Scene {
 #[rustfmt::skip]
 pub fn techstore_2370() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 151, 128, 360, 295)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 360, 295)
-                    Children [
-                        (
-                            retail_node(fourcc!("top "), 0, 0, 360, 295)
-                            retail_picture(2370)
-                            Children [
-                                (
-                                    retail_node(fourcc!("titl"), 81, 19, 264, 32)
-                                    Text("Static Text")
-                                    retail_text_style(1, 0, 0, 0)
-                                    TextColor(Color::BLACK)
-                                ),
-                                (
-                                    retail_node(fourcc!("pict"), 10, 10, 60, 60)
-                                    retail_picture(2373)
-                                ),
-                                (
-                                    retail_node(fourcc!("scvw"), 9, 76, 342, 175)
-                                    ScrollArea
-                                    Node { overflow: Overflow::scroll_y() }
-                                    Pickable
-                                ),
-                                (
-                                    retail_node(fourcc!("okay"), 281, 260, 61, 24)
-                                    Button
-                                    retail_picture_swap(9410, 9411)
-                                ),
-                            ]
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("TechStore.rsrc:2370")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 151, 128, 360, 295)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 360, 295)
+                        Children [
+                            (
+                                retail_node(fourcc!("top "), 0, 0, 360, 295)
+                                retail_picture(2370)
+                                Children [
+                                    (
+                                        retail_node(fourcc!("titl"), 81, 19, 264, 32)
+                                        Text("Static Text")
+                                        retail_text_style(1, 0, 0, 0)
+                                        TextColor(Color::BLACK)
+                                    ),
+                                    (
+                                        retail_node(fourcc!("pict"), 10, 10, 60, 60)
+                                        retail_picture(2373)
+                                    ),
+                                    (
+                                        retail_node(fourcc!("scvw"), 9, 76, 342, 175)
+                                        ScrollArea
+                                        Node { overflow: Overflow::scroll_y() }
+                                        Pickable
+                                    ),
+                                    (
+                                        retail_node(fourcc!("okay"), 281, 260, 61, 24)
+                                        Button
+                                        retail_picture_swap(9410, 9411)
+                                    ),
+                                ]
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }
 
@@ -9915,8 +9994,7 @@ pub fn univ_9210() -> impl Scene {
     bsn! {
         (
             retail_node(fourcc!("WIND"), 51, 61, 370, 410)
-            captioned_window()
-            Children [
+            {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
                     retail_picture(9900)
@@ -10247,7 +10325,7 @@ pub fn univ_9210() -> impl Scene {
                         ),
                     ]
                 ),
-            ]
+            ])}
         )
     }
 }
@@ -10255,65 +10333,68 @@ pub fn univ_9210() -> impl Scene {
 #[rustfmt::skip]
 pub fn join_selector_message() -> impl Scene {
     bsn! {
-        (
-            retail_node(fourcc!("WIND"), 125, 169, 336, 123)
-            Children [
-                (
-                    retail_node(fourcc!("DLOG"), 0, 0, 336, 123)
-                    retail_picture(4650)
-                    Children [
-                        (
-                            retail_node(fourcc!("okay"), 249, 89, 61, 24)
-                            Button
-                            retail_picture_swap(9410, 9411)
-                        ),
-                        (
-                            retail_node(fourcc!("cncl"), 26, 90, 61, 24)
-                            Button
-                            retail_picture_swap(9412, 9413)
-                        ),
-                        (
-                            retail_node(fourcc!("mesg"), 7, 8, 322, 50)
-                            Node { padding: UiRect { left: px(3), top: px(3), right: px(3), bottom: px(3) } }
-                        ),
-                        (
-                            retail_node(fourcc!("box0"), 29, 62, 29, 22)
-                            Checkbox
-                            retail_picture_swap(4650, 4651)
-                        ),
-                        (
-                            retail_node(fourcc!("box1"), 70, 62, 29, 22)
-                            Checkbox
-                            retail_picture_swap(4656, 4657)
-                        ),
-                        (
-                            retail_node(fourcc!("box2"), 111, 62, 29, 22)
-                            Checkbox
-                            retail_picture_swap(4660, 4661)
-                        ),
-                        (
-                            retail_node(fourcc!("box3"), 152, 62, 29, 22)
-                            Checkbox
-                            retail_picture_swap(4666, 4667)
-                        ),
-                        (
-                            retail_node(fourcc!("box4"), 193, 62, 29, 22)
-                            Checkbox
-                            retail_picture_swap(4670, 4671)
-                        ),
-                        (
-                            retail_node(fourcc!("box5"), 234, 62, 29, 22)
-                            Checkbox
-                            retail_picture_swap(4676, 4677)
-                        ),
-                        (
-                            retail_node(fourcc!("box6"), 275, 62, 29, 22)
-                            Checkbox
-                            retail_picture_swap(4680, 4681)
-                        ),
-                    ]
-                ),
-            ]
-        )
+        retail_view("join_selector_message")
+        Children [
+            (
+                retail_node(fourcc!("WIND"), 125, 169, 336, 123)
+                Children [
+                    (
+                        retail_node(fourcc!("DLOG"), 0, 0, 336, 123)
+                        retail_picture(4650)
+                        Children [
+                            (
+                                retail_node(fourcc!("okay"), 249, 89, 61, 24)
+                                Button
+                                retail_picture_swap(9410, 9411)
+                            ),
+                            (
+                                retail_node(fourcc!("cncl"), 26, 90, 61, 24)
+                                Button
+                                retail_picture_swap(9412, 9413)
+                            ),
+                            (
+                                retail_node(fourcc!("mesg"), 7, 8, 322, 50)
+                                Node { padding: UiRect { left: px(3), top: px(3), right: px(3), bottom: px(3) } }
+                            ),
+                            (
+                                retail_node(fourcc!("box0"), 29, 62, 29, 22)
+                                Checkbox
+                                retail_picture_swap(4650, 4651)
+                            ),
+                            (
+                                retail_node(fourcc!("box1"), 70, 62, 29, 22)
+                                Checkbox
+                                retail_picture_swap(4656, 4657)
+                            ),
+                            (
+                                retail_node(fourcc!("box2"), 111, 62, 29, 22)
+                                Checkbox
+                                retail_picture_swap(4660, 4661)
+                            ),
+                            (
+                                retail_node(fourcc!("box3"), 152, 62, 29, 22)
+                                Checkbox
+                                retail_picture_swap(4666, 4667)
+                            ),
+                            (
+                                retail_node(fourcc!("box4"), 193, 62, 29, 22)
+                                Checkbox
+                                retail_picture_swap(4670, 4671)
+                            ),
+                            (
+                                retail_node(fourcc!("box5"), 234, 62, 29, 22)
+                                Checkbox
+                                retail_picture_swap(4676, 4677)
+                            ),
+                            (
+                                retail_node(fourcc!("box6"), 275, 62, 29, 22)
+                                Checkbox
+                                retail_picture_swap(4680, 4681)
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+        ]
     }
 }

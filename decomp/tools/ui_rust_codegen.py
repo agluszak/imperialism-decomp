@@ -495,8 +495,11 @@ def _emit_hover_help_bar() -> list[str]:
     return ["hover_help_bar()"]
 
 
-def _emit_captioned_window() -> list[str]:
-    return ["captioned_window()"]
+CAPTIONED_FLOATING_WINDOW = (0x80, 0x1F40, 1, 1, 1, 1, 0, 1)
+
+
+def _is_captioned_floating_window(node: Node) -> bool:
+    return node.window == CAPTIONED_FLOATING_WINDOW
 
 
 def _emit_scroll_area() -> list[str]:
@@ -650,8 +653,6 @@ def _class_lines(node: Node) -> list[str]:
 def _emit_node(node: Node, indent: int) -> list[str]:
     pad, x, y, w, h = " " * indent, *node.geometry
     lines = [f"{pad}(", f"{pad}    retail_node(fourcc!({_rust_str(node.tag)}), {x}, {y}, {w}, {h})"]
-    if node.window == (0x80, 0x1F40, 1, 1, 1, 1, 0, 1):
-        lines.extend(f"{pad}    {line}" for line in _emit_captioned_window())
     ins = node.insets or (0, 0, 0, 0)
     if any(ins):
         lines += [f"{pad}    Node {{ padding: UiRect {{ left: px({ins[0]}), top: px({ins[1]}), "
@@ -672,6 +673,13 @@ def _emit_node(node: Node, indent: int) -> list[str]:
             chunk[-1] += ","
             lines.extend(chunk)
         lines.append(f"{pad}    ])}}")
+    elif node.window == CAPTIONED_FLOATING_WINDOW:
+        lines.append(f"{pad}    {{captioned_window(bsn_list![")
+        for child in node.children:
+            chunk = _emit_node(child, indent + 8)
+            chunk[-1] += ","
+            lines.extend(chunk)
+        lines.append(f"{pad}    ])}}")
     elif node.children:
         lines.append(f"{pad}    Children [")
         for child in node.children:
@@ -684,7 +692,7 @@ def _emit_node(node: Node, indent: int) -> list[str]:
 
 
 def _emit_root_directly(root: Node) -> bool:
-    return root.type_code in ("wind", "fwnd")
+    return _is_captioned_floating_window(root)
 
 
 def render(scenes: list[tuple[str, str, Node]]) -> str:
