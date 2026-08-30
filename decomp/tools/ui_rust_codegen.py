@@ -683,30 +683,8 @@ def _emit_node(node: Node, indent: int) -> list[str]:
     return lines
 
 
-WINDOW_ROOT_SCENES = frozenset(
-    {
-        f"citydlog_{id_}"
-        for id_ in (
-            9200,
-            9201,
-            9202,
-            9203,
-            9204,
-            9205,
-            9206,
-            9209,
-            9210,
-            9211,
-            9212,
-            9213,
-            9214,
-            9215,
-            9220,
-            9221,
-        )
-    }
-    | {"shipyard_9207", "armory_9208", "univ_9210"}
-)
+def _emit_root_directly(root: Node) -> bool:
+    return root.type_code in ("wind", "fwnd")
 
 
 def render(scenes: list[tuple[str, str, Node]]) -> str:
@@ -727,16 +705,17 @@ def render(scenes: list[tuple[str, str, Node]]) -> str:
     body = []
     for fn, view_name, root in scenes:
         body += ["#[rustfmt::skip]", f"pub fn {fn}() -> impl Scene {{", "    bsn! {"]
-        if fn in WINDOW_ROOT_SCENES:
+        if _emit_root_directly(root):
             chunk = _emit_node(root, 8)
         else:
             body.append(f"        retail_view({_rust_str(view_name)})")
             body.append("        Children [")
             chunk = _emit_node(root, 12)
             chunk[-1] += ","
-        body.extend(chunk)
-        if fn not in WINDOW_ROOT_SCENES:
+            body.extend(chunk)
             body += ["        ]"]
+            chunk = []
+        body.extend(chunk)
         body += ["    }", "}", ""]
     return header + "\n".join(body)
 

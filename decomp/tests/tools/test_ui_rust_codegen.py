@@ -155,6 +155,16 @@ class UiRustCodegenTests(unittest.TestCase):
         rendered = "\n".join(_emit_node(node, 4))
         self.assertIn("TextColor(Color::BLACK)", rendered)
 
+    def test_floating_windows_emit_without_retail_view_wrapper(self) -> None:
+        for fn_name in ("linger_3000", "citydlog_9200", "mapview_3012", "linger_2020"):
+            source = _scene_source(fn_name)
+            self.assertNotIn("retail_view(", source, fn_name)
+
+    def test_full_views_stay_wrapped_in_retail_view(self) -> None:
+        for fn_name in ("startup_1500", "transport_2014", "mapview_2013"):
+            source = _scene_source(fn_name)
+            self.assertIn("retail_view(", source, fn_name)
+
     def test_city_layout_generated_from_evidence(self) -> None:
         layout = render_city_building_layout(REPO_ROOT)
         committed = (REPO_ROOT / RUST_CITY_LAYOUT_OUT).read_text(encoding="utf-8")
