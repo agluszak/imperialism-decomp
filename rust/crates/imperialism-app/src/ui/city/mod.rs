@@ -9,7 +9,7 @@ use super::retail_resources::{
     ResourceKindRetailResources, ShipTypeRetailResources,
 };
 use super::window::{
-    CaptionedWindow, ModalWindow, bind_modal_keys, dismiss_on_activate, set_window_position,
+    CaptionedWindow, bind_modal_keys, dismiss_on_activate, set_window_position, spawn_modal_window,
     window_position,
 };
 use super::{CityWindows, GameSession};

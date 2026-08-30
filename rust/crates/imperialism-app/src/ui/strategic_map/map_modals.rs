@@ -11,7 +11,7 @@ use crate::ui::retail_resources::CivilianUnitKindRetailResources;
 use crate::ui::retail_resources::EngineerConstructionChoiceRetailResources;
 use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::retail_resources::ShipTypeRetailResources;
-use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
+use crate::ui::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
 use crate::ui::{RetailUiAssets, fill_brackets, format_currency};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -92,50 +92,41 @@ pub(super) fn register(app: &mut App) {
 }
 
 pub(crate) fn spawn_garrison(commands: &mut Commands, province: ProvinceId) {
-    let root = commands.spawn_scene(generated::mapview_3500()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(GarrisonDialog(province));
+    let modal = spawn_modal(commands, generated::mapview_3500());
+    commands.entity(modal).insert(GarrisonDialog(province));
 }
 
 pub(crate) fn spawn_army_report(commands: &mut Commands, province: ProvinceId) {
-    let root = commands.spawn_scene(generated::mapview_3100()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(ArmyReportDialog(province));
+    let modal = spawn_modal(commands, generated::mapview_3100());
+    commands.entity(modal).insert(ArmyReportDialog(province));
 }
 
 pub(crate) fn spawn_fleet_report(commands: &mut Commands, kind: FleetReportKind) {
-    let root = match kind {
-        FleetReportKind::Friendly(_) => commands.spawn_scene(generated::mapview_9474()).id(),
-        FleetReportKind::Intelligence { .. } => {
-            commands.spawn_scene(generated::mapview_9475()).id()
-        }
+    let modal = match kind {
+        FleetReportKind::Friendly(_) => spawn_modal(commands, generated::mapview_9474()),
+        FleetReportKind::Intelligence { .. } => spawn_modal(commands, generated::mapview_9475()),
     };
-    spawn_modal(commands, root);
-    commands.entity(root).insert(FleetReportDialog(kind));
+    commands.entity(modal).insert(FleetReportDialog(kind));
 }
 
 pub(crate) fn spawn_navy_roster(commands: &mut Commands, kind: NavyRosterKind) {
-    let root = commands.spawn_scene(generated::mapview_9478()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(NavyRosterDialog(kind));
+    let modal = spawn_modal(commands, generated::mapview_9478());
+    commands.entity(modal).insert(NavyRosterDialog(kind));
 }
 
 pub(crate) fn spawn_army_roster(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::mapview_3500()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(ArmyRosterDialog);
+    let modal = spawn_modal(commands, generated::mapview_3500());
+    commands.entity(modal).insert(ArmyRosterDialog);
 }
 
 pub(crate) fn spawn_civilian_roster(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::mapview_3500()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(CivilianLedger);
+    let modal = spawn_modal(commands, generated::mapview_3500());
+    commands.entity(modal).insert(CivilianLedger);
 }
 
 pub(crate) fn spawn_engineer_construction(commands: &mut Commands, unit: CivilianUnitId) {
-    let root = commands.spawn_scene(generated::mapview_7200()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(CivilianModal::Engineer(unit));
+    let modal = spawn_modal(commands, generated::mapview_7200());
+    commands.entity(modal).insert(CivilianModal::Engineer(unit));
 }
 
 pub(crate) fn spawn_developer_purchase(
@@ -151,9 +142,8 @@ pub(crate) fn spawn_developer_purchase(
 }
 
 pub(crate) fn spawn_civilian_report(commands: &mut Commands, unit: CivilianUnitId) {
-    let root = commands.spawn_scene(generated::mapview_3012()).id();
-    spawn_modal(commands, root);
-    commands.entity(root).insert(CivilianModal::Report(unit));
+    let modal = spawn_modal(commands, generated::mapview_3012());
+    commands.entity(modal).insert(CivilianModal::Report(unit));
 }
 
 pub(crate) fn spawn_civilian_disband(commands: &mut Commands, unit: CivilianUnitId) {
@@ -164,10 +154,12 @@ pub(crate) fn spawn_civilian_disband(commands: &mut Commands, unit: CivilianUnit
     );
 }
 
-fn spawn_modal(commands: &mut Commands, root: Entity) {
+fn spawn_modal(commands: &mut Commands, scene: impl Scene) -> Entity {
+    let (modal, _window) = spawn_modal_window(commands, scene);
     commands
-        .entity(root)
-        .insert((MapModal, ModalWindow, DespawnOnExit(AppState::StrategicMap)));
+        .entity(modal)
+        .insert((MapModal, DespawnOnExit(AppState::StrategicMap)));
+    modal
 }
 
 fn bind_added_map_modals(

@@ -11,7 +11,7 @@ use crate::ui::strategic_map::{
     StrategicBaseTerrainCanvas, bind_minimap, bind_strategic_base_terrain,
     compose_city_site_terrain, strategic_base_terrain_tile_at_cursor, sync_minimap,
 };
-use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate, no_modal};
+use crate::ui::window::{bind_modal_keys, dismiss_on_activate, no_modal, spawn_modal_window};
 use crate::ui::{GameSession, StrategicMapSession};
 use crate::{AppState, RetailAssetsResource};
 use bevy::picking::events::{Click, Pointer};
@@ -267,12 +267,10 @@ fn on_city_site_map_click(
 }
 
 fn open_new_city_dialog(commands: &mut Commands, site: CapitalSite) {
-    let root = commands.spawn_scene(generated::startup_953()).id();
-    commands.entity(root).insert((
-        NewCityDialogRoot(site),
-        ModalWindow,
-        DespawnOnExit(AppState::CitySite),
-    ));
+    let (modal, _window) = spawn_modal_window(commands, generated::startup_953());
+    commands
+        .entity(modal)
+        .insert((NewCityDialogRoot(site), DespawnOnExit(AppState::CitySite)));
 }
 
 fn open_city_site_notice(commands: &mut Commands, body: String) {

@@ -16,10 +16,17 @@ const CLOSE_SIZE: f32 = 14.0;
 #[require(GlobalZIndex)]
 struct UiWindow;
 
-/// Retained child refs for a captioned window hierarchy.
+/// Captured once at scene construction: the captioned window this close button dismisses.
 #[derive(Component, FromTemplate, Clone, Copy)]
-struct CaptionedWindowParts {
-    close: Entity,
+struct CloseWindow(Entity);
+
+/// Finds the captioned-window close control in a spawned scene.
+#[cfg(test)]
+pub(crate) fn captioned_close_in(world: &mut World) -> Entity {
+    world
+        .query_filtered::<Entity, With<CloseWindow>>()
+        .single(world)
+        .expect("captioned window scene has a close control")
 }
 
 /// Recovered captioned dialog/window root marker.
@@ -30,9 +37,9 @@ pub struct CaptionedWindow;
 /// Caption bar, close control, and window chrome on the recovered window root.
 pub fn captioned_window() -> impl Scene {
     bsn! {
+        #Window
         CaptionedWindow
         Node { overflow: Overflow::visible() }
-        CaptionedWindowParts { close: #Close }
         on(on_window_press_raise)
         Children [
             (
@@ -62,6 +69,7 @@ pub fn captioned_window() -> impl Scene {
                         }
                         BackgroundColor(Color::srgb_u8(192, 192, 192))
                         ZIndex(1)
+                        CloseWindow(#Window)
                         on(on_captioned_window_close)
                         Children [
                             (
@@ -110,6 +118,14 @@ pub fn window_position(node: &Node) -> IVec2 {
 pub fn set_window_position(node: &mut Node, position: IVec2) {
     node.left = px(position.x);
     node.top = px(position.y);
+}
+
+/// Spawns a recovered floating-window scene under a full-screen modal barrier.
+pub fn spawn_modal_window(commands: &mut Commands, scene: impl Scene) -> (Entity, Entity) {
+    let modal = commands.spawn(ModalWindow).id();
+    let window = commands.spawn_scene(scene).id();
+    commands.entity(window).insert(ChildOf(modal));
+    (modal, window)
 }
 
 /// Routes modal Enter/Escape to the bound default/cancel controls.
@@ -193,15 +209,13 @@ fn raise_window(entity: Entity, windows: &mut Query<(Entity, &mut GlobalZIndex),
 
 fn on_captioned_window_close(
     activate: On<Activate>,
-    windows: Query<(Entity, &CaptionedWindowParts), With<CaptionedWindow>>,
+    targets: Query<&CloseWindow>,
     mut commands: Commands,
 ) {
-    for (window, parts) in &windows {
-        if parts.close == activate.entity {
-            commands.entity(window).try_despawn();
-            return;
-        }
-    }
+    let Ok(target) = targets.get(activate.entity) else {
+        return;
+    };
+    commands.entity(target.0).try_despawn();
 }
 
 fn on_caption_drag(
@@ -290,6 +304,10 @@ mod tests {
     ) {
         bind_modal_keys(&mut app.world_mut().commands(), root, default, cancel);
         app.world_mut().flush();
+    }
+
+    fn close_button(app: &mut App) -> Entity {
+        captioned_close_in(app.world_mut())
     }
 
     #[test]
@@ -429,16 +447,7 @@ mod tests {
         assert!(app.world().get::<UiWindow>(window).is_some());
         assert!(app.world().get::<Node>(window).is_some());
 
-        let close = app
-            .world()
-            .get::<CaptionedWindowParts>(window)
-            .expect("window retains close ref")
-            .close;
-        let caption = app
-            .world()
-            .get::<ChildOf>(close)
-            .expect("close has caption parent")
-            .parent();
+        let close = close_button(&mut app);
 
         app.world_mut()
             .commands()
@@ -448,7 +457,6 @@ mod tests {
 
         assert!(app.world().get_entity(canvas).is_ok());
         assert!(app.world().get_entity(window).is_err());
-        assert!(app.world().get_entity(caption).is_err());
         assert!(app.world().get_entity(close).is_err());
     }
 }

@@ -50,14 +50,13 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             (next_capacity.to_string(), can_reserve)
         }
     };
-    let root = commands.spawn_scene(generated::citydlog_9220()).id();
-    commands.entity(root).insert((
+    let (modal, _window) = spawn_modal_window(commands, generated::citydlog_9220());
+    commands.entity(modal).insert((
         BuildingChangeDialog::Construction {
             slot,
             capacity,
             can_reserve,
         },
-        ModalWindow,
         DespawnOnExit(AppState::City),
     ));
 }
@@ -85,15 +84,14 @@ pub(in crate::ui::city) fn open_city_expansion_dialog(
         ExpandableFacility::try_from_slot(slot).expect("ordinary industry is expandable"),
     );
     let can_reserve = needed <= session.game.city_order_limit(nation, order).maximum;
-    let root = commands.spawn_scene(generated::citydlog_9221()).id();
-    commands.entity(root).insert((
+    let (modal, _window) = spawn_modal_window(commands, generated::citydlog_9221());
+    commands.entity(modal).insert((
         BuildingChangeDialog::Expansion {
             slot,
             next_capacity,
             next_level,
             can_reserve,
         },
-        ModalWindow,
         DespawnOnExit(AppState::City),
     ));
 }

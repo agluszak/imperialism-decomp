@@ -1,6 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
-use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
+use super::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
 use crate::{AppState, ReturnTo};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -41,10 +41,10 @@ fn on_open_query_floater(
     state: Res<State<AppState>>,
     mut commands: Commands,
 ) {
-    let root = commands.spawn_scene(generated::linger_4122()).id();
+    let (modal, _window) = spawn_modal_window(&mut commands, generated::linger_4122());
     commands
-        .entity(root)
-        .insert((QueryFloaterRoot, ModalWindow, DespawnOnExit(*state.get())));
+        .entity(modal)
+        .insert((QueryFloaterRoot, DespawnOnExit(*state.get())));
 }
 
 fn bind_query_floaters(
