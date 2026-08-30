@@ -1,5 +1,6 @@
 use super::generated;
 use super::retail::RetailTree;
+use super::window::CaptionedWindowParts;
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -138,11 +139,15 @@ struct PendingMapHelp(HelpContext);
 fn bind_added_help(
     mut commands: Commands,
     pending: Query<(Entity, &PendingMapHelp), Added<PendingMapHelp>>,
+    captioned_parts: Query<&CaptionedWindowParts>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
 ) {
     for (root, PendingMapHelp(context)) in &pending {
+        if let Ok(parts) = captioned_parts.get(root) {
+            super::window::bind_captioned_close(&mut commands, parts, root);
+        }
         let context = *context;
         let title = fill_brackets(
             &retail.get_string(0x2749, 6),
@@ -336,7 +341,9 @@ mod tests {
     use super::*;
     use crate::ui::RetailUiPlugin;
     use crate::ui::retail::retail_node;
-    use crate::ui::window::{UiWindowPlugin, captioned_close_in, captioned_window};
+    use crate::ui::window::{
+        CaptionedWindowParts, UiWindowPlugin, bind_captioned_close, captioned_window,
+    };
     use bevy::asset::AssetPlugin;
     use bevy::scene::ScenePlugin;
     use bevy::ui_widgets::Activate;
@@ -359,8 +366,7 @@ mod tests {
         bsn! {
             (
                 retail_node(fourcc!("WIND"), 100, 100, 390, 315)
-                captioned_window()
-                Children [
+                captioned_window(bsn_list![
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 390, 315)
                         Children [
@@ -401,8 +407,8 @@ mod tests {
                                 retail_node(fourcc!("more"), 0, 0, 1, 1)
                             ),
                         ]
-                    )
-                ]
+                    ),
+                ])
             )
         }
     }
@@ -421,6 +427,7 @@ mod tests {
             !scene[..end].contains("retail_view("),
             "map help must bind semantic state to the recovered WIND root"
         );
+        assert!(scene[..end].contains("captioned_window(bsn_list!["));
     }
 
     #[test]
@@ -455,11 +462,17 @@ mod tests {
         });
         app.update();
 
-        let close = captioned_close_in(app.world_mut());
+        let parts = app
+            .world()
+            .get::<CaptionedWindowParts>(root)
+            .copied()
+            .expect("map help window parts");
+        bind_captioned_close(&mut app.world_mut().commands(), &parts, root);
+        app.update();
 
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: close });
+        app.world_mut().commands().trigger(Activate {
+            entity: parts.close,
+        });
         app.update();
 
         let world = app.world_mut();
@@ -467,6 +480,6 @@ mod tests {
         assert!(app.world().get_entity(root).is_err());
         assert!(app.world().get_entity(subject).is_err());
         assert!(app.world().get_entity(body).is_err());
-        assert!(app.world().get_entity(close).is_err());
+        assert!(app.world().get_entity(parts.close).is_err());
     }
 }

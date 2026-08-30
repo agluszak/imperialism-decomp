@@ -66,12 +66,16 @@ pub(in crate::ui::city) fn open_city_dialog(
 pub(in crate::ui::city) fn bind_city_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &CityBuildingDialog), Added<CityBuildingDialog>>,
+    captioned_parts: Query<&CaptionedWindowParts>,
     tree: RetailTree,
     amount_bars: Query<&AmountBarParts>,
     mut assets: RetailUiAssets,
     session: Res<GameSession>,
 ) {
     for (root, dialog) in &dialogs {
+        if let Ok(parts) = captioned_parts.get(root) {
+            bind_captioned_close(&mut commands, parts, root);
+        }
         if let Some(position) = dialog.saved_position {
             commands
                 .entity(root)
