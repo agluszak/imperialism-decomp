@@ -50,15 +50,15 @@ pub(in crate::ui::city) fn open_city_construction_dialog(
             (next_capacity.to_string(), can_reserve)
         }
     };
-    let (modal, _window) = spawn_modal_window(commands, generated::citydlog_9220());
-    commands.entity(modal).insert((
-        BuildingChangeDialog::Construction {
+    let (modal, scene_root) = spawn_modal_window(commands, generated::citydlog_9220());
+    commands.entity(modal).insert(DespawnOnExit(AppState::City));
+    commands
+        .entity(scene_root)
+        .insert(BuildingChangeDialog::Construction {
             slot,
             capacity,
             can_reserve,
-        },
-        DespawnOnExit(AppState::City),
-    ));
+        });
 }
 
 pub(in crate::ui::city) fn open_city_expansion_dialog(
@@ -84,16 +84,16 @@ pub(in crate::ui::city) fn open_city_expansion_dialog(
         ExpandableFacility::try_from_slot(slot).expect("ordinary industry is expandable"),
     );
     let can_reserve = needed <= session.game.city_order_limit(nation, order).maximum;
-    let (modal, _window) = spawn_modal_window(commands, generated::citydlog_9221());
-    commands.entity(modal).insert((
-        BuildingChangeDialog::Expansion {
+    let (modal, scene_root) = spawn_modal_window(commands, generated::citydlog_9221());
+    commands.entity(modal).insert(DespawnOnExit(AppState::City));
+    commands
+        .entity(scene_root)
+        .insert(BuildingChangeDialog::Expansion {
             slot,
             next_capacity,
             next_level,
             can_reserve,
-        },
-        DespawnOnExit(AppState::City),
-    ));
+        });
 }
 
 struct BuildingChangePresentation {
@@ -136,7 +136,8 @@ fn apply_building_change(session: &mut GameSession, slot: CityFacilitySlot, acce
 fn bind_building_change_common(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
+    modal: Entity,
+    tree_root: Entity,
     tree: &RetailTree,
     presentation: BuildingChangePresentation,
 ) {
@@ -151,17 +152,17 @@ fn bind_building_change_common(
         can_reserve,
     } = presentation;
     commands
-        .entity(tree.find(root, fourcc!("DLOG")))
+        .entity(tree.find(tree_root, fourcc!("DLOG")))
         .insert(ImageNode::new(assets.picture(picture)));
     for (tag, text) in [
         (fourcc!("name"), name),
         (fourcc!("capT"), capacity),
         (fourcc!("cost"), cost),
     ] {
-        let entity = tree.find(root, tag);
+        let entity = tree.find(tree_root, tag);
         commands.entity(entity).insert(Text::new(text));
     }
-    let warning = tree.find(root, fourcc!("warn"));
+    let warning = tree.find(tree_root, fourcc!("warn"));
     commands.entity(warning).insert((
         Text::new(warning_text),
         TextColor(warning_color),
@@ -171,8 +172,8 @@ fn bind_building_change_common(
             Visibility::Visible
         },
     ));
-    let okay = tree.find(root, fourcc!("okay"));
-    let cancel = tree.find(root, fourcc!("cncl"));
+    let okay = tree.find(tree_root, fourcc!("okay"));
+    let cancel = tree.find(tree_root, fourcc!("cncl"));
     for (button, accept) in [(okay, true), (cancel, false)] {
         commands.entity(button).observe(
             move |_: On<Activate>, mut session: ResMut<GameSession>| {
@@ -185,15 +186,16 @@ fn bind_building_change_common(
             .entity(okay)
             .insert((InteractionDisabled, Visibility::Hidden));
     }
-    dismiss_on_activate(commands, okay, root);
-    dismiss_on_activate(commands, cancel, root);
-    bind_modal_keys(commands, root, Some(okay), Some(cancel));
+    dismiss_on_activate(commands, okay, modal);
+    dismiss_on_activate(commands, cancel, modal);
+    bind_modal_keys(commands, modal, Some(okay), Some(cancel));
 }
 
 fn bind_construction_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
+    modal: Entity,
+    tree_root: Entity,
     tree: &RetailTree,
     slot: CityFacilitySlot,
     capacity_value: &str,
@@ -202,12 +204,12 @@ fn bind_construction_dialog(
     let capacity = fill_brackets(&city_text(assets, 0x10), &[capacity_value]);
     let headline = assets.string(slot.construction_headline_string());
     commands
-        .entity(tree.find(root, fourcc!("tex1")))
+        .entity(tree.find(tree_root, fourcc!("tex1")))
         .insert(Text::new(headline));
 
     if slot == CityFacilitySlot::PowerPlant {
         commands
-            .entity(tree.find(root, fourcc!("tex2")))
+            .entity(tree.find(tree_root, fourcc!("tex2")))
             .entry::<Node>()
             .and_modify(|mut node| {
                 let Val::Px(top) = node.top else {
@@ -217,7 +219,7 @@ fn bind_construction_dialog(
             });
     }
 
-    let connective = tree.find(root, fourcc!("or  "));
+    let connective = tree.find(tree_root, fourcc!("or  "));
     let connective_left = match slot {
         CityFacilitySlot::TextileMill => Some(0x98),
         CityFacilitySlot::Metalworks => Some(0xcd),
@@ -235,7 +237,7 @@ fn bind_construction_dialog(
         commands.entity(connective).insert(Visibility::Hidden);
     }
 
-    let buck = tree.find(root, fourcc!("buck"));
+    let buck = tree.find(tree_root, fourcc!("buck"));
     commands.entity(buck).insert((
         Text::new(if slot == CityFacilitySlot::PowerPlant {
             format_currency(5_000)
@@ -252,7 +254,8 @@ fn bind_construction_dialog(
     bind_building_change_common(
         commands,
         assets,
-        root,
+        modal,
+        tree_root,
         tree,
         BuildingChangePresentation {
             slot,
@@ -277,7 +280,8 @@ fn bind_construction_dialog(
 fn bind_expansion_dialog(
     commands: &mut Commands,
     assets: &mut RetailUiAssets,
-    root: Entity,
+    modal: Entity,
+    tree_root: Entity,
     tree: &RetailTree,
     slot: CityFacilitySlot,
     next_capacity: i16,
@@ -287,7 +291,8 @@ fn bind_expansion_dialog(
     bind_building_change_common(
         commands,
         assets,
-        root,
+        modal,
+        tree_root,
         tree,
         BuildingChangePresentation {
             slot,
@@ -305,10 +310,15 @@ fn bind_expansion_dialog(
 pub(in crate::ui::city) fn bind_building_change_dialogs(
     mut commands: Commands,
     dialogs: Query<(Entity, &BuildingChangeDialog), Added<BuildingChangeDialog>>,
+    child_of: Query<&ChildOf>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
 ) {
-    for (root, dialog) in &dialogs {
+    for (scene_root, dialog) in &dialogs {
+        let modal = child_of
+            .get(scene_root)
+            .expect("construction dialog scene is owned by a modal")
+            .parent();
         match dialog {
             BuildingChangeDialog::Construction {
                 slot,
@@ -317,7 +327,8 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
             } => bind_construction_dialog(
                 &mut commands,
                 &mut assets,
-                root,
+                modal,
+                scene_root,
                 &tree,
                 *slot,
                 capacity,
@@ -331,7 +342,8 @@ pub(in crate::ui::city) fn bind_building_change_dialogs(
             } => bind_expansion_dialog(
                 &mut commands,
                 &mut assets,
-                root,
+                modal,
+                scene_root,
                 &tree,
                 *slot,
                 *next_capacity,
