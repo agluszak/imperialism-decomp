@@ -240,7 +240,7 @@ impl GameState {
     /// Turn-machine case `0x10`: clear turn-flow flags, advance the season, and
     /// post the technology phase.
     pub fn advance_season_phase(&mut self) {
-        self.turn_flow = TurnFlow::TechnologyAdvances(TechnologyFlow::Running);
+        self.turn_flow = TurnFlow::TechnologyAdvances;
         self.turn.turn_flow_status_flags = 0;
         self.turn.advance_season();
     }
@@ -577,7 +577,7 @@ mod tests {
         assert_eq!(state.turn.turn_flow_status_flags, 0);
         assert_eq!(
             state.turn_flow,
-            TurnFlow::TechnologyAdvances(TechnologyFlow::Running)
+            TurnFlow::TechnologyAdvances
         );
     }
 

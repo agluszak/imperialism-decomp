@@ -147,7 +147,7 @@ pub fn run(
     );
     if let Some(mut loaded) = initial_game {
         assert_eq!(
-            loaded.game.phase(),
+            loaded.game.retail_phase(),
             imperialism_core::PhaseCode::STRATEGIC_MAP,
             "Bevy may only start from a strategic-map core phase"
         );

@@ -69,7 +69,7 @@ impl NavyOrdersContinuation {
 impl GameState {
     pub fn pending_naval_battle(&self) -> Option<&PendingNavalBattle> {
         match &self.turn_flow {
-            TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) => {
+            TurnFlow::NavalBattle(continuation) => {
                 Some(&continuation.battle)
             }
             _ => None,
@@ -79,15 +79,15 @@ impl GameState {
     /// Continues the retained `CarryOutOrders` scan after the tactical naval
     /// battle has applied its outcome to the two authoritative task forces.
     pub fn resume_after_naval_battle(&mut self) -> crate::TurnStop {
-        let TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)) = std::mem::replace(
+        let TurnFlow::NavalBattle(continuation) = std::mem::replace(
             &mut self.turn_flow,
-            TurnFlow::Military(MilitaryFlow::Running),
+            TurnFlow::Military,
         ) else {
             panic!("naval-battle resume requires a navy-orders continuation");
         };
         self.turn_flow = match self.resume_navy_orders(continuation) {
-            Some(continuation) => TurnFlow::Military(MilitaryFlow::NavalBattle(continuation)),
-            None => TurnFlow::CombatMoves(CombatMovesFlow::Running),
+            Some(continuation) => TurnFlow::NavalBattle(continuation),
+            None => TurnFlow::CombatMoves,
         };
         self.advance_turn()
     }
@@ -1698,7 +1698,7 @@ mod tests {
         let continuation = state.carry_out_navy_orders().expect("player encounter");
         assert_eq!(continuation.battle.attacker, attacker_force);
         assert_eq!(continuation.battle.defender, defender_force);
-        state.turn_flow = TurnFlow::Military(MilitaryFlow::NavalBattle(continuation));
+        state.turn_flow = TurnFlow::NavalBattle(continuation);
 
         let mut expected_rng = state.rng;
         expected_rng.next_crt_rand();

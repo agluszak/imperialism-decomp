@@ -63,7 +63,7 @@ fn deal_book_dispatch_precedes_the_quarter_gate() {
 fn city_and_transport_writes_the_resume_phase_before_the_body() {
     compare_native("turn_stop_city_and_transport", |state, (): ()| {
         assert_eq!(
-            state.phase(),
+            state.retail_phase(),
             imperialism_core::PhaseCode::CITY_AND_TRANSPORT
         );
         state.apply_city_and_transport_case();
@@ -211,7 +211,7 @@ fn trade_offer_dispatch_precedes_the_offer_sheet_phase() {
         .expect("trade stop requires an active deal cursor");
     let result = TradeBoundaryResult {
         stop: "trade_offer".to_owned(),
-        phase: actual.phase().retail(),
+        phase: actual.retail_phase().retail(),
         category_index,
         entry_ordinal,
         buyer: pending.buyer.get(),

@@ -319,6 +319,7 @@ mod tests {
             major
         });
         parts.nations = Nations::new(majors, IndexMap::new());
+        parts.turn_flow = TurnFlow::Trade;
         GameState::from_parts(parts)
     }
 

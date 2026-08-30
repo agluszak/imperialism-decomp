@@ -65,7 +65,7 @@ impl GameState {
     ///
     /// Identical orders produce identical movement and battle-creation state.
     /// The first would-be tactical battle is returned with the remaining stacks
-    /// for the turn driver to store as [`crate::CombatMovesFlow::LandBattle`].
+    /// for the turn driver to store as [`crate::TurnFlow::LandBattle`].
     pub fn do_combat_moves(&mut self) -> Option<CombatMovesContinuation> {
         let mut stationed = StationedUnits::from_units(&self.military_units);
         let stacks = self.form_stacks(&mut stationed);
@@ -88,7 +88,7 @@ impl GameState {
 
     pub fn pending_land_battle(&self) -> Option<&PendingLandBattle> {
         match &self.turn_flow {
-            TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) => {
+            TurnFlow::LandBattle(continuation) => {
                 Some(&continuation.battle)
             }
             _ => None,
@@ -98,7 +98,7 @@ impl GameState {
     /// `TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters` without the trailing
     /// `ResolveNextMove`. Call [`Self::resume_after_land_battle`] to resume the cursor.
     pub fn resolve_land_battle(&mut self, attacker_won: bool) {
-        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) = &self.turn_flow
+        let TurnFlow::LandBattle(continuation) = &self.turn_flow
         else {
             panic!("land-battle resolve requires a combat-moves continuation");
         };
@@ -140,7 +140,7 @@ impl GameState {
             self.apply_uncontested_units(&mut stationed, &attacker_ids);
             self.grow_stack_experience(&attacker_ids, EXPERIENCE_WINNER);
             self.grow_stack_experience(&defender_ids, EXPERIENCE_LOSER);
-            let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) =
+            let TurnFlow::LandBattle(continuation) =
                 &mut self.turn_flow
             else {
                 unreachable!("continuation still holds the land battle");
@@ -155,19 +155,19 @@ impl GameState {
 
     /// Stores a `DoCombatMoves` land-battle continuation (same as `advance_turn`).
     pub fn enter_land_battle(&mut self, continuation: CombatMovesContinuation) {
-        self.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation));
+        self.turn_flow = TurnFlow::LandBattle(continuation);
     }
 
     /// Continues `DoCombatMoves` after the current land battle has been resolved.
     pub fn resume_after_land_battle(&mut self) -> crate::TurnStop {
-        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) = std::mem::replace(
+        let TurnFlow::LandBattle(continuation) = std::mem::replace(
             &mut self.turn_flow,
-            TurnFlow::CombatMoves(CombatMovesFlow::Running),
+            TurnFlow::CombatMoves,
         ) else {
             panic!("land-battle resume requires a combat-moves continuation");
         };
         self.turn_flow = match self.resume_combat_moves(continuation) {
-            Some(continuation) => TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)),
+            Some(continuation) => TurnFlow::LandBattle(continuation),
             None => TurnFlow::MilitaryCleanup,
         };
         self.advance_turn()
@@ -797,7 +797,7 @@ mod tests {
     fn combat_moves_phase_keeps_the_battle_in_continuation() {
         let mut state = game_state();
         state.turn.economic_turn = 3;
-        state.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::Running);
+        state.turn_flow = TurnFlow::CombatMoves;
         seed_province(&mut state, 1, 0, &[2]);
         seed_province(&mut state, 2, 1, &[1]);
         let attacker = push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
@@ -814,7 +814,7 @@ mod tests {
             defender_units: vec![defender],
         };
         assert_eq!(state.advance_turn(), crate::TurnStop::LandBattle);
-        assert_eq!(state.phase(), crate::PhaseCode::MILITARY_CLEANUP);
+        assert_eq!(state.retail_phase(), crate::PhaseCode::MILITARY_CLEANUP);
         assert_eq!(state.pending_land_battle(), Some(&expected));
         let encoded = serde_json::to_vec(&state).expect("serialize");
         let restored: GameState = serde_json::from_slice(&encoded).expect("deserialize");
@@ -831,7 +831,7 @@ mod tests {
         fn pending_battle() -> GameState {
             let mut state = game_state();
             state.turn.economic_turn = 3;
-            state.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::Running);
+            state.turn_flow = TurnFlow::CombatMoves;
             seed_province(&mut state, 1, 0, &[2]);
             seed_province(&mut state, 2, 1, &[1]);
             push_unit(&mut state, 0, 1, MilitaryUnitKind::Regulars, Some(2));
@@ -880,7 +880,7 @@ mod tests {
     fn land_battle_stop_keeps_remaining_stacks_for_resume() {
         let mut state = game_state();
         state.turn.economic_turn = 3;
-        state.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::Running);
+        state.turn_flow = TurnFlow::CombatMoves;
         seed_province(&mut state, 1, 0, &[2]);
         seed_province(&mut state, 2, 1, &[1]);
         seed_province(&mut state, 3, 0, &[4]);
@@ -938,7 +938,7 @@ mod tests {
     fn battle_then_later_uncontested_state() -> (GameState, MilitaryUnitId, MilitaryUnitId) {
         let mut state = game_state();
         state.turn.economic_turn = 3;
-        state.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::Running);
+        state.turn_flow = TurnFlow::CombatMoves;
         seed_province(&mut state, 1, 0, &[2]);
         seed_province(&mut state, 2, 1, &[1]);
         seed_province(&mut state, 3, 0, &[4]);
@@ -976,9 +976,9 @@ mod tests {
             Some(ProvinceId::new(3))
         );
 
-        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) = std::mem::replace(
+        let TurnFlow::LandBattle(continuation) = std::mem::replace(
             &mut state.turn_flow,
-            TurnFlow::CombatMoves(CombatMovesFlow::Running),
+            TurnFlow::CombatMoves,
         ) else {
             panic!("combat continuation");
         };
@@ -1023,9 +1023,9 @@ mod tests {
             Some(ProvinceId::new(3))
         );
 
-        let TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation)) = std::mem::replace(
+        let TurnFlow::LandBattle(continuation) = std::mem::replace(
             &mut state.turn_flow,
-            TurnFlow::CombatMoves(CombatMovesFlow::Running),
+            TurnFlow::CombatMoves,
         ) else {
             panic!("combat continuation");
         };
@@ -1045,7 +1045,7 @@ mod tests {
     fn auto_resolve_writes_strengths_then_continues() {
         let mut state = game_state();
         state.turn.economic_turn = 3;
-        state.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::Running);
+        state.turn_flow = TurnFlow::CombatMoves;
         seed_province(&mut state, 1, 0, &[2]);
         seed_province(&mut state, 2, 1, &[1]);
         seed_province(&mut state, 3, 0, &[4]);
@@ -1110,7 +1110,7 @@ mod tests {
     fn land_battle_resume_follows_unit_ids_after_roster_shift() {
         let mut state = game_state();
         state.turn.economic_turn = 3;
-        state.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::Running);
+        state.turn_flow = TurnFlow::CombatMoves;
         seed_province(&mut state, 1, 0, &[2]);
         seed_province(&mut state, 2, 1, &[1]);
         seed_province(&mut state, 3, 0, &[4]);

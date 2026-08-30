@@ -494,9 +494,9 @@ mod tests {
             parts.turn.difficulty,
             player,
         );
-        parts.turn_flow = TurnFlow::Military(MilitaryFlow::NavalBattle(
+        parts.turn_flow = TurnFlow::NavalBattle(
             NavyOrdersContinuation::player_encounter(attacker_force, defender_force),
-        ));
+        );
         GameState::from_parts(parts)
     }
 

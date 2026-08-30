@@ -2328,7 +2328,7 @@ mod tests {
             parts.turn.difficulty,
             parts.turn.active_nation,
         );
-        parts.turn_flow = TurnFlow::CombatMoves(CombatMovesFlow::Running);
+        parts.turn_flow = TurnFlow::CombatMoves;
 
         let mut state = GameState::from_parts(parts);
         assert_eq!(state.advance_turn(), TurnStop::LandBattle);

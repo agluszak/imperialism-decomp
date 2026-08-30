@@ -464,7 +464,7 @@ mod tests {
         let stop = confirm_capital_site(&mut state, site);
 
         assert!(matches!(
-            (stop, state.phase()),
+            (stop, state.retail_phase()),
             (
                 crate::TurnStop::TechnologyAdvance,
                 crate::PhaseCode::NEWSPAPER
@@ -567,7 +567,7 @@ mod tests {
         state.set_game_data(crate::GameData::from_news_story_ids(story_ids));
         let stop = enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6));
         assert!(matches!(
-            (stop, state.phase()),
+            (stop, state.retail_phase()),
             (
                 crate::TurnStop::TechnologyAdvance,
                 crate::PhaseCode::NEWSPAPER

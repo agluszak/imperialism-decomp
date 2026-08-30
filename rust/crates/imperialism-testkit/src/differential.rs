@@ -180,11 +180,11 @@ pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<
     // `turnStateCode` is all the oracle can report, and it names the phase retail already
     // advanced to rather than the interrupt the turn stopped at. Compare that projection;
     // the flow behind it has no counterpart in the capture.
-    if expected.phase() != actual.phase() {
+    if expected.retail_phase() != actual.retail_phase() {
         bail!(
             "turn phase differs: C++ {:?}, Rust {:?}",
-            expected.phase(),
-            actual.phase()
+            expected.retail_phase(),
+            actual.retail_phase()
         );
     }
     let mut expected_json =

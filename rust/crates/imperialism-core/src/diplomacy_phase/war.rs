@@ -67,7 +67,7 @@ impl GameState {
     }
 
     /// Walks the alliance reactions to one war from `start`, ending the diplomacy
-    /// phase unless a human ally must answer in [`DiplomacyFlow::WarJoin`].
+    /// phase unless a human ally must answer in [`TurnFlow::DiplomacyWarJoin`].
     pub(super) fn continue_war_reactions(&mut self, first: NationId, second: NationId, start: u8) {
         if MajorNationId::from_nation(second).is_none() {
             if start == 0
@@ -81,7 +81,7 @@ impl GameState {
                 };
                 if self.nations.majors[&favorite].auto.is_none() {
                     self.turn_flow =
-                        TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(DiplomacyWarJoinPrompt {
+                        TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
                             nation: favorite,
                             target: second,
                             source: first,
@@ -89,7 +89,7 @@ impl GameState {
                             pair_first: first,
                             pair_second: second,
                             cursor: 1,
-                        }));
+                        });
                     return;
                 }
                 self.ai_handle_minor_war(favorite, second, first);
@@ -110,7 +110,7 @@ impl GameState {
             }
             if self.nations.majors[&other].auto.is_none() {
                 self.turn_flow =
-                    TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(DiplomacyWarJoinPrompt {
+                    TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
                         nation: other,
                         target: second,
                         source: first,
@@ -118,7 +118,7 @@ impl GameState {
                         pair_first: first,
                         pair_second: second,
                         cursor,
-                    }));
+                    });
                 return;
             }
             self.ai_handle_role_swap(other, second, first, false);
@@ -134,7 +134,7 @@ impl GameState {
             }
             if self.nations.majors[&other].auto.is_none() {
                 self.turn_flow =
-                    TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(DiplomacyWarJoinPrompt {
+                    TurnFlow::DiplomacyWarJoin(DiplomacyWarJoinPrompt {
                         nation: other,
                         target: second,
                         source: first,
@@ -142,7 +142,7 @@ impl GameState {
                         pair_first: first,
                         pair_second: second,
                         cursor,
-                    }));
+                    });
                 return;
             }
             self.ai_handle_role_swap(other, second, first, true);

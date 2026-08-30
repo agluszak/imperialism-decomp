@@ -145,7 +145,7 @@ impl GameState {
 
     /// Replies from `start_nation`/`start_index` onward, then processes one queued war.
     ///
-    /// Stops early on a human offer, leaving [`DiplomacyFlow::Offer`] for the reply.
+    /// Stops early on a human offer, leaving [`TurnFlow::DiplomacyOffer`] for the reply.
     pub(super) fn reply_to_diplomacy_offers_from(&mut self, start_nation: u8, start_index: usize) {
         for nation in MajorNationId::all().skip(usize::from(start_nation)) {
             let first = if nation.get() == start_nation {
@@ -156,10 +156,10 @@ impl GameState {
             let count = self.pending.nations[nation].proposals.len();
             for index in first..count {
                 if let Some(prompt) = self.reply_to_one_diplomacy_offer(nation, index) {
-                    self.turn_flow = TurnFlow::Diplomacy(DiplomacyFlow::Offer {
+                    self.turn_flow = TurnFlow::DiplomacyOffer {
                         nation: prompt.nation,
                         index: prompt.index,
-                    });
+                    };
                     return;
                 }
             }

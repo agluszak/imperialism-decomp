@@ -31,19 +31,19 @@ fn computer_major() -> MajorNation {
 }
 
 fn run_diplomacy(state: &mut GameState) {
-    state.turn_flow = TurnFlow::Diplomacy(DiplomacyFlow::Running);
+    state.turn_flow = TurnFlow::Diplomacy;
     state.do_diplomacy();
 }
 
 fn assert_diplomacy_completed(state: &GameState) {
-    assert_eq!(state.turn_flow, TurnFlow::Trade(TradeFlow::Running));
-    assert_eq!(state.phase(), PhaseCode::TRADE);
+    assert_eq!(state.turn_flow, TurnFlow::Trade);
+    assert_eq!(state.retail_phase(), PhaseCode::TRADE);
 }
 
 fn assert_diplomacy_offer_blocked(state: &GameState) -> DiplomacyOfferPrompt {
     assert!(matches!(
         state.turn_flow,
-        TurnFlow::Diplomacy(DiplomacyFlow::Offer { .. })
+        TurnFlow::DiplomacyOffer { .. }
     ));
     state.current_diplomacy_offer().expect("diplomacy offer")
 }
@@ -51,7 +51,7 @@ fn assert_diplomacy_offer_blocked(state: &GameState) -> DiplomacyOfferPrompt {
 fn assert_diplomacy_war_join_blocked(state: &GameState) -> DiplomacyWarJoinPrompt {
     assert!(matches!(
         state.turn_flow,
-        TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(_))
+        TurnFlow::DiplomacyWarJoin(_)
     ));
     state
         .current_diplomacy_war_join()

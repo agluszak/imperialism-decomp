@@ -171,25 +171,67 @@ pub enum TurnFlow {
     CapitalSelection,
     /// Case `5`: waiting for player orders on the strategic map.
     StrategicMap,
-    Diplomacy(DiplomacyFlow),
-    Trade(TradeFlow),
+    /// Case `6`: diplomacy resolution and offer replies.
+    Diplomacy,
+    /// Human reply pending for proposal `index` posted to `nation`.
+    DiplomacyOffer {
+        nation: MajorNationId,
+        index: u8,
+    },
+    DiplomacyWarJoin(DiplomacyWarJoinPrompt),
+    /// Case `7`: ranked trade deals.
+    Trade,
+    /// Offer Sheet posed for `offer`; `session` resumes `TTradeMgr::NextTradeDeal`.
+    TradeOffer {
+        session: Box<TradeSession>,
+        offer: PendingTradeOffer,
+    },
     /// Case `9`.
     Civilians,
-    Military(MilitaryFlow),
-    CombatMoves(CombatMovesFlow),
+    /// Case `10`: naval orders and encounters.
+    Military,
+    /// Tactical naval battle owns the retained `CarryOutOrders` scan.
+    NavalBattle(NavyOrdersContinuation),
+    /// Case `0x14`: land combat moves.
+    CombatMoves,
+    /// Land battle owns the retained `ResolveNextMove` stack cursor.
+    LandBattle(CombatMovesContinuation),
     /// Case `0x15`.
     MilitaryCleanup,
-    DiplomacyOfferGate(DiplomacyOfferGateFlow),
-    Elimination(EliminationFlow),
+    /// Case `0x0d`: post-combat diplomacy gate.
+    DiplomacyOfferGate,
+    /// `TBattleReportView` overview posed by `kTurnEventDiplomacyOffer` (0x0547).
+    PostCombatReports,
+    /// Case `0x19`: elimination check.
+    Elimination,
+    /// The active nation became a protectorate; the `"lose"` movie is showing.
+    PlayerEliminated,
+    /// One eligible major remains; the `"win"` movie is showing.
+    EliminationVictory,
     /// Case `8`.
     CityAndTransport,
-    GreatPowerPressure(GreatPowerPressureFlow),
-    DealBook(DealBookFlow),
-    QuarterGate(QuarterGateFlow),
+    /// Case `0x0b`: great-power pressure check.
+    GreatPowerPressure,
+    /// `SorryYouLose` movie; retail reinitializes instead of reaching the Deal Book.
+    GreatPowerLoss,
+    /// Case `0x0c`: deal-book eligibility.
+    DealBook,
+    /// The Deal Book is on screen and holds the turn until the player closes it.
+    DealBookOpen,
+    /// Case `0x0e`: quarter gate.
+    QuarterGate,
+    /// Decade `"vote"` movie, holding the phase the gate already selected.
+    DecadeCinematic(PostQuarterGate),
     /// Case `0x10`.
     SeasonAdvance,
-    TechnologyAdvances(TechnologyFlow),
-    Newspaper(NewspaperFlow),
+    /// Case `0x11`: technology advances.
+    TechnologyAdvances,
+    /// Technology advance dialog for one interactive unlock.
+    TechnologyReport(Technology),
+    /// Case `0x0f`: newspaper construction.
+    Newspaper,
+    /// Pages are built and the paper is open; the body must not run again.
+    NewspaperOpen,
     /// Case `0x12`.
     ReturnToMap,
     /// Case `0x16`: top-ten scores, then the `"win"` movie.
@@ -204,95 +246,6 @@ pub enum TurnFlow {
     HighScores,
     /// Retail reinitialized to the main menu; this session cannot advance again.
     SessionEnded,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum DiplomacyFlow {
-    Running,
-    /// Human reply pending for proposal `index` posted to `nation`.
-    Offer {
-        nation: MajorNationId,
-        index: u8,
-    },
-    WarJoin(DiplomacyWarJoinPrompt),
-}
-
-#[allow(clippy::large_enum_variant)]
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
-pub enum TradeFlow {
-    Running,
-    /// Offer Sheet posed for `offer`; `session` resumes `TTradeMgr::NextTradeDeal`.
-    AwaitingOffer {
-        session: Box<TradeSession>,
-        offer: PendingTradeOffer,
-    },
-}
-
-#[allow(clippy::large_enum_variant)]
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
-pub enum MilitaryFlow {
-    Running,
-    /// Tactical naval battle owns the retained `CarryOutOrders` scan.
-    NavalBattle(NavyOrdersContinuation),
-}
-
-#[allow(clippy::large_enum_variant)]
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
-pub enum CombatMovesFlow {
-    Running,
-    /// Land battle owns the retained `ResolveNextMove` stack cursor.
-    LandBattle(CombatMovesContinuation),
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum GreatPowerPressureFlow {
-    Running,
-    /// `SorryYouLose` movie; retail reinitializes instead of reaching the Deal Book.
-    Loss,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum DealBookFlow {
-    Running,
-    /// The Deal Book is on screen and holds the turn until the player closes it.
-    Open,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum DiplomacyOfferGateFlow {
-    Running,
-    /// `TBattleReportView` overview posed by `kTurnEventDiplomacyOffer` (0x0547).
-    PostCombatReports,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum EliminationFlow {
-    Running,
-    /// The active nation became a protectorate; the `"lose"` movie is showing.
-    PlayerEliminated,
-    /// One eligible major remains; the `"win"` movie is showing.
-    Victory,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum QuarterGateFlow {
-    Running,
-    /// Decade `"vote"` movie, holding the phase the gate already selected.
-    DecadeCinematic(PostQuarterGate),
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum TechnologyFlow {
-    Running,
-    /// Technology advance dialog for one interactive unlock.
-    Report(Technology),
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum NewspaperFlow {
-    Running,
-    /// Pages are built and the paper is open; the body must not run again.
-    Reading,
 }
 
 /// Phase the case `0x0e` gate selects before the cinematic and council path.
@@ -332,51 +285,51 @@ impl TurnFlow {
         match self {
             Self::CapitalSelection => PhaseCode::CAPITAL_SELECTION,
             Self::StrategicMap => PhaseCode::STRATEGIC_MAP,
-            Self::Diplomacy(DiplomacyFlow::Running) => PhaseCode::DIPLOMACY,
+            Self::Diplomacy => PhaseCode::DIPLOMACY,
             // Case 6 wrote 7 before `ReplyToDiplomacyOffers` posed the dialog.
-            Self::Diplomacy(_) | Self::Trade(TradeFlow::Running) => PhaseCode::TRADE,
+            Self::DiplomacyOffer { .. } | Self::DiplomacyWarJoin(_) | Self::Trade => PhaseCode::TRADE,
             // Case 7 wrote 9 before `DoTrade` posed the Offer Sheet.
-            Self::Trade(_) | Self::Civilians => PhaseCode::CIVILIANS,
-            Self::Military(MilitaryFlow::Running) => PhaseCode::MILITARY,
+            Self::TradeOffer { .. } | Self::Civilians => PhaseCode::CIVILIANS,
+            Self::Military => PhaseCode::MILITARY,
             // Case 10 wrote 0x14 before `DoMilitary` reached the naval encounter.
-            Self::Military(_) | Self::CombatMoves(CombatMovesFlow::Running) => {
+            Self::NavalBattle(_) | Self::CombatMoves => {
                 PhaseCode::COMBAT_MOVES
             }
             // Case 0x14 wrote 0x15 before `ResolveNextMove` reached the land battle.
-            Self::CombatMoves(_) | Self::MilitaryCleanup => PhaseCode::MILITARY_CLEANUP,
-            Self::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running) => PhaseCode::DIPLOMACY_OFFER,
+            Self::LandBattle(_) | Self::MilitaryCleanup => PhaseCode::MILITARY_CLEANUP,
+            Self::DiplomacyOfferGate => PhaseCode::DIPLOMACY_OFFER,
             // Case 0x0d wrote 0x19 before posing `TBattleReportView`.
-            Self::DiplomacyOfferGate(_) | Self::Elimination(EliminationFlow::Running) => {
+            Self::PostCombatReports | Self::Elimination => {
                 PhaseCode::ELIMINATION
             }
             // Case 0x19 wrote 8 before the win/lose movie, and the Game Score dialog
             // the win movie posts leaves the code alone.
-            Self::Elimination(_) | Self::GameScore | Self::CityAndTransport => {
+            Self::PlayerEliminated | Self::EliminationVictory | Self::GameScore | Self::CityAndTransport => {
                 PhaseCode::CITY_AND_TRANSPORT
             }
-            Self::GreatPowerPressure(GreatPowerPressureFlow::Running) => {
+            Self::GreatPowerPressure => {
                 PhaseCode::GREAT_POWER_PRESSURE
             }
             // Case 0x0b wrote 0x0c before `SorryYouLose`.
-            Self::GreatPowerPressure(_) | Self::DealBook(DealBookFlow::Running) => {
+            Self::GreatPowerLoss | Self::DealBook => {
                 PhaseCode::DEAL_BOOK
             }
             // Case 0x0c wrote 0x0e before posing the Deal Book.
-            Self::DealBook(_) | Self::QuarterGate(QuarterGateFlow::Running) => {
+            Self::DealBookOpen | Self::QuarterGate => {
                 PhaseCode::QUARTER_GATE
             }
             // Case 0x0e wrote the post-gate code before the decade `"vote"` movie, and
             // `kTurnEventCouncilOfGovernors` leaves it alone.
-            Self::QuarterGate(QuarterGateFlow::DecadeCinematic(next))
+            Self::DecadeCinematic(next)
             | Self::CouncilOfGovernors(next) => next.retail_phase(),
             Self::SeasonAdvance => PhaseCode::SEASON_ADVANCE,
-            Self::TechnologyAdvances(TechnologyFlow::Running) => PhaseCode::TECHNOLOGY_ADVANCES,
+            Self::TechnologyAdvances => PhaseCode::TECHNOLOGY_ADVANCES,
             // Case 0x11 wrote 0x0f before posing the technology report.
-            Self::TechnologyAdvances(_) | Self::Newspaper(NewspaperFlow::Running) => {
+            Self::TechnologyReport(_) | Self::Newspaper => {
                 PhaseCode::NEWSPAPER
             }
             // Case 0x0f wrote 0x12 before opening the newspaper.
-            Self::Newspaper(_) | Self::ReturnToMap => PhaseCode::RETURN_TO_MAP,
+            Self::NewspaperOpen | Self::ReturnToMap => PhaseCode::RETURN_TO_MAP,
             Self::TopTenScores => PhaseCode::TOP_TEN_SCORES,
             Self::OpeningCinematicLose => PhaseCode::OPENING_CINEMATIC,
             Self::HighScores | Self::SessionEnded => PhaseCode::REINITIALIZED,
@@ -395,26 +348,26 @@ impl TurnFlow {
             PhaseCode::PRE_MAP | PhaseCode::HOME_PLACEMENT | PhaseCode::STRATEGIC_MAP => {
                 Self::StrategicMap
             }
-            PhaseCode::DIPLOMACY => Self::Diplomacy(DiplomacyFlow::Running),
-            PhaseCode::TRADE => Self::Trade(TradeFlow::Running),
+            PhaseCode::DIPLOMACY => Self::Diplomacy,
+            PhaseCode::TRADE => Self::Trade,
             PhaseCode::CITY_AND_TRANSPORT => Self::CityAndTransport,
             PhaseCode::CIVILIANS => Self::Civilians,
-            PhaseCode::MILITARY => Self::Military(MilitaryFlow::Running),
+            PhaseCode::MILITARY => Self::Military,
             PhaseCode::GREAT_POWER_PRESSURE => {
-                Self::GreatPowerPressure(GreatPowerPressureFlow::Running)
+                Self::GreatPowerPressure
             }
-            PhaseCode::DEAL_BOOK => Self::DealBook(DealBookFlow::Running),
-            PhaseCode::DIPLOMACY_OFFER => Self::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running),
-            PhaseCode::QUARTER_GATE => Self::QuarterGate(QuarterGateFlow::Running),
-            PhaseCode::NEWSPAPER => Self::Newspaper(NewspaperFlow::Running),
+            PhaseCode::DEAL_BOOK => Self::DealBook,
+            PhaseCode::DIPLOMACY_OFFER => Self::DiplomacyOfferGate,
+            PhaseCode::QUARTER_GATE => Self::QuarterGate,
+            PhaseCode::NEWSPAPER => Self::Newspaper,
             PhaseCode::SEASON_ADVANCE => Self::SeasonAdvance,
-            PhaseCode::TECHNOLOGY_ADVANCES => Self::TechnologyAdvances(TechnologyFlow::Running),
+            PhaseCode::TECHNOLOGY_ADVANCES => Self::TechnologyAdvances,
             PhaseCode::RETURN_TO_MAP => Self::ReturnToMap,
-            PhaseCode::COMBAT_MOVES => Self::CombatMoves(CombatMovesFlow::Running),
+            PhaseCode::COMBAT_MOVES => Self::CombatMoves,
             PhaseCode::MILITARY_CLEANUP => Self::MilitaryCleanup,
             PhaseCode::TOP_TEN_SCORES => Self::TopTenScores,
             PhaseCode::OPENING_CINEMATIC => Self::OpeningCinematicLose,
-            PhaseCode::ELIMINATION => Self::Elimination(EliminationFlow::Running),
+            PhaseCode::ELIMINATION => Self::Elimination,
             _ => panic!("unsupported retail turn phase"),
         }
     }
@@ -463,7 +416,7 @@ impl TurnState {
 
 impl GameState {
     /// Retail `turnStateCode` for the authoritative turn flow.
-    pub const fn phase(&self) -> PhaseCode {
+    pub const fn retail_phase(&self) -> PhaseCode {
         self.turn_flow.retail_phase()
     }
 
@@ -480,7 +433,7 @@ impl GameState {
         if !alerts.is_empty() {
             return TurnStop::TurnAlerts(alerts);
         }
-        self.turn_flow = TurnFlow::Diplomacy(DiplomacyFlow::Running);
+        self.turn_flow = TurnFlow::Diplomacy;
         self.advance_turn()
     }
 
@@ -504,8 +457,8 @@ impl GameState {
 
     /// Closes the Deal Book opened by the turn driver and continues the turn.
     pub fn close_turn_deal_book(&mut self) -> TurnStop {
-        assert_eq!(self.turn_flow, TurnFlow::DealBook(DealBookFlow::Open));
-        self.turn_flow = TurnFlow::QuarterGate(QuarterGateFlow::Running);
+        assert_eq!(self.turn_flow, TurnFlow::DealBookOpen);
+        self.turn_flow = TurnFlow::QuarterGate;
         self.advance_turn()
     }
 
@@ -514,13 +467,13 @@ impl GameState {
         assert!(
             matches!(
                 self.turn_flow,
-                TurnFlow::TechnologyAdvances(TechnologyFlow::Report(_))
+                TurnFlow::TechnologyReport(_)
             ),
             "technology report answer requires an open technology report"
         );
         self.turn_flow = match self.consume_interactive_technology_unlock() {
-            Some(tech_id) => TurnFlow::TechnologyAdvances(TechnologyFlow::Report(tech_id)),
-            None => TurnFlow::Newspaper(NewspaperFlow::Running),
+            Some(tech_id) => TurnFlow::TechnologyReport(tech_id),
+            None => TurnFlow::Newspaper,
         };
         self.advance_turn()
     }
@@ -528,7 +481,7 @@ impl GameState {
     /// Dismisses the newspaper and returns to player orders. Retail's map-entry
     /// music selection consumes the process-global CRT stream when music is enabled.
     pub fn close_newspaper(&mut self, music_enabled: bool) -> TurnStop {
-        assert_eq!(self.turn_flow, TurnFlow::Newspaper(NewspaperFlow::Reading));
+        assert_eq!(self.turn_flow, TurnFlow::NewspaperOpen);
         self.return_to_map();
         if let Some((unit, _)) = self.first_idle_civilian(self.turn.active_nation) {
             self.activate_civilian_selection(unit);
@@ -543,21 +496,12 @@ impl GameState {
     /// the already-updated `turnStateCode` (`HandleTurnEventDialogFactorySlotF4`).
     pub fn opening_cinematic_movie(&self) -> CinematicKind {
         match self.turn_flow {
-            TurnFlow::QuarterGate(QuarterGateFlow::DecadeCinematic(_)) => CinematicKind::Vote,
-            TurnFlow::TopTenScores | TurnFlow::Elimination(EliminationFlow::Victory) => {
+            TurnFlow::DecadeCinematic(_) => CinematicKind::Vote,
+            TurnFlow::TopTenScores | TurnFlow::EliminationVictory => {
                 CinematicKind::Win
             }
             _ => CinematicKind::Lose,
         }
-    }
-
-    /// Pressure-loss movie finished. Retail reinitializes; it does not continue to Deal Book.
-    pub fn acknowledge_great_power_loss(&mut self) {
-        assert_eq!(
-            self.turn_flow,
-            TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Loss)
-        );
-        self.turn_flow = TurnFlow::SessionEnded;
     }
 
     /// Closes `TBattleReportView`. Reports stay until the next military phase's
@@ -565,9 +509,9 @@ impl GameState {
     pub fn close_post_combat_reports(&mut self) -> TurnStop {
         assert_eq!(
             self.turn_flow,
-            TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::PostCombatReports)
+            TurnFlow::PostCombatReports
         );
-        self.turn_flow = TurnFlow::Elimination(EliminationFlow::Running);
+        self.turn_flow = TurnFlow::Elimination;
         self.advance_turn()
     }
 
@@ -575,16 +519,16 @@ impl GameState {
     /// elimination win goes to Game Score; elimination/pressure loss ends the session.
     pub fn close_opening_cinematic(&mut self) -> TurnStop {
         self.turn_flow = match self.turn_flow {
-            TurnFlow::QuarterGate(QuarterGateFlow::DecadeCinematic(next)) => {
+            TurnFlow::DecadeCinematic(next) => {
                 TurnFlow::CouncilOfGovernors(next)
             }
             TurnFlow::TopTenScores => TurnFlow::CouncilOfGovernors(PostQuarterGate::TopTenScores),
             TurnFlow::OpeningCinematicLose => {
                 TurnFlow::CouncilOfGovernors(PostQuarterGate::OpeningCinematicLose)
             }
-            TurnFlow::Elimination(EliminationFlow::Victory) => TurnFlow::GameScore,
-            TurnFlow::Elimination(EliminationFlow::PlayerEliminated)
-            | TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Loss) => TurnFlow::SessionEnded,
+            TurnFlow::EliminationVictory => TurnFlow::GameScore,
+            TurnFlow::PlayerEliminated
+            | TurnFlow::GreatPowerLoss => TurnFlow::SessionEnded,
             _ => panic!(
                 "opening cinematic resume requires a cinematic flow, got {:?}",
                 self.turn_flow
@@ -617,7 +561,7 @@ impl GameState {
     }
 
     pub fn current_diplomacy_offer(&self) -> Option<DiplomacyOfferPrompt> {
-        let TurnFlow::Diplomacy(DiplomacyFlow::Offer { nation, index }) = self.turn_flow else {
+        let TurnFlow::DiplomacyOffer { nation, index } = self.turn_flow else {
             return None;
         };
         let proposal = self.pending.nations[nation]
@@ -633,25 +577,25 @@ impl GameState {
 
     pub fn current_diplomacy_war_join(&self) -> Option<DiplomacyWarJoinPrompt> {
         match self.turn_flow {
-            TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(prompt)) => Some(prompt),
+            TurnFlow::DiplomacyWarJoin(prompt) => Some(prompt),
             _ => None,
         }
     }
 
     pub fn current_technology_report(&self) -> Option<Technology> {
         match self.turn_flow {
-            TurnFlow::TechnologyAdvances(TechnologyFlow::Report(tech_id)) => Some(tech_id),
+            TurnFlow::TechnologyReport(tech_id) => Some(tech_id),
             _ => None,
         }
     }
 
     pub fn advance_turn(&mut self) -> TurnStop {
         loop {
-            if let Some(stop) = self.interrupt_stop() {
-                return stop;
-            }
             if self.pending_town_naming().is_some() {
                 return TurnStop::TownNaming;
+            }
+            if let Some(stop) = self.interrupt_stop() {
+                return stop;
             }
             match self.turn_flow {
                 TurnFlow::StrategicMap => return TurnStop::PlayerOrders,
@@ -665,90 +609,90 @@ impl GameState {
                     }
                     self.turn_flow = TurnFlow::SeasonAdvance;
                 }
-                TurnFlow::Diplomacy(DiplomacyFlow::Running) => self.do_diplomacy(),
-                TurnFlow::Trade(TradeFlow::Running) => self.begin_trade_phase(),
+                TurnFlow::Diplomacy => self.do_diplomacy(),
+                TurnFlow::Trade => self.begin_trade_phase(),
                 TurnFlow::Civilians => {
-                    self.turn_flow = TurnFlow::Military(MilitaryFlow::Running);
+                    self.turn_flow = TurnFlow::Military;
                     self.do_civilians();
                 }
-                TurnFlow::Military(MilitaryFlow::Running) => {
+                TurnFlow::Military => {
                     self.turn_flow = match self.do_military() {
                         Some(continuation) => {
-                            TurnFlow::Military(MilitaryFlow::NavalBattle(continuation))
+                            TurnFlow::NavalBattle(continuation)
                         }
-                        None => TurnFlow::CombatMoves(CombatMovesFlow::Running),
+                        None => TurnFlow::CombatMoves,
                     };
                 }
-                TurnFlow::CombatMoves(CombatMovesFlow::Running) => {
+                TurnFlow::CombatMoves => {
                     self.turn_flow = match self.do_combat_moves() {
                         Some(continuation) => {
-                            TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(continuation))
+                            TurnFlow::LandBattle(continuation)
                         }
                         None => TurnFlow::MilitaryCleanup,
                     };
                 }
                 TurnFlow::MilitaryCleanup => {
-                    self.turn_flow = TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running);
+                    self.turn_flow = TurnFlow::DiplomacyOfferGate;
                     self.do_military_cleanup();
                 }
-                TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running) => {
+                TurnFlow::DiplomacyOfferGate => {
                     self.turn_flow = if self.diplomacy_offer_gate() {
-                        TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::PostCombatReports)
+                        TurnFlow::PostCombatReports
                     } else {
-                        TurnFlow::Elimination(EliminationFlow::Running)
+                        TurnFlow::Elimination
                     };
                 }
-                TurnFlow::Elimination(EliminationFlow::Running) => {
+                TurnFlow::Elimination => {
                     self.turn_flow = match self.do_elimination_phase() {
                         EliminationOutcome::Continue => TurnFlow::CityAndTransport,
                         EliminationOutcome::PlayerEliminated => {
-                            TurnFlow::Elimination(EliminationFlow::PlayerEliminated)
+                            TurnFlow::PlayerEliminated
                         }
                         EliminationOutcome::Victory => {
-                            TurnFlow::Elimination(EliminationFlow::Victory)
+                            TurnFlow::EliminationVictory
                         }
                     };
                 }
                 TurnFlow::CityAndTransport => self.apply_city_and_transport_case(),
-                TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Running) => {
+                TurnFlow::GreatPowerPressure => {
                     self.turn_flow = if self.do_great_power_pressure_phase() {
                         // `mode` is still `0x0b`; movie factory default is `"lose"`, then
                         // `ReinitializeGameFlow` — not the council path.
-                        TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Loss)
+                        TurnFlow::GreatPowerLoss
                     } else {
-                        TurnFlow::DealBook(DealBookFlow::Running)
+                        TurnFlow::DealBook
                     };
                 }
-                TurnFlow::DealBook(DealBookFlow::Running) => {
+                TurnFlow::DealBook => {
                     self.turn_flow = if self.event_eligible(self.turn.active_nation) {
-                        TurnFlow::DealBook(DealBookFlow::Open)
+                        TurnFlow::DealBookOpen
                     } else {
-                        TurnFlow::QuarterGate(QuarterGateFlow::Running)
+                        TurnFlow::QuarterGate
                     };
                 }
-                TurnFlow::QuarterGate(QuarterGateFlow::Running) => {
+                TurnFlow::QuarterGate => {
                     let next = self.post_quarter_gate();
                     self.turn_flow = match self.quarter_gate() {
                         QuarterGateResult::Continue => next.flow(),
                         QuarterGateResult::DecadeCinematic => {
-                            TurnFlow::QuarterGate(QuarterGateFlow::DecadeCinematic(next))
+                            TurnFlow::DecadeCinematic(next)
                         }
                     };
                 }
                 TurnFlow::SeasonAdvance => self.advance_season_phase(),
-                TurnFlow::TechnologyAdvances(TechnologyFlow::Running) => {
+                TurnFlow::TechnologyAdvances => {
                     self.apply_technology_advances_phase();
                     self.turn_flow = match self.consume_interactive_technology_unlock() {
                         Some(tech_id) => {
-                            TurnFlow::TechnologyAdvances(TechnologyFlow::Report(tech_id))
+                            TurnFlow::TechnologyReport(tech_id)
                         }
-                        None => TurnFlow::Newspaper(NewspaperFlow::Running),
+                        None => TurnFlow::Newspaper,
                     };
                 }
-                TurnFlow::Newspaper(NewspaperFlow::Running) => {
+                TurnFlow::Newspaper => {
                     self.construct_newspaper_pages();
                     self.mark_all_pending_status_flags_handled();
-                    self.turn_flow = TurnFlow::Newspaper(NewspaperFlow::Reading);
+                    self.turn_flow = TurnFlow::NewspaperOpen;
                 }
                 TurnFlow::ReturnToMap => self.return_to_map(),
                 _ => unreachable!("interrupt_stop answers every waiting turn flow"),
@@ -759,59 +703,42 @@ impl GameState {
     /// Stop the current flow waits on, or `None` when the driver can run it.
     fn interrupt_stop(&self) -> Option<TurnStop> {
         match &self.turn_flow {
-            TurnFlow::Diplomacy(DiplomacyFlow::Offer { .. }) => Some(TurnStop::DiplomacyOffer),
-            TurnFlow::Diplomacy(DiplomacyFlow::WarJoin(_)) => Some(TurnStop::DiplomacyWarJoin),
-            TurnFlow::Trade(TradeFlow::AwaitingOffer { .. }) => Some(TurnStop::TradeOffer),
-            TurnFlow::Military(MilitaryFlow::NavalBattle(_)) => Some(TurnStop::NavalBattle),
-            TurnFlow::CombatMoves(CombatMovesFlow::LandBattle(_)) => Some(TurnStop::LandBattle),
-            TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::PostCombatReports) => {
+            TurnFlow::DiplomacyOffer { .. } => Some(TurnStop::DiplomacyOffer),
+            TurnFlow::DiplomacyWarJoin(_) => Some(TurnStop::DiplomacyWarJoin),
+            TurnFlow::TradeOffer { .. } => Some(TurnStop::TradeOffer),
+            TurnFlow::NavalBattle(_) => Some(TurnStop::NavalBattle),
+            TurnFlow::LandBattle(_) => Some(TurnStop::LandBattle),
+            TurnFlow::PostCombatReports => {
                 Some(TurnStop::PostCombatReports)
             }
-            TurnFlow::Elimination(EliminationFlow::PlayerEliminated) => {
+            TurnFlow::PlayerEliminated => {
                 Some(TurnStop::PlayerEliminated)
             }
-            TurnFlow::Elimination(EliminationFlow::Victory) => Some(TurnStop::Victory),
-            TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Loss) => {
+            TurnFlow::EliminationVictory => Some(TurnStop::Victory),
+            TurnFlow::GreatPowerLoss => {
                 Some(TurnStop::GreatPowerLoss)
             }
-            TurnFlow::QuarterGate(QuarterGateFlow::DecadeCinematic(_)) => {
+            TurnFlow::DecadeCinematic(_) => {
                 Some(TurnStop::DecadeCinematic)
             }
-            TurnFlow::TechnologyAdvances(TechnologyFlow::Report(_)) => {
+            TurnFlow::TechnologyReport(_) => {
                 Some(TurnStop::TechnologyAdvance)
             }
-            TurnFlow::Newspaper(NewspaperFlow::Reading) => Some(TurnStop::Newspaper),
-            TurnFlow::DealBook(DealBookFlow::Open) => Some(TurnStop::DealBook),
+            TurnFlow::NewspaperOpen => Some(TurnStop::Newspaper),
+            TurnFlow::DealBookOpen => Some(TurnStop::DealBook),
             TurnFlow::TopTenScores => Some(TurnStop::Victory),
             TurnFlow::OpeningCinematicLose => Some(TurnStop::PlayerEliminated),
             TurnFlow::CouncilOfGovernors(_) => Some(TurnStop::CouncilOfGovernors),
             TurnFlow::GameScore => Some(TurnStop::GameScore),
             TurnFlow::HighScores => Some(TurnStop::HighScores),
             TurnFlow::SessionEnded => Some(TurnStop::SessionEnded),
-            TurnFlow::CapitalSelection
-            | TurnFlow::StrategicMap
-            | TurnFlow::Diplomacy(DiplomacyFlow::Running)
-            | TurnFlow::Trade(TradeFlow::Running)
-            | TurnFlow::Civilians
-            | TurnFlow::Military(MilitaryFlow::Running)
-            | TurnFlow::CombatMoves(CombatMovesFlow::Running)
-            | TurnFlow::MilitaryCleanup
-            | TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running)
-            | TurnFlow::Elimination(EliminationFlow::Running)
-            | TurnFlow::CityAndTransport
-            | TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Running)
-            | TurnFlow::DealBook(DealBookFlow::Running)
-            | TurnFlow::QuarterGate(QuarterGateFlow::Running)
-            | TurnFlow::SeasonAdvance
-            | TurnFlow::TechnologyAdvances(TechnologyFlow::Running)
-            | TurnFlow::Newspaper(NewspaperFlow::Running)
-            | TurnFlow::ReturnToMap => None,
+            _ => None,
         }
     }
 
     /// Retail case 8 body: write the resume phase, then `DoCityAndTransport`.
     pub fn apply_city_and_transport_case(&mut self) {
-        self.turn_flow = TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Running);
+        self.turn_flow = TurnFlow::GreatPowerPressure;
         self.do_city_and_transport();
     }
 
@@ -846,11 +773,7 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        DealBookFlow, DiplomacyFlow, DiplomacyOfferGateFlow, EliminationFlow,
-        GreatPowerPressureFlow, NewspaperFlow, PostQuarterGate, QuarterGateFlow, TechnologyFlow,
-        TradeFlow, TurnFlow,
-    };
+    use super::{PostQuarterGate, TurnFlow};
     use crate::test_support::game_state;
     use crate::{
         AutoGreatPowerState, BattleReport, BattleReportKind, BattleReportLocation,
@@ -920,9 +843,9 @@ mod tests {
         state.turn_flow = TurnFlow::CityAndTransport;
         let stop = state.advance_turn();
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn_flow, TurnFlow::DealBook(DealBookFlow::Open));
+        assert_eq!(state.turn_flow, TurnFlow::DealBookOpen);
         // Retail case 0x0c wrote the quarter gate before posing the Deal Book.
-        assert_eq!(state.phase(), crate::PhaseCode::QUARTER_GATE);
+        assert_eq!(state.retail_phase(), crate::PhaseCode::QUARTER_GATE);
     }
 
     #[test]
@@ -941,8 +864,8 @@ mod tests {
         );
         assert!(matches!(
             state.turn_flow,
-            TurnFlow::TechnologyAdvances(TechnologyFlow::Report(_))
-                | TurnFlow::Newspaper(NewspaperFlow::Reading)
+            TurnFlow::TechnologyReport(_)
+                | TurnFlow::NewspaperOpen
         ));
     }
 
@@ -958,7 +881,7 @@ mod tests {
             stop = state.acknowledge_technology_report();
         }
         assert_eq!(stop, crate::TurnStop::Newspaper);
-        assert_eq!(state.turn_flow, TurnFlow::Newspaper(NewspaperFlow::Reading));
+        assert_eq!(state.turn_flow, TurnFlow::NewspaperOpen);
         assert_eq!(state.turn.economic_turn, start_turn + 1);
         assert_eq!(state.close_newspaper(false), crate::TurnStop::PlayerOrders);
         assert_eq!(state.turn_flow, TurnFlow::StrategicMap);
@@ -977,7 +900,7 @@ mod tests {
             .current_diplomacy_offer()
             .expect("diplomacy offer flow");
         // Retail case 6 wrote the trade phase before `ReplyToDiplomacyOffers` posed this.
-        assert_eq!(state.phase(), crate::PhaseCode::TRADE);
+        assert_eq!(state.retail_phase(), crate::PhaseCode::TRADE);
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
         let stop = state.answer_current_diplomacy_offer(true);
         assert!(state.current_diplomacy_offer().is_none());
@@ -1008,7 +931,7 @@ mod tests {
             .expect("diplomacy offer flow");
         assert!(matches!(
             state.turn_flow,
-            TurnFlow::Diplomacy(DiplomacyFlow::Offer { .. })
+            TurnFlow::DiplomacyOffer { .. }
         ));
         assert_eq!(state.current_diplomacy_offer(), Some(prompt));
 
@@ -1016,14 +939,14 @@ mod tests {
         if let crate::TurnStop::TradeOffer = stop {
             assert!(matches!(
                 state.turn_flow,
-                TurnFlow::Trade(TradeFlow::AwaitingOffer { .. })
+                TurnFlow::TradeOffer { .. }
             ));
             while let crate::TurnStop::TradeOffer = stop {
                 stop = state.answer_trade_offer(0, false);
             }
         }
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn_flow, TurnFlow::DealBook(DealBookFlow::Open));
+        assert_eq!(state.turn_flow, TurnFlow::DealBookOpen);
         assert!(state.pending_trade_offer().is_none());
         assert!(state.pending_land_battle().is_none());
     }
@@ -1050,7 +973,7 @@ mod tests {
         state.nations.majors[&seller]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
-        state.turn_flow = TurnFlow::Trade(TradeFlow::Running);
+        state.turn_flow = TurnFlow::Trade;
         state
     }
 
@@ -1060,7 +983,7 @@ mod tests {
         seed_town_tiles(&mut state);
         assert_eq!(state.advance_turn(), crate::TurnStop::TradeOffer);
         let stop = state.answer_trade_offer(0, false);
-        assert!(!matches!(state.turn_flow, TurnFlow::Trade(_)));
+        assert!(state.turn_flow != TurnFlow::Trade);
         assert_ne!(stop, crate::TurnStop::TradeOffer);
     }
 
@@ -1068,14 +991,14 @@ mod tests {
     fn completing_trade_continues_through_civilians_to_deal_book() {
         let mut state = game_state();
         seed_town_tiles(&mut state);
-        state.turn_flow = TurnFlow::Trade(TradeFlow::Running);
+        state.turn_flow = TurnFlow::Trade;
         let mut stop = state.advance_turn();
         while let crate::TurnStop::TradeOffer = stop {
             stop = state.answer_trade_offer(0, false);
         }
         assert!(state.pending_trade_offer().is_none());
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn_flow, TurnFlow::DealBook(DealBookFlow::Open));
+        assert_eq!(state.turn_flow, TurnFlow::DealBookOpen);
     }
 
     #[test]
@@ -1101,7 +1024,7 @@ mod tests {
         state.nations.majors[&seller]
             .economy
             .remembered_trade_offers_by_resource[ResourceKind::Clothing] = 4;
-        state.turn_flow = TurnFlow::Trade(TradeFlow::Running);
+        state.turn_flow = TurnFlow::Trade;
         state.begin_trade_phase();
         let encoded = serde_json::to_vec(&state).expect("serialize");
         let restored: crate::GameState = serde_json::from_slice(&encoded).expect("deserialize");
@@ -1124,12 +1047,12 @@ mod tests {
         );
         assert_eq!(state.turn.economic_turn, 1);
         if stop == crate::TurnStop::Newspaper {
-            assert_eq!(state.turn_flow, TurnFlow::Newspaper(NewspaperFlow::Reading));
+            assert_eq!(state.turn_flow, TurnFlow::NewspaperOpen);
             assert!(state.pending.newspaper_events.is_empty());
         } else {
             assert!(matches!(
                 state.turn_flow,
-                TurnFlow::TechnologyAdvances(TechnologyFlow::Report(_))
+                TurnFlow::TechnologyReport(_)
             ));
         }
     }
@@ -1137,7 +1060,7 @@ mod tests {
     #[test]
     fn newspaper_stop_constructs_pages_before_returning() {
         let mut state = game_state();
-        state.turn_flow = TurnFlow::Newspaper(NewspaperFlow::Running);
+        state.turn_flow = TurnFlow::Newspaper;
         state
             .pending
             .queue_newspaper_event(crate::PendingNewspaperEvent::Miscellaneous {
@@ -1149,7 +1072,7 @@ mod tests {
         state.set_game_data(crate::GameData::from_news_story_ids(story_ids));
         let stop = state.advance_turn();
         assert_eq!(stop, crate::TurnStop::Newspaper);
-        assert_eq!(state.turn_flow, TurnFlow::Newspaper(NewspaperFlow::Reading));
+        assert_eq!(state.turn_flow, TurnFlow::NewspaperOpen);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
     }
@@ -1157,7 +1080,7 @@ mod tests {
     #[test]
     fn the_open_newspaper_does_not_rebuild_its_pages() {
         let mut state = game_state();
-        state.turn_flow = TurnFlow::Newspaper(NewspaperFlow::Running);
+        state.turn_flow = TurnFlow::Newspaper;
         assert_eq!(state.advance_turn(), crate::TurnStop::Newspaper);
         let pages = state.news.pages.clone();
         assert_eq!(state.advance_turn(), crate::TurnStop::Newspaper);
@@ -1171,7 +1094,7 @@ mod tests {
         state.nations.majors[&nation].economy.pending_actions
             [crate::PendingActionKind::NavyGrowthReward] =
             crate::PendingActionState::new(crate::PendingActionStatus::QUEUED, Some(1));
-        state.turn_flow = TurnFlow::Newspaper(NewspaperFlow::Running);
+        state.turn_flow = TurnFlow::Newspaper;
         assert_eq!(state.advance_turn(), crate::TurnStop::Newspaper);
         assert_eq!(
             state.nations.majors[&nation].economy.pending_actions
@@ -1203,14 +1126,14 @@ mod tests {
                 },
             ]),
         });
-        state.turn_flow = TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::Running);
+        state.turn_flow = TurnFlow::DiplomacyOfferGate;
         assert_eq!(state.advance_turn(), crate::TurnStop::PostCombatReports);
         assert_eq!(
             state.turn_flow,
-            TurnFlow::DiplomacyOfferGate(DiplomacyOfferGateFlow::PostCombatReports)
+            TurnFlow::PostCombatReports
         );
         // Retail case 0x0d wrote elimination before posing `TBattleReportView`.
-        assert_eq!(state.phase(), crate::PhaseCode::ELIMINATION);
+        assert_eq!(state.retail_phase(), crate::PhaseCode::ELIMINATION);
     }
 
     #[test]
@@ -1221,11 +1144,11 @@ mod tests {
             eliminated.turn.active_nation,
             crate::CountryStatus::ProtectorateOf(NationId::new(1)),
         );
-        eliminated.turn_flow = TurnFlow::Elimination(EliminationFlow::Running);
+        eliminated.turn_flow = TurnFlow::Elimination;
         assert_eq!(eliminated.advance_turn(), crate::TurnStop::PlayerEliminated);
         assert_eq!(
             eliminated.turn_flow,
-            TurnFlow::Elimination(EliminationFlow::PlayerEliminated)
+            TurnFlow::PlayerEliminated
         );
 
         let mut victory = game_state();
@@ -1234,11 +1157,11 @@ mod tests {
         victory
             .nations
             .append_owned_region_during_construction(survivor.nation(), crate::ProvinceId::new(0));
-        victory.turn_flow = TurnFlow::Elimination(EliminationFlow::Running);
+        victory.turn_flow = TurnFlow::Elimination;
         assert_eq!(victory.advance_turn(), crate::TurnStop::Victory);
         assert_eq!(
             victory.turn_flow,
-            TurnFlow::Elimination(EliminationFlow::Victory)
+            TurnFlow::EliminationVictory
         );
     }
 
@@ -1248,16 +1171,16 @@ mod tests {
         seed_town_tiles(&mut state);
         state.turn.economic_turn = 40;
         state.turn.phase_state_by_decade[crate::Decade::Second as usize] = 1;
-        state.turn_flow = TurnFlow::QuarterGate(QuarterGateFlow::Running);
+        state.turn_flow = TurnFlow::QuarterGate;
         assert_eq!(state.advance_turn(), crate::TurnStop::DecadeCinematic);
         assert_eq!(
             state.turn_flow,
-            TurnFlow::QuarterGate(QuarterGateFlow::DecadeCinematic(
+            TurnFlow::DecadeCinematic(
                 PostQuarterGate::SeasonAdvance
-            ))
+            )
         );
         // Retail case 0x0e wrote the post-gate phase before the `"vote"` movie.
-        assert_eq!(state.phase(), crate::PhaseCode::SEASON_ADVANCE);
+        assert_eq!(state.retail_phase(), crate::PhaseCode::SEASON_ADVANCE);
     }
 
     #[test]
@@ -1266,7 +1189,7 @@ mod tests {
         seed_town_tiles(&mut state);
         let stop = state.finish_player_orders(true);
         assert_eq!(stop, crate::TurnStop::DealBook);
-        assert_eq!(state.turn_flow, TurnFlow::DealBook(DealBookFlow::Open));
+        assert_eq!(state.turn_flow, TurnFlow::DealBookOpen);
         let start_turn = state.turn.economic_turn;
         let mut stop = state.close_turn_deal_book();
         while let crate::TurnStop::TechnologyAdvance = stop {
@@ -1305,28 +1228,28 @@ mod tests {
     #[test]
     fn opening_cinematic_movie_follows_entered_mode() {
         let mut state = game_state();
-        state.turn_flow = TurnFlow::QuarterGate(QuarterGateFlow::DecadeCinematic(
+        state.turn_flow = TurnFlow::DecadeCinematic(
             PostQuarterGate::SeasonAdvance,
-        ));
+        );
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Vote);
         state.turn_flow = TurnFlow::TopTenScores;
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Win);
-        state.turn_flow = TurnFlow::Elimination(EliminationFlow::Victory);
+        state.turn_flow = TurnFlow::EliminationVictory;
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Win);
         state.turn_flow = TurnFlow::OpeningCinematicLose;
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
-        state.turn_flow = TurnFlow::Elimination(EliminationFlow::PlayerEliminated);
+        state.turn_flow = TurnFlow::PlayerEliminated;
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
-        state.turn_flow = TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Loss);
+        state.turn_flow = TurnFlow::GreatPowerLoss;
         assert_eq!(state.opening_cinematic_movie(), crate::CinematicKind::Lose);
     }
 
     #[test]
     fn decade_cinematic_close_enters_council_with_the_chosen_phase() {
         let mut state = game_state();
-        state.turn_flow = TurnFlow::QuarterGate(QuarterGateFlow::DecadeCinematic(
+        state.turn_flow = TurnFlow::DecadeCinematic(
             PostQuarterGate::SeasonAdvance,
-        ));
+        );
         assert_eq!(
             state.close_opening_cinematic(),
             crate::TurnStop::CouncilOfGovernors
@@ -1335,7 +1258,7 @@ mod tests {
             state.turn_flow,
             TurnFlow::CouncilOfGovernors(PostQuarterGate::SeasonAdvance)
         );
-        assert_eq!(state.phase(), crate::PhaseCode::SEASON_ADVANCE);
+        assert_eq!(state.retail_phase(), crate::PhaseCode::SEASON_ADVANCE);
     }
 
     #[test]
@@ -1356,7 +1279,7 @@ mod tests {
     #[test]
     fn elimination_win_close_enters_game_score() {
         let mut state = game_state();
-        state.turn_flow = TurnFlow::Elimination(EliminationFlow::Victory);
+        state.turn_flow = TurnFlow::EliminationVictory;
         assert_eq!(state.close_opening_cinematic(), crate::TurnStop::GameScore);
         assert_eq!(state.close_game_score(), crate::TurnStop::HighScores);
         assert_eq!(state.close_high_scores(), crate::TurnStop::SessionEnded);
@@ -1366,7 +1289,7 @@ mod tests {
     #[test]
     fn pressure_loss_close_ends_the_session() {
         let mut state = game_state();
-        state.turn_flow = TurnFlow::GreatPowerPressure(GreatPowerPressureFlow::Loss);
+        state.turn_flow = TurnFlow::GreatPowerLoss;
         assert_eq!(
             state.close_opening_cinematic(),
             crate::TurnStop::SessionEnded
