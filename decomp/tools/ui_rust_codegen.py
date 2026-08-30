@@ -7,6 +7,7 @@ import argparse
 import csv
 import json
 import re
+import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -19,6 +20,7 @@ MANIFEST = "config/ui_factory_codegen.yml"
 IR_PATH = "vendor/macos_codewarrior/evidence/resources/ui_views.json"
 STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
+PICTURES_PATH = "vendor/macos_codewarrior/evidence/resources/pictures.csv"
 WINDOWS_VIEWS_PATH = "config/ui_factory_windows_views.yml"
 DELTAS_PATH = "config/ui_platform_deltas.yml"
 RUST_OUT = "../rust/crates/imperialism-app/src/ui/generated.rs"
@@ -45,7 +47,7 @@ BUTTON_CLASSES = frozenset(
     ("T2PictureButton", "TClickZone", "TControl", "TDealTabControl", "TNoHilitePicture",
      "TPictureNumberText", "TTextPictureButton", "TUpDownPictureButton", "TPictureButton")
 )
-PICTURE_OVERLAY_CLASSES = frozenset(("TPictureButton",))
+PICTURE_BUTTON_ENABLED_CLASSES = frozenset(("TPictureButton", "T2PictureButton"))
 CHECKBOX_SWAP_CLASSES = frozenset(("TCzechBox",))
 
 
@@ -96,6 +98,7 @@ class Node:
     max_chars: int | None = None
     window: tuple[Any, ...] | None = None
     slider: tuple[int, int, int, int] | None = None
+    picture_active_id: int | None = None
     children: list[Node] = field(default_factory=list)
 
 
@@ -186,6 +189,8 @@ def _load_evidence(root: Path) -> dict[str, Any]:
         strings = {(r["resource_file"], int(r["group_id"]), int(r["string_index"])): r["text"]
                    for r in csv.DictReader(stream)}
     text_data = json.loads((root / TEXT_RESOURCES_PATH).read_text(encoding="utf-8"))
+    with (root / PICTURES_PATH).open(encoding="utf-8", newline="") as stream:
+        picture_ids = {int(row["resource_id"]) for row in csv.DictReader(stream)}
     styles = {(r["resource_file"], int(r["resource_id"])): r for r in text_data["text_styles"]}
     views = {ResourceKey(r["resource_file"], int(r["view_id"])): r
              for r in json.loads((root / IR_PATH).read_text(encoding="utf-8"))["views"]}
@@ -225,7 +230,7 @@ def _load_evidence(root: Path) -> dict[str, Any]:
     if not isinstance(node_sub_rows, list):
         raise ValueError(f"{DELTAS_PATH}: node_class_substitutions must be a list")
     return {
-        "strings": strings, "styles": styles, "views": views,
+        "strings": strings, "styles": styles, "pictures": picture_ids, "views": views,
         "keys": sorted(set(keys), key=lambda k: (k.resource_file, k.view_id)),
         "overrides": overrides, "win_names": sorted(set(win_names)),
         "subs": {k: v["windows_class"] for k, v in (deltas.get("class_substitutions") or {}).items()},
@@ -316,11 +321,15 @@ def _parse_mac_node(row: dict, key: ResourceKey, ev: dict[str, Any]) -> Node:
             shadow_offset=(1, 1),
             center_vertically=False,
         )
+    active_id = _catalog_picture_swap_id(picture_id, class_name, type_code, ev["pictures"])
+    enabled = 1 if (
+        class_name in PICTURE_BUTTON_ENABLED_CLASSES and int(row["state"]) != 0
+    ) else int(row["enabled"])
     return Node(f"0x{int(row['offset']):04x}", type_code, str(row["tag"]), class_name,
                 f"0x{int(row['parent_offset']):04x}" if row.get("parent_offset") is not None else None,
                 (int(geom["x"]), int(geom["y"]), int(geom["width"]), int(geom["height"])),
-                int(row["state"]), int(row["enabled"]), int(row["input_gate"]), insets, picture_id,
-                control_state, text, max_chars, window)
+                int(row["state"]), enabled, int(row["input_gate"]), insets, picture_id,
+                control_state, text, max_chars, window, picture_active_id=active_id)
 
 
 def _apply_patches(flat: dict[str, Node], order: list[str], key: ResourceKey, ev: dict[str, Any]) -> None:
@@ -409,11 +418,15 @@ def _node_from_raw(raw: dict[str, Any]) -> Node:
     text = _text_from_patch(fam_text) if isinstance(fam_text, dict) and "font_family" in fam_text else None
     if isinstance(fam_text, dict) and "point_size" in fam_text and text is None:
         text = _text_from_windows_child(fam_text)
+    picture_id = raw.get("picture_id")
     return Node(
         raw["node_id"], raw["type_code"], raw["tag"], raw["class_name"], raw.get("parent_id"),
         raw["geometry"], raw["state"], raw["enabled"], raw["input_gate"], raw.get("insets"),
-        raw.get("picture_id"), raw.get("control_state"), text, raw.get("max_chars"), raw.get("window"),
-        raw.get("slider"),
+        picture_id, raw.get("control_state"), text, raw.get("max_chars"), raw.get("window"),
+        raw.get("slider"), picture_active_id=(
+            _default_picture_swap_id(picture_id, raw["class_name"], raw["type_code"])
+            if picture_id is not None else None
+        ),
     )
 
 
@@ -423,9 +436,30 @@ def _interaction_disabled(node: Node) -> bool:
 
 def _picture_swap_ids(node: Node) -> tuple[int, int]:
     pic = _require_picture(node)
-    if node.class_name in CHECKBOX_SWAP_CLASSES or node.type_code == "chkb":
-        return pic & ~1, pic | 1
-    return pic, pic + 1
+    idle = pic & ~1 if node.class_name in CHECKBOX_SWAP_CLASSES or node.type_code == "chkb" else pic
+    if node.picture_active_id is not None:
+        return idle, node.picture_active_id
+    return idle, _default_picture_swap_id(pic, node.class_name, node.type_code)
+
+
+def _default_picture_swap_id(picture_id: int, class_name: str, type_code: str) -> int:
+    if class_name in CHECKBOX_SWAP_CLASSES or type_code == "chkb":
+        return picture_id | 1
+    return picture_id + 1
+
+
+def _catalog_picture_swap_id(
+    picture_id: int | None,
+    class_name: str,
+    type_code: str,
+    picture_ids: set[int],
+) -> int | None:
+    if picture_id is None:
+        return None
+    candidate = _default_picture_swap_id(picture_id, class_name, type_code)
+    if candidate in picture_ids:
+        return candidate
+    return picture_id & ~1 if class_name in CHECKBOX_SWAP_CLASSES or type_code == "chkb" else picture_id
 
 
 def _emit_checked(node: Node) -> list[str]:
@@ -448,9 +482,11 @@ def _emit_picture_art(node: Node) -> list[str]:
         return [f"retail_madness_picture({pic})"]
     if node.class_name == "TToggleButton":
         return [f"retail_picture({pic})"]
-    if node.class_name in PICTURE_OVERLAY_CLASSES:
-        idle, overlay = _picture_swap_ids(node)
-        return [f"retail_picture_button({idle}, {overlay})"]
+    if node.class_name in PICTURE_BUTTON_ENABLED_CLASSES:
+        # `TPictureButton::HiliteState` changes visibility; it does not derive a
+        # pressed bitmap from the next resource ID. Adjacent picture IDs commonly
+        # belong to different controls (for example transport return/query).
+        return [f"retail_picture({pic})"]
     idle, active = _picture_swap_ids(node)
     return [f"retail_picture_swap({idle}, {active})"]
 
@@ -784,7 +820,10 @@ def render_city_building_layout(root: Path) -> str:
         "use imperialism_formats::PictureId;",
         "",
         "const fn building(slot: CityFacilitySlot, x: i32, y: i32) -> CityBuildingVisual {",
-        "    CityBuildingVisual { slot, origin: [x, y] }",
+        "    CityBuildingVisual {",
+        "        slot,",
+        "        origin: [x, y],",
+        "    }",
         "}",
         "",
         "const fn action(",
@@ -818,13 +857,35 @@ def render_city_building_layout(root: Path) -> str:
     for action in actions:
         x, y = action["origin"]
         w, h = action["frame_size"]
-        lines.append(
+        compact = (
             f"    action(CityFacilitySlot::{_rust_enum_variant(action['slot'])}, "
             f"{action['level']}, {action['picture_id']}, {action['frame_count']}, "
             f"{x}, {y}, {w}, {h}),"
         )
+        if len(compact) <= 72:
+            lines.append(compact)
+            continue
+        lines.extend([
+            "    action(",
+            f"        CityFacilitySlot::{_rust_enum_variant(action['slot'])},",
+            f"        {action['level']},",
+            f"        {action['picture_id']},",
+            f"        {action['frame_count']},",
+            f"        {x},",
+            f"        {y},",
+            f"        {w},",
+            f"        {h},",
+            "    ),",
+        ])
     lines.extend(["];", ""])
-    return "\n".join(lines)
+    source = "\n".join(lines)
+    return subprocess.run(
+        ("rustfmt", "--emit", "stdout"),
+        input=source,
+        text=True,
+        check=True,
+        capture_output=True,
+    ).stdout
 
 
 def generate(root: Path) -> tuple[str, list[tuple[str, str, Node]]]:

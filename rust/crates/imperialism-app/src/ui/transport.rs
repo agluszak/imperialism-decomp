@@ -103,6 +103,7 @@ struct TransportScreen;
 
 #[derive(Clone, Copy)]
 struct TransportGaugeView {
+    track: Entity,
     fill: Entity,
     /// [`Entity::PLACEHOLDER`] for capacity gauges (no limit marker).
     limit: Entity,
@@ -181,6 +182,7 @@ fn bind_gauge_view(
         .get(entity)
         .expect("bound transport gauge must exist");
     TransportGaugeView {
+        track: parts.track,
         fill: parts.fill,
         limit: parts.limit,
         caption: tree.find(entity, fourcc!("text")),
@@ -336,6 +338,16 @@ fn write_allocation_gauge(
             commands.entity(gauge.limit).insert(Visibility::Hidden);
         }
     }
+    commands.entity(gauge.track).insert(if total > 0 {
+        Visibility::Visible
+    } else {
+        Visibility::Hidden
+    });
+    commands.entity(gauge.fill).insert(if total > 0 {
+        Visibility::Visible
+    } else {
+        Visibility::Hidden
+    });
 }
 
 fn write_capacity_gauge(
@@ -504,18 +516,21 @@ mod tests {
         for tag in [fourcc!("tran"), fourcc!("curs"), fourcc!("trea")] {
             world.spawn((RetailTag(tag), Node::default(), ChildOf(root)));
         }
+        let track = world.spawn(Node::default()).id();
         let fill = world.spawn(Node::default()).id();
         let total = world
             .spawn((
                 RetailTag(fourcc!("tota")),
                 Node::default(),
                 TransportGaugeParts {
+                    track,
                     fill,
                     limit: Entity::PLACEHOLDER,
                 },
                 ChildOf(root),
             ))
             .id();
+        world.entity_mut(track).insert(ChildOf(total));
         world.entity_mut(fill).insert(ChildOf(total));
         world.spawn((
             RetailTag(fourcc!("text")),
@@ -524,16 +539,18 @@ mod tests {
             ChildOf(total),
         ));
         for binding in TRANSPORT_ROWS {
+            let track = world.spawn(Node::default()).id();
             let fill = world.spawn(Node::default()).id();
             let limit = world.spawn(Node::default()).id();
             let row = world
                 .spawn((
                     RetailTag(binding.tag),
                     Node::default(),
-                    TransportGaugeParts { fill, limit },
+                    TransportGaugeParts { track, fill, limit },
                     ChildOf(root),
                 ))
                 .id();
+            world.entity_mut(track).insert(ChildOf(row));
             world.entity_mut(fill).insert(ChildOf(row));
             world.entity_mut(limit).insert(ChildOf(row));
             world.spawn((

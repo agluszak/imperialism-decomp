@@ -1530,7 +1530,7 @@ fn project_land_battle_toolbar(
     mut visibilities: Query<&mut Visibility>,
     mut images: Query<&mut ImageNode>,
     mut swaps: Query<&mut RetailPictureSwap>,
-    mut helps: Query<&mut HoverHelpText>,
+    mut helps: Query<&mut HoverHelpText, Without<LandBattlefield>>,
     experience_bars: Query<(), With<LandBattleExperienceBar>>,
     children: Query<&Children>,
     mut assets: RetailUiAssets,
@@ -2398,6 +2398,16 @@ mod tests {
             return;
         };
         bind_land_battle_controls(&mut commands, *root, &tree);
+    }
+
+    #[test]
+    fn land_battle_toolbar_queries_are_disjoint() {
+        let mut world = World::new();
+        let mut schedule = Schedule::default();
+        schedule.add_systems(project_land_battle_toolbar);
+        schedule
+            .initialize(&mut world)
+            .expect("land battle toolbar system parameters are compatible");
     }
 
     fn node_left_top(node: &Node) -> (i32, i32) {

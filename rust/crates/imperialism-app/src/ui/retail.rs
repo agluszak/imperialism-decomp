@@ -36,16 +36,6 @@ pub struct RetailPictureSwap {
     pub active: Handle<Image>,
 }
 
-/// A `TPictureButton` down-state bitmap drawn only while the control is pressed.
-#[derive(Component, Debug, Default, Clone)]
-pub struct RetailPressedOverlay;
-
-/// Retained overlay child for a [`retail_picture_button`] hierarchy.
-#[derive(Component, FromTemplate, Clone, Copy)]
-struct PictureButtonParts {
-    overlay: Entity,
-}
-
 /// `TMadnessButton::CheckTheLook` bitmap frames: base+0..=4 from checked/pressed/disabled.
 #[derive(Component, Clone, Debug)]
 pub struct RetailMadnessPicture {
@@ -106,27 +96,6 @@ pub fn retail_picture_swap(idle: i16, active: i16) -> impl Scene {
             let active = load_template_picture(context, PictureId::new(active))?;
             Ok(RetailPictureSwap { idle, active })
         })
-    }
-}
-
-/// `TPictureButton` base art plus a child overlay shown only while pressed.
-pub fn retail_picture_button(idle: i16, overlay: i16) -> impl Scene {
-    bsn! {
-        PictureButtonParts { overlay: #Overlay }
-        retail_picture(idle)
-        Children [
-            (
-                #Overlay
-                template(move |context| {
-                    let image = load_template_picture(context, PictureId::new(overlay))?;
-                    let mut node = ImageNode::new(image);
-                    node.color.set_alpha(0.0);
-                    Ok(node)
-                })
-                RetailPressedOverlay
-                Pickable::IGNORE
-            )
-        ]
     }
 }
 
@@ -459,8 +428,6 @@ impl Plugin for RetailUiPlugin {
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Add, Checked>)
             .add_observer(on_retail_picture_swap_state::<Remove, Checked>)
-            .add_observer(on_retail_pressed_overlay_state::<Add>)
-            .add_observer(on_retail_pressed_overlay_state::<Remove>)
             .add_observer(on_retail_madness_picture_state::<Add, RetailMadnessPicture>)
             .add_observer(on_retail_madness_picture_state::<Add, Pressed>)
             .add_observer(on_retail_madness_picture_state::<Remove, Pressed>)
@@ -479,21 +446,6 @@ impl Plugin for RetailUiPlugin {
         super::retail_page_corner::register_page_corner(app);
         super::hover_help::register_hover_help(app);
     }
-}
-
-fn on_retail_pressed_overlay_state<E: EntityEvent>(
-    event: On<E, Pressed>,
-    buttons: Query<(&PictureButtonParts, Has<Pressed>)>,
-    mut overlays: Query<&mut ImageNode, With<RetailPressedOverlay>>,
-) {
-    let Ok((parts, pressed)) = buttons.get(event.event_target()) else {
-        return;
-    };
-    let Ok(mut image) = overlays.get_mut(parts.overlay) else {
-        return;
-    };
-    let pressed = pressed && !E::is::<Remove>();
-    image.color.set_alpha(if pressed { 1.0 } else { 0.0 });
 }
 
 fn load_madness_frames(context: &mut TemplateContext, base: i16) -> [Handle<Image>; 5] {
@@ -853,55 +805,6 @@ mod tests {
         assert_eq!(
             app.world().get::<ImageNode>(entity).unwrap().image,
             expected
-        );
-    }
-
-    #[test]
-    fn picture_button_overlay_is_visible_only_while_parent_is_pressed() {
-        let mut app = scene_app();
-        let button = app
-            .world_mut()
-            .spawn_scene(bsn! {
-                PictureButtonParts { overlay: #Overlay }
-                ImageNode::default()
-                Children [
-                    (
-                        #Overlay
-                        template(|_| {
-                            let mut node = ImageNode::default();
-                            node.color.set_alpha(0.0);
-                            Ok(node)
-                        })
-                        RetailPressedOverlay
-                    )
-                ]
-            })
-            .expect("picture button scene")
-            .id();
-        app.update();
-
-        let overlay = app
-            .world()
-            .get::<PictureButtonParts>(button)
-            .expect("picture button retains overlay child")
-            .overlay;
-        assert_eq!(
-            app.world().get::<ImageNode>(overlay).unwrap().color.alpha(),
-            0.0
-        );
-
-        app.world_mut().entity_mut(button).insert(Pressed);
-        app.update();
-        assert_eq!(
-            app.world().get::<ImageNode>(overlay).unwrap().color.alpha(),
-            1.0
-        );
-
-        app.world_mut().entity_mut(button).remove::<Pressed>();
-        app.update();
-        assert_eq!(
-            app.world().get::<ImageNode>(overlay).unwrap().color.alpha(),
-            0.0
         );
     }
 

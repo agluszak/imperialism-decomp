@@ -249,6 +249,12 @@ pub(in crate::ui::city) fn bind_city_screen(
 
     let nation = session.active_major_nation();
     bind_game_status_display(&mut commands, &mut assets, *root, &tree);
+    // `TCityProductionView::Draw` starts its off-screen composition with the
+    // 640x480 city backdrop, then blits the facility pictures over it.
+    let main = tree.find(*root, fourcc!("main"));
+    commands
+        .entity(main)
+        .insert(ImageNode::new(assets.picture(PictureId::new(6000))));
     let summary = bind_city_summary_values(*root, &tree, &placard_parts);
     let hover_title = bind_city_hover_title(&mut commands, *root, &tree, &mut assets);
     spawn_city_buildings(

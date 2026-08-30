@@ -28,6 +28,7 @@ const ALLOCATION_FILL_PALETTE: u8 = 0x3a;
 /// Capacity gauges leave [`Self::limit`] as [`Entity::PLACEHOLDER`].
 #[derive(Component, FromTemplate, Clone, Copy)]
 pub struct TransportGaugeParts {
+    pub track: Entity,
     pub fill: Entity,
     pub limit: Entity,
 }
@@ -36,9 +37,10 @@ pub struct TransportGaugeParts {
 pub fn transport_capacity_gauge(owner_left: i32, recovered: impl SceneList) -> impl Scene {
     let track_left = transport_gauge_track_left(owner_left);
     bsn! {
-        TransportGaugeParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
+        TransportGaugeParts { track: #Track, fill: #Fill, limit: {Entity::PLACEHOLDER} }
         Children [
             (
+                #Track
                 Node {
                     position_type: PositionType::Absolute,
                     left: px(track_left),
@@ -70,9 +72,10 @@ pub fn transport_capacity_gauge(owner_left: i32, recovered: impl SceneList) -> i
 pub fn transport_allocation_gauge(owner_left: i32, recovered: impl SceneList) -> impl Scene {
     let track_left = transport_gauge_track_left(owner_left);
     bsn! {
-        TransportGaugeParts { fill: #Fill, limit: #Limit }
+        TransportGaugeParts { track: #Track, fill: #Fill, limit: #Limit }
         Children [
             (
+                #Track
                 Node {
                     position_type: PositionType::Absolute,
                     left: px(track_left),
@@ -170,9 +173,10 @@ mod tests {
         let row = app
             .world_mut()
             .spawn_scene(bsn! {
-                TransportGaugeParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
+                TransportGaugeParts { track: #Track, fill: #Fill, limit: {Entity::PLACEHOLDER} }
                 Children [
                     (
+                        #Track
                         Node {
                             position_type: PositionType::Absolute,
                             left: px(track_left),
@@ -214,9 +218,10 @@ mod tests {
         let row = app
             .world_mut()
             .spawn_scene(bsn! {
-                TransportGaugeParts { fill: #Fill, limit: #Limit }
+                TransportGaugeParts { track: #Track, fill: #Fill, limit: #Limit }
                 Children [
                     (
+                        #Track
                         Node {
                             position_type: PositionType::Absolute,
                             left: px(track_left),

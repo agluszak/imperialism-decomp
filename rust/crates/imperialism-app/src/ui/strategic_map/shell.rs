@@ -158,7 +158,7 @@ fn bind_strategic_map(
     let flag = tree.find(*root, fourcc!("Flag"));
     bind_open_flag_menu(&mut commands, flag);
     // `quer` is enabled by `bind_native_game_screen_nav` / query floater binding.
-    // Generated `TPictureButton` already carries `RetailPressedOverlay`.
+    // Generated `TPictureButton` has the recovered picture and visibility contract.
     crate::ui::technology_store::bind_open_control(
         &mut commands,
         tree.find(*root, fourcc!("mmap")),

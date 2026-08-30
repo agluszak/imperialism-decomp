@@ -40,6 +40,27 @@ class UiRustCodegenTests(unittest.TestCase):
     def test_generated_output_is_current(self) -> None:
         self.assertTrue(is_current(REPO_ROOT))
 
+    def test_newspaper_buttons_do_not_assume_missing_pressed_art(self) -> None:
+        newspaper = _scene_source("flagview_8451")
+        self.assertIn("retail_picture(8454)", newspaper)
+        self.assertIn("retail_picture(8456)", newspaper)
+        self.assertNotIn("InteractionDisabled", newspaper)
+        self.assertNotIn("retail_picture_button(8454", newspaper)
+        self.assertNotIn("retail_picture_button(8456", newspaper)
+
+    def test_picture_button_does_not_pair_the_transport_return_with_query_art(self) -> None:
+        transport = _scene_source("transport_2014")
+        return_start = transport.index('retail_node(fourcc!("end ")')
+        return_end = transport.index('retail_node(fourcc!("seas")', return_start)
+        return_button = transport[return_start:return_end]
+        self.assertIn("retail_picture(4024)", return_button)
+        self.assertNotIn("retail_picture_button", return_button)
+
+    def test_strategic_transport_button_does_not_assume_missing_active_art(self) -> None:
+        strategic_map = _scene_source("mapview_2013")
+        self.assertIn("retail_picture_swap(1111, 1111)", strategic_map)
+        self.assertNotIn("retail_picture_swap(1111, 1112)", strategic_map)
+
     def test_armory_custom_radios_do_not_start_checked(self) -> None:
         armory = _scene_source("armory_9208")
         for tag in (f"civ{i}" for i in range(8)):

@@ -5,7 +5,8 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{AmountBarParts, RetailTree, Step};
 use super::retail_amount_bar::{
-    amount_bar_x_from_normalized, trade_amount_bar_click_value, trade_amount_bar_geometry,
+    TRADE_BAR_HEIGHT, amount_bar_x_from_normalized, trade_amount_bar_click_value,
+    trade_amount_bar_geometry,
 };
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
@@ -117,6 +118,7 @@ struct TradeRowView {
     offer_indicator: Entity,
     gauge: Entity,
     gauge_fill: Entity,
+    gauge_limit: Entity,
     price: Entity,
     stock: Entity,
 }
@@ -237,6 +239,11 @@ fn bind_trade_row(
     });
 
     let quantity = tree.find(row, fourcc!("Sell"));
+    let (font, layout, line_height, underline) = text_style;
+    assert!(!underline, "retail Trade Sell counter is not underlined");
+    commands
+        .entity(quantity)
+        .insert((font.clone(), *layout, *line_height, TextColor(text_color)));
     let offer_indicator = tree.find(row, fourcc!("gree"));
     let gauge = tree.find(row, fourcc!("bar "));
     commands.entity(gauge).observe(
@@ -280,10 +287,9 @@ fn bind_trade_row(
     );
     let price = spawn_trade_row_text(commands, row, 180.0, 58.0, text_style, text_color);
     let stock = spawn_trade_row_text(commands, row, 238.0, 62.0, text_style, text_color);
-    let gauge_fill = amount_bars
+    let gauge_parts = amount_bars
         .get(gauge)
-        .expect("bound trade amount bar must exist")
-        .fill;
+        .expect("bound trade amount bar must exist");
     TradeRowView {
         bid,
         offer,
@@ -292,7 +298,8 @@ fn bind_trade_row(
         quantity,
         offer_indicator,
         gauge,
-        gauge_fill,
+        gauge_fill: gauge_parts.fill,
+        gauge_limit: gauge_parts.limit,
         price,
         stock,
     }
@@ -425,11 +432,21 @@ fn render_trade(
         set_trade_visibility(&mut commands, row.quantity, selling);
         set_trade_visibility(&mut commands, row.offer_indicator, selling);
         set_trade_visibility(&mut commands, row.gauge, selling);
-        let fill_width = f32::from(trade_amount_bar_geometry(capacity).span(quantity));
-        nodes
+        let geometry = trade_amount_bar_geometry(capacity);
+        let stock = major.city.stockpile[commodity.resource()];
+        let stock_marker = geometry.span(capacity.saturating_sub(stock));
+        let offer_marker =
+            (i32::from(TRADE_BAR_HEIGHT) * i32::from(quantity) / i32::from(capacity.max(1))) as i16;
+        let mut stock_node = nodes
             .get_mut(row.gauge_fill)
-            .expect("bound trade amount bar fill")
-            .width = Val::Px(fill_width);
+            .expect("bound trade amount bar stock marker");
+        stock_node.left = Val::Px(f32::from(stock_marker.saturating_sub(1)));
+        let mut offer_node = nodes
+            .get_mut(row.gauge_limit)
+            .expect("bound trade amount bar offer marker");
+        offer_node.left = Val::Px(f32::from(offer_marker.saturating_sub(1)));
+        set_trade_visibility(&mut commands, row.gauge_fill, stock_marker > 0);
+        set_trade_visibility(&mut commands, row.gauge_limit, offer_marker > 0);
         texts
             .get_mut(row.price)
             .expect("bound trade price text must exist")

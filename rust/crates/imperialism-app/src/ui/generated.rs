@@ -2001,8 +2001,7 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(6021, 6022)
+                                        retail_picture(6021)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -2049,8 +2048,7 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(6020, 6021)
+                                        retail_picture(6020)
                                     ),
                                 ]
                             ),
@@ -2107,8 +2105,7 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 8, 38, 31, 51)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4106, 4107)
+                                        retail_picture(4106)
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 294, 412, 53, 57)
@@ -2165,8 +2162,7 @@ pub fn diplo_1351() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
                                                 Button
-                                                InteractionDisabled
-                                                retail_picture_button(4107, 4108)
+                                                retail_picture(4107)
                                             ),
                                         ]
                                     ),
@@ -2205,8 +2201,7 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 27, 9, 33, 32)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(4070, 4071)
+                                retail_picture(4070)
                             ),
                             (
                                 retail_node(fourcc!("flgR"), 408, 10, 64, 86)
@@ -2533,8 +2528,7 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(5052, 5053)
+                                        retail_picture(5052)
                                     ),
                                 ]
                             ),
@@ -2585,8 +2579,7 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(5051, 5052)
+                                        retail_picture(5051)
                                     ),
                                 ]
                             ),
@@ -2667,8 +2660,7 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4140, 4141)
+                                        retail_picture(4140)
                                     ),
                                 ]
                             ),
@@ -2678,8 +2670,7 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4141, 4142)
+                                        retail_picture(4141)
                                     ),
                                 ]
                             ),
@@ -2874,8 +2865,7 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(8454, 8455)
+                                        retail_picture(8454)
                                     ),
                                 ]
                             ),
@@ -2885,8 +2875,7 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(8456, 8457)
+                                        retail_picture(8456)
                                     ),
                                 ]
                             ),
@@ -2978,14 +2967,12 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(8533, 8534)
+                                        retail_picture(8533)
                                     ),
                                     (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(8532, 8533)
+                                        retail_picture(8532)
                                     ),
                                     (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
@@ -3096,16 +3083,14 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(8404, 8405)
+                                        retail_picture(8404)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(8825, 8826)
+                                retail_picture(8825)
                             ),
                         ]
                     ),
@@ -3139,8 +3124,7 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
                                                         Button
-                                                        InteractionDisabled
-                                                        retail_picture_button(8814, 8815)
+                                                        retail_picture(8814)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -3198,7 +3182,7 @@ pub fn flagview_8800() -> impl Scene {
                                                 retail_node(fourcc!("mark"), 8, 136, 40, 53)
                                                 Button
                                                 InteractionDisabled
-                                                retail_picture_button(8812, 8813)
+                                                retail_picture(8812)
                                             ),
                                             (
                                                 retail_node(fourcc!("tbr2"), 608, 40, 22, 37)
@@ -3206,8 +3190,7 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
                                                         Button
-                                                        InteractionDisabled
-                                                        retail_picture_button(8816, 8817)
+                                                        retail_picture(8816)
                                                     ),
                                                 ]
                                             ),
@@ -3242,7 +3225,7 @@ pub fn linger_950() -> impl Scene {
                     (
                         retail_node(fourcc!("okay"), 0, 0, 550, 350)
                         Button
-                        retail_picture_swap(950, 951)
+                        retail_picture_swap(950, 950)
                     ),
                 ]
             ),
@@ -3732,44 +3715,37 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("advi"), 113, 65, 97, 37)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(4123, 4124)
+                                retail_picture(4123)
                             ),
                             (
                                 retail_node(fourcc!("oref"), 11, 150, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_swap(4124, 4125)
+                                retail_picture(4124)
                             ),
                             (
                                 retail_node(fourcc!("news"), 11, 187, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_swap(4125, 4126)
+                                retail_picture(4125)
                             ),
                             (
                                 retail_node(fourcc!("deal"), 11, 224, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_swap(4126, 4127)
+                                retail_picture(4126)
                             ),
                             (
                                 retail_node(fourcc!("batt"), 11, 261, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_swap(4127, 4128)
+                                retail_picture(4127)
                             ),
                             (
                                 retail_node(fourcc!("char"), 12, 298, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_swap(4128, 4129)
+                                retail_picture(4128)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 10, 335, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(4129, 4130)
+                                retail_picture(4129)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 101, 22, 126, 16)
@@ -3884,44 +3860,37 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("save"), 112, 65, 97, 37)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(1331, 1332)
+                                retail_picture(1331)
                             ),
                             (
                                 retail_node(fourcc!("newg"), 10, 149, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(1332, 1333)
+                                retail_picture(1332)
                             ),
                             (
                                 retail_node(fourcc!("load"), 10, 186, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(1333, 1334)
+                                retail_picture(1333)
                             ),
                             (
                                 retail_node(fourcc!("pref"), 10, 223, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(1334, 1335)
+                                retail_picture(1334)
                             ),
                             (
                                 retail_node(fourcc!("cred"), 10, 260, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(1335, 1336)
+                                retail_picture(1335)
                             ),
                             (
                                 retail_node(fourcc!("quit"), 10, 297, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(1336, 1337)
+                                retail_picture(1336)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 11, 335, 65, 27)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(1337, 1338)
+                                retail_picture(1337)
                             ),
                             (
                                 retail_node(fourcc!("txt7"), 84, 340, 126, 18)
@@ -3980,8 +3949,7 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4145, 4146)
+                                        retail_picture(4145)
                                     ),
                                 ]
                             ),
@@ -4051,8 +4019,7 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4146, 4147)
+                                        retail_picture(4146)
                                     ),
                                 ]
                             ),
@@ -4116,8 +4083,7 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4325, 4326)
+                                        retail_picture(4325)
                                     ),
                                 ]
                             ),
@@ -4194,8 +4160,7 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4145, 4146)
+                                        retail_picture(4145)
                                     ),
                                 ]
                             ),
@@ -4342,7 +4307,7 @@ pub fn mapview_2013() -> impl Scene {
                                         retail_node(fourcc!("Flag"), 62, 8, 25, 35)
                                         Button
                                         InteractionDisabled
-                                        retail_picture_button(1300, 1301)
+                                        retail_picture(1300)
                                     ),
                                     (
                                         retail_node(fourcc!("mmap"), 33, 8, 25, 35)
@@ -4353,7 +4318,7 @@ pub fn mapview_2013() -> impl Scene {
                                         retail_node(fourcc!("quer"), 91, 8, 25, 35)
                                         Button
                                         InteractionDisabled
-                                        retail_picture_button(1307, 1308)
+                                        retail_picture(1307)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
@@ -4363,7 +4328,7 @@ pub fn mapview_2013() -> impl Scene {
                                     (
                                         retail_node(fourcc!("tran"), 4, 119, 25, 25)
                                         Button
-                                        retail_picture_swap(1111, 1112)
+                                        retail_picture_swap(1111, 1111)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 33, 119, 25, 25)
@@ -4381,7 +4346,7 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("back"), 4, 34, 112, 269)
                                                 Button
-                                                retail_picture_swap(1534, 1535)
+                                                retail_picture_swap(1534, 1534)
                                             ),
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 9, 25, 25)
@@ -4594,8 +4559,7 @@ pub fn mapview_2013() -> impl Scene {
                                     (
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(1011, 1012)
+                                        retail_picture(1011)
                                     ),
                                     (
                                         retail_node(fourcc!("uciv"), 128, 143, 126, 306)
@@ -4637,8 +4601,7 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
                                                 Button
-                                                InteractionDisabled
-                                                retail_picture_button(1113, 1114)
+                                                retail_picture(1113)
                                             ),
                                         ]
                                     ),
@@ -4704,14 +4667,12 @@ pub fn mapview_3012() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(3014, 3015)
+                                retail_picture(3014)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(3013, 3014)
+                                retail_picture(3013)
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
@@ -4828,8 +4789,7 @@ pub fn mapview_3500() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(3507, 3508)
+                                retail_picture(3507)
                             ),
                         ]
                     ),
@@ -5824,8 +5784,7 @@ pub fn mapview_9478() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(3507, 3508)
+                                retail_picture(3507)
                             ),
                             (
                                 retail_node(fourcc!("page"), 13, 46, 458, 310)
@@ -6495,14 +6454,12 @@ pub fn startup_952() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(1017, 1018)
+                                        retail_picture(1017)
                                     ),
                                     (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(1018, 1019)
+                                        retail_picture(1018)
                                     ),
                                 ]
                             ),
@@ -6982,14 +6939,12 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(4510, 4511)
+                                retail_picture(4510)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
                                 Button
-                                InteractionDisabled
-                                retail_picture_button(4511, 4512)
+                                retail_picture(4511)
                             ),
                             (
                                 retail_node(fourcc!("txt0"), 264, 171, 138, 18)
@@ -7340,8 +7295,7 @@ pub fn startup_1515() -> impl Scene {
                                     (
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4596, 4597)
+                                        retail_picture(4596)
                                     ),
                                 ]
                             ),
@@ -7375,14 +7329,12 @@ pub fn startup_20000() -> impl Scene {
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(20001, 20002)
+                                        retail_picture(20001)
                                     ),
                                     (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(20002, 20003)
+                                        retail_picture(20002)
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
@@ -7470,8 +7422,7 @@ pub fn tactical_3800() -> impl Scene {
                                     (
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(3798, 3799)
+                                        retail_picture(3798)
                                     ),
                                     (
                                         retail_node(fourcc!("tpic"), 2, 356, 50, 50)
@@ -7609,7 +7560,7 @@ pub fn tech_2200() -> impl Scene {
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
                                         InteractionDisabled
-                                        retail_picture_button(2228, 2229)
+                                        retail_picture(2228)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
@@ -7664,8 +7615,7 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(2301, 2302)
+                                        retail_picture(2301)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -7712,8 +7662,7 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(2302, 2303)
+                                        retail_picture(2302)
                                     ),
                                 ]
                             ),
@@ -7728,7 +7677,7 @@ pub fn techstore_2300() -> impl Scene {
                             (
                                 retail_node(fourcc!("rcor"), 590, 445, 32, 30)
                                 Button
-                                retail_picture_swap(2362, 2363)
+                                retail_picture_swap(2362, 2362)
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 67, 40, 128, 16)
@@ -7829,8 +7778,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(6020, 6021)
+                                        retail_picture(6020)
                                     ),
                                 ]
                             ),
@@ -7855,8 +7803,7 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(6021, 6022)
+                                        retail_picture(6021)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -8721,8 +8668,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                                 Button
-                                                InteractionDisabled
-                                                retail_picture_button(6020, 6021)
+                                                retail_picture(6020)
                                             ),
                                         ]
                                     ),
@@ -9482,8 +9428,7 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
                                                 Button
-                                                InteractionDisabled
-                                                retail_picture_button(6021, 6022)
+                                                retail_picture(6021)
                                             ),
                                             (
                                                 retail_node(fourcc!("seas"), 44, 4, 94, 17)
@@ -9636,8 +9581,7 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4025, 4026)
+                                        retail_picture(4025)
                                     ),
                                 ]
                             ),
@@ -9647,8 +9591,7 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
-                                        retail_picture_button(4024, 4025)
+                                        retail_picture(4024)
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)

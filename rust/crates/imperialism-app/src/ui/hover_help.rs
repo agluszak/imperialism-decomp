@@ -51,29 +51,24 @@ pub(crate) fn bind_hover_help_texts(
     }
 }
 
-#[allow(clippy::type_complexity)]
 fn sync_hover_help_bar(
-    sources: Query<(&HoverHelpText, &DirectlyHovered)>,
-    changed: Query<
-        (),
-        (
-            With<HoverHelpText>,
-            Or<(Changed<DirectlyHovered>, Changed<HoverHelpText>)>,
-        ),
-    >,
+    sources: Query<(Ref<HoverHelpText>, Ref<DirectlyHovered>)>,
     mut bars: Query<&mut Text, With<HoverHelpBar>>,
 ) {
-    if changed.is_empty() {
-        return;
+    let mut changed = false;
+    let mut help = String::new();
+
+    for (text, hovered) in &sources {
+        changed |= text.is_changed() || hovered.is_changed();
+        if hovered.get() {
+            help = text.0.clone();
+        }
     }
-    let Some(help) = sources
-        .iter()
-        .find_map(|(help, hovered)| hovered.get().then_some(help.0.as_str()))
-    else {
-        return;
-    };
-    for mut text in &mut bars {
-        text.0 = help.to_owned();
+
+    if changed {
+        for mut bar in &mut bars {
+            bar.0 = help.clone();
+        }
     }
 }
 

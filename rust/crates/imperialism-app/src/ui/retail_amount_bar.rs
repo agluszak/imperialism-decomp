@@ -18,9 +18,10 @@ pub const TRADE_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
 pub const INDUSTRY_BAR_FILL: u8 = 0x16;
 // `TTraderAmtBar` calls `ApplyLegendSplitSlot34(0x37)` → palette 0xbd via GetColor.
 pub const TRADE_BAR_FILL: u8 = 0xbd;
+pub const TRADE_BAR_HEIGHT: i16 = 7;
 
 ///
-/// Trade bars leave [`Self::limit`] as [`Entity::PLACEHOLDER`] (no limit child).
+/// Trade bars retain the stock-position and offer-limit markers.
 #[derive(Component, FromTemplate, Clone, Copy)]
 pub struct AmountBarParts {
     pub fill: Entity,
@@ -61,13 +62,23 @@ fn production_amount_bar() -> impl Scene {
 #[rustfmt::skip]
 fn trade_amount_bar() -> impl Scene {
     bsn! {
-        AmountBarParts { fill: #Fill, limit: {Entity::PLACEHOLDER} }
-        Children [(
-            #Fill
-            Node { position_type: PositionType::Absolute, left: px(0), top: px(0), width: px(0), height: percent(100) }
-            retail_background_color(TRADE_BAR_FILL)
-            Pickable::IGNORE
-        )]
+        AmountBarParts { fill: #Fill, limit: #Limit }
+        Children [
+            (
+                #Fill
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(0), width: px(1), height: percent(100) }
+                retail_background_color(0)
+                Visibility::Hidden
+                Pickable::IGNORE
+            ),
+            (
+                #Limit
+                Node { position_type: PositionType::Absolute, left: px(0), top: px(0), width: px(1), height: px(5) }
+                retail_background_color(TRADE_BAR_FILL)
+                Visibility::Hidden
+                Pickable::IGNORE
+            ),
+        ]
     }
 }
 
