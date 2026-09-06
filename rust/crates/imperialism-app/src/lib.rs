@@ -172,8 +172,12 @@ pub fn run(
                 )
             })?;
     app.insert_resource(retail_fonts);
-    app.world_mut()
-        .spawn((Camera2d, Msaa::Off, UiAntiAlias::Off));
+    app.world_mut().spawn((
+        Camera2d,
+        Msaa::Off,
+        UiAntiAlias::Off,
+        bevy::ui::picking_backend::UiPickingCamera,
+    ));
     app.run();
     Ok(())
 }

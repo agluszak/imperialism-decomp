@@ -3,7 +3,9 @@ use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets, placard_text_layout};
-use super::retail_amount_bar::{amount_bar_counter_offset, production_amount_bar_geometry};
+use super::retail_amount_bar::{
+    amount_bar_counter_offset, production_amount_bar_geometry, set_amount_bar_accessibility,
+};
 use super::retail_resources::{
     CityFacilityRetailResources, CivilianUnitKindRetailResources, MilitaryUnitKindRetailResources,
     ResourceKindRetailResources, ShipTypeRetailResources,
@@ -14,6 +16,7 @@ use super::window::{
 };
 use super::{CityWindows, GameSession};
 use crate::{AppState, RetailAssetsResource};
+use bevy::a11y::AccessibilityNode;
 use bevy::ecs::system::SystemParam;
 use bevy::log::warn;
 use bevy::picking::events::{Click, Pointer};
@@ -68,27 +71,40 @@ struct CityUi<'w, 's> {
     images: Query<'w, 's, &'static mut ImageNode>,
     checked: Query<'w, 's, Has<Checked>>,
     nodes: Query<'w, 's, &'static mut Node>,
+    accessibility: Query<'w, 's, &'static mut AccessibilityNode>,
 }
 
 impl CityUi<'_, '_> {
     fn text(&mut self, entity: Entity, value: impl Into<String>) {
-        self.texts.get_mut(entity).expect("text").0 = value.into();
+        self.texts
+            .get_mut(entity)
+            .expect("text")
+            .set_if_neq(Text::new(value));
     }
 
     fn visible(&mut self, entity: Entity, visible: bool) {
-        *self.visibility.get_mut(entity).expect("vis") = if visible {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+        self.visibility
+            .get_mut(entity)
+            .expect("vis")
+            .set_if_neq(if visible {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            });
     }
 
     fn color(&mut self, entity: Entity, color: Color) {
-        self.colors.get_mut(entity).expect("color").0 = color;
+        self.colors
+            .get_mut(entity)
+            .expect("color")
+            .set_if_neq(TextColor(color));
     }
 
     fn image(&mut self, entity: Entity, image: Handle<Image>) {
-        self.images.get_mut(entity).expect("image").image = image;
+        let mut current = self.images.get_mut(entity).expect("image");
+        if current.image != image {
+            current.image = image;
+        }
     }
 
     fn checked(&mut self, entity: Entity, checked: bool) {
@@ -102,11 +118,14 @@ impl CityUi<'_, '_> {
 
     fn placard(&mut self, view: PlacardView, value: i16) {
         let shown = value != 0;
-        *self.visibility.get_mut(view.root).expect("placard") = if shown {
-            Visibility::Visible
-        } else {
-            Visibility::Hidden
-        };
+        self.visibility
+            .get_mut(view.root)
+            .expect("placard")
+            .set_if_neq(if shown {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            });
         if !shown {
             return;
         }
@@ -120,20 +139,29 @@ impl CityUi<'_, '_> {
         let (left, top) = placard_text_layout(width, height, value);
         self.texts.get_mut(view.text).expect("placard text").0 = value.to_string();
         let mut text_node = self.nodes.get_mut(view.text).expect("placard text node");
-        text_node.left = Val::Px(left);
-        text_node.top = Val::Px(top);
+        if text_node.left != Val::Px(left) {
+            text_node.left = Val::Px(left);
+        }
+        if text_node.top != Val::Px(top) {
+            text_node.top = Val::Px(top);
+        }
     }
 
     /// Production amount bar: fill span, optional limit marker, optional quantity caption.
     fn amount_bar(&mut self, view: AmountBarView, value: i16, range: i16, maximum: i16) {
+        set_amount_bar_accessibility(&mut self.accessibility, view.root, value, range);
         let geometry = production_amount_bar_geometry(range);
-        self.nodes
-            .get_mut(view.fill)
-            .expect("amount bar fill")
-            .width = Val::Px(f32::from(geometry.span(value)));
+        let mut fill = self.nodes.get_mut(view.fill).expect("amount bar fill");
+        let width = Val::Px(f32::from(geometry.span(value)));
+        if fill.width != width {
+            fill.width = width;
+        }
         if let Some(limit) = view.limit {
-            self.nodes.get_mut(limit).expect("amount bar limit").left =
-                Val::Px(f32::from(geometry.span(maximum)));
+            let mut limit = self.nodes.get_mut(limit).expect("amount bar limit");
+            let left = Val::Px(f32::from(geometry.span(maximum)));
+            if limit.left != left {
+                limit.left = left;
+            }
         }
         let Some(quantity) = view.quantity else {
             return;
@@ -148,8 +176,14 @@ impl CityUi<'_, '_> {
             (left, top)
         };
         let mut counter = self.nodes.get_mut(quantity).expect("bound quantity node");
-        counter.left = Val::Px(bar_left + offset.x);
-        counter.top = Val::Px(bar_top + offset.y);
+        let left = Val::Px(bar_left + offset.x);
+        let top = Val::Px(bar_top + offset.y);
+        if counter.left != left {
+            counter.left = left;
+        }
+        if counter.top != top {
+            counter.top = top;
+        }
     }
 }
 

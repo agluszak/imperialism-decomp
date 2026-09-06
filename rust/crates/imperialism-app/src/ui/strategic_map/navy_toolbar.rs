@@ -206,9 +206,9 @@ fn sync_navy_toolbar(
     if !session.is_changed() && !map.is_changed() {
         return;
     }
-    let Ok((mut page, view)) = pages.single_mut() else {
-        return;
-    };
+    let (mut page, view) = pages
+        .single_mut()
+        .expect("StrategicMap state must contain exactly one navy toolbar");
     let position = navy_page_position(map.selection);
     page.left = Val::Px(position.x);
     page.top = Val::Px(position.y);
@@ -250,9 +250,9 @@ fn sync_navy_aggression(
     if !session.is_changed() && !map.is_changed() {
         return;
     }
-    let Ok(view) = pages.single() else {
-        return;
-    };
+    let view = pages
+        .single()
+        .expect("StrategicMap state must contain exactly one navy toolbar");
     let force = map.selection.navy_force();
     let aggression = force.and_then(|id| session.game.task_force(id).map(|f| f.aggression));
     for (&entity, &level) in view.aggression.iter().zip(AGGRESSION_LEVELS.iter()) {

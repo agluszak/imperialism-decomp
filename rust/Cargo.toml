@@ -15,6 +15,7 @@ rust-version = "1.97.1"
 too_many_arguments = "allow"
 
 [workspace.dependencies]
+accesskit = "0.24.1"
 anyhow = "1"
 bitflags = { version = "2", features = ["serde"] }
 bevy = { version = "0.19", default-features = false, features = [

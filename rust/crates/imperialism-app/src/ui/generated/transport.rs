@@ -16,31 +16,38 @@ pub fn transport_2014() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
+                        Pickable::IGNORE
                         retail_picture(1021)
                         Children [
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9449, 9450)
                                     ),
@@ -48,9 +55,11 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 599, 36, 40, 46)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
+                                        Pickable::default()
                                         Button
                                         retail_picture(4025)
                                         Visibility::Hidden
@@ -60,9 +69,11 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 218, 88)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
+                                        Pickable::default()
                                         Button
                                         retail_picture(4024)
                                         Visibility::Hidden
@@ -70,12 +81,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
+                                        Pickable::IGNORE
                                         Text("Winter, 1888")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("trea"), 141, 4, 75, 17)
+                                        Pickable::IGNORE
                                         Text("$55,555")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
@@ -84,10 +97,12 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tota"), 325, 397, 224, 30)
+                                Pickable::default()
                                 retail_picture(4019)
                                 {transport_capacity_gauge(325, bsn_list![
                                     (
                                         retail_node(fourcc!("text"), 162, 20, 60, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -96,6 +111,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fish"), 70, 118, 224, 30)
+                                Pickable::default()
                                 retail_picture(4001)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -110,6 +126,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -118,6 +135,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("prod"), 70, 149, 224, 30)
+                                Pickable::default()
                                 retail_picture(4002)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -132,6 +150,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -140,6 +159,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("grai"), 70, 180, 224, 30)
+                                Pickable::default()
                                 retail_picture(4003)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -154,6 +174,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -162,6 +183,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("timb"), 70, 211, 224, 30)
+                                Pickable::default()
                                 retail_picture(4004)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -176,6 +198,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -184,6 +207,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 70, 242, 224, 30)
+                                Pickable::default()
                                 retail_picture(4005)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -198,6 +222,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -206,6 +231,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("furn"), 70, 273, 224, 30)
+                                Pickable::default()
                                 retail_picture(4006)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -220,6 +246,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -228,6 +255,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("coal"), 70, 304, 224, 30)
+                                Pickable::default()
                                 retail_picture(4007)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -242,6 +270,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -250,6 +279,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("iron"), 70, 335, 224, 30)
+                                Pickable::default()
                                 retail_picture(4008)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -264,6 +294,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -272,6 +303,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stee"), 70, 367, 224, 30)
+                                Pickable::default()
                                 retail_picture(4009)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -286,6 +318,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -294,6 +327,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hard"), 70, 397, 224, 30)
+                                Pickable::default()
                                 retail_picture(4010)
                                 {transport_allocation_gauge(70, bsn_list![
                                     (
@@ -308,6 +342,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -316,6 +351,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("cott"), 325, 118, 224, 30)
+                                Pickable::default()
                                 retail_picture(4011)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -330,6 +366,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -338,6 +375,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 325, 149, 224, 30)
+                                Pickable::default()
                                 retail_picture(4012)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -352,6 +390,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -360,6 +399,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("clot"), 325, 180, 224, 30)
+                                Pickable::default()
                                 retail_picture(4013)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -374,6 +414,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -382,6 +423,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("oil "), 325, 211, 224, 30)
+                                Pickable::default()
                                 retail_picture(4014)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -396,6 +438,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -404,6 +447,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("fuel"), 325, 242, 224, 30)
+                                Pickable::default()
                                 retail_picture(4015)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -418,6 +462,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -426,6 +471,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("hors"), 325, 273, 224, 30)
+                                Pickable::default()
                                 retail_picture(4016)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -440,6 +486,7 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -448,6 +495,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gold"), 325, 304, 224, 30)
+                                Pickable::default()
                                 retail_picture(4017)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -462,12 +510,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
                                     (
                                         retail_node(fourcc!("valu"), 50, 20, 60, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -476,6 +526,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("gems"), 325, 335, 224, 30)
+                                Pickable::default()
                                 retail_picture(4018)
                                 {transport_allocation_gauge(325, bsn_list![
                                     (
@@ -490,12 +541,14 @@ pub fn transport_2014() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("text"), 152, 18, 70, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
                                     ),
                                     (
                                         retail_node(fourcc!("valu"), 50, 20, 60, 11)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 10, 1)
                                         retail_text_color(0x0)
@@ -504,6 +557,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("titL"), 163, 81, 136, 20)
+                                Pickable::IGNORE
                                 Text("Transport")
                                 retail_text_style(1, 0, 18, 1)
                                 retail_text_color(0xd2)
@@ -511,6 +565,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("titR"), 325, 81, 151, 21)
+                                Pickable::IGNORE
                                 Text("Ledger")
                                 retail_text_style(1, 0, 18, 1)
                                 retail_text_color(0xd2)
@@ -518,6 +573,7 @@ pub fn transport_2014() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 401, 4, 219, 30)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)

@@ -1470,18 +1470,20 @@ fn layout_diplomacy_panel_text(mut labels: Query<(&DiplomacyPanelText, &Computed
 fn sync_diplomacy_panel_text(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    panels: Single<Ref<DiplomacyPanelContent>>,
+    panel_views: Query<Ref<DiplomacyPanelContent>>,
     mut texts: Query<&mut Text>,
     mut visibilities: Query<&mut Visibility>,
     assets: RetailUiAssets,
 ) {
+    let panels = panel_views
+        .single()
+        .expect("Diplomacy state must contain exactly one panel view");
     let screen = screens
         .single()
         .expect("Diplomacy state has one Diplomacy screen");
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() && !panels.is_added() {
         return;
     }
-    let panels = panels.into_inner();
     let state = &session.game;
     let source = MajorNationId::from_nation(state.turn().active_nation)
         .expect("Diplomacy screen requires an active major nation");
@@ -1578,7 +1580,7 @@ fn render_diplomacy_chrome(
     mut commands: Commands,
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    view: Single<Ref<DiplomacyView>>,
+    views: Query<Ref<DiplomacyView>>,
     assets: Res<RetailAssetsResource>,
     mut nodes: Query<&mut Node>,
     mut texts: Query<&mut Text>,
@@ -1586,13 +1588,15 @@ fn render_diplomacy_chrome(
     mut visibilities: Query<&mut Visibility>,
     checked: Query<(), With<Checked>>,
 ) {
+    let view = views
+        .single()
+        .expect("Diplomacy state must contain exactly one DiplomacyView");
     let screen = screens
         .single()
         .expect("Diplomacy state has one Diplomacy screen");
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() && !view.is_added() {
         return;
     }
-    let view = view.into_inner();
     for topic in [
         DiplomacyTopic::Information,
         DiplomacyTopic::Treaties,
@@ -1758,7 +1762,7 @@ fn render_diplomacy_chrome(
 fn sync_diplomacy_information(
     session: Res<GameSession>,
     screens: Query<Ref<DiplomacyScreen>>,
-    view: Single<&DiplomacyView>,
+    views: Query<&DiplomacyView>,
     mut map_keys: Query<&mut ImageNode, Without<DiplomacyNationIcon>>,
     mut icons: Query<(
         &DiplomacyNationIcon,
@@ -1767,6 +1771,9 @@ fn sync_diplomacy_information(
         &mut Visibility,
     )>,
 ) {
+    let view = views
+        .single()
+        .expect("Diplomacy state must contain exactly one DiplomacyView");
     let screen = screens
         .single()
         .expect("Diplomacy state has one Diplomacy screen");
@@ -1923,13 +1930,19 @@ fn render_diplomacy_map(
     mut commands: Commands,
     session: Res<GameSession>,
     mut assets: RetailUiAssets,
-    screen: Single<Ref<DiplomacyScreen>>,
-    map: Single<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
+    screens: Query<Ref<DiplomacyScreen>>,
+    maps: Query<(Entity, Option<&ImageNode>), With<DiplomacyMapPicture>>,
 ) {
+    let screen = screens
+        .single()
+        .expect("Diplomacy state must contain exactly one DiplomacyScreen");
+    let map = maps
+        .single()
+        .expect("Diplomacy state must contain exactly one diplomacy map");
     if !session.is_changed() && !screen.is_added() && !screen.is_changed() {
         return;
     }
-    let (entity, image_node) = map.into_inner();
+    let (entity, image_node) = map;
     let state = &session.game;
     let framed = screen.framed_nation;
     let owner_at = |tile: TileId| {
