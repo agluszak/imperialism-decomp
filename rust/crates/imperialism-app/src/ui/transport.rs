@@ -105,8 +105,7 @@ struct TransportScreen;
 struct TransportGaugeView {
     track: Entity,
     fill: Entity,
-    /// [`Entity::PLACEHOLDER`] for capacity gauges (no limit marker).
-    limit: Entity,
+    limit: Option<Entity>,
     caption: Entity,
 }
 
@@ -321,23 +320,17 @@ fn write_allocation_gauge(
         .get_mut(gauge.caption)
         .expect("transport gauge caption")
         .0 = format!("{current}  /  {total}");
-    debug_assert_ne!(
-        gauge.limit,
-        Entity::PLACEHOLDER,
-        "allocation gauges retain a limit marker"
-    );
     let (visible, limit_visible) = allocation_gauge_visibility(total, limit.is_some());
     set_transport_visibility(commands, gauge.track, visible);
     set_transport_visibility(commands, gauge.fill, visible);
-    set_transport_visibility(commands, gauge.limit, limit_visible);
-    match limit {
-        Some(limit) if visible => {
+    if let Some(limit_entity) = gauge.limit {
+        set_transport_visibility(commands, limit_entity, limit_visible);
+        if let Some(limit) = limit.filter(|_| visible) {
             backgrounds
-                .get_mut(gauge.limit)
+                .get_mut(limit_entity)
                 .expect("transport gauge limit")
                 .0 = if current < limit { partial } else { full };
         }
-        _ => {}
     }
 }
 

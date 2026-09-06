@@ -88,8 +88,8 @@ pub(in crate::ui::city) fn bind_industry_order_row(
         bar: Some(AmountBarView {
             root: bar,
             fill: parts.fill,
-            limit: parts.limit,
-            quantity,
+            limit: Some(parts.limit),
+            quantity: Some(quantity),
         }),
     }
 }
