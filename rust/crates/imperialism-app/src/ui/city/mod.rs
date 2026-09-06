@@ -47,8 +47,8 @@ struct PlacardView {
 struct AmountBarView {
     root: Entity,
     fill: Entity,
-    limit: Entity,
-    quantity: Entity,
+    limit: Option<Entity>,
+    quantity: Option<Entity>,
 }
 
 fn city_text(assets: &RetailUiAssets, zero_based_index: u16) -> String {
@@ -125,24 +125,20 @@ impl CityUi<'_, '_> {
     }
 
     /// Production amount bar: fill span, optional limit marker, optional quantity caption.
-    ///
-    /// Trade-style bars leave [`AmountBarView::limit`] as [`Entity::PLACEHOLDER`].
     fn amount_bar(&mut self, view: AmountBarView, value: i16, range: i16, maximum: i16) {
         let geometry = production_amount_bar_geometry(range);
         self.nodes
             .get_mut(view.fill)
             .expect("amount bar fill")
             .width = Val::Px(f32::from(geometry.span(value)));
-        if view.limit != Entity::PLACEHOLDER {
-            self.nodes
-                .get_mut(view.limit)
-                .expect("amount bar limit")
-                .left = Val::Px(f32::from(geometry.span(maximum)));
+        if let Some(limit) = view.limit {
+            self.nodes.get_mut(limit).expect("amount bar limit").left =
+                Val::Px(f32::from(geometry.span(maximum)));
         }
-        if view.quantity == Entity::PLACEHOLDER {
+        let Some(quantity) = view.quantity else {
             return;
-        }
-        self.text(view.quantity, value.to_string());
+        };
+        self.text(quantity, value.to_string());
         let offset = amount_bar_counter_offset(geometry, value);
         let (bar_left, bar_top) = {
             let node = self.nodes.get(view.root).expect("bound amount bar node");
@@ -151,10 +147,7 @@ impl CityUi<'_, '_> {
             };
             (left, top)
         };
-        let mut counter = self
-            .nodes
-            .get_mut(view.quantity)
-            .expect("bound quantity node");
+        let mut counter = self.nodes.get_mut(quantity).expect("bound quantity node");
         counter.left = Val::Px(bar_left + offset.x);
         counter.top = Val::Px(bar_top + offset.y);
     }
