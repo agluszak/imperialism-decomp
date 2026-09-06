@@ -13,6 +13,7 @@ use imperialism_formats::fourcc;
 pub fn shipyard_9207() -> impl Scene {
     bsn! {
         (
+            RetailScene("Shipyard.rsrc:9207")
             retail_node(fourcc!("WIND"), 125, 62, 370, 410)
             {captioned_window(bsn_list![
                 (

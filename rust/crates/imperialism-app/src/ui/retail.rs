@@ -11,6 +11,7 @@ use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
+use std::panic::Location;
 
 pub use super::retail_amount_bar::{
     AmountBarParts, retail_production_amount_bar, retail_trade_amount_bar,
@@ -29,6 +30,10 @@ pub use super::retail_transport_gauge::{
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RetailTag(pub FourCc);
+
+/// Generated resource that owns a recovered retail hierarchy.
+#[derive(Component, FromTemplate, Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RetailScene(pub &'static str);
 
 /// `TPictureButton::HiliteState` pressed overlay; hidden until `Pressed`.
 #[derive(Component, Clone, Copy, Debug, Default, Reflect)]
@@ -60,6 +65,7 @@ pub fn retail_view(name: &'static str) -> impl Scene {
             overflow: Overflow::clip(),
         }
         Name(name)
+        RetailScene(name)
         Pickable
     }
 }
@@ -673,60 +679,194 @@ fn template_palette_color(context: &TemplateContext, index: u8) -> Color {
 pub struct RetailTree<'w, 's> {
     pub children: Query<'w, 's, &'static Children>,
     tags: Query<'w, 's, &'static RetailTag>,
+    parents: Query<'w, 's, &'static ChildOf>,
+    scenes: Query<'w, 's, &'static RetailScene>,
 }
 
 impl<'w, 's> RetailTree<'w, 's> {
+    #[track_caller]
     pub fn view<'a>(&'a self, root: Entity) -> RetailView<'a, 'w, 's> {
-        RetailView { tree: self, root }
+        RetailView {
+            tree: self,
+            root,
+            binding: Location::caller(),
+        }
     }
 
+    #[track_caller]
     pub fn try_find(&self, root: Entity, tag: FourCc) -> Option<Entity> {
-        let mut matches = self
+        self.try_find_for(root, tag, Location::caller())
+    }
+
+    fn try_find_for(
+        &self,
+        root: Entity,
+        tag: FourCc,
+        binding: &'static Location<'static>,
+    ) -> Option<Entity> {
+        let matches = self
             .children
             .iter_descendants_depth_first(root)
             .filter(|&entity| {
                 self.tags
                     .get(entity)
                     .is_ok_and(|candidate| candidate.0 == tag)
-            });
-        let found = matches.next();
-        assert!(matches.next().is_none(), "retail tag {tag:?} is ambiguous");
-        found
+            })
+            .collect::<Vec<_>>();
+        assert!(
+            matches.len() <= 1,
+            "retail tag `{tag}` is ambiguous ({} matches) while binding at {binding}; scope {}; matches: {}",
+            matches.len(),
+            self.describe_scope(root),
+            matches
+                .iter()
+                .map(|&entity| self.describe_entity(entity))
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+        matches.first().copied()
     }
 
+    #[track_caller]
     pub fn find(&self, root: Entity, tag: FourCc) -> Entity {
-        self.try_find(root, tag)
-            .unwrap_or_else(|| panic!("retail tag {tag:?} is missing below {root:?}"))
+        self.find_for(root, tag, Location::caller())
     }
 
+    fn find_for(&self, root: Entity, tag: FourCc, binding: &'static Location<'static>) -> Entity {
+        self.try_find_for(root, tag, binding).unwrap_or_else(|| {
+            panic!(
+                "retail tag `{tag}` is missing while binding at {binding}; scope {}",
+                self.describe_scope(root)
+            )
+        })
+    }
+
+    #[track_caller]
     pub fn child(&self, parent: Entity, tag: FourCc) -> Entity {
-        let mut found = None;
-        for entity in self.children.get(parent).into_iter().flatten() {
-            if let Ok(candidate) = self.tags.get(*entity)
-                && candidate.0 == tag
-            {
-                assert!(
-                    found.replace(*entity).is_none(),
-                    "retail tag {tag:?} is ambiguous directly below {parent:?}"
-                );
-            }
+        self.child_for(parent, tag, Location::caller())
+    }
+
+    fn child_for(
+        &self,
+        parent: Entity,
+        tag: FourCc,
+        binding: &'static Location<'static>,
+    ) -> Entity {
+        let matches = self
+            .children
+            .get(parent)
+            .into_iter()
+            .flatten()
+            .copied()
+            .filter(|&entity| {
+                self.tags
+                    .get(entity)
+                    .is_ok_and(|candidate| candidate.0 == tag)
+            })
+            .collect::<Vec<_>>();
+        assert!(
+            matches.len() <= 1,
+            "retail tag `{tag}` is ambiguous directly below {} ({} matches) while binding at {binding}; matches: {}",
+            self.describe_entity(parent),
+            matches.len(),
+            matches
+                .iter()
+                .map(|&entity| self.describe_entity(entity))
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+        matches.first().copied().unwrap_or_else(|| {
+            panic!(
+                "retail tag `{tag}` is missing directly below {} while binding at {binding}",
+                self.describe_entity(parent)
+            )
+        })
+    }
+
+    fn describe_scope(&self, root: Entity) -> String {
+        if let Some((scene_root, scene)) = self.ancestor_scene(root) {
+            return format!(
+                "resource `{}` path `{}`",
+                scene.0,
+                self.local_path(scene_root, root)
+            );
         }
-        found.unwrap_or_else(|| panic!("retail tag {tag:?} is missing directly below {parent:?}"))
+
+        let scenes = self
+            .children
+            .iter_descendants_depth_first(root)
+            .filter_map(|entity| self.scenes.get(entity).ok())
+            .collect::<Vec<_>>();
+        match scenes.as_slice() {
+            [scene] => format!("resource `{}` path `<scene-root>`", scene.0),
+            [] => format!("entity {root:?} outside a generated retail resource"),
+            _ => format!(
+                "entity {root:?} containing resources [{}]",
+                scenes
+                    .iter()
+                    .map(|scene| format!("`{}`", scene.0))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            ),
+        }
+    }
+
+    fn describe_entity(&self, entity: Entity) -> String {
+        let Some((scene_root, scene)) = self.ancestor_scene(entity) else {
+            return format!("entity {entity:?} outside a generated retail resource");
+        };
+        format!(
+            "resource `{}` path `{}`",
+            scene.0,
+            self.local_path(scene_root, entity)
+        )
+    }
+
+    fn ancestor_scene(&self, mut entity: Entity) -> Option<(Entity, &RetailScene)> {
+        loop {
+            if let Ok(scene) = self.scenes.get(entity) {
+                return Some((entity, scene));
+            }
+            entity = self.parents.get(entity).ok()?.parent();
+        }
+    }
+
+    fn local_path(&self, scene_root: Entity, mut entity: Entity) -> String {
+        let mut tags = Vec::new();
+        loop {
+            if let Ok(tag) = self.tags.get(entity) {
+                tags.push(tag.0.to_string());
+            }
+            if entity == scene_root {
+                break;
+            }
+            let Ok(parent) = self.parents.get(entity) else {
+                break;
+            };
+            entity = parent.parent();
+        }
+        tags.reverse();
+        if tags.is_empty() {
+            "<scene-root>".to_owned()
+        } else {
+            tags.join("/")
+        }
     }
 }
 
 pub struct RetailView<'a, 'w, 's> {
     tree: &'a RetailTree<'w, 's>,
     root: Entity,
+    binding: &'static Location<'static>,
 }
 
 impl RetailView<'_, '_, '_> {
     pub fn find(&self, tag: FourCc) -> Entity {
-        self.tree.find(self.root, tag)
+        self.tree.find_for(self.root, tag, self.binding)
     }
 
     pub fn child(&self, tag: FourCc) -> Entity {
-        self.tree.child(self.root, tag)
+        self.tree.child_for(self.root, tag, self.binding)
     }
 }
 
@@ -945,6 +1085,61 @@ mod tests {
         assert_eq!(tree.child(parent, fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).child(fourcc!("trad")), direct);
         assert_eq!(tree.view(parent).find(fourcc!("clus")), container);
+    }
+
+    #[test]
+    fn lookup_failures_report_resource_binding_and_recovered_paths() {
+        let mut app = App::new();
+        let scene = app.world_mut().spawn(RetailScene("Trade.rsrc:2009")).id();
+        let window = app
+            .world_mut()
+            .spawn((RetailTag(fourcc!("WIND")), ChildOf(scene)))
+            .id();
+        let left = app
+            .world_mut()
+            .spawn((RetailTag(fourcc!("left")), ChildOf(window)))
+            .id();
+        let right = app
+            .world_mut()
+            .spawn((RetailTag(fourcc!("rght")), ChildOf(window)))
+            .id();
+        for parent in [left, right] {
+            app.world_mut()
+                .spawn((RetailTag(fourcc!("same")), ChildOf(parent)));
+        }
+
+        let mut state = SystemState::<RetailTree>::new(app.world_mut());
+        let tree = state.get(app.world()).unwrap();
+
+        let ambiguous = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            tree.find(scene, fourcc!("same"));
+        }))
+        .expect_err("duplicate tags should panic");
+        let ambiguous = panic_message(ambiguous);
+        assert!(ambiguous.contains("ambiguous (2 matches)"));
+        assert!(ambiguous.contains("while binding at"));
+        assert!(ambiguous.contains("resource `Trade.rsrc:2009` path `WIND/left/same`"));
+        assert!(ambiguous.contains("resource `Trade.rsrc:2009` path `WIND/rght/same`"));
+
+        let missing = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            tree.find(left, fourcc!("none"));
+        }))
+        .expect_err("missing tags should panic");
+        let missing = panic_message(missing);
+        assert!(missing.contains("retail tag `none` is missing while binding at"));
+        assert!(missing.contains("scope resource `Trade.rsrc:2009` path `WIND/left`"));
+    }
+
+    fn panic_message(payload: Box<dyn std::any::Any + Send>) -> String {
+        payload
+            .downcast_ref::<String>()
+            .cloned()
+            .or_else(|| {
+                payload
+                    .downcast_ref::<&str>()
+                    .map(|message| message.to_string())
+            })
+            .expect("panic payload is a string")
     }
 
     #[test]
