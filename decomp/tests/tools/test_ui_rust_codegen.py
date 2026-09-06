@@ -5,7 +5,6 @@ from pathlib import Path
 
 from tools.ui_rust_codegen import (
     RUST_CITY_LAYOUT_OUT,
-    RUST_OUT,
     CAPTIONED_FLOATING_WINDOW,
     CheckboxPictures,
     DEFAULT_WINDOW,
@@ -29,8 +28,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _scene_source(fn_name: str) -> str:
-    output, _ = generate(REPO_ROOT)
+    outputs, _ = generate(REPO_ROOT)
     marker = f"pub fn {fn_name}()"
+    output = next(output for output in outputs.values() if marker in output)
     start = output.index(marker)
     next_fn = output.find("\npub fn ", start + 1)
     return output[start:] if next_fn == -1 else output[start:next_fn]
@@ -38,9 +38,9 @@ def _scene_source(fn_name: str) -> str:
 
 class UiRustCodegenTests(unittest.TestCase):
     def test_all_scenes_generate_without_error(self) -> None:
-        output, scenes = generate(REPO_ROOT)
+        outputs, scenes = generate(REPO_ROOT)
         self.assertGreater(len(scenes), 0)
-        self.assertIn("pub fn ", output)
+        self.assertTrue(any("pub fn " in output for output in outputs.values()))
         layout = render_city_building_layout(REPO_ROOT)
         self.assertIn("CITY_BUILDINGS", layout)
         self.assertIn("CITY_BUILDING_ACTIONS", layout)
@@ -108,7 +108,8 @@ class UiRustCodegenTests(unittest.TestCase):
         self.assertIn("retail_centered_text_padding(", diplo[nam0_start:nam0_end])
 
     def test_amount_bar_specializations(self) -> None:
-        output, _ = generate(REPO_ROOT)
+        outputs, _ = generate(REPO_ROOT)
+        output = "".join(outputs.values())
         self.assertIn("retail_production_amount_bar()", output)
         self.assertIn("retail_trade_amount_bar()", output)
         self.assertNotIn("retail_amount_bar(", output)
