@@ -18,6 +18,11 @@ pub(crate) struct HoverHelpText(pub String);
 #[derive(SceneComponent, Default, Clone)]
 pub(crate) struct HoverHelpBar;
 
+type ChangedHoverHelp = (
+    With<HoverHelpText>,
+    Or<(Changed<DirectlyHovered>, Changed<HoverHelpText>)>,
+);
+
 impl HoverHelpBar {
     fn scene() -> impl Scene {
         bsn! {
@@ -52,23 +57,23 @@ pub(crate) fn bind_hover_help_texts(
 }
 
 fn sync_hover_help_bar(
-    sources: Query<(Ref<HoverHelpText>, Ref<DirectlyHovered>)>,
+    sources: Query<(&HoverHelpText, &DirectlyHovered)>,
+    changed: Query<(), ChangedHoverHelp>,
     mut bars: Query<&mut Text, With<HoverHelpBar>>,
 ) {
-    let mut changed = false;
-    let mut help = String::new();
-
-    for (text, hovered) in &sources {
-        changed |= text.is_changed() || hovered.is_changed();
-        if hovered.get() {
-            help = text.0.clone();
-        }
+    if changed.is_empty() {
+        return;
     }
 
-    if changed {
-        for mut bar in &mut bars {
-            bar.0 = help.clone();
-        }
+    let Some(help) = sources
+        .iter()
+        .find_map(|(help, hovered)| hovered.get().then_some(&help.0))
+    else {
+        return;
+    };
+
+    for mut bar in &mut bars {
+        bar.0.clone_from(help);
     }
 }
 
