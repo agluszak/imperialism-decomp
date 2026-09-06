@@ -902,6 +902,7 @@ def _render_family(scenes: list[tuple[str, str, Node]]) -> str:
         body += ["#[rustfmt::skip]", f"pub fn {fn}() -> impl Scene {{", "    bsn! {"]
         if _emit_root_directly(root):
             chunk = _emit_node(root, 8)
+            chunk.insert(1, f"            RetailScene({_rust_str(view_name)})")
         else:
             body.append(f"        retail_view({_rust_str(view_name)})")
             body.append("        Children [")

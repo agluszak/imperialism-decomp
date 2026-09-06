@@ -288,6 +288,7 @@ pub fn linger_2020() -> impl Scene {
 pub fn linger_3000() -> impl Scene {
     bsn! {
         (
+            RetailScene("Linger.rsrc:3000")
             retail_node(fourcc!("WIND"), 100, 100, 390, 315)
             {captioned_window(bsn_list![
                 (
@@ -381,6 +382,7 @@ pub fn linger_3000() -> impl Scene {
 pub fn linger_3005() -> impl Scene {
     bsn! {
         (
+            RetailScene("Linger.rsrc:3005")
             retail_node(fourcc!("WIND"), 100, 100, 390, 300)
             {captioned_window(bsn_list![
                 (

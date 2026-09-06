@@ -13,6 +13,7 @@ use imperialism_formats::fourcc;
 pub fn citydlog_9200() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9200")
             retail_node(fourcc!("WIND"), 98, 166, 270, 120)
             {captioned_window(bsn_list![
                 (
@@ -105,6 +106,7 @@ pub fn citydlog_9200() -> impl Scene {
 pub fn citydlog_9201() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9201")
             retail_node(fourcc!("WIND"), 297, 250, 270, 120)
             {captioned_window(bsn_list![
                 (
@@ -185,6 +187,7 @@ pub fn citydlog_9201() -> impl Scene {
 pub fn citydlog_9202() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9202")
             retail_node(fourcc!("WIND"), 206, 98, 270, 120)
             {captioned_window(bsn_list![
                 (
@@ -271,6 +274,7 @@ pub fn citydlog_9202() -> impl Scene {
 pub fn citydlog_9203() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9203")
             retail_node(fourcc!("WIND"), 280, 153, 270, 160)
             {captioned_window(bsn_list![
                 (
@@ -384,6 +388,7 @@ pub fn citydlog_9203() -> impl Scene {
 pub fn citydlog_9204() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9204")
             retail_node(fourcc!("WIND"), 75, 164, 270, 160)
             {captioned_window(bsn_list![
                 (
@@ -497,6 +502,7 @@ pub fn citydlog_9204() -> impl Scene {
 pub fn citydlog_9205() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9205")
             retail_node(fourcc!("WIND"), 245, 271, 270, 120)
             {captioned_window(bsn_list![
                 (
@@ -577,6 +583,7 @@ pub fn citydlog_9205() -> impl Scene {
 pub fn citydlog_9206() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9206")
             retail_node(fourcc!("WIND"), 198, 66, 270, 120)
             {captioned_window(bsn_list![
                 (
@@ -657,6 +664,7 @@ pub fn citydlog_9206() -> impl Scene {
 pub fn citydlog_9209() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9209")
             retail_node(fourcc!("WIND"), 110, 57, 270, 270)
             {captioned_window(bsn_list![
                 (
@@ -797,6 +805,7 @@ pub fn citydlog_9209() -> impl Scene {
 pub fn citydlog_9211() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9211")
             retail_node(fourcc!("WIND"), 254, 98, 270, 120)
             {captioned_window(bsn_list![
                 (
@@ -856,6 +865,7 @@ pub fn citydlog_9211() -> impl Scene {
 pub fn citydlog_9212() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9212")
             retail_node(fourcc!("WIND"), 136, 101, 270, 160)
             {captioned_window(bsn_list![
                 (
@@ -939,6 +949,7 @@ pub fn citydlog_9212() -> impl Scene {
 pub fn citydlog_9213() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9213")
             retail_node(fourcc!("WIND"), 71, 61, 176, 300)
             {captioned_window(bsn_list![
                 (
@@ -1144,6 +1155,7 @@ pub fn citydlog_9213() -> impl Scene {
 pub fn citydlog_9214() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9214")
             retail_node(fourcc!("WIND"), 210, 90, 270, 120)
             {captioned_window(bsn_list![
                 (
@@ -1215,6 +1227,7 @@ pub fn citydlog_9214() -> impl Scene {
 pub fn citydlog_9215() -> impl Scene {
     bsn! {
         (
+            RetailScene("Citydlog.rsrc:9215")
             retail_node(fourcc!("WIND"), 63, 236, 270, 120)
             {captioned_window(bsn_list![
                 (
