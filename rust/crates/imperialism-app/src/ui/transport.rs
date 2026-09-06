@@ -326,28 +326,19 @@ fn write_allocation_gauge(
         Entity::PLACEHOLDER,
         "allocation gauges retain a limit marker"
     );
+    let (visible, limit_visible) = allocation_gauge_visibility(total, limit.is_some());
+    set_transport_visibility(commands, gauge.track, visible);
+    set_transport_visibility(commands, gauge.fill, visible);
+    set_transport_visibility(commands, gauge.limit, limit_visible);
     match limit {
-        Some(limit) => {
-            commands.entity(gauge.limit).insert(Visibility::Visible);
+        Some(limit) if visible => {
             backgrounds
                 .get_mut(gauge.limit)
                 .expect("transport gauge limit")
                 .0 = if current < limit { partial } else { full };
         }
-        None => {
-            commands.entity(gauge.limit).insert(Visibility::Hidden);
-        }
+        _ => {}
     }
-    commands.entity(gauge.track).insert(if total > 0 {
-        Visibility::Visible
-    } else {
-        Visibility::Hidden
-    });
-    commands.entity(gauge.fill).insert(if total > 0 {
-        Visibility::Visible
-    } else {
-        Visibility::Hidden
-    });
 }
 
 fn write_capacity_gauge(
@@ -384,6 +375,11 @@ fn set_transport_visibility(commands: &mut Commands, entity: Entity, visible: bo
     } else {
         Visibility::Hidden
     });
+}
+
+const fn allocation_gauge_visibility(total: i16, has_limit: bool) -> (bool, bool) {
+    let chrome = total > 0;
+    (chrome, chrome && has_limit)
 }
 
 fn set_transport_enabled(commands: &mut Commands, entity: Entity, enabled: bool) {
@@ -651,5 +647,12 @@ mod tests {
             .game
             .transport_row_status(nation, binding.allocation);
         assert_eq!(restored.allocated, before.allocated);
+    }
+
+    #[test]
+    fn zero_total_allocation_gauge_hides_all_chrome() {
+        assert_eq!(allocation_gauge_visibility(0, true), (false, false));
+        assert_eq!(allocation_gauge_visibility(10, true), (true, true));
+        assert_eq!(allocation_gauge_visibility(10, false), (true, false));
     }
 }

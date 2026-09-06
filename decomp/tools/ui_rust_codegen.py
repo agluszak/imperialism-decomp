@@ -9,6 +9,7 @@ import json
 import re
 import subprocess
 from dataclasses import dataclass, field
+from enum import Enum, auto
 from pathlib import Path
 from typing import Any
 
@@ -47,10 +48,6 @@ BUTTON_CLASSES = frozenset(
     ("T2PictureButton", "TClickZone", "TControl", "TDealTabControl", "TNoHilitePicture",
      "TPictureNumberText", "TTextPictureButton", "TUpDownPictureButton", "TPictureButton")
 )
-PICTURE_BUTTON_ENABLED_CLASSES = frozenset(("TPictureButton", "T2PictureButton"))
-CHECKBOX_SWAP_CLASSES = frozenset(("TCzechBox",))
-
-
 @dataclass(frozen=True)
 class ResourceKey:
     resource_file: str
@@ -105,6 +102,76 @@ class WindowPresentation:
         )
 
 
+@dataclass(frozen=True)
+class StaticPicture:
+    picture: int
+
+
+@dataclass(frozen=True)
+class PictureSwap:
+    idle: int
+    active: int
+
+
+@dataclass(frozen=True)
+class PressedOverlay:
+    picture: int
+
+
+@dataclass(frozen=True)
+class CheckboxPictures:
+    unchecked: int
+    checked: int
+
+
+@dataclass(frozen=True)
+class MadnessPictures:
+    base: int
+
+
+PictureBehavior = (
+    StaticPicture | PictureSwap | PressedOverlay | CheckboxPictures | MadnessPictures
+)
+
+
+@dataclass(frozen=True)
+class PictureClassRule:
+    kind: PictureBehaviorKind
+    enabled_when_present: bool = False
+
+
+class PictureBehaviorKind(Enum):
+    STATIC = auto()
+    SWAP = auto()
+    PRESSED_OVERLAY = auto()
+    CHECKBOX = auto()
+    MADNESS = auto()
+
+
+PICTURE_CLASS_RULES = {
+    "T2PictureButton": PictureClassRule(
+        PictureBehaviorKind.STATIC, enabled_when_present=True
+    ),
+    "TClickZone": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TCivilianButton": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TCzechBox": PictureClassRule(PictureBehaviorKind.CHECKBOX),
+    "TDealTabControl": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TMadnessButton": PictureClassRule(PictureBehaviorKind.MADNESS),
+    "TNoHilitePicture": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TOverlayRadioButton": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TPictureButton": PictureClassRule(
+        PictureBehaviorKind.PRESSED_OVERLAY, enabled_when_present=True
+    ),
+    "TPictureNumberText": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TRadioPictureButton": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TRightLeftView": PictureClassRule(PictureBehaviorKind.STATIC),
+    "TSidewaysArrow": PictureClassRule(PictureBehaviorKind.STATIC),
+    "TTextPictureButton": PictureClassRule(PictureBehaviorKind.SWAP),
+    "TToggleButton": PictureClassRule(PictureBehaviorKind.STATIC),
+    "TUpDownPictureButton": PictureClassRule(PictureBehaviorKind.SWAP),
+}
+
+
 @dataclass
 class Node:
     node_id: str
@@ -123,7 +190,7 @@ class Node:
     max_chars: int | None = None
     window: WindowPresentation | None = None
     slider: tuple[int, int, int, int] | None = None
-    picture_active_id: int | None = None
+    picture_behavior: PictureBehavior | None = None
     children: list[Node] = field(default_factory=list)
 
 
@@ -346,15 +413,36 @@ def _parse_mac_node(row: dict, key: ResourceKey, ev: dict[str, Any]) -> Node:
             shadow_offset=(1, 1),
             center_vertically=False,
         )
-    active_id = _catalog_picture_swap_id(picture_id, class_name, type_code, ev["pictures"])
-    enabled = 1 if (
-        class_name in PICTURE_BUTTON_ENABLED_CLASSES and int(row["state"]) != 0
-    ) else int(row["enabled"])
-    return Node(f"0x{int(row['offset']):04x}", type_code, str(row["tag"]), class_name,
-                f"0x{int(row['parent_offset']):04x}" if row.get("parent_offset") is not None else None,
-                (int(geom["x"]), int(geom["y"]), int(geom["width"]), int(geom["height"])),
-                int(row["state"]), enabled, int(row["input_gate"]), insets, picture_id,
-                control_state, text, max_chars, window, picture_active_id=active_id)
+    picture_rule = PICTURE_CLASS_RULES.get(class_name)
+    enabled = (
+        1
+        if picture_rule is not None
+        and picture_rule.enabled_when_present
+        and int(row["state"]) != 0
+        else int(row["enabled"])
+    )
+    return Node(
+        f"0x{int(row['offset']):04x}",
+        type_code,
+        str(row["tag"]),
+        class_name,
+        f"0x{int(row['parent_offset']):04x}"
+        if row.get("parent_offset") is not None
+        else None,
+        (int(geom["x"]), int(geom["y"]), int(geom["width"]), int(geom["height"])),
+        int(row["state"]),
+        enabled,
+        int(row["input_gate"]),
+        insets,
+        picture_id,
+        control_state,
+        text,
+        max_chars,
+        window,
+        picture_behavior=_classify_picture_behavior(
+            picture_id, class_name, type_code, ev["pictures"]
+        ),
+    )
 
 
 def _apply_patches(flat: dict[str, Node], order: list[str], key: ResourceKey, ev: dict[str, Any]) -> None:
@@ -399,11 +487,27 @@ def _apply_patches(flat: dict[str, Node], order: list[str], key: ResourceKey, ev
         child_text = fam.get("text")
         text = _text_from_windows_child(child_text) if isinstance(child_text, dict) else None
         node_id = f"windows:{parent_id}:{patch['tag']}"
-        flat[node_id] = Node(node_id, patch["type"], patch["tag"], patch["class"], parent_id,
-                             tuple(int(v) for v in patch["geometry"]), 1, 1, 1,
-                             tuple(int(v) for v in fam["content_insets"]) if "content_insets" in fam else None,
-                             int(fam["picture_id"]) if "picture_id" in fam else None,
-                             None, text)
+        picture_id = int(fam["picture_id"]) if "picture_id" in fam else None
+        flat[node_id] = Node(
+            node_id,
+            patch["type"],
+            patch["tag"],
+            patch["class"],
+            parent_id,
+            tuple(int(v) for v in patch["geometry"]),
+            1,
+            1,
+            1,
+            tuple(int(v) for v in fam["content_insets"])
+            if "content_insets" in fam
+            else None,
+            picture_id,
+            None,
+            text,
+            picture_behavior=_classify_picture_behavior(
+                picture_id, patch["class"], patch["type"], ev["pictures"]
+            ),
+        )
         order.append(node_id)
     for patch in ev["slider_patches"]:
         if ResourceKey.parse(patch["view"]) != key:
@@ -433,12 +537,15 @@ def resolve_scenes(evidence: dict[str, Any]) -> list[tuple[str, str, Node]]:
         scenes.append((_fn_name(key.resource_file, key.view_id), key.text(), _build_tree(flat, order)))
     for name in evidence["win_names"]:
         raw_nodes = evidence["windows_views"][name]
-        flat = {raw["node_id"]: _node_from_raw(raw) for raw in raw_nodes}
+        flat = {
+            raw["node_id"]: _node_from_raw(raw, evidence["pictures"])
+            for raw in raw_nodes
+        }
         scenes.append((name, name, _build_tree(flat, [raw["node_id"] for raw in raw_nodes])))
     return scenes
 
 
-def _node_from_raw(raw: dict[str, Any]) -> Node:
+def _node_from_raw(raw: dict[str, Any], picture_ids: set[int]) -> Node:
     fam_text = raw.get("text")
     text = _text_from_patch(fam_text) if isinstance(fam_text, dict) and "font_family" in fam_text else None
     if isinstance(fam_text, dict) and "point_size" in fam_text and text is None:
@@ -449,9 +556,11 @@ def _node_from_raw(raw: dict[str, Any]) -> Node:
         raw["geometry"], raw["state"], raw["enabled"], raw["input_gate"], raw.get("insets"),
         picture_id, raw.get("control_state"), text, raw.get("max_chars"),
         WindowPresentation.from_mapping(raw["window"]) if raw.get("window") else None,
-        raw.get("slider"), picture_active_id=(
-            _default_picture_swap_id(picture_id, raw["class_name"], raw["type_code"])
-            if picture_id is not None else None
+        raw.get("slider"), picture_behavior=_classify_picture_behavior(
+            picture_id,
+            raw["class_name"],
+            raw["type_code"],
+            picture_ids,
         ),
     )
 
@@ -460,32 +569,46 @@ def _interaction_disabled(node: Node) -> bool:
     return not node.enabled or not node.input_gate
 
 
-def _picture_swap_ids(node: Node) -> tuple[int, int]:
-    pic = _require_picture(node)
-    idle = pic & ~1 if node.class_name in CHECKBOX_SWAP_CLASSES or node.type_code == "chkb" else pic
-    if node.picture_active_id is not None:
-        return idle, node.picture_active_id
-    return idle, _default_picture_swap_id(pic, node.class_name, node.type_code)
+def _catalog_active_picture(
+    picture_id: int | None,
+    picture_ids: set[int],
+    *,
+    checkbox: bool,
+) -> int | None:
+    if picture_id is None:
+        return None
+    candidate = picture_id | 1 if checkbox else picture_id + 1
+    if candidate in picture_ids:
+        return candidate
+    return picture_id & ~1 if checkbox else picture_id
 
 
-def _default_picture_swap_id(picture_id: int, class_name: str, type_code: str) -> int:
-    if class_name in CHECKBOX_SWAP_CLASSES or type_code == "chkb":
-        return picture_id | 1
-    return picture_id + 1
-
-
-def _catalog_picture_swap_id(
+def _classify_picture_behavior(
     picture_id: int | None,
     class_name: str,
     type_code: str,
     picture_ids: set[int],
-) -> int | None:
+) -> PictureBehavior | None:
     if picture_id is None:
         return None
-    candidate = _default_picture_swap_id(picture_id, class_name, type_code)
-    if candidate in picture_ids:
-        return candidate
-    return picture_id & ~1 if class_name in CHECKBOX_SWAP_CLASSES or type_code == "chkb" else picture_id
+    rule = PICTURE_CLASS_RULES.get(class_name)
+    kind = rule.kind if rule is not None else None
+    if kind is PictureBehaviorKind.PRESSED_OVERLAY:
+        return PressedOverlay(picture_id)
+    if kind is PictureBehaviorKind.CHECKBOX or type_code == "chkb":
+        unchecked = picture_id & ~1
+        checked = _catalog_active_picture(
+            picture_id, picture_ids, checkbox=True
+        )
+        return CheckboxPictures(unchecked, checked if checked is not None else unchecked)
+    if kind is PictureBehaviorKind.SWAP:
+        active = _catalog_active_picture(
+            picture_id, picture_ids, checkbox=False
+        )
+        return PictureSwap(picture_id, active if active is not None else picture_id)
+    if kind is PictureBehaviorKind.MADNESS:
+        return MadnessPictures(picture_id)
+    return StaticPicture(picture_id)
 
 
 def _emit_checked(node: Node) -> list[str]:
@@ -501,20 +624,24 @@ def _emit_interaction_disabled(node: Node) -> list[str]:
 
 
 def _emit_picture_art(node: Node) -> list[str]:
-    if node.picture_id is None:
+    behavior = node.picture_behavior
+    if behavior is None:
         return []
-    pic = node.picture_id
-    if node.class_name == "TMadnessButton":
-        return [f"retail_madness_picture({pic})"]
-    if node.class_name == "TToggleButton":
-        return [f"retail_picture({pic})"]
-    if node.class_name in PICTURE_BUTTON_ENABLED_CLASSES:
-        # `TPictureButton::HiliteState` changes visibility; it does not derive a
-        # pressed bitmap from the next resource ID. Adjacent picture IDs commonly
-        # belong to different controls (for example transport return/query).
-        return [f"retail_picture({pic})"]
-    idle, active = _picture_swap_ids(node)
-    return [f"retail_picture_swap({idle}, {active})"]
+    if isinstance(behavior, StaticPicture):
+        return [f"retail_picture({behavior.picture})"]
+    if isinstance(behavior, PictureSwap):
+        return [f"retail_picture_swap({behavior.idle}, {behavior.active})"]
+    if isinstance(behavior, PressedOverlay):
+        # `TPictureButton::HiliteState` toggles visibility on the pressed overlay;
+        # adjacent picture IDs are different controls (transport return vs query).
+        return [
+            f"retail_picture({behavior.picture})",
+            "Visibility::Hidden",
+            "RetailPictureButtonOverlay",
+        ]
+    if isinstance(behavior, CheckboxPictures):
+        return [f"retail_picture_swap({behavior.unchecked}, {behavior.checked})"]
+    return [f"retail_madness_picture({behavior.base})"]
 
 
 def _emit_hover_help_bar() -> list[str]:
@@ -568,12 +695,11 @@ def _emit_page_corner(node: Node) -> list[str]:
 
 
 def _emit_sideways_arrow(node: Node, *, hilite: bool) -> list[str]:
-    idle, active = _picture_swap_ids(node)
     lines = ["RetailSidewaysArrow"]
     if hilite:
         lines.append("RetailSidewaysArrowHilite")
     lines.extend(_emit_interaction_disabled(node))
-    lines.append(f"retail_picture_swap({idle}, {active})")
+    lines.extend(_emit_picture_art(node))
     return lines
 
 
@@ -663,7 +789,7 @@ def _class_lines(node: Node) -> list[str]:
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls == "TTransportPicture":
-        lines = [f"retail_picture({_require_picture(node)})"]
+        lines = _emit_picture_art(node)
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls in CHECKBOX_CLASSES:
@@ -689,9 +815,9 @@ def _class_lines(node: Node) -> list[str]:
     if node.type_code in CONTAINER_TYPES | TEXT_TYPES:
         return []
     if node.type_code == "pict":
-        if node.picture_id is None:
+        if node.picture_behavior is None:
             raise ValueError(f"picture node {node.tag!r} missing picture_id")
-        return [f"retail_picture({node.picture_id})"]
+        return _emit_picture_art(node)
     raise ValueError(f"unsupported node class {cls} type={node.type_code!r} tag={node.tag!r}")
 
 

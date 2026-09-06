@@ -5,8 +5,7 @@ use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{AmountBarParts, RetailTree, Step};
 use super::retail_amount_bar::{
-    TRADE_BAR_HEIGHT, amount_bar_x_from_normalized, trade_amount_bar_click_value,
-    trade_amount_bar_geometry,
+    amount_bar_x_from_normalized, trade_amount_bar_click_value, trade_amount_bar_geometry,
 };
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
@@ -181,7 +180,7 @@ fn bind_trade_screen(
     let advisories = TRADE_ADVISORIES.map(|(tag, _)| tree.find(root, tag));
     let advanced = session.game.technology().advanced_production_unlocked();
     let text_style = assets.text_style(RetailTextStylePreset::explicit(2, 0, 14, -1));
-    let text_color = assets.palette_color(0x13);
+    let row_text_color = Color::BLACK;
     let rows = TRADE_ROW_TAGS.map(|commodity, tag| {
         let row = tree.find(root, tag);
         if !advanced && matches!(commodity, TradeCommodity::Oil | TradeCommodity::Fuel) {
@@ -193,7 +192,7 @@ fn bind_trade_screen(
             row,
             commodity,
             &text_style,
-            text_color,
+            row_text_color,
             &amount_bars,
         )
     });
@@ -239,11 +238,6 @@ fn bind_trade_row(
     });
 
     let quantity = tree.find(row, fourcc!("Sell"));
-    let (font, layout, line_height, underline) = text_style;
-    assert!(!underline, "retail Trade Sell counter is not underlined");
-    commands
-        .entity(quantity)
-        .insert((font.clone(), *layout, *line_height, TextColor(text_color)));
     let offer_indicator = tree.find(row, fourcc!("gree"));
     let gauge = tree.find(row, fourcc!("bar "));
     commands.entity(gauge).observe(
@@ -435,8 +429,7 @@ fn render_trade(
         let geometry = trade_amount_bar_geometry(capacity);
         let stock = major.city.stockpile[commodity.resource()];
         let stock_marker = geometry.span(capacity.saturating_sub(stock));
-        let offer_marker =
-            (i32::from(TRADE_BAR_HEIGHT) * i32::from(quantity) / i32::from(capacity.max(1))) as i16;
+        let offer_marker = trade_offer_marker(capacity, quantity);
         let mut stock_node = nodes
             .get_mut(row.gauge_fill)
             .expect("bound trade amount bar stock marker");
@@ -542,6 +535,10 @@ const fn trade_bid_tab_visible(capacity: i16, active: bool, bid_count: usize) ->
     active || (capacity > 0 && bid_count < 4)
 }
 
+fn trade_offer_marker(capacity: i16, quantity: i16) -> i16 {
+    trade_amount_bar_geometry(capacity).span(quantity)
+}
+
 fn bind_trade_card(
     commands: &mut Commands,
     entity: Entity,
@@ -643,7 +640,12 @@ mod tests {
                     ChildOf(root),
                 ))
                 .id();
-            world.spawn((RetailTag(fourcc!("Sell")), Text::default(), ChildOf(row)));
+            world.spawn((
+                RetailTag(fourcc!("Sell")),
+                Text::default(),
+                TextColor(Color::BLACK),
+                ChildOf(row),
+            ));
             world.spawn((RetailTag(fourcc!("card")), Node::default(), ChildOf(row)));
             world.spawn((RetailTag(fourcc!("offr")), Node::default(), ChildOf(row)));
             world.spawn((
@@ -947,6 +949,39 @@ mod tests {
                 .game
                 .player_trade_order(nation, other),
             PlayerTradeOrder::Buy
+        );
+    }
+
+    #[test]
+    fn trade_offer_marker_reaches_bar_end_at_full_capacity() {
+        assert_eq!(trade_offer_marker(10, 10).saturating_sub(1), 99);
+    }
+
+    #[test]
+    fn bind_trade_screen_leaves_sell_text_black() {
+        let state = fixture_state();
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            AssetPlugin::default(),
+            ScenePlugin,
+            StatesPlugin,
+            RetailUiPlugin,
+        ))
+        .insert_state(AppState::Trade)
+        .insert_resource(GameSession::new(state))
+        .add_systems(Update, bind_test_trade);
+        let root = spawn_trade_hierarchy(app.world_mut());
+        app.update();
+
+        let row = app
+            .world()
+            .get::<TradeView>(root)
+            .expect("trade root has a semantic view")
+            .rows[TradeCommodity::Food];
+        assert_eq!(
+            app.world().get::<TextColor>(row.quantity),
+            Some(&TextColor(Color::BLACK))
         );
     }
 }

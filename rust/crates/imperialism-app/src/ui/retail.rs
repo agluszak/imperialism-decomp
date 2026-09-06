@@ -29,6 +29,11 @@ pub use super::retail_transport_gauge::{
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RetailTag(pub FourCc);
 
+/// `TPictureButton::HiliteState` pressed overlay; hidden until `Pressed`.
+#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
+#[reflect(Component)]
+pub struct RetailPictureButtonOverlay;
+
 /// Images displayed by a retail picture control in its resting and active states.
 #[derive(Component, Clone, Debug)]
 pub struct RetailPictureSwap {
@@ -423,6 +428,8 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
+            .add_observer(on_retail_picture_button_overlay::<Add>)
+            .add_observer(on_retail_picture_button_overlay::<Remove>)
             .add_observer(on_retail_picture_swap_state::<Add, RetailPictureSwap>)
             .add_observer(on_retail_picture_swap_state::<Add, Pressed>)
             .add_observer(on_retail_picture_swap_state::<Remove, Pressed>)
@@ -486,6 +493,20 @@ type MadnessPictureQuery = (
     Has<Checked>,
     Has<InteractionDisabled>,
 );
+
+fn on_retail_picture_button_overlay<E: EntityEvent>(
+    event: On<E, Pressed>,
+    mut overlays: Query<&mut Visibility, With<RetailPictureButtonOverlay>>,
+) {
+    let Ok(mut visibility) = overlays.get_mut(event.event_target()) else {
+        return;
+    };
+    *visibility = if E::is::<Add>() {
+        Visibility::Visible
+    } else {
+        Visibility::Hidden
+    };
+}
 
 fn on_retail_picture_swap_state<E: EntityEvent, C: Component>(
     event: On<E, C>,
@@ -780,6 +801,29 @@ mod tests {
         assert_eq!(
             app.world().get::<ImageNode>(entity).unwrap().image,
             active_for_assert
+        );
+    }
+
+    #[test]
+    fn picture_button_overlay_follows_pressed_state() {
+        let mut app = scene_app();
+        let entity = app
+            .world_mut()
+            .spawn((RetailPictureButtonOverlay, Visibility::Hidden))
+            .id();
+
+        app.world_mut().entity_mut(entity).insert(Pressed);
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(entity),
+            Some(&Visibility::Visible)
+        );
+
+        app.world_mut().entity_mut(entity).remove::<Pressed>();
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(entity),
+            Some(&Visibility::Hidden)
         );
     }
 
