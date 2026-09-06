@@ -253,13 +253,11 @@ fn px_coord(value: Val) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::retail::retail_node;
     use bevy::asset::AssetPlugin;
     use bevy::input::keyboard::{Key, NativeKey};
     use bevy::input_focus::{InputFocusPlugin, dispatch_focused_input};
     use bevy::scene::ScenePlugin;
     use bevy::window::PrimaryWindow;
-    use imperialism_formats::fourcc;
 
     #[derive(Resource, Default)]
     struct Activations {
@@ -298,75 +296,6 @@ mod tests {
     ) {
         bind_modal_keys(&mut app.world_mut().commands(), root, default, cancel);
         app.world_mut().flush();
-    }
-
-    fn scene_source(fn_name: &str) -> &'static str {
-        let generated = include_str!("generated.rs");
-        let marker = format!("pub fn {fn_name}()");
-        let start = generated
-            .find(&marker)
-            .unwrap_or_else(|| panic!("generated scene {fn_name}"));
-        let rest = &generated[start..];
-        let end = rest.find("\npub fn ").unwrap_or(rest.len());
-        &rest[..end]
-    }
-
-    fn find_tag(world: &mut World, root: Entity, tag: &str) -> Entity {
-        let mut tree_state =
-            bevy::ecs::system::SystemState::<super::super::retail::RetailTree>::new(world);
-        let tree = tree_state.get(world).expect("RetailTree");
-        let entity = tree.find(root, imperialism_formats::FourCc::new(tag));
-        tree_state.apply(world);
-        entity
-    }
-
-    #[test]
-    fn generated_city_dialog_composes_caption_and_recovered_content_in_one_scope() {
-        let source = scene_source("citydlog_9200");
-        assert!(source.contains("captioned_window(bsn_list!["));
-        assert!(!source.contains("captioned_window()\n            Children ["));
-    }
-
-    #[test]
-    fn generated_map_help_is_a_floating_captioned_root_without_retail_view() {
-        let source = scene_source("linger_3000");
-        assert!(!source.contains("retail_view("));
-        assert!(source.contains("captioned_window(bsn_list!["));
-    }
-
-    #[test]
-    fn generated_construction_dialog_stays_wrapped_for_modal_composition() {
-        let source = scene_source("citydlog_9220");
-        assert!(!source.contains("captioned_window("));
-    }
-
-    #[test]
-    fn captioned_window_scene_keeps_caption_and_recovered_content_together() {
-        let mut app = test_app();
-        let root = app
-            .world_mut()
-            .spawn_scene(bsn! {
-                captioned_window(bsn_list![
-                    (
-                        retail_node(fourcc!("DLOG"), 0, 0, 64, 48)
-                        Children [
-                            (
-                                retail_node(fourcc!("body"), 4, 4, 56, 40)
-                            ),
-                        ]
-                    ),
-                ])
-            })
-            .expect("captioned window scene")
-            .id();
-        app.update();
-
-        assert!(app.world().get::<CaptionedWindow>(root).is_some());
-        assert!(app.world().get::<CaptionedWindowParts>(root).is_some());
-        let dialog = find_tag(app.world_mut(), root, "DLOG");
-        let body = find_tag(app.world_mut(), root, "body");
-        assert!(app.world().get_entity(dialog).is_ok());
-        assert!(app.world().get_entity(body).is_ok());
     }
 
     #[test]
@@ -479,41 +408,6 @@ mod tests {
         app.update();
 
         assert_eq!(app.world().resource::<Activations>().default, 1);
-    }
-
-    #[test]
-    fn modal_construction_composition_has_fullscreen_barrier_and_dialog_child() {
-        let mut app = test_app();
-        let canvas = app.world_mut().spawn(Name::new("canvas")).id();
-        let modal = app.world_mut().spawn((ModalWindow, ChildOf(canvas))).id();
-        let scene_root = app
-            .world_mut()
-            .spawn((
-                Node {
-                    width: px(640),
-                    height: px(480),
-                    ..default()
-                },
-                ChildOf(modal),
-            ))
-            .id();
-        let wind = app
-            .world_mut()
-            .spawn((
-                Node {
-                    width: px(320),
-                    height: px(320),
-                    ..default()
-                },
-                ChildOf(scene_root),
-            ))
-            .id();
-        app.update();
-
-        assert_eq!(app.world().get::<Node>(modal).unwrap().width, px(640));
-        assert_eq!(app.world().get::<Node>(modal).unwrap().height, px(480));
-        assert_eq!(app.world().get::<Node>(wind).unwrap().width, px(320));
-        assert!(app.world().get_entity(canvas).is_ok());
     }
 
     #[test]

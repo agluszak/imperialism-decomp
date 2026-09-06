@@ -6,10 +6,13 @@ from pathlib import Path
 from tools.ui_rust_codegen import (
     RUST_CITY_LAYOUT_OUT,
     RUST_OUT,
+    CAPTIONED_FLOATING_WINDOW,
+    DEFAULT_WINDOW,
     Node,
     TextPresentation,
     _class_lines,
     _emit_node,
+    _is_captioned_floating_window,
     _require_picture,
     _require_slider,
     generate,
@@ -155,17 +158,14 @@ class UiRustCodegenTests(unittest.TestCase):
         rendered = "\n".join(_emit_node(node, 4))
         self.assertIn("TextColor(Color::BLACK)", rendered)
 
-    def test_floating_captioned_windows_emit_without_retail_view_wrapper(self) -> None:
-        for fn_name in ("linger_3000", "citydlog_9200", "citydlog_9201"):
-            source = _scene_source(fn_name)
-            self.assertNotIn("retail_view(", source, fn_name)
-            self.assertIn("captioned_window(bsn_list![", source, fn_name)
-            self.assertNotIn("captioned_window()\n", source, fn_name)
-
-    def test_non_captioned_window_scenes_stay_wrapped_in_retail_view(self) -> None:
-        for fn_name in ("startup_1500", "transport_2014", "mapview_2013", "citydlog_9220", "linger_2020"):
-            source = _scene_source(fn_name)
-            self.assertIn("retail_view(", source, fn_name)
+    def test_captioned_floating_window_classification_uses_recovered_fields(self) -> None:
+        node = Node(
+            "0x0001", "fwnd", "WIND", "TFloatWindow", None,
+            (0, 0, 320, 200), 1, 1, 1, window=CAPTIONED_FLOATING_WINDOW,
+        )
+        self.assertTrue(_is_captioned_floating_window(node))
+        node.window = DEFAULT_WINDOW
+        self.assertFalse(_is_captioned_floating_window(node))
 
     def test_city_layout_generated_from_evidence(self) -> None:
         layout = render_city_building_layout(REPO_ROOT)

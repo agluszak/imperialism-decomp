@@ -20,20 +20,6 @@ type ChangedHoverHelp = (
     Or<(Changed<DirectlyHovered>, Changed<HoverHelpText>)>,
 );
 
-impl HoverHelpBar {
-    fn scene() -> impl Scene {
-        bsn! {
-            Node {
-                flex_direction: FlexDirection::Column,
-                justify_content: JustifyContent::Center,
-                overflow: Overflow::clip(),
-            }
-            Text("")
-        }
-        Text("")
-    }
-}
-
 pub(crate) fn hover_help_bar() -> impl Scene {
     bsn! {
         HoverHelpBar

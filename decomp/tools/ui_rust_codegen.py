@@ -80,6 +80,31 @@ class TextPresentation:
     center_vertically: bool
 
 
+@dataclass(frozen=True)
+class WindowPresentation:
+    flags: int
+    style_type: int
+    topmost: int
+    resource_6f: int
+    resource_6e: int
+    captioned_frame: int
+    resource_6c: int
+    resource_71: int
+
+    @classmethod
+    def from_mapping(cls, raw: dict[str, Any]) -> WindowPresentation:
+        return cls(
+            flags=int(raw["flags"]),
+            style_type=int(raw["style_type"]),
+            topmost=int(raw["topmost"]),
+            resource_6f=int(raw["resource_6f"]),
+            resource_6e=int(raw["resource_6e"]),
+            captioned_frame=int(raw["captioned_frame"]),
+            resource_6c=int(raw["resource_6c"]),
+            resource_71=int(raw["resource_71"]),
+        )
+
+
 @dataclass
 class Node:
     node_id: str
@@ -96,7 +121,7 @@ class Node:
     control_state: int | None = None
     text: TextPresentation | None = None
     max_chars: int | None = None
-    window: tuple[Any, ...] | None = None
+    window: WindowPresentation | None = None
     slider: tuple[int, int, int, int] | None = None
     picture_active_id: int | None = None
     children: list[Node] = field(default_factory=list)
@@ -308,7 +333,7 @@ def _parse_mac_node(row: dict, key: ResourceKey, ev: dict[str, Any]) -> Node:
     geom = row["geometry"]
     window = None
     if type_code in ("wind", "fwnd"):
-        window = (0x80, 0x1F40, 1, 1, 1, 1, 0, 1) if type_code == "fwnd" and family.get("window_flags") == 0x1F40 else (8, 2, 0, 1, 1, 0, 0, 1)
+        window = CAPTIONED_FLOATING_WINDOW if type_code == "fwnd" and family.get("window_flags") == 0x1F40 else DEFAULT_WINDOW
     if class_name == "TInfoBarText" and text is None:
         text = TextPresentation(
             value="",
@@ -422,7 +447,8 @@ def _node_from_raw(raw: dict[str, Any]) -> Node:
     return Node(
         raw["node_id"], raw["type_code"], raw["tag"], raw["class_name"], raw.get("parent_id"),
         raw["geometry"], raw["state"], raw["enabled"], raw["input_gate"], raw.get("insets"),
-        picture_id, raw.get("control_state"), text, raw.get("max_chars"), raw.get("window"),
+        picture_id, raw.get("control_state"), text, raw.get("max_chars"),
+        WindowPresentation.from_mapping(raw["window"]) if raw.get("window") else None,
         raw.get("slider"), picture_active_id=(
             _default_picture_swap_id(picture_id, raw["class_name"], raw["type_code"])
             if picture_id is not None else None
@@ -495,7 +521,26 @@ def _emit_hover_help_bar() -> list[str]:
     return ["hover_help_bar()"]
 
 
-CAPTIONED_FLOATING_WINDOW = (0x80, 0x1F40, 1, 1, 1, 1, 0, 1)
+CAPTIONED_FLOATING_WINDOW = WindowPresentation(
+    flags=0x80,
+    style_type=0x1F40,
+    topmost=1,
+    resource_6f=1,
+    resource_6e=1,
+    captioned_frame=1,
+    resource_6c=0,
+    resource_71=1,
+)
+DEFAULT_WINDOW = WindowPresentation(
+    flags=8,
+    style_type=2,
+    topmost=0,
+    resource_6f=1,
+    resource_6e=1,
+    captioned_frame=0,
+    resource_6c=0,
+    resource_71=1,
+)
 
 
 def _is_captioned_floating_window(node: Node) -> bool:

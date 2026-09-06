@@ -24,16 +24,6 @@ pub fn beginning_of_game_parts() -> GameStateParts {
     beginning_of_game_parts_with(beginning_context())
 }
 
-pub fn advanced_production_game() -> GameState {
-    const TECH_ABSOLUTE_OFFSET_V62: usize = 0x3af9;
-    const TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62: usize = 0x180;
-    const TECH_OIL_DRILLING_ID: usize = 0x13;
-    let mut bytes = BEGINNING_OF_GAME.to_vec();
-    bytes[TECH_ABSOLUTE_OFFSET_V62 + TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID] =
-        1;
-    LegacySaveV62::parse(&bytes).game_state(beginning_context())
-}
-
 pub fn beginning_of_game_with(context: LegacyGameStateContext) -> GameState {
     LegacySaveV62::parse(BEGINNING_OF_GAME).game_state(context)
 }
