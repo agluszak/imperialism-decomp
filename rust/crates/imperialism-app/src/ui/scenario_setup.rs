@@ -185,13 +185,16 @@ fn on_map_click(
 
 fn render_scenario_setup(
     setup: Res<ScenarioSetup>,
-    view: Single<&ScenarioSetupView>,
+    views: Query<&ScenarioSetupView>,
     retail: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut texts: Query<&mut Text>,
     mut maps: Query<&mut ScenarioMapPreview>,
     mut image_nodes: Query<&mut ImageNode>,
 ) {
+    let view = views
+        .single()
+        .expect("ScenarioSetup state must contain exactly one view");
     if !setup.is_changed() {
         return;
     }

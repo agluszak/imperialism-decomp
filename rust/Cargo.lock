@@ -3077,6 +3077,7 @@ dependencies = [
 name = "imperialism-app"
 version = "0.1.0"
 dependencies = [
+ "accesskit",
  "anyhow",
  "bevy",
  "clap",

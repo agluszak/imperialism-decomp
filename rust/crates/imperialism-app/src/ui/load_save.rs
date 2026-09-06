@@ -336,7 +336,9 @@ fn bind_load_save_actions(
     for (index, tag) in SLOT_TAGS.iter().copied().enumerate() {
         let entity = tree.find(root, tag);
         let slot = SaveSlot::numbered(index as u8).expect("slot tags are numbered 0..=7");
-        commands.entity(entity).insert(Button);
+        commands
+            .entity(entity)
+            .insert((Button, Pickable::default()));
         observe_select_slot(commands, entity, slot);
     }
     commands

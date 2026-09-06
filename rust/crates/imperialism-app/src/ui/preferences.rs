@@ -208,14 +208,14 @@ fn bind_preferences(
             .get(slider_root)
             .expect("bound two-pic slider")
             .input;
-        commands
-            .entity(slider_root)
-            .insert(HoverHelpText(assets.ui_string(0x2743, hover)))
-            .remove::<InteractionDisabled>();
+        commands.entity(slider_root).remove::<InteractionDisabled>();
         let write_on_drag = matches!(slot, PreferenceSlot::MusicVolume);
         commands
             .entity(input)
-            .insert(SliderValue(f32::from(prefs.values[slot])))
+            .insert((
+                SliderValue(f32::from(prefs.values[slot])),
+                HoverHelpText(assets.ui_string(0x2743, hover)),
+            ))
             .observe(slider_self_update)
             .remove::<InteractionDisabled>()
             .observe(
@@ -266,13 +266,16 @@ fn preference_caption(assets: &RetailUiAssets, row: usize, is_on: bool) -> Strin
 
 fn on_preferences_activate(
     _activate: On<Activate>,
-    view: Single<&PreferencesView>,
+    views: Query<&PreferencesView>,
     checked: Query<(), With<Checked>>,
     values: Query<&SliderValue>,
     mut prefs: ResMut<GamePreferences>,
     returning: Res<ReturnTo>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
+    let view = views
+        .single()
+        .expect("Preferences state must contain exactly one PreferencesView");
     // `TGamePreferencesPicture::DoEvent` writes `preferenceValues[row] = IsOn`
     // for each present opta+row checkbox, then overwrites [3]/[2] from the sliders.
     for &(entity, slot) in &view.checkboxes {

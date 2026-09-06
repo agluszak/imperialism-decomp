@@ -16,14 +16,17 @@ pub fn tactical_3800() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(3800)
                         Children [
                             (
                                 retail_node(fourcc!("curs"), 221, 4, 360, 20)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, -1)
@@ -32,40 +35,49 @@ pub fn tactical_3800() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("DLOG"), 5, 25, 575, 450)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("tool"), 583, 0, 55, 479)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("help"), 9, 8, 35, 44)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(3786, 3787)
                                     ),
                                     (
                                         retail_node(fourcc!("targ"), 9, 151, 35, 34)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(3788, 3789)
                                     ),
                                     (
                                         retail_node(fourcc!("done"), 9, 186, 35, 34)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(3790, 3791)
                                     ),
                                     (
                                         retail_node(fourcc!("retr"), 9, 221, 35, 34)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(3792, 3793)
                                     ),
                                     (
                                         retail_node(fourcc!("coat"), 0, 63, 52, 72)
+                                        Pickable::IGNORE
                                         retail_picture(3750)
                                     ),
                                     (
                                         retail_node(fourcc!("curr"), 2, 291, 50, 50)
+                                        Pickable::IGNORE
                                         retail_picture(3870)
                                     ),
                                     (
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
+                                        Pickable::default()
                                         Button
                                         retail_picture(3798)
                                         Visibility::Hidden
@@ -73,6 +85,7 @@ pub fn tactical_3800() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("tpic"), 2, 356, 50, 50)
+                                        Pickable::IGNORE
                                         retail_picture(3870)
                                     ),
                                 ]
@@ -92,27 +105,33 @@ pub fn tactical_3821() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 100, 80, 235, 350)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 235, 350)
+                        Pickable::IGNORE
                         retail_picture(3821)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 87, 314, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("info"), 13, 201, 210, 112)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("loca"), 7, 182, 221, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
@@ -132,46 +151,56 @@ pub fn tactical_3865() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 80, 80, 442, 297)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 442, 297)
+                        Pickable::IGNORE
                         retail_picture(3865)
                         Children [
                             (
                                 retail_node(fourcc!("pmap"), 59, 5, 324, 180)
+                                Pickable::default()
                                 RelativeCursorPosition
                             ),
                             (
                                 retail_node(fourcc!("okay"), 369, 261, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("info"), 12, 197, 417, 59)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("titl"), 7, 163, 221, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("loca"), 7, 182, 221, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 12, 261, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("acoa"), 3, 18, 52, 72)
+                                Pickable::IGNORE
                                 retail_picture(3757)
                             ),
                             (
                                 retail_node(fourcc!("dcoa"), 385, 18, 52, 72)
+                                Pickable::IGNORE
                                 retail_picture(3772)
                             ),
                         ]
