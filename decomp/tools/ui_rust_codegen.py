@@ -684,9 +684,9 @@ def _emit_scroll_area() -> list[str]:
 
 def _emit_page_corner(node: Node) -> list[str]:
     if node.tag == "lcor":
-        corner = "RetailPageCornerLeft"
+        corner = "RetailPageCorner::Left"
     elif node.tag == "rcor":
-        corner = "RetailPageCornerRight"
+        corner = "RetailPageCorner::Right"
     else:
         raise ValueError(f"unsupported page corner tag {node.tag!r}")
     lines = [corner]
@@ -872,7 +872,7 @@ def render(scenes: list[tuple[str, str, Node]]) -> str:
         "#![allow(dead_code, clippy::identity_op, unused_imports)]\n\n"
         "use super::hover_help::hover_help_bar;\n"
         "use super::retail::*;\n"
-        "use super::retail_page_corner::{RetailPageCornerLeft, RetailPageCornerRight};\n"
+        "use super::retail_page_corner::RetailPageCorner;\n"
         "use super::retail_sideways_arrow::{RetailSidewaysArrow, RetailSidewaysArrowHilite};\n"
         "use super::window::captioned_window;\n"
         "use bevy::prelude::*;\n"

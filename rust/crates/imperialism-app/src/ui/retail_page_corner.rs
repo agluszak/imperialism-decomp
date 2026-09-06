@@ -11,15 +11,6 @@ use bevy::ui::InteractionDisabled;
 use bevy::ui::picking_backend::ui_picking;
 use bevy::ui_widgets::Button;
 
-/// Which half of a page-corner control accepts clicks.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum RetailPageCorner {
-    /// `lcor`: accept when local `x < y`.
-    Left,
-    /// `rcor`: accept when `height - y < x`.
-    Right,
-}
-
 fn page_corner_pickable() -> Pickable {
     Pickable {
         should_block_lower: false,
@@ -27,17 +18,17 @@ fn page_corner_pickable() -> Pickable {
     }
 }
 
-/// `lcor` page-corner marker.
-#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
+/// `lcor` / `rcor` page-corner marker.
+#[derive(Component, FromTemplate, Clone, Copy, Debug, Eq, PartialEq, Reflect)]
 #[reflect(Component)]
 #[require(Button, Pickable = page_corner_pickable())]
-pub struct RetailPageCornerLeft;
-
-/// `rcor` page-corner marker.
-#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
-#[reflect(Component)]
-#[require(Button, Pickable = page_corner_pickable())]
-pub struct RetailPageCornerRight;
+pub enum RetailPageCorner {
+    /// `lcor`: accept when local `x < y`.
+    #[default]
+    Left,
+    /// `rcor`: accept when `height - y < x`.
+    Right,
+}
 
 pub(super) fn register_page_corner(app: &mut App) {
     app.add_systems(
@@ -71,15 +62,12 @@ fn local_pixels(hit: Vec3, size: Vec2) -> Option<(f32, f32)> {
 fn corner_hit_valid(
     entity: Entity,
     hit: &HitData,
-    left: &Query<(), With<RetailPageCornerLeft>>,
-    right: &Query<(), With<RetailPageCornerRight>>,
+    corners: &Query<&RetailPageCorner>,
     nodes: &Query<&ComputedNode>,
     disabled: &Query<(), With<InteractionDisabled>>,
 ) -> bool {
-    let corner = match (left.get(entity).is_ok(), right.get(entity).is_ok()) {
-        (true, false) => RetailPageCorner::Left,
-        (false, true) => RetailPageCorner::Right,
-        _ => return true,
+    let Ok(corner) = corners.get(entity) else {
+        return true;
     };
     if disabled.get(entity).is_ok() {
         return false;
@@ -93,21 +81,20 @@ fn corner_hit_valid(
     let Some((x, y)) = local_pixels(hit, node.size) else {
         return false;
     };
-    page_corner_hit(corner, node.size.x, node.size.y, x, y)
+    page_corner_hit(*corner, node.size.x, node.size.y, x, y)
 }
 
 /// Drop rejected triangle/disabled hits; truncate after the first retained corner.
 pub fn filter_page_corner_picks(
     picks: &mut Vec<(Entity, HitData)>,
-    left: &Query<(), With<RetailPageCornerLeft>>,
-    right: &Query<(), With<RetailPageCornerRight>>,
+    corners: &Query<&RetailPageCorner>,
     nodes: &Query<&ComputedNode>,
     disabled: &Query<(), With<InteractionDisabled>>,
 ) {
-    picks.retain(|(entity, hit)| corner_hit_valid(*entity, hit, left, right, nodes, disabled));
+    picks.retain(|(entity, hit)| corner_hit_valid(*entity, hit, corners, nodes, disabled));
     if let Some(index) = picks
         .iter()
-        .position(|(entity, _)| left.get(*entity).is_ok() || right.get(*entity).is_ok())
+        .position(|(entity, _)| corners.get(*entity).is_ok())
     {
         picks.truncate(index + 1);
     }
@@ -115,8 +102,7 @@ pub fn filter_page_corner_picks(
 
 fn filter_page_corner_pointer_hits(
     pointer_hits: Option<MessageMutator<PointerHits>>,
-    left: Query<(), With<RetailPageCornerLeft>>,
-    right: Query<(), With<RetailPageCornerRight>>,
+    corners: Query<&RetailPageCorner>,
     nodes: Query<&ComputedNode>,
     disabled: Query<(), With<InteractionDisabled>>,
 ) {
@@ -124,7 +110,7 @@ fn filter_page_corner_pointer_hits(
         return;
     };
     for hits in pointer_hits.read() {
-        filter_page_corner_picks(&mut hits.picks, &left, &right, &nodes, &disabled);
+        filter_page_corner_picks(&mut hits.picks, &corners, &nodes, &disabled);
     }
 }
 
@@ -153,13 +139,12 @@ mod tests {
 
     fn filter_picks(app: &mut App, picks: &mut Vec<(Entity, HitData)>) {
         let mut state = SystemState::<(
-            Query<(), With<RetailPageCornerLeft>>,
-            Query<(), With<RetailPageCornerRight>>,
+            Query<&RetailPageCorner>,
             Query<&ComputedNode>,
             Query<(), With<InteractionDisabled>>,
         )>::new(app.world_mut());
-        let (left, right, nodes, disabled) = state.get_mut(app.world_mut()).unwrap();
-        filter_page_corner_picks(picks, &left, &right, &nodes, &disabled);
+        let (corners, nodes, disabled) = state.get_mut(app.world_mut()).unwrap();
+        filter_page_corner_picks(picks, &corners, &nodes, &disabled);
     }
 
     fn pointer_location() -> bevy::picking::pointer::Location {
@@ -197,7 +182,7 @@ mod tests {
         let corner = app
             .world_mut()
             .spawn((
-                RetailPageCornerLeft,
+                RetailPageCorner::Left,
                 ComputedNode {
                     size: Vec2::new(40.0, 36.0),
                     ..default()
@@ -219,7 +204,7 @@ mod tests {
         let corner = app
             .world_mut()
             .spawn((
-                RetailPageCornerLeft,
+                RetailPageCorner::Left,
                 ComputedNode {
                     size: Vec2::new(40.0, 36.0),
                     ..default()
@@ -240,7 +225,7 @@ mod tests {
         let corner = app
             .world_mut()
             .spawn((
-                RetailPageCornerLeft,
+                RetailPageCorner::Left,
                 InteractionDisabled,
                 ComputedNode {
                     size: Vec2::new(40.0, 36.0),
@@ -263,7 +248,7 @@ mod tests {
         let corner = app
             .world_mut()
             .spawn((
-                RetailPageCornerLeft,
+                RetailPageCorner::Left,
                 ComputedNode {
                     size: Vec2::new(40.0, 36.0),
                     ..default()

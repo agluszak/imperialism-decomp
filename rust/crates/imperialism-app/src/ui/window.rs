@@ -6,6 +6,7 @@ use bevy::picking::events::{Drag, Pointer, Press};
 use bevy::picking::pointer::PointerButton;
 use bevy::prelude::*;
 use bevy::scene::SceneList;
+use bevy::text::FontSize;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button};
 
@@ -67,7 +68,9 @@ pub fn captioned_window(content: impl SceneList) -> impl Scene {
                         Children [
                             (
                                 Text("\u{00d7}")
-                                template(|_| Ok(TextFont::from_font_size(12.0)))
+                                TextFont {
+                                    font_size: FontSize::Px(12.0),
+                                }
                                 TextColor(Color::BLACK)
                                 Pickable::IGNORE
                             )
