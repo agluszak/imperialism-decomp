@@ -6,10 +6,13 @@ from pathlib import Path
 from tools.ui_rust_codegen import (
     RUST_CITY_LAYOUT_OUT,
     RUST_OUT,
+    CAPTIONED_FLOATING_WINDOW,
+    DEFAULT_WINDOW,
     Node,
     TextPresentation,
     _class_lines,
     _emit_node,
+    _is_captioned_floating_window,
     _require_picture,
     _require_slider,
     generate,
@@ -85,7 +88,7 @@ class UiRustCodegenTests(unittest.TestCase):
         curs_start = startup.index('retail_node(fourcc!("curs")')
         curs_end = startup.index('retail_node(fourcc!("', curs_start + 1)
         block = startup[curs_start:curs_end]
-        self.assertIn("@HoverHelpBar", block)
+        self.assertIn("hover_help_bar()", block)
         self.assertIn("retail_text_style(1, 0, 14, 1)", block)
         self.assertIn("retail_text_color(0x28)", block)
         self.assertIn("retail_text_shadow(0xd2, 1, 1)", block)
@@ -154,6 +157,15 @@ class UiRustCodegenTests(unittest.TestCase):
         )
         rendered = "\n".join(_emit_node(node, 4))
         self.assertIn("TextColor(Color::BLACK)", rendered)
+
+    def test_captioned_floating_window_classification_uses_recovered_fields(self) -> None:
+        node = Node(
+            "0x0001", "fwnd", "WIND", "TFloatWindow", None,
+            (0, 0, 320, 200), 1, 1, 1, window=CAPTIONED_FLOATING_WINDOW,
+        )
+        self.assertTrue(_is_captioned_floating_window(node))
+        node.window = DEFAULT_WINDOW
+        self.assertFalse(_is_captioned_floating_window(node))
 
     def test_city_layout_generated_from_evidence(self) -> None:
         layout = render_city_building_layout(REPO_ROOT)

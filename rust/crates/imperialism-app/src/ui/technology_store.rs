@@ -7,7 +7,7 @@ use super::map_help;
 use super::retail::{RetailPictureSwap, RetailTree, RetailUiAssets, retail_text_style};
 use super::retail_resources::TechnologyRetailResources;
 use super::session::GameSession;
-use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
+use super::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -372,10 +372,9 @@ fn on_technology_history(
     let Ok(history) = histories.get(activate.entity).copied() else {
         return;
     };
-    let root = commands.spawn_scene(generated::techstore_2370()).id();
-    commands.entity(root).insert((
+    let (modal, _window) = spawn_modal_window(&mut commands, generated::techstore_2370());
+    commands.entity(modal).insert((
         TechnologyHistoryRoot(history.0),
-        ModalWindow,
         DespawnOnExit(AppState::TechnologyStore),
     ));
 }

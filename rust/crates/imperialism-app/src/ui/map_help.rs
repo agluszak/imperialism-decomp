@@ -1,5 +1,6 @@
 use super::generated;
 use super::retail::RetailTree;
+use super::window::CaptionedWindowParts;
 use super::{RetailUiAssets, fill_brackets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
@@ -138,11 +139,15 @@ struct PendingMapHelp(HelpContext);
 fn bind_added_help(
     mut commands: Commands,
     pending: Query<(Entity, &PendingMapHelp), Added<PendingMapHelp>>,
+    captioned_parts: Query<&CaptionedWindowParts>,
     tree: RetailTree,
     mut assets: RetailUiAssets,
     retail: Res<RetailAssetsResource>,
 ) {
     for (root, PendingMapHelp(context)) in &pending {
+        if let Ok(parts) = captioned_parts.get(root) {
+            super::window::bind_captioned_close(&mut commands, parts, root);
+        }
         let context = *context;
         let title = fill_brackets(
             &retail.get_string(0x2749, 6),

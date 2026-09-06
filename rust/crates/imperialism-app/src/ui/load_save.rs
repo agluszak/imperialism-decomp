@@ -4,7 +4,7 @@ use crate::ui::generated;
 use crate::ui::linger::{bind_linger_dialog, spawn_linger_dialog};
 use crate::ui::retail::{RetailPictureSwap, RetailTree, RetailUiAssets};
 use crate::ui::satellite_preview::SatellitePreview;
-use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
+use crate::ui::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
 use crate::ui::{
     BattleReportPresentation, CityWindows, GameSession, StrategicMapSession, insert_loaded_game,
     remove_game_session,
@@ -865,12 +865,10 @@ pub(crate) fn bind_open_flag_menu(commands: &mut Commands, flag: Entity) {
 }
 
 fn on_open_flag_menu(_activate: On<Activate>, mut commands: Commands) {
-    let root = commands.spawn_scene(generated::linger_4140()).id();
-    commands.entity(root).insert((
-        FlagMenuRoot,
-        ModalWindow,
-        DespawnOnExit(AppState::StrategicMap),
-    ));
+    let (modal, _window) = spawn_modal_window(&mut commands, generated::linger_4140());
+    commands
+        .entity(modal)
+        .insert((FlagMenuRoot, DespawnOnExit(AppState::StrategicMap)));
 }
 
 fn bind_flag_menu(

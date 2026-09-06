@@ -1,6 +1,6 @@
 use super::generated;
 use super::retail::{RetailTree, RetailUiAssets};
-use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
+use super::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
 use crate::AppState;
 use bevy::prelude::*;
 use imperialism_formats::{RetailTextStylePreset, fourcc};
@@ -18,11 +18,11 @@ pub fn spawn_linger_dialog(
     extra: impl Bundle,
     screen: AppState,
 ) -> Entity {
-    let root = commands.spawn_scene(generated::linger_2020()).id();
+    let (modal, _window) = spawn_modal_window(commands, generated::linger_2020());
     commands
-        .entity(root)
-        .insert((extra, ModalWindow, DespawnOnExit(screen)));
-    root
+        .entity(modal)
+        .insert((extra, DespawnOnExit(screen)));
+    modal
 }
 
 pub fn bind_linger_dialog(

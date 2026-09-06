@@ -3,7 +3,7 @@ use crate::ui::hover_help::bind_hover_help_texts;
 use crate::ui::random_setup_map;
 use crate::ui::retail::{RADIO_CLUSTER_FRAME_PALETTE, RetailTree, RetailUiAssets};
 use crate::ui::session::apply_turn_stop;
-use crate::ui::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
+use crate::ui::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
 use crate::ui::{insert_game_session, insert_loaded_game};
 use crate::{AppState, RandomGameNamesResource, RetailAssetsResource};
 use bevy::ecs::system::SystemParam;
@@ -541,12 +541,10 @@ fn regenerate_random_setup_planet(
 }
 
 fn open_planet_seed_dialog(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::linger_954()).id();
-    commands.entity(root).insert((
-        PlanetSeedDialogRoot,
-        ModalWindow,
-        DespawnOnExit(AppState::RandomSetup),
-    ));
+    let (modal, _window) = spawn_modal_window(commands, generated::linger_954());
+    commands
+        .entity(modal)
+        .insert((PlanetSeedDialogRoot, DespawnOnExit(AppState::RandomSetup)));
 }
 
 fn bind_planet_seed_dialog(

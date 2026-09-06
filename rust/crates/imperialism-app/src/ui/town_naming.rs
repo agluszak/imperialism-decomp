@@ -2,7 +2,7 @@ use crate::ui::generated;
 use crate::ui::retail::{RetailTree, retail_text_color, retail_text_style};
 use crate::ui::retail_resources::ResourceKindRetailResources;
 use crate::ui::session::apply_turn_stop;
-use crate::ui::window::{ModalWindow, bind_modal_keys};
+use crate::ui::window::{bind_modal_keys, spawn_modal_window};
 use crate::ui::{GameSession, RetailUiAssets};
 use crate::{AppState, RetailAssetsResource};
 use bevy::input_focus::AutoFocus;
@@ -32,12 +32,10 @@ impl Plugin for TownNamingPlugin {
 }
 
 fn spawn_town_naming(mut commands: Commands) {
-    let root = commands.spawn_scene(generated::mapview_3508()).id();
-    commands.entity(root).insert((
-        TownNamingRoot,
-        ModalWindow,
-        DespawnOnExit(AppState::TownNaming),
-    ));
+    let (modal, _window) = spawn_modal_window(&mut commands, generated::mapview_3508());
+    commands
+        .entity(modal)
+        .insert((TownNamingRoot, DespawnOnExit(AppState::TownNaming)));
 }
 
 fn bind_town_naming(

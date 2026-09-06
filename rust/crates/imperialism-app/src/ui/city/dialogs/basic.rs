@@ -67,8 +67,7 @@ pub(in crate::ui::city) fn bind_warehouse(
             .entity(dialog)
             .entry::<Node>()
             .and_modify(|mut node| node.overflow = Overflow::clip());
-        for tag in [fourcc!("WIND"), fourcc!("DLOG")] {
-            let entity = tree.find(root, tag);
+        for entity in [root, dialog] {
             commands
                 .entity(entity)
                 .entry::<Node>()

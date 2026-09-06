@@ -6,7 +6,7 @@ use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::satellite_preview::nation_owner_palette;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
-use super::window::{ModalWindow, bind_modal_keys, dismiss_on_activate};
+use super::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
@@ -700,12 +700,10 @@ fn on_battle_report_detail(
 }
 
 fn spawn_detail(commands: &mut Commands) {
-    let root = commands.spawn_scene(generated::diplo_1352()).id();
-    commands.entity(root).insert((
-        DetailBookRoot,
-        ModalWindow,
-        DespawnOnExit(AppState::BattleReport),
-    ));
+    let (modal, _window) = spawn_modal_window(commands, generated::diplo_1352());
+    commands
+        .entity(modal)
+        .insert((DetailBookRoot, DespawnOnExit(AppState::BattleReport)));
 }
 
 /// Marker on the diplo_1352 detail book so `bind_detail` does not claim other modals.
