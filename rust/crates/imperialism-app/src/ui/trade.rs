@@ -429,7 +429,7 @@ fn render_trade(
         let geometry = trade_amount_bar_geometry(capacity);
         let stock = major.city.stockpile[commodity.resource()];
         let stock_marker = geometry.span(capacity.saturating_sub(stock));
-        let offer_marker = geometry.span(quantity);
+        let offer_marker = trade_offer_marker(capacity, quantity);
         let mut stock_node = nodes
             .get_mut(row.gauge_fill)
             .expect("bound trade amount bar stock marker");
@@ -533,6 +533,10 @@ fn set_trade_visibility(commands: &mut Commands, entity: Entity, visible: bool) 
 /// Idle buy tabs follow retail `fieldEc` / merchant-capacity gating.
 const fn trade_bid_tab_visible(capacity: i16, active: bool, bid_count: usize) -> bool {
     active || (capacity > 0 && bid_count < 4)
+}
+
+fn trade_offer_marker(capacity: i16, quantity: i16) -> i16 {
+    trade_amount_bar_geometry(capacity).span(quantity)
 }
 
 fn bind_trade_card(
@@ -950,8 +954,7 @@ mod tests {
 
     #[test]
     fn trade_offer_marker_reaches_bar_end_at_full_capacity() {
-        let geometry = trade_amount_bar_geometry(10);
-        assert_eq!(geometry.span(10).saturating_sub(1), 99);
+        assert_eq!(trade_offer_marker(10, 10).saturating_sub(1), 99);
     }
 
     #[test]

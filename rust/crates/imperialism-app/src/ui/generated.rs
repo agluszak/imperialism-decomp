@@ -1945,7 +1945,6 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(6021)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -1995,7 +1994,6 @@ pub fn citymain_2011() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(6020)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2055,7 +2053,6 @@ pub fn diplo_1351() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 8, 38, 31, 51)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4106)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2115,7 +2112,6 @@ pub fn diplo_1351() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 6, 3, 22, 37)
                                                 Button
-                                                InteractionDisabled
                                                 retail_picture(4107)
                                                 Visibility::Hidden
                                                 RetailPictureButtonOverlay
@@ -2157,7 +2153,6 @@ pub fn diplo_1352() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 27, 9, 33, 32)
                                 Button
-                                InteractionDisabled
                                 retail_picture(4070)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -2487,7 +2482,6 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(5052)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2541,7 +2535,6 @@ pub fn diplo_2008() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 6, 30, 52)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(5051)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2625,7 +2618,6 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4140)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2638,7 +2630,6 @@ pub fn diplo_2016() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4141)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2836,7 +2827,6 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(8454)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2849,7 +2839,6 @@ pub fn flagview_8451() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(8456)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2944,7 +2933,6 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(8533)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -2952,7 +2940,6 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(8532)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -3066,7 +3053,6 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(8404)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -3076,7 +3062,6 @@ pub fn flagview_8500() -> impl Scene {
                             (
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
                                 Button
-                                InteractionDisabled
                                 retail_picture(8825)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3113,7 +3098,6 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
                                                         Button
-                                                        InteractionDisabled
                                                         retail_picture(8814)
                                                         Visibility::Hidden
                                                         RetailPictureButtonOverlay
@@ -3184,7 +3168,6 @@ pub fn flagview_8800() -> impl Scene {
                                                     (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
                                                         Button
-                                                        InteractionDisabled
                                                         retail_picture(8816)
                                                         Visibility::Hidden
                                                         RetailPictureButtonOverlay
@@ -3704,7 +3687,6 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("advi"), 113, 65, 97, 37)
                                 Button
-                                InteractionDisabled
                                 retail_picture(4123)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3737,7 +3719,6 @@ pub fn linger_4122() -> impl Scene {
                             (
                                 retail_node(fourcc!("cncl"), 10, 335, 65, 27)
                                 Button
-                                InteractionDisabled
                                 retail_picture(4129)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3855,7 +3836,6 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("save"), 112, 65, 97, 37)
                                 Button
-                                InteractionDisabled
                                 retail_picture(1331)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3863,7 +3843,6 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("newg"), 10, 149, 65, 27)
                                 Button
-                                InteractionDisabled
                                 retail_picture(1332)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3871,7 +3850,6 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("load"), 10, 186, 65, 27)
                                 Button
-                                InteractionDisabled
                                 retail_picture(1333)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3879,7 +3857,6 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("pref"), 10, 223, 65, 27)
                                 Button
-                                InteractionDisabled
                                 retail_picture(1334)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3887,7 +3864,6 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("cred"), 10, 260, 65, 27)
                                 Button
-                                InteractionDisabled
                                 retail_picture(1335)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3895,7 +3871,6 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("quit"), 10, 297, 65, 27)
                                 Button
-                                InteractionDisabled
                                 retail_picture(1336)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3903,7 +3878,6 @@ pub fn linger_4140() -> impl Scene {
                             (
                                 retail_node(fourcc!("cncl"), 11, 335, 65, 27)
                                 Button
-                                InteractionDisabled
                                 retail_picture(1337)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -3965,7 +3939,6 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4145)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -4038,7 +4011,6 @@ pub fn linger_4150() -> impl Scene {
                                     (
                                         retail_node(fourcc!("okay"), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4146)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -4105,7 +4077,6 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4325)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -4185,7 +4156,6 @@ pub fn linger_4300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 22, 38)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4145)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -4591,7 +4561,6 @@ pub fn mapview_2013() -> impl Scene {
                                     (
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(1011)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -4636,7 +4605,6 @@ pub fn mapview_2013() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
                                                 Button
-                                                InteractionDisabled
                                                 retail_picture(1113)
                                                 Visibility::Hidden
                                                 RetailPictureButtonOverlay
@@ -4705,7 +4673,6 @@ pub fn mapview_3012() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
                                 Button
-                                InteractionDisabled
                                 retail_picture(3014)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -4713,7 +4680,6 @@ pub fn mapview_3012() -> impl Scene {
                             (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
                                 Button
-                                InteractionDisabled
                                 retail_picture(3013)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -4833,7 +4799,6 @@ pub fn mapview_3500() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
                                 Button
-                                InteractionDisabled
                                 retail_picture(3507)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -5831,7 +5796,6 @@ pub fn mapview_9478() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
                                 Button
-                                InteractionDisabled
                                 retail_picture(3507)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -6500,7 +6464,6 @@ pub fn startup_952() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(1017)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -6508,7 +6471,6 @@ pub fn startup_952() -> impl Scene {
                                     (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(1018)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -6991,7 +6953,6 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
                                 Button
-                                InteractionDisabled
                                 retail_picture(4510)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -6999,7 +6960,6 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
                                 Button
-                                InteractionDisabled
                                 retail_picture(4511)
                                 Visibility::Hidden
                                 RetailPictureButtonOverlay
@@ -7353,7 +7313,6 @@ pub fn startup_1515() -> impl Scene {
                                     (
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4596)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -7390,7 +7349,6 @@ pub fn startup_20000() -> impl Scene {
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(20001)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -7398,7 +7356,6 @@ pub fn startup_20000() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(20002)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -7489,7 +7446,6 @@ pub fn tactical_3800() -> impl Scene {
                                     (
                                         retail_node(fourcc!("auto"), 2, 412, 50, 62)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(3798)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -7687,7 +7643,6 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(2301)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -7737,7 +7692,6 @@ pub fn techstore_2300() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(2302)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -7856,7 +7810,6 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(6020)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -7884,7 +7837,6 @@ pub fn trade_2009() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(6021)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -8752,7 +8704,6 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
                                                 Button
-                                                InteractionDisabled
                                                 retail_picture(6020)
                                                 Visibility::Hidden
                                                 RetailPictureButtonOverlay
@@ -9515,7 +9466,6 @@ pub fn trade_2010() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
                                                 Button
-                                                InteractionDisabled
                                                 retail_picture(6021)
                                                 Visibility::Hidden
                                                 RetailPictureButtonOverlay
@@ -9671,7 +9621,6 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("quer"), 6, 3, 25, 38)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4025)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay
@@ -9684,7 +9633,6 @@ pub fn transport_2014() -> impl Scene {
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
                                         Button
-                                        InteractionDisabled
                                         retail_picture(4024)
                                         Visibility::Hidden
                                         RetailPictureButtonOverlay

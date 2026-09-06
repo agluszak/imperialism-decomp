@@ -7,9 +7,14 @@ from tools.ui_rust_codegen import (
     RUST_CITY_LAYOUT_OUT,
     RUST_OUT,
     CAPTIONED_FLOATING_WINDOW,
+    CheckboxPictures,
     DEFAULT_WINDOW,
     Node,
+    PictureSwap,
+    PressedOverlay,
+    StaticPicture,
     TextPresentation,
+    _classify_picture_behavior,
     _class_lines,
     _emit_node,
     _is_captioned_floating_window,
@@ -43,38 +48,28 @@ class UiRustCodegenTests(unittest.TestCase):
     def test_generated_output_is_current(self) -> None:
         self.assertTrue(is_current(REPO_ROOT))
 
-    def test_newspaper_buttons_do_not_assume_missing_pressed_art(self) -> None:
-        newspaper = _scene_source("flagview_8451")
-        self.assertIn("retail_picture(8454)", newspaper)
-        self.assertIn("retail_picture(8456)", newspaper)
-        self.assertIn("RetailPictureButtonOverlay", newspaper)
-        self.assertNotIn("retail_picture_button", newspaper)
-        self.assertNotIn("retail_picture_swap", newspaper)
-
-    def test_picture_button_does_not_pair_the_transport_return_with_query_art(self) -> None:
-        transport = _scene_source("transport_2014")
-        return_start = transport.index('retail_node(fourcc!("end ")')
-        return_end = transport.index('retail_node(fourcc!("seas")', return_start)
-        return_button = transport[return_start:return_end]
-        self.assertIn("retail_picture(4024)", return_button)
-        self.assertIn("Visibility::Hidden", return_button)
-        self.assertIn("RetailPictureButtonOverlay", return_button)
-        self.assertNotIn("4025", return_button)
-        self.assertNotIn("retail_picture_swap", return_button)
-
-    def test_transport_sideways_arrows_do_not_use_catalog_adjacency_swap(self) -> None:
-        transport = _scene_source("transport_2014")
-        fish_start = transport.index('retail_node(fourcc!("fish")')
-        fish_end = transport.index('retail_node(fourcc!("prod")', fish_start)
-        block = transport[fish_start:fish_end]
-        self.assertIn("retail_picture(4020)", block)
-        self.assertIn("retail_picture(4021)", block)
-        self.assertNotIn("retail_picture_swap", block)
-
-    def test_strategic_transport_button_does_not_assume_missing_active_art(self) -> None:
-        strategic_map = _scene_source("mapview_2013")
-        self.assertIn("retail_picture_swap(1111, 1111)", strategic_map)
-        self.assertNotIn("retail_picture_swap(1111, 1112)", strategic_map)
+    def test_picture_behavior_normalizes_class_and_catalog_evidence(self) -> None:
+        pictures = {801, 1111, 4020, 4024, 4025}
+        self.assertEqual(
+            _classify_picture_behavior(4024, "TPictureButton", "pict", pictures),
+            PressedOverlay(4024),
+        )
+        self.assertEqual(
+            _classify_picture_behavior(4024, "T2PictureButton", "pict", pictures),
+            StaticPicture(4024),
+        )
+        self.assertEqual(
+            _classify_picture_behavior(4020, "TRightLeftView", "pict", pictures),
+            StaticPicture(4020),
+        )
+        self.assertEqual(
+            _classify_picture_behavior(1111, "TUpDownPictureButton", "pict", pictures),
+            PictureSwap(1111, 1111),
+        )
+        self.assertEqual(
+            _classify_picture_behavior(800, "TCzechBox", "chkb", pictures),
+            CheckboxPictures(800, 801),
+        )
 
     def test_armory_custom_radios_do_not_start_checked(self) -> None:
         armory = _scene_source("armory_9208")

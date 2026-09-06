@@ -805,6 +805,29 @@ mod tests {
     }
 
     #[test]
+    fn picture_button_overlay_follows_pressed_state() {
+        let mut app = scene_app();
+        let entity = app
+            .world_mut()
+            .spawn((RetailPictureButtonOverlay, Visibility::Hidden))
+            .id();
+
+        app.world_mut().entity_mut(entity).insert(Pressed);
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(entity),
+            Some(&Visibility::Visible)
+        );
+
+        app.world_mut().entity_mut(entity).remove::<Pressed>();
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(entity),
+            Some(&Visibility::Hidden)
+        );
+    }
+
+    #[test]
     fn madness_picture_initializes_unchecked_frame_when_spawned_from_scene() {
         let mut app = scene_app();
         let frames: [Handle<Image>; 5] = {

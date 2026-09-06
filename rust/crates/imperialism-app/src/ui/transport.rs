@@ -326,10 +326,10 @@ fn write_allocation_gauge(
         Entity::PLACEHOLDER,
         "allocation gauges retain a limit marker"
     );
-    let visible = total > 0;
+    let (visible, limit_visible) = allocation_gauge_visibility(total, limit.is_some());
     set_transport_visibility(commands, gauge.track, visible);
     set_transport_visibility(commands, gauge.fill, visible);
-    set_transport_visibility(commands, gauge.limit, visible && limit.is_some());
+    set_transport_visibility(commands, gauge.limit, limit_visible);
     match limit {
         Some(limit) if visible => {
             backgrounds
@@ -375,6 +375,11 @@ fn set_transport_visibility(commands: &mut Commands, entity: Entity, visible: bo
     } else {
         Visibility::Hidden
     });
+}
+
+const fn allocation_gauge_visibility(total: i16, has_limit: bool) -> (bool, bool) {
+    let chrome = total > 0;
+    (chrome, chrome && has_limit)
 }
 
 fn set_transport_enabled(commands: &mut Commands, entity: Entity, enabled: bool) {
@@ -646,13 +651,8 @@ mod tests {
 
     #[test]
     fn zero_total_allocation_gauge_hides_all_chrome() {
-        fn limit_visible(total: i16, limit: Option<i16>) -> bool {
-            let visible = total > 0;
-            visible && limit.is_some()
-        }
-
-        assert!(!limit_visible(0, Some(5)));
-        assert!(limit_visible(10, Some(5)));
-        assert!(!limit_visible(10, None));
+        assert_eq!(allocation_gauge_visibility(0, true), (false, false));
+        assert_eq!(allocation_gauge_visibility(10, true), (true, true));
+        assert_eq!(allocation_gauge_visibility(10, false), (true, false));
     }
 }
