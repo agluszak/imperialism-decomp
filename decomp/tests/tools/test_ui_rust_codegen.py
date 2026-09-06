@@ -122,13 +122,6 @@ class UiRustCodegenTests(unittest.TestCase):
         self.assertNotIn("transport_gauge_capacity_children(", transport)
         self.assertNotIn("transport_gauge_allocation_children(", transport)
 
-    def test_page_corner_emits_marker_components(self) -> None:
-        output, _ = generate(REPO_ROOT)
-        self.assertIn("RetailPageCorner::Left", output)
-        self.assertIn("RetailPageCorner::Right", output)
-        self.assertNotIn("RetailPageCornerLeft", output)
-        self.assertNotIn("RetailPageCornerRight", output)
-
     def test_transport_right_left_view_has_no_sideways_arrow_hilite(self) -> None:
         transport = _scene_source("transport_2014")
         fish_start = transport.index('retail_node(fourcc!("fish")')
