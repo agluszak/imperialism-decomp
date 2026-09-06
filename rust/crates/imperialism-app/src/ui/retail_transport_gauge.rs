@@ -34,6 +34,8 @@ pub struct TransportGaugeParts {
 }
 
 fn transport_gauge_limit(limit: EntityTemplate) -> impl Scene {
+    // FIXME: Inline `OptionTemplate::Some(#Limit)` once Bevy BSN handles named entity
+    // references inside enum fields; bevy_scene_macros 0.19.1 panics on that form.
     TransportGaugeParts::patch(move |parts, _| {
         parts.limit = OptionTemplate::Some(limit);
     })
