@@ -155,10 +155,10 @@ pub use navy_orders::{NavyOrdersContinuation, PendingNavalBattle};
 pub use news::{
     DiplomacyNotice, DiplomacyProposal, InterNationNewsKind, LandSale, NEWS_TEMPLATE_COUNT,
     NationPendingWork, NewsArgument, NewsPage, NewsState, NewsStory, PendingNewspaperEvent,
-    PendingWorkState, TurnStartEvent, TurnSummary, WarTransition,
+    PendingWorkState, PreviousTurnSummary, TurnStartEvent, TurnSummary, WarTransition,
 };
 pub use ocean::{Ocean, OceanRoute, PortZone, Zone, ZoneKind};
-pub use pending::{PendingActionState, PendingActionStatus};
+pub use pending::{PendingActionState, PendingActionStatus, PendingStatusPrompt};
 pub use population::{
     FoodOutcome, LaborPool, PopulationAccumulator, PopulationState, SkillBand, StrikePhase,
 };
