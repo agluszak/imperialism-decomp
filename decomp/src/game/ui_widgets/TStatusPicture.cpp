@@ -67,28 +67,7 @@ void TStatusPicture::DoPostCreate(int arg) {
 
   comparisonMode90 = 0;
   RefreshControl();
-  g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
-
-  // Same per-nation score as DoEvent's commandId==10/newIndex==0 branch.
-  {
-    for (int i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
-        int sum = 0;
-        int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
-        int metricCount = 4;
-        do {
-          sum += *metric;
-          ++metric;
-          --metricCount;
-        } while (metricCount != 0);
-        values94[i] = static_cast<short>(sum) * 400 / 400;
-        pictureIds_b0[i] = static_cast<short>(i);
-      } else {
-        pictureIds_b0[i] = -1;
-      }
-    }
-  }
-  SortSevenEntriesAndUpdatePictureWidgets();
+  CalcStandardGraph();
 
   // 'curs' is also installed as the shared cursor-hint panel, same as 'labl' in
   // TLoungeDialog::DoPostCreate.
@@ -103,24 +82,7 @@ void TStatusPicture::SetComparisonModeAndRefresh(int comparisonMode) {
   comparisonMode90 = comparisonMode;
   RefreshControl();
   if (comparisonMode == 0) {
-    g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
-    for (int i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
-        int sum = 0;
-        int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
-        int metricCount = 4;
-        do {
-          sum += *metric;
-          ++metric;
-          --metricCount;
-        } while (metricCount != 0);
-        values94[i] = static_cast<short>(sum) * 400 / 400;
-        pictureIds_b0[i] = static_cast<short>(i);
-      } else {
-        pictureIds_b0[i] = -1;
-      }
-    }
-    SortSevenEntriesAndUpdatePictureWidgets();
+    CalcStandardGraph();
     return;
   }
   RecomputeNationComparisonValuesAndNormalizeScale();
@@ -141,24 +103,7 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
         g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
         comparisonMode90 = newIndex;
         if (newIndex == 0) {
-          g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
-          for (int i = 0; i < 7; ++i) {
-            if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
-              int sum = 0;
-              int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
-              int metricCount = 4;
-              do {
-                sum += *metric;
-                ++metric;
-                --metricCount;
-              } while (metricCount != 0);
-              values94[i] = static_cast<short>(sum) * 400 / 400;
-              pictureIds_b0[i] = static_cast<short>(i);
-            } else {
-              pictureIds_b0[i] = -1;
-            }
-          }
-          SortSevenEntriesAndUpdatePictureWidgets();
+          CalcStandardGraph();
         } else {
           RecomputeNationComparisonValuesAndNormalizeScale();
         }

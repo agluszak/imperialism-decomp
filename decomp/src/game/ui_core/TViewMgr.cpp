@@ -999,6 +999,12 @@ inline void BindCursorPanelAndSetTurnEventCodeRange() {
 // It must NOT be the direct TCouncilView ticker init (0x4fc2e0): on non-council
 // screens (e.g. the combined map, whose 'main' has no can0/can1 children) that
 // misdispatch dereferences a null control and crashes.
+// Binds the shared 'curs' cursor panel on the active dialog and, when 'main' is a
+// TDiplomacyMapView, stamps the terrain index for the pending diplomacy-offer turn
+// event. The original retains a dead out-of-line copy (0x5d8310) beside the two
+// inlined dispatch sites; the definition lives in retail address order below.
+inline void BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView, short terrainIndex);
+
 inline void RefreshMainPanelControl() {
   TControl* mainPanel = ResolveMainTaggedControl(kControlTagMain);
   if (mainPanel != nullptr) {
@@ -1170,19 +1176,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
     } else if (newCode == kTurnEventDiplomacyOffer) {
       mainView->RefreshControl();
-
-      g_pCursorControlPanel =
-          static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
-      g_pCursorControlPanel->AssertValid();
-      g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
-
-      TView* diplomacyMap = mainView->ResolveControlByTag(kControlTagMain);
-      diplomacyMap->AssertValid();
-      if (diplomacyMap != nullptr &&
-          diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
-        static_cast<TDiplomacyMapView*>(diplomacyMap)
-            ->SetSelectedTerrainIndexForTurnEvent(secondary);
-      }
+      turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
     } else if (newCode == kTurnEventTechnologyStore) {
       mainView->RefreshControl();
       this->RefreshTechnologyStorePageAndHudText(payload);
@@ -1251,18 +1245,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       if (newCode == kTurnEventMainMenu) {
         this->HandleTurnEventDialogFactorySlotF8();
       } else if (newCode == kTurnEventDiplomacyOffer) {
-        g_pCursorControlPanel =
-            static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
-        g_pCursorControlPanel->AssertValid();
-        g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
-
-        TView* diplomacyMap = mainView->ResolveControlByTag(kControlTagMain);
-        diplomacyMap->AssertValid();
-        if (diplomacyMap != nullptr &&
-            diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
-          static_cast<TDiplomacyMapView*>(diplomacyMap)
-              ->SetSelectedTerrainIndexForTurnEvent(secondary);
-        }
+        turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
         g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
       }
@@ -1490,6 +1473,23 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   diplomacyMap = activeDialog->ResolveControlByTag(kControlTagMain);
   if (diplomacyMap != nullptr && diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
     static_cast<TDiplomacyMapView*>(diplomacyMap)->SetSelectedTerrainIndexForTurnEvent(nationSlot);
+  }
+}
+
+// SYNTHETIC: IMPERIALISM 0x005d8310
+// BindCursorPanelAndStampDiplomacyMapTerrain — dead retained copy of the inline above.
+inline void turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView, short terrainIndex) {
+  TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
+  cursor->AssertValid();
+  static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  TView* diplomacyMap = mainView->ResolveControlByTag(kControlTagMain);
+  diplomacyMap->AssertValid();
+  if (diplomacyMap != nullptr &&
+      diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
+    static_cast<TDiplomacyMapView*>(diplomacyMap)
+        ->SetSelectedTerrainIndexForTurnEvent(terrainIndex);
   }
 }
 

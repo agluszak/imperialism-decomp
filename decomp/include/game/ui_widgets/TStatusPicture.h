@@ -1,6 +1,10 @@
 #pragma once
 
 #include "game/ui_core/TPicture.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/globals/game_session_globals.h"
+#include "game/globals/military_ui_globals.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00642268
@@ -27,6 +31,31 @@ public:
   // each entry's picture id into its child picture widget. 0x594c00.
   void SortSevenEntriesAndUpdatePictureWidgets();
   void RecomputeNationComparisonValuesAndNormalizeScale();
+  // Mac oracle: CalcStandardGraph(). Retained VC5 copy of the mode-0 score fill
+  // inlined at all three live callsites (DoPostCreate, SetComparisonModeAndRefresh,
+  // DoEvent).
+  // SYNTHETIC: IMPERIALISM 0x00594830
+  // TStatusPicture::CalcStandardGraph
+  void CalcStandardGraph() {
+    g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+    for (int i = 0; i < 7; ++i) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
+        int sum = 0;
+        int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
+        int metricCount = 4;
+        do {
+          sum += *metric;
+          ++metric;
+          --metricCount;
+        } while (metricCount != 0);
+        values94[i] = static_cast<short>(sum) * 400 / 400;
+        pictureIds_b0[i] = static_cast<short>(i);
+      } else {
+        pictureIds_b0[i] = -1;
+      }
+    }
+    SortSevenEntriesAndUpdatePictureWidgets();
+  }
   // Retained VC5 copy of a method inlined at its only live callsite.
   // SYNTHETIC: IMPERIALISM 0x00594d30
   // TStatusPicture::NormalizeAsNeeded

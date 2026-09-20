@@ -92,6 +92,12 @@ public:
   void ClearStoryParms(newsStory* story); // 0x0055d090
   void InitializeNewsManager();
   newsEntry* FindEntry(int storyId); // 0x55c930, Mac oracle
+  // Mac oracle: FindEventType(long, long, long&, unsigned char). Scans the shared event
+  // record queue from *ordinal+1 for the next record of eventKind; differentNation
+  // inverts the subject-nation test (set = nation must differ). Stores the 1-based hit
+  // in *ordinal, or 0 when the queue is exhausted.
+  InterNationNewsRecord* FindEventType(int eventKind, int nation, int* ordinal,
+                                       unsigned char differentNation); // 0x55c870
 
   // Mac-oracle event-queue API (gameplay side).
   void AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,

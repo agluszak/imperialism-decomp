@@ -829,6 +829,29 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 // TEMPLATE: IMPERIALISM 0x004847d0
 // ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
 
+// One-shot "AmbitCadreEgout" window-class registration returning the class-name
+// pointer (NULL when registration failed). Dead module helper: the retail copy has
+// no callers, and the 0x6a1834 gate/atom has no other writers.
+// FUNCTION: IMPERIALISM 0x00484ea0
+LPCSTR RegisterAmbitCadreEgoutWindowClass() {
+  if (g_AmbitCadreEgoutWndClassAtom_006A1834 == 0) {
+    WNDCLASS wndClass;
+    memset(&wndClass, 0, sizeof(wndClass));
+    wndClass.lpfnWndProc = ::DefWindowProc;
+    wndClass.hInstance = AfxGetInstanceHandle();
+    wndClass.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+    wndClass.style = 0x2000200;
+    wndClass.lpszClassName = g_szAmbitCadreEgoutClassName_00694D40;
+    wndClass.hIcon = ::LoadIcon(AfxGetResourceHandle(), MAKEINTRESOURCE(0x7a01));
+    if (wndClass.hIcon == NULL) {
+      wndClass.hIcon = ::LoadIcon(NULL, IDI_APPLICATION);
+    }
+    g_AmbitCadreEgoutWndClassAtom_006A1834 = AfxRegisterClass(&wndClass);
+  }
+  return g_AmbitCadreEgoutWndClassAtom_006A1834 != 0 ? g_szAmbitCadreEgoutClassName_00694D40
+                                                   : NULL;
+}
+
 // Native host view (TView::nativeWindow50) of the top window on the modal stack.
 // FUNCTION: IMPERIALISM 0x0048d290
 static CWnd* GetModalStackTopHostView() {

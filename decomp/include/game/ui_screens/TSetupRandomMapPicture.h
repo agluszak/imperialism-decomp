@@ -18,6 +18,7 @@ public:
   TSetupRandomMapPicture();
 
   void RecheckCountryName();                        // 0x576fe0
+  void SetSelectedNationSlot(short nationSlot);     // 0x576ef0
   void GroundControlToMajorTom(unsigned char mode); // 0x578230
   void MajorTomToGroundControl(unsigned char mode); // 0x578330
   void SpinYourGlobe();                             // 0x578680

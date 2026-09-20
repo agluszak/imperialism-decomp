@@ -19,6 +19,7 @@ public:
   int selectedChildTag;
 
   TCluster();
+  TCluster(const TCluster& source); // 0x491540
 
   // Frame this cluster into `parent`: adopt the parent's host window, blank the control
   // tag, mark it enabled/visible, record the parent link, copy the offset and size point

@@ -174,6 +174,11 @@ extern int g_nMcWindowStateMsgAssertGate_006A1C74;
 // asserts, and the gate read before the msg-0x4ef detach assert fires.
 extern char g_szIncludeViewSourcePath_00694D10[];
 
+// "AmbitCadreEgout" WNDCLASS name + one-shot registration atom for CIncludeView's
+// dead class-registration helper (0x484ea0).
+extern char g_szAmbitCadreEgoutClassName_00694D40[];
+extern int g_AmbitCadreEgoutWndClassAtom_006A1834;
+
 extern int g_nIncludeViewAssertGate_006A17B0;
 extern int g_nIncludeViewCaptureAssertGate_006A17B8;
 

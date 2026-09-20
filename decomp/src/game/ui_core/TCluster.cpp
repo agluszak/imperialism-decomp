@@ -36,6 +36,11 @@ TCluster::TCluster() {
 // FUNCTION: IMPERIALISM 0x004914b0
 TCluster::~TCluster() {}
 
+// Dead out-of-line copy-ctor emission: TControl(source) plus selectedChildTag.
+// FUNCTION: IMPERIALISM 0x00491540
+TCluster::TCluster(const TCluster& source)
+    : TControl(source), selectedChildTag(source.selectedChildTag) {}
+
 // Frame this cluster into `parent`. The host window is inherited from the parent when
 // one is supplied, the control tag is blanked to four spaces, the enable/visible pair is
 // set, and the offset/size point pairs are copied into the frame fields. Registration as

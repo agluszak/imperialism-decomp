@@ -1639,6 +1639,16 @@ int g_nIncludeViewReinitAssertGate_006A17BC = 0;
 // GLOBAL: IMPERIALISM 0x006a17c0
 int g_nIncludeViewReinitThreadOnceGate_006A17C0 = 0;
 
+// "AmbitCadreEgout" WNDCLASS name for CIncludeView's dead one-shot class
+// registration helper (0x484ea0).
+// GLOBAL: IMPERIALISM 0x00694d40
+char g_szAmbitCadreEgoutClassName_00694D40[] = "AmbitCadreEgout";
+
+// One-shot registration gate + result atom for the "AmbitCadreEgout" WNDCLASS
+// (written by the dead helper at 0x484ea0; no other readers).
+// GLOBAL: IMPERIALISM 0x006a1834
+int g_AmbitCadreEgoutWndClassAtom_006A1834 = 0;
+
 // GLOBAL: IMPERIALISM 0x006a2480
 int g_nMcAppUiAssertGate_006A2480 = 0;
 

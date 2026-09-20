@@ -5625,7 +5625,7 @@ address|name|symbol|size|type|prototype|provenance
 5942f0|TStatusPicture::DoEvent||450|function|undefined DestructTStatusPictureAndMaybeFree()|
 594540|TStatusPicture::Draw||463|function|undefined RenderLocalizedHeaderAndSevenLineTerrainSummary()|
 594790|TStatusPicture::DrawBar||122|function|void __thiscall DrawBar(short rowY, short width, short nationSlot)|mac_oracle
-594830|IltTarget_00594830||153|function|undefined IltTarget_00594830()|
+594830|TStatusPicture::CalcStandardGraph||153|function|void CalcStandardGraph()|compiler_synthetic
 594900|RecomputeNationComparisonValuesAndNormalizeScale||559|function|undefined RecomputeNationComparisonValuesAndNormalizeScale()|
 594c00|TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets||225|function|undefined SortSevenEntriesAndUpdatePictureWidgets()|
 594d30|TStatusPicture::NormalizeAsNeeded||79|function|void NormalizeAsNeeded()|compiler_synthetic

@@ -533,6 +533,31 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0055c870
+InterNationNewsRecord* TNewsMgr::FindEventType(int eventKind, int nation, int* ordinal,
+                                               unsigned char differentNation) {
+  int index = *ordinal + 1;
+  if (index > sharedEventRecordQueue->GetSize()) {
+    *ordinal = 0;
+    return 0;
+  }
+  for (;;) {
+    InterNationNewsRecord* rec = static_cast<InterNationNewsRecord*>(
+        sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(index));
+    if (rec->eventKind == eventKind &&
+        ((differentNation != 0 && rec->payload.subjectNationOrAll != nation) ||
+         (differentNation == 0 && rec->payload.subjectNationOrAll == nation))) {
+      *ordinal = index;
+      return rec;
+    }
+    ++index;
+    if (index > sharedEventRecordQueue->GetSize()) {
+      *ordinal = 0;
+      return 0;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0055c930
 newsEntry* TNewsMgr::FindEntry(int storyId) {
   newsEntry* entry = storyTemplateTable;

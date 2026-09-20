@@ -54,6 +54,32 @@ TSetupRandomMapPicture::TSetupRandomMapPicture()
 // TSetupRandomMapPicture::~TSetupRandomMapPicture
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
+// FUNCTION: IMPERIALISM 0x00576ef0
+void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
+  selectedNationSlot9A = nationSlot;
+
+  TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
+  flagView->AssertValid();
+  int flagStripRight = (selectedNationSlot9A + 1) * flagView->frameWidth34;
+  flagView->sourceRect64.left = selectedNationSlot9A * flagView->frameWidth34;
+  flagView->sourceRect64.top = 0;
+  flagView->sourceRect64.right = flagStripRight;
+  flagView->sourceRect64.bottom = flagView->frameHeight38;
+  flagView->RefreshControl();
+
+  TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
+  coatView->AssertValid();
+  coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
+
+  if (countryControlReadyA4 == 0) {
+    bool sessionInactive = g_pSimMgr->multiplayerSessionRole == 0;
+    if (sessionInactive) {
+      TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+      countryControl->AssertValid();
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00576fe0
 void TSetupRandomMapPicture::RecheckCountryName() {
   if (countryControlReadyA4 == 0) {
