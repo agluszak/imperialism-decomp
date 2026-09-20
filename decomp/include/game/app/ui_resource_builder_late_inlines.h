@@ -6,6 +6,11 @@
 #include "game/ui_core/TWindow.h"
 #include "game/globals/ui_core_globals.h"
 
+// Live no-op callback: 13 dialog-init call sites reach it through ILT thunk
+// 0x404f75. Retail body is a bare RET.
+// FUNCTION: IMPERIALISM 0x00426f80
+UI_RESOURCE_BUILDER_INLINE void __cdecl NoOpRuntimeCallback_00426f80() {}
+
 // FUNCTION: IMPERIALISM 0x00426fa0
 UI_RESOURCE_BUILDER_INLINE void __cdecl
 SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType, bool f70, bool f6f, bool f6e,

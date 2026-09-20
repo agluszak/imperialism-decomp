@@ -20,9 +20,15 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 template <typename T> class stretch {
 public:
   stretch() : data(0), capacity(0), count(0) {}
-  stretch(int initialCapacity)
-      : data(static_cast<T*>(realloc(0, static_cast<size_t>(initialCapacity) * sizeof(T)))),
-        capacity(initialCapacity), count(0) {}
+  // TEMPLATE: IMPERIALISM 0x004c1fc0
+  // ??0?$stretch@F@@QAE@H@Z — retail stores fields then allocates only when
+  // initialCapacity > 0.
+  stretch(int initialCapacity) : data(0), capacity(0), count(0) {
+    if (0 < initialCapacity) {
+      data = static_cast<T*>(realloc(0, static_cast<size_t>(initialCapacity) * sizeof(T)));
+      capacity = initialCapacity;
+    }
+  }
   // Non-virtual on purpose (see IMPERIALISM_*_INTENTIONAL_NON_VIRTUAL_DTOR above): frees
   // the growable buffer allocated by OverStretch/SetCapacity (realloc-family growth,
   // so release via the matching free(), not

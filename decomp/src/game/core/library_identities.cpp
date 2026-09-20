@@ -7208,4 +7208,12 @@
 // symbol: ?AfxWinTerm@@YGXXZ
 // prototype: void __stdcall AfxWinTerm(void)
 
+// Called from _WinMainCRTStartup (0x5e9974) before main: LoadLibrary's the bundled
+// wav-winmm.dll forwarder and binds mciSendCommandA, auxGetNumDevs, auxGetDevCapsA,
+// auxGetVolume and auxSetVolume into the 0x6ab5xx import table, continuing startup
+// even on failure. Vendor/toolchain glue, not game source.
+// LIBRARY: IMPERIALISM 0x00707081
+// name: InitializeWinmmImportBindings
+// prototype: void InitializeWinmmImportBindings(void)
+
 #endif
