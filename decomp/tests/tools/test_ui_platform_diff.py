@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from tools.workflow.ui_platform_diff import build_report
+from tools.workflow.ui_platform_diff import _load_delta_config, build_report
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -46,6 +46,16 @@ class UiPlatformDiffTests(unittest.TestCase):
     def test_alternate_runtime_paths_are_absent_from_factory_report(self) -> None:
         self.assertEqual(self.report["summary"]["functional_parity_cases"], 0)
         self.assertNotIn("0x07e5", self.report["functions"]["0x004357b0"]["cases"])
+
+    def test_delta_config_accepts_committed_schema(self) -> None:
+        config = _load_delta_config(REPO_ROOT)
+
+        buildings = config["city_buildings"]
+        self.assertEqual(buildings["view"], "Citymain.rsrc:2011")
+        self.assertEqual(len(buildings["visuals"]), 16)
+        actions = config["city_building_actions"]
+        self.assertEqual(actions["view"], "Citymain.rsrc:2011")
+        self.assertGreater(len(actions["actions"]), 0)
 
 
 if __name__ == "__main__":

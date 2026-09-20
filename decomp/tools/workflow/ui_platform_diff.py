@@ -31,6 +31,8 @@ def _load_delta_config(repo_root: Path) -> dict:
     if not isinstance(data, dict):
         raise ValueError(f"{DELTA_CONFIG_PATH}: expected a mapping")
     allowed = {
+        "city_building_actions",
+        "city_buildings",
         "class_substitutions",
         "functional_parity_cases",
         "node_class_substitutions",
@@ -41,6 +43,23 @@ def _load_delta_config(repo_root: Path) -> dict:
     unknown = sorted(set(data) - allowed)
     if unknown:
         raise ValueError(f"{DELTA_CONFIG_PATH}: unknown fields {', '.join(unknown)}")
+    # The city-building sections feed tools/ui_rust_codegen.py's scene layout;
+    # it owns the row-level schema. Here we only pin the top-level shape.
+    for section_name, list_key in (
+        ("city_buildings", "visuals"),
+        ("city_building_actions", "actions"),
+    ):
+        section = data.get(section_name)
+        if section is None:
+            continue
+        if not isinstance(section, dict) or set(section) != {"view", "evidence", list_key}:
+            raise ValueError(
+                f"{DELTA_CONFIG_PATH}: {section_name} must declare view, evidence, and {list_key}"
+            )
+        if not str(section["evidence"]).strip():
+            raise ValueError(f"{DELTA_CONFIG_PATH}: {section_name} evidence is required")
+        if not isinstance(section[list_key], list):
+            raise ValueError(f"{DELTA_CONFIG_PATH}: {section_name}/{list_key} must be a list")
     substitutions = data.get("class_substitutions", {})
     if not isinstance(substitutions, dict):
         raise ValueError(f"{DELTA_CONFIG_PATH}: class_substitutions must be a mapping")
