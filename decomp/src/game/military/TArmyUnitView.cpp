@@ -39,6 +39,15 @@ TArmyUnitView::TArmyUnitView() : TView() {}
 // FUNCTION: IMPERIALISM 0x004a9540
 TArmyUnitView::~TArmyUnitView() {}
 
+// FUNCTION: IMPERIALISM 0x004a9560
+void TArmyUnitView::IArmyUnitView(TView* panel, int* offsetLayout, int* sizeLayout,
+                                  int sizeDeterminerX, int sizeDeterminerY,
+                                  TMilitaryUnit* unit) {
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout,
+                                          sizeDeterminerX, sizeDeterminerY, 0);
+  militaryUnit60 = unit;
+}
+
 // FUNCTION: IMPERIALISM 0x004a95b0
 void TArmyUnitView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

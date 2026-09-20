@@ -21,5 +21,10 @@ public:
 
   // NOOP: verified empty in original 0x004aadc6 (no standalone TMiniArmyView::TMiniArmyView body exists: CreateObject 0x004aad90 inlines this default ctor, calling the TControl base ctor directly at that site)
   TMiniArmyView() {}
+
+  // Second-phase init mirroring TMiniCivView::InitializeForCivilianUnit. Dead
+  // standalone COMDAT at 0x004aae30; no surviving caller.
+  void InitializeForMilitaryUnit(TView* panel, int* offsetLayout, int* sizeLayout,
+                                 TMilitaryUnit* unit);
 };
 ASSERT_SIZE(TMiniArmyView, 0x88);

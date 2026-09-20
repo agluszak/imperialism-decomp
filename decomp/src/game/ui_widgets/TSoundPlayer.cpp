@@ -121,6 +121,27 @@ char TSoundPlayer::DoIdle(int action) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00593530
+char TSoundPlayer::FadeCD() {
+  char keepTimer = 1;
+  if (fadeStartTick16 > 0) {
+    unsigned int now = GetTickCountDiv16();
+    int remaining = static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) -
+                    static_cast<int>(now) + static_cast<int>(fadeStartTick16);
+    if (!(remaining > 0 && fadeStartTick16 <= now)) {
+      remaining = 0;
+      keepTimer = 0;
+      fadeStartTick16 = 0;
+      if (static_cast<short>(pendingAudioCueId) == static_cast<short>(remaining)) {
+        g_cdAudioDevice.StopPlayback();
+      }
+    }
+    g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(static_cast<short>(remaining) << 8);
+    return keepTimer;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005935c0
 void TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue() {
   if (clearCuePoolsAfterFade != 0 && fadeStartTick16 == 0) {

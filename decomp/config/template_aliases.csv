@@ -263,3 +263,4 @@
 0x00607782|0x00608257|CWnd::CWnd_00607782|folded_symbol_group
 0x006077c0|0x00608257|CWnd::CWnd_006077C0|folded_symbol_group
 0x006244a3|0x0062409a|CThreadLocalObject|folded_symbol_group
+0x004b8530|0x004b4f70|?IProductionOrder@TProductionOrder@@UAEXPAVTCity@@F@Z|per_tu_duplicate

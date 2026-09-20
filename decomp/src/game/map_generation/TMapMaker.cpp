@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include "game/strategic_terrain.h"
 #include "game/ui_tags_common.h"
@@ -1558,6 +1559,29 @@ int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
     return -1;
   }
   return neighbor;
+}
+
+// Dead standalone helper: converts a full-resolution 108-wide grid tile index to a
+// staggered-hex pixel center scaled by cellSize (odd rows shifted a full cell, even
+// rows half a cell; Y centered on the cell). No surviving caller.
+// FUNCTION: IMPERIALISM 0x00528d80
+void ComputeHexTilePixelCenter(int tileIndex, int* outX, int* outY, int cellSize) {
+  int xOffset;
+  *outY = tileIndex / 0x6c;
+  if ((tileIndex / 0x6c & 1) != 0) {
+    xOffset = cellSize;
+  } else {
+    xOffset = cellSize / 2;
+  }
+  *outX = tileIndex % 0x6c * cellSize + xOffset;
+  *outY = *outY * cellSize + cellSize / 2;
+}
+
+// FUNCTION: IMPERIALISM 0x00528e00
+void TMapMaker::WriteTileGridToFile(const char* path) {
+  FILE* file = fopen(path, g_szLiteralWb_006976E0);
+  fwrite(mapTileGrid08, 0x6540, 1, file);
+  fclose(file);
 }
 
 // Two-pass ownership smoothing over the full-resolution generation grid (rows 1..58

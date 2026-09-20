@@ -18,5 +18,12 @@ public:
 
   short randomResetFrame2c;     // +0x2c frame that may restart the cycle early
   short randomResetThreshold2e; // +0x2e threshold compared with rand() & 0xf
+
+  // Second-phase init duplicating TAnimation::IAnimation's assignment pattern plus
+  // the two random-reset fields (retail emits the stores inline, no IAnimation
+  // call). Dead standalone COMDAT at 0x0049f4f0.
+  void ICivAnimation(TView* ownerViewArg, RECT* rect, short frameCountArg,
+                     short frameResourceBaseIdArg, int ticksPerFrameArg, int tag,
+                     short randomResetFrameArg, short randomResetThresholdArg);
 };
 ASSERT_SIZE(TCivAnimation, 0x30);

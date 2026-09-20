@@ -1138,6 +1138,8 @@ int g_McAppUiFlag_006A1B18 = 0;
 int g_McAppUiFlag_006A1B1C = 0;
 // GLOBAL: IMPERIALISM 0x006a1b0c
 int g_McAppUiFlag_006A1B0C = 0;
+// GLOBAL: IMPERIALISM 0x006a1b5c
+int g_McAppUiFlag_006A1B5C = 0;
 
 // GLOBAL: IMPERIALISM 0x0064b8f0
 int g_Reset_Quick_Draw_Value_0064B8F0 = 1;

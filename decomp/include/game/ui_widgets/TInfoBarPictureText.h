@@ -14,7 +14,9 @@ public:
   virtual void SetTextAndLayoutRect(CString text,
                                     RECT* layoutRect) override; // slot 0x80 0x5b5cb0
 
-  // NOOP: verified empty in original 0x005b5af7 (no standalone TInfoBarPictureText::TInfoBarPictureText body exists: CreateObject 0x005b5ac0 inlines this default ctor, calling the TStaticText base ctor directly at that site)
+  // NOOP: verified empty in original 0x005b5af7; TDeluxeText's ctor performs the
+  // field init seen inline at CreateObject 0x005b5ac0 (the standalone emission at
+  // 0x005b5bd0 is TDeluxeText's retained COMDAT, not a TInfoBarPictureText body).
   TInfoBarPictureText() {}
 };
 ASSERT_SIZE(TInfoBarPictureText, 0xb4);

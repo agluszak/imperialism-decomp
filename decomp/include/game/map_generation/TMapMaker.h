@@ -70,6 +70,26 @@ public:
   // Marks the region record of tileIndex, then visits its six hex neighbours.
   // slot 28 / 0x70
   virtual void EraseZones(long coarseIndex);
+  // Retained VC5 copy of the class-index purge inlined inside
+  // RunMapGenerationAttempt (clears regionClassGrid10 cells and
+  // groupMemberLists1a8 entries equal to classIndex).
+  // SYNTHETIC: IMPERIALISM 0x00526fd0
+  // TMapMaker::ClearRegionClassIndexReferences
+  void ClearRegionClassIndexReferences(int classIndex) {
+    signed char* regionClassGridFlat = &regionClassGrid10[0][0];
+    for (int cell = 0; cell < 15 * 27; ++cell) {
+      if (regionClassGridFlat[cell] == classIndex) {
+        regionClassGridFlat[cell] = -1;
+      }
+    }
+    for (int group = 0; group < 7; ++group) {
+      for (int member = 0; member < 3; ++member) {
+        if (groupMemberLists1a8[group][member] == classIndex) {
+          groupMemberLists1a8[group][member] = -1;
+        }
+      }
+    }
+  }
   // Resolves the region-grid cell adjacent to cell in hex direction 0..5. slot 29 / 0x74
   virtual int GetAdjacentRegionGridCell(int cell, int direction);
   // Runs between region-grid expansion and terrain-feature placement. slot 30 / 0x78
@@ -160,6 +180,10 @@ public:
   // wires mutual primary-neighbour adjacency between each link's two region contexts, then
   // refreshes port-zone adjacency and zone status codes. 0x0052e350.
   void RebuildUMapperRouteRecordsAndActiveMapRects();
+
+  // Dead debug helper: dumps the 0x6540-byte map-tile grid to a "wb" file. No
+  // surviving caller. 0x00528e00.
+  void WriteTileGridToFile(const char* path);
 
   // Second-phase entry: parses the map-tuning string into the terrain-class quota
   // globals, seeds the map-gen PRNG from the string hash, then loops generation

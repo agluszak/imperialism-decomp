@@ -21,5 +21,10 @@ public:
   // GetBidderList; +0x62 indexes tradeOfferCells[] and is this row's nation slot.
   short categorySlot;
   short nationSlot;
+
+  // Mac oracle: ITradeOfferNationView(TView*, VPoint&, VPoint&, short, short). Dead
+  // standalone emission; InstallViews inlines the same init. 0x005bd280.
+  void ITradeOfferNationView(TView* panel, int* offsetLayout, int* sizeLayout,
+                             short nation, short category);
 };
 ASSERT_SIZE(TTradeOfferNationView, 0x64);

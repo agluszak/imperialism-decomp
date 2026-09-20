@@ -16,6 +16,11 @@ public:
   TCtlMgr() {}
 
   virtual ~TCtlMgr() override; // slot 0x01 (scalar deleting destructor 0x492de0)
+
+  // Assert-only virtual default (slot 0x71, RET 0x8): asserts the one-shot
+  // McAppUI flag at 0x6a1b5c (header path, line 0x5a7) and returns. The five
+  // leaf vtables that inherit it (TButton/TRadio family) share thunk 0x4096f6.
+  virtual void AssertMcAppUiInvalidationFlagSet(int arg1, int arg2); // slot 0x71 0x492db0
 };
 
 ASSERT_SIZE(TCtlMgr, 0x84);

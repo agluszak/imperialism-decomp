@@ -20,5 +20,10 @@ public:
   // slot to +0x62; Draw currently consumes the latter.
   short categorySlot;
   short nationSlot;
+
+  // Mac oracle: ITradeBidNationView(TView*, VPoint&, VPoint&, short, short). Dead
+  // standalone emission; InstallViews inlines the same init. 0x005bdbd0.
+  void ITradeBidNationView(TView* panel, int* offsetLayout, int* sizeLayout,
+                           short nation, short category);
 };
 ASSERT_SIZE(TTradeBidNationView, 0x64);

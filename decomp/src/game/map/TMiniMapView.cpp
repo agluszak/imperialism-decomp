@@ -30,6 +30,16 @@ TMiniMapView::TMiniMapView()
 // FUNCTION: IMPERIALISM 0x0059a420
 TMiniMapView::~TMiniMapView() {}
 
+// FUNCTION: IMPERIALISM 0x0059a440
+void TMiniMapView::IMiniMapView(TView* panel, int* offsetLayout, int* sizeLayout,
+                                int sizeDeterminerX, int sizeDeterminerY) {
+  (void)sizeDeterminerX;
+  (void)sizeDeterminerY;
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
+  markerBoxX90 = frameWidth34 / 2 - markerBoxWidth98;
+  markerBoxY94 = frameHeight38 / 2 - markerBoxHeight9c;
+}
+
 // FUNCTION: IMPERIALISM 0x0059a540
 void TMiniMapView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

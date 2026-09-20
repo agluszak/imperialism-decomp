@@ -132,6 +132,10 @@ public:
                                                   const void* mapEntry, short shortA,
                                                   short shortB);      // 0x5493c0
   void SendChangeProvinceOwner(short provinceIndex, short nationTag); // 0x5494b0
+
+  // Dead predicate: every populated nationSessionIds[] slot (skipping 0/-2) equals the
+  // net session's active nation id. No surviving caller. 0x54cbb0.
+  char AreAllSessionSlotsOwnedByActiveNation();
   void SendNewsEvent(int nationSlot, NewsEvent* event);               // 0x549540 (Mac oracle)
   void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
                                                    short shortD, short shortE,

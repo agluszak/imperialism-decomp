@@ -80,6 +80,16 @@ public:
   char HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode);
   void HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode);
   void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);
+  // Dead pair: scan indexList (1-based) for the first HelpSetRecord whose
+  // helpResourceBaseId matches; one returns the record, the other its flagByte.
+  // No surviving callers. 0x005037e0 / 0x00503790.
+  HelpSetRecord* FindHelpSetRecordByResourceBase(short helpResourceBaseId);
+  char GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId);
+  // Dead COMDAT helper: bumps civilianCompletionCounters[index] and reports whether it
+  // reached its per-index threshold (index 1 -> 3, indices 0/2/3/4 -> 1, others -> -1).
+  // TryShowCivilianCompletionMilestoneNotification carries the same sequence inline.
+  // 0x00503830.
+  char IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index);
   // 0x5010b0 — scans indexList for the pending event matching the active view's
   // currentTurnEventCode and activates one: the lowest-rank unflagged match wins;
   // otherwise a flagged match, else a zero previousHelpResourceBaseId match, is activated.

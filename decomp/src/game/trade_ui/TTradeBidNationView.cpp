@@ -21,6 +21,15 @@ TTradeBidNationView::~TTradeBidNationView() {}
 
 IMPLEMENT_DYNCREATE(TTradeBidNationView, TView)
 
+// FUNCTION: IMPERIALISM 0x005bdbd0
+void TTradeBidNationView::ITradeBidNationView(TView* panel, int* offsetLayout, int* sizeLayout,
+                                              short nation, short category) {
+  InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout, sizeLayout,
+                                          5, 5, 0);
+  nationSlot = nation;
+  categorySlot = category;
+}
+
 // FUNCTION: IMPERIALISM 0x005bdc20
 void TTradeBidNationView::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -38,5 +38,24 @@ public:
   int markerBoxHeight9c;
 
   TMiniMapView();
+
+  // Mac oracle: IMiniMapView(TView*, const VPoint&, const VPoint&, SizeDeterminer,
+  // SizeDeterminer). Second-phase init; the two SizeDeterminer args are dead on
+  // Windows (4,4 forwarded literally). Dead standalone COMDAT at 0x0059a440.
+  void IMiniMapView(TView* panel, int* offsetLayout, int* sizeLayout, int sizeDeterminerX,
+                    int sizeDeterminerY);
+
+  // Mac oracle: SetScreenSize(VPoint&). Retail retains a dead standalone COMDAT at
+  // 0x0059a4c0; the live sites in TMapUberPicture carry the same field sequence
+  // inline (VC5 declines to inline this body in the recomp TUs).
+  // SYNTHETIC: IMPERIALISM 0x0059a4c0
+  // TMiniMapView::SetScreenSize
+  void SetScreenSize(const POINT& size) {
+    markerBoxWidth98 = size.x;
+    markerBoxHeight9c = size.y;
+    markerBoxX90 = frameWidth34 / 2 - markerBoxWidth98 - 2;
+    markerBoxY94 = frameHeight38 / 2 - markerBoxHeight9c - 2;
+    RefreshControl();
+  }
 };
 ASSERT_SIZE(TMiniMapView, 0xa0);

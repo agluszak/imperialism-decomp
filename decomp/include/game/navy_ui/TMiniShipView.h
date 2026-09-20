@@ -26,5 +26,9 @@ public:
   // admiral (+0x20), and taskForce (+0xc) through this
   // pointer, matching TShip's layout exactly (same shape as TShipView::shipNode60).
   TShip* shipNode84;
+
+  // Dead standalone emission of the row init: frame init + eventNumber60 = 0x22 +
+  // shipNode84 store; live creation sites inline the same sequence. 0x00569e60.
+  void IMiniShipView(TView* panel, int* offsetLayout, int* sizeLayout, TShip* ship);
 };
 ASSERT_SIZE(TMiniShipView, 0x88);

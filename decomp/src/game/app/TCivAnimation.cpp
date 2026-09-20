@@ -14,6 +14,22 @@
 
 IMPLEMENT_DYNCREATE(TCivAnimation, TAnimation)
 
+// FUNCTION: IMPERIALISM 0x0049f4f0
+void TCivAnimation::ICivAnimation(TView* ownerViewArg, RECT* rect, short frameCountArg,
+                                  short frameResourceBaseIdArg, int ticksPerFrameArg, int tag,
+                                  short randomResetFrameArg, short randomResetThresholdArg) {
+  ownerView = ownerViewArg;
+  screenRect = *rect;
+  frameCount = frameCountArg;
+  frameResourceBaseId = frameResourceBaseIdArg;
+  frameIndex = 0;
+  ticksSinceFrameChange = 0;
+  ticksPerFrame = ticksPerFrameArg;
+  registryTag = tag;
+  randomResetFrame2c = randomResetFrameArg;
+  randomResetThreshold2e = randomResetThresholdArg;
+}
+
 // FUNCTION: IMPERIALISM 0x0049f580
 void TCivAnimation::Tick() {
   ++ticksSinceFrameChange;

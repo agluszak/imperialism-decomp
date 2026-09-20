@@ -31,6 +31,15 @@ TMiniArmyView::~TMiniArmyView() {}
 
 IMPLEMENT_DYNCREATE(TMiniArmyView, TControl)
 
+// FUNCTION: IMPERIALISM 0x004aae30
+void TMiniArmyView::InitializeForMilitaryUnit(TView* panel, int* offsetLayout, int* sizeLayout,
+                                              TMilitaryUnit* unit) {
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
+  militaryUnit84 = unit;
+  eventNumber60 = 0x22;
+  SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
+}
+
 // FUNCTION: IMPERIALISM 0x004aaeb0
 void TMiniArmyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

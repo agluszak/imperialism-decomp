@@ -24,6 +24,15 @@ TTradeOfferNationView::~TTradeOfferNationView() {}
 
 IMPLEMENT_DYNCREATE(TTradeOfferNationView, TView)
 
+// FUNCTION: IMPERIALISM 0x005bd280
+void TTradeOfferNationView::ITradeOfferNationView(TView* panel, int* offsetLayout,
+                                                  int* sizeLayout, short nation, short category) {
+  InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout, sizeLayout,
+                                          5, 5, 0);
+  nationSlot = nation;
+  categorySlot = category;
+}
+
 // FUNCTION: IMPERIALISM 0x005bd2d0
 void TTradeOfferNationView::Draw(RECT* rectBuffer) {
   CString finalText;

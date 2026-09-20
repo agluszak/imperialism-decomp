@@ -44,5 +44,9 @@ public:
   TEditText();
   void IEditText(TView* panel, int* offsetLayout, int* sizeLayout,
                  short maximumCharacterCount); // 0x004905e0
+
+  // Dead COMDAT helper: CopyViewStateFromSource plus the three TEditText fields.
+  // TNumberText::ShallowClone carries the same sequence inline. 0x00491260.
+  void CopyEditTextStateFromSource(TEditText* source);
 };
 ASSERT_SIZE(TEditText, 0xa0);

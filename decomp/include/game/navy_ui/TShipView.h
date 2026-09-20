@@ -29,5 +29,11 @@ public:
 
   // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
   void RunEngineerOrderNameEditDialogAndApply();
+
+  // Mac oracle: IShipView(TView*, const VPoint&, const VPoint&, SizeDeterminer,
+  // SizeDeterminer, TShip*, TTaskForce*). Dead standalone emission; live creation
+  // sites inline the same init sequence. 0x00565490.
+  void IShipView(TView* panel, int* offsetLayout, int* sizeLayout,
+                 int sizeDeterminerX, int sizeDeterminerY, TShip* ship, class TTaskForce* taskForce);
 };
 ASSERT_SIZE(TShipView, 0x68);

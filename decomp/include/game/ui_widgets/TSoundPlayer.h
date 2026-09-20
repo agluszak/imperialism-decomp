@@ -61,6 +61,12 @@ public:
   virtual int PlaySoundSynchronously(short soundId, short channel, short priority); // 0x30 0x5e5190
   virtual int PlayAiffFile(CString fileName, short channel, short priority);        // 0x31 0x5e51b0
 
+  // Non-virtual: the member form of the deferred CD-audio fade tick — same body as
+  // the free UpdateDeferredCdAudioFade (0x593210) rebound to `this`. Retail retains
+  // a dead standalone COMDAT at 0x593530; no live caller references it. Mac oracle:
+  // TSoundPlayer::FadeCD.
+  char FadeCD();
+
   void StopCdAudioPlayback(char fadeOut); // 0x593c10
 
   // Arm the deferred CD-audio fade callback unless a fade is already active. This is

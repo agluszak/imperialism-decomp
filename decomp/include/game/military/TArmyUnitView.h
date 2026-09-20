@@ -22,5 +22,11 @@ public:
   void HandleCrossUArmyViewsNameCommand();
 
   TArmyUnitView();
+
+  // Mac oracle: IArmyUnitView(TView*, const VPoint&, const VPoint&, SizeDeterminer,
+  // SizeDeterminer, TMilitaryUnit*). Dead standalone emission; live creation sites
+  // inline the same init. 0x004a9560.
+  void IArmyUnitView(TView* panel, int* offsetLayout, int* sizeLayout,
+                     int sizeDeterminerX, int sizeDeterminerY, TMilitaryUnit* unit);
 };
 ASSERT_SIZE(TArmyUnitView, 0x64);

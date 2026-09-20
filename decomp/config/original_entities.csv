@@ -3206,7 +3206,7 @@ address|name|symbol|size|type|prototype|provenance
 503420|ActivatePendingEventAndRefreshView||702|function|undefined ActivatePendingEventAndRefreshView()|
 503790|IltTarget_00503790||58|function|undefined IltTarget_00503790()|
 5037e0|IltTarget_005037e0||55|function|undefined IltTarget_005037e0()|
-503830|IltTarget_00503830||37|function|undefined IltTarget_00503830()|
+503830|IltTarget_00503830||65|function|undefined IltTarget_00503830()|
 5038b0|TryShowCivilianCompletionMilestoneNotification||414|function|void __thiscall TryShowCivilianCompletionMilestoneNotification(int * pCivilianOrderEntry)|
 503ac0|EnsureMapActionContextViewAndBuildDefaultTileMenu||157|function|undefined EnsureMapActionContextViewAndBuildDefaultTileMenu()|
 503b90|CycleTradeScreenMode0To2||36|function|undefined CycleTradeScreenMode0To2()|
@@ -3638,7 +3638,7 @@ address|name|symbol|size|type|prototype|provenance
 5267f0|ValidateSeedCandidateExistsForEachTerrainClass||737|function|undefined ValidateSeedCandidateExistsForEachTerrainClass()|
 526ba0|TMapMaker::GetBoolSlot28||81|function|undefined TMapMaker_GenerateRandomCoarseGridCoord27x15()|
 526c20|TMapMaker::RunMapGenerationAttempt||747|function|void __thiscall RunMapGenerationAttempt(void)|
-526fd0|IltTarget_00526fd0||77|function|undefined IltTarget_00526fd0()|
+526fd0|TMapMaker::ClearRegionClassIndexReferences||77|function|void ClearRegionClassIndexReferences(int)|compiler_synthetic
 527040|TMapMaker::QueryStepValue||500|function|undefined ExpandCoarseRegionNodeWithNeighborChecks()|
 5272c0|IltTarget_005272c0||40|function|undefined IltTarget_005272c0()|
 527300|TMapMaker::DispatchQueuedUiCommandAndRelease||358|function|undefined MergeCoarseRegionSetsAcrossNeighbors()|
@@ -5713,7 +5713,7 @@ address|name|symbol|size|type|prototype|provenance
 59a3f0|TMiniMapView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59a420|TMiniMapView::~TMiniMapView||5|function|void __thiscall ~TMiniMapView(void)|
 59a440|IltTarget_0059a440||81|function|undefined IltTarget_0059a440()|
-59a4c0|IltTarget_0059a4c0||82|function|undefined IltTarget_0059a4c0()|
+59a4c0|TMiniMapView::SetScreenSize||82|function|void SetScreenSize(const POINT &)|compiler_synthetic
 59a540|TMiniMapView::Draw||783|function|undefined RecomputeAndRenderStrategicMapViewportOverlay()|
 59a920|TMiniMapView::TrackMouse||312|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)|
 59acf0|`dynamic initializer for 'g_scaledShortConst_6A46A0''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A46A0''(void)|library
@@ -5943,9 +5943,6 @@ address|name|symbol|size|type|prototype|provenance
 5a65e0|IltTarget_005a65e0||36|function|undefined IltTarget_005a65e0()|
 5a6620|TNextMoveCommand::DoIt||99|function|void __thiscall DoIt(void)|
 5a67e0|`dynamic initializer for 'g_scaledShortConst_6A54A8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A54A8''(void)|library
-5a6830|InitializeTacticalTileSize||21|function|void __cdecl InitializeTacticalTileSize(void)|source_recovery
-5a6860|InitializeTacticalBattlefieldSurfaceSize||21|function|void __cdecl InitializeTacticalBattlefieldSurfaceSize(void)|source_recovery
-5a6890|InitializeTacticalUnitSpriteCellSize||16|function|void __cdecl InitializeTacticalUnitSpriteCellSize(void)|source_recovery
 5a6940|ClipRect_AdjustOffset_Validate||144|function|undefined4 __stdcall ClipRect_AdjustOffset_Validate(int * bounds, astruct_15 * param_2, astruct_16 * param_3)|
 5a6a20|InitializeTacticalUnitFacingOffsetTable||5022|function|undefined OrphanLeaf_NoCall_Ins838_005a6a20()|
 5a82b0|TTacticalBattleView::CreateObject|?CreateObject@TTacticalBattleView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
@@ -8356,6 +8353,7 @@ address|name|symbol|size|type|prototype|provenance
 626c02|AUX_DATA::~AUX_DATA|??1AUX_DATA@@QAE@XZ|10|function|public: __thiscall AUX_DATA::~AUX_DATA(void)|msvc500_library_override
 626c0c|CDocManager::~CDocManager|??1CDocManager@@UAE@XZ|113|function|public: virtual __thiscall CDocManager::~CDocManager(void)|msvc500_library_oracle
 626c7d|AfxWinTerm|?AfxWinTerm@@YGXXZ|178|function|void __stdcall AfxWinTerm(void)|msvc500_library_oracle
+707081|InitializeWinmmImportBindings||150|function|undefined InitializeWinmmImportBindings()|
 413620|TAmbitApplication::~TAmbitApplication|||global||
 415e55|TRuntimeLinkedBlockChainState_0063E880::thunk_DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70|||global||
 42d240|InitializeCityTradeDiplomacyUiEntries|||global||
@@ -10582,6 +10580,9 @@ address|name|symbol|size|type|prototype|provenance
 59acc0|`dynamic initializer for 'g_gfxCoordinateScale_6A4630''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4630''(void)|source_recovery
 59f590|`dynamic initializer for 'g_gfxCoordinateScale_6A46D8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A46D8''(void)|source_recovery
 5a67b0|`dynamic initializer for 'g_gfxCoordinateScale_6A5438''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5438''(void)|source_recovery
+5a6830|InitializeTacticalTileSize||21|function|void __cdecl InitializeTacticalTileSize(void)|source_recovery
+5a6860|InitializeTacticalBattlefieldSurfaceSize||21|function|void __cdecl InitializeTacticalBattlefieldSurfaceSize(void)|source_recovery
+5a6890|InitializeTacticalUnitSpriteCellSize||16|function|void __cdecl InitializeTacticalUnitSpriteCellSize(void)|source_recovery
 5adae0|`dynamic initializer for 'g_gfxCoordinateScale_6A5760''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5760''(void)|source_recovery
 5aeed0|`dynamic initializer for 'g_gfxCoordinateScale_6A57B8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A57B8''(void)|source_recovery
 5b0e10|`dynamic initializer for 'g_gfxCoordinateScale_6A5810''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5810''(void)|source_recovery

@@ -45,6 +45,14 @@ int TNumberText::UpdateControlCachedIntFromWindowText() {
   return this->value;
 }
 
+// FUNCTION: IMPERIALISM 0x00491260
+void TEditText::CopyEditTextStateFromSource(TEditText* source) {
+  CopyViewStateFromSource(source);
+  editWindow = source->editWindow;
+  editFont = source->editFont;
+  maxCharacterCount = source->maxCharacterCount;
+}
+
 // FUNCTION: IMPERIALISM 0x004912b0
 TObject* TNumberText::ShallowClone() {
   TObject* cloned = this->ShallowFree();

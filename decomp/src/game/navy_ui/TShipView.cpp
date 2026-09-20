@@ -34,6 +34,16 @@ TShipView::~TShipView() {}
 
 IMPLEMENT_DYNCREATE(TShipView, TView)
 
+// FUNCTION: IMPERIALISM 0x00565490
+void TShipView::IShipView(TView* panel, int* offsetLayout, int* sizeLayout,
+                          int sizeDeterminerX, int sizeDeterminerY, TShip* ship,
+                          TTaskForce* taskForce) {
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout,
+                                          sizeDeterminerX, sizeDeterminerY, 0);
+  shipNode60 = ship;
+  field64 = taskForce;
+}
+
 // FUNCTION: IMPERIALISM 0x005654e0
 void TShipView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

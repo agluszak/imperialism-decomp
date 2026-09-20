@@ -2758,6 +2758,17 @@ bool TMultiplayerMgr::WaitForClients() {
   return g_pNetMgr006a6014->ProbeNationReachabilityAndMarkAwolBitmask() == 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0054cbb0
+char TMultiplayerMgr::AreAllSessionSlotsOwnedByActiveNation() {
+  for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
+    if (nationSessionIds[slot] != 0 && nationSessionIds[slot] != -2 &&
+        nationSessionIds[slot] != g_pNetMgr006a6014->GetSessionActiveNationId()) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x0054cc00
 void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot) {
   if (nationSlot == -1) {

@@ -992,6 +992,61 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   helpPicture->ShowTopicList();
 }
 
+// FUNCTION: IMPERIALISM 0x00503790
+char THelpMgr::GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId) {
+  HelpSetRecord* record;
+  char found = 0;
+  int index = 1;
+  while (index <= indexList->GetSize()) {
+    record = static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
+    if (record->helpResourceBaseId == helpResourceBaseId) {
+      found = 1;
+    }
+    ++index;
+    if (found != 0) {
+      break;
+    }
+  }
+  return record->flagByte;
+}
+
+// FUNCTION: IMPERIALISM 0x005037e0
+HelpSetRecord* THelpMgr::FindHelpSetRecordByResourceBase(short helpResourceBaseId) {
+  HelpSetRecord* record;
+  char found = 0;
+  int index = 1;
+  while (index <= indexList->GetSize()) {
+    record = static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
+    if (record->helpResourceBaseId == helpResourceBaseId) {
+      found = 1;
+    }
+    ++index;
+    if (found != 0) {
+      break;
+    }
+  }
+  return record;
+}
+
+// FUNCTION: IMPERIALISM 0x00503830
+char THelpMgr::IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index) {
+  short* counters = &civilianCompletionCounters10.values[0];
+  short threshold = -1;
+  switch (index) {
+  case 0:
+  case 2:
+  case 3:
+  case 4:
+    threshold = 1;
+    break;
+  case 1:
+    ++counters[index];
+    return counters[index] == 3;
+  }
+  ++counters[index];
+  return counters[index] == threshold;
+}
+
 // FUNCTION: IMPERIALISM 0x005038b0
 void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilianOrderEntry) {
   int titleStringIndex = -1;
