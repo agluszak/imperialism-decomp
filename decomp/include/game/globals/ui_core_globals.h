@@ -99,6 +99,8 @@ extern int g_QuickDrawGetCursorAssertGate;
 
 extern int g_QuickDrawEqualRgnAssertGate;
 
+extern int g_QuickDrawStateAssertGate_006A1DB8;
+
 extern char* g_pNationInfoEmptyText_0066f050;
 
 extern short g_anAbilityStatusPictureIndex_0066F058[29];

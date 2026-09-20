@@ -1257,6 +1257,9 @@ int g_QuickDrawGetCursorAssertGate = 0;
 // EqualRgn reports its unsupported QuickDraw compatibility assertion when zero.
 // GLOBAL: IMPERIALISM 0x006a1dd0
 int g_QuickDrawEqualRgnAssertGate = 0;
+// Stroke-state compatibility gate read only by the dead out-of-line copy at 0x495370.
+// GLOBAL: IMPERIALISM 0x006a1db8
+int g_QuickDrawStateAssertGate_006A1DB8 = 0;
 
 // Overlay clip cache parameters
 // GLOBAL: IMPERIALISM 0x006a4450
@@ -1561,7 +1564,7 @@ LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqu
 // GLOBAL: IMPERIALISM 0x006a1890
 int g_nDibOrientationFlag_006A1890 = 0;
 // Probed aux-output (CD-audio line) device index; -1 until
-// ProbeAuxOutputDeviceIndexByPidMask (0x5e1430, unported) finds one.
+// ProbeAuxOutputDeviceIndexByPidMask (0x5e1430, wave_helpers.cpp) finds one.
 // GLOBAL: IMPERIALISM 0x0069b89c
 int g_nAuxOutputDeviceIndex = -1;
 // GLOBAL: IMPERIALISM 0x6a1d9c

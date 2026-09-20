@@ -18,7 +18,7 @@ void TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout,
   int captionSize[2] = {0x80, 0x18};
   int captionOffset[2] = {offsetLayout[0] + 0xac, offsetLayout[1]};
   TStaticText* caption = new TStaticText();
-  caption->IStaticText(this, captionOffset, captionSize, 5, 5, static_cast<short>(field60), 0x18);
+  caption->IStaticText(this, captionOffset, captionSize, 5, 5, static_cast<short>(captionStringResourceGroup), 0x18);
 }
 // SYNTHETIC: IMPERIALISM 0x004b19b0
 // TGPCheater::CreateObject

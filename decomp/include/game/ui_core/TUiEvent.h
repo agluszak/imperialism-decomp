@@ -21,8 +21,8 @@ ASSERT_SIZE(TUiEvent, 0x14);
 // The shared keyboard/turn-order-navigation command event (persistent global object @
 // 0x6a1780): a TUiEvent header followed by the command parameters written once per
 // keystroke by CIncludeView::OnKeyDown (0x484260) and read by TGameWindow::DoKeyEvent
-// (0x4ffd70). The not-yet-ported CMcWindow WM_CHAR handler (0x493ce0) shares the same
-// global object and should use this type when it's ported.
+// (0x4ffd70). The CMcWindow WM_CHAR handler (0x493ce0) shares the same
+// global object and this type.
 struct TToolboxEvent {
   TUiEvent event;             // 0x00 TEvent-derived header (installs vtable 0x648590)
   int mouseX;                 // 0x14 mouse-event client X

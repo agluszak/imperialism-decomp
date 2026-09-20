@@ -46,7 +46,7 @@ Common conventions in every ratio body:
    both return 0 — this proved `CompareMissionScoreVariantsByMode` (0x004dc540) is
    **virtual slot 0x52** (`call [vt+0x148]`), now declared so in the header.
 3. Join if `ComputeMinisterSkillFloatSlot8C() < this->slotA3(target)` — slot 0xa3
-   (vt+0x28c, body 0x004e1f40, **not yet ported**; provisional inline returns 0.0f).
+   (vt+0x28c, body 0x004e1f40, ported as `TGreatPower::GetPeaceThreat`).
 4. On join: for each eligible nation `i<7` with `GetRelationTierSlot70(my, i) == 2` and
    `HasPolicyWithNationSlot44(i, target)`, call `ApplyRelationCode4Slot7c(my, i, 1)`;
    then `TNewsMgr::AddTreatyEvent(0x1c, target, my, 0)`.

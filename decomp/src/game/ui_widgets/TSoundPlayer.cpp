@@ -67,7 +67,7 @@ IMPLEMENT_DYNCREATE(TSoundPlayer, TEventHandler)
 // FUNCTION: IMPERIALISM 0x00593370
 TSoundPlayer::TSoundPlayer()
     : TEventHandler(), audioCuePool(0), remainingRandomAudioCues(0), cdAudioPlaybackActive(0),
-      unknown79(0), unknown7A(0), fadeStartTick16(0) {}
+      unused79(0), unused7A(0), fadeStartTick16(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005933b0
 // TSoundPlayer::`scalar deleting destructor'
@@ -400,7 +400,7 @@ void TSoundPlayer::ISoundPlayer(int idleFrequency) {
   this->activeAudioCueId = 0;
   g_cdAudioDevice.EnsureCdAudioDeviceHandleInitialized();
   this->idleFrequencyTicks = idleFrequency;
-  // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
+  // Register for idle ticks on the global UI root controller (virtual slot 0x29).
   g_pAmbitApplication->InstallCohandler(this, 1);
 }
 

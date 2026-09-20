@@ -30,7 +30,7 @@ public:
   // 0x45..0x67 and 0x69..0x73 inherited from TNoHilitePicture.
   // RET 0x1c = 7 stack dwords. Types read off 0x4bac50: arg5 feeds
   // CreateBitmapResourceLoaderHandle, and args 6/7 are the SetGWorld(context, flags)
-  // pair restored at the end. Body is still unported. slot 0x74 0x4bac50
+  // pair restored at the end. slot 0x74 0x4bac50
   virtual void BlitBitmapResourceRectWithScreenOffsetAndPalette(
       RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY, short offsetX,
       short resourceId, TQuickDrawSurfaceContext* restoreContext, int restoreFlags);

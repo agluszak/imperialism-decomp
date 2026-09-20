@@ -20,7 +20,7 @@ public:
   // NOOP: verified empty in original 0x00565433 (no standalone TShipView::TShipView body exists: CreateObject 0x00565400 inlines this default ctor, calling the TView base ctor directly at that site)
   TShipView() {}
 
-  // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   // The order node this row represents: Draw (0x5654e0) reads
   // type (+4), name (+0x18), strength (+0x1c), and
   // admiral (+0x20) through this pointer, matching TShip's layout exactly.

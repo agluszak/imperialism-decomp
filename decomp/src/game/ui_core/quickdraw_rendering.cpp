@@ -473,11 +473,41 @@ void SetQuickDrawTextFace(short value) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004952c0
+void MarkQuickDrawStrokePairDirty() {
+  g_bQuickDrawStrokePairDirty = 1;
+}
+
+// Dead out-of-line copy of the resolved-origin/pen-state snapshot; no retail caller
+// remains (every reach site was inlined).
+// FUNCTION: IMPERIALISM 0x004952e0
+void CopyQuickDrawStrokeStateBlock(int* out) {
+  memcpy(out, &g_nQuickDrawResolvedTextOriginX, 5 * sizeof(int));
+}
+
 // FUNCTION: IMPERIALISM 0x00495310
 void SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize) {
   g_nQuickDrawPenHorizontalSize = static_cast<int>(horizontalSize);
   g_nQuickDrawPenVerticalSize = static_cast<int>(verticalSize);
   g_bQuickDrawStrokePairDirty = 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00495340
+short SetQuickDrawStrokeStateAndMarkDirty(short state) {
+  g_bQuickDrawStrokePairDirty = 1;
+  g_Reset_Quick_Draw_State_006A1D10 = state;
+  return state;
+}
+
+// Dead out-of-line assert-guard body; reports QuickDraw.cpp:0x35a when the gate is
+// zero, matching the g_QuickDraw*AssertGate pattern used by the live cursor leaves.
+// FUNCTION: IMPERIALISM 0x00495370
+int QuickDrawStateAssertGuard() {
+  int result = g_QuickDrawStateAssertGate_006A1DB8;
+  if (g_QuickDrawStateAssertGate_006A1DB8 == 0) {
+    result = TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x35a);
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004953a0

@@ -55,11 +55,13 @@ public:
 
   // Object size 0x30 (base TEventHandler ends at 0x20). +0x20 is the offscreen
   // surface the focus animations blit into (read as `*(g_pUiAnimator) + 0x20` at
-  // 0x4a0810 and 0x4a05c0). field28 is not touched by the ctor (only zeroed in
-  // IAnimator); its reader is not yet identified.
+  // 0x4a0810 and 0x4a05c0). overlayPhaseTickCount is not touched by the ctor (only zeroed in
+  // IAnimator); DoIdle increments it once per idle tick while a map-interaction
+  // selection is active and resets it to 0 on every 15th tick, when it toggles
+  // g_bStrategicMapSelectionOverlayPhase. It is the selection-blink divider.
   TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
   TList* registryList24;                          // +0x24 transient-animation registry
-  int field28;                                    // +0x28
+  int overlayPhaseTickCount;                        // +0x28
   TMapUberPicture* mapUberPicture2c;              // +0x2c active strategic-map root
 
   TAnimator();

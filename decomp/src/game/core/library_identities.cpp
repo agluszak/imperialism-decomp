@@ -23,6 +23,14 @@
 // LIBRARY: IMPERIALISM 0x00413380
 // name: CObject::operator delete
 
+// LIBRARY: IMPERIALISM 0x004133a0
+// MFC nafxcw registry helper: RegCloseKey on the handle at [ecx], then
+// clears it. Part of the CWinApp registry-key cluster around AfxGetAppRegistryKey.
+
+// LIBRARY: IMPERIALISM 0x00415000
+// MFC/CRT file-find close: if [ecx] holds a find handle (!= -1), calls
+// _findclose and resets it. CFileFind::Close shape.
+
 // LIBRARY: IMPERIALISM 0x00415030
 // name: CWnd::DoDataExchange
 // symbol: ?DoDataExchange@CWnd@@MAEXPAVCDataExchange@@@Z
@@ -170,8 +178,26 @@
 // symbol: ??1CFileDialog@@UAE@XZ
 // prototype: public: virtual __thiscall CFileDialog::~CFileDialog(void)
 
+// LIBRARY: IMPERIALISM 0x0047f760
+// MFC container teardown (one of three byte-identical bodies at
+// 0x47f760/0x5e27c0/0x5e2870): for each of count slots, run the element
+// cleanup thunk then operator_delete; then operator_delete the table and
+// zero head/count globals. MFC template/library code, not game source.
+
 // LIBRARY: IMPERIALISM 0x004845f0
 // ownership-only
+
+// LIBRARY: IMPERIALISM 0x0048d2c0
+// MFC frame-modal window-list pop (winfrm.obj family): unlinks a node from
+// the DAT_006a1ac4 disable-list head, returns it to the CPlex freelist, and
+// re-enables the next tracked top-level window via CWnd::EnableWindow.
+// Paired with the push body at 0x48d390 (CFrameWnd modal state machinery).
+
+// LIBRARY: IMPERIALISM 0x0048d390
+// MFC frame-modal window-list push (winfrm.obj family): disables the current
+// top-level window via CWnd::EnableWindow(0), then links a new node onto the
+// DAT_006a1ac4 list (CPlex freelist allocation at DAT_006a1ad0).
+// CFrameWnd modal-state machinery -- MFC library code.
 
 // LIBRARY: IMPERIALISM 0x004919e0
 // name: COleStreamFile::GetStream
@@ -250,6 +276,26 @@
 // LIBRARY: IMPERIALISM 0x004b0970
 // ownership-only
 
+// LIBRARY: IMPERIALISM 0x004d6b70
+// CString::operator= forwarder: calls the shared-body assign then returns
+// this. MFC strcore.obj family.
+
+// LIBRARY: IMPERIALISM 0x004fe5c0
+// CDC::SelectPalette wrapper: SelectPalette([ecx+4] DC, bForceBkgd=0).
+// MFC afxwin/dc inline out-of-line copy.
+
+// LIBRARY: IMPERIALISM 0x00525810
+// CDC::SelectClipRgn wrapper: SelectClipRgn(*[ecx], NULL). MFC dc inline
+// out-of-line copy.
+
+// LIBRARY: IMPERIALISM 0x0054ae70
+// CStringData release tail: InterlockedDecrement on the shared-data refcount
+// at [ecx+0xc4]-0xc, operator_delete on zero -- MFC CString::FreeData shape.
+
+// LIBRARY: IMPERIALISM 0x00556320
+// CFrameWnd::GetActiveFrame (unique msvc500 oracle hit, winfrm.obj):
+// 3-byte `mov eax,ecx; ret` -- returns this.
+
 // LIBRARY: IMPERIALISM 0x005d5d10
 // name: CString::operator char const *
 // symbol: ??BCString@@QBEPBDXZ
@@ -268,8 +314,27 @@
 // symbol: ??_GCResourceException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CResourceException::`scalar deleting destructor'(unsigned int)
 
+// LIBRARY: IMPERIALISM 0x005df660
+// MFC exception-object destructor tail (CFileException/CException family):
+// EH frame, exception-vftable store, CString member dtor, CObject vftable
+// restore.
+
+// LIBRARY: IMPERIALISM 0x005e27c0
+// MFC container teardown -- see the triplicate note at 0x47f760.
+
+// LIBRARY: IMPERIALISM 0x005e2870
+// MFC container teardown -- see the triplicate note at 0x47f760.
+
 // LIBRARY: IMPERIALISM 0x005e4a90
 // name: CPtrArray::SetSize
+
+// LIBRARY: IMPERIALISM 0x005e538c
+// MFC nafxcw handler in the CDialog-derived message maps 0x66fb20/0x673208
+// (ON_COMMAND id 2): `mov eax,[ecx]; jmp [eax+0xcc]` virtual-call forwarder.
+
+// LIBRARY: IMPERIALISM 0x005e5394
+// MFC nafxcw handler in the CDialog-derived message maps 0x66fb20/0x673208
+// (ON_COMMAND id 1 / id 0x64): `mov eax,[ecx]; jmp [eax+0xcc]` virtual-call forwarder.
 
 // LIBRARY: IMPERIALISM 0x005e539c
 // name: AfxGetMainWnd
@@ -598,6 +663,10 @@
 // LIBRARY: IMPERIALISM 0x005e6784
 // symbol: ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
 
+// LIBRARY: IMPERIALISM 0x005e67b2
+// MFC nafxcw WM_DESTROY handler in message map 0x670d10 (base CWnd's map
+// 0x670868): sends CB_GETCOUNT (0x1302) to the child combo-box window.
+
 // LIBRARY: IMPERIALISM 0x005e67ec
 // name: CAnimateCtrl::Create
 // symbol: ?Create@CAnimateCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
@@ -859,6 +928,10 @@
 
 // LIBRARY: IMPERIALISM 0x005e7079
 // ownership-only
+
+// LIBRARY: IMPERIALISM 0x005e7095
+// MFC nafxcw handler in message map 0x672aa0 (base CWnd's map 0x670868),
+// MFC-internal message 0x364.
 
 // LIBRARY: IMPERIALISM 0x005e709d
 // name: CCtrlView::~CListView
@@ -2100,6 +2173,10 @@
 // symbol: ?OnAddTool@CToolTipCtrl@@IAEJIJ@Z
 // prototype: protected: long __thiscall CToolTipCtrl::OnAddTool(unsigned int, long)
 
+// LIBRARY: IMPERIALISM 0x005fa9ba
+// MFC nafxcw handler in message map 0x674468 (base CWnd's map 0x670868),
+// MFC-internal message 0x36c.
+
 // LIBRARY: IMPERIALISM 0x005fa9d1
 // name: CToolTipCtrl::OnWindowFromPoint
 // symbol: ?OnWindowFromPoint@CToolTipCtrl@@IAEJIJ@Z
@@ -2370,6 +2447,10 @@
 // name: CCommonDialog::OnOK
 // symbol: ?OnOK@CCommonDialog@@MAEXXZ
 // prototype: protected: virtual void __thiscall CCommonDialog::OnOK(void)
+
+// LIBRARY: IMPERIALISM 0x00600002
+// MFC nafxcw handler in message map 0x673760 (base CDialog's map 0x66fb20),
+// message 0x53 (WM_HELP).
 
 // LIBRARY: IMPERIALISM 0x0060000a
 // name: CTime::CTime
@@ -2730,6 +2811,10 @@
 // symbol: ?EndDialog@CDialog@@QAEXH@Z
 // prototype: public: void __thiscall CDialog::EndDialog(int)
 
+// LIBRARY: IMPERIALISM 0x00605341
+// MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
+// message 0x30: forwards via 0x613a36.
+
 // LIBRARY: IMPERIALISM 0x00605365
 // name: CDialog::PreInitDialog
 // symbol: ?PreInitDialog@CDialog@@MAEXXZ
@@ -2769,6 +2854,18 @@
 // name: CDialog::CheckAutoCenter
 // symbol: ?CheckAutoCenter@CDialog@@UAEHXZ
 // prototype: public: virtual int __thiscall CDialog::CheckAutoCenter(void)
+
+// LIBRARY: IMPERIALISM 0x00605547
+// MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
+// message 0x19: pushes the three WM_ params and forwards to 0x60a0e4.
+
+// LIBRARY: IMPERIALISM 0x0060555b
+// MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
+// message 0x365: help-id translation via [ecx+0x3c] + 0x20000 (HID_COMMAND).
+
+// LIBRARY: IMPERIALISM 0x00605595
+// MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
+// message 0x366: returns [ecx+0x3c] + 0x20000 (HID_COMMAND base).
 
 // LIBRARY: IMPERIALISM 0x006055ae
 // name: CWinApp::Run
@@ -3812,6 +3909,10 @@
 // symbol: ?GrayCtlColor@CWnd@@SGHPAUHDC__@@PAUHWND__@@IPAUHBRUSH__@@K@Z
 // prototype: public: static int __stdcall CWnd::GrayCtlColor(struct HDC__*, struct HWND__*, unsigned int, struct HBRUSH__*, unsigned long)
 
+// LIBRARY: IMPERIALISM 0x0060a1bc
+// MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
+// message 0x36f: `mov eax,0xffff; ret 8`.
+
 // LIBRARY: IMPERIALISM 0x0060a1c4
 // name: CWnd::UpdateData
 // symbol: ?UpdateData@CWnd@@QAEHH@Z
@@ -4357,6 +4458,10 @@
 // symbol: ?AfxWinMain@@YGHPAUHINSTANCE__@@0PADH@Z
 // prototype: int __stdcall AfxWinMain(struct HINSTANCE__*, struct HINSTANCE__*, char *, int)
 
+// LIBRARY: IMPERIALISM 0x0061069f
+// MFC nafxcw handler in message map 0x66fd60 (base 0x670560 = CCmdTarget),
+// ON_COMMAND 0xe141: SendMessage(m_hWnd, WM_CLOSE) forwarder.
+
 // LIBRARY: IMPERIALISM 0x006106bd
 // name: CSingleDocTemplate::CSingleDocTemplate
 // symbol: ??0CSingleDocTemplate@@QAE@IPAUCRuntimeClass@@00@Z
@@ -4456,6 +4561,14 @@
 // name: CDocument::OnFileClose
 // symbol: ?OnFileClose@CDocument@@IAEXXZ
 // prototype: protected: void __thiscall CDocument::OnFileClose(void)
+
+// LIBRARY: IMPERIALISM 0x00610ca2
+// MFC nafxcw handler in CDocument's message map 0x672078 (ON_COMMAND
+// 0xe103): `mov eax,[ecx]; jmp [eax+0xa4]` virtual tail-call.
+
+// LIBRARY: IMPERIALISM 0x00610caa
+// MFC nafxcw handler in CDocument's message map 0x672078 (ON_COMMAND
+// 0xe104): `push 1; push 0; call [eax+0xa0]` virtual forwarder.
 
 // LIBRARY: IMPERIALISM 0x00610cb7
 // name: CDocument::DoFileSave
@@ -5147,6 +5260,22 @@
 // symbol: ?GetScrollBarCtrl@CView@@UBEPAVCScrollBar@@H@Z
 // prototype: public: virtual class CScrollBar * __thiscall CView::GetScrollBarCtrl(int)const
 
+// LIBRARY: IMPERIALISM 0x006140c2
+// MFC nafxcw handler in message map 0x672aa0 (base CWnd), ON_COMMAND
+// 0xe135 -- MFC frame/window command family.
+
+// LIBRARY: IMPERIALISM 0x006140ea
+// MFC nafxcw handler in message map 0x672aa0 (base CWnd), ON_COMMAND
+// 0xe135 -- MFC frame/window command family.
+
+// LIBRARY: IMPERIALISM 0x00614106
+// MFC nafxcw handler in message map 0x672aa0 (base CWnd), ON_COMMAND
+// 0xe150/0xe151 -- MFC frame/window command family.
+
+// LIBRARY: IMPERIALISM 0x00614144
+// MFC nafxcw handler in message map 0x672aa0 (base CWnd), ON_COMMAND
+// 0xe150/0xe151 -- MFC frame/window command family.
+
 // LIBRARY: IMPERIALISM 0x0061416e
 // name: CView::OnPrepareDC
 // symbol: ?OnPrepareDC@CView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z
@@ -5460,6 +5589,10 @@
 // symbol: ?OnFileNew@CWinApp@@IAEXXZ
 // prototype: protected: void __thiscall CWinApp::OnFileNew(void)
 
+// LIBRARY: IMPERIALISM 0x0061843f
+// MFC nafxcw handler in message map 0x63e068 (base 0x66fd60), ON_COMMAND
+// 0xe101: `mov ecx,[ecx+0x80]; jmp [eax+0x40]` inner-object forwarder.
+
 // LIBRARY: IMPERIALISM 0x0061844a
 // name: CWinApp::DoPromptFileName
 // symbol: ?DoPromptFileName@CWinApp@@QAEHAAVCString@@IKHPAVCDocTemplate@@@Z
@@ -5515,10 +5648,18 @@
 // symbol: ?CloseAllDocuments@CWinApp@@QAEXH@Z
 // prototype: public: void __thiscall CWinApp::CloseAllDocuments(int)
 
+// LIBRARY: IMPERIALISM 0x0061871a
+// MFC nafxcw handler in message map 0x66fd60 (base CCmdTarget), ON_COMMAND
+// 0xe110: control-site check via [ecx+0xa8] then command forward.
+
 // LIBRARY: IMPERIALISM 0x0061873c
 // name: CWinApp::OnDDECommand
 // symbol: ?OnDDECommand@CWinApp@@UAEHPAD@Z
 // prototype: public: virtual int __thiscall CWinApp::OnDDECommand(char *)
+
+// LIBRARY: IMPERIALISM 0x00618756
+// MFC nafxcw handler in message map 0x66fd60 (base CCmdTarget), ON_COMMAND
+// 0xe110: id-range 0xe110 decode via [ecx+0xa8] control-site.
 
 // LIBRARY: IMPERIALISM 0x0061878f
 // name: CWinApp::AddDocTemplate
@@ -5693,6 +5834,12 @@
 // name: CFrameWnd::OnHelp
 // symbol: ?OnHelp@CFrameWnd@@IAEXXZ
 // prototype: protected: void __thiscall CFrameWnd::OnHelp(void)
+
+// LIBRARY: IMPERIALISM 0x006194b1
+// MFC nafxcw handler in CMainFrame's message map 0x648640, ON_COMMAND
+// 0xe143/0xe147: AfxGetModuleState() + [eax+4] vcall 0xa0 dispatch forwarder
+// (entities name it TMacViewMgr_OnCommand_ID_E143_E147 from the map; the body
+// is stock MFC dispatch machinery, not game code).
 
 // LIBRARY: IMPERIALISM 0x006194df
 // symbol: ?CanEnterHelpMode@CFrameWnd@@QAEHXZ

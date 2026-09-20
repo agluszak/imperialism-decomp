@@ -185,7 +185,8 @@ public:
   // ResolveNextMove as it walks pendingUnitPool0c.
   int nextStackOrdinal10;
   // +0x14/+0x18 -- static lookup-table pointers installed by
-  // IArmyMgr (0x695448 / 0x695428); consumers not yet mapped.
+  // InitializeMapContextActionManager (0x695448 / 0x695428). Field-xrefs prove
+  // write-only: no reader survives, so these are unused retained pointers.
   const void* staticTable14;
   const void* staticTable18;
   // +0x1c..+0x31b -- one entry per map tile (0x180 = 384 tiles, confirmed by
@@ -306,7 +307,7 @@ public:
   // of the call site (0x4a67b1, ILT thunk 0x408c79) pushes the addresses of two
   // separately-constructed CString locals (real `CString::CString()` calls at
   // 0x4a678c/0x4a679a), not styleC/styleD -- those two TextStyle locals are
-  // consumed later, in the still-unported widget-dispatch tail of the caller.
+  // consumed later, in the widget-dispatch tail of the caller (ShowSpyReport).
   //
   // outDefenderSummary: "<leading unit/admiral name or city name>" -- Phase 1 scans
   // cityScoreTable[cityRecordIndex]'s adjacent regions (adjacentRegionIds0A[0..

@@ -23,8 +23,8 @@ public:
   void MakeNewCity(TCity* city) override;
   // Two stack args (RET 0x8; Ghidra reads two shorts). Mac oracle: SetParameters.
   virtual void SetParameters(short firstParameter, short secondParameter); // slot 0x12 0x4be450
-  // Zeroes trailingTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.
-  virtual void ClearTrailingTable();
+  // Zeroes persistedReservedTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.
+  virtual void ClearPersistedReservedTable();
   // Tops up up to 10 of the nation's needs (fixed priority order
   // g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading,
   // stopping when need-cap headroom hits zero. Mac oracle name (present on both
@@ -81,9 +81,11 @@ public:
   short field12;          // +0x12 — set from SetParameters' first argument
   short capabilityFlag14; // +0x14
   short capabilityFlag16; // +0x16
-  // +0x18..0x25 — 7-entry short table, byte-swapped per-pair on ReadFrom (0x4be290);
-  // semantic contents not yet recovered.
-  short trailingTable[7];
+  // +0x18..0x25 — 7-entry persisted short table, byte-swapped per-pair on ReadFrom
+  // (0x4be290). Field-xrefs prove no behavioral reader: only ClearPersistedReservedTable
+  // (0x4be4f0) writes it and save/load move it. Reserved serialized state, not
+  // unrecovered gameplay state.
+  short persistedReservedTable[7];
   // +0x26..+0x28: zero field-xrefs; genuinely untouched, not an unrecovered field.
   unsigned char unused26[0x28 - 0x26];
 };

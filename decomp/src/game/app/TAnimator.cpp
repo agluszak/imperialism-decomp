@@ -24,7 +24,7 @@
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
 // The original inlines the TEventHandler base construction (keeping only the shared
-// field-defaults helper out-of-line) and does not touch field28; the recompile emits
+// field-defaults helper out-of-line) and does not touch overlayPhaseTickCount; the recompile emits
 // the real base-ctor call instead -- the usual accepted ctor-inlining divergence.
 // FUNCTION: IMPERIALISM 0x004a0aa0
 TAnimator::TAnimator()
@@ -44,7 +44,7 @@ void TAnimator::IAnimator(int idleFrequency) {
   bounds.bottom = g_ptUiAnimatorSurfaceBounds.y;
   g_pDisplayMgr->MakeNewGWorld(renderSurfaceContext, 8, bounds);
   registryList24 = new TList();
-  field28 = 0;
+  overlayPhaseTickCount = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a0c00
@@ -57,11 +57,11 @@ void TAnimator::Install() {
 char TAnimator::DoIdle(int action) {
   if (action == 1) {
     if (mapUberPicture2c != 0 && mapUberPicture2c->HasActiveMapInteractionSelection()) {
-      ++field28;
-      if (field28 >= 15) {
+      ++overlayPhaseTickCount;
+      if (overlayPhaseTickCount >= 15) {
         mapUberPicture2c->PrepareAndRenderMapOverlayMode(g_bStrategicMapSelectionOverlayPhase);
         g_bStrategicMapSelectionOverlayPhase = g_bStrategicMapSelectionOverlayPhase == 0;
-        field28 = 0;
+        overlayPhaseTickCount = 0;
       }
     }
   }

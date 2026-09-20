@@ -175,11 +175,11 @@ public:
   CIncludeViewOverlayRectQueue m_overlayRectQueue;
   POSITION m_overlayRectCursor68; // 0x68 — iteration cursor of the repaint pass (0x482fc0)
   UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  int m_field70;                  // 0x70 — ctor-zeroed dword, purpose not yet resolved
+  int m_unused70;                 // 0x70 — ctor-write only; field-xrefs show no reader
   // 0x74 — this view's own captured-control track (a second copy of the
   // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
-  // it the state-1 drag command through TControl slots 0x67/0x68; the writer that arms
-  // it is not yet located.
+  // it the state-1 drag command through TControl slots 0x67/0x68; armed by
+  // BeginTracking (0x483280) below.
   TControl* m_capturedControl74;
 
   // Starts a mouse-capture drag for `tracker`: takes the Win32 capture, seeds all three
@@ -190,7 +190,7 @@ public:
   CPoint m_captureLastPoint80;    // 0x80
   CPoint m_captureCurrentPoint88; // 0x88
   // 0x90 — nonzero while the UI is interactive; TApplication::InModalState (0x486960)
-  // reports TRUE while it is 0. Writer not yet located.
+  // reports TRUE while it is 0. Written by SetUiInteractiveFlag90 (0x484080) below.
   int m_uiInteractiveFlag90;
 
   int GetUiInteractiveFlag90();                          // 0x00484060

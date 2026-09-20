@@ -133,13 +133,13 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
   field10 = 0;
   field12 = 0;
-  trailingTable[0] = 0;
-  trailingTable[1] = 0;
-  trailingTable[2] = 0;
-  trailingTable[3] = 0;
-  trailingTable[4] = 0;
-  trailingTable[5] = 0;
-  trailingTable[6] = 0;
+  persistedReservedTable[0] = 0;
+  persistedReservedTable[1] = 0;
+  persistedReservedTable[2] = 0;
+  persistedReservedTable[3] = 0;
+  persistedReservedTable[4] = 0;
+  persistedReservedTable[5] = 0;
+  persistedReservedTable[6] = 0;
   pendingShipType32 = 0;
   pendingRecruitmentCommandIndex36 = -1;
   pendingUnitCommandIndex38 = -1;
@@ -280,7 +280,7 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&field12, 2);
   stream->WriteBytes(&capabilityFlag14, 2);
   stream->WriteBytes(&capabilityFlag16, 2);
-  WriteShortArrayElems(stream, trailingTable, 7);
+  WriteShortArrayElems(stream, persistedReservedTable, 7);
   stream->WriteBytes(&nextProductionBuildingOrdinal30, 2);
   stream->WriteBytes(&pendingShipType32, 2);
   stream->WriteBytes(&field34, 2);
@@ -357,8 +357,8 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field12, 2);
   stream->ReadBytes(&capabilityFlag14, 2);
   stream->ReadBytes(&capabilityFlag16, 2);
-  stream->ReadBytes(trailingTable, sizeof(trailingTable));
-  SwapShortArrayBytes(trailingTable, 7);
+  stream->ReadBytes(persistedReservedTable, sizeof(persistedReservedTable));
+  SwapShortArrayBytes(persistedReservedTable, 7);
   stream->ReadBytes(&nextProductionBuildingOrdinal30, 2);
   stream->ReadBytes(&pendingShipType32, 2);
   stream->ReadBytes(&field34, 2);

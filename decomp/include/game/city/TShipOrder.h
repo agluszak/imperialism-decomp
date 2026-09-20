@@ -28,7 +28,7 @@ public:
   // TShipOrder adds no fields of its own: `config/rtti_class_oracle.csv` gives
   // it the identical 0x4c object size as TProductionOrder, so every field
   // formerly modeled here (quantity, ownerCity, productionSummary,
-  // trackingSlots, reservedWorkforce, limitingConstraint, field44, resourceTypeIndex, unknown4a)
+  // trackingSlots, reservedWorkforce, limitingConstraint, field44, resourceTypeIndex, unused4a)
   // is really TProductionOrder's own layout — see TProductionOrder.h.
 };
 

@@ -25,7 +25,8 @@ public:
   virtual ~TStratReportView() override;
 
   // slot 0x110 0x58e460 -- renders the battle-outcome header winner/loser
-  // score lines; body not yet fully ported (CString/QuickDraw table render).
+  // score lines (verified against the retail body: 30-entry winner/loser count
+  // loops, resource group 0x2717 labels, face 1/0 switches, 0x10 row spacing).
   virtual void Draw(RECT* rectBuffer) override;
 };
 ASSERT_SIZE(TStratReportView, 0x64);

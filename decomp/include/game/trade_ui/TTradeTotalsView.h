@@ -18,9 +18,9 @@ public:
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
   // at 0x60. The low short of the trailing 4 bytes is this row's nation slot (0..6),
-  // read throughout Draw to index g_apNationStates[]; the high short is
-  // still unobserved.
+  // read throughout Draw to index g_apNationStates[]; the high short has zero
+  // field-xrefs — behaviorally dead tail storage.
   short nationSlot;
-  short unknown62;
+  short unused62;
 };
 ASSERT_SIZE(TTradeTotalsView, 0x64);

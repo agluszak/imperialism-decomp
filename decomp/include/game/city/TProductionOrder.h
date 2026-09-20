@@ -47,7 +47,7 @@ public:
   short limitingConstraint;                // 0x40 — ProductionOrderLimitKind
   int accumulatedValue; // 0x44 — summed by TGreatPower::SumCommodityRecordAccumulatedValues (0x004e06d0)
   short resourceTypeIndex; // 0x48 — resource/entry type index
-  short unknown4a;         // 0x4a — unresolved storage; no recovered access outside layout
+  short unused4a;          // 0x4a — field-xrefs show zero accesses; layout padding/reserved
 
   // In-class inline. 0x004b4f00 is the out-of-line copy MSVC still emits, but derived
   // CreateObject bodies absorb it instead of calling it: TItemOrder::CreateObject

@@ -22,7 +22,7 @@ public:
   // then this line's field10. 0x00569c40, __thiscall.
   void IMiniShipLine(short rowArg, short colArg, int* bounds, TShip* item);
 
-  // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   TShip* field10;
 };
 ASSERT_SIZE(TMiniShipLine, 0x14);

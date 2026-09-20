@@ -40,9 +40,8 @@ struct TCdAudioDevice {
 // g_cdAudioDevice (0x006a60bc) is declared in game/global_data_tables.h.
 
 // Aux-output (CD-audio line) volume: g_nAuxOutputDeviceIndex (global_data_tables.h) holds
-// the probed aux device index (-1 = none found; set by the still-unported
-// ProbeAuxOutputDeviceIndexByPidMask, 0x005e1430, which sits in this same address cluster
-// between WaveLoadFile's end and these functions -- part of this module, not wave.c).
+// the probed aux device index (-1 = none found; set by ProbeAuxOutputDeviceIndexByPidMask,
+// 0x005e1430, implemented in wave_helpers.cpp -- part of this module, not wave.c).
 // 0x005e1500 -- duplicates dwVolume into both channel words and calls winmm auxSetVolume.
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar);
 // 0x005e14c0 -- combines independently supplied left and right channel words.

@@ -20,8 +20,9 @@ struct TurnEvent2SyncPacket;
 // One of TMultiplayerMgr::nationStatusControlSlots' 4 elements. Ground truth from
 // TMultiplayerMgr construction/destruction (0x542670/0x542810) uses VC5's vector
 // iterators over four of these records. The element ctor zeroes both fields and the
-// element dtor scalar-deletes the byte/POD storage when present. Neither the payload
-// shape nor tagOrSize's meaning is recovered yet.
+// element dtor scalar-deletes the byte/POD storage when present. Field-xrefs show
+// allocatedData is touched only by ctor/dtor and tagOrSize only by the ctor — nothing
+// ever allocates the payload, so both are behaviorally dead handle state.
 struct TMultiplayerSlotHandle {
   unsigned char* allocatedData;
   int tagOrSize;
@@ -98,7 +99,7 @@ public:
   unsigned char CloseLobbyDialogAndEmitTurnEvent3();
   // 0x54c480 — builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
   // relation/pending-policy/selection/comparative-power matrices and hands it to
-  // TNetMgr::Send. Body not yet ported (separate packet-struct modeling task); called
+  // TNetMgr::Send. Called
   // from RebuildDiplomacyStandingAndInfluenceMatrices only when g_pSimMgr->multiplayerSessionRole == 1.
   void EmitTurnEvent26DiplomacyMatrixSnapshot();
   // Appends a queue node (next pointer at node+0x10) to the tail of

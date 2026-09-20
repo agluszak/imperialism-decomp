@@ -41,7 +41,7 @@ void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x5b7);
   }
   doneButton->eventNumber60 = 0x22;
-  field60 = 0x80;
+  captionStringResourceGroup = 0x80;
 }
 
 // FUNCTION: IMPERIALISM 0x004b1670

@@ -37,7 +37,7 @@ void TInteriorMinister::IInteriorMinister(TGreatPower* owner) {
   TMinister::IMinister(owner);
   field10 = 0;
   field12 = 0;
-  memset(trailingTable, 0, sizeof(trailingTable));
+  memset(persistedReservedTable, 0, sizeof(persistedReservedTable));
 }
 
 // FUNCTION: IMPERIALISM 0x004be290
@@ -47,8 +47,8 @@ void TInteriorMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field12, 2);
   stream->ReadBytes(&capabilityFlag14, 2);
   stream->ReadBytes(&capabilityFlag16, 2);
-  unsigned char* table = static_cast<unsigned char*>(static_cast<void*>(trailingTable));
-  stream->ReadBytes(table, sizeof(trailingTable));
+  unsigned char* table = static_cast<unsigned char*>(static_cast<void*>(persistedReservedTable));
+  stream->ReadBytes(table, sizeof(persistedReservedTable));
   for (int i = 0; i < 7; ++i) {
     unsigned char lo = table[i * 2];
     table[i * 2] = table[i * 2 + 1];
@@ -63,7 +63,7 @@ void TInteriorMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&field12, 2);
   stream->WriteBytes(&capabilityFlag14, 2);
   stream->WriteBytes(&capabilityFlag16, 2);
-  WriteShortArrayElems(stream, trailingTable, 7);
+  WriteShortArrayElems(stream, persistedReservedTable, 7);
 }
 
 // The interior minister ranks a nation purely by its remaining need capacity.
@@ -113,8 +113,8 @@ short TInteriorMinister::GetNumCarsToBuild() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be4f0
-void TInteriorMinister::ClearTrailingTable() {
-  memset(trailingTable, 0, sizeof(trailingTable));
+void TInteriorMinister::ClearPersistedReservedTable() {
+  memset(persistedReservedTable, 0, sizeof(persistedReservedTable));
 }
 
 // Mac oracle name (on both TInteriorMinister and TCityInteriorMinister). Tops up up

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 // OrderSheet: the buffer passed to the TProductionOrder::FillOrderSheet/CanFillOrderSheet
 // family (TProductionOrder, TItemOrder, TExpansionOrder, TUnitOrder, TPowerPlantOrder,
 // TPopGrowthOrder, TFoodProcessingOrder, TTrainingOrder, TShipOrder/TCapacityOrder).
@@ -21,11 +23,11 @@
 // semantically distinct trailer, just that the clear loop is dword-granular. Modeled as
 // one uniform array through index 62.
 //
-// NOT YET VERIFIED: the real allocator/caller. Every xref to a FillOrderSheet override
-// resolves only to the vtable slot (address-taken data); the code that allocates this
-// buffer and loops over a city's order items to fill it hasn't been located, so there is
-// deliberately no ASSERT_SIZE here (0x7e is corroborated by Produce()'s clear loop, but
-// not by a verified allocation site).
+// Caller verification: TCityTask::ApplyProductionDistributionToCitySlots (0x005ae420)
+// places the sheet at the bottom of a dedicated 0x80-byte local slot (LEA EDX,[ESP+0x14]
+// after one arg push => locals base), so 0x7e bytes + 2 bytes pad fits the frame exactly.
+// The highest index any FillOrderSheet writes is 0x3e (byte 0x7d), agreeing with the
+// clear body's 0x7e extent.
 struct OrderSheet {
   short slotByResourceCode[0x3f];
 
@@ -33,3 +35,5 @@ struct OrderSheet {
     return slotByResourceCode[resourceCode];
   }
 };
+
+ASSERT_SIZE(OrderSheet, 0x7e);

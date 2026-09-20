@@ -17,7 +17,7 @@ public:
   // NOOP: verified empty in original 0x004aff93 (no standalone TBatRepDetLine::TBatRepDetLine body exists: CreateObject 0x004aff60 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TBatRepDetLine() {}
 
-  // Original object size is 0x18 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  // Original object size is 0x18 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   BattleRecord* battleRecord10;
   BattleReportDetailRecord* battleDetail14;
 };

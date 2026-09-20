@@ -58,9 +58,8 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short rowBucket = (levelBucket < 5) ? 0x1a : ((levelBucket > 0xe) ? 10 : 18);
 
-  // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
-  // field isn't recovered yet, so it's read via a raw offset like the sibling
-  // roster-row views (TShipView, TArmyBoyView, TArmyUnitView, TMiniArmyView).
+  // The blit source surface is the per-level icon strip cached on TMacViewMgr
+  // (atlas694, shared with the sibling roster-row views).
   TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, rowBucket, levelBucket * 4 - 1, rowBucket + 7};
   RECT dstRect = {0x8c, 4, levelBucket * 4 + 0x8b, 0xb};
@@ -75,8 +74,8 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   DrawCenteredGuideLineOnMapDc(0xdd, 0xc);
   DrawCenteredGuideLineOnMapDc(0xdd, 6);
 
-  // A second, per-nation icon strip lives at TMacViewMgr+0x68c (distinct from the
-  // per-level strip at +0x694 used above); also not yet recovered as a typed field.
+  // A second, per-nation icon strip lives at TMacViewMgr::atlas68c (distinct from the
+  // per-level strip at atlas694 used above).
   // Re-derived in each branch below rather than cached, matching the original (which
   // re-reads it separately at each blit site instead of hoisting it).
 

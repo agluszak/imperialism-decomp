@@ -51,7 +51,7 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
 // The shared keyboard command event (original object @ 0x6a1780) lives as a function-local
 // static so first use constructs it once; the whole block is forwarded as a typed event
 // into the active TView tree. Layout/type shared with TGameWindow::DoKeyEvent (which reads
-// commandCode/handledMarker) and the not-yet-ported CMcWindow WM_CHAR handler 0x493ce0 via
+// commandCode/handledMarker) and the CMcWindow WM_CHAR handler 0x493ce0 via
 // game/TUiEvent.h (TToolboxEvent).
 static __inline void PopulateKeyCommandBlock(TToolboxEvent& block, UINT nChar, UINT nRepCnt,
                                              UINT nFlags) {
@@ -94,7 +94,7 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 // FUNCTION: IMPERIALISM 0x00482950
 CIncludeView::CIncludeView()
     : CView(), m_activeDialogContext(0), m_pMainPaneDib(0), m_pOffscreenDib(0), m_tickTimerId(0),
-      m_field70(0), m_capturedControl74(0), m_uiInteractiveFlag90(1) {}
+      m_unused70(0), m_capturedControl74(0), m_uiInteractiveFlag90(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x004829c0
 // CIncludeView::`scalar deleting destructor'
