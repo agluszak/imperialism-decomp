@@ -32,6 +32,8 @@ ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
 ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
 ACTION_TECH_NAVAL_UPGRADE = "technology_naval_capability_upgrade.run"
 ACTION_TECH_NAVAL_SEQUENCE = "technology_naval_capability_sequence.run"
+ACTION_NAVY_BATTLE_DEPLOY = "navy_battle_accepted_deploy_tiles.run"
+ACTION_NAVY_BATTLE_DEFENDER = "navy_battle_player_as_defender.run"
 ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
 ACTION_SEASON_ADVANCE = "season_advance_clears_status_flags.run"
 ACTION_ELIMINATION_PHASE = "elimination_phase_with_landed_great_powers.run"
@@ -84,6 +86,8 @@ CHECKPOINT_TECH_NAVAL_UPGRADE = (
 CHECKPOINT_TECH_NAVAL_SEQUENCE = (
     "technology_naval_capability_sequence.resolved"
 )
+CHECKPOINT_NAVY_BATTLE_DEPLOY = "navy_battle_accepted_deploy_tiles.resolved"
+CHECKPOINT_NAVY_BATTLE_DEFENDER = "navy_battle_player_as_defender.resolved"
 CHECKPOINT_TURN_STOP_TECHNOLOGY = "turn_stop_technology.resolved"
 CHECKPOINT_SEASON_ADVANCE = "season_advance_clears_status_flags.resolved"
 CHECKPOINT_ELIMINATION_PHASE = (
@@ -583,6 +587,42 @@ SCHEMAS = {
             "targets",
             "actuals",
             "snapshots",
+        ),
+    ),
+    CHECKPOINT_NAVY_BATTLE_DEPLOY: CheckpointSchema(
+        CHECKPOINT_NAVY_BATTLE_DEPLOY,
+        ACTION_NAVY_BATTLE_DEPLOY,
+        "navy_battle_accepted_deploy_tiles",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "column_count",
+            "current_side",
+            "side0_nation",
+            "side1_nation",
+            "side0_selected",
+            "side1_selected",
+            "side0_tiles",
+            "side1_tiles",
+        ),
+    ),
+    CHECKPOINT_NAVY_BATTLE_DEFENDER: CheckpointSchema(
+        CHECKPOINT_NAVY_BATTLE_DEFENDER,
+        ACTION_NAVY_BATTLE_DEFENDER,
+        "navy_battle_player_as_defender",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "column_count",
+            "current_side",
+            "side0_nation",
+            "side1_nation",
+            "side0_selected",
+            "side1_selected",
+            "side0_tiles",
+            "side1_tiles",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
@@ -2389,6 +2429,84 @@ def normalize_retail_battle_attack(
         ],
         "snapshots": snapshots,
     }
+
+
+_NAVY_DEPLOY_SNAPSHOT_FIELDS = (
+    "column_count",
+    "current_side",
+    "side0_nation",
+    "side1_nation",
+    "side0_selected",
+    "side1_selected",
+)
+
+
+def _navy_deploy_snapshot(raw: Any, label: str) -> dict[str, Any]:
+    snapshot = _require_mapping(raw, label)
+    normalized = {
+        field: _require_int(snapshot.get(field), f"{label}.{field}")
+        for field in _NAVY_DEPLOY_SNAPSHOT_FIELDS
+    }
+    for side_field in ("side0_tiles", "side1_tiles"):
+        tiles = snapshot.get(side_field)
+        if not isinstance(tiles, list):
+            raise ValueError(f"{label}.{side_field} must be an array")
+        normalized[side_field] = [
+            _require_int(tile, f"{label}.{side_field}[{index}]")
+            for index, tile in enumerate(tiles)
+        ]
+    return normalized
+
+
+def normalize_native_navy_battle_deploy(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a native navy-battle deploy case to the stable schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    transition_result = _require_mapping(
+        captures.get("result"), "native result capture"
+    )
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    observation = {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _mission_turn(turn, "native turn"),
+    }
+    observation.update(
+        _navy_deploy_snapshot(transition_result, "native result")
+    )
+    return observation
+
+
+def normalize_retail_navy_battle_deploy(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail navy-battle deploy capture to the same schema."""
+    observation = {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+    }
+    observation.update(_navy_deploy_snapshot(raw, "retail result"))
+    return observation
 
 
 def normalize_retail_second_turn_sequence(

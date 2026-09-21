@@ -36,6 +36,8 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_TECH_NAVAL_SEQUENCE,
     CHECKPOINT_BATTLE_MELEE,
     CHECKPOINT_BATTLE_RANGED,
+    CHECKPOINT_NAVY_BATTLE_DEFENDER,
+    CHECKPOINT_NAVY_BATTLE_DEPLOY,
     CHECKPOINT_ELIMINATION_PHASE,
     CHECKPOINT_PRESSURE_AI_NOOP,
     CHECKPOINT_PRESSURE_HUMAN_DEBT,
@@ -62,6 +64,7 @@ from tools.runtime.checkpoints import (
     normalize_native_check_technology_advances,
     normalize_native_consecutive_turn_sequence,
     normalize_native_battle_attack,
+    normalize_native_navy_battle_deploy,
     normalize_native_elimination_phase,
     normalize_native_great_power_pressure,
     normalize_native_season_advance,
@@ -83,6 +86,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_check_technology_advances,
     normalize_retail_consecutive_turn_sequence,
     normalize_retail_battle_attack,
+    normalize_retail_navy_battle_deploy,
     normalize_retail_elimination_phase,
     normalize_retail_great_power_pressure,
     normalize_retail_season_advance,
@@ -576,6 +580,27 @@ def load_scenario(name: str) -> Scenario:
                 else CHECKPOINT_BATTLE_RANGED
             ),
         )
+    elif name in (
+        "navy_battle_accepted_deploy_tiles",
+        "navy_battle_player_as_defender",
+    ):
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=600,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=(
+                CHECKPOINT_NAVY_BATTLE_DEPLOY
+                if name == "navy_battle_accepted_deploy_tiles"
+                else CHECKPOINT_NAVY_BATTLE_DEFENDER
+            ),
+        )
     elif name in ("turn_stop_deal_book", "turn_stop_city_and_transport"):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -1066,6 +1091,10 @@ def _invoke_virtual(
 def _s16(session: GdbSession, address: int) -> int:
     value = _eval_int(session, f"*(short*)0x{address:08x}") & 0xFFFF
     return value - 0x10000 if value & 0x8000 else value
+
+
+def _u8(session: GdbSession, address: int) -> int:
+    return _eval_int(session, f"*(unsigned char*)0x{address:08x}") & 0xFF
 
 
 def _s32(session: GdbSession, address: int) -> int:
@@ -3134,6 +3163,21 @@ _NAVY_SECONDARY_ORDER_LIST_HEAD = 0x006A3EBC
 _TSHIP_SINK = 0x005509C0
 _HANDLE_ABILITY_UNLOCK = 0x005AFD00
 _TTECHMGR = 0x006A43D8
+# Static MFC CreateObject sites (operator-new + inlined ctor + vptr store):
+_NAVY_BATTLE_CREATE_OBJECT = 0x005A5480
+_NAVY_HUMAN_PLAYER_CREATE_OBJECT = 0x0059EEF0
+_NAVY_AUTO_PLAYER_CREATE_OBJECT = 0x0059F040
+_TLIST_CREATE_OBJECT = 0x00487E50
+_TNAVY_HUMAN_PLAYER_INIT = 0x0059EF90
+_TNAVY_AUTO_PLAYER_INIT = 0x0059F0E0
+_TNAVY_BATTLE_INIT = 0x005A5540
+_TTACTICAL_BATTLE_DEPLOY_SLOT = 0x30
+_TTACTICAL_BATTLE_FREE_SLOT = 0x1C
+_TSORTED_LIST_ENTRY_BY_ORDINAL = 0x004886F0
+_TTASKFORCE_SUBMIT_ORDERS = 0x005540B0
+_TZONE_CREATE_TASK_FORCE = 0x005609E0
+_TTACTICAL_TILE_RECORD_SIZE = 0x14
+_TTASKFORCE_NATION = 0x1C
 
 
 def _drive_check_technology_advances(
@@ -3469,6 +3513,304 @@ def _drive_technology_naval_capability_upgrade(
             breakpoint_roles,
             args=(technology_id, nation_slot),
         )
+
+
+def _navy_zone_unoccupied(session: GdbSession, zone: int) -> bool:
+    ship = _u32(session, _NAVY_PRIMARY_ORDER_LIST_HEAD)
+    while ship != 0:
+        if _u32(session, ship + 0x08) == zone:
+            return False
+        ship = _u32(session, ship + 0x24)
+    return True
+
+
+def _find_unoccupied_map_zone(session: GdbSession) -> int:
+    zone = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+    while zone != 0:
+        if _navy_zone_unoccupied(session, zone):
+            return zone
+        zone = _u32(session, zone + 0x18)
+    return 0
+
+
+def _create_frigate_force(
+    session: GdbSession,
+    zone: int,
+    nation_slot: int,
+    orders: int,
+    order_target: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    for _ in range(2):
+        _new_ship(
+            session,
+            3,
+            zone,
+            nation_slot,
+            "navy-tactical",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+    force = _invoke_thiscall(
+        session,
+        _TZONE_CREATE_TASK_FORCE,
+        zone,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(nation_slot,),
+    )
+    if force != 0:
+        _invoke_thiscall(
+            session,
+            _TTASKFORCE_SUBMIT_ORDERS,
+            force,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(orders, order_target),
+        )
+    return force
+
+
+def _navy_deploy_probe_tiles(
+    session: GdbSession,
+    battle: int,
+    unit: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> list[int]:
+    tiles: list[int] = []
+    if unit == 0:
+        return tiles
+    side = _s32(session, unit + 0x20)
+    player = _u32(session, battle + 0x14 + side * 4)
+    saved_tile = _s32(session, unit + 0x08)
+    saved_ready = _u8(session, player + 0x10)
+    saved_cursor = _s32(session, player + 0x18)
+    saved_selected = _u32(session, battle + 0x1C)
+    saved_side = _s32(session, battle + 0x0C)
+    saved_live = _s32(session, battle + 0x10)
+    tile_grid = _u32(session, battle + 0x04)
+    tile_count = _s32(session, battle + 0x3C)
+    for tile in range(tile_count):
+        occupant = _u32(
+            session, tile_grid + tile * _TTACTICAL_TILE_RECORD_SIZE + 0x04
+        )
+        _invoke_virtual(
+            session,
+            battle,
+            _TTACTICAL_BATTLE_DEPLOY_SLOT,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(unit, tile),
+        )
+        if _s32(session, unit + 0x08) == tile:
+            tiles.append(tile)
+            session.assign(f"*(int*)0x{unit + 0x08:08x}", saved_tile)
+            session.assign(
+                f"*(int*)0x{tile_grid + tile * _TTACTICAL_TILE_RECORD_SIZE + 0x04:08x}",
+                occupant,
+            )
+            session.assign(f"*(unsigned char*)0x{player + 0x10:08x}", saved_ready)
+            session.assign(f"*(int*)0x{player + 0x18:08x}", saved_cursor)
+            session.assign(f"*(int*)0x{battle + 0x1C:08x}", saved_selected)
+            session.assign(f"*(int*)0x{battle + 0x0C:08x}", saved_side)
+            session.assign(f"*(int*)0x{battle + 0x10:08x}", saved_live)
+    return tiles
+
+
+def _drive_navy_battle_deploy(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    defender_is_active: bool,
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    hostile_nation = -1
+    for slot in range(_MAJOR_NATION_COUNT):
+        if slot != active_nation and _nation_pointer(session, slot) != 0:
+            hostile_nation = slot
+            break
+    zone = _find_unoccupied_map_zone(session)
+    if hostile_nation < 0 or zone == 0:
+        raise RuntimeError("fixture cannot create a naval tactical battle")
+
+    attacker_nation = active_nation if not defender_is_active else hostile_nation
+    defender_nation = hostile_nation if not defender_is_active else active_nation
+    attacker = _create_frigate_force(
+        session,
+        zone,
+        attacker_nation,
+        3,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    defender = _create_frigate_force(
+        session,
+        zone,
+        defender_nation,
+        6,
+        zone,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    if attacker == 0 or defender == 0:
+        raise RuntimeError("could not create the naval task forces")
+    _force_war_between(session, active_nation, hostile_nation)
+
+    our_force = defender if defender_is_active else attacker
+    enemy_force = attacker if defender_is_active else defender
+    our_nation = _s16(session, our_force + _TTASKFORCE_NATION)
+    enemy_nation = _s16(session, enemy_force + _TTASKFORCE_NATION)
+
+    battle = _invoke_thiscall(
+        session,
+        _NAVY_BATTLE_CREATE_OBJECT,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    session.assign(
+        f"*(int*)0x{battle + 0x20:08x}",
+        _invoke_thiscall(
+            session,
+            _TLIST_CREATE_OBJECT,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+        ),
+    )
+    our_player = _invoke_thiscall(
+        session,
+        _NAVY_HUMAN_PLAYER_CREATE_OBJECT,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _TNAVY_HUMAN_PLAYER_INIT,
+        our_player,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(our_force, 1, our_nation),
+    )
+    session.assign(
+        f"*(int*)0x{our_player + 0x08:08x}",
+        _invoke_thiscall(
+            session,
+            _TLIST_CREATE_OBJECT,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+        ),
+    )
+    enemy_player = _invoke_thiscall(
+        session,
+        _NAVY_AUTO_PLAYER_CREATE_OBJECT,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _TNAVY_AUTO_PLAYER_INIT,
+        enemy_player,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(enemy_force, 0, enemy_nation),
+    )
+    session.assign(
+        f"*(int*)0x{enemy_player + 0x08:08x}",
+        _invoke_thiscall(
+            session,
+            _TLIST_CREATE_OBJECT,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+        ),
+    )
+    _invoke_thiscall(
+        session,
+        _TNAVY_BATTLE_INIT,
+        battle,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(our_player, enemy_player),
+    )
+
+    our_unit_list = _u32(session, our_player + 0x04)
+    enemy_unit_list = _u32(session, enemy_player + 0x04)
+    side0_unit = _invoke_thiscall(
+        session,
+        _TSORTED_LIST_ENTRY_BY_ORDINAL,
+        our_unit_list,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(1,),
+    )
+    side1_unit = _invoke_thiscall(
+        session,
+        _TSORTED_LIST_ENTRY_BY_ORDINAL,
+        enemy_unit_list,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(1,),
+    )
+    side0_tiles = _navy_deploy_probe_tiles(
+        session, battle, side0_unit, records, occurrences, breakpoint_roles
+    )
+    side1_tiles = _navy_deploy_probe_tiles(
+        session, battle, side1_unit, records, occurrences, breakpoint_roles
+    )
+
+    snapshot = {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "column_count": _s32(session, battle + 0x34),
+        "current_side": _s32(session, battle + 0x0C),
+        "side0_nation": _s32(session, our_player + 0x1C),
+        "side1_nation": _s32(session, enemy_player + 0x1C),
+        "side0_selected": _u8(session, side0_unit + 0x18) if side0_unit else 0,
+        "side1_selected": _u8(session, side1_unit + 0x18) if side1_unit else 0,
+        "side0_tiles": side0_tiles,
+        "side1_tiles": side1_tiles,
+    }
+    _invoke_virtual(
+        session,
+        battle,
+        _TTACTICAL_BATTLE_FREE_SLOT,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    return snapshot
 
 
 def _drive_check_technology_advances_ai_purchase(
@@ -5549,6 +5891,19 @@ def run_binary(
                             else 5,
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in (
+                        "navy_battle_accepted_deploy_tiles",
+                        "navy_battle_player_as_defender",
+                    ):
+                        result_fields = _drive_navy_battle_deploy(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            scenario.drive
+                            == "navy_battle_player_as_defender",
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif (
                         scenario.drive
                         == "military_phase_ships_without_orders"
@@ -5699,6 +6054,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
+        "navy_battle_accepted_deploy_tiles",
+        "navy_battle_player_as_defender",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -5862,6 +6219,13 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             "interactive_army_battle_ranged",
         ):
             recomp_observation = normalize_native_battle_attack(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in (
+            "navy_battle_accepted_deploy_tiles",
+            "navy_battle_player_as_defender",
+        ):
+            recomp_observation = normalize_native_navy_battle_deploy(
                 native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "second_turn_military_cleanup":
@@ -6059,6 +6423,13 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         CHECKPOINT_BATTLE_RANGED,
     ):
         retail_observation = normalize_retail_battle_attack(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        CHECKPOINT_NAVY_BATTLE_DEPLOY,
+        CHECKPOINT_NAVY_BATTLE_DEFENDER,
+    ):
+        retail_observation = normalize_retail_navy_battle_deploy(
             retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
