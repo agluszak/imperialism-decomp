@@ -36,6 +36,8 @@ ACTION_ELIMINATION_PHASE = "elimination_phase_with_landed_great_powers.run"
 ACTION_TURN_ALERTS_FIRST = "turn_alerts_skip_first_economic_turn.run"
 ACTION_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.run"
 ACTION_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.run"
+ACTION_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.run"
+ACTION_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -79,6 +81,8 @@ CHECKPOINT_ELIMINATION_PHASE = (
 CHECKPOINT_TURN_ALERTS_FIRST = "turn_alerts_skip_first_economic_turn.resolved"
 CHECKPOINT_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.resolved"
 CHECKPOINT_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.resolved"
+CHECKPOINT_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.resolved"
+CHECKPOINT_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.resolved"
 
 
 @dataclass(frozen=True)
@@ -482,6 +486,28 @@ SCHEMAS = {
             "turn.economic_turn",
             "lost",
             "nations",
+        ),
+    ),
+    CHECKPOINT_TURN_STOP_DEAL_BOOK: CheckpointSchema(
+        CHECKPOINT_TURN_STOP_DEAL_BOOK,
+        ACTION_TURN_STOP_DEAL_BOOK,
+        "turn_stop_deal_book",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+        ),
+    ),
+    CHECKPOINT_TURN_STOP_CITY_TRANSPORT: CheckpointSchema(
+        CHECKPOINT_TURN_STOP_CITY_TRANSPORT,
+        ACTION_TURN_STOP_CITY_TRANSPORT,
+        "turn_stop_city_and_transport",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
@@ -2030,6 +2056,48 @@ def normalize_retail_great_power_pressure(
         },
         "lost": _require_int(raw.get("lost"), "retail lost"),
         "nations": _pressure_nations(raw.get("nations"), "retail"),
+    }
+
+
+def normalize_native_turn_stop_state(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a native turn-stop case to the turn-state schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _mission_turn(turn, "native turn"),
+    }
+
+
+def normalize_retail_turn_stop_state(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail turn-stop capture to the same schema."""
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
     }
 
 

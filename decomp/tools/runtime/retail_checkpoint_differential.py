@@ -37,6 +37,8 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_PRESSURE_HUMAN_DEBT,
     CHECKPOINT_SEASON_ADVANCE,
     CHECKPOINT_TURN_ALERTS_FIRST,
+    CHECKPOINT_TURN_STOP_CITY_TRANSPORT,
+    CHECKPOINT_TURN_STOP_DEAL_BOOK,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
@@ -58,6 +60,7 @@ from tools.runtime.checkpoints import (
     normalize_native_great_power_pressure,
     normalize_native_season_advance,
     normalize_native_turn_alerts_first,
+    normalize_native_turn_stop_state,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -76,6 +79,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_great_power_pressure,
     normalize_retail_season_advance,
     normalize_retail_turn_alerts_first,
+    normalize_retail_turn_stop_state,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -526,6 +530,24 @@ def load_scenario(name: str) -> Scenario:
                 CHECKPOINT_PRESSURE_HUMAN_DEBT
                 if name == "great_power_pressure_human_debt"
                 else CHECKPOINT_PRESSURE_AI_NOOP
+            ),
+        )
+    elif name in ("turn_stop_deal_book", "turn_stop_city_and_transport"):
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=(
+                CHECKPOINT_TURN_STOP_DEAL_BOOK
+                if name == "turn_stop_deal_book"
+                else CHECKPOINT_TURN_STOP_CITY_TRANSPORT
             ),
         )
     elif name == "turn_stop_technology":
@@ -4688,6 +4710,38 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = CHECKPOINT_PRESSURE_AI_NOOP
+                    elif scenario.drive == "turn_stop_deal_book":
+                        sim_mgr = _u32(session, _SIM_MGR)
+                        session.assign(
+                            f"*(int*)0x{sim_mgr + 0x04:08x}", 0x0C
+                        )
+                        _invoke_thiscall(
+                            session,
+                            _ADVANCE_TURN_STATE,
+                            sim_mgr,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                        )
+                        result_fields = _capture_turn_state(session)
+                        result_probe = CHECKPOINT_TURN_STOP_DEAL_BOOK
+                    elif (
+                        scenario.drive == "turn_stop_city_and_transport"
+                    ):
+                        sim_mgr = _u32(session, _SIM_MGR)
+                        session.assign(
+                            f"*(int*)0x{sim_mgr + 0x04:08x}", 0x0B
+                        )
+                        _invoke_virtual(
+                            session,
+                            sim_mgr,
+                            0x54,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                        )
+                        result_fields = _capture_turn_state(session)
+                        result_probe = CHECKPOINT_TURN_STOP_CITY_TRANSPORT
                     elif (
                         scenario.drive
                         == "military_phase_ships_without_orders"
@@ -4831,6 +4885,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "turn_alerts_skip_first_economic_turn",
         "great_power_pressure_human_debt",
         "great_power_pressure_ai_noop",
+        "turn_stop_deal_book",
+        "turn_stop_city_and_transport",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -4965,6 +5021,13 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_great_power_pressure(
                 native_result,
                 scenario.result_checkpoint_id,
+            )
+        elif scenario.drive in (
+            "turn_stop_deal_book",
+            "turn_stop_city_and_transport",
+        ):
+            recomp_observation = normalize_native_turn_stop_state(
+                native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "second_turn_military_cleanup":
             recomp_observation = normalize_native_military_cleanup(
@@ -5131,6 +5194,13 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         CHECKPOINT_PRESSURE_AI_NOOP,
     ):
         retail_observation = normalize_retail_great_power_pressure(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        CHECKPOINT_TURN_STOP_DEAL_BOOK,
+        CHECKPOINT_TURN_STOP_CITY_TRANSPORT,
+    ):
+        retail_observation = normalize_retail_turn_stop_state(
             retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
