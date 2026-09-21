@@ -121,6 +121,9 @@ public:
   // Mac oracle: NoSelection() const. Null/empty task forces and forces with no active
   // child return true; the first active child returns false.
   bool NoSelection() const; // 0x553b50
+  // Dead member (no live callers): null/empty task forces return true; otherwise true
+  // only when every shipList entry's ship has selection != 0. 0x00556280.
+  bool AllShipsSelected() const;
   // 0x00554460 -- province-context command resolver (returns 0x10 or 1); asks the
   // diplomacy manager about this entry's nation vs the province's owner.
   char MouseCodeForTarget(Province* province) const;

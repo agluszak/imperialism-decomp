@@ -2050,6 +2050,22 @@ short TTaskForce::CountSelectedShips() const {
   return count;
 }
 
+// FUNCTION: IMPERIALISM 0x00556280
+bool TTaskForce::AllShipsSelected() const {
+  // MATCH: 80.00% - residual diff is VC5 register allocation (retail keeps the
+  // node payload in ECX and the bool temp in EDX; recomp swaps them).
+  if (this == 0) {
+    return true;
+  }
+  for (TMapOrderChildLinkNode* node = shipList; node != 0; node = node->next) {
+    bool selected = static_cast<TShip*>(node->payload)->selection != 0;
+    if (!selected) {
+      return false;
+    }
+  }
+  return true;
+}
+
 // FUNCTION: IMPERIALISM 0x005562c0
 short TTaskForce::CountShips() const {
   if (this == nullptr) {
