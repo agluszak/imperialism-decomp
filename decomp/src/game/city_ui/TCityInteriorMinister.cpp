@@ -1258,6 +1258,10 @@ void TCityInteriorMinister::DispatchBuilders() {
   }
 }
 
+// MATCH: retail calls the stretch<short> ctor out-of-line for `candidateTiles` at this
+// site while faithful source makes VC5 inline it in this TU (~20 extra blocks). The
+// residual is constructor placement plus register scheduling, not a source defect
+// (reccmp 0.1.7: non_isomorphic_cfg, modulo-stack 27%).
 // FUNCTION: IMPERIALISM 0x004c1ac0
 void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
   RequestMissingCivilianOrderTypes();
