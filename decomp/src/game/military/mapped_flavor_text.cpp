@@ -277,20 +277,20 @@ bool ShouldRetryMappedFlavorTextGeneration(CString* dest) {
 
 // FUNCTION: IMPERIALISM 0x005d4410
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot) {
-  if (g_pSimMgr->useLocalizedNameTables68 == '\0') {
-    short variantIndex = g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex;
-    GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
-    if (g_bMultiplayerScenarioSetupActive == '\0') {
-      while (dest->GetLength() > 0xc) {
-        GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
-      }
-    }
+  if (g_pSimMgr->useLocalizedNameTables68 != '\0') {
+    CString localizedName;
+    g_pSimMgr->GetString(0x2715, tableSlot, &localizedName);
+    *dest = CString(localizedName);
     return;
   }
 
-  CString localizedName;
-  g_pSimMgr->GetString(0x2715, tableSlot, &localizedName);
-  *dest = localizedName;
+  short variantIndex = g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex;
+  GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
+  if (g_bMultiplayerScenarioSetupActive == '\0') {
+    while (dest->GetLength() > 0xc) {
+      GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005d4550
@@ -305,7 +305,7 @@ void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot
     CString provinceName;
     short ordinal = ++g_anProvinceNameOrdinalByNationSlot_006a5af0[nationSlot];
     g_pSimMgr->GetString(static_cast<short>(nationSlot + 8000), ordinal, &provinceName);
-    *dest = provinceName;
+    *dest = CString(provinceName);
     return;
   }
 

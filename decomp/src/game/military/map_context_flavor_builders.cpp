@@ -1098,11 +1098,10 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ce110
-CString* GenerateMappedFlavorTextVariantEToSharedString(CString* out) {
+CString GenerateMappedFlavorTextVariantEToSharedString() {
   CString temp;
   GenerateMappedFlavorTextVariantE_005ccce0(&temp);
-  *out = temp;
-  return out;
+  return temp;
 }
 
 // FUNCTION: IMPERIALISM 0x005ce1b0
@@ -1209,7 +1208,7 @@ void AppendRandomMapContextStatusSuffixWithProbability(CString* dest) {
 }
 
 // FUNCTION: IMPERIALISM 0x005cf090
-CString* BuildMapContextStatusStringWithRandomSuffix(CString* out) {
+CString BuildMapContextStatusStringWithRandomSuffix() {
   CString local;
   BuildRandomMapContextStatusBaseString(&local);
   if (local.GetLength() < 9) {
@@ -1219,8 +1218,7 @@ CString* BuildMapContextStatusStringWithRandomSuffix(CString* out) {
       local += AssignRandomMapContextStatusBaseString();
     }
   }
-  *out = local;
-  return out;
+  return local;
 }
 
 // FUNCTION: IMPERIALISM 0x005cf1b0
@@ -1292,11 +1290,10 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005cfba0
-CString* GenerateMappedFlavorTextVariantCToSharedString(CString* out) {
+CString GenerateMappedFlavorTextVariantCToSharedString() {
   CString temp;
   GenerateMappedFlavorTextVariantC_005cf1b0(&temp);
-  *out = temp;
-  return out;
+  return temp;
 }
 
 // FUNCTION: IMPERIALISM 0x005cfc40
@@ -1415,11 +1412,10 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d1330
-CString* GenerateMappedFlavorTextVariantBToSharedString(CString* out) {
+CString GenerateMappedFlavorTextVariantBToSharedString() {
   CString temp;
   GenerateMappedFlavorTextVariantB_005cfc40(&temp);
-  *out = temp;
-  return out;
+  return temp;
 }
 
 // FUNCTION: IMPERIALISM 0x005d13d0
@@ -1568,11 +1564,10 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d3300
-CString* GenerateMappedFlavorTextVariantAToSharedString(CString* out) {
+CString GenerateMappedFlavorTextVariantAToSharedString() {
   CString temp;
   GenerateMappedFlavorTextVariantA_005d13d0(&temp);
-  *out = temp;
-  return out;
+  return temp;
 }
 
 // FUNCTION: IMPERIALISM 0x005d33a0
@@ -1668,9 +1663,8 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d41a0
-CString* GenerateMappedFlavorTextVariantDToSharedString(CString* out) {
+CString GenerateMappedFlavorTextVariantDToSharedString() {
   CString temp;
   GenerateMappedFlavorTextVariantD_005d33a0(&temp);
-  *out = temp;
-  return out;
+  return temp;
 }
