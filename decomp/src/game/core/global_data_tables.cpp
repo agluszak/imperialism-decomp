@@ -1631,6 +1631,11 @@ char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
 // GLOBAL: IMPERIALISM 0x006a17b0
 int g_nIncludeViewAssertGate_006A17B0 = 0;
 
+// One-shot assert gate for the dead overlay-queue cursor guard (0x483250). Never
+// written; the guard is the gate's only reader, so a call would always assert.
+// GLOBAL: IMPERIALISM 0x006a17b4
+int g_nIncludeViewQueueAssertGate_006A17B4 = 0;
+
 // One-shot assert gate for starting a mouse-capture track without a live UI context.
 // GLOBAL: IMPERIALISM 0x006a17b8
 int g_nIncludeViewCaptureAssertGate_006A17B8 = 0;
@@ -3241,6 +3246,11 @@ int g_lastClickedMapTileIndex_006a4608 = 0;
 // id in the nation-info modal (0x5d5ea6). Never observed written yet; zero-initialized.
 // GLOBAL: IMPERIALISM 0x006a5bac
 int g_nationInfoGoldResourceOverride_006a5bac = 0;
+
+// One-shot assert gate for the dead ModalMessage-family stub at 0x5d5bc0
+// (UViewMgr.cpp:0x2ac). Never written; the stub is its only reader.
+// GLOBAL: IMPERIALISM 0x006a5bb0
+int g_nViewMgrModalAssertGate_006A5BB0 = 0;
 
 // Round-robin localization-audio slot cursor (0..5) advanced by
 // TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState (0x5e50c0).

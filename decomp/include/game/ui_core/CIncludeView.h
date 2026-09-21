@@ -189,6 +189,11 @@ public:
   // BeginTracking (0x483280) below.
   TControl* m_capturedControl74;
 
+  // Dead one-shot gate assert (gate 0x6a17b4, IncludeView.cpp:0x166). The gate is never
+  // written, so a call would always assert; no callers exist in the original.
+  // 0x00483250, __thiscall.
+  void AssertOverlayQueueGate();
+
   // Starts a mouse-capture drag for `tracker`: takes the Win32 capture, seeds all three
   // capture points to the press position, and hands the control its begin phase.
   // 0x00483280, __thiscall.

@@ -347,6 +347,13 @@ CPoint IncludeViewOverlayRectRecord::ComputeSpan() const {
   return CPoint(rect.right - rect.left, rect.bottom - rect.top);
 }
 
+// FUNCTION: IMPERIALISM 0x00483250
+void CIncludeView::AssertOverlayQueueGate() {
+  if (g_nIncludeViewQueueAssertGate_006A17B4 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x166);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00483280
 void CIncludeView::BeginTracking(CPoint* startPoint, TControl* tracker) {
   if (g_nIncludeViewCaptureAssertGate_006A17B8 == 0) {

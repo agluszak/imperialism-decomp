@@ -453,6 +453,17 @@ char TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short
                             showCancel);
 }
 
+// FUNCTION: IMPERIALISM 0x005d5bc0
+char TViewMgr::ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4,
+                                          int arg5, int arg6) {
+  // MATCH: 95.24% raw / 100% modulo stack - the by-value CString arg destructs at a
+  // 4-byte-higher stack slot in the original; identical code otherwise.
+  if (g_nViewMgrModalAssertGate_006A5BB0 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2ac);
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005d5c40
 char TViewMgr::ModalMessage(long templateKind, CString titleSuffix, CString message,
                             const POINT& messagePosition, short overlayMode,

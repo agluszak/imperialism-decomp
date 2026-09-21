@@ -189,6 +189,11 @@ public:
   // RunNationInfoModalAndReturnNonCancel is a short too.
   char ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
                     unsigned char showCancel);
+  // Dead gate-assert stub: asserts UViewMgr.cpp:0x2ac when the (never-written) gate is
+  // clear, then returns 0. The by-value CString produces the retail SEH frame; `this`
+  // is never read. 0x005d5bc0, __thiscall.
+  char ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
+                                  int arg6);
   // 0x5de990 — load string (group, index) and pose it through the localized-message
   // dispatch; returns the prompt result byte.
   char ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,

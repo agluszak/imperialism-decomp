@@ -23,6 +23,7 @@ extern POINT g_ptUiPromptModalMessage; // @ 0x6a5be0
 extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
 
 extern int g_nationInfoGoldResourceOverride_006a5bac;
+extern int g_nViewMgrModalAssertGate_006A5BB0; // @ 0x6a5bb0
 
 extern int g_lastTurnAlertTick_006a31c0;
 
@@ -182,6 +183,7 @@ extern char g_szAmbitCadreEgoutClassName_00694D40[];
 extern int g_AmbitCadreEgoutWndClassAtom_006A1834;
 
 extern int g_nIncludeViewAssertGate_006A17B0;
+extern int g_nIncludeViewQueueAssertGate_006A17B4;
 extern int g_nIncludeViewCaptureAssertGate_006A17B8;
 
 // One-shot assert / init gates used by CIncludeView's main-pane reinitialise path.
