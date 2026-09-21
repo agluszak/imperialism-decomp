@@ -20,6 +20,7 @@ ACTION_CITY_TRANSPORT_PHASE = "city_transport_phase.run"
 ACTION_CIVILIANS_PHASE = "civilians_phase.run"
 ACTION_MILITARY_PHASE = "military_phase.run"
 ACTION_MILITARY_CLEANUP = "second_turn_military_cleanup.run"
+ACTION_RECOMPUTE_METRICS = "recompute_nation_order_priority_metrics.run"
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
@@ -44,6 +45,7 @@ CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE = (
 CHECKPOINT_LAND_RETREAT_PHASE = "military_phase_land_retreat.resolved"
 CHECKPOINT_SECOND_TURN_MILITARY_PHASE = "second_turn_military_phase.resolved"
 CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP = "second_turn_military_cleanup.resolved"
+CHECKPOINT_RECOMPUTE_METRICS = "recompute_nation_order_priority_metrics.resolved"
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
 
 
@@ -289,6 +291,21 @@ SCHEMAS = {
             "military_cleanup.expansion_pressure",
             "military_cleanup.unit_divergence",
             "military_cleanup.mission_pressure",
+        ),
+    ),
+    CHECKPOINT_RECOMPUTE_METRICS: CheckpointSchema(
+        CHECKPOINT_RECOMPUTE_METRICS,
+        ACTION_RECOMPUTE_METRICS,
+        "recompute_nation_order_priority_metrics",
+        (
+            "queue_divergence",
+            "mobile_score",
+            "mobile_divergence",
+            "combined_divergence",
+            "weighted_military",
+            "expansion_pressure",
+            "unit_divergence",
+            "mission_pressure",
         ),
     ),
     CHECKPOINT_SECOND_TURN_SEQUENCE: CheckpointSchema(
@@ -1217,6 +1234,40 @@ def normalize_native_second_turn_sequence(
             transition_result.get("economic_turn"), "native economic_turn"
         ),
     }
+
+
+def normalize_native_recompute_metrics(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the native metric case result payload to its float-bit arrays."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    transition_result = _require_mapping(
+        captures.get("result"), "native result capture"
+    )
+    normalized: dict[str, Any] = {
+        "checkpoint_id": CHECKPOINT_RECOMPUTE_METRICS,
+        "action_id": ACTION_RECOMPUTE_METRICS,
+    }
+    for key in _MILITARY_CLEANUP_METRIC_KEYS:
+        normalized[key] = _require_int_list(
+            transition_result.get(key), f"native result {key}"
+        )
+    return normalized
+
+
+def normalize_retail_recompute_metrics(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the retail metric capture to the same float-bit arrays."""
+    normalized = {
+        "checkpoint_id": CHECKPOINT_RECOMPUTE_METRICS,
+        "action_id": ACTION_RECOMPUTE_METRICS,
+    }
+    for key in _MILITARY_CLEANUP_METRIC_KEYS:
+        normalized[key] = _require_int_list(raw.get(key), f"retail {key}")
+    return normalized
 
 
 def normalize_retail_second_turn_sequence(
