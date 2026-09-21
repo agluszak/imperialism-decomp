@@ -971,9 +971,10 @@ void TSimMgr::EnterOptionalPhase(int gamePhase) {
 // perturb the codegen of the methods in this file.
 
 // FUNCTION: IMPERIALISM 0x0057f110
-int TSimMgr::InLinearPhase() {
+char TSimMgr::InLinearPhase() {
   int phase = turnStateCode;
-  return (phase <= 3) || (phase >= 6);
+  char linear = (phase < 4) || (phase > 5);
+  return linear;
 }
 
 // FUNCTION: IMPERIALISM 0x0057f140
@@ -1086,14 +1087,18 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
   return 0;
 }
 
+// MATCH: retail leaves upper EAX dirty (char return); residual is VC5's signed
+// pointer-compare (jl) on the array-end bound, same as DoPerTurnMissionAIStuff.
 // FUNCTION: IMPERIALISM 0x0057f4f0
-int TSimMgr::AllHumansFinished() {
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_apNationStates[nationSlot]->field904 == 0) {
-      return 0;
+char TSimMgr::AllHumansFinished() {
+  char finished = 1;
+  for (TGreatPower** nation = g_apNationStates; nation < g_apNationStates + 7; ++nation) {
+    if ((*nation)->field904 == 0) {
+      finished = 0;
+      break;
     }
   }
-  return 1;
+  return finished;
 }
 
 // FUNCTION: IMPERIALISM 0x0057f530

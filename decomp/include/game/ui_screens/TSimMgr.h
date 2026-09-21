@@ -77,12 +77,12 @@ public:
   // yet named, so retain its ABI-equivalent int representation.
   virtual void EnterOptionalPhase(int gamePhase); // 0x48  0x0057d990
   virtual void AdvanceGlobalTurnStateMachine();   // 0x4c  0x0057da70
-  virtual int InLinearPhase();                    // 0x50  0x0057f110
+  virtual char InLinearPhase();                   // 0x50  0x0057f110
   virtual void DoCityAndTransport();              // 0x54  0x0057f140, Mac oracle
   virtual void DoCivilians();                     // 0x58  0x0057f200, Mac oracle
   virtual void DoMilitary();                      // 0x5c  0x0057f280, Mac oracle
   virtual void DoTrade();                         // 0x60  0x0057f3c0, Mac oracle
-  virtual int AllHumansFinished();                // 0x64  0x0057f4f0
+  virtual char AllHumansFinished();               // 0x64  0x0057f4f0
   virtual void ResetTurnFlags();                  // 0x68  0x0057f530
   void PrepareMultiplayerTurnResume();            // 0x0057f570
   virtual int PlayerLost();                       // 0x6c  0x0057f490, Mac oracle
