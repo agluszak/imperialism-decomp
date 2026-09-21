@@ -30,6 +30,7 @@ ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 ACTION_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.run"
 ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
 ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
+ACTION_TECH_NAVAL_UPGRADE = "technology_naval_capability_upgrade.run"
 ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
 ACTION_SEASON_ADVANCE = "season_advance_clears_status_flags.run"
 ACTION_ELIMINATION_PHASE = "elimination_phase_with_landed_great_powers.run"
@@ -75,6 +76,9 @@ CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.resolved"
 CHECKPOINT_CHECK_TECH_ADVANCES = "check_technology_advances.resolved"
 CHECKPOINT_CHECK_TECH_ADVANCES_AI = (
     "check_technology_advances_ai_purchase.resolved"
+)
+CHECKPOINT_TECH_NAVAL_UPGRADE = (
+    "technology_naval_capability_upgrade.resolved"
 )
 CHECKPOINT_TURN_STOP_TECHNOLOGY = "turn_stop_technology.resolved"
 CHECKPOINT_SEASON_ADVANCE = "season_advance_clears_status_flags.resolved"
@@ -417,6 +421,17 @@ SCHEMAS = {
         CHECKPOINT_CHECK_TECH_ADVANCES_AI,
         ACTION_CHECK_TECH_ADVANCES_AI,
         "check_technology_advances_ai_purchase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "technology",
+        ),
+    ),
+    CHECKPOINT_TECH_NAVAL_UPGRADE: CheckpointSchema(
+        CHECKPOINT_TECH_NAVAL_UPGRADE,
+        ACTION_TECH_NAVAL_UPGRADE,
+        "technology_naval_capability_upgrade",
         (
             "turn.phase",
             "turn.active",
@@ -1750,6 +1765,23 @@ def normalize_retail_ai_naval_development(
     }
 
 
+def _upgrade_ship_records(raw: Any, label: str) -> list[dict[str, Any]]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{label} must be an array")
+    records = []
+    for index, ship in enumerate(raw):
+        ship_map = _require_mapping(ship, f"{label}[{index}]")
+        records.append(
+            {
+                field: _require_int(
+                    ship_map.get(field), f"{label}[{index}].{field}"
+                )
+                for field in ("nation", "type", "strength", "experience")
+            }
+        )
+    return records
+
+
 def _technology_record(raw: Any, label: str) -> dict[str, Any]:
     entry = _require_mapping(raw, label)
     nations_raw = entry.get("nations")
@@ -1785,7 +1817,7 @@ def _technology_record(raw: Any, label: str) -> dict[str, Any]:
                 ),
             }
         )
-    return {
+    result = {
         "marker": _require_int(entry.get("marker"), f"{label}.marker"),
         "prereq_primary": _require_int(
             entry.get("prereq_primary"), f"{label}.prereq_primary"
@@ -1805,6 +1837,55 @@ def _technology_record(raw: Any, label: str) -> dict[str, Any]:
         ),
         "nations": nations,
     }
+    cap_b_raw = entry.get("cap_b_selected")
+    if not isinstance(cap_b_raw, list):
+        raise ValueError(f"{label}.cap_b_selected must be an array")
+    cap_b_selected = []
+    for index, row in enumerate(cap_b_raw):
+        cap_b_selected.append(
+            _require_int_list(row, f"{label}.cap_b_selected[{index}]")
+        )
+    ship_orders_raw = entry.get("ship_order_types")
+    if not isinstance(ship_orders_raw, list):
+        raise ValueError(f"{label}.ship_order_types must be an array")
+    ship_order_types = []
+    for index, record in enumerate(ship_orders_raw):
+        record_map = _require_mapping(
+            record, f"{label}.ship_order_types[{index}]"
+        )
+        ship_order_types.append(
+            {
+                "nation": _require_int(
+                    record_map.get("nation"),
+                    f"{label}.ship_order_types[{index}].nation",
+                ),
+                "types": _require_int_list(
+                    record_map.get("types"),
+                    f"{label}.ship_order_types[{index}].types",
+                ),
+            }
+        )
+    tech_ships = _upgrade_ship_records(entry.get("ships"), f"{label}.ships")
+    admirals_raw = entry.get("admirals")
+    if not isinstance(admirals_raw, list):
+        raise ValueError(f"{label}.admirals must be an array")
+    admirals = []
+    for index, admiral in enumerate(admirals_raw):
+        admiral_map = _require_mapping(admiral, f"{label}.admirals[{index}]")
+        admirals.append(
+            {
+                field: _require_int(
+                    admiral_map.get(field),
+                    f"{label}.admirals[{index}].{field}",
+                )
+                for field in ("nation", "experience", "ship")
+            }
+        )
+    result["cap_b_selected"] = cap_b_selected
+    result["ship_order_types"] = ship_order_types
+    result["ships"] = tech_ships
+    result["admirals"] = admirals
+    return result
 
 
 def normalize_native_check_technology_advances(

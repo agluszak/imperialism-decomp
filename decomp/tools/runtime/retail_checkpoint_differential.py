@@ -32,6 +32,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_AI_NAVAL_DEVELOPMENT,
     CHECKPOINT_CHECK_TECH_ADVANCES,
     CHECKPOINT_CHECK_TECH_ADVANCES_AI,
+    CHECKPOINT_TECH_NAVAL_UPGRADE,
     CHECKPOINT_BATTLE_MELEE,
     CHECKPOINT_BATTLE_RANGED,
     CHECKPOINT_ELIMINATION_PHASE,
@@ -609,6 +610,7 @@ def load_scenario(name: str) -> Scenario:
     elif name in (
         "check_technology_advances",
         "check_technology_advances_ai_purchase",
+        "technology_naval_capability_upgrade",
     ):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -625,6 +627,8 @@ def load_scenario(name: str) -> Scenario:
                 CHECKPOINT_CHECK_TECH_ADVANCES
                 if name == "check_technology_advances"
                 else CHECKPOINT_CHECK_TECH_ADVANCES_AI
+                if name == "check_technology_advances_ai_purchase"
+                else CHECKPOINT_TECH_NAVAL_UPGRADE
             ),
         )
     elif name == "consecutive_turn_sequence":
@@ -3113,7 +3117,19 @@ _TECH_UNIVERSITY_ROWS = 0x467
 _TECH_UNIVERSITY_STRIDE = 9
 _TECH_YEAR_ROWS = 0x4A6
 _TECH_YEAR_STRIDE = 0x3A
+_TECH_CAP_B_ROWS = 0x333
+_TECH_CAP_B_STRIDE = 0x0E
 _NATION_TREASURY = 0x10
+_NATION_CITY = 0x894
+_CITY_SHIP_ORDER_SLOTS = 0x190
+_ORDER_RESOURCE_TYPE_INDEX = 0x48
+_TADMIRAL_CTOR = 0x00551430
+_TADMIRAL_ASSIGN_TO_SHIP = 0x00552250
+_TADMIRAL_SIZE = 0x1C
+_NAVY_SECONDARY_ORDER_LIST_HEAD = 0x006A3EBC
+_TSHIP_SINK = 0x005509C0
+_HANDLE_ABILITY_UNLOCK = 0x005AFD00
+_TTECHMGR = 0x006A43D8
 
 
 def _drive_check_technology_advances(
@@ -3222,8 +3238,224 @@ def _capture_technology(
             "unlock_flags": unlock_flags,
             "enabled_types": enabled_types,
             "nations": nations,
+            "cap_b_selected": [
+                list(
+                    session.read_memory(
+                        tech_mgr + _TECH_CAP_B_ROWS + slot * _TECH_CAP_B_STRIDE,
+                        0x0E,
+                    )
+                )
+                for slot in range(_MAJOR_NATION_COUNT)
+            ],
+            "ship_order_types": _capture_ship_order_types(session),
+            "ships": _capture_navy_ships(session),
+            "admirals": _capture_navy_admirals(session),
         },
     }
+
+
+def _navy_ship_list(session: GdbSession) -> list[int]:
+    ships: list[int] = []
+    ship = _u32(session, _NAVY_PRIMARY_ORDER_LIST_HEAD)
+    while ship != 0:
+        ships.append(ship)
+        ship = _u32(session, ship + 0x24)
+    return ships
+
+
+def _capture_navy_ships(session: GdbSession) -> list[dict[str, object]]:
+    return [
+        {
+            "nation": _s16(session, ship + 0x14),
+            "type": _s16(session, ship + 0x04),
+            "strength": _s16(session, ship + 0x1C),
+            "experience": _s16(session, ship + 0x30),
+        }
+        for ship in _navy_ship_list(session)
+    ]
+
+
+def _capture_navy_admirals(session: GdbSession) -> list[dict[str, object]]:
+    ships = _navy_ship_list(session)
+    admirals: list[dict[str, object]] = []
+    admiral = _u32(session, _NAVY_SECONDARY_ORDER_LIST_HEAD)
+    while admiral != 0:
+        assigned = _u32(session, admiral + 0x08)
+        admirals.append(
+            {
+                "nation": _s16(session, admiral + 0x04),
+                "experience": _s16(session, admiral + 0x10),
+                "ship": ships.index(assigned) if assigned in ships else -1,
+            }
+        )
+        admiral = _u32(session, admiral + 0x14)
+    return admirals
+
+
+def _capture_ship_order_types(session: GdbSession) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        city = _u32(session, nation + _NATION_CITY)
+        if city == 0:
+            continue
+        types = []
+        for order_slot in range(8):
+            order = _u32(
+                session, city + _CITY_SHIP_ORDER_SLOTS + order_slot * 4
+            )
+            types.append(_s16(session, order + _ORDER_RESOURCE_TYPE_INDEX))
+        records.append({"nation": slot, "types": types})
+    return records
+
+
+def _drive_technology_naval_capability_upgrade(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    tech_mgr = _u32(session, _TTECHMGR)
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    nation_slot = 1 if active_nation == 0 else 0
+    nation = _nation_pointer(session, nation_slot)
+    if nation == 0:
+        raise RuntimeError("naval-upgrade fixture has no target nation")
+    city = _u32(session, nation + _NATION_CITY)
+    zone = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+    if city == 0 or zone == 0:
+        raise RuntimeError("naval-upgrade fixture lacks city or zone")
+
+    # ClearNationNavy: free the nation's admirals, then sink its ships.
+    admiral = _u32(session, _NAVY_SECONDARY_ORDER_LIST_HEAD)
+    while admiral != 0:
+        next_admiral = _u32(session, admiral + 0x14)
+        if _s16(session, admiral + 0x04) == nation_slot:
+            _invoke_virtual(
+                session,
+                admiral,
+                0x1C,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+        admiral = next_admiral
+    ship = _u32(session, _NAVY_PRIMARY_ORDER_LIST_HEAD)
+    while ship != 0:
+        next_ship = _u32(session, ship + 0x24)
+        if _s16(session, ship + 0x14) == nation_slot:
+            _invoke_thiscall(
+                session,
+                _TSHIP_SINK,
+                ship,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+        ship = next_ship
+
+    cap_b_base = tech_mgr + _TECH_CAP_B_ROWS + nation_slot * _TECH_CAP_B_STRIDE
+    for resource_type in range(0x0E):
+        session.assign(
+            f"*(unsigned char*)0x{cap_b_base + resource_type:08x}",
+            1 if resource_type < 5 else 0,
+        )
+    for order_slot, ship_type in enumerate((1, 2, 0, 0, 3, 4, 0, 0)):
+        order = _u32(
+            session, city + _CITY_SHIP_ORDER_SLOTS + order_slot * 4
+        )
+        session.assign(
+            f"*(short*)0x{order + _ORDER_RESOURCE_TYPE_INDEX:08x}",
+            ship_type,
+        )
+
+    survivor_a = _new_ship(
+        session,
+        3,
+        zone,
+        nation_slot,
+        "technology-survivor-a",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    session.assign(f"*(short*)0x{survivor_a + 0x30:08x}", 100)
+    survivor_b = _new_ship(
+        session,
+        4,
+        zone,
+        nation_slot,
+        "technology-survivor-b",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    session.assign(f"*(short*)0x{survivor_b + 0x30:08x}", 498)
+    obsolete = _new_ship(
+        session,
+        1,
+        zone,
+        nation_slot,
+        "technology-obsolete",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    session.assign(f"*(short*)0x{obsolete + 0x30:08x}", 250)
+
+    admiral_ptr = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TADMIRAL_SIZE,),
+    )
+    _invoke_thiscall(
+        session,
+        _TADMIRAL_CTOR,
+        admiral_ptr,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(nation_slot,),
+    )
+    admiral_name = _write_name_string(
+        session, "technology-admiral", records, occurrences, breakpoint_roles
+    )
+    session.assign(f"*(int*)0x{admiral_ptr + 0x0C:08x}", admiral_name)
+    session.assign(f"*(short*)0x{admiral_ptr + 0x10:08x}", 200)
+    _invoke_thiscall(
+        session,
+        _TADMIRAL_ASSIGN_TO_SHIP,
+        admiral_ptr,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(obsolete,),
+    )
+
+    session.assign(
+        f"*(unsigned char*)0x{tech_mgr + _TECH_ORDER_CAP_ROWS + nation_slot * _TECH_ORDER_CAP_STRIDE + 9:08x}",
+        1,
+    )
+    session.assign(
+        f"*(short*)0x{tech_mgr + _TECH_YEAR_ROWS + nation_slot * _TECH_YEAR_STRIDE + 2 * 9:08x}",
+        77,
+    )
+    _invoke_thiscall(
+        session,
+        _HANDLE_ABILITY_UNLOCK,
+        tech_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(9, nation_slot),
+    )
 
 
 def _drive_check_technology_advances_ai_purchase(
@@ -5185,6 +5417,15 @@ def run_binary(
                         )
                         result_fields = _capture_technology(session)
                         result_probe = CHECKPOINT_CHECK_TECH_ADVANCES_AI
+                    elif (
+                        scenario.drive
+                        == "technology_naval_capability_upgrade"
+                    ):
+                        _drive_technology_naval_capability_upgrade(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_technology(session)
+                        result_probe = CHECKPOINT_TECH_NAVAL_UPGRADE
                     elif scenario.drive == "turn_stop_technology":
                         _drive_turn_stop_technology(
                             session, records, occurrences, breakpoint_roles
@@ -5418,6 +5659,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "consecutive_turn_sequence",
         "check_technology_advances",
         "check_technology_advances_ai_purchase",
+        "technology_naval_capability_upgrade",
         "turn_stop_technology",
         "season_advance_clears_status_flags",
         "elimination_phase_with_landed_great_powers",
@@ -5532,6 +5774,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                 native_result,
                 checkpoint_id=CHECKPOINT_CHECK_TECH_ADVANCES_AI,
                 action_id="check_technology_advances_ai_purchase.run",
+            )
+        elif scenario.drive == "technology_naval_capability_upgrade":
+            recomp_observation = normalize_native_check_technology_advances(
+                native_result,
+                checkpoint_id=CHECKPOINT_TECH_NAVAL_UPGRADE,
+                action_id="technology_naval_capability_upgrade.run",
             )
         elif scenario.drive == "turn_stop_technology":
             recomp_observation = normalize_native_check_technology_advances(
@@ -5723,6 +5971,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_CHECK_TECH_ADVANCES_AI,
             action_id="check_technology_advances_ai_purchase.run",
+        )
+    elif result_checkpoint == CHECKPOINT_TECH_NAVAL_UPGRADE:
+        retail_observation = normalize_retail_check_technology_advances(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_TECH_NAVAL_UPGRADE,
+            action_id="technology_naval_capability_upgrade.run",
         )
     elif result_checkpoint == CHECKPOINT_TURN_STOP_TECHNOLOGY:
         retail_observation = normalize_retail_check_technology_advances(

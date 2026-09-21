@@ -3645,6 +3645,53 @@ JSON_Value* CaptureTechnologyEphemeral() {
     nations.Add(record.Release());
   }
   object.Set("nations", nations.Release());
+  JsonArray capBSelected;
+  for (int capNation = 0; capNation < 7; ++capNation) {
+    JsonArray row;
+    for (int resourceType = 0; resourceType < 0xe; ++resourceType) {
+      row.Add(static_cast<int>(
+          g_pTechMgr->capRowsB333[capNation].selectedByResourceType[resourceType]));
+    }
+    capBSelected.Add(row.Release());
+  }
+  object.Set("cap_b_selected", capBSelected.Release());
+  JsonArray shipOrderTypes;
+  for (int orderNation = 0; orderNation < 7; ++orderNation) {
+    TGreatPower* orderOwner = g_apNationStates[orderNation];
+    if (orderOwner == 0 || orderOwner->city == 0) {
+      continue;
+    }
+    JsonObject record;
+    record.Set("nation", orderNation);
+    JsonArray types;
+    for (int orderSlot = 0; orderSlot < 8; ++orderSlot) {
+      types.Add(static_cast<int>(
+          orderOwner->city->shipOrderSlots190[orderSlot]->resourceTypeIndex));
+    }
+    record.Set("types", types.Release());
+    shipOrderTypes.Add(record.Release());
+  }
+  object.Set("ship_order_types", shipOrderTypes.Release());
+  JsonArray ships;
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    JsonObject record;
+    record.Set("nation", static_cast<int>(ship->nation));
+    record.Set("type", static_cast<int>(ship->type));
+    record.Set("strength", static_cast<int>(ship->strength));
+    record.Set("experience", static_cast<int>(ship->experience));
+    ships.Add(record.Release());
+  }
+  object.Set("ships", ships.Release());
+  JsonArray admirals;
+  for (TAdmiral* admiral = g_pNavySecondaryOrderListHead; admiral != 0;
+       admiral = admiral->next) {
+    JsonObject record;
+    record.Set("nation", static_cast<int>(admiral->nationSlot));
+    record.Set("experience", static_cast<int>(admiral->experiencePoints));
+    record.Set("ship", RuntimeShipIndex(admiral->assignedShip));
+    admirals.Add(record.Release());
+  }
+  object.Set("admirals", admirals.Release());
   return object.Release();
 }
 
