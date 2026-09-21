@@ -50,6 +50,11 @@ struct WarTransitionPair {
   short targetNationSlot;
 };
 
+// MATCH: retail sign-extends the minor slot for the needLevelByNation index
+// (movsx eax, bx) while using the full register for the *23 matrix row — hence the
+// short cast at the index only. The tie-break is the codebase LCG idiom
+// ((seed >> 12) & 0x7fff) % 2 (signed mod: cdq/xor/sub/and 1/xor/sub). Residual is
+// a ebx/edi register-allocation swap; CFG and instruction sequence match.
 // FUNCTION: IMPERIALISM 0x00413250
 int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
   int bestScore = 0;
@@ -59,24 +64,29 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
       continue;
     }
 
-    int score = (200 - g_apNationStates[majorNation]->needLevelByNation[minorNationSlot]) *
-                relationStandingScores[minorNationSlot * kNationSlotCount + majorNation];
-    bool select = score > bestScore;
-    if (score == bestScore) {
-      select = g_apTerrainTypeDescriptorTable[minorNationSlot]->IsColonyOf(majorNation) != 0;
-      if (!select) {
+    int score =
+        (200 - g_apNationStates[majorNation]
+                   ->needLevelByNation[static_cast<short>(minorNationSlot)]) *
+        relationStandingScores[minorNationSlot * kNationSlotCount + majorNation];
+    if (score > bestScore) {
+      selectedNation = majorNation;
+      bestScore = score;
+    } else if (score == bestScore) {
+      if (g_apTerrainTypeDescriptorTable[minorNationSlot]->IsColonyOf(majorNation) != 0) {
+        selectedNation = majorNation;
+        bestScore = score;
+      } else {
         unsigned int tieSeed =
             minorNationSlot * 7 + majorNation + g_pSimMgr->GetEconomicTurn() + score;
         if (tieSeed == 0) {
           tieSeed = minorNationSlot;
         }
         tieSeed = tieSeed * 0x15a4e35 + 1;
-        select = ((tieSeed >> 12) & 1) != 0;
+        if (static_cast<int>((tieSeed >> 0xc) & 0x7fff) % 2 != 0) {
+          selectedNation = majorNation;
+          bestScore = score;
+        }
       }
-    }
-    if (select) {
-      bestScore = score;
-      selectedNation = majorNation;
     }
   }
   return selectedNation;
@@ -950,7 +960,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
               if (rnd == 0)
                 rnd = randSeed1;
               randSeed1 = rnd * 0x15a4e35 + 1;
-              if ((randSeed1 >> 12) & 1) {
+              if (static_cast<int>((randSeed1 >> 0xc) & 0x7fff) % 2 != 0) {
                 bestOfferNation = gpSlot;
                 bestOfferScore = relationVal;
               }
@@ -979,7 +989,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
             if (rnd == 0)
               rnd = randSeed2;
             randSeed2 = rnd * 0x15a4e35 + 1;
-            if ((randSeed2 >> 12) & 1) {
+            if (static_cast<int>((randSeed2 >> 0xc) & 0x7fff) % 2 != 0) {
               // Retail's 0x4f0815 store targets the first winner slot, not the
               // relation-score winner. Preserve that cross-coupling.
               bestOfferNation = gpSlot;
