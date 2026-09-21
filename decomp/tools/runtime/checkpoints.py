@@ -31,6 +31,7 @@ ACTION_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.run"
 ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
 ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
 ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
+ACTION_SEASON_ADVANCE = "season_advance_clears_status_flags.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -67,6 +68,7 @@ CHECKPOINT_CHECK_TECH_ADVANCES_AI = (
     "check_technology_advances_ai_purchase.resolved"
 )
 CHECKPOINT_TURN_STOP_TECHNOLOGY = "turn_stop_technology.resolved"
+CHECKPOINT_SEASON_ADVANCE = "season_advance_clears_status_flags.resolved"
 
 
 @dataclass(frozen=True)
@@ -411,6 +413,17 @@ SCHEMAS = {
             "turn.active",
             "turn.economic_turn",
             "technology",
+        ),
+    ),
+    CHECKPOINT_SEASON_ADVANCE: CheckpointSchema(
+        CHECKPOINT_SEASON_ADVANCE,
+        ACTION_SEASON_ADVANCE,
+        "season_advance_clears_status_flags",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
@@ -1701,6 +1714,46 @@ def normalize_retail_check_technology_advances(
         "technology": _technology_record(
             raw.get("technology"), "retail technology"
         ),
+    }
+
+
+def normalize_native_season_advance(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce a native driver result to the season-advance turn schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "checkpoint_id": CHECKPOINT_SEASON_ADVANCE,
+        "action_id": ACTION_SEASON_ADVANCE,
+        "turn": _mission_turn(turn, "native turn"),
+    }
+
+
+def normalize_retail_season_advance(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce a retail GDB turn capture to the same schema."""
+    return {
+        "checkpoint_id": CHECKPOINT_SEASON_ADVANCE,
+        "action_id": ACTION_SEASON_ADVANCE,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
     }
 
 

@@ -32,6 +32,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_AI_NAVAL_DEVELOPMENT,
     CHECKPOINT_CHECK_TECH_ADVANCES,
     CHECKPOINT_CHECK_TECH_ADVANCES_AI,
+    CHECKPOINT_SEASON_ADVANCE,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
@@ -49,6 +50,7 @@ from tools.runtime.checkpoints import (
     normalize_native_ai_naval_development,
     normalize_native_check_technology_advances,
     normalize_native_consecutive_turn_sequence,
+    normalize_native_season_advance,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -63,6 +65,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_ai_naval_development,
     normalize_retail_check_technology_advances,
     normalize_retail_consecutive_turn_sequence,
+    normalize_retail_season_advance,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -452,6 +455,20 @@ def load_scenario(name: str) -> Scenario:
                   "military_phase_land_interactive",
                   "military_phase_land_retreat"):
         scenario = _military_phase_land_combat_scenario(fixture, name)
+    elif name == "season_advance_clears_status_flags":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_SEASON_ADVANCE,
+        )
     elif name == "turn_stop_technology":
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -3170,6 +3187,47 @@ def _drive_turn_stop_technology(
     )
 
 
+# --- season_advance_clears_status_flags retail drive ---------------------------
+# Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
+# fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
+
+_ADVANCE_SEASON = 0x0057D950
+
+
+def _drive_season_advance(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 4)
+    session.assign(f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}", 0x51)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x10)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x11)
+    session.assign(f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}", 0)
+    _invoke_thiscall(
+        session,
+        _ADVANCE_SEASON,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+
+def _capture_turn_state(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+    }
+
+
 def _drive_recompute_metrics(
     session: GdbSession,
     records: list[dict],
@@ -4333,6 +4391,12 @@ def run_binary(
                         )
                         result_fields = _capture_technology(session)
                         result_probe = CHECKPOINT_TURN_STOP_TECHNOLOGY
+                    elif scenario.drive == "season_advance_clears_status_flags":
+                        _drive_season_advance(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_turn_state(session)
+                        result_probe = CHECKPOINT_SEASON_ADVANCE
                     elif (
                         scenario.drive
                         == "military_phase_ships_without_orders"
@@ -4471,6 +4535,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "check_technology_advances",
         "check_technology_advances_ai_purchase",
         "turn_stop_technology",
+        "season_advance_clears_status_flags",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -4580,6 +4645,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                 native_result,
                 checkpoint_id=CHECKPOINT_TURN_STOP_TECHNOLOGY,
                 action_id="turn_stop_technology.run",
+            )
+        elif scenario.drive == "season_advance_clears_status_flags":
+            recomp_observation = normalize_native_season_advance(
+                native_result
             )
         elif scenario.drive == "second_turn_military_cleanup":
             recomp_observation = normalize_native_military_cleanup(
@@ -4728,6 +4797,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_TURN_STOP_TECHNOLOGY,
             action_id="turn_stop_technology.run",
+        )
+    elif result_checkpoint == CHECKPOINT_SEASON_ADVANCE:
+        retail_observation = normalize_retail_season_advance(
+            retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
         retail_observation = normalize_retail_second_turn_sequence(
