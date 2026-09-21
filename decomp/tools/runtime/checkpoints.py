@@ -33,6 +33,7 @@ ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
 ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
 ACTION_SEASON_ADVANCE = "season_advance_clears_status_flags.run"
 ACTION_ELIMINATION_PHASE = "elimination_phase_with_landed_great_powers.run"
+ACTION_TURN_ALERTS_FIRST = "turn_alerts_skip_first_economic_turn.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -73,6 +74,7 @@ CHECKPOINT_SEASON_ADVANCE = "season_advance_clears_status_flags.resolved"
 CHECKPOINT_ELIMINATION_PHASE = (
     "elimination_phase_with_landed_great_powers.resolved"
 )
+CHECKPOINT_TURN_ALERTS_FIRST = "turn_alerts_skip_first_economic_turn.resolved"
 
 
 @dataclass(frozen=True)
@@ -441,6 +443,17 @@ SCHEMAS = {
             "turn.turn_flow_status_flags",
             "eligibility",
             "nation_encoded",
+        ),
+    ),
+    CHECKPOINT_TURN_ALERTS_FIRST: CheckpointSchema(
+        CHECKPOINT_TURN_ALERTS_FIRST,
+        ACTION_TURN_ALERTS_FIRST,
+        "turn_alerts_skip_first_economic_turn",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "shown",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
@@ -1859,6 +1872,51 @@ def normalize_retail_elimination_phase(
             _require_int(entry, f"retail nation_encoded[{index}]")
             for index, entry in enumerate(nation_encoded_raw)
         ],
+    }
+
+
+def normalize_native_turn_alerts_first(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the native first-turn alert-skip case to the stable schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    shown = captures.get("result")
+    if not isinstance(shown, (bool, int)):
+        raise ValueError("native result must be a boolean")
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "checkpoint_id": CHECKPOINT_TURN_ALERTS_FIRST,
+        "action_id": ACTION_TURN_ALERTS_FIRST,
+        "turn": _mission_turn(turn, "native turn"),
+        "shown": int(shown),
+    }
+
+
+def normalize_retail_turn_alerts_first(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the retail alert-skip capture to the same schema."""
+    return {
+        "checkpoint_id": CHECKPOINT_TURN_ALERTS_FIRST,
+        "action_id": ACTION_TURN_ALERTS_FIRST,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+        "shown": _require_int(raw.get("shown"), "retail shown"),
     }
 
 

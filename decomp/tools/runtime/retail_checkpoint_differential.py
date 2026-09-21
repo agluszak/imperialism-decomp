@@ -34,6 +34,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_CHECK_TECH_ADVANCES_AI,
     CHECKPOINT_ELIMINATION_PHASE,
     CHECKPOINT_SEASON_ADVANCE,
+    CHECKPOINT_TURN_ALERTS_FIRST,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
@@ -53,6 +54,7 @@ from tools.runtime.checkpoints import (
     normalize_native_consecutive_turn_sequence,
     normalize_native_elimination_phase,
     normalize_native_season_advance,
+    normalize_native_turn_alerts_first,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -69,6 +71,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_consecutive_turn_sequence,
     normalize_retail_elimination_phase,
     normalize_retail_season_advance,
+    normalize_retail_turn_alerts_first,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -485,6 +488,20 @@ def load_scenario(name: str) -> Scenario:
             start_action=base.start_action,
             drive=name,
             result_checkpoint_id=CHECKPOINT_ELIMINATION_PHASE,
+        )
+    elif name == "turn_alerts_skip_first_economic_turn":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_TURN_ALERTS_FIRST,
         )
     elif name == "turn_stop_technology":
         base = _load_save_to_map_scenario(fixture)
@@ -3256,6 +3273,34 @@ def _capture_turn_state(session: GdbSession) -> dict[str, object]:
 
 _COUNTRY_ENCODED_SLOT = 0x0E
 
+# --- turn_alerts_skip_first_economic_turn retail drive -------------------------
+# Mirrors RunTurnAlertsSkipFirstEconomicTurn: economicTurn = 1 forces
+# ShowTurnAlertsForActiveNation's first-turn early return.
+
+_SHOW_TURN_ALERTS = 0x00502B60
+
+
+def _drive_turn_alerts_first(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 1)
+    shown = (
+        _invoke_thiscall(
+            session,
+            _SHOW_TURN_ALERTS,
+            sim_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        & 0xFF
+    )
+    return {"shown": shown, **_capture_turn_state(session)}
+
 
 def _drive_elimination_phase(
     session: GdbSession,
@@ -4477,6 +4522,14 @@ def run_binary(
                         result_probe = CHECKPOINT_ELIMINATION_PHASE
                     elif (
                         scenario.drive
+                        == "turn_alerts_skip_first_economic_turn"
+                    ):
+                        result_fields = _drive_turn_alerts_first(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_TURN_ALERTS_FIRST
+                    elif (
+                        scenario.drive
                         == "military_phase_ships_without_orders"
                     ):
                         _drive_military_phase_ships_without_orders(
@@ -4615,6 +4668,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "turn_stop_technology",
         "season_advance_clears_status_flags",
         "elimination_phase_with_landed_great_powers",
+        "turn_alerts_skip_first_economic_turn",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -4734,6 +4788,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             == "elimination_phase_with_landed_great_powers"
         ):
             recomp_observation = normalize_native_elimination_phase(
+                native_result
+            )
+        elif (
+            scenario.drive == "turn_alerts_skip_first_economic_turn"
+        ):
+            recomp_observation = normalize_native_turn_alerts_first(
                 native_result
             )
         elif scenario.drive == "second_turn_military_cleanup":
@@ -4890,6 +4950,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     elif result_checkpoint == CHECKPOINT_ELIMINATION_PHASE:
         retail_observation = normalize_retail_elimination_phase(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_TURN_ALERTS_FIRST:
+        retail_observation = normalize_retail_turn_alerts_first(
             retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
