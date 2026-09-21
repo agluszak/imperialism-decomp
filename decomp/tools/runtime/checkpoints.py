@@ -15,12 +15,14 @@ ACTION_COMBINED_MAP_ENTRY = "combined_map.enter"
 ACTION_CITY_ACTIVATION = "city.activate"
 ACTION_TURN_ADVANCEMENT = "turn.advance"
 ACTION_DIPLOMACY_PHASE = "diplomacy_phase.run"
+ACTION_TRADE_PHASE = "trade_phase.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
 CHECKPOINT_CITY_ACTIVE = "city.active"
 CHECKPOINT_TURN_ADVANCED = "turn.advanced"
 CHECKPOINT_DIPLOMACY_PHASE = "diplomacy_phase.resolved"
+CHECKPOINT_TRADE_PHASE = "trade_phase.resolved"
 
 
 @dataclass(frozen=True)
@@ -78,7 +80,26 @@ SCHEMAS = {
             "diplomacy.nations",
         ),
     ),
+    CHECKPOINT_TRADE_PHASE: CheckpointSchema(
+        CHECKPOINT_TRADE_PHASE,
+        ACTION_TRADE_PHASE,
+        "trade_phase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "trade.market",
+            "trade.nations",
+        ),
+    ),
 }
+
+
+_RESOURCE_NAMES = (
+    "cotton", "wool", "timber", "coal", "iron", "horses", "oil", "food",
+    "fabric", "lumber", "paper", "steel", "fuel", "clothing", "furniture",
+    "hardware", "arms", "grain", "fruit", "fish", "livestock", "gems", "gold",
+)
 
 
 _DIPLOMACY_POLICY_NAMES = {
@@ -235,6 +256,141 @@ def _diplomacy_proposals(records: Any, label: str) -> list[dict[str, Any]]:
     return normalized
 
 
+def normalize_native_trade_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a native driver result to the stable trade-phase schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    trade = _require_mapping(ephemeral.get("trade"), "native ephemeral trade")
+    for row in _require_mapping(
+        trade.get("market"), "native trade.market"
+    ).get("rows", {}).values():
+        if isinstance(row, Mapping) and "adjusted_offer_count" in row:
+            row["adjusted_offer_count"] = float(row["adjusted_offer_count"])
+    return {
+        "checkpoint_id": CHECKPOINT_TRADE_PHASE,
+        "action_id": ACTION_TRADE_PHASE,
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active_nation"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+            ),
+        },
+        "last_processed_nation": ephemeral.get("last_processed_nation"),
+        "trade": trade,
+    }
+
+
+_TRADE_NATION_INT_FIELDS = (
+    "treasury",
+    "available_merchant",
+    "merchant_capacity",
+    "transport_capacity",
+    "reserved_transport",
+    "unfilled_trade_offer_count",
+)
+
+_TRADE_NATION_ARRAY_FIELDS = (
+    "item_potentials",
+    "remembered_trade_offers",
+    "purchased_items",
+    "transported_items",
+    "unfilled_trade_turns",
+    "city_stocks",
+)
+
+
+def normalize_retail_trade_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a retail GDB trade capture to the same stable schema."""
+    rows_raw = raw.get("market_rows")
+    if not isinstance(rows_raw, list) or len(rows_raw) != 17:
+        raise ValueError("retail market_rows must hold the 17 priced categories")
+    rows: dict[str, Any] = {}
+    for index, row in enumerate(rows_raw):
+        row_map = _require_mapping(row, f"retail market row {index}")
+        rows[_RESOURCE_NAMES[index]] = {
+            "previous_price": _require_int(
+                row_map.get("previous_price"), f"retail previous_price[{index}]"
+            ),
+            "price": _require_int(row_map.get("price"), f"retail price[{index}]"),
+            "base_price": _require_int(
+                row_map.get("base_price"), f"retail base_price[{index}]"
+            ),
+            "request_count": _require_int(
+                row_map.get("request_count"), f"retail request_count[{index}]"
+            ),
+            "offer_count": _require_int(
+                row_map.get("offer_count"), f"retail offer_count[{index}]"
+            ),
+            "amount_offered": _require_int(
+                row_map.get("amount_offered"), f"retail amount_offered[{index}]"
+            ),
+            "adjusted_offer_count": float(
+                _require_number(
+                    row_map.get("adjusted_offer_count"),
+                    f"retail adjusted_offer_count[{index}]",
+                )
+            ),
+            "current_offer_by_nation": _require_int_list(
+                row_map.get("current_offer_by_nation"),
+                f"retail current_offer_by_nation[{index}]",
+            ),
+            "maximum_offer_by_nation": _require_int_list(
+                row_map.get("maximum_offer_by_nation"),
+                f"retail maximum_offer_by_nation[{index}]",
+            ),
+        }
+    nations_raw = raw.get("trade_nations")
+    if not isinstance(nations_raw, list):
+        raise ValueError("retail trade_nations must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(nations_raw):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"retail trade nation {slot}")
+        entry: dict[str, Any] = {
+            field: _require_int(
+                nation_map.get(field), f"retail {field}[{slot}]"
+            )
+            for field in _TRADE_NATION_INT_FIELDS
+        }
+        for field in _TRADE_NATION_ARRAY_FIELDS:
+            value = nation_map.get(field)
+            entry[field] = (
+                None
+                if value is None
+                else _require_int_list(value, f"retail {field}[{slot}]")
+            )
+        nations.append(entry)
+    last_processed = raw.get("last_processed_nation")
+    if last_processed == -1:
+        last_processed = None
+    return {
+        "checkpoint_id": CHECKPOINT_TRADE_PHASE,
+        "action_id": ACTION_TRADE_PHASE,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+            ),
+        },
+        "last_processed_nation": last_processed,
+        "trade": {"market": {"rows": rows}, "nations": nations},
+    }
+
+
 def _diplomacy_records(records: Any, label: str) -> list[dict[str, Any]]:
     if not isinstance(records, list):
         raise ValueError(f"{label} must be an array")
@@ -255,6 +411,12 @@ def _diplomacy_records(records: Any, label: str) -> list[dict[str, Any]]:
 def _require_mapping(value: Any, label: str) -> Mapping[str, Any]:
     if not isinstance(value, Mapping):
         raise ValueError(f"{label} must be an object")
+    return value
+
+
+def _require_number(value: Any, label: str) -> "int | float":
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{label} must be a number")
     return value
 
 

@@ -522,6 +522,10 @@ RuntimeActionResult RunTradePhaseCase(NativeTransition& transition, bool buyClot
   }
   SeedHumanTradeOrders(nation, buyClothing);
 
+  // The market transition consumes CRT rand() (minor bids, AI replies). Seed it
+  // deterministically so the retail differential drive can replay the same stream.
+  srand(0x1234);
+
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;

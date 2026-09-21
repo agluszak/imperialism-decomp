@@ -17,12 +17,15 @@ import time
 
 from tools.runtime.checkpoints import (
     CHECKPOINT_DIPLOMACY_PHASE,
+    CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
     normalize_native_combined_map,
     normalize_native_diplomacy_phase,
+    normalize_native_trade_phase,
     normalize_retail_combined_map,
     normalize_retail_diplomacy_phase,
+    normalize_retail_trade_phase,
     validate_checkpoint,
 )
 from tools.runtime.debug.binary import direct_call_target_after
@@ -211,6 +214,23 @@ def _diplomacy_phase_scenario(fixture: Path) -> Scenario:
     )
 
 
+def _trade_phase_scenario(fixture: Path) -> Scenario:
+    """Reach the loaded map, then drive the native trade transition under GDB."""
+    base = _load_save_to_map_scenario(fixture)
+    return Scenario(
+        name="trade_phase",
+        native_test="trade_phase",
+        action_id="trade_phase.run",
+        fixture=fixture,
+        probes=base.probes,
+        terminal_checkpoint=base.terminal_checkpoint,
+        timeout_seconds=base.timeout_seconds,
+        start_action=base.start_action,
+        drive="trade_phase",
+        result_checkpoint_id=CHECKPOINT_TRADE_PHASE,
+    )
+
+
 def load_scenario(name: str) -> Scenario:
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / "beginning_of_game.imp"
@@ -220,6 +240,8 @@ def load_scenario(name: str) -> Scenario:
         scenario = _load_save_to_map_scenario(fixture)
     elif name == "diplomacy_phase":
         scenario = _diplomacy_phase_scenario(fixture)
+    elif name == "trade_phase":
+        scenario = _trade_phase_scenario(fixture)
     else:
         raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
@@ -483,6 +505,424 @@ def _drive_diplomacy_phase(
             )
 
 
+# --- trade_phase retail drive ---------------------------------------------------
+# Mirrors NativeTradeCases.cpp RunTradePhaseCase / ExecuteDoTradeWithoutPhaseAdvance:
+# seed merchant capacity + stocks, run the market pipeline, drain ranked deals with
+# the human auto-accept substitution, then fold offer cells without StartNextPhase.
+
+_TRADE_MGR = 0x006A43CC
+_TRADE_DEAL_CATEGORY_ORDER = 0x0066D810
+_INITIALIZE_DEAL_BOOK = 0x004DD310
+_CLEAR_TRADE_OFFERS = 0x004DDF90
+_RESET_NATION_METRIC_ROWS = 0x005B7FC0
+_RUN_NATION_UPDATE_PASSES = 0x005B97C0
+_SET_MINORS_TRADE_BIDS = 0x005B9890
+_TALLY_TRADE_BIDS = 0x005B98D0
+_CALCULATE_NEW_WORLD_PRICES = 0x005B8AA0
+_CALCULATE_DEAL_ORDER = 0x005B8080
+_SET_DEAL_RESULTS = 0x005B94D0
+# TCountry vtable slots (index * 4).
+_VT_GET_AMT_UNSOLD = 0x1C * 4
+_VT_GET_MERCHANT_CAPACITY = 0x1D * 4
+_VT_STILL_BUYING_ITEM = 0x21 * 4
+_VT_REPLY_TO_TRADE_OFFER = 0x22 * 4
+# Retail CRT srand (cdecl): seeds the thread-local rand() stream that minor bids
+# and AI offer replies consume. Must match the srand() call in RunTradePhaseCase.
+_SRAND = 0x005E83E0
+_TRADE_CATEGORY_COUNT = 0x11
+_TRADE_ROW_STRIDE = 0xA0
+_TRADE_ROW_BASE = 4  # categoryRows[0] starts at TTradeMgr + 0x04
+_TRADE_RANK_LISTS = 0xAA8
+
+
+def _invoke_virtual(
+    session: GdbSession,
+    receiver: int,
+    slot_offset: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    args: tuple[int, ...] = (),
+) -> int:
+    vtable = _eval_int(session, f"*(unsigned int*)0x{receiver:08x}")
+    address = _eval_int(session, f"*(unsigned int*)0x{vtable + slot_offset:08x}")
+    return _invoke_thiscall(
+        session, address, receiver, records, occurrences, breakpoint_roles, args
+    )
+
+
+def _s16(session: GdbSession, address: int) -> int:
+    value = _eval_int(session, f"*(short*)0x{address:08x}") & 0xFFFF
+    return value - 0x10000 if value & 0x8000 else value
+
+
+def _deal_entry(session: GdbSession, deal_list: int, ordinal: int) -> int:
+    data = _eval_int(session, f"*(unsigned int*)0x{deal_list + 4:08x}")
+    if data == 0 or ordinal < 1:
+        return 0
+    return _eval_int(
+        session, f"*(unsigned int*)0x{data + 4 * (ordinal - 1):08x}"
+    )
+
+
+def _deal_list_size(session: GdbSession, deal_list: int) -> int:
+    if deal_list == 0:
+        return 0
+    return _eval_int(session, f"*(int*)0x{deal_list + 8:08x}")
+
+
+def _drive_trade_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    stages: "dict[str, object] | None" = None,
+) -> None:
+    sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
+    trade_mgr = _eval_int(session, f"*(unsigned int*)0x{_TRADE_MGR:08x}")
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    active_nation = _nation_pointer(session, active_slot)
+    if trade_mgr == 0 or active_nation == 0:
+        raise RuntimeError("retail loaded game has no trade market")
+    if (
+        _eval_int(session, f"*(unsigned int*)0x{active_nation + 0x894:08x}") == 0
+        or _eval_int(session, f"*(unsigned char*)0x{active_nation + 0xA0:08x}") == 0
+    ):
+        raise RuntimeError("retail active nation is not a human great power")
+
+    stock_seed = {0: 8, 1: 8, 2: 12, 3: 10, 4: 10, 5: 4, 6: 6,
+                  7: 16, 13: 10, 14: 8, 15: 8, 16: 6}
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        city = _eval_int(session, f"*(unsigned int*)0x{nation + 0x894:08x}")
+        if city == 0:
+            continue
+        session.write_memory(city + 0x5C, b"\x00" * 28)
+        for index, value in ((1, 2), (5, 1), (10, 1)):
+            session.assign(f"*(short*)0x{city + 0x5C + 2 * index:08x}", value)
+        for index, value in stock_seed.items():
+            session.assign(
+                f"*(short*)0x{city + 0xB6 + 2 * index:08x}", value
+            )
+        session.assign(f"*(int*)0x{nation + 0x10:08x}", 20000)
+
+    session.write_memory(active_nation + 0x250, b"\x00" * 46)
+    session.write_memory(active_nation + 0x1C6, b"\x00" * 46)
+    session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 13:08x}", -1)
+    session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 2:08x}", 5)
+
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+
+    for slot in range(_MAJOR_NATION_COUNT - 1, -1, -1):
+        nation = _nation_pointer(session, slot)
+        if nation != 0:
+            _invoke_thiscall(
+                session,
+                _INITIALIZE_DEAL_BOOK,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+
+    stage_names = (
+        "reset",
+        "nation_updates",
+        "minors_bids",
+        "tally_bids",
+        "new_world_prices",
+        "deal_order",
+    )
+    for stage_name, address in zip(
+        stage_names,
+        (
+            _RESET_NATION_METRIC_ROWS,
+            _RUN_NATION_UPDATE_PASSES,
+            _SET_MINORS_TRADE_BIDS,
+            _TALLY_TRADE_BIDS,
+            _CALCULATE_NEW_WORLD_PRICES,
+            _CALCULATE_DEAL_ORDER,
+        ),
+    ):
+        _invoke_thiscall(
+            session, address, trade_mgr, records, occurrences, breakpoint_roles
+        )
+        if stages is not None:
+            stages[stage_name] = _capture_trade_phase(session)["market_rows"]
+
+    row0 = trade_mgr + _TRADE_ROW_BASE
+    session.assign(f"*(short*)0x{row0 + 2:08x}", 1)
+    session.assign(f"*(short*)0x{row0:08x}", 0)
+    next_index = 0
+    while True:
+        index = _s16(session, row0)
+        dispatch = _s16(session, _TRADE_DEAL_CATEGORY_ORDER + 2 * index)
+        deal_list = _eval_int(
+            session, f"*(unsigned int*)0x{trade_mgr + _TRADE_RANK_LISTS + 4 * dispatch:08x}"
+        )
+        if _deal_list_size(session, deal_list) != 0:
+            break
+        next_index = _s16(session, row0) + 1
+        session.assign(f"*(short*)0x{row0:08x}", next_index)
+        if next_index >= 0x11:
+            break
+
+    while _s16(session, row0) <= 0x10:
+        index = _s16(session, row0)
+        dispatch = _s16(session, _TRADE_DEAL_CATEGORY_ORDER + 2 * index)
+        deal_list = _eval_int(
+            session, f"*(unsigned int*)0x{trade_mgr + _TRADE_RANK_LISTS + 4 * dispatch:08x}"
+        )
+        ordinal = _s16(session, row0 + 2)
+        entry = _deal_entry(session, deal_list, ordinal)
+        if entry == 0:
+            raise RuntimeError("retail ranked deal entry is null")
+        entry_raw = session.read_memory(entry, 0x10)
+        source_slot = struct.unpack("<h", entry_raw[0:2])[0]
+        target_slot = struct.unpack("<h", entry_raw[2:4])[0]
+        score = struct.unpack("<i", entry_raw[8:12])[0]
+        if stages is not None:
+            stages.setdefault("deals", []).append(
+                {
+                    "index": index,
+                    "dispatch": dispatch,
+                    "ordinal": ordinal,
+                    "source": source_slot,
+                    "target": target_slot,
+                    "score": score,
+                    "list_size": _deal_list_size(session, deal_list),
+                }
+            )
+        target_country = _eval_int(
+            session,
+            f"*(unsigned int*)0x{_TERRAIN_TABLE + 4 * target_slot:08x}",
+        )
+        transfer = _invoke_virtual(
+            session,
+            target_country,
+            _VT_GET_AMT_UNSOLD,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(dispatch,),
+        )
+        transfer = ((transfer & 0xFFFF) - 0x10000) if transfer & 0x8000 else transfer & 0xFFFF
+        if target_slot < 7 <= source_slot:
+            capacity = _invoke_virtual(
+                session,
+                target_country,
+                _VT_GET_MERCHANT_CAPACITY,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+            capacity = ((capacity & 0xFFFF) - 0x10000) if capacity & 0x8000 else capacity & 0xFFFF
+            if capacity < transfer:
+                transfer = capacity
+        if transfer > 0:
+            buyer = _eval_int(
+                session,
+                f"*(unsigned int*)0x{_TERRAIN_TABLE + 4 * source_slot:08x}",
+            )
+            buyer_power = (
+                _nation_pointer(session, source_slot) if source_slot < 7 else 0
+            )
+            still_buying = 0
+            if (
+                buyer_power != 0
+                and _eval_int(
+                    session, f"*(unsigned char*)0x{buyer_power + 0xA0:08x}"
+                )
+                != 0
+            ):
+                still_buying = _invoke_virtual(
+                    session,
+                    buyer,
+                    _VT_STILL_BUYING_ITEM,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                    args=(dispatch,),
+                )
+            if buyer_power != 0 and still_buying & 0xFF != 0:
+                _invoke_thiscall(
+                    session,
+                    _SET_DEAL_RESULTS,
+                    trade_mgr,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                    args=(source_slot, target_slot, transfer, score, dispatch, 0, 0),
+                )
+            else:
+                _invoke_virtual(
+                    session,
+                    buyer,
+                    _VT_REPLY_TO_TRADE_OFFER,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                    args=(target_slot, transfer, score, dispatch),
+                )
+        ordinal += 1
+        session.assign(f"*(short*)0x{row0 + 2:08x}", ordinal)
+        if ordinal > _deal_list_size(session, deal_list):
+            while True:
+                index = _s16(session, row0) + 1
+                session.assign(f"*(short*)0x{row0:08x}", index)
+                if index > 0x10:
+                    break
+                dispatch = _s16(session, _TRADE_DEAL_CATEGORY_ORDER + 2 * index)
+                deal_list = _eval_int(
+                    session,
+                    f"*(unsigned int*)0x{trade_mgr + _TRADE_RANK_LISTS + 4 * dispatch:08x}",
+                )
+                if _deal_list_size(session, deal_list) != 0:
+                    break
+            session.assign(f"*(short*)0x{row0 + 2:08x}", 1)
+            if stages is not None:
+                stages[f"drain_to_{index}"] = _capture_trade_phase(session)[
+                    "market_rows"
+                ]
+
+    if stages is not None:
+        stages["drain_end"] = _capture_trade_phase(session)["market_rows"]
+
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation != 0:
+            _invoke_thiscall(
+                session,
+                _CLEAR_TRADE_OFFERS,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+
+    if stages is not None:
+        stages["clear_done"] = _capture_trade_phase(session)["market_rows"]
+
+    # Fold the turn-history offer cells: 0x11 rows x 0x17 cells, each cell raised
+    # to the running maximum seen 23 cells earlier (deliberately reads across the
+    # sub-row boundary into the next contiguous row). Indices are absolute shorts
+    # from tradeOfferCells[0] of row 0, matching retail's rowCursor walk.
+    cells_base = trade_mgr + _TRADE_ROW_BASE + 0x18
+    fold_bytes = _TRADE_CATEGORY_COUNT * _TRADE_ROW_STRIDE - 0x18 + 2
+    values = list(
+        struct.unpack(
+            f"<{fold_bytes // 2}h", session.read_memory(cells_base, fold_bytes)
+        )
+    )
+    original = list(values)
+    for row in range(0x11):
+        for cell in range(0x17):
+            current = row * 0x50 + 46 + cell
+            if values[current - 0x17] > values[current]:
+                values[current] = values[current - 0x17]
+    # Assign only changed cells: bulk -data-write-memory-bytes payloads corrupt
+    # memory under winedbg's gdb stub (observed zeroed market rows).
+    for index in range(46, len(values)):
+        if values[index] != original[index]:
+            session.assign(
+                f"*(short*)0x{cells_base + 2 * index:08x}", values[index]
+            )
+    if stages is not None:
+        stages["fold_done"] = _capture_trade_phase(session)["market_rows"]
+
+
+def _capture_trade_phase(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
+    trade_mgr = _eval_int(session, f"*(unsigned int*)0x{_TRADE_MGR:08x}")
+    diplomacy_mgr = _eval_int(session, f"*(unsigned int*)0x{_DIPLOMACY_MGR:08x}")
+    rows = []
+    # The maximum-offer sub-row intentionally runs 23 cells past the declared
+    # array boundary into the following row (or the trailing padding on row 16).
+    rows_region = session.read_memory(
+        trade_mgr + _TRADE_ROW_BASE, _TRADE_CATEGORY_COUNT * _TRADE_ROW_STRIDE + 2
+    )
+    for index in range(17):
+        raw = rows_region[index * _TRADE_ROW_STRIDE : (index + 1) * _TRADE_ROW_STRIDE]
+        cells = struct.unpack(
+            "<69h",
+            rows_region[
+                index * _TRADE_ROW_STRIDE + 0x18 : index * _TRADE_ROW_STRIDE + 0x18 + 138
+            ],
+        )
+        rows.append(
+            {
+                "previous_price": struct.unpack("<h", raw[4:6])[0],
+                "price": struct.unpack("<h", raw[6:8])[0],
+                "base_price": struct.unpack("<h", raw[0x16:0x18])[0],
+                "request_count": struct.unpack("<h", raw[8:10])[0],
+                "offer_count": struct.unpack("<h", raw[10:12])[0],
+                "amount_offered": struct.unpack("<h", raw[0x14:0x16])[0],
+                "adjusted_offer_count": struct.unpack("<d", raw[0x0C:0x14])[0],
+                "current_offer_by_nation": list(cells[:23]),
+                "maximum_offer_by_nation": list(cells[46:69]),
+            }
+        )
+    nations: list[dict[str, object] | None] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            nations.append(None)
+            continue
+        arrays = struct.unpack(
+            "<115h", session.read_memory(nation + 0x1C6, 230)
+        )
+        city = _eval_int(session, f"*(unsigned int*)0x{nation + 0x894:08x}")
+        city_stocks = (
+            list(struct.unpack("<23h", session.read_memory(city + 0xB6, 46)))
+            if city != 0
+            else None
+        )
+        nations.append(
+            {
+                "treasury": _eval_int(session, f"*(int*)0x{nation + 0x10:08x}"),
+                "available_merchant": _s16(session, nation + 0xA2),
+                "merchant_capacity": _s16(session, nation + 0xA4),
+                "transport_capacity": _s16(session, nation + 0xA6),
+                "reserved_transport": _s16(session, nation + 0xA8),
+                "unfilled_trade_offer_count": _s16(session, nation + 0xB0),
+                "item_potentials": list(arrays[0:23]),
+                "unfilled_trade_turns": list(arrays[23:46]),
+                "transported_items": list(arrays[46:69]),
+                "remembered_trade_offers": list(arrays[69:92]),
+                "purchased_items": list(
+                    struct.unpack("<23h", session.read_memory(nation + 0x198, 46))
+                ),
+                "city_stocks": city_stocks,
+            }
+        )
+    last_processed = _eval_int(
+        session, f"*(signed char*)0x{diplomacy_mgr + 0x78E:08x}"
+    )
+    if last_processed > 0x7F:
+        last_processed -= 0x100
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "last_processed_nation": last_processed,
+        "market_rows": rows,
+        "trade_nations": nations,
+    }
+
+
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
     if queue == 0:
         return []
@@ -689,20 +1129,41 @@ def run_binary(
                         "fields": fields,
                     }
                 )
-                if scenario.drive == "diplomacy_phase":
+                if scenario.drive:
                     if terminal_return_number is not None:
                         session.delete_breakpoint(terminal_return_number)
-                    _drive_diplomacy_phase(
-                        session, records, occurrences, breakpoint_roles
-                    )
-                    diplomacy_fields = _capture_diplomacy_phase(session)
+                    if scenario.drive == "diplomacy_phase":
+                        _drive_diplomacy_phase(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_diplomacy_phase(session)
+                        result_probe = CHECKPOINT_DIPLOMACY_PHASE
+                    elif scenario.drive == "trade_phase":
+                        stages: dict[str, object] = {}
+                        result_fields = {
+                            "pre": _capture_trade_phase(session),
+                            "stages": stages,
+                        }
+                        _drive_trade_phase(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            stages,
+                        )
+                        result_fields.update(_capture_trade_phase(session))
+                        result_probe = CHECKPOINT_TRADE_PHASE
+                    else:
+                        raise RuntimeError(
+                            f"unknown scenario drive {scenario.drive!r}"
+                        )
                     records.append(
                         {
                             "type": "checkpoint",
                             "seq": len(records),
-                            "probe": CHECKPOINT_DIPLOMACY_PHASE,
+                            "probe": result_probe,
                             "occurrence": 1,
-                            "fields": diplomacy_fields,
+                            "fields": result_fields,
                         }
                     )
                 metadata["status"] = "completed"
@@ -795,7 +1256,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         run_dir,
         timeout_seconds,
     )
-    if scenario.drive == "diplomacy_phase":
+    if scenario.drive in {"diplomacy_phase", "trade_phase"}:
         from tools.runtime.native_oracle import run_native_transition
 
         native_dir = run_dir / "recomp"
@@ -820,7 +1281,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             native_result["captures"] = json.loads(
                 captures_path.read_text(encoding="utf-8")
             )
-        recomp_observation = normalize_native_diplomacy_phase(native_result)
+        if scenario.drive == "diplomacy_phase":
+            recomp_observation = normalize_native_diplomacy_phase(native_result)
+        else:
+            recomp_observation = normalize_native_trade_phase(native_result)
         recomp_identity = native_result.get("host", {}).get("provenance", {})
     else:
         native_outcome = RuntimeRunner(
@@ -855,6 +1319,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     if result_checkpoint == CHECKPOINT_DIPLOMACY_PHASE:
         retail_observation = normalize_retail_diplomacy_phase(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_TRADE_PHASE:
+        retail_observation = normalize_retail_trade_phase(
             retail_records[0]["fields"]
         )
     else:

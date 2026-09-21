@@ -3150,6 +3150,55 @@ JSON_Value* CaptureDiplomacyEphemeral() {
   return object.Release();
 }
 
+// Compact trade-phase state for retail-vs-recomp transition differentials:
+// market rows plus per-major-nation treasury, capacities, trade arrays, and
+// city stock levels.
+JSON_Value* CaptureTradeEphemeral() {
+  JsonObject object;
+  object.Set("market", CaptureMarket());
+  JsonArray nations;
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0) {
+      nations.AddNull();
+      continue;
+    }
+    JsonObject entry;
+    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("available_merchant",
+              static_cast<int>(nation->availableMerchantCapacity));
+    entry.Set("merchant_capacity", static_cast<int>(nation->merchantCapacity));
+    entry.Set("transport_capacity", static_cast<int>(nation->transportCapacity));
+    entry.Set("reserved_transport",
+              static_cast<int>(nation->reservedTransportCapacity));
+    entry.Set("unfilled_trade_offer_count",
+              static_cast<int>(nation->unfilledTradeOfferCount));
+    entry.Set("item_potentials",
+              CaptureShortArray(nation->itemPotentials, kResourceKindCount));
+    entry.Set("remembered_trade_offers",
+              CaptureShortArray(nation->rememberedTradeOffersByResource,
+                                kResourceKindCount));
+    entry.Set("purchased_items",
+              CaptureShortArray(nation->purchasedItemsByResource, kResourceKindCount));
+    entry.Set("transported_items",
+              CaptureShortArray(nation->transportedItemsByResource,
+                                kResourceKindCount));
+    entry.Set("unfilled_trade_turns",
+              CaptureShortArray(nation->unfilledTradeTurnCountsByResource,
+                                kResourceKindCount));
+    if (nation->city != 0) {
+      entry.Set("city_stocks",
+                CaptureShortArray(&nation->city->cityStockCottonB6,
+                                  kResourceKindCount));
+    } else {
+      entry.SetNull("city_stocks");
+    }
+    nations.Add(entry.Release());
+  }
+  object.Set("nations", nations.Release());
+  return object.Release();
+}
+
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
@@ -3162,6 +3211,9 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("news", CaptureNews());
   object.Set("pending", CapturePending());
   object.Set("diplomacy", CaptureDiplomacyEphemeral());
+  if (g_pTradeMgr != 0) {
+    object.Set("trade", CaptureTradeEphemeral());
+  }
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();
