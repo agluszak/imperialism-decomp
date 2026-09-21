@@ -96,6 +96,95 @@ int FindActiveNationSlotIndexInGameFlowList() {
   return -1;
 }
 
+// FUNCTION: IMPERIALISM 0x005421e0
+const char* GetGamePhaseNameString(int gamePhase) {
+  switch (gamePhase) {
+    case -1:
+      return "kPhNoPhase";
+    case 1:
+      return "kPhInitializeGame";
+    case 2:
+      return "kPhKickOff";
+    case 3:
+      return "kPhCitySiteSelection";
+    case 4:
+      return "kPhMap";
+    case 5:
+      return "kPhWaitingToEndTurn";
+    case 6:
+      return "kPhEverybodyDoDiplomacy";
+    case 7:
+      return "kPhEverybodyDoTrade";
+    case 8:
+      return "kPhEverybodyDoCity";
+    case 9:
+      return "kPhEverybodyDoCivilians";
+    case 10:
+      return "kPhEverybodyDoMilitary";
+    case 11:
+      return "kPhMoneyLenders";
+    case 12:
+      return "kPhDealBook";
+    case 13:
+      return "kPhStratBatReport";
+    case 14:
+      return "kPhCouncilVoting";
+    case 15:
+      return "kPhNewspaper";
+    case 16:
+      return "kPhStartTurn";
+    case 17:
+      return "kPhTechnology";
+    case 18:
+      return "kPhStartMap";
+    case 19:
+      return "kPhMultiSync";
+    case 20:
+      return "kPhCombat";
+    case 21:
+      return "kPhFinishMilitary";
+    case 22:
+      return "kPhCouncilVictory";
+    case 23:
+      return "kPhCouncilDefeat";
+    case 24:
+      return "kPhMapEdit";
+    case 25:
+      return "kPhCheckForLosses";
+    case 100:
+      return "kOptPhDealBook";
+    case 101:
+      return "kOptPhStratBatReport";
+    case 102:
+      return "kOptPhNewspaper";
+    case 103:
+      return "kOptPhTrade";
+    case 104:
+      return "kOptPhDiplomacy";
+    case 105:
+      return "kOptPhTransport";
+    case 106:
+      return "kOptPhCity";
+    case 107:
+      return "kOptPhGameOptions";
+    case 108:
+      return "kOptPhShowUnitHistory";
+    case 109:
+      return "kOptPhTechStore";
+    case 110:
+      return "kOptPhGameStatus";
+    case 111:
+      return "kOptPhSaveGame";
+    case 112:
+      return "kOptPhLoadGame";
+    case 113:
+      return "kOptPhCredits";
+    case 114:
+      return "kOptPhMultiplayerLounge";
+  }
+  return "?";
+}
+
 // SYNTHETIC: IMPERIALISM 0x005425d0
 // TMultiplayerMgr::CreateObject
 

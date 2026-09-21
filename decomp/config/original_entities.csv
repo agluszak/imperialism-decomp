@@ -4205,7 +4205,7 @@ address|name|symbol|size|type|prototype|provenance
 542150|IltTarget_00542150||1|function|void IltTarget_00542150(void)|curated
 542170|IltTarget_00542170||32|function|undefined IltTarget_00542170()|
 5421a0|FindActiveNationSlotIndexInGameFlowList||42|function|undefined FindActiveNationSlotIndexInGameFlowList()|
-5421e0|IltTarget_005421e0||35|function|undefined IltTarget_005421e0()|
+5421e0|IltTarget_005421e0||281|function|undefined IltTarget_005421e0()|
 5424b0|TCancelGameOptionsCommand::CreateObject|?CreateObject@TCancelGameOptionsCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 542520|TCancelGameOptionsCommand::DoIt||46|function|void __thiscall DoIt(void)|
 542560|TCancelGameOptionsCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
