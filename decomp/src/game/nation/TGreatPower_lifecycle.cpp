@@ -1072,9 +1072,9 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
 
   if (treasuryValue10 < 0) {
     int halfBand = pressureBand / 2;
-    if ((-halfBand == treasuryValue10) || (-treasuryValue10 < halfBand)) {
+    if (-treasuryValue10 <= halfBand) {
       this->pressureCounter = 1;
-    } else if ((-pressureBand == treasuryValue10) || (-treasuryValue10 < pressureBand)) {
+    } else if (-treasuryValue10 <= pressureBand) {
       if (this->pressureCounter > 1) {
         int nextPressureValue =
             this->escalationCounter +
@@ -1104,15 +1104,13 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       }
 
       int pressureTier = static_cast<int>(this->pressureCounter);
-      int hardThreshold = g_anGreatPowerPressureHardAlertThresholdByLocale[localeIndex];
-      int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
-
-      if (hardThreshold <= pressureTier) {
+      if (pressureTier >= g_anGreatPowerPressureHardAlertThresholdByLocale[localeIndex]) {
         g_pSimMgr->GetString(0x274b, 4, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
         return 1;
       }
 
+      int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
       if (pressureTier >= compileThreshold) {
         g_pSimMgr->GetString(0x274b, 1, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
@@ -1142,12 +1140,12 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
 
   treasuryValue10 = this->treasuryValue10;
   if (treasuryValue10 >= 0) {
-    this->field900 = 0;
+    this->pendingCommitmentCost = 0;
     return 0;
   }
 
   int drainAmount = (0xC7 - static_cast<int>(this->escalationCounter) * treasuryValue10) / 200;
-  this->field900 = drainAmount;
+  this->pendingCommitmentCost = drainAmount;
   this->treasuryValue10 = treasuryValue10 - drainAmount;
   return 0;
 }
