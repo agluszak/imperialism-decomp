@@ -25,6 +25,7 @@
 #include "game/net/TMultiplayerMgr.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/military_ui/TNextDiplomationCommand.h"
+#include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/ui_core/TApplication.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/tactical_ui/TTechMgr.h"
@@ -48,13 +49,6 @@ static inline bool IsNationTerrainEligible(short nationSlot) {
   }
   const short code = terrain->encodedNationSlot;
   return code < 100 || code > 199;
-}
-
-static inline int GetNationTrackedOrderCount(TGreatPower* nation) {
-  if (nation == nullptr || nation->trackedObjectList == nullptr) {
-    return 0;
-  }
-  return nation->trackedObjectList->listState.GetCount();
 }
 
 static inline bool ShouldDispatchNextTradePacket(TSimMgr* simMgr) {
@@ -227,7 +221,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
         TGreatPower* nation = g_apNationStates[nationSlot];
         if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
-            GetNationTrackedOrderCount(nation) > 0) {
+            nation->proposalQueue->GetSize() >= 0) {
           g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
           g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap),
                                         activeNationSlot);
