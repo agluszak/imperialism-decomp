@@ -859,8 +859,8 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
             short flag = rowNation->diplomacyGrantByNation[col];
             if (flag != -1) {
               if (IsGreatPower(col) != 0) {
-                // arg0 is the constant 0 (held in [esp+0x10] across the loop in the original).
-                g_apNationStates[col]->AddNoticeFrom(0, flag);
+                // arg0 is the granting nation row (held in [esp+0x10] across the loop).
+                g_apNationStates[col]->AddNoticeFrom(static_cast<short>(row), flag);
               }
               rowNation->GiveGrantTo(col);
             }

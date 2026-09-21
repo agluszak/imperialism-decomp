@@ -14,11 +14,13 @@ ACTION_RANDOM_GAME_SETUP = "random_game.setup"
 ACTION_COMBINED_MAP_ENTRY = "combined_map.enter"
 ACTION_CITY_ACTIVATION = "city.activate"
 ACTION_TURN_ADVANCEMENT = "turn.advance"
+ACTION_DIPLOMACY_PHASE = "diplomacy_phase.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
 CHECKPOINT_CITY_ACTIVE = "city.active"
 CHECKPOINT_TURN_ADVANCED = "turn.advanced"
+CHECKPOINT_DIPLOMACY_PHASE = "diplomacy_phase.resolved"
 
 
 @dataclass(frozen=True)
@@ -64,7 +66,190 @@ SCHEMAS = {
         "easy_turns_advance",
         ("turn_event", "nation.active", "nation.economic_turn"),
     ),
+    CHECKPOINT_DIPLOMACY_PHASE: CheckpointSchema(
+        CHECKPOINT_DIPLOMACY_PHASE,
+        ACTION_DIPLOMACY_PHASE,
+        "diplomacy_phase_applies_grant_and_consulate",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "last_processed_nation",
+            "diplomacy.nations",
+        ),
+    ),
 }
+
+
+_DIPLOMACY_POLICY_NAMES = {
+    0x12D: "join_empire",
+    0x12E: "alliance",
+    0x12F: "non_aggression_pact",
+    0x130: "peace_treaty",
+    0x131: "declare_war",
+    0x132: "join_empire_with_war_entanglements",
+    0x133: "build_consulate",
+    0x134: "build_embassy",
+}
+
+
+def _native_captures(result: Mapping[str, Any]) -> Mapping[str, Any]:
+    captures = result.get("captures")
+    if not isinstance(captures, Mapping):
+        captures_path = result.get("captures_path")
+        if isinstance(captures_path, str) and captures_path:
+            from pathlib import Path
+
+            from tools.runtime.protocol import load_captures
+
+            captures = load_captures(
+                dict(result),
+                Path(captures_path) if Path(captures_path).is_absolute() else Path("."),
+            )
+        else:
+            captures = None
+    return _require_mapping(captures, "native captures")
+
+
+def _diplomacy_policy_name(code: Any, label: str) -> str | None:
+    value = _require_int(code, label)
+    if value == -1:
+        return None
+    name = _DIPLOMACY_POLICY_NAMES.get(value)
+    if name is None:
+        raise ValueError(f"{label} has no semantic representation: {value:#x}")
+    return name
+
+
+def _diplomacy_grant(entry: Any, label: str) -> dict[str, Any] | None:
+    value = _require_int(entry, label)
+    if value == -1:
+        return None
+    if value < -1:
+        raise ValueError(f"{label} is below the -1 sentinel: {value}")
+    return {"amount": value & 0x3FFF, "recurring": (value & 0x4000) != 0}
+
+
+def normalize_native_diplomacy_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a native driver result to the stable diplomacy-phase schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    diplomacy = _require_mapping(ephemeral.get("diplomacy"), "native ephemeral diplomacy")
+    return {
+        "checkpoint_id": CHECKPOINT_DIPLOMACY_PHASE,
+        "action_id": ACTION_DIPLOMACY_PHASE,
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active_nation"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+            ),
+        },
+        "last_processed_nation": ephemeral.get("last_processed_nation"),
+        "diplomacy": diplomacy,
+    }
+
+
+def normalize_retail_diplomacy_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a retail GDB diplomacy capture to the same stable schema."""
+    nations_raw = raw.get("diplomacy_nations")
+    if not isinstance(nations_raw, list):
+        raise ValueError("retail diplomacy_nations must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(nations_raw):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"retail diplomacy nation {slot}")
+        policies_raw = _require_int_list(
+            nation_map.get("policies"), f"retail policies[{slot}]"
+        )
+        grants_raw = _require_int_list(
+            nation_map.get("grants"), f"retail grants[{slot}]"
+        )
+        nations.append(
+            {
+                "treasury": _require_int(
+                    nation_map.get("treasury"), f"retail treasury[{slot}]"
+                ),
+                "policies": [
+                    _diplomacy_policy_name(code, f"retail policies[{slot}][{index}]")
+                    for index, code in enumerate(policies_raw)
+                ],
+                "grants": [
+                    _diplomacy_grant(entry, f"retail grants[{slot}][{index}]")
+                    for index, entry in enumerate(grants_raw)
+                ],
+                "proposals": _diplomacy_proposals(
+                    nation_map.get("proposals"), f"retail proposals[{slot}]"
+                ),
+                "turn_events": _diplomacy_records(
+                    nation_map.get("turn_events"), f"retail turn_events[{slot}]"
+                ),
+            }
+        )
+    last_processed = raw.get("last_processed_nation")
+    if last_processed == -1:
+        last_processed = None
+    return {
+        "checkpoint_id": CHECKPOINT_DIPLOMACY_PHASE,
+        "action_id": ACTION_DIPLOMACY_PHASE,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+            ),
+        },
+        "last_processed_nation": last_processed,
+        "diplomacy": {"nations": nations},
+    }
+
+
+def _diplomacy_proposals(records: Any, label: str) -> list[dict[str, Any]]:
+    if not isinstance(records, list):
+        raise ValueError(f"{label} must be an array")
+    normalized = []
+    for index, record in enumerate(records):
+        record_map = _require_mapping(record, f"{label}[{index}]")
+        normalized.append(
+            {
+                "source": _require_int(
+                    record_map.get("source"), f"{label}[{index}].source"
+                ),
+                "policy": _diplomacy_policy_name(
+                    record_map.get("code"), f"{label}[{index}].policy"
+                ),
+            }
+        )
+    return normalized
+
+
+def _diplomacy_records(records: Any, label: str) -> list[dict[str, Any]]:
+    if not isinstance(records, list):
+        raise ValueError(f"{label} must be an array")
+    normalized = []
+    for index, record in enumerate(records):
+        record_map = _require_mapping(record, f"{label}[{index}]")
+        normalized.append(
+            {
+                "code": record_map.get("code"),
+                "source": _require_int(
+                    record_map.get("source"), f"{label}[{index}].source"
+                ),
+            }
+        )
+    return normalized
 
 
 def _require_mapping(value: Any, label: str) -> Mapping[str, Any]:
@@ -97,21 +282,7 @@ def normalize_native_combined_map(result: Mapping[str, Any]) -> dict[str, Any]:
     """Reduce a native driver result to the stable combined-map schema."""
     if result.get("status") != "passed":
         raise ValueError(f"native driver did not pass: {result.get('status')!r}")
-    captures = result.get("captures")
-    if not isinstance(captures, Mapping):
-        captures_path = result.get("captures_path")
-        if isinstance(captures_path, str) and captures_path:
-            from pathlib import Path
-
-            from tools.runtime.protocol import load_captures
-
-            captures = load_captures(
-                dict(result),
-                Path(captures_path) if Path(captures_path).is_absolute() else Path("."),
-            )
-        else:
-            captures = None
-    captures = _require_mapping(captures, "native captures")
+    captures = _native_captures(result)
     map_state = _require_mapping(captures.get("map_state"), "native map_state")
     root_class = map_state.get("root_class")
     if root_class != "TMapUberPicture":

@@ -12,13 +12,17 @@ import json
 import os
 from pathlib import Path
 import shutil
+import struct
 import time
 
 from tools.runtime.checkpoints import (
+    CHECKPOINT_DIPLOMACY_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
     normalize_native_combined_map,
+    normalize_native_diplomacy_phase,
     normalize_retail_combined_map,
+    normalize_retail_diplomacy_phase,
     validate_checkpoint,
 )
 from tools.runtime.debug.binary import direct_call_target_after
@@ -94,6 +98,8 @@ class Scenario:
     terminal_checkpoint: Checkpoint
     timeout_seconds: float
     start_action: DeferredShellAction
+    drive: str = ""
+    result_checkpoint_id: str = ""
 
 
 @dataclass(frozen=True)
@@ -188,17 +194,38 @@ def _load_save_to_map_scenario(fixture: Path) -> Scenario:
     )
 
 
+def _diplomacy_phase_scenario(fixture: Path) -> Scenario:
+    """Reach the loaded map, then drive the native diplomacy transition under GDB."""
+    base = _load_save_to_map_scenario(fixture)
+    return Scenario(
+        name="diplomacy_phase",
+        native_test="diplomacy_phase_applies_grant_and_consulate",
+        action_id="diplomacy_phase.run",
+        fixture=fixture,
+        probes=base.probes,
+        terminal_checkpoint=base.terminal_checkpoint,
+        timeout_seconds=base.timeout_seconds,
+        start_action=base.start_action,
+        drive="diplomacy_phase",
+        result_checkpoint_id=CHECKPOINT_DIPLOMACY_PHASE,
+    )
+
+
 def load_scenario(name: str) -> Scenario:
-    if name != "load_save_to_map":
-        raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / "beginning_of_game.imp"
     if not fixture.is_file():
         raise SystemExit(f"missing differential fixture {fixture}")
-    scenario = _load_save_to_map_scenario(fixture)
-    schema = SCHEMAS.get(scenario.terminal_checkpoint.checkpoint_id)
+    if name == "load_save_to_map":
+        scenario = _load_save_to_map_scenario(fixture)
+    elif name == "diplomacy_phase":
+        scenario = _diplomacy_phase_scenario(fixture)
+    else:
+        raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
+    checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
+    schema = SCHEMAS.get(checkpoint_id)
     if schema is None:
-        raise SystemExit("unknown differential checkpoint combined_map.ready")
+        raise SystemExit(f"unknown differential checkpoint {checkpoint_id}")
     if scenario.action_id != schema.action_id:
         raise SystemExit(
             f"checkpoint {schema.checkpoint_id!r} requires action {schema.action_id!r}"
@@ -278,6 +305,241 @@ def _capture_fields(session: GdbSession, probe: Probe) -> dict[str, int | str]:
             session.evaluate(capture.expression), capture.normalize
         )
     return fields
+
+
+# --- diplomacy_phase retail drive -------------------------------------------------
+# Mirrors NativeDiplomacyCases.cpp RunDiplomacyPhase: seed eligibility, a one-time
+# grant, and a build-consulate policy on the active nation, then invoke
+# TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn plus per-nation
+# TGreatPower::ReplyToDiplomacyOffers through inferior calls.
+
+_SIM_MGR = 0x006A20F8
+_NATION_STATES = 0x006A4370
+_DIPLOMACY_MGR = 0x006A43D0
+_TERRAIN_TABLE = 0x006A4310
+_SET_GRANT_ENTRY = 0x004DE340
+_APPLY_DIPLOMACY_TURN = 0x004F01E0
+_REPLY_TO_OFFERS = 0x004DF5F0
+_MAJOR_NATION_COUNT = 7
+_NATION_SLOT_COUNT = 23
+_MINOR_NATION_FIRST_SLOT = 7
+_DIPLOMACY_PROPOSAL_BUILD_CONSULATE = 0x133
+
+
+def _eval_int(session: GdbSession, expression: str) -> int:
+    return int(session.evaluate(expression).split(maxsplit=1)[0], 0)
+
+
+def _wait_for_injected_return(
+    session: GdbSession,
+    breakpoint_number: str,
+    deadline: float,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    while time.monotonic() < deadline:
+        stop = session.wait_for_stop(min(1.0, deadline - time.monotonic()))
+        if stop is None:
+            if session.process.poll() is not None:
+                raise RuntimeError("debugged game exited before the injected call returned")
+            continue
+        if is_terminal_stop(stop):
+            raise RuntimeError("debugged game exited before the injected call returned")
+        if stop.reason == "breakpoint-hit" and stop.breakpoint_number == breakpoint_number:
+            return
+        role = breakpoint_roles.get(stop.breakpoint_number or "")
+        if role is not None and role[0] == "probe" and role[1] is not None:
+            probe = role[1]
+            occurrence = occurrences.get(probe.probe_id, 0) + 1
+            occurrences[probe.probe_id] = occurrence
+            records.append(
+                {
+                    "type": "checkpoint",
+                    "seq": len(records),
+                    "probe": probe.probe_id,
+                    "occurrence": occurrence,
+                    "fields": _capture_fields(session, probe),
+                }
+            )
+            session.continue_inferior()
+            continue
+        session.capture_stop(
+            f"unexpected-injected-{stop.signal_name or stop.reason}", stop
+        )
+        raise RuntimeError(
+            f"debugged game stopped unexpectedly during injected call: "
+            f"{stop.signal_name or stop.reason}"
+        )
+    session.interrupt_and_capture("injected-call-timeout")
+    raise RuntimeError("timed out waiting for injected call to return")
+
+
+def _invoke_thiscall(
+    session: GdbSession,
+    address: int,
+    receiver: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    args: tuple[int, ...] = (),
+) -> int:
+    stack = _eval_int(session, "$esp")
+    return_address = _eval_int(session, "$eip")
+    return_breakpoint = session.set_breakpoint(return_address)
+    try:
+        frame = stack - 4 * (len(args) + 1)
+        session.assign(f"*(unsigned int*)0x{frame:08x}", return_address)
+        for index, argument in enumerate(args):
+            session.assign(
+                f"*(int*)0x{frame + 4 + 4 * index:08x}", argument
+            )
+        session.assign("$esp", frame)
+        session.assign("$ecx", receiver)
+        session.assign("$eip", address)
+        session.continue_inferior()
+        _wait_for_injected_return(
+            session,
+            return_breakpoint,
+            time.monotonic() + 30.0,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        result = _eval_int(session, "$eax")
+        session.assign("$esp", stack)
+        return result
+    finally:
+        session.delete_breakpoint(return_breakpoint)
+
+
+def _nation_pointer(session: GdbSession, slot: int) -> int:
+    return _eval_int(
+        session, f"*(unsigned int*)0x{_NATION_STATES + 4 * slot:08x}"
+    )
+
+
+def _drive_diplomacy_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
+    active_slot = _eval_int(session, f"*(short*)0x{sim_mgr + 0x2E:08x}")
+    active_nation = _nation_pointer(session, active_slot)
+    diplomacy_mgr = _eval_int(session, f"*(unsigned int*)0x{_DIPLOMACY_MGR:08x}")
+    if active_nation == 0 or diplomacy_mgr == 0:
+        raise RuntimeError("retail loaded player has no diplomacy state")
+    if (
+        _eval_int(
+            session,
+            f"*(unsigned int*)0x{_TERRAIN_TABLE + 4 * _MINOR_NATION_FIRST_SLOT:08x}",
+        )
+        == 0
+    ):
+        raise RuntimeError("retail fixture has no first minor nation")
+
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation != 0:
+            session.assign(f"*(unsigned char*)0x{nation + 0xA0:08x}", 1)
+
+    grant_target = (active_slot + 1) % _MAJOR_NATION_COUNT
+    accepted = _invoke_thiscall(
+        session,
+        _SET_GRANT_ENTRY,
+        active_nation,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(grant_target, 1000),
+    )
+    if accepted & 0xFF == 0:
+        raise RuntimeError("retail rejected the seeded diplomacy grant")
+    session.assign(
+        f"*(short*)0x{active_nation + 0xB2 + 2 * _MINOR_NATION_FIRST_SLOT:08x}",
+        _DIPLOMACY_PROPOSAL_BUILD_CONSULATE,
+    )
+
+    _invoke_thiscall(
+        session,
+        _APPLY_DIPLOMACY_TURN,
+        diplomacy_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation != 0:
+            _invoke_thiscall(
+                session,
+                _REPLY_TO_OFFERS,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+
+
+def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
+    if queue == 0:
+        return []
+    size = _eval_int(session, f"*(int*)0x{queue + 8:08x}")
+    data = _eval_int(session, f"*(unsigned int*)0x{queue + 4:08x}")
+    if size <= 0 or data == 0:
+        return []
+    entries = struct.unpack(f"<{size}I", session.read_memory(data, 4 * size))
+    records: list[dict[str, int]] = []
+    for entry in entries:
+        code, source = struct.unpack("<2h", session.read_memory(entry, 4))
+        records.append({"code": code, "source": source})
+    return records
+
+
+def _capture_diplomacy_phase(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
+    diplomacy_mgr = _eval_int(session, f"*(unsigned int*)0x{_DIPLOMACY_MGR:08x}")
+    nations: list[dict[str, object] | None] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            nations.append(None)
+            continue
+        block = session.read_memory(nation + 0xB2, 4 * _NATION_SLOT_COUNT)
+        policies = list(struct.unpack(f"<{_NATION_SLOT_COUNT}h", block[: 2 * _NATION_SLOT_COUNT]))
+        grants = list(struct.unpack(f"<{_NATION_SLOT_COUNT}h", block[2 * _NATION_SLOT_COUNT :]))
+        nations.append(
+            {
+                "treasury": _eval_int(session, f"*(int*)0x{nation + 0x10:08x}"),
+                "policies": policies,
+                "grants": grants,
+                "proposals": _read_diplomacy_records(
+                    session,
+                    _eval_int(session, f"*(unsigned int*)0x{nation + 0x84C:08x}"),
+                ),
+                "turn_events": _read_diplomacy_records(
+                    session,
+                    _eval_int(session, f"*(unsigned int*)0x{nation + 0x848:08x}"),
+                ),
+            }
+        )
+    last_processed = _eval_int(
+        session, f"*(signed char*)0x{diplomacy_mgr + 0x78E:08x}"
+    )
+    if last_processed > 0x7F:
+        last_processed -= 0x100
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _eval_int(session, f"*(short*)0x{sim_mgr + 0x2E:08x}"),
+        "economic_turn": _eval_int(session, f"*(short*)0x{sim_mgr + 0x2C:08x}"),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "last_processed_nation": last_processed,
+        "diplomacy_nations": nations,
+    }
 
 
 def run_binary(
@@ -427,6 +689,22 @@ def run_binary(
                         "fields": fields,
                     }
                 )
+                if scenario.drive == "diplomacy_phase":
+                    if terminal_return_number is not None:
+                        session.delete_breakpoint(terminal_return_number)
+                    _drive_diplomacy_phase(
+                        session, records, occurrences, breakpoint_roles
+                    )
+                    diplomacy_fields = _capture_diplomacy_phase(session)
+                    records.append(
+                        {
+                            "type": "checkpoint",
+                            "seq": len(records),
+                            "probe": CHECKPOINT_DIPLOMACY_PHASE,
+                            "occurrence": 1,
+                            "fields": diplomacy_fields,
+                        }
+                    )
                 metadata["status"] = "completed"
                 break
             if probe is None:
@@ -517,35 +795,70 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         run_dir,
         timeout_seconds,
     )
-    native_outcome = RuntimeRunner(
-        run_dir / "recomp", scenario.fixture.parent
-    ).run(
-        RunRequest(
-            name=scenario.native_test,
-            seed=1,
-            timeout_seconds=timeout_seconds,
-            rerun_seh=False,
-            gdb_first=False,
-            no_gdb=True,
-            require_fixtures=True,
+    if scenario.drive == "diplomacy_phase":
+        from tools.runtime.native_oracle import run_native_transition
+
+        native_dir = run_dir / "recomp"
+        native_dir.mkdir(parents=True, exist_ok=True)
+        if (
+            run_native_transition(
+                scenario.native_test,
+                timeout_seconds=timeout_seconds,
+                result_dir=native_dir,
+                fixture_dir=scenario.fixture.parent,
+            )
+            != 0
+        ):
+            raise RuntimeError(
+                f"native transition {scenario.native_test} failed; see {native_dir}"
+            )
+        native_result = json.loads(
+            (native_dir / "result.json").read_text(encoding="utf-8")
         )
-    )
-    if native_outcome.exit_code != 0:
-        raise RuntimeError(
-            f"native recomp driver {scenario.native_test} failed; see "
-            f"{run_dir / 'recomp' / (scenario.native_test + '.json')}"
+        captures_path = native_dir / "captures.json"
+        if captures_path.is_file():
+            native_result["captures"] = json.loads(
+                captures_path.read_text(encoding="utf-8")
+            )
+        recomp_observation = normalize_native_diplomacy_phase(native_result)
+        recomp_identity = native_result.get("host", {}).get("provenance", {})
+    else:
+        native_outcome = RuntimeRunner(
+            run_dir / "recomp", scenario.fixture.parent
+        ).run(
+            RunRequest(
+                name=scenario.native_test,
+                seed=1,
+                timeout_seconds=timeout_seconds,
+                rerun_seh=False,
+                gdb_first=False,
+                no_gdb=True,
+                require_fixtures=True,
+            )
         )
+        if native_outcome.exit_code != 0:
+            raise RuntimeError(
+                f"native recomp driver {scenario.native_test} failed; see "
+                f"{run_dir / 'recomp' / (scenario.native_test + '.json')}"
+            )
+        recomp_observation = normalize_native_combined_map(native_outcome.result)
+        recomp_identity = native_outcome.result.get("host", {}).get("provenance", {})
+    result_checkpoint = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
     retail_records = [
         record
         for record in original_trace.records
-        if record.get("probe") == scenario.terminal_checkpoint.checkpoint_id
+        if record.get("probe") == result_checkpoint
     ]
     if len(retail_records) != 1:
         raise RuntimeError(
-            f"retail produced {len(retail_records)} terminal checkpoint records"
+            f"retail produced {len(retail_records)} result checkpoint records"
         )
-    retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])
-    recomp_observation = normalize_native_combined_map(native_outcome.result)
+    if result_checkpoint == CHECKPOINT_DIPLOMACY_PHASE:
+        retail_observation = normalize_retail_diplomacy_phase(
+            retail_records[0]["fields"]
+        )
+    else:
+        retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])
     validate_checkpoint(retail_observation)
     validate_checkpoint(recomp_observation)
     divergence = first_checkpoint_difference(retail_observation, recomp_observation)
@@ -557,7 +870,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             "retail": "gdb_checkpoint_tape",
             "recomp": "native_runtime_driver",
         },
-        "checkpoint_sequence": [scenario.terminal_checkpoint.checkpoint_id],
+        "checkpoint_sequence": [result_checkpoint],
         "observations": {
             "retail": retail_observation,
             "recomp": recomp_observation,
@@ -565,7 +878,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "first_divergence": divergence,
         "binary_identities": {
             "retail": original_trace.metadata["binary"],
-            "recomp": native_outcome.result["host"]["provenance"]["runtime_executable"],
+            "recomp": recomp_identity.get("runtime_executable"),
         },
         "fixture_identity": original_trace.metadata["fixture"],
         "retail_assets": {

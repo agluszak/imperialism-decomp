@@ -2775,7 +2775,7 @@ JSON_Value* CaptureMissions(bool freshRandomStart) {
   return missions.Release();
 }
 
-JSON_Value* CaptureDiplomacyNotices(TSortedByRelationshipList* queue) {
+JSON_Value* CaptureDiplomacyNotices(TSortedPtrList* queue) {
   JsonArray notices;
   if (queue != 0 && queue->recordSize14 != 4) {
     FailSemanticCapture("diplomacy notice queue record size is not four bytes");
@@ -2797,7 +2797,7 @@ JSON_Value* CaptureDiplomacyNotices(TSortedByRelationshipList* queue) {
   return notices.Release();
 }
 
-JSON_Value* CaptureDiplomacyProposals(TSortedByRelationshipList* queue) {
+JSON_Value* CaptureDiplomacyProposals(TSortedPtrList* queue) {
   JsonArray proposals;
   if (queue != 0 && queue->recordSize14 != 4) {
     FailSemanticCapture("diplomacy proposal queue record size is not four bytes");
@@ -2819,7 +2819,7 @@ JSON_Value* CaptureDiplomacyProposals(TSortedByRelationshipList* queue) {
   return proposals.Release();
 }
 
-JSON_Value* CaptureTurnSummary(TSortedByRelationshipList* queue) {
+JSON_Value* CaptureTurnSummary(TSortedPtrList* queue) {
   JsonArray summaries;
   if (queue != 0 && queue->recordSize14 != sizeof(TurnOrderDispatchPacket)) {
     FailSemanticCapture("turn-summary queue record size is not eight bytes");
@@ -3124,6 +3124,32 @@ bool CaptureFreshRandomGameState(RuntimeRun& run, const char* name) {
   return true;
 }
 
+// Compact per-major-nation diplomacy state for retail-vs-recomp transition
+// differentials: treasury, policy/grant rows, and the posted proposal/notice
+// queues (each record is a {code, source} pair).
+JSON_Value* CaptureDiplomacyEphemeral() {
+  JsonArray nations;
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0) {
+      nations.AddNull();
+      continue;
+    }
+    JsonObject entry;
+    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("policies", CaptureDiplomacyPolicies(nation->diplomacyPolicyByNation,
+                                                 kNationSlotCount));
+    entry.Set("grants", CaptureDiplomacyGrants(nation->diplomacyGrantByNation,
+                                              kNationSlotCount));
+    entry.Set("proposals", CaptureDiplomacyProposals(nation->proposalQueue));
+    entry.Set("turn_events", CaptureDiplomacyNotices(nation->turnEventQueue));
+    nations.Add(entry.Release());
+  }
+  JsonObject object;
+  object.Set("nations", nations.Release());
+  return object.Release();
+}
+
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
@@ -3135,6 +3161,7 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("rng", CaptureRng());
   object.Set("news", CaptureNews());
   object.Set("pending", CapturePending());
+  object.Set("diplomacy", CaptureDiplomacyEphemeral());
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();
