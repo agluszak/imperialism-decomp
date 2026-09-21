@@ -3537,6 +3537,42 @@ JSON_Value* CaptureMilitaryCleanupEphemeral() {
   return object.Release();
 }
 
+// AI development planner outputs: the interior minister's order tables and the
+// queued production-order list that IndustryOrder/PleaseBuildLandUnit append to.
+JSON_Value* CaptureDevelopmentEphemeral() {
+  JsonArray nations;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    TCityInteriorMinister* minister = nation->interiorMinister;
+    if (minister == 0) {
+      continue;
+    }
+    JsonObject object;
+    object.Set("nation", nationSlot);
+    JsonArray orderBA;
+    JsonArray orderDC;
+    for (int index = 0; index < 16; ++index) {
+      orderBA.Add(static_cast<int>(minister->orderShortTableBA[index]));
+      orderDC.Add(static_cast<int>(minister->orderShortTableDC[index]));
+    }
+    object.Set("order_ba", orderBA.Release());
+    object.Set("order_dc", orderDC.Release());
+    JsonArray queued;
+    if (minister->list190 != 0) {
+      POSITION position = minister->list190->GetHeadPosition();
+      while (position != 0) {
+        queued.Add(static_cast<int>(minister->list190->GetNext(position)));
+      }
+    }
+    object.Set("queued_orders", queued.Release());
+    nations.Add(object.Release());
+  }
+  return nations.Release();
+}
+
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
@@ -3557,6 +3593,7 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("military", CaptureMilitaryEphemeral());
   object.Set("military_cleanup", CaptureMilitaryCleanupEphemeral());
   object.Set("missions", CaptureMissionsEphemeral());
+  object.Set("development", CaptureDevelopmentEphemeral());
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();

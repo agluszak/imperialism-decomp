@@ -25,6 +25,7 @@ ACTION_REASSESS_MISSIONS = "reassess_control_sea_missions.run"
 ACTION_REASSESS_MISSIONS_DAMAGED = (
     "reassess_control_sea_missions_damaged_ship.run"
 )
+ACTION_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.run"
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
@@ -54,6 +55,7 @@ CHECKPOINT_REASSESS_MISSIONS = "reassess_control_sea_missions.resolved"
 CHECKPOINT_REASSESS_MISSIONS_DAMAGED = (
     "reassess_control_sea_missions_damaged_ship.resolved"
 )
+CHECKPOINT_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.resolved"
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
 
 
@@ -336,6 +338,18 @@ SCHEMAS = {
             "turn.active",
             "turn.economic_turn",
             "missions",
+        ),
+    ),
+    CHECKPOINT_AI_NAVAL_DEVELOPMENT: CheckpointSchema(
+        CHECKPOINT_AI_NAVAL_DEVELOPMENT,
+        ACTION_AI_NAVAL_DEVELOPMENT,
+        "ai_naval_industry_development",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "missions",
+            "development",
         ),
     ),
     CHECKPOINT_SECOND_TURN_SEQUENCE: CheckpointSchema(
@@ -1404,6 +1418,80 @@ def normalize_retail_reassess_missions(
         "action_id": ACTION_REASSESS_MISSIONS,
         "turn": turn,
         "missions": _mission_records(raw.get("missions"), "retail missions"),
+    }
+
+
+def _development_records(raw: Any, label: str) -> list[dict[str, Any]]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{label} must be an array")
+    records = []
+    for index, entry in enumerate(raw):
+        entry = _require_mapping(entry, f"{label}[{index}]")
+        records.append(
+            {
+                "nation": _require_int(
+                    entry.get("nation"), f"{label}[{index}].nation"
+                ),
+                "order_ba": _require_int_list(
+                    entry.get("order_ba"), f"{label}[{index}].order_ba"
+                ),
+                "order_dc": _require_int_list(
+                    entry.get("order_dc"), f"{label}[{index}].order_dc"
+                ),
+                "queued_orders": _require_int_list(
+                    entry.get("queued_orders"),
+                    f"{label}[{index}].queued_orders",
+                ),
+            }
+        )
+    return records
+
+
+def normalize_native_ai_naval_development(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce a native driver result to the AI-development schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "checkpoint_id": CHECKPOINT_AI_NAVAL_DEVELOPMENT,
+        "action_id": ACTION_AI_NAVAL_DEVELOPMENT,
+        "turn": _mission_turn(turn, "native turn"),
+        "missions": _mission_records(
+            ephemeral.get("missions"), "native missions"
+        ),
+        "development": _development_records(
+            ephemeral.get("development"), "native development"
+        ),
+    }
+
+
+def normalize_retail_ai_naval_development(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce a retail GDB AI-development capture to the same schema."""
+    turn = {
+        "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+        "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+        "economic_turn": _require_int(
+            raw.get("economic_turn"), "retail economic_turn"
+        ),
+        "turn_flow_status_flags": _require_int(
+            raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+        ),
+    }
+    return {
+        "checkpoint_id": CHECKPOINT_AI_NAVAL_DEVELOPMENT,
+        "action_id": ACTION_AI_NAVAL_DEVELOPMENT,
+        "turn": turn,
+        "missions": _mission_records(raw.get("missions"), "retail missions"),
+        "development": _development_records(
+            raw.get("development"), "retail development"
+        ),
     }
 
 

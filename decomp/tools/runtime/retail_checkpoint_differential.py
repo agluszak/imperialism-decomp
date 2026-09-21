@@ -29,6 +29,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
     CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+    CHECKPOINT_AI_NAVAL_DEVELOPMENT,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
     CHECKPOINT_RECOMPUTE_METRICS,
@@ -41,6 +42,7 @@ from tools.runtime.checkpoints import (
     normalize_native_city_transport_phase,
     normalize_native_civilians_phase,
     normalize_native_military_cleanup,
+    normalize_native_ai_naval_development,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -52,6 +54,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_civilians_phase,
     normalize_retail_combined_map,
     normalize_retail_military_cleanup,
+    normalize_retail_ai_naval_development,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -497,6 +500,20 @@ def load_scenario(name: str) -> Scenario:
             drive=name,
             result_checkpoint_id=CHECKPOINT_RECOMPUTE_METRICS,
         )
+    elif name == "ai_naval_industry_development":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_AI_NAVAL_DEVELOPMENT,
+        )
     elif name in (
         "reassess_control_sea_missions",
         "reassess_control_sea_missions_damaged_ship",
@@ -844,6 +861,11 @@ def _invoke_virtual(
 def _s16(session: GdbSession, address: int) -> int:
     value = _eval_int(session, f"*(short*)0x{address:08x}") & 0xFFFF
     return value - 0x10000 if value & 0x8000 else value
+
+
+def _s32(session: GdbSession, address: int) -> int:
+    value = _eval_int(session, f"*(int*)0x{address:08x}") & 0xFFFFFFFF
+    return value - 0x100000000 if value & 0x80000000 else value
 
 
 def _deal_entry(session: GdbSession, deal_list: int, ordinal: int) -> int:
@@ -2687,6 +2709,192 @@ def _drive_reassess_missions_damaged(
     )
 
 
+# --- ai_naval_industry_development retail drive -------------------------------
+# Mirrors RunAiNavalIndustryDevelopment: prime the first eligible auto nation's
+# interior-minister order table, pin mission flag10, append a navyState=2
+# TControlSeaZoneMission with 1000 equipment demand in slot 3, optionally
+# reinforce it with a max-strength transport at a neighboring zone, then call
+# TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools.
+
+_PLAN_AI_DEVELOPMENT = 0x004EB190
+_TSHIP_GET_MAX_STRENGTH = 0x005505A0
+_VT_ACCEPT_REENFORCEMENT_SHIP = 0x21 * 4
+_NATION_INTERIOR_MINISTER = 0x98
+_MINISTER_ORDER_BA = 0xBA
+_MINISTER_ORDER_DC = 0xDC
+_MINISTER_LIST190 = 0x190
+_ZONE_PRIMARY_NEIGHBORS = 0x24
+
+
+def _drive_ai_naval_development(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    eligible = _eligible_auto_nations(
+        session, records, occurrences, breakpoint_roles
+    )
+    head = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+    if not eligible or head == 0:
+        raise RuntimeError("the fixture has no eligible AI-development nation")
+    nation_slot, nation = eligible[0]
+    minister = _u32(session, nation + _NATION_INTERIOR_MINISTER)
+    for index in range(16):
+        session.assign(
+            f"*(short*)0x{minister + _MINISTER_ORDER_BA + index * 2:08x}", 20
+        )
+    queue = _u32(session, nation + _NATION_MISSION_QUEUE)
+    for entry in _sorted_ptr_list_entries(session, queue):
+        session.assign(f"*(char*)0x{entry + 0x10:08x}", 1)
+    mission = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_MISSION_SIZE,),
+    )
+    _invoke_thiscall(
+        session,
+        _TNAVY_MISSION_CTOR,
+        mission,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(head,),
+    )
+    session.assign(f"*(unsigned int*)0x{mission:08x}", _CONTROL_SEA_VTABLE)
+    _invoke_thiscall(
+        session,
+        _MISSION_INIT_NATION,
+        mission,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(nation_slot,),
+    )
+    session.assign(f"*(int*)0x{mission + 0x28:08x}", 2)
+    for index, value in enumerate((0.0, 0.0, 0.0, 1000.0)):
+        session.assign(
+            f"*(float*)0x{mission + 0x2C + index * 4:08x}", repr(value)
+        )
+    session.assign(f"*(char*)0x{mission + 0x10:08x}", 0)
+    _invoke_thiscall(
+        session,
+        _TSORTED_LIST_ADD_TAIL,
+        queue,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(mission,),
+    )
+    neighbor_count = _s32(session, head + _ZONE_PRIMARY_NEIGHBORS + 0x0C)
+    if neighbor_count != 0:
+        neighbor_data = _u32(session, head + _ZONE_PRIMARY_NEIGHBORS + 0x04)
+        neighbor = _u32(session, neighbor_data)
+        ship = _new_ship(
+            session,
+            4,
+            neighbor,
+            nation_slot,
+            "naval-development-distance-weight",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        max_strength = _invoke_thiscall(
+            session,
+            _TSHIP_GET_MAX_STRENGTH,
+            ship,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        # Sign-extend AX: GetMaxStrength returns short.
+        max_strength = max_strength & 0xFFFF
+        if max_strength >= 0x8000:
+            max_strength -= 0x10000
+        session.assign(
+            f"*(short*)0x{ship + _TSHIP_STRENGTH:08x}", max_strength
+        )
+        _invoke_virtual(
+            session,
+            mission,
+            _VT_ACCEPT_REENFORCEMENT_SHIP,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(ship, 0),
+        )
+    _invoke_thiscall(
+        session,
+        _PLAN_AI_DEVELOPMENT,
+        nation,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0,),
+    )
+
+
+def _long_list_entries(session: GdbSession, list_pointer: int) -> list[int]:
+    """Walk a CList<long,long> node chain (m_pNodeHead at +0x04 after vptr)."""
+    entries: list[int] = []
+    if list_pointer == 0:
+        return entries
+    node = _u32(session, list_pointer + 0x04)
+    while node != 0:
+        entries.append(_s32(session, node + 8))
+        node = _u32(session, node)
+    return entries
+
+
+def _capture_ai_development(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    capture = _capture_missions(
+        session, records, occurrences, breakpoint_roles
+    )
+    development: list[dict[str, object]] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        if (
+            _runtime_class(
+                session, nation, records, occurrences, breakpoint_roles
+            )
+            != _CLASS_AUTO_GREAT_POWER
+        ):
+            continue
+        minister = _u32(session, nation + _NATION_INTERIOR_MINISTER)
+        if minister == 0:
+            continue
+        development.append(
+            {
+                "nation": slot,
+                "order_ba": [
+                    _s16(session, minister + _MINISTER_ORDER_BA + i * 2)
+                    for i in range(16)
+                ],
+                "order_dc": [
+                    _s16(session, minister + _MINISTER_ORDER_DC + i * 2)
+                    for i in range(16)
+                ],
+                "queued_orders": _long_list_entries(
+                    session, _u32(session, minister + _MINISTER_LIST190)
+                ),
+            }
+        )
+    capture["development"] = development
+    return capture
+
+
 def _drive_recompute_metrics(
     session: GdbSession,
     records: list[dict],
@@ -3702,6 +3910,14 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = CHECKPOINT_REASSESS_MISSIONS_DAMAGED
+                    elif scenario.drive == "ai_naval_industry_development":
+                        _drive_ai_naval_development(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_ai_development(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_AI_NAVAL_DEVELOPMENT
                     elif scenario.drive in (
                         "military_phase_naval_encounter",
                         "military_phase_naval_escalation",
@@ -3874,6 +4090,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "recompute_nation_order_priority_metrics",
         "reassess_control_sea_missions",
         "reassess_control_sea_missions_damaged_ship",
+        "ai_naval_industry_development",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3958,6 +4175,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             "reassess_control_sea_missions_damaged_ship",
         ):
             recomp_observation = normalize_native_reassess_missions(
+                native_result
+            )
+        elif scenario.drive == "ai_naval_industry_development":
+            recomp_observation = normalize_native_ai_naval_development(
                 native_result
             )
         elif scenario.drive == "second_turn_military_cleanup":
@@ -4082,6 +4303,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
     ):
         retail_observation = normalize_retail_reassess_missions(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_AI_NAVAL_DEVELOPMENT:
+        retail_observation = normalize_retail_ai_naval_development(
             retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
