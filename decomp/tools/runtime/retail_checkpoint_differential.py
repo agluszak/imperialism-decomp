@@ -37,6 +37,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_PRESSURE_HUMAN_DEBT,
     CHECKPOINT_SEASON_ADVANCE,
     CHECKPOINT_TURN_ALERTS_FIRST,
+    CHECKPOINT_TURN_ALERTS_LATER,
     CHECKPOINT_TURN_STOP_CITY_TRANSPORT,
     CHECKPOINT_TURN_STOP_DEAL_BOOK,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
@@ -60,6 +61,7 @@ from tools.runtime.checkpoints import (
     normalize_native_great_power_pressure,
     normalize_native_season_advance,
     normalize_native_turn_alerts_first,
+    normalize_native_turn_alerts_later,
     normalize_native_turn_stop_state,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
@@ -79,6 +81,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_great_power_pressure,
     normalize_retail_season_advance,
     normalize_retail_turn_alerts_first,
+    normalize_retail_turn_alerts_later,
     normalize_retail_turn_stop_state,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
@@ -510,6 +513,20 @@ def load_scenario(name: str) -> Scenario:
             start_action=base.start_action,
             drive=name,
             result_checkpoint_id=CHECKPOINT_TURN_ALERTS_FIRST,
+        )
+    elif name == "turn_alerts_later_turn":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_TURN_ALERTS_LATER,
         )
     elif name in (
         "great_power_pressure_human_debt",
@@ -3349,6 +3366,137 @@ def _drive_turn_alerts_first(
     return {"shown": shown, **_capture_turn_state(session)}
 
 
+# --- turn_alerts_later_turn retail drive ---------------------------------------
+# Mirrors RunTurnAlertsLaterTurn: economicTurn=3 with the turn-alert gate open.
+# The native run records each displayed alert's body string row instead of
+# posing the modal; the retail side reproduces that by breaking on
+# TSimMgr::GetString (to track the last fetched 0x2753 row) and on
+# TViewMgr::ModalMessage (to record the body row then return early from the
+# callee, skipping the dialog entirely).
+
+_GET_STRING_BODY = 0x00580760
+_MODAL_MESSAGE = 0x005D5C40
+_MODAL_MESSAGE_STACK_ARGS = 24
+_LAST_TURN_ALERT_TICK = 0x006A31C0
+_TURN_COOLDOWN_DEFER = 0x006A43C4
+_DIPLOMACY_LAST_EFFORT_TURN = 0x790
+
+
+def _drive_turn_alerts_later(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    diplomacy_mgr = _u32(session, _DIPLOMACY_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 3)
+    session.assign(f"*(short*)0x{sim_mgr + 0x58:08x}", 1)
+    session.assign(f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}", 0x1010)
+    session.assign(
+        f"*(short*)0x{diplomacy_mgr + _DIPLOMACY_LAST_EFFORT_TURN:08x}", 0
+    )
+    session.assign(f"*(int*)0x{_LAST_TURN_ALERT_TICK:08x}", 0)
+    session.assign(f"*(short*)0x{_TURN_COOLDOWN_DEFER:08x}", 0)
+
+    stack = _eval_int(session, "$esp")
+    return_address = _eval_int(session, "$eip")
+    return_breakpoint = session.set_breakpoint(return_address)
+    getstring_breakpoint = session.set_breakpoint(_GET_STRING_BODY)
+    modal_breakpoint = session.set_breakpoint(_MODAL_MESSAGE)
+    alerts: list[int] = []
+    last_row = -1
+    try:
+        session.assign(f"*(unsigned int*)0x{stack - 4:08x}", return_address)
+        session.assign("$esp", stack - 4)
+        session.assign("$eip", _SHOW_TURN_ALERTS)
+        session.continue_inferior()
+        deadline = time.monotonic() + 60.0
+        while time.monotonic() < deadline:
+            stop = session.wait_for_stop(
+                min(1.0, deadline - time.monotonic())
+            )
+            if stop is None:
+                if session.process.poll() is not None:
+                    raise RuntimeError(
+                        "debugged game exited before the injected call returned"
+                    )
+                continue
+            if is_terminal_stop(stop):
+                raise RuntimeError(
+                    "debugged game exited before the injected call returned"
+                )
+            if stop.reason == "breakpoint-hit":
+                number = stop.breakpoint_number or ""
+                if number == return_breakpoint:
+                    break
+                if number == getstring_breakpoint:
+                    frame = _eval_int(session, "$esp")
+                    if (
+                        _eval_int(
+                            session, f"*(int*)0x{frame + 4:08x}"
+                        )
+                        == 0x2753
+                    ):
+                        last_row = (
+                            _eval_int(
+                                session, f"*(int*)0x{frame + 8:08x}"
+                            )
+                            & 0xFFFF
+                        )
+                    session.continue_inferior()
+                    continue
+                if number == modal_breakpoint:
+                    alerts.append(last_row)
+                    frame = _eval_int(session, "$esp")
+                    session.assign(
+                        "$eip", _u32(session, frame)
+                    )
+                    session.assign(
+                        "$esp", frame + 4 + _MODAL_MESSAGE_STACK_ARGS
+                    )
+                    session.continue_inferior()
+                    continue
+                role = breakpoint_roles.get(number)
+                if (
+                    role is not None
+                    and role[0] == "probe"
+                    and role[1] is not None
+                ):
+                    probe = role[1]
+                    occurrence = occurrences.get(probe.probe_id, 0) + 1
+                    occurrences[probe.probe_id] = occurrence
+                    records.append(
+                        {
+                            "type": "checkpoint",
+                            "seq": len(records),
+                            "probe": probe.probe_id,
+                            "occurrence": occurrence,
+                            "fields": _capture_fields(session, probe),
+                        }
+                    )
+                    session.continue_inferior()
+                    continue
+            session.capture_stop(
+                f"unexpected-injected-{stop.signal_name or stop.reason}", stop
+            )
+            raise RuntimeError(
+                f"debugged game stopped unexpectedly during injected call: "
+                f"{stop.signal_name or stop.reason}"
+            )
+        else:
+            session.interrupt_and_capture("injected-call-timeout")
+            raise RuntimeError(
+                "timed out waiting for injected call to return"
+            )
+        session.assign("$esp", stack)
+    finally:
+        session.delete_breakpoint(return_breakpoint)
+        session.delete_breakpoint(getstring_breakpoint)
+        session.delete_breakpoint(modal_breakpoint)
+    return {"alerts": alerts, **_capture_turn_state(session)}
+
+
 # --- great_power_pressure_* retail drives --------------------------------------
 # Mirrors RunGreatPowerPressureHumanDebt / RunGreatPowerPressureAiNoop:
 # UpdateGreatPowerPressureStateAndDispatchEscalationMessage is vtable slot 0xaf
@@ -4694,6 +4842,11 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = CHECKPOINT_TURN_ALERTS_FIRST
+                    elif scenario.drive == "turn_alerts_later_turn":
+                        result_fields = _drive_turn_alerts_later(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_TURN_ALERTS_LATER
                     elif (
                         scenario.drive
                         == "great_power_pressure_human_debt"
@@ -4887,6 +5040,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "great_power_pressure_ai_noop",
         "turn_stop_deal_book",
         "turn_stop_city_and_transport",
+        "turn_alerts_later_turn",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -5028,6 +5182,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         ):
             recomp_observation = normalize_native_turn_stop_state(
                 native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive == "turn_alerts_later_turn":
+            recomp_observation = normalize_native_turn_alerts_later(
+                native_result
             )
         elif scenario.drive == "second_turn_military_cleanup":
             recomp_observation = normalize_native_military_cleanup(
@@ -5202,6 +5360,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     ):
         retail_observation = normalize_retail_turn_stop_state(
             retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint == CHECKPOINT_TURN_ALERTS_LATER:
+        retail_observation = normalize_retail_turn_alerts_later(
+            retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
         retail_observation = normalize_retail_second_turn_sequence(
