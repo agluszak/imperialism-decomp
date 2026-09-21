@@ -3441,6 +3441,49 @@ JSON_Value* CaptureMilitaryEphemeral() {
   return object.Release();
 }
 
+// Per-nation mission queues: TMission base fields plus the TNavyMission state
+// that Reassess rewrites (navyState28, resolved port zone, equipage needs).
+JSON_Value* CaptureMissionsEphemeral() {
+  JsonArray missions;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    TSortedList* queue = static_cast<TAutoGreatPower*>(nation)->missionQueue;
+    CIterator iter(queue);
+    for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+         mission = static_cast<TMission*>(iter.Advance())) {
+      JsonObject object;
+      object.Set("nation", nationSlot);
+      CRuntimeClass* runtimeClass = mission->GetRuntimeClass();
+      object.Set("kind",
+                 runtimeClass != 0 ? runtimeClass->m_lpszClassName : "unknown");
+      object.Set("nation_id", static_cast<int>(mission->nationId04));
+      object.Set("path_marker", static_cast<int>(mission->pathMarker06));
+      object.Set("state", static_cast<unsigned int>(mission->state08));
+      object.Set("importance_bits", FloatBits(mission->importanceScore0c));
+      object.Set("flag10", static_cast<unsigned int>(mission->flag10));
+      object.Set("marker", static_cast<unsigned int>(mission->marker11));
+      if (mission->IsNavyMission() != 0) {
+        TNavyMission* navy = static_cast<TNavyMission*>(mission);
+        object.Set("target_zone", RuntimeZoneIndex(navy->missionTargetZone));
+        object.Set("resolved_port_zone",
+                   RuntimeZoneIndex(navy->resolvedPortZone));
+        object.Set("navy_state", navy->navyState28);
+        object.Set("has_orders", navy->orderList24 != 0);
+        JsonArray equipage;
+        for (int index = 0; index < 4; ++index) {
+          equipage.Add(FloatBits(navy->requiredShipEquipageByCategory[index]));
+        }
+        object.Set("required_equipage_bits", equipage.Release());
+      }
+      missions.Add(object.Release());
+    }
+  }
+  return missions.Release();
+}
+
 // End-of-turn cleanup outputs: the strategic-score heatmap written into
 // cityScoreTable[*].cityScoreValue plus the RecomputeNationOrderPriorityMetrics
 // float caches and the TAutoGreatPower pressure fields they feed.
@@ -3513,6 +3556,7 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("civilians", CaptureCiviliansEphemeral());
   object.Set("military", CaptureMilitaryEphemeral());
   object.Set("military_cleanup", CaptureMilitaryCleanupEphemeral());
+  object.Set("missions", CaptureMissionsEphemeral());
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();

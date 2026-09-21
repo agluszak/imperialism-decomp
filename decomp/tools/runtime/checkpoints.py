@@ -21,6 +21,7 @@ ACTION_CIVILIANS_PHASE = "civilians_phase.run"
 ACTION_MILITARY_PHASE = "military_phase.run"
 ACTION_MILITARY_CLEANUP = "second_turn_military_cleanup.run"
 ACTION_RECOMPUTE_METRICS = "recompute_nation_order_priority_metrics.run"
+ACTION_REASSESS_MISSIONS = "reassess_control_sea_missions.run"
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
@@ -46,6 +47,7 @@ CHECKPOINT_LAND_RETREAT_PHASE = "military_phase_land_retreat.resolved"
 CHECKPOINT_SECOND_TURN_MILITARY_PHASE = "second_turn_military_phase.resolved"
 CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP = "second_turn_military_cleanup.resolved"
 CHECKPOINT_RECOMPUTE_METRICS = "recompute_nation_order_priority_metrics.resolved"
+CHECKPOINT_REASSESS_MISSIONS = "reassess_control_sea_missions.resolved"
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
 
 
@@ -306,6 +308,17 @@ SCHEMAS = {
             "expansion_pressure",
             "unit_divergence",
             "mission_pressure",
+        ),
+    ),
+    CHECKPOINT_REASSESS_MISSIONS: CheckpointSchema(
+        CHECKPOINT_REASSESS_MISSIONS,
+        ACTION_REASSESS_MISSIONS,
+        "reassess_control_sea_missions",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "missions",
         ),
     ),
     CHECKPOINT_SECOND_TURN_SEQUENCE: CheckpointSchema(
@@ -1268,6 +1281,113 @@ def normalize_retail_recompute_metrics(
     for key in _MILITARY_CLEANUP_METRIC_KEYS:
         normalized[key] = _require_int_list(raw.get(key), f"retail {key}")
     return normalized
+
+
+def _mission_records(records: Any, label: str) -> list[dict[str, Any]]:
+    if not isinstance(records, list):
+        raise ValueError(f"{label} must be an array")
+    normalized = []
+    for index, record in enumerate(records):
+        entry = _require_mapping(record, f"{label}[{index}]")
+        mission = {
+            "nation": _require_int(entry.get("nation"), f"{label}[{index}].nation"),
+            "kind": entry.get("kind"),
+            "nation_id": _require_int(
+                entry.get("nation_id"), f"{label}[{index}].nation_id"
+            ),
+            "path_marker": _require_int(
+                entry.get("path_marker"), f"{label}[{index}].path_marker"
+            ),
+            "state": _require_int(entry.get("state"), f"{label}[{index}].state"),
+            "importance_bits": _require_int(
+                entry.get("importance_bits"), f"{label}[{index}].importance_bits"
+            ),
+            "flag10": _require_int(
+                entry.get("flag10"), f"{label}[{index}].flag10"
+            ),
+            "marker": _require_int(
+                entry.get("marker"), f"{label}[{index}].marker"
+            ),
+        }
+        if entry.get("navy_state") is not None:
+            mission["target_zone"] = _require_int(
+                entry.get("target_zone"), f"{label}[{index}].target_zone"
+            )
+            mission["resolved_port_zone"] = _require_int(
+                entry.get("resolved_port_zone"),
+                f"{label}[{index}].resolved_port_zone",
+            )
+            mission["navy_state"] = _require_int(
+                entry.get("navy_state"), f"{label}[{index}].navy_state"
+            )
+            mission["has_orders"] = _require_bool(
+                entry.get("has_orders"), f"{label}[{index}].has_orders"
+            )
+            mission["required_equipage_bits"] = _require_int_list(
+                entry.get("required_equipage_bits"),
+                f"{label}[{index}].required_equipage_bits",
+            )
+        normalized.append(mission)
+    return normalized
+
+
+def _mission_turn(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
+    return {
+        "phase": _require_int(raw.get("phase"), f"{label}.phase"),
+        "active": _require_int(
+            raw.get("active_nation", raw.get("active")), f"{label}.active"
+        ),
+        "economic_turn": _require_int(
+            raw.get("economic_turn"), f"{label}.economic_turn"
+        ),
+        "turn_flow_status_flags": _require_int(
+            raw.get("turn_flow_status_flags"), f"{label}.turn_flow_status_flags"
+        ),
+    }
+
+
+def normalize_native_reassess_missions(
+    result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_REASSESS_MISSIONS,
+) -> dict[str, Any]:
+    """Reduce a native driver result to the mission-reassess schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": ACTION_REASSESS_MISSIONS,
+        "turn": _mission_turn(turn, "native turn"),
+        "missions": _mission_records(
+            ephemeral.get("missions"), "native missions"
+        ),
+    }
+
+
+def normalize_retail_reassess_missions(
+    raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_REASSESS_MISSIONS,
+) -> dict[str, Any]:
+    """Reduce a retail GDB mission capture to the same schema."""
+    turn = {
+        "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+        "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+        "economic_turn": _require_int(
+            raw.get("economic_turn"), "retail economic_turn"
+        ),
+        "turn_flow_status_flags": _require_int(
+            raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+        ),
+    }
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": ACTION_REASSESS_MISSIONS,
+        "turn": turn,
+        "missions": _mission_records(raw.get("missions"), "retail missions"),
+    }
 
 
 def normalize_retail_second_turn_sequence(

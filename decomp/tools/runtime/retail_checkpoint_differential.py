@@ -29,6 +29,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
     CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+    CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_RECOMPUTE_METRICS,
     CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
     CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
@@ -39,6 +40,7 @@ from tools.runtime.checkpoints import (
     normalize_native_city_transport_phase,
     normalize_native_civilians_phase,
     normalize_native_military_cleanup,
+    normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
     normalize_native_second_turn_sequence,
@@ -49,6 +51,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_civilians_phase,
     normalize_retail_combined_map,
     normalize_retail_military_cleanup,
+    normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
     normalize_retail_second_turn_sequence,
@@ -492,6 +495,20 @@ def load_scenario(name: str) -> Scenario:
             start_action=base.start_action,
             drive=name,
             result_checkpoint_id=CHECKPOINT_RECOMPUTE_METRICS,
+        )
+    elif name == "reassess_control_sea_missions":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id="reassess_control_sea_missions.run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_REASSESS_MISSIONS,
         )
     elif name == "military_phase_ships_without_orders":
         base = _load_save_to_map_scenario(fixture)
@@ -2340,6 +2357,173 @@ def _capture_priority_metrics(
     return metrics
 
 
+# --- reassess_control_sea_missions retail drive --------------------------------
+# Mirrors RunReassessControlSeaMissions: for each eligible TAutoGreatPower,
+# iterate missionQueue and Reassess() entries that are both navy and hospital
+# missions. TMission vtable slots: GetRuntimeClass 0x00 (CObject prefix),
+# Reassess 0x10, IsNavyMission 0x15, IsHospitalMission 0x19.
+
+_NATION_SLOT_ELIGIBLE = 0x00581280
+_VT_MISSION_REASSESS = 0x10 * 4
+_VT_MISSION_IS_NAVY = 0x15 * 4
+_VT_MISSION_IS_HOSPITAL = 0x19 * 4
+_NATION_MISSION_QUEUE = 0xB60
+
+
+def _drive_reassess_missions(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        if (
+            _runtime_class(
+                session, nation, records, occurrences, breakpoint_roles
+            )
+            != _CLASS_AUTO_GREAT_POWER
+        ):
+            continue
+        eligible = _invoke_thiscall(
+            session,
+            _NATION_SLOT_ELIGIBLE,
+            sim_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(slot,),
+        )
+        if eligible & 0xFF == 0:
+            continue
+        queue = _u32(session, nation + _NATION_MISSION_QUEUE)
+        for mission in _sorted_ptr_list_entries(session, queue):
+            if (
+                _invoke_virtual(
+                    session,
+                    mission,
+                    _VT_MISSION_IS_NAVY,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                )
+                & 0xFF
+                == 0
+            ):
+                continue
+            if (
+                _invoke_virtual(
+                    session,
+                    mission,
+                    _VT_MISSION_IS_HOSPITAL,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                )
+                & 0xFF
+                == 0
+            ):
+                continue
+            _invoke_virtual(
+                session,
+                mission,
+                _VT_MISSION_REASSESS,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+
+
+def _read_cstring(session: GdbSession, address: int) -> str:
+    if address == 0:
+        return ""
+    return session.read_memory(address, 64).split(b"\x00")[0].decode(
+        "ascii", "replace"
+    )
+
+
+def _zone_ordinal(session: GdbSession, zone: int) -> int:
+    return _s16(session, zone + 0x14) if zone != 0 else -1
+
+
+def _capture_missions(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    missions: list[dict[str, object]] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        if (
+            _runtime_class(
+                session, nation, records, occurrences, breakpoint_roles
+            )
+            != _CLASS_AUTO_GREAT_POWER
+        ):
+            continue
+        queue = _u32(session, nation + _NATION_MISSION_QUEUE)
+        for mission in _sorted_ptr_list_entries(session, queue):
+            raw = session.read_memory(mission, 0x3C)
+            class_ptr = _runtime_class(
+                session, mission, records, occurrences, breakpoint_roles
+            )
+            record: dict[str, object] = {
+                "nation": slot,
+                "kind": _read_cstring(
+                    session, _u32(session, class_ptr) if class_ptr else 0
+                ),
+                "nation_id": struct.unpack("<h", raw[0x04:0x06])[0],
+                "path_marker": struct.unpack("<h", raw[0x06:0x08])[0],
+                "state": raw[0x08],
+                "importance_bits": struct.unpack("<I", raw[0x0C:0x10])[0],
+                "flag10": raw[0x10],
+                "marker": raw[0x11],
+            }
+            if (
+                _invoke_virtual(
+                    session,
+                    mission,
+                    _VT_MISSION_IS_NAVY,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                )
+                & 0xFF
+                != 0
+            ):
+                record["target_zone"] = _zone_ordinal(
+                    session, struct.unpack("<I", raw[0x14:0x18])[0]
+                )
+                record["resolved_port_zone"] = _zone_ordinal(
+                    session, struct.unpack("<I", raw[0x18:0x1C])[0]
+                )
+                record["navy_state"] = struct.unpack("<i", raw[0x28:0x2C])[0]
+                record["has_orders"] = (
+                    struct.unpack("<I", raw[0x24:0x28])[0] != 0
+                )
+                record["required_equipage_bits"] = [
+                    struct.unpack("<I", raw[0x2C + i * 4 : 0x30 + i * 4])[0]
+                    for i in range(4)
+                ]
+            missions.append(record)
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "missions": missions,
+    }
+
+
 def _drive_recompute_metrics(
     session: GdbSession,
     records: list[dict],
@@ -3336,6 +3520,14 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = CHECKPOINT_RECOMPUTE_METRICS
+                    elif scenario.drive == "reassess_control_sea_missions":
+                        _drive_reassess_missions(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_missions(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_REASSESS_MISSIONS
                     elif scenario.drive in (
                         "military_phase_naval_encounter",
                         "military_phase_naval_escalation",
@@ -3506,6 +3698,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "second_turn_civilians_phase",
         "second_turn_military_cleanup",
         "recompute_nation_order_priority_metrics",
+        "reassess_control_sea_missions",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3583,6 +3776,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         elif scenario.drive == "recompute_nation_order_priority_metrics":
             recomp_observation = normalize_native_recompute_metrics(
+                native_result
+            )
+        elif scenario.drive == "reassess_control_sea_missions":
+            recomp_observation = normalize_native_reassess_missions(
                 native_result
             )
         elif scenario.drive == "second_turn_military_cleanup":
@@ -3700,6 +3897,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     elif result_checkpoint == CHECKPOINT_RECOMPUTE_METRICS:
         retail_observation = normalize_retail_recompute_metrics(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_REASSESS_MISSIONS:
+        retail_observation = normalize_retail_reassess_missions(
             retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
