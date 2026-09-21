@@ -9,6 +9,8 @@
 #include "game/resource_domain_types.h"
 #include "game/ui_screens/TSimMgr.h"
 
+#include <stdlib.h>
+
 namespace {
 
 short OtherMajorNation(short activeNationSlot, int offset) {
@@ -271,6 +273,8 @@ RuntimeActionResult RunSecondTurnDiplomacyPhase(NativeTransition& transition) {
     return started;
   }
 
+  // Deterministic CRT seed for retail-vs-recomp rand() parity.
+  srand(0x1234);
   g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
   for (int replyNationSlot = 0; replyNationSlot < kMajorNationCount; ++replyNationSlot) {
     if (g_apNationStates[replyNationSlot] != 0) {

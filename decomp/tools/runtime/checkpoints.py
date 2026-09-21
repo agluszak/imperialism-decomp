@@ -26,6 +26,7 @@ CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
 CHECKPOINT_CITY_ACTIVE = "city.active"
 CHECKPOINT_TURN_ADVANCED = "turn.advanced"
 CHECKPOINT_DIPLOMACY_PHASE = "diplomacy_phase.resolved"
+CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE = "second_turn_diplomacy_phase.resolved"
 CHECKPOINT_TRADE_PHASE = "trade_phase.resolved"
 CHECKPOINT_CITY_TRANSPORT_PHASE = "city_transport_phase.resolved"
 CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
@@ -89,6 +90,18 @@ SCHEMAS = {
         CHECKPOINT_DIPLOMACY_PHASE,
         ACTION_DIPLOMACY_PHASE,
         "diplomacy_phase_applies_grant_and_consulate",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "last_processed_nation",
+            "diplomacy.nations",
+        ),
+    ),
+    CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE: CheckpointSchema(
+        CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
+        ACTION_DIPLOMACY_PHASE,
+        "second_turn_diplomacy_phase",
         (
             "turn.phase",
             "turn.active",
@@ -311,7 +324,10 @@ def _diplomacy_grant(entry: Any, label: str) -> dict[str, Any] | None:
     return {"amount": value & 0x3FFF, "recurring": (value & 0x4000) != 0}
 
 
-def normalize_native_diplomacy_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_native_diplomacy_phase(
+    result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_DIPLOMACY_PHASE,
+) -> dict[str, Any]:
     """Reduce a native driver result to the stable diplomacy-phase schema."""
     if result.get("status") != "passed":
         raise ValueError(f"native driver did not pass: {result.get('status')!r}")
@@ -321,7 +337,7 @@ def normalize_native_diplomacy_phase(result: Mapping[str, Any]) -> dict[str, Any
     turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
     diplomacy = _require_mapping(ephemeral.get("diplomacy"), "native ephemeral diplomacy")
     return {
-        "checkpoint_id": CHECKPOINT_DIPLOMACY_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_DIPLOMACY_PHASE,
         "turn": {
             "phase": _require_int(turn.get("phase"), "native turn.phase"),
@@ -338,7 +354,10 @@ def normalize_native_diplomacy_phase(result: Mapping[str, Any]) -> dict[str, Any
     }
 
 
-def normalize_retail_diplomacy_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_retail_diplomacy_phase(
+    raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_DIPLOMACY_PHASE,
+) -> dict[str, Any]:
     """Reduce a retail GDB diplomacy capture to the same stable schema."""
     nations_raw = raw.get("diplomacy_nations")
     if not isinstance(nations_raw, list):
@@ -380,7 +399,7 @@ def normalize_retail_diplomacy_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
     if last_processed == -1:
         last_processed = None
     return {
-        "checkpoint_id": CHECKPOINT_DIPLOMACY_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_DIPLOMACY_PHASE,
         "turn": {
             "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),

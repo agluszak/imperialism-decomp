@@ -19,6 +19,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_CITY_TRANSPORT_PHASE,
     CHECKPOINT_CIVILIANS_PHASE,
     CHECKPOINT_DIPLOMACY_PHASE,
+    CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
     CHECKPOINT_MILITARY_PHASE,
     CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
     CHECKPOINT_NAVAL_ESCALATION_PHASE,
@@ -369,6 +370,20 @@ def load_scenario(name: str) -> Scenario:
         raise SystemExit(f"missing differential fixture {fixture}")
     if name == "load_save_to_map":
         scenario = _load_save_to_map_scenario(fixture)
+    elif name == "second_turn_diplomacy_phase":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id="diplomacy_phase.run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
+        )
     elif name == "diplomacy_phase":
         scenario = _diplomacy_phase_scenario(fixture)
     elif name == "trade_phase":
@@ -2381,6 +2396,48 @@ def _drive_second_turn_sequence(
     }
 
 
+def _drive_second_turn_diplomacy_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    """Mirror RunSecondTurnDiplomacyPhase: economicTurn=2, pinned srand,
+    ApplyDiplomacyInterNationStatesForTurn (0x4f01e0), then each major's
+    ReplyToDiplomacyOffers (0x4df5f0)."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    diplomacy_mgr = _u32(session, _DIPLOMACY_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 2)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session,
+        _APPLY_DIPLOMACY_TURN,
+        diplomacy_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation != 0:
+            _invoke_thiscall(
+                session,
+                _REPLY_TO_OFFERS,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+
+
 def _resolved_tile_owner(session: GdbSession, owner_code: int) -> int:
     """Mirror TMapMgr::ResolveTileOwnerNationCodeNormalized (0x514120)."""
     if owner_code < 0:
@@ -2882,6 +2939,12 @@ def run_binary(
                         )
                         result_fields = _capture_diplomacy_phase(session)
                         result_probe = CHECKPOINT_DIPLOMACY_PHASE
+                    elif scenario.drive == "second_turn_diplomacy_phase":
+                        _drive_second_turn_diplomacy_phase(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_diplomacy_phase(session)
+                        result_probe = CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE
                     elif scenario.drive == "trade_phase":
                         stages: dict[str, object] = {}
                         result_fields = {
@@ -3090,6 +3153,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase_ships_without_orders",
         "second_turn_military_phase",
         "second_turn_sequence",
+        "second_turn_diplomacy_phase",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3117,6 +3181,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         if scenario.drive == "diplomacy_phase":
             recomp_observation = normalize_native_diplomacy_phase(native_result)
+        elif scenario.drive == "second_turn_diplomacy_phase":
+            recomp_observation = normalize_native_diplomacy_phase(
+                native_result,
+                checkpoint_id=CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
+            )
         elif scenario.drive == "city_transport_phase":
             recomp_observation = normalize_native_city_transport_phase(
                 native_result
@@ -3191,6 +3260,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     if result_checkpoint == CHECKPOINT_DIPLOMACY_PHASE:
         retail_observation = normalize_retail_diplomacy_phase(
             retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE:
+        retail_observation = normalize_retail_diplomacy_phase(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
         )
     elif result_checkpoint == CHECKPOINT_TRADE_PHASE:
         retail_observation = normalize_retail_trade_phase(
