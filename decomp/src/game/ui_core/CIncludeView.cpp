@@ -89,7 +89,7 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 // CList (0x4c), then 0x6c/0x70/0x74 and 0x90 after it, and writes the vptr LAST — the
 // MSVC signature of an all-init-list ctor with an empty body. Body assignments would
 // instead run after member construction and after the vptr write, scrambling the order.
-// m_overlayRectQueue (default CList ctor), m_overlayRectCursor68, and the capture CPoints
+// m_overlayRectQueue (default CList ctor), m_overlayRectQueue.cursor, and the capture CPoints
 // are left default/uninitialized, matching the original (no stores to 0x68 or 0x78-0x8f).
 // FUNCTION: IMPERIALISM 0x00482950
 CIncludeView::CIncludeView()
@@ -289,9 +289,9 @@ void CIncludeView::QueueOrMergeOverlayDirtyRect(RECT* rect, int processedFlag, i
 // FUNCTION: IMPERIALISM 0x00482fc0
 void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRect) {
   // Pass 1: blit each not-yet-processed hint rect into the offscreen surface.
-  m_overlayRectCursor68 = m_overlayRectQueue.records.GetHeadPosition();
-  while (m_overlayRectCursor68 != 0) {
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectCursor68);
+  m_overlayRectQueue.cursor = m_overlayRectQueue.records.GetHeadPosition();
+  while (m_overlayRectQueue.cursor != 0) {
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
     if (rec.processedFlag10 == 0) {
       rec.processedFlag10 = 1;
       CPoint dimensions;
@@ -311,9 +311,9 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
     }
   }
   // Pass 2: repaint the hosted dialog tree over each remaining unprocessed rect.
-  m_overlayRectCursor68 = m_overlayRectQueue.records.GetHeadPosition();
-  while (m_overlayRectCursor68 != 0) {
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectCursor68);
+  m_overlayRectQueue.cursor = m_overlayRectQueue.records.GetHeadPosition();
+  while (m_overlayRectQueue.cursor != 0) {
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
     if (rec.processedFlag10 == 0) {
       rec.processedFlag10 = 1;
       RECT paintRect;
@@ -327,10 +327,10 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
     // LIBRARY: CDC::FromHandle (0x00612736)
     targetDc = CDC::FromHandle(::GetDC(m_hWnd));
   }
-  m_overlayRectCursor68 = m_overlayRectQueue.records.GetHeadPosition();
-  while (m_overlayRectCursor68 != 0) {
-    POSITION current = m_overlayRectCursor68;
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectCursor68);
+  m_overlayRectQueue.cursor = m_overlayRectQueue.records.GetHeadPosition();
+  while (m_overlayRectQueue.cursor != 0) {
+    POSITION current = m_overlayRectQueue.cursor;
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
     if (rec.processedFlag10 == 2) {
       RECT flushRect = rec.rect;
       m_overlayRectQueue.records.RemoveAt(current);
@@ -609,6 +609,20 @@ void CIncludeViewOverlayRectQueue::AddHead(RECT* rect, int processedFlag, int fi
   record.processedFlag10 = processedFlag != 0;
   record.field14 = field14;
   records.AddHead(record);
+}
+
+// FUNCTION: IMPERIALISM 0x00483d10
+IncludeViewOverlayRectRecord*
+CIncludeViewOverlayRectQueue::UpdateNextRecordProcessedFlagFromCursor(int matchFlag,
+                                                                    int newFlag) {
+  while (cursor != 0) {
+    IncludeViewOverlayRectRecord& rec = records.GetNext(cursor);
+    if (rec.processedFlag10 == matchFlag) {
+      rec.processedFlag10 = newFlag;
+      return &rec;
+    }
+  }
+  return 0;
 }
 
 // Command 0x8011 momentarily enters and leaves MFC's wait-cursor state. This forces the

@@ -48,9 +48,17 @@ ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
 class CIncludeViewOverlayRectQueue {
 public:
   CList<IncludeViewOverlayRectRecord, IncludeViewOverlayRectRecord&> records;
+  // +0x1c — persistent iteration cursor of the repaint pass (0x482fc0). The original
+  // keeps it inside the queue object: 0x483d10 reads and advances it as this+0x1c.
+  POSITION cursor;
   void AddHead(RECT* rect, int processedFlag, int field14); // 0x00483ba0
+  // Resumes the list walk at `cursor`: returns the first record whose processedFlag10
+  // equals matchFlag after storing newFlag into it, null when the cursor runs out.
+  // Dead in the original. 0x00483d10, __thiscall.
+  IncludeViewOverlayRectRecord* UpdateNextRecordProcessedFlagFromCursor(int matchFlag,
+                                                                      int newFlag);
 };
-ASSERT_SIZE(CIncludeViewOverlayRectQueue, 0x1c);
+ASSERT_SIZE(CIncludeViewOverlayRectQueue, 0x20);
 
 // Full 68-slot vtable. The two game overrides (PreCreateWindow 0x64, OnCommand 0x80),
 // CalcWindowRect 0x68, OnInitialUpdate/OnActivateView/OnDraw and the message-map handlers
@@ -173,7 +181,6 @@ public:
   // instantiation twice (ctor TU vtable 0x648560, dtor/Serialize TU vtable 0x648578) —
   // the twin-copy template pattern; both are the same class.
   CIncludeViewOverlayRectQueue m_overlayRectQueue;
-  POSITION m_overlayRectCursor68; // 0x68 — iteration cursor of the repaint pass (0x482fc0)
   UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
   int m_unused70;                 // 0x70 — ctor-write only; field-xrefs show no reader
   // 0x74 — this view's own captured-control track (a second copy of the
