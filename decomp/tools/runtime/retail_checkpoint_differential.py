@@ -21,6 +21,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_DIPLOMACY_PHASE,
     CHECKPOINT_MILITARY_PHASE,
     CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
+    CHECKPOINT_NAVAL_ESCALATION_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
@@ -292,7 +293,9 @@ def _military_phase_scenario(fixture: Path) -> Scenario:
     )
 
 
-def _military_phase_naval_encounter_scenario(fixture: Path) -> Scenario:
+def _military_phase_naval_encounter_scenario(
+    fixture: Path, name: str = "military_phase_naval_encounter"
+) -> Scenario:
     """Reach the loaded map, then drive the naval-encounter transition."""
     base = _load_save_to_map_scenario(fixture)
     trace_fields = {"receiver": FieldCapture("$ecx", "u32")}
@@ -313,16 +316,18 @@ def _military_phase_naval_encounter_scenario(fixture: Path) -> Scenario:
         )
     )
     return Scenario(
-        name="military_phase_naval_encounter",
-        native_test="military_phase_naval_encounter",
+        name=name,
+        native_test=name,
         action_id="military_phase.run",
         fixture=fixture,
         probes=base.probes + trace_probes,
         terminal_checkpoint=base.terminal_checkpoint,
         timeout_seconds=base.timeout_seconds,
         start_action=base.start_action,
-        drive="military_phase_naval_encounter",
-        result_checkpoint_id=CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
+        drive=name,
+        result_checkpoint_id=CHECKPOINT_NAVAL_ESCALATION_PHASE
+        if name == "military_phase_naval_escalation"
+        else CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
     )
 
 
@@ -343,8 +348,9 @@ def load_scenario(name: str) -> Scenario:
         scenario = _civilians_phase_scenario(fixture)
     elif name == "military_phase":
         scenario = _military_phase_scenario(fixture)
-    elif name == "military_phase_naval_encounter":
-        scenario = _military_phase_naval_encounter_scenario(fixture)
+    elif name in ("military_phase_naval_encounter",
+                  "military_phase_naval_escalation"):
+        scenario = _military_phase_naval_encounter_scenario(fixture, name)
     else:
         raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
@@ -2009,6 +2015,8 @@ def _drive_military_phase_naval_encounter(
     records: list[dict],
     occurrences: dict[str, int],
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    attacker_type: int = 3,
+    defender_type: int = 3,
 ) -> dict[str, object]:
     """Mirror RunMilitaryPhaseNavalEncounter: two hostile task forces sharing
     one zone, a forced war relation, then TSimMgr::DoMilitary."""
@@ -2033,7 +2041,7 @@ def _drive_military_phase_naval_encounter(
     )
     _new_ship(
         session,
-        3,
+        attacker_type,
         zone,
         active_nation,
         "military-encounter-attacker",
@@ -2063,7 +2071,7 @@ def _drive_military_phase_naval_encounter(
     )
     _new_ship(
         session,
-        3,
+        defender_type,
         zone,
         hostile_nation,
         "military-encounter-defender",
@@ -2385,12 +2393,22 @@ def run_binary(
                         )
                         result_fields = _capture_military_phase(session)
                         result_probe = CHECKPOINT_MILITARY_PHASE
-                    elif scenario.drive == "military_phase_naval_encounter":
+                    elif scenario.drive in (
+                        "military_phase_naval_encounter",
+                        "military_phase_naval_escalation",
+                    ):
                         result_fields = _drive_military_phase_naval_encounter(
-                            session, records, occurrences, breakpoint_roles
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            *( (9, 3)
+                               if scenario.drive
+                               == "military_phase_naval_escalation"
+                               else () ),
                         )
                         result_fields.update(_capture_military_phase(session))
-                        result_probe = CHECKPOINT_NAVAL_ENCOUNTER_PHASE
+                        result_probe = scenario.result_checkpoint_id
                     else:
                         raise RuntimeError(
                             f"unknown scenario drive {scenario.drive!r}"
@@ -2501,6 +2519,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "civilians_phase",
         "military_phase",
         "military_phase_naval_encounter",
+        "military_phase_naval_escalation",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -2536,7 +2555,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_civilians_phase(native_result)
         elif scenario.drive == "military_phase":
             recomp_observation = normalize_native_military_phase(native_result)
-        elif scenario.drive == "military_phase_naval_encounter":
+        elif scenario.drive in ("military_phase_naval_encounter",
+                                "military_phase_naval_escalation"):
             recomp_observation = normalize_native_military_phase(native_result)
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
@@ -2592,7 +2612,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"]
         )
-    elif result_checkpoint == CHECKPOINT_NAVAL_ENCOUNTER_PHASE:
+    elif result_checkpoint in (CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
+                               CHECKPOINT_NAVAL_ESCALATION_PHASE):
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"]
         )

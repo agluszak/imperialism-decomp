@@ -669,7 +669,9 @@ RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transit
   return transition.Finish();
 }
 
-RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition) {
+RuntimeActionResult RunMilitaryPhaseNavalEncounterImpl(NativeTransition& transition,
+                                                       short attackerType,
+                                                       short defenderType) {
   // Deterministic CRT seed so the retail-vs-recomp differential sees identical
   // rand() streams through ship setup and DoMilitary.
   srand(0x1234);
@@ -701,7 +703,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
   }
 
   TShip* attackerShip = new TShip();
-  attackerShip->IShip(3, zone, activeNation, "military-encounter-attacker");
+  attackerShip->IShip(attackerType, zone, activeNation, "military-encounter-attacker");
   TTaskForce* attacker = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(activeNation);
   if (attacker == 0) {
     return RuntimeActionResult::Failure("could not create the attacking task force");
@@ -709,7 +711,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
   attacker->SubmitOrders(3, 0);
 
   TShip* defenderShip = new TShip();
-  defenderShip->IShip(3, zone, hostileNation, "military-encounter-defender");
+  defenderShip->IShip(defenderType, zone, hostileNation, "military-encounter-defender");
   TTaskForce* defender = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(hostileNation);
   if (defender == 0) {
     return RuntimeActionResult::Failure("could not create the defending task force");
@@ -724,10 +726,20 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
   }
   g_pSimMgr->DoMilitary();
 
-  // Retail resolves the encounter by mutual attrition and frees both task
+  // Retail resolves the encounter by attrition and may free one or both task
   // forces, so `attacker`/`defender` are dangling here -- do not touch them.
 
   return transition.Finish();
+}
+
+RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition) {
+  return RunMilitaryPhaseNavalEncounterImpl(transition, 3, 3);
+}
+
+RuntimeActionResult RunMilitaryPhaseNavalEscalation(NativeTransition& transition) {
+  // Tier-3 attacker vs tier-1 defender so ResolveStrategicBattle's
+  // favor-ratio tier escalation actually engages.
+  return RunMilitaryPhaseNavalEncounterImpl(transition, 9, 3);
 }
 
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition) {

@@ -30,6 +30,7 @@ CHECKPOINT_CITY_TRANSPORT_PHASE = "city_transport_phase.resolved"
 CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
 CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
 CHECKPOINT_NAVAL_ENCOUNTER_PHASE = "military_phase_naval_encounter.resolved"
+CHECKPOINT_NAVAL_ESCALATION_PHASE = "military_phase_naval_escalation.resolved"
 
 
 @dataclass(frozen=True)
@@ -140,6 +141,19 @@ SCHEMAS = {
         CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
         ACTION_MILITARY_PHASE,
         "military_phase_naval_encounter",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
+        ),
+    ),
+    CHECKPOINT_NAVAL_ESCALATION_PHASE: CheckpointSchema(
+        CHECKPOINT_NAVAL_ESCALATION_PHASE,
+        ACTION_MILITARY_PHASE,
+        "military_phase_naval_escalation",
         (
             "turn.phase",
             "turn.active",
