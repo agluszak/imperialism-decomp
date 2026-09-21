@@ -44,6 +44,7 @@
 #include "game/map/TZone.h"
 #include "game/map/map_records.h"
 #include "game/military/TArmyMgr.h"
+#include "game/tactical/TArmyBattle.h"
 #include "game/military/TArmyMission.h"
 #include "game/military/TAttackProvinceMission.h"
 #include "game/military/TCivUnit.h"
@@ -3418,6 +3419,25 @@ JSON_Value* CaptureMilitaryEphemeral() {
     }
   }
   object.Set("task_forces", taskForces.Release());
+  JsonArray provinceOwners;
+  for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+    provinceOwners.Add(static_cast<int>(
+        g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode00));
+  }
+  object.Set("province_owners", provinceOwners.Release());
+  JsonObject landBattle;
+  landBattle.Set("created",
+                 g_pMapContextActionManager != 0 &&
+                     g_pMapContextActionManager->activeBattleView3a4 != 0);
+  landBattle.Set(
+      "outcome",
+      g_pMapContextActionManager != 0 &&
+              g_pMapContextActionManager->activeBattleView3a4 != 0
+          ? static_cast<int>(
+                g_pMapContextActionManager->activeBattleView3a4
+                    ->battleOutcome44)
+          : -1);
+  object.Set("land_battle", landBattle.Release());
   return object.Release();
 }
 

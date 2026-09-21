@@ -31,6 +31,7 @@ CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
 CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
 CHECKPOINT_NAVAL_ENCOUNTER_PHASE = "military_phase_naval_encounter.resolved"
 CHECKPOINT_NAVAL_ESCALATION_PHASE = "military_phase_naval_escalation.resolved"
+CHECKPOINT_LAND_COMBAT_PHASE = "military_phase_land_combat.resolved"
 
 
 @dataclass(frozen=True)
@@ -161,6 +162,21 @@ SCHEMAS = {
             "military.nations",
             "military.ships",
             "military.task_forces",
+        ),
+    ),
+    CHECKPOINT_LAND_COMBAT_PHASE: CheckpointSchema(
+        CHECKPOINT_LAND_COMBAT_PHASE,
+        ACTION_MILITARY_PHASE,
+        "military_phase_land_combat",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
+            "military.land_battle",
+            "military.province_owners",
         ),
     ),
 }
@@ -796,10 +812,38 @@ def _military_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
                 for field in _MILITARY_TASK_FORCE_INT_FIELDS
             }
         )
-    return {"nations": nations, "ships": ships, "task_forces": task_forces}
+    normalized = {
+        "nations": nations,
+        "ships": ships,
+        "task_forces": task_forces,
+    }
+    owners_raw = raw.get("province_owners")
+    if owners_raw is not None:
+        if not isinstance(owners_raw, list):
+            raise ValueError(f"{label}.province_owners must be an array")
+        normalized["province_owners"] = [
+            _require_int(owner, f"{label}.province_owners[{index}]")
+            for index, owner in enumerate(owners_raw)
+        ]
+    battle_raw = raw.get("land_battle")
+    if battle_raw is not None:
+        battle_map = _require_mapping(battle_raw, f"{label}.land_battle")
+        created = battle_map.get("created")
+        if not isinstance(created, bool):
+            raise ValueError(f"{label}.land_battle.created must be a boolean")
+        normalized["land_battle"] = {
+            "created": created,
+            "outcome": _require_int(
+                battle_map.get("outcome"), f"{label}.land_battle.outcome"
+            ),
+        }
+    return normalized
 
 
-def normalize_native_military_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_native_military_phase(
+    result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_MILITARY_PHASE,
+) -> dict[str, Any]:
     """Reduce a native driver result to the stable military-phase schema."""
     if result.get("status") != "passed":
         raise ValueError(f"native driver did not pass: {result.get('status')!r}")
@@ -811,7 +855,7 @@ def normalize_native_military_phase(result: Mapping[str, Any]) -> dict[str, Any]
         ephemeral.get("military"), "native ephemeral military"
     )
     return {
-        "checkpoint_id": CHECKPOINT_MILITARY_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_MILITARY_PHASE,
         "turn": {
             "phase": _require_int(turn.get("phase"), "native turn.phase"),
@@ -827,10 +871,13 @@ def normalize_native_military_phase(result: Mapping[str, Any]) -> dict[str, Any]
     }
 
 
-def normalize_retail_military_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_retail_military_phase(
+    raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_MILITARY_PHASE,
+) -> dict[str, Any]:
     """Reduce a retail GDB military capture to the same schema."""
     return {
-        "checkpoint_id": CHECKPOINT_MILITARY_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_MILITARY_PHASE,
         "turn": {
             "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),

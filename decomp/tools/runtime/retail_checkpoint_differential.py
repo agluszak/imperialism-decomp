@@ -22,6 +22,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_MILITARY_PHASE,
     CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
     CHECKPOINT_NAVAL_ESCALATION_PHASE,
+    CHECKPOINT_LAND_COMBAT_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
@@ -331,6 +332,23 @@ def _military_phase_naval_encounter_scenario(
     )
 
 
+def _military_phase_land_combat_scenario(fixture: Path) -> Scenario:
+    """Reach the loaded map, then drive the land-combat transition."""
+    base = _load_save_to_map_scenario(fixture)
+    return Scenario(
+        name="military_phase_land_combat",
+        native_test="military_phase_land_combat",
+        action_id="military_phase.run",
+        fixture=fixture,
+        probes=base.probes,
+        terminal_checkpoint=base.terminal_checkpoint,
+        timeout_seconds=base.timeout_seconds,
+        start_action=base.start_action,
+        drive="military_phase_land_combat",
+        result_checkpoint_id=CHECKPOINT_LAND_COMBAT_PHASE,
+    )
+
+
 def load_scenario(name: str) -> Scenario:
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / "beginning_of_game.imp"
@@ -351,6 +369,8 @@ def load_scenario(name: str) -> Scenario:
     elif name in ("military_phase_naval_encounter",
                   "military_phase_naval_escalation"):
         scenario = _military_phase_naval_encounter_scenario(fixture, name)
+    elif name == "military_phase_land_combat":
+        scenario = _military_phase_land_combat_scenario(fixture)
     else:
         raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
@@ -1772,6 +1792,10 @@ def _capture_civilians_phase(session: GdbSession) -> dict[str, object]:
 # srand, then TSimMgr::DoMilitary (0x57f280).
 
 _DO_MILITARY = 0x0057F280
+_DO_COMBAT_MOVES = 0x004A1E40
+_TUNIT_SET_ORDERS = 0x005C2630
+_TTACTICAL_BATTLE_NEXT_MOVE = 0x005A0E20
+_MAP_ACTION_CONTEXT_MANAGER = 0x006A3338
 _NAVY_PRIMARY_ORDER_LIST_HEAD = 0x006A3EDC
 _NAVY_ORDER_MANAGER = 0x006A43E4
 _MAP_ACTION_CONTEXT_LIST_HEAD = 0x006A3FC8
@@ -1782,6 +1806,9 @@ _ZONE_CREATE_TASK_FORCE = 0x005609E0
 _TSHIP_SIZE = 0x38
 _RELATION_WAR = 6
 _RELATION_PROPAGATION_MATRIX = 0xBBE
+_UNIT_ORDER_IDLE = 0
+_UNIT_ORDER_REDEPLOY = 1
+_TACTICAL_BATTLE_IN_PROGRESS = 0
 
 
 def _drive_military_phase(
@@ -1902,6 +1929,27 @@ def _capture_military_phase(session: GdbSession) -> dict[str, object]:
             }
         )
         force = struct.unpack("<I", raw[0x2C:0x30])[0]
+    province_owners: list[int] = []
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    if map_state != 0:
+        province_base = _u32(session, map_state + 0x10)
+        provinces = b""
+        total = _PROVINCE_COUNT * _PROVINCE_STRIDE
+        for offset in range(0, total, 0x2000):
+            provinces += session.read_memory(
+                province_base + offset, min(0x2000, total - offset)
+            )
+        province_owners = [
+            struct.unpack(
+                "<b",
+                provinces[
+                    index * _PROVINCE_STRIDE : index * _PROVINCE_STRIDE + 1
+                ],
+            )[0]
+            for index in range(_PROVINCE_COUNT)
+        ]
+    army_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    battle = _u32(session, army_mgr + 0x3A4) if army_mgr != 0 else 0
     return {
         "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
         "active_nation": _s16(session, sim_mgr + 0x2E),
@@ -1913,6 +1961,11 @@ def _capture_military_phase(session: GdbSession) -> dict[str, object]:
             "nations": nations,
             "ships": ships,
             "task_forces": task_forces,
+            "province_owners": province_owners,
+            "land_battle": {
+                "created": battle != 0,
+                "outcome": _s16(session, battle + 0x44) if battle != 0 else -1,
+            },
         },
     }
 
@@ -2143,6 +2196,147 @@ def _drive_military_phase_naval_encounter(
         breakpoint_roles,
     )
     return pre
+
+
+def _resolved_tile_owner(session: GdbSession, owner_code: int) -> int:
+    """Mirror TMapMgr::ResolveTileOwnerNationCodeNormalized (0x514120)."""
+    if owner_code < 0:
+        return owner_code
+    nation = _u32(session, _TERRAIN_TABLE + 4 * owner_code)
+    if nation == 0:
+        return owner_code
+    encoded = _s16(session, nation + 0x0E)
+    if encoded < 200:
+        return owner_code
+    return encoded - 200
+
+
+def _find_hostile_redeploy(
+    session: GdbSession, snapshot: _TerrainSnapshot
+) -> tuple[int, int, int]:
+    """Mirror FindHostileRedeploy: first unit with an adjacent enemy-garrisoned
+    province. Returns (unit, destination region, defender nation slot)."""
+    for slot in range(_NATION_SLOT_COUNT):
+        country = _u32(session, _TERRAIN_TABLE + slot * 4)
+        if country == 0:
+            continue
+        for unit in _sorted_ptr_list_entries(
+            session, _u32(session, country + 0x44)
+        ):
+            source = _s16(session, unit + 0x06)
+            if source < 0 or source >= _PROVINCE_COUNT:
+                continue
+            record = snapshot.provinces[
+                source * _PROVINCE_STRIDE : (source + 1) * _PROVINCE_STRIDE
+            ]
+            owner = struct.unpack("<b", record[0x00:0x01])[0]
+            adjacent_count = struct.unpack("<b", record[0x08:0x09])[0]
+            for adj in range(adjacent_count):
+                dest = struct.unpack(
+                    "<h", record[0x0A + 2 * adj : 0x0C + 2 * adj]
+                )[0]
+                if dest < 0 or dest >= _PROVINCE_COUNT:
+                    continue
+                destination = snapshot.provinces[
+                    dest * _PROVINCE_STRIDE : (dest + 1) * _PROVINCE_STRIDE
+                ]
+                if (
+                    struct.unpack("<b", destination[0x00:0x01])[0] == owner
+                    or struct.unpack("<I", destination[0x98:0x9C])[0] == 0
+                ):
+                    continue
+                defender = _resolved_tile_owner(
+                    session, struct.unpack("<b", destination[0x00:0x01])[0]
+                )
+                if defender < 0:
+                    continue
+                return unit, dest, defender
+    return 0, -1, -1
+
+
+def _drive_military_phase_land_combat(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    """Mirror RunMilitaryPhaseLandCombat: pinned srand, clear all military
+    orders, issue one hostile redeploy under a forced war, then run the real
+    TArmyMgr::DoCombatMoves (0x4a1e40) and pump the tactical battle via
+    TTacticalBattle::NextMove (0x5a0e20) until the outcome is decided."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    for slot in range(_NATION_SLOT_COUNT):
+        country = _u32(session, _TERRAIN_TABLE + slot * 4)
+        if country == 0:
+            continue
+        for unit in _sorted_ptr_list_entries(
+            session, _u32(session, country + 0x44)
+        ):
+            _invoke_thiscall(
+                session,
+                _TUNIT_SET_ORDERS,
+                unit,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(_UNIT_ORDER_IDLE, -1),
+            )
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    snapshot = _TerrainSnapshot(session, map_state)
+    snapshot.refresh_provinces()
+    unit, dest, defender = _find_hostile_redeploy(session, snapshot)
+    if unit == 0:
+        raise RuntimeError(
+            "the loaded fixture has no adjacent enemy-garrisoned province"
+        )
+    owner = _s16(session, unit + 0x18)
+    _force_war_between(session, owner, defender)
+    _invoke_thiscall(
+        session,
+        _TUNIT_SET_ORDERS,
+        unit,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_UNIT_ORDER_REDEPLOY, dest),
+    )
+    # preferenceValues[0] = 0 -> unattended battles auto-resolve.
+    session.assign(f"*(short*)0x{sim_mgr + 0x48:08x}", 0)
+    army_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    _invoke_thiscall(
+        session,
+        _DO_COMBAT_MOVES,
+        army_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    battle = _u32(session, army_mgr + 0x3A4)
+    guard = 20000
+    while (
+        battle != 0
+        and _s16(session, battle + 0x44) == _TACTICAL_BATTLE_IN_PROGRESS
+    ):
+        if guard <= 0:
+            raise RuntimeError("retail tactical auto did not terminate")
+        guard -= 1
+        _invoke_thiscall(
+            session,
+            _TTACTICAL_BATTLE_NEXT_MOVE,
+            battle,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
 
 
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
@@ -2409,6 +2603,12 @@ def run_binary(
                         )
                         result_fields.update(_capture_military_phase(session))
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "military_phase_land_combat":
+                        _drive_military_phase_land_combat(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_military_phase(session)
+                        result_probe = CHECKPOINT_LAND_COMBAT_PHASE
                     else:
                         raise RuntimeError(
                             f"unknown scenario drive {scenario.drive!r}"
@@ -2520,6 +2720,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase",
         "military_phase_naval_encounter",
         "military_phase_naval_escalation",
+        "military_phase_land_combat",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -2558,6 +2759,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         elif scenario.drive in ("military_phase_naval_encounter",
                                 "military_phase_naval_escalation"):
             recomp_observation = normalize_native_military_phase(native_result)
+        elif scenario.drive == "military_phase_land_combat":
+            recomp_observation = normalize_native_military_phase(
+                native_result, checkpoint_id=CHECKPOINT_LAND_COMBAT_PHASE
+            )
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
         recomp_identity = native_result.get("host", {}).get("provenance", {})
@@ -2616,6 +2821,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                                CHECKPOINT_NAVAL_ESCALATION_PHASE):
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_LAND_COMBAT_PHASE:
+        retail_observation = normalize_retail_military_phase(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_LAND_COMBAT_PHASE,
         )
     else:
         retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])

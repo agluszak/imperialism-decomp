@@ -742,6 +742,41 @@ RuntimeActionResult RunMilitaryPhaseNavalEscalation(NativeTransition& transition
   return RunMilitaryPhaseNavalEncounterImpl(transition, 9, 3);
 }
 
+RuntimeActionResult RunMilitaryPhaseLandCombat(NativeTransition& transition) {
+  // Deterministic CRT seed so the retail-vs-recomp differential sees identical
+  // rand() streams through order issuing and combat resolution.
+  srand(0x1234);
+  ClearAllMilitaryOrders();
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->preferenceValues[0] = 0;
+  g_pMapContextActionManager->DoCombatMoves();
+  TArmyBattle* battle = g_pMapContextActionManager->activeBattleView3a4;
+  int guard = 20000;
+  while (battle != 0 && battle->battleOutcome44 == kTacticalBattleInProgress) {
+    if (guard-- <= 0) {
+      return RuntimeActionResult::Failure("tactical auto did not terminate");
+    }
+    battle->NextMove();
+  }
+
+  return transition.Finish();
+}
+
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition) {
   const short activeNation = ActiveNationSlot();
   short hostileNation = FirstHostileNation(activeNation);
