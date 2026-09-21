@@ -131,6 +131,24 @@ _COMBAT_MOVES_FIELDS = (
 )
 
 
+_PLAYER_DIPLOMACY_POLICY_SCENARIOS = (
+    "player_diplomacy_policy_posts_consulate",
+    "player_diplomacy_policy_rejects_consulate_on_major",
+    "player_diplomacy_policy_posts_join_empire",
+    "player_diplomacy_policy_posts_alliance",
+    "player_diplomacy_policy_needs_alliance_entanglement",
+    "player_diplomacy_policy_confirms_alliance_entanglement",
+    "player_diplomacy_policy_posts_non_aggression_pact",
+    "player_diplomacy_policy_posts_peace_treaty",
+    "player_diplomacy_policy_posts_declare_war",
+    "player_diplomacy_policy_posts_embassy",
+    "player_diplomacy_policy_retracts_embassy",
+    "player_diplomacy_policy_cannot_afford_committed_consulate",
+    "player_diplomacy_policy_rejects_colony",
+    "player_diplomacy_policy_selects_self",
+)
+
+
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
         CHECKPOINT_RANDOM_SETUP_READY,
@@ -706,6 +724,23 @@ SCHEMAS = {
 }
 
 
+for _policy_scenario in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
+    SCHEMAS[_policy_scenario + ".resolved"] = CheckpointSchema(
+        _policy_scenario + ".resolved",
+        _policy_scenario + ".run",
+        _policy_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "toggle",
+            "diplomacy.nations",
+        ),
+    )
+del _policy_scenario
+
+
 _RESOURCE_NAMES = (
     "cotton", "wool", "timber", "coal", "iron", "horses", "oil", "food",
     "fabric", "lumber", "paper", "steel", "fuel", "clothing", "furniture",
@@ -760,6 +795,137 @@ def _diplomacy_grant(entry: Any, label: str) -> dict[str, Any] | None:
     if value < -1:
         raise ValueError(f"{label} is below the -1 sentinel: {value}")
     return {"amount": value & 0x3FFF, "recurring": (value & 0x4000) != 0}
+
+
+def _native_diplomacy_policy_nations(
+    nations: Any, label: str
+) -> list[Any]:
+    if not isinstance(nations, list):
+        raise ValueError(f"{label} nations must be an array")
+    normalized = []
+    for entry in nations:
+        if entry is None:
+            normalized.append(None)
+            continue
+        nation = _require_mapping(entry, f"{label} nation entry")
+        normalized.append(
+            {
+                "treasury": _require_int(
+                    nation.get("treasury"), f"{label} nation.treasury"
+                ),
+                "policies": nation.get("policies"),
+                "grants": nation.get("grants"),
+                "proposals": nation.get("proposals"),
+                "turn_events": nation.get("turn_events"),
+            }
+        )
+    return normalized
+
+
+def _retail_diplomacy_policy_nations(
+    nations_raw: Any,
+) -> list[Any]:
+    if not isinstance(nations_raw, list):
+        raise ValueError("retail diplomacy_nations must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(nations_raw):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"retail diplomacy nation {slot}")
+        policies_raw = _require_int_list(
+            nation_map.get("policies"), f"retail policies[{slot}]"
+        )
+        grants_raw = _require_int_list(
+            nation_map.get("grants"), f"retail grants[{slot}]"
+        )
+        nations.append(
+            {
+                "treasury": _require_int(
+                    nation_map.get("treasury"), f"retail treasury[{slot}]"
+                ),
+                "policies": [
+                    _diplomacy_policy_name(
+                        code, f"retail policies[{slot}][{index}]"
+                    )
+                    for index, code in enumerate(policies_raw)
+                ],
+                "grants": [
+                    _diplomacy_grant(
+                        entry, f"retail grants[{slot}][{index}]"
+                    )
+                    for index, entry in enumerate(grants_raw)
+                ],
+                "proposals": _diplomacy_proposals(
+                    nation_map.get("proposals"), f"retail proposals[{slot}]"
+                ),
+                "turn_events": _diplomacy_records(
+                    nation_map.get("turn_events"),
+                    f"retail turn_events[{slot}]",
+                ),
+            }
+        )
+    return nations
+
+
+def normalize_native_player_diplomacy_policy(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a native player-diplomacy-policy case to the stable schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    toggle = captures.get("result")
+    if not isinstance(toggle, (bool, int)):
+        raise ValueError("native result must be a number")
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    diplomacy = _require_mapping(
+        ephemeral.get("diplomacy"), "native ephemeral diplomacy"
+    )
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _mission_turn(turn, "native turn"),
+        "toggle": int(toggle),
+        "diplomacy": {
+            "nations": _native_diplomacy_policy_nations(
+                diplomacy.get("nations"), "native"
+            )
+        },
+    }
+
+
+def normalize_retail_player_diplomacy_policy(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail player-diplomacy-policy capture to the same schema."""
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+        "toggle": _require_int(raw.get("toggle"), "retail toggle"),
+        "diplomacy": {
+            "nations": _retail_diplomacy_policy_nations(
+                raw.get("diplomacy_nations")
+            )
+        },
+    }
 
 
 def normalize_native_diplomacy_phase(

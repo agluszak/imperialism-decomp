@@ -52,6 +52,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_TURN_STOP_DEAL_BOOK,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_TURN_STOP_TRADE,
+    _PLAYER_DIPLOMACY_POLICY_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -78,6 +79,7 @@ from tools.runtime.checkpoints import (
     normalize_native_turn_alerts_later,
     normalize_native_turn_stop_state,
     normalize_native_turn_stop_trade,
+    normalize_native_player_diplomacy_policy,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -102,6 +104,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_turn_alerts_later,
     normalize_retail_turn_stop_state,
     normalize_retail_turn_stop_trade,
+    normalize_retail_player_diplomacy_policy,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -653,6 +656,20 @@ def load_scenario(name: str) -> Scenario:
                 if name == "turn_stop_deal_book"
                 else CHECKPOINT_TURN_STOP_CITY_TRANSPORT
             ),
+        )
+    elif name in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=name + ".resolved",
         )
     elif name in ("turn_stop_technology", "turn_stop_trade"):
         base = _load_save_to_map_scenario(fixture)
@@ -4049,6 +4066,369 @@ def _drive_turn_stop_trade(
     return result
 
 
+# --- player_diplomacy_policy_* retail drives ------------------------------------
+# Mirrors TogglePlayerDiplomacyPolicyResult in NativeDiplomacyCases.cpp: each case
+# seeds relation/mission matrix pairs or nation fields, then runs the same
+# validate -> entanglement-guard -> apply sequence against the real functions.
+
+# TDiplomacyMgr field offsets (shorts over kNationPairMatrixEntries = 23*23).
+_DIPLO_REL_PROPAGATION = 0x0BBE   # relationPropagationMatrix
+_DIPLO_REL_TURN_STAMP = 0x0FE0    # relationTurnStampMatrix
+_DIPLO_REL_SIDE_EFFECT = 0x1402   # relationSideEffectMatrix
+_DIPLO_PROPOSAL_MODE = 0x18D8     # proposalArrayMode
+
+# TGreatPower field offsets.
+_GNATION_SLOT = 0x0C              # TCountry::nationSlot
+_GNATION_GRANT_TOTAL = 0xAC       # grantTotalCost
+_GNATION_POLICIES = 0xB2          # diplomacyPolicyByNation[23]
+_GNATION_BUDGET_BASE = 0x8F0      # diplomacyBudgetBase
+_TERRAIN_ENCODED_SLOT = 0x0E      # TCountry::encodedNationSlot
+
+# Direct body addresses -- the active nation is always a human TGreatPower, so
+# the TGreatPower override is the correct target for the Apply/Grant virtuals.
+_FN_VALIDATE_DIPLO_ACTION = 0x004EF700  # ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode
+_FN_HAS_ALLIANCE_GUARD = 0x004EFC30     # HasAllianceGuardForNationPair
+_FN_APPLY_DIPLO_POLICY = 0x004DDFC0     # ApplyDiplomacyPolicyStateForTargetWithCostChecks
+_FN_SET_DIPLO_GRANT = 0x004DE340        # SetDiplomacyGrantEntryForTargetAndUpdateTreasury
+
+# Relationship codes (DiplomacyRelationshipStorage).
+_REL_ALLIANCE = 2
+_REL_PEACE = 4
+_REL_WAR = 6
+
+# Policy codes.
+_POLICY_JOIN_EMPIRE = 0x12D
+_POLICY_ALLIANCE = 0x12E
+_POLICY_NON_AGGRESSION = 0x12F
+_POLICY_PEACE_TREATY = 0x130
+_POLICY_DECLARE_WAR = 0x131
+_POLICY_CONSULATE = 0x133
+_POLICY_EMBASSY = 0x134
+
+
+def _dip_matrix_pair_write(
+    session: GdbSession,
+    diplo: int,
+    base: int,
+    a: int,
+    b: int,
+    value: int,
+) -> None:
+    session.assign(
+        f"*(short*)0x{diplo + base + 2 * (a * _NATION_SLOT_COUNT + b):08x}",
+        value,
+    )
+    session.assign(
+        f"*(short*)0x{diplo + base + 2 * (b * _NATION_SLOT_COUNT + a):08x}",
+        value,
+    )
+
+
+def _dip_set_relation(
+    session: GdbSession,
+    diplo: int,
+    a: int,
+    b: int,
+    relation: int,
+    stamp: int = -1,
+) -> None:
+    _dip_matrix_pair_write(
+        session, diplo, _DIPLO_REL_PROPAGATION, a, b, relation
+    )
+    _dip_matrix_pair_write(
+        session, diplo, _DIPLO_REL_TURN_STAMP, a, b, stamp
+    )
+
+
+def _dip_set_mission(
+    session: GdbSession, diplo: int, a: int, b: int, level: int
+) -> None:
+    _dip_matrix_pair_write(
+        session, diplo, _DIPLO_REL_SIDE_EFFECT, a, b, level
+    )
+
+
+def _diplomacy_mgr(session: GdbSession) -> int:
+    return _eval_int(session, f"*(unsigned int*)0x{_DIPLOMACY_MGR:08x}")
+
+
+def _toggle_player_policy(
+    session: GdbSession,
+    nation: int,
+    diplo: int,
+    target: int,
+    policy: int,
+    action: int,
+    confirm_entanglements: bool,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    bool_result: bool = False,
+) -> int:
+    """Mirror TogglePlayerDiplomacyPolicyResult (or the 4-arg bool variant when
+    bool_result is set) through the real functions."""
+    nation_slot = _s16(session, nation + _GNATION_SLOT)
+    if not bool_result and nation_slot == target:
+        return 3
+    if _s16(session, nation + _GNATION_POLICIES + 2 * target) == policy:
+        applied = _invoke_thiscall(
+            session,
+            _FN_APPLY_DIPLO_POLICY,
+            nation,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(target, -1),
+        ) & 0xFF
+        return 1 if applied else 0
+    valid = _invoke_thiscall(
+        session,
+        _FN_VALIDATE_DIPLO_ACTION,
+        diplo,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(nation_slot, target, action),
+    ) & 0xFF
+    if not valid:
+        if bool_result:
+            return 0
+        return -_s16(session, diplo + _DIPLO_PROPOSAL_MODE)
+    if (
+        not bool_result
+        and not confirm_entanglements
+        and action in (2, 3)
+        and _invoke_thiscall(
+            session,
+            _FN_HAS_ALLIANCE_GUARD,
+            diplo,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(target, nation_slot),
+        )
+        & 0xFF
+    ):
+        return 2
+    applied = _invoke_thiscall(
+        session,
+        _FN_APPLY_DIPLO_POLICY,
+        nation,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(target, policy),
+    ) & 0xFF
+    return 1 if applied else 0
+
+
+# Per-case spec: (target selector, setup ops, policy, action, confirm).
+# Selectors: "minor" = slot 7, "m1"/"m2" = other majors, "self" = the source.
+# Setup ops use symbolic slots resolved against the active nation:
+#   ("mission", a, b, level)        -> symmetric side-effect matrix write
+#   ("rel", a, b, relation[, stamp])-> symmetric propagation + turn-stamp write
+#   ("grant", target, amount)       -> SetDiplomacyGrantEntryForTargetAndUpdateTreasury
+#   ("treasury", value)             -> treasuryValue10
+#   ("budget", value)               -> diplomacyBudgetBase
+#   ("grant_total", value)          -> grantTotalCost
+#   ("policy", target, code)        -> diplomacyPolicyByNation[target]
+#   ("colony", target, owner)       -> terrain[target].encodedNationSlot = 200+owner
+_PLAYER_DIPLO_POLICY_SPECS: dict[str, tuple] = {
+    "player_diplomacy_policy_posts_consulate": (
+        "minor", (), _POLICY_CONSULATE, 14, False, True
+    ),
+    "player_diplomacy_policy_rejects_consulate_on_major": (
+        "m1", (), _POLICY_CONSULATE, 14, False, True
+    ),
+    "player_diplomacy_policy_posts_join_empire": (
+        "minor",
+        (("mission", "s", "t", 2), ("rel", "s", "t", _REL_PEACE)),
+        _POLICY_JOIN_EMPIRE,
+        2,
+        False,
+    ),
+    "player_diplomacy_policy_posts_alliance": (
+        "m1",
+        (("mission", "s", "t", 2), ("rel", "s", "t", _REL_PEACE)),
+        _POLICY_ALLIANCE,
+        3,
+        False,
+    ),
+    "player_diplomacy_policy_needs_alliance_entanglement": (
+        "m1",
+        (
+            ("mission", "s", "t", 2),
+            ("rel", "s", "t", _REL_PEACE),
+            ("rel", "m1", "m2", _REL_WAR),
+        ),
+        _POLICY_ALLIANCE,
+        3,
+        False,
+    ),
+    "player_diplomacy_policy_confirms_alliance_entanglement": (
+        "m1",
+        (
+            ("mission", "s", "t", 2),
+            ("rel", "s", "t", _REL_PEACE),
+            ("rel", "m1", "m2", _REL_WAR),
+        ),
+        _POLICY_ALLIANCE,
+        3,
+        True,
+    ),
+    "player_diplomacy_policy_posts_non_aggression_pact": (
+        "minor",
+        (("mission", "s", "t", 2), ("rel", "s", "t", _REL_PEACE)),
+        _POLICY_NON_AGGRESSION,
+        4,
+        False,
+    ),
+    "player_diplomacy_policy_posts_peace_treaty": (
+        "m1",
+        (("rel", "s", "t", _REL_WAR),),
+        _POLICY_PEACE_TREATY,
+        5,
+        False,
+    ),
+    "player_diplomacy_policy_posts_declare_war": (
+        "m1",
+        (("rel", "s", "t", _REL_ALLIANCE), ("grant", "t", 1000)),
+        _POLICY_DECLARE_WAR,
+        6,
+        False,
+    ),
+    "player_diplomacy_policy_posts_embassy": (
+        "minor",
+        (("mission", "s", "t", 1), ("rel", "s", "t", _REL_PEACE)),
+        _POLICY_EMBASSY,
+        15,
+        False,
+    ),
+    "player_diplomacy_policy_retracts_embassy": (
+        "minor",
+        (("policy", "t", _POLICY_EMBASSY),),
+        _POLICY_EMBASSY,
+        15,
+        False,
+    ),
+    "player_diplomacy_policy_cannot_afford_committed_consulate": (
+        "minor",
+        (
+            ("mission", "s", "t", 0),
+            ("rel", "s", "t", _REL_PEACE),
+            ("treasury", 500),
+            ("budget", 0),
+            ("grant_total", 1),
+        ),
+        _POLICY_CONSULATE,
+        14,
+        False,
+    ),
+    "player_diplomacy_policy_rejects_colony": (
+        "minor",
+        (("colony", "t", "m1"),),
+        _POLICY_DECLARE_WAR,
+        6,
+        False,
+    ),
+    "player_diplomacy_policy_selects_self": (
+        "self", (), _POLICY_ALLIANCE, 3, False
+    ),
+}
+
+
+def _drive_player_diplomacy_policy(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    drive: str,
+) -> dict[str, object]:
+    spec = _PLAYER_DIPLO_POLICY_SPECS[drive]
+    target_sel, ops, policy, action, confirm = spec[:5]
+    bool_result = spec[5] if len(spec) > 5 else False
+    sim_mgr = _u32(session, _SIM_MGR)
+    diplo = _diplomacy_mgr(session)
+    source = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, source)
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    slots = {
+        "s": source,
+        "t": None,
+        "m1": (source + 1) % _MAJOR_NATION_COUNT,
+        "m2": (source + 2) % _MAJOR_NATION_COUNT,
+        "minor": _MINOR_NATION_FIRST_SLOT,
+        "self": source,
+    }
+    target = slots[target_sel]
+    slots["t"] = target
+    for op in ops:
+        kind = op[0]
+        if kind == "mission":
+            _dip_set_mission(
+                session, diplo, slots[op[1]], slots[op[2]], op[3]
+            )
+        elif kind == "rel":
+            stamp = op[4] if len(op) > 4 else -1
+            _dip_set_relation(
+                session, diplo, slots[op[1]], slots[op[2]], op[3], stamp
+            )
+        elif kind == "grant":
+            _invoke_thiscall(
+                session,
+                _FN_SET_DIPLO_GRANT,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(slots[op[1]], op[2]),
+            )
+        elif kind == "treasury":
+            session.assign(
+                f"*(int*)0x{nation + 0x10:08x}", op[1]
+            )
+        elif kind == "budget":
+            session.assign(
+                f"*(int*)0x{nation + _GNATION_BUDGET_BASE:08x}", op[1]
+            )
+        elif kind == "grant_total":
+            session.assign(
+                f"*(int*)0x{nation + _GNATION_GRANT_TOTAL:08x}", op[1]
+            )
+        elif kind == "policy":
+            session.assign(
+                f"*(short*)0x{nation + _GNATION_POLICIES + 2 * slots[op[1]]:08x}",
+                op[2],
+            )
+        elif kind == "colony":
+            terrain = _u32(
+                session, _TERRAIN_TABLE + 4 * slots[op[1]]
+            )
+            session.assign(
+                f"*(short*)0x{terrain + _TERRAIN_ENCODED_SLOT:08x}",
+                200 + slots[op[2]],
+            )
+        else:
+            raise RuntimeError(f"unknown diplomacy setup op {kind!r}")
+    toggle = _toggle_player_policy(
+        session,
+        nation,
+        diplo,
+        target,
+        policy,
+        action,
+        confirm,
+        records,
+        occurrences,
+        breakpoint_roles,
+        bool_result=bool_result,
+    )
+    result = _capture_diplomacy_phase(session)
+    result["toggle"] = toggle
+    return result
+
+
 # --- season_advance_clears_status_flags retail drive ---------------------------
 # Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
 # fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
@@ -6253,6 +6633,15 @@ def run_binary(
                         )
                         result_fields = _capture_technology(session)
                         result_probe = CHECKPOINT_TURN_STOP_TECHNOLOGY
+                    elif scenario.drive in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
+                        result_fields = _drive_player_diplomacy_policy(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            scenario.drive,
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive == "turn_stop_trade":
                         result_fields = _drive_turn_stop_trade(
                             session, records, occurrences, breakpoint_roles
@@ -6532,6 +6921,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "turn_stop_deal_book",
         "turn_stop_city_and_transport",
         "turn_stop_trade",
+        *_PLAYER_DIPLOMACY_POLICY_SCENARIOS,
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -6698,6 +7088,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         elif scenario.drive == "turn_stop_trade":
             recomp_observation = normalize_native_turn_stop_trade(
                 native_result
+            )
+        elif scenario.drive in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
+            recomp_observation = normalize_native_player_diplomacy_policy(
+                native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "turn_alerts_later_turn":
             recomp_observation = normalize_native_turn_alerts_later(
@@ -6915,6 +7309,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     elif result_checkpoint == CHECKPOINT_TURN_STOP_TRADE:
         retail_observation = normalize_retail_turn_stop_trade(
             retail_records[0]["fields"]
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _PLAYER_DIPLOMACY_POLICY_SCENARIOS
+    ):
+        retail_observation = normalize_retail_player_diplomacy_policy(
+            retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint == CHECKPOINT_TURN_ALERTS_LATER:
         retail_observation = normalize_retail_turn_alerts_later(
