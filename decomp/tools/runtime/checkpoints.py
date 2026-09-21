@@ -30,6 +30,7 @@ ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 ACTION_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.run"
 ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
 ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
+ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -65,6 +66,7 @@ CHECKPOINT_CHECK_TECH_ADVANCES = "check_technology_advances.resolved"
 CHECKPOINT_CHECK_TECH_ADVANCES_AI = (
     "check_technology_advances_ai_purchase.resolved"
 )
+CHECKPOINT_TURN_STOP_TECHNOLOGY = "turn_stop_technology.resolved"
 
 
 @dataclass(frozen=True)
@@ -393,6 +395,17 @@ SCHEMAS = {
         CHECKPOINT_CHECK_TECH_ADVANCES_AI,
         ACTION_CHECK_TECH_ADVANCES_AI,
         "check_technology_advances_ai_purchase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "technology",
+        ),
+    ),
+    CHECKPOINT_TURN_STOP_TECHNOLOGY: CheckpointSchema(
+        CHECKPOINT_TURN_STOP_TECHNOLOGY,
+        ACTION_TURN_STOP_TECHNOLOGY,
+        "turn_stop_technology",
         (
             "turn.phase",
             "turn.active",

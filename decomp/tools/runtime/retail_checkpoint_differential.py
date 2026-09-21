@@ -32,6 +32,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_AI_NAVAL_DEVELOPMENT,
     CHECKPOINT_CHECK_TECH_ADVANCES,
     CHECKPOINT_CHECK_TECH_ADVANCES_AI,
+    CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -451,6 +452,20 @@ def load_scenario(name: str) -> Scenario:
                   "military_phase_land_interactive",
                   "military_phase_land_retreat"):
         scenario = _military_phase_land_combat_scenario(fixture, name)
+    elif name == "turn_stop_technology":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_TURN_STOP_TECHNOLOGY,
+        )
     elif name in (
         "check_technology_advances",
         "check_technology_advances_ai_purchase",
@@ -3116,6 +3131,45 @@ def _drive_check_technology_advances_ai_purchase(
     )
 
 
+def _drive_turn_stop_technology(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    """Mirror RunTechnologyTurnStop: clear every unscheduled unlock, mark tech 3
+    pending for the active nation, enter turn state 0x11, and step
+    AdvanceGlobalTurnStateMachine once."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    tech_mgr = _u32(session, _TECH_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 1)
+    for tech in range(3, 0x1D):
+        if (
+            _eval_int(
+                session, f"*(unsigned char*)0x{tech_mgr + 0x180 + tech:08x}"
+            )
+            == 0
+        ):
+            session.assign(
+                f"*(short*)0x{tech_mgr + _TECH_PRIORITY_SLOTS + 2 * tech:08x}",
+                0,
+            )
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    session.assign(
+        f"*(unsigned char*)0x{tech_mgr + _TECH_ORDER_CAP_ROWS + active_nation * _TECH_ORDER_CAP_STRIDE + 3:08x}",
+        1,
+    )
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x11)
+    _invoke_thiscall(
+        session,
+        _ADVANCE_TURN_STATE,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+
 def _drive_recompute_metrics(
     session: GdbSession,
     records: list[dict],
@@ -4273,6 +4327,12 @@ def run_binary(
                         )
                         result_fields = _capture_technology(session)
                         result_probe = CHECKPOINT_CHECK_TECH_ADVANCES_AI
+                    elif scenario.drive == "turn_stop_technology":
+                        _drive_turn_stop_technology(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_technology(session)
+                        result_probe = CHECKPOINT_TURN_STOP_TECHNOLOGY
                     elif (
                         scenario.drive
                         == "military_phase_ships_without_orders"
@@ -4410,6 +4470,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "consecutive_turn_sequence",
         "check_technology_advances",
         "check_technology_advances_ai_purchase",
+        "turn_stop_technology",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -4513,6 +4574,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                 native_result,
                 checkpoint_id=CHECKPOINT_CHECK_TECH_ADVANCES_AI,
                 action_id="check_technology_advances_ai_purchase.run",
+            )
+        elif scenario.drive == "turn_stop_technology":
+            recomp_observation = normalize_native_check_technology_advances(
+                native_result,
+                checkpoint_id=CHECKPOINT_TURN_STOP_TECHNOLOGY,
+                action_id="turn_stop_technology.run",
             )
         elif scenario.drive == "second_turn_military_cleanup":
             recomp_observation = normalize_native_military_cleanup(
@@ -4655,6 +4722,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_CHECK_TECH_ADVANCES_AI,
             action_id="check_technology_advances_ai_purchase.run",
+        )
+    elif result_checkpoint == CHECKPOINT_TURN_STOP_TECHNOLOGY:
+        retail_observation = normalize_retail_check_technology_advances(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_TURN_STOP_TECHNOLOGY,
+            action_id="turn_stop_technology.run",
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
         retail_observation = normalize_retail_second_turn_sequence(
