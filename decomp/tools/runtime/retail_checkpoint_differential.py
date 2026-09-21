@@ -24,6 +24,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_NAVAL_ESCALATION_PHASE,
     CHECKPOINT_LAND_COMBAT_PHASE,
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
+    CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
@@ -349,9 +350,11 @@ def _military_phase_land_combat_scenario(
         timeout_seconds=base.timeout_seconds,
         start_action=base.start_action,
         drive=name,
-        result_checkpoint_id=CHECKPOINT_LAND_INTERACTIVE_PHASE
-        if name == "military_phase_land_interactive"
-        else CHECKPOINT_LAND_COMBAT_PHASE,
+        result_checkpoint_id={
+            "military_phase_land_combat": CHECKPOINT_LAND_COMBAT_PHASE,
+            "military_phase_land_interactive": CHECKPOINT_LAND_INTERACTIVE_PHASE,
+            "military_phase_land_retreat": CHECKPOINT_LAND_RETREAT_PHASE,
+        }[name],
     )
 
 
@@ -376,7 +379,8 @@ def load_scenario(name: str) -> Scenario:
                   "military_phase_naval_escalation"):
         scenario = _military_phase_naval_encounter_scenario(fixture, name)
     elif name in ("military_phase_land_combat",
-                  "military_phase_land_interactive"):
+                  "military_phase_land_interactive",
+                  "military_phase_land_retreat"):
         scenario = _military_phase_land_combat_scenario(fixture, name)
     elif name == "military_phase_ships_without_orders":
         base = _load_save_to_map_scenario(fixture)
@@ -1834,6 +1838,7 @@ _UNIT_ORDER_REDEPLOY = 1
 _TACTICAL_BATTLE_IN_PROGRESS = 0
 _FINISH_TACTICAL_ACTION = 0x005A0D60
 _TARMY_PLAYER_ADVANCE_PULSE = 0x0059E3E0
+_TARMY_PLAYER_CURSOR_PROFILE = 0x0059C440
 
 
 def _drive_military_phase(
@@ -2398,7 +2403,7 @@ def _drive_military_phase_land_combat(
     records: list[dict],
     occurrences: dict[str, int],
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
-    interactive: bool = False,
+    mode: str = "auto",
 ) -> None:
     """Mirror RunMilitaryPhaseLandCombat: pinned srand, clear all military
     orders, issue one hostile redeploy under a forced war, then run the real
@@ -2454,7 +2459,7 @@ def _drive_military_phase_land_combat(
         breakpoint_roles,
         args=(_UNIT_ORDER_REDEPLOY, dest),
     )
-    if interactive:
+    if mode != "auto":
         # g_pSimMgr->activeNationSlot = attacker owner.
         session.assign(f"*(short*)0x{sim_mgr + 0x2E:08x}", owner)
     # preferenceValues[0] = 0 -> unattended battles auto-resolve.
@@ -2469,7 +2474,7 @@ def _drive_military_phase_land_combat(
         breakpoint_roles,
     )
     battle = _u32(session, army_mgr + 0x3A4)
-    if not interactive:
+    if mode == "auto":
         guard = 20000
         while (
             battle != 0
@@ -2500,20 +2505,50 @@ def _drive_military_phase_land_combat(
         session, battle, active_nation, records, occurrences, breakpoint_roles
     ):
         raise RuntimeError("retail battle did not reach active-nation input")
-    _invoke_thiscall(
-        session,
-        _FINISH_TACTICAL_ACTION,
-        battle,
-        records,
-        occurrences,
-        breakpoint_roles,
-    )
-    if not _pump_battle_to_active_input(
-        session, battle, active_nation, records, occurrences, breakpoint_roles
-    ):
-        raise RuntimeError(
-            "retail Done did not reach the next active-nation input"
+    if mode == "retreat":
+        # Mirror RunInteractiveArmyBattleRetreat: order the current side to
+        # retreat (fieldF=1, stance profile 0) and pulse the tactical turn.
+        side = _eval_int(session, f"*(int*)0x{battle + 0x0C:08x}")
+        current = player14 if side == 0 else player18
+        session.assign(f"*(char*)0x{current + 0x0F:08x}", 1)
+        session.assign(f"*(char*)0x{current + 0x0E:08x}", 1)
+        _invoke_thiscall(
+            session,
+            _TARMY_PLAYER_CURSOR_PROFILE,
+            current,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(0,),
         )
+        _invoke_thiscall(
+            session,
+            _TARMY_PLAYER_ADVANCE_PULSE,
+            current,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+    else:
+        _invoke_thiscall(
+            session,
+            _FINISH_TACTICAL_ACTION,
+            battle,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        if not _pump_battle_to_active_input(
+            session,
+            battle,
+            active_nation,
+            records,
+            occurrences,
+            breakpoint_roles,
+        ):
+            raise RuntimeError(
+                "retail Done did not reach the next active-nation input"
+            )
     # AutoArmyBattleToCommit: unwatched both sides, pulse a pending end of
     # action, then run NextMove to a decision plus one extra step.
     session.assign(f"*(char*)0x{player14 + 0x0E:08x}", 1)
@@ -2809,16 +2844,18 @@ def run_binary(
                     elif scenario.drive in (
                         "military_phase_land_combat",
                         "military_phase_land_interactive",
+                        "military_phase_land_retreat",
                     ):
                         _drive_military_phase_land_combat(
                             session,
                             records,
                             occurrences,
                             breakpoint_roles,
-                            interactive=(
-                                scenario.drive
-                                == "military_phase_land_interactive"
-                            ),
+                            mode={
+                                "military_phase_land_combat": "auto",
+                                "military_phase_land_interactive": "interactive",
+                                "military_phase_land_retreat": "retreat",
+                            }[scenario.drive],
                         )
                         result_fields = _capture_military_phase(session)
                         result_probe = scenario.result_checkpoint_id
@@ -2944,6 +2981,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase_naval_escalation",
         "military_phase_land_combat",
         "military_phase_land_interactive",
+        "military_phase_land_retreat",
         "military_phase_ships_without_orders",
     }:
         from tools.runtime.native_oracle import run_native_transition
@@ -2990,6 +3028,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         elif scenario.drive == "military_phase_land_interactive":
             recomp_observation = normalize_native_military_phase(
                 native_result, checkpoint_id=CHECKPOINT_LAND_INTERACTIVE_PHASE
+            )
+        elif scenario.drive == "military_phase_land_retreat":
+            recomp_observation = normalize_native_military_phase(
+                native_result, checkpoint_id=CHECKPOINT_LAND_RETREAT_PHASE
             )
         elif scenario.drive == "military_phase_ships_without_orders":
             recomp_observation = normalize_native_military_phase(
@@ -3064,6 +3106,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_LAND_INTERACTIVE_PHASE,
+        )
+    elif result_checkpoint == CHECKPOINT_LAND_RETREAT_PHASE:
+        retail_observation = normalize_retail_military_phase(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_LAND_RETREAT_PHASE,
         )
     elif result_checkpoint == CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE:
         retail_observation = normalize_retail_military_phase(

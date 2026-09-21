@@ -823,6 +823,52 @@ RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition
   return transition.Finish();
 }
 
+RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
+  // Mirror of RunInteractiveArmyBattleRetreat through the production
+  // TArmyMgr::DoCombatMoves entry: pump to the active nation's input, then
+  // order the retreat (fieldF=1 + stance profile 0 + turn pulse) and
+  // auto-resolve to a decision.
+  srand(0x1234);
+  ClearAllMilitaryOrders();
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "fixture has no hostile army redeploy");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->preferenceValues[0] = 0;
+  g_pMapContextActionManager->DoCombatMoves();
+  TArmyBattle* battle = g_pMapContextActionManager->activeBattleView3a4;
+  if (battle == 0) {
+    return RuntimeActionResult::Failure("land battle was not created");
+  }
+  StopActiveNationArmyPlayerForInput(battle);
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("battle did not reach active-nation input");
+  }
+  TArmyPlayer* player = static_cast<TArmyPlayer*>(
+      battle->currentSideC == 0 ? battle->tacticalPlayer14 : battle->tacticalPlayer18);
+  player->fieldF = 1;
+  player->notWatchedFlagE = 1;
+  player->SelectAndApplyTacticalCursorModeProfile(0);
+  player->AdvanceTacticalTurnPulse();
+  if (!AutoArmyBattleToCommit(battle)) {
+    return RuntimeActionResult::Failure("retreat did not terminate");
+  }
+  return transition.Finish();
+}
+
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition) {
   const short activeNation = ActiveNationSlot();
   short hostileNation = FirstHostileNation(activeNation);
