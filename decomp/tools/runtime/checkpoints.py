@@ -28,6 +28,7 @@ CHECKPOINT_TURN_ADVANCED = "turn.advanced"
 CHECKPOINT_DIPLOMACY_PHASE = "diplomacy_phase.resolved"
 CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE = "second_turn_diplomacy_phase.resolved"
 CHECKPOINT_TRADE_PHASE = "trade_phase.resolved"
+CHECKPOINT_SECOND_TURN_TRADE_PHASE = "second_turn_trade_phase.resolved"
 CHECKPOINT_CITY_TRANSPORT_PHASE = "city_transport_phase.resolved"
 CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
 CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
@@ -114,6 +115,18 @@ SCHEMAS = {
         CHECKPOINT_TRADE_PHASE,
         ACTION_TRADE_PHASE,
         "trade_phase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "trade.market",
+            "trade.nations",
+        ),
+    ),
+    CHECKPOINT_SECOND_TURN_TRADE_PHASE: CheckpointSchema(
+        CHECKPOINT_SECOND_TURN_TRADE_PHASE,
+        ACTION_TRADE_PHASE,
+        "second_turn_trade_phase",
         (
             "turn.phase",
             "turn.active",
@@ -435,7 +448,10 @@ def _diplomacy_proposals(records: Any, label: str) -> list[dict[str, Any]]:
     return normalized
 
 
-def normalize_native_trade_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_native_trade_phase(
+    result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_TRADE_PHASE,
+) -> dict[str, Any]:
     """Reduce a native driver result to the stable trade-phase schema."""
     if result.get("status") != "passed":
         raise ValueError(f"native driver did not pass: {result.get('status')!r}")
@@ -450,7 +466,7 @@ def normalize_native_trade_phase(result: Mapping[str, Any]) -> dict[str, Any]:
         if isinstance(row, Mapping) and "adjusted_offer_count" in row:
             row["adjusted_offer_count"] = float(row["adjusted_offer_count"])
     return {
-        "checkpoint_id": CHECKPOINT_TRADE_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_TRADE_PHASE,
         "turn": {
             "phase": _require_int(turn.get("phase"), "native turn.phase"),
@@ -486,7 +502,10 @@ _TRADE_NATION_ARRAY_FIELDS = (
 )
 
 
-def normalize_retail_trade_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_retail_trade_phase(
+    raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_TRADE_PHASE,
+) -> dict[str, Any]:
     """Reduce a retail GDB trade capture to the same stable schema."""
     rows_raw = raw.get("market_rows")
     if not isinstance(rows_raw, list) or len(rows_raw) != 17:
@@ -553,7 +572,7 @@ def normalize_retail_trade_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
     if last_processed == -1:
         last_processed = None
     return {
-        "checkpoint_id": CHECKPOINT_TRADE_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_TRADE_PHASE,
         "turn": {
             "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),

@@ -20,6 +20,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_CIVILIANS_PHASE,
     CHECKPOINT_DIPLOMACY_PHASE,
     CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
+    CHECKPOINT_SECOND_TURN_TRADE_PHASE,
     CHECKPOINT_MILITARY_PHASE,
     CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
     CHECKPOINT_NAVAL_ESCALATION_PHASE,
@@ -370,6 +371,20 @@ def load_scenario(name: str) -> Scenario:
         raise SystemExit(f"missing differential fixture {fixture}")
     if name == "load_save_to_map":
         scenario = _load_save_to_map_scenario(fixture)
+    elif name == "second_turn_trade_phase":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id="trade_phase.run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_SECOND_TURN_TRADE_PHASE,
+        )
     elif name == "second_turn_diplomacy_phase":
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -778,8 +793,11 @@ def _drive_trade_phase(
     occurrences: dict[str, int],
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
     stages: "dict[str, object] | None" = None,
+    economic_turn: int | None = None,
 ) -> None:
     sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
+    if economic_turn is not None:
+        session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", economic_turn)
     trade_mgr = _eval_int(session, f"*(unsigned int*)0x{_TRADE_MGR:08x}")
     active_slot = _s16(session, sim_mgr + 0x2E)
     active_nation = _nation_pointer(session, active_slot)
@@ -2960,6 +2978,22 @@ def run_binary(
                         )
                         result_fields.update(_capture_trade_phase(session))
                         result_probe = CHECKPOINT_TRADE_PHASE
+                    elif scenario.drive == "second_turn_trade_phase":
+                        second_stages: dict[str, object] = {}
+                        result_fields = {
+                            "pre": _capture_trade_phase(session),
+                            "stages": second_stages,
+                        }
+                        _drive_trade_phase(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            second_stages,
+                            economic_turn=2,
+                        )
+                        result_fields.update(_capture_trade_phase(session))
+                        result_probe = CHECKPOINT_SECOND_TURN_TRADE_PHASE
                     elif scenario.drive == "city_transport_phase":
                         _drive_city_transport_phase(
                             session, records, occurrences, breakpoint_roles
@@ -3154,6 +3188,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "second_turn_military_phase",
         "second_turn_sequence",
         "second_turn_diplomacy_phase",
+        "second_turn_trade_phase",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3185,6 +3220,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_diplomacy_phase(
                 native_result,
                 checkpoint_id=CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
+            )
+        elif scenario.drive == "second_turn_trade_phase":
+            recomp_observation = normalize_native_trade_phase(
+                native_result,
+                checkpoint_id=CHECKPOINT_SECOND_TURN_TRADE_PHASE,
             )
         elif scenario.drive == "city_transport_phase":
             recomp_observation = normalize_native_city_transport_phase(
@@ -3265,6 +3305,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_diplomacy_phase(
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_SECOND_TURN_DIPLOMACY_PHASE,
+        )
+    elif result_checkpoint == CHECKPOINT_SECOND_TURN_TRADE_PHASE:
+        retail_observation = normalize_retail_trade_phase(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_SECOND_TURN_TRADE_PHASE,
         )
     elif result_checkpoint == CHECKPOINT_TRADE_PHASE:
         retail_observation = normalize_retail_trade_phase(
