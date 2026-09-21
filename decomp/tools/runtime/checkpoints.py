@@ -37,6 +37,7 @@ CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE = (
     "military_phase_ships_without_orders.resolved"
 )
 CHECKPOINT_LAND_RETREAT_PHASE = "military_phase_land_retreat.resolved"
+CHECKPOINT_SECOND_TURN_MILITARY_PHASE = "second_turn_military_phase.resolved"
 
 
 @dataclass(frozen=True)
@@ -212,6 +213,19 @@ SCHEMAS = {
             "military.task_forces",
             "military.land_battle",
             "military.province_owners",
+        ),
+    ),
+    CHECKPOINT_SECOND_TURN_MILITARY_PHASE: CheckpointSchema(
+        CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+        ACTION_MILITARY_PHASE,
+        "second_turn_military_phase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(

@@ -644,6 +644,8 @@ RuntimeActionResult RunSecondTurnMilitaryPhase(NativeTransition& transition) {
     return started;
   }
 
+  // Deterministic CRT seed for retail-vs-recomp rand() parity in DoMilitary.
+  srand(0x1234);
   g_pSimMgr->DoMilitary();
   return transition.Finish();
 }

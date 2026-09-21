@@ -26,6 +26,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
     CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+    CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
@@ -382,6 +383,20 @@ def load_scenario(name: str) -> Scenario:
                   "military_phase_land_interactive",
                   "military_phase_land_retreat"):
         scenario = _military_phase_land_combat_scenario(fixture, name)
+    elif name == "second_turn_military_phase":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id="military_phase.run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+        )
     elif name == "military_phase_ships_without_orders":
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -1846,9 +1861,10 @@ def _drive_military_phase(
     records: list[dict],
     occurrences: dict[str, int],
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    economic_turn: int = 6,
 ) -> None:
     sim_mgr = _u32(session, _SIM_MGR)
-    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 6)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", economic_turn)
     _invoke_thiscall(
         session,
         _SRAND,
@@ -2825,6 +2841,16 @@ def run_binary(
                         )
                         result_fields = _capture_military_phase(session)
                         result_probe = CHECKPOINT_MILITARY_PHASE
+                    elif scenario.drive == "second_turn_military_phase":
+                        _drive_military_phase(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            economic_turn=2,
+                        )
+                        result_fields = _capture_military_phase(session)
+                        result_probe = CHECKPOINT_SECOND_TURN_MILITARY_PHASE
                     elif scenario.drive in (
                         "military_phase_naval_encounter",
                         "military_phase_naval_escalation",
@@ -2983,6 +3009,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase_land_interactive",
         "military_phase_land_retreat",
         "military_phase_ships_without_orders",
+        "second_turn_military_phase",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3037,6 +3064,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_military_phase(
                 native_result,
                 checkpoint_id=CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+            )
+        elif scenario.drive == "second_turn_military_phase":
+            recomp_observation = normalize_native_military_phase(
+                native_result,
+                checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
             )
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
@@ -3116,6 +3148,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+        )
+    elif result_checkpoint == CHECKPOINT_SECOND_TURN_MILITARY_PHASE:
+        retail_observation = normalize_retail_military_phase(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
         )
     else:
         retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])
