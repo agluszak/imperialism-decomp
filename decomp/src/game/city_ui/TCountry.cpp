@@ -7,7 +7,9 @@
 #include "game/core/CString.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
+#include "game/TList.h"
 #include "game/nation/TGreatPower.h"
+#include "game/globals/nation_globals.h"
 
 #include "game/military/TArmyMgr.h"
 #include "game/ui_core/TLanguageMgr.h" // NormalizeRuntimeCredentialNameToken (display-name load)
@@ -96,17 +98,23 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
     this->needLevelByNation[nationIndex] = 100;
   }
 
-  this->identitySharedString0 = g_szEmptyString;
-  CString flavorName;
-  SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, nationSlot);
-  this->identitySharedString0 = flavorName;
-  if (g_pSimMgr != 0) {
-    g_pSimMgr->sharedTextSlots[nationSlot] = this->identitySharedString0;
+  this->identitySharedString0 = CString(g_pszDescriptorDefaultName_00653300);
+  char nameIsDefault =
+      _mbscmp(reinterpret_cast<const unsigned char*>(g_pszDescriptorDefaultName_00653300),
+              reinterpret_cast<const unsigned char*>(
+                  static_cast<LPCSTR>(this->identitySharedString0))) == 0;
+  if (nameIsDefault != 0) {
+    CString flavorName;
+    SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, this->nationSlot);
+    this->identitySharedString0 = CString(flavorName);
+    if (g_pSimMgr != 0) {
+      g_pSimMgr->sharedTextSlots[this->nationSlot] = flavorName;
+    }
   }
   this->identitySharedString1 = this->identitySharedString0;
   this->treasuryValue10 = 5000;
 
-  this->militaryUnitList44 = new TSortedList();
+  this->militaryUnitList44 = new TList();
 
   for (int unitType = 0; unitType < 0x1e; ++unitType) {
     this->unitNameOrdinalByType[unitType] = 1;
