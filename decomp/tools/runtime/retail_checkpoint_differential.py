@@ -27,12 +27,14 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
     CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+    CHECKPOINT_SECOND_TURN_SEQUENCE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
     normalize_native_city_transport_phase,
     normalize_native_civilians_phase,
     normalize_native_military_phase,
+    normalize_native_second_turn_sequence,
     normalize_native_combined_map,
     normalize_native_diplomacy_phase,
     normalize_native_trade_phase,
@@ -40,6 +42,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_civilians_phase,
     normalize_retail_combined_map,
     normalize_retail_military_phase,
+    normalize_retail_second_turn_sequence,
     normalize_retail_diplomacy_phase,
     normalize_retail_trade_phase,
     validate_checkpoint,
@@ -383,6 +386,20 @@ def load_scenario(name: str) -> Scenario:
                   "military_phase_land_interactive",
                   "military_phase_land_retreat"):
         scenario = _military_phase_land_combat_scenario(fixture, name)
+    elif name == "second_turn_sequence":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id="second_turn_sequence.run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_SECOND_TURN_SEQUENCE,
+        )
     elif name == "second_turn_military_phase":
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -1846,6 +1863,8 @@ _ZONE_CREATE_TASK_FORCE = 0x005609E0
 _TSHIP_SIZE = 0x38
 _FIND_FIRST_PORT_ZONE = 0x00563540
 _OCEAN_SINGLETON = 0x006A3FBC
+_ADVANCE_TURN_STATE = 0x0057DA70
+_TECH_MGR = 0x006A43D8
 _RELATION_WAR = 6
 _RELATION_PROPAGATION_MATRIX = 0xBBE
 _UNIT_ORDER_IDLE = 0
@@ -2305,6 +2324,61 @@ def _drive_military_phase_ships_without_orders(
         occurrences,
         breakpoint_roles,
     )
+
+
+def _drive_second_turn_sequence(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunSecondTurnSequence: economicTurn=2, turnStateCode=5,
+    preferenceValues[8]=0, tech unlock flags and priority slots cleared, then
+    AdvanceGlobalTurnStateMachine (0x57da70) pumped until the deal book
+    (0x0e), newspaper (0x12), and player-orders (5) stops are reached."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    tech_mgr = _u32(session, _TECH_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 2)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 5)
+    session.assign(f"*(short*)0x{sim_mgr + 0x58:08x}", 0)
+    for tech in range(3, 0x1D):
+        session.assign(f"*(char*)0x{tech_mgr + 0x180 + tech:08x}", 0)
+        session.assign(f"*(short*)0x{tech_mgr + 0x04 + 2 * tech:08x}", 0)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    stops: list[int] = []
+    targets = iter((0x0E, 0x12, 0x05))
+    wanted = next(targets, None)
+    step = 0
+    while wanted is not None:
+        if step >= 96:
+            raise RuntimeError(
+                f"retail turn sequence stalled before state {wanted:#x}"
+            )
+        step += 1
+        _invoke_thiscall(
+            session,
+            _ADVANCE_TURN_STATE,
+            sim_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        state = _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}")
+        if state == wanted:
+            stops.append(state)
+            wanted = next(targets, None)
+    return {
+        "stops": stops,
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+    }
 
 
 def _resolved_tile_owner(session: GdbSession, owner_code: int) -> int:
@@ -2885,6 +2959,11 @@ def run_binary(
                         )
                         result_fields = _capture_military_phase(session)
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "second_turn_sequence":
+                        result_fields = _drive_second_turn_sequence(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_SECOND_TURN_SEQUENCE
                     elif (
                         scenario.drive
                         == "military_phase_ships_without_orders"
@@ -3010,6 +3089,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase_land_retreat",
         "military_phase_ships_without_orders",
         "second_turn_military_phase",
+        "second_turn_sequence",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3069,6 +3149,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_military_phase(
                 native_result,
                 checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+            )
+        elif scenario.drive == "second_turn_sequence":
+            recomp_observation = normalize_native_second_turn_sequence(
+                native_result
             )
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
@@ -3153,6 +3237,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+        )
+    elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
+        retail_observation = normalize_retail_second_turn_sequence(
+            retail_records[0]["fields"]
         )
     else:
         retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])

@@ -15,6 +15,7 @@
 #include "game/ui_screens/TSimMgr.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 namespace {
@@ -166,6 +167,9 @@ RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
     return started;
   }
 
+  // Deterministic CRT seed so retail-vs-recomp differentials see identical
+  // rand() streams across the whole turn sequence.
+  srand(0x1234);
   int stepCount = 0;
   while (g_pSimMgr->turnStateCode != 0xe && stepCount < 32) {
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
