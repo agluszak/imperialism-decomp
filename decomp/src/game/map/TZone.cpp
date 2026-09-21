@@ -314,20 +314,15 @@ bool TZone::HasNeighbor(Province* province) {
 // FUNCTION: IMPERIALISM 0x0055f440
 char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
-  if (entryCount == 0) {
-    return 0;
-  }
   const Province* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
+  Province* const* entrySlot = 0;
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
-    // Inlined bounds-guarded stretch element access, as in the original (mirrors
-    // HasSecondaryNeighborWithNationTag / IsZoneMaskOrArrayEntryPresentForKey).
-    Province* const* entrySlot =
-        (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
-    if (*entrySlot == target) {
-      return 1;
+    if (this->secondaryNeighbors.Data()[entryIndex] == target) {
+      entrySlot = this->secondaryNeighbors.Data() + entryIndex;
+      break;
     }
   }
-  return 0;
+  return entrySlot != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f4d0
@@ -349,15 +344,12 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f540
-char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
+int TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
   unsigned char keyBit = static_cast<unsigned char>(1 << key);
-  if ((nationKeyMask10 & keyBit) != 0) {
+  if ((keyBit & nationKeyMask10) != 0) {
     return 1;
   }
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
-  if (entryCount == 0) {
-    return 0;
-  }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original.
     Province* const* entrySlot =

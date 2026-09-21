@@ -119,7 +119,7 @@ public:
   char HasSecondaryNeighborWithNationTag(short nationTag);
   // 0x0055f540 — true when key's bit is set in nationKeyMask10's low byte, or any
   // secondaryNeighbors entry has ownerNationCode00 == key.
-  char IsZoneMaskOrArrayEntryPresentForKey(short key);
+  int IsZoneMaskOrArrayEntryPresentForKey(short key);
   // 0x0055f440 — true when any secondaryNeighbors entry points at
   // &g_pGlobalMapState->cityScoreTable[cityIndex].
   char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
