@@ -23,13 +23,6 @@ static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag(path, line);
 }
 
-// FUNCTION: IMPERIALISM 0x0048d500
-TWindow::TWindow() : TView(), dialogBehavior(), busyFlag98(0) {
-  g_LiveViewRegistry.AddHead(this);
-  dialogBehavior.SetUiColorDescriptorGoldTriplet(1, kControlTagSpSpSpSp, kControlTagSpSpSpSp);
-  activeLinkedWindow64 = this;
-  dialogBehavior.SetOwner(this);
-}
 // IMPLEMENT_DYNCREATE also emits `TWindow::CreateObject`; the original copy at
 // 0x48d090 has the TWindow ctor (including the inlined g_LiveViewRegistry AddHead
 // CPlex node code on the 0x6a1a44/0x6a1a50/0x6a1a54/0x6a1a58 globals) inlined into it.

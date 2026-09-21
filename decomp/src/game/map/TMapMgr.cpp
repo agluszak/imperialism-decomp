@@ -4522,7 +4522,7 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
 // Reset a tile's resource-icon edge cache: resolve resourceTypeByEdge[0] from a fixed 16-entry
 // lookup indexed by the tile's gateFlag, and force resourceTypeByEdge[1] to 0xff.
 // FUNCTION: IMPERIALISM 0x0051da60
-void OrphanDeadLeaf_NoRefs_0051da60(StrategicTileIndex nTileIndex) {
+void __stdcall OrphanDeadLeaf_NoRefs_0051da60(StrategicTileIndex nTileIndex) {
   unsigned short lookup[16];
   lookup[0] = 0xffff;
   lookup[1] = 0xffff;

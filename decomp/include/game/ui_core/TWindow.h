@@ -4,6 +4,7 @@
 
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_core/TView.h"
+#include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
@@ -95,6 +96,26 @@ public:
   TWindow();
 };
 ASSERT_SIZE(TWindow, 0xa0);
+
+// The two McAppUI window registries (canonical declarations; consumers may also
+// reach them through game/globals/view_registries.h).
+// Live-view registry (base 0x006a1a40): every TWindow links itself in on
+// construction and unlinks on teardown; CWMgrIterator sweeps it.
+extern CList<TWindow*, TWindow*> g_LiveViewRegistry;
+// Modal-window stack (base 0x006a1ac0): pushed on modal entry, popped on exit.
+extern CList<TWindow*, TWindow*> g_ModalViewStack;
+
+// The out-of-line definition is material: retail expands this constructor
+// inline at every subclass construction site and CreateObject, and still
+// retains the standalone COMDAT at 0x48d500.
+// FUNCTION: IMPERIALISM 0x0048d500
+inline TWindow::TWindow() : TView(), dialogBehavior(), busyFlag98(0) {
+  g_LiveViewRegistry.AddHead(this);
+  dialogBehavior.SetUiColorDescriptorGoldTriplet(1, kControlTagSpSpSpSp,
+                                                 kControlTagSpSpSpSp);
+  activeLinkedWindow64 = this;
+  dialogBehavior.SetOwner(this);
+}
 
 #if defined(__clang__)
 #pragma clang diagnostic pop
