@@ -435,6 +435,8 @@ int TViewMgr::ClassifyTurnStateForOverlayMode() {
   case 0x19:
   case 0x65:
     return 1;
+  case 0x6a:
+    return 2;
   default:
     return 2;
   }
