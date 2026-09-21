@@ -12,6 +12,7 @@
 #include "game/trade_ui/TOfferDeskPicture.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_tags_common.h"
+#include "game/globals/trade_ui_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TDealList.h"
 #include "game/ui_widgets/TTradeMgr.h"
@@ -568,6 +569,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
   }
   SeedHumanTradeOrders(nation, true);
   g_pSimMgr->turnStateCode = 7;
+  srand(0x1234);
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
@@ -593,5 +595,20 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
   result.Set("amount", sheet->proposedAmount);
   result.Set("price", sheet->maxAmount);
   result.Set("commodity", sheet->commodityType);
+  short dispatchIdx = g_aTradeDealCategoryOrder_0066D810[0];
+  TDealList* deals = g_pTradeMgr->categoryRankLists[dispatchIdx];
+  JsonArray dealRows;
+  for (int ordinal = 1; ordinal <= deals->GetSize(); ++ordinal) {
+    TradeDealEntry* deal = static_cast<TradeDealEntry*>(
+        deals->GetPtrListEntryByOneBasedIndex(ordinal));
+    JsonObject row;
+    row.Set("source", deal->sourceNationSlot);
+    row.Set("target", deal->targetNationSlot);
+    row.Set("delta", deal->relationDelta04);
+    row.Set("standing", deal->relationStanding06);
+    row.Set("score", deal->dispatchScore08);
+    dealRows.Add(row.Release());
+  }
+  result.Set("deals", dealRows.Release());
   return transition.Finish(result.Release());
 }

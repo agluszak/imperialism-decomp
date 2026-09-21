@@ -51,6 +51,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_TURN_STOP_CITY_TRANSPORT,
     CHECKPOINT_TURN_STOP_DEAL_BOOK,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
+    CHECKPOINT_TURN_STOP_TRADE,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -76,6 +77,7 @@ from tools.runtime.checkpoints import (
     normalize_native_turn_alerts_first,
     normalize_native_turn_alerts_later,
     normalize_native_turn_stop_state,
+    normalize_native_turn_stop_trade,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -99,6 +101,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_turn_alerts_first,
     normalize_retail_turn_alerts_later,
     normalize_retail_turn_stop_state,
+    normalize_retail_turn_stop_trade,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -651,7 +654,7 @@ def load_scenario(name: str) -> Scenario:
                 else CHECKPOINT_TURN_STOP_CITY_TRANSPORT
             ),
         )
-    elif name == "turn_stop_technology":
+    elif name in ("turn_stop_technology", "turn_stop_trade"):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
             name=name,
@@ -663,7 +666,11 @@ def load_scenario(name: str) -> Scenario:
             timeout_seconds=base.timeout_seconds,
             start_action=base.start_action,
             drive=name,
-            result_checkpoint_id=CHECKPOINT_TURN_STOP_TECHNOLOGY,
+            result_checkpoint_id=(
+                CHECKPOINT_TURN_STOP_TECHNOLOGY
+                if name == "turn_stop_technology"
+                else CHECKPOINT_TURN_STOP_TRADE
+            ),
         )
     elif name in (
         "check_technology_advances",
@@ -1149,28 +1156,10 @@ def _deal_list_size(session: GdbSession, deal_list: int) -> int:
     return _eval_int(session, f"*(int*)0x{deal_list + 8:08x}")
 
 
-def _drive_trade_phase(
-    session: GdbSession,
-    records: list[dict],
-    occurrences: dict[str, int],
-    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
-    stages: "dict[str, object] | None" = None,
-    economic_turn: int | None = None,
-) -> None:
-    sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
-    if economic_turn is not None:
-        session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", economic_turn)
-    trade_mgr = _eval_int(session, f"*(unsigned int*)0x{_TRADE_MGR:08x}")
-    active_slot = _s16(session, sim_mgr + 0x2E)
-    active_nation = _nation_pointer(session, active_slot)
-    if trade_mgr == 0 or active_nation == 0:
-        raise RuntimeError("retail loaded game has no trade market")
-    if (
-        _eval_int(session, f"*(unsigned int*)0x{active_nation + 0x894:08x}") == 0
-        or _eval_int(session, f"*(unsigned char*)0x{active_nation + 0xA0:08x}") == 0
-    ):
-        raise RuntimeError("retail active nation is not a human great power")
-
+def _seed_trade_market(session: GdbSession, active_nation: int) -> None:
+    """Mirror SeedMerchantCapacity + SeedTradeableStocks + SeedHumanTradeOrders
+    (buyClothing=True): merchant-capacity order counts, city stocks, treasury,
+    and the human's remembered trade offers / item potentials."""
     stock_seed = {0: 8, 1: 8, 2: 12, 3: 10, 4: 10, 5: 4, 6: 6,
                   7: 16, 13: 10, 14: 8, 15: 8, 16: 6}
     for slot in range(_MAJOR_NATION_COUNT):
@@ -1193,6 +1182,31 @@ def _drive_trade_phase(
     session.write_memory(active_nation + 0x1C6, b"\x00" * 46)
     session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 13:08x}", -1)
     session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 2:08x}", 5)
+
+
+def _drive_trade_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    stages: "dict[str, object] | None" = None,
+    economic_turn: int | None = None,
+) -> None:
+    sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
+    if economic_turn is not None:
+        session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", economic_turn)
+    trade_mgr = _eval_int(session, f"*(unsigned int*)0x{_TRADE_MGR:08x}")
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    active_nation = _nation_pointer(session, active_slot)
+    if trade_mgr == 0 or active_nation == 0:
+        raise RuntimeError("retail loaded game has no trade market")
+    if (
+        _eval_int(session, f"*(unsigned int*)0x{active_nation + 0x894:08x}") == 0
+        or _eval_int(session, f"*(unsigned char*)0x{active_nation + 0xA0:08x}") == 0
+    ):
+        raise RuntimeError("retail active nation is not a human great power")
+
+    _seed_trade_market(session, active_nation)
 
     _invoke_thiscall(
         session,
@@ -3929,6 +3943,112 @@ def _drive_turn_stop_technology(
     )
 
 
+# --- turn_stop_trade retail drive -----------------------------------------------
+# Mirrors RunTradeTurnStop: seed the trade market, enter turnStateCode 7, and
+# step AdvanceGlobalTurnStateMachine until it poses the Offer Sheet dialog.
+
+_DISPLAY_MGR = 0x006A2158
+_CONTROL_TAG_MAIN = 0x6D61696E  # 'main'
+# TView::ResolveControlByTag -- vtable index 0x25 -> byte offset 0x94.
+_VT_RESOLVE_CONTROL_BY_TAG = 0x25 * 4
+
+
+def _drive_turn_stop_trade(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    trade_mgr = _u32(session, _TRADE_MGR)
+    active_nation = _nation_pointer(session, _s16(session, sim_mgr + 0x2E))
+    if active_nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    if (
+        _eval_int(session, f"*(unsigned int*)0x{active_nation + 0x894:08x}")
+        == 0
+        or _eval_int(
+            session, f"*(unsigned char*)0x{active_nation + 0xA0:08x}"
+        )
+        == 0
+    ):
+        raise RuntimeError(
+            "the active nation cannot receive trade offers"
+        )
+    _seed_trade_market(session, active_nation)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 7)
+    _invoke_thiscall(
+        session, _SRAND, 0, records, occurrences, breakpoint_roles,
+        args=(0x1234,)
+    )
+    _invoke_thiscall(
+        session,
+        _ADVANCE_TURN_STATE,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    display_mgr = _u32(session, _DISPLAY_MGR)
+    dialog = _u32(session, display_mgr + 0x04)
+    sheet = 0
+    if dialog != 0:
+        sheet = _invoke_virtual(
+            session,
+            dialog,
+            _VT_RESOLVE_CONTROL_BY_TAG,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_CONTROL_TAG_MAIN,),
+        )
+    if sheet == 0 or _s16(session, sheet + 0x90) < 0:
+        raise RuntimeError("trade phase did not pose an Offer Sheet")
+    row0 = trade_mgr + _TRADE_ROW_BASE
+    category_index = _s16(session, row0)
+    # g_aTradeDealCategoryOrder_0066D810 at 0x66d810: order index -> category.
+    # Capture the first-processed category (clothing) regardless of where the
+    # deal cursor stopped.
+    dispatch_idx = _s16(session, 0x0066D810)
+    deal_list = _u32(session, trade_mgr + _TRADE_RANK_LISTS + 4 * dispatch_idx)
+    deals = []
+    deal_data = _u32(session, deal_list + 0x04)  # CPtrArray::m_pData
+    deal_count = _eval_int(
+        session, f"*(int*)0x{deal_list + 0x08:08x}"
+    )  # CPtrArray::m_nSize
+    for ordinal in range(deal_count):
+        deal = _u32(session, deal_data + 4 * ordinal)
+        deals.append(
+            {
+                "source": _s16(session, deal),
+                "target": _s16(session, deal + 0x02),
+                "delta": _s16(session, deal + 0x04),
+                "standing": _s16(session, deal + 0x06),
+                "score": _eval_int(
+                    session, f"*(int*)0x{deal + 0x08:08x}"
+                ),
+            }
+        )
+    result = _capture_turn_state(session)
+    result.update(
+        {
+            "stop": "trade_offer",
+            "phase": _eval_int(
+                session, f"*(int*)0x{sim_mgr + 0x04:08x}"
+            ),
+            "category_index": category_index,
+            "entry_ordinal": _s16(session, row0 + 2),
+            "buyer": _s16(session, sheet + 0x90),
+            "seller": _s16(session, sheet + 0x92),
+            "amount": _s16(session, sheet + 0x98),
+            "price": _s16(session, sheet + 0x94),
+            "commodity": _s16(session, sheet + 0x96),
+            "deals": deals,
+        }
+    )
+    return result
+
+
 # --- season_advance_clears_status_flags retail drive ---------------------------
 # Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
 # fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
@@ -6133,6 +6253,11 @@ def run_binary(
                         )
                         result_fields = _capture_technology(session)
                         result_probe = CHECKPOINT_TURN_STOP_TECHNOLOGY
+                    elif scenario.drive == "turn_stop_trade":
+                        result_fields = _drive_turn_stop_trade(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_TURN_STOP_TRADE
                     elif scenario.drive == "season_advance_clears_status_flags":
                         _drive_season_advance(
                             session, records, occurrences, breakpoint_roles
@@ -6406,6 +6531,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "great_power_pressure_ai_noop",
         "turn_stop_deal_book",
         "turn_stop_city_and_transport",
+        "turn_stop_trade",
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -6568,6 +6694,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         ):
             recomp_observation = normalize_native_turn_stop_state(
                 native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive == "turn_stop_trade":
+            recomp_observation = normalize_native_turn_stop_trade(
+                native_result
             )
         elif scenario.drive == "turn_alerts_later_turn":
             recomp_observation = normalize_native_turn_alerts_later(
@@ -6781,6 +6911,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     ):
         retail_observation = normalize_retail_turn_stop_state(
             retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint == CHECKPOINT_TURN_STOP_TRADE:
+        retail_observation = normalize_retail_turn_stop_trade(
+            retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_TURN_ALERTS_LATER:
         retail_observation = normalize_retail_turn_alerts_later(

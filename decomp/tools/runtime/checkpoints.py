@@ -43,6 +43,7 @@ ACTION_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.run"
 ACTION_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.run"
 ACTION_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.run"
 ACTION_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.run"
+ACTION_TURN_STOP_TRADE = "turn_stop_trade.run"
 ACTION_BATTLE_MELEE = "interactive_army_battle_melee.run"
 ACTION_BATTLE_RANGED = "interactive_army_battle_ranged.run"
 ACTION_COMBAT_UNCONTESTED = "combat_moves_uncontested.run"
@@ -103,6 +104,7 @@ CHECKPOINT_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.resolved"
 CHECKPOINT_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.resolved"
 CHECKPOINT_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.resolved"
 CHECKPOINT_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.resolved"
+CHECKPOINT_TURN_STOP_TRADE = "turn_stop_trade.resolved"
 CHECKPOINT_BATTLE_MELEE = "interactive_army_battle_melee.resolved"
 CHECKPOINT_BATTLE_RANGED = "interactive_army_battle_ranged.resolved"
 CHECKPOINT_COMBAT_UNCONTESTED = "combat_moves_uncontested.resolved"
@@ -577,6 +579,27 @@ SCHEMAS = {
             "turn.active",
             "turn.economic_turn",
             "turn.turn_flow_status_flags",
+        ),
+    ),
+    CHECKPOINT_TURN_STOP_TRADE: CheckpointSchema(
+        CHECKPOINT_TURN_STOP_TRADE,
+        ACTION_TURN_STOP_TRADE,
+        "turn_stop_trade",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "stop",
+            "phase",
+            "category_index",
+            "entry_ordinal",
+            "buyer",
+            "seller",
+            "amount",
+            "price",
+            "commodity",
+            "deals",
         ),
     ),
     CHECKPOINT_BATTLE_MELEE: CheckpointSchema(
@@ -2376,6 +2399,117 @@ def normalize_retail_turn_stop_state(
             ),
         },
     }
+
+
+_TURN_STOP_TRADE_INT_FIELDS = (
+    "phase",
+    "category_index",
+    "entry_ordinal",
+    "buyer",
+    "seller",
+    "amount",
+    "price",
+    "commodity",
+)
+
+_TURN_STOP_TRADE_DEAL_FIELDS = (
+    "source",
+    "target",
+    "delta",
+    "standing",
+    "score",
+)
+
+
+def _turn_stop_trade_deals(
+    deals_raw: Any, side: str
+) -> list[dict[str, int]]:
+    if not isinstance(deals_raw, list):
+        raise ValueError(f"{side} deals must be an array")
+    deals = []
+    for index, entry in enumerate(deals_raw):
+        row = _require_mapping(entry, f"{side} deals[{index}]")
+        deals.append(
+            {
+                field: _require_int(
+                    row.get(field), f"{side} deals[{index}].{field}"
+                )
+                for field in _TURN_STOP_TRADE_DEAL_FIELDS
+            }
+        )
+    return deals
+
+
+def normalize_native_turn_stop_trade(
+    result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_TURN_STOP_TRADE,
+) -> dict[str, Any]:
+    """Reduce a native trade turn-stop case to the offer-sheet schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    transition_result = _require_mapping(
+        captures.get("result"), "native result capture"
+    )
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    normalized = {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active_nation"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+            ),
+        },
+        "stop": transition_result.get("stop"),
+    }
+    for field in _TURN_STOP_TRADE_INT_FIELDS:
+        normalized[field] = _require_int(
+            transition_result.get(field), f"native {field}"
+        )
+    normalized["deals"] = _turn_stop_trade_deals(
+        transition_result.get("deals"), "native"
+    )
+    return normalized
+
+
+def normalize_retail_turn_stop_trade(
+    raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_TURN_STOP_TRADE,
+) -> dict[str, Any]:
+    """Reduce a retail trade turn-stop capture to the same schema."""
+    normalized = {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+        "stop": raw.get("stop"),
+    }
+    for field in _TURN_STOP_TRADE_INT_FIELDS:
+        normalized[field] = _require_int(
+            raw.get(field), f"retail {field}"
+        )
+    normalized["deals"] = _turn_stop_trade_deals(
+        raw.get("deals"), "retail"
+    )
+    return normalized
 
 
 def normalize_native_battle_attack(
