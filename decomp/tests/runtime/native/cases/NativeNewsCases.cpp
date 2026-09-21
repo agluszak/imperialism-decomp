@@ -233,6 +233,9 @@ RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
     return started;
   }
 
+  // Deterministic CRT seed so retail-vs-recomp differentials see identical
+  // rand() streams across the whole turn sequence.
+  srand(0x1234);
   JsonArray stops;
   JsonArray rngStates;
   JsonArray economicTurns;

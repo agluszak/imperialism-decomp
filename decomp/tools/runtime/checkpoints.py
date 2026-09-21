@@ -27,6 +27,7 @@ ACTION_REASSESS_MISSIONS_DAMAGED = (
 )
 ACTION_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.run"
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
+ACTION_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -57,6 +58,7 @@ CHECKPOINT_REASSESS_MISSIONS_DAMAGED = (
 )
 CHECKPOINT_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.resolved"
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
+CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.resolved"
 
 
 @dataclass(frozen=True)
@@ -359,6 +361,15 @@ SCHEMAS = {
         (
             "stops",
             "economic_turn",
+        ),
+    ),
+    CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE: CheckpointSchema(
+        CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
+        ACTION_CONSECUTIVE_TURN_SEQUENCE,
+        "consecutive_turn_sequence",
+        (
+            "stops",
+            "economic_turns",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
@@ -1276,6 +1287,58 @@ def normalize_native_second_turn_sequence(
         "stops": stops,
         "economic_turn": _require_int(
             transition_result.get("economic_turn"), "native economic_turn"
+        ),
+    }
+
+
+def normalize_native_consecutive_turn_sequence(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the native 12-turn state-machine walk to stops + turn numbers."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    transition_result = _require_mapping(
+        captures.get("result"), "native result capture"
+    )
+    stops_raw = transition_result.get("stops")
+    if not isinstance(stops_raw, list):
+        raise ValueError("native result stops must be an array")
+    stops: list[str] = []
+    for index, stop in enumerate(stops_raw):
+        if not isinstance(stop, str):
+            raise ValueError(f"native result stops[{index}] must be a string")
+        stops.append(stop)
+    return {
+        "checkpoint_id": CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
+        "action_id": ACTION_CONSECUTIVE_TURN_SEQUENCE,
+        "stops": stops,
+        "economic_turns": _require_int_list(
+            transition_result.get("economic_turns"), "native economic_turns"
+        ),
+    }
+
+
+def normalize_retail_consecutive_turn_sequence(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the retail 12-turn state-machine walk to the same schema."""
+    stops_raw = raw.get("stops")
+    if not isinstance(stops_raw, list):
+        raise ValueError("retail stops must be an array")
+    stops = []
+    for index, code in enumerate(stops_raw):
+        code = _require_int(code, f"retail stops[{index}]")
+        name = _TURN_STATE_STOP_NAMES.get(code)
+        if name is None:
+            raise ValueError(f"retail stops[{index}] unknown state {code:#x}")
+        stops.append(name)
+    return {
+        "checkpoint_id": CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
+        "action_id": ACTION_CONSECUTIVE_TURN_SEQUENCE,
+        "stops": stops,
+        "economic_turns": _require_int_list(
+            raw.get("economic_turns"), "retail economic_turns"
         ),
     }
 
