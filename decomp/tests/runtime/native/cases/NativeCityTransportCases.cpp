@@ -22,6 +22,7 @@
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 namespace {
@@ -98,6 +99,9 @@ RuntimeActionResult RunCityAndTransportPhase(NativeTransition& transition) {
     return started;
   }
 
+  // Deterministic CRT seed so retail-vs-recomp differentials see identical
+  // rand() streams (interior-minister tie-breaks consume rand()).
+  srand(0x1234);
   g_pSimMgr->DoCityAndTransport();
   return transition.Finish();
 }

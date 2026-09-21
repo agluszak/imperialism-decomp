@@ -16,6 +16,8 @@ ACTION_CITY_ACTIVATION = "city.activate"
 ACTION_TURN_ADVANCEMENT = "turn.advance"
 ACTION_DIPLOMACY_PHASE = "diplomacy_phase.run"
 ACTION_TRADE_PHASE = "trade_phase.run"
+ACTION_CITY_TRANSPORT_PHASE = "city_transport_phase.run"
+ACTION_CIVILIANS_PHASE = "civilians_phase.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -23,6 +25,8 @@ CHECKPOINT_CITY_ACTIVE = "city.active"
 CHECKPOINT_TURN_ADVANCED = "turn.advanced"
 CHECKPOINT_DIPLOMACY_PHASE = "diplomacy_phase.resolved"
 CHECKPOINT_TRADE_PHASE = "trade_phase.resolved"
+CHECKPOINT_CITY_TRANSPORT_PHASE = "city_transport_phase.resolved"
+CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
 
 
 @dataclass(frozen=True)
@@ -90,6 +94,30 @@ SCHEMAS = {
             "turn.economic_turn",
             "trade.market",
             "trade.nations",
+        ),
+    ),
+    CHECKPOINT_CITY_TRANSPORT_PHASE: CheckpointSchema(
+        CHECKPOINT_CITY_TRANSPORT_PHASE,
+        ACTION_CITY_TRANSPORT_PHASE,
+        "city_and_transport_phase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "city_transport.nations",
+            "city_transport.regions",
+        ),
+    ),
+    CHECKPOINT_CIVILIANS_PHASE: CheckpointSchema(
+        CHECKPOINT_CIVILIANS_PHASE,
+        ACTION_CIVILIANS_PHASE,
+        "civilians_phase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "civilians.units",
+            "civilians.nations",
         ),
     ),
 }
@@ -388,6 +416,242 @@ def normalize_retail_trade_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
         },
         "last_processed_nation": last_processed,
         "trade": {"market": {"rows": rows}, "nations": nations},
+    }
+
+
+_CITY_NATION_INT_FIELDS = ("treasury", "reserved_transport")
+
+_CITY_NATION_ARRAY_FIELDS = (
+    "pending_actions",
+    "item_potentials",
+    "transported_items",
+    "purchased_items",
+    "production_orders",
+    "production_accum",
+    "production_flags",
+    "city_stocks",
+)
+
+_CITY_REGION_INT_FIELDS = (
+    "region_id",
+    "development_stage",
+    "last_turn_tick",
+    "city_score",
+    "linked_tile",
+    "linked_dev_class",
+    "linked_edge0",
+    "linked_edge1",
+)
+
+
+def _city_transport_nations(raw_nations: Any, label: str) -> list[Any]:
+    if not isinstance(raw_nations, list):
+        raise ValueError(f"{label} must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(raw_nations):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"{label}[{slot}]")
+        entry: dict[str, Any] = {
+            field: _require_int(
+                nation_map.get(field), f"{label}[{slot}].{field}"
+            )
+            for field in _CITY_NATION_INT_FIELDS
+        }
+        for field in _CITY_NATION_ARRAY_FIELDS:
+            value = nation_map.get(field)
+            entry[field] = (
+                None
+                if value is None
+                else _require_int_list(value, f"{label}[{slot}].{field}")
+            )
+        nations.append(entry)
+    return nations
+
+
+def _city_transport_regions(raw_regions: Any, label: str) -> list[Any]:
+    if not isinstance(raw_regions, list):
+        raise ValueError(f"{label} must be an array")
+    regions: list[Any] = []
+    for index, region in enumerate(raw_regions):
+        region_map = _require_mapping(region, f"{label}[{index}]")
+        entry: dict[str, Any] = {}
+        for field in _CITY_REGION_INT_FIELDS:
+            value = region_map.get(field)
+            entry[field] = (
+                None
+                if value is None
+                else _require_int(value, f"{label}[{index}].{field}")
+            )
+        entry["dev_counts"] = _require_int_list(
+            region_map.get("dev_counts"), f"{label}[{index}].dev_counts"
+        )
+        regions.append(entry)
+    return regions
+
+
+def _city_transport_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
+    return {
+        "nations": _city_transport_nations(raw.get("nations"), f"{label}.nations"),
+        "regions": _city_transport_regions(raw.get("regions"), f"{label}.regions"),
+    }
+
+
+def normalize_native_city_transport_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a native driver result to the stable city+transport schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    city_transport = _require_mapping(
+        ephemeral.get("city_transport"), "native ephemeral city_transport"
+    )
+    return {
+        "checkpoint_id": CHECKPOINT_CITY_TRANSPORT_PHASE,
+        "action_id": ACTION_CITY_TRANSPORT_PHASE,
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active_nation"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+            ),
+        },
+        "city_transport": _city_transport_ephemeral(
+            city_transport, "native city_transport"
+        ),
+    }
+
+
+def normalize_retail_city_transport_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a retail GDB city+transport capture to the same schema."""
+    return {
+        "checkpoint_id": CHECKPOINT_CITY_TRANSPORT_PHASE,
+        "action_id": ACTION_CITY_TRANSPORT_PHASE,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+            ),
+        },
+        "city_transport": _city_transport_ephemeral(
+            _require_mapping(
+                raw.get("city_transport"), "retail city_transport"
+            ),
+            "retail city_transport",
+        ),
+    }
+
+
+_CIVILIAN_UNIT_INT_FIELDS = (
+    "tile",
+    "kind",
+    "order",
+    "target",
+    "owner",
+    "remaining_turns",
+    "completion_marker",
+)
+
+_CIVILIAN_NATION_INT_FIELDS = ("treasury", "town_count")
+
+
+def _civilians_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
+    units_raw = raw.get("units")
+    if not isinstance(units_raw, list):
+        raise ValueError(f"{label}.units must be an array")
+    units: list[Any] = []
+    for index, unit in enumerate(units_raw):
+        unit_map = _require_mapping(unit, f"{label}.units[{index}]")
+        units.append(
+            {
+                field: _require_int(
+                    unit_map.get(field), f"{label}.units[{index}].{field}"
+                )
+                for field in _CIVILIAN_UNIT_INT_FIELDS
+            }
+        )
+    nations_raw = raw.get("nations")
+    if not isinstance(nations_raw, list):
+        raise ValueError(f"{label}.nations must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(nations_raw):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"{label}.nations[{slot}]")
+        entry: dict[str, Any] = {
+            field: _require_int(
+                nation_map.get(field), f"{label}.nations[{slot}].{field}"
+            )
+            for field in _CIVILIAN_NATION_INT_FIELDS
+        }
+        stocks = nation_map.get("city_stocks")
+        entry["city_stocks"] = (
+            None
+            if stocks is None
+            else _require_int_list(stocks, f"{label}.nations[{slot}].city_stocks")
+        )
+        nations.append(entry)
+    return {"units": units, "nations": nations}
+
+
+def normalize_native_civilians_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a native driver result to the stable civilians-phase schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    civilians = _require_mapping(
+        ephemeral.get("civilians"), "native ephemeral civilians"
+    )
+    return {
+        "checkpoint_id": CHECKPOINT_CIVILIANS_PHASE,
+        "action_id": ACTION_CIVILIANS_PHASE,
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active_nation"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+            ),
+        },
+        "civilians": _civilians_ephemeral(civilians, "native civilians"),
+    }
+
+
+def normalize_retail_civilians_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a retail GDB civilians capture to the same schema."""
+    return {
+        "checkpoint_id": CHECKPOINT_CIVILIANS_PHASE,
+        "action_id": ACTION_CIVILIANS_PHASE,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+            ),
+        },
+        "civilians": _civilians_ephemeral(
+            _require_mapping(raw.get("civilians"), "retail civilians"),
+            "retail civilians",
+        ),
     }
 
 

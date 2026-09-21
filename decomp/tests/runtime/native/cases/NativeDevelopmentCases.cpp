@@ -1,6 +1,8 @@
 #include "NativeCases.h"
 #include "JsonObject.h"
 
+#include <stdlib.h>
+
 #include "game/civilian_domain_types.h"
 #include "game/city/TTown.h"
 #include "game/globals/shared_globals.h"
@@ -371,6 +373,9 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
     return started;
   }
 
+  // Deterministic CRT seed so retail-vs-recomp differentials see identical
+  // rand() streams (civilian dispute resolution and ministers consume rand()).
+  srand(0x1234);
   g_pSimMgr->DoCivilians();
 
   // TTown::ITown leaves this serialized byte uninitialized. Normalize only

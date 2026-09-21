@@ -16,13 +16,19 @@ import struct
 import time
 
 from tools.runtime.checkpoints import (
+    CHECKPOINT_CITY_TRANSPORT_PHASE,
+    CHECKPOINT_CIVILIANS_PHASE,
     CHECKPOINT_DIPLOMACY_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
+    normalize_native_city_transport_phase,
+    normalize_native_civilians_phase,
     normalize_native_combined_map,
     normalize_native_diplomacy_phase,
     normalize_native_trade_phase,
+    normalize_retail_city_transport_phase,
+    normalize_retail_civilians_phase,
     normalize_retail_combined_map,
     normalize_retail_diplomacy_phase,
     normalize_retail_trade_phase,
@@ -231,6 +237,40 @@ def _trade_phase_scenario(fixture: Path) -> Scenario:
     )
 
 
+def _city_transport_phase_scenario(fixture: Path) -> Scenario:
+    """Reach the loaded map, then drive the native city+transport transition."""
+    base = _load_save_to_map_scenario(fixture)
+    return Scenario(
+        name="city_transport_phase",
+        native_test="city_and_transport_phase",
+        action_id="city_transport_phase.run",
+        fixture=fixture,
+        probes=base.probes,
+        terminal_checkpoint=base.terminal_checkpoint,
+        timeout_seconds=base.timeout_seconds,
+        start_action=base.start_action,
+        drive="city_transport_phase",
+        result_checkpoint_id=CHECKPOINT_CITY_TRANSPORT_PHASE,
+    )
+
+
+def _civilians_phase_scenario(fixture: Path) -> Scenario:
+    """Reach the loaded map, then drive the native civilians transition."""
+    base = _load_save_to_map_scenario(fixture)
+    return Scenario(
+        name="civilians_phase",
+        native_test="civilians_phase",
+        action_id="civilians_phase.run",
+        fixture=fixture,
+        probes=base.probes,
+        terminal_checkpoint=base.terminal_checkpoint,
+        timeout_seconds=base.timeout_seconds,
+        start_action=base.start_action,
+        drive="civilians_phase",
+        result_checkpoint_id=CHECKPOINT_CIVILIANS_PHASE,
+    )
+
+
 def load_scenario(name: str) -> Scenario:
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / "beginning_of_game.imp"
@@ -242,6 +282,10 @@ def load_scenario(name: str) -> Scenario:
         scenario = _diplomacy_phase_scenario(fixture)
     elif name == "trade_phase":
         scenario = _trade_phase_scenario(fixture)
+    elif name == "city_transport_phase":
+        scenario = _city_transport_phase_scenario(fixture)
+    elif name == "civilians_phase":
+        scenario = _civilians_phase_scenario(fixture)
     else:
         raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
@@ -923,6 +967,741 @@ def _capture_trade_phase(session: GdbSession) -> dict[str, object]:
     }
 
 
+# --- city_transport_phase retail drive -------------------------------------------
+# Mirrors NativeCityTransportCases.cpp RunCityAndTransportPhase: seed one
+# non-capital owned region for development plus the active nation's
+# pendingActionStatus.byAction[10], then invoke TSimMgr::DoCityAndTransport.
+
+_GLOBAL_MAP_STATE = 0x006A43D4
+_DO_CITY_AND_TRANSPORT = 0x0057F140
+_PROVINCE_STRIDE = 0xA8
+_TERRAIN_RECORD_STRIDE = 0x24
+
+
+def _s8(session: GdbSession, address: int) -> int:
+    value = _eval_int(session, f"*(signed char*)0x{address:08x}") & 0xFF
+    return value - 0x100 if value & 0x80 else value
+
+
+def _u32(session: GdbSession, address: int) -> int:
+    return _eval_int(session, f"*(unsigned int*)0x{address:08x}")
+
+
+def _longint_list_entries(session: GdbSession, list_pointer: int) -> list[int]:
+    """Walk a retail TLongintList (CList<long,long> node chain)."""
+    entries: list[int] = []
+    if list_pointer == 0:
+        return entries
+    node = _u32(session, list_pointer + 4)
+    while node != 0:
+        entries.append(_eval_int(session, f"*(int*)0x{node + 8:08x}"))
+        node = _u32(session, node)
+    return entries
+
+
+def _seed_city_transport(session: GdbSession) -> int:
+    """Mirror SeedNonCapitalOwnedRegionDevelopment on the retail process.
+
+    Returns the chosen region id, or raises when the fixture has no eligible
+    non-capital province (the native case fails the same way).
+    """
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    city_score_table = _u32(session, map_state + 0x10)
+    terrain_table = _u32(session, map_state + 0x0C)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, active_slot)
+    if nation == 0 or map_state == 0:
+        raise RuntimeError("retail loaded game has no active nation or map state")
+    city = _u32(session, nation + 0x894)
+    owned_regions = _u32(session, nation + 0x90)
+    if city == 0 or owned_regions == 0:
+        raise RuntimeError("retail active nation has no city or region list")
+
+    economic_turn = _s16(session, sim_mgr + 0x2C)
+    home_tile = _s16(session, nation + 0x88)
+    chosen_id = -1
+    for region_id in _longint_list_entries(session, owned_regions):
+        province = city_score_table + region_id * _PROVINCE_STRIDE
+        session.assign(f"*(short*)0x{province + 0x06:08x}", economic_turn)
+        if (
+            chosen_id == -1
+            and _s16(session, province + 0x04) != home_tile
+            and _s8(session, province + 0x3A) > 0
+        ):
+            chosen_id = region_id
+    if chosen_id == -1:
+        raise RuntimeError(
+            "retail fixture has no non-capital owned province with linked tiles"
+        )
+
+    chosen = city_score_table + chosen_id * _PROVINCE_STRIDE
+    session.assign(f"*(short*)0x{chosen + 0x06:08x}", economic_turn - 6)
+    session.assign(f"*(signed char*)0x{chosen + 0x02:08x}", 0)
+    for index in range(10):
+        session.assign(f"*(short*)0x{chosen + 0x82 + 2 * index:08x}", 0)
+
+    linked = _s16(session, chosen + 0x42)
+    tile = terrain_table + linked * _TERRAIN_RECORD_STRIDE
+    session.assign(f"*(signed char*)0x{tile + 0x11:08x}", 0)
+    session.assign(f"*(signed char*)0x{tile + 0x12:08x}", -1)
+    session.assign(f"*(signed char*)0x{tile + 0x0C:08x}", 3)
+
+    session.assign(f"*(short*)0x{city + 0x1DC + 2:08x}", 4)
+    session.assign(f"*(signed char*)0x{nation + 0x8C8 + 10:08x}", 0x32)
+    return chosen_id
+
+
+def _drive_city_transport_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    _seed_city_transport(session)
+    sim_mgr = _u32(session, _SIM_MGR)
+    # Match the srand(0x1234) in RunCityAndTransportPhase so minister tie-break
+    # rand() draws line up between retail and recomp.
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session,
+        _DO_CITY_AND_TRANSPORT,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+
+def _capture_city_transport_phase(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    city_score_table = _u32(session, map_state + 0x10)
+    terrain_table = _u32(session, map_state + 0x0C)
+    nations: list[dict[str, object] | None] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            nations.append(None)
+            continue
+        arrays = struct.unpack(
+            "<115h", session.read_memory(nation + 0x1C6, 230)
+        )
+        city = _u32(session, nation + 0x894)
+        pending = [
+            byte - 0x100 if byte & 0x80 else byte
+            for byte in session.read_memory(nation + 0x8C8, 0x0D)
+        ]
+        entry: dict[str, object] = {
+            "treasury": _eval_int(session, f"*(int*)0x{nation + 0x10:08x}"),
+            "pending_actions": pending,
+            "reserved_transport": _s16(session, nation + 0xA8),
+            "item_potentials": list(arrays[0:23]),
+            "transported_items": list(arrays[46:69]),
+            "purchased_items": list(
+                struct.unpack("<23h", session.read_memory(nation + 0x198, 46))
+            ),
+            "production_orders": None,
+            "production_accum": None,
+            "production_flags": None,
+            "city_stocks": None,
+        }
+        if city != 0:
+            entry["production_orders"] = list(
+                struct.unpack("<16h", session.read_memory(city + 0x1DC, 32))
+            )
+            entry["production_accum"] = list(
+                struct.unpack("<16h", session.read_memory(city + 0x1FC, 32))
+            )
+            entry["production_flags"] = list(session.read_memory(city + 0x21C, 16))
+            entry["city_stocks"] = list(
+                struct.unpack("<23h", session.read_memory(city + 0xB6, 46))
+            )
+        nations.append(entry)
+    regions: list[dict[str, object]] = []
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    active_nation = _nation_pointer(session, active_slot)
+    if active_nation != 0:
+        for region_id in _longint_list_entries(
+            session, _u32(session, active_nation + 0x90)
+        ):
+            province = city_score_table + region_id * _PROVINCE_STRIDE
+            raw = session.read_memory(province, _PROVINCE_STRIDE)
+            linked = struct.unpack("<h", raw[0x42:0x44])[0]
+            region: dict[str, object] = {
+                "region_id": region_id,
+                "development_stage": struct.unpack("<b", raw[0x02:0x03])[0],
+                "last_turn_tick": struct.unpack("<h", raw[0x06:0x08])[0],
+                "city_score": struct.unpack("<i", raw[0x9C:0xA0])[0],
+                "dev_counts": list(
+                    struct.unpack("<10h", raw[0x82 : 0x82 + 20])
+                ),
+                "linked_tile": linked,
+                "linked_dev_class": None,
+                "linked_edge0": None,
+                "linked_edge1": None,
+            }
+            if linked >= 0:
+                tile = session.read_memory(
+                    terrain_table + linked * _TERRAIN_RECORD_STRIDE,
+                    _TERRAIN_RECORD_STRIDE,
+                )
+                region["linked_dev_class"] = struct.unpack(
+                    "<b", tile[0x0C:0x0D]
+                )[0]
+                region["linked_edge0"] = struct.unpack("<b", tile[0x11:0x12])[0]
+                region["linked_edge1"] = struct.unpack("<b", tile[0x12:0x13])[0]
+            regions.append(region)
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": active_slot,
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "city_transport": {"nations": nations, "regions": regions},
+    }
+
+
+# --- civilians_phase retail drive -------------------------------------------------
+# Mirrors NativeDevelopmentCases.cpp RunCiviliansPhaseCase: the same tile-search
+# helpers run against a snapshot of terrainStateTable, then TCivUnit objects are
+# constructed via retail operator new + ICivUnit + SetOrders/MoveTo inferior
+# calls, and TSimMgr::DoCivilians runs the phase.
+
+_OPERATOR_NEW = 0x00606F73
+_CIV_UNIT_CTOR = 0x005C28C0
+_ICIV_UNIT = 0x005C2940
+_CIV_SET_ORDERS = 0x005C29F0
+_CIV_MOVE_TO = 0x005C2B70
+_APPLY_RAIL_FLAGS = 0x00513FF0
+_DO_CIVILIANS = 0x0057F200
+_CIV_UNIT_SIZE = 0x28
+_TILE_COUNT = 0x1950
+_PROVINCE_COUNT = 0x180
+# g_Build_Hex_Area_LookupTable_00696E70/_00696E80: per-direction scaled-column /
+# row deltas consumed by TMapMgr::GetNeighborTileID (0x512cc0).
+_HEX_COL_DELTAS = 0x00696E70
+_HEX_ROW_DELTAS = 0x00696E80
+_HEX_DIRECTION_COUNT = 6
+_HEX_DIRECTION_EAST = 1
+_TERRAIN_WATER = 5
+
+
+class _TerrainSnapshot:
+    """Byte-level view of terrainStateTable + cityScoreTable for the Find* scans."""
+
+    def __init__(self, session: GdbSession, map_state: int) -> None:
+        self.session = session
+        self.map_state = map_state
+        self.terrain_base = _u32(session, map_state + 0x0C)
+        self.province_base = _u32(session, map_state + 0x10)
+        self.tiles = b""
+        self.provinces = b""
+
+    def refresh_tiles(self) -> None:
+        chunks = []
+        total = _TILE_COUNT * _TERRAIN_RECORD_STRIDE
+        for offset in range(0, total, 0x2000):
+            chunks.append(
+                self.session.read_memory(
+                    self.terrain_base + offset, min(0x2000, total - offset)
+                )
+            )
+        self.tiles = b"".join(chunks)
+
+    def refresh_provinces(self) -> None:
+        total = _PROVINCE_COUNT * _PROVINCE_STRIDE
+        chunks = []
+        for offset in range(0, total, 0x2000):
+            chunks.append(
+                self.session.read_memory(
+                    self.province_base + offset, min(0x2000, total - offset)
+                )
+            )
+        self.provinces = b"".join(chunks)
+
+    def tile_field(self, tile: int, offset: int, fmt: str) -> int:
+        base = tile * _TERRAIN_RECORD_STRIDE + offset
+        size = struct.calcsize(fmt)
+        return struct.unpack(fmt, self.tiles[base : base + size])[0]
+
+    def has_civilian(self, tile: int) -> bool:
+        base = tile * _TERRAIN_RECORD_STRIDE + 0x20
+        return struct.unpack("<I", self.tiles[base : base + 4])[0] != 0
+
+    def province_city_tile(self, province: int) -> int:
+        base = province * _PROVINCE_STRIDE + 0x04
+        return struct.unpack("<h", self.provinces[base : base + 2])[0]
+
+
+def _neighbor_tile(
+    tile: int, direction: int, col_deltas: list[int], row_deltas: list[int]
+) -> int:
+    """Mirror TMapMgr::GetNeighborTileID (0x512cc0)."""
+    row, col = divmod(tile, 0x6C)
+    scaled = (row % 2) + col * 2 + col_deltas[direction]
+    wrapped_row = row + row_deltas[direction]
+    if scaled > 0xD7:
+        scaled -= 0xD9
+    elif scaled < 0:
+        scaled += 0xD8
+    wrapped_row = min(max(wrapped_row, 0), 0x3B)
+    result = (scaled >> 1) + wrapped_row * 0x6C
+    return result if 0 <= result < _TILE_COUNT else -1
+
+
+def _find_unoccupied_rail_section(
+    snapshot: _TerrainSnapshot, col_deltas: list[int], row_deltas: list[int]
+) -> tuple[int, int]:
+    for candidate in range(_TILE_COUNT):
+        if (
+            snapshot.has_civilian(candidate)
+            or snapshot.tile_field(candidate, 0x06, "<b") != 0
+            or snapshot.tile_field(candidate, 0x17, "<B") != 0
+        ):
+            continue
+        neighbor = _neighbor_tile(
+            candidate, _HEX_DIRECTION_EAST, col_deltas, row_deltas
+        )
+        if neighbor == -1 or neighbor == candidate:
+            continue
+        if (
+            not snapshot.has_civilian(neighbor)
+            and snapshot.tile_field(neighbor, 0x06, "<b") == 0
+            and snapshot.tile_field(neighbor, 0x17, "<B") == 0
+        ):
+            return candidate, neighbor
+    return -1, -1
+
+
+def _find_unoccupied_tile(snapshot: _TerrainSnapshot) -> int:
+    for candidate in range(_TILE_COUNT):
+        if not snapshot.has_civilian(candidate):
+            return candidate
+    return -1
+
+
+def _find_unoccupied_province_tile(snapshot: _TerrainSnapshot) -> int:
+    for candidate in range(_TILE_COUNT):
+        if snapshot.has_civilian(candidate):
+            continue
+        province = snapshot.tile_field(candidate, 0x14, "<h")
+        if province < 0 or province >= _PROVINCE_COUNT:
+            continue
+        if snapshot.province_city_tile(province) < 0:
+            continue
+        return candidate
+    return -1
+
+
+def _find_owned_construction_tile(
+    snapshot: _TerrainSnapshot,
+    nation_slot: int,
+    required_flags: int,
+    forbidden_flags: int,
+) -> int:
+    for candidate in range(_TILE_COUNT):
+        if snapshot.has_civilian(candidate):
+            continue
+        if snapshot.tile_field(candidate, 0x04, "<b") != nation_slot:
+            continue
+        flags = snapshot.tile_field(candidate, 0x1C, "<H")
+        if (flags & required_flags) != required_flags or (
+            flags & forbidden_flags
+        ) != 0:
+            continue
+        return candidate
+    return -1
+
+
+def _find_owned_coastal_construction_tile(
+    snapshot: _TerrainSnapshot,
+    nation_slot: int,
+    forbidden_flags: int,
+    col_deltas: list[int],
+    row_deltas: list[int],
+) -> int:
+    for candidate in range(_TILE_COUNT):
+        if snapshot.has_civilian(candidate):
+            continue
+        if snapshot.tile_field(candidate, 0x04, "<b") != nation_slot:
+            continue
+        if (
+            snapshot.tile_field(candidate, 0x1C, "<H") & forbidden_flags
+        ) != 0:
+            continue
+        for direction in range(_HEX_DIRECTION_COUNT):
+            neighbor = _neighbor_tile(
+                candidate, direction, col_deltas, row_deltas
+            )
+            if neighbor == -1:
+                continue
+            if (
+                snapshot.tile_field(neighbor, 0x00, "<b")
+                == _TERRAIN_WATER
+            ):
+                return candidate
+    return -1
+
+
+def _new_civilian_unit(
+    session: GdbSession,
+    kind: int,
+    tile: int,
+    nation_slot: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    unit = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_CIV_UNIT_SIZE,),
+    )
+    _invoke_thiscall(
+        session, _CIV_UNIT_CTOR, unit, records, occurrences, breakpoint_roles
+    )
+    _invoke_thiscall(
+        session,
+        _ICIV_UNIT,
+        unit,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(kind, tile, nation_slot),
+    )
+    return unit
+
+
+def _set_orders(
+    session: GdbSession,
+    unit: int,
+    order: int,
+    payload: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    remaining_turns: "int | None" = None,
+) -> None:
+    _invoke_thiscall(
+        session,
+        _CIV_SET_ORDERS,
+        unit,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(order, payload),
+    )
+    if remaining_turns is not None:
+        session.assign(f"*(short*)0x{unit + 0x24:08x}", remaining_turns)
+
+
+def _town_marker_count(session: GdbSession, nation: int) -> int:
+    town_list = _u32(session, nation + 0x898)
+    if town_list == 0:
+        return -1
+    # TSortedList embeds CPtrList at +0x04; m_nCount sits at +0x10.
+    return _eval_int(session, f"*(int*)0x{town_list + 0x10:08x}")
+
+
+def _drive_civilians_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, active_slot)
+    if nation == 0 or map_state == 0:
+        raise RuntimeError("retail loaded game has no civilian state")
+
+    col_deltas = list(
+        struct.unpack(
+            "<6h",
+            session.read_memory(_HEX_COL_DELTAS, 2 * _HEX_DIRECTION_COUNT),
+        )
+    )
+    row_deltas = list(
+        struct.unpack(
+            "<6h",
+            session.read_memory(_HEX_ROW_DELTAS, 2 * _HEX_DIRECTION_COUNT),
+        )
+    )
+    snapshot = _TerrainSnapshot(session, map_state)
+    snapshot.refresh_tiles()
+    snapshot.refresh_provinces()
+
+    source_tile, destination_tile = _find_unoccupied_rail_section(
+        snapshot, col_deltas, row_deltas
+    )
+    if source_tile < 0:
+        raise RuntimeError("retail map has no clear rail section")
+    engineer = _new_civilian_unit(
+        session, 4, source_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _APPLY_RAIL_FLAGS,
+        map_state,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(source_tile, destination_tile, active_slot),
+    )
+    _set_orders(
+        session, engineer, 5, source_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+    _invoke_thiscall(
+        session,
+        _CIV_MOVE_TO,
+        engineer,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(destination_tile,),
+    )
+    snapshot.refresh_tiles()
+
+    prospect_tile = _find_unoccupied_tile(snapshot)
+    if prospect_tile < 0:
+        raise RuntimeError("retail map has no unoccupied prospecting tile")
+    prospector = _new_civilian_unit(
+        session, 1, prospect_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, prospector, 8, prospect_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+    snapshot.refresh_tiles()
+
+    develop_tile = _find_unoccupied_tile(snapshot)
+    if develop_tile < 0:
+        raise RuntimeError("retail map has no unoccupied development tile")
+    miner = _new_civilian_unit(
+        session, 0, develop_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, miner, 10, develop_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+    snapshot.refresh_tiles()
+
+    fort_tile = _find_unoccupied_province_tile(snapshot)
+    if fort_tile < 0:
+        raise RuntimeError("retail map has no unoccupied province tile")
+    fort_engineer = _new_civilian_unit(
+        session, 4, fort_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, fort_engineer, 12, fort_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+    snapshot.refresh_tiles()
+
+    purchase_tile = _find_unoccupied_tile(snapshot)
+    if purchase_tile < 0:
+        raise RuntimeError("retail map has no unoccupied purchase tile")
+    developer = _new_civilian_unit(
+        session, 7, purchase_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, developer, 13, purchase_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+    snapshot.refresh_tiles()
+
+    sleep_tile = _find_unoccupied_tile(snapshot)
+    if sleep_tile < 0:
+        raise RuntimeError("retail map has no unoccupied sleep tile")
+    sleeper = _new_civilian_unit(
+        session, 2, sleep_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, sleeper, 2, sleep_tile, records, occurrences,
+        breakpoint_roles,
+    )
+    snapshot.refresh_tiles()
+
+    redeploy_tile = _find_unoccupied_tile(snapshot)
+    if redeploy_tile < 0:
+        raise RuntimeError("retail map has no unoccupied redeploy tile")
+    traveler = _new_civilian_unit(
+        session, 5, redeploy_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, traveler, 1, redeploy_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+    snapshot.refresh_tiles()
+
+    depot_tile = _find_owned_construction_tile(snapshot, active_slot, 0, 0x24)
+    if depot_tile < 0:
+        raise RuntimeError(
+            "retail map has no owned depot construction tile"
+        )
+    depot_engineer = _new_civilian_unit(
+        session, 4, depot_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, depot_engineer, 6, depot_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+    snapshot.refresh_tiles()
+
+    port_tile = _find_owned_coastal_construction_tile(
+        snapshot, active_slot, 0x30, col_deltas, row_deltas
+    )
+    if port_tile < 0:
+        raise RuntimeError(
+            "retail map has no owned coastal port construction tile"
+        )
+    port_flags = snapshot.tile_field(port_tile, 0x1C, "<H") | 1
+    session.assign(
+        f"*(unsigned short*)0x{snapshot.terrain_base + port_tile * _TERRAIN_RECORD_STRIDE + 0x1C:08x}",
+        port_flags,
+    )
+    port_engineer = _new_civilian_unit(
+        session, 4, port_tile, active_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _set_orders(
+        session, port_engineer, 7, port_tile, records, occurrences,
+        breakpoint_roles, remaining_turns=1,
+    )
+
+    town_counts_before = [
+        _town_marker_count(session, _nation_pointer(session, slot))
+        for slot in range(_MAJOR_NATION_COUNT)
+    ]
+
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session,
+        _DO_CIVILIANS,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+    # Mirror the native post-pass: zero hasAdjacentCity (TTown+0x4e) only on
+    # towns this phase created (ordinals beyond townCountsBefore).
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation_ptr = _nation_pointer(session, slot)
+        town_list = _u32(session, nation_ptr + 0x898) if nation_ptr else 0
+        before = town_counts_before[slot]
+        if town_list == 0 or before < 0:
+            continue
+        node = _u32(session, town_list + 0x08)
+        ordinal = 1
+        while node != 0:
+            if ordinal > before:
+                town = _u32(session, node + 8)
+                session.assign(
+                    f"*(unsigned char*)0x{town + 0x4E:08x}", 0
+                )
+            node = _u32(session, node)
+            ordinal += 1
+
+
+def _capture_civilians_phase(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    terrain_base = _u32(session, map_state + 0x0C)
+    units: list[dict[str, object]] = []
+    total = _TILE_COUNT * _TERRAIN_RECORD_STRIDE
+    tiles = b""
+    chunks = []
+    for offset in range(0, total, 0x2000):
+        chunks.append(
+            session.read_memory(terrain_base + offset, min(0x2000, total - offset))
+        )
+    tiles = b"".join(chunks)
+    for tile_index in range(_TILE_COUNT):
+        base = tile_index * _TERRAIN_RECORD_STRIDE
+        head = struct.unpack("<I", tiles[base + 0x20 : base + 0x24])[0]
+        unit = head
+        while unit != 0:
+            raw = session.read_memory(unit, _CIV_UNIT_SIZE)
+            units.append(
+                {
+                    "tile": tile_index,
+                    "kind": struct.unpack("<h", raw[0x04:0x06])[0],
+                    "order": struct.unpack("<h", raw[0x08:0x0A])[0],
+                    "target": struct.unpack("<h", raw[0x0C:0x0E])[0],
+                    "owner": struct.unpack("<h", raw[0x18:0x1A])[0],
+                    "remaining_turns": struct.unpack("<h", raw[0x24:0x26])[0],
+                    "completion_marker": struct.unpack("<h", raw[0x26:0x28])[0],
+                }
+            )
+            unit = struct.unpack("<I", raw[0x14:0x18])[0]
+    nations: list[dict[str, object] | None] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            nations.append(None)
+            continue
+        city = _u32(session, nation + 0x894)
+        nations.append(
+            {
+                "treasury": _eval_int(
+                    session, f"*(int*)0x{nation + 0x10:08x}"
+                ),
+                "town_count": _town_marker_count(session, nation),
+                "city_stocks": (
+                    list(
+                        struct.unpack(
+                            "<23h", session.read_memory(city + 0xB6, 46)
+                        )
+                    )
+                    if city != 0
+                    else None
+                ),
+            }
+        )
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "civilians": {"units": units, "nations": nations},
+    }
+
+
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
     if queue == 0:
         return []
@@ -1153,6 +1932,18 @@ def run_binary(
                         )
                         result_fields.update(_capture_trade_phase(session))
                         result_probe = CHECKPOINT_TRADE_PHASE
+                    elif scenario.drive == "city_transport_phase":
+                        _drive_city_transport_phase(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_city_transport_phase(session)
+                        result_probe = CHECKPOINT_CITY_TRANSPORT_PHASE
+                    elif scenario.drive == "civilians_phase":
+                        _drive_civilians_phase(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_civilians_phase(session)
+                        result_probe = CHECKPOINT_CIVILIANS_PHASE
                     else:
                         raise RuntimeError(
                             f"unknown scenario drive {scenario.drive!r}"
@@ -1256,7 +2047,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         run_dir,
         timeout_seconds,
     )
-    if scenario.drive in {"diplomacy_phase", "trade_phase"}:
+    if scenario.drive in {
+        "diplomacy_phase",
+        "trade_phase",
+        "city_transport_phase",
+        "civilians_phase",
+    }:
         from tools.runtime.native_oracle import run_native_transition
 
         native_dir = run_dir / "recomp"
@@ -1283,6 +2079,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         if scenario.drive == "diplomacy_phase":
             recomp_observation = normalize_native_diplomacy_phase(native_result)
+        elif scenario.drive == "city_transport_phase":
+            recomp_observation = normalize_native_city_transport_phase(
+                native_result
+            )
+        elif scenario.drive == "civilians_phase":
+            recomp_observation = normalize_native_civilians_phase(native_result)
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
         recomp_identity = native_result.get("host", {}).get("provenance", {})
@@ -1323,6 +2125,14 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     elif result_checkpoint == CHECKPOINT_TRADE_PHASE:
         retail_observation = normalize_retail_trade_phase(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_CITY_TRANSPORT_PHASE:
+        retail_observation = normalize_retail_city_transport_phase(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_CIVILIANS_PHASE:
+        retail_observation = normalize_retail_civilians_phase(
             retail_records[0]["fields"]
         )
     else:

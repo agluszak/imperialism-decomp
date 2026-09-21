@@ -3199,6 +3199,150 @@ JSON_Value* CaptureTradeEphemeral() {
   return object.Release();
 }
 
+// Compact city+transport-phase state for retail-vs-recomp transition
+// differentials: per-major-nation treasury, pending-action bytes, transport
+// arrays, city production tables and stocks, plus the active nation's owned
+// region development records and their first linked tile.
+JSON_Value* CaptureCityTransportEphemeral() {
+  JsonObject object;
+  JsonArray nations;
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0) {
+      nations.AddNull();
+      continue;
+    }
+    JsonObject entry;
+    entry.Set("treasury", nation->treasuryValue10);
+    JsonArray pending;
+    for (int index = 0; index < 0x0d; ++index) {
+      pending.Add(static_cast<int>(nation->pendingActionStatus.byAction[index]));
+    }
+    entry.Set("pending_actions", pending.Release());
+    entry.Set("reserved_transport",
+              static_cast<int>(nation->reservedTransportCapacity));
+    entry.Set("item_potentials",
+              CaptureShortArray(nation->itemPotentials, kResourceKindCount));
+    entry.Set("transported_items",
+              CaptureShortArray(nation->transportedItemsByResource,
+                                kResourceKindCount));
+    entry.Set("purchased_items",
+              CaptureShortArray(nation->purchasedItemsByResource, kResourceKindCount));
+    if (nation->city != 0) {
+      entry.Set("production_orders",
+                CaptureShortArray(nation->city->productionOrderTable1dc, 0x10));
+      entry.Set("production_accum",
+                CaptureShortArray(nation->city->productionAccum1fc, 0x10));
+      JsonArray flags;
+      for (int index = 0; index < 0x10; ++index) {
+        flags.Add(static_cast<int>(nation->city->productionFlags21c[index]));
+      }
+      entry.Set("production_flags", flags.Release());
+      entry.Set("city_stocks",
+                CaptureShortArray(&nation->city->cityStockCottonB6,
+                                  kResourceKindCount));
+    } else {
+      entry.SetNull("production_orders");
+      entry.SetNull("production_accum");
+      entry.SetNull("production_flags");
+      entry.SetNull("city_stocks");
+    }
+    nations.Add(entry.Release());
+  }
+  JsonArray regions;
+  TGreatPower* active = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  if (active != 0 && active->ownedRegionList != 0 &&
+      g_pGlobalMapState != 0 && g_pGlobalMapState->cityScoreTable != 0) {
+    TLongintList* owned = active->ownedRegionList;
+    for (int ordinal = 1; ordinal <= owned->GetSize(); ++ordinal) {
+      const short regionId = static_cast<short>(owned->At(ordinal));
+      Province& province = g_pGlobalMapState->cityScoreTable[regionId];
+      JsonObject region;
+      region.Set("region_id", static_cast<int>(regionId));
+      region.Set("development_stage",
+                 static_cast<int>(province.developmentStage));
+      region.Set("last_turn_tick", static_cast<int>(province.lastTurnTick));
+      region.Set("city_score", province.cityScoreValue);
+      region.Set("dev_counts",
+                 CaptureShortArray(province.resourceDevelopmentCounts82, 10));
+      const short linked = static_cast<short>(province.linkedTileIndices42[0]);
+      region.Set("linked_tile", static_cast<int>(linked));
+      if (linked >= 0) {
+        TTerrainStateRecord& tile =
+            g_pGlobalMapState->terrainStateTable[linked];
+        region.Set("linked_dev_class",
+                   static_cast<int>(tile.developmentClassNibbles0c));
+        region.Set("linked_edge0",
+                   static_cast<int>(tile.resourceTypeByEdge[0]));
+        region.Set("linked_edge1",
+                   static_cast<int>(tile.resourceTypeByEdge[1]));
+      } else {
+        region.SetNull("linked_dev_class");
+        region.SetNull("linked_edge0");
+        region.SetNull("linked_edge1");
+      }
+      regions.Add(region.Release());
+    }
+  }
+  object.Set("nations", nations.Release());
+  object.Set("regions", regions.Release());
+  return object.Release();
+}
+
+// Compact civilians-phase state for retail-vs-recomp transition differentials:
+// every tile's civilian-order chain (kind, order, target, owner, countdowns)
+// plus per-major-nation treasury, town count, and city stocks.
+JSON_Value* CaptureCiviliansEphemeral() {
+  JsonObject object;
+  JsonArray units;
+  if (g_pGlobalMapState != 0 && g_pGlobalMapState->terrainStateTable != 0) {
+    for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+      TUnit* unit = g_pGlobalMapState->terrainStateTable[tileIndex]
+                        .firstCivilianOrder20;
+      while (unit != 0) {
+        JsonObject entry;
+        entry.Set("tile", tileIndex);
+        entry.Set("kind", static_cast<int>(unit->orderType));
+        entry.Set("order", static_cast<int>(unit->unitOrder));
+        entry.Set("target", static_cast<int>(unit->orderTargetIndex0C));
+        entry.Set("owner", static_cast<int>(unit->ownerNationSlot18));
+        entry.Set("remaining_turns",
+                  static_cast<int>(
+                      static_cast<TCivUnit*>(unit)->remainingTurns24));
+        entry.Set("completion_marker",
+                  static_cast<int>(
+                      static_cast<TCivUnit*>(unit)->completionMarker26));
+        units.Add(entry.Release());
+        unit = unit->nextAtLocation14;
+      }
+    }
+  }
+  object.Set("units", units.Release());
+  JsonArray nations;
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0) {
+      nations.AddNull();
+      continue;
+    }
+    JsonObject entry;
+    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("town_count",
+              nation->townMarkerList != 0 ? nation->townMarkerList->GetCount()
+                                        : -1);
+    if (nation->city != 0) {
+      entry.Set("city_stocks",
+                CaptureShortArray(&nation->city->cityStockCottonB6,
+                                  kResourceKindCount));
+    } else {
+      entry.SetNull("city_stocks");
+    }
+    nations.Add(entry.Release());
+  }
+  object.Set("nations", nations.Release());
+  return object.Release();
+}
+
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
@@ -3214,6 +3358,8 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (g_pTradeMgr != 0) {
     object.Set("trade", CaptureTradeEphemeral());
   }
+  object.Set("city_transport", CaptureCityTransportEphemeral());
+  object.Set("civilians", CaptureCiviliansEphemeral());
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();
