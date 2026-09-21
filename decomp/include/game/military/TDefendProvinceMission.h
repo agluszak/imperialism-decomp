@@ -39,6 +39,9 @@ public:
 
   static float ComputeLocalSupportVectorScore(int nodeContext);
   static float ComputeCrossNationSupportVectorScore(int nodeContext);
+  // 0x53eca0 -- dead member (no live callers): the instance form, forwarding
+  // presentLocation14 to the static scorer.
+  float ComputePresentLocationCrossNationSupportScore();
 
   // Walks orderListAt18 and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every
   // linked TMilitaryUnit whose tileIndex06 differs from newTile (propagating this

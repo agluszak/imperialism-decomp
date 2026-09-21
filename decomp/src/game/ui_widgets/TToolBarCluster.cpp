@@ -21,7 +21,9 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/navy/TTaskForce.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_core/TWindow.h"
+#include "game/globals/ui_core_globals.h"
 #include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/raw_globals.h"
@@ -377,6 +379,23 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   CPoint placement;
   g_pViewMgr->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->Locate(placement, 0);
+  node->PoseModally();
+  node->Close();
+  node->Free();
+}
+
+// Dead turn-event dialog helper (no live callers): poses the game-preferences dialog
+// resolved through the factory registry, then closes and frees it.
+// FUNCTION: IMPERIALISM 0x005dc600
+void PoseGamePreferencesDialogModally() {
+  TWindow* node = static_cast<TWindow*>(
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+          kTurnEventGamePreferences, 0));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf90);
+  }
+  node->SetModality(1);
   node->PoseModally();
   node->Close();
   node->Free();

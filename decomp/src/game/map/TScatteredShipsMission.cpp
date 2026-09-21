@@ -98,6 +98,18 @@ bool TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* z
   return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
 }
 
+// Dead cursor helper (no live callers): advances *cursor to its prev18 neighbour,
+// wrapping back to the list head once it walks off the end; returns the pre-wrap value.
+// FUNCTION: IMPERIALISM 0x0053bd00
+TZone* AdvanceZoneCursorToPrevOrWrapToHead(TZone** cursor) {
+  TZone* next = (*cursor)->prev18;
+  *cursor = next;
+  if (next == nullptr) {
+    *cursor = g_pMapActionContextListHead;
+  }
+  return next;
+}
+
 // Selects the nearest inactive ship-list entry to *targetZone, marks the selected link
 // active, and returns its ship. The pointer-to-pointer contract makes each distance probe
 // observe the caller's current zone variable.

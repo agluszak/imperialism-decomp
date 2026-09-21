@@ -250,6 +250,11 @@ void TDefendProvinceMission::Free() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0053eca0
+float TDefendProvinceMission::ComputePresentLocationCrossNationSupportScore() {
+  return ComputeCrossNationSupportVectorScore(presentLocation14);
+}
+
 // FUNCTION: IMPERIALISM 0x0053ecc0
 void TDefendProvinceMission::SetStateByte8To2() {
   TGreatPower* nation = g_apNationStates[nationId04];

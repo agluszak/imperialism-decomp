@@ -1358,6 +1358,11 @@ void TSimMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
   g_pDiplomacyTurnStateManager->RemoveNationSlotAndNotifyPeers_Impl(nationSlot);
 }
 
+// FUNCTION: IMPERIALISM 0x005813d0
+void TSimMgr::NotifyActiveNationLost() {
+  g_apNationStates[activeNationSlot]->SorryYouLose();
+}
+
 // FUNCTION: IMPERIALISM 0x00581400
 void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   if (writeBack) {

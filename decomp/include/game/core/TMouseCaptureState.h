@@ -15,7 +15,11 @@ void __cdecl CopyCurrentMouseCapturePoint(CPoint* outPoint);
 // real __thiscall methods (ecx = &g_McAppMouseCaptureState).
 class TMouseCaptureState {
 public:
+  // SYNTHETIC: IMPERIALISM 0x00489b10
+  // TMouseCaptureState::TMouseCaptureState
   TMouseCaptureState() : capturedControl(0) {}
+  // SYNTHETIC: IMPERIALISM 0x00489b30
+  // TMouseCaptureState::~TMouseCaptureState
   ~TMouseCaptureState() {
     if (capturedControl != 0) {
       capturedControl = 0;

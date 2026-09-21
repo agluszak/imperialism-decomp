@@ -2,6 +2,7 @@
 #include "game/ui_tags_common.h"
 
 #include "game/tactical/TTacticalBattleView.h"
+#include "game/ui_core/TPicture.h"
 
 // FUNCTION: IMPERIALISM 0x0045d3b0
 void TTacMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
@@ -14,6 +15,14 @@ void TTacMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
 // TTacMapUberPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045d410
 TTacMapUberPicture::~TTacMapUberPicture() {}
+// FUNCTION: IMPERIALISM 0x005ad290
+void TTacMapUberPicture::SetWindPictureResourceIdAndRefresh(int resourceBase) {
+  TPicture* windPicture =
+      static_cast<TPicture*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'i', 'n', 'd')));
+  windPicture->AssertValid();
+  windPicture->SetPictureResourceIdAndRefresh(static_cast<short>(resourceBase + 0xf00), 1);
+}
+
 // SYNTHETIC: IMPERIALISM 0x005ad2e0
 // TTacMapUberPicture::CreateObject
 

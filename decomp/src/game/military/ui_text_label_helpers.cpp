@@ -152,6 +152,12 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
                                                   pointSize, themeCode, themeCode2, caption);
 }
 
+// Dead helper (no live callers): the bare tag-resolve form the siblings above wrap.
+// FUNCTION: IMPERIALISM 0x005c4380
+TView* __cdecl ResolveControlByTagInActiveDialog(unsigned int controlTag) {
+  return g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+}
+
 // Recursively applies a picture-rect/theme state to every TStaticText control in `view`'s
 // subtree: if `view` itself is a TStaticText it gets the state, then each subview is visited
 // via the shared CSubViewIterator (which recurses into their subviews in turn).

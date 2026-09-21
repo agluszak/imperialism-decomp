@@ -1723,6 +1723,15 @@ int ComputeStridedRecordAddress6C(int recordBase, int recordIndex) {
   return recordBase + recordIndex * 0x6c;
 }
 
+// Dead coordinate helper: scales both shorts into 64-pixel tile units through the
+// out params (swapped order) and returns the second out pointer.
+// FUNCTION: IMPERIALISM 0x00512410
+short* ScaleOffsetsToTilePixelUnits(short a, short b, short* outB, short* outA) {
+  *outB = static_cast<short>(b << 6);
+  *outA = static_cast<short>(a << 6);
+  return outA;
+}
+
 // FUNCTION: IMPERIALISM 0x005125a0
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol) {
   *outRow = tileIndex / 0x6c;
@@ -1742,6 +1751,14 @@ void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short
 // FUNCTION: IMPERIALISM 0x00512850
 int ComputeTileIndexFromHexColumnX2AndRow(short columnX2, int row) {
   return columnX2 / 2 + row * 0x6c;
+}
+
+// Dead coordinate helper: copies `b` to `outCopy` and stores/returns `a` halved.
+// FUNCTION: IMPERIALISM 0x00512880
+int CopyOffsetAndHalve(short a, short b, short* outHalf, short* outCopy) {
+  *outCopy = b;
+  *outHalf = static_cast<short>(a / 2);
+  return a / 2;
 }
 
 // Row delta (in tiles) for one of the six hex-neighbour directions, wrapping the direction

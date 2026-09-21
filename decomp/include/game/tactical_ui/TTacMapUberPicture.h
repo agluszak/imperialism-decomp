@@ -19,6 +19,10 @@ public:
 
   TTacMapUberPicture() : tacticalBattleView94(nullptr) {}
 
+  // Dead helper: retargets the 'wind' child picture to `resourceBase + 0xf00` with an
+  // immediate refresh. No live caller survives in the retail binary.
+  void SetWindPictureResourceIdAndRefresh(int resourceBase);
+
   // Tactical 'DLOG' child resolved by DoPostCreate. Scroll forwards
   // the edge mask to its slot 0x6b
   // (TTacticalBattleView::Scroll).

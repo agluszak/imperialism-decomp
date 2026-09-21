@@ -937,8 +937,8 @@ address|name|symbol|size|type|prototype|provenance
 489a70|GetMcAppUiActiveFlag||6|function|int GetMcAppUiActiveFlag()|
 489a90|ClearGlobalUiInvalidationFlagAndReturnPrevious||16|function|int ClearGlobalUiInvalidationFlagAndReturnPrevious(void)|
 489ab0|`dynamic initializer for 'g_McAppMouseCaptureState''||24|function|void __cdecl `dynamic initializer for 'g_McAppMouseCaptureState''(void)|source_recovery
-489b10|IltTarget_00489b10||10|function|undefined IltTarget_00489b10()|
-489b30|IltTarget_00489b30||21|function|undefined IltTarget_00489b30()|
+489b10|TMouseCaptureState::TMouseCaptureState||10|function|TMouseCaptureState()|compiler_synthetic
+489b30|TMouseCaptureState::~TMouseCaptureState||21|function|~TMouseCaptureState()|compiler_synthetic
 489b60|NotifyGlobalCaptureOwnerState1WithCachedCoords||99|function|undefined NotifyGlobalCaptureOwnerState1WithCachedCoords()|
 489bf0|TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer||133|function|void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point, TControl* control)|
 489cb0|TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords||108|function|undefined NotifyCaptureOwnerState1AndMaybeUpdateCoords()|

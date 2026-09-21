@@ -149,6 +149,25 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
   return g_pQuickDrawCachedUiFont;
 }
 
+// GLOBAL: IMPERIALISM 0x00695120
+static unsigned char g_reversedDwordScratchBuffer[5];
+
+// Dead byte-order helper: writes `value` big-endian into the static scratch buffer
+// after its leading byte and returns the buffer base (matching the original's
+// dword store plus byte fixes at 0x695121..0x695124).
+// FUNCTION: IMPERIALISM 0x004945a0
+unsigned char* __cdecl WriteDwordBytesReversedToScratchBuffer(unsigned long value) {
+  unsigned char* p = g_reversedDwordScratchBuffer + 1;
+  unsigned char b3 = ((unsigned char*)&value)[3];
+  *(unsigned long*)p = value;
+  unsigned char t = p[2];
+  p[3] = (unsigned char)value;
+  p[2] = p[1];
+  p[0] = b3;
+  p[1] = t;
+  return g_reversedDwordScratchBuffer;
+}
+
 // FUNCTION: IMPERIALISM 0x00494950
 void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
   if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {

@@ -131,6 +131,9 @@ public:
   // clears its state/descriptor slots and the per-slot flag byte, decrements the active
   // count, then resets its diplomacy relation matrices via g_pDiplomacyTurnStateManager.
   void RemoveNationSlotAndNotifyPeers(NationSlot nationSlot);
+  // 0x5813d0 -- tail-forwarder: hands the "this nation leaves play" transition to the
+  // active great power's SorryYouLose (vtable byte offset 0x2ac).
+  void NotifyActiveNationLost();
   // Mac symbol oracle: SetDifficultyLevel(eDifficulty). Store the selected difficulty
   // into +0x40 and set the +0x5c short flag only for the zero-valued level; values 1..4
   // and out-of-range values clear it. Windows 0x57d870.

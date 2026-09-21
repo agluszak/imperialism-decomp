@@ -904,6 +904,13 @@ void TShip::SetTaskForce(TTaskForce* newEntry) {
   }
 }
 
+// Dead predicate (no live callers): true when `count * unitSize` rounds up to an
+// exact multiple of `slotSize`, i.e. the load fills whole slots with no remainder.
+// FUNCTION: IMPERIALISM 0x00551290
+bool DoesLoadFillWholeSlots(int count, int unitSize, int slotSize) {
+  return ((count * unitSize + slotSize - 1) / slotSize * slotSize) / unitSize == count;
+}
+
 // FUNCTION: IMPERIALISM 0x005519d0
 int FindCumulativeWeightBucketIndex(short* weightTable, short roll) {
   int index = -1;

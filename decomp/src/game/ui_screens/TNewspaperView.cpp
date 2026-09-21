@@ -246,6 +246,13 @@ void TNewspaperView::ProvinceParmList(CString& out, int cityRecordIndex) {
   out = cityName;
 }
 
+// Dead helper (no live callers): copies the display name of the map action context
+// identified by `nodeId` into `out`.
+// FUNCTION: IMPERIALISM 0x0055df20
+void __stdcall LookupZoneDisplayNameByNodeId(CString* out, short nodeId) {
+  FindMapActionContextByNodeId(nodeId)->AssignZoneDisplayNameToOutputRef(out);
+}
+
 // FUNCTION: IMPERIALISM 0x0055df50
 int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, int recordOffset,
                                                            int recordLength, TextStyle* style,

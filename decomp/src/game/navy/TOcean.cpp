@@ -1,4 +1,5 @@
 #include "game/navy/TOcean.h"
+#include "game/ui_tags_common.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -15,6 +16,7 @@
 #include "game/ui_screens/TPortZone.h"
 #include "game/nation/TGreatPower.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapUberPicture.h"
@@ -801,6 +803,15 @@ void TOcean::ForgetForce(TTaskForce* entry) {
   } else {
     zone->ShowFocusIngot(0);
   }
+}
+
+// Dead helper (no live callers): resolves the 'DOOG' control in the active dialog and
+// validates it.
+// FUNCTION: IMPERIALISM 0x005644f0
+TView* __cdecl ResolveDoogControlInActiveDialog() {
+  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDOOG);
+  control->AssertValid();
+  return control;
 }
 
 // FUNCTION: IMPERIALISM 0x00564530

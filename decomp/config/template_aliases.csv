@@ -265,3 +265,4 @@
 0x006244a3|0x0062409a|CThreadLocalObject|folded_symbol_group
 0x004b8530|0x004b4f70|?IProductionOrder@TProductionOrder@@UAEXPAVTCity@@F@Z|per_tu_duplicate
 0x004138e0|0x004146d0|?PostWmCloseToMainThreadWindow@TApplication@@QAEXXZ|per_tu_duplicate
+0x004940b0|0x00494010|??_FTQuickDrawClipStateInitializer@@QAEXXZ|per_tu_duplicate
