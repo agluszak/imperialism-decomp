@@ -11,7 +11,6 @@
 #include "game/city/TCity.h"
 #include "game/city/TPopulationMgr.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_screens/TTerrainHelpPicture.h"
 #include "game/ui_core/TWindow.h"
@@ -319,7 +318,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
   }
   CString minorNameText;
   short advisoryCount = 0;
-  TSortedByRelationshipList* queue = g_apNationStates[activeNationIndex]->turnEventQueue;
+  TPtrList* queue = g_apNationStates[activeNationIndex]->turnEventQueue;
   int i;
   for (i = 1; i <= queue->GetSize(); ++i) {
     short* eventRecord = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(i));

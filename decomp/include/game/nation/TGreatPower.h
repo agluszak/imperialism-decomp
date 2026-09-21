@@ -17,7 +17,7 @@ class TMinister;
 class TForeignMinister;
 class TDefenseMinister;
 class TCityInteriorMinister;
-class TSortedByRelationshipList;
+class TPtrList;
 class TCity;
 class TZone;
 class TTurnStartEvent;
@@ -430,11 +430,12 @@ public:
   int aidAllocationMatrix[0x170];
   int budgetPoolBase;
   int budgetPoolDelta;
-  // Turn/proposal/diplomacy queues are TSortedByRelationshipList instances
-  // (constructed via TSortedByRelationshipList::CreateObject in 0x004d8cc0).
-  TSortedByRelationshipList* turnEventQueue;
-  TSortedByRelationshipList* proposalQueue;
-  TSortedByRelationshipList* diplomacyTrackedSlots[0x11];
+  // Turn/proposal/diplomacy queues are TPtrList instances (vtable 0x00649068)
+  // allocated with operator new in 0x004d8cc0, with recordSize14 assigned
+  // afterward (4 for the queues, 0xC for the tracked slots).
+  TPtrList* turnEventQueue;
+  TPtrList* proposalQueue;
+  TPtrList* diplomacyTrackedSlots[0x11];
   // 0x894 — city production state; same object used as TCity in diplomacy paths.
   TCity* city;
   TSortedList* townMarkerList;
@@ -456,7 +457,7 @@ public:
   int field900;
   unsigned char field904;
   unsigned char pad_905[3];
-  TSortedByRelationshipList* turnSummaryQueue;
+  TPtrList* turnSummaryQueue;
   TSortedList* missionNodeQueue;
   int field910;
   int aidAllocationTotal;

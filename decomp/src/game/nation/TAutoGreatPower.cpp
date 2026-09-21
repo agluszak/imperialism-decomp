@@ -17,6 +17,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_core/TSortedList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"

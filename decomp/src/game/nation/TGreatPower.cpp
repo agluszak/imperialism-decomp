@@ -54,6 +54,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/ui_core/TSortedList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/core/TStream.h"
 #include "game/city/TTown.h"
@@ -1302,7 +1303,7 @@ void TGreatPower::AddToDealBook(short kind, NationSlot targetNation, short value
 char TGreatPower::AnyTrackedSlotEntryHasZeroField4(short targetSlot) {
   char found = 0;
   for (short entryIndex = 1; found == 0; ++entryIndex) {
-    TSortedByRelationshipList* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
+    TPtrList* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
     if (entryIndex > trackedSlot->GetSize()) {
       return found;
     }
@@ -1337,7 +1338,7 @@ void TGreatPower::AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, 
                                                                 int payload) {
   bool matched = false;
   for (int entryIndex = 1; !matched; ++entryIndex) {
-    TSortedByRelationshipList* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
+    TPtrList* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
     if (entryIndex > trackedSlot->GetSize()) {
       return;
     }
@@ -1997,7 +1998,7 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
 
 // FUNCTION: IMPERIALISM 0x004df370
 void TGreatPower::RejectOffer(short proposalQueueIndex) {
-  TSortedByRelationshipList* queue = this->proposalQueue;
+  TPtrList* queue = this->proposalQueue;
   int queueOrdinal = proposalQueueIndex;
   if (queueOrdinal > queue->GetSize()) {
     return;
@@ -2099,7 +2100,7 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
   int proposalIndex = 0;
   int queueIndex = 0;
 
-  TSortedByRelationshipList* queue = this->proposalQueue;
+  TPtrList* queue = this->proposalQueue;
   short proposalCount = static_cast<short>(queue->GetSize());
   if (proposalCount != 0 && proposalCount > 0) {
     proposalIndex = 1;
@@ -3287,7 +3288,7 @@ void TGreatPower::AnnounceLater(short orderKind, short payload, short flags) {
   packet.payload = payload;
   packet.flags = flags;
 
-  TSortedByRelationshipList* turnSummaryQueue = this->turnSummaryQueue;
+  TPtrList* turnSummaryQueue = this->turnSummaryQueue;
   if (turnSummaryQueue != 0) {
     turnSummaryQueue->InsertCopiedRecordSortedByComparator(&packet);
   }

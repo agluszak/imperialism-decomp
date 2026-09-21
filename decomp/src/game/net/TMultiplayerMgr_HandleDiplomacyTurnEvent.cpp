@@ -24,6 +24,7 @@
 #include "game/nation/TAutoGreatPower.h"
 #include "game/city/TCity.h"
 #include "game/ui_core/TSortedList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/city_ui/TCountry.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
@@ -688,14 +689,14 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
              sizeof(newNation->aidAllocationMatrix));
       newNation->budgetPoolBase = oldNation->budgetPoolBase;
       newNation->budgetPoolDelta = oldNation->budgetPoolDelta;
-      TSortedByRelationshipList* turnEvents = newNation->turnEventQueue;
+      TPtrList* turnEvents = newNation->turnEventQueue;
       newNation->turnEventQueue = oldNation->turnEventQueue;
       oldNation->turnEventQueue = turnEvents;
-      TSortedByRelationshipList* proposals = newNation->proposalQueue;
+      TPtrList* proposals = newNation->proposalQueue;
       newNation->proposalQueue = oldNation->proposalQueue;
       oldNation->proposalQueue = proposals;
       for (int trackedSlot = 0; trackedSlot < 0x11; ++trackedSlot) {
-        TSortedByRelationshipList* tracked = newNation->diplomacyTrackedSlots[trackedSlot];
+        TPtrList* tracked = newNation->diplomacyTrackedSlots[trackedSlot];
         newNation->diplomacyTrackedSlots[trackedSlot] =
             oldNation->diplomacyTrackedSlots[trackedSlot];
         oldNation->diplomacyTrackedSlots[trackedSlot] = tracked;

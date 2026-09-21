@@ -49,7 +49,7 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/city_ui/TCountry.h" // FormatOverlayTerrainLabelText (terrain overlay case)
 #include "game/nation/TGreatPower.h"
-#include "game/military_ui/TSortedByRelationshipList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/military/TGarrisonView.h"
 #include "game/map/TMapMgr.h"
 #include "game/gfx/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
@@ -2608,7 +2608,7 @@ void TViewMgr::ShowUnitHistory(short nationSlot) {
     toolbar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
   }
 
-  TSortedByRelationshipList* history = g_apNationStates[nationSlot]->turnSummaryQueue;
+  TPtrList* history = g_apNationStates[nationSlot]->turnSummaryQueue;
   int historyCount = history->GetSize();
   if (historyCount <= 0) {
     return;

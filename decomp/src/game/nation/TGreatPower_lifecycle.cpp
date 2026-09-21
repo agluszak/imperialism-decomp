@@ -54,7 +54,8 @@
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/military_ui/TSortedByRelationshipList.h"
+#include "game/TList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/ui_core/TSortedList.h"
 #include "game/core/TStream.h"
 #include "game/city/TTown.h"
@@ -213,13 +214,7 @@ short TGreatPower::GetMerchantCapacity(void) {
 void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) {
   this->InitializeNationStateIdentityAndOwnedRegionList(nationSlotIndex);
 
-  TSimMgr* localizationRuntime = g_pSimMgr;
-  if (localizationRuntime != 0) {
-    int runtimeIndex = localizationRuntime->difficultyLevel;
-    this->treasuryValue10 = g_anNationStartingTreasuryByLocale[runtimeIndex];
-  } else {
-    this->treasuryValue10 = 0;
-  }
+  this->treasuryValue10 = g_anNationStartingTreasuryByLocale[g_pSimMgr->difficultyLevel];
 
   this->diplomacyEligibilityA0 = (humanControlledFlag == 1) ? 1 : 0;
 
@@ -229,23 +224,17 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   }
   this->city = cityModel;
 
-  this->townMarkerList = new TSortedList();
+  this->townMarkerList = new TList();
 
   this->grantTotalCost = 0;
   this->transportCapacity = 0x0F;
   this->field900 = 0x0F;
 
-  this->turnEventQueue =
-      static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
-  if (this->turnEventQueue != 0) {
-    this->turnEventQueue->recordSize14 = 4;
-  }
+  this->turnEventQueue = new TPtrList();
+  this->turnEventQueue->recordSize14 = 4;
 
-  this->proposalQueue =
-      static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
-  if (this->proposalQueue != 0) {
-    this->proposalQueue->recordSize14 = 4;
-  }
+  this->proposalQueue = new TPtrList();
+  this->proposalQueue->recordSize14 = 4;
 
   if (this->diplomacyEligibilityA0 != 0) {
     TForeignMinister* foreignMinister = new TForeignMinister();
@@ -263,11 +252,8 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
 
   int listIndex = 0;
   while (listIndex < kDiplomacyTrackedSlotCount) {
-    TSortedByRelationshipList* trackedSlotList =
-        static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
-    if (trackedSlotList != 0) {
-      trackedSlotList->recordSize14 = 0x0C;
-    }
+    TPtrList* trackedSlotList = new TPtrList();
+    trackedSlotList->recordSize14 = 0x0C;
     this->diplomacyTrackedSlots[listIndex] = trackedSlotList;
     ++listIndex;
   }
@@ -283,23 +269,19 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
     ++nationSlot;
   }
 
-  this->trackedObjectList = new TSortedList();
+  this->trackedObjectList = new TList();
 
   int candidateIndex = 0;
   while (candidateIndex < kNationSlotCount) {
     this->candidateNationFlags[candidateIndex] = 0;
     ++candidateIndex;
   }
-  this->scenarioInitFlag = 0;
   this->field904 = 1;
 
-  this->turnSummaryQueue =
-      static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
-  if (this->turnSummaryQueue != 0) {
-    this->turnSummaryQueue->recordSize14 = 8;
-  }
+  this->turnSummaryQueue = new TPtrList();
+  this->turnSummaryQueue->recordSize14 = 8;
 
-  this->missionNodeQueue = new TSortedList();
+  this->missionNodeQueue = new TList();
   this->militaryExpenses960 = 0;
 }
 
@@ -329,7 +311,7 @@ void TGreatPower::Free(void) {
     this->defenseMinister->Free();
   }
   this->defenseMinister = 0;
-  TSortedByRelationshipList** trackedSlots = this->diplomacyTrackedSlots;
+  TPtrList** trackedSlots = this->diplomacyTrackedSlots;
   int trackedSlotCount = 0x11;
   do {
     if (*trackedSlots != 0) {
