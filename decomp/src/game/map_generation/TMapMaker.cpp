@@ -51,16 +51,20 @@ TMapMaker::~TMapMaker() {}
 // the first parameter in the source-era signature.
 // SYNTHETIC: IMPERIALISM 0x005259e0
 // TuningKeywordMatches
+// MATCH: retail hoists keyword - text into edx and advances only eax; the explicit
+// `diff` reproduces that fold and the [edx+eax+1] next-character load. Residual is
+// loop rotation only: retail tests the compare at the loop head with a test/jne
+// back-edge while VC5 merges the compare into the bottom continue-condition.
 char TuningKeywordMatches(const char* keyword, const char* text) {
   char k = *keyword;
   if (k != 0) {
+    int diff = keyword - text;
     do {
       if (k != *text) {
         return 0;
       }
-      ++keyword;
-      k = *keyword;
       ++text;
+      k = text[diff];
     } while (k != 0);
   }
   if (*text != 0 && *text != ' ') {
