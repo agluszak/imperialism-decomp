@@ -29,6 +29,7 @@ ACTION_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.run"
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 ACTION_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.run"
 ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
+ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -61,6 +62,9 @@ CHECKPOINT_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.resolved"
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
 CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.resolved"
 CHECKPOINT_CHECK_TECH_ADVANCES = "check_technology_advances.resolved"
+CHECKPOINT_CHECK_TECH_ADVANCES_AI = (
+    "check_technology_advances_ai_purchase.resolved"
+)
 
 
 @dataclass(frozen=True)
@@ -378,6 +382,17 @@ SCHEMAS = {
         CHECKPOINT_CHECK_TECH_ADVANCES,
         ACTION_CHECK_TECH_ADVANCES,
         "check_technology_advances",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "technology",
+        ),
+    ),
+    CHECKPOINT_CHECK_TECH_ADVANCES_AI: CheckpointSchema(
+        CHECKPOINT_CHECK_TECH_ADVANCES_AI,
+        ACTION_CHECK_TECH_ADVANCES_AI,
+        "check_technology_advances_ai_purchase",
         (
             "turn.phase",
             "turn.active",
@@ -1630,6 +1645,8 @@ def _technology_record(raw: Any, label: str) -> dict[str, Any]:
 
 def normalize_native_check_technology_advances(
     result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_CHECK_TECH_ADVANCES,
+    action_id: str = ACTION_CHECK_TECH_ADVANCES,
 ) -> dict[str, Any]:
     """Reduce a native driver result to the technology-advance schema."""
     if result.get("status") != "passed":
@@ -1639,8 +1656,8 @@ def normalize_native_check_technology_advances(
     ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
     turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
     return {
-        "checkpoint_id": CHECKPOINT_CHECK_TECH_ADVANCES,
-        "action_id": ACTION_CHECK_TECH_ADVANCES,
+        "checkpoint_id": checkpoint_id,
+        "action_id": action_id,
         "turn": _mission_turn(turn, "native turn"),
         "technology": _technology_record(
             ephemeral.get("technology"), "native technology"
@@ -1650,6 +1667,8 @@ def normalize_native_check_technology_advances(
 
 def normalize_retail_check_technology_advances(
     raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_CHECK_TECH_ADVANCES,
+    action_id: str = ACTION_CHECK_TECH_ADVANCES,
 ) -> dict[str, Any]:
     """Reduce a retail GDB technology capture to the same schema."""
     turn = {
@@ -1663,8 +1682,8 @@ def normalize_retail_check_technology_advances(
         ),
     }
     return {
-        "checkpoint_id": CHECKPOINT_CHECK_TECH_ADVANCES,
-        "action_id": ACTION_CHECK_TECH_ADVANCES,
+        "checkpoint_id": checkpoint_id,
+        "action_id": action_id,
         "turn": turn,
         "technology": _technology_record(
             raw.get("technology"), "retail technology"
