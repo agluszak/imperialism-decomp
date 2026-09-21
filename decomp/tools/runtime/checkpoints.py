@@ -31,6 +31,7 @@ CHECKPOINT_TRADE_PHASE = "trade_phase.resolved"
 CHECKPOINT_SECOND_TURN_TRADE_PHASE = "second_turn_trade_phase.resolved"
 CHECKPOINT_CITY_TRANSPORT_PHASE = "city_transport_phase.resolved"
 CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
+CHECKPOINT_SECOND_TURN_CIVILIANS_PHASE = "second_turn_civilians_phase.resolved"
 CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
 CHECKPOINT_NAVAL_ENCOUNTER_PHASE = "military_phase_naval_encounter.resolved"
 CHECKPOINT_NAVAL_ESCALATION_PHASE = "military_phase_naval_escalation.resolved"
@@ -151,6 +152,18 @@ SCHEMAS = {
         CHECKPOINT_CIVILIANS_PHASE,
         ACTION_CIVILIANS_PHASE,
         "civilians_phase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "civilians.units",
+            "civilians.nations",
+        ),
+    ),
+    CHECKPOINT_SECOND_TURN_CIVILIANS_PHASE: CheckpointSchema(
+        CHECKPOINT_SECOND_TURN_CIVILIANS_PHASE,
+        ACTION_CIVILIANS_PHASE,
+        "second_turn_civilians_phase",
         (
             "turn.phase",
             "turn.active",
@@ -775,7 +788,10 @@ def _civilians_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
     return {"units": units, "nations": nations}
 
 
-def normalize_native_civilians_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_native_civilians_phase(
+    result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_CIVILIANS_PHASE,
+) -> dict[str, Any]:
     """Reduce a native driver result to the stable civilians-phase schema."""
     if result.get("status") != "passed":
         raise ValueError(f"native driver did not pass: {result.get('status')!r}")
@@ -787,7 +803,7 @@ def normalize_native_civilians_phase(result: Mapping[str, Any]) -> dict[str, Any
         ephemeral.get("civilians"), "native ephemeral civilians"
     )
     return {
-        "checkpoint_id": CHECKPOINT_CIVILIANS_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_CIVILIANS_PHASE,
         "turn": {
             "phase": _require_int(turn.get("phase"), "native turn.phase"),
@@ -803,10 +819,13 @@ def normalize_native_civilians_phase(result: Mapping[str, Any]) -> dict[str, Any
     }
 
 
-def normalize_retail_civilians_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_retail_civilians_phase(
+    raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_CIVILIANS_PHASE,
+) -> dict[str, Any]:
     """Reduce a retail GDB civilians capture to the same schema."""
     return {
-        "checkpoint_id": CHECKPOINT_CIVILIANS_PHASE,
+        "checkpoint_id": checkpoint_id,
         "action_id": ACTION_CIVILIANS_PHASE,
         "turn": {
             "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
