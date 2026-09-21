@@ -387,6 +387,13 @@ TADTemplateDialog::TADTemplateDialog(void* initParam)
 // SYNTHETIC: IMPERIALISM 0x0047f4e0
 // TADTemplateDialog::`scalar deleting destructor'
 
+// Dead member (no live callers): adds *text to the embedded listbox via
+// CListBox::AddString (LB_ADDSTRING on listbox.m_hWnd at +0x90).
+// FUNCTION: IMPERIALISM 0x0047f5a0
+int TADTemplateDialog::AddListboxText(const CString* text) {
+  return listbox.AddString(*text);
+}
+
 // FUNCTION: IMPERIALISM 0x0047f5d0
 void TADTemplateDialog::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, 0x3ff, listbox);

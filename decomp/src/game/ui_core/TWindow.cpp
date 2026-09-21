@@ -392,6 +392,15 @@ void TWindow::Free() {
   delete this;
 }
 
+// Dead predicate (no live callers): true when the window's +0x9c flag word is 0x80.
+// FUNCTION: IMPERIALISM 0x0048e400
+char __cdecl IsWindowFlagsWord0x80(TWindow* window) {
+  if (window != 0) {
+    return window->windowFlags == 0x80;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00492cc0
 TWindow* TWindow::GetWindow() {
   return this;

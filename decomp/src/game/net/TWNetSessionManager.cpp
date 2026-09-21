@@ -31,6 +31,15 @@ static BOOL FAR PASCAL ForwardEnumSessionToCallbackTable(LPGUID sessionGuid, LPS
   return mgr->OnEnumerateServiceProvider(sessionGuid, sessionName, majorVersion, minorVersion);
 }
 
+// Dead callback trampoline (no live callers): forwards a 4-argument DirectPlay
+// notification to the manager's slot-1 virtual, OnDirectPlayAssertion111.
+// FUNCTION: IMPERIALISM 0x0047f840
+BOOL FAR PASCAL ForwardDirectPlayAssertionToManager(void* arg1, void* arg2, void* arg3,
+                                                           void* arg4, LPVOID context) {
+  TDirectPlaySessionManagerBase* manager = static_cast<TDirectPlaySessionManagerBase*>(context);
+  return manager->OnDirectPlayAssertion111(arg1, arg2, arg3, arg4);
+}
+
 // IDirectPlay2::EnumSessions callback: DPESC_TIMEDOUT asks the manager whether to keep
 // waiting, anything else is a real session offer.
 // FUNCTION: IMPERIALISM 0x0047f870

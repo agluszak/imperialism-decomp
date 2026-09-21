@@ -3629,7 +3629,7 @@ address|name|symbol|size|type|prototype|provenance
 525970|TMapMaker::ConstructTMapMaker||16|function|undefined ConstructTMapMaker()|
 525990|TMapMaker::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5259c0|TMapMaker::DestructTMapMaker||7|function|undefined DestructTMapMaker()|
-5259e0|IltTarget_005259e0||51|function|undefined IltTarget_005259e0()|
+5259e0|TuningKeywordMatches||51|function|char TuningKeywordMatches(const char* keyword, const char* text)|compiler_synthetic
 525a30|TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides||2291|function|void __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(char * tileGrid, Province * cityTable, CString * tuningString)|
 526600|IltTarget_00526600||1|function|void IltTarget_00526600(void)|curated
 526620|TMapMaker::CheckProvs||179|function|char __thiscall TMapMaker::CheckProvs(void)|mac_oracle

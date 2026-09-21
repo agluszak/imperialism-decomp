@@ -168,6 +168,10 @@ public:
   ~TADTemplateDialog() override {}
   TADTemplateDialog(void* initParam); // 0x0047f450
 
+  // Dead member (no live callers): forwards *text to the embedded listbox's
+  // CListBox::AddString. 0x0047f5a0.
+  int AddListboxText(const CString* text);
+
   CListBox listbox; // +0x74
 
 protected:

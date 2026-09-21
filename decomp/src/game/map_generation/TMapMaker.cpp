@@ -47,7 +47,11 @@ TMapMaker::~TMapMaker() {}
 
 // Inline-expanded at every keyword test in 0x525a30 (the original emits the compare
 // loop at each site): true when `text` begins with `keyword` followed by NUL or ' '.
-static __inline char TuningKeywordMatches(const char* text, const char* keyword) {
+// The retained standalone emission at 0x5259e0 drives the loop on arg1, so keyword is
+// the first parameter in the source-era signature.
+// SYNTHETIC: IMPERIALISM 0x005259e0
+// TuningKeywordMatches
+char TuningKeywordMatches(const char* keyword, const char* text) {
   char k = *keyword;
   if (k != 0) {
     do {
@@ -292,7 +296,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     // Easter-egg keyword overrides: each mutates matching land tiles (water
     // is always skipped) with a per-tile LCG draw.
     const char* text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Dune")) {
+    if (TuningKeywordMatches("Dune", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -306,7 +310,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Congo")) {
+    if (TuningKeywordMatches("Congo", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -321,7 +325,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Mirkwood")) {
+    if (TuningKeywordMatches("Mirkwood", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -337,8 +341,8 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Yucatan") ||
-        TuningKeywordMatches(static_cast<LPCSTR>(*tuningString), "Siberia")) {
+    if (TuningKeywordMatches("Yucatan", text) ||
+        TuningKeywordMatches("Siberia", static_cast<LPCSTR>(*tuningString))) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -353,7 +357,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Antarctica")) {
+    if (TuningKeywordMatches("Antarctica", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -368,7 +372,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Kansas")) {
+    if (TuningKeywordMatches("Kansas", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -382,7 +386,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Eden")) {
+    if (TuningKeywordMatches("Eden", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -396,7 +400,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Everglades")) {
+    if (TuningKeywordMatches("Everglades", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -410,7 +414,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Nepal")) {
+    if (TuningKeywordMatches("Nepal", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -424,7 +428,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Scotland")) {
+    if (TuningKeywordMatches("Scotland", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {
@@ -438,7 +442,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
-    if (TuningKeywordMatches(text, "Eclectia")) {
+    if (TuningKeywordMatches("Eclectia", text)) {
       char* tile = mapTileGrid08;
       int t;
       for (t = 0x1950; t != 0; --t) {

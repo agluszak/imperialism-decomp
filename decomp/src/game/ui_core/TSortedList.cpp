@@ -4,6 +4,17 @@
 #include "game/map/TMission.h"
 #include "game/pointer_representation.h"
 
+// Dead helper (no live callers): returns `low + rand() % |high - low|`, or `low`
+// itself when the range is empty.
+// FUNCTION: IMPERIALISM 0x00487a20
+int __cdecl RandomOffsetWithinRange(int low, int high) {
+  if (low == high) {
+    return low;
+  }
+  int roll = rand();
+  return low + roll % abs(high - low);
+}
+
 // Default-compare trampoline whose address Sort() passes as the comparator: adapts the
 // three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
 // context. (Ghidra: OrphanCallChain_C1_I08_00487a60.)

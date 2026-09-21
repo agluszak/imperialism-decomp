@@ -11,7 +11,15 @@
 #include "game/ui_core/CIncludeView.h"
 #include "game/ImperialismApp.h"
 #include "game/ui_core/TEventHandler.h"
+#include "game/ui_core/TWindow.h"
 #include "game/mfc.h"
+
+// Dead helper (no live callers): tail-forwards to the window's CloseAndFree vcall
+// (slot 0x74, byte 0x1d0).
+// FUNCTION: IMPERIALISM 0x004146b0
+void __stdcall CloseWindowAndFree(TWindow* window) {
+  window->CloseAndFree();
+}
 
 // Post WM_CLOSE to the main thread's window. Faithful to the original: when
 // AfxGetThread() returns null the main-window pointer stays null and the m_hWnd
