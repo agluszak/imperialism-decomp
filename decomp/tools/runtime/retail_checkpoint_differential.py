@@ -36,6 +36,10 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_TECH_NAVAL_SEQUENCE,
     CHECKPOINT_BATTLE_MELEE,
     CHECKPOINT_BATTLE_RANGED,
+    CHECKPOINT_COMBAT_BATTLE,
+    CHECKPOINT_COMBAT_RESUME,
+    CHECKPOINT_COMBAT_THEN_MOVES,
+    CHECKPOINT_COMBAT_UNCONTESTED,
     CHECKPOINT_NAVY_BATTLE_DEFENDER,
     CHECKPOINT_NAVY_BATTLE_DEPLOY,
     CHECKPOINT_ELIMINATION_PHASE,
@@ -64,6 +68,7 @@ from tools.runtime.checkpoints import (
     normalize_native_check_technology_advances,
     normalize_native_consecutive_turn_sequence,
     normalize_native_battle_attack,
+    normalize_native_combat_moves,
     normalize_native_navy_battle_deploy,
     normalize_native_elimination_phase,
     normalize_native_great_power_pressure,
@@ -86,6 +91,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_check_technology_advances,
     normalize_retail_consecutive_turn_sequence,
     normalize_retail_battle_attack,
+    normalize_retail_combat_moves,
     normalize_retail_navy_battle_deploy,
     normalize_retail_elimination_phase,
     normalize_retail_great_power_pressure,
@@ -579,6 +585,32 @@ def load_scenario(name: str) -> Scenario:
                 if name == "interactive_army_battle_melee"
                 else CHECKPOINT_BATTLE_RANGED
             ),
+        )
+    elif name in (
+        "combat_moves_uncontested",
+        "combat_moves_creates_battle",
+        "combat_moves_resumes_after_battle",
+        "combat_moves_battle_then_later_movement",
+    ):
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=900,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id={
+                "combat_moves_uncontested": CHECKPOINT_COMBAT_UNCONTESTED,
+                "combat_moves_creates_battle": CHECKPOINT_COMBAT_BATTLE,
+                "combat_moves_resumes_after_battle": CHECKPOINT_COMBAT_RESUME,
+                "combat_moves_battle_then_later_movement": (
+                    CHECKPOINT_COMBAT_THEN_MOVES
+                ),
+            }[name],
         )
     elif name in (
         "navy_battle_accepted_deploy_tiles",
@@ -4762,10 +4794,14 @@ def _resolved_tile_owner(session: GdbSession, owner_code: int) -> int:
 
 
 def _find_hostile_redeploy(
-    session: GdbSession, snapshot: _TerrainSnapshot
+    session: GdbSession,
+    snapshot: _TerrainSnapshot,
+    skip_unit: int = 0,
+    skip_dest: int = -1,
 ) -> tuple[int, int, int]:
-    """Mirror FindHostileRedeploy: first unit with an adjacent enemy-garrisoned
-    province. Returns (unit, destination region, defender nation slot)."""
+    """Mirror FindHostileRedeployExcluding: first unit with an adjacent
+    enemy-garrisoned province, optionally skipping a unit and a destination.
+    Returns (unit, destination region, defender nation slot)."""
     for slot in range(_NATION_SLOT_COUNT):
         country = _u32(session, _TERRAIN_TABLE + slot * 4)
         if country == 0:
@@ -4774,7 +4810,7 @@ def _find_hostile_redeploy(
             session, _u32(session, country + 0x44)
         ):
             source = _s16(session, unit + 0x06)
-            if source < 0 or source >= _PROVINCE_COUNT:
+            if unit == skip_unit or source < 0 or source >= _PROVINCE_COUNT:
                 continue
             record = snapshot.provinces[
                 source * _PROVINCE_STRIDE : (source + 1) * _PROVINCE_STRIDE
@@ -4785,7 +4821,7 @@ def _find_hostile_redeploy(
                 dest = struct.unpack(
                     "<h", record[0x0A + 2 * adj : 0x0C + 2 * adj]
                 )[0]
-                if dest < 0 or dest >= _PROVINCE_COUNT:
+                if dest < 0 or dest >= _PROVINCE_COUNT or dest == skip_dest:
                     continue
                 destination = snapshot.provinces[
                     dest * _PROVINCE_STRIDE : (dest + 1) * _PROVINCE_STRIDE
@@ -4802,6 +4838,291 @@ def _find_hostile_redeploy(
                     continue
                 return unit, dest, defender
     return 0, -1, -1
+
+
+def _find_uncontested_redeploy(
+    session: GdbSession, snapshot: _TerrainSnapshot, skip_unit: int = 0
+) -> tuple[int, int]:
+    """Mirror FindUncontestedRedeploy: first unit with an adjacent
+    same-owner province. Returns (unit, destination region)."""
+    for slot in range(_NATION_SLOT_COUNT):
+        country = _u32(session, _TERRAIN_TABLE + slot * 4)
+        if country == 0:
+            continue
+        for unit in _sorted_ptr_list_entries(
+            session, _u32(session, country + 0x44)
+        ):
+            source = _s16(session, unit + 0x06)
+            if unit == skip_unit or source < 0 or source >= _PROVINCE_COUNT:
+                continue
+            record = snapshot.provinces[
+                source * _PROVINCE_STRIDE : (source + 1) * _PROVINCE_STRIDE
+            ]
+            owner = struct.unpack("<b", record[0x00:0x01])[0]
+            adjacent_count = struct.unpack("<b", record[0x08:0x09])[0]
+            for adj in range(adjacent_count):
+                dest = struct.unpack(
+                    "<h", record[0x0A + 2 * adj : 0x0C + 2 * adj]
+                )[0]
+                if dest < 0 or dest >= _PROVINCE_COUNT:
+                    continue
+                destination = snapshot.provinces[
+                    dest * _PROVINCE_STRIDE : (dest + 1) * _PROVINCE_STRIDE
+                ]
+                if struct.unpack("<b", destination[0x00:0x01])[0] == owner:
+                    return unit, dest
+    return 0, -1
+
+
+def _issue_uncontested_redeploys(
+    session: GdbSession,
+    snapshot: _TerrainSnapshot,
+    skip_unit: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    """Mirror IssueUncontestedRedeploys: give every unit except skip_unit a
+    redeploy order to its first adjacent same-owner province."""
+    issued = 0
+    for slot in range(_NATION_SLOT_COUNT):
+        country = _u32(session, _TERRAIN_TABLE + slot * 4)
+        if country == 0:
+            continue
+        for unit in _sorted_ptr_list_entries(
+            session, _u32(session, country + 0x44)
+        ):
+            source = _s16(session, unit + 0x06)
+            if unit == skip_unit or source < 0 or source >= _PROVINCE_COUNT:
+                continue
+            record = snapshot.provinces[
+                source * _PROVINCE_STRIDE : (source + 1) * _PROVINCE_STRIDE
+            ]
+            owner = struct.unpack("<b", record[0x00:0x01])[0]
+            adjacent_count = struct.unpack("<b", record[0x08:0x09])[0]
+            for adj in range(adjacent_count):
+                dest = struct.unpack(
+                    "<h", record[0x0A + 2 * adj : 0x0C + 2 * adj]
+                )[0]
+                if dest < 0 or dest >= _PROVINCE_COUNT:
+                    continue
+                destination = snapshot.provinces[
+                    dest * _PROVINCE_STRIDE : (dest + 1) * _PROVINCE_STRIDE
+                ]
+                if struct.unpack("<b", destination[0x00:0x01])[0] == owner:
+                    _invoke_thiscall(
+                        session,
+                        _TUNIT_SET_ORDERS,
+                        unit,
+                        records,
+                        occurrences,
+                        breakpoint_roles,
+                        args=(_UNIT_ORDER_REDEPLOY, dest),
+                    )
+                    issued += 1
+                    break
+    return issued
+
+
+def _stack_unit_ids(session: GdbSession, stack: int) -> list[int]:
+    ids = []
+    node = _u32(session, stack + 0x14)
+    while node != 0:
+        unit = _u32(session, node + 0x00)
+        if unit != 0:
+            ids.append(_eval_int(session, f"*(int*)0x{unit + 0x20:08x}"))
+        node = _u32(session, node + 0x04)
+    return ids
+
+
+def _capture_active_battle(session: GdbSession, army_mgr: int) -> dict | None:
+    """Mirror CaptureActiveBattleJson: read the cached battle stacks after
+    ResolveNextMove stops on a battle view."""
+    view = _u32(session, army_mgr + 0x3A4)
+    ours = _u32(session, army_mgr + 0x39C)
+    enemy = _u32(session, army_mgr + 0x3A0)
+    if view == 0 or ours == 0 or enemy == 0:
+        return None
+    return {
+        "province": _s16(session, enemy + 0x10),
+        "attacker_nation": _s8(session, ours + 0x08),
+        "defender_nation": _s8(session, enemy + 0x08),
+        "attacker_units": _stack_unit_ids(session, ours),
+        "defender_units": _stack_unit_ids(session, enemy),
+    }
+
+
+def _capture_military_positions(session: GdbSession) -> list[dict]:
+    units = []
+    for slot in range(_NATION_SLOT_COUNT):
+        country = _u32(session, _TERRAIN_TABLE + slot * 4)
+        if country == 0:
+            continue
+        for unit in _sorted_ptr_list_entries(
+            session, _u32(session, country + 0x44)
+        ):
+            units.append(
+                {
+                    "id": _eval_int(
+                        session, f"*(int*)0x{unit + 0x20:08x}"
+                    ),
+                    "tile": _s16(session, unit + 0x06),
+                }
+            )
+    return units
+
+
+_DO_COMBAT_MOVES = 0x004A1E40
+_RESOLVE_NEXT_MOVE = 0x004A2390
+
+
+def _drive_combat_moves(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    mode: str,
+) -> dict[str, object]:
+    """Mirror the RunCombatMoves* cases: clear orders, seed redeploys, then
+    drive the production TArmyMgr::DoCombatMoves (0x4a1e40) and, for the
+    sequencing modes, TArmyMgr::ResolveNextMove (0x4a2390) resume step."""
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    snapshot = _TerrainSnapshot(session, map_state)
+    # TArmyStackList::Compare sorts on field6 = (class << 8) | (rand() & 0xff),
+    # so FormStacks consumes rand() per stack -- pin the stream for parity.
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _clear_all_military_orders(
+        session, records, occurrences, breakpoint_roles
+    )
+    snapshot.refresh_provinces()
+    if mode == "uncontested":
+        unit, dest = _find_uncontested_redeploy(session, snapshot)
+        if unit == 0:
+            raise RuntimeError(
+                "the loaded fixture has no adjacent same-owner provinces "
+                "with a stationed unit"
+            )
+        _invoke_thiscall(
+            session,
+            _TUNIT_SET_ORDERS,
+            unit,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_UNIT_ORDER_REDEPLOY, dest),
+        )
+    elif mode == "battle_then_moves":
+        hostile, hostile_dest, defender = _find_hostile_redeploy(
+            session, snapshot
+        )
+        if hostile == 0:
+            raise RuntimeError(
+                "the loaded fixture has no adjacent enemy-garrisoned province"
+            )
+        if (
+            _issue_uncontested_redeploys(
+                session,
+                snapshot,
+                hostile,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+            == 0
+        ):
+            raise RuntimeError(
+                "the loaded fixture has no later same-owner redeploy besides "
+                "the hostile stack"
+            )
+        _force_war_between(
+            session, _s16(session, hostile + 0x18), defender
+        )
+        _invoke_thiscall(
+            session,
+            _TUNIT_SET_ORDERS,
+            hostile,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_UNIT_ORDER_REDEPLOY, hostile_dest),
+        )
+    else:
+        first, first_dest, first_defender = _find_hostile_redeploy(
+            session, snapshot
+        )
+        if first == 0:
+            raise RuntimeError(
+                "the loaded fixture has no adjacent enemy-garrisoned province"
+            )
+        _force_war_between(
+            session, _s16(session, first + 0x18), first_defender
+        )
+        _invoke_thiscall(
+            session,
+            _TUNIT_SET_ORDERS,
+            first,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_UNIT_ORDER_REDEPLOY, first_dest),
+        )
+        if mode == "two_battles":
+            second, second_dest, second_defender = _find_hostile_redeploy(
+                session, snapshot, skip_unit=first, skip_dest=first_dest
+            )
+            if second == 0:
+                raise RuntimeError(
+                    "the loaded fixture has no second distinct hostile stack"
+                )
+            _force_war_between(
+                session, _s16(session, second + 0x18), second_defender
+            )
+            _invoke_thiscall(
+                session,
+                _TUNIT_SET_ORDERS,
+                second,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(_UNIT_ORDER_REDEPLOY, second_dest),
+            )
+    army_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    battles = []
+    _invoke_thiscall(
+        session,
+        _DO_COMBAT_MOVES,
+        army_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    battle = _capture_active_battle(session, army_mgr)
+    if battle is not None:
+        battles.append(battle)
+    if mode in ("two_battles", "battle_then_moves"):
+        _invoke_thiscall(
+            session,
+            _RESOLVE_NEXT_MOVE,
+            army_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        battle = _capture_active_battle(session, army_mgr)
+        if battle is not None:
+            battles.append(battle)
+    result = _capture_turn_state(session)
+    result["battles"] = battles
+    result["units"] = _capture_military_positions(session)
+    return result
 
 
 def _next_tactical_move(
@@ -4855,6 +5176,30 @@ def _pump_battle_to_active_input(
     return True
 
 
+def _clear_all_military_orders(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    for slot in range(_NATION_SLOT_COUNT):
+        country = _u32(session, _TERRAIN_TABLE + slot * 4)
+        if country == 0:
+            continue
+        for unit in _sorted_ptr_list_entries(
+            session, _u32(session, country + 0x44)
+        ):
+            _invoke_thiscall(
+                session,
+                _TUNIT_SET_ORDERS,
+                unit,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(_UNIT_ORDER_IDLE, -1),
+            )
+
+
 def _drive_military_phase_land_combat(
     session: GdbSession,
     records: list[dict],
@@ -4881,22 +5226,9 @@ def _drive_military_phase_land_combat(
         breakpoint_roles,
         args=(0x1234,),
     )
-    for slot in range(_NATION_SLOT_COUNT):
-        country = _u32(session, _TERRAIN_TABLE + slot * 4)
-        if country == 0:
-            continue
-        for unit in _sorted_ptr_list_entries(
-            session, _u32(session, country + 0x44)
-        ):
-            _invoke_thiscall(
-                session,
-                _TUNIT_SET_ORDERS,
-                unit,
-                records,
-                occurrences,
-                breakpoint_roles,
-                args=(_UNIT_ORDER_IDLE, -1),
-            )
+    _clear_all_military_orders(
+        session, records, occurrences, breakpoint_roles
+    )
     map_state = _u32(session, _GLOBAL_MAP_STATE)
     snapshot = _TerrainSnapshot(session, map_state)
     snapshot.refresh_provinces()
@@ -5892,6 +6224,29 @@ def run_binary(
                         )
                         result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in (
+                        "combat_moves_uncontested",
+                        "combat_moves_creates_battle",
+                        "combat_moves_resumes_after_battle",
+                        "combat_moves_battle_then_later_movement",
+                    ):
+                        result_fields = _drive_combat_moves(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            {
+                                "combat_moves_uncontested": "uncontested",
+                                "combat_moves_creates_battle": "battle",
+                                "combat_moves_resumes_after_battle": (
+                                    "two_battles"
+                                ),
+                                "combat_moves_battle_then_later_movement": (
+                                    "battle_then_moves"
+                                ),
+                            }[scenario.drive],
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in (
                         "navy_battle_accepted_deploy_tiles",
                         "navy_battle_player_as_defender",
                     ):
@@ -6056,6 +6411,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "interactive_army_battle_ranged",
         "navy_battle_accepted_deploy_tiles",
         "navy_battle_player_as_defender",
+        "combat_moves_uncontested",
+        "combat_moves_creates_battle",
+        "combat_moves_resumes_after_battle",
+        "combat_moves_battle_then_later_movement",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -6226,6 +6585,15 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             "navy_battle_player_as_defender",
         ):
             recomp_observation = normalize_native_navy_battle_deploy(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in (
+            "combat_moves_uncontested",
+            "combat_moves_creates_battle",
+            "combat_moves_resumes_after_battle",
+            "combat_moves_battle_then_later_movement",
+        ):
+            recomp_observation = normalize_native_combat_moves(
                 native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "second_turn_military_cleanup":
@@ -6435,6 +6803,15 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
         retail_observation = normalize_retail_second_turn_sequence(
             retail_records[0]["fields"]
+        )
+    elif result_checkpoint in (
+        CHECKPOINT_COMBAT_UNCONTESTED,
+        CHECKPOINT_COMBAT_BATTLE,
+        CHECKPOINT_COMBAT_RESUME,
+        CHECKPOINT_COMBAT_THEN_MOVES,
+    ):
+        retail_observation = normalize_retail_combat_moves(
+            retail_records[0]["fields"], result_checkpoint
         )
     else:
         retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])

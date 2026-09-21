@@ -45,6 +45,10 @@ ACTION_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.run"
 ACTION_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.run"
 ACTION_BATTLE_MELEE = "interactive_army_battle_melee.run"
 ACTION_BATTLE_RANGED = "interactive_army_battle_ranged.run"
+ACTION_COMBAT_UNCONTESTED = "combat_moves_uncontested.run"
+ACTION_COMBAT_BATTLE = "combat_moves_creates_battle.run"
+ACTION_COMBAT_RESUME = "combat_moves_resumes_after_battle.run"
+ACTION_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -101,6 +105,10 @@ CHECKPOINT_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.resolved"
 CHECKPOINT_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.resolved"
 CHECKPOINT_BATTLE_MELEE = "interactive_army_battle_melee.resolved"
 CHECKPOINT_BATTLE_RANGED = "interactive_army_battle_ranged.resolved"
+CHECKPOINT_COMBAT_UNCONTESTED = "combat_moves_uncontested.resolved"
+CHECKPOINT_COMBAT_BATTLE = "combat_moves_creates_battle.resolved"
+CHECKPOINT_COMBAT_RESUME = "combat_moves_resumes_after_battle.resolved"
+CHECKPOINT_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.resolved"
 
 
 @dataclass(frozen=True)
@@ -109,6 +117,16 @@ class CheckpointSchema:
     action_id: str
     native_test: str
     required_paths: tuple[str, ...]
+
+
+_COMBAT_MOVES_FIELDS = (
+    "turn.phase",
+    "turn.active",
+    "turn.economic_turn",
+    "turn.turn_flow_status_flags",
+    "battles",
+    "units",
+)
 
 
 SCHEMAS = {
@@ -588,6 +606,30 @@ SCHEMAS = {
             "actuals",
             "snapshots",
         ),
+    ),
+    CHECKPOINT_COMBAT_UNCONTESTED: CheckpointSchema(
+        CHECKPOINT_COMBAT_UNCONTESTED,
+        ACTION_COMBAT_UNCONTESTED,
+        "combat_moves_uncontested",
+        _COMBAT_MOVES_FIELDS,
+    ),
+    CHECKPOINT_COMBAT_BATTLE: CheckpointSchema(
+        CHECKPOINT_COMBAT_BATTLE,
+        ACTION_COMBAT_BATTLE,
+        "combat_moves_creates_battle",
+        _COMBAT_MOVES_FIELDS,
+    ),
+    CHECKPOINT_COMBAT_RESUME: CheckpointSchema(
+        CHECKPOINT_COMBAT_RESUME,
+        ACTION_COMBAT_RESUME,
+        "combat_moves_resumes_after_battle",
+        _COMBAT_MOVES_FIELDS,
+    ),
+    CHECKPOINT_COMBAT_THEN_MOVES: CheckpointSchema(
+        CHECKPOINT_COMBAT_THEN_MOVES,
+        ACTION_COMBAT_THEN_MOVES,
+        "combat_moves_battle_then_later_movement",
+        _COMBAT_MOVES_FIELDS,
     ),
     CHECKPOINT_NAVY_BATTLE_DEPLOY: CheckpointSchema(
         CHECKPOINT_NAVY_BATTLE_DEPLOY,
@@ -2428,6 +2470,108 @@ def normalize_retail_battle_attack(
             for index, entry in enumerate(actuals)
         ],
         "snapshots": snapshots,
+    }
+
+
+def _combat_moves_battle(value: Any, label: str) -> dict[str, Any]:
+    entry = _require_mapping(value, label)
+    result = {
+        "province": _require_int(entry.get("province"), f"{label}.province"),
+        "attacker_nation": _require_int(
+            entry.get("attacker_nation"), f"{label}.attacker_nation"
+        ),
+        "defender_nation": _require_int(
+            entry.get("defender_nation"), f"{label}.defender_nation"
+        ),
+    }
+    for key in ("attacker_units", "defender_units"):
+        units = entry.get(key)
+        if not isinstance(units, list):
+            raise ValueError(f"{label}.{key} must be an array")
+        result[key] = [
+            _require_int(unit, f"{label}.{key}[{index}]")
+            for index, unit in enumerate(units)
+        ]
+    return result
+
+
+def _combat_moves_units(value: Any, label: str) -> list[dict[str, int]]:
+    if not isinstance(value, list):
+        raise ValueError(f"{label} must be an array")
+    units = []
+    for index, entry in enumerate(value):
+        record = _require_mapping(entry, f"{label}[{index}]")
+        units.append(
+            {
+                "id": _require_int(record.get("id"), f"{label}[{index}].id"),
+                "tile": _require_int(
+                    record.get("tile"), f"{label}[{index}].tile"
+                ),
+            }
+        )
+    return units
+
+
+def normalize_native_combat_moves(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a native combat-moves case to the stable schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    transition_result = _require_mapping(
+        captures.get("result"), "native result capture"
+    )
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    battles = transition_result.get("battles")
+    if not isinstance(battles, list):
+        raise ValueError("native result battles must be an array")
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _mission_turn(turn, "native turn"),
+        "battles": [
+            _combat_moves_battle(battle, f"native battles[{index}]")
+            for index, battle in enumerate(battles)
+        ],
+        "units": _combat_moves_units(
+            transition_result.get("units"), "native units"
+        ),
+    }
+
+
+def normalize_retail_combat_moves(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail combat-moves capture to the same schema."""
+    battles = raw.get("battles")
+    if not isinstance(battles, list):
+        raise ValueError("retail battles must be an array")
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail turn.active"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail turn.economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn.turn_flow_status_flags",
+            ),
+        },
+        "battles": [
+            _combat_moves_battle(battle, f"retail battles[{index}]")
+            for index, battle in enumerate(battles)
+        ],
+        "units": _combat_moves_units(raw.get("units"), "retail units"),
     }
 
 

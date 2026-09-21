@@ -175,141 +175,58 @@ void ClearAllMilitaryOrders() {
   }
 }
 
-void ApplyUncontestedStack(TArmyStack* stack) {
-  stack->cursor18 = stack->head14;
-  TArmyStackUnitNode* node = stack->cursor18;
-  TUnit* unit = (node != 0) ? node->unit : 0;
-  while (unit != 0) {
-    unit->MoveTo(unit->orderTargetIndex0C);
-    unit->SetOrders(kUnitOrderIdle, -1);
-    node = stack->cursor18;
-    if (node != 0) {
-      node = node->next;
-      stack->cursor18 = node;
-      unit = (node != 0) ? node->unit : 0;
-    } else {
-      unit = 0;
+void CollectStackUnitIds(TArmyStack* stack, JsonArray* ids) {
+  TArmyStackUnitNode* node;
+  for (node = stack->head14; node != 0; node = node->next) {
+    if (node->unit != 0) {
+      ids->Add(node->unit->persistentUnitId20);
     }
   }
 }
 
-void PrependUnit(TMilitaryUnit** units, int* count, TMilitaryUnit* unit) {
-  int index;
-  for (index = *count; index > 0; --index) {
-    units[index] = units[index - 1];
-  }
-  units[0] = unit;
-  *count += 1;
-}
-
-JSON_Value* BuildPendingBattleJson(short province, short attackerNation, short defenderNation,
-                                   TMilitaryUnit** attackers, int attackerCount,
-                                   TMilitaryUnit** defenders, int defenderCount) {
+// Reads the army manager's cached battle stacks after ResolveNextMove stops on
+// a battle view. Returns 0 when no battle is active.
+JSON_Value* CaptureActiveBattleJson() {
+  TArmyMgr* army = g_pMapContextActionManager;
+  TArmyStack* ours = army->ourStackBattle39c;
+  TArmyStack* enemy = army->enemyStackBattle3a0;
   JsonObject result;
   JsonArray attackerUnits;
   JsonArray defenderUnits;
-  int index;
-  result.Set("province", static_cast<int>(province));
-  result.Set("attacker_nation", static_cast<int>(attackerNation));
-  result.Set("defender_nation", static_cast<int>(defenderNation));
-  for (index = 0; index < attackerCount; ++index) {
-    attackerUnits.Add(attackers[index]->persistentUnitId20);
+  if (army->activeBattleView3a4 == 0 || ours == 0 || enemy == 0) {
+    return 0;
   }
-  for (index = 0; index < defenderCount; ++index) {
-    defenderUnits.Add(defenders[index]->persistentUnitId20);
-  }
+  CollectStackUnitIds(ours, &attackerUnits);
+  CollectStackUnitIds(enemy, &defenderUnits);
+  result.Set("province", static_cast<int>(enemy->tileIndex10));
+  result.Set("attacker_nation", static_cast<int>(ours->categoryFlag8));
+  result.Set("defender_nation", static_cast<int>(enemy->categoryFlag8));
   result.Set("attacker_units", attackerUnits.Release());
   result.Set("defender_units", defenderUnits.Release());
   return result.Release();
 }
 
-JSON_Value* TryCreateBattleWithoutUi(TArmyMgr* army, TArmyStack* stack) {
-  TMilitaryUnit* attackers[256];
-  TMilitaryUnit* defenders[256];
-  int attackerCount = 0;
-  int defenderCount = 0;
-  const short dest = stack->ownerNationCodeE;
-  const short cachedOwner = army->perTileOwnerNationCodeCache1c[dest];
-  const short attackerNation = static_cast<short>(stack->categoryFlag8);
-  TArmyStackUnitNode* node;
-  TMilitaryUnit* garrison;
-
-  stack->cursor18 = stack->head14;
-  node = stack->cursor18;
-  while (node != 0 && attackerCount < 256) {
-    TUnit* unit = node->unit;
-    if (unit != 0 && unit->orderTargetIndex0C == dest) {
-      PrependUnit(attackers, &attackerCount, static_cast<TMilitaryUnit*>(unit));
+// Post-pass roster: every nation's military unit persistent id and tile.
+JSON_Value* CaptureMilitaryUnitPositions() {
+  JsonArray units;
+  int slot;
+  for (slot = 0; slot < kNationSlotCount; ++slot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+    CIterator cursor(country == 0 ? 0 : country->militaryUnitList44);
+    TMilitaryUnit* unit;
+    if (country == 0 || country->militaryUnitList44 == 0) {
+      continue;
     }
-    node = node->next;
-    stack->cursor18 = node;
-  }
-  if (attackerCount == 0) {
-    return 0;
-  }
-
-  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(attackerNation,
-                                                                           cachedOwner) == 0) {
-    army->RelocateStackUnitsToStackTile(stack);
-    return 0;
-  }
-
-  garrison = 0;
-  if (dest >= 0 && dest < 0x180) {
-    garrison = g_pGlobalMapState->cityScoreTable[dest].stationedUnitChain98;
-  }
-  for (; garrison != 0 && defenderCount < 256;
-       garrison = static_cast<TMilitaryUnit*>(garrison->nextAtLocation14)) {
-    PrependUnit(defenders, &defenderCount, garrison);
-  }
-
-  if (defenderCount != 0) {
-    return BuildPendingBattleJson(dest, attackerNation, cachedOwner, attackers, attackerCount,
-                                  defenders, defenderCount);
-  }
-
-  ApplyUncontestedStack(stack);
-  army->perTileOwnerNationCodeCache1c[dest] = attackerNation;
-  return 0;
-}
-
-JSON_Value* ProcessPendingStacksUntilBattle(int finalizeIfComplete) {
-  TArmyMgr* army = g_pMapContextActionManager;
-  int stackCount = army->pendingUnitPool0c->GetCount();
-  while (army->nextStackOrdinal10 <= stackCount) {
-    const int cursor = army->nextStackOrdinal10;
-    TArmyStack* stack;
-    JSON_Value* battle;
-    army->nextStackOrdinal10 = cursor + 1;
-    stack = static_cast<TArmyStack*>(army->pendingUnitPool0c->GetEntryByOrdinal(cursor));
-    if (army->perTileOwnerNationCodeCache1c[stack->ownerNationCodeE] ==
-        static_cast<short>(stack->categoryFlag8)) {
-      ApplyUncontestedStack(stack);
-    } else {
-      battle = TryCreateBattleWithoutUi(army, stack);
-      if (battle != 0) {
-        return battle;
-      }
+    unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+    while (cursor.More() != 0) {
+      JsonObject entry;
+      entry.Set("id", unit->persistentUnitId20);
+      entry.Set("tile", static_cast<int>(unit->tileIndex06));
+      units.Add(entry.Release());
+      unit = static_cast<TMilitaryUnit*>(cursor.Advance());
     }
-    stackCount = army->pendingUnitPool0c->GetCount();
   }
-  if (finalizeIfComplete != 0) {
-    army->ClearPendingStacksAndFinalizeMilitaryUnits();
-    army->DoOwnershipChanges();
-    return JsonNullValue();
-  }
-  return 0;
-}
-
-JSON_Value* ResolveNextPendingBattleWithoutUi() {
-  return ProcessPendingStacksUntilBattle(0);
-}
-
-JSON_Value* ResolveCombatMovesWithoutBattleUi() {
-  TArmyMgr* army = g_pMapContextActionManager;
-  army->FormStacks();
-  army->nextStackOrdinal10 = 1;
-  return ProcessPendingStacksUntilBattle(1);
+  return units.Release();
 }
 
 bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
@@ -980,7 +897,8 @@ RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition) {
 RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition) {
   TMilitaryUnit* unit = 0;
   short dest = -1;
-  JSON_Value* result;
+  JSON_Value* battle;
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindUncontestedRedeploy(&unit, &dest, 0)) {
     return RuntimeActionResult::Failure(
@@ -994,15 +912,24 @@ RuntimeActionResult RunCombatMovesUncontested(NativeTransition& transition) {
     return started;
   }
 
-  result = ResolveCombatMovesWithoutBattleUi();
-  return transition.Finish(result);
+  g_pMapContextActionManager->DoCombatMoves();
+  JsonObject result;
+  JsonArray battles;
+  battle = CaptureActiveBattleJson();
+  if (battle != 0) {
+    battles.Add(battle);
+  }
+  result.Set("battles", battles.Release());
+  result.Set("units", CaptureMilitaryUnitPositions());
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
   TMilitaryUnit* unit = 0;
   short dest = -1;
   short defender = -1;
-  JSON_Value* result;
+  JSON_Value* battle;
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure(
@@ -1017,12 +944,17 @@ RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
     return started;
   }
 
-  result = ResolveCombatMovesWithoutBattleUi();
-  if (result == 0 || json_value_get_type(result) != JSONObject) {
-    JsonFreeValue(result);
+  g_pMapContextActionManager->DoCombatMoves();
+  battle = CaptureActiveBattleJson();
+  if (battle == 0) {
     return RuntimeActionResult::Failure("identical orders did not create a land battle");
   }
-  return transition.Finish(result);
+  JsonObject result;
+  JsonArray battles;
+  battles.Add(battle);
+  result.Set("battles", battles.Release());
+  result.Set("units", CaptureMilitaryUnitPositions());
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
@@ -1386,6 +1318,7 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
   JSON_Value* secondBattle;
   JsonObject result;
 
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindHostileRedeploy(&firstUnit, &firstDest, &firstDefender)) {
     return RuntimeActionResult::Failure(
@@ -1407,22 +1340,25 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
   }
 
   army = g_pMapContextActionManager;
-  army->FormStacks();
-  army->nextStackOrdinal10 = 1;
-  firstBattle = ResolveNextPendingBattleWithoutUi();
-  if (firstBattle == 0 || json_value_get_type(firstBattle) != JSONObject) {
-    JsonFreeValue(firstBattle);
+  army->DoCombatMoves();
+  firstBattle = CaptureActiveBattleJson();
+  if (firstBattle == 0) {
     return RuntimeActionResult::Failure("first hostile stack did not create a land battle");
   }
-  secondBattle = ResolveNextPendingBattleWithoutUi();
-  if (secondBattle == 0 || json_value_get_type(secondBattle) != JSONObject) {
+  army->ResolveNextMove();
+  secondBattle = CaptureActiveBattleJson();
+  if (secondBattle == 0) {
     JsonFreeValue(firstBattle);
-    JsonFreeValue(secondBattle);
     return RuntimeActionResult::Failure(
         "second stack did not create a land battle after the first stop");
   }
-  result.Set("first", firstBattle);
-  result.Set("second", secondBattle);
+  {
+    JsonArray battles;
+    battles.Add(firstBattle);
+    battles.Add(secondBattle);
+    result.Set("battles", battles.Release());
+  }
+  result.Set("units", CaptureMilitaryUnitPositions());
   return transition.Finish(result.Release());
 }
 
@@ -1438,6 +1374,7 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
   JsonObject args;
   RuntimeActionResult started;
 
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindHostileRedeploy(&hostile, &hostileDest, &defender)) {
     return RuntimeActionResult::Failure(
@@ -1456,11 +1393,9 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
   }
 
   army = g_pMapContextActionManager;
-  army->FormStacks();
-  army->nextStackOrdinal10 = 1;
-  first = ProcessPendingStacksUntilBattle(0);
-  if (first == 0 || json_value_get_type(first) != JSONObject) {
-    JsonFreeValue(first);
+  army->DoCombatMoves();
+  first = CaptureActiveBattleJson();
+  if (first == 0) {
     return RuntimeActionResult::Failure("identical orders did not create a land battle");
   }
   if (army->nextStackOrdinal10 > army->pendingUnitPool0c->GetCount()) {
@@ -1469,9 +1404,17 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
         "the first battle consumed the last stack; no later movement remains");
   }
 
-  second = ProcessPendingStacksUntilBattle(1);
-  result.Set("first", first);
-  result.Set("second", second);
+  army->ResolveNextMove();
+  second = CaptureActiveBattleJson();
+  {
+    JsonArray battles;
+    battles.Add(first);
+    if (second != 0) {
+      battles.Add(second);
+    }
+    result.Set("battles", battles.Release());
+  }
+  result.Set("units", CaptureMilitaryUnitPositions());
   return transition.Finish(result.Release());
 }
 
