@@ -24,7 +24,7 @@ address|name|symbol|size|type|prototype|provenance
 413550|ImperialismCommandLineInfo::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 413580|ImperialismCommandLineInfo::~ImperialismCommandLineInfo||71|function|undefined ~ImperialismCommandLineInfo()|
 4135f0|TAmbitApplication::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-413640|IltTarget_00413640||22|function|undefined IltTarget_00413640()|
+413640|T64TemplateDialog::T64TemplateDialog||22|function|T64TemplateDialog()|compiler_synthetic
 413670|T64TemplateDialog::`scalar deleting destructor'|??_GT64TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 4136a0|T64TemplateDialog||5|function|void __thiscall T64TemplateDialog(void)|
 4136c0|T64TemplateDialog::DoDataExchange||3|function|void T64TemplateDialog::DoDataExchange(CDataExchange* pDX)|
@@ -848,7 +848,7 @@ address|name|symbol|size|type|prototype|provenance
 488920|TStream::CreateTStreamInstance||62|function|undefined CreateTStreamInstance()|
 4889a0|TStream::CreateObject|?CreateObject@TStream@@SGPAVCObject@@XZ|1|function|undefined CreateObject()|rtti
 4889d0|TStream::GetRuntimeClass||6|function|undefined GetTStreamClassNamePointer()|rtti
-4889f0|IltTarget_004889f0||9|function|undefined IltTarget_004889f0()|
+4889f0|TStream::TStream||9|function|TStream()|compiler_synthetic
 488a10|TStream::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 488a40|TStream::DestructTStreamAndMaybeFree||7|function|undefined DestructTStreamAndMaybeFree()|
 488a60|IltTarget_00488a60||1|function|void IltTarget_00488a60(void)|curated
@@ -1119,7 +1119,7 @@ address|name|symbol|size|type|prototype|provenance
 48e500|TControl::GetRuntimeClass||6|function|undefined GetTControlClassNamePointer()|rtti
 48e520|TControl::TControl||74|function|undefined TControl()|
 48e590|TControl::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-48e5c0|IltTarget_0048e5c0||92|function|undefined IltTarget_0048e5c0()|
+48e5c0|TControl::TControl||92|function|TControl(const TControl &)|compiler_synthetic
 48e640|TControl::DoMouseCommand||149|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 48e710|TControl::DoEvent||111|function|undefined HandleCityDialogToggleCommandOrForward()|
 48e7a0|TControl::SetControlPictureEntryAndMaybeRefresh||30|function|void __thiscall SetControlPictureEntryAndMaybeRefresh(int * pPictureEntryRef, bool fRefreshNow)|
@@ -1207,7 +1207,7 @@ address|name|symbol|size|type|prototype|provenance
 491650|TCluster::DoEvent||222|function|void __thiscall DoEvent(int commandId, void * sourceHandler, int event)|
 491770|TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770||7|function|undefined OrphanTiny_GetDwordEcxOffset_84_00491770(void)|
 491790|TCluster::SetSelectedChildTagAndRefresh||108|function|void TCluster::SetSelectedChildTagAndRefresh(int childTag)|
-491820|IltTarget_00491820||83|function|undefined IltTarget_00491820()|
+491820|TControl::TControl||83|function|TControl(const TControl &)|compiler_synthetic
 4918a0|TCluster::ShallowClone_08||89|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
 491920|IltTarget_00491920||36|function|undefined IltTarget_00491920()|
 491960|CSubViewIterator::CSubViewIterator||34|function|void __thiscall CSubViewIterator::CSubViewIterator(TView const * owner, char forward)|curated
@@ -1665,7 +1665,7 @@ address|name|symbol|size|type|prototype|provenance
 4a18f0|TArmyMgr::InitializeMapContextActionManager||208|function|void __thiscall InitializeMapContextActionManager(void)|
 4a1a00|TArmyMgr::Free||296|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a1a00(void)|
 4a1b80|TArmyMgr::ReadFrom||403|function|undefined RebuildMapActionSelectionCachesAndContexts()|
-4a1d90|WrapperFor_FreeHeapBufferIfNotNull_At004a1d90||35|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a1d90()|
+4a1d90|MapContextActionRecord::~MapContextActionRecord||35|function|~MapContextActionRecord()|compiler_synthetic
 4a1dd0|TArmyMgr::WriteTo||77|function|undefined DeserializeArmyManagerListFromStream()|
 4a1e40|TArmyMgr::DoCombatMoves||65|function|void DoCombatMoves(void)|
 4a1eb0|TArmyMgr::EndBattlePhase||151|function|void EndBattlePhase(void)|
@@ -3146,7 +3146,7 @@ address|name|symbol|size|type|prototype|provenance
 4ff2f0|TGWorldPeeker::Draw||123|function|undefined CreateTFuzzyVarInstance()|
 4ff460|TFuzzyVar::CreateObject|?CreateObject@TFuzzyVar@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4ff490|TFuzzyVar::GetRuntimeClass||6|function|undefined GetTFuzzyVarClassNamePointer()|rtti
-4ff4b0|IltTarget_004ff4b0||9|function|undefined IltTarget_004ff4b0()|
+4ff4b0|TFuzzyVar::TFuzzyVar||9|function|TFuzzyVar()|compiler_synthetic
 4ff4d0|TFuzzyVar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ff500|TFuzzyVar::~TFuzzyVar||7|function|undefined ~TFuzzyVar()|
 4ff520|TFuzzyVar::IFuzzyVar||31|function|void __thiscall TFuzzyVar::IFuzzyVar(float v0, float v1, float v2, float v3)|curated
@@ -4883,7 +4883,7 @@ address|name|symbol|size|type|prototype|provenance
 56ffe0|TPageView::Free||51|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 570030|TPictureLine::CreateObject|?CreateObject@TPictureLine@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 570060|TPictureLine::GetRuntimeClass||6|function|undefined GetTPictureLineClassNamePointer()|rtti
-570080|IltTarget_00570080||9|function|undefined IltTarget_00570080()|
+570080|TPictureLine::TPictureLine||9|function|TPictureLine()|compiler_synthetic
 5700a0|TPictureLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5700d0|TPictureLine::DestructTPictureLineAndMaybeFree||7|function|undefined DestructTPictureLineAndMaybeFree()|
 5700f0|IltTarget_005700f0||45|function|undefined IltTarget_005700f0()|
@@ -5937,7 +5937,7 @@ address|name|symbol|size|type|prototype|provenance
 5a63c0|TNavyTacUnit::ApplyNavalDamage||207|function|void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting)|
 5a64d0|TNextMoveCommand::CreateObject|?CreateObject@TNextMoveCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5a6540|TNextMoveCommand::GetRuntimeClass||6|function|undefined GetTNextMoveCommandClassNamePointer()|rtti
-5a6560|TNextMoveCommand::ConstructTNextMoveCommandBaseState||18|function|undefined ConstructTNextMoveCommandBaseState()|
+5a6560|TNextMoveCommand::TNextMoveCommand||18|function|TNextMoveCommand()|compiler_synthetic
 5a6590|TNextMoveCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5a65c0|DestructTNextMoveCommandAndMaybeFree_Impl||7|function|undefined DestructTNextMoveCommandAndMaybeFree_Impl()|
 5a65e0|IltTarget_005a65e0||36|function|undefined IltTarget_005a65e0()|
@@ -6176,7 +6176,7 @@ address|name|symbol|size|type|prototype|provenance
 5b59b0|TDropShadowNumberText::Draw||200|function|undefined RenderDropShadowNumberTextValue()|
 5b5ac0|TInfoBarPictureText::CreateObject|?CreateObject@TInfoBarPictureText@@SGPAVCObject@@XZ|184|function|undefined CreateObject()|rtti
 5b5bb0|TInfoBarPictureText::GetRuntimeClass||6|function|undefined GetTInfoBarPictureTextClassNamePointer()|rtti
-5b5bd0|IltTarget_005b5bd0||102|function|undefined IltTarget_005b5bd0()|
+5b5bd0|TInfoBarPictureText::TInfoBarPictureText||102|function|TInfoBarPictureText()|compiler_synthetic
 5b5c60|TInfoBarPictureText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b5c90|TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree||5|function|undefined DestructTInfoBarPictureTextAndMaybeFree()|
 5b5cb0|TInfoBarPictureText::SetTextAndLayoutRect||216|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
@@ -6380,7 +6380,7 @@ address|name|symbol|size|type|prototype|provenance
 5c2430|TUnit::CreateObject|?CreateObject@TUnit@@SGPAVCObject@@XZ|41|function|undefined CreateObject()|rtti
 5c2470|TUnit::DetachUnitOrderFromOwnerAndReset||1|function|void __thiscall DetachUnitOrderFromOwnerAndReset()|
 5c2490|TUnit::GetRuntimeClass||6|function|CRuntimeClass* __thiscall GetRuntimeClass() const|rtti
-5c24b0|IltTarget_005c24b0||26|function|undefined IltTarget_005c24b0()|
+5c24b0|TUnit::TUnit||26|function|TUnit()|compiler_synthetic
 5c24e0|TUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c2510|TUnit::~TUnit||7|function|void __thiscall ~TUnit()|
 5c2530|TUnit::RegisterUnitOrderWithOwnerManager||165|function|undefined RegisterUnitOrderWithOwnerManager()|

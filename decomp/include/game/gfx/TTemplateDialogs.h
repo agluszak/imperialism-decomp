@@ -480,6 +480,8 @@ class T64TemplateDialog : public CDialog {
 public:
   // FUNCTION: IMPERIALISM 0x004136a0
   ~T64TemplateDialog() override {}
+  // SYNTHETIC: IMPERIALISM 0x00413640
+  // T64TemplateDialog::T64TemplateDialog
   T64TemplateDialog() : CDialog(0x64) {}
 
   unsigned char scratch5c[0x74 - 0x5c]; // 0x5c-0x74 — template scratch written by the ctor

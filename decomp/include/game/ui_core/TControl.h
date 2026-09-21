@@ -84,6 +84,10 @@ public:
   TControl();
   // Inline base-copy shape used by the concrete text/picture copy constructors: the
   // retail bodies call TView's copy constructor and then copy only these live fields.
+  // SYNTHETIC: IMPERIALISM 0x0048e5c0
+  // TControl::TControl
+  // SYNTHETIC: IMPERIALISM 0x00491820
+  // TControl::TControl
   TControl(const TControl& source)
       : TView(source), eventNumber60(source.eventNumber60), controlState64(source.controlState64),
         contentInsets68(source.contentInsets68), textStyle78(source.textStyle78) {}

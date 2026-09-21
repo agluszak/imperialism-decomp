@@ -14,6 +14,8 @@ public:
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x570130
 
   // NOOP: verified empty in original 0x00570032 (no standalone TPictureLine::TPictureLine body exists: construction is fully inlined into CreateObject 0x00570030; that address is its operator-new call site)
+  // SYNTHETIC: IMPERIALISM 0x00570080
+  // TPictureLine::TPictureLine
   TPictureLine() {}
 
   void SetPictureLineRowBoundsAndResource(short rowArg, short colArg, int* bounds,

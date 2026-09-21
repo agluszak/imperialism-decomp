@@ -15,8 +15,11 @@ public:
                                     RECT* layoutRect) override; // slot 0x80 0x5b5cb0
 
   // NOOP: verified empty in original 0x005b5af7; TDeluxeText's ctor performs the
-  // field init seen inline at CreateObject 0x005b5ac0 (the standalone emission at
-  // 0x005b5bd0 is TDeluxeText's retained COMDAT, not a TInfoBarPictureText body).
+  // field init seen inline at CreateObject 0x005b5ac0. The standalone emission at
+  // 0x005b5bd0 is this ctor's retained COMDAT (base zeroing inlined, derived vptr
+  // 0x66d288 stored last).
+  // SYNTHETIC: IMPERIALISM 0x005b5bd0
+  // TInfoBarPictureText::TInfoBarPictureText
   TInfoBarPictureText() {}
 };
 ASSERT_SIZE(TInfoBarPictureText, 0xb4);

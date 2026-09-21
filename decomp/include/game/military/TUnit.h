@@ -61,6 +61,8 @@ public:
   // originals emit.
   // In-class inline: the original has no out-of-line TUnit::TUnit -- every
   // caller absorbs it, so an out-of-line definition pessimizes them into a call.
+  // SYNTHETIC: IMPERIALISM 0x005c24b0
+  // TUnit::TUnit
   TUnit() {
     previousAtLocation10 = 0;
     nextAtLocation14 = 0;

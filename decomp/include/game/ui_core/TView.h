@@ -55,6 +55,7 @@ public:
 // TEventHandler itself.
 class TViewChildList : public CList<TView*, TView*> {
 public:
+  TView* FindByTag(unsigned int tag);
   void RemoveByTag(unsigned int tag);
   void FreeAll();
 };

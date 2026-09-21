@@ -52,6 +52,8 @@ public:
   // In-class inline: the original has no out-of-line TStream::TStream -- every
   // caller absorbs it, so an out-of-line definition pessimizes them into a call.
   // NOOP: verified empty in original 0x004889a1 (no standalone TStream::TStream body exists: construction is fully inlined into CreateObject 0x004889a0; that address is its operator-new call site)
+  // SYNTHETIC: IMPERIALISM 0x004889f0
+  // TStream::TStream
   TStream() {}
 
 public:

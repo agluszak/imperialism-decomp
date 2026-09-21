@@ -108,6 +108,18 @@ void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
 // TEMPLATE: IMPERIALISM 0x00479d80
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
+// FUNCTION: IMPERIALISM 0x00489f60
+TView* TViewChildList::FindByTag(unsigned int tag) {
+  POSITION position = GetHeadPosition();
+  while (position != 0) {
+    TView* entry = GetNext(position);
+    if (static_cast<unsigned int>(entry->controlTag) == tag) {
+      return entry;
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00489f90
 void TViewChildList::RemoveByTag(unsigned int tag) {
   POSITION position = GetHeadPosition();

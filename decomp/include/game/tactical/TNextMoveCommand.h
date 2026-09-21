@@ -17,6 +17,8 @@ public:
 
   // MATCH: VC5 expands this constructor at every live retail allocation site; the
   // unreferenced standalone COMDAT copy is intentionally left unclaimed.
+  // SYNTHETIC: IMPERIALISM 0x005a6560
+  // TNextMoveCommand::TNextMoveCommand
   TNextMoveCommand() : TCommand() {}
   void INextMoveCommand(TTacticalBattle* battle); // 0x5a65e0
 };

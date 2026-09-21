@@ -18,6 +18,8 @@ public:
   // those sites into a call with an EH frame.
   // NOOP: verified empty in original 0x004ff7e1 (no standalone body exists; the ctor is
   // absorbed at each allocation site as a single vptr store)
+  // SYNTHETIC: IMPERIALISM 0x004ff4b0
+  // TFuzzyVar::TFuzzyVar
   TFuzzyVar() {}
 
   // Mac oracle: IFuzzyVar. Two-phase init storing the four fuzzy breakpoints.

@@ -53,6 +53,8 @@ struct MapContextActionRecord {
   // TArmyMgr::ReadFrom (0x4a1b80) wraps around its per-iteration stack-local record --
   // the local always transfers array ownership into mapContextActionRecordList04 and
   // nulls its own copies before falling out of scope, so this normally deletes null.
+  // SYNTHETIC: IMPERIALISM 0x004a1d90
+  // MapContextActionRecord::~MapContextActionRecord
   ~MapContextActionRecord() {
     delete[] sideChildRecords250[0];
     delete[] sideChildRecords250[1];
