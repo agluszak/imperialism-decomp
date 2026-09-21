@@ -221,7 +221,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
         TGreatPower* nation = g_apNationStates[nationSlot];
         if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
-            nation->proposalQueue->GetSize() >= 0) {
+            nation->proposalQueue->GetSize() > 0) {
           g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
           g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap),
                                         activeNationSlot);
@@ -287,9 +287,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 10: {
     turnStateCode = 0x14;
-    if (g_pSimMgr != nullptr) {
-      g_pSimMgr->DoMilitary();
-    }
+    g_pSimMgr->DoMilitary();
     StartNextPhase();
     break;
   }
@@ -348,8 +346,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0xe: {
     turnStateCode = 0x10;
-    if (g_pDiplomacyTurnStateManager != nullptr &&
-        g_pDiplomacyTurnStateManager->lastProcessedNationSlot != -1) {
+    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot != -1) {
       const short lastProcessed = g_pDiplomacyTurnStateManager->lastProcessedNationSlot;
       turnStateCode = static_cast<int>(lastProcessed != activeNationSlot) + 0x16;
     }
@@ -366,10 +363,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (!IsNationTerrainEligible(nationSlot)) {
         continue;
       }
-      TGreatPower* nation = g_apNationStates[nationSlot];
-      if (nation != nullptr) {
-        nation->MarkAllPendingStatusFlagsHandled();
-      }
+      g_apNationStates[nationSlot]->MarkAllPendingStatusFlagsHandled();
     }
     bool saveTurn = false;
     if (g_nTurnCooldownDeferCounter006A43C4 < 1) {
@@ -415,7 +409,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       turnFlowStatusFlags |= 0x40;
     }
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-      if (g_pSimMgr != nullptr && g_pSimMgr->activeNationSlot == nationSlot &&
+      if (g_pSimMgr->activeNationSlot == nationSlot &&
           g_nTurnCooldownDeferCounter006A43C4 < 1) {
         g_nTurnCooldownDeferCounter006A43C4 = 0;
         g_nTurnCooldownSideFlag00698B10 = 1;
@@ -478,9 +472,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x14: {
     turnStateCode = 0x15;
-    if (g_pMapContextActionManager != nullptr) {
-      g_pMapContextActionManager->DoCombatMoves();
-    }
+    g_pMapContextActionManager->DoCombatMoves();
     if (multiplayerSessionRole != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       turnStateCode = 0x13;
@@ -514,16 +506,14 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (!IsNationTerrainEligible(nationSlot)) {
         continue;
       }
-      TGreatPower* nation = g_apNationStates[nationSlot];
-      if (nation != nullptr) {
-        nation->AddPurchasedItems();
-      }
+      g_apNationStates[nationSlot]->AddPurchasedItems();
     }
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
     if (((tickB % 0x28) == 0) && (phaseStateByDecade[tickA / 0x28] != 0) &&
-        multiplayerSessionRole != 2 && g_pDiplomacyTurnStateManager != nullptr) {
-      g_pDiplomacyTurnStateManager->RebuildDiplomacyStandingAndInfluenceMatrices(0);
+        multiplayerSessionRole != 2) {
+      g_pDiplomacyTurnStateManager->RebuildDiplomacyStandingAndInfluenceMatrices(
+          phaseStateByDecade[tickA / 0x28]);
     }
     if (multiplayerSessionRole != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
@@ -565,17 +555,14 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         RemoveNationSlotAndNotifyPeers(static_cast<short>(removeNationSlot));
       }
     }
-    for (int secondaryIndex = 7; secondaryIndex < 36; ++secondaryIndex) {
+    for (int secondaryIndex = 7; secondaryIndex < 0x17; ++secondaryIndex) {
       TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
       if (secondaryNation != nullptr && secondaryNation->ownedRegionList->GetSize() == 0) {
         for (short percentNationSlot = 0; percentNationSlot < 7; ++percentNationSlot) {
           if (!IsNationTerrainEligible(percentNationSlot)) {
             continue;
           }
-          TGreatPower* nation = g_apNationStates[percentNationSlot];
-          if (nation != nullptr) {
-            nation->NewStatusFor(0, 100);
-          }
+          g_apNationStates[percentNationSlot]->NewStatusFor(secondaryIndex, 500);
         }
       }
     }
