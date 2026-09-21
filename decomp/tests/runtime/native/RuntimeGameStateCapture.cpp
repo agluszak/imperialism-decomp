@@ -3138,6 +3138,16 @@ JSON_Value* CaptureDiplomacyEphemeral() {
     }
     JsonObject entry;
     entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("encoded_slot", static_cast<int>(nation->encodedNationSlot));
+    {
+      TCountry* terrain = g_apTerrainTypeDescriptorTable[slot];
+      int terrain_eligible = -1;
+      if (terrain != 0) {
+        const short code = terrain->encodedNationSlot;
+        terrain_eligible = (code < 100 || code > 199) ? 1 : 0;
+      }
+      entry.Set("terrain_eligible", terrain_eligible);
+    }
     entry.Set("policies", CaptureDiplomacyPolicies(nation->diplomacyPolicyByNation,
                                                  kNationSlotCount));
     entry.Set("grants", CaptureDiplomacyGrants(nation->diplomacyGrantByNation,

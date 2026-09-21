@@ -23,14 +23,6 @@
 
 namespace {
 
-JSON_Value* ContinueOutcome() {
-  JSON_Value* json = json_value_init_string("continue");
-  if (json == 0) {
-    abort();
-  }
-  return json;
-}
-
 short OtherGreatPowerSlot(short activeNationSlot) {
   return activeNationSlot == 0 ? 1 : 0;
 }
@@ -261,54 +253,12 @@ RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& t
     return started;
   }
 
-  const short activeNationSlot = ActiveNationSlot();
-  char lost = 0;
-  TGreatPower* localizationNationState = g_apNationStates[g_pSimMgr->activeNationSlot];
-  if (localizationNationState != 0) {
-    const short encoded = localizationNationState->encodedNationSlot;
-    if (encoded > 99 && encoded < 200) {
-      lost = 1;
-    }
-  }
-  for (int removeNationSlot = 0; removeNationSlot < 7; ++removeNationSlot) {
-    if (g_apTerrainTypeDescriptorTable[removeNationSlot] == 0 ||
-        g_apNationStates[removeNationSlot] == 0) {
-      continue;
-    }
-    if (g_apNationStates[removeNationSlot]->ownedRegionList->GetSize() == 0) {
-      g_pSimMgr->RemoveNationSlotAndNotifyPeers(static_cast<short>(removeNationSlot));
-    }
-  }
-  for (int secondaryIndex = 7; secondaryIndex < 36; ++secondaryIndex) {
-    TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
-    if (secondaryNation != 0 && secondaryNation->ownedRegionList->GetSize() == 0) {
-      for (short percentNationSlot = 0; percentNationSlot < 7; ++percentNationSlot) {
-        if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(percentNationSlot) == 0) {
-          continue;
-        }
-        TGreatPower* nation = g_apNationStates[percentNationSlot];
-        if (nation != 0) {
-          nation->NewStatusFor(0, 100);
-        }
-      }
-    }
-  }
-
-  int eligibleCount = 0;
-  for (int countNationSlot = 0; countNationSlot < 7; ++countNationSlot) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(countNationSlot)) !=
-        0) {
-      ++eligibleCount;
-    }
-  }
-  if (lost == 0 && eligibleCount == 1 &&
-      g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNationSlot) != 0) {
-    return transition.Finish(json_value_init_string("victory"));
-  }
-  if (lost != 0) {
-    return transition.Finish(json_value_init_string("player_eliminated"));
-  }
-  return transition.Finish(ContinueOutcome());
+  // 0x19: the elimination/game-over case of AdvanceGlobalTurnStateMachine —
+  // player-loss check, region-less major removal, minor-slot status updates,
+  // then victory/next-phase dispatch.
+  g_pSimMgr->turnStateCode = 0x19;
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish();
 }
 
 RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {

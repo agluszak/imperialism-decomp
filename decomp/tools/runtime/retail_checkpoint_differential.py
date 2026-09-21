@@ -32,6 +32,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_AI_NAVAL_DEVELOPMENT,
     CHECKPOINT_CHECK_TECH_ADVANCES,
     CHECKPOINT_CHECK_TECH_ADVANCES_AI,
+    CHECKPOINT_ELIMINATION_PHASE,
     CHECKPOINT_SEASON_ADVANCE,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
@@ -50,6 +51,7 @@ from tools.runtime.checkpoints import (
     normalize_native_ai_naval_development,
     normalize_native_check_technology_advances,
     normalize_native_consecutive_turn_sequence,
+    normalize_native_elimination_phase,
     normalize_native_season_advance,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
@@ -65,6 +67,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_ai_naval_development,
     normalize_retail_check_technology_advances,
     normalize_retail_consecutive_turn_sequence,
+    normalize_retail_elimination_phase,
     normalize_retail_season_advance,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
@@ -468,6 +471,20 @@ def load_scenario(name: str) -> Scenario:
             start_action=base.start_action,
             drive=name,
             result_checkpoint_id=CHECKPOINT_SEASON_ADVANCE,
+        )
+    elif name == "elimination_phase_with_landed_great_powers":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_ELIMINATION_PHASE,
         )
     elif name == "turn_stop_technology":
         base = _load_save_to_map_scenario(fixture)
@@ -3228,6 +3245,59 @@ def _capture_turn_state(session: GdbSession) -> dict[str, object]:
     }
 
 
+# --- elimination_phase_with_landed_great_powers retail drive -------------------
+# Mirrors RunEliminationPhaseWithLandedGreatPowers: player-elimination check via
+# the active nation's encoded slot, removal of region-less majors, region-less
+# minor notifications, then the victory/eliminated/continue outcome.
+
+# Runs the real case-0x19 elimination/game-over step of
+# AdvanceGlobalTurnStateMachine: player-loss check, region-less major removal,
+# minor-slot status updates, then victory/next-phase dispatch.
+
+_COUNTRY_ENCODED_SLOT = 0x0E
+
+
+def _drive_elimination_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x19)
+    _invoke_thiscall(
+        session,
+        _ADVANCE_TURN_STATE,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    eligibility = []
+    nation_encoded = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        terrain = _eval_int(
+            session,
+            f"*(unsigned int*)0x{_TERRAIN_TABLE + 4 * slot:08x}",
+        )
+        if terrain == 0:
+            eligibility.append(-1)
+        else:
+            code = _s16(session, terrain + _COUNTRY_ENCODED_SLOT)
+            eligibility.append(1 if code < 100 or code > 199 else 0)
+        nation = _nation_pointer(session, slot)
+        nation_encoded.append(
+            _s16(session, nation + _COUNTRY_ENCODED_SLOT)
+            if nation != 0
+            else -1
+        )
+    return {
+        "eligibility": eligibility,
+        "nation_encoded": nation_encoded,
+        **_capture_turn_state(session),
+    }
+
+
 def _drive_recompute_metrics(
     session: GdbSession,
     records: list[dict],
@@ -4399,6 +4469,14 @@ def run_binary(
                         result_probe = CHECKPOINT_SEASON_ADVANCE
                     elif (
                         scenario.drive
+                        == "elimination_phase_with_landed_great_powers"
+                    ):
+                        result_fields = _drive_elimination_phase(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_ELIMINATION_PHASE
+                    elif (
+                        scenario.drive
                         == "military_phase_ships_without_orders"
                     ):
                         _drive_military_phase_ships_without_orders(
@@ -4536,6 +4614,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "check_technology_advances_ai_purchase",
         "turn_stop_technology",
         "season_advance_clears_status_flags",
+        "elimination_phase_with_landed_great_powers",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -4648,6 +4727,13 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         elif scenario.drive == "season_advance_clears_status_flags":
             recomp_observation = normalize_native_season_advance(
+                native_result
+            )
+        elif (
+            scenario.drive
+            == "elimination_phase_with_landed_great_powers"
+        ):
+            recomp_observation = normalize_native_elimination_phase(
                 native_result
             )
         elif scenario.drive == "second_turn_military_cleanup":
@@ -4800,6 +4886,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     elif result_checkpoint == CHECKPOINT_SEASON_ADVANCE:
         retail_observation = normalize_retail_season_advance(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_ELIMINATION_PHASE:
+        retail_observation = normalize_retail_elimination_phase(
             retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:

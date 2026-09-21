@@ -32,6 +32,7 @@ ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
 ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
 ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
 ACTION_SEASON_ADVANCE = "season_advance_clears_status_flags.run"
+ACTION_ELIMINATION_PHASE = "elimination_phase_with_landed_great_powers.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -69,6 +70,9 @@ CHECKPOINT_CHECK_TECH_ADVANCES_AI = (
 )
 CHECKPOINT_TURN_STOP_TECHNOLOGY = "turn_stop_technology.resolved"
 CHECKPOINT_SEASON_ADVANCE = "season_advance_clears_status_flags.resolved"
+CHECKPOINT_ELIMINATION_PHASE = (
+    "elimination_phase_with_landed_great_powers.resolved"
+)
 
 
 @dataclass(frozen=True)
@@ -426,6 +430,19 @@ SCHEMAS = {
             "turn.turn_flow_status_flags",
         ),
     ),
+    CHECKPOINT_ELIMINATION_PHASE: CheckpointSchema(
+        CHECKPOINT_ELIMINATION_PHASE,
+        ACTION_ELIMINATION_PHASE,
+        "elimination_phase_with_landed_great_powers",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "eligibility",
+            "nation_encoded",
+        ),
+    ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
         CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
         ACTION_MILITARY_PHASE,
@@ -510,6 +527,12 @@ def normalize_native_diplomacy_phase(
     ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
     turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
     diplomacy = _require_mapping(ephemeral.get("diplomacy"), "native ephemeral diplomacy")
+    nations = diplomacy.get("nations")
+    if isinstance(nations, list):
+        for nation in nations:
+            if isinstance(nation, dict):
+                nation.pop("encoded_slot", None)
+                nation.pop("terrain_eligible", None)
     return {
         "checkpoint_id": checkpoint_id,
         "action_id": ACTION_DIPLOMACY_PHASE,
@@ -1754,6 +1777,88 @@ def normalize_retail_season_advance(
                 "retail turn_flow_status_flags",
             ),
         },
+    }
+
+
+def normalize_native_elimination_phase(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the native elimination-phase case to the stable schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    diplomacy = _require_mapping(
+        ephemeral.get("diplomacy"), "native ephemeral diplomacy"
+    )
+    nations = diplomacy.get("nations")
+    if not isinstance(nations, list):
+        raise ValueError("native diplomacy nations must be an array")
+    eligibility: list[Any] = []
+    nation_encoded: list[Any] = []
+    for slot, nation in enumerate(nations):
+        if nation is None:
+            eligibility.append(-1)
+            nation_encoded.append(-1)
+            continue
+        nation_map = _require_mapping(nation, f"native diplomacy nation {slot}")
+        eligibility.append(
+            _require_int(
+                nation_map.get("terrain_eligible"),
+                f"native terrain_eligible[{slot}]",
+            )
+        )
+        nation_encoded.append(
+            _require_int(
+                nation_map.get("encoded_slot"),
+                f"native encoded_slot[{slot}]",
+            )
+        )
+    return {
+        "checkpoint_id": CHECKPOINT_ELIMINATION_PHASE,
+        "action_id": ACTION_ELIMINATION_PHASE,
+        "turn": _mission_turn(turn, "native turn"),
+        "eligibility": eligibility,
+        "nation_encoded": nation_encoded,
+    }
+
+
+def normalize_retail_elimination_phase(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce the retail elimination-phase capture to the same schema."""
+    eligibility_raw = raw.get("eligibility")
+    if not isinstance(eligibility_raw, list):
+        raise ValueError("retail eligibility must be an array")
+    nation_encoded_raw = raw.get("nation_encoded")
+    if not isinstance(nation_encoded_raw, list):
+        raise ValueError("retail nation_encoded must be an array")
+    return {
+        "checkpoint_id": CHECKPOINT_ELIMINATION_PHASE,
+        "action_id": ACTION_ELIMINATION_PHASE,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+        "eligibility": [
+            _require_int(entry, f"retail eligibility[{index}]")
+            for index, entry in enumerate(eligibility_raw)
+        ],
+        "nation_encoded": [
+            _require_int(entry, f"retail nation_encoded[{index}]")
+            for index, entry in enumerate(nation_encoded_raw)
+        ],
     }
 
 
