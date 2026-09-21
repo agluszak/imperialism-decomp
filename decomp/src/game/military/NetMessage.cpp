@@ -37,6 +37,11 @@ TimelyMessageHeader* TimelyMessageHeader::InitializeEmitEventHeaderWithActiveNat
   return this;
 }
 
+// FUNCTION: IMPERIALISM 0x00544cb0
+void TurnEvent2SyncPacket::Free() {
+  delete this;
+}
+
 // FUNCTION: IMPERIALISM 0x00544cd0
 void TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode(void* buffer) {
   switch (deltaKind21) {

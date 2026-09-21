@@ -143,6 +143,10 @@ struct TurnEvent2SyncPacket : NetMessage {
   // 3 = (short index, int value) records. The receiver decides the element width, so
   // the buffer is opaque here (TDiplomacyMgr passes its short relation matrix).
   void ApplyEncodedDeltaPayloadToBufferByMode(void* buffer);
+
+  // Dead release helper: `delete this` emits as a bare operator-delete call (the packet
+  // family is non-polymorphic and trivially destructible). 0x00544cb0, __thiscall.
+  void Free();
 };
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount, short* current, short* baseline);

@@ -1087,7 +1087,7 @@ address|name|symbol|size|type|prototype|provenance
 48d640|TWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 48d670|DestructTWindowViewAndUnlinkGlobalLists||356|function|undefined DestructTWindowViewAndUnlinkGlobalLists()|
 48d840|GetLiveRegistryHeadHostView||31|function|CWnd * __cdecl GetLiveRegistryHeadHostView(void)|
-48d870|IltTarget_0048d870||21|function|undefined IltTarget_0048d870()|
+48d870|AssertMcAppUiDialogStateAndReturn||21|function|void __stdcall AssertMcAppUiDialogStateAndReturn(int,int,int,int,int)|
 48d8a0|TWindow::SetDialogItems||23|function|void __thiscall SetDialogItems(unsigned long defaultCommandCode, unsigned long cancelCommandCode)|
 48d8d0|TWindow::Activate||30|function|void Activate(unsigned char active)|
 48d900|TWindow::Show||95|function|void __thiscall Show(uchar show, uchar refresh)|listing+mac-symbol
@@ -1228,7 +1228,7 @@ address|name|symbol|size|type|prototype|provenance
 491fb0|TFloatWindow::TFloatWindow||266|function|undefined ConstructUiWindowResourceEntryType4B340()|
 492110|TFloatWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 492140|DestructTWindowAndUnlinkGlobalWindowNode||306|function|undefined DestructTWindowAndUnlinkGlobalWindowNode()|
-4922d0|IltTarget_004922d0||34|function|undefined IltTarget_004922d0()|
+4922d0|AssertMcAppUiDialogStateAndMarkWindow||34|function|void __stdcall AssertMcAppUiDialogStateAndMarkWindow(int,TWindow*,int,int,int)|
 492310|TFloatWindow::GetWindowTypeTag||6|function|undefined OrphanVtableAssignStub_00492310(void)|
 492330|TFloatWindow::Close||140|function|void TFloatWindow::Close()|macos-name-oracle:Close()
 4923f0|CWMgrIterator::Reset||26|function|void __thiscall Reset(unsigned char param_1)|
@@ -4238,7 +4238,7 @@ address|name|symbol|size|type|prototype|provenance
 544840|IltTarget_00544840||287|function|undefined IltTarget_00544840()|
 5449b0|BuildTurnEvent2ArraySyncPacketDeltaOrFull||304|function|undefined BuildTurnEvent2ArraySyncPacketDeltaOrFull()|
 544b30|IltTarget_00544b30||298|function|undefined IltTarget_00544b30()|
-544cb0|IltTarget_00544cb0||10|function|undefined IltTarget_00544cb0()|
+544cb0|TurnEvent2SyncPacket::Free||10|function|void __thiscall Free()|
 544cd0|TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode||251|function|void __thiscall ApplyEncodedDeltaPayloadToBufferByMode(void *)|
 544e30|TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue||33|function|undefined DispatchOptionalChildEventAndProcessDiplomacyTurnQueue()|
 544e70|InitializeProtocolOptionControlFromProvider||138|function|undefined InitializeProtocolOptionControlFromProvider()|
@@ -4850,7 +4850,7 @@ address|name|symbol|size|type|prototype|provenance
 56ee50|TCreditsPicture::DoPostCreate||280|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 56efc0|TCreditsPicture::DoEvent||363|function|undefined ToggleTaggedControlsCredCre2WithBitmapIdsFb2Fb3AndForwardCommand()|
 56f190|TCreditsPicture::Draw||13|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
-56f1d0|IltTarget_0056f1d0||23|function|undefined IltTarget_0056f1d0()|
+56f1d0|ReleaseDibOrientationGuard||23|function|void __fastcall ReleaseDibOrientationGuard(int*)|
 56f330|`dynamic initializer for 'g_scaledShortConst_6A40E0''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A40E0''(void)|library
 56f360|TLineData::CreateObject|?CreateObject@TLineData@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 56f390|TLineData::GetRuntimeClass||6|function|undefined GetTLineDataClassNamePointer()|rtti
@@ -6513,7 +6513,7 @@ address|name|symbol|size|type|prototype|provenance
 5d5960|TViewMgr::ClassifyTurnStateForOverlayMode||47|function|undefined ClassifyTurnStateForOverlayMode()|
 5d5a70|TViewMgr::ModalMessage||104|function|void ModalMessage(CString message, POINT const & messagePosition)|mac-oracle
 5d5b00|TViewMgr::ModalMessage||138|function|char ModalMessage(CString message, POINT const & messagePosition, short overlayMode, unsigned char showCancel)|mac-oracle
-5d5bc0|IltTarget_005d5bc0||92|function|undefined IltTarget_005d5bc0()|
+5d5bc0|TViewMgr::ModalMessageGateAssertStub||92|function|char __thiscall ModalMessageGateAssertStub(CString,int,int,int,int,int)|
 5d5c40|TViewMgr::ModalMessage||151|function|char ModalMessage(long templateKind, CString titleSuffix, CString message, POINT const & messagePosition, short overlayMode, unsigned char showCancel)|mac-oracle
 5d5d10|CString::operator char const *||3|function|char const * __thiscall operator char const *()|
 5d5d30|TViewMgr::RunNationInfoModalAndReturnNonCancel||1485|function|bool RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix, char const * messageChars, int messageLength, POINT const & messagePosition, int contextTag, char showCancel)|mac-oracle-point-semantics

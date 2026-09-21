@@ -1,5 +1,7 @@
 #include "game/ui_core/TFloatWindow.h"
 #include "game/ui_tags_widgets.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/globals/ui_core_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x00491e00
 // TFloatWindow::CreateObject
@@ -16,6 +18,16 @@ TFloatWindow::TFloatWindow() : TWindow() {}
 // TFloatWindow::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00492140
 TFloatWindow::~TFloatWindow() {}
+
+// Dead helper: unconditional McAppUI.cpp:0x8c9 assert, then stamps the window's +0x9c
+// flag word 0x80 on its second argument (loaded while the assert's pushed args are
+// still on the stack). Five-argument __stdcall; no callers survive.
+// FUNCTION: IMPERIALISM 0x004922d0
+void __stdcall AssertMcAppUiDialogStateAndMarkWindow(int arg1, TWindow* window, int arg3,
+                                                    int arg4, int arg5) {
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x8c9);
+  window->windowFlags = 0x80;
+}
 
 // FUNCTION: IMPERIALISM 0x00492310
 int TFloatWindow::GetWindowTypeTag() {

@@ -68,6 +68,14 @@ TWindow::~TWindow() {
   }
 }
 
+// Dead helper whose whole body is the unconditional McAppUI.cpp:0x8c9 assert call; all
+// five arguments are unused and no callers survive. 0x0048d870, __stdcall.
+// FUNCTION: IMPERIALISM 0x0048d870
+void __stdcall AssertMcAppUiDialogStateAndReturn(int arg1, int arg2, int arg3, int arg4,
+                                               int arg5) {
+  AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0x8c9);
+}
+
 // FUNCTION: IMPERIALISM 0x0048d8a0
 void TWindow::SetDialogItems(unsigned long defaultCommandCode, unsigned long cancelCommandCode) {
   dialogBehavior.defaultCommandCode = defaultCommandCode;

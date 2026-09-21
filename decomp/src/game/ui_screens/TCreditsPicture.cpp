@@ -8,6 +8,7 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/gfx_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -95,4 +96,15 @@ void TCreditsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 // FUNCTION: IMPERIALISM 0x0056f190
 void TCreditsPicture::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
+}
+
+// Dead scoped-release helper: drops the shared top-down-DIB orientation count while the
+// caller's engaged flag is set, then clears it. Emitted here as a __fastcall free
+// function (ECX arg, bare RET); no callers survive in the original.
+// FUNCTION: IMPERIALISM 0x0056f1d0
+void __fastcall ReleaseDibOrientationGuard(int* engagedFlag) {
+  if (*engagedFlag != 0) {
+    --g_nDibOrientationFlag_006A1890;
+    *engagedFlag = 0;
+  }
 }
