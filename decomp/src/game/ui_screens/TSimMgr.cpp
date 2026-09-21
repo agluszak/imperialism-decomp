@@ -901,17 +901,17 @@ void TSimMgr::GetSeason(CString* destString) {
 
 // FUNCTION: IMPERIALISM 0x0057d870
 void TSimMgr::SetDifficultyLevel(int difficulty) {
-  signed char zeroFlag = 0;
+  char zeroFlag = 0;
   difficultyLevel = difficulty;
   if (difficulty != 0) {
-    if (0 < difficulty && difficulty <= 4) {
-      this->preferenceValues[10] = static_cast<short>(zeroFlag);
+    if (difficulty > 0 && difficulty <= 4) {
+      this->preferenceValues[10] = zeroFlag;
       return;
     }
   } else {
     zeroFlag = 1;
   }
-  this->preferenceValues[10] = static_cast<short>(zeroFlag);
+  this->preferenceValues[10] = zeroFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x0057d8b0
@@ -1152,23 +1152,27 @@ void TSimMgr::NumToCurrency(int value, CString* destString) {
 
 // FUNCTION: IMPERIALISM 0x0057f8f0
 void TSimMgr::NumToOrdinal(int value, CString* destString) {
+  CString suffixTemplate;
   CString numberStr;
   numberStr.Format(g_szDecimalFormat, value);
 
   // English ordinal suffix selection (1st/2nd/3rd/Nth, with the 11/12/13 exceptions).
   int suffixCode;
-  int remainder = value % 10;
-  if (remainder == 1 && value != 11) {
-    suffixCode = 0;
-  } else if (remainder == 2 && value != 12) {
-    suffixCode = 1;
-  } else if (remainder == 3 && value != 13) {
-    suffixCode = 2;
-  } else {
+  switch (value % 10) {
+  case 1:
+    suffixCode = (value != 11) ? 0 : 3;
+    break;
+  case 2:
+    suffixCode = (value != 12) ? 1 : 3;
+    break;
+  case 3:
+    suffixCode = (value == 13) ? 3 : 2;
+    break;
+  default:
     suffixCode = 3;
+    break;
   }
 
-  CString suffixTemplate;
   g_pSimMgr->GetString(0x275f, suffixCode, &suffixTemplate);
   scanBracketExpressions(this, destString, static_cast<LPCSTR>(suffixTemplate),
                          static_cast<LPCSTR>(numberStr));

@@ -1038,18 +1038,17 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
   if (g_pMapActionContextDistanceCache == 0 ||
       g_nMapActionContextCount != g_nMapActionContextDistanceCacheSizedFor) {
     g_nMapActionContextDistanceCacheSizedFor = g_nMapActionContextCount;
-    int cellCount = g_nMapActionContextCount * g_nMapActionContextCount;
-    char* newCache = new char[cellCount];
-    for (int i = 0; i < cellCount; ++i) {
-      newCache[i] = static_cast<char>(0xff);
+    g_pMapActionContextDistanceCache =
+        new char[g_nMapActionContextCount * g_nMapActionContextCount];
+    for (int i = 0; i < g_nMapActionContextCount * g_nMapActionContextCount; ++i) {
+      static_cast<char*>(g_pMapActionContextDistanceCache)[i] = static_cast<char>(0xff);
     }
-    g_pMapActionContextDistanceCache = newCache;
   }
 
-  short thisOrd = this != 0 ? contextOrdinal14 : -1;
-  short otherOrd = other != 0 ? other->contextOrdinal14 : -1;
-  char* cache = static_cast<char*>(g_pMapActionContextDistanceCache);
-  signed char cachedDistance = cache[thisOrd * g_nMapActionContextCount + otherOrd];
+  signed char cachedDistance = static_cast<char*>(
+      g_pMapActionContextDistanceCache)[(this != 0 ? contextOrdinal14 : -1) *
+                                            g_nMapActionContextCount +
+                                        (other != 0 ? other->contextOrdinal14 : -1)];
 
   if (cachedDistance < 0) {
     for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
@@ -1066,16 +1065,22 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
 
     for (TZone* writeNode = g_pMapActionContextListHead; writeNode != 0;
          writeNode = writeNode->prev18) {
-      short nodeOrd = writeNode != 0 ? writeNode->contextOrdinal14 : -1;
-      cache = static_cast<char*>(g_pMapActionContextDistanceCache);
-      cache[thisOrd * g_nMapActionContextCount + nodeOrd] =
+      static_cast<char*>(
+          g_pMapActionContextDistanceCache)[(this != 0 ? contextOrdinal14 : -1) *
+                                                g_nMapActionContextCount +
+                                            (writeNode != 0 ? writeNode->contextOrdinal14 : -1)] =
           static_cast<char>(writeNode->distanceLevel44);
-      cache[nodeOrd * g_nMapActionContextCount + thisOrd] =
+      static_cast<char*>(
+          g_pMapActionContextDistanceCache)[(writeNode != 0 ? writeNode->contextOrdinal14 : -1) *
+                                                g_nMapActionContextCount +
+                                            (this != 0 ? contextOrdinal14 : -1)] =
           static_cast<char>(writeNode->distanceLevel44);
     }
 
-    cache = static_cast<char*>(g_pMapActionContextDistanceCache);
-    cachedDistance = cache[thisOrd * g_nMapActionContextCount + otherOrd];
+    cachedDistance = static_cast<char*>(
+        g_pMapActionContextDistanceCache)[(this != 0 ? contextOrdinal14 : -1) *
+                                              g_nMapActionContextCount +
+                                          (other != 0 ? other->contextOrdinal14 : -1)];
   }
 
   return cachedDistance;
