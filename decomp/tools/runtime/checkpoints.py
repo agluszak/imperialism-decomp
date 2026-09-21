@@ -31,6 +31,7 @@ ACTION_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.run"
 ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
 ACTION_CHECK_TECH_ADVANCES_AI = "check_technology_advances_ai_purchase.run"
 ACTION_TECH_NAVAL_UPGRADE = "technology_naval_capability_upgrade.run"
+ACTION_TECH_NAVAL_SEQUENCE = "technology_naval_capability_sequence.run"
 ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
 ACTION_SEASON_ADVANCE = "season_advance_clears_status_flags.run"
 ACTION_ELIMINATION_PHASE = "elimination_phase_with_landed_great_powers.run"
@@ -79,6 +80,9 @@ CHECKPOINT_CHECK_TECH_ADVANCES_AI = (
 )
 CHECKPOINT_TECH_NAVAL_UPGRADE = (
     "technology_naval_capability_upgrade.resolved"
+)
+CHECKPOINT_TECH_NAVAL_SEQUENCE = (
+    "technology_naval_capability_sequence.resolved"
 )
 CHECKPOINT_TURN_STOP_TECHNOLOGY = "turn_stop_technology.resolved"
 CHECKPOINT_SEASON_ADVANCE = "season_advance_clears_status_flags.resolved"
@@ -432,6 +436,17 @@ SCHEMAS = {
         CHECKPOINT_TECH_NAVAL_UPGRADE,
         ACTION_TECH_NAVAL_UPGRADE,
         "technology_naval_capability_upgrade",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "technology",
+        ),
+    ),
+    CHECKPOINT_TECH_NAVAL_SEQUENCE: CheckpointSchema(
+        CHECKPOINT_TECH_NAVAL_SEQUENCE,
+        ACTION_TECH_NAVAL_SEQUENCE,
+        "technology_naval_capability_sequence",
         (
             "turn.phase",
             "turn.active",

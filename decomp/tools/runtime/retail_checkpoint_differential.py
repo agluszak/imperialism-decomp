@@ -33,6 +33,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_CHECK_TECH_ADVANCES,
     CHECKPOINT_CHECK_TECH_ADVANCES_AI,
     CHECKPOINT_TECH_NAVAL_UPGRADE,
+    CHECKPOINT_TECH_NAVAL_SEQUENCE,
     CHECKPOINT_BATTLE_MELEE,
     CHECKPOINT_BATTLE_RANGED,
     CHECKPOINT_ELIMINATION_PHASE,
@@ -611,6 +612,7 @@ def load_scenario(name: str) -> Scenario:
         "check_technology_advances",
         "check_technology_advances_ai_purchase",
         "technology_naval_capability_upgrade",
+        "technology_naval_capability_sequence",
     ):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -629,6 +631,8 @@ def load_scenario(name: str) -> Scenario:
                 else CHECKPOINT_CHECK_TECH_ADVANCES_AI
                 if name == "check_technology_advances_ai_purchase"
                 else CHECKPOINT_TECH_NAVAL_UPGRADE
+                if name == "technology_naval_capability_upgrade"
+                else CHECKPOINT_TECH_NAVAL_SEQUENCE
             ),
         )
     elif name == "consecutive_turn_sequence":
@@ -3316,6 +3320,8 @@ def _drive_technology_naval_capability_upgrade(
     records: list[dict],
     occurrences: dict[str, int],
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    technology_ids: tuple[int, ...] = (9,),
+    with_ships: bool = True,
 ) -> None:
     sim_mgr = _u32(session, _SIM_MGR)
     tech_mgr = _u32(session, _TTECHMGR)
@@ -3372,90 +3378,97 @@ def _drive_technology_naval_capability_upgrade(
             ship_type,
         )
 
-    survivor_a = _new_ship(
-        session,
-        3,
-        zone,
-        nation_slot,
-        "technology-survivor-a",
-        records,
-        occurrences,
-        breakpoint_roles,
-    )
-    session.assign(f"*(short*)0x{survivor_a + 0x30:08x}", 100)
-    survivor_b = _new_ship(
-        session,
-        4,
-        zone,
-        nation_slot,
-        "technology-survivor-b",
-        records,
-        occurrences,
-        breakpoint_roles,
-    )
-    session.assign(f"*(short*)0x{survivor_b + 0x30:08x}", 498)
-    obsolete = _new_ship(
-        session,
-        1,
-        zone,
-        nation_slot,
-        "technology-obsolete",
-        records,
-        occurrences,
-        breakpoint_roles,
-    )
-    session.assign(f"*(short*)0x{obsolete + 0x30:08x}", 250)
+    if with_ships:
+        survivor_a = _new_ship(
+            session,
+            3,
+            zone,
+            nation_slot,
+            "technology-survivor-a",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        session.assign(f"*(short*)0x{survivor_a + 0x30:08x}", 100)
+        survivor_b = _new_ship(
+            session,
+            4,
+            zone,
+            nation_slot,
+            "technology-survivor-b",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        session.assign(f"*(short*)0x{survivor_b + 0x30:08x}", 498)
+        obsolete = _new_ship(
+            session,
+            1,
+            zone,
+            nation_slot,
+            "technology-obsolete",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        session.assign(f"*(short*)0x{obsolete + 0x30:08x}", 250)
 
-    admiral_ptr = _invoke_thiscall(
-        session,
-        _OPERATOR_NEW,
-        0,
-        records,
-        occurrences,
-        breakpoint_roles,
-        args=(_TADMIRAL_SIZE,),
-    )
-    _invoke_thiscall(
-        session,
-        _TADMIRAL_CTOR,
-        admiral_ptr,
-        records,
-        occurrences,
-        breakpoint_roles,
-        args=(nation_slot,),
-    )
-    admiral_name = _write_name_string(
-        session, "technology-admiral", records, occurrences, breakpoint_roles
-    )
-    session.assign(f"*(int*)0x{admiral_ptr + 0x0C:08x}", admiral_name)
-    session.assign(f"*(short*)0x{admiral_ptr + 0x10:08x}", 200)
-    _invoke_thiscall(
-        session,
-        _TADMIRAL_ASSIGN_TO_SHIP,
-        admiral_ptr,
-        records,
-        occurrences,
-        breakpoint_roles,
-        args=(obsolete,),
-    )
+        admiral_ptr = _invoke_thiscall(
+            session,
+            _OPERATOR_NEW,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_TADMIRAL_SIZE,),
+        )
+        _invoke_thiscall(
+            session,
+            _TADMIRAL_CTOR,
+            admiral_ptr,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(nation_slot,),
+        )
+        admiral_name = _write_name_string(
+            session,
+            "technology-admiral",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        session.assign(f"*(int*)0x{admiral_ptr + 0x0C:08x}", admiral_name)
+        session.assign(f"*(short*)0x{admiral_ptr + 0x10:08x}", 200)
+        _invoke_thiscall(
+            session,
+            _TADMIRAL_ASSIGN_TO_SHIP,
+            admiral_ptr,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(obsolete,),
+        )
 
-    session.assign(
-        f"*(unsigned char*)0x{tech_mgr + _TECH_ORDER_CAP_ROWS + nation_slot * _TECH_ORDER_CAP_STRIDE + 9:08x}",
-        1,
-    )
-    session.assign(
-        f"*(short*)0x{tech_mgr + _TECH_YEAR_ROWS + nation_slot * _TECH_YEAR_STRIDE + 2 * 9:08x}",
-        77,
-    )
-    _invoke_thiscall(
-        session,
-        _HANDLE_ABILITY_UNLOCK,
-        tech_mgr,
-        records,
-        occurrences,
-        breakpoint_roles,
-        args=(9, nation_slot),
-    )
+    for index, technology_id in enumerate(technology_ids):
+        session.assign(
+            f"*(unsigned char*)0x{tech_mgr + _TECH_ORDER_CAP_ROWS + nation_slot * _TECH_ORDER_CAP_STRIDE + technology_id:08x}",
+            1,
+        )
+        session.assign(
+            f"*(short*)0x{tech_mgr + _TECH_YEAR_ROWS + nation_slot * _TECH_YEAR_STRIDE + 2 * technology_id:08x}",
+            70 + index if len(technology_ids) > 1 else 77,
+        )
+    for technology_id in technology_ids:
+        _invoke_thiscall(
+            session,
+            _HANDLE_ABILITY_UNLOCK,
+            tech_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(technology_id, nation_slot),
+        )
 
 
 def _drive_check_technology_advances_ai_purchase(
@@ -5426,6 +5439,20 @@ def run_binary(
                         )
                         result_fields = _capture_technology(session)
                         result_probe = CHECKPOINT_TECH_NAVAL_UPGRADE
+                    elif (
+                        scenario.drive
+                        == "technology_naval_capability_sequence"
+                    ):
+                        _drive_technology_naval_capability_upgrade(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            technology_ids=(4, 9, 15, 21, 24, 27),
+                            with_ships=False,
+                        )
+                        result_fields = _capture_technology(session)
+                        result_probe = CHECKPOINT_TECH_NAVAL_SEQUENCE
                     elif scenario.drive == "turn_stop_technology":
                         _drive_turn_stop_technology(
                             session, records, occurrences, breakpoint_roles
@@ -5660,6 +5687,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "check_technology_advances",
         "check_technology_advances_ai_purchase",
         "technology_naval_capability_upgrade",
+        "technology_naval_capability_sequence",
         "turn_stop_technology",
         "season_advance_clears_status_flags",
         "elimination_phase_with_landed_great_powers",
@@ -5780,6 +5808,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                 native_result,
                 checkpoint_id=CHECKPOINT_TECH_NAVAL_UPGRADE,
                 action_id="technology_naval_capability_upgrade.run",
+            )
+        elif scenario.drive == "technology_naval_capability_sequence":
+            recomp_observation = normalize_native_check_technology_advances(
+                native_result,
+                checkpoint_id=CHECKPOINT_TECH_NAVAL_SEQUENCE,
+                action_id="technology_naval_capability_sequence.run",
             )
         elif scenario.drive == "turn_stop_technology":
             recomp_observation = normalize_native_check_technology_advances(
@@ -5977,6 +6011,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_TECH_NAVAL_UPGRADE,
             action_id="technology_naval_capability_upgrade.run",
+        )
+    elif result_checkpoint == CHECKPOINT_TECH_NAVAL_SEQUENCE:
+        retail_observation = normalize_retail_check_technology_advances(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_TECH_NAVAL_SEQUENCE,
+            action_id="technology_naval_capability_sequence.run",
         )
     elif result_checkpoint == CHECKPOINT_TURN_STOP_TECHNOLOGY:
         retail_observation = normalize_retail_check_technology_advances(
