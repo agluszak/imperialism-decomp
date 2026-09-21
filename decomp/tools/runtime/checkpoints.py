@@ -39,6 +39,8 @@ ACTION_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.run"
 ACTION_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.run"
 ACTION_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.run"
 ACTION_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.run"
+ACTION_BATTLE_MELEE = "interactive_army_battle_melee.run"
+ACTION_BATTLE_RANGED = "interactive_army_battle_ranged.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -85,6 +87,8 @@ CHECKPOINT_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.resolved"
 CHECKPOINT_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.resolved"
 CHECKPOINT_TURN_STOP_DEAL_BOOK = "turn_stop_deal_book.resolved"
 CHECKPOINT_TURN_STOP_CITY_TRANSPORT = "turn_stop_city_and_transport.resolved"
+CHECKPOINT_BATTLE_MELEE = "interactive_army_battle_melee.resolved"
+CHECKPOINT_BATTLE_RANGED = "interactive_army_battle_ranged.resolved"
 
 
 @dataclass(frozen=True)
@@ -521,6 +525,34 @@ SCHEMAS = {
             "turn.active",
             "turn.economic_turn",
             "turn.turn_flow_status_flags",
+        ),
+    ),
+    CHECKPOINT_BATTLE_MELEE: CheckpointSchema(
+        CHECKPOINT_BATTLE_MELEE,
+        ACTION_BATTLE_MELEE,
+        "interactive_army_battle_melee",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "kinds",
+            "targets",
+            "actuals",
+            "snapshots",
+        ),
+    ),
+    CHECKPOINT_BATTLE_RANGED: CheckpointSchema(
+        CHECKPOINT_BATTLE_RANGED,
+        ACTION_BATTLE_RANGED,
+        "interactive_army_battle_ranged",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "kinds",
+            "targets",
+            "actuals",
+            "snapshots",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
@@ -2165,6 +2197,101 @@ def normalize_retail_turn_stop_state(
                 "retail turn_flow_status_flags",
             ),
         },
+    }
+
+
+def normalize_native_battle_attack(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a native interactive-attack case to the stable schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    transition_result = _require_mapping(
+        captures.get("result"), "native result capture"
+    )
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    kinds = transition_result.get("kinds")
+    targets = transition_result.get("targets")
+    actuals = transition_result.get("actuals")
+    snapshots = transition_result.get("snapshots")
+    for name, value in (
+        ("kinds", kinds),
+        ("targets", targets),
+        ("actuals", actuals),
+        ("snapshots", snapshots),
+    ):
+        if not isinstance(value, list):
+            raise ValueError(f"native result {name} must be an array")
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _mission_turn(turn, "native turn"),
+        "kinds": [
+            _require_int(entry, f"native kinds[{index}]")
+            for index, entry in enumerate(kinds)
+        ],
+        "targets": [
+            _require_int(entry, f"native targets[{index}]")
+            for index, entry in enumerate(targets)
+        ],
+        "actuals": [
+            _require_int(entry, f"native actuals[{index}]")
+            for index, entry in enumerate(actuals)
+        ],
+        "snapshots": snapshots,
+    }
+
+
+def normalize_retail_battle_attack(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail interactive-attack capture to the same schema."""
+    kinds = raw.get("kinds")
+    targets = raw.get("targets")
+    actuals = raw.get("actuals")
+    snapshots = raw.get("snapshots")
+    for name, value in (
+        ("kinds", kinds),
+        ("targets", targets),
+        ("actuals", actuals),
+        ("snapshots", snapshots),
+    ):
+        if not isinstance(value, list):
+            raise ValueError(f"retail {name} must be an array")
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+        "kinds": [
+            _require_int(entry, f"retail kinds[{index}]")
+            for index, entry in enumerate(kinds)
+        ],
+        "targets": [
+            _require_int(entry, f"retail targets[{index}]")
+            for index, entry in enumerate(targets)
+        ],
+        "actuals": [
+            _require_int(entry, f"retail actuals[{index}]")
+            for index, entry in enumerate(actuals)
+        ],
+        "snapshots": snapshots,
     }
 
 

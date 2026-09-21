@@ -1211,6 +1211,7 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
 
 RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition, int hoverState,
                                                     int defenderActive) {
+  srand(0x1234);
   TMilitaryUnit* unit = 0;
   short dest = -1;
   short defender = -1;
