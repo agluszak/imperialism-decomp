@@ -18,6 +18,16 @@ C++ 5.0. Follow `../AGENTS.md` plus these reconstruction invariants.
 - Preserve source that expresses the evidenced retail model even when raw matching is inconclusive.
   Investigate pairing, metadata, unsupported control flow, alignment, and code generation rather than
   distorting the model for a score.
+- Behavior before code generation. reccmp raw similarity is a diagnostic, not an optimization
+  target. Do not change source solely to reproduce register allocation, instruction order, loop
+  rotation, equivalent branch structure, temporary placement, equivalent arithmetic, switch-table
+  layout, or inline/out-of-line decisions. Do not use manual inlining or per-function compiler
+  controls for this purpose. A mismatch is actionable when evidence shows a difference in behavior,
+  ABI, object/type model, state mutation, serialization, virtual dispatch, resource/table indexing,
+  PRNG consumption, or another observable contract. Once those agree, residual code-generation
+  differences are acceptable.
+- Before modifying an already implemented low-scoring function, state the hypothesized semantic
+  divergence. If you cannot identify one, do not modify the function merely to improve its score.
 - No function is too large or complex to recover. Use focused evidence rather than leaving a stub,
   approximation, or test-only bypass.
 
