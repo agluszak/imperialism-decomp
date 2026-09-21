@@ -657,7 +657,7 @@ def load_scenario(name: str) -> Scenario:
                 else CHECKPOINT_TURN_STOP_CITY_TRANSPORT
             ),
         )
-    elif name in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
+    elif name in _PLAYER_POLICY_ALL_SCENARIOS:
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
             name=name,
@@ -4336,6 +4336,68 @@ _PLAYER_DIPLO_POLICY_SPECS: dict[str, tuple] = {
     ),
 }
 
+# Trade-policy tails mirror TogglePlayerTradePolicyResult: validate the boycott
+# or subsidy action, then SetTradePolicyTo(target, need==value ? 100 : value).
+_PLAYER_TRADE_POLICY_SPECS: dict[str, tuple] = {
+    "player_trade_policy_posts_subsidy": (
+        "minor",
+        (("mission", "s", "t", 1),),
+        95,
+    ),
+    "player_trade_policy_retracts_subsidy": (
+        "minor",
+        (("mission", "s", "t", 1), ("need", "t", 95)),
+        95,
+    ),
+    "player_trade_policy_boycott_clears_grant": (
+        "m1",
+        (("grant", "t", 1000),),
+        300,
+    ),
+    "player_trade_policy_rejects_allied_boycott": (
+        "m1",
+        (("rel", "s", "t", _REL_ALLIANCE),),
+        300,
+    ),
+}
+
+# Colony-boycott tails mirror RunConfiguredPlayerColonyBoycott: decode the
+# target's controlling nation and toggle the boycott flag through the real
+# SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations.
+_PLAYER_COLONY_BOYCOTT_SPECS: dict[str, tuple] = {
+    "player_colony_boycott_posts_and_propagates": (
+        "m1",
+        (("colony", "minor", "s"),),
+    ),
+    "player_colony_boycott_retracts_and_propagates": (
+        "m1",
+        (
+            ("colony", "minor", "s"),
+            ("boycott", "t", 1),
+            ("colony_trade", "minor", "t", 300),
+        ),
+    ),
+    "player_colony_boycott_own_colony_no_op": (
+        "minor",
+        (("colony", "t", "s"),),
+    ),
+}
+
+_PLAYER_TRADE_BOYCOTT_SCENARIOS = tuple(_PLAYER_TRADE_POLICY_SPECS) + tuple(
+    _PLAYER_COLONY_BOYCOTT_SPECS
+)
+
+# TCountry::SetTradePolicyTo -- vtable index 0x12 -> byte offset 0x48.
+_VT_SET_TRADE_POLICY = 0x12 * 4
+_GNATION_NEED_LEVELS = 0x14       # TCountry::needLevelByNation[23]
+_GNATION_BOYCOTT_FLAGS = 0x918    # colonyBoycottFlags[23]
+_FN_SET_TRADE_POLICY_GP = 0x004DD040  # TGreatPower::SetTradePolicyTo
+_FN_COLONY_BOYCOTT = 0x004DD0C0  # SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations
+
+_PLAYER_POLICY_ALL_SCENARIOS = (
+    _PLAYER_DIPLOMACY_POLICY_SCENARIOS + _PLAYER_TRADE_BOYCOTT_SCENARIOS
+)
+
 
 def _drive_player_diplomacy_policy(
     session: GdbSession,
@@ -4344,9 +4406,18 @@ def _drive_player_diplomacy_policy(
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
     drive: str,
 ) -> dict[str, object]:
-    spec = _PLAYER_DIPLO_POLICY_SPECS[drive]
-    target_sel, ops, policy, action, confirm = spec[:5]
-    bool_result = spec[5] if len(spec) > 5 else False
+    if drive in _PLAYER_DIPLO_POLICY_SPECS:
+        spec = _PLAYER_DIPLO_POLICY_SPECS[drive]
+        target_sel, ops = spec[0], spec[1]
+        policy, action, confirm = spec[2], spec[3], spec[4]
+        bool_result = spec[5] if len(spec) > 5 else False
+        tail = ("policy", policy, action, confirm, bool_result)
+    elif drive in _PLAYER_TRADE_POLICY_SPECS:
+        target_sel, ops, policy_value = _PLAYER_TRADE_POLICY_SPECS[drive]
+        tail = ("trade", policy_value)
+    else:
+        target_sel, ops = _PLAYER_COLONY_BOYCOTT_SPECS[drive]
+        tail = ("colony",)
     sim_mgr = _u32(session, _SIM_MGR)
     diplo = _diplomacy_mgr(session)
     source = _s16(session, sim_mgr + 0x2E)
@@ -4409,21 +4480,104 @@ def _drive_player_diplomacy_policy(
                 f"*(short*)0x{terrain + _TERRAIN_ENCODED_SLOT:08x}",
                 200 + slots[op[2]],
             )
+        elif kind == "need":
+            session.assign(
+                f"*(short*)0x{nation + _GNATION_NEED_LEVELS + 2 * slots[op[1]]:08x}",
+                op[2],
+            )
+        elif kind == "boycott":
+            session.assign(
+                f"*(unsigned char*)0x{nation + _GNATION_BOYCOTT_FLAGS + slots[op[1]]:08x}",
+                op[2],
+            )
+        elif kind == "colony_trade":
+            colony = _u32(session, _TERRAIN_TABLE + 4 * slots[op[1]])
+            _invoke_virtual(
+                session,
+                colony,
+                _VT_SET_TRADE_POLICY,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(slots[op[2]], op[3]),
+            )
         else:
             raise RuntimeError(f"unknown diplomacy setup op {kind!r}")
-    toggle = _toggle_player_policy(
-        session,
-        nation,
-        diplo,
-        target,
-        policy,
-        action,
-        confirm,
-        records,
-        occurrences,
-        breakpoint_roles,
-        bool_result=bool_result,
-    )
+    if tail[0] == "policy":
+        _, policy, action, confirm, bool_result = tail
+        toggle = _toggle_player_policy(
+            session,
+            nation,
+            diplo,
+            target,
+            policy,
+            action,
+            confirm,
+            records,
+            occurrences,
+            breakpoint_roles,
+            bool_result=bool_result,
+        )
+    elif tail[0] == "trade":
+        # TogglePlayerTradePolicyResult: self -> 3, invalid -> -reject mode,
+        # else SetTradePolicyTo(target, need == value ? 100 : value) -> 1.
+        policy_value = tail[1]
+        nation_slot = _s16(session, nation + _GNATION_SLOT)
+        if nation_slot == target:
+            toggle = 3
+        else:
+            trade_action = 11 if policy_value == 300 else 9
+            valid = _invoke_thiscall(
+                session,
+                _FN_VALIDATE_DIPLO_ACTION,
+                diplo,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(nation_slot, target, trade_action),
+            ) & 0xFF
+            if not valid:
+                toggle = -_s16(session, diplo + _DIPLO_PROPOSAL_MODE)
+            else:
+                need = _s16(
+                    session, nation + _GNATION_NEED_LEVELS + 2 * target
+                )
+                _invoke_thiscall(
+                    session,
+                    _FN_SET_TRADE_POLICY_GP,
+                    nation,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                    args=(
+                        target,
+                        100 if need == policy_value else policy_value,
+                    ),
+                )
+                toggle = 1
+    else:
+        # RunConfiguredPlayerColonyBoycott: decode the target's controlling
+        # nation and toggle the boycott flag through the real refresh path.
+        colony = _u32(session, _TERRAIN_TABLE + 4 * target)
+        encoded = _s16(session, colony + _TERRAIN_ENCODED_SLOT)
+        if encoded >= 200:
+            controlling = encoded - 200
+        elif encoded >= 100:
+            controlling = encoded - 100
+        else:
+            controlling = _s16(session, colony + _GNATION_SLOT)
+        if controlling != _s16(session, nation + _GNATION_SLOT):
+            flag = _u8(session, nation + _GNATION_BOYCOTT_FLAGS + target)
+            _invoke_thiscall(
+                session,
+                _FN_COLONY_BOYCOTT,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(target, 1 if flag == 0 else 0),
+            )
+        toggle = 1
     result = _capture_diplomacy_phase(session)
     result["toggle"] = toggle
     return result
@@ -6239,9 +6393,18 @@ def _capture_diplomacy_phase(session: GdbSession) -> dict[str, object]:
         block = session.read_memory(nation + 0xB2, 4 * _NATION_SLOT_COUNT)
         policies = list(struct.unpack(f"<{_NATION_SLOT_COUNT}h", block[: 2 * _NATION_SLOT_COUNT]))
         grants = list(struct.unpack(f"<{_NATION_SLOT_COUNT}h", block[2 * _NATION_SLOT_COUNT :]))
+        needs = list(
+            struct.unpack(
+                f"<{_NATION_SLOT_COUNT}h",
+                session.read_memory(nation + 0x14, 2 * _NATION_SLOT_COUNT),
+            )
+        )
+        boycotts = list(session.read_memory(nation + 0x918, _NATION_SLOT_COUNT))
         nations.append(
             {
                 "treasury": _eval_int(session, f"*(int*)0x{nation + 0x10:08x}"),
+                "needs": needs,
+                "boycotts": boycotts,
                 "policies": policies,
                 "grants": grants,
                 "proposals": _read_diplomacy_records(
@@ -6633,7 +6796,7 @@ def run_binary(
                         )
                         result_fields = _capture_technology(session)
                         result_probe = CHECKPOINT_TURN_STOP_TECHNOLOGY
-                    elif scenario.drive in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
+                    elif scenario.drive in _PLAYER_POLICY_ALL_SCENARIOS:
                         result_fields = _drive_player_diplomacy_policy(
                             session,
                             records,
@@ -6921,7 +7084,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "turn_stop_deal_book",
         "turn_stop_city_and_transport",
         "turn_stop_trade",
-        *_PLAYER_DIPLOMACY_POLICY_SCENARIOS,
+        *_PLAYER_POLICY_ALL_SCENARIOS,
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -7089,7 +7252,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_turn_stop_trade(
                 native_result
             )
-        elif scenario.drive in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
+        elif scenario.drive in _PLAYER_POLICY_ALL_SCENARIOS:
             recomp_observation = normalize_native_player_diplomacy_policy(
                 native_result, scenario.result_checkpoint_id
             )
@@ -7311,7 +7474,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             retail_records[0]["fields"]
         )
     elif result_checkpoint in (
-        _name + ".resolved" for _name in _PLAYER_DIPLOMACY_POLICY_SCENARIOS
+        _name + ".resolved" for _name in _PLAYER_POLICY_ALL_SCENARIOS
     ):
         retail_observation = normalize_retail_player_diplomacy_policy(
             retail_records[0]["fields"], result_checkpoint

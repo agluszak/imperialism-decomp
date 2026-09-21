@@ -146,6 +146,13 @@ _PLAYER_DIPLOMACY_POLICY_SCENARIOS = (
     "player_diplomacy_policy_cannot_afford_committed_consulate",
     "player_diplomacy_policy_rejects_colony",
     "player_diplomacy_policy_selects_self",
+    "player_trade_policy_posts_subsidy",
+    "player_trade_policy_retracts_subsidy",
+    "player_trade_policy_boycott_clears_grant",
+    "player_trade_policy_rejects_allied_boycott",
+    "player_colony_boycott_posts_and_propagates",
+    "player_colony_boycott_retracts_and_propagates",
+    "player_colony_boycott_own_colony_no_op",
 )
 
 
@@ -813,6 +820,12 @@ def _native_diplomacy_policy_nations(
                 "treasury": _require_int(
                     nation.get("treasury"), f"{label} nation.treasury"
                 ),
+                "needs": _require_int_list(
+                    nation.get("needs"), f"{label} nation.needs"
+                ),
+                "boycotts": _require_int_list(
+                    nation.get("boycotts"), f"{label} nation.boycotts"
+                ),
                 "policies": nation.get("policies"),
                 "grants": nation.get("grants"),
                 "proposals": nation.get("proposals"),
@@ -843,6 +856,12 @@ def _retail_diplomacy_policy_nations(
             {
                 "treasury": _require_int(
                     nation_map.get("treasury"), f"retail treasury[{slot}]"
+                ),
+                "needs": _require_int_list(
+                    nation_map.get("needs"), f"retail needs[{slot}]"
+                ),
+                "boycotts": _require_int_list(
+                    nation_map.get("boycotts"), f"retail boycotts[{slot}]"
                 ),
                 "policies": [
                     _diplomacy_policy_name(
@@ -949,6 +968,8 @@ def normalize_native_diplomacy_phase(
                 nation.pop("budget_base", None)
                 nation.pop("escalation", None)
                 nation.pop("pressure", None)
+                nation.pop("needs", None)
+                nation.pop("boycotts", None)
     return {
         "checkpoint_id": checkpoint_id,
         "action_id": ACTION_DIPLOMACY_PHASE,

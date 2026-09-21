@@ -3151,6 +3151,14 @@ JSON_Value* CaptureDiplomacyEphemeral() {
     entry.Set("budget_base", nation->diplomacyBudgetBase);
     entry.Set("escalation", static_cast<int>(nation->escalationCounter));
     entry.Set("pressure", static_cast<int>(nation->pressureCounter));
+    entry.Set("needs", CaptureShortArray(nation->needLevelByNation, kNationSlotCount));
+    {
+      JsonArray boycotts;
+      for (int index = 0; index < kNationSlotCount; ++index) {
+        boycotts.Add(static_cast<int>(nation->colonyBoycottFlags[index]));
+      }
+      entry.Set("boycotts", boycotts.Release());
+    }
     entry.Set("policies", CaptureDiplomacyPolicies(nation->diplomacyPolicyByNation,
                                                  kNationSlotCount));
     entry.Set("grants", CaptureDiplomacyGrants(nation->diplomacyGrantByNation,
