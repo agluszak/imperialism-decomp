@@ -34,6 +34,8 @@ ACTION_TURN_STOP_TECHNOLOGY = "turn_stop_technology.run"
 ACTION_SEASON_ADVANCE = "season_advance_clears_status_flags.run"
 ACTION_ELIMINATION_PHASE = "elimination_phase_with_landed_great_powers.run"
 ACTION_TURN_ALERTS_FIRST = "turn_alerts_skip_first_economic_turn.run"
+ACTION_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.run"
+ACTION_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -75,6 +77,8 @@ CHECKPOINT_ELIMINATION_PHASE = (
     "elimination_phase_with_landed_great_powers.resolved"
 )
 CHECKPOINT_TURN_ALERTS_FIRST = "turn_alerts_skip_first_economic_turn.resolved"
+CHECKPOINT_PRESSURE_HUMAN_DEBT = "great_power_pressure_human_debt.resolved"
+CHECKPOINT_PRESSURE_AI_NOOP = "great_power_pressure_ai_noop.resolved"
 
 
 @dataclass(frozen=True)
@@ -456,6 +460,30 @@ SCHEMAS = {
             "shown",
         ),
     ),
+    CHECKPOINT_PRESSURE_HUMAN_DEBT: CheckpointSchema(
+        CHECKPOINT_PRESSURE_HUMAN_DEBT,
+        ACTION_PRESSURE_HUMAN_DEBT,
+        "great_power_pressure_human_debt",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "lost",
+            "nations",
+        ),
+    ),
+    CHECKPOINT_PRESSURE_AI_NOOP: CheckpointSchema(
+        CHECKPOINT_PRESSURE_AI_NOOP,
+        ACTION_PRESSURE_AI_NOOP,
+        "great_power_pressure_ai_noop",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "lost",
+            "nations",
+        ),
+    ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
         CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
         ACTION_MILITARY_PHASE,
@@ -546,6 +574,9 @@ def normalize_native_diplomacy_phase(
             if isinstance(nation, dict):
                 nation.pop("encoded_slot", None)
                 nation.pop("terrain_eligible", None)
+                nation.pop("budget_base", None)
+                nation.pop("escalation", None)
+                nation.pop("pressure", None)
     return {
         "checkpoint_id": checkpoint_id,
         "action_id": ACTION_DIPLOMACY_PHASE,
@@ -1917,6 +1948,88 @@ def normalize_retail_turn_alerts_first(
             ),
         },
         "shown": _require_int(raw.get("shown"), "retail shown"),
+    }
+
+
+def _pressure_nations(nations_raw: Any, label: str) -> list[Any]:
+    if not isinstance(nations_raw, list):
+        raise ValueError(f"{label} nations must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(nations_raw):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"{label} nation {slot}")
+        nations.append(
+            {
+                "treasury": _require_int(
+                    nation_map.get("treasury"), f"{label} treasury[{slot}]"
+                ),
+                "budget_base": _require_int(
+                    nation_map.get("budget_base"),
+                    f"{label} budget_base[{slot}]",
+                ),
+                "escalation": _require_int(
+                    nation_map.get("escalation"),
+                    f"{label} escalation[{slot}]",
+                ),
+                "pressure": _require_int(
+                    nation_map.get("pressure"), f"{label} pressure[{slot}]"
+                ),
+            }
+        )
+    return nations
+
+
+def normalize_native_great_power_pressure(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a native great-power-pressure case to the stable schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    lost = captures.get("result")
+    if not isinstance(lost, (bool, int)):
+        raise ValueError("native result must be a boolean")
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    diplomacy = _require_mapping(
+        ephemeral.get("diplomacy"), "native ephemeral diplomacy"
+    )
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _mission_turn(turn, "native turn"),
+        "lost": int(lost),
+        "nations": _pressure_nations(diplomacy.get("nations"), "native"),
+    }
+
+
+def normalize_retail_great_power_pressure(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail great-power-pressure capture to the same schema."""
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+        "lost": _require_int(raw.get("lost"), "retail lost"),
+        "nations": _pressure_nations(raw.get("nations"), "retail"),
     }
 
 
