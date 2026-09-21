@@ -72,6 +72,7 @@ RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transit
 RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseNavalEscalation(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseLandCombat(NativeTransition& transition);
+RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition);
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition);
 RuntimeActionResult RunNavyBattlePlayerAsDefender(NativeTransition& transition);
 RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition);
@@ -218,6 +219,7 @@ const NativeCase kCases[] = {
     {"military_phase_naval_encounter", RunMilitaryPhaseNavalEncounter},
     {"military_phase_naval_escalation", RunMilitaryPhaseNavalEscalation},
     {"military_phase_land_combat", RunMilitaryPhaseLandCombat},
+    {"military_phase_land_interactive", RunMilitaryPhaseLandInteractive},
     {"navy_battle_accepted_deploy_tiles", RunNavyBattleAcceptedDeployTiles},
     {"navy_battle_player_as_defender", RunNavyBattlePlayerAsDefender},
     {"advisory_map_missions_case16", RunAdvisoryMapMissionsCase16},

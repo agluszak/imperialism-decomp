@@ -777,6 +777,50 @@ RuntimeActionResult RunMilitaryPhaseLandCombat(NativeTransition& transition) {
   return transition.Finish();
 }
 
+RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition) {
+  // Same hostile redeploy as RunMilitaryPhaseLandCombat, but with the attacker
+  // made the active nation and the real TArmyMgr::DoCombatMoves entry. The
+  // battle is then pumped to the active nation's input, "Done" is posted via
+  // FinishTacticalActionAndPostNextMoveCommand, and the rest auto-resolves.
+  srand(0x1234);
+  ClearAllMilitaryOrders();
+  TMilitaryUnit* unit = 0;
+  short dest = -1;
+  short defender = -1;
+  if (!FindHostileRedeploy(&unit, &dest, &defender)) {
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no adjacent enemy-garrisoned province");
+  }
+  ForceWarBetween(unit->ownerNationSlot18, defender);
+  unit->SetOrders(kUnitOrderRedeploy, dest);
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->preferenceValues[0] = 0;
+  g_pMapContextActionManager->DoCombatMoves();
+  TArmyBattle* battle = g_pMapContextActionManager->activeBattleView3a4;
+  if (battle == 0) {
+    return RuntimeActionResult::Failure("hostile orders did not create a land battle");
+  }
+  StopActiveNationArmyPlayerForInput(battle);
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("tactical battle did not reach active-nation input");
+  }
+  battle->FinishTacticalActionAndPostNextMoveCommand();
+  if (!PumpArmyBattleToActiveNationInput(battle)) {
+    return RuntimeActionResult::Failure("Done did not reach the next active-nation input");
+  }
+  if (!AutoArmyBattleToCommit(battle)) {
+    return RuntimeActionResult::Failure("tactical auto did not terminate after Done");
+  }
+  return transition.Finish();
+}
+
 RuntimeActionResult RunNavyBattleAcceptedDeployTiles(NativeTransition& transition) {
   const short activeNation = ActiveNationSlot();
   short hostileNation = FirstHostileNation(activeNation);
