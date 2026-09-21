@@ -3395,6 +3395,29 @@ JSON_Value* CaptureMilitaryEphemeral() {
     ships.Add(record.Release());
   }
   object.Set("ships", ships.Release());
+  JsonArray taskForces;
+  if (g_pNavyOrderManager != 0) {
+    for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != 0;
+         force = force->nextForce) {
+      JsonObject record;
+      record.Set("nation", static_cast<int>(force->nation));
+      record.Set("aggression", force->aggression);
+      record.Set("ship_orders", force->shipOrders);
+      record.Set("defeated", static_cast<int>(force->defeated));
+      record.Set("zone",
+                 force->location != 0
+                     ? static_cast<int>(force->location->contextOrdinal14)
+                     : -1);
+      int children = 0;
+      for (TMapOrderChildLinkNode* child = force->shipList; child != 0;
+           child = child->next) {
+        ++children;
+      }
+      record.Set("child_count", children);
+      taskForces.Add(record.Release());
+    }
+  }
+  object.Set("task_forces", taskForces.Release());
   return object.Release();
 }
 

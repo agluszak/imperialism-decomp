@@ -434,17 +434,6 @@ void ForceWarBetween(short left, short right) {
       kDiplomacyRelationshipWar;
 }
 
-int TaskForceQueueIndex(TTaskForce* expected) {
-  int index = 0;
-  for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != 0;
-       force = force->nextForce, ++index) {
-    if (force == expected) {
-      return index;
-    }
-  }
-  return -1;
-}
-
 TZone* FindUnoccupiedMapZone() {
   TZone* candidate;
   for (candidate = g_pMapActionContextListHead; candidate != 0; candidate = candidate->prev18) {
@@ -681,6 +670,9 @@ RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transit
 }
 
 RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition) {
+  // Deterministic CRT seed so the retail-vs-recomp differential sees identical
+  // rand() streams through ship setup and DoMilitary.
+  srand(0x1234);
   const short activeNation = ActiveNationSlot();
   short hostileNation = -1;
   for (short nation = 0; nation < kMajorNationCount; ++nation) {
@@ -732,11 +724,8 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition)
   }
   g_pSimMgr->DoMilitary();
 
-  const int attackerIndex = TaskForceQueueIndex(attacker);
-  const int defenderIndex = TaskForceQueueIndex(defender);
-  if (attackerIndex < 0 || defenderIndex < 0) {
-    return RuntimeActionResult::Failure("the naval encounter did not retain both task forces");
-  }
+  // Retail resolves the encounter by mutual attrition and frees both task
+  // forces, so `attacker`/`defender` are dangling here -- do not touch them.
 
   return transition.Finish();
 }

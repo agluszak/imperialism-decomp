@@ -20,6 +20,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_CIVILIANS_PHASE,
     CHECKPOINT_DIPLOMACY_PHASE,
     CHECKPOINT_MILITARY_PHASE,
+    CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
@@ -291,6 +292,40 @@ def _military_phase_scenario(fixture: Path) -> Scenario:
     )
 
 
+def _military_phase_naval_encounter_scenario(fixture: Path) -> Scenario:
+    """Reach the loaded map, then drive the naval-encounter transition."""
+    base = _load_save_to_map_scenario(fixture)
+    trace_fields = {"receiver": FieldCapture("$ecx", "u32")}
+    trace_probes = tuple(
+        Probe(probe_id=f"navy_trace.{name}", original_address=address,
+              fields=trace_fields)
+        for name, address in (
+            ("try_to_spot", 0x555720),
+            ("encounter", 0x555420),
+            ("resolve_encounter", 0x555920),
+            ("battle_with", 0x555D10),
+            ("resolve_strategic_battle", 0x55A780),
+            ("sink_or_swim", 0x553FE0),
+            ("task_force_free", 0x552930),
+            ("ship_free", 0x54F640),
+            ("remove_stragglers", 0x555090),
+            ("make_sure_orders", 0x557560),
+        )
+    )
+    return Scenario(
+        name="military_phase_naval_encounter",
+        native_test="military_phase_naval_encounter",
+        action_id="military_phase.run",
+        fixture=fixture,
+        probes=base.probes + trace_probes,
+        terminal_checkpoint=base.terminal_checkpoint,
+        timeout_seconds=base.timeout_seconds,
+        start_action=base.start_action,
+        drive="military_phase_naval_encounter",
+        result_checkpoint_id=CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
+    )
+
+
 def load_scenario(name: str) -> Scenario:
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / "beginning_of_game.imp"
@@ -308,6 +343,8 @@ def load_scenario(name: str) -> Scenario:
         scenario = _civilians_phase_scenario(fixture)
     elif name == "military_phase":
         scenario = _military_phase_scenario(fixture)
+    elif name == "military_phase_naval_encounter":
+        scenario = _military_phase_naval_encounter_scenario(fixture)
     else:
         raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
@@ -1730,6 +1767,15 @@ def _capture_civilians_phase(session: GdbSession) -> dict[str, object]:
 
 _DO_MILITARY = 0x0057F280
 _NAVY_PRIMARY_ORDER_LIST_HEAD = 0x006A3EDC
+_NAVY_ORDER_MANAGER = 0x006A43E4
+_MAP_ACTION_CONTEXT_LIST_HEAD = 0x006A3FC8
+_TSHIP_CTOR = 0x0054F500
+_TSHIP_ISHIP = 0x0054F7B0
+_TTASKFORCE_SUBMIT_ORDERS = 0x005540B0
+_ZONE_CREATE_TASK_FORCE = 0x005609E0
+_TSHIP_SIZE = 0x38
+_RELATION_WAR = 6
+_RELATION_PROPAGATION_MATRIX = 0xBBE
 
 
 def _drive_military_phase(
@@ -1819,12 +1865,37 @@ def _capture_military_phase(session: GdbSession) -> dict[str, object]:
             {
                 "type": struct.unpack("<h", raw[0x04:0x06])[0],
                 "nation": struct.unpack("<h", raw[0x14:0x16])[0],
-                "strength": struct.unpack("<h", raw[0x1E:0x20])[0],
+                "strength": struct.unpack("<h", raw[0x1C:0x1E])[0],
                 "experience": struct.unpack("<h", raw[0x30:0x32])[0],
                 "zone": zone_ordinal,
             }
         )
         ship = struct.unpack("<I", raw[0x24:0x28])[0]
+    task_forces: list[dict[str, object]] = []
+    navy_mgr = _u32(session, _NAVY_ORDER_MANAGER)
+    force = _u32(session, navy_mgr + 0x04) if navy_mgr != 0 else 0
+    while force != 0:
+        raw = session.read_memory(force, 0x34)
+        location = struct.unpack("<I", raw[0x18:0x1C])[0]
+        zone_ordinal = -1
+        if location != 0:
+            zone_ordinal = _s16(session, location + 0x14)
+        children = 0
+        child = struct.unpack("<I", raw[0x10:0x14])[0]
+        while child != 0:
+            children += 1
+            child = _u32(session, child + 0x04)
+        task_forces.append(
+            {
+                "nation": struct.unpack("<h", raw[0x1C:0x1E])[0],
+                "aggression": struct.unpack("<i", raw[0x04:0x08])[0],
+                "ship_orders": struct.unpack("<i", raw[0x08:0x0C])[0],
+                "zone": zone_ordinal,
+                "defeated": raw[0x26],
+                "child_count": children,
+            }
+        )
+        force = struct.unpack("<I", raw[0x2C:0x30])[0]
     return {
         "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
         "active_nation": _s16(session, sim_mgr + 0x2E),
@@ -1832,8 +1903,238 @@ def _capture_military_phase(session: GdbSession) -> dict[str, object]:
         "turn_flow_status_flags": _eval_int(
             session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
         ),
-        "military": {"nations": nations, "ships": ships},
+        "military": {
+            "nations": nations,
+            "ships": ships,
+            "task_forces": task_forces,
+        },
     }
+
+
+def _write_name_string(
+    session: GdbSession,
+    name: str,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    """Allocate a scratch buffer in the inferior and fill it byte-by-byte.
+
+    Bulk -data-write-memory-bytes payloads silently corrupt under the winedbg
+    stub (see the trade-phase fold note), so small strings go through per-byte
+    assigns instead.
+    """
+    encoded = name.encode("ascii") + b"\x00"
+    buffer = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(len(encoded),),
+    )
+    for index, byte in enumerate(encoded):
+        session.assign(f"*(char*)0x{buffer + index:08x}", byte)
+    return buffer
+
+
+def _new_ship(
+    session: GdbSession,
+    ship_type: int,
+    zone: int,
+    nation_slot: int,
+    name: str,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    ship = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TSHIP_SIZE,),
+    )
+    _invoke_thiscall(
+        session, _TSHIP_CTOR, ship, records, occurrences, breakpoint_roles
+    )
+    name_pointer = _write_name_string(
+        session, name, records, occurrences, breakpoint_roles
+    )
+    _invoke_thiscall(
+        session,
+        _TSHIP_ISHIP,
+        ship,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(ship_type, zone, nation_slot, name_pointer),
+    )
+    return ship
+
+
+def _find_unoccupied_zone(session: GdbSession) -> int:
+    """Mirror FindUnoccupiedMapZone: first zone no primary-order ship occupies."""
+    occupied: set[int] = set()
+    ship = _u32(session, _NAVY_PRIMARY_ORDER_LIST_HEAD)
+    while ship != 0:
+        occupied.add(_u32(session, ship + 0x08))
+        ship = _u32(session, ship + 0x24)
+    zone = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+    while zone != 0:
+        if zone not in occupied:
+            return zone
+        zone = _u32(session, zone + 0x18)
+    return 0
+
+
+def _force_war_between(session: GdbSession, left: int, right: int) -> None:
+    diplomacy_mgr = _u32(session, _DIPLOMACY_MGR)
+    matrix = diplomacy_mgr + _RELATION_PROPAGATION_MATRIX
+    session.assign(
+        f"*(short*)0x{matrix + 2 * (left * _NATION_SLOT_COUNT + right):08x}",
+        _RELATION_WAR,
+    )
+    session.assign(
+        f"*(short*)0x{matrix + 2 * (right * _NATION_SLOT_COUNT + left):08x}",
+        _RELATION_WAR,
+    )
+
+
+def _drive_military_phase_naval_encounter(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunMilitaryPhaseNavalEncounter: two hostile task forces sharing
+    one zone, a forced war relation, then TSimMgr::DoMilitary."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    hostile_nation = -1
+    for slot in range(_MAJOR_NATION_COUNT):
+        if slot != active_nation and _nation_pointer(session, slot) != 0:
+            hostile_nation = slot
+            break
+    zone = _find_unoccupied_zone(session)
+    if hostile_nation < 0 or zone == 0:
+        raise RuntimeError("the fixture cannot create a naval encounter")
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _new_ship(
+        session,
+        3,
+        zone,
+        active_nation,
+        "military-encounter-attacker",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    attacker = _invoke_thiscall(
+        session,
+        _ZONE_CREATE_TASK_FORCE,
+        zone,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(active_nation,),
+    )
+    if attacker == 0:
+        raise RuntimeError("could not create the attacking task force")
+    _invoke_thiscall(
+        session,
+        _TTASKFORCE_SUBMIT_ORDERS,
+        attacker,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(3, 0),
+    )
+    _new_ship(
+        session,
+        3,
+        zone,
+        hostile_nation,
+        "military-encounter-defender",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    defender = _invoke_thiscall(
+        session,
+        _ZONE_CREATE_TASK_FORCE,
+        zone,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(hostile_nation,),
+    )
+    if defender == 0:
+        raise RuntimeError("could not create the defending task force")
+    _invoke_thiscall(
+        session,
+        _TTASKFORCE_SUBMIT_ORDERS,
+        defender,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(6, zone),
+    )
+    _force_war_between(session, active_nation, hostile_nation)
+    diplomacy_mgr = _u32(session, _DIPLOMACY_MGR)
+    gate = {
+        "at_war": _invoke_thiscall(
+            session,
+            0x004EF540,
+            diplomacy_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(hostile_nation, active_nation),
+        )
+        & 0xFF,
+        "stale": _invoke_thiscall(
+            session,
+            0x004EF590,
+            diplomacy_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(hostile_nation, active_nation),
+        )
+        & 0xFF,
+    }
+    pre = {
+        "setup": {
+            "active_nation": active_nation,
+            "hostile_nation": hostile_nation,
+            "zone": zone,
+            "attacker": attacker,
+            "defender": defender,
+            "gate": gate,
+            "military": _capture_military_phase(session)["military"],
+        }
+    }
+    _invoke_thiscall(
+        session,
+        _DO_MILITARY,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    return pre
 
 
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
@@ -2084,6 +2385,12 @@ def run_binary(
                         )
                         result_fields = _capture_military_phase(session)
                         result_probe = CHECKPOINT_MILITARY_PHASE
+                    elif scenario.drive == "military_phase_naval_encounter":
+                        result_fields = _drive_military_phase_naval_encounter(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields.update(_capture_military_phase(session))
+                        result_probe = CHECKPOINT_NAVAL_ENCOUNTER_PHASE
                     else:
                         raise RuntimeError(
                             f"unknown scenario drive {scenario.drive!r}"
@@ -2193,6 +2500,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "city_transport_phase",
         "civilians_phase",
         "military_phase",
+        "military_phase_naval_encounter",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -2227,6 +2535,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         elif scenario.drive == "civilians_phase":
             recomp_observation = normalize_native_civilians_phase(native_result)
         elif scenario.drive == "military_phase":
+            recomp_observation = normalize_native_military_phase(native_result)
+        elif scenario.drive == "military_phase_naval_encounter":
             recomp_observation = normalize_native_military_phase(native_result)
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
@@ -2279,6 +2589,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_MILITARY_PHASE:
+        retail_observation = normalize_retail_military_phase(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_NAVAL_ENCOUNTER_PHASE:
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"]
         )

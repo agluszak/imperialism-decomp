@@ -29,6 +29,7 @@ CHECKPOINT_TRADE_PHASE = "trade_phase.resolved"
 CHECKPOINT_CITY_TRANSPORT_PHASE = "city_transport_phase.resolved"
 CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
 CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
+CHECKPOINT_NAVAL_ENCOUNTER_PHASE = "military_phase_naval_encounter.resolved"
 
 
 @dataclass(frozen=True)
@@ -132,6 +133,20 @@ SCHEMAS = {
             "turn.economic_turn",
             "military.nations",
             "military.ships",
+            "military.task_forces",
+        ),
+    ),
+    CHECKPOINT_NAVAL_ENCOUNTER_PHASE: CheckpointSchema(
+        CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
+        ACTION_MILITARY_PHASE,
+        "military_phase_naval_encounter",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
         ),
     ),
 }
@@ -688,6 +703,15 @@ _MILITARY_SHIP_INT_FIELDS = (
     "zone",
 )
 
+_MILITARY_TASK_FORCE_INT_FIELDS = (
+    "nation",
+    "aggression",
+    "ship_orders",
+    "zone",
+    "defeated",
+    "child_count",
+)
+
 
 def _military_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
     nations_raw = raw.get("nations")
@@ -743,7 +767,22 @@ def _military_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
                 for field in _MILITARY_SHIP_INT_FIELDS
             }
         )
-    return {"nations": nations, "ships": ships}
+    forces_raw = raw.get("task_forces")
+    if not isinstance(forces_raw, list):
+        raise ValueError(f"{label}.task_forces must be an array")
+    task_forces: list[Any] = []
+    for index, force in enumerate(forces_raw):
+        force_map = _require_mapping(force, f"{label}.task_forces[{index}]")
+        task_forces.append(
+            {
+                field: _require_int(
+                    force_map.get(field),
+                    f"{label}.task_forces[{index}].{field}",
+                )
+                for field in _MILITARY_TASK_FORCE_INT_FIELDS
+            }
+        )
+    return {"nations": nations, "ships": ships, "task_forces": task_forces}
 
 
 def normalize_native_military_phase(result: Mapping[str, Any]) -> dict[str, Any]:

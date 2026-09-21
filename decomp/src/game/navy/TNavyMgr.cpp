@@ -1812,7 +1812,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     int leftTierAdjust;
     if (bestLeftFavorTier < candidateTier) {
       leftTierAdjust = 0;
-    } else if (bestLeftFavorRatio >= leftThreshold || bestLeftFavorTier > candidateTier) {
+    } else if (bestLeftFavorRatio < leftThreshold || bestLeftFavorTier > candidateTier) {
       leftTierAdjust = 2;
     } else {
       leftTierAdjust = 1;
@@ -1820,7 +1820,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     int rightTierAdjust;
     if (bestRightFavorTier < candidateTier) {
       rightTierAdjust = 0;
-    } else if (bestRightFavorRatio >= rightThreshold || bestRightFavorTier > candidateTier) {
+    } else if (bestRightFavorRatio < rightThreshold || bestRightFavorTier > candidateTier) {
       rightTierAdjust = 2;
     } else {
       rightTierAdjust = 1;
@@ -1862,20 +1862,38 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     int leftCurrentCount = CountTaskForceChildren(leftEntry);
     int rightCurrentCount = CountTaskForceChildren(rightEntry);
 
+    // Damage to each side's ships scales with the OPPOSING side's
+    // admiral-adjusted power at the current tier, spread over the number of
+    // ships actually engaged -- retail divides the opposing power by the
+    // attrition target (0x55ae2e-0x55ae60), it does not use the favor ratio.
+    float leftPower =
+        SumTaskForceChildPowerAtOrAboveTier(leftEntry, candidateTier) *
+        (1.0f + leftBucket * 0.1f);
+    float rightPower =
+        SumTaskForceChildPowerAtOrAboveTier(rightEntry, candidateTier) *
+        (1.0f + rightBucket * 0.1f);
     int leftAttritionTarget = rightEligible < leftCurrentCount ? rightEligible : leftCurrentCount;
-    ApplyTaskForceConflictAttrition(leftEntry, bestLeftFavorRatio, leftAttritionTarget,
-                                    leftCurrentCount);
     int rightAttritionTarget = leftEligible < rightCurrentCount ? leftEligible : rightCurrentCount;
-    ApplyTaskForceConflictAttrition(rightEntry, bestRightFavorRatio, rightAttritionTarget,
-                                    rightCurrentCount);
+    ApplyTaskForceConflictAttrition(leftEntry,
+                                    rightPower / static_cast<float>(leftAttritionTarget),
+                                    leftAttritionTarget, leftCurrentCount);
+    ApplyTaskForceConflictAttrition(rightEntry,
+                                    leftPower / static_cast<float>(rightAttritionTarget),
+                                    rightAttritionTarget, rightCurrentCount);
 
     leftEntry->shipList = PruneMapOrderConflictHeadAndTail(leftEntry->shipList);
     leftEntry->ElectFlagship();
     bool leftEmpty = leftEntry->shipList == nullptr;
+    if (leftEmpty) {
+      leftEntry->defeated = 1;
+    }
 
     rightEntry->shipList = PruneMapOrderConflictHeadAndTail(rightEntry->shipList);
     rightEntry->ElectFlagship();
     bool rightEmpty = rightEntry->shipList == nullptr;
+    if (rightEmpty) {
+      rightEntry->defeated = 1;
+    }
 
     if (leftEmpty || rightEmpty) {
       break;
