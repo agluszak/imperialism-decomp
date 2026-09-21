@@ -649,6 +649,8 @@ RuntimeActionResult RunSecondTurnMilitaryPhase(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition) {
+  // Deterministic CRT seed for retail-vs-recomp rand() parity in DoMilitary.
+  srand(0x1234);
   g_pSimMgr->economicTurn = 6;
   TZone* zone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot());
   if (zone == 0) {

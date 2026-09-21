@@ -24,6 +24,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_NAVAL_ESCALATION_PHASE,
     CHECKPOINT_LAND_COMBAT_PHASE,
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
+    CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
@@ -377,6 +378,20 @@ def load_scenario(name: str) -> Scenario:
     elif name in ("military_phase_land_combat",
                   "military_phase_land_interactive"):
         scenario = _military_phase_land_combat_scenario(fixture, name)
+    elif name == "military_phase_ships_without_orders":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id="military_phase.run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+        )
     else:
         raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
@@ -1810,6 +1825,8 @@ _TSHIP_ISHIP = 0x0054F7B0
 _TTASKFORCE_SUBMIT_ORDERS = 0x005540B0
 _ZONE_CREATE_TASK_FORCE = 0x005609E0
 _TSHIP_SIZE = 0x38
+_FIND_FIRST_PORT_ZONE = 0x00563540
+_OCEAN_SINGLETON = 0x006A3FBC
 _RELATION_WAR = 6
 _RELATION_PROPAGATION_MATRIX = 0xBBE
 _UNIT_ORDER_IDLE = 0
@@ -2204,6 +2221,69 @@ def _drive_military_phase_naval_encounter(
         breakpoint_roles,
     )
     return pre
+
+
+def _drive_military_phase_ships_without_orders(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    """Mirror RunMilitaryPhaseShipsWithoutOrders: economicTurn=6, pinned srand,
+    two unordered active-nation ships (a damaged type 3 and a ready type 9) in
+    the nation's first port zone, then TSimMgr::DoMilitary (0x57f280)."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 6)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    zone = _invoke_thiscall(
+        session,
+        _FIND_FIRST_PORT_ZONE,
+        _u32(session, _OCEAN_SINGLETON),
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(active_nation,),
+    )
+    if zone == 0:
+        raise RuntimeError("the fixture has no active-nation port zone")
+    damaged = _new_ship(
+        session,
+        3,
+        zone,
+        active_nation,
+        "military-unordered-damaged",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    session.assign(f"*(short*)0x{damaged + 0x1C:08x}", 1)
+    _new_ship(
+        session,
+        9,
+        zone,
+        active_nation,
+        "military-unordered-ready",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _DO_MILITARY,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
 
 
 def _resolved_tile_owner(session: GdbSession, owner_code: int) -> int:
@@ -2742,6 +2822,15 @@ def run_binary(
                         )
                         result_fields = _capture_military_phase(session)
                         result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive
+                        == "military_phase_ships_without_orders"
+                    ):
+                        _drive_military_phase_ships_without_orders(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_military_phase(session)
+                        result_probe = CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE
                     else:
                         raise RuntimeError(
                             f"unknown scenario drive {scenario.drive!r}"
@@ -2855,6 +2944,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase_naval_escalation",
         "military_phase_land_combat",
         "military_phase_land_interactive",
+        "military_phase_ships_without_orders",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -2900,6 +2990,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         elif scenario.drive == "military_phase_land_interactive":
             recomp_observation = normalize_native_military_phase(
                 native_result, checkpoint_id=CHECKPOINT_LAND_INTERACTIVE_PHASE
+            )
+        elif scenario.drive == "military_phase_ships_without_orders":
+            recomp_observation = normalize_native_military_phase(
+                native_result,
+                checkpoint_id=CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
             )
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
@@ -2969,6 +3064,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_LAND_INTERACTIVE_PHASE,
+        )
+    elif result_checkpoint == CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE:
+        retail_observation = normalize_retail_military_phase(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
         )
     else:
         retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])

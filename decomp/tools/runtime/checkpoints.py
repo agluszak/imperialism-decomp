@@ -33,6 +33,9 @@ CHECKPOINT_NAVAL_ENCOUNTER_PHASE = "military_phase_naval_encounter.resolved"
 CHECKPOINT_NAVAL_ESCALATION_PHASE = "military_phase_naval_escalation.resolved"
 CHECKPOINT_LAND_COMBAT_PHASE = "military_phase_land_combat.resolved"
 CHECKPOINT_LAND_INTERACTIVE_PHASE = "military_phase_land_interactive.resolved"
+CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE = (
+    "military_phase_ships_without_orders.resolved"
+)
 
 
 @dataclass(frozen=True)
@@ -193,6 +196,19 @@ SCHEMAS = {
             "military.task_forces",
             "military.land_battle",
             "military.province_owners",
+        ),
+    ),
+    CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
+        CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+        ACTION_MILITARY_PHASE,
+        "military_phase_ships_without_orders",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
         ),
     ),
 }
