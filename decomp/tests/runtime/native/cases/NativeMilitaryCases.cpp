@@ -4,6 +4,8 @@
 #include "RuntimeGameStateCapture.h"
 #include "parson.h"
 
+#include <stdlib.h>
+
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCityInteriorMinister.h"
@@ -637,6 +639,9 @@ RuntimeActionResult RunMilitaryPhase(NativeTransition& transition) {
     return started;
   }
 
+  // Deterministic CRT seed so retail-vs-recomp differentials see identical
+  // rand() streams (military AI consumes rand()).
+  srand(0x1234);
   g_pSimMgr->DoMilitary();
   return transition.Finish();
 }

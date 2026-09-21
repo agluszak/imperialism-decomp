@@ -18,6 +18,7 @@ ACTION_DIPLOMACY_PHASE = "diplomacy_phase.run"
 ACTION_TRADE_PHASE = "trade_phase.run"
 ACTION_CITY_TRANSPORT_PHASE = "city_transport_phase.run"
 ACTION_CIVILIANS_PHASE = "civilians_phase.run"
+ACTION_MILITARY_PHASE = "military_phase.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -27,6 +28,7 @@ CHECKPOINT_DIPLOMACY_PHASE = "diplomacy_phase.resolved"
 CHECKPOINT_TRADE_PHASE = "trade_phase.resolved"
 CHECKPOINT_CITY_TRANSPORT_PHASE = "city_transport_phase.resolved"
 CHECKPOINT_CIVILIANS_PHASE = "civilians_phase.resolved"
+CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
 
 
 @dataclass(frozen=True)
@@ -118,6 +120,18 @@ SCHEMAS = {
             "turn.economic_turn",
             "civilians.units",
             "civilians.nations",
+        ),
+    ),
+    CHECKPOINT_MILITARY_PHASE: CheckpointSchema(
+        CHECKPOINT_MILITARY_PHASE,
+        ACTION_MILITARY_PHASE,
+        "military_phase",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military.nations",
+            "military.ships",
         ),
     ),
 }
@@ -651,6 +665,133 @@ def normalize_retail_civilians_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
         "civilians": _civilians_ephemeral(
             _require_mapping(raw.get("civilians"), "retail civilians"),
             "retail civilians",
+        ),
+    }
+
+
+_MILITARY_UNIT_INT_FIELDS = (
+    "kind",
+    "tile",
+    "order",
+    "target",
+    "owner",
+    "strength",
+    "experience",
+    "battle_flags",
+)
+
+_MILITARY_SHIP_INT_FIELDS = (
+    "type",
+    "nation",
+    "strength",
+    "experience",
+    "zone",
+)
+
+
+def _military_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
+    nations_raw = raw.get("nations")
+    if not isinstance(nations_raw, list):
+        raise ValueError(f"{label}.nations must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(nations_raw):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"{label}.nations[{slot}]")
+        units_raw = nation_map.get("units")
+        if not isinstance(units_raw, list):
+            raise ValueError(f"{label}.nations[{slot}].units must be an array")
+        units: list[Any] = []
+        for index, unit in enumerate(units_raw):
+            unit_map = _require_mapping(
+                unit, f"{label}.nations[{slot}].units[{index}]"
+            )
+            units.append(
+                {
+                    field: _require_int(
+                        unit_map.get(field),
+                        f"{label}.nations[{slot}].units[{index}].{field}",
+                    )
+                    for field in _MILITARY_UNIT_INT_FIELDS
+                }
+            )
+        nations.append(
+            {
+                "treasury": _require_int(
+                    nation_map.get("treasury"),
+                    f"{label}.nations[{slot}].treasury",
+                ),
+                "military_expenses": _require_int(
+                    nation_map.get("military_expenses"),
+                    f"{label}.nations[{slot}].military_expenses",
+                ),
+                "units": units,
+            }
+        )
+    ships_raw = raw.get("ships")
+    if not isinstance(ships_raw, list):
+        raise ValueError(f"{label}.ships must be an array")
+    ships: list[Any] = []
+    for index, ship in enumerate(ships_raw):
+        ship_map = _require_mapping(ship, f"{label}.ships[{index}]")
+        ships.append(
+            {
+                field: _require_int(
+                    ship_map.get(field), f"{label}.ships[{index}].{field}"
+                )
+                for field in _MILITARY_SHIP_INT_FIELDS
+            }
+        )
+    return {"nations": nations, "ships": ships}
+
+
+def normalize_native_military_phase(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a native driver result to the stable military-phase schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    military = _require_mapping(
+        ephemeral.get("military"), "native ephemeral military"
+    )
+    return {
+        "checkpoint_id": CHECKPOINT_MILITARY_PHASE,
+        "action_id": ACTION_MILITARY_PHASE,
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active_nation"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+            ),
+        },
+        "military": _military_ephemeral(military, "native military"),
+    }
+
+
+def normalize_retail_military_phase(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a retail GDB military capture to the same schema."""
+    return {
+        "checkpoint_id": CHECKPOINT_MILITARY_PHASE,
+        "action_id": ACTION_MILITARY_PHASE,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+            ),
+        },
+        "military": _military_ephemeral(
+            _require_mapping(raw.get("military"), "retail military"),
+            "retail military",
         ),
     }
 

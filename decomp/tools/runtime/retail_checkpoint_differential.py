@@ -19,17 +19,20 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_CITY_TRANSPORT_PHASE,
     CHECKPOINT_CIVILIANS_PHASE,
     CHECKPOINT_DIPLOMACY_PHASE,
+    CHECKPOINT_MILITARY_PHASE,
     CHECKPOINT_TRADE_PHASE,
     SCHEMAS,
     first_checkpoint_difference,
     normalize_native_city_transport_phase,
     normalize_native_civilians_phase,
+    normalize_native_military_phase,
     normalize_native_combined_map,
     normalize_native_diplomacy_phase,
     normalize_native_trade_phase,
     normalize_retail_city_transport_phase,
     normalize_retail_civilians_phase,
     normalize_retail_combined_map,
+    normalize_retail_military_phase,
     normalize_retail_diplomacy_phase,
     normalize_retail_trade_phase,
     validate_checkpoint,
@@ -271,6 +274,23 @@ def _civilians_phase_scenario(fixture: Path) -> Scenario:
     )
 
 
+def _military_phase_scenario(fixture: Path) -> Scenario:
+    """Reach the loaded map, then drive the native military transition."""
+    base = _load_save_to_map_scenario(fixture)
+    return Scenario(
+        name="military_phase",
+        native_test="military_phase",
+        action_id="military_phase.run",
+        fixture=fixture,
+        probes=base.probes,
+        terminal_checkpoint=base.terminal_checkpoint,
+        timeout_seconds=base.timeout_seconds,
+        start_action=base.start_action,
+        drive="military_phase",
+        result_checkpoint_id=CHECKPOINT_MILITARY_PHASE,
+    )
+
+
 def load_scenario(name: str) -> Scenario:
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / "beginning_of_game.imp"
@@ -286,6 +306,8 @@ def load_scenario(name: str) -> Scenario:
         scenario = _city_transport_phase_scenario(fixture)
     elif name == "civilians_phase":
         scenario = _civilians_phase_scenario(fixture)
+    elif name == "military_phase":
+        scenario = _military_phase_scenario(fixture)
     else:
         raise SystemExit(f"unknown retail checkpoint differential scenario {name!r}")
     checkpoint_id = scenario.result_checkpoint_id or scenario.terminal_checkpoint.checkpoint_id
@@ -1702,6 +1724,118 @@ def _capture_civilians_phase(session: GdbSession) -> dict[str, object]:
     }
 
 
+# --- military_phase retail drive --------------------------------------------------
+# Mirrors NativeMilitaryCases.cpp RunMilitaryPhase: economicTurn = 6, pinned
+# srand, then TSimMgr::DoMilitary (0x57f280).
+
+_DO_MILITARY = 0x0057F280
+_NAVY_PRIMARY_ORDER_LIST_HEAD = 0x006A3EDC
+
+
+def _drive_military_phase(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 6)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session,
+        _DO_MILITARY,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+
+def _sorted_ptr_list_entries(session: GdbSession, list_pointer: int) -> list[int]:
+    """Walk a TSortedList's embedded CPtrList node chain (listState at +0x04)."""
+    entries: list[int] = []
+    if list_pointer == 0:
+        return entries
+    node = _u32(session, list_pointer + 0x08)
+    while node != 0:
+        entries.append(_u32(session, node + 8))
+        node = _u32(session, node)
+    return entries
+
+
+def _capture_military_phase(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    nations: list[dict[str, object] | None] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            nations.append(None)
+            continue
+        units: list[dict[str, object]] = []
+        for unit in _sorted_ptr_list_entries(
+            session, _u32(session, nation + 0x44)
+        ):
+            raw = session.read_memory(unit, 0x40)
+            units.append(
+                {
+                    "kind": struct.unpack("<h", raw[0x04:0x06])[0],
+                    "tile": struct.unpack("<h", raw[0x06:0x08])[0],
+                    "order": struct.unpack("<h", raw[0x08:0x0A])[0],
+                    "target": struct.unpack("<h", raw[0x0C:0x0E])[0],
+                    "owner": struct.unpack("<h", raw[0x18:0x1A])[0],
+                    "strength": struct.unpack("<h", raw[0x34:0x36])[0],
+                    "experience": struct.unpack("<h", raw[0x38:0x3A])[0],
+                    "battle_flags": struct.unpack("<h", raw[0x3A:0x3C])[0],
+                }
+            )
+        nations.append(
+            {
+                "treasury": _eval_int(
+                    session, f"*(int*)0x{nation + 0x10:08x}"
+                ),
+                "military_expenses": _eval_int(
+                    session, f"*(int*)0x{nation + 0x960:08x}"
+                ),
+                "units": units,
+            }
+        )
+    ships: list[dict[str, object]] = []
+    ship = _u32(session, _NAVY_PRIMARY_ORDER_LIST_HEAD)
+    while ship != 0:
+        raw = session.read_memory(ship, 0x38)
+        location = struct.unpack("<I", raw[0x08:0x0C])[0]
+        zone_ordinal = -1
+        if location != 0:
+            zone_ordinal = _s16(session, location + 0x14)
+        ships.append(
+            {
+                "type": struct.unpack("<h", raw[0x04:0x06])[0],
+                "nation": struct.unpack("<h", raw[0x14:0x16])[0],
+                "strength": struct.unpack("<h", raw[0x1E:0x20])[0],
+                "experience": struct.unpack("<h", raw[0x30:0x32])[0],
+                "zone": zone_ordinal,
+            }
+        )
+        ship = struct.unpack("<I", raw[0x24:0x28])[0]
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "military": {"nations": nations, "ships": ships},
+    }
+
+
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
     if queue == 0:
         return []
@@ -1944,6 +2078,12 @@ def run_binary(
                         )
                         result_fields = _capture_civilians_phase(session)
                         result_probe = CHECKPOINT_CIVILIANS_PHASE
+                    elif scenario.drive == "military_phase":
+                        _drive_military_phase(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_military_phase(session)
+                        result_probe = CHECKPOINT_MILITARY_PHASE
                     else:
                         raise RuntimeError(
                             f"unknown scenario drive {scenario.drive!r}"
@@ -2052,6 +2192,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "trade_phase",
         "city_transport_phase",
         "civilians_phase",
+        "military_phase",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -2085,6 +2226,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         elif scenario.drive == "civilians_phase":
             recomp_observation = normalize_native_civilians_phase(native_result)
+        elif scenario.drive == "military_phase":
+            recomp_observation = normalize_native_military_phase(native_result)
         else:
             recomp_observation = normalize_native_trade_phase(native_result)
         recomp_identity = native_result.get("host", {}).get("provenance", {})
@@ -2133,6 +2276,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     elif result_checkpoint == CHECKPOINT_CIVILIANS_PHASE:
         retail_observation = normalize_retail_civilians_phase(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_MILITARY_PHASE:
+        retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"]
         )
     else:

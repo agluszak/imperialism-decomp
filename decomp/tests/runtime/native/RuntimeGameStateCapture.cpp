@@ -3343,6 +3343,61 @@ JSON_Value* CaptureCiviliansEphemeral() {
   return object.Release();
 }
 
+// Compact military-phase state for retail-vs-recomp transition differentials:
+// per-major-nation treasury/expenses plus every rostered military unit and
+// navy ship (zone identity via contextOrdinal14 so pointers never leak).
+JSON_Value* CaptureMilitaryEphemeral() {
+  JsonObject object;
+  JsonArray nations;
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0) {
+      nations.AddNull();
+      continue;
+    }
+    JsonObject entry;
+    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("military_expenses", nation->militaryExpenses960);
+    JsonArray units;
+    if (nation->militaryUnitList44 != 0) {
+      CIterator cursor(nation->militaryUnitList44);
+      TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+      while (cursor.More() != 0) {
+        JsonObject record;
+        record.Set("kind", static_cast<int>(unit->orderType));
+        record.Set("tile", static_cast<int>(unit->tileIndex06));
+        record.Set("order", static_cast<int>(unit->unitOrder));
+        record.Set("target", static_cast<int>(unit->orderTargetIndex0C));
+        record.Set("owner", static_cast<int>(unit->ownerNationSlot18));
+        record.Set("strength", static_cast<int>(unit->strength34));
+        record.Set("experience", static_cast<int>(unit->experiencePercent38));
+        record.Set("battle_flags",
+                   static_cast<int>(unit->battleStateFlags3A));
+        units.Add(record.Release());
+        unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+      }
+    }
+    entry.Set("units", units.Release());
+    nations.Add(entry.Release());
+  }
+  object.Set("nations", nations.Release());
+  JsonArray ships;
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    JsonObject record;
+    record.Set("type", static_cast<int>(ship->type));
+    record.Set("nation", static_cast<int>(ship->nation));
+    record.Set("strength", static_cast<int>(ship->strength));
+    record.Set("experience", static_cast<int>(ship->experience));
+    record.Set("zone",
+               ship->location != 0
+                   ? static_cast<int>(ship->location->contextOrdinal14)
+                   : -1);
+    ships.Add(record.Release());
+  }
+  object.Set("ships", ships.Release());
+  return object.Release();
+}
+
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
@@ -3360,6 +3415,7 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   }
   object.Set("city_transport", CaptureCityTransportEphemeral());
   object.Set("civilians", CaptureCiviliansEphemeral());
+  object.Set("military", CaptureMilitaryEphemeral());
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();
