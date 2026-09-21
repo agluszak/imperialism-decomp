@@ -30,6 +30,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
     CHECKPOINT_REASSESS_MISSIONS,
+    CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
     CHECKPOINT_RECOMPUTE_METRICS,
     CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
     CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
@@ -496,19 +497,26 @@ def load_scenario(name: str) -> Scenario:
             drive=name,
             result_checkpoint_id=CHECKPOINT_RECOMPUTE_METRICS,
         )
-    elif name == "reassess_control_sea_missions":
+    elif name in (
+        "reassess_control_sea_missions",
+        "reassess_control_sea_missions_damaged_ship",
+    ):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
             name=name,
             native_test=name,
-            action_id="reassess_control_sea_missions.run",
+            action_id=name + ".run",
             fixture=fixture,
             probes=base.probes,
             terminal_checkpoint=base.terminal_checkpoint,
             timeout_seconds=base.timeout_seconds,
             start_action=base.start_action,
             drive=name,
-            result_checkpoint_id=CHECKPOINT_REASSESS_MISSIONS,
+            result_checkpoint_id=(
+                CHECKPOINT_REASSESS_MISSIONS
+                if name == "reassess_control_sea_missions"
+                else CHECKPOINT_REASSESS_MISSIONS_DAMAGED
+            ),
         )
     elif name == "military_phase_ships_without_orders":
         base = _load_save_to_map_scenario(fixture)
@@ -2524,6 +2532,161 @@ def _capture_missions(
     }
 
 
+# --- reassess_control_sea_missions_damaged_ship retail drive -------------------
+# Mirrors RunReassessControlSeaMissionsDamagedShip: locate the first eligible
+# auto nation's TControlSeaZoneMission (or construct one on the map-context
+# head zone), force a war, park a hostile type-3 frigate at 899 strength in the
+# target zone, then run the same reassessment walk.
+
+_CONTROL_SEA_VTABLE = 0x0065A740
+_TNAVY_MISSION_CTOR = 0x00535470
+_MISSION_INIT_NATION = 0x005350A0
+_TSORTED_LIST_ADD_TAIL = 0x00488610
+_MISSION_SIZE = 0x3C
+_TSHIP_STRENGTH = 0x1C
+
+
+def _eligible_auto_nations(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> list[tuple[int, int]]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    eligible: list[tuple[int, int]] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        if (
+            _runtime_class(
+                session, nation, records, occurrences, breakpoint_roles
+            )
+            != _CLASS_AUTO_GREAT_POWER
+        ):
+            continue
+        if (
+            _invoke_thiscall(
+                session,
+                _NATION_SLOT_ELIGIBLE,
+                sim_mgr,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(slot,),
+            )
+            & 0xFF
+            == 0
+        ):
+            continue
+        eligible.append((slot, nation))
+    return eligible
+
+
+def _mission_class_name(
+    session: GdbSession,
+    mission: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> str:
+    class_ptr = _runtime_class(
+        session, mission, records, occurrences, breakpoint_roles
+    )
+    return (
+        _read_cstring(session, _u32(session, class_ptr)) if class_ptr else ""
+    )
+
+
+def _drive_reassess_missions_damaged(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    target_zone = 0
+    mission_nation = -1
+    for slot, nation in _eligible_auto_nations(
+        session, records, occurrences, breakpoint_roles
+    ):
+        queue = _u32(session, nation + _NATION_MISSION_QUEUE)
+        for mission in _sorted_ptr_list_entries(session, queue):
+            if (
+                _mission_class_name(
+                    session, mission, records, occurrences, breakpoint_roles
+                )
+                == "TControlSeaZoneMission"
+            ):
+                target_zone = _u32(session, mission + 0x14)
+                mission_nation = slot
+                break
+        if target_zone != 0:
+            break
+    if target_zone == 0:
+        eligible = _eligible_auto_nations(
+            session, records, occurrences, breakpoint_roles
+        )
+        if not eligible:
+            raise RuntimeError("no eligible auto nation for the sea mission")
+        mission_nation, nation = eligible[0]
+        target_zone = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+        mission = _invoke_thiscall(
+            session,
+            _OPERATOR_NEW,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_MISSION_SIZE,),
+        )
+        _invoke_thiscall(
+            session,
+            _TNAVY_MISSION_CTOR,
+            mission,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(target_zone,),
+        )
+        session.assign(
+            f"*(unsigned int*)0x{mission:08x}", _CONTROL_SEA_VTABLE
+        )
+        _invoke_thiscall(
+            session,
+            _MISSION_INIT_NATION,
+            mission,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(mission_nation,),
+        )
+        _invoke_thiscall(
+            session,
+            _TSORTED_LIST_ADD_TAIL,
+            _u32(session, nation + _NATION_MISSION_QUEUE),
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(mission,),
+        )
+    hostile = 1 if mission_nation == 0 else 0
+    _force_war_between(session, mission_nation, hostile)
+    ship = _new_ship(
+        session,
+        3,
+        target_zone,
+        hostile,
+        "damaged-hostile-frigate",
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    session.assign(f"*(short*)0x{ship + _TSHIP_STRENGTH:08x}", 899)
+    _drive_reassess_missions(
+        session, records, occurrences, breakpoint_roles
+    )
+
+
 def _drive_recompute_metrics(
     session: GdbSession,
     records: list[dict],
@@ -3528,6 +3691,17 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = CHECKPOINT_REASSESS_MISSIONS
+                    elif (
+                        scenario.drive
+                        == "reassess_control_sea_missions_damaged_ship"
+                    ):
+                        _drive_reassess_missions_damaged(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_missions(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_REASSESS_MISSIONS_DAMAGED
                     elif scenario.drive in (
                         "military_phase_naval_encounter",
                         "military_phase_naval_escalation",
@@ -3699,6 +3873,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "second_turn_military_cleanup",
         "recompute_nation_order_priority_metrics",
         "reassess_control_sea_missions",
+        "reassess_control_sea_missions_damaged_ship",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3778,7 +3953,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_recompute_metrics(
                 native_result
             )
-        elif scenario.drive == "reassess_control_sea_missions":
+        elif scenario.drive in (
+            "reassess_control_sea_missions",
+            "reassess_control_sea_missions_damaged_ship",
+        ):
             recomp_observation = normalize_native_reassess_missions(
                 native_result
             )
@@ -3899,7 +4077,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_recompute_metrics(
             retail_records[0]["fields"]
         )
-    elif result_checkpoint == CHECKPOINT_REASSESS_MISSIONS:
+    elif result_checkpoint in (
+        CHECKPOINT_REASSESS_MISSIONS,
+        CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
+    ):
         retail_observation = normalize_retail_reassess_missions(
             retail_records[0]["fields"]
         )

@@ -22,6 +22,9 @@ ACTION_MILITARY_PHASE = "military_phase.run"
 ACTION_MILITARY_CLEANUP = "second_turn_military_cleanup.run"
 ACTION_RECOMPUTE_METRICS = "recompute_nation_order_priority_metrics.run"
 ACTION_REASSESS_MISSIONS = "reassess_control_sea_missions.run"
+ACTION_REASSESS_MISSIONS_DAMAGED = (
+    "reassess_control_sea_missions_damaged_ship.run"
+)
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
@@ -48,6 +51,9 @@ CHECKPOINT_SECOND_TURN_MILITARY_PHASE = "second_turn_military_phase.resolved"
 CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP = "second_turn_military_cleanup.resolved"
 CHECKPOINT_RECOMPUTE_METRICS = "recompute_nation_order_priority_metrics.resolved"
 CHECKPOINT_REASSESS_MISSIONS = "reassess_control_sea_missions.resolved"
+CHECKPOINT_REASSESS_MISSIONS_DAMAGED = (
+    "reassess_control_sea_missions_damaged_ship.resolved"
+)
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
 
 
@@ -314,6 +320,17 @@ SCHEMAS = {
         CHECKPOINT_REASSESS_MISSIONS,
         ACTION_REASSESS_MISSIONS,
         "reassess_control_sea_missions",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "missions",
+        ),
+    ),
+    CHECKPOINT_REASSESS_MISSIONS_DAMAGED: CheckpointSchema(
+        CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
+        ACTION_REASSESS_MISSIONS_DAMAGED,
+        "reassess_control_sea_missions_damaged_ship",
         (
             "turn.phase",
             "turn.active",
