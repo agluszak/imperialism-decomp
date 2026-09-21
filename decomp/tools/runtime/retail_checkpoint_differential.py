@@ -29,6 +29,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
     CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
+    CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
     CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
     CHECKPOINT_SECOND_TURN_SEQUENCE,
     CHECKPOINT_TRADE_PHASE,
@@ -36,6 +37,7 @@ from tools.runtime.checkpoints import (
     first_checkpoint_difference,
     normalize_native_city_transport_phase,
     normalize_native_civilians_phase,
+    normalize_native_military_cleanup,
     normalize_native_military_phase,
     normalize_native_second_turn_sequence,
     normalize_native_combined_map,
@@ -44,6 +46,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_city_transport_phase,
     normalize_retail_civilians_phase,
     normalize_retail_combined_map,
+    normalize_retail_military_cleanup,
     normalize_retail_military_phase,
     normalize_retail_second_turn_sequence,
     normalize_retail_diplomacy_phase,
@@ -458,6 +461,20 @@ def load_scenario(name: str) -> Scenario:
             start_action=base.start_action,
             drive=name,
             result_checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+        )
+    elif name == "second_turn_military_cleanup":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id="second_turn_military_cleanup.run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
         )
     elif name == "military_phase_ships_without_orders":
         base = _load_save_to_map_scenario(fixture)
@@ -2086,6 +2103,208 @@ def _capture_military_phase(session: GdbSession) -> dict[str, object]:
     }
 
 
+# --- second_turn_military_cleanup retail drive --------------------------------
+# Mirrors RunSecondTurnMilitaryCleanup / the case-0x15 epilogue of
+# AdvanceGlobalTurnStateMachine: ClearAllTransientOrders, then for non-client
+# sessions the heatmap + priority-metric recompute and per-nation AI replan,
+# then AddPurchasedItems for each terrain-eligible major nation.
+
+_RECOMPUTE_HEATMAP = 0x00518130
+_RECOMPUTE_PRIORITY_METRICS = 0x0053FE30
+_CLEAR_TRANSIENT_ORDERS = 0x00557040
+# Vtable byte offsets verified in the retail case-0x15 epilogue
+# (0x57e0d7 call [edx+0x2b8], 0x57e122 call [edx+0x108]); slot 0 is MFC
+# CObject::GetRuntimeClass, and classTAutoGreatPower is the retail
+# CRuntimeClass global for TAutoGreatPower.
+_VT_GET_RUNTIME_CLASS = 0x00
+_VT_REFRESH_AND_REPLAN = 0x2B8
+_VT_ADD_PURCHASED_ITEMS = 0x108
+_CLASS_AUTO_GREAT_POWER = 0x00653F90
+_CLEANUP_METRIC_GLOBALS = {
+    "queue_divergence": 0x006A3A88,
+    "mobile_score": 0x006A3B88,
+    "mobile_divergence": 0x006A3AE0,
+    "combined_divergence": 0x006A3B50,
+    "weighted_military": 0x006A3B20,
+}
+_PROVINCE_CITY_SCORE = 0x9C
+
+
+def _runtime_class(
+    session: GdbSession,
+    receiver: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    """Call MFC CObject::GetRuntimeClass (vtable slot 0) on receiver."""
+    return _invoke_virtual(
+        session,
+        receiver,
+        _VT_GET_RUNTIME_CLASS,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+
+def _nation_terrain_eligible(session: GdbSession, slot: int) -> int:
+    """Mirror IsNationTerrainEligible for slots 0..6 (terrain + nation non-null,
+    encodedNationSlot outside the 100..199 minor band). Returns the nation
+    pointer or 0."""
+    nation = _nation_pointer(session, slot)
+    country = _u32(session, _TERRAIN_TABLE + 4 * slot)
+    if nation == 0 or country == 0:
+        return 0
+    code = _s16(session, country + 0x0E)
+    if 100 <= code <= 199:
+        return 0
+    return nation
+
+
+def _drive_second_turn_military_cleanup(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 2)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    navy_mgr = _u32(session, _NAVY_ORDER_MANAGER)
+    if navy_mgr != 0:
+        _invoke_thiscall(
+            session,
+            _CLEAR_TRANSIENT_ORDERS,
+            navy_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+    if _eval_int(session, f"*(int*)0x{sim_mgr + 0x44:08x}") != 2:
+        map_state = _u32(session, _GLOBAL_MAP_STATE)
+        if map_state != 0:
+            _invoke_thiscall(
+                session,
+                _RECOMPUTE_HEATMAP,
+                map_state,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+        _invoke_thiscall(
+            session,
+            _RECOMPUTE_PRIORITY_METRICS,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        for slot in range(_MAJOR_NATION_COUNT):
+            nation = _nation_terrain_eligible(session, slot)
+            if nation == 0:
+                continue
+            _invoke_virtual(
+                session,
+                nation,
+                _VT_REFRESH_AND_REPLAN,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(0,),
+            )
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_terrain_eligible(session, slot)
+        if nation == 0:
+            continue
+        _invoke_virtual(
+            session,
+            nation,
+            _VT_ADD_PURCHASED_ITEMS,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+
+
+def _capture_military_cleanup(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    region_scores: list[int] = []
+    city_score_total = 0
+    if map_state != 0:
+        city_score_total = _eval_int(
+            session, f"*(int*)0x{map_state + 0x18:08x}"
+        )
+        table = _u32(session, map_state + 0x10)
+        if table != 0:
+            raw = b""
+            total = _PROVINCE_COUNT * _PROVINCE_STRIDE
+            for offset in range(0, total, 0x2000):
+                raw += session.read_memory(
+                    table + offset, min(0x2000, total - offset)
+                )
+            region_scores = [
+                struct.unpack(
+                    "<i",
+                    raw[
+                        index * _PROVINCE_STRIDE
+                        + _PROVINCE_CITY_SCORE : index * _PROVINCE_STRIDE
+                        + _PROVINCE_CITY_SCORE
+                        + 4
+                    ],
+                )[0]
+                for index in range(_PROVINCE_COUNT)
+            ]
+    cleanup: dict[str, object] = {
+        "region_scores": region_scores,
+        "city_score_total": city_score_total,
+    }
+    for key, address in _CLEANUP_METRIC_GLOBALS.items():
+        raw = session.read_memory(address, 7 * 4)
+        cleanup[key] = [
+            struct.unpack("<I", raw[index * 4 : index * 4 + 4])[0]
+            for index in range(7)
+        ]
+    for key, offset in (
+        ("expansion_pressure", 0xB64),
+        ("unit_divergence", 0xB68),
+        ("mission_pressure", 0xB6C),
+    ):
+        values: list[int] = []
+        for slot in range(_MAJOR_NATION_COUNT):
+            nation = _nation_pointer(session, slot)
+            if nation != 0 and _runtime_class(
+                session, nation, records, occurrences, breakpoint_roles
+            ) == _CLASS_AUTO_GREAT_POWER:
+                values.append(_u32(session, nation + offset))
+            else:
+                values.append(0)
+        cleanup[key] = values
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "military_cleanup": cleanup,
+    }
+
+
 def _write_name_string(
     session: GdbSession,
     name: str,
@@ -3050,6 +3269,14 @@ def run_binary(
                         )
                         result_fields = _capture_military_phase(session)
                         result_probe = CHECKPOINT_SECOND_TURN_MILITARY_PHASE
+                    elif scenario.drive == "second_turn_military_cleanup":
+                        _drive_second_turn_military_cleanup(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_military_cleanup(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP
                     elif scenario.drive in (
                         "military_phase_naval_encounter",
                         "military_phase_naval_escalation",
@@ -3218,6 +3445,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "second_turn_diplomacy_phase",
         "second_turn_trade_phase",
         "second_turn_civilians_phase",
+        "second_turn_military_cleanup",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -3292,6 +3520,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_military_phase(
                 native_result,
                 checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+            )
+        elif scenario.drive == "second_turn_military_cleanup":
+            recomp_observation = normalize_native_military_cleanup(
+                native_result,
+                checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
             )
         elif scenario.drive == "second_turn_sequence":
             recomp_observation = normalize_native_second_turn_sequence(
@@ -3395,6 +3628,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_PHASE,
+        )
+    elif result_checkpoint == CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP:
+        retail_observation = normalize_retail_military_cleanup(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
         retail_observation = normalize_retail_second_turn_sequence(

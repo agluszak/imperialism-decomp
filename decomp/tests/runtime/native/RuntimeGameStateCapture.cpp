@@ -3441,6 +3441,59 @@ JSON_Value* CaptureMilitaryEphemeral() {
   return object.Release();
 }
 
+// End-of-turn cleanup outputs: the strategic-score heatmap written into
+// cityScoreTable[*].cityScoreValue plus the RecomputeNationOrderPriorityMetrics
+// float caches and the TAutoGreatPower pressure fields they feed.
+JSON_Value* CaptureMilitaryCleanupEphemeral() {
+  JsonObject object;
+  JsonArray regionScores;
+  if (g_pGlobalMapState != 0 && g_pGlobalMapState->cityScoreTable != 0) {
+    for (int index = 0; index < 0x180; ++index) {
+      regionScores.Add(g_pGlobalMapState->cityScoreTable[index].cityScoreValue);
+    }
+    object.Set("city_score_total", g_pGlobalMapState->cityScoreTotal);
+  } else {
+    object.Set("city_score_total", 0);
+  }
+  object.Set("region_scores", regionScores.Release());
+
+  JsonArray queueDivergence;
+  JsonArray mobileScore;
+  JsonArray mobileDivergence;
+  JsonArray combinedDivergence;
+  JsonArray weightedMilitary;
+  JsonArray expansionPressure;
+  JsonArray unitDivergence;
+  JsonArray missionPressure;
+  for (int nation = 0; nation < 7; ++nation) {
+    queueDivergence.Add(FloatBits(g_afNationOrderQueueDivergence_006a3a88[nation]));
+    mobileScore.Add(FloatBits(g_afNationMobileUnitScore_006a3b88[nation]));
+    mobileDivergence.Add(FloatBits(g_afNationMobileUnitDivergence_006a3ae0[nation]));
+    combinedDivergence.Add(FloatBits(g_afNationCombinedUnitDivergence_006a3b50[nation]));
+    weightedMilitary.Add(FloatBits(g_afNationWeightedMilitaryOrderScore_006a3b20[nation]));
+    TGreatPower* power = g_apNationStates[nation];
+    if (power != 0 && power->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
+      TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);
+      expansionPressure.Add(FloatBits(autoPower->expansionPressurePerCompatibleRegionB64));
+      unitDivergence.Add(FloatBits(autoPower->averageUnitDivergencePerOwnedRegionB68));
+      missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverageB6c));
+    } else {
+      expansionPressure.Add(0U);
+      unitDivergence.Add(0U);
+      missionPressure.Add(0U);
+    }
+  }
+  object.Set("queue_divergence", queueDivergence.Release());
+  object.Set("mobile_score", mobileScore.Release());
+  object.Set("mobile_divergence", mobileDivergence.Release());
+  object.Set("combined_divergence", combinedDivergence.Release());
+  object.Set("weighted_military", weightedMilitary.Release());
+  object.Set("expansion_pressure", expansionPressure.Release());
+  object.Set("unit_divergence", unitDivergence.Release());
+  object.Set("mission_pressure", missionPressure.Release());
+  return object.Release();
+}
+
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
@@ -3459,6 +3512,7 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("city_transport", CaptureCityTransportEphemeral());
   object.Set("civilians", CaptureCiviliansEphemeral());
   object.Set("military", CaptureMilitaryEphemeral());
+  object.Set("military_cleanup", CaptureMilitaryCleanupEphemeral());
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();

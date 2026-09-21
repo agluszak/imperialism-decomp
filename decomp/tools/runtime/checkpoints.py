@@ -19,6 +19,7 @@ ACTION_TRADE_PHASE = "trade_phase.run"
 ACTION_CITY_TRANSPORT_PHASE = "city_transport_phase.run"
 ACTION_CIVILIANS_PHASE = "civilians_phase.run"
 ACTION_MILITARY_PHASE = "military_phase.run"
+ACTION_MILITARY_CLEANUP = "second_turn_military_cleanup.run"
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
@@ -42,6 +43,7 @@ CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE = (
 )
 CHECKPOINT_LAND_RETREAT_PHASE = "military_phase_land_retreat.resolved"
 CHECKPOINT_SECOND_TURN_MILITARY_PHASE = "second_turn_military_phase.resolved"
+CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP = "second_turn_military_cleanup.resolved"
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
 
 
@@ -267,6 +269,26 @@ SCHEMAS = {
             "military.nations",
             "military.ships",
             "military.task_forces",
+        ),
+    ),
+    CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP: CheckpointSchema(
+        CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
+        ACTION_MILITARY_CLEANUP,
+        "second_turn_military_cleanup",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military_cleanup.region_scores",
+            "military_cleanup.city_score_total",
+            "military_cleanup.queue_divergence",
+            "military_cleanup.mobile_score",
+            "military_cleanup.mobile_divergence",
+            "military_cleanup.combined_divergence",
+            "military_cleanup.weighted_military",
+            "military_cleanup.expansion_pressure",
+            "military_cleanup.unit_divergence",
+            "military_cleanup.mission_pressure",
         ),
     ),
     CHECKPOINT_SECOND_TURN_SEQUENCE: CheckpointSchema(
@@ -1022,6 +1044,93 @@ def normalize_retail_military_phase(
         "military": _military_ephemeral(
             _require_mapping(raw.get("military"), "retail military"),
             "retail military",
+        ),
+    }
+
+
+_MILITARY_CLEANUP_METRIC_KEYS = (
+    "queue_divergence",
+    "mobile_score",
+    "mobile_divergence",
+    "combined_divergence",
+    "weighted_military",
+    "expansion_pressure",
+    "unit_divergence",
+    "mission_pressure",
+)
+
+
+def _military_cleanup_ephemeral(raw: Any, label: str) -> dict[str, Any]:
+    mapping = _require_mapping(raw, label)
+    normalized = {
+        "region_scores": _require_int_list(
+            mapping.get("region_scores"), f"{label}.region_scores"
+        ),
+        "city_score_total": _require_int(
+            mapping.get("city_score_total"), f"{label}.city_score_total"
+        ),
+    }
+    for key in _MILITARY_CLEANUP_METRIC_KEYS:
+        normalized[key] = _require_int_list(
+            mapping.get(key), f"{label}.{key}"
+        )
+    return normalized
+
+
+def normalize_native_military_cleanup(
+    result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
+) -> dict[str, Any]:
+    """Reduce a native driver result to the military-cleanup schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    cleanup = _require_mapping(
+        ephemeral.get("military_cleanup"), "native ephemeral military_cleanup"
+    )
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": ACTION_MILITARY_CLEANUP,
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active_nation"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+            ),
+        },
+        "military_cleanup": _military_cleanup_ephemeral(
+            cleanup, "native military_cleanup"
+        ),
+    }
+
+
+def normalize_retail_military_cleanup(
+    raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
+) -> dict[str, Any]:
+    """Reduce a retail GDB military-cleanup capture to the same schema."""
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": ACTION_MILITARY_CLEANUP,
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+            ),
+        },
+        "military_cleanup": _military_cleanup_ephemeral(
+            _require_mapping(raw.get("military_cleanup"), "retail military_cleanup"),
+            "retail military_cleanup",
         ),
     }
 

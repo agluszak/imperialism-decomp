@@ -30,8 +30,9 @@
 //  3. Continues accumulating the same vector over the remaining ("static",
 //     GetCategory == 0) units without resetting it, then re-normalizes
 //     the combined vector the same way into g_afNationCombinedUnitDivergence_006a3b50.
-//  4. Scales the mobile-unit score by the nation's military-power-to-navy-order-cost
-//     ratio (capped at 1.0) into g_afNationWeightedMilitaryOrderScore_006a3b20.
+//  4. Scales the mobile-unit score by the navy-order-cost-to-military-power ratio
+//     (navy/power when power exceeds navy, else 1.0) into
+//     g_afNationWeightedMilitaryOrderScore_006a3b20.
 // A second pass lets each eligible nation consume the completed cross-nation cache set.
 // FUNCTION: IMPERIALISM 0x0053fe30
 void RecomputeNationOrderPriorityMetrics() {
@@ -146,8 +147,8 @@ void RecomputeNationOrderPriorityMetrics() {
     int militaryPower = nation->ComputeSelectedMilitaryPowerScore();
     int navyOrderIndustrySum = nation->GetArmsInNavy();
     float powerRatio = 1.0f;
-    if (static_cast<float>(militaryPower) < static_cast<float>(navyOrderIndustrySum)) {
-      powerRatio = static_cast<float>(militaryPower) / static_cast<float>(navyOrderIndustrySum);
+    if (static_cast<float>(navyOrderIndustrySum) < static_cast<float>(militaryPower)) {
+      powerRatio = static_cast<float>(navyOrderIndustrySum) / static_cast<float>(militaryPower);
     }
     g_afNationWeightedMilitaryOrderScore_006a3b20[nationIdx] =
         g_afNationMobileUnitScore_006a3b88[nationIdx] * powerRatio;

@@ -1476,6 +1476,7 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
 
 RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition) {
   g_pSimMgr->economicTurn = 2;
+  srand(0x1234);
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
