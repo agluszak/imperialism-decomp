@@ -28,6 +28,7 @@ ACTION_REASSESS_MISSIONS_DAMAGED = (
 ACTION_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.run"
 ACTION_SECOND_TURN_SEQUENCE = "second_turn_sequence.run"
 ACTION_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.run"
+ACTION_CHECK_TECH_ADVANCES = "check_technology_advances.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -59,6 +60,7 @@ CHECKPOINT_REASSESS_MISSIONS_DAMAGED = (
 CHECKPOINT_AI_NAVAL_DEVELOPMENT = "ai_naval_industry_development.resolved"
 CHECKPOINT_SECOND_TURN_SEQUENCE = "second_turn_sequence.resolved"
 CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE = "consecutive_turn_sequence.resolved"
+CHECKPOINT_CHECK_TECH_ADVANCES = "check_technology_advances.resolved"
 
 
 @dataclass(frozen=True)
@@ -370,6 +372,17 @@ SCHEMAS = {
         (
             "stops",
             "economic_turns",
+        ),
+    ),
+    CHECKPOINT_CHECK_TECH_ADVANCES: CheckpointSchema(
+        CHECKPOINT_CHECK_TECH_ADVANCES,
+        ACTION_CHECK_TECH_ADVANCES,
+        "check_technology_advances",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "technology",
         ),
     ),
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE: CheckpointSchema(
@@ -1554,6 +1567,107 @@ def normalize_retail_ai_naval_development(
         "missions": _mission_records(raw.get("missions"), "retail missions"),
         "development": _development_records(
             raw.get("development"), "retail development"
+        ),
+    }
+
+
+def _technology_record(raw: Any, label: str) -> dict[str, Any]:
+    entry = _require_mapping(raw, label)
+    nations_raw = entry.get("nations")
+    if not isinstance(nations_raw, list):
+        raise ValueError(f"{label}.nations must be an array")
+    nations = []
+    for index, nation in enumerate(nations_raw):
+        nation = _require_mapping(nation, f"{label}.nations[{index}]")
+        nations.append(
+            {
+                "nation": _require_int(
+                    nation.get("nation"), f"{label}.nations[{index}].nation"
+                ),
+                "treasury": _require_int(
+                    nation.get("treasury"),
+                    f"{label}.nations[{index}].treasury",
+                ),
+                "tech_status": _require_int_list(
+                    nation.get("tech_status"),
+                    f"{label}.nations[{index}].tech_status",
+                ),
+                "completion_years": _require_int_list(
+                    nation.get("completion_years"),
+                    f"{label}.nations[{index}].completion_years",
+                ),
+                "abilities": _require_int_list(
+                    nation.get("abilities"),
+                    f"{label}.nations[{index}].abilities",
+                ),
+                "university": _require_int_list(
+                    nation.get("university"),
+                    f"{label}.nations[{index}].university",
+                ),
+            }
+        )
+    return {
+        "marker": _require_int(entry.get("marker"), f"{label}.marker"),
+        "prereq_primary": _require_int(
+            entry.get("prereq_primary"), f"{label}.prereq_primary"
+        ),
+        "prereq_secondary": _require_int(
+            entry.get("prereq_secondary"), f"{label}.prereq_secondary"
+        ),
+        "selector": _require_int(entry.get("selector"), f"{label}.selector"),
+        "zone_index": _require_int(
+            entry.get("zone_index"), f"{label}.zone_index"
+        ),
+        "unlock_flags": _require_int_list(
+            entry.get("unlock_flags"), f"{label}.unlock_flags"
+        ),
+        "enabled_types": _require_int_list(
+            entry.get("enabled_types"), f"{label}.enabled_types"
+        ),
+        "nations": nations,
+    }
+
+
+def normalize_native_check_technology_advances(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce a native driver result to the technology-advance schema."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "checkpoint_id": CHECKPOINT_CHECK_TECH_ADVANCES,
+        "action_id": ACTION_CHECK_TECH_ADVANCES,
+        "turn": _mission_turn(turn, "native turn"),
+        "technology": _technology_record(
+            ephemeral.get("technology"), "native technology"
+        ),
+    }
+
+
+def normalize_retail_check_technology_advances(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Reduce a retail GDB technology capture to the same schema."""
+    turn = {
+        "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+        "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+        "economic_turn": _require_int(
+            raw.get("economic_turn"), "retail economic_turn"
+        ),
+        "turn_flow_status_flags": _require_int(
+            raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+        ),
+    }
+    return {
+        "checkpoint_id": CHECKPOINT_CHECK_TECH_ADVANCES,
+        "action_id": ACTION_CHECK_TECH_ADVANCES,
+        "turn": turn,
+        "technology": _technology_record(
+            raw.get("technology"), "retail technology"
         ),
     }
 

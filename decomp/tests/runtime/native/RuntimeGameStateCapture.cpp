@@ -3573,6 +3573,68 @@ JSON_Value* CaptureDevelopmentEphemeral() {
   return nations.Release();
 }
 
+// TTechMgr advance outputs: global capability markers plus each major nation's
+// treasury, research-status row, completion-year row, ability row, and
+// university availability row.
+JSON_Value* CaptureTechnologyEphemeral() {
+  JsonObject object;
+  object.Set("marker", static_cast<int>(g_pTechMgr->marker262));
+  object.Set(
+      "prereq_primary",
+      static_cast<int>(g_pTechMgr->activePrerequisitePair264.primaryTechId));
+  object.Set(
+      "prereq_secondary",
+      static_cast<int>(g_pTechMgr->activePrerequisitePair264.secondaryTechId));
+  object.Set("selector", static_cast<int>(g_pTechMgr->techSelectorShort1d2));
+  object.Set("zone_index", static_cast<int>(g_pTechMgr->activeZoneIndex1d4));
+  JsonArray unlockFlags;
+  for (int techId = 0; techId < 0x1d; ++techId) {
+    unlockFlags.Add(static_cast<int>(g_pTechMgr->perTechUnlockFlag180[techId]));
+  }
+  object.Set("unlock_flags", unlockFlags.Release());
+  JsonArray enabledTypes;
+  for (int slot = 0; slot < 0xe; ++slot) {
+    enabledTypes.Add(static_cast<int>(g_pTechMgr->resourceTypeEnabled19d[slot]));
+  }
+  object.Set("enabled_types", enabledTypes.Release());
+  JsonArray nations;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0) {
+      continue;
+    }
+    JsonObject record;
+    record.Set("nation", nationSlot);
+    record.Set("treasury", nation->treasuryValue10);
+    JsonArray status;
+    JsonArray years;
+    for (int techIndex = 0; techIndex < 0x1d; ++techIndex) {
+      status.Add(static_cast<int>(
+          g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[techIndex]));
+      years.Add(static_cast<int>(
+          g_pTechMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techIndex]));
+    }
+    record.Set("tech_status", status.Release());
+    record.Set("completion_years", years.Release());
+    JsonArray abilities;
+    for (int abilityId = 0; abilityId < 0x1e; ++abilityId) {
+      abilities.Add(static_cast<int>(
+          g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[abilityId]));
+    }
+    record.Set("abilities", abilities.Release());
+    JsonArray university;
+    for (int category = 0; category < 9; ++category) {
+      university.Add(static_cast<int>(
+          g_pTechMgr->universityRecruitmentAvailabilityByNation467[nationSlot]
+              .availableByCategory[category]));
+    }
+    record.Set("university", university.Release());
+    nations.Add(record.Release());
+  }
+  object.Set("nations", nations.Release());
+  return object.Release();
+}
+
 bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
     return false;
@@ -3594,6 +3656,9 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("military_cleanup", CaptureMilitaryCleanupEphemeral());
   object.Set("missions", CaptureMissionsEphemeral());
   object.Set("development", CaptureDevelopmentEphemeral());
+  if (g_pTechMgr != 0) {
+    object.Set("technology", CaptureTechnologyEphemeral());
+  }
   SetOptionalMajorNation(object, "last_processed_nation",
                          g_pDiplomacyTurnStateManager->lastProcessedNationSlot);
   *state = object.Release();

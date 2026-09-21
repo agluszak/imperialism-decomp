@@ -30,6 +30,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_LAND_RETREAT_PHASE,
     CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE,
     CHECKPOINT_AI_NAVAL_DEVELOPMENT,
+    CHECKPOINT_CHECK_TECH_ADVANCES,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -44,6 +45,7 @@ from tools.runtime.checkpoints import (
     normalize_native_civilians_phase,
     normalize_native_military_cleanup,
     normalize_native_ai_naval_development,
+    normalize_native_check_technology_advances,
     normalize_native_consecutive_turn_sequence,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
@@ -57,6 +59,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_combined_map,
     normalize_retail_military_cleanup,
     normalize_retail_ai_naval_development,
+    normalize_retail_check_technology_advances,
     normalize_retail_consecutive_turn_sequence,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
@@ -447,6 +450,20 @@ def load_scenario(name: str) -> Scenario:
                   "military_phase_land_interactive",
                   "military_phase_land_retreat"):
         scenario = _military_phase_land_combat_scenario(fixture, name)
+    elif name == "check_technology_advances":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_CHECK_TECH_ADVANCES,
+        )
     elif name == "consecutive_turn_sequence":
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -2912,6 +2929,140 @@ def _capture_ai_development(
     return capture
 
 
+# --- check_technology_advances retail drive ------------------------------------
+# Mirrors RunCheckTechnologyAdvances: economicTurn=1234, tech 4 scheduled for
+# that turn, every other unscheduled slot cleared, then
+# TTechMgr::CheckForAdvances (0x5af980).
+
+_CHECK_FOR_ADVANCES = 0x005AF980
+_TECH_PRIORITY_SLOTS = 0x04
+_TECH_UNLOCK_FLAGS = 0x180
+_TECH_ENABLED_TYPES = 0x19D
+_TECH_SELECTOR = 0x1D2
+_TECH_ZONE_INDEX = 0x1D4
+_TECH_MARKER = 0x262
+_TECH_PREREQ_PAIR = 0x264
+_TECH_ORDER_CAP_ROWS = 0x268
+_TECH_ORDER_CAP_STRIDE = 0x1D
+_TECH_ABILITY_ROWS = 0x395
+_TECH_ABILITY_STRIDE = 0x1E
+_TECH_UNIVERSITY_ROWS = 0x467
+_TECH_UNIVERSITY_STRIDE = 9
+_TECH_YEAR_ROWS = 0x4A6
+_TECH_YEAR_STRIDE = 0x3A
+_NATION_TREASURY = 0x10
+
+
+def _drive_check_technology_advances(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    tech_mgr = _u32(session, _TECH_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 1234)
+    for tech in range(3, 0x1D):
+        if tech == 4:
+            continue
+        if (
+            _eval_int(
+                session, f"*(unsigned char*)0x{tech_mgr + 0x180 + tech:08x}"
+            )
+            == 0
+        ):
+            session.assign(
+                f"*(short*)0x{tech_mgr + _TECH_PRIORITY_SLOTS + 2 * tech:08x}",
+                0,
+            )
+    session.assign(f"*(unsigned char*)0x{tech_mgr + 0x180 + 4:08x}", 0)
+    session.assign(
+        f"*(short*)0x{tech_mgr + _TECH_PRIORITY_SLOTS + 8:08x}", 1234
+    )
+    _invoke_thiscall(
+        session,
+        _CHECK_FOR_ADVANCES,
+        tech_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+
+def _capture_technology(
+    session: GdbSession,
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    tech_mgr = _u32(session, _TECH_MGR)
+    unlock_flags = list(
+        session.read_memory(tech_mgr + _TECH_UNLOCK_FLAGS, 0x1D)
+    )
+    enabled_types = list(
+        session.read_memory(tech_mgr + _TECH_ENABLED_TYPES, 0x0E)
+    )
+    nations: list[dict[str, object]] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        status = list(
+            session.read_memory(
+                tech_mgr + _TECH_ORDER_CAP_ROWS + slot * _TECH_ORDER_CAP_STRIDE,
+                0x1D,
+            )
+        )
+        years_raw = session.read_memory(
+            tech_mgr + _TECH_YEAR_ROWS + slot * _TECH_YEAR_STRIDE, 0x3A
+        )
+        abilities = list(
+            session.read_memory(
+                tech_mgr + _TECH_ABILITY_ROWS + slot * _TECH_ABILITY_STRIDE,
+                0x1E,
+            )
+        )
+        university = list(
+            session.read_memory(
+                tech_mgr
+                + _TECH_UNIVERSITY_ROWS
+                + slot * _TECH_UNIVERSITY_STRIDE,
+                9,
+            )
+        )
+        nations.append(
+            {
+                "nation": slot,
+                "treasury": _s32(session, nation + _NATION_TREASURY),
+                "tech_status": status,
+                "completion_years": [
+                    struct.unpack("<h", years_raw[i * 2 : i * 2 + 2])[0]
+                    for i in range(0x1D)
+                ],
+                "abilities": abilities,
+                "university": university,
+            }
+        )
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "technology": {
+            "marker": _s16(session, tech_mgr + _TECH_MARKER),
+            "prereq_primary": _s16(session, tech_mgr + _TECH_PREREQ_PAIR),
+            "prereq_secondary": _s16(
+                session, tech_mgr + _TECH_PREREQ_PAIR + 2
+            ),
+            "selector": _s16(session, tech_mgr + _TECH_SELECTOR),
+            "zone_index": _s16(session, tech_mgr + _TECH_ZONE_INDEX),
+            "unlock_flags": unlock_flags,
+            "enabled_types": enabled_types,
+            "nations": nations,
+        },
+    }
+
+
 def _drive_recompute_metrics(
     session: GdbSession,
     records: list[dict],
@@ -4054,6 +4205,12 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE
+                    elif scenario.drive == "check_technology_advances":
+                        _drive_check_technology_advances(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_fields = _capture_technology(session)
+                        result_probe = CHECKPOINT_CHECK_TECH_ADVANCES
                     elif (
                         scenario.drive
                         == "military_phase_ships_without_orders"
@@ -4189,6 +4346,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "reassess_control_sea_missions_damaged_ship",
         "ai_naval_industry_development",
         "consecutive_turn_sequence",
+        "check_technology_advances",
     }:
         from tools.runtime.native_oracle import run_native_transition
 
@@ -4281,6 +4439,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         elif scenario.drive == "consecutive_turn_sequence":
             recomp_observation = normalize_native_consecutive_turn_sequence(
+                native_result
+            )
+        elif scenario.drive == "check_technology_advances":
+            recomp_observation = normalize_native_check_technology_advances(
                 native_result
             )
         elif scenario.drive == "second_turn_military_cleanup":
@@ -4413,6 +4575,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     elif result_checkpoint == CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE:
         retail_observation = normalize_retail_consecutive_turn_sequence(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_CHECK_TECH_ADVANCES:
+        retail_observation = normalize_retail_check_technology_advances(
             retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_SECOND_TURN_SEQUENCE:
