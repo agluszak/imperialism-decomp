@@ -1,4 +1,5 @@
 #include "NativeCases.h"
+#include "JsonArray.h"
 #include "JsonObject.h"
 
 #include "game/city/TCity.h"
@@ -69,7 +70,8 @@ short SeedNonCapitalOwnedRegionDevelopment(TGreatPower* nation) {
 
 RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
-  if (SeedNonCapitalOwnedRegionDevelopment(nation) < 0) {
+  const short regionId = SeedNonCapitalOwnedRegionDevelopment(nation);
+  if (regionId < 0) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no non-capital owned province with linked tiles");
   }
@@ -82,7 +84,20 @@ RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition) {
   }
 
   nation->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
-  return transition.Finish();
+  const Province& record = g_pGlobalMapState->cityScoreTable[regionId];
+  JsonObject province;
+  province.Set("province", static_cast<int>(regionId));
+  province.Set("owner", static_cast<int>(record.ownerNationCode00));
+  province.Set("dev_stage", static_cast<int>(record.developmentStage));
+  province.Set("last_turn", static_cast<int>(record.lastTurnTick));
+  JsonArray devCounts;
+  for (int index = 0; index < 10; ++index) {
+    devCounts.Add(static_cast<int>(record.resourceDevelopmentCounts82[index]));
+  }
+  province.Set("dev_counts", devCounts.Release());
+  JsonObject result;
+  result.Set("provinces", province.Release());
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunCityAndTransportPhase(NativeTransition& transition) {

@@ -3382,6 +3382,26 @@ JSON_Value* CaptureCiviliansEphemeral() {
     entry.Set("town_count",
               nation->townMarkerList != 0 ? nation->townMarkerList->GetCount()
                                         : -1);
+    JsonArray towns;
+    if (nation->townMarkerList != 0) {
+      CIterator townIter(nation->townMarkerList);
+      for (TTown* town = static_cast<TTown*>(townIter.Reset()); townIter.More();
+           town = static_cast<TTown*>(townIter.Advance())) {
+        JsonObject townEntry;
+        townEntry.Set("tile", static_cast<int>(town->tileIndex));
+        townEntry.Set("owner", static_cast<int>(town->ownerNation));
+        townEntry.Set("yields", CaptureShortArray(town->resourceYieldByType,
+                                                  kResourceKindCount));
+        townEntry.Set("transport_linked", town->transportLinked ? 1 : 0);
+        townEntry.Set("enabled",
+                      static_cast<int>(
+                          static_cast<unsigned char>(town->enabledFlag)));
+        townEntry.Set("adjacent_city", town->hasAdjacentCity ? 1 : 0);
+        townEntry.Set("active", town->activeFlag ? 1 : 0);
+        towns.Add(townEntry.Release());
+      }
+    }
+    entry.Set("towns", towns.Release());
     if (nation->city != 0) {
       entry.Set("city_stocks",
                 CaptureShortArray(&nation->city->cityStockCottonB6,

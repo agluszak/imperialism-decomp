@@ -198,6 +198,17 @@ _DEVELOPMENT_SCENARIOS = (
     "completed_resource_development",
 )
 
+_YIELD_SCENARIOS = (
+    "nation_resource_yield_rebuild",
+    "ai_nation_resource_yield_rebuild_clamps_targets",
+    "nation_resource_yield_rebuild_multiple_towns",
+)
+
+_GROWTH_SCENARIOS = (
+    "navy_growth_pending",
+    "army_growth_selected_general",
+)
+
 
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
@@ -856,6 +867,70 @@ for _dev_scenario in _DEVELOPMENT_SCENARIOS:
         ),
     )
 del _dev_scenario
+
+for _yield_scenario in _YIELD_SCENARIOS:
+    SCHEMAS[_yield_scenario + ".resolved"] = CheckpointSchema(
+        _yield_scenario + ".resolved",
+        _yield_scenario + ".run",
+        _yield_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "trade.nations",
+            "civilians.units",
+            "civilians.nations",
+        ),
+    )
+del _yield_scenario
+
+SCHEMAS["owned_region_development.resolved"] = CheckpointSchema(
+    "owned_region_development.resolved",
+    "owned_region_development.run",
+    "owned_region_development",
+    (
+        "turn.phase",
+        "turn.active",
+        "turn.economic_turn",
+        "turn.turn_flow_status_flags",
+        "trade.nations",
+        "civilians.units",
+        "civilians.nations",
+        "provinces",
+    ),
+)
+
+SCHEMAS["specialist_recruitment.resolved"] = CheckpointSchema(
+    "specialist_recruitment.resolved",
+    "specialist_recruitment.run",
+    "specialist_recruitment",
+    (
+        "turn.phase",
+        "turn.active",
+        "turn.economic_turn",
+        "turn.turn_flow_status_flags",
+        "civilians.units",
+        "civilians.nations",
+    ),
+)
+
+for _growth_scenario in _GROWTH_SCENARIOS:
+    SCHEMAS[_growth_scenario + ".resolved"] = CheckpointSchema(
+        _growth_scenario + ".resolved",
+        _growth_scenario + ".run",
+        _growth_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
+        ),
+    )
+del _growth_scenario
 
 SCHEMAS["province_owner_ocean_context.resolved"] = CheckpointSchema(
     "province_owner_ocean_context.resolved",
@@ -1576,6 +1651,42 @@ def _civilians_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
             if stocks is None
             else _require_int_list(stocks, f"{label}.nations[{slot}].city_stocks")
         )
+        towns_raw = nation_map.get("towns")
+        if towns_raw is not None:
+            if not isinstance(towns_raw, list):
+                raise ValueError(
+                    f"{label}.nations[{slot}].towns must be an array"
+                )
+            towns: list[Any] = []
+            for town_index, town in enumerate(towns_raw):
+                town_map = _require_mapping(
+                    town, f"{label}.nations[{slot}].towns[{town_index}]"
+                )
+                towns.append(
+                    {
+                        "tile": _require_int(town_map.get("tile"), "town.tile"),
+                        "owner": _require_int(
+                            town_map.get("owner"), "town.owner"
+                        ),
+                        "yields": _require_int_list(
+                            town_map.get("yields"), "town.yields"
+                        ),
+                        "transport_linked": _require_int(
+                            town_map.get("transport_linked"),
+                            "town.transport_linked",
+                        ),
+                        "enabled": _require_int(
+                            town_map.get("enabled"), "town.enabled"
+                        ),
+                        "adjacent_city": _require_int(
+                            town_map.get("adjacent_city"), "town.adjacent_city"
+                        ),
+                        "active": _require_int(
+                            town_map.get("active"), "town.active"
+                        ),
+                    }
+                )
+            entry["towns"] = towns
         nations.append(entry)
     return {"units": units, "nations": nations}
 
@@ -1991,6 +2102,104 @@ def normalize_retail_development(
     observation["tiles"] = _tile_records(
         raw.get("tiles"), "retail tiles"
     )
+    return observation
+
+
+def _province_record(raw: Any, label: str) -> dict[str, Any]:
+    record = _require_mapping(raw, label)
+    return {
+        "province": _require_int(record.get("province"), f"{label}.province"),
+        "owner": _require_int(record.get("owner"), f"{label}.owner"),
+        "dev_stage": _require_int(
+            record.get("dev_stage"), f"{label}.dev_stage"
+        ),
+        "last_turn": _require_int(
+            record.get("last_turn"), f"{label}.last_turn"
+        ),
+        "dev_counts": _require_int_list(
+            record.get("dev_counts"), f"{label}.dev_counts"
+        ),
+    }
+
+
+def normalize_native_yield_rebuild(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Trade-phase nation state plus civilians (towns carry the rebuilt
+    resourceYieldByType rows) and the optional provinces payload."""
+    observation = normalize_native_trade_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    observation["civilians"] = _civilians_ephemeral(
+        _require_mapping(
+            ephemeral.get("civilians"), "native ephemeral civilians"
+        ),
+        "native civilians",
+    )
+    payload = captures.get("result")
+    if isinstance(payload, Mapping) and payload.get("provinces") is not None:
+        observation["provinces"] = _province_record(
+            payload.get("provinces"), "native result.provinces"
+        )
+    return observation
+
+
+def normalize_retail_yield_rebuild(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail GDB yield-rebuild capture to the same schema."""
+    observation = normalize_retail_trade_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    observation["civilians"] = _civilians_ephemeral(
+        _require_mapping(raw.get("civilians"), "retail civilians"),
+        "retail civilians",
+    )
+    if raw.get("provinces") is not None:
+        observation["provinces"] = _province_record(
+            raw.get("provinces"), "retail provinces"
+        )
+    return observation
+
+
+def normalize_native_specialist_recruitment(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Civilians schema for the specialist TUnitOrder::Produce path."""
+    observation = normalize_native_civilians_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+def normalize_retail_specialist_recruitment(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_civilians_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+def normalize_native_growth(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Military schema for the DoCityAndTransport growth paths."""
+    observation = normalize_native_military_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+def normalize_retail_growth(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_military_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
     return observation
 
 

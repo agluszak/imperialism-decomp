@@ -57,6 +57,8 @@ from tools.runtime.checkpoints import (
     _DIPLOMACY_ECONOMY_SCENARIOS,
     _PROVINCE_SCENARIOS,
     _DEVELOPMENT_SCENARIOS,
+    _YIELD_SCENARIOS,
+    _GROWTH_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -88,6 +90,9 @@ from tools.runtime.checkpoints import (
     normalize_native_province_loss,
     normalize_native_province_ocean,
     normalize_native_development,
+    normalize_native_yield_rebuild,
+    normalize_native_specialist_recruitment,
+    normalize_native_growth,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -117,6 +122,9 @@ from tools.runtime.checkpoints import (
     normalize_retail_province_loss,
     normalize_retail_province_ocean,
     normalize_retail_development,
+    normalize_retail_yield_rebuild,
+    normalize_retail_specialist_recruitment,
+    normalize_retail_growth,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -688,6 +696,9 @@ def load_scenario(name: str) -> Scenario:
         + _DIPLOMACY_ECONOMY_SCENARIOS
         + _PROVINCE_SCENARIOS
         + _DEVELOPMENT_SCENARIOS
+        + _YIELD_SCENARIOS
+        + _GROWTH_SCENARIOS
+        + ("owned_region_development", "specialist_recruitment")
     ):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -1630,7 +1641,9 @@ def _longint_list_entries(session: GdbSession, list_pointer: int) -> list[int]:
     return entries
 
 
-def _seed_city_transport(session: GdbSession) -> int:
+def _seed_city_transport(
+    session: GdbSession, seed_pending_action: bool = True
+) -> int:
     """Mirror SeedNonCapitalOwnedRegionDevelopment on the retail process.
 
     Returns the chosen region id, or raises when the fixture has no eligible
@@ -1679,7 +1692,10 @@ def _seed_city_transport(session: GdbSession) -> int:
     session.assign(f"*(signed char*)0x{tile + 0x0C:08x}", 3)
 
     session.assign(f"*(short*)0x{city + 0x1DC + 2:08x}", 4)
-    session.assign(f"*(signed char*)0x{nation + 0x8C8 + 10:08x}", 0x32)
+    if seed_pending_action:
+        session.assign(
+            f"*(signed char*)0x{nation + 0x8C8 + 10:08x}", 0x32
+        )
     return chosen_id
 
 
@@ -2308,12 +2324,31 @@ def _capture_civilians_phase(session: GdbSession) -> dict[str, object]:
             nations.append(None)
             continue
         city = _u32(session, nation + 0x894)
+        town_list = _u32(session, nation + 0x898)
+        towns: list[dict[str, object]] = []
+        if town_list != 0:
+            for town in _sorted_ptr_list_entries(session, town_list):
+                raw = session.read_memory(town, 0x50)
+                towns.append(
+                    {
+                        "tile": struct.unpack("<h", raw[0x14:0x16])[0],
+                        "owner": struct.unpack("<h", raw[0x1C:0x1E])[0],
+                        "yields": list(
+                            struct.unpack("<23h", raw[0x1E:0x4C])
+                        ),
+                        "transport_linked": 1 if raw[0x4C] else 0,
+                        "enabled": raw[0x4D],
+                        "adjacent_city": 1 if raw[0x4E] else 0,
+                        "active": 1 if raw[0x4F] else 0,
+                    }
+                )
         nations.append(
             {
                 "treasury": _eval_int(
                     session, f"*(int*)0x{nation + 0x10:08x}"
                 ),
                 "town_count": _town_marker_count(session, nation),
+                "towns": towns,
                 "city_stocks": (
                     list(
                         struct.unpack(
@@ -5919,6 +5954,443 @@ def _drive_completed_resource_development(
     return result
 
 
+# --- nation yield-rebuild retail drives ----------------------------------------
+# Mirror RunNationResourceYieldRebuild* and RunOwnedRegionDevelopment: the real
+# RebuildNationResourceYieldCountersAndDevelopmentTargets /
+# AdvanceOwnedRegionDevelopmentCountersAndHandleEvents virtuals.
+
+_VT_REBUILD_YIELD = 0x4D * 4
+_VT_ADVANCE_REGION_DEV = 0x4E * 4
+_VT_TRANSPORT_INFLUENCE = 0x34 * 4
+_VT_LIST_ADD_TAIL = 0x0C * 4
+_FN_TTOWN_CTOR = 0x005B6C60
+_FN_TTOWN_ITOWN = 0x005B6CD0
+_TTOWN_SIZE = 0x50
+_RESOURCE_FISH = 19
+_RESOURCE_COTTON = 0
+
+
+def _neighbor_tile_array(tile: int, wrap: int) -> list[int]:
+    """Mirror TMapMgr::GetNeighborTileIDArray (0x512b50): fixed per-parity
+    offsets; wrap==0 wraps columns at the east/west edges, wrap!=0 returns
+    -1 there. Order: NE, E, SE, SW, W, NW."""
+    row, col = divmod(tile, 0x6C)
+    parity = row & 1
+    if parity == 0:
+        neighbors = [
+            tile - 0x6C,
+            tile + 1,
+            tile + 0x6C,
+            tile + 0x6B,
+            tile - 1,
+            tile - 0x6D,
+        ]
+    else:
+        neighbors = [
+            tile - 0x6B,
+            tile + 1,
+            tile + 0x6D,
+            tile + 0x6C,
+            tile - 1,
+            tile - 0x6C,
+        ]
+    if col < 0x6B:
+        if col == 0:
+            if wrap == 0:
+                neighbors[4] = tile + 0x6B
+                if parity == 0:
+                    neighbors[5] = tile - 1
+                    neighbors[3] = tile + 0xD7
+            else:
+                neighbors[4] = neighbors[3] = neighbors[5] = -1
+    elif wrap == 0:
+        neighbors[1] = tile - 0x6B
+        if parity != 0:
+            neighbors[2] = tile + 1
+            neighbors[0] = tile - 0xD7
+    else:
+        neighbors[1] = neighbors[0] = neighbors[2] = -1
+    if row > 0x3A:
+        neighbors[2] = neighbors[3] = -1
+        return neighbors
+    if row == 0:
+        neighbors[0] = neighbors[5] = -1
+    return neighbors
+
+
+def _clear_tile_yield_sources(
+    session: GdbSession, snapshot: _TerrainSnapshot, tile: int
+) -> None:
+    """Mirror ClearTileYieldSources: blank both resource edges, and zero the
+    province dev-count row when this tile is the province's city tile."""
+    terrain_base = snapshot.terrain_base
+    record = terrain_base + tile * _TERRAIN_RECORD_STRIDE
+    session.assign(f"*(signed char*)0x{record + 0x11:08x}", -1)
+    session.assign(f"*(signed char*)0x{record + 0x12:08x}", -1)
+    province = struct.unpack(
+        "<h",
+        session.read_memory(record + 0x14, 2),
+    )[0]
+    if 0 <= province < _PROVINCE_COUNT:
+        province_record = snapshot.province_base + province * _PROVINCE_STRIDE
+        city_tile = struct.unpack(
+            "<h", session.read_memory(province_record + 0x04, 2)
+        )[0]
+        if city_tile == tile:
+            session.write_memory(province_record + 0x82, b"\x00" * 20)
+
+
+def _drive_yield_rebuild(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    nation = _nation_pointer(session, _s16(session, sim_mgr + 0x2E))
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    _invoke_virtual(
+        session, nation, _VT_REBUILD_YIELD, records, occurrences,
+        breakpoint_roles,
+    )
+    result = _capture_trade_phase(session)
+    result["civilians"] = _capture_civilians_phase(session)["civilians"]
+    return result
+
+
+def _drive_yield_rebuild_clamps(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    nation = _nation_pointer(session, 0)
+    if nation == 0:
+        raise RuntimeError("retail fixture has no nation at slot 0")
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    snapshot = _TerrainSnapshot(session, map_state)
+    snapshot.refresh_tiles()
+    snapshot.refresh_provinces()
+    city = _u32(session, nation + 0x894)
+    town = _u32(session, city + 0xB0)
+    home_tile = _s16(session, town + 0x14)
+    wrap = _u8(session, map_state + 0x20)
+    _clear_tile_yield_sources(session, snapshot, home_tile)
+    for neighbor in _neighbor_tile_array(home_tile, wrap):
+        if neighbor != -1:
+            _clear_tile_yield_sources(session, snapshot, neighbor)
+    session.assign(f"*(unsigned char*)0x{town + 0x4C:08x}", 0)
+    session.assign(f"*(signed char*)0x{town + 0x4D:08x}", 0)
+    session.assign(f"*(unsigned char*)0x{town + 0x4F:08x}", 1)
+    home_record = snapshot.terrain_base + home_tile * _TERRAIN_RECORD_STRIDE
+    session.assign(f"*(signed char*)0x{home_record + 0x13:08x}", 1)
+    session.assign(f"*(signed char*)0x{home_record + 0x0C:08x}", 3)
+    session.assign(
+        f"*(signed char*)0x{home_record + 0x11:08x}", _RESOURCE_FISH
+    )
+    session.assign(
+        f"*(signed char*)0x{home_record + 0x12:08x}", _RESOURCE_COTTON
+    )
+    session.write_memory(nation + 0x10E, b"\x00" * 46)
+    session.write_memory(nation + 0x13C, b"\x00" * 46)
+    session.assign(
+        f"*(short*)0x{nation + 0x13C + _RESOURCE_FISH * 2:08x}", 4
+    )
+    session.assign(
+        f"*(short*)0x{nation + 0x13C + _RESOURCE_COTTON * 2:08x}", 6
+    )
+    session.assign(f"*(short*)0x{nation + 0xA8:08x}", 10)
+    _invoke_virtual(
+        session, nation, _VT_REBUILD_YIELD, records, occurrences,
+        breakpoint_roles,
+    )
+    result = _capture_trade_phase(session)
+    result["civilians"] = _capture_civilians_phase(session)["civilians"]
+    return result
+
+
+def _drive_yield_rebuild_multiple_towns(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    nation = _nation_pointer(session, 0)
+    if nation == 0:
+        raise RuntimeError("retail fixture has no nation at slot 0")
+    city = _u32(session, nation + 0x894)
+    home_town = _u32(session, city + 0xB0)
+    session.assign(f"*(signed char*)0x{home_town + 0x4D:08x}", 0)
+    session.assign(f"*(unsigned char*)0x{home_town + 0x4F:08x}", 1)
+    session.assign(f"*(unsigned char*)0x{home_town + 0x4C:08x}", 0)
+    out_slot = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(4,),
+    )
+    session.assign(f"*(unsigned int*)0x{out_slot:08x}", 0)
+    _invoke_virtual(
+        session,
+        nation,
+        _VT_TRANSPORT_INFLUENCE,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(out_slot,),
+    )
+    influence_map = _u32(session, out_slot)
+    if influence_map == 0:
+        raise RuntimeError(
+            "retail transport influence map was not returned"
+        )
+    tiles_map = session.read_memory(influence_map, _TILE_COUNT)
+    snapshot = _TerrainSnapshot(session, _u32(session, _GLOBAL_MAP_STATE))
+    snapshot.refresh_tiles()
+    outpost_tile = -1
+    for tile in range(_TILE_COUNT):
+        if (
+            tiles_map[tile] == 0
+            and snapshot.tile_field(tile, 0x04, "<b") == 0
+        ):
+            outpost_tile = tile
+            break
+    if outpost_tile < 0:
+        raise RuntimeError(
+            "retail fixture has no disconnected owned tile for a second town"
+        )
+    name_buffer = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(16,),
+    )
+    session.write_memory(name_buffer, b"Outpost\x00")
+    outpost = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TTOWN_SIZE,),
+    )
+    _invoke_thiscall(
+        session, _FN_TTOWN_CTOR, outpost, records, occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _FN_TTOWN_ITOWN,
+        outpost,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(name_buffer, outpost_tile, 0, 0),
+    )
+    session.assign(f"*(unsigned char*)0x{outpost + 0x4E:08x}", 0)
+    session.assign(f"*(unsigned char*)0x{outpost + 0x4C:08x}", 1)
+    town_list = _u32(session, nation + 0x898)
+    _invoke_virtual(
+        session,
+        town_list,
+        _VT_LIST_ADD_TAIL,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(outpost,),
+    )
+    _invoke_virtual(
+        session, nation, _VT_REBUILD_YIELD, records, occurrences,
+        breakpoint_roles,
+    )
+    result = _capture_trade_phase(session)
+    result["civilians"] = _capture_civilians_phase(session)["civilians"]
+    return result
+
+
+def _drive_owned_region_development(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    nation = _nation_pointer(session, _s16(session, sim_mgr + 0x2E))
+    region_id = _seed_city_transport(session, seed_pending_action=False)
+    _invoke_virtual(
+        session, nation, _VT_ADVANCE_REGION_DEV, records, occurrences,
+        breakpoint_roles,
+    )
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    record = _u32(session, map_state + 0x10) + region_id * _PROVINCE_STRIDE
+    result = _capture_trade_phase(session)
+    result["civilians"] = _capture_civilians_phase(session)["civilians"]
+    result["provinces"] = {
+        "province": region_id,
+        "owner": _s8(session, record),
+        "dev_stage": _s8(session, record + 0x02),
+        "last_turn": _s16(session, record + 0x06),
+        "dev_counts": list(
+            struct.unpack("<10h", session.read_memory(record + 0x82, 20))
+        ),
+    }
+    return result
+
+
+# --- specialist_recruitment / growth retail drives ------------------------------
+# RunSpecialistRecruitment builds a specialist TUnitOrder on the active nation's
+# city (operator new + ctor vptr store + IUnitOrder + quantity + Produce).
+# RunNavyGrowthPending / RunArmyGrowthSelectedGeneral set a pending-action byte
+# and run TSimMgr::DoCityAndTransport, the latter after
+# TTechMgr::ActivateSlotAndUpdateUI(kMilitaryUnitGeneralEra2).
+
+_UNIT_ORDER_SIZE = 0x5C
+_UNIT_ORDER_CTOR = 0x004B6F70
+_UNIT_ORDER_INIT = 0x004B6FE0
+_UNIT_ORDER_PRODUCE = 0x004B73B0
+_TECH_ACTIVATE_SLOT = 0x005B0340
+_MILITARY_UNIT_GENERAL_ERA2 = 28
+_PENDING_ACTION_BY_ACTION = 0x8C8
+
+
+def _drive_specialist_recruitment(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    nation = _nation_pointer(session, _s16(session, sim_mgr + 0x2E))
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    city = _u32(session, nation + 0x894)
+    if city == 0:
+        raise RuntimeError("retail active nation has no city")
+    order = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_UNIT_ORDER_SIZE,),
+    )
+    _invoke_thiscall(
+        session,
+        _UNIT_ORDER_CTOR,
+        order,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _UNIT_ORDER_INIT,
+        order,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(city, 24, -1, 0, -1, 0, 0, 4, 1),
+    )
+    session.assign(f"*(short*)0x{order + 0x04:08x}", 1)
+    _invoke_thiscall(
+        session,
+        _UNIT_ORDER_PRODUCE,
+        order,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    return _capture_civilians_phase(session)
+
+
+def _drive_navy_growth_pending(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, active_slot)
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    if (
+        _u32(session, _NAVY_PRIMARY_ORDER_LIST_HEAD) != 0
+        or _u32(session, _NAVY_SECONDARY_ORDER_LIST_HEAD) != 0
+    ):
+        raise RuntimeError("retail fixture already has navy objects")
+    zone = _invoke_thiscall(
+        session,
+        _FIND_FIRST_PORT_ZONE,
+        _u32(session, _OCEAN_SINGLETON),
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(active_slot,),
+    )
+    if zone == 0:
+        raise RuntimeError(
+            "retail fixture has no port zone for the active nation"
+        )
+    session.assign(
+        f"*(signed char*)0x{nation + _PENDING_ACTION_BY_ACTION:08x}", 0x32
+    )
+    _invoke_thiscall(
+        session,
+        _DO_CITY_AND_TRANSPORT,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    return _capture_military_phase(session)
+
+
+def _drive_army_growth_selected_general(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, active_slot)
+    tech_mgr = _u32(session, _TECH_MGR)
+    if nation == 0 or tech_mgr == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    session.assign(
+        f"*(signed char*)0x{nation + _PENDING_ACTION_BY_ACTION + 1:08x}",
+        0x32,
+    )
+    _invoke_thiscall(
+        session,
+        _TECH_ACTIVATE_SLOT,
+        tech_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_MILITARY_UNIT_GENERAL_ERA2, active_slot),
+    )
+    _invoke_thiscall(
+        session,
+        _DO_CITY_AND_TRANSPORT,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    return _capture_military_phase(session)
+
+
 # --- season_advance_clears_status_flags retail drive ---------------------------
 # Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
 # fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
@@ -8212,6 +8684,47 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "nation_resource_yield_rebuild":
+                        result_fields = _drive_yield_rebuild(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive
+                        == "ai_nation_resource_yield_rebuild_clamps_targets"
+                    ):
+                        result_fields = _drive_yield_rebuild_clamps(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive
+                        == "nation_resource_yield_rebuild_multiple_towns"
+                    ):
+                        result_fields = _drive_yield_rebuild_multiple_towns(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "owned_region_development":
+                        result_fields = _drive_owned_region_development(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "specialist_recruitment":
+                        result_fields = _drive_specialist_recruitment(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "navy_growth_pending":
+                        result_fields = _drive_navy_growth_pending(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "army_growth_selected_general":
+                        result_fields = _drive_army_growth_selected_general(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in _NATION_ECONOMY_SPECS:
                         result_fields = _drive_nation_economy(
                             session,
@@ -8509,6 +9022,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         *_DIPLOMACY_ECONOMY_SCENARIOS,
         *_PROVINCE_SCENARIOS,
         *_DEVELOPMENT_SCENARIOS,
+        *_YIELD_SCENARIOS,
+        *_GROWTH_SCENARIOS,
+        "owned_region_development",
+        "specialist_recruitment",
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -8694,6 +9211,20 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_province_ocean(native_result)
         elif scenario.drive in _DEVELOPMENT_SCENARIOS:
             recomp_observation = normalize_native_development(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _YIELD_SCENARIOS + (
+            "owned_region_development",
+        ):
+            recomp_observation = normalize_native_yield_rebuild(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive == "specialist_recruitment":
+            recomp_observation = normalize_native_specialist_recruitment(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _GROWTH_SCENARIOS:
+            recomp_observation = normalize_native_growth(
                 native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "turn_alerts_later_turn":
@@ -8943,6 +9474,23 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         _name + ".resolved" for _name in _DEVELOPMENT_SCENARIOS
     ):
         retail_observation = normalize_retail_development(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved"
+        for _name in _YIELD_SCENARIOS + ("owned_region_development",)
+    ):
+        retail_observation = normalize_retail_yield_rebuild(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint == "specialist_recruitment.resolved":
+        retail_observation = normalize_retail_specialist_recruitment(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _GROWTH_SCENARIOS
+    ):
+        retail_observation = normalize_retail_growth(
             retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint == CHECKPOINT_TURN_ALERTS_LATER:
