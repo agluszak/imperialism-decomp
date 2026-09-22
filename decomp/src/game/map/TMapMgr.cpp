@@ -36,8 +36,8 @@
 #include "game/globals/global_types.h"
 #include "game/globals/map_flow_globals.h"
 #include "game/globals/map_globals.h"
+#include "game/globals/mapped_flavor_literals.h"
 #include "game/globals/tactical_globals.h"
-#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 
 #include <cstdio>

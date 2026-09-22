@@ -9,7 +9,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/map_globals.h"
-#include "game/globals/raw_globals.h"
+#include "game/globals/mapped_flavor_literals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 

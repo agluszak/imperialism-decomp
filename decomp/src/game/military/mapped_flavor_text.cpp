@@ -2,7 +2,7 @@
 
 #include "game/core/CString.h"
 #include "game/globals/global_types.h"
-#include "game/globals/raw_globals.h"
+#include "game/globals/mapped_flavor_literals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_screens/TSimMgr.h"
