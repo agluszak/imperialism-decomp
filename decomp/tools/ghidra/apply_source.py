@@ -147,7 +147,7 @@ def main() -> int:
         stats = {"primary_exact": 0, "fn": 0, "label": 0, "vtable": 0,
                  "skipped_illegal": 0, "failed": 0, "stale_labels_dropped": 0,
                  "interior_vtable_labels_dropped": 0,
-                 "embedded_functions_demoted": 0}
+                 "embedded_functions_demoted": 0, "embedded_labels_renamed": 0}
 
         def _drop_stale_same_name_labels(a, simple):
             """Non-primary labels whose simple name equals the target block the
@@ -200,6 +200,20 @@ def main() -> int:
             a = af.getAddress(address)
             fn = fm.getFunctionAt(a)
             if fn is None:
+                # Already a plain label: keep the curated name authoritative.
+                prim = st.getPrimarySymbol(a)
+                if prim is None or prim.getName() == label_name:
+                    continue
+                if not args.apply:
+                    if not args.quiet:
+                        print(
+                            f"  would rename embedded label 0x{address:08x} "
+                            f"{prim.getName(True)} -> {label_name}"
+                        )
+                    stats["embedded_labels_renamed"] += 1
+                    continue
+                prim.setName(label_name, SourceType.USER_DEFINED)
+                stats["embedded_labels_renamed"] += 1
                 continue
             if not args.apply:
                 if not args.quiet:
@@ -225,6 +239,7 @@ def main() -> int:
                 f"[{mode}] interior_vtable_labels_dropped="
                 f"{stats['interior_vtable_labels_dropped']}"
                 f" embedded_functions_demoted={stats['embedded_functions_demoted']}"
+                f" embedded_labels_renamed={stats['embedded_labels_renamed']}"
             )
             if args.strict and not args.apply and (
                 stats["interior_vtable_labels_dropped"]
@@ -356,6 +371,7 @@ def main() -> int:
             f"stale_labels_dropped={stats['stale_labels_dropped']} failed={stats['failed']}"
             f" interior_vtable_labels_dropped={stats['interior_vtable_labels_dropped']}"
             f" embedded_functions_demoted={stats['embedded_functions_demoted']}"
+            f" embedded_labels_renamed={stats['embedded_labels_renamed']}"
         )
         if args.apply:
             print("Run `just export-project` so the vendored .gzf carries the result.")
@@ -364,6 +380,7 @@ def main() -> int:
                 stats["fn"] + stats["label"] + stats["vtable"]
                 + stats["interior_vtable_labels_dropped"]
                 + stats["embedded_functions_demoted"]
+                + stats["embedded_labels_renamed"]
             )
             if stats["failed"] or pending:
                 print(f"STRICT: not converged (failed={stats['failed']} pending={pending}).")

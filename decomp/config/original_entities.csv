@@ -8493,7 +8493,7 @@ address|name|symbol|size|type|prototype|provenance
 46ca9c|restore_exception_context|||global||
 46caae|return_resource_head|||global||
 474ac5|BuildUniversityDialogControls|||global||
-475f80|thunk_BuildUniversityRecruitmentRows|||global||
+475f80|UniversityRecruitRadioButtonCtorDone|||global||
 475f82|UniversityRecruitRadioButtonAllocNullPath|||global||
 475f84|PushUniversityRecruitRadioButtonUiNode|||global||
 47b53b|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b|||global||
@@ -8616,7 +8616,7 @@ address|name|symbol|size|type|prototype|provenance
 5974eb|ReinitializeGameFlowAndPostTurnEvent5DD|||global||
 59c98d|ApplyDefenderHoldLineStanceCursorMode0|||global||
 59c999|SetLinkedListEntryState2CForTacticalCategory0|||global||
-59c9d7|IterateLinkedListCursorAndAdvanceToEnd_0059c9d7|||global||
+59c9d7|AssignNodeState2CAndAdvanceCursor|||global||
 59c9f6|ApplyDefenderBombardStanceCursorMode2|||global||
 59ca02|ApplyAttackerSiegeStanceCursorMode3|||global||
 59ca0e|ApplyAttackerAssaultStanceCursorMode4|||global||
