@@ -14,11 +14,38 @@
 #include "game/nation_domain_types.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_tags_widgets.h"
 
 namespace {
 
 // The icon offset the map draws over a nation the player has an alliance posted towards.
 const short kAllianceTreatyIcon = 0x30;
+
+// Which status toolbar button a picture resource belongs to: dipl, trade, city, transport,
+// or -1. ShowTerrainMap gives each button an up art, a depressed art, and an unavailable
+// art; a glyph outside its button's family means the toolbar is showing a neighbor's
+// picture, which is the regression this guards.
+int StatusGlyphFamily(short glyph) {
+  switch (glyph) {
+  case 0x24d9:
+  case 0x24da:
+  case 0x24e1:
+    return 0;
+  case 0x24db:
+  case 0x24dc:
+  case 0x24e3:
+    return 1;
+  case 0x24dd:
+  case 0x24de:
+  case 0x24e5:
+    return 2;
+  case 0x24df:
+  case 0x24e0:
+  case 0x24e7:
+    return 3;
+  }
+  return -1;
+}
 
 // The foreign minister's screen, end to end: inspect a nation, render its relationships, post a
 // consulate to a minor nation and an alliance to a major one, then answer two offer sheets --
@@ -91,6 +118,14 @@ protected:
     RT_REQUIRE(Diplomacy().LastResponseWasReject());
 
     RT_CLOSE_TO_MAP("leave the diplomacy map", Diplomacy().Close());
+    // Every status button must be back to a picture of its own family -- raised or
+    // unavailable as the turn-flow flags dictate, never stuck depressed and never a
+    // neighbor's art. Visiting the screen legitimately flips its flag, so the exact
+    // resource id is recomputed rather than remembered.
+    RT_REQUIRE(StatusGlyphFamily(StrategicMap().ToolbarStatusGlyph(kControlTagDipl)) == 0);
+    RT_REQUIRE(StatusGlyphFamily(StrategicMap().ToolbarStatusGlyph(kControlTagTrad)) == 1);
+    RT_REQUIRE(StatusGlyphFamily(StrategicMap().ToolbarStatusGlyph(kControlTagCity)) == 2);
+    RT_REQUIRE(StatusGlyphFamily(StrategicMap().ToolbarStatusGlyph(kControlTagTran)) == 3);
     RT_PASS();
 
     RT_END();

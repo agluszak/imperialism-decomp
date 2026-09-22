@@ -245,6 +245,13 @@ TPicture* CivilianPortrait(TCivToolbar* toolbar) {
 
 } // namespace
 
+short StrategicMapScreen::ToolbarStatusGlyph(int tag) const {
+  TView* button = mapView != 0 ? mapView->ResolveControlByTag(tag) : 0;
+  return button != 0 && button->IsKindOf(RUNTIME_CLASS(TPicture)) != 0
+             ? static_cast<TPicture*>(button)->glyphBase84
+             : -1;
+}
+
 short StrategicMapScreen::CivilianPortraitGlyph() const {
   TPicture* portrait = CivilianPortrait(CivilianToolbar());
   return portrait != 0 ? portrait->glyphBase84 : -1;
@@ -408,8 +415,7 @@ TShipFractionCluster* StrategicMapScreen::NavyClassCluster(short navyClass) cons
     return 0;
   }
   TNavyToolbarCluster* toolbar = NavyToolbar();
-  TView* cluster =
-      toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagCls0 + navyClass) : 0;
+  TView* cluster = toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagCls0 + navyClass) : 0;
   return cluster != 0 && cluster->IsKindOf(RUNTIME_CLASS(TShipFractionCluster)) != 0
              ? static_cast<TShipFractionCluster*>(cluster)
              : 0;
@@ -446,8 +452,7 @@ bool StrategicMapScreen::NavyMenuIsActiveForZone(TZone* zone) const {
 
 bool StrategicMapScreen::NavyMenuIsActiveForForce(TTaskForce* force) const {
   return mapView != 0 && mapView->activeUnitCategoryIndex96 == kNavyInteractionMode &&
-         g_pActiveMapOrderContext != 0 &&
-         g_pActiveMapOrderContext->selectedTaskForce14 == force;
+         g_pActiveMapOrderContext != 0 && g_pActiveMapOrderContext->selectedTaskForce14 == force;
 }
 
 short StrategicMapScreen::NavyClassAvailableCount(short navyClass) const {

@@ -56,6 +56,11 @@ public:
   RuntimeActionResult ZoomIn();
   RuntimeActionResult ActivateZoomWithControl();
   RuntimeActionResult CancelToSetup();
+  // The picture resource a status toolbar button (Dipl/Trad/City/Tran) currently displays,
+  // or -1 when it cannot be resolved. Reading the live glyph is how a script checks that a
+  // screen which depressed its button left it raised again on return -- and that no button
+  // ever wears a neighbor's art.
+  short ToolbarStatusGlyph(int tag) const;
   // Re-enter the map through the game's own turn-event dispatch, for a script that left it by
   // dispatching some other screen and so has no control to click its way back with.
   RuntimeActionResult ReopenByTurnEvent(short nationSlot);
