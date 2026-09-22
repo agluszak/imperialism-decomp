@@ -276,6 +276,12 @@
 // LIBRARY: IMPERIALISM 0x004b0970
 // ownership-only
 
+// LIBRARY: IMPERIALISM 0x004bdcf0
+// name: CRect::CRect
+// symbol: ??0CRect@@QAE@HHHH@Z
+// prototype: public: __thiscall CRect::CRect(int,int,int,int)
+// second emission of the 0x41b1e0 body (per-TU duplicate); 9 call sites.
+
 // LIBRARY: IMPERIALISM 0x004d6b70
 // CString::operator= forwarder: calls the shared-body assign then returns
 // this. MFC strcore.obj family.
