@@ -14,6 +14,7 @@ from tools.runtime.debug.session import StopEvent
 from tools.runtime.checkpoints import (
     CHECKPOINT_COMBINED_MAP_READY,
     CHECKPOINT_ELIMINATION_PHASE,
+    CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE,
     CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
     CHECKPOINT_TURN_STATE_COMBAT_MOVES,
     CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
@@ -270,6 +271,14 @@ class StrategicNavalBattleMatrixTests(unittest.TestCase):
         )
         self.assertEqual(scenario.action_id, "strategic_naval_battle_matrix.run")
 
+    def test_tier_exhaustion_scenario_invokes_the_production_path(self) -> None:
+        scenario = load_scenario("military_phase_naval_tier_exhaustion")
+        self.assertEqual(
+            scenario.result_checkpoint_id,
+            CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE,
+        )
+        self.assertEqual(scenario.action_id, "military_phase.run")
+
     def test_matrix_normalizer_requires_reward_and_ship_state(self) -> None:
         cases = []
         for index in range(20):
@@ -327,6 +336,10 @@ class DifferentialTraceTests(unittest.TestCase):
         )
         self.assertEqual(
             _scenario_classification("turn_state_quarter_gate"),
+            "production_path",
+        )
+        self.assertEqual(
+            _scenario_classification("military_phase_naval_tier_exhaustion"),
             "production_path",
         )
         self.assertEqual(

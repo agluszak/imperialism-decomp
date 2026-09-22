@@ -68,6 +68,9 @@ CHECKPOINT_SECOND_TURN_CIVILIANS_PHASE = "second_turn_civilians_phase.resolved"
 CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
 CHECKPOINT_NAVAL_ENCOUNTER_PHASE = "military_phase_naval_encounter.resolved"
 CHECKPOINT_NAVAL_ESCALATION_PHASE = "military_phase_naval_escalation.resolved"
+CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE = (
+    "military_phase_naval_tier_exhaustion.resolved"
+)
 CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX = "strategic_naval_battle_matrix.resolved"
 CHECKPOINT_LAND_COMBAT_PHASE = "military_phase_land_combat.resolved"
 CHECKPOINT_LAND_INTERACTIVE_PHASE = "military_phase_land_interactive.resolved"
@@ -432,6 +435,27 @@ SCHEMAS = {
             "military.nations",
             "military.ships",
             "military.task_forces",
+        ),
+    ),
+    CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE: CheckpointSchema(
+        CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE,
+        ACTION_MILITARY_PHASE,
+        "military_phase_naval_tier_exhaustion",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
+            "naval_outcome.participant",
+            "naval_outcome.winner",
+            "naval_outcome.left",
+            "naval_outcome.right",
+            "naval_outcome.left_report_ships",
+            "naval_outcome.right_report_ships",
+            "rng.before.crt_rand",
+            "rng.after.crt_rand",
         ),
     ),
     CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX: CheckpointSchema(
@@ -2342,6 +2366,94 @@ def normalize_retail_military_phase(
             raw.get("dispatched_event"), "retail dispatched_event"
         )
         observation["rng"] = _rng_state(raw.get("rng"), "retail rng")
+    return observation
+
+
+def _production_naval_side(raw: Any, label: str) -> dict[str, Any]:
+    side = _require_mapping(raw, label)
+    survived = _require_bool(side.get("survived"), f"{label}.survived")
+    normalized = {
+        "survived": survived,
+        "force_queued": _require_bool(
+            side.get("force_queued"), f"{label}.force_queued"
+        ),
+        "defeated": _require_bool(side.get("defeated"), f"{label}.defeated"),
+    }
+    for key in ("strength", "experience", "admiral_experience"):
+        value = side.get(key)
+        if survived:
+            normalized[key] = _require_int(value, f"{label}.{key}")
+        elif value is not None:
+            raise ValueError(f"{label}.{key} must be null for a removed ship")
+        else:
+            normalized[key] = None
+    return normalized
+
+
+def _production_naval_report_side(raw: Any, label: str) -> list[dict[str, int]]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{label} must be a list")
+    ships = []
+    for index, ship_raw in enumerate(raw):
+        ship = _require_mapping(ship_raw, f"{label}[{index}]")
+        ships.append(
+            {
+                "type": _require_int(ship.get("type"), f"{label}[{index}].type"),
+                "strength": _require_int(
+                    ship.get("strength"), f"{label}[{index}].strength"
+                ),
+                "experience_bucket": _require_int(
+                    ship.get("experience_bucket"),
+                    f"{label}[{index}].experience_bucket",
+                ),
+            }
+        )
+    return ships
+
+
+def _production_naval_outcome(raw: Any, label: str) -> dict[str, Any]:
+    outcome = _require_mapping(raw, label)
+    participant = _require_int(outcome.get("participant"), f"{label}.participant")
+    winner = outcome.get("winner")
+    if winner not in {"left", "right", "draw"}:
+        raise ValueError(f"{label}.winner is invalid")
+    return {
+        "participant": participant,
+        "winner": winner,
+        "left": _production_naval_side(outcome.get("left"), f"{label}.left"),
+        "right": _production_naval_side(outcome.get("right"), f"{label}.right"),
+        "left_report_ships": _production_naval_report_side(
+            outcome.get("left_report_ships"), f"{label}.left_report_ships"
+        ),
+        "right_report_ships": _production_naval_report_side(
+            outcome.get("right_report_ships"), f"{label}.right_report_ships"
+        ),
+    }
+
+
+def normalize_native_military_phase_naval_tier_exhaustion(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    observation = normalize_native_military_phase(
+        result, CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE
+    )
+    captures = _native_captures(result)
+    result_capture = _require_mapping(captures.get("result"), "native result")
+    observation["naval_outcome"] = _production_naval_outcome(
+        result_capture.get("naval_outcome"), "native naval_outcome"
+    )
+    return observation
+
+
+def normalize_retail_military_phase_naval_tier_exhaustion(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    observation = normalize_retail_military_phase(
+        raw, CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE
+    )
+    observation["naval_outcome"] = _production_naval_outcome(
+        raw.get("naval_outcome"), "retail naval_outcome"
+    )
     return observation
 
 

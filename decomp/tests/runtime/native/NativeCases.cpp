@@ -71,6 +71,7 @@ RuntimeActionResult RunSecondTurnMilitaryPhase(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseNavalEncounter(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseNavalEscalation(NativeTransition& transition);
+RuntimeActionResult RunMilitaryPhaseNavalTierExhaustion(NativeTransition& transition);
 RuntimeActionResult RunStrategicNavalBattleMatrix(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseLandCombat(NativeTransition& transition);
 RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition);
@@ -226,6 +227,7 @@ const NativeCase kCases[] = {
     {"military_phase_ships_without_orders", RunMilitaryPhaseShipsWithoutOrders},
     {"military_phase_naval_encounter", RunMilitaryPhaseNavalEncounter},
     {"military_phase_naval_escalation", RunMilitaryPhaseNavalEscalation},
+    {"military_phase_naval_tier_exhaustion", RunMilitaryPhaseNavalTierExhaustion},
     {"strategic_naval_battle_matrix", RunStrategicNavalBattleMatrix},
     {"military_phase_land_combat", RunMilitaryPhaseLandCombat},
     {"military_phase_land_interactive", RunMilitaryPhaseLandInteractive},

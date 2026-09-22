@@ -827,6 +827,148 @@ RuntimeActionResult RunMilitaryPhaseNavalEscalation(NativeTransition& transition
   return RunMilitaryPhaseNavalEncounterImpl(transition, 9, 3);
 }
 
+bool ProductionNavyShipSurvived(TShip* expected) {
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    if (ship == expected) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ProductionTaskForceRemainsQueued(TTaskForce* expected) {
+  if (g_pNavyOrderManager == 0) {
+    return false;
+  }
+  for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != 0;
+       force = force->nextForce) {
+    if (force == expected) {
+      return true;
+    }
+  }
+  return false;
+}
+
+JSON_Value* CaptureProductionNavalSide(TTaskForce* force, TShip* ship, TAdmiral* admiral) {
+  JsonObject side;
+  const bool survived = ProductionNavyShipSurvived(ship);
+  const bool queued = ProductionTaskForceRemainsQueued(force);
+  side.Set("survived", survived);
+  side.Set("force_queued", queued);
+  side.Set("defeated", queued ? force->defeated != 0 : !survived);
+  if (survived) {
+    side.Set("strength", static_cast<int>(ship->strength));
+    side.Set("experience", static_cast<int>(ship->experience));
+    side.Set("admiral_experience",
+             ship->admiral == admiral ? static_cast<int>(admiral->experiencePoints) : -1);
+  } else {
+    side.SetNull("strength");
+    side.SetNull("experience");
+    side.SetNull("admiral_experience");
+  }
+  return side.Release();
+}
+
+JSON_Value* CaptureProductionNavalReportSide(const MapContextActionRecord* report, int sideIndex) {
+  JsonArray ships;
+  for (int index = 0; index < report->childCount24a[sideIndex]; ++index) {
+    const MapOrderBattleSideChildRecord& child = report->sideChildRecords250[sideIndex][index];
+    JsonObject ship;
+    ship.Set("type", static_cast<int>(child.resourceType));
+    ship.Set("strength", static_cast<int>(child.stockOrRequired));
+    ship.Set("experience_bucket", static_cast<int>(child.strengthBucket));
+    ships.Add(ship.Release());
+  }
+  return ships.Release();
+}
+
+RuntimeActionResult RunMilitaryPhaseNavalTierExhaustion(NativeTransition& transition) {
+  srand(0x1234);
+  const short activeNation = ActiveNationSlot();
+  short hostileNation = -1;
+  for (short nation = 0; nation < kMajorNationCount; ++nation) {
+    if (nation != activeNation && g_apNationStates[nation] != 0) {
+      hostileNation = nation;
+      break;
+    }
+  }
+  TZone* zone = FindUnoccupiedMapZone();
+  if (hostileNation < 0 || zone == 0 || g_pNavyOrderManager == 0 ||
+      g_pMapContextActionManager == 0 ||
+      g_pMapContextActionManager->mapContextActionRecordList04 == 0) {
+    return RuntimeActionResult::Failure("the fixture cannot create a controlled naval encounter");
+  }
+
+  TShip* attackerShip = new TShip();
+  attackerShip->IShip(3, zone, activeNation, "tier-exhaustion-attacker");
+  attackerShip->strength = 100;
+  attackerShip->experience = 0;
+  TTaskForce* attacker = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(activeNation);
+  if (attacker == 0) {
+    return RuntimeActionResult::Failure("could not create the tier-exhaustion attacker");
+  }
+  attacker->SetAggression(1);
+  attacker->defeated = 0;
+  attacker->SubmitOrders(3, 0);
+  TAdmiral* attackerAdmiral = new TAdmiral(activeNation);
+  attackerAdmiral->experiencePoints = 0;
+  attackerAdmiral->AssignToShip(attacker->flagship);
+
+  TShip* defenderShip = new TShip();
+  defenderShip->IShip(3, zone, hostileNation, "tier-exhaustion-defender");
+  defenderShip->strength = 100;
+  defenderShip->experience = 0;
+  TTaskForce* defender = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(hostileNation);
+  if (defender == 0) {
+    return RuntimeActionResult::Failure("could not create the tier-exhaustion defender");
+  }
+  defender->SetAggression(1);
+  defender->defeated = 0;
+  defender->SubmitOrders(6, zone);
+  TAdmiral* defenderAdmiral = new TAdmiral(hostileNation);
+  defenderAdmiral->experiencePoints = 100;
+  defenderAdmiral->AssignToShip(defender->flagship);
+  ForceWarBetween(activeNation, hostileNation);
+
+  TSortedPtrList* reports = g_pMapContextActionManager->mapContextActionRecordList04;
+  const int reportCountBefore = reports->GetSize();
+  JsonObject args;
+  args.Set("report_count_before", reportCountBefore);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+  g_pSimMgr->preferenceValues[1] = 0;
+  g_pSimMgr->DoMilitary();
+  if (reports->GetSize() != reportCountBefore + 1) {
+    return RuntimeActionResult::Failure(
+        "controlled production naval battle did not append one report");
+  }
+
+  MapContextActionRecord* report = static_cast<MapContextActionRecord*>(
+      reports->GetPtrListEntryByOneBasedIndex(reportCountBefore + 1));
+  if (!ProductionNavyShipSurvived(attackerShip) || !ProductionNavyShipSurvived(defenderShip) ||
+      !ProductionTaskForceRemainsQueued(attacker) || !ProductionTaskForceRemainsQueued(defender) ||
+      attackerShip->strength != 100 || defenderShip->strength != 100 ||
+      (attacker->defeated != 0) == (defender->defeated != 0)) {
+    return RuntimeActionResult::Failure(
+        "controlled naval battle did not exhaust tiers with both fleets afloat");
+  }
+  const int participant =
+      static_cast<int>(static_cast<signed char>(report->reportParticipantIndex02));
+  JsonObject outcome;
+  outcome.Set("participant", participant);
+  outcome.Set("winner", participant == 0 ? "left" : participant == 1 ? "right" : "draw");
+  outcome.Set("left", CaptureProductionNavalSide(attacker, attackerShip, attackerAdmiral));
+  outcome.Set("right", CaptureProductionNavalSide(defender, defenderShip, defenderAdmiral));
+  outcome.Set("left_report_ships", CaptureProductionNavalReportSide(report, 0));
+  outcome.Set("right_report_ships", CaptureProductionNavalReportSide(report, 1));
+
+  JsonObject result;
+  result.Set("naval_outcome", outcome.Release());
+  return transition.Finish(result.Release());
+}
+
 RuntimeActionResult RunStrategicNavalBattleMatrix(NativeTransition& transition) {
   const short activeNation = ActiveNationSlot();
   short hostileNation = -1;
