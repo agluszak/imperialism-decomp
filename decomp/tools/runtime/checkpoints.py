@@ -241,6 +241,17 @@ _NEWS_SCENARIOS = (
     "turn_stop_newspaper",
 )
 
+_ARMY_UI_SCENARIOS = (
+    "army_toolbar_counts",
+    "army_select_category",
+    "army_set_order_mode",
+    "army_select_province",
+    "army_click_blocked",
+    "army_click_friendly",
+    "army_click_hostile",
+    "army_selection_cycling",
+)
+
 
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
@@ -1090,6 +1101,22 @@ for _news_scenario in _NEWS_SCENARIOS:
         ),
     )
 del _news_scenario
+
+for _army_ui_scenario in _ARMY_UI_SCENARIOS:
+    SCHEMAS[_army_ui_scenario + ".resolved"] = CheckpointSchema(
+        _army_ui_scenario + ".resolved",
+        _army_ui_scenario + ".run",
+        _army_ui_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "military.nations",
+            "result",
+        ),
+    )
+del _army_ui_scenario
 
 
 _RESOURCE_NAMES = (
@@ -2593,6 +2620,32 @@ def normalize_retail_news(
             raw.get("newspaper_events"), "retail newspaper_events"
         ),
     }
+
+
+def normalize_native_army_ui(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Military schema plus the case's result payload (cursor/selection state)."""
+    observation = normalize_native_military_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    captures = _native_captures(result)
+    observation["result"] = _require_mapping(
+        captures.get("result"), "native result capture"
+    )
+    return observation
+
+
+def normalize_retail_army_ui(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_military_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    observation["result"] = _require_mapping(
+        raw.get("result"), "retail result"
+    )
+    return observation
 
 
 def _battle_snapshot_fields(

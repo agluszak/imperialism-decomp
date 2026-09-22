@@ -162,7 +162,10 @@ RuntimeActionResult RunArmyToolbarCounts(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  return transition.Finish(ToolbarCountJson(province));
+  JsonObject toolbar(ToolbarCountJson(province));
+  toolbar.Set("pending_index",
+              static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(toolbar.Release());
 }
 
 RuntimeActionResult RunArmySelectCategory(NativeTransition& transition) {
@@ -182,7 +185,11 @@ RuntimeActionResult RunArmySelectCategory(NativeTransition& transition) {
     return started;
   }
   remaining = g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(2, province);
-  return transition.Finish(static_cast<int>(remaining));
+  JsonObject selectResult;
+  selectResult.Set("remaining", static_cast<int>(remaining));
+  selectResult.Set("pending_index",
+                   static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(selectResult.Release());
 }
 
 RuntimeActionResult RunArmySetOrderMode(NativeTransition& transition) {
@@ -202,7 +209,10 @@ RuntimeActionResult RunArmySetOrderMode(NativeTransition& transition) {
     return started;
   }
   g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(3);
-  return transition.Finish();
+  JsonObject modeResult;
+  modeResult.Set("pending_index",
+                 static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(modeResult.Release());
 }
 
 RuntimeActionResult RunArmySelectProvince(NativeTransition& transition) {
@@ -228,7 +238,11 @@ RuntimeActionResult RunArmySelectProvince(NativeTransition& transition) {
     return started;
   }
   g_pMapContextActionManager->SetActiveProvinceSelection(province);
-  return transition.Finish();
+  JsonObject provinceResult;
+  provinceResult.Set(
+      "pending_index",
+      static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(provinceResult.Release());
 }
 
 RuntimeActionResult RunArmyClickBlocked(NativeTransition& transition) {
@@ -249,7 +263,11 @@ RuntimeActionResult RunArmyClickBlocked(NativeTransition& transition) {
     return started;
   }
   cursor = g_pMapContextActionManager->ComputeCivilianMapCursorStateIndex(tile, 0);
-  return transition.Finish(cursor);
+  JsonObject cursorResult;
+  cursorResult.Set("cursor", cursor);
+  cursorResult.Set("pending_index",
+                   static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(cursorResult.Release());
 }
 
 RuntimeActionResult RunArmyClickFriendly(NativeTransition& transition) {
@@ -270,7 +288,11 @@ RuntimeActionResult RunArmyClickFriendly(NativeTransition& transition) {
     return started;
   }
   g_pMapContextActionManager->SelectMovableUnitOnCurrentTileAndPlaySfx(dest);
-  return transition.Finish();
+  JsonObject friendlyResult;
+  friendlyResult.Set(
+      "pending_index",
+      static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(friendlyResult.Release());
 }
 
 RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
@@ -300,7 +322,11 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
   // NoticeTile recenters the retail view after a successful order. Camera position is
   // presentation state; keep the differential focused on the validated order transition.
   g_pGlobalMapState->field6 = mapViewOrigin;
-  return transition.Finish();
+  JsonObject hostileResult;
+  hostileResult.Set(
+      "pending_index",
+      static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(hostileResult.Release());
 }
 
 RuntimeActionResult RunArmySelectionCycling(NativeTransition& transition) {
@@ -321,5 +347,9 @@ RuntimeActionResult RunArmySelectionCycling(NativeTransition& transition) {
   }
   nextProvince =
       g_pMapContextActionManager->FindNextSelectableProvinceForNation(ActiveNationSlot());
-  return transition.Finish(static_cast<int>(nextProvince));
+  JsonObject cycleResult;
+  cycleResult.Set("next", static_cast<int>(nextProvince));
+  cycleResult.Set("pending_index",
+                  static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  return transition.Finish(cycleResult.Release());
 }

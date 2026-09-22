@@ -65,6 +65,7 @@ from tools.runtime.checkpoints import (
     _OPENING_SCENARIOS,
     _PENDING_STATUS_SCENARIOS,
     _NEWS_SCENARIOS,
+    _ARMY_UI_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -105,6 +106,7 @@ from tools.runtime.checkpoints import (
     normalize_native_opening,
     normalize_native_pending_status,
     normalize_native_news,
+    normalize_native_army_ui,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -143,6 +145,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_opening,
     normalize_retail_pending_status,
     normalize_retail_news,
+    normalize_retail_army_ui,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -722,6 +725,7 @@ def load_scenario(name: str) -> Scenario:
         + _OPENING_SCENARIOS
         + _PENDING_STATUS_SCENARIOS
         + _NEWS_SCENARIOS
+        + _ARMY_UI_SCENARIOS
         + (
             "owned_region_development",
             "specialist_recruitment",
@@ -1056,6 +1060,7 @@ def _wait_for_injected_return(
             f"debugged game stopped unexpectedly during injected call: "
             f"{stop.signal_name or stop.reason}"
         )
+
     session.interrupt_and_capture("injected-call-timeout")
     raise RuntimeError("timed out waiting for injected call to return")
 
@@ -9221,6 +9226,355 @@ def _drive_opening_home_city_setup(
     return _capture_civilians_phase(session)
 
 
+# --- army map-selection retail drives -------------------------------------------
+# Mirror the NativeArmyOrderCases bodies against the live retail process: the
+# TArmyMgr/g_pMapContextActionManager selection and order-mode surface
+# (pendingMapActionIndex +0x31c), the toolbar category tally, and the map-click
+# cursor/order validators.
+
+_ARMY_SELECT_CATEGORY = 0x004A43F0
+_ARMY_SELECT_PROVINCE = 0x004A45E0
+_ARMY_NEXT_PROVINCE = 0x004A4760
+_CIVILIAN_CURSOR_STATE = 0x004A4C80
+_VALIDATE_ORDER_TILE = 0x004A5080
+_UBER_SET_MAP_MODE = 0x00596CB0
+_MIL_CAN_UPGRADE = 0x005C3650
+_UNIT_CATEGORY_TABLE = 0x00695528
+_VIEW_MGR = 0x006A21BC
+# TUnit.h "slot" comments are byte offsets; TArmyMgr.h "slot" comments are indices.
+_VT_SELECT_MOVABLE = 0x14 * 4
+_VT_SET_ORDERS_IDLE = 0x16 * 4
+_VT_UNIT_MOVE_TO = 0x28
+_VT_UNIT_SET_ORDERS = 0x34
+_MIL_KIND_MINUTEMEN = 0
+_MIL_KIND_REGULARS = 2
+_DIPLO_REL_WAR = 6
+
+
+def _province_record(session: GdbSession, province: int) -> int:
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    return _u32(session, map_state + 0x10) + province * _PROVINCE_STRIDE
+
+
+def _army_active_nation(session: GdbSession) -> tuple[int, int]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    return _nation_pointer(session, active_slot), active_slot
+
+
+def _army_first_owned_province(session: GdbSession, nation: int) -> int:
+    owned = _u32(session, nation + 0x90)
+    if nation == 0 or owned == 0:
+        return -1
+    entries = _longint_list_entries(session, owned)
+    return entries[0] if entries else -1
+
+
+def _adjacent_owned_province(session: GdbSession, province: int) -> int:
+    record = _province_record(session, province)
+    owner = _s8(session, record)
+    count = _s8(session, record + 0x08)
+    for index in range(count):
+        dest = _s16(session, record + 0x0A + 2 * index)
+        if 0 <= dest < _PROVINCE_COUNT:
+            if _s8(session, _province_record(session, dest)) == owner:
+                return dest
+    return -1
+
+
+def _adjacent_foreign_province(session: GdbSession, province: int) -> int:
+    record = _province_record(session, province)
+    owner = _s8(session, record)
+    count = _s8(session, record + 0x08)
+    for index in range(count):
+        dest = _s16(session, record + 0x0A + 2 * index)
+        if 0 <= dest < _PROVINCE_COUNT:
+            dest_owner = _s8(session, _province_record(session, dest))
+            if dest_owner != owner and dest_owner != -1:
+                return dest
+    return -1
+
+
+def _find_owned_foreign_pair(session: GdbSession, active_slot: int) -> tuple[int, int]:
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    base = _u32(session, map_state + 0x10)
+    total = _PROVINCE_COUNT * _PROVINCE_STRIDE
+    owners = b""
+    for offset in range(0, total, 0x2000):
+        owners += session.read_memory(base + offset, min(0x2000, total - offset))
+    for province in range(_PROVINCE_COUNT):
+        if struct.unpack(
+            "<b", owners[province * _PROVINCE_STRIDE :][:1]
+        )[0] != active_slot:
+            continue
+        adjacent = _adjacent_foreign_province(session, province)
+        if adjacent >= 0:
+            return province, adjacent
+    return -1, -1
+
+
+def _empty_tile_index(session: GdbSession) -> int:
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    terrain_base = _u32(session, map_state + 0x0C)
+    total = _TILE_COUNT * _TERRAIN_RECORD_STRIDE
+    tiles = b""
+    for offset in range(0, total, 0x2000):
+        tiles += session.read_memory(
+            terrain_base + offset, min(0x2000, total - offset)
+        )
+    for tile in range(_TILE_COUNT):
+        if struct.unpack(
+            "<h", tiles[tile * _TERRAIN_RECORD_STRIDE + 0x14 :][:2]
+        )[0] == -1:
+            return tile
+    return -1
+
+
+def _spawn_stationed(
+    session: GdbSession,
+    kind: int,
+    province: int,
+    nation_slot: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    unit = _new_military_unit(
+        session, kind, -1, nation_slot, records, occurrences,
+        breakpoint_roles,
+    )
+    _invoke_virtual(
+        session, unit, _VT_UNIT_MOVE_TO, records, occurrences,
+        breakpoint_roles, args=(province,),
+    )
+    _invoke_virtual(
+        session, unit, _VT_UNIT_SET_ORDERS, records, occurrences,
+        breakpoint_roles, args=(0, -1),
+    )
+    return unit
+
+
+def _set_unit_orders(
+    session: GdbSession,
+    unit: int,
+    order: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    _invoke_virtual(
+        session, unit, _VT_UNIT_SET_ORDERS, records, occurrences,
+        breakpoint_roles, args=(order, -1),
+    )
+
+
+def _stationed_chain(session: GdbSession, province: int) -> list[int]:
+    units = []
+    unit = _u32(session, _province_record(session, province) + 0x98)
+    while unit != 0:
+        units.append(unit)
+        unit = _u32(session, unit + 0x14)
+    return units
+
+
+def _army_ui_result(
+    session: GdbSession, extra: dict[str, object] | None = None
+) -> dict[str, object]:
+    army_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    payload: dict[str, object] = {
+        "pending_index": _s16(session, army_mgr + 0x31C)
+    }
+    if extra:
+        payload.update(extra)
+    fields = _capture_military_phase(session)
+    fields["result"] = payload
+    return fields
+
+
+def _drive_army_ui(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    name: str,
+) -> dict[str, object]:
+    nation, active_slot = _army_active_nation(session)
+    army_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    if nation == 0 or army_mgr == 0:
+        raise RuntimeError("army selection state is unavailable")
+
+    def spawn(kind: int, province: int) -> int:
+        return _spawn_stationed(
+            session, kind, province, active_slot, records, occurrences,
+            breakpoint_roles,
+        )
+
+    province = _army_first_owned_province(session, nation)
+    if name in (
+        "army_toolbar_counts",
+        "army_select_category",
+        "army_set_order_mode",
+        "army_select_province",
+        "army_click_blocked",
+        "army_click_friendly",
+        "army_selection_cycling",
+    ) and province < 0:
+        raise RuntimeError("the fixture has no owned province")
+
+    if name == "army_toolbar_counts":
+        spawn(_MIL_KIND_REGULARS, province)
+        sleeping = spawn(_MIL_KIND_REGULARS, province)
+        spawn(_MIL_KIND_MINUTEMEN, province)
+        _set_unit_orders(
+            session, sleeping, 2, records, occurrences, breakpoint_roles
+        )
+        available = [0] * 10
+        totals = [0] * 10
+        can_upgrade = False
+        categories = struct.unpack(
+            "<64h", session.read_memory(_UNIT_CATEGORY_TABLE, 128)
+        )
+        for unit in _stationed_chain(session, province):
+            raw = session.read_memory(unit, 0x40)
+            order = struct.unpack("<h", raw[0x08:0x0A])[0]
+            category = categories[struct.unpack("<h", raw[0x04:0x06])[0]]
+            if order == 0:
+                available[category] += 1
+            if order in (0, 2, 3, 4):
+                totals[category] += 1
+            if (
+                _invoke_thiscall(
+                    session, _MIL_CAN_UPGRADE, unit, records, occurrences,
+                    breakpoint_roles,
+                )
+                & 0xFF
+            ):
+                can_upgrade = True
+        return _army_ui_result(
+            session,
+            {
+                "available": available,
+                "totals": totals,
+                "can_upgrade": can_upgrade,
+            },
+        )
+
+    if name == "army_select_category":
+        spawn(_MIL_KIND_REGULARS, province)
+        spawn(_MIL_KIND_REGULARS, province)
+        remaining = _invoke_thiscall(
+            session, _ARMY_SELECT_CATEGORY, army_mgr, records, occurrences,
+            breakpoint_roles, args=(2, province),
+        ) & 0xFFFF
+        if remaining & 0x8000:
+            remaining -= 0x10000
+        return _army_ui_result(session, {"remaining": remaining})
+
+    if name == "army_set_order_mode":
+        spawn(_MIL_KIND_REGULARS, province)
+        spawn(_MIL_KIND_REGULARS, province)
+        session.assign(f"*(short*)0x{army_mgr + 0x31C:08x}", province)
+        _invoke_virtual(
+            session, army_mgr, _VT_SET_ORDERS_IDLE, records, occurrences,
+            breakpoint_roles, args=(3,),
+        )
+        return _army_ui_result(session)
+
+    if name == "army_select_province":
+        latr = spawn(_MIL_KIND_REGULARS, province)
+        done = spawn(_MIL_KIND_REGULARS, province)
+        militia = spawn(_MIL_KIND_MINUTEMEN, province)
+        _set_unit_orders(
+            session, latr, 3, records, occurrences, breakpoint_roles
+        )
+        _set_unit_orders(
+            session, done, 4, records, occurrences, breakpoint_roles
+        )
+        _set_unit_orders(
+            session, militia, 4, records, occurrences, breakpoint_roles
+        )
+        uber = _u32(session, _u32(session, _VIEW_MGR) + 0xF0)
+        if uber == 0:
+            raise RuntimeError("map uber picture is unavailable")
+        _invoke_thiscall(
+            session, _UBER_SET_MAP_MODE, uber, records, occurrences,
+            breakpoint_roles, args=(1,),
+        )
+        _invoke_thiscall(
+            session, _ARMY_SELECT_PROVINCE, army_mgr, records, occurrences,
+            breakpoint_roles, args=(province,),
+        )
+        return _army_ui_result(session)
+
+    if name == "army_click_blocked":
+        tile = _empty_tile_index(session)
+        if tile < 0:
+            raise RuntimeError("the fixture has no empty tile")
+        spawn(_MIL_KIND_REGULARS, province)
+        session.assign(f"*(short*)0x{army_mgr + 0x31C:08x}", province)
+        cursor = _invoke_thiscall(
+            session, _CIVILIAN_CURSOR_STATE, army_mgr, records, occurrences,
+            breakpoint_roles, args=(tile, 0),
+        )
+        return _army_ui_result(session, {"cursor": cursor})
+
+    if name == "army_click_friendly":
+        dest = _adjacent_owned_province(session, province)
+        if dest < 0:
+            raise RuntimeError("the fixture has no adjacent owned province")
+        spawn(_MIL_KIND_REGULARS, province)
+        spawn(_MIL_KIND_MINUTEMEN, province)
+        session.assign(f"*(short*)0x{army_mgr + 0x31C:08x}", province)
+        _invoke_virtual(
+            session, army_mgr, _VT_SELECT_MOVABLE, records, occurrences,
+            breakpoint_roles, args=(dest,),
+        )
+        return _army_ui_result(session)
+
+    if name == "army_click_hostile":
+        province, dest = _find_owned_foreign_pair(session, active_slot)
+        if province < 0:
+            raise RuntimeError("the fixture has no adjacent foreign province")
+        spawn(_MIL_KIND_REGULARS, province)
+        session.assign(f"*(short*)0x{army_mgr + 0x31C:08x}", province)
+        diplo_mgr = _u32(session, _DIPLOMACY_MGR)
+        dest_owner = _s8(session, _province_record(session, dest))
+        matrix = diplo_mgr + _DIPLO_REL_PROPAGATION
+        session.assign(
+            f"*(short*)0x{matrix + 2 * (active_slot * _NATION_SLOT_COUNT + dest_owner):08x}",
+            _DIPLO_REL_WAR,
+        )
+        session.assign(
+            f"*(short*)0x{matrix + 2 * (dest_owner * _NATION_SLOT_COUNT + active_slot):08x}",
+            _DIPLO_REL_WAR,
+        )
+        map_state = _u32(session, _GLOBAL_MAP_STATE)
+        view_origin = _s16(session, map_state + 0x06)
+        _invoke_thiscall(
+            session, _VALIDATE_ORDER_TILE, army_mgr, records, occurrences,
+            breakpoint_roles, args=(dest,),
+        )
+        session.assign(f"*(short*)0x{map_state + 0x06:08x}", view_origin)
+        return _army_ui_result(session)
+
+    if name == "army_selection_cycling":
+        spawn(_MIL_KIND_REGULARS, province)
+        session.assign(f"*(short*)0x{army_mgr + 0x31C:08x}", province)
+        _invoke_virtual(
+            session, army_mgr, _VT_SET_ORDERS_IDLE, records, occurrences,
+            breakpoint_roles, args=(2,),
+        )
+        next_province = _invoke_thiscall(
+            session, _ARMY_NEXT_PROVINCE, army_mgr, records, occurrences,
+            breakpoint_roles, args=(active_slot,),
+        ) & 0xFFFF
+        if next_province & 0x8000:
+            next_province -= 0x10000
+        return _army_ui_result(session, {"next": next_province})
+
+    raise RuntimeError(f"unknown army ui drive {name!r}")
+
+
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
     if queue == 0:
         return []
@@ -9864,6 +10218,15 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in _ARMY_UI_SCENARIOS:
+                        result_fields = _drive_army_ui(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            scenario.drive,
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in _NATION_ECONOMY_SPECS:
                         result_fields = _drive_nation_economy(
                             session,
@@ -10169,6 +10532,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         *_OPENING_SCENARIOS,
         *_PENDING_STATUS_SCENARIOS,
         *_NEWS_SCENARIOS,
+        *_ARMY_UI_SCENARIOS,
         "owned_region_development",
         "specialist_recruitment",
         "advisory_map_missions_case16",
@@ -10395,6 +10759,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         elif scenario.drive in _NEWS_SCENARIOS:
             recomp_observation = normalize_native_news(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _ARMY_UI_SCENARIOS:
+            recomp_observation = normalize_native_army_ui(
                 native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "turn_alerts_later_turn":
@@ -10689,6 +11057,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         _name + ".resolved" for _name in _NEWS_SCENARIOS
     ):
         retail_observation = normalize_retail_news(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _ARMY_UI_SCENARIOS
+    ):
+        retail_observation = normalize_retail_army_ui(
             retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint in (
