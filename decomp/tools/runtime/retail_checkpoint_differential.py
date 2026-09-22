@@ -25,6 +25,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_MILITARY_PHASE,
     CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
     CHECKPOINT_NAVAL_ESCALATION_PHASE,
+    CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE,
     CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
     CHECKPOINT_LAND_COMBAT_PHASE,
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
@@ -119,6 +120,7 @@ from tools.runtime.checkpoints import (
     normalize_native_recompute_metrics,
     normalize_native_rng_contract,
     normalize_native_military_phase,
+    normalize_native_military_phase_naval_tier_exhaustion,
     normalize_native_strategic_naval_battle_matrix,
     normalize_native_second_turn_sequence,
     normalize_native_combined_map,
@@ -162,6 +164,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_recompute_metrics,
     normalize_retail_rng_contract,
     normalize_retail_military_phase,
+    normalize_retail_military_phase_naval_tier_exhaustion,
     normalize_retail_strategic_naval_battle_matrix,
     normalize_retail_second_turn_sequence,
     normalize_retail_diplomacy_phase,
@@ -264,6 +267,7 @@ _PRODUCTION_PATH_SCENARIOS = frozenset(
     {
         "elimination_phase_with_landed_great_powers",
         "military_phase_naval_encounter",
+        "military_phase_naval_tier_exhaustion",
         "turn_state_combat_moves",
         "turn_state_diplomacy_offer_gate",
         "turn_state_diplomacy_phase",
@@ -486,9 +490,13 @@ def _military_phase_naval_encounter_scenario(
         timeout_seconds=base.timeout_seconds,
         start_action=base.start_action,
         drive=name,
-        result_checkpoint_id=CHECKPOINT_NAVAL_ESCALATION_PHASE
-        if name == "military_phase_naval_escalation"
-        else CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
+        result_checkpoint_id={
+            "military_phase_naval_encounter": CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
+            "military_phase_naval_escalation": CHECKPOINT_NAVAL_ESCALATION_PHASE,
+            "military_phase_naval_tier_exhaustion": (
+                CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE
+            ),
+        }[name],
     )
 
 
@@ -574,8 +582,11 @@ def load_scenario(name: str) -> Scenario:
         scenario = _civilians_phase_scenario(fixture)
     elif name == "military_phase":
         scenario = _military_phase_scenario(fixture)
-    elif name in ("military_phase_naval_encounter",
-                  "military_phase_naval_escalation"):
+    elif name in (
+        "military_phase_naval_encounter",
+        "military_phase_naval_escalation",
+        "military_phase_naval_tier_exhaustion",
+    ):
         scenario = _military_phase_naval_encounter_scenario(fixture, name)
     elif name == "strategic_naval_battle_matrix":
         base = _load_save_to_map_scenario(fixture)
@@ -1752,6 +1763,10 @@ _TERRAIN_RECORD_STRIDE = 0x24
 def _s8(session: GdbSession, address: int) -> int:
     value = _eval_int(session, f"*(signed char*)0x{address:08x}") & 0xFF
     return value - 0x100 if value & 0x80 else value
+
+
+def _u16(session: GdbSession, address: int) -> int:
+    return _eval_int(session, f"*(unsigned short*)0x{address:08x}") & 0xFFFF
 
 
 def _u32(session: GdbSession, address: int) -> int:
@@ -7628,6 +7643,66 @@ def _force_war_between(session: GdbSession, left: int, right: int) -> None:
     )
 
 
+def _production_navy_ship_survived(session: GdbSession, expected: int) -> bool:
+    ship = _u32(session, _NAVY_PRIMARY_ORDER_LIST_HEAD)
+    while ship != 0:
+        if ship == expected:
+            return True
+        ship = _u32(session, ship + 0x24)
+    return False
+
+
+def _production_task_force_remains_queued(
+    session: GdbSession, expected: int
+) -> bool:
+    navy_mgr = _u32(session, _NAVY_ORDER_MANAGER)
+    force = _u32(session, navy_mgr + 0x04)
+    while force != 0:
+        if force == expected:
+            return True
+        force = _u32(session, force + 0x2C)
+    return False
+
+
+def _capture_production_naval_side(
+    session: GdbSession, force: int, ship: int, admiral: int
+) -> dict[str, object]:
+    survived = _production_navy_ship_survived(session, ship)
+    queued = _production_task_force_remains_queued(session, force)
+    return {
+        "survived": survived,
+        "force_queued": queued,
+        "defeated": bool(_u8(session, force + 0x26)) if queued else not survived,
+        "strength": _s16(session, ship + 0x1C) if survived else None,
+        "experience": _s16(session, ship + 0x30) if survived else None,
+        "admiral_experience": (
+            _s16(session, admiral + 0x10)
+            if survived and _u32(session, ship + 0x20) == admiral
+            else -1
+        )
+        if survived
+        else None,
+    }
+
+
+def _capture_production_naval_report_side(
+    session: GdbSession, report: int, side: int
+) -> list[dict[str, int]]:
+    ships = []
+    count = _u16(session, report + 0x24A + 2 * side)
+    records = _u32(session, report + 0x250 + 4 * side)
+    for index in range(count):
+        child = records + 0x2C * index
+        ships.append(
+            {
+                "type": _s16(session, child),
+                "strength": _s16(session, child + 0x02),
+                "experience_bucket": _u8(session, child + 0x24),
+            }
+        )
+    return ships
+
+
 def _drive_military_phase_naval_encounter(
     session: GdbSession,
     records: list[dict],
@@ -7635,6 +7710,7 @@ def _drive_military_phase_naval_encounter(
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
     attacker_type: int = 3,
     defender_type: int = 3,
+    tier_exhaustion: bool = False,
 ) -> dict[str, object]:
     """Mirror RunMilitaryPhaseNavalEncounter: two hostile task forces sharing
     one zone, a forced war relation, then TSimMgr::DoMilitary."""
@@ -7657,7 +7733,7 @@ def _drive_military_phase_naval_encounter(
         breakpoint_roles,
         args=(0x1234,),
     )
-    _new_ship(
+    attacker_ship = _new_ship(
         session,
         attacker_type,
         zone,
@@ -7687,7 +7763,7 @@ def _drive_military_phase_naval_encounter(
         breakpoint_roles,
         args=(3, 0),
     )
-    _new_ship(
+    defender_ship = _new_ship(
         session,
         defender_type,
         zone,
@@ -7708,6 +7784,91 @@ def _drive_military_phase_naval_encounter(
     )
     if defender == 0:
         raise RuntimeError("could not create the defending task force")
+    attacker_admiral = 0
+    defender_admiral = 0
+    report_count_before = 0
+    if tier_exhaustion:
+        session.assign(f"*(short*)0x{attacker_ship + 0x1C:08x}", 100)
+        session.assign(f"*(short*)0x{attacker_ship + 0x30:08x}", 0)
+        session.assign(f"*(short*)0x{defender_ship + 0x1C:08x}", 100)
+        session.assign(f"*(short*)0x{defender_ship + 0x30:08x}", 0)
+        _invoke_thiscall(
+            session,
+            _TTASKFORCE_SET_AGGRESSION,
+            attacker,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(1,),
+        )
+        _invoke_thiscall(
+            session,
+            _TTASKFORCE_SET_AGGRESSION,
+            defender,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(1,),
+        )
+        attacker_admiral = _invoke_thiscall(
+            session,
+            _OPERATOR_NEW,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_TADMIRAL_SIZE,),
+        )
+        defender_admiral = _invoke_thiscall(
+            session,
+            _OPERATOR_NEW,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(_TADMIRAL_SIZE,),
+        )
+        _invoke_thiscall(
+            session,
+            _TADMIRAL_CTOR,
+            attacker_admiral,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(active_nation,),
+        )
+        _invoke_thiscall(
+            session,
+            _TADMIRAL_CTOR,
+            defender_admiral,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(hostile_nation,),
+        )
+        session.assign(f"*(short*)0x{attacker_admiral + 0x10:08x}", 0)
+        session.assign(f"*(short*)0x{defender_admiral + 0x10:08x}", 100)
+        _invoke_thiscall(
+            session,
+            _TADMIRAL_ASSIGN_TO_SHIP,
+            attacker_admiral,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(attacker_ship,),
+        )
+        _invoke_thiscall(
+            session,
+            _TADMIRAL_ASSIGN_TO_SHIP,
+            defender_admiral,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(defender_ship,),
+        )
+        map_context_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+        reports = _u32(session, map_context_mgr + 0x04)
+        report_count_before = _u32(session, reports + 0x08)
     _invoke_thiscall(
         session,
         _TTASKFORCE_SUBMIT_ORDERS,
@@ -7718,6 +7879,8 @@ def _drive_military_phase_naval_encounter(
         args=(6, zone),
     )
     _force_war_between(session, active_nation, hostile_nation)
+    if tier_exhaustion:
+        session.assign(f"*(short*)0x{sim_mgr + 0x4A:08x}", 0)
     diplomacy_mgr = _u32(session, _DIPLOMACY_MGR)
     gate = {
         "at_war": _invoke_thiscall(
@@ -7760,6 +7923,52 @@ def _drive_military_phase_naval_encounter(
         occurrences,
         breakpoint_roles,
     )
+    if tier_exhaustion:
+        map_context_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+        reports = _u32(session, map_context_mgr + 0x04)
+        report_count = _u32(session, reports + 0x08)
+        if report_count != report_count_before + 1:
+            raise RuntimeError(
+                "controlled production naval battle did not append one report"
+            )
+        report = _u32(session, _u32(session, reports + 0x04) + 4 * report_count_before)
+        participant = _s8(session, report + 0x02)
+        left = _capture_production_naval_side(
+            session, attacker, attacker_ship, attacker_admiral
+        )
+        right = _capture_production_naval_side(
+            session, defender, defender_ship, defender_admiral
+        )
+        if (
+            not left["survived"]
+            or not right["survived"]
+            or not left["force_queued"]
+            or not right["force_queued"]
+            or left["strength"] != 100
+            or right["strength"] != 100
+            or left["defeated"] == right["defeated"]
+        ):
+            raise RuntimeError(
+                "controlled naval battle did not exhaust tiers with both fleets afloat"
+            )
+        pre["naval_outcome"] = {
+            "participant": participant,
+            "winner": (
+                "left"
+                if participant == 0
+                else "right"
+                if participant == 1
+                else "draw"
+            ),
+            "left": left,
+            "right": right,
+            "left_report_ships": _capture_production_naval_report_side(
+                session, report, 0
+            ),
+            "right_report_ships": _capture_production_naval_report_side(
+                session, report, 1
+            ),
+        }
     return pre
 
 
@@ -10934,16 +11143,23 @@ def run_binary(
                     elif scenario.drive in (
                         "military_phase_naval_encounter",
                         "military_phase_naval_escalation",
+                        "military_phase_naval_tier_exhaustion",
                     ):
                         result_fields = _drive_military_phase_naval_encounter(
                             session,
                             records,
                             occurrences,
                             breakpoint_roles,
-                            *( (9, 3)
-                               if scenario.drive
-                               == "military_phase_naval_escalation"
-                               else () ),
+                            attacker_type=(
+                                9
+                                if scenario.drive
+                                == "military_phase_naval_escalation"
+                                else 3
+                            ),
+                            tier_exhaustion=(
+                                scenario.drive
+                                == "military_phase_naval_tier_exhaustion"
+                            ),
                         )
                         result_fields.update(_capture_military_phase(session))
                         result_probe = scenario.result_checkpoint_id
@@ -11571,6 +11787,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase",
         "military_phase_naval_encounter",
         "military_phase_naval_escalation",
+        "military_phase_naval_tier_exhaustion",
         "strategic_naval_battle_matrix",
         "military_phase_land_combat",
         "military_phase_land_interactive",
@@ -11679,9 +11896,17 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_civilians_phase(native_result)
         elif scenario.drive == "military_phase":
             recomp_observation = normalize_native_military_phase(native_result)
-        elif scenario.drive in ("military_phase_naval_encounter",
-                                "military_phase_naval_escalation"):
+        elif scenario.drive in (
+            "military_phase_naval_encounter",
+            "military_phase_naval_escalation",
+        ):
             recomp_observation = normalize_native_military_phase(native_result)
+        elif scenario.drive == "military_phase_naval_tier_exhaustion":
+            recomp_observation = (
+                normalize_native_military_phase_naval_tier_exhaustion(
+                    native_result
+                )
+            )
         elif scenario.drive == "strategic_naval_battle_matrix":
             recomp_observation = normalize_native_strategic_naval_battle_matrix(
                 native_result
@@ -11979,6 +12204,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                                CHECKPOINT_NAVAL_ESCALATION_PHASE):
         retail_observation = normalize_retail_military_phase(
             retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE:
+        retail_observation = (
+            normalize_retail_military_phase_naval_tier_exhaustion(
+                retail_records[0]["fields"]
+            )
         )
     elif result_checkpoint == CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX:
         retail_observation = normalize_retail_strategic_naval_battle_matrix(
