@@ -29,6 +29,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/nation/TGreatPower_internal.h"
 #include "game/nation_domain_types.h"
+#include "game/navy/TAdmiral.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/navy/TOcean.h"
 #include "game/navy/TShip.h"
@@ -47,11 +48,13 @@
 #include "game/TList.h"
 #include "game/tactical/hex_tile_distance.h"
 #include "game/ui_core/CIterator.h"
+#include "game/ui_core/TSortedPtrList.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/unit_domain_types.h"
 #include "game/globals/nation_globals.h"
 
 #include <string.h>
+#include <stdio.h>
 
 namespace {
 
@@ -59,6 +62,169 @@ unsigned int FloatBits(float value) {
   unsigned int bits = 0;
   memcpy(&bits, &value, sizeof(bits));
   return bits;
+}
+
+struct StrategicBattleMatrixCase {
+  const char* name;
+  unsigned int seed;
+  short leftTypes[4];
+  short leftCount;
+  int leftAggression;
+  short leftStrength;
+  short leftExperience;
+  short leftAdmiralExperience;
+  short rightTypes[4];
+  short rightCount;
+  int rightAggression;
+  short rightStrength;
+  short rightExperience;
+  short rightAdmiralExperience;
+  const char* convergence;
+  const char* resolution;
+  int participant;
+  int leftDefeated;
+  int rightDefeated;
+};
+
+// clang-format off
+const StrategicBattleMatrixCase kStrategicBattleMatrix[] = {
+    {"left_fails_admiral_boundary", 0x1234, {3, 0, 0, 0}, 1, 0, 100, 0, 0,
+     {3, 0, 0, 0}, 1, 0, 100, 0, 100, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+    {"left_fails_tier_gap", 0x1234, {3, 0, 0, 0}, 1, 0, 500, 0, 0, {7, 0, 0, 0}, 1,
+     0, 500, 0, 0, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+    {"left_fails_fleet_size", 50, {4, 0, 0, 0}, 1, 1, 1600, 0, 400, {4, 4, 7, 0}, 3,
+     0, 500, 0, 0, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+    {"left_fails_mixed_tiers", 1, {7, 11, 0, 0}, 2, 0, 500, 0, 200, {7, 8, 11, 0}, 3,
+     1, 500, 0, 100, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+    {"right_fails_admiral_boundary", 0x1234, {3, 0, 0, 0}, 1, 0, 100, 0, 400,
+     {3, 0, 0, 0}, 1, 0, 100, 0, 200, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+    {"right_fails_tier_gap", 0x1234, {7, 0, 0, 0}, 1, 0, 500, 0, 0, {3, 0, 0, 0}, 1,
+     0, 500, 0, 0, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+    {"right_fails_mixed_tiers", 10, {8, 9, 13, 0}, 3, 1, 500, 0, 100,
+     {9, 11, 11, 0}, 3, 2, 1000, 0, 100, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+    {"right_fails_fleet_size", 999, {4, 7, 7, 7}, 4, 2, 500, 0, 200,
+     {8, 0, 0, 0}, 1, 1, 500, 0, 200, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+    {"both_fail_tier_one", 999, {3, 0, 0, 0}, 1, 0, 100, 0, 0, {3, 0, 0, 0}, 1, 0,
+     100, 0, 0, "both_fail", "tier_exhaustion", -1, 0, 0},
+    {"both_fail_tier_two", 10, {8, 0, 0, 0}, 1, 0, 500, 0, 0, {8, 0, 0, 0}, 1, 0,
+     500, 0, 0, "both_fail", "tier_exhaustion", -1, 0, 0},
+    {"both_fail_admiral_boundary", 4, {4, 0, 0, 0}, 1, 0, 100, 0, 200,
+     {4, 0, 0, 0}, 1, 0, 100, 0, 100, "both_fail", "tier_exhaustion", -1, 0, 0},
+    {"both_fail_top_tiers", 2, {11, 11, 12, 0}, 3, 0, 500, 0, 100,
+     {11, 11, 13, 0}, 3, 0, 500, 0, 200, "both_fail", "tier_exhaustion", -1, 0, 0},
+    {"left_eliminated_tier_one", 0x1234, {3, 0, 0, 0}, 1, 0, 1, 0, 200,
+     {3, 3, 0, 0}, 2, 0, 1, 0, 400, "only_left_fails", "left_eliminated", 1, 1, 0},
+    {"left_eliminated_tier_two", 0x1234, {7, 0, 0, 0}, 1, 0, 1, 0, 0,
+     {7, 7, 0, 0}, 2, 0, 1, 0, 0, "only_left_fails", "left_eliminated", 1, 1, 0},
+    {"left_eliminated_weight_boundary", 999, {8, 0, 0, 0}, 1, 0, 1, 0, 0,
+     {8, 8, 0, 0}, 2, 0, 1, 0, 0, "only_left_fails", "left_eliminated", 1, 1, 0},
+    {"right_eliminated_tier_one", 0x1234, {3, 3, 0, 0}, 2, 0, 1, 0, 0,
+     {3, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated", 0, 0, 1},
+    {"right_eliminated_tier_two", 0x1234, {7, 7, 0, 0}, 2, 0, 1, 0, 0,
+     {7, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated", 0, 0, 1},
+    {"right_eliminated_weight_boundary", 2, {8, 8, 0, 0}, 2, 0, 1, 0, 0,
+     {8, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated", 0, 0, 1},
+    {"both_eliminated_admiral_boundary", 0x1234, {3, 0, 0, 0}, 1, 0, 1, 0, 100,
+     {3, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "both_eliminated", -1, 1, 1},
+    {"both_eliminated_neither_fails", 0x1234, {3, 0, 0, 0}, 1, 2, 1, 0, 0,
+     {3, 0, 0, 0}, 1, 2, 1, 0, 0, "neither_fails", "both_eliminated", -1, 1, 1},
+};
+// clang-format on
+
+struct StrategicBattleFleet {
+  TTaskForce* force;
+  TShip* ships[4];
+  short count;
+};
+
+bool FleetContainsShip(const StrategicBattleFleet& fleet, TShip* ship) {
+  for (TMapOrderChildLinkNode* node = fleet.force->shipList; node != 0; node = node->next) {
+    if (node->payload == ship) {
+      return true;
+    }
+  }
+  return false;
+}
+
+StrategicBattleFleet CreateStrategicBattleFleet(TZone* zone, short nation, const short* types,
+                                                short count, int aggression, short strength,
+                                                short experience, short admiralExperience,
+                                                int caseIndex, char side) {
+  StrategicBattleFleet fleet;
+  fleet.force = new TTaskForce(zone, nation);
+  fleet.force->defeated = 0;
+  fleet.force->SetAggression(aggression);
+  fleet.count = count;
+  for (int index = 0; index < 4; ++index) {
+    fleet.ships[index] = 0;
+  }
+  for (int index = 0; index < count; ++index) {
+    char name[32];
+    sprintf(name, "matrix-%02d-%c%d", caseIndex, side, index);
+    TShip* ship = new TShip();
+    ship->IShip(types[index], zone, nation, name);
+    ship->strength = strength;
+    ship->experience = experience;
+    fleet.force->Add(ship);
+    fleet.ships[index] = ship;
+  }
+  fleet.force->ElectFlagship();
+  TAdmiral* admiral = new TAdmiral(nation);
+  admiral->experiencePoints = admiralExperience;
+  admiral->AssignToShip(fleet.force->flagship);
+  return fleet;
+}
+
+JSON_Value* CaptureStrategicBattleFleet(const StrategicBattleFleet& fleet, const short* types,
+                                        int aggression, short initialStrength,
+                                        short initialExperience, short initialAdmiralExperience) {
+  JsonObject object;
+  JsonArray ships;
+  object.Set("aggression", aggression);
+  object.Set("initial_strength", initialStrength);
+  object.Set("initial_experience", initialExperience);
+  object.Set("initial_admiral_experience", initialAdmiralExperience);
+  object.Set("defeated", fleet.force->defeated != 0);
+  TAdmiral* liveAdmiral = 0;
+  for (int index = 0; index < fleet.count; ++index) {
+    JsonObject ship;
+    bool alive = FleetContainsShip(fleet, fleet.ships[index]);
+    ship.Set("type", static_cast<int>(types[index]));
+    ship.Set("alive", alive);
+    if (alive) {
+      ship.Set("strength", static_cast<int>(fleet.ships[index]->strength));
+      ship.Set("experience", static_cast<int>(fleet.ships[index]->experience));
+      if (fleet.ships[index]->admiral != 0) {
+        liveAdmiral = fleet.ships[index]->admiral;
+      }
+    } else {
+      ship.SetNull("strength");
+      ship.SetNull("experience");
+    }
+    ships.Add(ship.Release());
+  }
+  if (liveAdmiral != 0) {
+    object.Set("admiral_experience", static_cast<int>(liveAdmiral->experiencePoints));
+  } else {
+    object.SetNull("admiral_experience");
+  }
+  object.Set("ships", ships.Release());
+  return object.Release();
+}
+
+void FreeStrategicBattleFleet(StrategicBattleFleet& fleet) {
+  bool alive[4];
+  for (int index = 0; index < fleet.count; ++index) {
+    alive[index] = FleetContainsShip(fleet, fleet.ships[index]);
+  }
+  fleet.force->Free();
+  fleet.force = 0;
+  for (int index = 0; index < fleet.count; ++index) {
+    if (alive[index]) {
+      fleet.ships[index]->Free();
+    }
+    fleet.ships[index] = 0;
+  }
 }
 
 JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
@@ -661,6 +827,94 @@ RuntimeActionResult RunMilitaryPhaseNavalEscalation(NativeTransition& transition
   // Tier-3 attacker vs tier-1 defender so ResolveStrategicBattle's
   // favor-ratio tier escalation actually engages.
   return RunMilitaryPhaseNavalEncounterImpl(transition, 9, 3);
+}
+
+RuntimeActionResult RunStrategicNavalBattleMatrix(NativeTransition& transition) {
+  const short activeNation = ActiveNationSlot();
+  short hostileNation = -1;
+  for (short nation = 0; nation < kMajorNationCount; ++nation) {
+    if (nation != activeNation && g_apNationStates[nation] != 0) {
+      hostileNation = nation;
+      break;
+    }
+  }
+  TZone* zone = FindUnoccupiedMapZone();
+  if (g_pNavyOrderManager == 0 || g_pMapContextActionManager == 0 ||
+      g_pMapContextActionManager->mapContextActionRecordList04 == 0 || hostileNation < 0 ||
+      zone == 0) {
+    return RuntimeActionResult::Failure("strategic naval matrix state is unavailable");
+  }
+
+  JsonObject args;
+  args.Set("case_count",
+           static_cast<int>(sizeof(kStrategicBattleMatrix) / sizeof(kStrategicBattleMatrix[0])));
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  JsonArray rows;
+  const int caseCount =
+      static_cast<int>(sizeof(kStrategicBattleMatrix) / sizeof(kStrategicBattleMatrix[0]));
+  for (int caseIndex = 0; caseIndex < caseCount; ++caseIndex) {
+    const StrategicBattleMatrixCase& testCase = kStrategicBattleMatrix[caseIndex];
+    StrategicBattleFleet left = CreateStrategicBattleFleet(
+        zone, activeNation, testCase.leftTypes, testCase.leftCount, testCase.leftAggression,
+        testCase.leftStrength, testCase.leftExperience, testCase.leftAdmiralExperience, caseIndex,
+        'l');
+    StrategicBattleFleet right = CreateStrategicBattleFleet(
+        zone, hostileNation, testCase.rightTypes, testCase.rightCount, testCase.rightAggression,
+        testCase.rightStrength, testCase.rightExperience, testCase.rightAdmiralExperience,
+        caseIndex, 'r');
+
+    TSortedPtrList* reports = g_pMapContextActionManager->mapContextActionRecordList04;
+    const int reportCountBefore = reports->GetSize();
+    srand(testCase.seed);
+    g_pNavyOrderManager->ResolveStrategicBattle(left.force, right.force);
+    if (reports->GetSize() != reportCountBefore + 1) {
+      FreeStrategicBattleFleet(left);
+      FreeStrategicBattleFleet(right);
+      return RuntimeActionResult::Failure("strategic naval battle did not append one report");
+    }
+    MapContextActionRecord* report = static_cast<MapContextActionRecord*>(
+        reports->GetPtrListEntryByOneBasedIndex(reportCountBefore + 1));
+    const int participant =
+        static_cast<int>(static_cast<signed char>(report->reportParticipantIndex02));
+    const int leftDefeated = left.force->defeated != 0;
+    const int rightDefeated = right.force->defeated != 0;
+
+    JsonObject row;
+    row.Set("case", testCase.name);
+    row.Set("seed", testCase.seed);
+    row.Set("convergence", testCase.convergence);
+    row.Set("resolution", testCase.resolution);
+    row.Set("participant", participant);
+    row.Set("winner", participant == 0 ? "left" : participant == 1 ? "right" : "draw");
+    row.Set("left_defeated", leftDefeated != 0);
+    row.Set("right_defeated", rightDefeated != 0);
+    row.Set("left", CaptureStrategicBattleFleet(left, testCase.leftTypes, testCase.leftAggression,
+                                                testCase.leftStrength, testCase.leftExperience,
+                                                testCase.leftAdmiralExperience));
+    row.Set("right",
+            CaptureStrategicBattleFleet(right, testCase.rightTypes, testCase.rightAggression,
+                                        testCase.rightStrength, testCase.rightExperience,
+                                        testCase.rightAdmiralExperience));
+    rows.Add(row.Release());
+
+    FreeStrategicBattleFleet(left);
+    FreeStrategicBattleFleet(right);
+
+    if (participant != testCase.participant || leftDefeated != testCase.leftDefeated ||
+        rightDefeated != testCase.rightDefeated) {
+      char failure[96];
+      sprintf(failure, "strategic naval matrix outcome mismatch: %s", testCase.name);
+      return RuntimeActionResult::Failure(failure);
+    }
+  }
+
+  JsonObject result;
+  result.Set("cases", rows.Release());
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunMilitaryPhaseLandCombat(NativeTransition& transition) {
