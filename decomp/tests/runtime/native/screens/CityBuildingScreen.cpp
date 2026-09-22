@@ -178,9 +178,19 @@ RuntimeActionResult CityBuildingScreen::VerifyRetailFloatingFrame() const {
   const LPARAM captionPoint =
       MAKELPARAM(static_cast<short>((windowRect.left + windowRect.right) / 2),
                  static_cast<short>((windowRect.top + clientOrigin.y) / 2));
-  if (SendMessageA(frame, WM_NCHITTEST, 0, captionPoint) != HTCAPTION) {
-    return PageFailure("verify the building window frame",
-                       CString("the frame does not expose a movable caption"));
+  const LRESULT hitResult = SendMessageA(frame, WM_NCHITTEST, 0, captionPoint);
+  if (hitResult != HTCAPTION) {
+    CString detail;
+    detail.Format("the frame does not expose a movable caption: frame=%p cmc=%p hit=0x%lx rect=(%ld,%ld,%ld,%ld) "
+                  "clientOrigin=(%ld,%ld) point=(%ld,%ld)",
+                  (void*)frame, (void*)window->nativeWindow50,
+                  static_cast<long>(hitResult), static_cast<long>(windowRect.left),
+                  static_cast<long>(windowRect.top), static_cast<long>(windowRect.right),
+                  static_cast<long>(windowRect.bottom), static_cast<long>(clientOrigin.x),
+                  static_cast<long>(clientOrigin.y),
+                  static_cast<long>((windowRect.left + windowRect.right) / 2),
+                  static_cast<long>((windowRect.top + clientOrigin.y) / 2));
+    return PageFailure("verify the building window frame", detail);
   }
   return RuntimeActionResult::Success();
 }

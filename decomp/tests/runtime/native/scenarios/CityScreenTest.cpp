@@ -9,6 +9,8 @@
 #include "screens/StrategicMapScreen.h"
 
 #include "game/city/TCity.h"
+#include "game/gfx/TBackdropWindow.h"
+#include "game/globals/gfx_globals.h"
 #include "game/city/TItemOrder.h"
 #include "game/city/TProductionOrder.h"
 #include "game/city/TShipOrder.h"
@@ -67,6 +69,10 @@ protected:
   void Script() override {
     RT_BEGIN();
 
+    // The main frame starts offscreen and only gets its real placement when the splash
+    // backdrop's timer tears it down. Float-window frame geometry is meaningless until then.
+    RT_AWAIT(g_pActiveBackdropWindow == 0,
+             kObserveUiStateChanged | kObserveApplicationIdle);
     RT_REQUIRE_NOT_NULL(PlayerCity());
     RT_OPEN_TO("open the city production screen", StrategicMap().OpenCity(), CityScreen);
     RT_REQUIRE(City().HasProductionControls());
