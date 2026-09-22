@@ -151,14 +151,15 @@ StrategicBattleFleet CreateStrategicBattleFleet(TZone* zone, short nation, const
                                                 short experience, short admiralExperience,
                                                 int caseIndex, char side) {
   StrategicBattleFleet fleet;
+  int index;
   fleet.force = new TTaskForce(zone, nation);
   fleet.force->defeated = 0;
   fleet.force->SetAggression(aggression);
   fleet.count = count;
-  for (int index = 0; index < 4; ++index) {
+  for (index = 0; index < 4; ++index) {
     fleet.ships[index] = 0;
   }
-  for (int index = 0; index < count; ++index) {
+  for (index = 0; index < count; ++index) {
     char name[32];
     sprintf(name, "matrix-%02d-%c%d", caseIndex, side, index);
     TShip* ship = new TShip();
@@ -214,12 +215,13 @@ JSON_Value* CaptureStrategicBattleFleet(const StrategicBattleFleet& fleet, const
 
 void FreeStrategicBattleFleet(StrategicBattleFleet& fleet) {
   bool alive[4];
-  for (int index = 0; index < fleet.count; ++index) {
+  int index;
+  for (index = 0; index < fleet.count; ++index) {
     alive[index] = FleetContainsShip(fleet, fleet.ships[index]);
   }
   fleet.force->Free();
   fleet.force = 0;
-  for (int index = 0; index < fleet.count; ++index) {
+  for (index = 0; index < fleet.count; ++index) {
     if (alive[index]) {
       fleet.ships[index]->Free();
     }
@@ -265,10 +267,10 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
     unitArray.Add(record.Release());
   }
   snapshot.SetOptional(
-      "selected", battle->selectedUnit1c != 0
-                      ? static_cast<TArmyTacUnit*>(battle->selectedUnit1c)
-                            ->sourceUnit38->persistentUnitId20
-                      : -1);
+      "selected",
+      battle->selectedUnit1c != 0
+          ? static_cast<TArmyTacUnit*>(battle->selectedUnit1c)->sourceUnit38->persistentUnitId20
+          : -1);
   snapshot.Set("current_side", battle->currentSideC);
   snapshot.Set("round", battle->roundCounter74);
   snapshot.Set("outcome", battle->battleOutcome44);
@@ -293,8 +295,8 @@ bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
   while (battle->battleOutcome44 == kTacticalBattleInProgress) {
     TArmyPlayer* player = static_cast<TArmyPlayer*>(
         battle->currentSideC == 0 ? battle->tacticalPlayer14 : battle->tacticalPlayer18);
-    if (battle->pendingEndOfActionFlag48 != 0 &&
-        player->nationIndex1C == ActiveNationSlot() && player->notWatchedFlagE == 0) {
+    if (battle->pendingEndOfActionFlag48 != 0 && player->nationIndex1C == ActiveNationSlot() &&
+        player->notWatchedFlagE == 0) {
       return true;
     }
     if (guard-- <= 0) {
@@ -757,8 +759,7 @@ RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transit
 }
 
 RuntimeActionResult RunMilitaryPhaseNavalEncounterImpl(NativeTransition& transition,
-                                                       short attackerType,
-                                                       short defenderType) {
+                                                       short attackerType, short defenderType) {
   // Deterministic CRT seed so the retail-vs-recomp differential sees identical
   // rand() streams through ship setup and DoMilitary.
   srand(0x1234);
@@ -1007,8 +1008,7 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   short dest = -1;
   short defender = -1;
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
-    return RuntimeActionResult::Failure(
-        "fixture has no hostile army redeploy");
+    return RuntimeActionResult::Failure("fixture has no hostile army redeploy");
   }
   ForceWarBetween(unit->ownerNationSlot18, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
@@ -1401,7 +1401,7 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition, int hoverState,
-                                                    int defenderActive) {
+                                                   int defenderActive) {
   srand(0x1234);
   TMilitaryUnit* unit = 0;
   short dest = -1;
@@ -1475,7 +1475,8 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
           TTacticalUnit* occupant = battle->tileGrid4[enemyTile].occupant4;
           if (occupant != 0 && occupant->side20 != moving->side20) {
             int candidate = ComputeHexTileDistanceFromIndices(tile, enemyTile);
-            if (candidate < distance) distance = candidate;
+            if (candidate < distance)
+              distance = candidate;
           }
         }
         if (distance < bestDistance) {
@@ -1538,14 +1539,16 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
   unit->SetOrders(kUnitOrderRedeploy, dest);
   g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
   RuntimeActionResult started = transition.Begin(args.Release());
-  if (!started.Succeeded()) return started;
+  if (!started.Succeeded())
+    return started;
   g_pSimMgr->preferenceValues[0] = 0;
   army = g_pMapContextActionManager;
   army->FormStacks();
   army->nextStackOrdinal10 = 1;
   army->ResolveNextMove();
   battle = army->activeBattleView3a4;
-  if (battle == 0) return RuntimeActionResult::Failure("land battle was not created");
+  if (battle == 0)
+    return RuntimeActionResult::Failure("land battle was not created");
   StopActiveNationArmyPlayerForInput(battle);
   if (!PumpArmyBattleToActiveNationInput(battle)) {
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
