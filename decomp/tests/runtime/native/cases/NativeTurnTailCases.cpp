@@ -27,6 +27,25 @@ short OtherGreatPowerSlot(short activeNationSlot) {
   return activeNationSlot == 0 ? 1 : 0;
 }
 
+RuntimeActionResult RunProductionTurnState(NativeTransition& transition, int turnStateCode) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+
+  g_pSimMgr->turnStateCode = turnStateCode;
+  srand(0x1234);
+
+  JsonObject args;
+  args.Set("turn_state", turnStateCode);
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish();
+}
+
 } // namespace
 
 RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition) {
@@ -217,6 +236,43 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
   return transition.Finish();
 }
 
+RuntimeActionResult RunTurnStateDiplomacyPhase(NativeTransition& transition) {
+  return RunProductionTurnState(transition, 6);
+}
+
+RuntimeActionResult RunTurnStateDiplomacyOfferGate(NativeTransition& transition) {
+  if (g_pMapContextActionManager == 0) {
+    return RuntimeActionResult::Failure("diplomacy-offer gate state is unavailable");
+  }
+  g_pMapContextActionManager->flag8 = 1;
+  return RunProductionTurnState(transition, 0xd);
+}
+
+RuntimeActionResult RunTurnStateQuarterGate(NativeTransition& transition) {
+  if (g_pSimMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
+    return RuntimeActionResult::Failure("quarter-gate state is unavailable");
+  }
+  g_pSimMgr->economicTurn = 1;
+  g_pDiplomacyTurnStateManager->lastProcessedNationSlot = ActiveNationSlot();
+  return RunProductionTurnState(transition, 0xe);
+}
+
+RuntimeActionResult RunTurnStateReturnToMap(NativeTransition& transition) {
+  return RunProductionTurnState(transition, 0x12);
+}
+
+RuntimeActionResult RunTurnStateCombatMoves(NativeTransition& transition) {
+  return RunProductionTurnState(transition, 0x14);
+}
+
+RuntimeActionResult RunTurnStateMilitaryCleanup(NativeTransition& transition) {
+  if (g_pSimMgr == 0) {
+    return RuntimeActionResult::Failure("turn state is unavailable");
+  }
+  g_pSimMgr->economicTurn = 2;
+  return RunProductionTurnState(transition, 0x15);
+}
+
 RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   if (nation == 0) {
@@ -248,6 +304,7 @@ RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& t
     return RuntimeActionResult::Failure("elimination state is unavailable");
   }
 
+  srand(0x1234);
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;

@@ -72,6 +72,7 @@
 #include "game/ui_core/CIterator.h"
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_core/TSortedPtrList.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_screens/TPortZone.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -1125,6 +1126,8 @@ JSON_Value* CaptureTurn(const RuntimeRun& run) {
   object.Set("diplomacy_year_term_raw", static_cast<int>(g_pSimMgr->field6c));
   object.Set("phase", g_pSimMgr->turnStateCode);
   object.Set("turn_flow_status_flags", g_pSimMgr->turnFlowStatusFlags);
+  object.Set("dispatched_event",
+             g_pViewMgr != 0 ? static_cast<int>(g_pViewMgr->currentTurnEventCode) : -1);
   JsonArray quarterGateByDecade;
   for (int decade = 0; decade < 10; ++decade) {
     quarterGateByDecade.Add(static_cast<int>(g_pSimMgr->phaseStateByDecade[decade]));
@@ -3172,6 +3175,23 @@ JSON_Value* CaptureDiplomacyEphemeral() {
   return object.Release();
 }
 
+JSON_Value* CaptureNationStatusEphemeral() {
+  JsonArray nations;
+  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+    TCountry* nation = g_apTerrainTypeDescriptorTable[slot];
+    if (nation == 0) {
+      nations.AddNull();
+      continue;
+    }
+    JsonObject entry;
+    entry.Set("encoded_slot", static_cast<int>(nation->encodedNationSlot));
+    entry.Set("owned_region_count",
+              nation->ownedRegionList != 0 ? nation->ownedRegionList->GetSize() : 0);
+    nations.Add(entry.Release());
+  }
+  return nations.Release();
+}
+
 // Compact trade-phase state for retail-vs-recomp transition differentials:
 // market rows plus per-major-nation treasury, capacities, trade arrays, and
 // city stock levels.
@@ -3774,6 +3794,7 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("news", CaptureNews());
   object.Set("pending", CapturePending());
   object.Set("diplomacy", CaptureDiplomacyEphemeral());
+  object.Set("nation_status", CaptureNationStatusEphemeral());
   if (g_pTradeMgr != 0) {
     object.Set("trade", CaptureTradeEphemeral());
   }
