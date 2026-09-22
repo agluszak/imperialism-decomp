@@ -1555,6 +1555,7 @@ def _capture_trade_phase(session: GdbSession) -> dict[str, object]:
                 "budget_pool_base": _s32(session, nation + 0x840),
                 "budget_pool_delta": _s32(session, nation + 0x844),
                 "aid_allocation_total": _s32(session, nation + 0x914),
+                "military_expenses": _s32(session, nation + 0x960),
                 "aid_nonzero": [
                     [index, value]
                     for index, value in enumerate(aid_matrix)
@@ -5071,6 +5072,263 @@ def _drive_diplomacy_economy(
     return result
 
 
+# --- military_maintenance / turn-tail gate retail drives -----------------------
+
+_FN_PAY_FOR_MILITARY = 0x004E3560
+_FN_UNIT_DETACH_ORDER = 0x005C31C0
+_FN_MILITARY_UNIT_CTOR = 0x005C2DF0
+_FN_MILITARY_UNIT_INIT = 0x005C2F50
+_TMILITARY_UNIT_SIZE = 0x44
+_VT_LIST_GET_COUNT = 0x12 * 4
+_VT_LIST_GET_BY_ORDINAL = 0x13 * 4
+_VT_UNIT_FREE = 0x07 * 4
+_FN_IS_ELIGIBLE_FOR_EVENTS = 0x00581280
+_FN_GET_BYTE_FLAG_8 = 0x004A6DD0
+_FN_GET_ECONOMIC_TURN = 0x0057D8B0
+_VT_INIT_DIPLOMACY_NOTICES = 0x7F * 4
+_VT_DISPATCH_MISSION_CALLBACKS = 0x30 * 4
+
+
+def _new_military_unit(
+    session: GdbSession,
+    kind: int,
+    node_context: int,
+    nation_slot: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    unit = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TMILITARY_UNIT_SIZE,),
+    )
+    _invoke_thiscall(
+        session,
+        _FN_MILITARY_UNIT_CTOR,
+        unit,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _FN_MILITARY_UNIT_INIT,
+        unit,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(kind, node_context, nation_slot),
+    )
+    return unit
+
+
+def _drive_military_maintenance(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunMilitaryMaintenance: drain the nation's unit list, create
+    minutemen/artillery/armor plus three owned and one foreign ship, then run
+    TGreatPower::PayForMilitary against a seeded treasury."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    source = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, source)
+    foreign = 0 if source != 0 else 1
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    unit_list = _u32(session, nation + 0x44)
+    while (
+        _invoke_virtual(
+            session, unit_list, _VT_LIST_GET_COUNT, records, occurrences,
+            breakpoint_roles,
+        )
+        != 0
+    ):
+        unit = _invoke_virtual(
+            session,
+            unit_list,
+            _VT_LIST_GET_BY_ORDINAL,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(1,),
+        )
+        _invoke_thiscall(
+            session,
+            _FN_UNIT_DETACH_ORDER,
+            unit,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        _invoke_virtual(
+            session, unit, _VT_UNIT_FREE, records, occurrences,
+            breakpoint_roles,
+        )
+    _new_military_unit(
+        session, 0, -1, source, records, occurrences, breakpoint_roles
+    )
+    _new_military_unit(
+        session, 6, -1, source, records, occurrences, breakpoint_roles
+    )
+    _new_military_unit(
+        session, 21, -1, source, records, occurrences, breakpoint_roles
+    )
+    _new_military_unit(
+        session, 21, -1, foreign, records, occurrences, breakpoint_roles
+    )
+    zone_head = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+    _new_ship(
+        session, 3, zone_head, source, "maintenance-owned-slot3",
+        records, occurrences, breakpoint_roles,
+    )
+    _new_ship(
+        session, 9, zone_head, source, "maintenance-owned-slot9",
+        records, occurrences, breakpoint_roles,
+    )
+    _new_ship(
+        session, 12, zone_head, source, "maintenance-owned-slot12",
+        records, occurrences, breakpoint_roles,
+    )
+    _new_ship(
+        session, 12, zone_head, foreign, "maintenance-foreign-slot12",
+        records, occurrences, breakpoint_roles,
+    )
+    session.assign(f"*(int*)0x{nation + 0x10:08x}", 10000)
+    session.assign(f"*(int*)0x{nation + 0x960:08x}", 0)
+    _invoke_thiscall(
+        session,
+        _FN_PAY_FOR_MILITARY,
+        nation,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    result = _capture_trade_phase(session)
+    result["toggle"] = 0
+    return result
+
+
+def _drive_diplomacy_offer_gate(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunDiplomacyOfferGate: the map-action manager flag byte ANDed
+    with the active nation's event-processing eligibility."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    action_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    source = _s16(session, sim_mgr + 0x2E)
+    flag = _invoke_thiscall(
+        session,
+        _FN_GET_BYTE_FLAG_8,
+        action_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    ) & 0xFF
+    eligible = _invoke_thiscall(
+        session,
+        _FN_IS_ELIGIBLE_FOR_EVENTS,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(source,),
+    ) & 0xFF
+    result = _capture_trade_phase(session)
+    result["toggle"] = 1 if (flag != 0 and eligible != 0) else 0
+    return result
+
+
+def _drive_quarter_gate(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunQuarterGateOffDecade: seed turn 1, recompute the turn-tail
+    state code, then evaluate the decade-cinematic gate."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    diplo = _u32(session, _DIPLOMACY_MGR)
+    source = _s16(session, sim_mgr + 0x2E)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 1)
+    session.assign(f"*(signed char*)0x{diplo + 0x78E:08x}", source)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x10)
+    last_processed = _s8(session, diplo + 0x78E)
+    if last_processed != -1:
+        active = _s16(session, sim_mgr + 0x2E)
+        session.assign(
+            f"*(int*)0x{sim_mgr + 0x04:08x}",
+            (1 if last_processed != active else 0) + 0x16,
+        )
+    tick = _invoke_thiscall(
+        session,
+        _FN_GET_ECONOMIC_TURN,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    ) & 0xFFFF
+    if tick & 0x8000:
+        tick -= 0x10000
+    decade_flag = _u8(session, sim_mgr + 0x6E + tick // 0x28)
+    decade_cinematic = (tick % 0x28) == 0 and decade_flag != 0
+    result = _capture_trade_phase(session)
+    result["toggle"] = 1 if decade_cinematic else 0
+    return result
+
+
+def _drive_return_to_map(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunReturnToMapClearsNoticeQueues: state 0x12 -> 5, then for each
+    eligible major nation run InitializeDiplomacyNotices +
+    DispatchMissionNodeCallbacksAndClearQueue."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x12)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 5)
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        if (
+            _invoke_thiscall(
+                session,
+                _FN_IS_ELIGIBLE_FOR_EVENTS,
+                sim_mgr,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(slot,),
+            )
+            & 0xFF
+            == 0
+        ):
+            continue
+        _invoke_virtual(
+            session, nation, _VT_INIT_DIPLOMACY_NOTICES, records,
+            occurrences, breakpoint_roles,
+        )
+        _invoke_virtual(
+            session, nation, _VT_DISPATCH_MISSION_CALLBACKS, records,
+            occurrences, breakpoint_roles,
+        )
+    result = _capture_diplomacy_phase(session)
+    result["toggle"] = 0
+    return result
+
+
 # --- season_advance_clears_status_flags retail drive ---------------------------
 # Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
 # fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
@@ -7312,6 +7570,28 @@ def run_binary(
                         result_probe = scenario.result_checkpoint_id
                     elif scenario.drive == "trade_market_price":
                         result_fields = _drive_trade_market_price(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "military_maintenance":
+                        result_fields = _drive_military_maintenance(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "diplomacy_offer_gate":
+                        result_fields = _drive_diplomacy_offer_gate(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "quarter_gate_off_decade":
+                        result_fields = _drive_quarter_gate(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive == "return_to_map_clears_notice_queues"
+                    ):
+                        result_fields = _drive_return_to_map(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = scenario.result_checkpoint_id

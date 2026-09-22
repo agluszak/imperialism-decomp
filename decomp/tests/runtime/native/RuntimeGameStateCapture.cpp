@@ -3220,6 +3220,7 @@ JSON_Value* CaptureTradeEphemeral() {
     entry.Set("budget_pool_base", nation->budgetPoolBase);
     entry.Set("budget_pool_delta", nation->budgetPoolDelta);
     entry.Set("aid_allocation_total", nation->aidAllocationTotal);
+    entry.Set("military_expenses", nation->militaryExpenses960);
     {
       JsonArray aidNonzero;
       const int cellCount = static_cast<int>(

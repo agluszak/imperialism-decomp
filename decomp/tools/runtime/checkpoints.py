@@ -176,11 +176,15 @@ _NATION_ECONOMY_SCENARIOS = (
     "created_items_phase",
     "aid_allocation",
     "power_plant_upgrade",
+    "military_maintenance",
+    "diplomacy_offer_gate",
+    "quarter_gate_off_decade",
 )
 
 _DIPLOMACY_ECONOMY_SCENARIOS = (
     "diplomacy_grant_entry_updates_treasury",
     "diplomacy_reset_preserves_recurring_grants",
+    "return_to_map_clears_notice_queues",
 )
 
 
@@ -1179,6 +1183,7 @@ _TRADE_NATION_INT_FIELDS = (
     "budget_pool_base",
     "budget_pool_delta",
     "aid_allocation_total",
+    "military_expenses",
 )
 
 _TRADE_NATION_ARRAY_FIELDS = (
