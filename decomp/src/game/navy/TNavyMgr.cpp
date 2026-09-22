@@ -1777,7 +1777,11 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
   float rightThreshold = kTierConvergenceThreshold[rightEntry->aggression];
 
   int candidateTier = maxTier;
-  bool tierUnreachable = false;
+  // Per-side "failed to converge" flags, recomputed each round (retail carries them in
+  // EBP bits 0x1000000/0x100 between the threshold compares at 0x55ab07-0x55ab30 and the
+  // outcome decode at 0x55b13e-0x55b179).
+  bool leftThresholdFailed = false;
+  bool rightThresholdFailed = false;
 
   for (;;) {
     TAdmiral* leftAdmiral =
@@ -1809,10 +1813,12 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     }
 
     // 0 = tier should drop for this side, 2 = tier should rise, 1 = holds.
+    leftThresholdFailed = bestLeftFavorRatio < leftThreshold;
+    rightThresholdFailed = bestRightFavorRatio < rightThreshold;
     int leftTierAdjust;
     if (bestLeftFavorTier < candidateTier) {
       leftTierAdjust = 0;
-    } else if (bestLeftFavorRatio < leftThreshold || bestLeftFavorTier > candidateTier) {
+    } else if (leftThresholdFailed || bestLeftFavorTier > candidateTier) {
       leftTierAdjust = 2;
     } else {
       leftTierAdjust = 1;
@@ -1820,7 +1826,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     int rightTierAdjust;
     if (bestRightFavorTier < candidateTier) {
       rightTierAdjust = 0;
-    } else if (bestRightFavorRatio < rightThreshold || bestRightFavorTier > candidateTier) {
+    } else if (rightThresholdFailed || bestRightFavorTier > candidateTier) {
       rightTierAdjust = 2;
     } else {
       rightTierAdjust = 1;
@@ -1853,7 +1859,6 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     }
 
     if (candidateTier > maxTier) {
-      tierUnreachable = true;
       break;
     }
 
@@ -1867,15 +1872,12 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     // ships actually engaged -- retail divides the opposing power by the
     // attrition target (0x55ae2e-0x55ae60), it does not use the favor ratio.
     float leftPower =
-        SumTaskForceChildPowerAtOrAboveTier(leftEntry, candidateTier) *
-        (1.0f + leftBucket * 0.1f);
-    float rightPower =
-        SumTaskForceChildPowerAtOrAboveTier(rightEntry, candidateTier) *
-        (1.0f + rightBucket * 0.1f);
+        SumTaskForceChildPowerAtOrAboveTier(leftEntry, candidateTier) * (1.0f + leftBucket * 0.1f);
+    float rightPower = SumTaskForceChildPowerAtOrAboveTier(rightEntry, candidateTier) *
+                       (1.0f + rightBucket * 0.1f);
     int leftAttritionTarget = rightEligible < leftCurrentCount ? rightEligible : leftCurrentCount;
     int rightAttritionTarget = leftEligible < rightCurrentCount ? leftEligible : rightCurrentCount;
-    ApplyTaskForceConflictAttrition(leftEntry,
-                                    rightPower / static_cast<float>(leftAttritionTarget),
+    ApplyTaskForceConflictAttrition(leftEntry, rightPower / static_cast<float>(leftAttritionTarget),
                                     leftAttritionTarget, leftCurrentCount);
     ApplyTaskForceConflictAttrition(rightEntry,
                                     leftPower / static_cast<float>(rightAttritionTarget),
@@ -1902,12 +1904,25 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
 
   bool leftEliminated = leftEntry->shipList == nullptr;
   bool rightEliminated = rightEntry->shipList == nullptr;
-  snapshot.reportParticipantIndex02 = static_cast<unsigned char>(
-      leftEliminated == rightEliminated ? -1 : (leftEliminated ? 1 : 0));
-  if (!tierUnreachable && (leftEliminated != rightEliminated)) {
-    TTaskForce* loser = leftEliminated ? leftEntry : rightEntry;
-    TTaskForce* winner = leftEliminated ? rightEntry : leftEntry;
-    int loserStart = leftEliminated ? leftStartCount : rightStartCount;
+  // -1 draw, 0 left wins, 1 right wins. A side eliminated outright loses; when the tier
+  // search exhausts (candidateTier > maxTier) with both forces still afloat, retail still
+  // resolves a winner: the side whose favor ratio never reached its convergence threshold
+  // loses (0x55b13e-0x55b179). Only both-failed or both-converged is a draw.
+  signed char outcome;
+  if (leftEliminated) {
+    outcome = static_cast<signed char>(rightEliminated ? -1 : 1);
+  } else if (rightEliminated) {
+    outcome = 0;
+  } else if (leftThresholdFailed) {
+    outcome = static_cast<signed char>(rightThresholdFailed ? -1 : 1);
+  } else {
+    outcome = static_cast<signed char>(rightThresholdFailed ? 0 : -1);
+  }
+  snapshot.reportParticipantIndex02 = static_cast<unsigned char>(outcome);
+  if (outcome != -1) {
+    TTaskForce* loser = outcome == 1 ? leftEntry : rightEntry;
+    TTaskForce* winner = outcome == 1 ? rightEntry : leftEntry;
+    int loserStart = outcome == 1 ? leftStartCount : rightStartCount;
     int loserRemaining = CountMapOrderChildren(loser->shipList);
     int bump = (loserStart - loserRemaining) * 5 + loserRemaining;
     int winnerCount = CountMapOrderChildren(winner->shipList);
