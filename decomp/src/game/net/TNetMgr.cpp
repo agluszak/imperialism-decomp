@@ -189,7 +189,7 @@ void TNetMgr::HandleError(int errorCode) {
   }
 
   g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8);
-  if (DAT_006a601c == 0) {
+  if (g_suppressUiInvalidationClear006a601c == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
 }

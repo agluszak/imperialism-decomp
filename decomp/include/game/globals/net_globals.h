@@ -39,7 +39,7 @@ extern int g_nTurnEvent2BNationMaskAccumulator;
 // WNetMgr.cpp TU globals (0x6a5fxx band), consumed by TNetMgr::Send / TWNetSessionManager.
 // The pending-packet queue and its two serialization siblings are file-scope MFC template
 // statics (see the typed C++ section below).
-extern int DAT_006a601c;
+extern int g_suppressUiInvalidationClear006a601c;
 
 extern int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 

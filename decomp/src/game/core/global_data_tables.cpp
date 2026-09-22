@@ -2646,7 +2646,7 @@ short g_anCapabilityPriorityRangeData_0066ABA4[54] = {
     21, 25, 26, 30, 26, 30, 31, 35, 31, 35, 36, 40, 41, 45, 41, 45, 46, 50,
     51, 55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
 // GLOBAL: IMPERIALISM 0x006a601c
-int DAT_006a601c = 0;
+int g_suppressUiInvalidationClear006a601c = 0;
 
 // InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles,
 // EnsurePictWvDataGobLoadedBySlot).
