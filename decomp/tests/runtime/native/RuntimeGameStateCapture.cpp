@@ -3238,8 +3238,11 @@ JSON_Value* CaptureTradeEphemeral() {
       entry.Set("city_stocks",
                 CaptureShortArray(&nation->city->cityStockCottonB6,
                                   kResourceKindCount));
+      entry.Set("city_power_flag",
+                static_cast<int>(nation->city->powerPlantUpgradeQueuedFlag04));
     } else {
       entry.SetNull("city_stocks");
+      entry.SetNull("city_power_flag");
     }
     nations.Add(entry.Release());
   }

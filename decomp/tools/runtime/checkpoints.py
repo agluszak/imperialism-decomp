@@ -167,6 +167,15 @@ _NATION_ECONOMY_SCENARIOS = (
     "trade_capacity_refresh",
     "major_trade_settlement",
     "purchased_items_phase",
+    "direct_transport",
+    "transport_need_allocation",
+    "transported_items_phase",
+    "rolling_stock",
+    "rolling_stock_insufficient_resources",
+    "merchant_marine",
+    "created_items_phase",
+    "aid_allocation",
+    "power_plant_upgrade",
 )
 
 _DIPLOMACY_ECONOMY_SCENARIOS = (
@@ -1268,6 +1277,12 @@ def normalize_retail_trade_phase(
             )
         entry["aid_nonzero"] = _require_int_pairs(
             nation_map.get("aid_nonzero"), f"retail aid_nonzero[{slot}]"
+        )
+        power_flag = nation_map.get("city_power_flag")
+        entry["city_power_flag"] = (
+            None
+            if power_flag is None
+            else _require_int(power_flag, f"retail city_power_flag[{slot}]")
         )
         nations.append(entry)
     last_processed = raw.get("last_processed_nation")

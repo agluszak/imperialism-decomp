@@ -1561,6 +1561,9 @@ def _capture_trade_phase(session: GdbSession) -> dict[str, object]:
                     if value != 0
                 ],
                 "city_stocks": city_stocks,
+                "city_power_flag": (
+                    _u8(session, city + 0x04) if city != 0 else None
+                ),
             }
         )
     last_processed = _eval_int(
@@ -4718,6 +4721,60 @@ _NATION_ECONOMY_SPECS = {
         ("vt", _VT_PURCHASE_ITEM, (7, -30, 1)),
         ("vt", _VT_ADD_PURCHASED_ITEMS, ()),
     ],
+    "direct_transport": [
+        ("z", 0x10E, 46),
+        ("z", 0x13C, 46),
+        ("ssi", 0x10E, 0, 7),
+        ("ssi", 0x13C, 0, 7),
+        ("ssi", 0x10E, _RESOURCE_STEEL, 10),
+        ("ssi", 0x13C, _RESOURCE_STEEL, 4),
+        ("ss", 0xA6, 15),
+        ("ss", 0xA8, 11),
+        ("cs", _RESOURCE_STEEL, 2),
+        ("cvt_result", 0x13 * 4, (_RESOURCE_STEEL, 9), "short"),
+    ],
+    "transport_need_allocation": [
+        ("vtm", 0x14 * 4, ()),
+    ],
+    "transported_items_phase": [
+        ("z", 0x222, 46),
+        ("cs", 0, 3),
+        ("cs", 1, 2),
+        ("cs", 22, 11),
+        ("ssi", 0x222, 0, 5),
+        ("ssi", 0x222, 1, -7),
+        ("ssi", 0x222, 22, 4),
+        ("vt", 0x41 * 4, ()),
+    ],
+    "rolling_stock": [
+        ("cs", 9, 1),
+        ("cs", _RESOURCE_STEEL, 1),
+        ("ss", 0xA6, 15),
+        ("vt_result", 0x4A * 4, (), "char"),
+    ],
+    "rolling_stock_insufficient_resources": [
+        ("cs", 9, 0),
+        ("cs", _RESOURCE_STEEL, 1),
+        ("ss", 0xA6, 15),
+        ("vt_result", 0x4A * 4, (), "char"),
+    ],
+    "merchant_marine": [
+        ("cs", 9, 3),
+        ("cs", 8, 1),
+        ("ss", 0xA4, 15),
+        ("vt_result", 0x4B * 4, (), "char"),
+    ],
+    "created_items_phase": [
+        ("vt", 0x43 * 4, ()),
+    ],
+    "aid_allocation": [
+        ("vt", _VT_ADD_AID_CELL, (37, _RESOURCE_STEEL, _MINOR_SLOT)),
+    ],
+    "power_plant_upgrade": [
+        ("cb", 0x04, 0),
+        ("si", 0x10, 10000),
+        ("cvt", 0x18 * 4, (1,)),
+    ],
 }
 
 _NATION_ECONOMY_SPECS["recall_trade_bids"] = (
@@ -4751,6 +4808,15 @@ def _drive_nation_economy(
     def _slot(value):
         return slots[value] if isinstance(value, str) else value
 
+    def _mask_result(value: int, mode: str) -> int:
+        if mode == "char":
+            return 1 if (value & 0xFF) != 0 else 0
+        if mode == "short":
+            value &= 0xFFFF
+            return value - 0x10000 if value & 0x8000 else value
+        return value
+
+    toggle = 0
     for step in _NATION_ECONOMY_SPECS[drive]:
         kind = step[0]
         if kind == "vt":
@@ -4798,6 +4864,52 @@ def _drive_nation_economy(
                 breakpoint_roles,
                 args=tuple(_slot(a) for a in step[2]),
             )
+        elif kind == "vt_result":
+            toggle = _mask_result(
+                _invoke_virtual(
+                    session,
+                    nation,
+                    step[1],
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                    args=tuple(_slot(a) for a in step[2]),
+                ),
+                step[3],
+            )
+        elif kind in ("cvt", "cvt_result"):
+            if city == 0:
+                raise RuntimeError("retail nation has no city")
+            value = _invoke_virtual(
+                session,
+                city,
+                step[1],
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=tuple(_slot(a) for a in step[2]),
+            )
+            if kind == "cvt_result":
+                toggle = _mask_result(value, step[3])
+        elif kind == "vtm":
+            minister = _u32(session, nation + 0x98)
+            if minister == 0:
+                raise RuntimeError("retail nation has no interior minister")
+            _invoke_virtual(
+                session,
+                minister,
+                step[1],
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=tuple(_slot(a) for a in step[2]),
+            )
+        elif kind == "cb":
+            if city == 0:
+                raise RuntimeError("retail nation has no city")
+            session.assign(
+                f"*(unsigned char*)0x{city + step[1]:08x}", step[2]
+            )
         elif kind == "ss":
             session.assign(f"*(short*)0x{nation + step[1]:08x}", step[2])
         elif kind == "ssi":
@@ -4837,7 +4949,7 @@ def _drive_nation_economy(
         else:
             raise RuntimeError(f"unknown economy step {kind!r}")
     result = _capture_trade_phase(session)
-    result["toggle"] = 0
+    result["toggle"] = toggle
     return result
 
 
