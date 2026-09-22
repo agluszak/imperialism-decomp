@@ -19,7 +19,8 @@
 // distributions. Runs in game-flow state 0x15, before the per-nation +0x2B8/+0x108
 // passes. For each eligible nation (g_pSimMgr->IsNationSlotEligibleForEventProcessing):
 //  1. Blends the 4-category TShip navy-order contribution percentages for that
-//     nation's ships into a queue-demand divergence score (normalized against
+//     nation's ships into a queue-demand divergence score, strength-scaling the
+//     first three categories, then normalizing against
 //     g_Populate_Beachhead_Mission_LookupTable_00697958), cached in both
 //     g_afNationOrderQueueDivergence_006a3a88 and its mirror at 006a3ac0.
 //  2. Accumulates a per-unit-type weighted vector over the nation's militaryUnitList44
@@ -45,12 +46,15 @@ void RecomputeNationOrderPriorityMetrics() {
     float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
       if (ship->nation == nationIdx) {
-        ship->GetMaxStrength();
+        int strengthRatio = ship->strength / ship->GetMaxStrength();
         categoryVector[0] +=
+            strengthRatio *
             static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0));
         categoryVector[1] +=
+            strengthRatio *
             static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1));
         categoryVector[2] +=
+            strengthRatio *
             static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2));
         categoryVector[3] +=
             static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));

@@ -54,6 +54,9 @@ ACTION_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.run"
 ACTION_TURN_STATE_COMBAT_MOVES = "turn_state_combat_moves.run"
 ACTION_TURN_STATE_MILITARY_CLEANUP = "turn_state_military_cleanup.run"
 ACTION_TURN_STATE_AI_REPLAN = "turn_state_ai_replan_perturbed.run"
+ACTION_TURN_STATE_AI_REASSESS_DAMAGED = (
+    "turn_state_ai_reassess_damaged_ship.run"
+)
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -122,6 +125,9 @@ CHECKPOINT_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.resolved
 CHECKPOINT_TURN_STATE_COMBAT_MOVES = "turn_state_combat_moves.resolved"
 CHECKPOINT_TURN_STATE_MILITARY_CLEANUP = "turn_state_military_cleanup.resolved"
 CHECKPOINT_TURN_STATE_AI_REPLAN = "turn_state_ai_replan_perturbed.resolved"
+CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED = (
+    "turn_state_ai_reassess_damaged_ship.resolved"
+)
 
 
 @dataclass(frozen=True)
@@ -139,6 +145,33 @@ _COMBAT_MOVES_FIELDS = (
     "turn.turn_flow_status_flags",
     "battles",
     "units",
+)
+
+_TURN_STATE_AI_FIELDS = (
+    "turn.phase",
+    "turn.active",
+    "turn.economic_turn",
+    "dispatched_event",
+    "military_cleanup.region_scores",
+    "military_cleanup.city_score_total",
+    "military_cleanup.queue_divergence",
+    "military_cleanup.mobile_score",
+    "military_cleanup.mobile_divergence",
+    "military_cleanup.combined_divergence",
+    "military_cleanup.weighted_military",
+    "military_cleanup.expansion_pressure",
+    "military_cleanup.unit_divergence",
+    "military_cleanup.mission_pressure",
+    "trade.nations",
+    "diplomacy.nations",
+    "missions",
+    "development",
+    "rng.before.crt_rand",
+    "rng.before.map_generation",
+    "rng.before.zone_status",
+    "rng.after.crt_rand",
+    "rng.after.map_generation",
+    "rng.after.zone_status",
 )
 
 
@@ -568,63 +601,19 @@ SCHEMAS = {
         CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
         ACTION_TURN_STATE_MILITARY_CLEANUP,
         "turn_state_military_cleanup",
-        (
-            "turn.phase",
-            "turn.active",
-            "turn.economic_turn",
-            "dispatched_event",
-            "military_cleanup.region_scores",
-            "military_cleanup.city_score_total",
-            "military_cleanup.queue_divergence",
-            "military_cleanup.mobile_score",
-            "military_cleanup.mobile_divergence",
-            "military_cleanup.combined_divergence",
-            "military_cleanup.weighted_military",
-            "military_cleanup.expansion_pressure",
-            "military_cleanup.unit_divergence",
-            "military_cleanup.mission_pressure",
-            "trade.nations",
-            "diplomacy.nations",
-            "missions",
-            "development",
-            "rng.before.crt_rand",
-            "rng.before.map_generation",
-            "rng.before.zone_status",
-            "rng.after.crt_rand",
-            "rng.after.map_generation",
-            "rng.after.zone_status",
-        ),
+        _TURN_STATE_AI_FIELDS,
     ),
     CHECKPOINT_TURN_STATE_AI_REPLAN: CheckpointSchema(
         CHECKPOINT_TURN_STATE_AI_REPLAN,
         ACTION_TURN_STATE_AI_REPLAN,
         "turn_state_ai_replan_perturbed",
-        (
-            "turn.phase",
-            "turn.active",
-            "turn.economic_turn",
-            "dispatched_event",
-            "military_cleanup.region_scores",
-            "military_cleanup.city_score_total",
-            "military_cleanup.queue_divergence",
-            "military_cleanup.mobile_score",
-            "military_cleanup.mobile_divergence",
-            "military_cleanup.combined_divergence",
-            "military_cleanup.weighted_military",
-            "military_cleanup.expansion_pressure",
-            "military_cleanup.unit_divergence",
-            "military_cleanup.mission_pressure",
-            "trade.nations",
-            "diplomacy.nations",
-            "missions",
-            "development",
-            "rng.before.crt_rand",
-            "rng.before.map_generation",
-            "rng.before.zone_status",
-            "rng.after.crt_rand",
-            "rng.after.map_generation",
-            "rng.after.zone_status",
-        ),
+        _TURN_STATE_AI_FIELDS,
+    ),
+    CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED: CheckpointSchema(
+        CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED,
+        ACTION_TURN_STATE_AI_REASSESS_DAMAGED,
+        "turn_state_ai_reassess_damaged_ship",
+        _TURN_STATE_AI_FIELDS,
     ),
     CHECKPOINT_RECOMPUTE_METRICS: CheckpointSchema(
         CHECKPOINT_RECOMPUTE_METRICS,

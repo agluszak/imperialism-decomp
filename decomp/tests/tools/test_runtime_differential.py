@@ -17,6 +17,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_NAVAL_TIER_EXHAUSTION_PHASE,
     CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
     CHECKPOINT_TURN_STATE_AI_REPLAN,
+    CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED,
     CHECKPOINT_TURN_STATE_COMBAT_MOVES,
     CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
     SCHEMAS,
@@ -59,6 +60,9 @@ class CheckpointSchemaTests(unittest.TestCase):
             CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
         ].required_paths
         ai_replan = SCHEMAS[CHECKPOINT_TURN_STATE_AI_REPLAN].required_paths
+        ai_reassess = SCHEMAS[
+            CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED
+        ].required_paths
         elimination = SCHEMAS[CHECKPOINT_ELIMINATION_PHASE].required_paths
         newspaper = SCHEMAS["turn_stop_newspaper.resolved"].required_paths
 
@@ -73,6 +77,10 @@ class CheckpointSchemaTests(unittest.TestCase):
         self.assertIn("missions", ai_replan)
         self.assertIn("development", ai_replan)
         self.assertIn("rng.after.crt_rand", ai_replan)
+        self.assertIn("military_cleanup.mission_pressure", ai_reassess)
+        self.assertIn("missions", ai_reassess)
+        self.assertIn("development", ai_reassess)
+        self.assertIn("rng.after.crt_rand", ai_reassess)
         self.assertIn("nation_status", elimination)
         self.assertIn("rng.before.crt_rand", elimination)
         self.assertIn("rng.after.crt_rand", elimination)
@@ -354,6 +362,10 @@ class DifferentialTraceTests(unittest.TestCase):
             "production_path",
         )
         self.assertEqual(
+            _scenario_classification("turn_state_ai_reassess_damaged_ship"),
+            "production_path",
+        )
+        self.assertEqual(
             _scenario_classification("load_save_to_map"),
             "unclassified",
         )
@@ -555,6 +567,9 @@ class DifferentialRunTests(unittest.TestCase):
                 combat = load_scenario("turn_state_combat_moves")
                 cleanup = load_scenario("turn_state_military_cleanup")
                 ai_replan = load_scenario("turn_state_ai_replan_perturbed")
+                ai_reassess = load_scenario(
+                    "turn_state_ai_reassess_damaged_ship"
+                )
 
         self.assertEqual(
             combat.result_checkpoint_id,
@@ -567,6 +582,10 @@ class DifferentialRunTests(unittest.TestCase):
         self.assertEqual(
             ai_replan.result_checkpoint_id,
             CHECKPOINT_TURN_STATE_AI_REPLAN,
+        )
+        self.assertEqual(
+            ai_reassess.result_checkpoint_id,
+            CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED,
         )
 
     def test_partial_trace_is_persisted_when_session_raises(self) -> None:

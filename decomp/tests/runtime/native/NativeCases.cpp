@@ -93,6 +93,7 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
 RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition);
 RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition);
 RuntimeActionResult RunTurnStateAiReplanPerturbed(NativeTransition& transition);
+RuntimeActionResult RunTurnStateAiReassessDamagedShip(NativeTransition& transition);
 RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition);
 RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition);
 RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& transition);
@@ -250,6 +251,7 @@ const NativeCase kCases[] = {
     {"second_turn_military_cleanup", RunSecondTurnMilitaryCleanup},
     {"ai_naval_industry_development", RunAiNavalIndustryDevelopment},
     {"turn_state_ai_replan_perturbed", RunTurnStateAiReplanPerturbed},
+    {"turn_state_ai_reassess_damaged_ship", RunTurnStateAiReassessDamagedShip},
     {"reassess_control_sea_missions", RunReassessControlSeaMissions},
     {"reassess_control_sea_missions_damaged_ship", RunReassessControlSeaMissionsDamagedShip},
     {"recompute_nation_order_priority_metrics", RunRecomputeNationOrderPriorityMetrics},

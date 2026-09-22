@@ -223,8 +223,8 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExis
     float value;
     if (includeExistingLack != 0 && requiredEquipageByClass[i] <= vector[i]) {
       float difference = requiredEquipageByClass[i] - vector[i];
-      value = difference + static_cast<float>(accumulatedLack[i]) *
-                               g_InvadeMissionSuppressedPriorContributionScale_0065A95C;
+      value = difference * g_InvadeMissionSuppressedPriorContributionScale_0065A95C +
+              static_cast<float>(accumulatedLack[i]);
     } else {
       value = requiredEquipageByClass[i] - vector[i] + static_cast<float>(accumulatedLack[i]);
     }
