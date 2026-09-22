@@ -17,3 +17,7 @@ extern "C" CPoint g_offerDeskSheetPosition_006a5a00;
 extern "C" CPoint g_offerDeskOffscreenPosition_006a5a28;
 
 extern "C" const int g_pTradeSummarySelectionMap[23];
+
+// Assert source-path literal shared by the trade views (TDealBookPicture,
+// TOfferDeskPicture, TTradeScreenPicture).
+extern "C" const char s_SourcePathUTradeViews_0069AA94[];

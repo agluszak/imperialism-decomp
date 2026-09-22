@@ -60,4 +60,8 @@ extern "C" char g_bTurnFlowBootstrapComplete;
 // "Conan" — developer-cheat probe filename statted by TSimMgr::ISimMgr.
 extern char g_szConanCheatFileName_00698BEC[];
 
+// TSimMgr's opaque debug tag literal, passed as the label argument to
+// RebuildMapContextAndGlobalMapState from AdvanceGlobalTurnStateMachine.
+extern const char s_Chunk_00698C0C[];
+
 } // extern "C"

@@ -201,6 +201,8 @@ extern char g_szMcAppUiHeaderPath_006943CC[];
 // McAppUI.h line-0x56f assert path runs.
 extern int g_McAppUiFlag_006A143C;
 
+extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
+
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 
 extern "C" const char s_SourcePathUHelpMgr_00696C58[];

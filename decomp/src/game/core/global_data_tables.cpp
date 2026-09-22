@@ -22,7 +22,6 @@ class TInfoBarText;
 #include "game/mfc.h"
 #include "game/core/global_data_tables.h"
 #include "game/globals/mapped_flavor_literals.h"
-#include "game/globals/raw_globals.h"
 #include "game/map/sea_geometry.h"
 #include "game/app_init_globals.h"
 #include "game/ui_core/TViewMgr.h"
