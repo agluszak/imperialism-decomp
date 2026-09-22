@@ -117,13 +117,9 @@ def sanitize_path_component(name):
 def load_old_files(manifest_path, key_name):
     if not os.path.isfile(manifest_path):
         return []
-    try:
-        with open(manifest_path, "rb") as fd:
-            payload = json.loads(fd.read().decode("utf-8"))
-        return list(payload.get(key_name, []))
-    except Exception as exc:
-        print("Warning: failed reading manifest {}: {}".format(manifest_path, exc))
-        return []
+    with open(manifest_path, "rb") as fd:
+        payload = json.loads(fd.read().decode("utf-8"))
+    return list(payload.get(key_name, []))
 
 
 def remove_old_generated_files(base_dir, old_files):

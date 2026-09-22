@@ -161,7 +161,9 @@ def main() -> int:
                               for i in range(4)), "little", signed=True)
                     return addr + 5 + rel
             except Exception:
-                pass
+                # Memory read failed: record 0 (unresolved) rather than the raw
+                # thunk address, which would masquerade as a resolved target.
+                return 0
             return addr
 
         # GetRuntimeClass bodies are `MOV EAX, <descriptor>; RET` (B8 xx xx xx xx C3):
