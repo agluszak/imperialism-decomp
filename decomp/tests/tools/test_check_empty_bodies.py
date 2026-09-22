@@ -104,12 +104,9 @@ class TestTrivialReturnClassification(unittest.TestCase):
         self.assertNotIn("trivial_return_but_big", AUDIT_KINDS)
         self.assertTrue(set(AUDIT_KINDS).isdisjoint(VIOLATION_KINDS))
 
-    def test_audit_only_kind_stays_outside_the_gate(self):
-        import tempfile
-
-        finding = {"kind": "ctor_missing_derived_init", "file": "src/game/TFoo.cpp"}
-        with tempfile.TemporaryDirectory() as d:
-            self.assertEqual(counts_per_file([finding], Path(d)), {})
+    def test_ctor_missing_derived_init_is_gated(self):
+        self.assertIn("ctor_missing_derived_init", VIOLATION_KINDS)
+        self.assertNotIn("ctor_missing_derived_init", AUDIT_KINDS)
 
 
 class TestDerivedStoreOffsets(unittest.TestCase):

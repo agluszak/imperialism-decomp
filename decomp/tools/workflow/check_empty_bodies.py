@@ -58,15 +58,15 @@ VIOLATION_KINDS = (
     "empty_unresolved",
     "noop_contradicted",
     "trivial_return_but_big",
+    # bd kwee: an empty, init-list-free ctor whose original stores to offsets
+    # beyond the base-class size — the derived fields are seeded in the retail
+    # binary but not by our port. Promoted after the audit ran clean.
+    "ctor_missing_derived_init",
 )
 
-# Audit-only kinds (bd kwee): reported by the audit and `--kind`, but excluded from
-# the hard gate. Promote a kind into VIOLATION_KINDS once its findings are triaged.
-#
-#   ctor_missing_derived_init an empty, init-list-free ctor whose original stores to
-#                             offsets beyond the base-class size — the derived fields
-#                             are seeded in the retail binary but not by our port.
-AUDIT_KINDS = ("ctor_missing_derived_init",)
+# Audit-only kinds: reported by the audit and `--kind`, but excluded from the
+# hard gate. Promote a kind into VIOLATION_KINDS once its findings are triaged.
+AUDIT_KINDS: tuple[str, ...] = ()
 
 
 def sizes_by_address(symbols: dict[str, tuple[int, int]]) -> dict[int, int]:
