@@ -126,6 +126,12 @@ RuntimeActionResult RunTurnAlertsLaterTurn(NativeTransition& transition);
 RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition);
 RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition);
 RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transition);
+RuntimeActionResult RunTurnStateDiplomacyPhase(NativeTransition& transition);
+RuntimeActionResult RunTurnStateDiplomacyOfferGate(NativeTransition& transition);
+RuntimeActionResult RunTurnStateQuarterGate(NativeTransition& transition);
+RuntimeActionResult RunTurnStateReturnToMap(NativeTransition& transition);
+RuntimeActionResult RunTurnStateCombatMoves(NativeTransition& transition);
+RuntimeActionResult RunTurnStateMilitaryCleanup(NativeTransition& transition);
 RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition);
 RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& transition);
 RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition);
@@ -272,6 +278,12 @@ const NativeCase kCases[] = {
     {"diplomacy_offer_gate", RunDiplomacyOfferGate},
     {"quarter_gate_off_decade", RunQuarterGateOffDecade},
     {"return_to_map_clears_notice_queues", RunReturnToMapClearsNoticeQueues},
+    {"turn_state_diplomacy_phase", RunTurnStateDiplomacyPhase},
+    {"turn_state_diplomacy_offer_gate", RunTurnStateDiplomacyOfferGate},
+    {"turn_state_quarter_gate", RunTurnStateQuarterGate},
+    {"turn_state_return_to_map", RunTurnStateReturnToMap},
+    {"turn_state_combat_moves", RunTurnStateCombatMoves},
+    {"turn_state_military_cleanup", RunTurnStateMilitaryCleanup},
     {"newspaper_navy_growth_reward_levels", RunNewspaperNavyGrowthRewardLevels},
     {"elimination_phase_with_landed_great_powers", RunEliminationPhaseWithLandedGreatPowers},
     {"opening_civilian_grant", RunOpeningCivilianGrant},

@@ -51,6 +51,8 @@ ACTION_COMBAT_UNCONTESTED = "combat_moves_uncontested.run"
 ACTION_COMBAT_BATTLE = "combat_moves_creates_battle.run"
 ACTION_COMBAT_RESUME = "combat_moves_resumes_after_battle.run"
 ACTION_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.run"
+ACTION_TURN_STATE_COMBAT_MOVES = "turn_state_combat_moves.run"
+ACTION_TURN_STATE_MILITARY_CLEANUP = "turn_state_military_cleanup.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -113,6 +115,8 @@ CHECKPOINT_COMBAT_UNCONTESTED = "combat_moves_uncontested.resolved"
 CHECKPOINT_COMBAT_BATTLE = "combat_moves_creates_battle.resolved"
 CHECKPOINT_COMBAT_RESUME = "combat_moves_resumes_after_battle.resolved"
 CHECKPOINT_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.resolved"
+CHECKPOINT_TURN_STATE_COMBAT_MOVES = "turn_state_combat_moves.resolved"
+CHECKPOINT_TURN_STATE_MILITARY_CLEANUP = "turn_state_military_cleanup.resolved"
 
 
 @dataclass(frozen=True)
@@ -181,12 +185,16 @@ _NATION_ECONOMY_SCENARIOS = (
     "military_maintenance",
     "diplomacy_offer_gate",
     "quarter_gate_off_decade",
+    "turn_state_quarter_gate",
 )
 
 _DIPLOMACY_ECONOMY_SCENARIOS = (
     "diplomacy_grant_entry_updates_treasury",
     "diplomacy_reset_preserves_recurring_grants",
     "return_to_map_clears_notice_queues",
+    "turn_state_diplomacy_phase",
+    "turn_state_diplomacy_offer_gate",
+    "turn_state_return_to_map",
 )
 
 _PROVINCE_SCENARIOS = (
@@ -510,6 +518,50 @@ SCHEMAS = {
             "military_cleanup.mission_pressure",
         ),
     ),
+    CHECKPOINT_TURN_STATE_COMBAT_MOVES: CheckpointSchema(
+        CHECKPOINT_TURN_STATE_COMBAT_MOVES,
+        ACTION_TURN_STATE_COMBAT_MOVES,
+        "turn_state_combat_moves",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "dispatched_event",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
+            "rng.crt_rand",
+            "rng.map_generation",
+            "rng.zone_status",
+        ),
+    ),
+    CHECKPOINT_TURN_STATE_MILITARY_CLEANUP: CheckpointSchema(
+        CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+        ACTION_TURN_STATE_MILITARY_CLEANUP,
+        "turn_state_military_cleanup",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "dispatched_event",
+            "military_cleanup.region_scores",
+            "military_cleanup.city_score_total",
+            "military_cleanup.queue_divergence",
+            "military_cleanup.mobile_score",
+            "military_cleanup.mobile_divergence",
+            "military_cleanup.combined_divergence",
+            "military_cleanup.weighted_military",
+            "military_cleanup.expansion_pressure",
+            "military_cleanup.unit_divergence",
+            "military_cleanup.mission_pressure",
+            "trade.nations",
+            "diplomacy.nations",
+            "missions",
+            "rng.crt_rand",
+            "rng.map_generation",
+            "rng.zone_status",
+        ),
+    ),
     CHECKPOINT_RECOMPUTE_METRICS: CheckpointSchema(
         CHECKPOINT_RECOMPUTE_METRICS,
         ACTION_RECOMPUTE_METRICS,
@@ -654,6 +706,11 @@ SCHEMAS = {
             "turn.turn_flow_status_flags",
             "eligibility",
             "nation_encoded",
+            "nation_status",
+            "dispatched_event",
+            "rng.crt_rand",
+            "rng.map_generation",
+            "rng.zone_status",
         ),
     ),
     CHECKPOINT_TURN_ALERTS_FIRST: CheckpointSchema(
@@ -878,6 +935,16 @@ for _economy_scenario in _NATION_ECONOMY_SCENARIOS:
             "toggle",
             "trade.market",
             "trade.nations",
+        )
+        + (
+            (
+                "dispatched_event",
+                "rng.crt_rand",
+                "rng.map_generation",
+                "rng.zone_status",
+            )
+            if _economy_scenario.startswith("turn_state_")
+            else ()
         ),
     )
 del _economy_scenario
@@ -894,6 +961,17 @@ for _diplo_economy_scenario in _DIPLOMACY_ECONOMY_SCENARIOS:
             "turn.turn_flow_status_flags",
             "toggle",
             "diplomacy.nations",
+        )
+        + (
+            (
+                "missions",
+                "dispatched_event",
+                "rng.crt_rand",
+                "rng.map_generation",
+                "rng.zone_status",
+            )
+            if _diplo_economy_scenario.startswith("turn_state_")
+            else ()
         ),
     )
 del _diplo_economy_scenario
@@ -1119,6 +1197,17 @@ for _news_scenario in _NEWS_SCENARIOS:
             "turn.turn_flow_status_flags",
             "news",
             "newspaper_events",
+        )
+        + (
+            (
+                "dispatched_event",
+                "pending_nations",
+                "rng.crt_rand",
+                "rng.map_generation",
+                "rng.zone_status",
+            )
+            if _news_scenario == "turn_stop_newspaper"
+            else ()
         ),
     )
 del _news_scenario
@@ -1314,7 +1403,7 @@ def normalize_native_player_diplomacy_policy(
     diplomacy = _require_mapping(
         ephemeral.get("diplomacy"), "native ephemeral diplomacy"
     )
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
         "action_id": checkpoint_id.replace(".resolved", ".run"),
         "turn": _mission_turn(turn, "native turn"),
@@ -1325,6 +1414,15 @@ def normalize_native_player_diplomacy_policy(
             )
         },
     }
+    if checkpoint_id.startswith("turn_state_"):
+        observation["missions"] = _mission_records(
+            ephemeral.get("missions"), "native missions"
+        )
+        observation["dispatched_event"] = _require_int(
+            turn.get("dispatched_event"), "native dispatched_event"
+        )
+        observation["rng"] = _rng_state(ephemeral.get("rng"), "native rng")
+    return observation
 
 
 def normalize_retail_player_diplomacy_policy(
@@ -1332,7 +1430,7 @@ def normalize_retail_player_diplomacy_policy(
     checkpoint_id: str,
 ) -> dict[str, Any]:
     """Reduce a retail player-diplomacy-policy capture to the same schema."""
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
         "action_id": checkpoint_id.replace(".resolved", ".run"),
         "turn": {
@@ -1355,6 +1453,15 @@ def normalize_retail_player_diplomacy_policy(
             )
         },
     }
+    if checkpoint_id.startswith("turn_state_"):
+        observation["missions"] = _mission_records(
+            raw.get("missions"), "retail missions"
+        )
+        observation["dispatched_event"] = _require_int(
+            raw.get("dispatched_event"), "retail dispatched_event"
+        )
+        observation["rng"] = _rng_state(raw.get("rng"), "retail rng")
+    return observation
 
 
 def normalize_native_diplomacy_phase(
@@ -1665,6 +1772,18 @@ def normalize_native_nation_economy(
     observation["toggle"] = (
         int(toggle) if isinstance(toggle, (bool, int)) else 0
     )
+    if checkpoint_id.startswith("turn_state_"):
+        after = _require_mapping(
+            _native_captures(result).get("after"), "native after capture"
+        )
+        ephemeral = _require_mapping(
+            after.get("ephemeral"), "native after.ephemeral"
+        )
+        turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+        observation["dispatched_event"] = _require_int(
+            turn.get("dispatched_event"), "native dispatched_event"
+        )
+        observation["rng"] = _rng_state(ephemeral.get("rng"), "native rng")
     return observation
 
 
@@ -1675,6 +1794,11 @@ def normalize_retail_nation_economy(
     observation = normalize_retail_trade_phase(raw, checkpoint_id)
     observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
     observation["toggle"] = _require_int(raw.get("toggle"), "retail toggle")
+    if checkpoint_id.startswith("turn_state_"):
+        observation["dispatched_event"] = _require_int(
+            raw.get("dispatched_event"), "retail dispatched_event"
+        )
+        observation["rng"] = _rng_state(raw.get("rng"), "retail rng")
     return observation
 
 
@@ -2099,6 +2223,8 @@ def _military_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
 def normalize_native_military_phase(
     result: Mapping[str, Any],
     checkpoint_id: str = CHECKPOINT_MILITARY_PHASE,
+    action_id: str = ACTION_MILITARY_PHASE,
+    include_rng: bool = False,
 ) -> dict[str, Any]:
     """Reduce a native driver result to the stable military-phase schema."""
     if result.get("status") != "passed":
@@ -2110,9 +2236,9 @@ def normalize_native_military_phase(
     military = _require_mapping(
         ephemeral.get("military"), "native ephemeral military"
     )
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
-        "action_id": ACTION_MILITARY_PHASE,
+        "action_id": action_id,
         "turn": {
             "phase": _require_int(turn.get("phase"), "native turn.phase"),
             "active": _require_int(turn.get("active_nation"), "native active_nation"),
@@ -2125,16 +2251,24 @@ def normalize_native_military_phase(
         },
         "military": _military_ephemeral(military, "native military"),
     }
+    if include_rng:
+        observation["dispatched_event"] = _require_int(
+            turn.get("dispatched_event"), "native dispatched_event"
+        )
+        observation["rng"] = _rng_state(ephemeral.get("rng"), "native rng")
+    return observation
 
 
 def normalize_retail_military_phase(
     raw: Mapping[str, Any],
     checkpoint_id: str = CHECKPOINT_MILITARY_PHASE,
+    action_id: str = ACTION_MILITARY_PHASE,
+    include_rng: bool = False,
 ) -> dict[str, Any]:
     """Reduce a retail GDB military capture to the same schema."""
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
-        "action_id": ACTION_MILITARY_PHASE,
+        "action_id": action_id,
         "turn": {
             "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
             "active": _require_int(raw.get("active_nation"), "retail active_nation"),
@@ -2150,6 +2284,12 @@ def normalize_retail_military_phase(
             "retail military",
         ),
     }
+    if include_rng:
+        observation["dispatched_event"] = _require_int(
+            raw.get("dispatched_event"), "retail dispatched_event"
+        )
+        observation["rng"] = _rng_state(raw.get("rng"), "retail rng")
+    return observation
 
 
 def _strategic_naval_matrix_side(
@@ -2771,6 +2911,19 @@ def _news_events(raw: Any, label: str) -> list[Any]:
     ]
 
 
+def _rng_state(raw: Any, label: str) -> dict[str, int]:
+    rng = _require_mapping(raw, label)
+    return {
+        "crt_rand": _require_int(rng.get("crt_rand"), f"{label}.crt_rand"),
+        "map_generation": _require_int(
+            rng.get("map_generation"), f"{label}.map_generation"
+        ),
+        "zone_status": _require_int(
+            rng.get("zone_status"), f"{label}.zone_status"
+        ),
+    }
+
+
 def normalize_native_news(
     result: Mapping[str, Any],
     checkpoint_id: str,
@@ -2784,7 +2937,7 @@ def normalize_native_news(
     pending = _require_mapping(
         ephemeral.get("pending"), "native ephemeral pending"
     )
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
         "action_id": checkpoint_id.replace(".resolved", ".run"),
         "turn": _turn_fields_from_native(ephemeral),
@@ -2793,13 +2946,26 @@ def normalize_native_news(
             pending.get("newspaper_events"), "native newspaper_events"
         ),
     }
+    if checkpoint_id == "turn_stop_newspaper.resolved":
+        turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+        city_transport = _require_mapping(
+            ephemeral.get("city_transport"), "native ephemeral city_transport"
+        )
+        observation["dispatched_event"] = _require_int(
+            turn.get("dispatched_event"), "native dispatched_event"
+        )
+        observation["pending_nations"] = _pending_status_nations(
+            city_transport.get("pending_nations"), "native pending_nations"
+        )
+        observation["rng"] = _rng_state(ephemeral.get("rng"), "native rng")
+    return observation
 
 
 def normalize_retail_news(
     raw: Mapping[str, Any],
     checkpoint_id: str,
 ) -> dict[str, Any]:
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
         "action_id": checkpoint_id.replace(".resolved", ".run"),
         "turn": _turn_fields_from_retail(raw),
@@ -2808,6 +2974,15 @@ def normalize_retail_news(
             raw.get("newspaper_events"), "retail newspaper_events"
         ),
     }
+    if checkpoint_id == "turn_stop_newspaper.resolved":
+        observation["dispatched_event"] = _require_int(
+            raw.get("dispatched_event"), "retail dispatched_event"
+        )
+        observation["pending_nations"] = _pending_status_nations(
+            raw.get("pending_nations"), "retail pending_nations"
+        )
+        observation["rng"] = _rng_state(raw.get("rng"), "retail rng")
+    return observation
 
 
 def normalize_native_army_ui(
@@ -3022,6 +3197,8 @@ def _military_cleanup_ephemeral(raw: Any, label: str) -> dict[str, Any]:
 def normalize_native_military_cleanup(
     result: Mapping[str, Any],
     checkpoint_id: str = CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
+    action_id: str = ACTION_MILITARY_CLEANUP,
+    include_rng: bool = False,
 ) -> dict[str, Any]:
     """Reduce a native driver result to the military-cleanup schema."""
     if result.get("status") != "passed":
@@ -3033,9 +3210,9 @@ def normalize_native_military_cleanup(
     cleanup = _require_mapping(
         ephemeral.get("military_cleanup"), "native ephemeral military_cleanup"
     )
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
-        "action_id": ACTION_MILITARY_CLEANUP,
+        "action_id": action_id,
         "turn": {
             "phase": _require_int(turn.get("phase"), "native turn.phase"),
             "active": _require_int(turn.get("active_nation"), "native active_nation"),
@@ -3050,16 +3227,24 @@ def normalize_native_military_cleanup(
             cleanup, "native military_cleanup"
         ),
     }
+    if include_rng:
+        observation["dispatched_event"] = _require_int(
+            turn.get("dispatched_event"), "native dispatched_event"
+        )
+        observation["rng"] = _rng_state(ephemeral.get("rng"), "native rng")
+    return observation
 
 
 def normalize_retail_military_cleanup(
     raw: Mapping[str, Any],
     checkpoint_id: str = CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
+    action_id: str = ACTION_MILITARY_CLEANUP,
+    include_rng: bool = False,
 ) -> dict[str, Any]:
     """Reduce a retail GDB military-cleanup capture to the same schema."""
-    return {
+    observation = {
         "checkpoint_id": checkpoint_id,
-        "action_id": ACTION_MILITARY_CLEANUP,
+        "action_id": action_id,
         "turn": {
             "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
             "active": _require_int(raw.get("active_nation"), "retail active_nation"),
@@ -3075,6 +3260,54 @@ def normalize_retail_military_cleanup(
             "retail military_cleanup",
         ),
     }
+    if include_rng:
+        observation["dispatched_event"] = _require_int(
+            raw.get("dispatched_event"), "retail dispatched_event"
+        )
+        observation["rng"] = _rng_state(raw.get("rng"), "retail rng")
+    return observation
+
+
+def normalize_native_turn_state_military_cleanup(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    observation = normalize_native_military_cleanup(
+        result,
+        checkpoint_id=CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+        action_id=ACTION_TURN_STATE_MILITARY_CLEANUP,
+        include_rng=True,
+    )
+    observation["trade"] = normalize_native_trade_phase(
+        result, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+    )["trade"]
+    observation["diplomacy"] = normalize_native_player_diplomacy_policy(
+        result, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+    )["diplomacy"]
+    observation["missions"] = normalize_native_reassess_missions(
+        result, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+    )["missions"]
+    return observation
+
+
+def normalize_retail_turn_state_military_cleanup(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    observation = normalize_retail_military_cleanup(
+        raw,
+        checkpoint_id=CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+        action_id=ACTION_TURN_STATE_MILITARY_CLEANUP,
+        include_rng=True,
+    )
+    observation["trade"] = normalize_retail_trade_phase(
+        raw, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+    )["trade"]
+    observation["diplomacy"] = normalize_retail_player_diplomacy_policy(
+        raw, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+    )["diplomacy"]
+    observation["missions"] = normalize_retail_reassess_missions(
+        raw, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+    )["missions"]
+    return observation
 
 
 def _diplomacy_records(records: Any, label: str) -> list[dict[str, Any]]:
@@ -3639,6 +3872,30 @@ def normalize_retail_season_advance(
     }
 
 
+def _nation_statuses(raw: Any, label: str) -> list[dict[str, int] | None]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{label} must be an array")
+    statuses: list[dict[str, int] | None] = []
+    for index, entry in enumerate(raw):
+        if entry is None:
+            statuses.append(None)
+            continue
+        status = _require_mapping(entry, f"{label}[{index}]")
+        statuses.append(
+            {
+                "encoded_slot": _require_int(
+                    status.get("encoded_slot"),
+                    f"{label}[{index}].encoded_slot",
+                ),
+                "owned_region_count": _require_int(
+                    status.get("owned_region_count"),
+                    f"{label}[{index}].owned_region_count",
+                ),
+            }
+        )
+    return statuses
+
+
 def normalize_native_elimination_phase(
     result: Mapping[str, Any],
 ) -> dict[str, Any]:
@@ -3681,6 +3938,13 @@ def normalize_native_elimination_phase(
         "turn": _mission_turn(turn, "native turn"),
         "eligibility": eligibility,
         "nation_encoded": nation_encoded,
+        "nation_status": _nation_statuses(
+            ephemeral.get("nation_status"), "native nation_status"
+        ),
+        "dispatched_event": _require_int(
+            turn.get("dispatched_event"), "native dispatched_event"
+        ),
+        "rng": _rng_state(ephemeral.get("rng"), "native rng"),
     }
 
 
@@ -3718,6 +3982,13 @@ def normalize_retail_elimination_phase(
             _require_int(entry, f"retail nation_encoded[{index}]")
             for index, entry in enumerate(nation_encoded_raw)
         ],
+        "nation_status": _nation_statuses(
+            raw.get("nation_status"), "retail nation_status"
+        ),
+        "dispatched_event": _require_int(
+            raw.get("dispatched_event"), "retail dispatched_event"
+        ),
+        "rng": _rng_state(raw.get("rng"), "retail rng"),
     }
 
 

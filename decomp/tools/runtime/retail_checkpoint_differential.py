@@ -53,6 +53,10 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_TURN_STOP_DEAL_BOOK,
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_TURN_STOP_TRADE,
+    CHECKPOINT_TURN_STATE_COMBAT_MOVES,
+    CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+    ACTION_TURN_STATE_COMBAT_MOVES,
+    ACTION_TURN_STATE_MILITARY_CLEANUP,
     _PLAYER_DIPLOMACY_POLICY_SCENARIOS,
     _NATION_ECONOMY_SCENARIOS,
     _DIPLOMACY_ECONOMY_SCENARIOS,
@@ -94,6 +98,7 @@ from tools.runtime.checkpoints import (
     normalize_native_turn_alerts_later,
     normalize_native_turn_stop_state,
     normalize_native_turn_stop_trade,
+    normalize_native_turn_state_military_cleanup,
     normalize_native_player_diplomacy_policy,
     normalize_native_nation_economy,
     normalize_native_province_loss,
@@ -135,6 +140,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_turn_alerts_later,
     normalize_retail_turn_stop_state,
     normalize_retail_turn_stop_trade,
+    normalize_retail_turn_state_military_cleanup,
     normalize_retail_player_diplomacy_policy,
     normalize_retail_nation_economy,
     normalize_retail_province_loss,
@@ -241,6 +247,37 @@ class Scenario:
 class Trace:
     metadata: dict
     records: list[dict]
+
+
+_COMPONENT_PROBE_SCENARIOS = frozenset(
+    {
+        "diplomacy_offer_gate",
+        "quarter_gate_off_decade",
+        "return_to_map_clears_notice_queues",
+        "second_turn_military_cleanup",
+    }
+)
+_PRODUCTION_PATH_SCENARIOS = frozenset(
+    {
+        "elimination_phase_with_landed_great_powers",
+        "military_phase_naval_encounter",
+        "turn_state_combat_moves",
+        "turn_state_diplomacy_offer_gate",
+        "turn_state_diplomacy_phase",
+        "turn_state_military_cleanup",
+        "turn_state_quarter_gate",
+        "turn_state_return_to_map",
+        "turn_stop_newspaper",
+    }
+)
+
+
+def _scenario_classification(name: str) -> str:
+    if name in _COMPONENT_PROBE_SCENARIOS:
+        return "component_probe"
+    if name in _PRODUCTION_PATH_SCENARIOS:
+        return "production_path"
+    return "unclassified"
 
 
 def _load_save_to_map_scenario(fixture: Path) -> Scenario:
@@ -873,6 +910,34 @@ def load_scenario(name: str) -> Scenario:
             start_action=base.start_action,
             drive=name,
             result_checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
+        )
+    elif name == "turn_state_combat_moves":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=ACTION_TURN_STATE_COMBAT_MOVES,
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_TURN_STATE_COMBAT_MOVES,
+        )
+    elif name == "turn_state_military_cleanup":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=ACTION_TURN_STATE_MILITARY_CLEANUP,
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
         )
     elif name == "recompute_nation_order_priority_metrics":
         base = _load_save_to_map_scenario(fixture)
@@ -5459,6 +5524,131 @@ def _drive_return_to_map(
     return result
 
 
+def _invoke_production_turn_state(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    turn_state: int,
+) -> None:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", turn_state)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session,
+        _ADVANCE_TURN_STATE,
+        sim_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+
+
+def _drive_turn_state_diplomacy(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    turn_state: int,
+) -> dict[str, object]:
+    if turn_state == 0xD:
+        action_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+        session.assign(f"*(unsigned char*)0x{action_mgr + 0x08:08x}", 1)
+    _invoke_production_turn_state(
+        session, records, occurrences, breakpoint_roles, turn_state
+    )
+    result = _capture_diplomacy_phase(session)
+    result.update(
+        _capture_missions(
+            session, records, occurrences, breakpoint_roles
+        )
+    )
+    result["toggle"] = 0
+    result["dispatched_event"] = _current_turn_event(session)
+    result["rng"] = _capture_rng_state(
+        session, records, occurrences, breakpoint_roles
+    )
+    return result
+
+
+def _drive_turn_state_quarter_gate(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    diplomacy_mgr = _u32(session, _DIPLOMACY_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 1)
+    session.assign(
+        f"*(signed char*)0x{diplomacy_mgr + 0x78E:08x}",
+        _s16(session, sim_mgr + 0x2E),
+    )
+    _invoke_production_turn_state(
+        session, records, occurrences, breakpoint_roles, 0x0E
+    )
+    result = _capture_trade_phase(session)
+    result["toggle"] = 0
+    result["dispatched_event"] = _current_turn_event(session)
+    result["rng"] = _capture_rng_state(
+        session, records, occurrences, breakpoint_roles
+    )
+    return result
+
+
+def _drive_turn_state_combat_moves(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    _invoke_production_turn_state(
+        session, records, occurrences, breakpoint_roles, 0x14
+    )
+    result = _capture_military_phase(session)
+    result["dispatched_event"] = _current_turn_event(session)
+    result["rng"] = _capture_rng_state(
+        session, records, occurrences, breakpoint_roles
+    )
+    return result
+
+
+def _drive_turn_state_military_cleanup(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 2)
+    _invoke_production_turn_state(
+        session, records, occurrences, breakpoint_roles, 0x15
+    )
+    result = _capture_military_cleanup(
+        session, records, occurrences, breakpoint_roles
+    )
+    result.update(_capture_trade_phase(session))
+    result.update(_capture_diplomacy_phase(session))
+    result.update(
+        _capture_missions(
+            session, records, occurrences, breakpoint_roles
+        )
+    )
+    result["dispatched_event"] = _current_turn_event(session)
+    result["rng"] = _capture_rng_state(
+        session, records, occurrences, breakpoint_roles
+    )
+    return result
+
+
 # --- province ownership retail drives ------------------------------------------
 # Mirror RunProvinceLossWithStationedUnit / RunProvinceOwnerOceanContext: both
 # pick the active nation's first non-capital owned province with linked tiles,
@@ -6511,7 +6701,13 @@ def _capture_turn_state(session: GdbSession) -> dict[str, object]:
         "turn_flow_status_flags": _eval_int(
             session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
         ),
+        "dispatched_event": _current_turn_event(session),
     }
+
+
+def _current_turn_event(session: GdbSession) -> int:
+    view_mgr = _u32(session, 0x006A21BC)
+    return _s16(session, view_mgr + 0x04) if view_mgr != 0 else -1
 
 
 # --- elimination_phase_with_landed_great_powers retail drive -------------------
@@ -6814,6 +7010,15 @@ def _drive_elimination_phase(
     session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x19)
     _invoke_thiscall(
         session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session,
         _ADVANCE_TURN_STATE,
         sim_mgr,
         records,
@@ -6841,8 +7046,36 @@ def _drive_elimination_phase(
     return {
         "eligibility": eligibility,
         "nation_encoded": nation_encoded,
+        "nation_status": _capture_nation_status(session),
+        "rng": _capture_rng_state(
+            session, records, occurrences, breakpoint_roles
+        ),
         **_capture_turn_state(session),
     }
+
+
+def _capture_nation_status(
+    session: GdbSession,
+) -> list[dict[str, int] | None]:
+    statuses: list[dict[str, int] | None] = []
+    for slot in range(0x17):
+        nation = _u32(session, _TERRAIN_TABLE + 4 * slot)
+        if nation == 0:
+            statuses.append(None)
+            continue
+        statuses.append(
+            {
+                "encoded_slot": _s16(
+                    session, nation + _COUNTRY_ENCODED_SLOT
+                ),
+                "owned_region_count": len(
+                    _longint_list_entries(
+                        session, _u32(session, nation + 0x90)
+                    )
+                ),
+            }
+        )
+    return statuses
 
 
 def _drive_recompute_metrics(
@@ -8390,6 +8623,8 @@ _DISPATCH_HOVER_ACTION = 0x005A3370
 _MOVE_TACTICAL_VTABLE = 0x34  # TTacticalBattle slot 0x0d
 _CRT_GETPTD = 0x005ED7F0
 _TACTICAL_TILE_STRIDE = 0x14
+_MAP_GENERATION_RNG = 0x006A38E8
+_ZONE_STATUS_RNG = 0x006A5AEC
 
 
 def _crt_rand_state(
@@ -8404,6 +8639,21 @@ def _crt_rand_state(
     if ptd == 0:
         return 0
     return _u32(session, ptd + 0x14)
+
+
+def _capture_rng_state(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, int]:
+    return {
+        "crt_rand": _crt_rand_state(
+            session, records, occurrences, breakpoint_roles
+        ),
+        "map_generation": _u32(session, _MAP_GENERATION_RNG),
+        "zone_status": _u32(session, _ZONE_STATUS_RNG),
+    }
 
 
 def _hex_tile_distance(a: int, b: int) -> int:
@@ -9540,7 +9790,13 @@ def _drive_turn_stop_newspaper(
         session, _ADVANCE_TURN_STATE, sim_mgr, records, occurrences,
         breakpoint_roles,
     )
-    return _news_capture_fields(session)
+    result = _news_capture_fields(session)
+    result.update(_capture_pending_status(session))
+    result["dispatched_event"] = _current_turn_event(session)
+    result["rng"] = _capture_rng_state(
+        session, records, occurrences, breakpoint_roles
+    )
+    return result
 
 
 def _capture_pending_status(session: GdbSession) -> dict[str, object]:
@@ -10829,6 +11085,48 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "turn_state_diplomacy_phase":
+                        result_fields = _drive_turn_state_diplomacy(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            6,
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "turn_state_diplomacy_offer_gate":
+                        result_fields = _drive_turn_state_diplomacy(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            0x0D,
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "turn_state_quarter_gate":
+                        result_fields = _drive_turn_state_quarter_gate(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "turn_state_return_to_map":
+                        result_fields = _drive_turn_state_diplomacy(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            0x12,
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "turn_state_combat_moves":
+                        result_fields = _drive_turn_state_combat_moves(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "turn_state_military_cleanup":
+                        result_fields = _drive_turn_state_military_cleanup(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif (
                         scenario.drive == "province_loss_with_stationed_unit"
                     ):
@@ -11282,6 +11580,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "second_turn_trade_phase",
         "second_turn_civilians_phase",
         "second_turn_military_cleanup",
+        "turn_state_combat_moves",
+        "turn_state_military_cleanup",
         "recompute_nation_order_priority_metrics",
         "reassess_control_sea_missions",
         "reassess_control_sea_missions_damaged_ship",
@@ -11587,6 +11887,19 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                 native_result,
                 checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
             )
+        elif scenario.drive == "turn_state_combat_moves":
+            recomp_observation = normalize_native_military_phase(
+                native_result,
+                checkpoint_id=CHECKPOINT_TURN_STATE_COMBAT_MOVES,
+                action_id=ACTION_TURN_STATE_COMBAT_MOVES,
+                include_rng=True,
+            )
+        elif scenario.drive == "turn_state_military_cleanup":
+            recomp_observation = (
+                normalize_native_turn_state_military_cleanup(
+                    native_result
+                )
+            )
         elif scenario.drive == "second_turn_sequence":
             recomp_observation = normalize_native_second_turn_sequence(
                 native_result
@@ -11698,6 +12011,19 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_military_cleanup(
             retail_records[0]["fields"],
             checkpoint_id=CHECKPOINT_SECOND_TURN_MILITARY_CLEANUP,
+        )
+    elif result_checkpoint == CHECKPOINT_TURN_STATE_COMBAT_MOVES:
+        retail_observation = normalize_retail_military_phase(
+            retail_records[0]["fields"],
+            checkpoint_id=CHECKPOINT_TURN_STATE_COMBAT_MOVES,
+            action_id=ACTION_TURN_STATE_COMBAT_MOVES,
+            include_rng=True,
+        )
+    elif result_checkpoint == CHECKPOINT_TURN_STATE_MILITARY_CLEANUP:
+        retail_observation = (
+            normalize_retail_turn_state_military_cleanup(
+                retail_records[0]["fields"]
+            )
         )
     elif result_checkpoint == CHECKPOINT_RECOMPUTE_METRICS:
         retail_observation = normalize_retail_recompute_metrics(
@@ -11911,6 +12237,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     result = {
         "scenario": scenario.name,
         "evidence_kind": "retail_differential",
+        "scenario_class": _scenario_classification(scenario.name),
         "status": "matched" if divergence is None else "diverged",
         "execution": {
             "retail": "gdb_checkpoint_tape",
