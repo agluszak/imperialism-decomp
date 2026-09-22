@@ -42,6 +42,7 @@ TTaskForce* CreateCommittedEvadeForce(TZone* zone) {
   SpawnShip(12, zone, "navy-cls3");
   TTaskForce* force = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(ActiveNationSlot());
   if (force != 0) {
+    force->defeated = 0;
     force->SubmitOrders(9, 0);
   }
   return force;
@@ -231,8 +232,24 @@ RuntimeActionResult RunNavyZoneTarget(NativeTransition& transition) {
   legal = force->IsValidTarget(zone);
   illegal = other != 0 && other != zone ? force->IsValidTarget(other) : false;
   JsonObject result;
+  JsonArray actives;
+  JsonArray childTypes;
+  TMapOrderChildLinkNode* node;
+  for (node = force->shipList; node != 0; node = node->next) {
+    actives.Add(static_cast<int>(node->active));
+    childTypes.Add(
+        static_cast<int>(static_cast<TShip*>(node->payload)->type));
+  }
   result.Set("legal", legal);
   result.Set("illegal", illegal);
+  result.Set("actives", actives.Release());
+  result.Set("child_types", childTypes.Release());
+  result.Set("distance",
+             static_cast<int>(
+                 zone->GetCachedMapActionContextDistanceOrRecompute(other)));
+  result.Set("zone_ord", ZoneIndex(zone));
+  result.Set("force_loc_ord", ZoneIndex(force->location));
+  result.Set("other_ord", ZoneIndex(other));
   return transition.Finish(result.Release());
 }
 

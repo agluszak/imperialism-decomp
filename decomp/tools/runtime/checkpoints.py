@@ -252,6 +252,19 @@ _ARMY_UI_SCENARIOS = (
     "army_selection_cycling",
 )
 
+_NAVY_UI_SCENARIOS = (
+    "navy_create_force",
+    "navy_toolbar_counts",
+    "navy_select_ship",
+    "navy_set_aggression",
+    "navy_submit_order",
+    "navy_cancel_order",
+    "navy_zone_target",
+    "navy_province_target",
+    "navy_selection_cycling",
+    "navy_empty_toolbar",
+)
+
 
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
@@ -1118,6 +1131,22 @@ for _army_ui_scenario in _ARMY_UI_SCENARIOS:
     )
 del _army_ui_scenario
 
+for _navy_ui_scenario in _NAVY_UI_SCENARIOS:
+    SCHEMAS[_navy_ui_scenario + ".resolved"] = CheckpointSchema(
+        _navy_ui_scenario + ".resolved",
+        _navy_ui_scenario + ".run",
+        _navy_ui_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "military.nations",
+            "result",
+        ),
+    )
+del _navy_ui_scenario
+
 
 _RESOURCE_NAMES = (
     "cotton", "wool", "timber", "coal", "iron", "horses", "oil", "food",
@@ -1952,7 +1981,6 @@ _MILITARY_TASK_FORCE_INT_FIELDS = (
     "aggression",
     "ship_orders",
     "zone",
-    "defeated",
     "child_count",
 )
 
@@ -2024,6 +2052,12 @@ def _military_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
                     f"{label}.task_forces[{index}].{field}",
                 )
                 for field in _MILITARY_TASK_FORCE_INT_FIELDS
+            }
+            | {
+                "defeated": _require_bool(
+                    force_map.get("defeated"),
+                    f"{label}.task_forces[{index}].defeated",
+                )
             }
         )
     normalized = {
@@ -2643,6 +2677,56 @@ def normalize_retail_army_ui(
     observation = normalize_retail_military_phase(raw, checkpoint_id)
     observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
     observation["result"] = _require_mapping(
+        raw.get("result"), "retail result"
+    )
+    return observation
+
+
+def _normalize_navy_ui_result(
+    value: Any, label: str
+) -> Any:
+    if isinstance(value, Mapping):
+        return {
+            key: (
+                [
+                    _require_int(entry, f"{label}.{key}[{index}]")
+                    for index, entry in enumerate(item)
+                ]
+                if isinstance(item, list)
+                else (
+                    item
+                    if isinstance(item, bool)
+                    else _require_int(item, f"{label}.{key}")
+                )
+            )
+            for key, item in value.items()
+        }
+    if value is None or isinstance(value, bool):
+        return value
+    return _require_int(value, label)
+
+
+def normalize_native_navy_ui(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Military schema plus the case's result payload (scalar or object)."""
+    observation = normalize_native_military_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    captures = _native_captures(result)
+    observation["result"] = _normalize_navy_ui_result(
+        captures.get("result"), "native result"
+    )
+    return observation
+
+
+def normalize_retail_navy_ui(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_military_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    observation["result"] = _normalize_navy_ui_result(
         raw.get("result"), "retail result"
     )
     return observation

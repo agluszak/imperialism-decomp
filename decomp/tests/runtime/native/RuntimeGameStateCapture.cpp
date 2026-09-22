@@ -3482,7 +3482,9 @@ JSON_Value* CaptureMilitaryEphemeral() {
       record.Set("nation", static_cast<int>(force->nation));
       record.Set("aggression", force->aggression);
       record.Set("ship_orders", force->shipOrders);
-      record.Set("defeated", static_cast<int>(force->defeated));
+      // defeated is a flag byte left uninitialized by the task-force ctor; emit
+      // the semantic predicate, not allocator residue.
+      record.Set("defeated", force->defeated != 0);
       record.Set("zone",
                  force->location != 0
                      ? static_cast<int>(force->location->contextOrdinal14)

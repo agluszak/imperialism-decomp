@@ -66,6 +66,7 @@ from tools.runtime.checkpoints import (
     _PENDING_STATUS_SCENARIOS,
     _NEWS_SCENARIOS,
     _ARMY_UI_SCENARIOS,
+    _NAVY_UI_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -107,6 +108,7 @@ from tools.runtime.checkpoints import (
     normalize_native_pending_status,
     normalize_native_news,
     normalize_native_army_ui,
+    normalize_native_navy_ui,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -146,6 +148,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_pending_status,
     normalize_retail_news,
     normalize_retail_army_ui,
+    normalize_retail_navy_ui,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -726,6 +729,7 @@ def load_scenario(name: str) -> Scenario:
         + _PENDING_STATUS_SCENARIOS
         + _NEWS_SCENARIOS
         + _ARMY_UI_SCENARIOS
+        + _NAVY_UI_SCENARIOS
         + (
             "owned_region_development",
             "specialist_recruitment",
@@ -2562,7 +2566,7 @@ def _capture_military_phase(session: GdbSession) -> dict[str, object]:
                 "aggression": struct.unpack("<i", raw[0x04:0x08])[0],
                 "ship_orders": struct.unpack("<i", raw[0x08:0x0C])[0],
                 "zone": zone_ordinal,
-                "defeated": raw[0x26],
+                "defeated": raw[0x26] != 0,
                 "child_count": children,
             }
         )
@@ -9575,6 +9579,267 @@ def _drive_army_ui(
     raise RuntimeError(f"unknown army ui drive {name!r}")
 
 
+# --- navy_* UI interaction retail drives --------------------------------------
+# Mirrors NativeNavyOrderCases.cpp: the TOcean port-zone lookup, TZone's
+# task-force factory and context-display gate, and the TTaskForce order/selection
+# surface (SubmitOrders, CancelOrders, Select, SetAggression, IsValidTarget,
+# GetSelected).
+
+_OCEAN_MGR = 0x006A3FBC
+_OCEAN_FIND_PORT_ZONE = 0x00563540
+_ZONE_CREATE_TASK_FORCE = 0x005609E0
+_ZONE_CAN_DISPLAY = 0x00560B00
+_TF_SUBMIT_ORDERS = 0x005540B0
+_TF_CANCEL_ORDERS = 0x005547D0
+_TF_SET_AGGRESSION = 0x00552F60
+_TF_SELECT_SLOT = 0x00554930
+_TF_GET_SELECTED = 0x00554A30
+_TF_VALID_TARGET_ZONE = 0x005544A0
+_TF_VALID_TARGET_PROVINCE = 0x00554590
+
+
+def _zone_ordinal(session: GdbSession, zone: int) -> int:
+    return _s16(session, zone + 0x14) if zone != 0 else -1
+
+
+def _navy_ui_result(
+    session: GdbSession, extra: object = None
+) -> dict[str, object]:
+    fields = _capture_military_phase(session)
+    fields["result"] = extra
+    return fields
+
+
+def _drive_navy_ui(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    name: str,
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+
+    def spawn(ship_type: int, zone: int, label: str) -> int:
+        return _new_ship(
+            session, ship_type, zone, active_slot, label, records,
+            occurrences, breakpoint_roles,
+        )
+
+    zone = 0
+    force = 0
+    if name != "navy_empty_toolbar":
+        ocean = _u32(session, _OCEAN_MGR)
+        if ocean == 0:
+            raise RuntimeError("the fixture has no map-order context")
+        zone = _invoke_thiscall(
+            session, _OCEAN_FIND_PORT_ZONE, ocean, records, occurrences,
+            breakpoint_roles, args=(active_slot,),
+        )
+        if zone == 0:
+            raise RuntimeError("the fixture has no port zone for the active nation")
+
+    def spawn_four() -> None:
+        spawn(3, zone, "navy-cls1")
+        spawn(7, zone, "navy-cls2")
+        spawn(9, zone, "navy-cls0")
+        spawn(12, zone, "navy-cls3")
+
+    def create_force() -> int:
+        return _invoke_thiscall(
+            session, _ZONE_CREATE_TASK_FORCE, zone, records, occurrences,
+            breakpoint_roles, args=(active_slot,),
+        )
+
+    def committed_evade_force() -> int:
+        spawn_four()
+        created = create_force()
+        if created == 0:
+            raise RuntimeError("could not commit a task force")
+        session.assign(f"*(char*)0x{created + 0x26:08x}", 0)
+        _invoke_thiscall(
+            session, _TF_SUBMIT_ORDERS, created, records, occurrences,
+            breakpoint_roles, args=(9, 0),
+        )
+        return created
+
+    if name in (
+        "navy_toolbar_counts",
+        "navy_select_ship",
+        "navy_set_aggression",
+        "navy_cancel_order",
+        "navy_zone_target",
+        "navy_province_target",
+    ):
+        force = committed_evade_force()
+
+    if name == "navy_create_force":
+        spawn(3, zone, "navy-create-cls1")
+        spawn(9, zone, "navy-create-cls0")
+        created = create_force()
+        if created == 0:
+            raise RuntimeError(
+                "CreateTaskForceFromNavyOrdersForNationIfEligible returned null"
+            )
+        session.assign(f"*(char*)0x{created + 0x26:08x}", 0)
+        _invoke_thiscall(
+            session, _TF_SUBMIT_ORDERS, created, records, occurrences,
+            breakpoint_roles, args=(9, 0),
+        )
+        return _navy_ui_result(session)
+
+    if name == "navy_toolbar_counts" or name == "navy_empty_toolbar":
+        available = [0] * 4
+        selected = [-1] * 4
+        if force != 0:
+            counts = session.read_memory(force + 0x1E, 8)
+            available = list(struct.unpack("<4h", counts))
+            selected = [
+                _invoke_thiscall(
+                    session, _TF_GET_SELECTED, force, records, occurrences,
+                    breakpoint_roles, args=(slot,),
+                )
+                for slot in range(4)
+            ]
+        return _navy_ui_result(
+            session, {"available": available, "selected": selected}
+        )
+
+    if name == "navy_select_ship":
+        _invoke_thiscall(
+            session, _TF_SELECT_SLOT, force, records, occurrences,
+            breakpoint_roles, args=(0, 0),
+        )
+        return _navy_ui_result(session)
+
+    if name == "navy_set_aggression":
+        _invoke_thiscall(
+            session, _TF_SET_AGGRESSION, force, records, occurrences,
+            breakpoint_roles, args=(2,),
+        )
+        return _navy_ui_result(session)
+
+    if name == "navy_submit_order":
+        spawn(3, zone, "navy-submit-cls1")
+        spawn(9, zone, "navy-submit-cls0")
+        created = create_force()
+        if created == 0:
+            raise RuntimeError(
+                "CreateTaskForceFromNavyOrdersForNationIfEligible returned null"
+            )
+        session.assign(f"*(char*)0x{created + 0x26:08x}", 0)
+        _invoke_thiscall(
+            session, _TF_SUBMIT_ORDERS, created, records, occurrences,
+            breakpoint_roles, args=(9, 0),
+        )
+        return _navy_ui_result(session)
+
+    if name == "navy_cancel_order":
+        _invoke_thiscall(
+            session, _TF_CANCEL_ORDERS, force, records, occurrences,
+            breakpoint_roles, args=(0,),
+        )
+        return _navy_ui_result(session)
+
+    if name == "navy_zone_target":
+        other = _u32(session, zone + 0x18)
+        if other == 0:
+            other = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+        legal = (
+            _invoke_thiscall(
+                session, _TF_VALID_TARGET_ZONE, force, records, occurrences,
+                breakpoint_roles, args=(zone,),
+            )
+            & 0xFF
+            != 0
+        )
+        illegal = False
+        if other != 0 and other != zone:
+            illegal = (
+                _invoke_thiscall(
+                    session, _TF_VALID_TARGET_ZONE, force, records,
+                    occurrences, breakpoint_roles, args=(other,),
+                )
+                & 0xFF
+                != 0
+            )
+        child = _u32(session, force + 0x10)
+        actives = []
+        child_types = []
+        while child != 0:
+            actives.append(_u8(session, child + 0x0C))
+            child_types.append(_s16(session, _u32(session, child) + 0x04))
+            child = _u32(session, child + 0x04)
+        distance = _invoke_thiscall(
+            session, 0x005610B0, zone, records, occurrences,
+            breakpoint_roles, args=(other,),
+        )
+        return _navy_ui_result(
+            session,
+            {
+                "legal": bool(legal),
+                "illegal": bool(illegal),
+                "actives": actives,
+                "child_types": child_types,
+                "distance": distance & 0xFFFF,
+                "zone_ord": _zone_ordinal(session, zone),
+                "force_loc_ord": _zone_ordinal(
+                    session, _u32(session, force + 0x18)
+                ),
+                "other_ord": _zone_ordinal(session, other),
+            },
+        )
+
+    if name == "navy_province_target":
+        province = -1
+        map_state = _u32(session, _GLOBAL_MAP_STATE)
+        base = _u32(session, map_state + 0x10)
+        owners = b""
+        total = _PROVINCE_COUNT * _PROVINCE_STRIDE
+        for offset in range(0, total, 0x2000):
+            owners += session.read_memory(
+                base + offset, min(0x2000, total - offset)
+            )
+        for index in range(_PROVINCE_COUNT):
+            if struct.unpack(
+                "<b", owners[index * _PROVINCE_STRIDE :][:1]
+            )[0] >= 0:
+                province = index
+                break
+        if province < 0:
+            raise RuntimeError("the fixture has no owned province")
+        legal = (
+            _invoke_thiscall(
+                session, _TF_VALID_TARGET_PROVINCE, force, records,
+                occurrences, breakpoint_roles,
+                args=(_province_record(session, province),),
+            )
+            & 0xFF
+            != 0
+        )
+        return _navy_ui_result(session, bool(legal))
+
+    if name == "navy_selection_cycling":
+        spawn(3, zone, "navy-cycle-cls1")
+        next_zone = 0
+        candidate = _u32(session, zone + 0x18)
+        while candidate != 0:
+            displayable = (
+                _invoke_thiscall(
+                    session, _ZONE_CAN_DISPLAY, candidate, records,
+                    occurrences, breakpoint_roles, args=(active_slot, 0),
+                )
+                & 0xFF
+            )
+            if displayable != 0:
+                next_zone = candidate
+                break
+            candidate = _u32(session, candidate + 0x18)
+        return _navy_ui_result(session, _zone_ordinal(session, next_zone))
+
+    raise RuntimeError(f"unknown navy ui drive {name!r}")
+
+
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
     if queue == 0:
         return []
@@ -10227,6 +10492,15 @@ def run_binary(
                             scenario.drive,
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in _NAVY_UI_SCENARIOS:
+                        result_fields = _drive_navy_ui(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            scenario.drive,
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in _NATION_ECONOMY_SPECS:
                         result_fields = _drive_nation_economy(
                             session,
@@ -10533,6 +10807,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         *_PENDING_STATUS_SCENARIOS,
         *_NEWS_SCENARIOS,
         *_ARMY_UI_SCENARIOS,
+        *_NAVY_UI_SCENARIOS,
         "owned_region_development",
         "specialist_recruitment",
         "advisory_map_missions_case16",
@@ -10763,6 +11038,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         elif scenario.drive in _ARMY_UI_SCENARIOS:
             recomp_observation = normalize_native_army_ui(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _NAVY_UI_SCENARIOS:
+            recomp_observation = normalize_native_navy_ui(
                 native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "turn_alerts_later_turn":
@@ -11063,6 +11342,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         _name + ".resolved" for _name in _ARMY_UI_SCENARIOS
     ):
         retail_observation = normalize_retail_army_ui(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _NAVY_UI_SCENARIOS
+    ):
+        retail_observation = normalize_retail_navy_ui(
             retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint in (
