@@ -32,7 +32,10 @@ protected:
     RT_REQUIRE(Transport().HasLedgerHeadings());
     RT_REQUIRE(Transport().ToolbarIconIsSelected());
     RT_REQUIRE(Transport().CommodityHelpIsSubstituted(kFirstCommodityRow));
-    RT_REQUIRE(Transport().CapacityLabelMatchesSplit());
+    // The capacity label is written by TTransportPicture::Draw→Refresh, so it only exists
+    // once the gauge's first paint has been delivered.
+    RT_AWAIT(Transport().CapacityLabelMatchesSplit(),
+             kObservePaintCompleted | kObserveApplicationIdle);
     RT_REQUIRE(Transport().CapacityLabelHasRetailGeometry());
     RT_AWAIT(HasScenarioUiSnapshot(), kObserveUiStateChanged);
 
