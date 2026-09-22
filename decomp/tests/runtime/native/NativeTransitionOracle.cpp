@@ -1,5 +1,6 @@
 #include "NativeCases.h"
 
+#include "RuntimeGameStateCapture.h"
 #include "flows/LoadGameFlow.h"
 #include "scenarios/RuntimeScenario.h"
 #include "scenarios/RuntimeTestFactory.h"
@@ -27,6 +28,7 @@ protected:
     }
 
     NativeTransition transition(RunState());
+    RunState().SetCapture("rng_contract_before", CaptureRuntimeRngStateForTests());
     const NativeCase* nativeCase = FindNativeCase(name);
     if (nativeCase == 0) {
       FailScenario("unknown native transition case");
@@ -38,6 +40,7 @@ protected:
       FailScenarioText((LPCSTR)result.FailureMessage());
       return;
     }
+    RunState().SetCapture("rng_contract_after", CaptureRuntimeRngStateForTests());
 
     Pass();
   }

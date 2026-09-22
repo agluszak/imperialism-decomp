@@ -25,5 +25,6 @@ bool CaptureFreshRandomGameState(RuntimeRun& run, const char* name);
 bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name);
 void CaptureRuntimeGameState(RuntimeRun& run);
 unsigned int RuntimeCrtRandStateForTests();
+JSON_Value* CaptureRuntimeRngStateForTests();
 
 #endif

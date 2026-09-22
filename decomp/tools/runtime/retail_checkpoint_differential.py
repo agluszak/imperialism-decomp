@@ -117,6 +117,7 @@ from tools.runtime.checkpoints import (
     normalize_native_navy_ui,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
+    normalize_native_rng_contract,
     normalize_native_military_phase,
     normalize_native_strategic_naval_battle_matrix,
     normalize_native_second_turn_sequence,
@@ -159,6 +160,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_navy_ui,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
+    normalize_retail_rng_contract,
     normalize_retail_military_phase,
     normalize_retail_strategic_naval_battle_matrix,
     normalize_retail_second_turn_sequence,
@@ -10812,6 +10814,9 @@ def run_binary(
                 if scenario.drive:
                     if terminal_return_number is not None:
                         session.delete_breakpoint(terminal_return_number)
+                    rng_before = _capture_rng_state(
+                        session, records, occurrences, breakpoint_roles
+                    )
                     if scenario.drive == "diplomacy_phase":
                         _drive_diplomacy_phase(
                             session, records, occurrences, breakpoint_roles
@@ -11462,6 +11467,12 @@ def run_binary(
                         raise RuntimeError(
                             f"unknown scenario drive {scenario.drive!r}"
                         )
+                    result_fields["rng_contract"] = {
+                        "before": rng_before,
+                        "after": _capture_rng_state(
+                            session, records, occurrences, breakpoint_roles
+                        ),
+                    }
                     records.append(
                         {
                             "type": "checkpoint",
@@ -11561,6 +11572,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         run_dir,
         timeout_seconds,
     )
+    native_result = None
     if scenario.drive in {
         "diplomacy_phase",
         "trade_phase",
@@ -12231,6 +12243,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     else:
         retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])
+    if native_result is not None:
+        recomp_observation["rng"] = normalize_native_rng_contract(native_result)
+        retail_observation["rng"] = normalize_retail_rng_contract(
+            retail_records[0]["fields"]
+        )
     validate_checkpoint(retail_observation)
     validate_checkpoint(recomp_observation)
     divergence = first_checkpoint_difference(retail_observation, recomp_observation)

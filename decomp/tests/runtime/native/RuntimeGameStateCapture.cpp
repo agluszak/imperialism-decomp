@@ -3065,8 +3065,12 @@ unsigned int RuntimeCrtRandStateForTests() {
   return threadData->randState14;
 }
 
+JSON_Value* CaptureRuntimeRngStateForTests() {
+  return CaptureRng();
+}
+
 static bool BuildRuntimeGameStateWithFreshObjectDefaults(const RuntimeRun& run, JSON_Value** state,
-                                                          bool freshRandomStart) {
+                                                         bool freshRandomStart) {
   if (state == 0 || g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 ||
       g_pGlobalMapState->cityScoreTable == 0 || g_pSimMgr == 0 || g_pTradeMgr == 0 ||
       g_pDiplomacyTurnStateManager == 0 || g_pTechMgr == 0 || g_pNewsMgr == 0) {
