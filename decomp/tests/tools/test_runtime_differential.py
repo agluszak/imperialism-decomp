@@ -13,6 +13,10 @@ from unittest.mock import patch
 from tools.runtime.debug.session import StopEvent
 from tools.runtime.checkpoints import (
     CHECKPOINT_COMBINED_MAP_READY,
+    CHECKPOINT_ELIMINATION_PHASE,
+    CHECKPOINT_TURN_STATE_COMBAT_MOVES,
+    CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+    SCHEMAS,
     first_checkpoint_difference,
     normalize_native_combined_map,
     normalize_native_rng_contract,
@@ -22,6 +26,7 @@ from tools.runtime.checkpoints import (
 )
 from tools.runtime.retail_checkpoint_differential import (
     _normalize_value,
+    _scenario_classification,
     first_divergence,
     load_scenario,
     run_binary,
@@ -43,6 +48,24 @@ def combined_map_fields() -> dict:
 
 
 class CheckpointSchemaTests(unittest.TestCase):
+    def test_production_turn_state_schemas_require_semantic_post_state(self) -> None:
+        combat = SCHEMAS[CHECKPOINT_TURN_STATE_COMBAT_MOVES].required_paths
+        cleanup = SCHEMAS[
+            CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        ].required_paths
+        elimination = SCHEMAS[CHECKPOINT_ELIMINATION_PHASE].required_paths
+        newspaper = SCHEMAS["turn_stop_newspaper.resolved"].required_paths
+
+        self.assertIn("dispatched_event", combat)
+        self.assertIn("rng.crt_rand", combat)
+        self.assertIn("trade.nations", cleanup)
+        self.assertIn("diplomacy.nations", cleanup)
+        self.assertIn("missions", cleanup)
+        self.assertIn("nation_status", elimination)
+        self.assertIn("rng.crt_rand", elimination)
+        self.assertIn("pending_nations", newspaper)
+        self.assertIn("rng.crt_rand", newspaper)
+
     def test_native_and_retail_normalize_to_one_schema(self) -> None:
         retail = normalize_retail_combined_map(combined_map_fields())
         native = normalize_native_combined_map(
@@ -186,6 +209,20 @@ class CheckpointSchemaTests(unittest.TestCase):
 
 
 class DifferentialTraceTests(unittest.TestCase):
+    def test_scenario_classification_distinguishes_component_probes(self) -> None:
+        self.assertEqual(
+            _scenario_classification("quarter_gate_off_decade"),
+            "component_probe",
+        )
+        self.assertEqual(
+            _scenario_classification("turn_state_quarter_gate"),
+            "production_path",
+        )
+        self.assertEqual(
+            _scenario_classification("load_save_to_map"),
+            "unclassified",
+        )
+
     def test_gdb_character_rendering_normalizes_to_integer(self) -> None:
         self.assertEqual(_normalize_value("0 '\\000'", "int"), 0)
 
@@ -370,6 +407,27 @@ class DifferentialRunTests(unittest.TestCase):
             metadata = json.loads(lines[0])
             self.assertEqual(metadata["type"], "trace_metadata")
             self.assertEqual(metadata["binary"]["sha256"], trace.metadata["binary"]["sha256"])
+
+    def test_production_turn_state_scenarios_use_dedicated_checkpoints(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            fixture = root / "beginning_of_game.imp"
+            fixture.write_bytes(b"fixture")
+            with patch(
+                "tools.runtime.retail_checkpoint_differential.FIXTURE_DIR",
+                root,
+            ):
+                combat = load_scenario("turn_state_combat_moves")
+                cleanup = load_scenario("turn_state_military_cleanup")
+
+        self.assertEqual(
+            combat.result_checkpoint_id,
+            CHECKPOINT_TURN_STATE_COMBAT_MOVES,
+        )
+        self.assertEqual(
+            cleanup.result_checkpoint_id,
+            CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+        )
 
     def test_partial_trace_is_persisted_when_session_raises(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
