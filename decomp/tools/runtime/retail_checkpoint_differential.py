@@ -25,6 +25,7 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_MILITARY_PHASE,
     CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
     CHECKPOINT_NAVAL_ESCALATION_PHASE,
+    CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
     CHECKPOINT_LAND_COMBAT_PHASE,
     CHECKPOINT_LAND_INTERACTIVE_PHASE,
     CHECKPOINT_LAND_RETREAT_PHASE,
@@ -118,6 +119,7 @@ from tools.runtime.checkpoints import (
     normalize_native_recompute_metrics,
     normalize_native_rng_contract,
     normalize_native_military_phase,
+    normalize_native_strategic_naval_battle_matrix,
     normalize_native_second_turn_sequence,
     normalize_native_combined_map,
     normalize_native_diplomacy_phase,
@@ -160,6 +162,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_recompute_metrics,
     normalize_retail_rng_contract,
     normalize_retail_military_phase,
+    normalize_retail_strategic_naval_battle_matrix,
     normalize_retail_second_turn_sequence,
     normalize_retail_diplomacy_phase,
     normalize_retail_trade_phase,
@@ -573,6 +576,27 @@ def load_scenario(name: str) -> Scenario:
     elif name in ("military_phase_naval_encounter",
                   "military_phase_naval_escalation"):
         scenario = _military_phase_naval_encounter_scenario(fixture, name)
+    elif name == "strategic_naval_battle_matrix":
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes
+            + (
+                Probe(
+                    probe_id="navy_trace.resolve_strategic_battle",
+                    original_address=_RESOLVE_STRATEGIC_BATTLE,
+                    fields={"receiver": FieldCapture("$ecx", "u32")},
+                ),
+            ),
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
+        )
     elif name in ("military_phase_land_combat",
                   "military_phase_land_interactive",
                   "military_phase_land_retreat"):
@@ -2502,9 +2526,17 @@ _NAVY_ORDER_MANAGER = 0x006A43E4
 _MAP_ACTION_CONTEXT_LIST_HEAD = 0x006A3FC8
 _TSHIP_CTOR = 0x0054F500
 _TSHIP_ISHIP = 0x0054F7B0
+_TSHIP_FREE = 0x0054F640
+_TTASKFORCE_CTOR = 0x00552800
+_TTASKFORCE_FREE = 0x00552930
+_TTASKFORCE_SET_AGGRESSION = 0x00552F60
+_TTASKFORCE_ADD = 0x00553BC0
+_TTASKFORCE_ELECT_FLAGSHIP = 0x00553E30
 _TTASKFORCE_SUBMIT_ORDERS = 0x005540B0
+_RESOLVE_STRATEGIC_BATTLE = 0x0055A780
 _ZONE_CREATE_TASK_FORCE = 0x005609E0
 _TSHIP_SIZE = 0x38
+_TTASKFORCE_SIZE = 0x34
 _FIND_FIRST_PORT_ZONE = 0x00563540
 _OCEAN_SINGLETON = 0x006A3FBC
 _ADVANCE_TURN_STATE = 0x0057DA70
@@ -7129,6 +7161,472 @@ def _new_ship(
     return ship
 
 
+_STRATEGIC_NAVAL_BATTLE_MATRIX = (
+    {
+        "name": "left_fails_admiral_boundary",
+        "seed": 0x1234,
+        "left": ((3,), 0, 100, 0, 0),
+        "right": ((3,), 0, 100, 0, 100),
+        "convergence": "only_left_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (1, True, False),
+    },
+    {
+        "name": "left_fails_tier_gap",
+        "seed": 0x1234,
+        "left": ((3,), 0, 500, 0, 0),
+        "right": ((7,), 0, 500, 0, 0),
+        "convergence": "only_left_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (1, True, False),
+    },
+    {
+        "name": "left_fails_fleet_size",
+        "seed": 50,
+        "left": ((4,), 1, 1600, 0, 400),
+        "right": ((4, 4, 7), 0, 500, 0, 0),
+        "convergence": "only_left_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (1, True, False),
+    },
+    {
+        "name": "left_fails_mixed_tiers",
+        "seed": 1,
+        "left": ((7, 11), 0, 500, 0, 200),
+        "right": ((7, 8, 11), 1, 500, 0, 100),
+        "convergence": "only_left_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (1, True, False),
+    },
+    {
+        "name": "right_fails_admiral_boundary",
+        "seed": 0x1234,
+        "left": ((3,), 0, 100, 0, 400),
+        "right": ((3,), 0, 100, 0, 200),
+        "convergence": "only_right_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (0, False, True),
+    },
+    {
+        "name": "right_fails_tier_gap",
+        "seed": 0x1234,
+        "left": ((7,), 0, 500, 0, 0),
+        "right": ((3,), 0, 500, 0, 0),
+        "convergence": "only_right_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (0, False, True),
+    },
+    {
+        "name": "right_fails_mixed_tiers",
+        "seed": 10,
+        "left": ((8, 9, 13), 1, 500, 0, 100),
+        "right": ((9, 11, 11), 2, 1000, 0, 100),
+        "convergence": "only_right_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (0, False, True),
+    },
+    {
+        "name": "right_fails_fleet_size",
+        "seed": 999,
+        "left": ((4, 7, 7, 7), 2, 500, 0, 200),
+        "right": ((8,), 1, 500, 0, 200),
+        "convergence": "only_right_fails",
+        "resolution": "tier_exhaustion",
+        "expected": (0, False, True),
+    },
+    {
+        "name": "both_fail_tier_one",
+        "seed": 999,
+        "left": ((3,), 0, 100, 0, 0),
+        "right": ((3,), 0, 100, 0, 0),
+        "convergence": "both_fail",
+        "resolution": "tier_exhaustion",
+        "expected": (-1, False, False),
+    },
+    {
+        "name": "both_fail_tier_two",
+        "seed": 10,
+        "left": ((8,), 0, 500, 0, 0),
+        "right": ((8,), 0, 500, 0, 0),
+        "convergence": "both_fail",
+        "resolution": "tier_exhaustion",
+        "expected": (-1, False, False),
+    },
+    {
+        "name": "both_fail_admiral_boundary",
+        "seed": 4,
+        "left": ((4,), 0, 100, 0, 200),
+        "right": ((4,), 0, 100, 0, 100),
+        "convergence": "both_fail",
+        "resolution": "tier_exhaustion",
+        "expected": (-1, False, False),
+    },
+    {
+        "name": "both_fail_top_tiers",
+        "seed": 2,
+        "left": ((11, 11, 12), 0, 500, 0, 100),
+        "right": ((11, 11, 13), 0, 500, 0, 200),
+        "convergence": "both_fail",
+        "resolution": "tier_exhaustion",
+        "expected": (-1, False, False),
+    },
+    {
+        "name": "left_eliminated_tier_one",
+        "seed": 0x1234,
+        "left": ((3,), 0, 1, 0, 200),
+        "right": ((3, 3), 0, 1, 0, 400),
+        "convergence": "only_left_fails",
+        "resolution": "left_eliminated",
+        "expected": (1, True, False),
+    },
+    {
+        "name": "left_eliminated_tier_two",
+        "seed": 0x1234,
+        "left": ((7,), 0, 1, 0, 0),
+        "right": ((7, 7), 0, 1, 0, 0),
+        "convergence": "only_left_fails",
+        "resolution": "left_eliminated",
+        "expected": (1, True, False),
+    },
+    {
+        "name": "left_eliminated_weight_boundary",
+        "seed": 999,
+        "left": ((8,), 0, 1, 0, 0),
+        "right": ((8, 8), 0, 1, 0, 0),
+        "convergence": "only_left_fails",
+        "resolution": "left_eliminated",
+        "expected": (1, True, False),
+    },
+    {
+        "name": "right_eliminated_tier_one",
+        "seed": 0x1234,
+        "left": ((3, 3), 0, 1, 0, 0),
+        "right": ((3,), 0, 1, 0, 0),
+        "convergence": "only_right_fails",
+        "resolution": "right_eliminated",
+        "expected": (0, False, True),
+    },
+    {
+        "name": "right_eliminated_tier_two",
+        "seed": 0x1234,
+        "left": ((7, 7), 0, 1, 0, 0),
+        "right": ((7,), 0, 1, 0, 0),
+        "convergence": "only_right_fails",
+        "resolution": "right_eliminated",
+        "expected": (0, False, True),
+    },
+    {
+        "name": "right_eliminated_weight_boundary",
+        "seed": 2,
+        "left": ((8, 8), 0, 1, 0, 0),
+        "right": ((8,), 0, 1, 0, 0),
+        "convergence": "only_right_fails",
+        "resolution": "right_eliminated",
+        "expected": (0, False, True),
+    },
+    {
+        "name": "both_eliminated_admiral_boundary",
+        "seed": 0x1234,
+        "left": ((3,), 0, 1, 0, 100),
+        "right": ((3,), 0, 1, 0, 0),
+        "convergence": "only_right_fails",
+        "resolution": "both_eliminated",
+        "expected": (-1, True, True),
+    },
+    {
+        "name": "both_eliminated_neither_fails",
+        "seed": 0x1234,
+        "left": ((3,), 2, 1, 0, 0),
+        "right": ((3,), 2, 1, 0, 0),
+        "convergence": "neither_fails",
+        "resolution": "both_eliminated",
+        "expected": (-1, True, True),
+    },
+)
+
+
+def _create_strategic_battle_fleet(
+    session: GdbSession,
+    zone: int,
+    nation: int,
+    side: tuple[tuple[int, ...], int, int, int, int],
+    case_index: int,
+    side_name: str,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> tuple[int, list[int]]:
+    types, aggression, strength, experience, admiral_experience = side
+    force = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TTASKFORCE_SIZE,),
+    )
+    _invoke_thiscall(
+        session,
+        _TTASKFORCE_CTOR,
+        force,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(zone, nation),
+    )
+    session.assign(f"*(char*)0x{force + 0x26:08x}", 0)
+    _invoke_thiscall(
+        session,
+        _TTASKFORCE_SET_AGGRESSION,
+        force,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(aggression,),
+    )
+    ships = []
+    for index, ship_type in enumerate(types):
+        ship = _new_ship(
+            session,
+            ship_type,
+            zone,
+            nation,
+            f"matrix-{case_index:02d}-{side_name}{index}",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        session.assign(f"*(short*)0x{ship + 0x1C:08x}", strength)
+        session.assign(f"*(short*)0x{ship + 0x30:08x}", experience)
+        _invoke_thiscall(
+            session,
+            _TTASKFORCE_ADD,
+            force,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(ship,),
+        )
+        ships.append(ship)
+    _invoke_thiscall(
+        session,
+        _TTASKFORCE_ELECT_FLAGSHIP,
+        force,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    admiral = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TADMIRAL_SIZE,),
+    )
+    _invoke_thiscall(
+        session,
+        _TADMIRAL_CTOR,
+        admiral,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(nation,),
+    )
+    session.assign(f"*(short*)0x{admiral + 0x10:08x}", admiral_experience)
+    _invoke_thiscall(
+        session,
+        _TADMIRAL_ASSIGN_TO_SHIP,
+        admiral,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_u32(session, force + 0x14),),
+    )
+    return force, ships
+
+
+def _strategic_battle_live_ships(
+    session: GdbSession, force: int
+) -> set[int]:
+    live = set()
+    link = _u32(session, force + 0x10)
+    while link != 0:
+        live.add(_u32(session, link))
+        link = _u32(session, link + 0x04)
+    return live
+
+
+def _capture_strategic_battle_fleet(
+    session: GdbSession,
+    force: int,
+    ships: list[int],
+    side: tuple[tuple[int, ...], int, int, int, int],
+) -> dict[str, object]:
+    types, aggression, strength, experience, admiral_experience = side
+    live = _strategic_battle_live_ships(session, force)
+    ship_rows = []
+    live_admiral = 0
+    for ship_type, ship in zip(types, ships, strict=True):
+        alive = ship in live
+        row = {
+            "type": ship_type,
+            "alive": alive,
+            "strength": _s16(session, ship + 0x1C) if alive else None,
+            "experience": _s16(session, ship + 0x30) if alive else None,
+        }
+        if alive and _u32(session, ship + 0x20) != 0:
+            live_admiral = _u32(session, ship + 0x20)
+        ship_rows.append(row)
+    return {
+        "aggression": aggression,
+        "initial_strength": strength,
+        "initial_experience": experience,
+        "initial_admiral_experience": admiral_experience,
+        "defeated": _u8(session, force + 0x26) != 0,
+        "admiral_experience": (
+            _s16(session, live_admiral + 0x10) if live_admiral != 0 else None
+        ),
+        "ships": ship_rows,
+    }
+
+
+def _free_strategic_battle_fleet(
+    session: GdbSession,
+    force: int,
+    ships: list[int],
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    live = _strategic_battle_live_ships(session, force)
+    _invoke_thiscall(
+        session,
+        _TTASKFORCE_FREE,
+        force,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    for ship in ships:
+        if ship in live:
+            _invoke_thiscall(
+                session,
+                _TSHIP_FREE,
+                ship,
+                records,
+                occurrences,
+                breakpoint_roles,
+            )
+
+
+def _drive_strategic_naval_battle_matrix(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    hostile_nation = next(
+        slot
+        for slot in range(_MAJOR_NATION_COUNT)
+        if slot != active_nation and _nation_pointer(session, slot) != 0
+    )
+    zone = _find_unoccupied_zone(session)
+    navy_mgr = _u32(session, _NAVY_ORDER_MANAGER)
+    action_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    reports = _u32(session, action_mgr + 0x04)
+    rows = []
+    for case_index, test_case in enumerate(_STRATEGIC_NAVAL_BATTLE_MATRIX):
+        left, left_ships = _create_strategic_battle_fleet(
+            session,
+            zone,
+            active_nation,
+            test_case["left"],
+            case_index,
+            "l",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        right, right_ships = _create_strategic_battle_fleet(
+            session,
+            zone,
+            hostile_nation,
+            test_case["right"],
+            case_index,
+            "r",
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+        report_count = _eval_int(session, f"*(int*)0x{reports + 0x08:08x}")
+        _invoke_thiscall(
+            session,
+            _SRAND,
+            0,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(test_case["seed"],),
+        )
+        _invoke_thiscall(
+            session,
+            _RESOLVE_STRATEGIC_BATTLE,
+            navy_mgr,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(left, right),
+        )
+        if _eval_int(session, f"*(int*)0x{reports + 0x08:08x}") != report_count + 1:
+            raise RuntimeError("strategic naval battle did not append one report")
+        report_data = _u32(session, reports + 0x04)
+        report = _u32(session, report_data + report_count * 4)
+        participant = _s8(session, report + 0x02)
+        left_row = _capture_strategic_battle_fleet(
+            session, left, left_ships, test_case["left"]
+        )
+        right_row = _capture_strategic_battle_fleet(
+            session, right, right_ships, test_case["right"]
+        )
+        observed = (
+            participant,
+            left_row["defeated"],
+            right_row["defeated"],
+        )
+        if observed != test_case["expected"]:
+            raise RuntimeError(
+                f"strategic naval matrix outcome mismatch: {test_case['name']}"
+            )
+        rows.append(
+            {
+                "case": test_case["name"],
+                "seed": test_case["seed"],
+                "convergence": test_case["convergence"],
+                "resolution": test_case["resolution"],
+                "participant": participant,
+                "winner": (
+                    "left" if participant == 0 else "right" if participant == 1 else "draw"
+                ),
+                "left_defeated": left_row["defeated"],
+                "right_defeated": right_row["defeated"],
+                "left": left_row,
+                "right": right_row,
+            }
+        )
+        _free_strategic_battle_fleet(
+            session, left, left_ships, records, occurrences, breakpoint_roles
+        )
+        _free_strategic_battle_fleet(
+            session, right, right_ships, records, occurrences, breakpoint_roles
+        )
+    return {"cases": rows}
+
+
 def _find_unoccupied_zone(session: GdbSession) -> int:
     """Mirror FindUnoccupiedMapZone: first zone no primary-order ship occupies."""
     occupied: set[int] = set()
@@ -10459,6 +10957,14 @@ def run_binary(
                         )
                         result_fields.update(_capture_military_phase(session))
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "strategic_naval_battle_matrix":
+                        result_fields = _drive_strategic_naval_battle_matrix(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                        )
+                        result_probe = CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX
                     elif scenario.drive in (
                         "military_phase_land_combat",
                         "military_phase_land_interactive",
@@ -11075,6 +11581,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "military_phase",
         "military_phase_naval_encounter",
         "military_phase_naval_escalation",
+        "strategic_naval_battle_matrix",
         "military_phase_land_combat",
         "military_phase_land_interactive",
         "military_phase_land_retreat",
@@ -11185,6 +11692,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         elif scenario.drive in ("military_phase_naval_encounter",
                                 "military_phase_naval_escalation"):
             recomp_observation = normalize_native_military_phase(native_result)
+        elif scenario.drive == "strategic_naval_battle_matrix":
+            recomp_observation = normalize_native_strategic_naval_battle_matrix(
+                native_result
+            )
         elif scenario.drive == "military_phase_land_combat":
             recomp_observation = normalize_native_military_phase(
                 native_result, checkpoint_id=CHECKPOINT_LAND_COMBAT_PHASE
@@ -11477,6 +11988,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     elif result_checkpoint in (CHECKPOINT_NAVAL_ENCOUNTER_PHASE,
                                CHECKPOINT_NAVAL_ESCALATION_PHASE):
         retail_observation = normalize_retail_military_phase(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX:
+        retail_observation = normalize_retail_strategic_naval_battle_matrix(
             retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_LAND_COMBAT_PHASE:

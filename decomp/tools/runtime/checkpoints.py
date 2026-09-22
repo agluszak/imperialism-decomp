@@ -19,6 +19,7 @@ ACTION_TRADE_PHASE = "trade_phase.run"
 ACTION_CITY_TRANSPORT_PHASE = "city_transport_phase.run"
 ACTION_CIVILIANS_PHASE = "civilians_phase.run"
 ACTION_MILITARY_PHASE = "military_phase.run"
+ACTION_STRATEGIC_NAVAL_BATTLE_MATRIX = "strategic_naval_battle_matrix.run"
 ACTION_MILITARY_CLEANUP = "second_turn_military_cleanup.run"
 ACTION_RECOMPUTE_METRICS = "recompute_nation_order_priority_metrics.run"
 ACTION_REASSESS_MISSIONS = "reassess_control_sea_missions.run"
@@ -67,6 +68,7 @@ CHECKPOINT_SECOND_TURN_CIVILIANS_PHASE = "second_turn_civilians_phase.resolved"
 CHECKPOINT_MILITARY_PHASE = "military_phase.resolved"
 CHECKPOINT_NAVAL_ENCOUNTER_PHASE = "military_phase_naval_encounter.resolved"
 CHECKPOINT_NAVAL_ESCALATION_PHASE = "military_phase_naval_escalation.resolved"
+CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX = "strategic_naval_battle_matrix.resolved"
 CHECKPOINT_LAND_COMBAT_PHASE = "military_phase_land_combat.resolved"
 CHECKPOINT_LAND_INTERACTIVE_PHASE = "military_phase_land_interactive.resolved"
 CHECKPOINT_SHIPS_WITHOUT_ORDERS_PHASE = (
@@ -431,6 +433,12 @@ SCHEMAS = {
             "military.ships",
             "military.task_forces",
         ),
+    ),
+    CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX: CheckpointSchema(
+        CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
+        ACTION_STRATEGIC_NAVAL_BATTLE_MATRIX,
+        "strategic_naval_battle_matrix",
+        ("cases",),
     ),
     CHECKPOINT_LAND_COMBAT_PHASE: CheckpointSchema(
         CHECKPOINT_LAND_COMBAT_PHASE,
@@ -2317,6 +2325,152 @@ def normalize_retail_military_phase(
         )
         observation["rng"] = _rng_state(raw.get("rng"), "retail rng")
     return observation
+
+
+def _strategic_naval_matrix_side(
+    raw: Any, label: str
+) -> dict[str, Any]:
+    side = _require_mapping(raw, label)
+    ships_raw = side.get("ships")
+    if not isinstance(ships_raw, list):
+        raise ValueError(f"{label}.ships must be an array")
+    ships = []
+    for index, ship_raw in enumerate(ships_raw):
+        ship = _require_mapping(ship_raw, f"{label}.ships[{index}]")
+        alive = _require_bool(ship.get("alive"), f"{label}.ships[{index}].alive")
+        strength = ship.get("strength")
+        experience = ship.get("experience")
+        if alive:
+            strength = _require_int(strength, f"{label}.ships[{index}].strength")
+            experience = _require_int(
+                experience, f"{label}.ships[{index}].experience"
+            )
+        elif strength is not None or experience is not None:
+            raise ValueError(f"{label}.ships[{index}] dead state must be null")
+        ships.append(
+            {
+                "type": _require_int(
+                    ship.get("type"), f"{label}.ships[{index}].type"
+                ),
+                "alive": alive,
+                "strength": strength,
+                "experience": experience,
+            }
+        )
+    admiral_experience = side.get("admiral_experience")
+    if admiral_experience is not None:
+        admiral_experience = _require_int(
+            admiral_experience, f"{label}.admiral_experience"
+        )
+    return {
+        "aggression": _require_int(side.get("aggression"), f"{label}.aggression"),
+        "initial_strength": _require_int(
+            side.get("initial_strength"), f"{label}.initial_strength"
+        ),
+        "initial_experience": _require_int(
+            side.get("initial_experience"), f"{label}.initial_experience"
+        ),
+        "initial_admiral_experience": _require_int(
+            side.get("initial_admiral_experience"),
+            f"{label}.initial_admiral_experience",
+        ),
+        "defeated": _require_bool(side.get("defeated"), f"{label}.defeated"),
+        "admiral_experience": admiral_experience,
+        "ships": ships,
+    }
+
+
+def _normalize_strategic_naval_battle_matrix(
+    raw: Mapping[str, Any], label: str
+) -> dict[str, Any]:
+    cases_raw = raw.get("cases")
+    if not isinstance(cases_raw, list) or len(cases_raw) != 20:
+        raise ValueError(f"{label}.cases must contain 20 matrix rows")
+    cases = []
+    seen = set()
+    for index, case_raw in enumerate(cases_raw):
+        case = _require_mapping(case_raw, f"{label}.cases[{index}]")
+        name = case.get("case")
+        convergence = case.get("convergence")
+        resolution = case.get("resolution")
+        winner = case.get("winner")
+        if not isinstance(name, str) or not name or name in seen:
+            raise ValueError(f"{label}.cases[{index}].case must be unique")
+        seen.add(name)
+        if convergence not in {
+            "only_left_fails",
+            "only_right_fails",
+            "both_fail",
+            "neither_fails",
+        }:
+            raise ValueError(f"{label}.cases[{index}].convergence is invalid")
+        if resolution not in {
+            "tier_exhaustion",
+            "left_eliminated",
+            "right_eliminated",
+            "both_eliminated",
+        }:
+            raise ValueError(f"{label}.cases[{index}].resolution is invalid")
+        if winner not in {"left", "right", "draw"}:
+            raise ValueError(f"{label}.cases[{index}].winner is invalid")
+        left = _strategic_naval_matrix_side(
+            case.get("left"), f"{label}.cases[{index}].left"
+        )
+        right = _strategic_naval_matrix_side(
+            case.get("right"), f"{label}.cases[{index}].right"
+        )
+        left_defeated = _require_bool(
+            case.get("left_defeated"),
+            f"{label}.cases[{index}].left_defeated",
+        )
+        right_defeated = _require_bool(
+            case.get("right_defeated"),
+            f"{label}.cases[{index}].right_defeated",
+        )
+        if left_defeated != left["defeated"] or right_defeated != right["defeated"]:
+            raise ValueError(f"{label}.cases[{index}] defeated state is inconsistent")
+        cases.append(
+            {
+                "case": name,
+                "seed": _require_int(
+                    case.get("seed"), f"{label}.cases[{index}].seed"
+                ),
+                "convergence": convergence,
+                "resolution": resolution,
+                "participant": _require_int(
+                    case.get("participant"),
+                    f"{label}.cases[{index}].participant",
+                ),
+                "winner": winner,
+                "left_defeated": left_defeated,
+                "right_defeated": right_defeated,
+                "left": left,
+                "right": right,
+            }
+        )
+    return {
+        "checkpoint_id": CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
+        "action_id": ACTION_STRATEGIC_NAVAL_BATTLE_MATRIX,
+        "cases": cases,
+    }
+
+
+def normalize_native_strategic_naval_battle_matrix(
+    result: Mapping[str, Any],
+) -> dict[str, Any]:
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    return _normalize_strategic_naval_battle_matrix(
+        _require_mapping(captures.get("result"), "native result"),
+        "native",
+    )
+
+
+def normalize_retail_strategic_naval_battle_matrix(
+    raw: Mapping[str, Any],
+) -> dict[str, Any]:
+    return _normalize_strategic_naval_battle_matrix(raw, "retail")
 
 
 def normalize_native_province_loss(result: Mapping[str, Any]) -> dict[str, Any]:
