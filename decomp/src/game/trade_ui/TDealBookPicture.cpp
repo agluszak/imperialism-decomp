@@ -38,7 +38,7 @@ void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005babc0
-TDealBookPicture::TDealBookPicture() : TPicture(), selectedNationSlot(8), unresolvedByteB2(0) {}
+TDealBookPicture::TDealBookPicture() : TPicture(), selectedNationSlot(8), deadByteB2(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005bac00
 // TDealBookPicture::`scalar deleting destructor'

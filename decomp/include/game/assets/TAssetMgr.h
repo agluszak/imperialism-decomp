@@ -59,7 +59,9 @@ public:
   // nothing in the shipped binary touches it.
   int unusedRegion04[7];
   CString sharedTextSlots[0xd]; // +0x20 .. 0x54
-  int unknown54;                // +0x54
+  // +0x54: dead store — the ctor zeroes it and no reader exists anywhere in
+  // the image (field-xref sweep). Kept for layout fidelity.
+  int deadStore54; // +0x54
 
   TAssetMgr();
   // 0x5dff20 — load the picture-word-data GOB for a language slot. Real __thiscall

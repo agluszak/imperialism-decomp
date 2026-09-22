@@ -67,8 +67,9 @@ public:
   // TTaskForce: its CreateTaskForceFromNavyOrders... factory produces the task force
   // panel shown for it (SetActiveMapOrderEntry/RefreshMapOrderEntryPanel).
   TZone* orderEntryContext98;
-  // Windows field-xrefs find only the constructor's zero write at +0x9c.
-  int unresolvedZero9C;
+  // +0x9c dead store — Windows field-xrefs find only the constructor's zero
+  // write; no reader anywhere in the image. Kept for layout fidelity.
+  int deadStore9C;
   // Mac TMapUberPicture::UpdateRoster (Windows 0x599a20) refreshes this page at its
   // currentPage. The Combined Map resource identifies the enclosing 'main' receiver as
   // TMapUberPicture; the pointed-to page is optional.

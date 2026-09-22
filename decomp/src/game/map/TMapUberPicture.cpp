@@ -53,7 +53,7 @@ IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 // FUNCTION: IMPERIALISM 0x005969e0
 TMapUberPicture::TMapUberPicture()
     : invalidationFlag94(1), activeUnitCategoryIndex96(3), orderEntryContext98(nullptr),
-      unresolvedZero9C(0), navyRosterA0(0), goodGoldTagControlA4(nullptr), miniMapViewC0(nullptr) {}
+      deadStore9C(0), navyRosterA0(0), goodGoldTagControlA4(nullptr), miniMapViewC0(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x00596a30
 // TMapUberPicture::`scalar deleting destructor'

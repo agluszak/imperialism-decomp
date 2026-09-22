@@ -21,7 +21,7 @@ public:
   virtual void ShowPage(int pageIndex, short nationId); // slot 0x73 0x5baf70
   virtual void CalculatePages();                        // slot 0x74 0x5bb2e0
   // TPicture's slice ends at 0x90; RTTI oracle confirms sizeof(TDealBookPicture) == 0xb4.
-  // The ctor (0x5babc0) writes selectedNationSlot (= 8) and unresolvedByteB2 (= 0); the intervening region and
+  // The ctor (0x5babc0) writes selectedNationSlot (= 8) and deadByteB2 (= 0); the intervening region and
   // the 0xb3 byte are unconfirmed padding. Fields 0x92-0xb1 (formerly a pad92[0x20] blob)
   // recovered from SwitchPages (0x5bc0d0).
   short selectedNationSlot; // +0x90 initialized to 8; indexes g_apNationStates in CalculatePages
@@ -43,8 +43,9 @@ public:
   // +0xb1 -- "already initialized" flag; flipped (via `!=0`) at the end of
   // SwitchPages each time it runs.
   bool alternatePageMode;
-  // +0xb2 has only the constructor's zero byte write so far; its meaning remains unresolved.
-  unsigned char unresolvedByteB2;
+  // +0xb2 dead store — only the constructor's zero byte write exists; no reader
+  // anywhere in the image (field-xref sweep). Kept for layout fidelity.
+  unsigned char deadByteB2;
   unsigned char paddingB3; // +0xb3
 
   TDealBookPicture();
