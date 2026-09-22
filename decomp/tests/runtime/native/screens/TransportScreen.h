@@ -37,9 +37,22 @@ public:
   bool CapacityLabelMatchesSplit() const;
   bool CapacityLabelHasRetailGeometry() const;
 
+  // The first ledger row whose allocation can be lowered: a plain metric slot (the summed
+  // food and luxury pairs spread one click across two need entries, so a scenario that
+  // asserts on a single slot skips them) whose target is above zero. -1 when nothing on
+  // the ledger can go down.
+  short FirstLowerableCommoditySlot() const;
+  // Presses one of a row's sideways arrows through the real mouse-capture path.
+  RuntimeActionResult ClickCommodityArrow(short slot, int arrowTag);
+  // The nation's recorded transport need target for a slot, and how much of its capacity
+  // is spoken for -- the state a sideways-arrow click actually writes.
+  short CommodityNeedTarget(short slot) const;
+  short ReservedTransportCapacity() const;
+
   RuntimeActionResult Close();
 
 private:
+  TTransportPicture* CommodityRow(short slot) const;
   TTransportPicture* CapacityGauge() const;
   class TStaticText* CapacityLabel() const;
   class TStaticText* Heading(int tag) const;

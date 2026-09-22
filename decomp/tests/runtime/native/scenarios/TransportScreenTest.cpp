@@ -6,6 +6,7 @@
 
 #include "game/map/TMapUberPicture.h"
 #include "game/turn_event_codes.h"
+#include "game/ui_tags_common.h"
 
 namespace {
 
@@ -39,11 +40,27 @@ protected:
     RT_REQUIRE(Transport().CapacityLabelHasRetailGeometry());
     RT_AWAIT(HasScenarioUiSnapshot(), kObserveUiStateChanged);
 
+    // Moving an allocation off a commodity must go through the real order path: the row's
+    // 'left' arrow drops its need target and frees the nation's reserved capacity by one.
+    lowerableSlot = Transport().FirstLowerableCommoditySlot();
+    RT_REQUIRE_NE(-1, lowerableSlot);
+    targetBefore = Transport().CommodityNeedTarget(lowerableSlot);
+    reservedBefore = Transport().ReservedTransportCapacity();
+    RT_DO("lower one commodity's transport share",
+          Transport().ClickCommodityArrow(lowerableSlot, kControlTagLeft));
+    RT_REQUIRE_EQ(targetBefore - 1, Transport().CommodityNeedTarget(lowerableSlot));
+    RT_REQUIRE_EQ(reservedBefore - 1, Transport().ReservedTransportCapacity());
+
     RT_CLOSE_TO_MAP("leave the transport ledger", Transport().Close());
     RT_PASS();
 
     RT_END();
   }
+
+private:
+  short lowerableSlot;
+  short targetBefore;
+  short reservedBefore;
 };
 
 } // namespace
