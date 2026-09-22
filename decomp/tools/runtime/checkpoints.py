@@ -225,6 +225,22 @@ _CITY_ITEM_ORDER_SCENARIOS = (
     "city_item_order_decrease",
 )
 
+_OPENING_SCENARIOS = (
+    "opening_civilian_grant",
+    "opening_home_city_setup",
+)
+
+_PENDING_STATUS_SCENARIOS = (
+    "newspaper_pending_status",
+    "newspaper_navy_growth_reward_levels",
+)
+
+_NEWS_SCENARIOS = (
+    "construct_newspaper_page",
+    "construct_newspaper_page_misc_event",
+    "turn_stop_newspaper",
+)
+
 
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
@@ -1028,6 +1044,53 @@ SCHEMAS["province_owner_ocean_context.resolved"] = CheckpointSchema(
     ),
 )
 
+for _opening_scenario in _OPENING_SCENARIOS:
+    SCHEMAS[_opening_scenario + ".resolved"] = CheckpointSchema(
+        _opening_scenario + ".resolved",
+        _opening_scenario + ".run",
+        _opening_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "civilians.units",
+            "civilians.nations",
+        ),
+    )
+del _opening_scenario
+
+for _pending_scenario in _PENDING_STATUS_SCENARIOS:
+    SCHEMAS[_pending_scenario + ".resolved"] = CheckpointSchema(
+        _pending_scenario + ".resolved",
+        _pending_scenario + ".run",
+        _pending_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "pending_nations",
+        ),
+    )
+del _pending_scenario
+
+for _news_scenario in _NEWS_SCENARIOS:
+    SCHEMAS[_news_scenario + ".resolved"] = CheckpointSchema(
+        _news_scenario + ".resolved",
+        _news_scenario + ".run",
+        _news_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "news",
+            "newspaper_events",
+        ),
+    )
+del _news_scenario
+
 
 _RESOURCE_NAMES = (
     "cotton", "wool", "timber", "coal", "iron", "horses", "oil", "food",
@@ -1555,6 +1618,7 @@ _CITY_NATION_INT_FIELDS = ("treasury", "reserved_transport")
 
 _CITY_NATION_ARRAY_FIELDS = (
     "pending_actions",
+    "pending_payloads",
     "item_potentials",
     "transported_items",
     "purchased_items",
@@ -1694,7 +1758,7 @@ _CIVILIAN_UNIT_INT_FIELDS = (
     "completion_marker",
 )
 
-_CIVILIAN_NATION_INT_FIELDS = ("treasury", "town_count")
+_CIVILIAN_NATION_INT_FIELDS = ("treasury", "town_count", "home_tile")
 
 
 def _civilians_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
@@ -1732,6 +1796,14 @@ def _civilians_ephemeral(raw: Mapping[str, Any], label: str) -> dict[str, Any]:
             None
             if stocks is None
             else _require_int_list(stocks, f"{label}.nations[{slot}].city_stocks")
+        )
+        order_counts = nation_map.get("order_counts")
+        entry["order_counts"] = (
+            None
+            if order_counts is None
+            else _require_int_list(
+                order_counts, f"{label}.nations[{slot}].order_counts"
+            )
         )
         towns_raw = nation_map.get("towns")
         if towns_raw is not None:
@@ -2302,6 +2374,225 @@ def normalize_retail_advisory(
     observation = normalize_retail_reassess_missions(raw, checkpoint_id)
     observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
     return observation
+
+
+def normalize_native_opening(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Civilians schema for the opening grant/home-city setup paths."""
+    observation = normalize_native_civilians_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+def normalize_retail_opening(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_civilians_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+_PENDING_NATION_ARRAY_FIELDS = ("pending_actions", "pending_payloads")
+
+
+def _pending_status_nations(raw: Any, label: str) -> list[Any]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{label} must be an array")
+    nations: list[Any] = []
+    for slot, nation in enumerate(raw):
+        if nation is None:
+            nations.append(None)
+            continue
+        nation_map = _require_mapping(nation, f"{label}[{slot}]")
+        nations.append(
+            {
+                field: _require_int_list(
+                    nation_map.get(field), f"{label}[{slot}].{field}"
+                )
+                for field in _PENDING_NATION_ARRAY_FIELDS
+            }
+        )
+    return nations
+
+
+def _turn_fields_from_native(ephemeral: Mapping[str, Any]) -> dict[str, int]:
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "phase": _require_int(turn.get("phase"), "native turn.phase"),
+        "active": _require_int(turn.get("active_nation"), "native active_nation"),
+        "economic_turn": _require_int(
+            turn.get("economic_turn"), "native economic_turn"
+        ),
+        "turn_flow_status_flags": _require_int(
+            turn.get("turn_flow_status_flags"), "native turn_flow_status_flags"
+        ),
+    }
+
+
+def _turn_fields_from_retail(raw: Mapping[str, Any]) -> dict[str, int]:
+    return {
+        "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+        "active": _require_int(raw.get("active_nation"), "retail active_nation"),
+        "economic_turn": _require_int(
+            raw.get("economic_turn"), "retail economic_turn"
+        ),
+        "turn_flow_status_flags": _require_int(
+            raw.get("turn_flow_status_flags"), "retail turn_flow_status_flags"
+        ),
+    }
+
+
+def normalize_native_pending_status(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Per-nation pending-action status/payload rows for the pending sweep."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    city_transport = _require_mapping(
+        ephemeral.get("city_transport"), "native ephemeral city_transport"
+    )
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _turn_fields_from_native(ephemeral),
+        "pending_nations": _pending_status_nations(
+            city_transport.get("nations"), "native pending_nations"
+        ),
+    }
+
+
+def normalize_retail_pending_status(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _turn_fields_from_retail(raw),
+        "pending_nations": _pending_status_nations(
+            raw.get("pending_nations"), "retail pending_nations"
+        ),
+    }
+
+
+def _news_story(raw: Any, label: str) -> dict[str, Any]:
+    story = _require_mapping(raw, label)
+    arguments = story.get("arguments")
+    if not isinstance(arguments, list):
+        raise ValueError(f"{label}.arguments must be an array")
+    return {
+        "template_index": _require_int(
+            story.get("template_index"), f"{label}.template_index"
+        ),
+        "story_id": _require_int(story.get("story_id"), f"{label}.story_id"),
+        "feature": bool(story.get("feature")),
+        "arguments": [
+            _require_mapping(argument, f"{label}.arguments[{index}]")
+            for index, argument in enumerate(arguments)
+        ],
+    }
+
+
+def _news_state(raw: Any, label: str) -> dict[str, Any]:
+    news = _require_mapping(raw, label)
+    pages_raw = news.get("pages")
+    if not isinstance(pages_raw, list) or len(pages_raw) != 7:
+        raise ValueError(f"{label}.pages must be a seven-nation array")
+    pages: list[Any] = []
+    for slot, page in enumerate(pages_raw):
+        if page is None:
+            pages.append(None)
+            continue
+        page_map = _require_mapping(page, f"{label}.pages[{slot}]")
+        columns_raw = page_map.get("stories")
+        if not isinstance(columns_raw, list) or len(columns_raw) != 3:
+            raise ValueError(f"{label}.pages[{slot}].stories must be 3 columns")
+        columns: list[Any] = []
+        for column_index, column in enumerate(columns_raw):
+            if not isinstance(column, list) or len(column) != 3:
+                raise ValueError(
+                    f"{label}.pages[{slot}].stories[{column_index}]"
+                    " must be 3 rows"
+                )
+            columns.append(
+                [
+                    None
+                    if story is None
+                    else _news_story(
+                        story,
+                        f"{label}.pages[{slot}].stories[{column_index}]",
+                    )
+                    for story in column
+                ]
+            )
+        pages.append({"stories": columns})
+    last_used_raw = news.get("last_used_turn_by_nation_and_template")
+    if not isinstance(last_used_raw, list) or len(last_used_raw) != 7:
+        raise ValueError(
+            f"{label}.last_used_turn_by_nation_and_template must be 7 rows"
+        )
+    return {
+        "pages": pages,
+        "last_used_turn_by_nation_and_template": [
+            _require_int_list(row, f"{label}.last_used[{index}]")
+            for index, row in enumerate(last_used_raw)
+        ],
+    }
+
+
+def _news_events(raw: Any, label: str) -> list[Any]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{label} must be an array")
+    return [
+        _require_mapping(event, f"{label}[{index}]")
+        for index, event in enumerate(raw)
+    ]
+
+
+def normalize_native_news(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Newspaper pages, template last-used ticks, and the shared event queue."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    pending = _require_mapping(
+        ephemeral.get("pending"), "native ephemeral pending"
+    )
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _turn_fields_from_native(ephemeral),
+        "news": _news_state(ephemeral.get("news"), "native news"),
+        "newspaper_events": _news_events(
+            pending.get("newspaper_events"), "native newspaper_events"
+        ),
+    }
+
+
+def normalize_retail_news(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    return {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _turn_fields_from_retail(raw),
+        "news": _news_state(raw.get("news"), "retail news"),
+        "newspaper_events": _news_events(
+            raw.get("newspaper_events"), "retail newspaper_events"
+        ),
+    }
 
 
 def _battle_snapshot_fields(

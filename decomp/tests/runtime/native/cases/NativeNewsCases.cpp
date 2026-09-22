@@ -105,6 +105,8 @@ RuntimeActionResult RunNewspaperConstruction(NativeTransition& transition, bool 
   if (!started.Succeeded()) {
     return started;
   }
+  // Deterministic CRT seed: filler/random story selection consumes rand().
+  srand(0x1234);
   g_pNewsMgr->StartNewsPhase();
   return transition.Finish();
 }
@@ -137,6 +139,8 @@ RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
+  // Deterministic CRT seed: the news phase's filler stories consume rand().
+  srand(0x1234);
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
   return transition.Finish(json_value_init_string("newspaper"));
 }

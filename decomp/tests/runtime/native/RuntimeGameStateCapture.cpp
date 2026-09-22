@@ -3271,6 +3271,8 @@ JSON_Value* CaptureCityTransportEphemeral() {
       pending.Add(static_cast<int>(nation->pendingActionStatus.byAction[index]));
     }
     entry.Set("pending_actions", pending.Release());
+    entry.Set("pending_payloads",
+              CaptureShortArray(nation->field8d6, 0x0d));
     entry.Set("reserved_transport",
               static_cast<int>(nation->reservedTransportCapacity));
     entry.Set("item_potentials",
@@ -3402,12 +3404,17 @@ JSON_Value* CaptureCiviliansEphemeral() {
       }
     }
     entry.Set("towns", towns.Release());
+    entry.Set("home_tile", static_cast<int>(nation->homeTileIndex));
     if (nation->city != 0) {
       entry.Set("city_stocks",
                 CaptureShortArray(&nation->city->cityStockCottonB6,
                                   kResourceKindCount));
+      entry.Set("order_counts",
+                CaptureShortArray(nation->city->orderCountByType5c,
+                                  kIndustryActionSlotCount));
     } else {
       entry.SetNull("city_stocks");
+      entry.SetNull("order_counts");
     }
     nations.Add(entry.Release());
   }

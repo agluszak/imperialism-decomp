@@ -62,6 +62,9 @@ from tools.runtime.checkpoints import (
     _TACTICAL_SNAPSHOT_SCENARIOS,
     _ARMY_MILITARY_SCENARIOS,
     _CITY_ITEM_ORDER_SCENARIOS,
+    _OPENING_SCENARIOS,
+    _PENDING_STATUS_SCENARIOS,
+    _NEWS_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -99,6 +102,9 @@ from tools.runtime.checkpoints import (
     normalize_native_advisory,
     normalize_native_battle_snapshots,
     normalize_native_city_item_order,
+    normalize_native_opening,
+    normalize_native_pending_status,
+    normalize_native_news,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -134,6 +140,9 @@ from tools.runtime.checkpoints import (
     normalize_retail_advisory,
     normalize_retail_battle_snapshots,
     normalize_retail_city_item_order,
+    normalize_retail_opening,
+    normalize_retail_pending_status,
+    normalize_retail_news,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -710,6 +719,9 @@ def load_scenario(name: str) -> Scenario:
         + _TACTICAL_SNAPSHOT_SCENARIOS
         + _ARMY_MILITARY_SCENARIOS
         + _CITY_ITEM_ORDER_SCENARIOS
+        + _OPENING_SCENARIOS
+        + _PENDING_STATUS_SCENARIOS
+        + _NEWS_SCENARIOS
         + (
             "owned_region_development",
             "specialist_recruitment",
@@ -1766,6 +1778,9 @@ def _capture_city_transport_phase(session: GdbSession) -> dict[str, object]:
         entry: dict[str, object] = {
             "treasury": _eval_int(session, f"*(int*)0x{nation + 0x10:08x}"),
             "pending_actions": pending,
+            "pending_payloads": list(
+                struct.unpack("<13h", session.read_memory(nation + 0x8D6, 26))
+            ),
             "reserved_transport": _s16(session, nation + 0xA8),
             "item_potentials": list(arrays[0:23]),
             "transported_items": list(arrays[46:69]),
@@ -2365,10 +2380,20 @@ def _capture_civilians_phase(session: GdbSession) -> dict[str, object]:
                 ),
                 "town_count": _town_marker_count(session, nation),
                 "towns": towns,
+                "home_tile": _s16(session, nation + 0x88),
                 "city_stocks": (
                     list(
                         struct.unpack(
                             "<23h", session.read_memory(city + 0xB6, 46)
+                        )
+                    )
+                    if city != 0
+                    else None
+                ),
+                "order_counts": (
+                    list(
+                        struct.unpack(
+                            "<14h", session.read_memory(city + 0x5C, 28)
                         )
                     )
                     if city != 0
@@ -8714,6 +8739,488 @@ def _drive_city_item_order(
     return result
 
 
+# --- opening / newspaper retail drives -----------------------------------------
+# Mirrors the NativeTurnTailCases/NativeNewsCases bodies against the live retail
+# process: opening civilian grant + home-city setup, the pending-action sweep,
+# and the NEWS.TAB newspaper construction/turn-stop paths.
+
+_NEWS_MGR = 0x006A43E8
+_MULTIPLAYER_SETUP_FLAG = 0x006A43F0
+_FIND_REACHABLE_RECRUIT_TILE = 0x00514C80
+_SET_HOME_CITY = 0x004DFD30
+_NEWS_ADD_MISC_EVENT = 0x0055CD00
+_NEWS_START_PHASE = 0x0055B8E0
+_VT_LIST_RESET_HOOK = 0x08 * 4
+_VT_MARK_PENDING_HANDLED = 0x2C * 4
+_VT_IS_REMOTE = 0x28 * 4
+
+_NEWS_EVENT_KIND_NAMES = {
+    0x00: "war_declared_by_subject",
+    0x01: "war_declared_against_subject",
+    0x02: "peace_treaty_accepted",
+    0x03: "join_empire_accepted",
+    0x04: "alliance_accepted",
+    0x05: "non_aggression_pact_accepted",
+    0x07: "peace_treaty_rejected",
+    0x09: "join_empire_rejected",
+    0x0B: "alliance_rejected",
+    0x0D: "non_aggression_pact_rejected",
+    0x12: "trade_consulate_established",
+    0x14: "embassy_established",
+    0x16: "minor_empire_affiliation_changed",
+    0x17: "minor_territory_relationship_affected",
+    0x18: "peace_relationship_propagated",
+    0x19: "war_with_independent_minor",
+    0x1A: "alliance_relationship_established",
+    0x1B: "nation_joined_empire",
+    0x1C: "nation_joined_war",
+    0x1D: "nation_transferred",
+}
+
+_NEWS_RESOURCE_NAMES = (
+    "cotton", "wool", "timber", "coal", "iron", "horses", "oil", "food",
+    "fabric", "lumber", "paper", "steel", "fuel", "clothing", "furniture",
+    "hardware", "arms", "grain", "fruit", "fish", "livestock", "gems", "gold",
+)
+
+_NEWS_TEMPLATE_COUNT = 360
+
+
+def _news_nation_mask(source: int) -> list[bool]:
+    if source & ~((1 << _NATION_SLOT_COUNT) - 1):
+        raise RuntimeError(
+            "shared newspaper event mask contains bits outside the nation table"
+        )
+    return [
+        (source & (1 << nation)) != 0 for nation in range(_NATION_SLOT_COUNT)
+    ]
+
+
+def _news_argument(kind: int, value: int) -> dict[str, object]:
+    if kind == 0:
+        return {"kind": "empty"}
+    if kind in (1, 2):
+        return {
+            "kind": "nation_mask" if kind == 1 else "nation_list",
+            "nations": _news_nation_mask(value),
+        }
+    if kind == 3:
+        return {"kind": "province", "province": value}
+    if kind == 4:
+        return {"kind": "zone", "ordinal": value}
+    raise RuntimeError(f"newspaper argument has an unknown kind {kind}")
+
+
+def _capture_news(session: GdbSession) -> dict[str, object]:
+    """Mirror CaptureNews/CapturePendingNewspaperEvents on the retail process."""
+    news_mgr = _u32(session, _NEWS_MGR)
+    if news_mgr == 0:
+        raise RuntimeError("retail news manager is unavailable")
+    template_count = _eval_int(
+        session, f"*(int*)0x{news_mgr + 0x08:08x}"
+    )
+    if template_count == 0:
+        news: dict[str, object] = {
+            "pages": [None] * _MAJOR_NATION_COUNT,
+            "last_used_turn_by_nation_and_template": [
+                [0] * _NEWS_TEMPLATE_COUNT for _ in range(_MAJOR_NATION_COUNT)
+            ],
+        }
+    else:
+        if template_count != _NEWS_TEMPLATE_COUNT:
+            raise RuntimeError(
+                "initialized newspaper state does not use the 360-row NEWS.TAB"
+            )
+        template_table = _u32(session, news_mgr + 0x04)
+        templates = session.read_memory(
+            template_table, _NEWS_TEMPLATE_COUNT * 0x18
+        )
+        pages: list[object] = []
+        last_used_by_nation: list[object] = []
+        for nation in range(_MAJOR_NATION_COUNT):
+            tick_ptr = _u32(session, news_mgr + 0xEF4 + nation * 4)
+            if tick_ptr == 0:
+                raise RuntimeError(
+                    "initialized newspaper state has no last-used history"
+                )
+            block = session.read_memory(
+                news_mgr + 0x0C + nation * 9 * 0x3C, 9 * 0x3C
+            )
+            stories_raw = [
+                block[index * 0x3C : (index + 1) * 0x3C] for index in range(9)
+            ]
+            if not any(
+                struct.unpack("<i", story[0x20:0x24])[0] != 0
+                for story in stories_raw
+            ):
+                pages.append(None)
+            else:
+                columns = []
+                for column in range(3):
+                    rows = []
+                    for row in range(3):
+                        story = stories_raw[column * 3 + row]
+                        entry = story[0x20:0x38]
+                        if struct.unpack("<i", entry[:4])[0] == 0:
+                            rows.append(None)
+                            continue
+                        template_index = -1
+                        for index in range(_NEWS_TEMPLATE_COUNT):
+                            if entry == templates[index * 0x18 : (index + 1) * 0x18]:
+                                if template_index != -1:
+                                    raise RuntimeError(
+                                        "newspaper story matches more than one"
+                                        " template row"
+                                    )
+                                template_index = index
+                        if template_index == -1:
+                            raise RuntimeError(
+                                "newspaper story does not match NEWS.TAB"
+                            )
+                        kinds = struct.unpack("<4i", story[0x10:0x20])
+                        values = struct.unpack("<4i", story[0x00:0x10])
+                        rows.append(
+                            {
+                                "template_index": template_index,
+                                "story_id": struct.unpack("<i", entry[:4])[0],
+                                "feature": story[0x38] != 0,
+                                "arguments": [
+                                    _news_argument(kinds[i], values[i])
+                                    for i in range(4)
+                                ],
+                            }
+                        )
+                    columns.append(rows)
+                pages.append({"stories": columns})
+            last_used_by_nation.append(
+                list(
+                    struct.unpack(
+                        f"<{_NEWS_TEMPLATE_COUNT}h",
+                        session.read_memory(tick_ptr, _NEWS_TEMPLATE_COUNT * 2),
+                    )
+                )
+            )
+        news = {
+            "pages": pages,
+            "last_used_turn_by_nation_and_template": last_used_by_nation,
+        }
+
+    queue = _u32(session, news_mgr + 0xEF0)
+    if queue == 0:
+        raise RuntimeError("shared newspaper event queue is unavailable")
+    record_size = _eval_int(
+        session, f"*(short*)0x{queue + 0x14:08x}"
+    )
+    if record_size != 0x10:
+        raise RuntimeError("shared newspaper event queue has the wrong record size")
+    count = _eval_int(session, f"*(int*)0x{queue + 8:08x}")
+    data = _u32(session, queue + 4)
+    events: list[dict[str, object]] = []
+    if count > 0 and data != 0:
+        pointers = struct.unpack(
+            f"<{count}I", session.read_memory(data, 4 * count)
+        )
+        for pointer in pointers:
+            if pointer == 0:
+                raise RuntimeError(
+                    "shared newspaper event queue contains a null record"
+                )
+            kind, subject, mask, related = struct.unpack(
+                "<4i", session.read_memory(pointer, 0x10)
+            )
+            if kind == 0x0F:
+                if related < 0 or related >= len(_NEWS_RESOURCE_NAMES):
+                    raise RuntimeError(
+                        "shared newspaper shortage has an invalid resource"
+                    )
+                events.append(
+                    {
+                        "kind": "shortage",
+                        "subject": subject,
+                        "affected_nations": _news_nation_mask(mask),
+                        "resource": _NEWS_RESOURCE_NAMES[related],
+                    }
+                )
+            elif kind == 0x11:
+                events.append(
+                    {
+                        "kind": "miscellaneous",
+                        "audience": None if subject == 999 else subject,
+                        "story_code": mask,
+                    }
+                )
+            else:
+                if kind not in _NEWS_EVENT_KIND_NAMES:
+                    raise RuntimeError(
+                        "shared newspaper queue contains an unknown"
+                        " inter-nation event kind"
+                    )
+                events.append(
+                    {
+                        "kind": "inter_nation",
+                        "event": _NEWS_EVENT_KIND_NAMES[kind],
+                        "subject": subject,
+                        "related_nations": _news_nation_mask(mask),
+                    }
+                )
+    return {"news": news, "newspaper_events": events}
+
+
+def _news_capture_fields(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    fields = _capture_news(session)
+    fields["turn_phase"] = _eval_int(
+        session, f"*(int*)0x{sim_mgr + 4:08x}"
+    )
+    fields["active_nation"] = _s16(session, sim_mgr + 0x2E)
+    fields["economic_turn"] = _s16(session, sim_mgr + 0x2C)
+    fields["turn_flow_status_flags"] = _eval_int(
+        session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+    )
+    return fields
+
+
+def _drive_construct_newspaper(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    queue_misc_event: bool,
+) -> dict[str, object]:
+    """Mirror RunNewspaperConstruction: reset the shared event queue, optionally
+    queue a miscellaneous event, then run TNewsMgr::StartNewsPhase."""
+    news_mgr = _u32(session, _NEWS_MGR)
+    queue = _u32(session, news_mgr + 0xEF0)
+    if news_mgr == 0 or queue == 0:
+        raise RuntimeError("newspaper state is unavailable")
+    _invoke_virtual(
+        session, queue, _VT_LIST_RESET_HOOK, records, occurrences,
+        breakpoint_roles,
+    )
+    if queue_misc_event:
+        _invoke_thiscall(
+            session, _NEWS_ADD_MISC_EVENT, news_mgr, records, occurrences,
+            breakpoint_roles, args=(999, 3, 1),
+        )
+    # Match the srand(0x1234) in RunNewspaperConstruction so the filler-story
+    # rand() draws line up between retail and recomp.
+    _invoke_thiscall(
+        session, _SRAND, 0, records, occurrences, breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session, _NEWS_START_PHASE, news_mgr, records, occurrences,
+        breakpoint_roles,
+    )
+    return _news_capture_fields(session)
+
+
+def _drive_turn_stop_newspaper(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x0F)
+    # Match the srand(0x1234) in RunNewspaperTurnStop so the news phase's
+    # filler-story rand() draws line up between retail and recomp.
+    _invoke_thiscall(
+        session, _SRAND, 0, records, occurrences, breakpoint_roles,
+        args=(0x1234,),
+    )
+    _invoke_thiscall(
+        session, _ADVANCE_TURN_STATE, sim_mgr, records, occurrences,
+        breakpoint_roles,
+    )
+    return _news_capture_fields(session)
+
+
+def _capture_pending_status(session: GdbSession) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    nations: list[dict[str, object] | None] = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            nations.append(None)
+            continue
+        nations.append(
+            {
+                "pending_actions": [
+                    byte - 0x100 if byte & 0x80 else byte
+                    for byte in session.read_memory(nation + 0x8C8, 0x0D)
+                ],
+                "pending_payloads": list(
+                    struct.unpack(
+                        "<13h", session.read_memory(nation + 0x8D6, 26)
+                    )
+                ),
+            }
+        )
+    return {
+        "turn_phase": _eval_int(session, f"*(int*)0x{sim_mgr + 4:08x}"),
+        "active_nation": _s16(session, sim_mgr + 0x2E),
+        "economic_turn": _s16(session, sim_mgr + 0x2C),
+        "turn_flow_status_flags": _eval_int(
+            session, f"*(unsigned int*)0x{sim_mgr + 0x3C:08x}"
+        ),
+        "pending_nations": nations,
+    }
+
+
+def _drive_pending_status(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    navy_growth_only: bool,
+) -> dict[str, object]:
+    """Mirror RunNewspaperPendingStatus/RunNewspaperNavyGrowthRewardLevels."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    if navy_growth_only:
+        nation = _nation_pointer(session, active_slot)
+        if nation == 0:
+            raise RuntimeError("retail loaded game has no active nation")
+        session.assign(f"*(signed char*)0x{nation + 0x8C8:08x}", 0x32)
+        session.assign(f"*(short*)0x{nation + 0x8D6:08x}", 1)
+    else:
+        for slot in range(_MAJOR_NATION_COUNT):
+            eligible = (
+                _invoke_thiscall(
+                    session,
+                    _FN_IS_ELIGIBLE_FOR_EVENTS,
+                    sim_mgr,
+                    records,
+                    occurrences,
+                    breakpoint_roles,
+                    args=(slot,),
+                )
+                & 0xFF
+            )
+            if not eligible:
+                continue
+            nation = _nation_pointer(session, slot)
+            if nation == 0:
+                continue
+            for index, payload in ((0, 3), (1, 6), (3, -1)):
+                session.assign(
+                    f"*(signed char*)0x{nation + 0x8C8 + index:08x}", 0x32
+                )
+                session.assign(
+                    f"*(short*)0x{nation + 0x8D6 + 2 * index:08x}", payload
+                )
+    for slot in range(_MAJOR_NATION_COUNT):
+        eligible = (
+            _invoke_thiscall(
+                session,
+                _FN_IS_ELIGIBLE_FOR_EVENTS,
+                sim_mgr,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(slot,),
+            )
+            & 0xFF
+        )
+        if not eligible:
+            continue
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        _invoke_virtual(
+            session, nation, _VT_MARK_PENDING_HANDLED, records, occurrences,
+            breakpoint_roles,
+        )
+    return _capture_pending_status(session)
+
+
+def _drive_opening_civilian_grant(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunOpeningCivilianGrant: seed difficulty/scenario/eligibility,
+    then spawn prospector+engineer plus the three difficulty-0 grant units."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    active_slot = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, active_slot)
+    city = _u32(session, nation + 0x894) if nation else 0
+    if nation == 0 or city == 0 or map_state == 0:
+        raise RuntimeError("opening civilian grant state is unavailable")
+    session.assign(f"*(int*)0x{sim_mgr + 0x40:08x}", 0)
+    session.assign(f"*(short*)0x{sim_mgr + 0x114:08x}", 0)
+    session.assign(f"*(signed char*)0x{nation + 0xA0:08x}", 1)
+    home_tile = _s16(session, nation + 0x88)
+    nation_slot = _s16(session, nation + 0x0C)
+
+    def spawn(kind: int, allow_flag: int) -> None:
+        tile = _invoke_thiscall(
+            session,
+            _FIND_REACHABLE_RECRUIT_TILE,
+            map_state,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(home_tile, allow_flag),
+        ) & 0xFFFF
+        tile = tile - 0x10000 if tile & 0x8000 else tile
+        _new_civilian_unit(
+            session, kind, tile, nation_slot, records, occurrences,
+            breakpoint_roles,
+        )
+
+    spawn(1, 0)
+    spawn(4, 1)
+    order_count_addr = city + 0x5C + 2
+    session.assign(
+        f"*(short*)0x{order_count_addr:08x}",
+        _s16(session, order_count_addr) + 2,
+    )
+    if _u8(session, nation + 0xA0):
+        session.assign(
+            f"*(short*)0x{order_count_addr:08x}",
+            _s16(session, order_count_addr) + 6,
+        )
+        spawn(1, 0)
+        spawn(0, 0)
+        spawn(2, 0)
+    return _capture_civilians_phase(session)
+
+
+def _drive_opening_home_city_setup(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunOpeningHomeCitySetup: SetHomeCityTileAndDisplayName(-1, 0) on
+    every non-remote major nation while the multiplayer-setup gate is clear."""
+    session.assign(
+        f"*(signed char*)0x{_MULTIPLAYER_SETUP_FLAG:08x}", 0
+    )
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        remote = (
+            _invoke_virtual(
+                session, nation, _VT_IS_REMOTE, records, occurrences,
+                breakpoint_roles,
+            )
+            & 0xFF
+        )
+        if remote or _u8(session, _MULTIPLAYER_SETUP_FLAG):
+            continue
+        _invoke_thiscall(
+            session, _SET_HOME_CITY, nation, records, occurrences,
+            breakpoint_roles, args=(-1, 0),
+        )
+    return _capture_civilians_phase(session)
+
+
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
     if queue == 0:
         return []
@@ -9315,6 +9822,48 @@ def run_binary(
                             ),
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "opening_civilian_grant":
+                        result_fields = _drive_opening_civilian_grant(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "opening_home_city_setup":
+                        result_fields = _drive_opening_home_city_setup(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in _PENDING_STATUS_SCENARIOS:
+                        result_fields = _drive_pending_status(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            navy_growth_only=(
+                                scenario.drive
+                                == "newspaper_navy_growth_reward_levels"
+                            ),
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in (
+                        "construct_newspaper_page",
+                        "construct_newspaper_page_misc_event",
+                    ):
+                        result_fields = _drive_construct_newspaper(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            queue_misc_event=(
+                                scenario.drive
+                                == "construct_newspaper_page_misc_event"
+                            ),
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "turn_stop_newspaper":
+                        result_fields = _drive_turn_stop_newspaper(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in _NATION_ECONOMY_SPECS:
                         result_fields = _drive_nation_economy(
                             session,
@@ -9617,6 +10166,9 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         *_TACTICAL_SNAPSHOT_SCENARIOS,
         *_ARMY_MILITARY_SCENARIOS,
         *_CITY_ITEM_ORDER_SCENARIOS,
+        *_OPENING_SCENARIOS,
+        *_PENDING_STATUS_SCENARIOS,
+        *_NEWS_SCENARIOS,
         "owned_region_development",
         "specialist_recruitment",
         "advisory_map_missions_case16",
@@ -9831,6 +10383,18 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             )
         elif scenario.drive in _CITY_ITEM_ORDER_SCENARIOS:
             recomp_observation = normalize_native_city_item_order(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _OPENING_SCENARIOS:
+            recomp_observation = normalize_native_opening(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _PENDING_STATUS_SCENARIOS:
+            recomp_observation = normalize_native_pending_status(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _NEWS_SCENARIOS:
+            recomp_observation = normalize_native_news(
                 native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "turn_alerts_later_turn":
@@ -10107,6 +10671,24 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         _name + ".resolved" for _name in _CITY_ITEM_ORDER_SCENARIOS
     ):
         retail_observation = normalize_retail_city_item_order(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _OPENING_SCENARIOS
+    ):
+        retail_observation = normalize_retail_opening(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _PENDING_STATUS_SCENARIOS
+    ):
+        retail_observation = normalize_retail_pending_status(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _NEWS_SCENARIOS
+    ):
+        retail_observation = normalize_retail_news(
             retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint in (
