@@ -53,6 +53,7 @@ ACTION_COMBAT_RESUME = "combat_moves_resumes_after_battle.run"
 ACTION_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.run"
 ACTION_TURN_STATE_COMBAT_MOVES = "turn_state_combat_moves.run"
 ACTION_TURN_STATE_MILITARY_CLEANUP = "turn_state_military_cleanup.run"
+ACTION_TURN_STATE_AI_REPLAN = "turn_state_ai_replan_perturbed.run"
 
 CHECKPOINT_RANDOM_SETUP_READY = "random_setup.ready"
 CHECKPOINT_COMBINED_MAP_READY = "combined_map.ready"
@@ -120,6 +121,7 @@ CHECKPOINT_COMBAT_RESUME = "combat_moves_resumes_after_battle.resolved"
 CHECKPOINT_COMBAT_THEN_MOVES = "combat_moves_battle_then_later_movement.resolved"
 CHECKPOINT_TURN_STATE_COMBAT_MOVES = "turn_state_combat_moves.resolved"
 CHECKPOINT_TURN_STATE_MILITARY_CLEANUP = "turn_state_military_cleanup.resolved"
+CHECKPOINT_TURN_STATE_AI_REPLAN = "turn_state_ai_replan_perturbed.resolved"
 
 
 @dataclass(frozen=True)
@@ -584,6 +586,38 @@ SCHEMAS = {
             "trade.nations",
             "diplomacy.nations",
             "missions",
+            "development",
+            "rng.before.crt_rand",
+            "rng.before.map_generation",
+            "rng.before.zone_status",
+            "rng.after.crt_rand",
+            "rng.after.map_generation",
+            "rng.after.zone_status",
+        ),
+    ),
+    CHECKPOINT_TURN_STATE_AI_REPLAN: CheckpointSchema(
+        CHECKPOINT_TURN_STATE_AI_REPLAN,
+        ACTION_TURN_STATE_AI_REPLAN,
+        "turn_state_ai_replan_perturbed",
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "dispatched_event",
+            "military_cleanup.region_scores",
+            "military_cleanup.city_score_total",
+            "military_cleanup.queue_divergence",
+            "military_cleanup.mobile_score",
+            "military_cleanup.mobile_divergence",
+            "military_cleanup.combined_divergence",
+            "military_cleanup.weighted_military",
+            "military_cleanup.expansion_pressure",
+            "military_cleanup.unit_divergence",
+            "military_cleanup.mission_pressure",
+            "trade.nations",
+            "diplomacy.nations",
+            "missions",
+            "development",
             "rng.before.crt_rand",
             "rng.before.map_generation",
             "rng.before.zone_status",
@@ -3435,43 +3469,56 @@ def normalize_retail_military_cleanup(
 
 def normalize_native_turn_state_military_cleanup(
     result: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+    action_id: str = ACTION_TURN_STATE_MILITARY_CLEANUP,
 ) -> dict[str, Any]:
     observation = normalize_native_military_cleanup(
         result,
-        checkpoint_id=CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
-        action_id=ACTION_TURN_STATE_MILITARY_CLEANUP,
+        checkpoint_id=checkpoint_id,
+        action_id=action_id,
         include_rng=True,
     )
     observation["trade"] = normalize_native_trade_phase(
-        result, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        result, checkpoint_id
     )["trade"]
     observation["diplomacy"] = normalize_native_player_diplomacy_policy(
-        result, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        result, checkpoint_id
     )["diplomacy"]
     observation["missions"] = normalize_native_reassess_missions(
-        result, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        result, checkpoint_id
     )["missions"]
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    observation["development"] = _development_records(
+        ephemeral.get("development"), "native development"
+    )
     return observation
 
 
 def normalize_retail_turn_state_military_cleanup(
     raw: Mapping[str, Any],
+    checkpoint_id: str = CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
+    action_id: str = ACTION_TURN_STATE_MILITARY_CLEANUP,
 ) -> dict[str, Any]:
     observation = normalize_retail_military_cleanup(
         raw,
-        checkpoint_id=CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
-        action_id=ACTION_TURN_STATE_MILITARY_CLEANUP,
+        checkpoint_id=checkpoint_id,
+        action_id=action_id,
         include_rng=True,
     )
     observation["trade"] = normalize_retail_trade_phase(
-        raw, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        raw, checkpoint_id
     )["trade"]
     observation["diplomacy"] = normalize_retail_player_diplomacy_policy(
-        raw, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        raw, checkpoint_id
     )["diplomacy"]
     observation["missions"] = normalize_retail_reassess_missions(
-        raw, CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        raw, checkpoint_id
     )["missions"]
+    observation["development"] = _development_records(
+        raw.get("development"), "retail development"
+    )
     return observation
 
 

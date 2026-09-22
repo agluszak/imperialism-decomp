@@ -1850,7 +1850,7 @@ RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition) {
   return transition.Finish();
 }
 
-RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) {
+static TAutoGreatPower* ConfigureAiNavalDevelopmentPressure(short* nationSlotOut) {
   TAutoGreatPower* autoNation = 0;
   short nationSlot = -1;
   for (short slot = 0; slot < 7; ++slot) {
@@ -1863,7 +1863,7 @@ RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) 
     }
   }
   if (autoNation == 0 || g_pMapActionContextListHead == 0) {
-    return RuntimeActionResult::Failure("AI naval-development fixture has no eligible nation");
+    return 0;
   }
 
   for (int index = 0; index < 16; ++index) {
@@ -1891,6 +1891,16 @@ RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) 
     ship->strength = ship->GetMaxStrength();
     navyMission->AcceptReenforcement(ship, 0);
   }
+  *nationSlotOut = nationSlot;
+  return autoNation;
+}
+
+RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) {
+  short nationSlot = -1;
+  TAutoGreatPower* autoNation = ConfigureAiNavalDevelopmentPressure(&nationSlot);
+  if (autoNation == 0) {
+    return RuntimeActionResult::Failure("AI naval-development fixture has no eligible nation");
+  }
 
   JsonObject args;
   args.Set("nation", static_cast<int>(nationSlot));
@@ -1901,6 +1911,26 @@ RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) 
   }
 
   autoNation->PlanAiDevelopmentActionsFromResourcePools(0);
+  return transition.Finish();
+}
+
+RuntimeActionResult RunTurnStateAiReplanPerturbed(NativeTransition& transition) {
+  short nationSlot = -1;
+  if (g_pSimMgr == 0 || ConfigureAiNavalDevelopmentPressure(&nationSlot) == 0) {
+    return RuntimeActionResult::Failure("AI replan fixture has no eligible nation");
+  }
+
+  g_pSimMgr->economicTurn = 2;
+  g_pSimMgr->turnStateCode = 0x15;
+
+  JsonObject args;
+  args.Set("nation", static_cast<int>(nationSlot));
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
   return transition.Finish();
 }
 
