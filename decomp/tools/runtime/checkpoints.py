@@ -530,9 +530,12 @@ SCHEMAS = {
             "military.nations",
             "military.ships",
             "military.task_forces",
-            "rng.crt_rand",
-            "rng.map_generation",
-            "rng.zone_status",
+            "rng.before.crt_rand",
+            "rng.before.map_generation",
+            "rng.before.zone_status",
+            "rng.after.crt_rand",
+            "rng.after.map_generation",
+            "rng.after.zone_status",
         ),
     ),
     CHECKPOINT_TURN_STATE_MILITARY_CLEANUP: CheckpointSchema(
@@ -557,9 +560,12 @@ SCHEMAS = {
             "trade.nations",
             "diplomacy.nations",
             "missions",
-            "rng.crt_rand",
-            "rng.map_generation",
-            "rng.zone_status",
+            "rng.before.crt_rand",
+            "rng.before.map_generation",
+            "rng.before.zone_status",
+            "rng.after.crt_rand",
+            "rng.after.map_generation",
+            "rng.after.zone_status",
         ),
     ),
     CHECKPOINT_RECOMPUTE_METRICS: CheckpointSchema(
@@ -708,9 +714,12 @@ SCHEMAS = {
             "nation_encoded",
             "nation_status",
             "dispatched_event",
-            "rng.crt_rand",
-            "rng.map_generation",
-            "rng.zone_status",
+            "rng.before.crt_rand",
+            "rng.before.map_generation",
+            "rng.before.zone_status",
+            "rng.after.crt_rand",
+            "rng.after.map_generation",
+            "rng.after.zone_status",
         ),
     ),
     CHECKPOINT_TURN_ALERTS_FIRST: CheckpointSchema(
@@ -939,9 +948,12 @@ for _economy_scenario in _NATION_ECONOMY_SCENARIOS:
         + (
             (
                 "dispatched_event",
-                "rng.crt_rand",
-                "rng.map_generation",
-                "rng.zone_status",
+                "rng.before.crt_rand",
+                "rng.before.map_generation",
+                "rng.before.zone_status",
+                "rng.after.crt_rand",
+                "rng.after.map_generation",
+                "rng.after.zone_status",
             )
             if _economy_scenario.startswith("turn_state_")
             else ()
@@ -966,9 +978,12 @@ for _diplo_economy_scenario in _DIPLOMACY_ECONOMY_SCENARIOS:
             (
                 "missions",
                 "dispatched_event",
-                "rng.crt_rand",
-                "rng.map_generation",
-                "rng.zone_status",
+                "rng.before.crt_rand",
+                "rng.before.map_generation",
+                "rng.before.zone_status",
+                "rng.after.crt_rand",
+                "rng.after.map_generation",
+                "rng.after.zone_status",
             )
             if _diplo_economy_scenario.startswith("turn_state_")
             else ()
@@ -1202,9 +1217,12 @@ for _news_scenario in _NEWS_SCENARIOS:
             (
                 "dispatched_event",
                 "pending_nations",
-                "rng.crt_rand",
-                "rng.map_generation",
-                "rng.zone_status",
+                "rng.before.crt_rand",
+                "rng.before.map_generation",
+                "rng.before.zone_status",
+                "rng.after.crt_rand",
+                "rng.after.map_generation",
+                "rng.after.zone_status",
             )
             if _news_scenario == "turn_stop_newspaper"
             else ()
@@ -2990,7 +3008,7 @@ def normalize_native_news(
             turn.get("dispatched_event"), "native dispatched_event"
         )
         observation["pending_nations"] = _pending_status_nations(
-            city_transport.get("pending_nations"), "native pending_nations"
+            city_transport.get("nations"), "native pending_nations"
         )
         observation["rng"] = _rng_state(ephemeral.get("rng"), "native rng")
     return observation

@@ -136,6 +136,33 @@ class NativeOracleTests(unittest.TestCase):
             self.assertFalse((run_dir / "before.imp").exists())
             self.assertFalse((run_dir / "after.imp").exists())
 
+    def test_complete_passed_result_wins_over_late_heartbeat_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            run_dir = root / "run"
+            fixture_dir = root / "fixtures"
+            fixture_dir.mkdir()
+            (fixture_dir / "beginning_of_game.imp").write_bytes(b"fixture")
+
+            def fake_execute(config: RunConfig) -> HostResult:
+                self.write_native_bundle(config.run_dir)
+                return host_result(
+                    config.run_dir,
+                    classification="heartbeat_stopped",
+                    exit_code=1,
+                )
+
+            code = run_native_transition(
+                "city_item_order_increase",
+                result_dir=run_dir,
+                execute=fake_execute,
+                fixture_dir=fixture_dir,
+            )
+
+            self.assertEqual(code, 0)
+            self.assertEqual((run_dir / "before.imp").read_bytes(), b"before-bytes")
+            self.assertEqual((run_dir / "after.imp").read_bytes(), b"after-bytes")
+
 
 if __name__ == "__main__":
     unittest.main()

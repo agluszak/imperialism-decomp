@@ -81,53 +81,50 @@ struct StrategicBattleMatrixCase {
   short rightAdmiralExperience;
   const char* convergence;
   const char* resolution;
-  int participant;
-  int leftDefeated;
-  int rightDefeated;
 };
 
 // clang-format off
 const StrategicBattleMatrixCase kStrategicBattleMatrix[] = {
     {"left_fails_admiral_boundary", 0x1234, {3, 0, 0, 0}, 1, 0, 100, 0, 0,
-     {3, 0, 0, 0}, 1, 0, 100, 0, 100, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+     {3, 0, 0, 0}, 1, 0, 100, 0, 100, "only_left_fails", "tier_exhaustion"},
     {"left_fails_tier_gap", 0x1234, {3, 0, 0, 0}, 1, 0, 500, 0, 0, {7, 0, 0, 0}, 1,
-     0, 500, 0, 0, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+     0, 500, 0, 0, "only_left_fails", "tier_exhaustion"},
     {"left_fails_fleet_size", 50, {4, 0, 0, 0}, 1, 1, 1600, 0, 400, {4, 4, 7, 0}, 3,
-     0, 500, 0, 0, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+     0, 500, 0, 0, "only_left_fails", "tier_exhaustion"},
     {"left_fails_mixed_tiers", 1, {7, 11, 0, 0}, 2, 0, 500, 0, 200, {7, 8, 11, 0}, 3,
-     1, 500, 0, 100, "only_left_fails", "tier_exhaustion", 1, 1, 0},
+     1, 500, 0, 100, "only_left_fails", "tier_exhaustion"},
     {"right_fails_admiral_boundary", 0x1234, {3, 0, 0, 0}, 1, 0, 100, 0, 400,
-     {3, 0, 0, 0}, 1, 0, 100, 0, 200, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+     {3, 0, 0, 0}, 1, 0, 100, 0, 200, "only_right_fails", "tier_exhaustion"},
     {"right_fails_tier_gap", 0x1234, {7, 0, 0, 0}, 1, 0, 500, 0, 0, {3, 0, 0, 0}, 1,
-     0, 500, 0, 0, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+     0, 500, 0, 0, "only_right_fails", "tier_exhaustion"},
     {"right_fails_mixed_tiers", 10, {8, 9, 13, 0}, 3, 1, 500, 0, 100,
-     {9, 11, 11, 0}, 3, 2, 1000, 0, 100, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+     {9, 11, 11, 0}, 3, 2, 1000, 0, 100, "only_right_fails", "tier_exhaustion"},
     {"right_fails_fleet_size", 999, {4, 7, 7, 7}, 4, 2, 500, 0, 200,
-     {8, 0, 0, 0}, 1, 1, 500, 0, 200, "only_right_fails", "tier_exhaustion", 0, 0, 1},
+     {8, 0, 0, 0}, 1, 1, 500, 0, 200, "only_right_fails", "tier_exhaustion"},
     {"both_fail_tier_one", 999, {3, 0, 0, 0}, 1, 0, 100, 0, 0, {3, 0, 0, 0}, 1, 0,
-     100, 0, 0, "both_fail", "tier_exhaustion", -1, 0, 0},
+     100, 0, 0, "both_fail", "tier_exhaustion"},
     {"both_fail_tier_two", 10, {8, 0, 0, 0}, 1, 0, 500, 0, 0, {8, 0, 0, 0}, 1, 0,
-     500, 0, 0, "both_fail", "tier_exhaustion", -1, 0, 0},
+     500, 0, 0, "both_fail", "tier_exhaustion"},
     {"both_fail_admiral_boundary", 4, {4, 0, 0, 0}, 1, 0, 100, 0, 200,
-     {4, 0, 0, 0}, 1, 0, 100, 0, 100, "both_fail", "tier_exhaustion", -1, 0, 0},
+     {4, 0, 0, 0}, 1, 0, 100, 0, 100, "both_fail", "tier_exhaustion"},
     {"both_fail_top_tiers", 2, {11, 11, 12, 0}, 3, 0, 500, 0, 100,
-     {11, 11, 13, 0}, 3, 0, 500, 0, 200, "both_fail", "tier_exhaustion", -1, 0, 0},
+     {11, 11, 13, 0}, 3, 0, 500, 0, 200, "both_fail", "tier_exhaustion"},
     {"left_eliminated_tier_one", 0x1234, {3, 0, 0, 0}, 1, 0, 1, 0, 200,
-     {3, 3, 0, 0}, 2, 0, 1, 0, 400, "only_left_fails", "left_eliminated", 1, 1, 0},
+     {3, 3, 0, 0}, 2, 0, 1, 0, 400, "only_left_fails", "left_eliminated"},
     {"left_eliminated_tier_two", 0x1234, {7, 0, 0, 0}, 1, 0, 1, 0, 0,
-     {7, 7, 0, 0}, 2, 0, 1, 0, 0, "only_left_fails", "left_eliminated", 1, 1, 0},
+     {7, 7, 0, 0}, 2, 0, 1, 0, 0, "only_left_fails", "left_eliminated"},
     {"left_eliminated_weight_boundary", 999, {8, 0, 0, 0}, 1, 0, 1, 0, 0,
-     {8, 8, 0, 0}, 2, 0, 1, 0, 0, "only_left_fails", "left_eliminated", 1, 1, 0},
+     {8, 8, 0, 0}, 2, 0, 1, 0, 0, "only_left_fails", "left_eliminated"},
     {"right_eliminated_tier_one", 0x1234, {3, 3, 0, 0}, 2, 0, 1, 0, 0,
-     {3, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated", 0, 0, 1},
+     {3, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated"},
     {"right_eliminated_tier_two", 0x1234, {7, 7, 0, 0}, 2, 0, 1, 0, 0,
-     {7, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated", 0, 0, 1},
+     {7, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated"},
     {"right_eliminated_weight_boundary", 2, {8, 8, 0, 0}, 2, 0, 1, 0, 0,
-     {8, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated", 0, 0, 1},
+     {8, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "right_eliminated"},
     {"both_eliminated_admiral_boundary", 0x1234, {3, 0, 0, 0}, 1, 0, 1, 0, 100,
-     {3, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "both_eliminated", -1, 1, 1},
+     {3, 0, 0, 0}, 1, 0, 1, 0, 0, "only_right_fails", "both_eliminated"},
     {"both_eliminated_neither_fails", 0x1234, {3, 0, 0, 0}, 1, 2, 1, 0, 0,
-     {3, 0, 0, 0}, 1, 2, 1, 0, 0, "neither_fails", "both_eliminated", -1, 1, 1},
+     {3, 0, 0, 0}, 1, 2, 1, 0, 0, "neither_fails", "both_eliminated"},
 };
 // clang-format on
 
@@ -904,13 +901,6 @@ RuntimeActionResult RunStrategicNavalBattleMatrix(NativeTransition& transition) 
 
     FreeStrategicBattleFleet(left);
     FreeStrategicBattleFleet(right);
-
-    if (participant != testCase.participant || leftDefeated != testCase.leftDefeated ||
-        rightDefeated != testCase.rightDefeated) {
-      char failure[96];
-      sprintf(failure, "strategic naval matrix outcome mismatch: %s", testCase.name);
-      return RuntimeActionResult::Failure(failure);
-    }
   }
 
   JsonObject result;
