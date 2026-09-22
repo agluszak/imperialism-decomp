@@ -209,6 +209,22 @@ _GROWTH_SCENARIOS = (
     "army_growth_selected_general",
 )
 
+_TACTICAL_SNAPSHOT_SCENARIOS = (
+    "interactive_army_battle_done",
+    "interactive_army_battle_move",
+    "interactive_army_battle_retreat",
+)
+
+_ARMY_MILITARY_SCENARIOS = (
+    "auto_resolve_land_battle",
+    "army_movement_give_orders",
+)
+
+_CITY_ITEM_ORDER_SCENARIOS = (
+    "city_item_order_increase",
+    "city_item_order_decrease",
+)
+
 
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
@@ -931,6 +947,72 @@ for _growth_scenario in _GROWTH_SCENARIOS:
         ),
     )
 del _growth_scenario
+
+for _army_scenario in _ARMY_MILITARY_SCENARIOS:
+    SCHEMAS[_army_scenario + ".resolved"] = CheckpointSchema(
+        _army_scenario + ".resolved",
+        _army_scenario + ".run",
+        _army_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "military.nations",
+            "military.ships",
+            "military.task_forces",
+        ),
+    )
+del _army_scenario
+
+SCHEMAS["advisory_map_missions_case16.resolved"] = CheckpointSchema(
+    "advisory_map_missions_case16.resolved",
+    "advisory_map_missions_case16.run",
+    "advisory_map_missions_case16",
+    (
+        "turn.phase",
+        "turn.active",
+        "turn.economic_turn",
+        "missions",
+    ),
+)
+
+for _tactical_scenario in _TACTICAL_SNAPSHOT_SCENARIOS:
+    _fields = [
+        "turn.phase",
+        "turn.active",
+        "turn.economic_turn",
+        "snapshots",
+    ]
+    if _tactical_scenario == "interactive_army_battle_move":
+        _fields += ["targets", "actuals"]
+    SCHEMAS[_tactical_scenario + ".resolved"] = CheckpointSchema(
+        _tactical_scenario + ".resolved",
+        _tactical_scenario + ".run",
+        _tactical_scenario,
+        tuple(_fields),
+    )
+del _tactical_scenario, _fields
+
+for _item_order_scenario in _CITY_ITEM_ORDER_SCENARIOS:
+    SCHEMAS[_item_order_scenario + ".resolved"] = CheckpointSchema(
+        _item_order_scenario + ".resolved",
+        _item_order_scenario + ".run",
+        _item_order_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "civilians.units",
+            "civilians.nations",
+            "applied",
+            "quantity",
+            "requested",
+            "fabric_tracking",
+        ),
+    )
+del _item_order_scenario
 
 SCHEMAS["province_owner_ocean_context.resolved"] = CheckpointSchema(
     "province_owner_ocean_context.resolved",
@@ -2200,6 +2282,129 @@ def normalize_retail_growth(
 ) -> dict[str, Any]:
     observation = normalize_retail_military_phase(raw, checkpoint_id)
     observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+def normalize_native_advisory(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Mission schema for the advisory case-16 queueing path."""
+    observation = normalize_native_reassess_missions(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+def normalize_retail_advisory(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_reassess_missions(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    return observation
+
+
+def _battle_snapshot_fields(
+    payload: Mapping[str, Any], label: str
+) -> dict[str, Any]:
+    snapshots = payload.get("snapshots")
+    if not isinstance(snapshots, list):
+        raise ValueError(f"{label}.snapshots must be an array")
+    fields: dict[str, Any] = {"snapshots": snapshots}
+    for key in ("targets", "actuals"):
+        values = payload.get(key)
+        if values is not None:
+            if not isinstance(values, list):
+                raise ValueError(f"{label}.{key} must be an array")
+            fields[key] = [
+                _require_int(entry, f"{label}.{key}[{index}]")
+                for index, entry in enumerate(values)
+            ]
+    return fields
+
+
+def normalize_native_battle_snapshots(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Done/move/retreat cases: turn state plus the result payload's
+    tactical snapshots (and move targets/actuals)."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    payload = _require_mapping(captures.get("result"), "native result capture")
+    observation = {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": _mission_turn(turn, "native turn"),
+    }
+    observation.update(
+        _battle_snapshot_fields(payload, "native result")
+    )
+    return observation
+
+
+def normalize_retail_battle_snapshots(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = {
+        "checkpoint_id": checkpoint_id,
+        "action_id": checkpoint_id.replace(".resolved", ".run"),
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"),
+                "retail turn_flow_status_flags",
+            ),
+        },
+    }
+    observation.update(_battle_snapshot_fields(raw, "retail"))
+    return observation
+
+
+_ITEM_ORDER_RESULT_FIELDS = (
+    "applied",
+    "quantity",
+    "requested",
+    "fabric_tracking",
+)
+
+
+def normalize_native_city_item_order(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Civilians schema plus the order-slot fields the case emits."""
+    observation = normalize_native_civilians_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    payload = _require_mapping(
+        _native_captures(result).get("result"), "native result capture"
+    )
+    for field in _ITEM_ORDER_RESULT_FIELDS:
+        observation[field] = _require_int(
+            payload.get(field), f"native result.{field}"
+        )
+    return observation
+
+
+def normalize_retail_city_item_order(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_civilians_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    for field in _ITEM_ORDER_RESULT_FIELDS:
+        observation[field] = _require_int(raw.get(field), f"retail {field}")
     return observation
 
 

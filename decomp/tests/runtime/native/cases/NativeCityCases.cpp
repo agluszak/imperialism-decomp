@@ -33,7 +33,14 @@ RuntimeActionResult RunCityItemOrderIncrease(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  return transition.Finish(order->SetQuantity(1));
+  const bool applied = order->SetQuantity(1);
+  JsonObject result;
+  result.Set("applied", applied ? 1 : 0);
+  result.Set("quantity", static_cast<int>(order->quantity));
+  result.Set("requested", static_cast<int>(order->requestedQuantity4c));
+  result.Set("fabric_tracking",
+             static_cast<int>(order->trackingSlots[kResourceFabric]));
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunCityItemOrderDecrease(NativeTransition& transition) {
@@ -50,7 +57,14 @@ RuntimeActionResult RunCityItemOrderDecrease(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  return transition.Finish(order->SetQuantity(0));
+  const bool applied = order->SetQuantity(0);
+  JsonObject result;
+  result.Set("applied", applied ? 1 : 0);
+  result.Set("quantity", static_cast<int>(order->quantity));
+  result.Set("requested", static_cast<int>(order->requestedQuantity4c));
+  result.Set("fabric_tracking",
+             static_cast<int>(order->trackingSlots[kResourceFabric]));
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunPowerPlantUpgrade(NativeTransition& transition) {

@@ -967,6 +967,7 @@ RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
   JsonObject args;
   RuntimeActionResult started;
 
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure(
@@ -1010,6 +1011,7 @@ RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition) {
   JsonObject args;
   JsonArray snapshots;
 
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure(
@@ -1045,7 +1047,9 @@ RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition) {
   if (!AutoArmyBattleToCommit(battle)) {
     return RuntimeActionResult::Failure("tactical auto did not terminate after Done");
   }
-  return transition.Finish(snapshots.Release());
+  JsonObject result;
+  result.Set("snapshots", snapshots.Release());
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
@@ -1063,6 +1067,7 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
   int inputGuard = 20;
   int tile;
 
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure(
@@ -1270,6 +1275,7 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
   TArmyBattle* battle;
   JsonObject args;
 
+  srand(0x1234);
   ClearAllMilitaryOrders();
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure("fixture has no hostile army redeploy");
@@ -1301,7 +1307,11 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
     JsonFreeValue(initial);
     return RuntimeActionResult::Failure("retreat did not terminate");
   }
-  return transition.Finish(initial);
+  JsonArray snapshots;
+  snapshots.Add(initial);
+  JsonObject result;
+  result.Set("snapshots", snapshots.Release());
+  return transition.Finish(result.Release());
 }
 
 // FormStacks once, stop at the first tactical battle, then continue from the

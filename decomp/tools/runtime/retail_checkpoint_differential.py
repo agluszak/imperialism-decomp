@@ -59,6 +59,9 @@ from tools.runtime.checkpoints import (
     _DEVELOPMENT_SCENARIOS,
     _YIELD_SCENARIOS,
     _GROWTH_SCENARIOS,
+    _TACTICAL_SNAPSHOT_SCENARIOS,
+    _ARMY_MILITARY_SCENARIOS,
+    _CITY_ITEM_ORDER_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -93,6 +96,9 @@ from tools.runtime.checkpoints import (
     normalize_native_yield_rebuild,
     normalize_native_specialist_recruitment,
     normalize_native_growth,
+    normalize_native_advisory,
+    normalize_native_battle_snapshots,
+    normalize_native_city_item_order,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -125,6 +131,9 @@ from tools.runtime.checkpoints import (
     normalize_retail_yield_rebuild,
     normalize_retail_specialist_recruitment,
     normalize_retail_growth,
+    normalize_retail_advisory,
+    normalize_retail_battle_snapshots,
+    normalize_retail_city_item_order,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -698,7 +707,14 @@ def load_scenario(name: str) -> Scenario:
         + _DEVELOPMENT_SCENARIOS
         + _YIELD_SCENARIOS
         + _GROWTH_SCENARIOS
-        + ("owned_region_development", "specialist_recruitment")
+        + _TACTICAL_SNAPSHOT_SCENARIOS
+        + _ARMY_MILITARY_SCENARIOS
+        + _CITY_ITEM_ORDER_SCENARIOS
+        + (
+            "owned_region_development",
+            "specialist_recruitment",
+            "advisory_map_missions_case16",
+        )
     ):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -8174,6 +8190,530 @@ def _drive_interactive_battle_attack(
     }
 
 
+# --- interactive_army_battle_done/_move/_retreat + auto_resolve retail drives ---
+# Shared hostile-battle prologue: pinned srand, all orders cleared, one hostile
+# redeploy under a forced war, FormStacks + ordinal + ResolveNextMove, then the
+# active nation's side is unwatched for input. Matches the native cases exactly.
+
+_ELIGIBLE_EVENT = 0x00581280
+_VT_MOVE_ARMY = 0x15C  # slot 0x57 -> TAutoGreatPower::MoveArmy 0x4e78f0
+_VT_ADVISORY_CASE16 = 0x288  # slot 0xa2 -> ...Case16 0x4e9a50
+_ITEM_ORDER_SET_QUANTITY = 0x004B53D0
+
+
+def _setup_hostile_battle(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    set_active: bool = True,
+) -> tuple[int, int, int]:
+    """Returns (sim_mgr, army_mgr, battle) with the created battle pending."""
+    sim_mgr = _u32(session, _SIM_MGR)
+    _invoke_thiscall(
+        session,
+        _SRAND,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0x1234,),
+    )
+    _clear_all_military_orders(
+        session, records, occurrences, breakpoint_roles
+    )
+    snapshot = _TerrainSnapshot(session, _u32(session, _GLOBAL_MAP_STATE))
+    snapshot.refresh_provinces()
+    unit, dest, defender = _find_hostile_redeploy(session, snapshot)
+    if unit == 0:
+        raise RuntimeError("fixture has no hostile army redeploy")
+    owner = _s16(session, unit + 0x18)
+    _force_war_between(session, owner, defender)
+    _invoke_thiscall(
+        session,
+        _TUNIT_SET_ORDERS,
+        unit,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_UNIT_ORDER_REDEPLOY, dest),
+    )
+    if set_active:
+        session.assign(f"*(short*)0x{sim_mgr + 0x2E:08x}", owner)
+    session.assign(f"*(short*)0x{sim_mgr + 0x48:08x}", 0)
+    army_mgr = _u32(session, _MAP_ACTION_CONTEXT_MANAGER)
+    _invoke_thiscall(
+        session,
+        _FORM_STACKS,
+        army_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    session.assign(f"*(int*)0x{army_mgr + 0x10:08x}", 1)
+    _invoke_thiscall(
+        session,
+        _RESOLVE_NEXT_MOVE,
+        army_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    battle = _u32(session, army_mgr + 0x3A4)
+    if battle == 0:
+        raise RuntimeError("redeploy did not create a land battle")
+    return sim_mgr, army_mgr, battle
+
+
+def _unwatch_active_side(
+    session: GdbSession, battle: int, active_nation: int
+) -> tuple[int, int]:
+    """Mirror StopActiveNationArmyPlayerForInput: watch only the active
+    nation's side. Returns (player14, player18)."""
+    player14 = _u32(session, battle + 0x14)
+    player18 = _u32(session, battle + 0x18)
+    for player in (player14, player18):
+        watched = (
+            _eval_int(session, f"*(int*)0x{player + 0x1C:08x}")
+            == active_nation
+        )
+        session.assign(
+            f"*(char*)0x{player + 0x0E:08x}", 0 if watched else 1
+        )
+    return player14, player18
+
+
+def _auto_battle_to_commit(
+    session: GdbSession,
+    battle: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    """Mirror AutoArmyBattleToCommit: unwatch both sides, pulse a pending end
+    of action, then run NextMove to a decision plus one extra step."""
+    player14 = _u32(session, battle + 0x14)
+    player18 = _u32(session, battle + 0x18)
+    session.assign(f"*(char*)0x{player14 + 0x0E:08x}", 1)
+    session.assign(f"*(char*)0x{player18 + 0x0E:08x}", 1)
+    if _eval_int(session, f"*(char*)0x{battle + 0x48:08x}") & 0xFF != 0:
+        side = _eval_int(session, f"*(int*)0x{battle + 0x0C:08x}")
+        current = player14 if side == 0 else player18
+        _invoke_thiscall(
+            session,
+            _TARMY_PLAYER_ADVANCE_PULSE,
+            current,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+    guard = 20000
+    while _s32(session, battle + 0x44) == _TACTICAL_BATTLE_IN_PROGRESS:
+        if guard <= 0:
+            raise RuntimeError("retail tactical auto did not terminate")
+        guard -= 1
+        _next_tactical_move(
+            session, battle, records, occurrences, breakpoint_roles
+        )
+    _next_tactical_move(
+        session, battle, records, occurrences, breakpoint_roles
+    )
+
+
+def _drive_interactive_battle_done(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr, _army_mgr, battle = _setup_hostile_battle(
+        session, records, occurrences, breakpoint_roles
+    )
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    _unwatch_active_side(session, battle, active_nation)
+    snapshots = []
+    if not _pump_battle_to_active_input(
+        session, battle, active_nation, records, occurrences, breakpoint_roles
+    ):
+        raise RuntimeError("retail battle did not reach active-nation input")
+    snapshots.append(
+        _battle_snapshot(
+            session, battle, records, occurrences, breakpoint_roles
+        )
+    )
+    _invoke_thiscall(
+        session,
+        _FINISH_TACTICAL_ACTION,
+        battle,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    if not _pump_battle_to_active_input(
+        session, battle, active_nation, records, occurrences, breakpoint_roles
+    ):
+        raise RuntimeError(
+            "retail Done did not reach the next active-nation input"
+        )
+    snapshots.append(
+        _battle_snapshot(
+            session, battle, records, occurrences, breakpoint_roles
+        )
+    )
+    _auto_battle_to_commit(
+        session, battle, records, occurrences, breakpoint_roles
+    )
+    return {"snapshots": snapshots, **_capture_turn_state(session)}
+
+
+def _drive_interactive_battle_move(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr, _army_mgr, battle = _setup_hostile_battle(
+        session, records, occurrences, breakpoint_roles
+    )
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    _unwatch_active_side(session, battle, active_nation)
+    snapshots = []
+    targets: list[int] = []
+    actuals: list[int] = []
+    if not _pump_battle_to_active_input(
+        session, battle, active_nation, records, occurrences, breakpoint_roles
+    ):
+        raise RuntimeError("retail battle did not reach active-nation input")
+    snapshots.append(
+        _battle_snapshot(
+            session, battle, records, occurrences, breakpoint_roles
+        )
+    )
+    tile_count = _s32(session, battle + 0x3C)
+    grid = _u32(session, battle + 0x04)
+    costs = _u32(session, battle + 0x24)
+    reaction_stopped = 0
+    input_guard = 20
+    while (
+        not reaction_stopped
+        and _s32(session, battle + 0x44) == _TACTICAL_BATTLE_IN_PROGRESS
+        and input_guard > 0
+    ):
+        input_guard -= 1
+        target = -1
+        best_distance = 9999
+        moving = _u32(session, battle + 0x1C)
+        for tile in range(tile_count):
+            if (
+                _s16(session, costs + 2 * tile) <= 0
+                or _u32(session, grid + _TACTICAL_TILE_STRIDE * tile + 4)
+                != 0
+            ):
+                continue
+            distance = 9999
+            for enemy_tile in range(tile_count):
+                occupant = _u32(
+                    session,
+                    grid + _TACTICAL_TILE_STRIDE * enemy_tile + 4,
+                )
+                if occupant == 0:
+                    continue
+                if _s32(session, occupant + 0x20) != _s32(
+                    session, moving + 0x20
+                ):
+                    candidate = _hex_tile_distance(tile, enemy_tile)
+                    if candidate < distance:
+                        distance = candidate
+            if distance < best_distance:
+                best_distance = distance
+                target = tile
+        if target < 0:
+            raise RuntimeError(
+                "selected tactical unit reached no reaction-fire move target"
+            )
+        _invoke_virtual(
+            session,
+            battle,
+            _MOVE_TACTICAL_VTABLE,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(moving, target),
+        )
+        targets.append(target)
+        actuals.append(_s32(session, moving + 0x08))
+        reaction_stopped = 1 if _s32(session, moving + 0x08) != target else 0
+        if not _pump_battle_to_active_input(
+            session,
+            battle,
+            active_nation,
+            records,
+            occurrences,
+            breakpoint_roles,
+        ):
+            raise RuntimeError(
+                "retail Move did not reach the next active-nation input"
+            )
+        snapshots.append(
+            _battle_snapshot(
+                session, battle, records, occurrences, breakpoint_roles
+            )
+        )
+    if not reaction_stopped:
+        raise RuntimeError(
+            "retail fixture did not produce reaction-stopped movement"
+        )
+    _auto_battle_to_commit(
+        session, battle, records, occurrences, breakpoint_roles
+    )
+    return {
+        "targets": targets,
+        "actuals": actuals,
+        "snapshots": snapshots,
+        **_capture_turn_state(session),
+    }
+
+
+def _drive_interactive_battle_retreat(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr, _army_mgr, battle = _setup_hostile_battle(
+        session, records, occurrences, breakpoint_roles
+    )
+    active_nation = _s16(session, sim_mgr + 0x2E)
+    _unwatch_active_side(session, battle, active_nation)
+    if not _pump_battle_to_active_input(
+        session, battle, active_nation, records, occurrences, breakpoint_roles
+    ):
+        raise RuntimeError("retail battle did not reach active-nation input")
+    initial = _battle_snapshot(
+        session, battle, records, occurrences, breakpoint_roles
+    )
+    player14 = _u32(session, battle + 0x14)
+    player18 = _u32(session, battle + 0x18)
+    side = _s32(session, battle + 0x0C)
+    current = player14 if side == 0 else player18
+    session.assign(f"*(char*)0x{current + 0x0F:08x}", 1)
+    session.assign(f"*(char*)0x{current + 0x0E:08x}", 1)
+    _invoke_thiscall(
+        session,
+        _TARMY_PLAYER_CURSOR_PROFILE,
+        current,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0,),
+    )
+    _invoke_thiscall(
+        session,
+        _TARMY_PLAYER_ADVANCE_PULSE,
+        current,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _auto_battle_to_commit(
+        session, battle, records, occurrences, breakpoint_roles
+    )
+    return {"snapshots": [initial], **_capture_turn_state(session)}
+
+
+def _drive_auto_resolve_land_battle(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    _sim_mgr, _army_mgr, battle = _setup_hostile_battle(
+        session,
+        records,
+        occurrences,
+        breakpoint_roles,
+        set_active=False,
+    )
+    guard = 20000
+    while _s32(session, battle + 0x44) == _TACTICAL_BATTLE_IN_PROGRESS:
+        if guard <= 0:
+            raise RuntimeError("retail tactical auto did not terminate")
+        guard -= 1
+        _next_tactical_move(
+            session, battle, records, occurrences, breakpoint_roles
+        )
+    _next_tactical_move(
+        session, battle, records, occurrences, breakpoint_roles
+    )
+    return _capture_military_phase(session)
+
+
+# --- army_movement_give_orders / advisory_map_missions_case16 ------------------
+# Both loop the great-power slots, keep TAutoGreatPower instances eligible via
+# TSimMgr::IsNationSlotEligibleForEventProcessing (0x581280), then dispatch the
+# minister entry point through the nation vtable (MoveArmy byte 0x15c, case-16
+# advisory queueing byte 0x288).
+
+
+def _auto_great_power_slots(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> list[tuple[int, int]]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    slots = []
+    for slot in range(_MAJOR_NATION_COUNT):
+        nation = _nation_pointer(session, slot)
+        if nation == 0:
+            continue
+        if (
+            _runtime_class(
+                session, nation, records, occurrences, breakpoint_roles
+            )
+            != _CLASS_AUTO_GREAT_POWER
+        ):
+            continue
+        eligible = (
+            _invoke_thiscall(
+                session,
+                _ELIGIBLE_EVENT,
+                sim_mgr,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(slot,),
+            )
+            & 0xFF
+        )
+        if eligible == 0:
+            continue
+        slots.append((slot, nation))
+    return slots
+
+
+def _drive_advisory_case16(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    slots = _auto_great_power_slots(
+        session, records, occurrences, breakpoint_roles
+    )
+    if not slots:
+        raise RuntimeError("the retail fixture has no AutoGreatPower")
+    for _slot, nation in slots:
+        _invoke_virtual(
+            session,
+            nation,
+            _VT_ADVISORY_CASE16,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+    return _capture_missions(
+        session, records, occurrences, breakpoint_roles
+    )
+
+
+def _drive_army_movement(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    slots = _auto_great_power_slots(
+        session, records, occurrences, breakpoint_roles
+    )
+    if not slots:
+        raise RuntimeError("the retail fixture has no AutoGreatPower")
+    for _slot, nation in slots:
+        _invoke_virtual(
+            session,
+            nation,
+            _VT_MOVE_ARMY,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+    return _capture_military_phase(session)
+
+
+# --- city_item_order_increase / _decrease --------------------------------------
+# Seed the city's fabric stock + clothing production slots, then drive the
+# clothing TItemOrder's SetQuantity (0x4b53d0). The decrease case pre-seeds
+# quantity 1 before the transition boundary.
+
+_CITY_ORDER_SLOTS = 0xE4
+_CITY_STOCKS = 0xB6
+_CITY_PRODUCTION_ORDER_TABLE = 0x1DC
+_CITY_PRODUCTION_ACCUM = 0x1FC
+_ORDER_QUANTITY = 0x04
+_ORDER_REQUESTED = 0x4C
+_ORDER_TRACKING_SLOTS = 0x10
+_RESOURCE_FABRIC = 8
+_RESOURCE_CLOTHING = 13
+
+
+def _drive_city_item_order(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    quantity: int,
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    nation = _nation_pointer(session, _s16(session, sim_mgr + 0x2E))
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    city = _u32(session, nation + 0x894)
+    order = _u32(
+        session, city + _CITY_ORDER_SLOTS + _RESOURCE_CLOTHING * 4
+    )
+    if order == 0:
+        raise RuntimeError("retail city has no clothing order slot")
+    session.assign(
+        f"*(short*)0x{city + _CITY_STOCKS + _RESOURCE_FABRIC * 2:08x}", 2
+    )
+    session.assign(
+        f"*(short*)0x{city + _CITY_PRODUCTION_ORDER_TABLE + 2:08x}", 1
+    )
+    session.assign(
+        f"*(short*)0x{city + _CITY_PRODUCTION_ACCUM + 2:08x}", 1
+    )
+    if quantity == 0:
+        _invoke_thiscall(
+            session,
+            _ITEM_ORDER_SET_QUANTITY,
+            order,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(1,),
+        )
+    applied = (
+        _invoke_thiscall(
+            session,
+            _ITEM_ORDER_SET_QUANTITY,
+            order,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(quantity,),
+        )
+        & 0xFF
+    )
+    result = _capture_civilians_phase(session)
+    result["applied"] = applied
+    result["quantity"] = _s16(session, order + _ORDER_QUANTITY)
+    result["requested"] = _s16(session, order + _ORDER_REQUESTED)
+    result["fabric_tracking"] = _s16(
+        session, order + _ORDER_TRACKING_SLOTS + _RESOURCE_FABRIC * 2
+    )
+    return result
+
+
 def _read_diplomacy_records(session: GdbSession, queue: int) -> list[dict[str, int]]:
     if queue == 0:
         return []
@@ -8725,6 +9265,56 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive == "interactive_army_battle_done"
+                    ):
+                        result_fields = _drive_interactive_battle_done(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive == "interactive_army_battle_move"
+                    ):
+                        result_fields = _drive_interactive_battle_move(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive == "interactive_army_battle_retreat"
+                    ):
+                        result_fields = _drive_interactive_battle_retreat(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "auto_resolve_land_battle":
+                        result_fields = _drive_auto_resolve_land_battle(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "advisory_map_missions_case16":
+                        result_fields = _drive_advisory_case16(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "army_movement_give_orders":
+                        result_fields = _drive_army_movement(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in _CITY_ITEM_ORDER_SCENARIOS:
+                        result_fields = _drive_city_item_order(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            quantity=(
+                                1
+                                if scenario.drive
+                                == "city_item_order_increase"
+                                else 0
+                            ),
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in _NATION_ECONOMY_SPECS:
                         result_fields = _drive_nation_economy(
                             session,
@@ -9024,8 +9614,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         *_DEVELOPMENT_SCENARIOS,
         *_YIELD_SCENARIOS,
         *_GROWTH_SCENARIOS,
+        *_TACTICAL_SNAPSHOT_SCENARIOS,
+        *_ARMY_MILITARY_SCENARIOS,
+        *_CITY_ITEM_ORDER_SCENARIOS,
         "owned_region_development",
         "specialist_recruitment",
+        "advisory_map_missions_case16",
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -9223,8 +9817,20 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_specialist_recruitment(
                 native_result, scenario.result_checkpoint_id
             )
-        elif scenario.drive in _GROWTH_SCENARIOS:
+        elif scenario.drive in _GROWTH_SCENARIOS + _ARMY_MILITARY_SCENARIOS:
             recomp_observation = normalize_native_growth(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive == "advisory_map_missions_case16":
+            recomp_observation = normalize_native_advisory(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _TACTICAL_SNAPSHOT_SCENARIOS:
+            recomp_observation = normalize_native_battle_snapshots(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _CITY_ITEM_ORDER_SCENARIOS:
+            recomp_observation = normalize_native_city_item_order(
                 native_result, scenario.result_checkpoint_id
             )
         elif scenario.drive == "turn_alerts_later_turn":
@@ -9487,8 +10093,25 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         retail_observation = normalize_retail_specialist_recruitment(
             retail_records[0]["fields"], result_checkpoint
         )
+    elif result_checkpoint == "advisory_map_missions_case16.resolved":
+        retail_observation = normalize_retail_advisory(
+            retail_records[0]["fields"], result_checkpoint
+        )
     elif result_checkpoint in (
-        _name + ".resolved" for _name in _GROWTH_SCENARIOS
+        _name + ".resolved" for _name in _TACTICAL_SNAPSHOT_SCENARIOS
+    ):
+        retail_observation = normalize_retail_battle_snapshots(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _CITY_ITEM_ORDER_SCENARIOS
+    ):
+        retail_observation = normalize_retail_city_item_order(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved"
+        for _name in _GROWTH_SCENARIOS + _ARMY_MILITARY_SCENARIOS
     ):
         retail_observation = normalize_retail_growth(
             retail_records[0]["fields"], result_checkpoint
