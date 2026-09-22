@@ -187,6 +187,11 @@ _DIPLOMACY_ECONOMY_SCENARIOS = (
     "return_to_map_clears_notice_queues",
 )
 
+_PROVINCE_SCENARIOS = (
+    "province_loss_with_stationed_unit",
+    "province_owner_ocean_context",
+)
+
 
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
@@ -811,6 +816,37 @@ for _diplo_economy_scenario in _DIPLOMACY_ECONOMY_SCENARIOS:
         ),
     )
 del _diplo_economy_scenario
+
+SCHEMAS["province_loss_with_stationed_unit.resolved"] = CheckpointSchema(
+    "province_loss_with_stationed_unit.resolved",
+    "province_loss_with_stationed_unit.run",
+    "province_loss_with_stationed_unit",
+    (
+        "turn.phase",
+        "turn.active",
+        "turn.economic_turn",
+        "turn.turn_flow_status_flags",
+        "military.nations",
+        "military.ships",
+        "military.task_forces",
+        "military.province_owners",
+        "civilians.units",
+        "civilians.nations",
+    ),
+)
+SCHEMAS["province_owner_ocean_context.resolved"] = CheckpointSchema(
+    "province_owner_ocean_context.resolved",
+    "province_owner_ocean_context.run",
+    "province_owner_ocean_context",
+    (
+        "turn.phase",
+        "turn.active",
+        "turn.economic_turn",
+        "turn.turn_flow_status_flags",
+        "province_owners",
+        "missions",
+    ),
+)
 
 
 _RESOURCE_NAMES = (
@@ -1756,6 +1792,127 @@ def normalize_retail_military_phase(
             _require_mapping(raw.get("military"), "retail military"),
             "retail military",
         ),
+    }
+
+
+def normalize_native_province_loss(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a native province-loss result: turn + military + civilians."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    return {
+        "checkpoint_id": "province_loss_with_stationed_unit.resolved",
+        "action_id": "province_loss_with_stationed_unit.run",
+        "turn": {
+            "phase": _require_int(turn.get("phase"), "native turn.phase"),
+            "active": _require_int(turn.get("active_nation"), "native active"),
+            "economic_turn": _require_int(
+                turn.get("economic_turn"), "native economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                turn.get("turn_flow_status_flags"), "native flags"
+            ),
+        },
+        "military": _military_ephemeral(
+            _require_mapping(
+                ephemeral.get("military"), "native ephemeral military"
+            ),
+            "native military",
+        ),
+        "civilians": _civilians_ephemeral(
+            _require_mapping(
+                ephemeral.get("civilians"), "native ephemeral civilians"
+            ),
+            "native civilians",
+        ),
+    }
+
+
+def normalize_retail_province_loss(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a retail GDB province-loss capture to the same schema."""
+    return {
+        "checkpoint_id": "province_loss_with_stationed_unit.resolved",
+        "action_id": "province_loss_with_stationed_unit.run",
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail flags"
+            ),
+        },
+        "military": _military_ephemeral(
+            _require_mapping(raw.get("military"), "retail military"),
+            "retail military",
+        ),
+        "civilians": _civilians_ephemeral(
+            _require_mapping(raw.get("civilians"), "retail civilians"),
+            "retail civilians",
+        ),
+    }
+
+
+def normalize_native_province_ocean(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a native ocean-context result: turn + province owners + missions."""
+    if result.get("status") != "passed":
+        raise ValueError(f"native driver did not pass: {result.get('status')!r}")
+    captures = _native_captures(result)
+    after = _require_mapping(captures.get("after"), "native after capture")
+    ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
+    turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
+    military = _require_mapping(
+        ephemeral.get("military"), "native ephemeral military"
+    )
+    owners_raw = military.get("province_owners")
+    if not isinstance(owners_raw, list):
+        raise ValueError("native military.province_owners must be an array")
+    return {
+        "checkpoint_id": "province_owner_ocean_context.resolved",
+        "action_id": "province_owner_ocean_context.run",
+        "turn": _mission_turn(turn, "native turn"),
+        "province_owners": [
+            _require_int(owner, f"native province_owners[{index}]")
+            for index, owner in enumerate(owners_raw)
+        ],
+        "missions": _mission_records(
+            ephemeral.get("missions"), "native missions"
+        ),
+    }
+
+
+def normalize_retail_province_ocean(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Reduce a retail GDB ocean-context capture to the same schema."""
+    military = _require_mapping(raw.get("military"), "retail military")
+    owners_raw = military.get("province_owners")
+    if not isinstance(owners_raw, list):
+        raise ValueError("retail military.province_owners must be an array")
+    return {
+        "checkpoint_id": "province_owner_ocean_context.resolved",
+        "action_id": "province_owner_ocean_context.run",
+        "turn": {
+            "phase": _require_int(raw.get("turn_phase"), "retail turn.phase"),
+            "active": _require_int(
+                raw.get("active_nation"), "retail active_nation"
+            ),
+            "economic_turn": _require_int(
+                raw.get("economic_turn"), "retail economic_turn"
+            ),
+            "turn_flow_status_flags": _require_int(
+                raw.get("turn_flow_status_flags"), "retail flags"
+            ),
+        },
+        "province_owners": [
+            _require_int(owner, f"retail province_owners[{index}]")
+            for index, owner in enumerate(owners_raw)
+        ],
+        "missions": _mission_records(raw.get("missions"), "retail missions"),
     }
 
 

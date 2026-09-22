@@ -55,6 +55,7 @@ from tools.runtime.checkpoints import (
     _PLAYER_DIPLOMACY_POLICY_SCENARIOS,
     _NATION_ECONOMY_SCENARIOS,
     _DIPLOMACY_ECONOMY_SCENARIOS,
+    _PROVINCE_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -83,6 +84,8 @@ from tools.runtime.checkpoints import (
     normalize_native_turn_stop_trade,
     normalize_native_player_diplomacy_policy,
     normalize_native_nation_economy,
+    normalize_native_province_loss,
+    normalize_native_province_ocean,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -109,6 +112,8 @@ from tools.runtime.checkpoints import (
     normalize_retail_turn_stop_trade,
     normalize_retail_player_diplomacy_policy,
     normalize_retail_nation_economy,
+    normalize_retail_province_loss,
+    normalize_retail_province_ocean,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -675,7 +680,11 @@ def load_scenario(name: str) -> Scenario:
             drive=name,
             result_checkpoint_id=name + ".resolved",
         )
-    elif name in _NATION_ECONOMY_SCENARIOS + _DIPLOMACY_ECONOMY_SCENARIOS:
+    elif name in (
+        _NATION_ECONOMY_SCENARIOS
+        + _DIPLOMACY_ECONOMY_SCENARIOS
+        + _PROVINCE_SCENARIOS
+    ):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
             name=name,
@@ -5329,6 +5338,204 @@ def _drive_return_to_map(
     return result
 
 
+# --- province ownership retail drives ------------------------------------------
+# Mirror RunProvinceLossWithStationedUnit / RunProvinceOwnerOceanContext: both
+# pick the active nation's first non-capital owned province with linked tiles,
+# then call the real TMapMgr::ChangeProvinceOwner.
+
+_FN_CHANGE_PROVINCE_OWNER = 0x00513290
+_FN_CIV_UNIT_CTOR = 0x005C28C0
+_FN_CIV_UNIT_INIT = 0x005C2940
+_TCIV_UNIT_SIZE = 0x28
+_TERRAIN_DESCRIPTOR_TABLE = 0x006A4310
+_FN_STRETCH_PROVINCE_ADD = 0x0055E9C0
+_VT_MISSION_MATCHES = 0x13 * 4
+_VT_MISSION_HOLD = 0x25 * 4
+
+
+def _find_non_capital_owned_province(session: GdbSession, nation: int) -> int:
+    """First ownedRegionList entry whose city tile differs from homeTileIndex
+    and whose linkedRegionCount is nonzero (-1 when none)."""
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    city_score_table = _u32(session, map_state + 0x10)
+    owned_regions = _u32(session, nation + 0x90)
+    home_tile = _s16(session, nation + 0x88)
+    if owned_regions == 0:
+        return -1
+    for region_id in _longint_list_entries(session, owned_regions):
+        province = city_score_table + region_id * _PROVINCE_STRIDE
+        if (
+            _s16(session, province + 0x04) != home_tile
+            and _s8(session, province + 0x3A) > 0
+        ):
+            return region_id
+    return -1
+
+
+def _drive_province_loss(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    source = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, source)
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    province_id = _find_non_capital_owned_province(session, nation)
+    if province_id < 0:
+        raise RuntimeError(
+            "retail fixture has no non-capital owned province with linked tiles"
+        )
+    minor_slot = -1
+    for slot in range(7, 23):
+        if _u32(session, _TERRAIN_DESCRIPTOR_TABLE + slot * 4) != 0:
+            minor_slot = slot
+            break
+    if minor_slot < 0:
+        raise RuntimeError("retail fixture has no minor nation")
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    record = _u32(session, map_state + 0x10) + province_id * _PROVINCE_STRIDE
+    tile = _s16(session, record + 0x42)
+    civilian = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TCIV_UNIT_SIZE,),
+    )
+    _invoke_thiscall(
+        session, _FN_CIV_UNIT_CTOR, civilian, records, occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _FN_CIV_UNIT_INIT,
+        civilian,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(0, tile, source),
+    )
+    _new_military_unit(
+        session, 0, province_id, source, records, occurrences,
+        breakpoint_roles,
+    )
+    _new_military_unit(
+        session, 0, -1, source, records, occurrences, breakpoint_roles
+    )
+    _invoke_thiscall(
+        session,
+        _FN_CHANGE_PROVINCE_OWNER,
+        map_state,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(province_id, minor_slot),
+    )
+    result = _capture_military_phase(session)
+    result["civilians"] = _capture_civilians_phase(session)["civilians"]
+    return result
+
+
+def _drive_province_ocean(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    source = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, source)
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    province_id = _find_non_capital_owned_province(session, nation)
+    if province_id < 0:
+        raise RuntimeError(
+            "retail fixture has no non-capital owned province with linked tiles"
+        )
+    ai_slot = -1
+    for slot in range(_MAJOR_NATION_COUNT):
+        if slot != source and _nation_pointer(session, slot) != 0:
+            ai_slot = slot
+            break
+    if ai_slot < 0:
+        raise RuntimeError("retail fixture has no AI great power")
+    zone = _u32(session, _MAP_ACTION_CONTEXT_LIST_HEAD)
+    if zone == 0:
+        raise RuntimeError("retail fixture has no ocean zone context")
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    record = _u32(session, map_state + 0x10) + province_id * _PROVINCE_STRIDE
+    session.assign(f"*(signed char*)0x{record + 0x08:08x}", 0)
+    _invoke_thiscall(
+        session,
+        _FN_STRETCH_PROVINCE_ADD,
+        zone + 0x34,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(record,),
+    )
+    ai = _nation_pointer(session, ai_slot)
+    saved_eligibility = _u8(session, ai + 0xA0)
+    session.assign(f"*(unsigned char*)0x{ai + 0xA0:08x}", 0)
+    _invoke_thiscall(
+        session,
+        _FN_CHANGE_PROVINCE_OWNER,
+        map_state,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(province_id, ai_slot),
+    )
+    session.assign(
+        f"*(unsigned char*)0x{ai + 0xA0:08x}", saved_eligibility
+    )
+    queue = _u32(session, ai + _NATION_MISSION_QUEUE)
+    held = False
+    for mission in _sorted_ptr_list_entries(session, queue):
+        if (
+            _invoke_virtual(
+                session,
+                mission,
+                _VT_MISSION_MATCHES,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(3, province_id, 0),
+            )
+            & 0xFF
+            != 0
+        ):
+            _invoke_virtual(
+                session,
+                mission,
+                _VT_MISSION_HOLD,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(0,),
+            )
+            held = True
+            break
+    if not held:
+        raise RuntimeError(
+            "retail province ownership change created no defend mission"
+        )
+    result = _capture_missions(
+        session, records, occurrences, breakpoint_roles
+    )
+    result["military"] = {
+        "province_owners": _capture_military_phase(session)["military"][
+            "province_owners"
+        ]
+    }
+    return result
+
+
 # --- season_advance_clears_status_flags retail drive ---------------------------
 # Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
 # fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
@@ -7595,6 +7802,18 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif (
+                        scenario.drive == "province_loss_with_stationed_unit"
+                    ):
+                        result_fields = _drive_province_loss(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "province_owner_ocean_context":
+                        result_fields = _drive_province_ocean(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in _NATION_ECONOMY_SPECS:
                         result_fields = _drive_nation_economy(
                             session,
@@ -7890,6 +8109,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         *_PLAYER_POLICY_ALL_SCENARIOS,
         *_NATION_ECONOMY_SCENARIOS,
         *_DIPLOMACY_ECONOMY_SCENARIOS,
+        *_PROVINCE_SCENARIOS,
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -8069,6 +8289,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_player_diplomacy_policy(
                 native_result, scenario.result_checkpoint_id
             )
+        elif scenario.drive == "province_loss_with_stationed_unit":
+            recomp_observation = normalize_native_province_loss(native_result)
+        elif scenario.drive == "province_owner_ocean_context":
+            recomp_observation = normalize_native_province_ocean(native_result)
         elif scenario.drive == "turn_alerts_later_turn":
             recomp_observation = normalize_native_turn_alerts_later(
                 native_result
@@ -8303,6 +8527,14 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     ):
         retail_observation = normalize_retail_player_diplomacy_policy(
             retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint == "province_loss_with_stationed_unit.resolved":
+        retail_observation = normalize_retail_province_loss(
+            retail_records[0]["fields"]
+        )
+    elif result_checkpoint == "province_owner_ocean_context.resolved":
+        retail_observation = normalize_retail_province_ocean(
+            retail_records[0]["fields"]
         )
     elif result_checkpoint == CHECKPOINT_TURN_ALERTS_LATER:
         retail_observation = normalize_retail_turn_alerts_later(
