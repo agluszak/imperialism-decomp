@@ -7,11 +7,14 @@
 struct CStr32 {
   char data[0x20];
 
-  // Defined in-class: the original inlines this into every stack declaration (the
+  // Defined in-class: the original inlines this into stack declarations (the
   // stride-0x20 store loop at 0x4a1c47 in TArmyMgr::ReadFrom is an array of two of
-  // these being constructed), while still emitting the standalone copy below because
-  // the vector-construction helper takes the constructor's address.
-  // FUNCTION: IMPERIALISM 0x004a31c0
+  // these being constructed). The binary also carries a standalone copy at
+  // 0x4a31c0 whose address is passed to the vector-construction helper at
+  // 0x4a291f; our build emits rolled loops at every array site, so the copy is
+  // claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x004a31c0
+  // ownership-only
   CStr32() {
     data[0] = 0;
   }
@@ -26,7 +29,11 @@ struct CStr255 {
   char data[0xff];
 
   // In-class for the same reason as CStr32 above (stride-0xff loop at 0x4a1c58).
-  // FUNCTION: IMPERIALISM 0x004a31e0
+  // The binary's standalone copy at 0x4a31e0 is referenced as the
+  // vector-construction helper's ctor pointer at four array-init sites; our build
+  // emits rolled loops at every site, so the copy is claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x004a31e0
+  // ownership-only
   CStr255() {
     data[0] = 0;
   }

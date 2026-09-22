@@ -46,8 +46,11 @@ public:
   // controlTag at +0x1c -- and no others. idleFrequencyTicks/lastIdleTick are the idle throttle
   // and last-idle stamp and firstBehavior is a list head, none of which a fresh copy
   // inherits.
-  // MATCH: keep this in-class (MSVC5 copy-ctor emission / reccmp pairing).
-  // FUNCTION: IMPERIALISM 0x0048a750
+  // MATCH: keep this in-class (MSVC5 copy-ctor emission). The binary carries an
+  // unreferenced COMDAT copy at 0x48a750; our build expands the body inline at every
+  // site and emits no standalone symbol, so the copy is claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x0048a750
+  // ownership-only
   TEventHandler(const TEventHandler& source)
       : TObject(), enabled(source.enabled), viewEnabled(source.viewEnabled),
         nextHandler(source.nextHandler), controlTag(source.controlTag) {}

@@ -17,8 +17,11 @@ public:
 
   // Defined inline, like TSortedList's own ctor: the construction site inlines the base
   // TObject-vtbl + CPtrList(10) sequence and then stores this class's vtable (0x4a193a).
-  // The marker claims the COMDAT copy the binary also carries.
-  // FUNCTION: IMPERIALISM 0x004a8450
+  // The binary also carries an unreferenced COMDAT copy at 0x4a8450 -- claimed
+  // SYNTHETIC ownership-only: our build inlines every site and emits no standalone
+  // symbol, so no FUNCTION marker can pair it.
+  // SYNTHETIC: IMPERIALISM 0x004a8450
+  // ownership-only
   TArmyStackList() : TSortedList() {}
 };
 ASSERT_SIZE(TArmyStackList, 0x20);

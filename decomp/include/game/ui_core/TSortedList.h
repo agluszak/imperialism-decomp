@@ -73,11 +73,14 @@ public:
   CPtrList listState; // +0x04
 
   // Defined inline (like the original): construction sites inline the TObject-vtbl +
-  // CPtrList(10) sequence (e.g. 0x4a18f0); the binary also carries a COMDAT copy that
-  // two call sites invoke non-inlined (settled by the 0x4a8640 listing: TObject base
-  // vptr 0x6485c0, CPtrList(10) member ctor at +0x4, final TSortedList vptr 0x648ee0,
-  // return-this -- a constructor, owned by TSortedList).
-  // FUNCTION: IMPERIALISM 0x004a8640
+  // CPtrList(10) sequence (e.g. 0x4a18f0); the binary also carries an EH-framed COMDAT
+  // copy that two call sites invoke non-inlined via ILT thunk 0x401947 (settled by the
+  // 0x4a8640 listing: TObject base vptr 0x6485c0, CPtrList(10) member ctor at +0x4,
+  // final TSortedList vptr 0x648ee0, return-this -- a constructor, owned by
+  // TSortedList). Our build expands the body inline at both corresponding sites and
+  // emits no standalone symbol, so the copy is claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x004a8640
+  // ownership-only
   TSortedList() : listState(10) {}
 };
 

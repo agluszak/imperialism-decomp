@@ -11,8 +11,11 @@ public:
   // FUNCTION: IMPERIALISM 0x004be230
   ~TInteriorMinister() override {}
   // In-class so VC5 can inline the immediate TMinister construction into concrete
-  // city-minister constructors; it also emits the original standalone copy.
-  // FUNCTION: IMPERIALISM 0x004be1d0
+  // city-minister constructors. The binary also carries an unreferenced COMDAT copy
+  // at 0x4be1d0; our build expands the body inline at every site and emits no
+  // standalone symbol, so the copy is claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x004be1d0
+  // ownership-only
   TInteriorMinister() : TMinister(), capabilityFlag14(1), capabilityFlag16(1) {}
 
   DECLARE_DYNCREATE(TInteriorMinister)

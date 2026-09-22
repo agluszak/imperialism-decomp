@@ -49,10 +49,14 @@ public:
   short resourceTypeIndex; // 0x48 — resource/entry type index
   short unused4a;          // 0x4a — field-xrefs show zero accesses; layout padding/reserved
 
-  // In-class inline. 0x004b4f00 is the out-of-line copy MSVC still emits, but derived
-  // CreateObject bodies absorb it instead of calling it: TItemOrder::CreateObject
-  // (0x004b51d0) has no call and no EH frame, just new + the derived vptr store.
-  // FUNCTION: IMPERIALISM 0x004b4f00
+  // In-class inline. 0x004b4f00 is the out-of-line copy the binary carries; the
+  // EH-framed TCity::ICity invokes it non-inlined via ILT thunk 0x405b9b (call at
+  // 0x4b2a00), while derived CreateObject bodies absorb it instead of calling it:
+  // TItemOrder::CreateObject (0x004b51d0) has no call and no EH frame, just new +
+  // the derived vptr store. Our build expands the body inline at every site and
+  // emits no standalone symbol, so the copy is claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x004b4f00
+  // ownership-only
   TProductionOrder() : TObject() {}
 };
 

@@ -13,7 +13,11 @@ public:
   short auxValueA;             // 0x64
   short auxValueB;             // 0x66
 
-  // FUNCTION: IMPERIALISM 0x00588580
+  // The binary carries an unreferenced COMDAT copy at 0x588580; our build expands
+  // the body inline at every site and emits no standalone symbol, so the copy is
+  // claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x00588580
+  // ownership-only
   TAmtBar() : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
   DECLARE_DYNCREATE(TAmtBar)
 

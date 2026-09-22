@@ -313,8 +313,11 @@ public:
   // ORACLE: Remove(TShip*). Removes the ship's child link, updates its class count and
   // preferred-child cache, then clears the ship's owner backlink.
   // MATCH: the class-body definition is material:
-  // VC5 both expands it in RegainVirginity and retains its COMDAT copy at 0x553d40.
-  // FUNCTION: IMPERIALISM 0x00553d40
+  // VC5 expands it in RegainVirginity. The binary also carries an unreferenced
+  // COMDAT copy at 0x553d40; our build expands the body inline at every site and
+  // emits no standalone symbol, so the copy is claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x00553d40
+  // ownership-only
   void Remove(TShip* ship) {
     TMapOrderChildLinkNode* matchingLink;
     if (shipList == 0) {

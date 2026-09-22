@@ -37,7 +37,11 @@ public:
   unsigned char padding9D;
   short embeddedPageIndex9E;
 
-  // FUNCTION: IMPERIALISM 0x004c6eb0
+  // The binary carries an unreferenced COMDAT copy at 0x4c6eb0; our build expands
+  // the body inline at every site and emits no standalone symbol, so the copy is
+  // claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x004c6eb0
+  // ownership-only
   TBuildingView() : TNoHilitePicture() {
     city94 = 0;
   }

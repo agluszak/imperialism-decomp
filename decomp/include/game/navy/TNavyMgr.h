@@ -76,8 +76,11 @@ public:
   // then clears the transient primary-order flags on that nation's ships.
   void FreeShipsOf(short nation); // 0x556f60
   // Mac oracle: ClearAllOrders. The class-body definition is material: VC5 expands
-  // it in Free() and retains its out-of-line COMDAT copy at 0x556850.
-  // FUNCTION: IMPERIALISM 0x00556850
+  // it in Free(). The binary also carries an unreferenced COMDAT copy at 0x556850;
+  // our build expands the body inline at every site and emits no standalone symbol,
+  // so the copy is claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x00556850
+  // ownership-only
   void ClearAllOrders() {
     while (g_pNavyPrimaryOrderListHead != 0) {
       g_pNavyPrimaryOrderListHead->Free();

@@ -13,7 +13,11 @@ public:
                        TEvent* event) override;                      // slot 0x0f 0x00586090
   virtual void SetSelectedChildTagAndRefresh(int childTag) override; // slot 0x72 0x586170
   virtual char IsTradeControlAtMinimum() override;                   // slot 0x73 0x586150
-  // FUNCTION: IMPERIALISM 0x00586010
+  // The binary carries an unreferenced COMDAT copy at 0x586010; our build expands
+  // the body inline at every site and emits no standalone symbol, so the copy is
+  // claimed ownership-only.
+  // SYNTHETIC: IMPERIALISM 0x00586010
+  // ownership-only
   TUnitToolbarCluster() : TUberCluster() {}
   DECLARE_DYNCREATE(TUnitToolbarCluster)
 };
