@@ -14,15 +14,18 @@ from tools.runtime.debug.session import StopEvent
 from tools.runtime.checkpoints import (
     CHECKPOINT_COMBINED_MAP_READY,
     CHECKPOINT_ELIMINATION_PHASE,
+    CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
     CHECKPOINT_TURN_STATE_COMBAT_MOVES,
     CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
     SCHEMAS,
     first_checkpoint_difference,
     normalize_native_combined_map,
     normalize_retail_combined_map,
+    normalize_retail_strategic_naval_battle_matrix,
     validate_checkpoint,
 )
 from tools.runtime.retail_checkpoint_differential import (
+    _STRATEGIC_NAVAL_BATTLE_MATRIX,
     _normalize_value,
     _scenario_classification,
     first_divergence,
@@ -101,6 +104,107 @@ class CheckpointSchemaTests(unittest.TestCase):
                 "retail": 7,
                 "recomp": 99,
             },
+        )
+
+
+class StrategicNavalBattleMatrixTests(unittest.TestCase):
+    def test_matrix_covers_semantic_outcomes_and_boundaries(self) -> None:
+        self.assertEqual(len(_STRATEGIC_NAVAL_BATTLE_MATRIX), 20)
+        self.assertEqual(
+            {case["convergence"] for case in _STRATEGIC_NAVAL_BATTLE_MATRIX},
+            {
+                "only_left_fails",
+                "only_right_fails",
+                "both_fail",
+                "neither_fails",
+            },
+        )
+        self.assertEqual(
+            {case["resolution"] for case in _STRATEGIC_NAVAL_BATTLE_MATRIX},
+            {
+                "tier_exhaustion",
+                "left_eliminated",
+                "right_eliminated",
+                "both_eliminated",
+            },
+        )
+        sides = [
+            side
+            for case in _STRATEGIC_NAVAL_BATTLE_MATRIX
+            for side in (case["left"], case["right"])
+        ]
+        self.assertGreaterEqual(
+            len({ship_type for side in sides for ship_type in side[0]}), 6
+        )
+        self.assertEqual({side[1] for side in sides}, {0, 1, 2})
+        self.assertEqual({side[2] for side in sides}, {1, 100, 500, 1000, 1600})
+        self.assertEqual({len(side[0]) for side in sides}, {1, 2, 3, 4})
+        self.assertEqual({side[4] for side in sides}, {0, 100, 200, 400})
+
+    def test_matrix_contains_tier_exhaustion_regression(self) -> None:
+        one_sided = [
+            case
+            for case in _STRATEGIC_NAVAL_BATTLE_MATRIX
+            if case["resolution"] == "tier_exhaustion"
+            and case["convergence"] in {"only_left_fails", "only_right_fails"}
+        ]
+        self.assertGreaterEqual(len(one_sided), 2)
+        for case in one_sided:
+            participant, left_defeated, right_defeated = case["expected"]
+            self.assertIn(participant, {0, 1})
+            self.assertNotEqual(left_defeated, right_defeated)
+
+    def test_matrix_scenario_invokes_the_direct_production_driver(self) -> None:
+        scenario = load_scenario("strategic_naval_battle_matrix")
+        self.assertEqual(scenario.drive, "strategic_naval_battle_matrix")
+        self.assertEqual(
+            scenario.result_checkpoint_id,
+            CHECKPOINT_STRATEGIC_NAVAL_BATTLE_MATRIX,
+        )
+        self.assertEqual(scenario.action_id, "strategic_naval_battle_matrix.run")
+
+    def test_matrix_normalizer_requires_reward_and_ship_state(self) -> None:
+        cases = []
+        for index in range(20):
+            side = {
+                "aggression": 0,
+                "initial_strength": 100,
+                "initial_experience": 5,
+                "initial_admiral_experience": 10,
+                "defeated": False,
+                "admiral_experience": 11,
+                "ships": [
+                    {
+                        "type": 3,
+                        "alive": True,
+                        "strength": 80,
+                        "experience": 8,
+                    }
+                ],
+            }
+            cases.append(
+                {
+                    "case": f"case_{index}",
+                    "seed": index,
+                    "convergence": "both_fail",
+                    "resolution": "tier_exhaustion",
+                    "participant": -1,
+                    "winner": "draw",
+                    "left_defeated": False,
+                    "right_defeated": False,
+                    "left": side,
+                    "right": json.loads(json.dumps(side)),
+                }
+            )
+        observation = normalize_retail_strategic_naval_battle_matrix(
+            {"cases": cases}
+        )
+        validate_checkpoint(observation)
+        self.assertEqual(
+            observation["cases"][0]["left"]["admiral_experience"], 11
+        )
+        self.assertEqual(
+            observation["cases"][0]["left"]["ships"][0]["experience"], 8
         )
 
 
