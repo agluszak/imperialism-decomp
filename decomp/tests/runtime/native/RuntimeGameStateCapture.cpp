@@ -3208,6 +3208,32 @@ JSON_Value* CaptureTradeEphemeral() {
     entry.Set("unfilled_trade_turns",
               CaptureShortArray(nation->unfilledTradeTurnCountsByResource,
                                 kResourceKindCount));
+    entry.Set("diplomacy_eligibility",
+              static_cast<int>(nation->diplomacyEligibilityA0));
+    entry.Set("grant_total", nation->grantTotalCost);
+    entry.Set("need_current",
+              CaptureShortArray(nation->needCurrentByType, kResourceKindCount));
+    entry.Set("need_target",
+              CaptureShortArray(nation->needTargetByType, kResourceKindCount));
+    entry.Set("relation_delta",
+              CaptureShortArray(nation->relationDeltaCurrent, kResourceKindCount));
+    entry.Set("budget_pool_base", nation->budgetPoolBase);
+    entry.Set("budget_pool_delta", nation->budgetPoolDelta);
+    entry.Set("aid_allocation_total", nation->aidAllocationTotal);
+    {
+      JsonArray aidNonzero;
+      const int cellCount = static_cast<int>(
+          sizeof(nation->aidAllocationMatrix) / sizeof(nation->aidAllocationMatrix[0]));
+      for (int cell = 0; cell < cellCount; ++cell) {
+        if (nation->aidAllocationMatrix[cell] != 0) {
+          JsonArray pair;
+          pair.Add(cell);
+          pair.Add(nation->aidAllocationMatrix[cell]);
+          aidNonzero.Add(pair.Release());
+        }
+      }
+      entry.Set("aid_nonzero", aidNonzero.Release());
+    }
     if (nation->city != 0) {
       entry.Set("city_stocks",
                 CaptureShortArray(&nation->city->cityStockCottonB6,

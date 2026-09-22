@@ -53,6 +53,8 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_TURN_STOP_TRADE,
     _PLAYER_DIPLOMACY_POLICY_SCENARIOS,
+    _NATION_ECONOMY_SCENARIOS,
+    _DIPLOMACY_ECONOMY_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -80,6 +82,7 @@ from tools.runtime.checkpoints import (
     normalize_native_turn_stop_state,
     normalize_native_turn_stop_trade,
     normalize_native_player_diplomacy_policy,
+    normalize_native_nation_economy,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -105,6 +108,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_turn_stop_state,
     normalize_retail_turn_stop_trade,
     normalize_retail_player_diplomacy_policy,
+    normalize_retail_nation_economy,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -671,6 +675,20 @@ def load_scenario(name: str) -> Scenario:
             drive=name,
             result_checkpoint_id=name + ".resolved",
         )
+    elif name in _NATION_ECONOMY_SCENARIOS + _DIPLOMACY_ECONOMY_SCENARIOS:
+        base = _load_save_to_map_scenario(fixture)
+        scenario = Scenario(
+            name=name,
+            native_test=name,
+            action_id=name + ".run",
+            fixture=fixture,
+            probes=base.probes,
+            terminal_checkpoint=base.terminal_checkpoint,
+            timeout_seconds=base.timeout_seconds,
+            start_action=base.start_action,
+            drive=name,
+            result_checkpoint_id=name + ".resolved",
+        )
     elif name in ("turn_stop_technology", "turn_stop_trade"):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -1173,10 +1191,12 @@ def _deal_list_size(session: GdbSession, deal_list: int) -> int:
     return _eval_int(session, f"*(int*)0x{deal_list + 8:08x}")
 
 
-def _seed_trade_market(session: GdbSession, active_nation: int) -> None:
-    """Mirror SeedMerchantCapacity + SeedTradeableStocks + SeedHumanTradeOrders
-    (buyClothing=True): merchant-capacity order counts, city stocks, treasury,
-    and the human's remembered trade offers / item potentials."""
+def _seed_trade_market(
+    session: GdbSession, active_nation: int, buy_clothing: bool = True
+) -> None:
+    """Mirror SeedMerchantCapacity + SeedTradeableStocks + SeedHumanTradeOrders:
+    merchant-capacity order counts, city stocks, treasury, and the human's
+    remembered trade offers / item potentials."""
     stock_seed = {0: 8, 1: 8, 2: 12, 3: 10, 4: 10, 5: 4, 6: 6,
                   7: 16, 13: 10, 14: 8, 15: 8, 16: 6}
     for slot in range(_MAJOR_NATION_COUNT):
@@ -1197,8 +1217,11 @@ def _seed_trade_market(session: GdbSession, active_nation: int) -> None:
 
     session.write_memory(active_nation + 0x250, b"\x00" * 46)
     session.write_memory(active_nation + 0x1C6, b"\x00" * 46)
-    session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 13:08x}", -1)
-    session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 2:08x}", 5)
+    if buy_clothing:
+        session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 13:08x}", -1)
+        session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 2:08x}", 5)
+    else:
+        session.assign(f"*(short*)0x{active_nation + 0x250 + 2 * 13:08x}", 4)
 
 
 def _drive_trade_phase(
@@ -1208,6 +1231,7 @@ def _drive_trade_phase(
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
     stages: "dict[str, object] | None" = None,
     economic_turn: int | None = None,
+    buy_clothing: bool = True,
 ) -> None:
     sim_mgr = _eval_int(session, f"*(unsigned int*)0x{_SIM_MGR:08x}")
     if economic_turn is not None:
@@ -1223,7 +1247,7 @@ def _drive_trade_phase(
     ):
         raise RuntimeError("retail active nation is not a human great power")
 
-    _seed_trade_market(session, active_nation)
+    _seed_trade_market(session, active_nation, buy_clothing)
 
     _invoke_thiscall(
         session,
@@ -1499,6 +1523,9 @@ def _capture_trade_phase(session: GdbSession) -> dict[str, object]:
             if city != 0
             else None
         )
+        aid_matrix = struct.unpack(
+            "<368i", session.read_memory(nation + 0x280, 0x170 * 4)
+        )
         nations.append(
             {
                 "treasury": _eval_int(session, f"*(int*)0x{nation + 0x10:08x}"),
@@ -1514,6 +1541,25 @@ def _capture_trade_phase(session: GdbSession) -> dict[str, object]:
                 "purchased_items": list(
                     struct.unpack("<23h", session.read_memory(nation + 0x198, 46))
                 ),
+                "diplomacy_eligibility": _u8(session, nation + 0xA0),
+                "grant_total": _s32(session, nation + 0xAC),
+                "need_current": list(
+                    struct.unpack("<23h", session.read_memory(nation + 0x10E, 46))
+                ),
+                "need_target": list(
+                    struct.unpack("<23h", session.read_memory(nation + 0x13C, 46))
+                ),
+                "relation_delta": list(
+                    struct.unpack("<23h", session.read_memory(nation + 0x16A, 46))
+                ),
+                "budget_pool_base": _s32(session, nation + 0x840),
+                "budget_pool_delta": _s32(session, nation + 0x844),
+                "aid_allocation_total": _s32(session, nation + 0x914),
+                "aid_nonzero": [
+                    [index, value]
+                    for index, value in enumerate(aid_matrix)
+                    if value != 0
+                ],
                 "city_stocks": city_stocks,
             }
         )
@@ -4583,6 +4629,336 @@ def _drive_player_diplomacy_policy(
     return result
 
 
+# --- nation-economy retail drives ----------------------------------------------
+# Mirrors the NativeTradeCases.cpp single-function economy cases. Each spec is a
+# list of ordered steps on the active nation; "vt" invokes the production
+# virtual through the retail vtable, "vtai" on the first TAutoGreatPower.
+
+_VT_PURCHASE_ITEM = 0x20 * 4              # TCountry::PurchaseItem index 0x20
+_VT_RECOMPUTE_AID_BUDGET = 0x59 * 4       # RecomputeDiplomacyAidBudgetScoreFromResourceWeights
+_VT_RESET_NEED_SCORES = 0x5A * 4          # ResetDiplomacyNeedScoresAndClearAidAllocationMatrix
+_VT_RECALL_TRADE_BIDS = 0x5B * 4          # RecallTradeBids
+_VT_ADD_AID_CELL = 0x5D * 4               # AddAmountToAidAllocationMatrixCellAndTotal
+_VT_RESET_NEED_SLOTS = 0x61 * 4           # ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
+_VT_SET_ITEM_POTENTIALS = 0x69 * 4        # SetItemPotentials
+_VT_REMEMBER_TRADE_BIDS = 0x6A * 4        # RememberTradeBids
+_VT_RESET_POLICY_GRANTS = 0x73 * 4        # ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants
+_VT_DECREMENT_NEED = 0x79 * 4             # DecrementNeedLevelByNationStep index 121
+
+_GNATION_REMEMBERED_OFFERS = 0x250
+_GNATION_ITEM_POTENTIALS = 0x1C6
+_GNATION_UNFILLED_OFFERS = 0xB0
+_GNATION_AID_MATRIX = 0x280
+_GNATION_BUDGET_POOL_BASE = 0x840
+_GNATION_BUDGET_POOL_DELTA = 0x844
+_CITY_ORDER_COUNTS = 0x5C
+_CITY_STOCKS = 0xB6
+
+_RESOURCE_STEEL = 11
+_MINOR_SLOT = 7
+
+
+def _nation_economy_common_seeds() -> list[tuple]:
+    """Shared seeding for recall_trade_bids / player_trade_phase_reset."""
+    return [
+        ("z", _GNATION_REMEMBERED_OFFERS, 46),
+        ("fill_short", _GNATION_ITEM_POTENTIALS, 23, 9),
+        ("cs", 0, 3),
+        ("cs", 1, 4),
+        ("cs", 2, 5),
+        ("ssi", _GNATION_REMEMBERED_OFFERS, 0, 7),
+        ("ssi", _GNATION_REMEMBERED_OFFERS, 1, -1),
+        ("ssi", _GNATION_REMEMBERED_OFFERS, 2, 2),
+        ("ss", _GNATION_UNFILLED_OFFERS, 4),
+        ("si", _GNATION_BUDGET_POOL_BASE, 600),
+        ("si", _GNATION_BUDGET_POOL_DELTA, -140),
+        ("ss", 0xA4, 19),
+        ("ss", 0xA2, 7),
+    ]
+
+
+_NATION_ECONOMY_SPECS = {
+    "trade_policy_set": [
+        ("call", _FN_SET_DIPLO_GRANT, ("m1", 1000)),
+        ("vt", _VT_SET_TRADE_POLICY, ("m1", 300)),
+    ],
+    "trade_policy_step": [
+        ("ssi", _GNATION_NEED_LEVELS, "t0", 75),
+        ("si", 0x10, 10001),
+        ("vt", _VT_DECREMENT_NEED, ("t0",)),
+    ],
+    "recall_trade_bids": [
+        ("z", _GNATION_AID_MATRIX, 0x170 * 4),
+        ("sii", _GNATION_AID_MATRIX, 0, 17),
+        ("sii", _GNATION_AID_MATRIX, 0x16F, -9),
+        ("vt", _VT_RECALL_TRADE_BIDS, ()),
+    ],
+    "player_trade_phase_reset": [
+        ("co", {1: 2, 5: 1, 10: 1}),
+        ("vt", _VT_ADD_AID_CELL, (37, _RESOURCE_STEEL, _MINOR_SLOT)),
+        ("vt", _VT_RESET_NEED_SCORES, ()),
+    ],
+    "ai_capital_selection_trade_bids": [
+        ("vtai", _VT_RESET_NEED_SLOTS, ()),
+    ],
+    "trade_capacity_refresh": [
+        ("co", {1: 2, 5: 1, 10: 1}),
+        ("vt", _VT_RECOMPUTE_AID_BUDGET, ()),
+    ],
+    "major_trade_settlement": [
+        ("vt", _VT_PURCHASE_ITEM, (8, 3, 7)),
+        ("vt", _VT_PURCHASE_ITEM, (13, -2, 5)),
+        ("vt", _VT_PURCHASE_ITEM, (8, -1, 4)),
+    ],
+    "purchased_items_phase": [
+        ("vt", _VT_SET_ITEM_POTENTIALS, (8, -1)),
+        ("vt", _VT_SET_ITEM_POTENTIALS, (13, -1)),
+        ("vt", _VT_REMEMBER_TRADE_BIDS, ()),
+        ("vt", _VT_PURCHASE_ITEM, (8, 3, 7)),
+        ("vt", _VT_PURCHASE_ITEM, (7, -30, 1)),
+        ("vt", _VT_ADD_PURCHASED_ITEMS, ()),
+    ],
+}
+
+_NATION_ECONOMY_SPECS["recall_trade_bids"] = (
+    _nation_economy_common_seeds() + _NATION_ECONOMY_SPECS["recall_trade_bids"]
+)
+_NATION_ECONOMY_SPECS["player_trade_phase_reset"] = (
+    _nation_economy_common_seeds() + _NATION_ECONOMY_SPECS["player_trade_phase_reset"]
+)
+
+
+def _drive_nation_economy(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    drive: str,
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    source = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, source)
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    city = _u32(session, nation + 0x894)
+    slots = {
+        "s": source,
+        "m1": (source + 1) % _MAJOR_NATION_COUNT,
+        "t0": 0 if source != 0 else 1,
+        "minor": _MINOR_NATION_FIRST_SLOT,
+    }
+
+    def _slot(value):
+        return slots[value] if isinstance(value, str) else value
+
+    for step in _NATION_ECONOMY_SPECS[drive]:
+        kind = step[0]
+        if kind == "vt":
+            _invoke_virtual(
+                session,
+                nation,
+                step[1],
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=tuple(_slot(a) for a in step[2]),
+            )
+        elif kind == "vtai":
+            target_nation = 0
+            for slot in range(_MAJOR_NATION_COUNT):
+                candidate = _nation_pointer(session, slot)
+                if candidate == 0:
+                    continue
+                if (
+                    _runtime_class(
+                        session, candidate, records, occurrences, breakpoint_roles
+                    )
+                    == _CLASS_AUTO_GREAT_POWER
+                ):
+                    target_nation = candidate
+                    break
+            if target_nation == 0:
+                raise RuntimeError("retail fixture has no AutoGreatPower")
+            _invoke_virtual(
+                session,
+                target_nation,
+                step[1],
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=tuple(_slot(a) for a in step[2]),
+            )
+        elif kind == "call":
+            _invoke_thiscall(
+                session,
+                step[1],
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=tuple(_slot(a) for a in step[2]),
+            )
+        elif kind == "ss":
+            session.assign(f"*(short*)0x{nation + step[1]:08x}", step[2])
+        elif kind == "ssi":
+            session.assign(
+                f"*(short*)0x{nation + step[1] + 2 * _slot(step[2]):08x}",
+                step[3],
+            )
+        elif kind == "si":
+            session.assign(f"*(int*)0x{nation + step[1]:08x}", step[2])
+        elif kind == "sii":
+            session.assign(
+                f"*(int*)0x{nation + step[1] + 4 * _slot(step[2]):08x}",
+                step[3],
+            )
+        elif kind == "z":
+            session.write_memory(nation + step[1], b"\x00" * step[2])
+        elif kind == "fill_short":
+            session.write_memory(
+                nation + step[1],
+                struct.pack("<h", step[3]) * step[2],
+            )
+        elif kind == "co":
+            if city == 0:
+                raise RuntimeError("retail nation has no city")
+            session.write_memory(city + _CITY_ORDER_COUNTS, b"\x00" * 28)
+            for index, value in step[1].items():
+                session.assign(
+                    f"*(short*)0x{city + _CITY_ORDER_COUNTS + 2 * index:08x}",
+                    value,
+                )
+        elif kind == "cs":
+            if city == 0:
+                raise RuntimeError("retail nation has no city")
+            session.assign(
+                f"*(short*)0x{city + _CITY_STOCKS + 2 * step[1]:08x}", step[2]
+            )
+        else:
+            raise RuntimeError(f"unknown economy step {kind!r}")
+    result = _capture_trade_phase(session)
+    result["toggle"] = 0
+    return result
+
+
+def _drive_trade_market_price(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    """Mirror RunTradeMarketPrice: seed the 17 priced category rows, then call
+    TTradeMgr::CalculateNewWorldPrices."""
+    trade_mgr = _u32(session, _TRADE_MGR)
+    overrides = {
+        0: (1000, 100, 1, 4.5),
+        1: (50, 10, 20, 10.0),
+        2: (50, 1000, 0, 100.0),
+        3: (400, 100, 10, 10.0),
+        4: (800, 100, 10, 10.0),
+        5: (720, 100, 14, 10.5),
+        6: (20000, 200, 10, 10.0),
+        7: (500, 50, 3, 11.0),
+        13: (1700, 800, 19, 10.25),
+        14: (1850, 900, 5, 8.5),
+        15: (900, 600, 100, 0.0),
+        16: (2222, 1000, 77, 3.25),
+    }
+    for resource in range(17):
+        row = trade_mgr + _TRADE_ROW_BASE + resource * _TRADE_ROW_STRIDE
+        price, base_price, requests, adjusted = overrides.get(
+            resource,
+            (400 + resource * 17, 200 + resource * 13, 20 + resource,
+             resource + 0.5),
+        )
+        session.assign(f"*(short*)0x{row + 4:08x}", 100 + resource)
+        session.assign(f"*(short*)0x{row + 6:08x}", price)
+        session.assign(f"*(short*)0x{row + 0x16:08x}", base_price)
+        session.assign(f"*(short*)0x{row + 8:08x}", requests)
+        session.assign(f"*(short*)0x{row + 0xA:08x}", 40 + resource)
+        session.assign(f"*(short*)0x{row + 0x14:08x}", 60 + resource)
+        session.write_memory(row + 0xC, struct.pack("<d", adjusted))
+    _invoke_thiscall(
+        session,
+        _CALCULATE_NEW_WORLD_PRICES,
+        trade_mgr,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    result = _capture_trade_phase(session)
+    result["toggle"] = 0
+    return result
+
+
+def _drive_diplomacy_economy(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+    drive: str,
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    source = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, source)
+    if nation == 0:
+        raise RuntimeError("retail loaded player has no active nation")
+    toggle = 0
+    if drive == "diplomacy_grant_entry_updates_treasury":
+        toggle = (
+            _invoke_thiscall(
+                session,
+                _FN_SET_DIPLO_GRANT,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(0, 10000),
+            )
+            & 0xFF
+        )
+    else:
+        # diplomacy_reset_preserves_recurring_grants
+        for target in range(_NATION_SLOT_COUNT):
+            _invoke_thiscall(
+                session,
+                _FN_SET_DIPLO_GRANT,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(target, -1),
+            )
+        m1 = (source + 1) % _MAJOR_NATION_COUNT
+        session.assign(
+            f"*(short*)0x{nation + _GNATION_POLICIES + 2 * m1:08x}", 0x133
+        )
+        for target, amount in (
+            ((source + 2) % _MAJOR_NATION_COUNT, 1000),
+            ((source + 3) % _MAJOR_NATION_COUNT, 3000 | 0x4000),
+        ):
+            _invoke_thiscall(
+                session,
+                _FN_SET_DIPLO_GRANT,
+                nation,
+                records,
+                occurrences,
+                breakpoint_roles,
+                args=(target, amount),
+            )
+        _invoke_virtual(
+            session,
+            nation,
+            _VT_RESET_POLICY_GRANTS,
+            records,
+            occurrences,
+            breakpoint_roles,
+        )
+    result = _capture_diplomacy_phase(session)
+    result["toggle"] = toggle
+    return result
+
+
 # --- season_advance_clears_status_flags retail drive ---------------------------
 # Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
 # fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
@@ -6810,6 +7186,41 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = CHECKPOINT_TURN_STOP_TRADE
+                    elif scenario.drive == "trade_phase_sell_only":
+                        result_fields = {"pre": _capture_trade_phase(session)}
+                        _drive_trade_phase(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            buy_clothing=False,
+                        )
+                        result_fields.update(_capture_trade_phase(session))
+                        result_fields["toggle"] = 0
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "trade_market_price":
+                        result_fields = _drive_trade_market_price(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in _NATION_ECONOMY_SPECS:
+                        result_fields = _drive_nation_economy(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            scenario.drive,
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive in _DIPLOMACY_ECONOMY_SCENARIOS:
+                        result_fields = _drive_diplomacy_economy(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            scenario.drive,
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive == "season_advance_clears_status_flags":
                         _drive_season_advance(
                             session, records, occurrences, breakpoint_roles
@@ -7085,6 +7496,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "turn_stop_city_and_transport",
         "turn_stop_trade",
         *_PLAYER_POLICY_ALL_SCENARIOS,
+        *_NATION_ECONOMY_SCENARIOS,
+        *_DIPLOMACY_ECONOMY_SCENARIOS,
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -7253,6 +7666,14 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                 native_result
             )
         elif scenario.drive in _PLAYER_POLICY_ALL_SCENARIOS:
+            recomp_observation = normalize_native_player_diplomacy_policy(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _NATION_ECONOMY_SCENARIOS:
+            recomp_observation = normalize_native_nation_economy(
+                native_result, scenario.result_checkpoint_id
+            )
+        elif scenario.drive in _DIPLOMACY_ECONOMY_SCENARIOS:
             recomp_observation = normalize_native_player_diplomacy_policy(
                 native_result, scenario.result_checkpoint_id
             )
@@ -7475,6 +7896,18 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         )
     elif result_checkpoint in (
         _name + ".resolved" for _name in _PLAYER_POLICY_ALL_SCENARIOS
+    ):
+        retail_observation = normalize_retail_player_diplomacy_policy(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _NATION_ECONOMY_SCENARIOS
+    ):
+        retail_observation = normalize_retail_nation_economy(
+            retail_records[0]["fields"], result_checkpoint
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _DIPLOMACY_ECONOMY_SCENARIOS
     ):
         retail_observation = normalize_retail_player_diplomacy_policy(
             retail_records[0]["fields"], result_checkpoint

@@ -156,6 +156,25 @@ _PLAYER_DIPLOMACY_POLICY_SCENARIOS = (
 )
 
 
+_NATION_ECONOMY_SCENARIOS = (
+    "trade_market_price",
+    "trade_phase_sell_only",
+    "trade_policy_set",
+    "trade_policy_step",
+    "recall_trade_bids",
+    "player_trade_phase_reset",
+    "ai_capital_selection_trade_bids",
+    "trade_capacity_refresh",
+    "major_trade_settlement",
+    "purchased_items_phase",
+)
+
+_DIPLOMACY_ECONOMY_SCENARIOS = (
+    "diplomacy_grant_entry_updates_treasury",
+    "diplomacy_reset_preserves_recurring_grants",
+)
+
+
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
         CHECKPOINT_RANDOM_SETUP_READY,
@@ -747,6 +766,39 @@ for _policy_scenario in _PLAYER_DIPLOMACY_POLICY_SCENARIOS:
     )
 del _policy_scenario
 
+for _economy_scenario in _NATION_ECONOMY_SCENARIOS:
+    SCHEMAS[_economy_scenario + ".resolved"] = CheckpointSchema(
+        _economy_scenario + ".resolved",
+        _economy_scenario + ".run",
+        _economy_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "toggle",
+            "trade.market",
+            "trade.nations",
+        ),
+    )
+del _economy_scenario
+
+for _diplo_economy_scenario in _DIPLOMACY_ECONOMY_SCENARIOS:
+    SCHEMAS[_diplo_economy_scenario + ".resolved"] = CheckpointSchema(
+        _diplo_economy_scenario + ".resolved",
+        _diplo_economy_scenario + ".run",
+        _diplo_economy_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "toggle",
+            "diplomacy.nations",
+        ),
+    )
+del _diplo_economy_scenario
+
 
 _RESOURCE_NAMES = (
     "cotton", "wool", "timber", "coal", "iron", "horses", "oil", "food",
@@ -897,7 +949,9 @@ def normalize_native_player_diplomacy_policy(
     captures = _native_captures(result)
     toggle = captures.get("result")
     if not isinstance(toggle, (bool, int)):
-        raise ValueError("native result must be a number")
+        if toggle is not None:
+            raise ValueError("native result must be a number")
+        toggle = 0
     after = _require_mapping(captures.get("after"), "native after capture")
     ephemeral = _require_mapping(after.get("ephemeral"), "native after.ephemeral")
     turn = _require_mapping(ephemeral.get("turn"), "native ephemeral turn")
@@ -1111,6 +1165,11 @@ _TRADE_NATION_INT_FIELDS = (
     "transport_capacity",
     "reserved_transport",
     "unfilled_trade_offer_count",
+    "diplomacy_eligibility",
+    "grant_total",
+    "budget_pool_base",
+    "budget_pool_delta",
+    "aid_allocation_total",
 )
 
 _TRADE_NATION_ARRAY_FIELDS = (
@@ -1119,8 +1178,27 @@ _TRADE_NATION_ARRAY_FIELDS = (
     "purchased_items",
     "transported_items",
     "unfilled_trade_turns",
+    "need_current",
+    "need_target",
+    "relation_delta",
     "city_stocks",
 )
+
+
+def _require_int_pairs(value: Any, label: str) -> list[list[int]]:
+    if not isinstance(value, list):
+        raise ValueError(f"{label} must be an array of [index, value] pairs")
+    pairs: list[list[int]] = []
+    for index, pair in enumerate(value):
+        if not isinstance(pair, list) or len(pair) != 2:
+            raise ValueError(f"{label}[{index}] must be a pair")
+        pairs.append(
+            [
+                _require_int(pair[0], f"{label}[{index}][0]"),
+                _require_int(pair[1], f"{label}[{index}][1]"),
+            ]
+        )
+    return pairs
 
 
 def normalize_retail_trade_phase(
@@ -1188,6 +1266,9 @@ def normalize_retail_trade_phase(
                 if value is None
                 else _require_int_list(value, f"retail {field}[{slot}]")
             )
+        entry["aid_nonzero"] = _require_int_pairs(
+            nation_map.get("aid_nonzero"), f"retail aid_nonzero[{slot}]"
+        )
         nations.append(entry)
     last_processed = raw.get("last_processed_nation")
     if last_processed == -1:
@@ -1208,6 +1289,30 @@ def normalize_retail_trade_phase(
         "last_processed_nation": last_processed,
         "trade": {"market": {"rows": rows}, "nations": nations},
     }
+
+
+def normalize_native_nation_economy(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Trade-phase schema plus the scalar Finish() result (JSON null -> 0)."""
+    observation = normalize_native_trade_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    toggle = _native_captures(result).get("result")
+    observation["toggle"] = (
+        int(toggle) if isinstance(toggle, (bool, int)) else 0
+    )
+    return observation
+
+
+def normalize_retail_nation_economy(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    observation = normalize_retail_trade_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    observation["toggle"] = _require_int(raw.get("toggle"), "retail toggle")
+    return observation
 
 
 _CITY_NATION_INT_FIELDS = ("treasury", "reserved_transport")
