@@ -1,6 +1,7 @@
 #include "NativeCases.h"
 
 #include "RuntimeGameStateCapture.h"
+#include "RuntimeRun.h"
 #include "flows/LoadGameFlow.h"
 #include "scenarios/RuntimeScenario.h"
 #include "scenarios/RuntimeTestFactory.h"
