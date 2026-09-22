@@ -192,6 +192,12 @@ _PROVINCE_SCENARIOS = (
     "province_owner_ocean_context",
 )
 
+_DEVELOPMENT_SCENARIOS = (
+    "completed_rail_section",
+    "issued_rail_section",
+    "completed_resource_development",
+)
+
 
 SCHEMAS = {
     CHECKPOINT_RANDOM_SETUP_READY: CheckpointSchema(
@@ -834,6 +840,23 @@ SCHEMAS["province_loss_with_stationed_unit.resolved"] = CheckpointSchema(
         "civilians.nations",
     ),
 )
+for _dev_scenario in _DEVELOPMENT_SCENARIOS:
+    SCHEMAS[_dev_scenario + ".resolved"] = CheckpointSchema(
+        _dev_scenario + ".resolved",
+        _dev_scenario + ".run",
+        _dev_scenario,
+        (
+            "turn.phase",
+            "turn.active",
+            "turn.economic_turn",
+            "turn.turn_flow_status_flags",
+            "civilians.units",
+            "civilians.nations",
+            "tiles",
+        ),
+    )
+del _dev_scenario
+
 SCHEMAS["province_owner_ocean_context.resolved"] = CheckpointSchema(
     "province_owner_ocean_context.resolved",
     "province_owner_ocean_context.run",
@@ -1914,6 +1937,61 @@ def normalize_retail_province_ocean(raw: Mapping[str, Any]) -> dict[str, Any]:
         ],
         "missions": _mission_records(raw.get("missions"), "retail missions"),
     }
+
+
+_TILE_RECORD_FIELDS = (
+    "tile",
+    "owner",
+    "adjacency",
+    "dev_nibbles",
+    "pending",
+    "rail_flags",
+    "active_flags",
+    "province",
+)
+
+
+def _tile_records(raw: Any, label: str) -> list[dict[str, Any]]:
+    if not isinstance(raw, list):
+        raise ValueError(f"{label} must be an array")
+    records = []
+    for index, entry in enumerate(raw):
+        record = _require_mapping(entry, f"{label}[{index}]")
+        records.append(
+            {
+                field: _require_int(
+                    record.get(field), f"{label}[{index}].{field}"
+                )
+                for field in _TILE_RECORD_FIELDS
+            }
+        )
+    return records
+
+
+def normalize_native_development(
+    result: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Civilians schema plus the touched-tile terrain fields the case emits."""
+    observation = normalize_native_civilians_phase(result, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    payload = _native_captures(result).get("result")
+    tiles = payload.get("tiles") if isinstance(payload, Mapping) else []
+    observation["tiles"] = _tile_records(tiles, "native result.tiles")
+    return observation
+
+
+def normalize_retail_development(
+    raw: Mapping[str, Any],
+    checkpoint_id: str,
+) -> dict[str, Any]:
+    """Reduce a retail GDB development capture to the same schema."""
+    observation = normalize_retail_civilians_phase(raw, checkpoint_id)
+    observation["action_id"] = checkpoint_id.replace(".resolved", ".run")
+    observation["tiles"] = _tile_records(
+        raw.get("tiles"), "retail tiles"
+    )
+    return observation
 
 
 _MILITARY_CLEANUP_METRIC_KEYS = (

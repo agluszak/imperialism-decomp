@@ -1,4 +1,5 @@
 #include "NativeCases.h"
+#include "JsonArray.h"
 #include "JsonObject.h"
 
 #include <stdlib.h>
@@ -154,6 +155,26 @@ bool FindOwnedCoastalConstructionTile(NationSlot nationSlot, unsigned short forb
   return false;
 }
 
+JSON_Value* CaptureTouchedTiles(const StrategicTileIndex* tiles, int count) {
+  JsonArray array;
+  for (int index = 0; index < count; ++index) {
+    const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tiles[index]];
+    JsonObject object;
+    object.Set("tile", static_cast<int>(tiles[index]));
+    object.Set("owner", static_cast<int>(tile.ownerNationTag04));
+    object.Set("adjacency", static_cast<int>(tile.adjacencyBits06));
+    object.Set("dev_nibbles",
+               static_cast<int>(
+                   static_cast<unsigned char>(tile.developmentClassNibbles0c)));
+    object.Set("pending", static_cast<int>(tile.pendingDevelopmentFlag0d));
+    object.Set("rail_flags", static_cast<int>(tile.railFlags17));
+    object.Set("active_flags", static_cast<int>(tile.activeFlags1c));
+    object.Set("province", static_cast<int>(tile.cityRecordIndex));
+    array.Add(object.Release());
+  }
+  return array.Release();
+}
+
 } // namespace
 
 RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
@@ -181,7 +202,10 @@ RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
   }
 
   civilian->ContinueOrders();
-  return transition.Finish();
+  JsonObject result;
+  const StrategicTileIndex touched[2] = {sourceTile, destinationTile};
+  result.Set("tiles", CaptureTouchedTiles(touched, 2));
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
@@ -217,7 +241,10 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
                                                             nationSlot);
   civilian->SetOrders(kUnitOrderLayRail, sourceTile);
   civilian->MoveTo(destinationTile);
-  return transition.Finish();
+  JsonObject result;
+  const StrategicTileIndex touched[2] = {sourceTile, destinationTile};
+  result.Set("tiles", CaptureTouchedTiles(touched, 2));
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition) {
@@ -260,7 +287,10 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
 
   extractiveWorker->ContinueOrders();
   surfaceWorker->ContinueOrders();
-  return transition.Finish();
+  JsonObject result;
+  const StrategicTileIndex touched[2] = {extractiveTile, surfaceTile};
+  result.Set("tiles", CaptureTouchedTiles(touched, 2));
+  return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool secondTurn) {

@@ -56,6 +56,7 @@ from tools.runtime.checkpoints import (
     _NATION_ECONOMY_SCENARIOS,
     _DIPLOMACY_ECONOMY_SCENARIOS,
     _PROVINCE_SCENARIOS,
+    _DEVELOPMENT_SCENARIOS,
     CHECKPOINT_CONSECUTIVE_TURN_SEQUENCE,
     CHECKPOINT_REASSESS_MISSIONS,
     CHECKPOINT_REASSESS_MISSIONS_DAMAGED,
@@ -86,6 +87,7 @@ from tools.runtime.checkpoints import (
     normalize_native_nation_economy,
     normalize_native_province_loss,
     normalize_native_province_ocean,
+    normalize_native_development,
     normalize_native_reassess_missions,
     normalize_native_recompute_metrics,
     normalize_native_military_phase,
@@ -114,6 +116,7 @@ from tools.runtime.checkpoints import (
     normalize_retail_nation_economy,
     normalize_retail_province_loss,
     normalize_retail_province_ocean,
+    normalize_retail_development,
     normalize_retail_reassess_missions,
     normalize_retail_recompute_metrics,
     normalize_retail_military_phase,
@@ -684,6 +687,7 @@ def load_scenario(name: str) -> Scenario:
         _NATION_ECONOMY_SCENARIOS
         + _DIPLOMACY_ECONOMY_SCENARIOS
         + _PROVINCE_SCENARIOS
+        + _DEVELOPMENT_SCENARIOS
     ):
         base = _load_save_to_map_scenario(fixture)
         scenario = Scenario(
@@ -5536,6 +5540,385 @@ def _drive_province_ocean(
     return result
 
 
+# --- civilian construction/development retail drives ---------------------------
+# Mirror RunCompletedRailSection / RunIssuedRailSection /
+# RunCompletedResourceDevelopment: engineer and worker TCivUnits driven through
+# the real SetOrders/MoveTo/ContinueOrders virtuals.
+
+_FN_APPLY_RAIL_FLAGS = 0x00513FF0
+_FN_SET_CIV_DEV_NIBBLE = 0x005136A0
+_ENGINEER_RAIL_COST_TABLE = 0x006531D8
+_VT_CIV_MOVE_TO = 0x0A * 4
+_VT_CIV_CONTINUE_ORDERS = 0x0B * 4
+_VT_CIV_SET_ORDERS = 0x0D * 4
+_UNIT_ORDER_LAY_RAIL = 5
+_UNIT_ORDER_DEVELOP_RESOURCE = 10
+_CIV_UNIT_ENGINEER = 4
+_RAIL_ALLOWED_TERRAIN = (0, 1, 6, 7)
+
+
+def _new_civilian_unit(
+    session: GdbSession,
+    kind: int,
+    tile: int,
+    nation_slot: int,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> int:
+    unit = _invoke_thiscall(
+        session,
+        _OPERATOR_NEW,
+        0,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_TCIV_UNIT_SIZE,),
+    )
+    _invoke_thiscall(
+        session, _FN_CIV_UNIT_CTOR, unit, records, occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _FN_CIV_UNIT_INIT,
+        unit,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(kind, tile, nation_slot),
+    )
+    return unit
+
+
+def _hex_deltas(session: GdbSession) -> tuple[list[int], list[int]]:
+    col_deltas = list(
+        struct.unpack(
+            "<6h", session.read_memory(_HEX_COL_DELTAS, 12)
+        )
+    )
+    row_deltas = list(
+        struct.unpack(
+            "<6h", session.read_memory(_HEX_ROW_DELTAS, 12)
+        )
+    )
+    return col_deltas, row_deltas
+
+
+def _tile_record(session: GdbSession, terrain_base: int, tile: int) -> dict:
+    raw = session.read_memory(
+        terrain_base + tile * _TERRAIN_RECORD_STRIDE, _TERRAIN_RECORD_STRIDE
+    )
+    return {
+        "tile": tile,
+        "owner": struct.unpack("<b", raw[0x04:0x05])[0],
+        "adjacency": struct.unpack("<b", raw[0x06:0x07])[0],
+        "dev_nibbles": raw[0x0C],
+        "pending": raw[0x0D],
+        "rail_flags": raw[0x17],
+        "active_flags": struct.unpack("<H", raw[0x1C:0x1E])[0],
+        "province": struct.unpack("<h", raw[0x14:0x16])[0],
+    }
+
+
+def _find_issuable_rail_section(
+    snapshot: _TerrainSnapshot,
+    nation_slot: int,
+    col_deltas: list[int],
+    row_deltas: list[int],
+) -> tuple[int, int]:
+    """Mirror FindIssuableRailSection: owned, unoccupied, flag-free,
+    rail-legal terrain pair in the east direction, columns 2..0x69."""
+    for candidate in range(_TILE_COUNT):
+        column = candidate % 0x6C
+        if column < 2 or column > 0x69:
+            continue
+        if (
+            snapshot.tile_field(candidate, 0x04, "<b") != nation_slot
+            or snapshot.has_civilian(candidate)
+            or snapshot.tile_field(candidate, 0x06, "<b") != 0
+            or snapshot.tile_field(candidate, 0x17, "<B") != 0
+            or snapshot.tile_field(candidate, 0x00, "<b")
+            not in _RAIL_ALLOWED_TERRAIN
+        ):
+            continue
+        neighbor = _neighbor_tile(
+            candidate, _HEX_DIRECTION_EAST, col_deltas, row_deltas
+        )
+        if neighbor == -1 or neighbor == candidate:
+            continue
+        if (
+            snapshot.tile_field(neighbor, 0x04, "<b") == nation_slot
+            and not snapshot.has_civilian(neighbor)
+            and snapshot.tile_field(neighbor, 0x06, "<b") == 0
+            and snapshot.tile_field(neighbor, 0x17, "<B") == 0
+            and snapshot.tile_field(neighbor, 0x00, "<b")
+            in _RAIL_ALLOWED_TERRAIN
+        ):
+            return candidate, neighbor
+    return -1, -1
+
+
+def _terrain_base(session: GdbSession) -> int:
+    return _u32(session, _u32(session, _GLOBAL_MAP_STATE) + 0x0C)
+
+
+def _drive_completed_rail_section(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    source = _s16(session, sim_mgr + 0x2E)
+    snapshot = _TerrainSnapshot(session, map_state)
+    snapshot.refresh_tiles()
+    col_deltas, row_deltas = _hex_deltas(session)
+    source_tile, destination_tile = _find_unoccupied_rail_section(
+        snapshot, col_deltas, row_deltas
+    )
+    if source_tile < 0:
+        raise RuntimeError("retail map has no clear rail section")
+    civilian = _new_civilian_unit(
+        session,
+        _CIV_UNIT_ENGINEER,
+        source_tile,
+        source,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_thiscall(
+        session,
+        _FN_APPLY_RAIL_FLAGS,
+        map_state,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(source_tile, destination_tile, source),
+    )
+    _invoke_virtual(
+        session,
+        civilian,
+        _VT_CIV_SET_ORDERS,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_UNIT_ORDER_LAY_RAIL, source_tile),
+    )
+    _invoke_virtual(
+        session,
+        civilian,
+        _VT_CIV_MOVE_TO,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(destination_tile,),
+    )
+    session.assign(f"*(short*)0x{civilian + 0x24:08x}", 1)
+    _invoke_virtual(
+        session,
+        civilian,
+        _VT_CIV_CONTINUE_ORDERS,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    result = _capture_civilians_phase(session)
+    terrain_base = _terrain_base(session)
+    result["tiles"] = [
+        _tile_record(session, terrain_base, tile)
+        for tile in (source_tile, destination_tile)
+    ]
+    return result
+
+
+def _drive_issued_rail_section(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    source = _s16(session, sim_mgr + 0x2E)
+    nation = _nation_pointer(session, source)
+    snapshot = _TerrainSnapshot(session, map_state)
+    snapshot.refresh_tiles()
+    col_deltas, row_deltas = _hex_deltas(session)
+    source_tile, destination_tile = _find_issuable_rail_section(
+        snapshot, source, col_deltas, row_deltas
+    )
+    if source_tile < 0:
+        raise RuntimeError("retail map has no issuable rail section")
+    civilian = _new_civilian_unit(
+        session,
+        _CIV_UNIT_ENGINEER,
+        source_tile,
+        source,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    treasury = _eval_int(session, f"*(int*)0x{nation + 0x10:08x}")
+    budget_base = _eval_int(session, f"*(int*)0x{nation + 0x8F0:08x}")
+    available = treasury + budget_base // 100
+    if available < 0:
+        available = 0
+    if available < 400:
+        session.assign(f"*(int*)0x{nation + 0x10:08x}", 10000)
+    terrain_kind = _s8(
+        session, _terrain_base(session) + destination_tile * 0x24
+    )
+    cost = _eval_int(
+        session,
+        f"*(int*)0x{_ENGINEER_RAIL_COST_TABLE + terrain_kind * 4:08x}",
+    )
+    _invoke_thiscall(
+        session,
+        _FN_APPLY_RAIL_FLAGS,
+        map_state,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(source_tile, destination_tile, source),
+    )
+    _invoke_virtual(
+        session,
+        civilian,
+        _VT_CIV_SET_ORDERS,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_UNIT_ORDER_LAY_RAIL, source_tile),
+    )
+    _invoke_virtual(
+        session,
+        civilian,
+        _VT_CIV_MOVE_TO,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(destination_tile,),
+    )
+    session.assign(
+        f"*(int*)0x{nation + 0x10:08x}",
+        _eval_int(session, f"*(int*)0x{nation + 0x10:08x}") - cost,
+    )
+    result = _capture_civilians_phase(session)
+    terrain_base = _terrain_base(session)
+    result["tiles"] = [
+        _tile_record(session, terrain_base, tile)
+        for tile in (source_tile, destination_tile)
+    ]
+    return result
+
+
+def _drive_completed_resource_development(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> dict[str, object]:
+    sim_mgr = _u32(session, _SIM_MGR)
+    map_state = _u32(session, _GLOBAL_MAP_STATE)
+    source = _s16(session, sim_mgr + 0x2E)
+    snapshot = _TerrainSnapshot(session, map_state)
+    snapshot.refresh_tiles()
+    extractive_tile = _find_unoccupied_tile(snapshot)
+    if extractive_tile < 0:
+        raise RuntimeError("retail map has no unoccupied tile")
+    for select_high, value in ((0, 2), (1, 0)):
+        _invoke_thiscall(
+            session,
+            _FN_SET_CIV_DEV_NIBBLE,
+            map_state,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(extractive_tile, select_high, value, 0),
+        )
+    session.assign(
+        f"*(unsigned char*)0x{_terrain_base(session) + extractive_tile * 0x24 + 0x0D:08x}",
+        0,
+    )
+    extractive = _new_civilian_unit(
+        session, 0, extractive_tile, source, records, occurrences,
+        breakpoint_roles,
+    )
+    _invoke_virtual(
+        session,
+        extractive,
+        _VT_CIV_SET_ORDERS,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_UNIT_ORDER_DEVELOP_RESOURCE, extractive_tile),
+    )
+    session.assign(f"*(short*)0x{extractive + 0x24:08x}", 1)
+    snapshot.refresh_tiles()
+    surface_tile = _find_unoccupied_tile(snapshot)
+    if surface_tile < 0:
+        raise RuntimeError("retail map has only one unoccupied tile")
+    for select_high, value in ((0, 2), (1, 0)):
+        _invoke_thiscall(
+            session,
+            _FN_SET_CIV_DEV_NIBBLE,
+            map_state,
+            records,
+            occurrences,
+            breakpoint_roles,
+            args=(surface_tile, select_high, value, 0),
+        )
+    session.assign(
+        f"*(unsigned char*)0x{_terrain_base(session) + surface_tile * 0x24 + 0x0D:08x}",
+        8,
+    )
+    surface = _new_civilian_unit(
+        session,
+        _CIV_UNIT_ENGINEER,
+        surface_tile,
+        source,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_virtual(
+        session,
+        surface,
+        _VT_CIV_SET_ORDERS,
+        records,
+        occurrences,
+        breakpoint_roles,
+        args=(_UNIT_ORDER_DEVELOP_RESOURCE, surface_tile),
+    )
+    session.assign(f"*(short*)0x{surface + 0x24:08x}", 1)
+    _invoke_virtual(
+        session,
+        extractive,
+        _VT_CIV_CONTINUE_ORDERS,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    _invoke_virtual(
+        session,
+        surface,
+        _VT_CIV_CONTINUE_ORDERS,
+        records,
+        occurrences,
+        breakpoint_roles,
+    )
+    result = _capture_civilians_phase(session)
+    terrain_base = _terrain_base(session)
+    result["tiles"] = [
+        _tile_record(session, terrain_base, tile)
+        for tile in (extractive_tile, surface_tile)
+    ]
+    return result
+
+
 # --- season_advance_clears_status_flags retail drive ---------------------------
 # Mirrors RunSeasonAdvanceClearsStatusFlags: seed the pre-transition turn
 # fields, then set turnStateCode=0x11/flags=0 and call TSimMgr::AdvanceSeason.
@@ -7814,6 +8197,21 @@ def run_binary(
                             session, records, occurrences, breakpoint_roles
                         )
                         result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "completed_rail_section":
+                        result_fields = _drive_completed_rail_section(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "issued_rail_section":
+                        result_fields = _drive_issued_rail_section(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif scenario.drive == "completed_resource_development":
+                        result_fields = _drive_completed_resource_development(
+                            session, records, occurrences, breakpoint_roles
+                        )
+                        result_probe = scenario.result_checkpoint_id
                     elif scenario.drive in _NATION_ECONOMY_SPECS:
                         result_fields = _drive_nation_economy(
                             session,
@@ -8110,6 +8508,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         *_NATION_ECONOMY_SCENARIOS,
         *_DIPLOMACY_ECONOMY_SCENARIOS,
         *_PROVINCE_SCENARIOS,
+        *_DEVELOPMENT_SCENARIOS,
         "turn_alerts_later_turn",
         "interactive_army_battle_melee",
         "interactive_army_battle_ranged",
@@ -8293,6 +8692,10 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             recomp_observation = normalize_native_province_loss(native_result)
         elif scenario.drive == "province_owner_ocean_context":
             recomp_observation = normalize_native_province_ocean(native_result)
+        elif scenario.drive in _DEVELOPMENT_SCENARIOS:
+            recomp_observation = normalize_native_development(
+                native_result, scenario.result_checkpoint_id
+            )
         elif scenario.drive == "turn_alerts_later_turn":
             recomp_observation = normalize_native_turn_alerts_later(
                 native_result
@@ -8535,6 +8938,12 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     elif result_checkpoint == "province_owner_ocean_context.resolved":
         retail_observation = normalize_retail_province_ocean(
             retail_records[0]["fields"]
+        )
+    elif result_checkpoint in (
+        _name + ".resolved" for _name in _DEVELOPMENT_SCENARIOS
+    ):
+        retail_observation = normalize_retail_development(
+            retail_records[0]["fields"], result_checkpoint
         )
     elif result_checkpoint == CHECKPOINT_TURN_ALERTS_LATER:
         retail_observation = normalize_retail_turn_alerts_later(
