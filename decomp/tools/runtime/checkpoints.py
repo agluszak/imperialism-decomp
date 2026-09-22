@@ -1185,6 +1185,41 @@ def _native_captures(result: Mapping[str, Any]) -> Mapping[str, Any]:
     return _require_mapping(captures, "native captures")
 
 
+def _normalize_rng_state(raw: object, label: str) -> dict[str, int]:
+    state = _require_mapping(raw, label)
+    return {
+        "crt_rand": _require_int(state.get("crt_rand"), f"{label}.crt_rand"),
+        "map_generation": _require_int(
+            state.get("map_generation"), f"{label}.map_generation"
+        ),
+        "zone_status": _require_int(
+            state.get("zone_status"), f"{label}.zone_status"
+        ),
+    }
+
+
+def normalize_native_rng_contract(result: Mapping[str, Any]) -> dict[str, Any]:
+    captures = _native_captures(result)
+    return {
+        "before": _normalize_rng_state(
+            captures.get("rng_contract_before"), "native rng before"
+        ),
+        "after": _normalize_rng_state(
+            captures.get("rng_contract_after"), "native rng after"
+        ),
+    }
+
+
+def normalize_retail_rng_contract(raw: Mapping[str, Any]) -> dict[str, Any]:
+    contract = _require_mapping(raw.get("rng_contract"), "retail rng contract")
+    return {
+        "before": _normalize_rng_state(
+            contract.get("before"), "retail rng before"
+        ),
+        "after": _normalize_rng_state(contract.get("after"), "retail rng after"),
+    }
+
+
 def _diplomacy_policy_name(code: Any, label: str) -> str | None:
     value = _require_int(code, label)
     if value == -1:

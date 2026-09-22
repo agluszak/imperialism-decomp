@@ -15,7 +15,9 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_COMBINED_MAP_READY,
     first_checkpoint_difference,
     normalize_native_combined_map,
+    normalize_native_rng_contract,
     normalize_retail_combined_map,
+    normalize_retail_rng_contract,
     validate_checkpoint,
 )
 from tools.runtime.retail_checkpoint_differential import (
@@ -77,6 +79,108 @@ class CheckpointSchemaTests(unittest.TestCase):
                 "kind": "value_mismatch",
                 "retail": 7,
                 "recomp": 99,
+            },
+        )
+
+    def test_rng_contract_normalizes_before_and_after_state(self) -> None:
+        contract = {
+            "before": {
+                "crt_rand": 1,
+                "map_generation": 2,
+                "zone_status": 3,
+            },
+            "after": {
+                "crt_rand": 4,
+                "map_generation": 5,
+                "zone_status": 6,
+            },
+        }
+        self.assertEqual(
+            normalize_native_rng_contract(
+                {
+                    "captures": {
+                        "rng_contract_before": contract["before"],
+                        "rng_contract_after": contract["after"],
+                    }
+                }
+            ),
+            contract,
+        )
+        self.assertEqual(
+            normalize_retail_rng_contract({"rng_contract": contract}),
+            contract,
+        )
+
+    def test_rng_post_state_diverges_when_outputs_match(self) -> None:
+        retail = normalize_retail_combined_map(combined_map_fields())
+        recomp = json.loads(json.dumps(retail))
+        retail["rng"] = {
+            "before": {
+                "crt_rand": 1,
+                "map_generation": 2,
+                "zone_status": 3,
+            },
+            "after": {
+                "crt_rand": 4,
+                "map_generation": 5,
+                "zone_status": 6,
+            },
+        }
+        recomp["rng"] = json.loads(json.dumps(retail["rng"]))
+        recomp["rng"]["after"]["crt_rand"] = 7
+        self.assertEqual(
+            first_checkpoint_difference(retail, recomp),
+            {
+                "path": "$.rng.after.crt_rand",
+                "kind": "value_mismatch",
+                "retail": 4,
+                "recomp": 7,
+            },
+        )
+
+    def test_equal_rng_contracts_do_not_diverge(self) -> None:
+        retail = {
+            "rng": {
+                "before": {
+                    "crt_rand": 1,
+                    "map_generation": 2,
+                    "zone_status": 3,
+                },
+                "after": {
+                    "crt_rand": 4,
+                    "map_generation": 5,
+                    "zone_status": 6,
+                },
+            }
+        }
+        self.assertIsNone(
+            first_checkpoint_difference(retail, json.loads(json.dumps(retail)))
+        )
+
+    def test_rng_before_state_is_distinct_from_after_state(self) -> None:
+        retail = {
+            "rng": {
+                "before": {
+                    "crt_rand": 1,
+                    "map_generation": 2,
+                    "zone_status": 3,
+                },
+                "after": {
+                    "crt_rand": 4,
+                    "map_generation": 5,
+                    "zone_status": 6,
+                },
+            }
+        }
+        recomp = json.loads(json.dumps(retail))
+        recomp["rng"]["before"]["zone_status"] = 7
+        self.assertEqual(
+            first_checkpoint_difference(retail, recomp),
+            {
+                "path": "$.rng.before.zone_status",
+                "kind": "value_mismatch",
+                "retail": 3,
+                "recomp": 7,
             },
         )
 
@@ -229,6 +333,14 @@ class DifferentialRunTests(unittest.TestCase):
             patch("tools.runtime.retail_checkpoint_differential.shut_down_wine_prefix"),
             patch("tools.runtime.retail_checkpoint_differential.direct_call_target_after", return_value=0x1234),
             patch("tools.runtime.retail_checkpoint_differential._capture_fields", side_effect=capture),
+            patch(
+                "tools.runtime.retail_checkpoint_differential._runtime_rng_state",
+                return_value={
+                    "crt_rand": 1,
+                    "map_generation": 2,
+                    "zone_status": 3,
+                },
+            ),
         )
         return scenario, executable, run_dir, patches
 
