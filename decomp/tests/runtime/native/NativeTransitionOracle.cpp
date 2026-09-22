@@ -3,6 +3,7 @@
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 #include "flows/LoadGameFlow.h"
+#include "game/globals/map_globals.h"
 #include "scenarios/RuntimeScenario.h"
 #include "scenarios/RuntimeTestFactory.h"
 
@@ -29,6 +30,9 @@ protected:
     }
 
     NativeTransition transition(RunState());
+    srand(0x1234);
+    g_mapGenLcgState_006a38e8 = 0x1234;
+    g_zoneStatusCodePrngSeed_006a5aec = 0x1234;
     RunState().SetCapture("rng_contract_before", CaptureRuntimeRngStateForTests());
     const NativeCase* nativeCase = FindNativeCase(name);
     if (nativeCase == 0) {

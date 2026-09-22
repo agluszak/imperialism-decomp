@@ -244,7 +244,7 @@ RuntimeActionResult RunTurnStateDiplomacyOfferGate(NativeTransition& transition)
   if (g_pMapContextActionManager == 0) {
     return RuntimeActionResult::Failure("diplomacy-offer gate state is unavailable");
   }
-  g_pMapContextActionManager->flag8 = 1;
+  g_pMapContextActionManager->flag8 = 0;
   return RunProductionTurnState(transition, 0xd);
 }
 

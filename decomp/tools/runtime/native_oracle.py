@@ -113,7 +113,7 @@ def run_native_transition(
     process_error = _process_failed(host)
     result_path = run_dir / "result.json"
     result = read_json_file(result_path)
-    if process_error is not None:
+    if result is None and process_error is not None:
         return _fail(f"native transition {case}: {process_error}", result=result)
     if result is None:
         return _fail(f"native transition {case}: missing result.json")

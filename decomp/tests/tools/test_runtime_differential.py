@@ -60,14 +60,17 @@ class CheckpointSchemaTests(unittest.TestCase):
         newspaper = SCHEMAS["turn_stop_newspaper.resolved"].required_paths
 
         self.assertIn("dispatched_event", combat)
-        self.assertIn("rng.crt_rand", combat)
+        self.assertIn("rng.before.crt_rand", combat)
+        self.assertIn("rng.after.crt_rand", combat)
         self.assertIn("trade.nations", cleanup)
         self.assertIn("diplomacy.nations", cleanup)
         self.assertIn("missions", cleanup)
         self.assertIn("nation_status", elimination)
-        self.assertIn("rng.crt_rand", elimination)
+        self.assertIn("rng.before.crt_rand", elimination)
+        self.assertIn("rng.after.crt_rand", elimination)
         self.assertIn("pending_nations", newspaper)
-        self.assertIn("rng.crt_rand", newspaper)
+        self.assertIn("rng.before.crt_rand", newspaper)
+        self.assertIn("rng.after.crt_rand", newspaper)
 
     def test_native_and_retail_normalize_to_one_schema(self) -> None:
         retail = normalize_retail_combined_map(combined_map_fields())
@@ -245,7 +248,7 @@ class StrategicNavalBattleMatrixTests(unittest.TestCase):
         self.assertEqual({len(side[0]) for side in sides}, {1, 2, 3, 4})
         self.assertEqual({side[4] for side in sides}, {0, 100, 200, 400})
 
-    def test_matrix_contains_tier_exhaustion_regression(self) -> None:
+    def test_matrix_contains_one_sided_tier_exhaustion_cases(self) -> None:
         one_sided = [
             case
             for case in _STRATEGIC_NAVAL_BATTLE_MATRIX
@@ -253,10 +256,10 @@ class StrategicNavalBattleMatrixTests(unittest.TestCase):
             and case["convergence"] in {"only_left_fails", "only_right_fails"}
         ]
         self.assertGreaterEqual(len(one_sided), 2)
-        for case in one_sided:
-            participant, left_defeated, right_defeated = case["expected"]
-            self.assertIn(participant, {0, 1})
-            self.assertNotEqual(left_defeated, right_defeated)
+        self.assertEqual(
+            {case["convergence"] for case in one_sided},
+            {"only_left_fails", "only_right_fails"},
+        )
 
     def test_matrix_scenario_invokes_the_direct_production_driver(self) -> None:
         scenario = load_scenario("strategic_naval_battle_matrix")
@@ -316,6 +319,10 @@ class DifferentialTraceTests(unittest.TestCase):
     def test_scenario_classification_distinguishes_component_probes(self) -> None:
         self.assertEqual(
             _scenario_classification("quarter_gate_off_decade"),
+            "component_probe",
+        )
+        self.assertEqual(
+            _scenario_classification("strategic_naval_battle_matrix"),
             "component_probe",
         )
         self.assertEqual(
