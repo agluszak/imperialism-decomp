@@ -480,7 +480,20 @@ node_class_substitutions:
   - view: Transport.rsrc:2014
     mac_class: TSidewaysArrow
     windows_class: TRightLeftView
+    # The retail factory still constructs the Mac class; the substitution is a
+    # post-create swap, so generated factories emit the final Windows class.
+    construction: post_create
     evidence: "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets at 0x0050bea0 Free()s placeholder left/rght TSidewaysArrow controls and replaces them with TRightLeftView instances that repeat without TUpDownPictureButton hilite"
+  - view: Startup.rsrc:20000
+    mac_class: TDeluxeText
+    windows_class: TTEView
+    nodes: [0x0135, 0x02ae]
+    evidence: "InitializeGameSetupScreenControlsAndModeTags calls TTEView::TTEView (0x0045ad20, installs the TTEView vftable) at retail 0x00458f27 for sale (0x0135) and 0x0045925b for requ (0x02ae); titl (0x0417) stays TDeluxeText"
+  - view: Tactical.rsrc:3821
+    mac_class: TDeluxeText
+    windows_class: TTEView
+    nodes: [0x0169]
+    evidence: "InitializeTacticalBattleViewToolbarAndDialogControls calls TTEView::TTEView (0x0045ad20, installs the TTEView vftable) at retail 0x0045bab6 for node 0x0169"
 
 # TCityProductionView draws and hit-tests these buildings dynamically rather
 # than constructing sixteen resource-backed child controls. Array order is paint

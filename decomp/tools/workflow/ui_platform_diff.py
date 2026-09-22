@@ -14,6 +14,7 @@ from tools.ui_cpp_codegen import (
     _render_factory_with_map,
     apply_case_windows_overrides,
     load_class_substitutions,
+    load_node_class_substitutions,
     load_windows_child_node_patches,
     load_recipes,
     load_text_resources,
@@ -98,7 +99,13 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
     windows_views = load_windows_views(repo_root)
     declared_substitutions = config["class_substitutions"]
     declared_parity = config["functional_parity_cases"]
+    declared_node_subs: dict[tuple[str, str], list[dict]] = {}
+    for row in config.get("node_class_substitutions") or []:
+        declared_node_subs.setdefault(
+            (str(row["view"]), str(row["mac_class"])), []
+        ).append(row)
     class_substitutions = load_class_substitutions(repo_root)
+    node_substitutions = load_node_class_substitutions(repo_root)
     errors: list[str] = []
 
     observed_parity: set[str] = set()
@@ -138,7 +145,11 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
             if case.resource is not None:
                 raw_view = raw_views[case.resource]
                 mac_semantic_view = normalize_resource_view(
-                    case.resource, raw_view, text_resources, class_substitutions
+                    case.resource,
+                    raw_view,
+                    text_resources,
+                    class_substitutions,
+                    node_substitutions,
                 )
                 semantic_view = apply_case_windows_overrides(
                     recipe, case, mac_semantic_view
@@ -192,7 +203,37 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
                         }
                     if raw_class != node.class_name:
                         declaration = declared_substitutions.get(raw_class)
-                        if declaration is None or declaration["windows_class"] != node.class_name:
+                        if (
+                            declaration is not None
+                            and declaration["windows_class"] == node.class_name
+                        ):
+                            delta_reason = declaration["reason"]
+                            delta_evidence = declaration["evidence"]
+                        else:
+                            node_rows_declared = declared_node_subs.get(
+                                (case.resource.text(), raw_class), []
+                            )
+                            node_row = next(
+                                (
+                                    row
+                                    for row in node_rows_declared
+                                    if row["windows_class"] == node.class_name
+                                    and (
+                                        row.get("nodes") is None
+                                        or int(node.node_id, 16) in row["nodes"]
+                                    )
+                                ),
+                                None,
+                            )
+                            if node_row is None:
+                                delta_reason = delta_evidence = None
+                            else:
+                                delta_reason = (
+                                    "original Windows builder substitutes this "
+                                    "class at the declared nodes"
+                                )
+                                delta_evidence = node_row["evidence"]
+                        if delta_evidence is None:
                             classification = "unexplained_delta"
                             summary["unexplained_deltas"] += 1
                             errors.append(
@@ -206,8 +247,8 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
                                 "field": "class",
                                 "mac": raw_class,
                                 "windows": node.class_name,
-                                "reason": declaration["reason"],
-                                "evidence": declaration["evidence"],
+                                "reason": delta_reason,
+                                "evidence": delta_evidence,
                             }
                     generated_node = generated_case.get("nodes", {}).get(node.node_id)
                     if generated_node is None:

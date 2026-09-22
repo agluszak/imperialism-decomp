@@ -356,37 +356,37 @@ pub fn join_selector_message() -> impl Scene {
                             (
                                 retail_node(fourcc!("box0"), 29, 62, 29, 22)
                                 Checkbox
-                                retail_picture_swap(4650, 4651)
+                                retail_madness_picture(4651)
                             ),
                             (
                                 retail_node(fourcc!("box1"), 70, 62, 29, 22)
                                 Checkbox
-                                retail_picture_swap(4656, 4657)
+                                retail_madness_picture(4656)
                             ),
                             (
                                 retail_node(fourcc!("box2"), 111, 62, 29, 22)
                                 Checkbox
-                                retail_picture_swap(4660, 4661)
+                                retail_madness_picture(4661)
                             ),
                             (
                                 retail_node(fourcc!("box3"), 152, 62, 29, 22)
                                 Checkbox
-                                retail_picture_swap(4666, 4667)
+                                retail_madness_picture(4666)
                             ),
                             (
                                 retail_node(fourcc!("box4"), 193, 62, 29, 22)
                                 Checkbox
-                                retail_picture_swap(4670, 4671)
+                                retail_madness_picture(4671)
                             ),
                             (
                                 retail_node(fourcc!("box5"), 234, 62, 29, 22)
                                 Checkbox
-                                retail_picture_swap(4676, 4677)
+                                retail_madness_picture(4676)
                             ),
                             (
                                 retail_node(fourcc!("box6"), 275, 62, 29, 22)
                                 Checkbox
-                                retail_picture_swap(4680, 4681)
+                                retail_madness_picture(4681)
                             ),
                         ]
                     ),

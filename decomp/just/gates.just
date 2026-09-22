@@ -38,7 +38,7 @@ _precommit-post-build-checks: gates _precommit-independent-checks
 
 [private]
 [parallel]
-_precommit-independent-checks: runtime-harness-lint lint-warning-gate-test test _precommit-generated-integrity-gate
+_precommit-independent-checks: runtime-harness-lint lint-warning-gate-test test _precommit-generated-integrity-gate ui-factory-widget-check
 
 # Compare the entire current branch plus worktree with main. PRECOMMIT_BASE_REF
 # permits an explicit integration base; otherwise prefer origin/main, then local
@@ -99,6 +99,15 @@ noop-gate:
 [group('gates')]
 noop-audit *args:
   uv run python -m tools.workflow.check_empty_bodies {{args}}
+
+# Generated UI factory fidelity floor: per-factory widget-class multiset must
+# match retail (resolved by ctor-installed vftable identity, not names).
+[private]
+[group('gates')]
+ui-factory-widget-check:
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY to your legally obtained Imperialism.exe}"
+  uv run python -m tools.workflow.check_ui_factory_widgets \
+    --original "$ORIGINAL_BINARY" --build-dir "{{build_dir}}"
 
 # Run the Python tooling unit tests (tests/tools).
 [group('gates')]

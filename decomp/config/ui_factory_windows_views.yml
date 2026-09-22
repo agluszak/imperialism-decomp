@@ -97,7 +97,7 @@ views:
 
       - id: nation_0
         type: pict
-        class: TCzechBox
+        class: TMadnessButton
         tag: box0
         parent: dialog
         geometry: [0x1d, 0x3e, 0x1d, 0x16]
@@ -109,7 +109,7 @@ views:
 
       - id: nation_1
         type: pict
-        class: TCzechBox
+        class: TMadnessButton
         tag: box1
         parent: dialog
         geometry: [0x46, 0x3e, 0x1d, 0x16]
@@ -121,7 +121,7 @@ views:
 
       - id: nation_2
         type: pict
-        class: TCzechBox
+        class: TMadnessButton
         tag: box2
         parent: dialog
         geometry: [0x6f, 0x3e, 0x1d, 0x16]
@@ -133,7 +133,7 @@ views:
 
       - id: nation_3
         type: pict
-        class: TCzechBox
+        class: TMadnessButton
         tag: box3
         parent: dialog
         geometry: [0x98, 0x3e, 0x1d, 0x16]
@@ -145,7 +145,7 @@ views:
 
       - id: nation_4
         type: pict
-        class: TCzechBox
+        class: TMadnessButton
         tag: box4
         parent: dialog
         geometry: [0xc1, 0x3e, 0x1d, 0x16]
@@ -157,7 +157,7 @@ views:
 
       - id: nation_5
         type: pict
-        class: TCzechBox
+        class: TMadnessButton
         tag: box5
         parent: dialog
         geometry: [0xea, 0x3e, 0x1d, 0x16]
@@ -169,7 +169,7 @@ views:
 
       - id: nation_6
         type: pict
-        class: TCzechBox
+        class: TMadnessButton
         tag: box6
         parent: dialog
         geometry: [0x113, 0x3e, 0x1d, 0x16]

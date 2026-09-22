@@ -466,6 +466,33 @@ def load_class_substitutions(repo_root: Path) -> dict[str, str]:
     return substitutions
 
 
+def load_node_class_substitutions(
+    repo_root: Path,
+) -> dict[str, dict[str, tuple[str, frozenset[int] | None]]]:
+    """view key -> {Mac class -> (Windows class, node offsets or None for all)}."""
+
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    context = f"{WINDOWS_DELTA_PATH}: node_class_substitutions"
+    rows = data.get("node_class_substitutions") or []
+    if not isinstance(rows, list):
+        raise ValueError(f"{context}: must be a list")
+    substitutions: dict[str, dict[str, tuple[str, frozenset[int] | None]]] = {}
+    for index, raw_row in enumerate(rows):
+        row = _mapping(raw_row, f"{context}[{index}]")
+        if not str(row.get("evidence") or "").strip():
+            raise ValueError(f"{context}[{index}]: missing evidence")
+        nodes = row.get("nodes")
+        offsets = (
+            frozenset(int(n) for n in nodes) if nodes is not None else None
+        )
+        view = str(row["view"])
+        substitutions.setdefault(view, {})[str(row["mac_class"])] = (
+            str(row["windows_class"]),
+            offsets,
+        )
+    return substitutions
+
+
 def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, ...]:
     data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
     rows = data.get("windows_child_nodes", [])
@@ -773,9 +800,17 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
     return views
 
 
-def _resolved_class(node: dict, class_substitutions: dict[str, str]) -> str:
+def _resolved_class(
+    node: dict,
+    class_substitutions: dict[str, str],
+    node_substitutions: dict[str, tuple[str, frozenset[int] | None]] | None = None,
+) -> str:
     class_name = str(node.get("class_name") or "")
     if class_name:
+        if node_substitutions and class_name in node_substitutions:
+            windows_class, offsets = node_substitutions[class_name]
+            if offsets is None or int(node["offset"]) in offsets:
+                return windows_class
         return class_substitutions.get(class_name, class_name)
     try:
         return DEFAULT_CLASSES[str(node["type_code"])]
@@ -843,12 +878,15 @@ def normalize_resource_view(
     view: dict,
     text_resources: TextResources,
     class_substitutions: dict[str, str],
+    node_substitutions: dict[str, dict[str, tuple[str, frozenset[int] | None]]]
+    | None = None,
 ) -> UiSemanticView:
+    scoped = (node_substitutions or {}).get(key.text())
     nodes: list[UiSemanticNode] = []
     for row in view.get("nodes", []):
         offset = int(row["offset"])
         type_code = str(row["type_code"])
-        class_name = _resolved_class(row, class_substitutions)
+        class_name = _resolved_class(row, class_substitutions, scoped)
         raw_family = row.get("family", {})
         frame_style: int | None = None
         content_insets: tuple[int, int, int, int] | None = None
@@ -1182,6 +1220,7 @@ def validate(
 ) -> list[str]:
     recipe_list = list(recipes)
     class_substitutions = load_class_substitutions(repo_root)
+    node_substitutions = load_node_class_substitutions(repo_root)
     errors: list[str] = []
     referenced_windows: set[str] = set()
     declarations = _squash_ws(
@@ -1216,7 +1255,11 @@ def validate(
                 errors.extend(validate_view_structure(raw_view, require_cluster_counts=True))
                 try:
                     view = normalize_resource_view(
-                        case.resource, raw_view, text_resources, class_substitutions
+                        case.resource,
+                        raw_view,
+                        text_resources,
+                        class_substitutions,
+                        node_substitutions,
                     )
                 except (KeyError, ValueError) as exc:
                     errors.append(f"{context}: {exc}")
@@ -1423,6 +1466,9 @@ def _render_factory_with_map(
     class_substitutions = load_class_substitutions(
         repo_root_from_file(__file__, levels_up=1)
     )
+    node_substitutions = load_node_class_substitutions(
+        repo_root_from_file(__file__, levels_up=1)
+    )
     body: list[str] = []
     classes: set[str] = set()
     case_maps: dict[str, object] = {}
@@ -1452,6 +1498,7 @@ def _render_factory_with_map(
                 views[case.resource],
                 text_resources,
                 class_substitutions,
+                node_substitutions,
             )
         elif case.windows_view is not None:
             view = windows_views[case.windows_view]
