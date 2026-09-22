@@ -1,4 +1,4 @@
-# Pre-existing config/symbols.csv function-range overlaps (bd: file follow-up beads
+# Pre-existing config/original_entities.csv function-range overlaps (bd: file follow-up beads
 # per class as they're cleaned up). Format: outer_addr:inner_addr  # note
 #
 # Each pair is a `type=="function"` row whose byte range fully or partially swallows

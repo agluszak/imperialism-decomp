@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Persistent read-only Ghidra query daemon: pay the JVM startup once per session.
 
-Every one-shot `just ghidra-*` invocation spends ~60-90s starting pyghidra/the JVM
+Every one-shot `just ghidra` invocation spends ~60-90s starting pyghidra/the JVM
 and opening the vendored project before running a query that itself takes
 milliseconds. Research sessions issue dozens of such queries; this daemon keeps one
 JVM + read-only program handle alive behind a unix socket so `tools.ghidra.query`

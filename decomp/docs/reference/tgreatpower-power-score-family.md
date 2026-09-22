@@ -99,7 +99,7 @@ note 96). Heuristics note 98 tracks this.
 
 ## Named data globals (operand pairing)
 
-Defined in `src/game/global_data_tables.cpp` with their `config/symbols.csv` names:
+Defined in `src/game/global_data_tables.cpp` with their `config/original_entities.csv` names:
 
 | Address | Symbol | Value |
 |---------|--------|-------|

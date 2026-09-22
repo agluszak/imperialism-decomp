@@ -32,8 +32,8 @@ Two further junk-row classes are pruned under the same keep-rules (3)+(4):
   * function rows whose address is not inside .text at all (data-section
     "functions", GOG `.patch`-section code, one-past-section-end artifacts).
 
-Run after `just sync-ghidra` regenerates config/original_entities.csv (sync-ghidra does
-this automatically).
+Run after `just refresh-inventory` regenerates config/original_entities.csv
+(refresh-inventory does this automatically).
 """
 
 from __future__ import annotations

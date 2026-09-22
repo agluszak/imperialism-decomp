@@ -13,7 +13,7 @@ class GeneratedBlockStripTests(unittest.TestCase):
         text = "\n".join(
             [
                 "int keep_before();",
-                "// === BEGIN GENERATED (TFoo) - refreshed by `just gen-class TFoo`; do not hand-edit ===",
+                "// === BEGIN GENERATED (TFoo) - refreshed by `just generate`; do not hand-edit ===",
                 "// raw provisional WrapperFor_SlotNameAndMaybeFree",
                 "// === END GENERATED (TFoo) ===",
                 "int keep_after();",

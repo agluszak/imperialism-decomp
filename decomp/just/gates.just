@@ -184,6 +184,15 @@ symbols-integrity-gate:
 repo-hygiene-gate:
   uv run python -m tools.workflow.check_repo_hygiene
 
+# Reject backticked just-recipe citations that name no real recipe and literal
+# repo paths inside recipe bodies that do not exist. Whole-tree; see the
+# check's docstring for why.
+[private]
+[doc('Reject dead just-recipe citations and recipe path literals')]
+[group('gates')]
+just-refs-gate:
+  uv run python -m tools.workflow.check_just_refs
+
 # Reject generated build inputs and retired generated source trees in a branch or
 # worktree diff. `precommit` resolves the merge base and includes local changes.
 [private]
@@ -229,7 +238,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate cstring-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate class-size-gate noop-gate shadow-stub-gate runtime-source-policy-gate
+_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate cstring-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate class-size-gate noop-gate shadow-stub-gate runtime-source-policy-gate just-refs-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
