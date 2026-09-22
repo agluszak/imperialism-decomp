@@ -55,9 +55,11 @@ from tools.runtime.checkpoints import (
     CHECKPOINT_TURN_STOP_TECHNOLOGY,
     CHECKPOINT_TURN_STOP_TRADE,
     CHECKPOINT_TURN_STATE_AI_REPLAN,
+    CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED,
     CHECKPOINT_TURN_STATE_COMBAT_MOVES,
     CHECKPOINT_TURN_STATE_MILITARY_CLEANUP,
     ACTION_TURN_STATE_AI_REPLAN,
+    ACTION_TURN_STATE_AI_REASSESS_DAMAGED,
     ACTION_TURN_STATE_COMBAT_MOVES,
     ACTION_TURN_STATE_MILITARY_CLEANUP,
     _PLAYER_DIPLOMACY_POLICY_SCENARIOS,
@@ -272,6 +274,7 @@ _PRODUCTION_PATH_SCENARIOS = frozenset(
         "military_phase_naval_tier_exhaustion",
         "turn_state_combat_moves",
         "turn_state_ai_replan_perturbed",
+        "turn_state_ai_reassess_damaged_ship",
         "turn_state_diplomacy_offer_gate",
         "turn_state_diplomacy_phase",
         "turn_state_military_cleanup",
@@ -945,27 +948,29 @@ def load_scenario(name: str) -> Scenario:
     elif name in (
         "turn_state_military_cleanup",
         "turn_state_ai_replan_perturbed",
+        "turn_state_ai_reassess_damaged_ship",
     ):
         base = _load_save_to_map_scenario(fixture)
+        if name == "turn_state_military_cleanup":
+            action_id = ACTION_TURN_STATE_MILITARY_CLEANUP
+            checkpoint_id = CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
+        elif name == "turn_state_ai_replan_perturbed":
+            action_id = ACTION_TURN_STATE_AI_REPLAN
+            checkpoint_id = CHECKPOINT_TURN_STATE_AI_REPLAN
+        else:
+            action_id = ACTION_TURN_STATE_AI_REASSESS_DAMAGED
+            checkpoint_id = CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED
         scenario = Scenario(
             name=name,
             native_test=name,
-            action_id=(
-                ACTION_TURN_STATE_MILITARY_CLEANUP
-                if name == "turn_state_military_cleanup"
-                else ACTION_TURN_STATE_AI_REPLAN
-            ),
+            action_id=action_id,
             fixture=fixture,
             probes=base.probes,
             terminal_checkpoint=base.terminal_checkpoint,
             timeout_seconds=base.timeout_seconds,
             start_action=base.start_action,
             drive=name,
-            result_checkpoint_id=(
-                CHECKPOINT_TURN_STATE_MILITARY_CLEANUP
-                if name == "turn_state_military_cleanup"
-                else CHECKPOINT_TURN_STATE_AI_REPLAN
-            ),
+            result_checkpoint_id=checkpoint_id,
         )
     elif name == "recompute_nation_order_priority_metrics":
         base = _load_save_to_map_scenario(fixture)
@@ -2612,10 +2617,16 @@ def _drive_military_phase(
 def _sorted_ptr_list_entries(session: GdbSession, list_pointer: int) -> list[int]:
     """Walk a TSortedList's embedded CPtrList node chain (listState at +0x04)."""
     entries: list[int] = []
+    seen: set[int] = set()
     if list_pointer == 0:
         return entries
     node = _u32(session, list_pointer + 0x08)
     while node != 0:
+        if node in seen:
+            raise RuntimeError(
+                f"TSortedList at 0x{list_pointer:08x} contains a node cycle"
+            )
+        seen.add(node)
         entries.append(_u32(session, node + 8))
         node = _u32(session, node)
     return entries
@@ -3194,12 +3205,12 @@ def _mission_class_name(
     )
 
 
-def _drive_reassess_missions_damaged(
+def _configure_reassess_missions_damaged(
     session: GdbSession,
     records: list[dict],
     occurrences: dict[str, int],
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
-) -> None:
+) -> int:
     target_zone = 0
     mission_nation = -1
     for slot, nation in _eligible_auto_nations(
@@ -3278,6 +3289,18 @@ def _drive_reassess_missions_damaged(
         breakpoint_roles,
     )
     session.assign(f"*(short*)0x{ship + _TSHIP_STRENGTH:08x}", 899)
+    return mission_nation
+
+
+def _drive_reassess_missions_damaged(
+    session: GdbSession,
+    records: list[dict],
+    occurrences: dict[str, int],
+    breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
+) -> None:
+    _configure_reassess_missions_damaged(
+        session, records, occurrences, breakpoint_roles
+    )
     _drive_reassess_missions(
         session, records, occurrences, breakpoint_roles
     )
@@ -5671,11 +5694,16 @@ def _drive_turn_state_military_cleanup(
     occurrences: dict[str, int],
     breakpoint_roles: dict[str, tuple[str, "Probe | None"]],
     perturb_ai: bool = False,
+    perturb_damaged_mission: bool = False,
 ) -> dict[str, object]:
     sim_mgr = _u32(session, _SIM_MGR)
     session.assign(f"*(short*)0x{sim_mgr + 0x2C:08x}", 2)
     if perturb_ai:
         _configure_ai_naval_development_pressure(
+            session, records, occurrences, breakpoint_roles
+        )
+    if perturb_damaged_mission:
+        _configure_reassess_missions_damaged(
             session, records, occurrences, breakpoint_roles
         )
     _invoke_production_turn_state(
@@ -11379,6 +11407,18 @@ def run_binary(
                         )
                         result_probe = scenario.result_checkpoint_id
                     elif (
+                        scenario.drive
+                        == "turn_state_ai_reassess_damaged_ship"
+                    ):
+                        result_fields = _drive_turn_state_military_cleanup(
+                            session,
+                            records,
+                            occurrences,
+                            breakpoint_roles,
+                            perturb_damaged_mission=True,
+                        )
+                        result_probe = scenario.result_checkpoint_id
+                    elif (
                         scenario.drive == "province_loss_with_stationed_unit"
                     ):
                         result_fields = _drive_province_loss(
@@ -11840,6 +11880,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "second_turn_civilians_phase",
         "second_turn_military_cleanup",
         "turn_state_ai_replan_perturbed",
+        "turn_state_ai_reassess_damaged_ship",
         "turn_state_combat_moves",
         "turn_state_military_cleanup",
         "recompute_nation_order_priority_metrics",
@@ -12165,6 +12206,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         elif scenario.drive in (
             "turn_state_military_cleanup",
             "turn_state_ai_replan_perturbed",
+            "turn_state_ai_reassess_damaged_ship",
         ):
             recomp_observation = (
                 normalize_native_turn_state_military_cleanup(
@@ -12310,6 +12352,14 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
                 retail_records[0]["fields"],
                 checkpoint_id=CHECKPOINT_TURN_STATE_AI_REPLAN,
                 action_id=ACTION_TURN_STATE_AI_REPLAN,
+            )
+        )
+    elif result_checkpoint == CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED:
+        retail_observation = (
+            normalize_retail_turn_state_military_cleanup(
+                retail_records[0]["fields"],
+                checkpoint_id=CHECKPOINT_TURN_STATE_AI_REASSESS_DAMAGED,
+                action_id=ACTION_TURN_STATE_AI_REASSESS_DAMAGED,
             )
         )
     elif result_checkpoint == CHECKPOINT_RECOMPUTE_METRICS:

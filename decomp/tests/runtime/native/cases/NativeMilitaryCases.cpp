@@ -1934,41 +1934,7 @@ RuntimeActionResult RunTurnStateAiReplanPerturbed(NativeTransition& transition) 
   return transition.Finish();
 }
 
-// ControlSeaZone Reassess only. Opening ControlSea missions do not read
-// AutoGreatPower B64/B68/B6c pressure scores, so this is safe on the loaded
-// beginning_of_game fixture without RecomputeNationOrderPriorityMetrics.
-RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) {
-  int slot;
-
-  JsonObject args;
-  RuntimeActionResult started = transition.Begin(args.Release());
-  if (!started.Succeeded()) {
-    return started;
-  }
-
-  for (slot = 0; slot < 7; ++slot) {
-    TGreatPower* nation = g_apNationStates[slot];
-    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
-      continue;
-    }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
-      continue;
-    }
-    TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);
-    CIterator iter(autoNation->missionQueue);
-    for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
-         mission = static_cast<TMission*>(iter.Advance())) {
-      if (mission->IsNavyMission() != 0 && mission->IsHospitalMission() != 0) {
-        mission->Reassess();
-      }
-    }
-  }
-  return transition.Finish();
-}
-
-// ControlSeaZone Reassess with a hostile frigate at 899/900 strength. Integer
-// strength/max_strength would treat that ratio as 0 and keep empty-zone needs.
-RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition) {
+static bool ConfigureDamagedHostileSeaMission(short* nationSlotOut) {
   int slot;
   TZone* targetZone = 0;
   short missionNation = -1;
@@ -2018,15 +1984,82 @@ RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& t
     }
   }
 
-  if (targetZone != 0 && hostNation != 0) {
-    short hostile = missionNation == 0 ? 1 : 0;
-    ForceWarBetween(missionNation, hostile);
-    TShip* ship = new TShip();
-    ship->IShip(3, targetZone, hostile, "damaged-hostile-frigate");
-    ship->strength = 899;
+  if (targetZone == 0 || hostNation == 0) {
+    return false;
+  }
+
+  short hostile = missionNation == 0 ? 1 : 0;
+  ForceWarBetween(missionNation, hostile);
+  TShip* ship = new TShip();
+  ship->IShip(3, targetZone, hostile, "damaged-hostile-frigate");
+  ship->strength = 899;
+  *nationSlotOut = missionNation;
+  return true;
+}
+
+RuntimeActionResult RunTurnStateAiReassessDamagedShip(NativeTransition& transition) {
+  short nationSlot = -1;
+  if (g_pSimMgr == 0 || !ConfigureDamagedHostileSeaMission(&nationSlot)) {
+    return RuntimeActionResult::Failure("AI reassess fixture has no eligible sea mission");
+  }
+
+  g_pSimMgr->economicTurn = 2;
+  g_pSimMgr->turnStateCode = 0x15;
+
+  JsonObject args;
+  args.Set("nation", static_cast<int>(nationSlot));
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  g_pSimMgr->AdvanceGlobalTurnStateMachine();
+  return transition.Finish();
+}
+
+// ControlSeaZone Reassess only. Opening ControlSea missions do not read
+// AutoGreatPower B64/B68/B6c pressure scores, so this is safe on the loaded
+// beginning_of_game fixture without RecomputeNationOrderPriorityMetrics.
+RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) {
+  int slot;
+
+  JsonObject args;
+  RuntimeActionResult started = transition.Begin(args.Release());
+  if (!started.Succeeded()) {
+    return started;
+  }
+
+  for (slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+      continue;
+    }
+    TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);
+    CIterator iter(autoNation->missionQueue);
+    for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+         mission = static_cast<TMission*>(iter.Advance())) {
+      if (mission->IsNavyMission() != 0 && mission->IsHospitalMission() != 0) {
+        mission->Reassess();
+      }
+    }
+  }
+  return transition.Finish();
+}
+
+// ControlSeaZone Reassess with a hostile frigate at 899/900 strength. Integer
+// strength/max_strength would treat that ratio as 0 and keep empty-zone needs.
+RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& transition) {
+  int slot;
+  short missionNation = -1;
+  if (!ConfigureDamagedHostileSeaMission(&missionNation)) {
+    return RuntimeActionResult::Failure("AI reassess fixture has no eligible sea mission");
   }
 
   JsonObject args;
+  args.Set("nation", static_cast<int>(missionNation));
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
