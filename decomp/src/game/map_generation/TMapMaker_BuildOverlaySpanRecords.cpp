@@ -16,11 +16,6 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 
-// A body this size exhausts VC5's inline budget: retail expands
-// stretch<Seapoint>::operator[] only at the first few sites and calls the out-of-line copy
-// at the rest. Suspending automatic expansion for this one function reproduces
-// the majority case; the handful of early sites retail did inline are residual.
-#pragma inline_depth(0)
 // FUNCTION: IMPERIALISM 0x0052cae0
 void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
   SeaSegmentStretch& seg = g_regionBorderLinkTable_006a3900;
@@ -111,4 +106,3 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
     }
   } while (i < static_cast<unsigned int>(quad.count));
 }
-#pragma inline_depth()
