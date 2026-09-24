@@ -44,45 +44,47 @@ void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short prima
 void TCapacityOrder::Produce() {
   TCity* city = this->ownerCity;
   short slotIndex = this->resourceTypeIndex;
-  short newValue;
-  short deltaToAccum;
 
   if (this->quantity == 0) {
     return;
   }
+
   if (slotIndex == 0xe) {
     const short currentCap = static_cast<short>(city->GetOwnerNeedCapA6());
     city->SetOwnerNeedCapA6(static_cast<short>(currentCap + this->quantity));
-    goto apply_done;
-  }
-  if (slotIndex == 0xf) {
-    TGreatPower* owner = city->ownerNationAc;
-    if (owner->pendingActionStatus.byAction[9] < '3') {
-      int laborPool = owner->ownedRegionList->GetSize();
-      if ((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2 < 2) {
-        newValue = 1;
+  } else {
+    short newValue;
+    if (slotIndex == 0xf) {
+      TGreatPower* owner = city->ownerNationAc;
+      if (owner->pendingActionStatus.byAction[9] < '3') {
+        int laborPool = owner->ownedRegionList->GetSize();
+        if ((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2 < 2) {
+          newValue = 1;
+        } else {
+          laborPool = owner->ownedRegionList->GetSize();
+          newValue = static_cast<short>((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2);
+        }
       } else {
-        laborPool = owner->ownedRegionList->GetSize();
-        newValue = static_cast<short>((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2);
+        int laborPool = owner->ownedRegionList->GetSize();
+        if (laborPool / 3 < 2) {
+          newValue = 1;
+        } else {
+          laborPool = owner->ownedRegionList->GetSize();
+          newValue = static_cast<short>(laborPool / 3);
+        }
       }
     } else {
-      int laborPool = owner->ownedRegionList->GetSize();
-      if (laborPool / 3 < 2) {
-        newValue = 1;
-      } else {
-        laborPool = owner->ownedRegionList->GetSize();
-        newValue = static_cast<short>(laborPool / 3);
-      }
+      newValue = city->productionOrderTable1dc[slotIndex];
     }
-  } else {
-    newValue = city->productionOrderTable1dc[slotIndex];
+
+    newValue = static_cast<short>(newValue + this->quantity);
+    const short deltaToAccum =
+        static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
+    city->productionAccum1fc[slotIndex] =
+        static_cast<short>(city->productionAccum1fc[slotIndex] + deltaToAccum);
+    city->productionOrderTable1dc[slotIndex] = newValue;
   }
-  newValue = static_cast<short>(newValue + this->quantity);
-  deltaToAccum = static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
-  city->productionAccum1fc[slotIndex] =
-      static_cast<short>(city->productionAccum1fc[slotIndex] + deltaToAccum);
-  city->productionOrderTable1dc[slotIndex] = newValue;
-apply_done:
+
   this->requestedQuantity4c = 0;
   this->quantity = 0;
   this->trackingSlots[this->primaryInputResourceId] = 0;
