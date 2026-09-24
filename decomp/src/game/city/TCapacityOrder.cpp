@@ -44,6 +44,8 @@ void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short prima
 void TCapacityOrder::Produce() {
   TCity* city = this->ownerCity;
   short slotIndex = this->resourceTypeIndex;
+  short newValue;
+  short deltaToAccum;
 
   if (this->quantity == 0) {
     return;
@@ -53,7 +55,6 @@ void TCapacityOrder::Produce() {
     const short currentCap = static_cast<short>(city->GetOwnerNeedCapA6());
     city->SetOwnerNeedCapA6(static_cast<short>(currentCap + this->quantity));
   } else {
-    short newValue;
     if (slotIndex == 0xf) {
       TGreatPower* owner = city->ownerNationAc;
       if (owner->pendingActionStatus.byAction[9] < '3') {
@@ -78,8 +79,7 @@ void TCapacityOrder::Produce() {
     }
 
     newValue = static_cast<short>(newValue + this->quantity);
-    const short deltaToAccum =
-        static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
+    deltaToAccum = static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
     city->productionAccum1fc[slotIndex] =
         static_cast<short>(city->productionAccum1fc[slotIndex] + deltaToAccum);
     city->productionOrderTable1dc[slotIndex] = newValue;
