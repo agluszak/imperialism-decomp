@@ -50,7 +50,9 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
           int dirDelta = ((b->f0c - a->f0c) + 6) % 6;
           unsigned char isPrimaryDirection = dirDelta >= 2 && dirDelta <= 4;
           if (isPrimaryDirection) {
-            if (bestPrimary != 0xffffffff) {
+            if (bestPrimary == 0xffffffff) {
+              bestPrimary = j;
+            } else {
               Seapoint* pa = &quad[i];
               Seapoint* pb = &quad[j];
               int rowDelta = pa->coord00 / 0xd8 - pb->coord00 / 0xd8;
@@ -63,22 +65,21 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
               }
               float candidateDist = static_cast<float>(
                   sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta)));
-              if ((&quad[bestPrimary])->WrappedDeltaMetric((&quad[i])) <= candidateDist) {
-                goto next;
+              if ((&quad[bestPrimary])->WrappedDeltaMetric((&quad[i])) > candidateDist) {
+                bestPrimary = j;
               }
             }
-            bestPrimary = j;
           } else if (bestPrimary == 0xffffffff) {
-            if (bestSecondary != 0xffffffff) {
+            if (bestSecondary == 0xffffffff) {
+              bestSecondary = j;
+            } else {
               float candidateDist = static_cast<float>((&quad[j])->WrappedDeltaMetric((&quad[i])));
-              if ((&quad[bestSecondary])->WrappedDeltaMetric((&quad[i])) <= candidateDist) {
-                goto next;
+              if ((&quad[bestSecondary])->WrappedDeltaMetric((&quad[i])) > candidateDist) {
+                bestSecondary = j;
               }
             }
-            bestSecondary = j;
           }
         }
-      next:
         j = j + 1;
       } while (j < static_cast<unsigned int>(quad.count));
     }
