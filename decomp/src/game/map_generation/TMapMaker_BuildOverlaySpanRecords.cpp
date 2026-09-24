@@ -1,9 +1,6 @@
 // TMapMaker overlay-segment builder: match the per-tile-edge Seapoint quad records
 // (g_seapointQuadTable_006a3478) into region-border SeaSegments
 // (g_regionBorderLinkTable_006a3900) that MergeSmallCityRegionsAndCompactIds later consumes.
-//
-// Isolated in its own translation unit so its size/codegen does not perturb the register
-// allocation of the neighbouring stretch methods in sea_geometry.cpp.
 
 #include "game/map/sea_geometry.h"
 
