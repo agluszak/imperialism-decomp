@@ -11,7 +11,7 @@ public:
   // FUNCTION: IMPERIALISM 0x004888a0
   ~TList() override {}
   DECLARE_DYNCREATE(TList)
-  TList() {}
+  TList() {} // NOOP: verified empty in original 0x00487e91
 };
 
 ASSERT_SIZE(TList, 0x20);
