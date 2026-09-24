@@ -7,10 +7,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-#if defined(_MSC_VER)
-#pragma intrinsic(strlen)
-#endif
-
 // SYNTHETIC: IMPERIALISM 0x004889a0
 // TStream::CreateObject
 
