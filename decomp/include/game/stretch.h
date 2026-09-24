@@ -157,9 +157,6 @@ public:
     return count;
   }
 
-  // Public because a caller compiled under `#pragma inline_depth(0)` cannot use
-  // the accessors above without emitting a call the original does not have.
-public:
   T* data;      // +0x04
   int capacity; // +0x08
   int count;    // +0x0c
