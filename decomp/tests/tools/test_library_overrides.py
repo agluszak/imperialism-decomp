@@ -82,6 +82,22 @@ class ApplySymbolsTests(unittest.TestCase):
         self.assertIsNotNone(row)
         self.assertEqual(row["provenance"], "library_identity_marker")
 
+    def test_global_declaration_replaces_only_inventory_name(self) -> None:
+        repo = self._repo(
+            "697870|g_Recompute_Nation_Order_LookupTable_00697870||40|global||retail\n",
+            "// GLOBAL: IMPERIALISM 0x00697870\n"
+            "short g_awTacticalCompositionReferenceProfiles_00697870[20] = {0};\n",
+        )
+        inventory = _row(repo / "config" / "original_entities.csv", 0x697870)
+        out = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")
+        self.assertEqual(_row(out, 0x697870), {
+            **inventory,
+            "name": "g_awTacticalCompositionReferenceProfiles_00697870",
+        })
+        self.assertEqual(
+            _row(repo / "config" / "original_entities.csv", 0x697870), inventory
+        )
+
     def test_overlay_is_idempotent(self) -> None:
         repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"

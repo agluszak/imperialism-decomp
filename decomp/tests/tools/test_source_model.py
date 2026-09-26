@@ -137,3 +137,14 @@ class TestDeclarationParsing(unittest.TestCase):
             "TDisplayMgr* g_pDisplayMgr = 0;\n"})
         self.assertEqual(m.vtables[0x650a08], "TLongintList")
         self.assertEqual(m.globals[0x6a2158], "g_pDisplayMgr")
+
+    def test_global_marker_prose_is_not_a_name(self):
+        m = self._model({"src/game/g.cpp":
+            "// GLOBAL: IMPERIALISM 0x006a43c0 — set after bootstrap.\n"
+            "char g_bTurnFlowBootstrapComplete = 0;\n"
+            "// GLOBAL: IMPERIALISM 0x006984b8 (static init -1)\n"
+            "int g_mapActionContextDisplayNameCacheId = -1;\n"})
+        self.assertEqual(m.globals, {
+            0x6a43c0: "g_bTurnFlowBootstrapComplete",
+            0x6984b8: "g_mapActionContextDisplayNameCacheId",
+        })

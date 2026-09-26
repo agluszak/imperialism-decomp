@@ -36,11 +36,18 @@ inspect the result before exporting.
 ```sh
 just ghidra-apply-source           # dry-run
 just ghidra-apply-source --apply   # write names / namespaces / vtable labels
+just ghidra-apply-source --address 0x00401000 --address 0x00402000
+just ghidra-apply-source --address 0x00401000 --address 0x00402000 --apply
 ```
 
 This is the one sanctioned source→Ghidra operation. It applies confirmed source
 markers and straightforward signatures; it does not regenerate layouts or replay
 historical type-projection campaigns.
+
+Repeat `--address` to select exact addresses for a focused source sync. The same
+selection limits function and global names, vtable labels, and entity-boundary
+repairs. Selecting a vtable start does not select its interior labels; include
+each interior address explicitly when repairing those boundaries.
 
 ## Restore and export
 

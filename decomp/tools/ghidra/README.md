@@ -29,6 +29,10 @@ just ghidra-apply-source --apply
 just export-project
 ```
 
+For a focused sync, pass repeatable `--address 0xADDR` selectors to
+`ghidra-apply-source`, inspect the dry-run, then repeat with `--apply`. Selection
+applies to exact addresses, including any interior labels needing boundary repair.
+
 `refresh-inventory` is for an intentional Ghidra boundary repair. It refreshes the curated inventory
 from the database; it never writes C++ source. Source markers and declarations remain the one-way,
 hand-authored source model. Generated evidence belongs under the build directory and is disposable.

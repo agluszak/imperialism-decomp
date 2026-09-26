@@ -13,10 +13,10 @@ beyond those raw facts is overlaid at generation time:
      they are stale entity boundaries in an already verified pointer run;
   3. `// LIBRARY:` / identity `// SYNTHETIC:` markers overlay name/symbol/prototype
      (prototype only when present) and add rows the inventory lacks;
-  4. source-derived FUNCTION names/prototypes (parsed from C++ declarations under
+  4. source-derived FUNCTION names/prototypes and GLOBAL names (parsed from declarations under
      markers by tools.source_model) overlay claimed addresses — a signature
      corrected in C++ mechanically reaches the generated table. Precedence:
-     source FUNCTION declaration > library/synthetic identity fields > inventory.
+     source declaration > library/synthetic identity fields > inventory.
 
 All facts come from tools.source_model — this module scans nothing itself.
 
@@ -111,6 +111,10 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
                 changed = True
             if changed:
                 stats["source"] += 1
+        global_name = model.globals.get(addr)
+        if global_name and (row.get("name") or "") != global_name:
+            row["name"] = global_name
+            stats["source"] += 1
         kept.append(row)
 
     for addr, identity in sorted(identities.items()):
