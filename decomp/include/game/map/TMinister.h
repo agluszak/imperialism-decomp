@@ -28,22 +28,22 @@ public:
   void ReadFrom(TStream* stream) override; // 6 (0x18)
   void Free() override;                    // 7 (0x1c)
   // Mac oracle: TMinister::GetRankingCriterionForGP(short).
-  virtual short GetRankingCriterionForGP(short nationSlot);        // 10 (0x28)
-  virtual void RebuildTerrainPreferenceEntriesAndAssignRanks();    // 11 (0x2c)
-  virtual short MapTerrainTypeToPreferenceRank(short terrainType); // 12 (0x30)
-  virtual short MapPreferenceRankToTerrainType(short rank);        // 13 (0x34)
-  virtual short GetPreferenceTerrainTypeByEntryIndex(short index); // 14 (0x38)
-  virtual short GetPreferenceGroupRankByEntryIndex(short index);   // 15 (0x3c)
-  virtual short GetPreferenceScoreByEntryIndex(short index);       // 16 (0x40)
+  virtual short GetRankingCriterionForGP(short nationSlot); // 10 (0x28)
+  virtual void FigureOutRanking();                          // 11 (0x2c)
+  virtual short GetRankOf(short countrySlot);               // 12 (0x30)
+  virtual short GetCountryInRank(short rank);               // 13 (0x34)
+  virtual short GetCountryAt(short index);                  // 14 (0x38)
+  virtual short GetRankOfCountryAt(short index);            // 15 (0x3c)
+  virtual short GetInfoOfCountryAt(short index);            // 16 (0x40)
   // Mac oracle: TMinister::MakeNewCity(TCity*). Personality ministers specialize the
   // initial per-city production priorities through this hook.
   virtual void MakeNewCity(TCity* city); // 17 (0x44)
   // Orig TMinister vtable (0x659c00) ends at slot 17 (0x44); slots 0x48-0x54 are NULL.
   // Slots 0x48+ are introduced per derived minister (e.g. TDefenseMinister, TInteriorMinister).
 
-  TGreatPower* ownerContextAt04; // +0x4 — great-power back-pointer from IMinister
-  TIndexAndRankList* field_8;    // +0x8 — minister order array (vtable 0x659c58)
-  short skillIndexC;             // +0xC
+  TGreatPower* ownerContextAt04;      // +0x4 — great-power back-pointer from IMinister
+  TIndexAndRankList* countryRankings; // +0x8, owned country ranking records
+  short skillIndexC;                  // +0xC
   unsigned char pad0e[0x10 - 0x0E];
   // Object ends here at 0x10 (== CRuntimeClass::m_nObjectSize for TMinister). Every
   // field previously declared here (field10/field12/capabilityFlag14../counters1e/...)

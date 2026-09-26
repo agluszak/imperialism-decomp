@@ -1443,7 +1443,7 @@ void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
   }
   goldControl->ResetPictureResourceEntry();
   goldControl->SetPictureResourceIdAndRefresh(0, 0);
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  g_pUiAnimator->FreeAllAnis();
 }
 
 // FUNCTION: IMPERIALISM 0x0050d9e0

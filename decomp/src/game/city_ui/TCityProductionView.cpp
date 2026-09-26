@@ -141,7 +141,7 @@ void TCityProductionView::DoPostCreate(int arg) {
       TTransFocusAnimation* animation = new TTransFocusAnimation;
       animation->ITransFocusAnimation(this, &bounds, resourceId, static_cast<short>(animationId),
                                       (buildingSlot != 7 ? 2 : 0) + 5, 0);
-      g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+      g_pUiAnimator->AddAnimation(animation);
       buildingActionAnimations12C[buildingSlot][action] = animation;
       InvalidateCityDialogRectRegion(&bounds, 1);
       needsRefreshAtA6 = 1;
@@ -151,7 +151,7 @@ void TCityProductionView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004ba740
 void TCityProductionView::Free() {
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  g_pUiAnimator->FreeAllAnis();
   for (int i = 0; i < 16; ++i) {
     buildingClipRegionsEC[i] = DisposeRgn(buildingClipRegionsEC[i]);
   }

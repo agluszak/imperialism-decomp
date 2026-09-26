@@ -9,6 +9,12 @@ struct IndustryCapabilityClassSlotEntry {
   int raw[8];
 };
 
+struct CapabilityPriorityRange {
+  short firstGroup;
+  short lastGroup;
+};
+ASSERT_SIZE(CapabilityPriorityRange, 4);
+
 extern POINT g_ptTechCapabilityModalMessage; // @ 0x6a57c8
 
 extern TTechMgr* g_pTechMgr;
@@ -26,9 +32,8 @@ extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
 extern "C" {
 extern char g_nForceTacticalBattleViewFlag_006A4758;
 
-// 26 (start, end) capability-priority range pairs followed by two padding shorts.
-// Retail anchors the loop cursor at element 1, pair 0's end.
-extern short g_anCapabilityPriorityRangeData_0066ABA4[54];
+// The generator consumes 26 ranges; the final zero range is present in retail data.
+extern CapabilityPriorityRange g_aCapabilityPriorityRanges[27];
 
 extern "C" const char s_SourcePathUTacViews_00699FF4[];
 

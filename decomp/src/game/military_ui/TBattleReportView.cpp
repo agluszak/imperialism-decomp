@@ -59,46 +59,37 @@ void TBattleReportView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   BuildDiplomacyNationOverlayGeometryAndHitMasks();
 
-  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes
-  // (the original zeroes them once before the first Build call).
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
+  TextStyle style;
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b67);
 
   char crowdGrid[0x654 * 4];
   memset(crowdGrid, 0, sizeof(crowdGrid));
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xe, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   TControl* control = static_cast<TControl*>(ResolveControlByTag(kControlTagResu)); // 'user'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
-  BuildUiTextStyleDescriptor(&style.desc, 2, 0xe, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 2, 0xe, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagLoca)); // 'acol'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagFadm)); // 'mdaf'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagEadm)); // 'mdae'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagFshp)); // 'phsf'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagEshp)); // 'phse'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
   int selectedOrdinal = -1;
   int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
@@ -114,10 +105,9 @@ void TBattleReportView::DoPostCreate(int arg) {
     if (record->reportKind04 == kMapContextReportLandBattle ||
         record->reportKind04 == kMapContextReportPreemptedLandBattle ||
         record->reportKind04 == kMapContextReportUncontestedTakeover) {
-      cell = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
-                 .cityTileIndex04;
+      cell = g_pGlobalMapState->cityScoreTable[record->site08.provinceIndex].cityTileIndex04;
     } else {
-      cell = static_cast<short>(static_cast<TZone*>(record->location08)->tileOrTerrainId0c);
+      cell = static_cast<short>(record->site08.zone->tileOrTerrainId0c);
     }
 
     // Spiral outward from the record's cell until a free crowding-grid cell is found.
@@ -232,7 +222,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   int registryTag = g_nIdleMeAnimationNextRegistryTag;
   g_nIdleMeAnimationNextRegistryTag++;
   animation->IAnimation(this, &animationRect, 0, 0, 0, registryTag);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+  g_pUiAnimator->AddAnimation(animation);
 
   TInfoBarText* cursorPanel =
       static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs)); // 'surc'
@@ -266,7 +256,7 @@ void TBattleReportView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004ad560
 void TBattleReportView::Free() {
   if (transientRegistryObject24cc != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject24cc->registryTag);
+    g_pUiAnimator->FreeAni(transientRegistryObject24cc->registryTag);
   }
   TDiplomacyMapView::Free();
 }
@@ -593,10 +583,9 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     locaText->AssertValid();
     CString strLocation;
     CString strTerrain;
-    g_pGlobalMapState->AssignCityRecordDisplayName(reinterpret_cast<int>(record->location08),
-                                                   &strLocation);
-    int ownerNation = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
-                          .ownerNationCode00;
+    g_pGlobalMapState->AssignCityRecordDisplayName(record->site08.provinceIndex, &strLocation);
+    int ownerNation =
+        g_pGlobalMapState->cityScoreTable[record->site08.provinceIndex].ownerNationCode00;
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strTerrain);
     CString locationTemplate;
     g_pSimMgr->GetString(0x273d, 7, &locationTemplate);
@@ -612,7 +601,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
     locaText->AssertValid();
     CString nameStr;
-    static_cast<TZone*>(record->location08)->AssignZoneDisplayNameToOutputRef(&nameStr);
+    record->site08.zone->AssignZoneDisplayNameToOutputRef(&nameStr);
     locaText->SetTextAndMaybeRefresh(&nameStr, 1);
     break;
   }
@@ -651,7 +640,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     userStringGroup = 0x273d;
     int activeHomeRegion =
         g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
-    char activeNationOwnsBattleSite = activeHomeRegion == reinterpret_cast<int>(record->location08);
+    char activeNationOwnsBattleSite = activeHomeRegion == record->site08.provinceIndex;
     char reportSidesAreSame =
         record->displayedParticipantIndex03 == record->reportParticipantIndex02;
     char reportParticipantIsActive =
@@ -665,7 +654,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     }
     bool otherNationOwnsBattleSite =
         g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() ==
-        reinterpret_cast<int>(record->location08);
+        record->site08.provinceIndex;
 
     if (activeNationOwnsBattleSite && displayedParticipantIsActive) {
       userStringIndex = 48;

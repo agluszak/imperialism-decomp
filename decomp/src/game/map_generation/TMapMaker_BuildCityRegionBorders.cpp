@@ -1,15 +1,13 @@
 // TMapMaker::BuildCityRegionBorderOverlaySegments (0x0052c1a0) -- a ~1.6 KB UMapper.cpp
 // routine that scans every tile's hex neighbours and appends a Seapoint into the overlay-quad
 // table (g_seapointQuadTable_006a3478) for each city-region border edge. It runs in four
-// phases over the 108x60 (=0x1950) tile grid at this->mapTileGrid08 (stride 0x24; a water
-// tile carries a city-region id at tile[4]-0x17):
+// phases over the 108x60 tile grid. A water tile carries a city-region id in
+// ownerNationTag04, biased by 0x17:
 //   1. row 0 tiles (0..0x6b): direction-4 edges only;
 //   2. tiles 0x6c..0x194f: directions 4 and 5, with 3-region triple-junction emission;
 //   3. all tiles: directions 1 and 2, triple-junction emission via
 //      EmitOverlaySegmentFromTileEdgeSorted, tailing off into a direction-1-only sweep of the
 //      last rows.
-// Its own translation unit (like the merge pass) so the inline accessors fold into the one
-// body without perturbing neighbouring methods.
 
 #include "game/map_generation/TMapMaker.h"
 
@@ -25,19 +23,12 @@
 
 namespace {
 
-// City-region id at a byte offset / tile index into the grid (inline forms matching the
-// original's inlined water-terrain ? tile[4]-0x17 : -1 reads; the method
-// GetCityRegionIdAtTileIndex
-// is the same logic, used by the original where it emits a real call, in the tail sweep).
-inline int RegionAtByteOffset(char* grid, int byteOffset) {
-  if (byteOffset < 0) {
+// City-region id at a tile index.
+inline int RegionAtTile(const TTerrainStateRecord* tiles, int tileIndex) {
+  if (tileIndex < 0 || tiles[tileIndex].terrainKindStorage00 != kStrategicTerrainWater) {
     return -1;
   }
-  char* tile = grid + byteOffset;
-  if (*tile != kStrategicTerrainWater) {
-    return -1;
-  }
-  return tile[4] - 0x17;
+  return tiles[tileIndex].ownerNationTag04 - 0x17;
 }
 
 // Inlined neighbour lookup (same logic as GetNeighborTileIndexOnMap108x60, which the original
@@ -91,24 +82,21 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
 
   // Phase 1: row 0 tiles, direction-4 edges.
   int tileIdx = 0;
-  int byteOffset = 0;
   do {
-    int region1 = RegionAtByteOffset(mapTileGrid08, byteOffset);
-    int region2 = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(tileIdx, 4) * 0x24);
+    int region1 = RegionAtTile(tiles, tileIdx);
+    int region2 = RegionAtTile(tiles, HexNeighborInline(tileIdx, 4));
     if (region1 != region2 && region1 != -1 && region2 != -1) {
       AppendBorderQuad(tileIdx, region1, region2, 2);
     }
-    byteOffset += 0x24;
     tileIdx += 1;
-  } while (byteOffset < 0xf30);
+  } while (tileIdx < 0x6c);
 
   // Phase 2: remaining tiles, directions 4 and 5, with triple-junction emission.
   if (tileIdx < 0x1950) {
-    byteOffset = tileIdx * 0x24;
     do {
-      int thisRegion = RegionAtByteOffset(mapTileGrid08, byteOffset);
-      int dir4region = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(tileIdx, 4) * 0x24);
-      int dir5region = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(tileIdx, 5) * 0x24);
+      int thisRegion = RegionAtTile(tiles, tileIdx);
+      int dir4region = RegionAtTile(tiles, HexNeighborInline(tileIdx, 4));
+      int dir5region = RegionAtTile(tiles, HexNeighborInline(tileIdx, 5));
 
       int codeDir45 = 4;
       int codeThisDir4 = 2;
@@ -137,20 +125,17 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
           AppendBorderQuad(tileIdx, dir4region, otherDir5, codeDir45);
         }
       }
-      byteOffset += 0x24;
       tileIdx += 1;
-    } while (byteOffset < 0x38f40);
+    } while (tileIdx < 0x1950);
   }
 
   // Phase 3: all tiles, directions 1 (inline) and 2 (via the neighbour helper), triple-junction
   // emission via EmitOverlaySegmentFromTileEdgeSorted; tails into a direction-1-only sweep.
   int t3 = 0;
-  int off3 = 0;
   do {
-    int rThis = RegionAtByteOffset(mapTileGrid08, off3);
-    int dir1region = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(t3, 1) * 0x24);
-    int dir2region =
-        RegionAtByteOffset(mapTileGrid08, GetNeighborTileIndexOnMap108x60(t3, 2) * 0x24);
+    int rThis = RegionAtTile(tiles, t3);
+    int dir1region = RegionAtTile(tiles, HexNeighborInline(t3, 1));
+    int dir2region = RegionAtTile(tiles, GetNeighborTileIndexOnMap108x60(t3, 2));
 
     int codeA = 1;
     int codeB = 3;
@@ -181,8 +166,7 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
       EmitOverlaySegmentFromTileEdgeSorted(t3, 0, rThis, dir1region, codeMid);
     }
     t3 += 1;
-    off3 += 0x24;
-    if (0x3800f < off3) {
+    if (t3 >= 6372) {
       for (; t3 < 0x1950; t3 += 1) {
         int r1 = GetCityRegionIdAtTileIndex(t3);
         int r2 = GetCityRegionIdAtTileIndex(GetNeighborTileIndexOnMap108x60(t3, 1));

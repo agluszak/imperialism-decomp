@@ -168,34 +168,23 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
     seed = static_cast<unsigned int>(ClockDerivedPrngSeed());
   }
 
-  short* pnOutputSlotCursor = &prioritySlots04[3];
-  int nSelectedSlotCount = 3;
-  // Pair i is (cursor[-1], cursor[0]); the retail cursor anchors pair 0's END at element 1,
-  // so pair 0's START is read one short before it.
-  for (short* pnRangePairCursor = &g_anCapabilityPriorityRangeData_0066ABA4[1];
-       pnRangePairCursor < &g_anCapabilityPriorityRangeData_0066ABA4[53]; pnRangePairCursor += 2) {
-    short nRangeStartGroup = pnRangePairCursor[-1];
-    short nRangeEndGroup = *pnRangePairCursor;
-    int nRangeSpan =
-        (static_cast<short>(nRangeEndGroup << 2) - static_cast<short>(nRangeStartGroup * 4)) + 1;
-    bool fUniqueCandidate;
+  for (int rangeIndex = 0; rangeIndex < 26; ++rangeIndex) {
+    const CapabilityPriorityRange& range = g_aCapabilityPriorityRanges[rangeIndex];
+    int firstSlot = range.firstGroup * 4;
+    int rangeSpan = (range.lastGroup - range.firstGroup) * 4 + 1;
+    int outputIndex = rangeIndex + 3;
+    bool uniqueCandidate;
     do {
       seed = seed * 0x15a4e35 + 1;
-      fUniqueCandidate = true;
-      short nCandidatePrioritySlotId =
-          static_cast<short>(static_cast<int>((seed >> 0xc) & 0x7fff) % nRangeSpan) +
-          static_cast<short>(nRangeStartGroup * 4);
-      *pnOutputSlotCursor = nCandidatePrioritySlotId;
-      short* pnExistingSlotCursor = &prioritySlots04[0];
-      for (int nRemaining = nSelectedSlotCount; nRemaining != 0; nRemaining--) {
-        if (nCandidatePrioritySlotId == *pnExistingSlotCursor) {
-          fUniqueCandidate = false;
+      short candidate = static_cast<short>(((seed >> 0xc) & 0x7fff) % rangeSpan + firstSlot);
+      prioritySlots04[outputIndex] = candidate;
+      uniqueCandidate = true;
+      for (int existingIndex = 0; existingIndex < outputIndex; ++existingIndex) {
+        if (candidate == prioritySlots04[existingIndex]) {
+          uniqueCandidate = false;
         }
-        pnExistingSlotCursor++;
       }
-    } while (!fUniqueCandidate);
-    nSelectedSlotCount++;
-    pnOutputSlotCursor++;
+    } while (!uniqueCandidate);
   }
   RecomputeGlobalCapabilityAverages();
 }

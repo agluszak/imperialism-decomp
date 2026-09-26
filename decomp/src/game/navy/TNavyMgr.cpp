@@ -110,7 +110,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     rec.resourceType = child->type;
     rec.stockOrRequired = child->strength;
     CopyCStringIntoFixedBuffer(rec.nameBuffer, 0x20, static_cast<LPCSTR>(child->name));
-    rec.detailIdentity28 = reinterpret_cast<unsigned int>(child);
+    rec.workingShip28 = child;
     rec.strengthBucket = static_cast<short>(child->experience / 100);
     ++idx;
   }
@@ -122,7 +122,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   short count = snapshot->childCount[side];
   for (int i = 0; i < count; ++i) {
     MapOrderBattleSideChildRecord& rec = snapshot->childRecords[side][i];
-    TShip* child = reinterpret_cast<TShip*>(rec.detailIdentity28);
+    TShip* child = rec.workingShip28;
     bool stillPresent = entry != nullptr && entry->shipList->FindNodeMatching(child) != nullptr;
     if (stillPresent) {
       rec.stockOrRequired = child->strength;

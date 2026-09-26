@@ -327,7 +327,7 @@ private:
       CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
       mapDialog->Draw(&mapBounds);
     }
-    return g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(spawnedCivilian));
+    return g_pUiAnimator->FindAni(PointerAddressLong32(spawnedCivilian));
   }
 
   int CollectProspectorLegendTargets(short ownerNation, short profile, short* targetTiles) {

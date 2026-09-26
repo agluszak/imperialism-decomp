@@ -4,6 +4,9 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 
+class TShip;
+class TZone;
+
 struct CStr32 {
   char data[0x20];
 
@@ -43,7 +46,7 @@ enum MapContextReportKind {
   kMapContextReportPreemptedLandBattle = 3,
   kMapContextReportUncontestedTakeover = 4
 };
-typedef int MapContextReportKindStorage;
+ASSERT_SIZE(MapContextReportKind, 4);
 
 // One detail row in a map-order action report. Conflict resolution initially retains a
 // live unit pointer while refreshing ship state, then finalizes that four-byte slot to
@@ -54,7 +57,10 @@ struct MapOrderBattleSideChildRecord {
   char nameBuffer[0x20]; // +0x04 -- copy of child TShip::name
   short strengthBucket;  // +0x24 -- child TShip::experience / 100
   char pad26[2];
-  unsigned int detailIdentity28; // +0x28
+  union {
+    unsigned int detailIdentity28; // finalized report category
+    TShip* workingShip28;          // transient pointer before report finalization
+  }; // +0x28
 
   MapOrderBattleSideChildRecord() {
     nameBuffer[0] = 0;
@@ -69,8 +75,8 @@ struct MapOrderBattleSnapshot {
   unsigned char nationIds[2];                // +0x00/+0x01, indexed by participant side
   unsigned char reportParticipantIndex02;    // +0x02
   unsigned char displayedParticipantIndex03; // +0x03
-  MapContextReportKindStorage reportKind04;  // +0x04
-  void* targetObject08;                      // +0x08
+  MapContextReportKind reportKind04;         // +0x04
+  TZone* targetObject08;                     // +0x08
   CStr32 nameBuffer[2];                      // +0x0c..+0x4b -- per-side terrain/nation label text
   CStr255 overlayLabel[2]; // +0x4c..+0x249 -- per-side selection overlay label text
   short childCount[2];     // +0x24a/+0x24c

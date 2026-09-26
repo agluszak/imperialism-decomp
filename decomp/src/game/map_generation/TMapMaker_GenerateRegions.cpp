@@ -2,7 +2,7 @@
 // pass that lays out water regions: seed a label per tile (-1 water / -2 non-water), scatter
 // region-centre seeds across a g_regionSeedGridRows x g_regionSeedGridCols lattice with LCG
 // jitter (spiral-searching outward for an empty water tile at each lattice point), then flood
-// each region id to adjacent same-region water tiles until stable, and write tile[4]=id+0x17.
+// each region id to adjacent same-region water tiles until stable, then write ownerNationTag04.
 // Own translation unit (like the other UMapper routines).
 
 #include "game/map_generation/TMapMaker.h"
@@ -162,15 +162,11 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
     } while (k != 0);
 
     if (changed < 1) {
-      int off = 0;
-      short* pw = labels;
-      do {
-        if (-1 < *pw) {
-          *(mapTileGrid08 + 4 + off) = static_cast<char>(*pw) + '\x17';
+      for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+        if (labels[tileIndex] >= 0) {
+          tiles[tileIndex].ownerNationTag04 = static_cast<char>(labels[tileIndex]) + '\x17';
         }
-        off = off + 0x24;
-        pw = pw + 1;
-      } while (off < 0x38f40);
+      }
 #ifdef IMPERIALISM_RUNTIME_TESTS
       RuntimeTerrainMapOracleCaptureStage("after_water_regions", this, g_mapGenLcgState_006a38e8);
 #endif

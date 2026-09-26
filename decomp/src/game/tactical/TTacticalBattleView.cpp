@@ -926,7 +926,7 @@ void TTacticalBattleView::Free() {
   g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface6C);
   g_pDisplayMgr->RemoveGWorld(tileScratchSurface70);
   g_pDisplayMgr->RemoveGWorld(effectAtlasSurface74);
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  g_pUiAnimator->FreeAllAnis();
   TView::Free();
 }
 
@@ -1279,10 +1279,7 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   // The original calls the init body unconditionally on the new-result (no null guard).
   animation->InitializeOneTimeAnimation(this, rect, static_cast<short>(frameCount),
                                         static_cast<short>(effectId), mode, tileIndex);
-  // The registry stores heterogeneous animation objects; TOneTimeAnimation is
-  // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
-  g_pUiAnimator->AddObjectToUiTransientRegistry(
-      static_cast<TAnimation*>(static_cast<void*>(animation)));
+  g_pUiAnimator->AddAnimation(animation);
   NoOpModalAnimWaitBracketHookA_00498c60();
   modalAnimWaitDoneFlag98 = 0;
   while (animation->completeFlag == 0) {
@@ -1291,7 +1288,7 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   modalAnimWaitDoneFlag98 = 1;
   NoOpModalAnimWaitBracketHookB_00498c80();
   InvalidateCityDialogRectRegion(rect, 1);
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(tileIndex);
+  g_pUiAnimator->FreeAni(tileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9240
@@ -1524,7 +1521,7 @@ void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
 
 // FUNCTION: IMPERIALISM 0x005a9bb0
 void TTacticalBattleView::UpdateSelectionBlink() {
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
+  g_pUiAnimator->FreeAni(0x2711);
   TTacticalUnit* selectedUnit = tacticalBattle60->selectedUnit1c;
   if (selectedUnit == 0) {
     return;
@@ -1549,12 +1546,12 @@ void TTacticalBattleView::UpdateSelectionBlink() {
   TAnimation* marker = new TAnimation;
   // Original calls the init body unconditionally on the new-result (no null guard).
   marker->IAnimation(this, &tileRect, 2, 0, 0xa, 0x2711);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(marker);
+  g_pUiAnimator->AddAnimation(marker);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9cc0
 void TTacticalBattleView::KillSelectionBlink() {
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
+  g_pUiAnimator->FreeAni(0x2711);
 }
 
 // FUNCTION: IMPERIALISM 0x005aa670

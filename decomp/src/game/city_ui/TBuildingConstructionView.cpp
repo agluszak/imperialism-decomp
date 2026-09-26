@@ -36,14 +36,7 @@ TBuildingConstructionView::TBuildingConstructionView()
 // FUNCTION: IMPERIALISM 0x004c9eb0
 void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
                                             TCityProductionView* productionView) {
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
+  TextStyle style;
 
   CString textBuffer;
   CString capValue;
@@ -83,14 +76,14 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   }
 
   // 'tex1' — headline text (string group buildingSlotId + 0x2422).
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b67);
   TStaticText* tex1 =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '1')));
   if (tex1 == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x47b);
   }
-  tex1->InstallTextStyle(style.desc, 0);
+  tex1->InstallTextStyle(style, 0);
   tex1->SetTextAlignmentAndMaybeRefresh(-2, 0);
   tex1->SetTextFromStringResource(static_cast<short>(buildingSlotId + 0x2422), 1, 1);
 
@@ -101,7 +94,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x481);
   }
-  tex2->InstallTextStyle(style.desc, 0);
+  tex2->InstallTextStyle(style, 0);
   tex2->SetTextAlignmentAndMaybeRefresh(-2, 0);
   tex2->SetTextFromStringResource(static_cast<short>(reinterpret_cast<int>(productionView98)), 2,
                                   1);
@@ -114,14 +107,14 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   }
 
   // 'name' — localized building title (string group 0x2719, indexed by slot).
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b67);
   TStaticText* nameCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (nameCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x493);
   }
-  nameCtrl->InstallTextStyle(style.desc, 0);
+  nameCtrl->InstallTextStyle(style, 0);
   nameCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
   g_pSimMgr->GetString(0x2719, buildingSlotId, &textBuffer);
   nameCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
@@ -133,7 +126,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x49a);
   }
-  costCtrl->InstallTextStyle(style.desc, 0);
+  costCtrl->InstallTextStyle(style, 0);
   costCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
   g_pSimMgr->GetString(0x2738, 0x14, &textBuffer);
   costCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
@@ -153,7 +146,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   g_pSimMgr->GetString(0x2738, 0x10, &capTemplate);
   scanBracketExpressions(g_pSimMgr, &textBuffer, static_cast<LPCSTR>(capTemplate),
                          static_cast<LPCSTR>(capValue));
-  capTCtrl->InstallTextStyle(style.desc, 0);
+  capTCtrl->InstallTextStyle(style, 0);
   capTCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
   capTCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
 
@@ -168,7 +161,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     orCtrl->Show(0, 0);
   } else {
     g_pSimMgr->GetString(0x2738, 0x11, &textBuffer);
-    orCtrl->InstallTextStyle(style.desc, 0);
+    orCtrl->InstallTextStyle(style, 0);
     orCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     orCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
 
@@ -213,7 +206,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
         static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('b', 'u', 'c', 'k')));
     buckCtrl->AssertValid();
     buckCtrl->Show(1, 0);
-    buckCtrl->InstallTextStyle(style.desc, 0);
+    buckCtrl->InstallTextStyle(style, 0);
     buckCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->NumToCurrency(0x1388, &buckCost);
     buckCtrl->SetTextAndMaybeRefresh(&buckCost, 1);
@@ -236,8 +229,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TPictureButton*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
   okButton->AssertValid();
   if (!eligible) {
-    BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b69);
-    warnCtrl->InstallTextStyle(style.desc, 0);
+    BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b69);
+    warnCtrl->InstallTextStyle(style, 0);
     warnCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->GetString(0x2738, (slot == 0xb) ? 0x16 : 0x17, &textBuffer);
     warnCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);

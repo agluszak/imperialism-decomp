@@ -36,28 +36,21 @@ void TWarehouseView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
 
 // FUNCTION: IMPERIALISM 0x004c7360
 void TWarehouseView::DoStartup() {
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
+  TextStyle style;
 
   CString hoverText;
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b67);
 
   // 'name' -- the warehouse title label.
   TStaticText* name =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
-  name->InstallTextStyle(style.desc, 0);
+  name->InstallTextStyle(style, 0);
   name->SetTextAlignmentAndMaybeRefresh(1, 0);
   g_pSimMgr->GetString(0x2719, 0xd, &hoverText);
   name->SetTextAndMaybeRefresh(&hoverText, 0);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b67);
 
   // Resolve and style the 23 commodity value controls by their FourCC tags.
   const int* commodityTag = g_pTradeSummarySelectionMap;
@@ -67,7 +60,7 @@ void TWarehouseView::DoStartup() {
     TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(*commodityTag));
     *commodityControl = static_cast<TPictureNumberText*>(control);
     if (control != nullptr) {
-      control->InstallTextStyle(style.desc, 0);
+      control->InstallTextStyle(style, 0);
       control->SetTextAlignmentAndMaybeRefresh(1, 0);
     }
     ++commodityTag;
@@ -79,7 +72,7 @@ void TWarehouseView::DoStartup() {
   laborValueControlFC =
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
   if (laborValueControlFC != nullptr) {
-    laborValueControlFC->InstallTextStyle(style.desc, 0);
+    laborValueControlFC->InstallTextStyle(style, 0);
     laborValueControlFC->SetTextAlignmentAndMaybeRefresh(1, 0);
   }
 
@@ -87,7 +80,7 @@ void TWarehouseView::DoStartup() {
   powerValueControl100 =
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
   if (powerValueControl100 != nullptr) {
-    powerValueControl100->InstallTextStyle(style.desc, 0);
+    powerValueControl100->InstallTextStyle(style, 0);
     powerValueControl100->SetTextAlignmentAndMaybeRefresh(1, 0);
   }
 

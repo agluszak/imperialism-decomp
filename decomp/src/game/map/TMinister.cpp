@@ -12,11 +12,12 @@
 
 namespace {
 
-struct MinisterTerrainPreferenceEntry {
-  short terrainType;
-  short score;
+struct MinisterCountryRankingEntry {
+  short countrySlot;
+  short criterion;
   short rank;
 };
+ASSERT_SIZE(MinisterCountryRankingEntry, 6);
 
 } // namespace
 // SYNTHETIC: IMPERIALISM 0x0052eb30
@@ -28,7 +29,7 @@ struct MinisterTerrainPreferenceEntry {
 IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80
-TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {}
+TMinister::TMinister() : ownerContextAt04(nullptr), countryRankings(0), skillIndexC(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0052eba0
 // TMinister::`scalar deleting destructor'
@@ -36,16 +37,16 @@ TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::IMinister(TGreatPower* ownerContext) {
   this->ownerContextAt04 = ownerContext;
-  this->field_8 = new TIndexAndRankList();
-  this->field_8->recordSize14 = 6;
+  countryRankings = new TIndexAndRankList();
+  countryRankings->recordSize14 = sizeof(MinisterCountryRankingEntry);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ec80
 void TMinister::Free() {
-  if (this->field_8 != 0) {
-    this->field_8->ReleasePtrList();
+  if (countryRankings != 0) {
+    countryRankings->ReleasePtrList();
   }
-  this->field_8 = 0;
+  countryRankings = 0;
   delete this;
 }
 
@@ -67,92 +68,76 @@ short TMinister::GetRankingCriterionForGP(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052ed50
-void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks() {
-  this->field_8->ClearAndFreeAllPtrListRecords();
+void TMinister::FigureOutRanking() {
+  countryRankings->ClearAndFreeAllPtrListRecords();
 
-  int terrainIndex = 0;
-  TCountry** tableCursor = g_apTerrainTypeDescriptorTable;
-  do {
-    if (*tableCursor != 0) {
-      MinisterTerrainPreferenceEntry entry;
-      entry.terrainType = static_cast<short>(terrainIndex);
-      entry.score = GetRankingCriterionForGP(static_cast<short>(terrainIndex));
-      this->field_8->InsertCopiedRecordSortedByComparator(&entry);
+  for (short countrySlot = 0; countrySlot < 7; ++countrySlot) {
+    if (g_apTerrainTypeDescriptorTable[countrySlot] != 0) {
+      MinisterCountryRankingEntry entry;
+      entry.countrySlot = countrySlot;
+      entry.criterion = GetRankingCriterionForGP(countrySlot);
+      countryRankings->InsertCopiedRecordSortedByComparator(&entry);
     }
-    terrainIndex = terrainIndex + 1;
-    tableCursor = tableCursor + 1;
-  } while (terrainIndex < 7);
+  }
 
-  int entryIndex = 1;
   short rank = 1;
-  if (1 < this->field_8->GetSize()) {
-    do {
-      short* currentEntry =
-          static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
-      short* nextEntry =
-          static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex + 1));
-      currentEntry[2] = rank;
-      if (nextEntry[1] < currentEntry[1]) {
-        rank = static_cast<short>(rank + 1);
-      }
-      nextEntry[2] = rank;
-      entryIndex = entryIndex + 1;
-    } while (entryIndex < this->field_8->GetSize());
+  // Retail assigns ranks only when at least two entries were inserted.
+  for (int entryIndex = 1; entryIndex < countryRankings->GetSize(); ++entryIndex) {
+    MinisterCountryRankingEntry* currentEntry = static_cast<MinisterCountryRankingEntry*>(
+        countryRankings->GetPtrListEntryByOneBasedIndex(entryIndex));
+    MinisterCountryRankingEntry* nextEntry = static_cast<MinisterCountryRankingEntry*>(
+        countryRankings->GetPtrListEntryByOneBasedIndex(entryIndex + 1));
+    currentEntry->rank = rank;
+    if (nextEntry->criterion < currentEntry->criterion) {
+      ++rank;
+    }
+    nextEntry->rank = rank;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0052ee20
-short TMinister::MapTerrainTypeToPreferenceRank(short terrainType) {
-  int entryIndex = 1;
-  short result = terrainType;
-  if (this->field_8->GetSize() < 1) {
-    return result;
-  }
-  do {
-    short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
-    if (entry[0] == terrainType) {
-      result = entry[2];
-      entryIndex = this->field_8->GetSize() + 10;
+short TMinister::GetRankOf(short countrySlot) {
+  for (int entryIndex = 1; entryIndex <= countryRankings->GetSize(); ++entryIndex) {
+    MinisterCountryRankingEntry* entry = static_cast<MinisterCountryRankingEntry*>(
+        countryRankings->GetPtrListEntryByOneBasedIndex(entryIndex));
+    if (entry->countrySlot == countrySlot) {
+      return entry->rank;
     }
-    entryIndex = entryIndex + 1;
-  } while (entryIndex <= this->field_8->GetSize());
-  return result;
+  }
+  return countrySlot;
 }
 
 // FUNCTION: IMPERIALISM 0x0052eea0
-short TMinister::MapPreferenceRankToTerrainType(short rank) {
-  int entryIndex = 1;
-  short result = rank;
-  if (this->field_8->GetSize() < 1) {
-    return result;
-  }
-  do {
-    short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
-    if (entry[2] == rank) {
-      result = entry[0];
-      entryIndex = this->field_8->GetSize() + 10;
+short TMinister::GetCountryInRank(short rank) {
+  for (int entryIndex = 1; entryIndex <= countryRankings->GetSize(); ++entryIndex) {
+    MinisterCountryRankingEntry* entry = static_cast<MinisterCountryRankingEntry*>(
+        countryRankings->GetPtrListEntryByOneBasedIndex(entryIndex));
+    if (entry->rank == rank) {
+      return entry->countrySlot;
     }
-    entryIndex = entryIndex + 1;
-  } while (entryIndex <= this->field_8->GetSize());
-  return result;
+  }
+  return rank;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef20
-short TMinister::GetPreferenceGroupRankByEntryIndex(short index) {
-  short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(index));
-  return entry[2];
+short TMinister::GetRankOfCountryAt(short index) {
+  MinisterCountryRankingEntry* entry = static_cast<MinisterCountryRankingEntry*>(
+      countryRankings->GetPtrListEntryByOneBasedIndex(index));
+  return entry->rank;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef50
-short TMinister::GetPreferenceScoreByEntryIndex(short index) {
-  short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(index));
-  return entry[1];
+short TMinister::GetInfoOfCountryAt(short index) {
+  MinisterCountryRankingEntry* entry = static_cast<MinisterCountryRankingEntry*>(
+      countryRankings->GetPtrListEntryByOneBasedIndex(index));
+  return entry->criterion;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef80
-short TMinister::GetPreferenceTerrainTypeByEntryIndex(short index) {
-  short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(index));
-  return entry[0];
+short TMinister::GetCountryAt(short index) {
+  MinisterCountryRankingEntry* entry = static_cast<MinisterCountryRankingEntry*>(
+      countryRankings->GetPtrListEntryByOneBasedIndex(index));
+  return entry->countrySlot;
 }
 
 // FUNCTION: IMPERIALISM 0x0052efb0

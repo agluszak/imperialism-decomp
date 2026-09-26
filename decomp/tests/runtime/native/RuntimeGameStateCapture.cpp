@@ -2980,10 +2980,10 @@ JSON_Value* CaptureBattleReports() {
     JsonObject location;
     if (kind == kMapContextReportLandBattle || kind == kMapContextReportPreemptedLandBattle ||
         kind == kMapContextReportUncontestedTakeover) {
-      location.Set("province", static_cast<int>(reinterpret_cast<unsigned>(record->location08)));
+      location.Set("province", record->site08.provinceIndex);
     } else {
       location.Set("zone",
-                   RuntimeRequiredZoneIndex(static_cast<TZone*>(record->location08)));
+                   RuntimeRequiredZoneIndex(record->site08.zone));
     }
     object.Set("location", location.Release());
     JsonArray sides;

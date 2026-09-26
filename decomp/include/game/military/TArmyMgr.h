@@ -12,14 +12,15 @@
 class TStream;
 class TSortedList;
 class TArmyStack;
+class TZone;
 struct TextStyle;
 
-// 0x268-byte POD record copied into the TSortedPtrList pointed to by
+// 0x268-byte report record copied into the TSortedPtrList pointed to by
 // TArmyMgr::mapContextActionRecordList04.
 // Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
-// small nation-id array indexed by reportParticipantIndex02. Land reports interpret
-// location08 as an index into g_pGlobalMapState's stride-0xa8 table; sea reports use a
-// map-object pointer whose short at +0xc is the map cell. The +0x258 tail is the
+// small nation-id array indexed by reportParticipantIndex02. Land reports use a
+// province index into g_pGlobalMapState's stride-0xa8 table; sea reports use a TZone
+// pointer whose short at +0xc is the map cell. The +0x258 tail is the
 // report-marker placement state stamped by that hook.
 struct MapContextActionRecord {
   unsigned char nationIds[2];             // +0x00
@@ -28,8 +29,12 @@ struct MapContextActionRecord {
   // real serialized byte rather than compiler padding, even though no reader has been
   // found for it yet.
   unsigned char displayedParticipantIndex03;
-  MapContextReportKindStorage reportKind04; // +0x04
-  void* location08;                         // +0x08
+  MapContextReportKind reportKind04; // +0x04
+  // Report kind selects the interpretation; both variants occupy the same saved slot.
+  union {
+    int provinceIndex;
+    TZone* zone;
+  } site08; // +0x08
   // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
   // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
   // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
@@ -61,12 +66,13 @@ struct MapContextActionRecord {
   }
 
   // 0x4a13c0 -- reads one record from `stream`: the fixed header fields, resolving
-  // location08 either as a raw tile/record index or (via FindMapActionContextByNodeId)
+  // site08 either as a province index or (via FindMapActionContextByNodeId)
   // a live TZone* depending on reportKind04, then for each side allocates and reads its
   // MapOrderBattleSideChildRecord array.
   void ReadFrom(TStream* stream);
   void WriteTo(TStream* stream); // 0x4a1640
 };
+ASSERT_SIZE(MapContextActionRecord, 0x268);
 
 // VTABLE: IMPERIALISM 0x0064c928
 class TArmyMgr : public TObject {

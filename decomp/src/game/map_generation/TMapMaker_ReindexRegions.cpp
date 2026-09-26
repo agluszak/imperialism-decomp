@@ -4,9 +4,7 @@
 //   1. seed labels[tile] = -2 - regionId for water tiles, else -1;
 //   2. repeatedly: assign the next compacted id to the first tile carrying each old label, then
 //      flood that id to same-original-region hex neighbours, until a pass assigns nothing new;
-//   3. write labels back (tile[4] = label + 0x17) and store the new region count.
-// Its own translation unit (like the other UMapper routines) so the inline neighbour accessor
-// folds into the one body.
+//   3. write labels back to ownerNationTag04 and store the new region count.
 
 #include "game/map_generation/TMapMaker.h"
 
@@ -54,25 +52,12 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
   short labels[0x1950];
 
   // Phase 1: seed a label per tile.
-  char* tile = mapTileGrid08;
-  unsigned int i = 0;
-  short* p = labels;
-  do {
-    short value;
-    if (*tile == kStrategicTerrainWater) {
-      if (static_cast<int>(i) < 0) {
-        value = -1;
-      } else {
-        value = static_cast<short>(-2 - (tile[4] - 0x17));
-      }
-    } else {
-      value = -1;
-    }
-    *p = value;
-    i = i + 1;
-    tile = tile + 0x24;
-    p = p + 1;
-  } while (i < 0x1950);
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    const TTerrainStateRecord& tile = tiles[tileIndex];
+    labels[tileIndex] = tile.terrainKindStorage00 == kStrategicTerrainWater
+                            ? static_cast<short>(-2 - (tile.ownerNationTag04 - 0x17))
+                            : -1;
+  }
 
   int newCount = 0;
   do {
@@ -101,16 +86,12 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
 
     if (assigned == 0) {
       // Write the compacted ids back into the tiles and store the new count.
-      unsigned int off = 0;
-      short* pw = labels;
-      do {
-        char* t = mapTileGrid08 + off;
-        if (*t == kStrategicTerrainWater) {
-          t[4] = static_cast<char>(*pw) + '\x17';
+      for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+        TTerrainStateRecord& tile = tiles[tileIndex];
+        if (tile.terrainKindStorage00 == kStrategicTerrainWater) {
+          tile.ownerNationTag04 = static_cast<char>(labels[tileIndex]) + '\x17';
         }
-        off = off + 0x24;
-        pw = pw + 1;
-      } while (off < 0x38f40);
+      }
       cityRegionCount2a4 = newCount;
       return;
     }

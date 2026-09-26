@@ -122,9 +122,9 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
     if (0x6b < cellX) {
       col = cellX + -0x6c;
     }
-    char* tile = mapTileGrid08 + (col + rowBase) * 0x24;
-    if (*tile == kStrategicTerrainWater && region != -1) {
-      tile[4] = static_cast<char>(region) + '\x17';
+    TTerrainStateRecord* tile = tiles + col + rowBase;
+    if (tile->terrainKindStorage00 == kStrategicTerrainWater && region != -1) {
+      tile->ownerNationTag04 = static_cast<char>(region) + '\x17';
     }
     leftCol = col;
     cellX = col + 1;
