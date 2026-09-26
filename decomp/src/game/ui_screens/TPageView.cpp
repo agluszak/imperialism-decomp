@@ -5,20 +5,7 @@
 #include "game/CSubViewIterator.h"
 #include "game/TList.h"
 #include "game/city_ui/TLongintList.h"
-
-// Option-entry item held in TPageView's optionEntries/orderedEntries lists. It carries the
-// tag used to look up the actual renderable entry and the short metrics used by
-// the page layout algorithms.
-class TSelectableTextOptionEntry : public TObject {
-public:
-  virtual void PlaceAt(TPageView* owner, CPoint* position) = 0;
-
-  short field_0x4;
-  short tag;
-  short field_0x8;
-  short field_0xa;
-  short field_0xc;
-};
+#include "game/ui_screens/TLineData.h"
 
 // SYNTHETIC: IMPERIALISM 0x0056f8e0
 // TPageView::CreateObject
@@ -54,12 +41,12 @@ void TPageView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbb0
-POSITION TPageView::AddOrderedEntry(void* item) {
+POSITION TPageView::AddOrderedEntry(TLineData* item) {
   return this->orderedEntries->AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbd0
-POSITION TPageView::AddOptionEntry(void* item) {
+POSITION TPageView::AddOptionEntry(TLineData* item) {
   return this->optionEntries->AddTail(item);
 }
 
@@ -88,111 +75,80 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
 
 // FUNCTION: IMPERIALISM 0x0056fc80
 void TPageView::BuildPageLayout() {
-  this->pageStartIndices->RemoveAll();
-  this->pageStartIndices->InsertLast(1);
+  pageStartIndices->RemoveAll();
 
-  int count = this->orderedEntries->GetCount();
-  short y = (short)this->pageRect.top;
-  short previousTag = 0;
-  short overflowCount = 1;
+  // ABI: line bounds are ints, but retail pagination keeps signed-short coordinates
+  // and reads only the low word of each line's height.
+  short y = static_cast<short>(pageRect.top);
+  short previousHeader = 0;
+  short pages = 1;
+  pageStartIndices->InsertLast(1);
+  for (int ordinal = 1; ordinal <= orderedEntries->GetCount(); ++ordinal) {
+    TLineData* entry = static_cast<TLineData*>(orderedEntries->GetEntryByOrdinal(ordinal));
+    if (entry->row != 0 && entry->row != previousHeader) {
+      previousHeader = entry->row;
+      TLineData* header = static_cast<TLineData*>(optionEntries->GetEntryByOrdinal(entry->row));
+      y += static_cast<short>(header->layoutHeight);
+    }
 
-  int i = 1;
-  if (i <= count) {
-    do {
-      TSelectableTextOptionEntry* entry =
-          static_cast<TSelectableTextOptionEntry*>(this->orderedEntries->GetEntryByOrdinal(i));
-      if (entry != nullptr) {
-        short tag = entry->tag;
-        if (tag != 0 && tag != previousTag) {
-          previousTag = tag;
-          TSelectableTextOptionEntry* lookup =
-              static_cast<TSelectableTextOptionEntry*>(this->optionEntries->GetEntryByOrdinal(tag));
-          if (lookup != nullptr) {
-            y += lookup->field_0xc;
-          }
-        }
-
-        short margin = entry->field_0x4;
-        short height = entry->field_0xc;
-        int bottom = (int)y + (int)margin + (int)height;
-        if (bottom > this->pageRect.bottom) {
-          overflowCount++;
-          y = this->pageRect.top + height;
-          this->pageStartIndices->InsertLast(i);
-          if (entry->tag != 0) {
-            TSelectableTextOptionEntry* lookup = static_cast<TSelectableTextOptionEntry*>(
-                this->optionEntries->GetEntryByOrdinal(entry->tag));
-            if (lookup != nullptr) {
-              height = lookup->field_0xc;
-            }
-          }
-        }
-
-        y += height;
+    short height = static_cast<short>(entry->layoutHeight);
+    if (y + entry->column + height > pageRect.bottom) {
+      ++pages;
+      y = static_cast<short>(pageRect.top + height);
+      pageStartIndices->InsertLast(ordinal);
+      if (entry->row != 0) {
+        TLineData* header = static_cast<TLineData*>(optionEntries->GetEntryByOrdinal(entry->row));
+        y += static_cast<short>(header->layoutHeight);
       }
-      ++i;
-    } while (i <= this->orderedEntries->GetCount());
+    } else {
+      y += height;
+    }
   }
 
-  this->pageCount = overflowCount;
+  pageCount = pages;
 }
 
 // FUNCTION: IMPERIALISM 0x0056fdb0
 void TPageView::ShowPage(short pageNumber) {
-  if (pageNumber < 1 || pageNumber > this->pageCount) {
+  if (pageNumber < 1 || pageNumber > pageCount) {
     return;
   }
 
-  this->ResetSelectableOptionEntriesExceptColorAndOkay();
+  ResetSelectableOptionEntriesExceptColorAndOkay();
 
-  short previousTag = 0;
-  for (int column = pageNumber; column < pageNumber + this->visibleColumnCount; column++) {
-    if (this->pageStartIndices->GetSize() < column) {
+  short previousHeader = 0;
+  for (int column = pageNumber; column < pageNumber + visibleColumnCount; ++column) {
+    if (pageStartIndices->GetSize() < column) {
       continue;
     }
 
-    int startIndex = this->pageStartIndices->At(column);
-    int perColumnWidth = this->frameWidth34 / this->visibleColumnCount;
-    short x = (short)(this->pageRect.left + perColumnWidth * (column - pageNumber));
+    short y = static_cast<short>(pageRect.top);
+    int perColumnWidth = frameWidth34 / visibleColumnCount;
+    short x = static_cast<short>(pageRect.left + perColumnWidth * (column - pageNumber));
+    short currentIndex = static_cast<short>(pageStartIndices->At(column));
 
-    int count = this->orderedEntries->GetCount();
-    int currentIndex = startIndex;
-    short y = (short)this->pageRect.top;
+    while (currentIndex <= orderedEntries->GetCount()) {
+      TLineData* entry = static_cast<TLineData*>(orderedEntries->GetEntryByOrdinal(currentIndex));
+      if (entry->row != 0 && entry->row != previousHeader) {
+        previousHeader = entry->row;
+        entry = static_cast<TLineData*>(optionEntries->GetEntryByOrdinal(entry->row));
+        // The header precedes this row; installing it must not consume the row.
+        --currentIndex;
+      }
 
-    while (currentIndex <= count) {
-      TSelectableTextOptionEntry* entry = static_cast<TSelectableTextOptionEntry*>(
-          this->orderedEntries->GetEntryByOrdinal(currentIndex));
-      if (entry == nullptr) {
+      if (y + entry->column + static_cast<short>(entry->layoutHeight) > pageRect.bottom) {
         break;
       }
 
-      short tag = entry->tag;
-      if (tag != 0 && tag != previousTag) {
-        previousTag = tag;
-        TSelectableTextOptionEntry* lookup =
-            static_cast<TSelectableTextOptionEntry*>(this->optionEntries->GetEntryByOrdinal(tag));
-        if (lookup != nullptr) {
-          entry = lookup;
-        }
-      }
-
-      short margin = entry->field_0x4;
-      short height = entry->field_0xc;
-      int bottom = (int)y + (int)margin + (int)height;
-      if (bottom > this->pageRect.bottom) {
-        break;
-      }
-
-      CPoint point(x, y);
-      entry->PlaceAt(this, &point);
-
-      y += height;
-      currentIndex++;
+      int offset[2] = {x, y};
+      entry->InstallViews(this, offset);
+      y += static_cast<short>(entry->layoutHeight);
+      ++currentIndex;
     }
   }
 
-  this->currentPage = pageNumber;
-  this->RefreshControl();
+  currentPage = pageNumber;
+  RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x0056ff90
