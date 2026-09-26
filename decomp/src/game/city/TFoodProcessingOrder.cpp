@@ -18,16 +18,7 @@ IMPLEMENT_DYNCREATE(TFoodProcessingOrder, TProductionOrder)
 
 // FUNCTION: IMPERIALISM 0x004b7e80
 void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {
-  ownerCity = city;
-  productionSummary = city->productionSummary1d8;
-  resourceTypeIndex = 7;
-  quantity = 0;
-  for (int resource = 0; resource < kResourceKindCount; ++resource) {
-    trackingSlots[resource] = 0;
-  }
-  accumulatedValue = 0;
-  limitingConstraint = kProductionOrderLimitResources;
-  reservedWorkforce = 0;
+  TProductionOrder::IProductionOrder(city, 7);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7ed0

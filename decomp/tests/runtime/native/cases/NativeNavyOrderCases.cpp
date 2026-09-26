@@ -237,8 +237,7 @@ RuntimeActionResult RunNavyZoneTarget(NativeTransition& transition) {
   TMapOrderChildLinkNode* node;
   for (node = force->shipList; node != 0; node = node->next) {
     actives.Add(static_cast<int>(node->active));
-    childTypes.Add(
-        static_cast<int>(static_cast<TShip*>(node->payload)->type));
+    childTypes.Add(static_cast<int>(node->payload->type));
   }
   result.Set("legal", legal);
   result.Set("illegal", illegal);

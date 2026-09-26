@@ -169,7 +169,7 @@ char TBeachheadMission::SmokeEmIfYouGotEm() {
     return 0;
   }
   while (orderList24 != 0) {
-    static_cast<TShip*>(orderList24->payload)->mission = 0;
+    orderList24->payload->mission = 0;
     orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
   }
   return 1;

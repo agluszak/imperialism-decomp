@@ -14,7 +14,7 @@ void TMapOrderChildLinkNode::SetChainActiveFlag(unsigned char flag) {
 }
 
 // FUNCTION: IMPERIALISM 0x005524d0
-void TMapOrderChildLinkNode::InitAndLinkBetween(TObject* child, TMapOrderChildLinkNode* prevNode,
+void TMapOrderChildLinkNode::InitAndLinkBetween(TShip* child, TMapOrderChildLinkNode* prevNode,
                                                 TMapOrderChildLinkNode* nextNode) {
   payload = child;
   next = nextNode;
@@ -29,7 +29,7 @@ void TMapOrderChildLinkNode::InitAndLinkBetween(TObject* child, TMapOrderChildLi
 }
 
 // FUNCTION: IMPERIALISM 0x00552510
-TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TObject* child_node) {
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TShip* child_node) {
   if (this == 0) {
     return 0;
   }
@@ -78,21 +78,13 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturn
 
 // FUNCTION: IMPERIALISM 0x005525d0
 TMapOrderChildLinkNode*
-TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TObject* child_node) {
+TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TShip* child_node) {
   if (this == 0) {
     return 0;
   }
 
   if (child_node == this->payload) {
-    TMapOrderChildLinkNode* next_node = this->next;
-    if (next_node != 0) {
-      next_node->prev = this->prev;
-    }
-    if (this->prev != 0) {
-      this->prev->next = this->next;
-    }
-    delete this;
-    return next_node;
+    return DeleteMapOrderChildLinkAndReturnNext();
   }
 
   this->next->RemoveLinkedOrderNodeByValueRecursive(child_node);
@@ -100,7 +92,7 @@ TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TObject* child_nod
 }
 
 // FUNCTION: IMPERIALISM 0x00552650
-TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TObject* child_node) {
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TShip* child_node) {
   TMapOrderChildLinkNode* new_node = new TMapOrderChildLinkNode(child_node, this);
   if (new_node == 0) {
     FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0x64e);
@@ -112,23 +104,12 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TObject* c
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAndReturnHead() {
   TMapOrderChildLinkNode* head = this;
   while (head != 0) {
-    TShip* child_node = static_cast<TShip*>(head->payload);
+    TShip* child_node = head->payload;
     unsigned char headDefeated = (child_node->strength <= 0);
     if (headDefeated != 0) {
       child_node->taskForce = 0;
-      static_cast<TShip*>(head->payload)->Free();
-
-      // Manual unlink (the original inlines the DeleteMapOrderChildLinkAndReturnNext
-      // steps here rather than calling 0x552590).
-      TMapOrderChildLinkNode* next_node = head->next;
-      if (next_node != 0) {
-        next_node->prev = head->prev;
-      }
-      if (head->prev != 0) {
-        head->prev->next = head->next;
-      }
-      delete head;
-      head = next_node;
+      head->payload->Free();
+      head = head->DeleteMapOrderChildLinkAndReturnNext();
     } else {
       // Surviving head: recursively prune the tail (nodes unlink themselves, so
       // the head stays valid) and return it.

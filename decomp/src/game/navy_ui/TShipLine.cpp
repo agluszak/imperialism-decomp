@@ -31,7 +31,7 @@ void TShipLine::IShipLine(short rowArg, short colArg, int* bounds,
   // The payload is read between the two stores, as the original does -- it reuses the
   // register holding `childLink` rather than re-loading it at the end.
   childLink14 = childLink;
-  TShip* ship = static_cast<TShip*>(childLink->payload);
+  TShip* ship = childLink->payload;
   taskForce18 = force;
   shipNode10 = ship;
 }
