@@ -6,7 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "pyghidra==3.1.0",
     "clang-format==21.1.8",
-    "reccmp @ git+https://github.com/agluszak/reccmp.git@9b53201f897ebb3288fef86eb2e57c735e2a3233",
+    "reccmp @ git+https://github.com/agluszak/reccmp.git@60ffd18bb0376b53fe60dfa436d2b2728a514784",
     "ghidra-stubs>=12.1.2",
     "pyyaml>=6.0.3",
     "capstone>=5.0.7",

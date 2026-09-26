@@ -1,9 +1,8 @@
 """Batch compare: score many functions from a single reccmp PDB parse.
 
-`reccmp-reccmp --verbose <addr>` cold-parses the whole PDB (~3s) for *one*
-function, so checking N addresses serially costs N*3s. This instead runs reccmp
-once with `--json` (all ~9600 functions in ~4s) and reports the scores for the
-requested addresses, or for every `// FUNCTION` marker in a source file.
+Loads and pairs symbols once, then compares the requested addresses or every
+`// FUNCTION` marker in a source file. Callee pairing remains complete even when
+only a few function bodies are selected for comparison.
 
 Usage:
     python -m tools.reccmp.compare_batch --target IMPERIALISM --build-dir <dir> \

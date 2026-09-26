@@ -15,15 +15,25 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 
 def rewrite(entries: list[dict], repo_root: str, build_dir: str) -> list[dict]:
+    mounts = {"/imperialism": repo_root, "/build": build_dir}
+
+    def replace_mount(value: str) -> str:
+        return re.sub(
+            r"/(imperialism|build)(?=/|[\s\"']|$)",
+            lambda match: mounts[match.group(0)],
+            value,
+        )
+
     out = []
     for entry in entries:
         rewritten = {
-            key: value.replace("/imperialism", repo_root).replace("/build", build_dir)
+            key: replace_mount(value)
             for key, value in entry.items()
             if isinstance(value, str)
         }

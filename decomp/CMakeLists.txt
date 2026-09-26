@@ -21,8 +21,8 @@ set(IMPERIALISM_UI_RESOURCE_BUILDER_SOURCE
 list(REMOVE_ITEM IMPERIALISM_GAME_SOURCES
     "${IMPERIALISM_UI_RESOURCE_BUILDER_SOURCE}")
 
-# Annotation-only carrier (`#if 0` LIBRARY/SYNTHETIC markers). Scanned by
-# source_model; must not become a compile TU.
+# Annotation-only carrier (LIBRARY/SYNTHETIC markers). Scanned by source_model
+# and reccmp's source collector; it has no product compile TU.
 list(REMOVE_ITEM IMPERIALISM_GAME_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/game/core/library_identities.cpp")
 
@@ -205,7 +205,7 @@ if(IMPERIALISM_LINK_MFC AND MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
 endif()
 
 foreach(_imp_compile_target IN LISTS IMPERIALISM_COMPILE_TARGETS)
-    target_include_directories(${_imp_compile_target} PRIVATE include)
+    target_include_directories(${_imp_compile_target} PRIVATE include src)
     target_compile_definitions(${_imp_compile_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
 endforeach()
 
