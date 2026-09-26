@@ -30,14 +30,6 @@ struct HelpSetRecord {
 
 ASSERT_SIZE(HelpSetRecord, 0xe);
 
-// Two adjacent short counters are cleared as one dword by THelpMgr's constructor, then
-// incremented independently by the civilian-completion advisor path.
-struct THelpCompletionCounterPair {
-  short values[2];
-};
-
-ASSERT_SIZE(THelpCompletionCounterPair, 4);
-
 #pragma pack(push, 2)
 // VTABLE: IMPERIALISM 0x00657040
 class THelpMgr : public TObject {
@@ -72,7 +64,7 @@ public:
 
   // Tracks the first few completed civilian construction categories and shows the
   // corresponding one-time localized advisor message. 0x005038b0, __thiscall.
-  void TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilianOrderEntry);
+  void CheckUnitAdvice(TCivUnit* civilianOrderEntry);
 
   // Periodic "another great power is beating you" advisory (turn-tick-indexed metric
   // comparison, string group 0x2753). 0x501be0, __thiscall (`this` unused).
@@ -87,7 +79,7 @@ public:
   char GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId);
   // Dead COMDAT helper: bumps civilianCompletionCounters[index] and reports whether it
   // reached its per-index threshold (index 1 -> 3, indices 0/2/3/4 -> 1, others -> -1).
-  // TryShowCivilianCompletionMilestoneNotification carries the same sequence inline.
+  // CheckUnitAdvice carries the same sequence inline.
   // 0x00503830.
   char IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index);
   // 0x5010b0 — scans indexList for the pending event matching the active view's
@@ -105,17 +97,13 @@ public:
   // to rebuild the action menu for the selected nation/tile context. 0x503ac0.
   void EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex);
 
-  // 2-byte packed like the other Mac-heritage records. helpIndexReady sits at +0x2e
+  // 2-byte packed like the other Mac-heritage records. tradeAdviceDetailLevel sits at +0x2e
   // (ctor 0x5005f3; read at 0x5bfae6 as the help detail level).
   TPtrList* indexList;
   TWindow* pendingDialogView8;
   TWindow* pendingDialogViewC;
-  // Five independent completion counters consumed by
-  // TryShowCivilianCompletionMilestoneNotification. Their short widths and offsets are
-  // explicit in the increment/compare instructions at 0x005038b0.
-  THelpCompletionCounterPair civilianCompletionCounters10;
-  THelpCompletionCounterPair civilianCompletionCounters14;
-  short civilianCompletionCounter18;
+  // Five consecutive shorts at +0x10, persisted as one big-endian block.
+  short civilianCompletionCounts[5];
   // Retail initializes +0x1a..+0x2c to zero in the ctor and has no other access to this
   // region. The final write is one byte at +0x2c; +0x2d is natural alignment, not part of
   // that field.
@@ -125,18 +113,19 @@ public:
   int unusedInitializedState26;
   short unusedInitializedState2A;
   unsigned char unusedInitializedState2C;
-  // Help/advisor detail level for info texts: 0 minimal, 1 concise verdict, >= 2 detailed
-  // numbers ("indexReady" name is historic; hedged).
-  short helpIndexReady;
+  // Trade advice detail: 0 minimal, 1 verdict, 2 detailed numbers.
+  short tradeAdviceDetailLevel;
 
   THelpMgr();
 
-  // Cycles helpIndexReady through 0 -> 1 -> 2 -> 0 (trade-desk info detail level).
+  // Mac oracle: ToggleTradeAdvice(). Cycles the detail level through 0, 1, 2.
   // 0x00503b90, __thiscall.
-  void CycleTradeScreenMode0To2();
+  void ToggleTradeAdvice();
 };
 #pragma pack(pop)
 ASSERT_SIZE(THelpMgr, 0x30);
+ASSERT_OFFSET(THelpMgr, civilianCompletionCounts, 0x10);
+ASSERT_OFFSET(THelpMgr, tradeAdviceDetailLevel, 0x2e);
 
 // 0x00502b60 (free function in the THelpMgr TU): once per turn tick, show the
 // active nation's turn alerts (mission-score comparisons, treasury prompt, commodity
