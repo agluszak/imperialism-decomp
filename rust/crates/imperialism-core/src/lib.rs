@@ -107,10 +107,9 @@ pub use deal_book::{
 };
 pub use difficulty::{Difficulty, DifficultyTable};
 pub use diplomacy::{
-    DiplomacyGrant, DiplomacyMapAction, DiplomacyOfferPrompt, DiplomacyPhaseResult,
-    DiplomacyPolicy, DiplomacyState, DiplomacyWarJoinKind, DiplomacyWarJoinPrompt,
-    DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
-    PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
+    DiplomacyGrant, DiplomacyMapAction, DiplomacyOfferPrompt, DiplomacyPolicy, DiplomacyState,
+    DiplomacyWarJoinKind, DiplomacyWarJoinPrompt, DiplomaticCongressState, DiplomaticMissionLevel,
+    DiplomaticRelationship, PlayerDiplomacyOrderResult, PlayerDiplomacyRejection, TradePolicyScore,
 };
 pub use game::{GameData, GameState, GameStateParts};
 pub use game_score::GameScore;
@@ -196,10 +195,10 @@ pub use territory::{
     CountryStatus, FortLevel, FortLevelTable, ProvinceDevelopmentStage, ProvinceState,
 };
 pub use trade::{PlayerTradeOrder, TransportAllocation, TransportRowStatus};
-pub use trade_phase::{PendingTradeOffer, TradeProgress, TradeSession};
+pub use trade_phase::PendingTradeOffer;
 pub use turn_flow::{
-    CinematicKind, Decade, DecadeTable, PhaseCode, ScenarioMapId, TurnContinuation, TurnState,
-    TurnStop,
+    CinematicKind, Decade, DecadeTable, PhaseCode, PostQuarterGate, ScenarioMapId, TurnFlow,
+    TurnState, TurnStop,
 };
 pub use turn_tail::{EliminationOutcome, QuarterGateResult, TurnAlert};
 pub use units::{

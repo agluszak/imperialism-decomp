@@ -859,7 +859,7 @@ mod tests {
     #[test]
     fn newspaper_construction_does_not_own_the_turn_phase() {
         let mut state = game_state();
-        state.turn.phase = PhaseCode::RETURN_TO_MAP;
+        state.turn_flow = TurnFlow::ReturnToMap;
         state
             .pending
             .queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
@@ -868,7 +868,7 @@ mod tests {
             });
         state.set_game_data(filler_catalog());
         state.construct_newspaper_pages();
-        assert_eq!(state.turn.phase, PhaseCode::RETURN_TO_MAP);
+        assert_eq!(state.turn_flow, TurnFlow::ReturnToMap);
         assert!(state.pending.newspaper_events.is_empty());
         assert!(state.news.pages[MajorNationId::new(0)].is_some());
     }

@@ -57,7 +57,7 @@ impl Plugin for OfferSheetPlugin {
 fn enter_offer_sheet_phase(session: Res<GameSession>) {
     assert!(
         session.game.pending_trade_offer().is_some(),
-        "Offer Sheet requires a core trade continuation"
+        "Offer Sheet requires a core trade flow"
     );
 }
 
@@ -319,6 +319,7 @@ mod tests {
             major
         });
         parts.nations = Nations::new(majors, IndexMap::new());
+        parts.turn_flow = TurnFlow::Trade;
         GameState::from_parts(parts)
     }
 
@@ -381,9 +382,8 @@ mod tests {
     #[test]
     fn entering_the_offer_sheet_binds_a_pending_offer() {
         let mut state = fixture_state();
-        let TradeProgress::Offer(_) = state.begin_trade_phase() else {
-            panic!("beginning-of-game fixture must produce a pending offer");
-        };
+        state.begin_trade_phase();
+        assert!(state.pending_trade_offer().is_some());
         let mut app = test_app(state);
         app.update();
         assert!(

@@ -217,31 +217,33 @@ pub fn load_game_from_bytes(
         return Err(LoadGameError::UnsupportedVersion(version));
     }
     let save = LegacySaveV62::parse(bytes);
+    // Manual saves are written while the optional save screen has phase 4; the
+    // newspaper autosave is written after case 0xf sets phase 0x12. Retail cannot
+    // create a single-player save in any other phase.
+    let phase = PhaseCode::from_retail(i32::from(save.simulation.turn_state_code));
+    if !matches!(
+        phase,
+        PhaseCode::STRATEGIC_MAP
+            | PhaseCode::CAPITAL_SELECTION
+            | PhaseCode::HOME_PLACEMENT
+            | PhaseCode::RETURN_TO_MAP
+    ) {
+        return Err(LoadGameError::UnsupportedPhase { phase });
+    }
     let map_view_origin = save.map_view_origin();
     let city_windows = save.city_window_layout();
     let battle_report_text = save.battle_report_text();
     let mut game = save.game_state(context);
-    match game.turn().phase() {
-        PhaseCode::STRATEGIC_MAP | PhaseCode::CAPITAL_SELECTION => Ok(LoadedGame {
-            game,
-            map_view_origin,
-            city_windows,
-            battle_report_text,
-        }),
-        // Manual saves are written while the optional save screen has phase 4;
-        // the newspaper autosave is written after case 0xf sets phase 0x12.
-        // TSimMgr::ReadFrom resumes both through phase 4 onto the strategic map.
-        PhaseCode::HOME_PLACEMENT | PhaseCode::RETURN_TO_MAP => {
-            game.resume_retail_save_on_strategic_map();
-            Ok(LoadedGame {
-                game,
-                map_view_origin,
-                city_windows,
-                battle_report_text,
-            })
-        }
-        phase => Err(LoadGameError::UnsupportedPhase { phase }),
+    // `TSimMgr::ReadFrom` resumes the autosave through phase 4 onto the strategic map.
+    if phase == PhaseCode::RETURN_TO_MAP {
+        game.resume_retail_save_on_strategic_map();
     }
+    Ok(LoadedGame {
+        game,
+        map_view_origin,
+        city_windows,
+        battle_report_text,
+    })
 }
 
 pub fn load_game_from_path(

@@ -196,17 +196,11 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
     return started;
   }
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
-  RuntimeActionResult finished =
-      transition.Finish(json_value_init_string("technology_advance"));
-  if (!finished.Succeeded()) {
-    return finished;
-  }
 
-  JsonObject continuation;
-  continuation.Set("TechnologyReport", technologyId);
-  if (json_object_dotset_value(transition.Run().Captures(), "after.ephemeral.continuation",
-                               continuation.Release()) != JSONSuccess) {
-    return RuntimeActionResult::Failure("technology continuation capture failed");
-  }
-  return finished;
+  // Case 0x11 wrote 0x0f before posing the report, so the unlock the dialog is showing
+  // is only observable in the result.
+  JsonObject result;
+  result.Set("stop", "technology_advance");
+  result.Set("technology", technologyId);
+  return transition.Finish(result.Release());
 }
