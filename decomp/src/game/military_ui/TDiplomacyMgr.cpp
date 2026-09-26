@@ -65,8 +65,8 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
     }
 
     int score =
-        (200 - g_apNationStates[majorNation]
-                   ->needLevelByNation[static_cast<short>(minorNationSlot)]) *
+        (200 -
+         g_apNationStates[majorNation]->needLevelByNation[static_cast<short>(minorNationSlot)]) *
         relationStandingScores[minorNationSlot * kNationSlotCount + majorNation];
     if (score > bestScore) {
       selectedNation = majorNation;
@@ -1839,62 +1839,35 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {
-    if (0 < static_cast<int>(byteCount)) {
-      unsigned char* cur = current;
-      unsigned int remaining = byteCount;
-      do {
-        if (*cur != cur[baseline - current]) {
-          ++differing;
-        }
-        ++cur;
-        --remaining;
-      } while (remaining != 0);
+    for (unsigned int index = 0; index < byteCount; ++index) {
+      if (current[index] != baseline[index]) {
+        ++differing;
+      }
     }
-    sendFull = true;
     if (static_cast<unsigned int>(differing * 3) < byteCount) {
       sendFull = false;
     }
   }
-  if (sendFull) {
-    int packetSize = byteCount + 0x24;
-    TurnEvent2SyncPacket* packet =
-        static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
-    packet->eventCode = 0;
-    packet->fromNetworkId = 0;
-    packet->toNetworkId = 0;
-    packet->messageLength = 0;
-    packet->messageLength = 0x1c;
-    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
-    packet->messageLength = packetSize;
-    packet->eventCode = 2;
-    packet->toNetworkId = 0;
-    memcpy(packet->payload.raw, current, byteCount);
-    packet->deltaKind21 = 0;
-    return packet;
-  }
-  int packetSize = (differing + 0xc) * 3;
+  int packetSize = sendFull ? byteCount + 0x24 : 0x24 + differing * 3;
   TurnEvent2SyncPacket* packet =
-      static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
-  packet->eventCode = 0;
+      reinterpret_cast<TurnEvent2SyncPacket*>(new unsigned char[packetSize]);
+  packet->eventCode = 2;
   packet->fromNetworkId = 0;
   packet->toNetworkId = 0;
-  packet->messageLength = 0;
-  packet->messageLength = 0x1c;
-  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet->messageLength = packetSize;
-  packet->pendingNationSlot = pendingSlot;
-  packet->eventCode = 2;
-  packet->toNetworkId = 0;
-  packet->deltaKind21 = 1;
+  packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet->deltaKind21 = sendFull ? 0 : 1;
+  if (sendFull) {
+    memcpy(packet->payload.raw, current, byteCount);
+    return packet;
+  }
   TurnEvent2ByteDeltaEntry* out = reinterpret_cast<TurnEvent2ByteDeltaEntry*>(packet->payload.raw);
-  unsigned char* cur = current;
   for (int i = 0; i < static_cast<int>(byteCount); ++i) {
-    if (*cur != cur[baseline - current]) {
+    if (current[i] != baseline[i]) {
       out->index = static_cast<unsigned short>(i);
-      out->value = *cur;
+      out->value = current[i];
       ++out;
     }
-    ++cur;
   }
   return packet;
 }
@@ -1906,62 +1879,36 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {
-    if (0 < static_cast<int>(shortCount)) {
-      short* cur = current;
-      unsigned int remaining = shortCount;
-      do {
-        if (*cur != cur[baseline - current]) {
-          ++differing;
-        }
-        ++cur;
-        --remaining;
-      } while (remaining != 0);
+    for (unsigned int index = 0; index < shortCount; ++index) {
+      if (current[index] != baseline[index]) {
+        ++differing;
+      }
     }
     if (static_cast<unsigned int>(differing * 4) < shortCount * 2) {
       sendFull = false;
     }
   }
-  if (sendFull) {
-    int packetSize = shortCount * 2 + 0x24;
-    TurnEvent2SyncPacket* packet =
-        static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
-    packet->eventCode = 0;
-    packet->fromNetworkId = 0;
-    packet->toNetworkId = 0;
-    packet->messageLength = 0;
-    packet->messageLength = 0x1c;
-    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
-    packet->messageLength = packetSize;
-    packet->eventCode = 2;
-    packet->toNetworkId = 0;
-    memcpy(packet->payload.raw, current, shortCount * 2);
-    packet->deltaKind21 = 0;
-    return packet;
-  }
-  int packetSize = differing * 4 + 0x24;
+  int packetSize = sendFull ? shortCount * 2 + 0x24 : differing * 4 + 0x24;
   TurnEvent2SyncPacket* packet =
-      static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
-  packet->eventCode = 0;
+      reinterpret_cast<TurnEvent2SyncPacket*>(new unsigned char[packetSize]);
+  packet->eventCode = 2;
   packet->fromNetworkId = 0;
   packet->toNetworkId = 0;
-  packet->messageLength = 0;
-  packet->messageLength = 0x1c;
-  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet->messageLength = packetSize;
-  packet->pendingNationSlot = pendingSlot;
-  packet->eventCode = 2;
-  packet->toNetworkId = 0;
-  packet->deltaKind21 = 2;
+  packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet->deltaKind21 = sendFull ? 0 : 2;
+  if (sendFull) {
+    memcpy(packet->payload.raw, current, shortCount * 2);
+    return packet;
+  }
   TurnEvent2ShortDeltaEntry* out =
       reinterpret_cast<TurnEvent2ShortDeltaEntry*>(packet->payload.raw);
-  short* cur = current;
   for (int i = 0; i < static_cast<int>(shortCount); ++i) {
-    if (*cur != cur[baseline - current]) {
+    if (current[i] != baseline[i]) {
       out->index = static_cast<unsigned short>(i);
-      out->value = *cur;
+      out->value = current[i];
       ++out;
     }
-    ++cur;
   }
   return packet;
 }
@@ -1974,62 +1921,35 @@ BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* ba
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {
-    if (0 < intCount) {
-      int* cur = baseline;
-      int remaining = intCount;
-      do {
-        if (cur[current - baseline] != *cur) {
-          ++differing;
-        }
-        ++cur;
-        --remaining;
-      } while (remaining != 0);
+    for (int index = 0; index < intCount; ++index) {
+      if (current[index] != baseline[index]) {
+        ++differing;
+      }
     }
-    sendFull = true;
     if (static_cast<unsigned int>(differing * 6) < static_cast<unsigned int>(intCount * 4)) {
       sendFull = false;
     }
   }
-  if (sendFull) {
-    int packetSize = intCount * 4 + 0x24;
-    TurnEvent2SyncPacket* packet =
-        static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
-    packet->eventCode = 0;
-    packet->fromNetworkId = 0;
-    packet->toNetworkId = 0;
-    packet->messageLength = 0;
-    packet->messageLength = 0x1c;
-    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
-    packet->messageLength = packetSize;
-    packet->eventCode = 2;
-    packet->toNetworkId = 0;
-    memcpy(packet->payload.raw, current, intCount * 4);
-    packet->deltaKind21 = 0;
-    return packet;
-  }
-  int packetSize = (differing + 6) * 6;
+  int packetSize = sendFull ? intCount * 4 + 0x24 : 0x24 + differing * 6;
   TurnEvent2SyncPacket* packet =
-      static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
-  packet->eventCode = 0;
+      reinterpret_cast<TurnEvent2SyncPacket*>(new unsigned char[packetSize]);
+  packet->eventCode = 2;
   packet->fromNetworkId = 0;
   packet->toNetworkId = 0;
-  packet->messageLength = 0;
-  packet->messageLength = 0x1c;
-  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet->messageLength = packetSize;
-  packet->pendingNationSlot = pendingSlot;
-  packet->eventCode = 2;
-  packet->toNetworkId = 0;
-  packet->deltaKind21 = 3;
+  packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet->deltaKind21 = sendFull ? 0 : 3;
+  if (sendFull) {
+    memcpy(packet->payload.raw, current, intCount * 4);
+    return packet;
+  }
   TurnEvent2IntDeltaEntry* out = reinterpret_cast<TurnEvent2IntDeltaEntry*>(packet->payload.raw);
-  int* cur = current;
   for (int i = 0; i < intCount; ++i) {
-    if (*cur != cur[baseline - current]) {
+    if (current[i] != baseline[i]) {
       out->index = static_cast<unsigned short>(i);
-      out->value = *cur;
+      out->value = current[i];
       ++out;
     }
-    ++cur;
   }
   return packet;
 }

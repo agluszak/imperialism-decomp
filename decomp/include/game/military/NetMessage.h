@@ -26,6 +26,7 @@ struct NetMessage {
   // -1 broadcasts, -2/-3 route to session id 0, otherwise the slot's session id.
   void DestinateTo(int nationSlot);
 };
+ASSERT_SIZE(NetMessage, 0x10);
 
 // Heap packet while it is parked in TMultiplayerMgr's two deferred-processing queues.
 // The queue link occupies +0x10; once a packet is dequeued, that slot is again available
@@ -121,6 +122,7 @@ ASSERT_SIZE(TurnEvent2ShortDeltaEntry, 4);
 ASSERT_SIZE(TurnEvent2IntDeltaEntry, 6);
 
 struct TurnEvent2DeltaPayload {
+  // Trailing wire bytes. A zero-element packet allocates only the 0x24-byte header.
   unsigned char raw[1];
 };
 
@@ -144,10 +146,11 @@ struct TurnEvent2SyncPacket : NetMessage {
   // the buffer is opaque here (TDiplomacyMgr passes its short relation matrix).
   void ApplyEncodedDeltaPayloadToBufferByMode(void* buffer);
 
-  // Dead release helper: `delete this` emits as a bare operator-delete call (the packet
-  // family is non-polymorphic and trivially destructible). 0x00544cb0, __thiscall.
+  // Releases the variable-length wire packet. VC5's byte-array allocation has no cookie,
+  // and the retail release calls scalar operator delete. 0x00544cb0.
   void Free();
 };
+ASSERT_OFFSET(TurnEvent2SyncPacket, payload, 0x24);
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount, short* current, short* baseline);
 // 0x544840 / 0x544b30: the byte- and int-element twins of the builder above; their delta
