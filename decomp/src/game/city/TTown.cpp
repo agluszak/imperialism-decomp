@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TTown, TObject)
 
 enum { kTownHarvestTileCount = kStrategicHexDirectionCount + 1 };
 
-// Bare vptr-write constructor; all field state comes from ITown.
+// ITown initializes the marker fields after construction.
 // FUNCTION: IMPERIALISM 0x005b6c60
 TTown::TTown() {}
 

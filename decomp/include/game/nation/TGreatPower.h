@@ -149,12 +149,12 @@ public:
   virtual void ApplyScenarioRelationPresetAndSpawnFrogCity(class TCity* mgr);
   // slot 0x3a — body 0x004dfa20: creates the "Frog City" town marker, hands it to
   // the receiver's slot 0x44 and appends it to townMarkerList.
-  virtual void CreateFrogCityTownMarkerAndAttach(void* receiver);
+  virtual void CreateFrogCityTownMarkerAndAttach(TCity* city);
   // slot 0x3b — body 0x004dfae0: resolves the nation's home region (minister slot 0xc0,
   // or a terrain-table scan when flag 0x114 is set, reporting "GP#<n> is missing capitol
   // site" on failure), stores it at +0x88, creates the "FrogCity" marker, attaches it to
   // the receiver and the global map, and notifies the interior minister.
-  virtual void CreateFrogCityAtHomeRegionAndAttach(void* receiver);
+  virtual void CreateFrogCityAtHomeRegionAndAttach(TCity* city);
   // Slots 0x3c-0x3e — each dispatches *message via A13A0 (overlayMode 2/1/0)
   // when the quarter gate (economicTurn / 4) is open.
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message);

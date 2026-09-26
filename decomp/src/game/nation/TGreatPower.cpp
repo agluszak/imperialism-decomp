@@ -2201,16 +2201,16 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dfa20
-void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
+void TGreatPower::CreateFrogCityTownMarkerAndAttach(TCity* city) {
   TTown* marker = new TTown();
   marker->ITown("Frog City", 0, 1, this->nationSlot);
-  static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
+  city->SetSelectedTownMarker(marker);
   marker->activeFlag = 1;
   this->townMarkerList->AddTail(marker);
 }
 
 // FUNCTION: IMPERIALISM 0x004dfae0
-void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
+void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(TCity* city) {
   TSimMgr* localization = g_pSimMgr;
   int homeTileIndex = -1;
   if (localization->scenarioMapIndexPlusOne == 0) {
@@ -2218,19 +2218,18 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   } else {
     TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
     for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-      if (static_cast<short>(terrainTable[static_cast<short>(tileIndex)].ownerNationTag04) ==
-              this->nationSlot &&
-          (terrainTable[static_cast<short>(tileIndex)].activeFlags1c & 1) != 0) {
+      if (terrainTable[tileIndex].ownerNationTag04 == this->nationSlot &&
+          (terrainTable[tileIndex].activeFlags1c & 1) != 0) {
         homeTileIndex = tileIndex;
       }
     }
-    if (static_cast<short>(homeTileIndex) == -1) {
+    if (homeTileIndex == -1) {
       CString message;
       {
         CString prefix("GP#");
         message = prefix;
       }
-      message += static_cast<char>('0' + static_cast<char>(this->nationSlot));
+      message += static_cast<char>('0' + this->nationSlot);
       message += " is missing capitol site";
       g_pViewMgr->ModalMessage(message, g_ptGreatPowerModalMessage);
     }
@@ -2238,12 +2237,12 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   this->homeTileIndex = static_cast<short>(homeTileIndex);
   TTown* marker = new TTown();
   marker->ITown("FrogCity", homeTileIndex, 1, this->nationSlot);
-  static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
+  city->SetSelectedTownMarker(marker);
   marker->activeFlag = 1;
   this->townMarkerList->AddTail(marker);
   g_pGlobalMapState->PlaceCity(marker->tileIndex, this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
-    this->interiorMinister->MakeNewCity(static_cast<TCity*>(receiver));
+    this->interiorMinister->MakeNewCity(city);
   }
 }
 
