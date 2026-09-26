@@ -97,15 +97,10 @@ void TMilitaryUnit::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005c3190
 void TMilitaryUnit::ClearPath() {
-  short tile = tileIndex06;
-  short* cursor = orderTargetTilesMirror2E;
-  int remaining = 3;
-  do {
-    cursor[-3] = tile; // lands in orderTargetTiles28[]
-    *cursor = tile;
-    ++cursor;
-    --remaining;
-  } while (remaining != 0);
+  for (int i = 0; i < 3; ++i) {
+    orderTargetTiles28[i] = tileIndex06;
+    orderTargetTilesMirror2E[i] = tileIndex06;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005c31c0

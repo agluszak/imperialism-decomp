@@ -101,10 +101,10 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, unsigned char isOurSide, unsign
   sideReadyFlag10 = 0; // duplicate store present in the original
   secondaryList8 = new TList();
 
-  for (TUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
+  for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
        unit = stack->AdvanceCursorAndGetUnit()) {
     TArmyTacUnit* record = new TArmyTacUnit();
-    record->IArmyTacUnit(static_cast<TMilitaryUnit*>(unit));
+    record->IArmyTacUnit(unit);
     unitList4->AddTail(record);
     if (static_cast<char>(isOurSide) == 0) {
       record->selectedFlag18 = 1; // set only for the enemy side (isOurSide == 0)

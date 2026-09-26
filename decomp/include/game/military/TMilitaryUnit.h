@@ -37,10 +37,8 @@ public:
 
   CString name24; // 0x24 display name (naming pass in TCountry.cpp)
 
-  // 0x28-0x33: three (target, mirror) short pairs written by
-  // ClearPath (0x5c3190) from the inherited
-  // TUnit::tileIndex06 "current tile" value at recruit-order init time; exact
-  // per-slot semantics (order targets vs a confirm/mirror copy) unconfirmed.
+  // Two path arrays, each serialized as three tile words. ClearPath fills matching
+  // elements with tileIndex06; the second array's distinct path role is unresolved.
   short orderTargetTiles28[3];       // 0x28, 0x2a, 0x2c
   short orderTargetTilesMirror2E[3]; // 0x2e, 0x30, 0x32
 

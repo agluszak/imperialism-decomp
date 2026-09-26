@@ -402,7 +402,7 @@ public:
   // (experiencePercent38, capped at 400) -- +35 for the winner, +20 for the loser -- before
   // re-running the pending-army-stack pass (slot 0x0c). 0x004a5ca0, __thiscall, ret 0x10.
   void ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack, TArmyStack* enemyStack,
-                                                    int sideWonFlag, int battleSiteIndex);
+                                                    unsigned char sideWonFlag, int battleSiteIndex);
 
   // Appends the built map-context battle record to mapContextActionRecordList04 (via its
   // sorted-insert virtual, slot 0x0f), clears the record's scratch working fields, and
