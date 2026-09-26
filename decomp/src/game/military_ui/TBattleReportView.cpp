@@ -59,46 +59,37 @@ void TBattleReportView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   BuildDiplomacyNationOverlayGeometryAndHitMasks();
 
-  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes
-  // (the original zeroes them once before the first Build call).
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
+  TextStyle style;
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b67);
 
   char crowdGrid[0x654 * 4];
   memset(crowdGrid, 0, sizeof(crowdGrid));
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xe, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   TControl* control = static_cast<TControl*>(ResolveControlByTag(kControlTagResu)); // 'user'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
-  BuildUiTextStyleDescriptor(&style.desc, 2, 0xe, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 2, 0xe, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagLoca)); // 'acol'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagFadm)); // 'mdaf'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagEadm)); // 'mdae'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagFshp)); // 'phsf'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
   control = static_cast<TControl*>(ResolveControlByTag(kControlTagEshp)); // 'phse'
   control->AssertValid();
-  control->InstallTextStyle(style.desc, 0);
+  control->InstallTextStyle(style, 0);
 
   int selectedOrdinal = -1;
   int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();

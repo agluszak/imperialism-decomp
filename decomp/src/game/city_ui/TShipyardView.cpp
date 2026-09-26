@@ -70,16 +70,7 @@ void TShipyardView::Free() {
 // 'plus'/'minu' stepper controls to the disabled/off state.
 // FUNCTION: IMPERIALISM 0x004c8390
 void TShipyardView::DoStartup() {
-  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes.
-  // Retail clears the tail at function entry and reuses the same descriptor throughout.
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
+  TextStyle style;
 
   productionView98 = g_pMacViewMgr->activeCityProductionView04;
   unresolvedZeroB4 = 0;
@@ -108,7 +99,7 @@ void TShipyardView::DoStartup() {
     minusButton->ViewEnable(0, 0);
   }
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
     TShipOrder* order = city94->shipOrderSlots190[queueIndex];
     if (order->resourceTypeIndex != 0) {
@@ -150,40 +141,40 @@ void TShipyardView::DoStartup() {
           static_cast<TNumberText*>(queueSlot->ResolveControlByTag(kControlTagNumb)); // 'numb'
       quantity->ViewEnable(0, 0);
       quantity->SetControlValue(order->quantity, 1);
-      quantity->InstallTextStyle(style.desc, 1);
+      quantity->InstallTextStyle(style, 1);
     }
   }
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0x18, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0x18, 0x2b6b);
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
-  title->InstallTextStyle(style.desc, 1);
+  title->InstallTextStyle(style, 1);
   title->SetTextFromStringResource(0x2736, 0xe, 1);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   for (int i = 0; i < 2; ++i) {
     TStaticText* fixedLabel =
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagFix0 + i)); // 'fix0'/'fix1'
     fixedLabel->AssertValid();
-    fixedLabel->InstallTextStyle(style.desc, 1);
+    fixedLabel->InstallTextStyle(style, 1);
     fixedLabel->SetTextFromStringResource(0x2736, static_cast<short>(i + 0xf), 1);
   }
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   TControl* shipName = static_cast<TControl*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
   shipName->AssertValid();
-  shipName->InstallTextStyle(style.desc, 1);
+  shipName->InstallTextStyle(style, 1);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   TControl* description = static_cast<TControl*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
-  description->InstallTextStyle(style.desc, 1);
+  description->InstallTextStyle(style, 1);
 
   selectedStatsRowA2 = 0;
   selectedRequirementRow = 0;
   SetShip(buildQueueSlotValues[0]);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
   // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
   // TCluster::SetSelectedChildTagAndRefresh(int) exactly (1 arg, RET 4).

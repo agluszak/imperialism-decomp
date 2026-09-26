@@ -30,7 +30,7 @@ public:
   short selectedRecruitmentCategoryA4;
   unsigned char paddingA6[2];
   // Selected city recruitment recipe. SetUnit indexes city94->buildOrderSlots148 at
-  // recruitmentCategory + 0x22; those entries are TUnitOrder objects, and UpdateFields
+  // recruitmentCategory + 9; those entries are TUnitOrder objects, and UpdateFields
   // reads their per-unit paper and cash costs.
   TUnitOrder* selectedRecruitmentOrderA8;
 };

@@ -38,6 +38,7 @@ struct TextStyle {
   COLORREF textColor;   // 0x6 -- Win32/MFC text color, including PALETTEINDEX values
 };
 #pragma pack(pop)
+ASSERT_SIZE(TextStyle, 0xa);
 
 // VTABLE: IMPERIALISM 0x64a098
 class TControl : public TView {

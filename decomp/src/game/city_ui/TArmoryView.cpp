@@ -30,9 +30,6 @@
 
 IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
-// A standalone out-of-line ctor DOES exist here: 0x4ceda0 is 32 bytes of base-ctor call,
-// vptr store (0x652b10), `xor eax,eax` reused for BOTH dword [this+0x94] and [this+0x98],
-// then `mov eax,esi` return-this. Zero both fields; claiming the address pairs at 90%.
 // FUNCTION: IMPERIALISM 0x004ceda0
 TArmoryView::TArmoryView() {
   city94 = 0;
@@ -48,16 +45,9 @@ TArmoryView::~TArmoryView() {}
 void TArmoryView::DoStartup() {
   productionView98 = g_pMacViewMgr->activeCityProductionView04;
 
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
+  TextStyle style;
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
 
   for (short row = 0; row < 8; ++row) {
     TUnitOrder* order = city94->buildOrderSlots148[row];
@@ -93,61 +83,61 @@ void TArmoryView::DoStartup() {
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1d);
     }
     numb->ViewEnable(0, 0);
-    numb->InstallTextStyle(style.desc, 1);
+    numb->InstallTextStyle(style, 1);
     numb->SetControlValue(order->quantity, 1);
   }
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0x18, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0x18, 0x2b6b);
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
-  title->InstallTextStyle(style.desc, 1);
+  title->InstallTextStyle(style, 1);
   title->SetTextFromStringResource(0x271c, 0x20, 1);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
   unit->AssertValid();
-  unit->InstallTextStyle(style.desc, 1);
+  unit->InstallTextStyle(style, 1);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   TStaticText* cost =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagCostLower)); // 'cost'
   cost->AssertValid();
-  cost->InstallTextStyle(style.desc, 1);
+  cost->InstallTextStyle(style, 1);
   cost->SetTextFromStringResource(0x271c, 0x1e, 1);
 
   TStaticText* avai = static_cast<TStaticText*>(ResolveControlByTag(kControlTagAvai)); // 'avai'
   avai->AssertValid();
-  avai->InstallTextStyle(style.desc, 1);
+  avai->InstallTextStyle(style, 1);
   avai->SetTextFromStringResource(0x271c, 0x1f, 1);
 
   for (short column = 0; column < 4; ++column) {
     TStaticText* current = static_cast<TStaticText*>(
         ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '0') + column)); // 'cos0'+column
     current->AssertValid();
-    current->InstallTextStyle(style.desc, 1);
+    current->InstallTextStyle(style, 1);
 
     TStaticText* available =
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagAva0 + column)); // 'ava0'+column
     available->AssertValid();
-    available->InstallTextStyle(style.desc, 1);
+    available->InstallTextStyle(style, 1);
 
     TStaticText* status =
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagSta0 + column)); // 'sta0'+column
     status->AssertValid();
-    status->InstallTextStyle(style.desc, 1);
+    status->InstallTextStyle(style, 1);
 
     TStaticText* label = static_cast<TStaticText*>(
         ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', '0') + column)); // 'lab0'+column
     label->AssertValid();
-    label->InstallTextStyle(style.desc, 1);
+    label->InstallTextStyle(style, 1);
     label->SetTextFromStringResource(0x271c, static_cast<short>(column + 1), 1);
   }
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
-  description->InstallTextStyle(style.desc, 1);
+  description->InstallTextStyle(style, 1);
 
   selectedRowIndexA4 = -1;
   selectedUnitOrderA8 = 0;
@@ -312,21 +302,14 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   }
   selectedUnitOrderA8 = order;
 
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
+  TextStyle style;
 
   TPicture* plaq =
       static_cast<TPicture*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'l', 'a', 'q')));
   plaq->AssertValid();
   plaq->SetPictureResourceIdAndRefresh(static_cast<short>(order->resourceTypeIndex + 0x1d9c), 1);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   TStaticText* unit =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 'i', 't')));
   if (unit == nullptr) {

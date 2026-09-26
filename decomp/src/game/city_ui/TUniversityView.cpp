@@ -44,16 +44,9 @@ TUniversityView::~TUniversityView() {}
 void TUniversityView::DoStartup() {
   productionView98 = g_pMacViewMgr->activeCityProductionView04;
 
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
+  TextStyle style;
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   short activeNation = g_pSimMgr->GetActiveNationId();
   for (short category = 0; category < 9; ++category) {
     if (category == 6 || category == 7) {
@@ -85,41 +78,41 @@ void TUniversityView::DoStartup() {
           static_cast<TNumberText*>(row->ResolveControlByTag(kControlTagNumb)); // 'numb'
       quantity->AssertValid();
       quantity->ViewEnable(0, 0);
-      quantity->InstallTextStyle(style.desc, 1);
+      quantity->InstallTextStyle(style, 1);
       quantity->SetControlValue(order->quantity, 1);
     }
   }
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0x18, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0x18, 0x2b6b);
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
-  title->InstallTextStyle(style.desc, 1);
+  title->InstallTextStyle(style, 1);
   title->SetTextFromStringResource(0x2723, 0xa, 1);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
   unit->AssertValid();
-  unit->InstallTextStyle(style.desc, 1);
+  unit->InstallTextStyle(style, 1);
 
-  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  BuildUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b);
   for (short fixedLabelIndex = 0; fixedLabelIndex < 2; ++fixedLabelIndex) {
     TStaticText* label = static_cast<TStaticText*>(
         ResolveControlByTag(kControlTagFix0 + fixedLabelIndex)); // 'fix0'/'fix1'
     label->AssertValid();
-    label->InstallTextStyle(style.desc, 1);
+    label->InstallTextStyle(style, 1);
     label->SetTextFromStringResource(0x2723, static_cast<short>(0xb + fixedLabelIndex), 1);
   }
 
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
-  description->InstallTextStyle(style.desc, 1);
+  description->InstallTextStyle(style, 1);
 
   for (short requirementLabelIndex = 0; requirementLabelIndex < 3; ++requirementLabelIndex) {
     TStaticText* label = static_cast<TStaticText*>(
         ResolveControlByTag(kControlTagFix2 + requirementLabelIndex)); // 'fix2'..'fix4'
     label->AssertValid();
-    label->InstallTextStyle(style.desc, 1);
+    label->InstallTextStyle(style, 1);
     label->SetTextFromStringResource(0x2723, static_cast<short>(0xe + requirementLabelIndex), 1);
     label->Show(0, 1);
     label->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -131,7 +124,7 @@ void TUniversityView::DoStartup() {
   for (short valueIndex = 0; valueIndex < 6; ++valueIndex) {
     TControl* value = static_cast<TControl*>(ResolveControlByTag(kStyledValueTags[valueIndex]));
     value->AssertValid();
-    value->InstallTextStyle(style.desc, 1);
+    value->InstallTextStyle(style, 1);
   }
 
   selectedRecruitmentCategoryA4 = -1;
