@@ -2,13 +2,9 @@
 
 #include "compat/compiler.h"
 
-// Preserve listing-proven VC5 inlining decisions in the rare large matching bodies where
-// automatic expansion changes call emission. MSVC accepts inline_depth only as a raw
-// #pragma (not through __pragma), so the scoped markers deliberately surround that directive.
-#define IMPERIALISM_BEGIN_DISABLE_AUTOMATIC_INLINING
-#define IMPERIALISM_END_DISABLE_AUTOMATIC_INLINING
-
-// Suppress Clang diagnostics only at listing-proven retail behaviors.
+// Suppress Clang diagnostics only where retail semantics or ABI require source that modern
+// diagnostics would otherwise reject. These wrappers are not code-generation controls and must not
+// be used to chase reccmp similarity.
 // clang-format off
 #if defined(__clang__)
 #define IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR                                             \

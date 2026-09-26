@@ -61,9 +61,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       recordIndex = 0x3c;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = static_cast<short>(city->GetBuildingType(0x0f));
-      goto LABEL_12;
-    }
-    if (summaryTag == kSummaryTagFood) {
+    } else if (summaryTag == kSummaryTagFood) {
       TLaborPool* labor = population->productionSlots14;
       recordIndex = 7;
       this->selectedMetricStep = 2;
@@ -71,40 +69,31 @@ void TRailCluster::DoPostCreate(int styleSeed) {
           static_cast<short>(((labor->highSkillCount08 * 2 + labor->mediumSkillCount06) * 2 +
                               population->extraAt1e + labor->lowSkillCount04) /
                              2);
-      goto LABEL_12;
     }
   } else if (summaryTag < kControlTagProg) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = population->baselineSlots10->mediumSkillCount06;
-      goto LABEL_12;
-    }
-    if (summaryTag == kSummaryTagPowe) {
+    } else if (summaryTag == kSummaryTagPowe) {
       recordIndex = 0x34;
       this->selectedMetricStep = 6;
       this->selectedMetricValue = 999;
-      goto LABEL_12;
     }
-  } else {
-    if (summaryTag == kSummaryTagRail) {
-      TLaborPool* labor = population->productionSlots14;
-      recordIndex = 0x33;
-      this->selectedMetricStep = 1;
-      this->selectedMetricValue =
-          static_cast<short>(((labor->highSkillCount08 * 2 + labor->mediumSkillCount06) * 2 +
-                              labor->lowSkillCount04 + population->extraAt1e) /
-                             2);
-      goto LABEL_12;
-    }
-    if (summaryTag == kSummaryTagTrai) {
-      recordIndex = 0x17;
-      this->selectedMetricStep = 1;
-      this->selectedMetricValue = population->baselineSlots10->lowSkillCount04;
-      goto LABEL_12;
-    }
+  } else if (summaryTag == kSummaryTagRail) {
+    TLaborPool* labor = population->productionSlots14;
+    recordIndex = 0x33;
+    this->selectedMetricStep = 1;
+    this->selectedMetricValue =
+        static_cast<short>(((labor->highSkillCount08 * 2 + labor->mediumSkillCount06) * 2 +
+                            labor->lowSkillCount04 + population->extraAt1e) /
+                           2);
+  } else if (summaryTag == kSummaryTagTrai) {
+    recordIndex = 0x17;
+    this->selectedMetricStep = 1;
+    this->selectedMetricValue = population->baselineSlots10->lowSkillCount04;
   }
-LABEL_12:
+
   this->selectedMetricOrder = city->orderSlotsE4[recordIndex];
   TAmtBarCluster::DoPostCreate(styleSeed);
   this->SetMoveAmount(this->selectedMetricOrder->quantity, 1);

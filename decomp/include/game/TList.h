@@ -10,11 +10,8 @@ class TList : public TSortedList {
 public:
   // FUNCTION: IMPERIALISM 0x004888a0
   ~TList() override {}
-  // NOOP: verified empty in original 0x00487e91 (no standalone TList::TList body exists: CreateObject 0x00487e50 inlines this default ctor, calling the CPtrList base ctor directly at that site)
   DECLARE_DYNCREATE(TList)
-  // NOOP: verified empty in original (the ctor chain is just TSortedList's; inline so
-  // construction sites match the original's fully inlined new-expressions).
-  TList() {}
+  TList() {} // NOOP: verified empty in original 0x00487e91
 };
 
 ASSERT_SIZE(TList, 0x20);

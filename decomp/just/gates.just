@@ -118,6 +118,13 @@ serde-audit *args:
 vtable-gate:
   uv run python -m tools.workflow.check_no_raw_vtable_calls
 
+# Source-level compiler tuning is not a reconstruction technique. ABI/layout pragmas are fine;
+# per-function optimization/inlining/intrinsic controls are not.
+[private]
+[group('gates')]
+codegen-tuning-gate:
+  uv run python -m tools.workflow.check_no_codegen_tuning
+
 [private]
 [group('gates')]
 marker-gate:
@@ -220,7 +227,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate cstring-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate class-size-gate noop-gate shadow-stub-gate runtime-source-policy-gate
+_source-gates-parallel: ui-codegen-check vtable-gate codegen-tuning-gate antipattern-gate marker-gate cstring-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate class-size-gate noop-gate shadow-stub-gate runtime-source-policy-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or

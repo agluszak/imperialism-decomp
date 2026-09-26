@@ -1,9 +1,6 @@
 // TMapMaker overlay-segment builder: match the per-tile-edge Seapoint quad records
 // (g_seapointQuadTable_006a3478) into region-border SeaSegments
 // (g_regionBorderLinkTable_006a3900) that MergeSmallCityRegionsAndCompactIds later consumes.
-//
-// Isolated in its own translation unit so its size/codegen does not perturb the register
-// allocation of the neighbouring stretch methods in sea_geometry.cpp.
 
 #include "game/map/sea_geometry.h"
 
@@ -16,11 +13,6 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 
-// A body this size exhausts VC5's inline budget: retail expands
-// stretch<Seapoint>::operator[] only at the first few sites and calls the out-of-line copy
-// at the rest. Suspending automatic expansion for this one function reproduces
-// the majority case; the handful of early sites retail did inline are residual.
-#pragma inline_depth(0)
 // FUNCTION: IMPERIALISM 0x0052cae0
 void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
   SeaSegmentStretch& seg = g_regionBorderLinkTable_006a3900;
@@ -55,7 +47,9 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
           int dirDelta = ((b->f0c - a->f0c) + 6) % 6;
           unsigned char isPrimaryDirection = dirDelta >= 2 && dirDelta <= 4;
           if (isPrimaryDirection) {
-            if (bestPrimary != 0xffffffff) {
+            if (bestPrimary == 0xffffffff) {
+              bestPrimary = j;
+            } else {
               Seapoint* pa = &quad[i];
               Seapoint* pb = &quad[j];
               int rowDelta = pa->coord00 / 0xd8 - pb->coord00 / 0xd8;
@@ -68,22 +62,21 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
               }
               float candidateDist = static_cast<float>(
                   sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta)));
-              if ((&quad[bestPrimary])->WrappedDeltaMetric((&quad[i])) <= candidateDist) {
-                goto next;
+              if ((&quad[bestPrimary])->WrappedDeltaMetric((&quad[i])) > candidateDist) {
+                bestPrimary = j;
               }
             }
-            bestPrimary = j;
           } else if (bestPrimary == 0xffffffff) {
-            if (bestSecondary != 0xffffffff) {
+            if (bestSecondary == 0xffffffff) {
+              bestSecondary = j;
+            } else {
               float candidateDist = static_cast<float>((&quad[j])->WrappedDeltaMetric((&quad[i])));
-              if ((&quad[bestSecondary])->WrappedDeltaMetric((&quad[i])) <= candidateDist) {
-                goto next;
+              if ((&quad[bestSecondary])->WrappedDeltaMetric((&quad[i])) > candidateDist) {
+                bestSecondary = j;
               }
             }
-            bestSecondary = j;
           }
         }
-      next:
         j = j + 1;
       } while (j < static_cast<unsigned int>(quad.count));
     }
@@ -111,4 +104,3 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
     }
   } while (i < static_cast<unsigned int>(quad.count));
 }
-#pragma inline_depth()
