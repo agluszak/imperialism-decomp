@@ -361,7 +361,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     if (tag == kControlTagAcce || tag == kControlTagReje) {
       CreateNextTradeCommandAndFormatPrompt(tag);
     } else if (tag == kControlTagForM) {
-      g_pHelpMgr->CycleTradeScreenMode0To2();
+      g_pHelpMgr->ToggleTradeAdvice();
       RefreshSelectedNationOrderCompatibilityInfo();
     }
   } else if (commandId == 0x14 && tag == kControlTagDone) {
@@ -392,7 +392,7 @@ void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
 
 // Rebuild the 'info' text control with the trade-compatibility explanation for the current
 // responding nation (+0x90), offering nation (+0x92) and commodity (+0x96), formatted at the
-// current help detail level (g_pHelpMgr->helpIndexReady: 0 minimal, 1 concise verdict,
+// current help detail level (g_pHelpMgr->tradeAdviceDetailLevel: 0 minimal, 1 concise verdict,
 // >=2 detailed numbers). Text comes from string-resource groups 0x2711 (commodity names),
 // 0x2740 and 0x2764 (compatibility phrases, bracket-expanded via scanBracketExpressions).
 // Commodity types 0/1 (Cotton+Wool) are always evaluated as a combined pair.
@@ -437,10 +437,10 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   short compat = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
       respondingNationSlot, offeringNationSlot);
 
-  if (g_pHelpMgr->helpIndexReady == 0) {
+  if (g_pHelpMgr->tradeAdviceDetailLevel == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);
     info->SetTextAlignmentAndMaybeRefresh(1, 0);
-  } else if (g_pHelpMgr->helpIndexReady == 1) {
+  } else if (g_pHelpMgr->tradeAdviceDetailLevel == 1) {
     if (compat >= 1 &&
         g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) == 0) {
       notAligned = 1;
