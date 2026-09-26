@@ -2892,7 +2892,7 @@ JSON_Value* CaptureNationPendingWork(TGreatPower* nation) {
   object.Set("proposals", CaptureDiplomacyProposals(nation != 0 ? nation->proposalQueue : 0));
   object.Set("turn_summary", CaptureTurnSummary(nation != 0 ? nation->turnSummaryQueue : 0));
   object.Set("turn_start_events",
-             CaptureTurnStartEvents(nation != 0 ? nation->missionNodeQueue : 0));
+             CaptureTurnStartEvents(nation != 0 ? nation->turnStartEvents : 0));
   return object.Release();
 }
 

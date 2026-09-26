@@ -15,6 +15,8 @@ public:
   virtual void InstallViews(TView* panel, int* offsetLayout); // slot 0x0a 0x56f460
   virtual void RemoveViews();                                 // slot 0x0b 0x56f480
 
+  // TPageView uses column as the space that must remain after this line to fit it
+  // on a page, and row as the one-based optionEntries header index (0 = none).
   short column;     // 0x04
   short row;        // 0x06
   int layoutWidth;  // 0x08
@@ -26,3 +28,7 @@ public:
 };
 
 ASSERT_SIZE(TLineData, 0x10);
+ASSERT_OFFSET(TLineData, column, 0x04);
+ASSERT_OFFSET(TLineData, row, 0x06);
+ASSERT_OFFSET(TLineData, layoutWidth, 0x08);
+ASSERT_OFFSET(TLineData, layoutHeight, 0x0c);

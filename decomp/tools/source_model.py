@@ -43,7 +43,7 @@ MODEL_NAME = "source_model.json"
 _KINDS = ("FUNCTION", "STUB", "TEMPLATE", "SYNTHETIC", "LIBRARY")
 _VTABLE_RE = re.compile(r"//\s*VTABLE\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE)
 _GLOBAL_RE = re.compile(
-    r"//\s*GLOBAL\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)(?:\s+(\S+))?", re.IGNORECASE
+    r"//\s*GLOBAL\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE
 )
 _CLASS_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+([A-Za-z_]\w*)")
 # Declaration head: `Ret [Class::]Name(args`. Qualified or free.
@@ -184,8 +184,8 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
             gm = _GLOBAL_RE.search(line)
             if gm and gm.group(1).upper() == target.upper():
                 gaddr = int(gm.group(2), 16)
-                gname = (gm.group(3) or "").strip()
-                if not gname and i + 1 < len(lines):
+                gname = ""
+                if i + 1 < len(lines):
                     # Name comes from the following declaration: `Type g_name... =`.
                     dm = re.search(r"\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\])?\s*(?:=|;)",
                                    lines[i + 1])

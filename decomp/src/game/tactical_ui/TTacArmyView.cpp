@@ -185,8 +185,7 @@ void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* 
     coatControl->AssertValid();
     coatControl->SetPictureResourceIdAndRefresh(
         static_cast<short>(
-            (&tacticalBattle60->tacticalPlayer14)[tacticalBattle60->currentSideC]->nationIndex1C +
-            0xea6),
+            tacticalBattle60->players[tacticalBattle60->currentSideC]->nationIndex1C + 0xea6),
         1);
 
     overlayBounds.left = 0;

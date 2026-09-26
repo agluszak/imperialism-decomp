@@ -1,7 +1,6 @@
 #include "game/ui_core/TSortedList.h"
 
 #include <stdlib.h>
-#include "game/map/TMission.h"
 #include "game/pointer_representation.h"
 
 // Dead helper (no live callers): returns `low + rand() % |high - low|`, or `low`
@@ -183,15 +182,10 @@ void TSortedList::RemoveAtOrdinal(int oneBasedIndex) {
 
 // FUNCTION: IMPERIALISM 0x00488750
 void TSortedList::FreePayloads() {
-  if (this->listState.IsEmpty()) {
-    return;
+  while (!listState.IsEmpty()) {
+    TObject* payload = static_cast<TObject*>(listState.RemoveHead());
+    payload->Free();
   }
-  do {
-    void* payload = this->listState.RemoveHead();
-    if (payload != 0) {
-      static_cast<TMission*>(payload)->Free();
-    }
-  } while (!this->listState.IsEmpty());
 }
 
 // FUNCTION: IMPERIALISM 0x00488790

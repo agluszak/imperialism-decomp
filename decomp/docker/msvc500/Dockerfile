@@ -56,6 +56,11 @@ RUN wget -O /tmp/cmake.zip https://github.com/Kitware/CMake/releases/download/v3
  && mv /root/.wine/drive_c/cmake-3.26.6-windows-i386 /root/.wine/drive_c/cmake \
  && rm -f /tmp/cmake.zip
 
+# The pinned reccmp collector uses the LLVM 19 AST and CodeGen APIs.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends llvm-19-dev libclang-19-dev \
+ && rm -rf /var/lib/apt/lists/*
+
 COPY entrypoint.py /entrypoint.py
 
 ENTRYPOINT ["python3", "/entrypoint.py"]

@@ -11,6 +11,7 @@
 #include "screens/UiAnimationRegistry.h"
 
 #include "game/core/global_data_tables.h"
+#include "game/city_ui/TLongintList.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
@@ -19,7 +20,10 @@
 #include "game/nation_domain_types.h"
 #include "game/resource_domain_types.h"
 #include "game/turn_event_codes.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_screens/TPageView.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_screens/TTextLine.h"
 
 namespace {
 
@@ -30,6 +34,77 @@ const int kMapAnimationRegressionTag = 0x74727374;
 // The deterministic offer the scenario poses to itself: three units of food at seventeen.
 const short kPosedOfferQuantity = 3;
 const short kPosedOfferPrice = 17;
+
+TPageView* CreatePaginationPage() {
+  TPageView* page = new TPageView();
+  int origin[2] = {0, 0};
+  int size[2] = {200, 91};
+  page->InitializeUiResourceEntryFrameAndParent(0, 0, origin, size, 5, 5, 0);
+  page->DoPostCreate(0);
+  return page;
+}
+
+TTextLine* CreatePaginationLine(const char* caption, short headerIndex, short followingSpace) {
+  TTextLine* line = new TTextLine();
+  int bounds[2] = {200, 30};
+  line->SetTextLineRowBoundsAndStyle(headerIndex, followingSpace, bounds, -1, 0);
+  CString text(caption);
+  line->SetCaptionText(&text);
+  return line;
+}
+
+bool HasPageTextAt(TPageView* page, const char* caption, int y) {
+  if (page->childList44 == 0) {
+    return false;
+  }
+  POSITION position = page->childList44->GetHeadPosition();
+  while (position != 0) {
+    // This detached fixture contains only children created by TTextLine::InstallViews.
+    TStaticText* text = static_cast<TStaticText*>(page->childList44->GetNext(position));
+    if (text->text->Compare(caption) == 0 && text->ownerLocalX == 0 && text->ownerLocalY == y) {
+      return true;
+    }
+  }
+  return false;
+}
+
+RuntimeActionResult CheckPagePagination() {
+  // Real TTextLine::InstallViews creates the child controls; no test-specific
+  // line subclass or replacement layout algorithm participates in these checks.
+  TPageView* grouped = CreatePaginationPage();
+  grouped->AddOptionEntry(CreatePaginationLine("Header", 0, 30));
+  grouped->AddOrderedEntry(CreatePaginationLine("First", 1, 0));
+  grouped->AddOrderedEntry(CreatePaginationLine("Second", 1, 0));
+  grouped->BuildPageLayout();
+  grouped->ShowPage(1);
+  bool groupedCorrect = grouped->pageCount == 1 && grouped->childList44 != 0 &&
+                        grouped->childList44->GetCount() == 3 &&
+                        HasPageTextAt(grouped, "Header", 0) &&
+                        HasPageTextAt(grouped, "First", 30) && HasPageTextAt(grouped, "Second", 60);
+  grouped->Free();
+  if (!groupedCorrect) {
+    return RuntimeActionResult::Failure("a page header consumed its first detail row");
+  }
+
+  TPageView* ungrouped = CreatePaginationPage();
+  const char* captions[6] = {"One", "Two", "Three", "Four", "Five", "Six"};
+  for (int index = 0; index < 6; ++index) {
+    ungrouped->AddOrderedEntry(CreatePaginationLine(captions[index], 0, 0));
+  }
+  ungrouped->BuildPageLayout();
+  bool breaksCorrect = ungrouped->pageCount == 2 && ungrouped->pageStartIndices->GetSize() == 2 &&
+                       ungrouped->pageStartIndices->At(1) == 1 &&
+                       ungrouped->pageStartIndices->At(2) == 4;
+  ungrouped->ShowPage(2);
+  bool rowsCorrect = ungrouped->childList44 != 0 && ungrouped->childList44->GetCount() == 3 &&
+                     HasPageTextAt(ungrouped, "Four", 0) && HasPageTextAt(ungrouped, "Five", 30) &&
+                     HasPageTextAt(ungrouped, "Six", 60);
+  ungrouped->Free();
+  if (!breaksCorrect || !rowsCorrect) {
+    return RuntimeActionResult::Failure("ungrouped page overflow counted its first row twice");
+  }
+  return RuntimeActionResult::Success();
+}
 
 // The Board of Trade, from the map and back, with the two regressions that live on this path:
 // opening it must discard the animations the map owned, and the buy and sell directions it
@@ -47,6 +122,8 @@ public:
 protected:
   void Script() override {
     RT_BEGIN();
+
+    RT_DO("check Deal Book row pagination", CheckPagePagination());
 
     // --- Declare war, so the turn's trade happens against a live conflict. ---
     RT_OPEN_TO("open the diplomacy map", StrategicMap().OpenDiplomacy(), DiplomacyScreen);

@@ -1,10 +1,8 @@
-// Annotation-only carrier (#if 0). Scanned by source_model for LIBRARY/SYNTHETIC
-// identity markers; excluded from the compile TU list in CMakeLists.txt.
+// Annotation-only carrier. Scanned by source_model and reccmp for LIBRARY/SYNTHETIC
+// identity markers; excluded from the product compile TU list in CMakeLists.txt.
 // CRT/MFC library and synthetic identity claims. Ownership plus reccmp
 // name/symbol/prototype overlays live here as // LIBRARY or // SYNTHETIC markers.
 // Accepting an object-matcher oracle hit means adding a block below.
-
-#if 0
 
 // LIBRARY: IMPERIALISM 0x00412600
 // name: `vector constructor iterator'
@@ -7221,5 +7219,3 @@
 // LIBRARY: IMPERIALISM 0x00707081
 // name: InitializeWinmmImportBindings
 // prototype: void InitializeWinmmImportBindings(void)
-
-#endif

@@ -110,9 +110,9 @@ public:
   virtual void SetNationPendingActionStateAndPayload(int index, short payload); // slot 0x2e
   // slot 0x2f — Mac oracle: AddTurnStartEvent(TTurnStartEvent*); the base queues it.
   virtual void AddTurnStartEvent(TTurnStartEvent* event);
-  // slot 0x30 — body 0x004daa80: invokes [vt+0x28] on every mission node, then
-  // clears missionNodeQueue.
-  virtual void DispatchMissionNodeCallbacksAndClearQueue(void);
+  // slot 0x30 — executes every queued event in order, then frees them.
+  // ORACLE: Mac TGreatPower::DisplayTurnStartEvents().
+  virtual void DisplayTurnStartEvents();
   virtual void NoOpNationQueuedOrderHook(void);
   // index 0x32 / vtable+0x0c8. Per-nation pending-action state machine that
   // constructs queued land/navy/civ order objects (body 0x004dab20).
@@ -458,7 +458,7 @@ public:
   unsigned char field904;
   unsigned char pad_905[3];
   TPtrList* turnSummaryQueue;
-  TSortedList* missionNodeQueue;
+  TSortedList* turnStartEvents; // +0x90c; owns TTurnStartEvent payloads
   int field910;
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[kNationSlotCount];

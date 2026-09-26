@@ -3,17 +3,17 @@
 #include "compat.h"
 
 #include "game/app/TObject.h"
-#include "game/military/TUnit.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
+class TMilitaryUnit;
 class TStream;
 
-// A node in TArmyStack's embedded intrusive unit chain (head14/cursor18).
+// Owned singly linked nodes holding non-owning military-unit pointers.
 struct TArmyStackUnitNode {
-  TUnit* unit;              // +0x00
+  TMilitaryUnit* unit;      // +0x00
   TArmyStackUnitNode* next; // +0x04
 };
+ASSERT_SIZE(TArmyStackUnitNode, 8);
 
 // VTABLE: IMPERIALISM 0x0064ca38
 class TArmyStack : public TObject {
@@ -23,11 +23,8 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a7960
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a77b0
   virtual void Free() override;                    // slot 0x07 0x4a7c20
-  // Field layout from FormStacks's construction site (0x4a1f80, `new TArmyStack()` +
-  // scatter-init) and ResolveNextMove's
-  // (0x4a2390) reads. TObject's own vptr occupies the first 4 bytes.
-  short field4; // +0x04 -- zeroed at construction
-  short field6; // +0x06 -- zeroed at construction
+  short field4;                                    // +0x04 -- composition class
+  short field6;                                    // +0x06 -- composition class and random sort key
   // +0x08 -- region/owner category; signed (indexed/compared via movsx/jge in the
   // original) and compared against TArmyMgr::perTileOwnerNationCodeCache1c.
   signed char categoryFlag8;
@@ -35,13 +32,13 @@ public:
   // most-recently-processed unit in UpdateDualLinkedEntryMetersAndBlinkState's Phase 1/2
   // scan; that scan stops early once this hits 0.
   unsigned char fortLevelAttackerPenaltyCache9;
-  short fieldA;         // +0x0a -- zeroed at construction
-  unsigned char fieldC; // +0x0c -- zeroed at construction
+  short unitCountA;     // +0x0a -- linked unit count, serialized as a signed word
+  unsigned char fieldC; // +0x0c -- initialized by IArmyStack
   unsigned char padD;
   short ownerNationCodeE; // +0x0e -- region/owner-nation code
   short tileIndex10;      // +0x10 -- originating tile index / order-target province
   unsigned char pad12[2];
-  TArmyStackUnitNode* head14;   // +0x14 -- head of an embedded {TUnit*, next} node chain
+  TArmyStackUnitNode* head14;   // +0x14 -- head of the owned node chain
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
   // Walk the unit chain re-seating every unit: hand each one its own orderTargetIndex0C through
@@ -62,14 +59,14 @@ public:
 
   // Resets cursor18 to head14 and returns its unit (nullptr if the chain is empty).
   // 0x004a3b70, __thiscall, no args.
-  TUnit* ResetCursorAndGetHeadUnit();
+  TMilitaryUnit* ResetCursorAndGetHeadUnit();
   // Advances cursor18 to its next node and returns that node's unit (nullptr if there is
   // no next node, or the cursor was already null). 0x004a3b90, __thiscall, no args.
-  TUnit* AdvanceCursorAndGetUnit();
+  TMilitaryUnit* AdvanceCursorAndGetUnit();
 
-  // Finds the first unit of type `unitTag` in this stack's owning country's military unit
-  // list and prepends it to the embedded node chain. 0x004a7a40.
-  void AddFirstCountryUnitOfTypeToStack(short unitTag);
+  // Resolves a roster ID in the owning country's military list and prepends the unit.
+  // Mac oracle: AddUnit(short). 0x004a7a40.
+  void AddUnitByRosterId(short rosterID);
   // Walks the whole chain from head14 (via ResetCursorAndGetHeadUnit/
   // AdvanceCursorAndGetUnit) and, for every unit with a positive strength34 (strength),
   // grows experiencePercent38 (percent-scaled quality) by 35 if boosted else 20, capped at 400.
@@ -84,16 +81,16 @@ public:
   // Applies a randomized decay to eligible entries using the accumulated weighted sum/
   // count from the method above. 0x004a8040, 482 bytes.
   void ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSum, int count, int counter);
-  // Re-initializes the stack for one tactical-battle side: zeroes field4/field6/fieldA/
+  // Re-initializes the stack for one tactical-battle side: zeroes field4/field6/unitCountA/
   // fieldC and stores the owner nation index, owner nation code, and originating tile.
   // 0x004a7770, __thiscall, ret 0xc.
   void IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex);
-  // Pushes a unit node at the head of the embedded chain (alloc-failure assert via
-  // UArmyMgr.cpp line 0xbeb) and bumps the fieldA unit count. 0x004a7b20.
-  void AddUnitToChainHead(TUnit* unit);
+  // Pushes a unit node at the head of the chain (alloc-failure assert via
+  // UArmyMgr.cpp line 0xbeb) and increments unitCountA. 0x004a7b20.
+  void AddUnitToChainHead(TMilitaryUnit* unit);
   // Unlinks and deletes the first node whose unit pointer matches (searches head14,
-  // then walks the chain), decrementing fieldA. No-op if not found. 0x004a7ba0.
-  void RemoveUnitFromChain(TUnit* unit);
+  // then walks the chain), decrementing unitCountA. No-op if not found. 0x004a7ba0.
+  void RemoveUnitFromChain(TMilitaryUnit* unit);
 
   TArmyStack();
 };

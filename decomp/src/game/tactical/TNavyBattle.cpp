@@ -78,13 +78,13 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
     battleView8->InvalidateUnit(unit);
   }
 
-  selectedUnit1c = (&tacticalPlayer14)[currentSideC]->SelectNextTacticalUnitForDoneCommand();
-  if ((&tacticalPlayer14)[currentSideC]->sideReadyFlag10 == 0) {
+  selectedUnit1c = players[currentSideC]->SelectNextTacticalUnitForDoneCommand();
+  if (players[currentSideC]->sideReadyFlag10 == 0) {
     return;
   }
 
   currentSideC = (currentSideC == 0);
-  selectedUnit1c = (&tacticalPlayer14)[currentSideC]->SelectNextTacticalUnitForDoneCommand();
+  selectedUnit1c = players[currentSideC]->SelectNextTacticalUnitForDoneCommand();
 
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
@@ -94,11 +94,11 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
     toolbar->ForceRedraw();
   }
 
-  if ((&tacticalPlayer14)[currentSideC]->sideReadyFlag10 != 0) {
+  if (players[currentSideC]->sideReadyFlag10 != 0) {
     FinalizeTacticalTurnStateAndQueueEvent232A();
     return;
   }
-  (&tacticalPlayer14)[currentSideC]->StartBattle();
+  players[currentSideC]->StartBattle();
 }
 
 // Resolves a naval gun action against the target tile's occupant: computes the hex
@@ -142,7 +142,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   }
 
   if (static_cast<float>(rand() % 100) < hitThreshold) {
-    TTacticalPlayer* attackerSidePlayer = (&tacticalPlayer14)[currentSideC];
+    TTacticalPlayer* attackerSidePlayer = players[currentSideC];
     attackerSidePlayer->AssertValid();
     NavyTargeting targeting = static_cast<TNavyPlayer*>(attackerSidePlayer)->targetingMode2c;
     float attackPower = attackerUnit->GetBaseAttackPower();
@@ -226,7 +226,7 @@ void TNavyBattle::EndBattle(unsigned char) {
 
 // FUNCTION: IMPERIALISM 0x005a5b90
 void TNavyBattle::SetTargeting(NavyTargeting targeting) {
-  static_cast<TNavyPlayer*>((&tacticalPlayer14)[currentSideC])->targetingMode2c = targeting;
+  static_cast<TNavyPlayer*>(players[currentSideC])->targetingMode2c = targeting;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5bc0

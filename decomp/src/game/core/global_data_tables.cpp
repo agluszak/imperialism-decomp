@@ -2398,10 +2398,10 @@ extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 extern const float g_MissionEmptyResourceWeight_0065AA24 = 100.0f;
 // GLOBAL: IMPERIALISM 0x0065aa48
 extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48 = 0.002;
+// Composition reference profiles: four rows of five military attributes.
+// Tactical accumulation and deployment select rows 1 and 2 differently;
+// see docs/reference/army_tactical_projections.md.
 // GLOBAL: IMPERIALISM 0x00697870
-// Tactical composition reference profiles (4 rows x 5 action classes, shorts at
-// 0x697870): row 0 baseline, row 1 fort-siege, row 2 open-field, row 3 unattributed.
-// Consumed by the distribution-similarity scorer (0x5362c0) callers.
 short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
     40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
 // Four back-to-back target-percentage profiles consumed by the navy-order distribution

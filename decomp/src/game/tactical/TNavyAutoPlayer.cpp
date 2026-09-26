@@ -51,9 +51,9 @@ void TNavyAutoPlayer::AdvanceTacticalTurnPulse() {
   TTacticalUnit* unit = battle14->selectedUnit1c;
   TList* enemyList;
   if (isOurSideFlagC != 0) {
-    enemyList = battle14->tacticalPlayer18->unitList4;
+    enemyList = battle14->players[1]->unitList4;
   } else {
-    enemyList = battle14->tacticalPlayer14->unitList4;
+    enemyList = battle14->players[0]->unitList4;
   }
 
   int* distances = new int[enemyList->GetCount()];

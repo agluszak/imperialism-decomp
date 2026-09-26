@@ -33,6 +33,8 @@ REASON_LABELS = {
     "dead_operation": "dead register-only operation",
     "padding": "alignment padding",
     "load_folding": "memory-load folding into the consuming instruction",
+    "algebraic_identity": "equivalent bit-vector arithmetic",
+    "folded_symbol_alias": "equivalent shared body",
 }
 
 
@@ -98,20 +100,17 @@ def render_entity(
         lines.append(f"inconclusive: {reason.replace('_', ' ')}")
         location = comparison.get("inconclusive_location")
         if location:
-            lines.append(f"  at {location}")
+            lines.append(
+                f"  {location.get('image') or 'unknown image'} "
+                f"@ insn {location.get('instruction_index')} addr {location.get('address')}"
+            )
         return "\n".join(lines)
 
     difference = comparison.get("difference") or {}
     kind = difference.get("kind") or "unknown"
     orig = difference.get("orig") or {}
     recomp = difference.get("recomp") or {}
-    semantic = comparison.get("semantic_similarity")
-    if semantic is not None:
-        lines.append(
-            f"mismatch ({kind.replace('_', ' ')}; {float(semantic) * 100:.2f}% semantic)"
-        )
-    else:
-        lines.append(f"mismatch ({kind.replace('_', ' ')})")
+    lines.append(f"mismatch ({kind.replace('_', ' ')})")
     lines.append(
         f"  original @ insn {orig.get('instruction_index')} addr {orig.get('address')}"
     )

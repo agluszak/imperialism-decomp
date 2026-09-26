@@ -7,16 +7,17 @@
 
 class TList;
 class TLongintList;
+class TLineData;
 
 // VTABLE: IMPERIALISM 0x0065e270
 class TPageView : public TView {
 public:
   DECLARE_DYNCREATE(TPageView)
-  virtual ~TPageView() override;                // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                 // slot 0x07 0x56ffe0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x56fa50
-  virtual POSITION AddOrderedEntry(void* item); // slot 0x68 0x56fbb0
-  virtual POSITION AddOptionEntry(void* item);  // slot 0x69 0x56fbd0
+  virtual ~TPageView() override;                     // slot 0x01 (scalar deleting destructor)
+  virtual void Free() override;                      // slot 0x07 0x56ffe0
+  virtual void DoPostCreate(int arg) override;       // slot 0x37 0x56fa50
+  virtual POSITION AddOrderedEntry(TLineData* item); // slot 0x68 0x56fbb0
+  virtual POSITION AddOptionEntry(TLineData* item);  // slot 0x69 0x56fbd0
   virtual void ResetSelectableOptionEntriesExceptColorAndOkay(); // slot 0x6a 0x56fbf0
   virtual void BuildPageLayout();                                // slot 0x6b 0x56fc80
   virtual void ShowPage(short pageNumber);                       // slot 0x6c 0x56fdb0
@@ -27,8 +28,8 @@ public:
   short visibleColumnCount;       // +0x64, ctor writes 1
   short reserved66;               // +0x66, no accesses observed
   RECT pageRect;                  // +0x68
-  TList* optionEntries;           // +0x78, entries referenced by their tag/index
-  TList* orderedEntries;          // +0x7c, rows in layout order
+  TList* optionEntries;           // +0x78, owned TLineData section headers, indexed by row
+  TList* orderedEntries;          // +0x7c, owned TLineData rows in layout order
   TLongintList* pageStartIndices; // +0x80
 
   TPageView();

@@ -24,6 +24,9 @@ Applied to the DB (dry-run by default; --apply writes and saves):
 After --apply, run `just export-project` so the vendored .gzf carries the
 result.
 
+Repeat --address 0xADDR to restrict names, vtables, and boundary repairs to
+those exact addresses. Interior labels require their own selected addresses.
+
 Optional PDB import (`just import-ghidra`) can refresh names from the recomp
 PDB when needed. The audit at the end of this tool reports remaining
 class-datatype drift from source.
@@ -51,9 +54,14 @@ def split_qualified(qualified: str) -> tuple[list[str], str]:
     return parts[:-1], parts[-1]
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", default="IMPERIALISM")
+    parser.add_argument(
+        "--address", action="append", type=lambda value: int(value, 16),
+        metavar="HEX",
+        help="Limit changes to this exact address (repeatable hexadecimal).",
+    )
     parser.add_argument("--apply", action="store_true", help="Write and save the DB (default: dry-run).")
     parser.add_argument("--quiet", action="store_true", help="Only print the summary lines.")
     parser.add_argument(
@@ -74,16 +82,24 @@ def parse_args() -> argparse.Namespace:
             "used when a sync playbook requires convergence."
         ),
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 def main() -> int:
     args = parse_args()
+    selected = set(args.address) if args.address is not None else None
 
     model = build_model(REPO_ROOT, args.target)
+    functions = model.functions
+    global_names = model.globals
     vtables = model.vtables
     extents = load_verified_vtable_extents(REPO_ROOT / "config" / "verified_vtable_extents.csv")
     embedded_labels = embedded_label_entries()
+    if selected is not None:
+        functions = {a: c for a, c in functions.items() if a in selected}
+        global_names = {a: n for a, n in global_names.items() if a in selected}
+        vtables = {a: n for a, n in vtables.items() if a in selected}
+        embedded_labels = [(a, n) for a, n in embedded_labels if a in selected]
     # Claimed entities only: source spelling when parsed, identity-marker
     # name for LIBRARY/SYNTHETIC overlays, inventory advisory ONLY as fallback
     # addresses whose spelling could not be parsed. Unclaimed addresses are
@@ -102,7 +118,7 @@ def main() -> int:
                     pass
     wanted: dict[int, str] = {}
     derived = fallback = 0
-    for addr, claim in model.functions.items():
+    for addr, claim in functions.items():
         if claim.name:
             wanted[addr] = claim.name
             derived += 1
@@ -110,11 +126,11 @@ def main() -> int:
             wanted[addr] = inventory[addr]
             fallback += 1
     # Source globals get labels too.
-    for addr, gname in model.globals.items():
+    for addr, gname in global_names.items():
         wanted.setdefault(addr, gname)
     print(
-        f"claims: {len(model.functions)} (named from source/reviewed: {derived}, "
-        f"inventory fallback: {fallback}); globals: {len(model.globals)}; "
+        f"claims: {len(functions)} (named from source/reviewed: {derived}, "
+        f"inventory fallback: {fallback}); globals: {len(global_names)}; "
         f"vtable annotations: {len(vtables)}"
     )
 
@@ -176,6 +192,8 @@ def main() -> int:
         )
         for extent in (extents if repair_vtable_interiors else ()):
             for address in range(extent.address + 4, extent.end, 4):
+                if selected is not None and address not in selected:
+                    continue
                 a = af.getAddress(address)
                 labels = [
                     sym

@@ -346,18 +346,17 @@ void TArmyMgr::EndBattlePhase() {
 void TArmyMgr::FormStacks() {
   TArmyStack* stack = nullptr;
   for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
-    TUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+    TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
     short previousOrderTargetIndex = -1;
     short previousOwnerNationSlot = -1;
-    for (; unit != nullptr; unit = unit->nextAtLocation14) {
+    for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
       short unitOrderTargetIndex = unit->orderTargetIndex0C;
       short unitOwnerNationSlot = unit->ownerNationSlot18;
       if (unitOrderTargetIndex == -1) {
-        TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-        if (milUnit->strength34 < 0x191) {
-          milUnit->strength34 += 100;
+        if (unit->strength34 < 0x191) {
+          unit->strength34 += 100;
         } else {
-          milUnit->strength34 = 500;
+          unit->strength34 = 500;
         }
         if (unitOwnerNationSlot < 7 &&
             g_apNationStates[unitOwnerNationSlot]->diplomacyEligibilityA0 == 0) {
@@ -392,15 +391,8 @@ void TArmyMgr::FormStacks() {
         }
         if (!foundExisting) {
           stack = new TArmyStack();
-          stack->head14 = nullptr;
-          stack->cursor18 = nullptr;
-          stack->fieldA = 0;
-          stack->field6 = 0;
-          stack->field4 = 0;
-          stack->categoryFlag8 = static_cast<unsigned char>(unitOwnerNationSlot);
-          stack->fieldC = 0;
-          stack->ownerNationCodeE = unitOrderTargetIndex;
-          stack->tileIndex10 = static_cast<short>(tileIndex);
+          stack->IArmyStack(static_cast<char>(unitOwnerNationSlot), unitOrderTargetIndex,
+                            static_cast<short>(tileIndex));
           this->pendingUnitPool0c->listState.AddHead(stack);
         }
         previousOrderTargetIndex = unitOrderTargetIndex;
@@ -411,46 +403,14 @@ void TArmyMgr::FormStacks() {
         }
       }
 
-      TArmyStackUnitNode* node = new TArmyStackUnitNode();
-      if (node == nullptr) {
-        MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
-      }
-      node->unit = unit;
-      node->next = stack->head14;
-      ++stack->fieldA;
-      stack->head14 = node;
+      stack->AddUnitToChainHead(unit);
     }
   }
 
   CIterator stackIter(this->pendingUnitPool0c);
   for (TArmyStack* item = static_cast<TArmyStack*>(stackIter.Reset()); stackIter.More();
        item = static_cast<TArmyStack*>(stackIter.Advance())) {
-    item->cursor18 = item->head14;
-    TArmyStackUnitNode* node = item->cursor18;
-    TUnit* unit = (node != nullptr) ? node->unit : nullptr;
-    short minClass = 3;
-    short maxClass = 1;
-    while (unit != nullptr) {
-      short unitClass = g_awUnitCombatClassBySlot[unit->orderType];
-      if (unitClass < minClass) {
-        minClass = unitClass;
-      }
-      if (unitClass > maxClass) {
-        maxClass = unitClass;
-      }
-      node = item->cursor18;
-      if (node != nullptr) {
-        node = node->next;
-        item->cursor18 = node;
-        unit = (node != nullptr) ? node->unit : nullptr;
-      } else {
-        unit = nullptr;
-      }
-    }
-    item->field4 = g_abStackCompositionClassTable[maxClass][minClass];
-    int roll = rand();
-    item->field6 = static_cast<short>((item->field4 << 8) + (roll & 0xff));
+    item->ComputeStackCompositionClassCode();
   }
 
   this->pendingUnitPool0c->Sort();
@@ -490,21 +450,7 @@ void TArmyMgr::ResolveNextMove() {
       stack->AssertValid();
       if (this->perTileOwnerNationCodeCache1c[stack->ownerNationCodeE] ==
           static_cast<short>(stack->categoryFlag8)) {
-        stack->cursor18 = stack->head14;
-        TArmyStackUnitNode* node = stack->cursor18;
-        TUnit* unit = (node != nullptr) ? node->unit : nullptr;
-        while (unit != nullptr) {
-          unit->MoveTo(unit->orderTargetIndex0C);
-          unit->SetOrders(kUnitOrderIdle, -1);
-          node = stack->cursor18;
-          if (node != nullptr) {
-            node = node->next;
-            stack->cursor18 = node;
-            unit = (node != nullptr) ? node->unit : nullptr;
-          } else {
-            unit = nullptr;
-          }
-        }
+        stack->ReseatChainUnitsAndClearOrders();
       } else {
         battleViewCreated =
             this->TryCreateTacticalBattleViewForTileArmies(stack, stack->ownerNationCodeE) != 0;
@@ -654,34 +600,32 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   int enemyCount[kUnitTypeSlotCount] = {0};
   int enemyActiveCount[kUnitTypeSlotCount] = {0};
   TMilitaryUnit* ourBestUnit = 0;
-  for (TUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != 0;
+  for (TMilitaryUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != 0;
        unit = ourStack->AdvanceCursorAndGetUnit()) {
     ++record.childCount24a[0];
     ++ourCount[unit->orderType];
-    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(unit);
-    if (militaryUnit->strength34 > 0) {
+    if (unit->strength34 > 0) {
       ++ourActiveCount[unit->orderType];
     }
     if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) &&
         (ourBestUnit == 0 ||
-         militaryUnit->experiencePercent38 / 100 > ourBestUnit->experiencePercent38 / 100)) {
-      ourBestUnit = militaryUnit;
+         unit->experiencePercent38 / 100 > ourBestUnit->experiencePercent38 / 100)) {
+      ourBestUnit = unit;
     }
   }
 
   TMilitaryUnit* enemyBestUnit = 0;
-  for (TUnit* enemyUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyUnit != 0;
+  for (TMilitaryUnit* enemyUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyUnit != 0;
        enemyUnit = enemyStack->AdvanceCursorAndGetUnit()) {
     ++record.childCount24a[1];
     ++enemyCount[enemyUnit->orderType];
-    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(enemyUnit);
-    if (militaryUnit->strength34 > 0) {
+    if (enemyUnit->strength34 > 0) {
       ++enemyActiveCount[enemyUnit->orderType];
     }
     if (enemyUnit->orderType >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) &&
         (enemyBestUnit == 0 ||
-         militaryUnit->experiencePercent38 / 100 > enemyBestUnit->experiencePercent38 / 100)) {
-      enemyBestUnit = militaryUnit;
+         enemyUnit->experiencePercent38 / 100 > enemyBestUnit->experiencePercent38 / 100)) {
+      enemyBestUnit = enemyUnit;
     }
   }
 
@@ -691,38 +635,36 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.sideChildRecords250[1] = new MapOrderBattleSideChildRecord[record.childCount24a[1]];
 
   int childIndex = 0;
-  for (TUnit* ourRecordUnit = ourStack->ResetCursorAndGetHeadUnit(); ourRecordUnit != 0;
+  for (TMilitaryUnit* ourRecordUnit = ourStack->ResetCursorAndGetHeadUnit(); ourRecordUnit != 0;
        ourRecordUnit = ourStack->AdvanceCursorAndGetUnit()) {
-    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(ourRecordUnit);
     MapOrderBattleSideChildRecord& child = record.sideChildRecords250[0][childIndex];
     child.resourceType = ourRecordUnit->orderType;
-    child.stockOrRequired = militaryUnit->strength34;
+    child.stockOrRequired = ourRecordUnit->strength34;
     if (child.stockOrRequired == -86) {
       child.stockOrRequired = 0;
     }
     CString unitName;
-    unitName = militaryUnit->name24;
+    unitName = ourRecordUnit->name24;
     CopyTextIntoFixedBuffer(child.nameBuffer, 0x20, static_cast<LPCSTR>(unitName));
     child.detailIdentity28 = kControlTagArmy;
-    child.strengthBucket = static_cast<short>(militaryUnit->experiencePercent38 / 100);
+    child.strengthBucket = static_cast<short>(ourRecordUnit->experiencePercent38 / 100);
     ++childIndex;
   }
 
   childIndex = 0;
-  for (TUnit* enemyRecordUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyRecordUnit != 0;
-       enemyRecordUnit = enemyStack->AdvanceCursorAndGetUnit()) {
-    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(enemyRecordUnit);
+  for (TMilitaryUnit* enemyRecordUnit = enemyStack->ResetCursorAndGetHeadUnit();
+       enemyRecordUnit != 0; enemyRecordUnit = enemyStack->AdvanceCursorAndGetUnit()) {
     MapOrderBattleSideChildRecord& child = record.sideChildRecords250[1][childIndex];
     child.resourceType = enemyRecordUnit->orderType;
-    child.stockOrRequired = militaryUnit->strength34;
+    child.stockOrRequired = enemyRecordUnit->strength34;
     if (child.stockOrRequired == -86) {
       child.stockOrRequired = 0;
     }
     CString unitName;
-    unitName = militaryUnit->name24;
+    unitName = enemyRecordUnit->name24;
     CopyTextIntoFixedBuffer(child.nameBuffer, 0x20, static_cast<LPCSTR>(unitName));
     child.detailIdentity28 = kControlTagArmy;
-    child.strengthBucket = static_cast<short>(militaryUnit->experiencePercent38 / 100);
+    child.strengthBucket = static_cast<short>(enemyRecordUnit->experiencePercent38 / 100);
     ++childIndex;
   }
 
@@ -773,48 +715,24 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
 // FUNCTION: IMPERIALISM 0x004a3200
 bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short ownerNationCode) {
   bool tacticalViewCreated = false;
-  TArmyStackUnitNode* headNode = stack->head14;
-  stack->cursor18 = headNode;
-  TUnit* curUnit = (headNode != nullptr) ? headNode->unit : nullptr;
+  TMilitaryUnit* curUnit = stack->ResetCursorAndGetHeadUnit();
 
   // Partition stack's own unit chain into a new "our stack" containing only the units
   // whose orderTargetIndex0C (order-owner nation) matches ownerNationCode; stack->head14 itself is
   // left untouched, only its cursor18 iteration state advances.
   TArmyStack* ourStack = new TArmyStack();
-  ourStack->head14 = nullptr;
-  ourStack->cursor18 = nullptr;
-  ourStack->categoryFlag8 = static_cast<unsigned char>(curUnit->ownerNationSlot18);
-  ourStack->fieldA = 0;
-  ourStack->field6 = 0;
-  ourStack->field4 = 0;
-  ourStack->fieldC = 0;
-  ourStack->ownerNationCodeE = ownerNationCode;
-  ourStack->tileIndex10 = curUnit->tileIndex06;
+  ourStack->IArmyStack(static_cast<char>(curUnit->ownerNationSlot18), ownerNationCode,
+                       curUnit->tileIndex06);
 
   while (curUnit != nullptr) {
     if (curUnit->orderTargetIndex0C == ownerNationCode) {
-      TArmyStackUnitNode* node = new TArmyStackUnitNode();
-      if (node == nullptr) {
-        MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
-      }
-      node->unit = curUnit;
-      node->next = ourStack->head14;
-      ++ourStack->fieldA;
-      ourStack->head14 = node;
+      ourStack->AddUnitToChainHead(curUnit);
     }
-    TArmyStackUnitNode* nextNode = stack->cursor18;
-    if (nextNode == nullptr) {
-      curUnit = nullptr;
-    } else {
-      nextNode = nextNode->next;
-      stack->cursor18 = nextNode;
-      curUnit = (nextNode != nullptr) ? nextNode->unit : nullptr;
-    }
+    curUnit = stack->AdvanceCursorAndGetUnit();
   }
 
   TArmyStack* enemyStack = nullptr;
-  if (ourStack->fieldA != 0) {
+  if (ourStack->unitCountA != 0) {
     int ownerNationCodeInt = ownerNationCode;
     short cachedOwnerAtTile = this->perTileOwnerNationCodeCache1c[ownerNationCodeInt];
 
@@ -822,15 +740,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
     // by ownerNationCode -- ground truth indexes cityScoreTable directly by this value
     // rather than by a separately-resolved tile index.
     enemyStack = new TArmyStack();
-    enemyStack->head14 = nullptr;
-    enemyStack->cursor18 = nullptr;
-    enemyStack->categoryFlag8 = static_cast<unsigned char>(cachedOwnerAtTile);
-    enemyStack->fieldA = 0;
-    enemyStack->field6 = 0;
-    enemyStack->field4 = 0;
-    enemyStack->fieldC = 0;
-    enemyStack->ownerNationCodeE = ownerNationCode;
-    enemyStack->tileIndex10 = ownerNationCode;
+    enemyStack->IArmyStack(static_cast<char>(cachedOwnerAtTile), ownerNationCode, ownerNationCode);
 
     TMilitaryUnit* enemyUnit = nullptr;
     if (ownerNationCode >= 0 && ownerNationCode < 0x180) {
@@ -838,15 +748,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
     }
     for (; enemyUnit != nullptr;
          enemyUnit = static_cast<TMilitaryUnit*>(enemyUnit->nextAtLocation14)) {
-      TArmyStackUnitNode* node = new TArmyStackUnitNode();
-      if (node == nullptr) {
-        MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
-      }
-      node->unit = enemyUnit;
-      node->next = enemyStack->head14;
-      ++enemyStack->fieldA;
-      enemyStack->head14 = node;
+      enemyStack->AddUnitToChainHead(enemyUnit);
     }
 
     if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
@@ -855,7 +757,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
       // relocate our own stack instead.
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
       this->RelocateStackUnitsToStackTile(ourStack);
-    } else if (enemyStack->fieldA != 0) {
+    } else if (enemyStack->unitCountA != 0) {
       // Ground truth also loops over g_apNationStates here (advancing a pointer with no
       // observable side effect -- the result is never read); not reproduced.
       tacticalViewCreated = true;
@@ -866,21 +768,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
       // our own stack's units in place, then update the per-tile owner cache to reflect
       // our stack taking over.
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 1, ownerNationCodeInt, 0);
-      ourStack->cursor18 = ourStack->head14;
-      TArmyStackUnitNode* node = ourStack->cursor18;
-      TUnit* unit = (node != nullptr) ? node->unit : nullptr;
-      while (unit != nullptr) {
-        unit->MoveTo(unit->orderTargetIndex0C);
-        unit->SetOrders(kUnitOrderIdle, -1);
-        node = ourStack->cursor18;
-        if (node != nullptr) {
-          node = node->next;
-          ourStack->cursor18 = node;
-          unit = (node != nullptr) ? node->unit : nullptr;
-        } else {
-          unit = nullptr;
-        }
-      }
+      ourStack->ReseatChainUnitsAndClearOrders();
       this->perTileOwnerNationCodeCache1c[ownerNationCodeInt] = ourStack->categoryFlag8;
     }
   }
@@ -899,8 +787,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
 // FUNCTION: IMPERIALISM 0x004a35e0
 void TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
                                                                 short tileIndex) {
-  stack->cursor18 = stack->head14;
-  TUnit* headUnit = (stack->head14 != nullptr) ? stack->head14->unit : nullptr;
+  TMilitaryUnit* headUnit = stack->ResetCursorAndGetHeadUnit();
   short headUnitTag = headUnit->ownerNationSlot18;
 
   const Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
@@ -918,82 +805,35 @@ void TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stac
   }
 
   if (candidateCount == 0) {
-    stack->cursor18 = stack->head14;
-    TArmyStackUnitNode* node = stack->cursor18;
-    TUnit* unit = (node != nullptr) ? node->unit : nullptr;
-    while (unit != nullptr) {
-      if (static_cast<TMilitaryUnit*>(unit)->strength34 != 0) {
+    for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
+         unit = stack->AdvanceCursorAndGetUnit()) {
+      if (unit->strength34 != 0) {
         unit->DetachUnitOrderFromOwnerAndReset();
-      }
-      node = stack->cursor18;
-      if (node != nullptr) {
-        node = node->next;
-        stack->cursor18 = node;
-        unit = (node != nullptr) ? node->unit : nullptr;
-      } else {
-        unit = nullptr;
       }
     }
     return;
   }
 
   short chosenRegion = candidateRegions[rand() % candidateCount];
-  stack->cursor18 = stack->head14;
-  TArmyStackUnitNode* node = stack->cursor18;
-  TUnit* unit = (node != nullptr) ? node->unit : nullptr;
-  while (unit != nullptr) {
+  for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
+       unit = stack->AdvanceCursorAndGetUnit()) {
     if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] == 0) {
       unit->DetachUnitOrderFromOwnerAndReset();
     } else {
       unit->SetOrders(kUnitOrderRedeploy, chosenRegion);
     }
-    node = stack->cursor18;
-    if (node != nullptr) {
-      node = node->next;
-      stack->cursor18 = node;
-      unit = (node != nullptr) ? node->unit : nullptr;
-    } else {
-      unit = nullptr;
-    }
   }
 
-  stack->cursor18 = stack->head14;
-  node = stack->cursor18;
-  unit = (node != nullptr) ? node->unit : nullptr;
-  if (unit == nullptr) {
-    return;
-  }
-  do {
-    unit->MoveTo(unit->orderTargetIndex0C);
-    unit->SetOrders(kUnitOrderIdle, -1);
-    node = stack->cursor18;
-    if (node != nullptr) {
-      node = node->next;
-      stack->cursor18 = node;
-      unit = (node != nullptr) ? node->unit : nullptr;
-    } else {
-      unit = nullptr;
-    }
-  } while (unit != nullptr);
+  stack->ReseatChainUnitsAndClearOrders();
 }
 
 // FUNCTION: IMPERIALISM 0x004a37b0
 void TArmyMgr::RelocateStackUnitsToStackTile(TArmyStack* stack) {
-  stack->cursor18 = stack->head14;
-  TArmyStackUnitNode* node = stack->cursor18;
-  TUnit* unit = (node != nullptr) ? node->unit : nullptr;
-  while (unit != nullptr) {
+  for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
+       unit = stack->AdvanceCursorAndGetUnit()) {
     unit->SetOrders(kUnitOrderIdle, -1);
     if (unit->tileIndex06 != stack->tileIndex10) {
       unit->MoveTo(stack->tileIndex10);
-    }
-    node = stack->cursor18;
-    if (node != nullptr) {
-      node = node->next;
-      stack->cursor18 = node;
-      unit = (node != nullptr) ? node->unit : nullptr;
-    } else {
-      unit = nullptr;
     }
   }
 }
@@ -1002,7 +842,7 @@ void TArmyMgr::RelocateStackUnitsToStackTile(TArmyStack* stack) {
 bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArmyStack* stack2) {
   // Phase 1: snapshot stack1's units' strength34 into strengthSnapshot3C and clear blink-mask bits 1/2,
   // stopping early the first time a unit's fort-level attacker-penalty lookup is 0.
-  TUnit* unit = stack1->ResetCursorAndGetHeadUnit();
+  TMilitaryUnit* unit = stack1->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
     stack1->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
         g_anFortLevelAttackerPenaltyPercentByLevel
@@ -1010,10 +850,9 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
     if (stack1->fortLevelAttackerPenaltyCache9 == 0) {
       break;
     }
-    TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-    milUnit->strengthSnapshot3C = milUnit->strength34;
-    milUnit->SetOrClearBattleStateFlags(1, false);
-    milUnit->SetOrClearBattleStateFlags(2, false);
+    unit->strengthSnapshot3C = unit->strength34;
+    unit->SetOrClearBattleStateFlags(1, false);
+    unit->SetOrClearBattleStateFlags(2, false);
     unit = stack1->AdvanceCursorAndGetUnit();
   }
 
@@ -1027,11 +866,10 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
     if (stack2->fortLevelAttackerPenaltyCache9 == 0) {
       break;
     }
-    TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-    milUnit->strengthSnapshot3C = milUnit->strength34;
+    unit->strengthSnapshot3C = unit->strength34;
     bool blinkFlag = g_abUnitTypeBlinkEligibilityFlag[unit->orderType] != 0;
-    milUnit->SetOrClearBattleStateFlags(1, blinkFlag);
-    milUnit->SetOrClearBattleStateFlags(2, false);
+    unit->SetOrClearBattleStateFlags(1, blinkFlag);
+    unit->SetOrClearBattleStateFlags(2, false);
     unit = stack2->AdvanceCursorAndGetUnit();
   }
 
@@ -1040,24 +878,10 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
   // across both stacks, until either side runs dry.
   int counter = 0;
   while (true) {
-    TUnit* eligible1 = stack1->ResetCursorAndGetHeadUnit();
-    while (eligible1 != nullptr &&
-           (static_cast<TMilitaryUnit*>(eligible1)->strength34 <=
-                static_cast<TMilitaryUnit*>(eligible1)->strengthSnapshot3C / 2 ||
-            (static_cast<TMilitaryUnit*>(eligible1)->battleStateFlags3A & 2) != 0)) {
-      eligible1 = stack1->AdvanceCursorAndGetUnit();
-    }
-    if (eligible1 == nullptr) {
+    if (!stack1->UnitsFighting()) {
       break;
     }
-    TUnit* eligible2 = stack2->ResetCursorAndGetHeadUnit();
-    while (eligible2 != nullptr &&
-           (static_cast<TMilitaryUnit*>(eligible2)->strength34 <=
-                static_cast<TMilitaryUnit*>(eligible2)->strengthSnapshot3C / 2 ||
-            (static_cast<TMilitaryUnit*>(eligible2)->battleStateFlags3A & 2) != 0)) {
-      eligible2 = stack2->AdvanceCursorAndGetUnit();
-    }
-    if (eligible2 == nullptr) {
+    if (!stack2->UnitsFighting()) {
       break;
     }
 
@@ -1075,18 +899,7 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
   // Neither side found an eligible pairing this round: re-check stack1 alone. If it still
   // has an eligible unit, boost stack1's meters (and give stack2 a plain refresh);
   // otherwise refresh stack1 plainly and boost stack2's instead.
-  TUnit* probe = stack1->ResetCursorAndGetHeadUnit();
-  bool stack1StillEligible = false;
-  while (probe != nullptr) {
-    TMilitaryUnit* militaryProbe = static_cast<TMilitaryUnit*>(probe);
-    if (militaryProbe->strength34 > militaryProbe->strengthSnapshot3C / 2 &&
-        (militaryProbe->battleStateFlags3A & 2) == 0) {
-      stack1StillEligible = true;
-      break;
-    }
-    probe = stack1->AdvanceCursorAndGetUnit();
-  }
-  if (stack1StillEligible) {
+  if (stack1->UnitsFighting()) {
     stack1->ApplyMeterGrowthToEligibleUnits(true);
     stack2->ApplyMeterGrowthToEligibleUnits(false);
     return true;
@@ -1260,28 +1073,14 @@ void TArmyMgr::DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, in
   tacticalCombatNationCode31e[0] = ourStack->categoryFlag8;
   tacticalCombatNationCode31e[1] = enemyStack->categoryFlag8;
 
-  ourStack->cursor18 = ourStack->head14;
-  TUnit* unit = ourStack->cursor18 != 0 ? ourStack->cursor18->unit : 0;
-  while (unit != 0) {
+  for (TMilitaryUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != 0;
+       unit = ourStack->AdvanceCursorAndGetUnit()) {
     ++tacticalCombatUnitCountByType322[0][unit->orderType];
-    if (ourStack->cursor18 != 0) {
-      ourStack->cursor18 = ourStack->cursor18->next;
-      unit = ourStack->cursor18 != 0 ? ourStack->cursor18->unit : 0;
-    } else {
-      unit = 0;
-    }
   }
 
-  enemyStack->cursor18 = enemyStack->head14;
-  unit = enemyStack->cursor18 != 0 ? enemyStack->cursor18->unit : 0;
-  while (unit != 0) {
-    ++tacticalCombatUnitCountByType322[1][unit->orderType];
-    if (enemyStack->cursor18 != 0) {
-      enemyStack->cursor18 = enemyStack->cursor18->next;
-      unit = enemyStack->cursor18 != 0 ? enemyStack->cursor18->unit : 0;
-    } else {
-      unit = 0;
-    }
+  for (TMilitaryUnit* enemyUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyUnit != 0;
+       enemyUnit = enemyStack->AdvanceCursorAndGetUnit()) {
+    ++tacticalCombatUnitCountByType322[1][enemyUnit->orderType];
   }
 }
 
@@ -1839,7 +1638,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 
 // FUNCTION: IMPERIALISM 0x004a5ca0
 void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack,
-                                                            TArmyStack* enemyStack, int sideWonFlag,
+                                                            TArmyStack* enemyStack,
+                                                            unsigned char sideWonFlag,
                                                             int battleSiteIndex) {
   BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, sideWonFlag, battleSiteIndex,
                                                 1);
@@ -1847,92 +1647,16 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
   if (sideWonFlag != 0) {
     this->RedistributeUnitOrderQueueToRandomAdjacentRegion(enemyStack,
                                                            static_cast<short>(battleSiteIndex));
-
-    // Winning stack: settle every unit into its tile (raw head14/cursor18 walk -- no
-    // calls emitted, matching TryCreateTacticalBattleViewForTileArmies's peaceful path).
-    TArmyStackUnitNode* node = ourStack->head14;
-    ourStack->cursor18 = node;
-    TUnit* unit = (node != 0) ? node->unit : 0;
-    while (unit != 0) {
-      unit->MoveTo(unit->orderTargetIndex0C);
-      unit->SetOrders(kUnitOrderIdle, -1);
-      node = ourStack->cursor18;
-      if (node != 0) {
-        node = node->next;
-        ourStack->cursor18 = node;
-        unit = (node != 0) ? node->unit : 0;
-      } else {
-        unit = 0;
-      }
-    }
-
+    ourStack->ReseatChainUnitsAndClearOrders();
     this->perTileOwnerNationCodeCache1c[battleSiteIndex] = ourStack->categoryFlag8;
-
-    // Boosted quality growth for the winner (raw walk, duplicates
-    // TArmyStack::ApplyMeterGrowthToEligibleUnits(true)'s body inline).
-    node = ourStack->head14;
-    ourStack->cursor18 = node;
-    unit = (node != 0) ? node->unit : 0;
-    while (unit != 0) {
-      TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-      if (milUnit->strength34 > 0) {
-        milUnit->experiencePercent38 = static_cast<short>(milUnit->experiencePercent38 + 0x23);
-        if (milUnit->experiencePercent38 > 0x190) {
-          milUnit->experiencePercent38 = 0x190;
-        }
-      }
-      node = ourStack->cursor18;
-      if (node != 0) {
-        node = node->next;
-        ourStack->cursor18 = node;
-        unit = (node != 0) ? node->unit : 0;
-      } else {
-        unit = 0;
-      }
-    }
-
-    // Non-boosted quality growth for the loser (same raw walk, +20 instead of +35).
-    node = enemyStack->head14;
-    enemyStack->cursor18 = node;
-    unit = (node != 0) ? node->unit : 0;
-    while (unit != 0) {
-      TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-      if (milUnit->strength34 > 0) {
-        milUnit->experiencePercent38 = static_cast<short>(milUnit->experiencePercent38 + 0x14);
-        if (milUnit->experiencePercent38 > 0x190) {
-          milUnit->experiencePercent38 = 0x190;
-        }
-      }
-      node = enemyStack->cursor18;
-      if (node != 0) {
-        node = node->next;
-        enemyStack->cursor18 = node;
-        unit = (node != 0) ? node->unit : 0;
-      } else {
-        unit = 0;
-      }
-    }
-
-    this->ResolveNextMove();
+    ourStack->ApplyMeterGrowthToEligibleUnits(true);
+    enemyStack->ApplyMeterGrowthToEligibleUnits(false);
   } else {
     this->RelocateStackUnitsToStackTile(ourStack);
-
-    // Non-boosted quality growth for the loser (ourStack), via the real accessors --
-    // ground truth emits real calls for this walk (only the growth loops above inline).
-    for (TUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != 0;
-         unit = ourStack->AdvanceCursorAndGetUnit()) {
-      TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-      if (milUnit->strength34 > 0) {
-        milUnit->experiencePercent38 = static_cast<short>(milUnit->experiencePercent38 + 0x14);
-        if (milUnit->experiencePercent38 > 0x190) {
-          milUnit->experiencePercent38 = 0x190;
-        }
-      }
-    }
-
+    ourStack->ApplyMeterGrowthToEligibleUnits(false);
     enemyStack->ApplyMeterGrowthToEligibleUnits(true);
-    this->ResolveNextMove();
   }
+  this->ResolveNextMove();
 }
 
 // FUNCTION: IMPERIALISM 0x004a5ec0

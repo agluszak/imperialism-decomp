@@ -42,6 +42,12 @@ _build-msvc500-unlocked jobs:
     "{{docker_image}}"
   just build-library-oracle
   just detect
+  just source-index
+
+[doc('Collect native Clang source facts required by reccmp')]
+[group('build')]
+source-index:
+  uv run python -m tools.reccmp.source_index --build-dir "{{build_dir}}" --image "{{docker_image}}"
 
 [doc('reccmp-project detect: record the recompiled binary/PDB for comparison')]
 [group('build')]

@@ -20,7 +20,7 @@ def entity(
     difference=None,
     reasons=None,
     inconclusive=None,
-    semantic_similarity=None,
+    location=None,
 ):
     return {
         "address": "0x401000",
@@ -31,8 +31,7 @@ def entity(
             "effective_reasons": reasons or [],
             "difference": difference,
             "inconclusive_reason": inconclusive,
-            "inconclusive_location": None,
-            "semantic_similarity": semantic_similarity,
+            "inconclusive_location": location,
         },
     }
 
@@ -69,11 +68,9 @@ class TriageRenderTests(unittest.TestCase):
                     "facts": {"value": 2},
                 },
             },
-            semantic_similarity=0.875,
         )
         text = render_entity(value, names=NAMES, ownership=OWNERSHIP)
         self.assertIn("mismatch (memory value", text)
-        self.assertIn("87.50% semantic", text)
         self.assertIn("orig facts", text)
 
     def test_inconclusive_prints_reason(self) -> None:
@@ -83,6 +80,18 @@ class TriageRenderTests(unittest.TestCase):
             ownership=OWNERSHIP,
         )
         self.assertIn("inconclusive: alignment failure", text)
+
+    def test_inconclusive_prints_structured_location(self) -> None:
+        text = render_entity(
+            entity(
+                "inconclusive",
+                inconclusive="unsupported_instruction",
+                location={"image": "orig", "instruction_index": 3, "address": 0x401020},
+            ),
+            names=NAMES,
+            ownership=OWNERSHIP,
+        )
+        self.assertIn("orig @ insn 3 addr 4198432", text)
 
 
 class TriageCliTests(unittest.TestCase):
