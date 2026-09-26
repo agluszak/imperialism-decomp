@@ -538,7 +538,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       if (lounge != 0) {
         TStaticText* nameLabel = (TStaticText*)lounge->ResolveControlByTag(kControlTagNam0 + slot9);
         nameLabel->AssertValid();
-        CString normalizedName = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&statusText);
+        CString normalizedName = g_pLanguageMgr->StripCodeStr(statusText);
         nameLabel->SetTextAndMaybeRefresh(&normalizedName, 1);
         ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameLabel, 0, 0xe,
                                       isLocal != 0 ? 0x2b6c : 0x2b6b,

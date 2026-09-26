@@ -615,8 +615,7 @@ TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TVi
 
   TEditText* nameControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
-  CString normalizedPlayerName =
-      g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&playerNameString);
+  CString normalizedPlayerName = g_pLanguageMgr->StripCodeStr(playerNameString);
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&normalizedPlayerName, 0);
 
   TEditText* passControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagPass));

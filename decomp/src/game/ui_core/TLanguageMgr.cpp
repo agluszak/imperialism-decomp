@@ -53,19 +53,19 @@ TLanguageMgr::~TLanguageMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00507e20
 void TLanguageMgr::Free() {
-  FreeNestedPointerTableRowsAndResetDimensions();
+  FreeTableRows();
   delete this;
 }
 
 // FUNCTION: IMPERIALISM 0x00507e50
-bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, int languageTag) {
+bool TLanguageMgr::ReadPrepLUT(const char* basePath, unsigned long languageTag) {
   (void)languageTag;
   CString tablePath(GetDataDirectoryPathLiteral());
   tablePath += basePath;
   newsTabPath = kNewsTabPath;
   newsTexPath = kNewsTexPath;
   delimiter = 0x20;
-  FreeNestedPointerTableRowsAndResetDimensions();
+  FreeTableRows();
 
   FILE* stream = fopen(tablePath, kReadTextMode);
   if (stream == 0) {
@@ -114,12 +114,12 @@ bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, 
           firstExtra = entry[10];
           lastExtra = entry[12];
         }
-        BuildNewsTableDimensions(entry[2], entry[4], entry[6], entry[8], firstExtra, lastExtra);
+        AllocateTable(entry[2], entry[4], entry[6], entry[8], firstExtra, lastExtra);
         break;
       }
       }
     } else if (marker == '.') {
-      ParseNewsTableRow(entry);
+      ParseRow(entry);
     }
   }
 
@@ -133,15 +133,16 @@ int IsNewsTableColumnDelimiter(char value) {
 }
 
 // FUNCTION: IMPERIALISM 0x005082b0
-void TLanguageMgr::ParseNewsTableRow(char* line) {
-  int rowIndex = static_cast<unsigned char>(line[1]);
+void TLanguageMgr::ParseRow(const char* line) {
+  // Retail sign-extends the row code before choosing the primary or extra range.
+  int rowIndex = line[1];
   if (rowIndex < firstPrimaryRow || rowIndex >= firstPrimaryRow + primaryRowCount) {
     rowIndex += primaryRowCount - firstExtraRow;
   } else {
     rowIndex -= firstPrimaryRow;
   }
 
-  char* text = line + 2;
+  const char* text = line + 2;
   if (*text == '_') {
     ++text;
     rowFlags |= 1u << (rowIndex & 0x1f);
@@ -149,11 +150,11 @@ void TLanguageMgr::ParseNewsTableRow(char* line) {
   }
 
   for (int column = 0; column < columnCount; ++column) {
-    while (*text == '\n' || *text == '\r' || *text == '\t' || *text == '\0') {
+    while (IsNewsTableColumnDelimiter(*text)) {
       ++text;
     }
-    char* end = text;
-    while (*end != '\n' && *end != '\r' && *end != '\t' && *end != '\0') {
+    const char* end = text;
+    while (!IsNewsTableColumnDelimiter(*end)) {
       ++end;
     }
     const int length = static_cast<int>(end - text);
@@ -169,57 +170,47 @@ CString TLanguageMgr::Localize(const char* data, unsigned char formatChar) const
   if (formatChar == '\0') {
     return CString(data);
   }
-  unsigned char dataByte = static_cast<unsigned char>(*data);
+
   CString result;
-  unsigned char column = static_cast<unsigned char>(firstColumn);
-  if (formatChar < column ||
-      columnCount <= static_cast<int>(static_cast<unsigned int>(formatChar) - column) ||
-      ((dataByte < static_cast<unsigned char>(firstPrimaryRow) ||
-        primaryRowCount <= static_cast<int>(dataByte - firstPrimaryRow)) &&
-       (dataByte < static_cast<unsigned char>(firstExtraRow) ||
-        extraRowCount <= static_cast<int>(dataByte - firstExtraRow)))) {
-    // Format column or data byte out of range: fall back to the raw string (dropping a
-    // leading space if present).
-    if (*data == ' ') {
-      result = CString(data + 1);
+  const unsigned char dataCode = static_cast<unsigned char>(*data);
+  const bool columnInRange = formatChar >= firstColumn && formatChar - firstColumn < columnCount;
+  const bool primaryRowInRange =
+      dataCode >= firstPrimaryRow && dataCode - firstPrimaryRow < primaryRowCount;
+  const bool extraRowInRange =
+      dataCode >= firstExtraRow && dataCode - firstExtraRow < extraRowCount;
+
+  if (!columnInRange || (!primaryRowInRange && !extraRowInRange)) {
+    // Invalid codes pass through, except that an initial space is removed.
+    result = CString(*data == ' ' ? data + 1 : data);
+    return result;
+  }
+
+  const int row =
+      primaryRowInRange ? dataCode - firstPrimaryRow : primaryRowCount + dataCode - firstExtraRow;
+  const char* fragment = rowTextTable[static_cast<unsigned char>(row)][formatChar - firstColumn];
+  for (; *fragment != '\0'; ++fragment) {
+    if (*fragment == '*') {
+      result += data + 1;
     } else {
-      result = CString(data);
-    }
-  } else {
-    unsigned char mappedColumn = formatChar - column;
-    char rowOffset;
-    if (dataByte < static_cast<unsigned char>(firstPrimaryRow) ||
-        primaryRowCount + firstPrimaryRow <= static_cast<int>(dataByte)) {
-      rowOffset = static_cast<char>(primaryRowCount) - static_cast<char>(firstExtraRow);
-    } else {
-      rowOffset = -static_cast<char>(firstPrimaryRow);
-    }
-    char* fragment = rowTextTable[static_cast<unsigned char>(dataByte + rowOffset)][mappedColumn];
-    for (char c = *fragment; c != '\0'; c = *fragment) {
-      if (c == '*') {
-        result += data + 1;
-      } else {
-        result += c;
-      }
-      fragment = fragment + 1;
+      result += *fragment;
     }
   }
   return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005086a0
-bool TLanguageMgr::ReloadPreplutNewsTableAndResources(int languageTag) {
-  FreeNestedPointerTableRowsAndResetDimensions();
+bool TLanguageMgr::SetLanguage(unsigned long languageTag) {
+  FreeTableRows();
 
   CString preplutPath(kPreplutPath);
   if (g_pImperialismApp != nullptr) {
     preplutPath += g_pImperialismApp->languageCodeStringE0;
   }
-  return LoadNewsTabTexResourcesAndBuildEntries(preplutPath, languageTag);
+  return ReadPrepLUT(preplutPath, languageTag);
 }
 
 // FUNCTION: IMPERIALISM 0x00508760
-void TLanguageMgr::FreeNestedPointerTableRowsAndResetDimensions() {
+void TLanguageMgr::FreeTableRows() {
   if (rowTextTable == 0) {
     return;
   }
@@ -242,16 +233,16 @@ void TLanguageMgr::FreeNestedPointerTableRowsAndResetDimensions() {
 }
 
 // FUNCTION: IMPERIALISM 0x00508800
-void TLanguageMgr::BuildNewsTableDimensions(char firstColumnArg, char lastColumn,
-                                            char firstPrimaryRowArg, char lastPrimaryRow,
-                                            char firstExtraRowArg, char lastExtraRow) {
-  FreeNestedPointerTableRowsAndResetDimensions();
+void TLanguageMgr::AllocateTable(unsigned char firstColumnArg, unsigned char lastColumn,
+                                 unsigned char firstPrimaryRowArg, unsigned char lastPrimaryRow,
+                                 unsigned char firstExtraRowArg, unsigned char lastExtraRow) {
+  FreeTableRows();
   firstColumn = firstColumnArg;
   firstPrimaryRow = firstPrimaryRowArg;
   firstExtraRow = firstExtraRowArg;
-  columnCount = static_cast<unsigned char>(lastColumn) - firstColumn + 1;
-  primaryRowCount = static_cast<unsigned char>(lastPrimaryRow) - firstPrimaryRow + 1;
-  extraRowCount = static_cast<unsigned char>(lastExtraRow) - firstExtraRow + 1;
+  columnCount = lastColumn - firstColumn + 1;
+  primaryRowCount = lastPrimaryRow - firstPrimaryRow + 1;
+  extraRowCount = lastExtraRow - firstExtraRow + 1;
 
   const int rowCount = primaryRowCount + extraRowCount;
   rowTextTable = new char**[rowCount];
@@ -323,15 +314,14 @@ char TLanguageMgr::PickGender(const char* name) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00508c50
-CString TLanguageMgr::NormalizeRuntimeCredentialNameToken(CString* name) {
+CString TLanguageMgr::StripCodeStr(const CString& name) const {
   CString token;
-  const char* text = *name;
+  const char* text = name;
   char first = *text;
   if (first == '(' || (first >= 'A' && first <= 'Z')) {
     token = CString(text);
   } else {
-    unsigned char newsTableLoaded = (rowTextTable != 0);
-    if (newsTableLoaded != 0 || first == ' ') {
+    if (rowTextTable != 0 || first == ' ') {
       token = CString(text + 1);
     } else {
       token = CString(text);

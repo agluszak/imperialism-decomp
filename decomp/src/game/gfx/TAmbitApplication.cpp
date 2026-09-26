@@ -60,7 +60,7 @@ void TAmbitApplication::IAmbitApplication() {
     g_pLanguageMgr = new TLanguageMgr();
   }
 
-  g_pLanguageMgr->ReloadPreplutNewsTableAndResources(languagePackId50);
+  g_pLanguageMgr->SetLanguage(languagePackId50);
 
   TSimMgr* simMgr = new TSimMgr();
   if (simMgr != nullptr) {
