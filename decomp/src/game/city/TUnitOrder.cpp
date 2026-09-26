@@ -30,19 +30,12 @@ void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputReso
                             short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
                             short nSecondaryInputPerUnit, short nCashCostPerUnit,
                             short nWorkforceMode, byte bSpecialistMode) {
-  ownerCity = city;
-  productionSummary = city->productionSummary1d8;
-  resourceTypeIndex = nEntryId;
-  quantity = 0;
-  memset(trackingSlots, 0, sizeof(trackingSlots));
+  TProductionOrder::IProductionOrder(city, nEntryId);
   primaryInputResourceId = nPrimaryInputResourceId;
   primaryInputPerUnit = nPrimaryInputPerUnit;
   secondaryInputResourceId = nSecondaryInputResourceId;
   secondaryInputPerUnit = nSecondaryInputPerUnit;
-  accumulatedValue = 0;
   cashCostPerUnit = nCashCostPerUnit;
-  limitingConstraint = kProductionOrderLimitResources;
-  reservedWorkforce = 0;
   workforceMode = nWorkforceMode;
   specialistMode = bSpecialistMode;
 }
@@ -261,13 +254,7 @@ void TUnitOrder::SetOrderCostProfile(short resourceTypeIndex, short nPrimaryInpu
 
 // FUNCTION: IMPERIALISM 0x004b7850
 void TUnitOrder::WriteTo(TStream* stream) {
-  TObject::WriteTo(stream);
-  stream->WriteBytes(&resourceTypeIndex, 2);
-  stream->WriteBytes(&quantity, 2);
-  stream->WriteBytes(&limitingConstraint, 2);
-  stream->WriteBytes(&resourceTypeIndex, 2);
-  stream->WriteBytes(trackingSlots, sizeof(trackingSlots));
-  stream->WriteBytes(&accumulatedValue, 4);
+  TProductionOrder::WriteTo(stream);
   stream->WriteBytes(&primaryInputResourceId, 2);
   stream->WriteBytes(&secondaryInputResourceId, 2);
   stream->WriteBytes(&primaryInputPerUnit, 2);
@@ -279,13 +266,7 @@ void TUnitOrder::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004b7920
 void TUnitOrder::ReadFrom(TStream* stream) {
-  TObject::ReadFrom(stream);
-  stream->ReadBytes(&resourceTypeIndex, 2);
-  stream->ReadBytes(&quantity, 2);
-  stream->ReadBytes(&limitingConstraint, 2);
-  stream->ReadBytes(&resourceTypeIndex, 2);
-  stream->ReadBytes(trackingSlots, sizeof(trackingSlots));
-  stream->ReadBytes(&accumulatedValue, 4);
+  TProductionOrder::ReadFrom(stream);
   stream->ReadBytes(&primaryInputResourceId, 2);
   stream->ReadBytes(&secondaryInputResourceId, 2);
   stream->ReadBytes(&primaryInputPerUnit, 2);

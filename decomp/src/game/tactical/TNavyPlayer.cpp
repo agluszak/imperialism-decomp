@@ -34,7 +34,7 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, char watchFlag,
   sideReadyFlag10 = 0;
 
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     TNavyTacUnit* unit = new TNavyTacUnit();
     unit->InitializeFromSourceShip(ship);
     unitList4->AddTail(unit);

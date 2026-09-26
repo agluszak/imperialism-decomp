@@ -24,20 +24,8 @@ IMPLEMENT_DYNCREATE(TCapacityOrder, TItemOrder)
 // FUNCTION: IMPERIALISM 0x004b8d50
 void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
                                     short secondaryInputResource, short productionSlotValue) {
-  this->ownerCity = city;
-  this->productionSummary = city->productionSummary1d8;
-  this->resourceTypeIndex = resourceType;
-  this->quantity = 0;
-  for (int resource = 0; resource < kResourceKindCount; ++resource) {
-    this->trackingSlots[resource] = 0;
-  }
-  this->accumulatedValue = 0;
-  this->primaryInputResourceId = primaryInputResource;
-  this->limitingConstraint = kProductionOrderLimitResources;
-  this->reservedWorkforce = 0;
-  this->requestedQuantity4c = 0;
-  this->secondaryInputResourceId = secondaryInputResource;
-  this->productionSlot = productionSlotValue;
+  TItemOrder::IItemOrder(city, resourceType, primaryInputResource, secondaryInputResource,
+                         productionSlotValue);
 }
 
 // FUNCTION: IMPERIALISM 0x004b8dd0

@@ -19,16 +19,7 @@ IMPLEMENT_DYNCREATE(TPowerPlantOrder, TProductionOrder)
 
 // FUNCTION: IMPERIALISM 0x004b7ab0
 void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
-  ownerCity = city;
-  productionSummary = city->productionSummary1d8;
-  resourceTypeIndex = 0;
-  quantity = 0;
-  for (int resource = 0; resource < kResourceKindCount; ++resource) {
-    trackingSlots[resource] = 0;
-  }
-  accumulatedValue = 0;
-  limitingConstraint = kProductionOrderLimitResources;
-  reservedWorkforce = 0;
+  TProductionOrder::IProductionOrder(city, 0);
   field4c = 0;
 }
 
@@ -90,24 +81,12 @@ void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b7cc0
 void TPowerPlantOrder::WriteTo(TStream* stream) {
-  TObject::WriteTo(stream);
-  stream->WriteBytes(&resourceTypeIndex, 2);
-  stream->WriteBytes(&quantity, 2);
-  stream->WriteBytes(&limitingConstraint, 2);
-  stream->WriteBytes(&resourceTypeIndex, 2);
-  stream->WriteBytes(trackingSlots, sizeof(trackingSlots));
-  stream->WriteBytes(&accumulatedValue, 4);
+  TProductionOrder::WriteTo(stream);
   stream->WriteBytes(&field4c, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7d40
 void TPowerPlantOrder::ReadFrom(TStream* stream) {
-  TObject::ReadFrom(stream);
-  stream->ReadBytes(&resourceTypeIndex, 2);
-  stream->ReadBytes(&quantity, 2);
-  stream->ReadBytes(&limitingConstraint, 2);
-  stream->ReadBytes(&resourceTypeIndex, 2);
-  stream->ReadBytes(trackingSlots, sizeof(trackingSlots));
-  stream->ReadBytes(&accumulatedValue, 4);
+  TProductionOrder::ReadFrom(stream);
   stream->ReadBytes(&field4c, 2);
 }

@@ -49,20 +49,9 @@ public:
   short resourceTypeIndex; // 0x48 — resource/entry type index
   short unused4a;          // 0x4a — field-xrefs show zero accesses; layout padding/reserved
 
-  // In-class inline. 0x004b4f00 is the out-of-line copy MSVC still emits, but derived
-  // CreateObject bodies absorb it instead of calling it: TItemOrder::CreateObject
-  // (0x004b51d0) has no call and no EH frame, just new + the derived vptr store.
+  // The base order has no initialized fields until IProductionOrder is called.
   // FUNCTION: IMPERIALISM 0x004b4f00
   TProductionOrder() : TObject() {}
 };
 
 ASSERT_SIZE(TProductionOrder, 0x4c);
-
-// FUNCTION: IMPERIALISM 0x004b5100
-inline bool TProductionOrder::SetQuantity(short newQuantity) {
-  if (newQuantity > MaxOrder() || newQuantity < 0) {
-    return false;
-  }
-  quantity = newQuantity;
-  return true;
-}

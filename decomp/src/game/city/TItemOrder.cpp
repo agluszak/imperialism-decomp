@@ -20,16 +20,7 @@ IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 // FUNCTION: IMPERIALISM 0x004b5290
 void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primaryInputResource,
                             short secondaryInputResource, short productionSlotIndex) {
-  ownerCity = city;
-  productionSummary = city->productionSummary1d8;
-  resourceTypeIndex = outputResourceType;
-  quantity = 0;
-  for (int resource = 0; resource < kResourceKindCount; ++resource) {
-    trackingSlots[resource] = 0;
-  }
-  accumulatedValue = 0;
-  limitingConstraint = kProductionOrderLimitResources;
-  reservedWorkforce = 0;
+  TProductionOrder::IProductionOrder(city, outputResourceType);
   requestedQuantity4c = 0;
   primaryInputResourceId = primaryInputResource;
   secondaryInputResourceId = secondaryInputResource;
@@ -154,18 +145,9 @@ void TItemOrder::Restock() {
   }
 }
 
-// Duplicates TProductionOrder::WriteTo's field-write sequence inline (calling the
-// grandparent TObject::WriteTo directly, not TProductionOrder::WriteTo) before
-// appending its own four fields.
 // FUNCTION: IMPERIALISM 0x004b5670
 void TItemOrder::WriteTo(TStream* stream) {
-  TObject::WriteTo(stream);
-  stream->WriteBytes(&resourceTypeIndex, 2);
-  stream->WriteBytes(&quantity, 2);
-  stream->WriteBytes(&limitingConstraint, 2);
-  stream->WriteBytes(&resourceTypeIndex, 2);
-  stream->WriteBytes(trackingSlots, sizeof(trackingSlots));
-  stream->WriteBytes(&accumulatedValue, 4);
+  TProductionOrder::WriteTo(stream);
   stream->WriteBytes(&requestedQuantity4c, 2);
   stream->WriteBytes(&primaryInputResourceId, 2);
   stream->WriteBytes(&secondaryInputResourceId, 2);
@@ -174,13 +156,7 @@ void TItemOrder::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004b5710
 void TItemOrder::ReadFrom(TStream* stream) {
-  TObject::ReadFrom(stream);
-  stream->ReadBytes(&resourceTypeIndex, 2);
-  stream->ReadBytes(&quantity, 2);
-  stream->ReadBytes(&limitingConstraint, 2);
-  stream->ReadBytes(&resourceTypeIndex, 2);
-  stream->ReadBytes(trackingSlots, sizeof(trackingSlots));
-  stream->ReadBytes(&accumulatedValue, 4);
+  TProductionOrder::ReadFrom(stream);
   stream->ReadBytes(&requestedQuantity4c, 2);
   stream->ReadBytes(&primaryInputResourceId, 2);
   stream->ReadBytes(&secondaryInputResourceId, 2);

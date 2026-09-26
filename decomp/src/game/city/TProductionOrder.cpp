@@ -30,6 +30,7 @@ void TProductionOrder::IProductionOrder(TCity* city, short resourceType) {
 // FUNCTION: IMPERIALISM 0x004b4fe0
 void TProductionOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
+  // Retail writes the resource type twice. Both reads target this same field.
   stream->WriteBytes(&resourceTypeIndex, 2);
   stream->WriteBytes(&quantity, 2);
   stream->WriteBytes(&limitingConstraint, 2);
@@ -52,6 +53,15 @@ void TProductionOrder::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004b50e0
 short TProductionOrder::MaxOrder() {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004b5100
+bool TProductionOrder::SetQuantity(short newQuantity) {
+  if (newQuantity > MaxOrder() || newQuantity < 0) {
+    return false;
+  }
+  quantity = newQuantity;
+  return true;
 }
 
 // NOOP: verified empty in original 0x004b5140

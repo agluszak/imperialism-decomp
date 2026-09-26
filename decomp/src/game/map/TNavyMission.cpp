@@ -75,7 +75,7 @@ void TNavyMission::Free() {
   taskForce20 = nullptr;
 
   while (orderList24 != nullptr) {
-    static_cast<TShip*>(orderList24->payload)->mission = nullptr;
+    orderList24->payload->mission = nullptr;
     orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
   }
 
@@ -99,7 +99,7 @@ void TNavyMission::WriteTo(TStream* stream) {
 
   // orderList24 payloads are TShip primary-order nodes (serialized by roster index).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    int idx = static_cast<TShip*>(node->payload)->GetIndex();
+    int idx = node->payload->GetIndex();
     stream->WriteInteger(idx);
   }
   stream->WriteInteger(-1);
@@ -143,7 +143,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00536740
 char TNavyMission::SmokeEmIfYouGotEm() {
   while (orderList24 != nullptr) {
-    static_cast<TShip*>(orderList24->payload)->mission = nullptr;
+    orderList24->payload->mission = nullptr;
     orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
   }
   return 1;
@@ -182,7 +182,7 @@ void TNavyMission::ForgetTaskForce(TTaskForce* taskForce) {
 int TNavyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     short distance = 0;
     if (GetActiveTargetZoneByState28() != nullptr) {
       distance = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
@@ -298,7 +298,7 @@ void TNavyMission::CombineForce(TZone* location, TTaskForce*& taskForce) {
   }
 
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     if (ship->location != location) {
       continue;
     }
@@ -372,9 +372,9 @@ TShip* TNavyMission::PickBestShipForMissionType(int missionType) const {
   int bestValue = -1;
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     // The payload is reloaded rather than cached, as the original does.
-    int value = static_cast<TShip*>(node->payload)->ComputeValueForMission(missionType);
+    int value = node->payload->ComputeValueForMission(missionType);
     if (value > bestValue) {
-      best = static_cast<TShip*>(node->payload);
+      best = node->payload;
       bestValue = value;
     }
   }
@@ -411,9 +411,9 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* location, TShip
   // callee here (verified via the 0x403e77 ILT thunk row) is the already-ported
   // TTaskForce::ComputeValueForMission (0x5501b0).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    int score = static_cast<TShip*>(node->payload)->ComputeValueForMission(3);
+    int score = node->payload->ComputeValueForMission(3);
     if (maxScore < score) {
-      topOrder = static_cast<TShip*>(node->payload);
+      topOrder = node->payload;
       maxScore = score;
     }
   }
@@ -459,11 +459,10 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* locatio
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     if (node->active == 0) {
       node->active = 1;
-      TTaskForce* entry = static_cast<TShip*>(node->payload)->DemandExclusiveTaskForce();
+      TTaskForce* entry = node->payload->DemandExclusiveTaskForce();
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
-        if (other->active == 0 &&
-            static_cast<TShip*>(other->payload)->location == entry->location) {
-          static_cast<TShip*>(other->payload)->ReassignToForce(entry);
+        if (other->active == 0 && other->payload->location == entry->location) {
+          other->payload->ReassignToForce(entry);
           other->active = 1;
         }
       }
@@ -490,7 +489,7 @@ float TNavyMission::ValueOf(TShip* candidate) {
     profile[2] = 0.0f;
     profile[3] = 0.0f;
     for (TMapOrderChildLinkNode* node = orderList24; node != 0; node = node->next) {
-      TShip* entry = static_cast<TShip*>(node->payload);
+      TShip* entry = node->payload;
       short bucket;
       if (GetActiveTargetZoneByState28() != 0) {
         bucket = entry->GetTurnDistanceTo(GetActiveTargetZoneByState28());
@@ -546,7 +545,7 @@ float TNavyMission::ValueOf(TShip* candidate) {
   profile[2] = 0.0f;
   profile[3] = 0.0f;
   for (TMapOrderChildLinkNode* node = orderList24; node != 0; node = node->next) {
-    TShip* entry = static_cast<TShip*>(node->payload);
+    TShip* entry = node->payload;
     short bucket;
     if (GetActiveTargetZoneByState28() != 0) {
       bucket = entry->GetTurnDistanceTo(GetActiveTargetZoneByState28());
@@ -672,7 +671,7 @@ void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vec
     farZone = nullptr;
   }
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     if (nearZone == nullptr || ship->GetTurnDistanceTo(nearZone) <= distanceThreshold) {
       short normBase = ship->GetMaxStrength();
       float ratio = static_cast<float>(ship->strength / normBase);
@@ -776,7 +775,7 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
   vector[2] = 0.0f;
   vector[3] = 0.0f;
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     TZone* targetZone = GetActiveTargetZoneByState28();
     short distanceIndex = 0;
     if (targetZone != nullptr) {
@@ -818,7 +817,7 @@ float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short dis
 float TNavyMission::GetWeightedSatisfaction() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     short distance = 0;
     if (GetActiveTargetZoneByState28() != nullptr) {
       distance = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
@@ -865,7 +864,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     TZone* targetZone = GetActiveTargetZoneByState28();
     short distanceIndex = 0;
     if (targetZone != nullptr) {
@@ -930,7 +929,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     TZone* targetZone = GetActiveTargetZoneByState28();
     short distanceIndex = 0;
     if (targetZone != nullptr) {

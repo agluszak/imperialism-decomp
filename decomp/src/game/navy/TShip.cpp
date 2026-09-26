@@ -137,7 +137,7 @@ void TShip::Free() {
       TMapOrderChildLinkNode* node = owner->shipList;
       owner->flagship = 0;
       while (node != 0) {
-        owner->flagship = static_cast<TShip*>(node->payload)->Finest(owner->flagship, 0);
+        owner->flagship = node->payload->Finest(owner->flagship, 0);
         node = node->next;
       }
     }
@@ -371,9 +371,7 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
 // Per-category normalized cost percent for a resource type, used by the AI
 // city/industry development selectors (0x4eb45a, 0x535d8e/0x535e26). Same
 // category-0..3 divisor table (g_aCategoryMetricBaselineAverage) and resource-descriptor
-// table as ComputeNavyOrderPriorityContributionPercentByCategory, but a distinct blend per
-// category; the original inlines the descriptor-field reads, so they are reproduced
-// inline here.
+// table as ComputeNavyOrderPriorityContributionPercentByCategory, with a distinct blend.
 
 // FUNCTION: IMPERIALISM 0x00550090
 int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType) {
@@ -492,14 +490,7 @@ TTaskForce* TShip::DemandExclusiveTaskForce() {
     }
   }
 
-  // Real construction (TTaskForce::TTaskForce(TZone*, short), 0x552800). The original
-  // compiles this one call site's construction as inlined field stores rather than a
-  // call to that ctor (likely a disabled-ICF duplicate, matching TArmyMission-style
-  // per-callsite reproduction elsewhere in this codebase); that inlining is not
-  // reproducible from C++ source without a manual vtable write, which construction
-  // Hard Rule 2 forbids outside quarantined runtime files. `new T()` is the correct
-  // model here even though it costs some match percentage at this address.
-  // The entry's zone context comes from this ship's port zone.
+  // The new entry's zone context comes from this ship's port zone.
   TTaskForce* entry = new TTaskForce(location, nation);
   if (entry == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -691,22 +682,14 @@ void TShip::Sink() {
     // (0x553fe0) runs on itself, minus the return flag.
     TMapOrderChildLinkNode* head = ownerEntry->shipList;
     if (head != 0) {
-      TShip* headChild = static_cast<TShip*>(head->payload);
+      TShip* headChild = head->payload;
       unsigned char headDefeated = (headChild->strength <= 0);
       if (headDefeated != 0) {
         headChild->taskForce = 0;
-        static_cast<TShip*>(head->payload)->Free();
+        head->payload->Free();
 
-        TMapOrderChildLinkNode* next = head->next;
-        if (next != 0) {
-          next->prev = head->prev;
-        }
-        if (head->prev != 0) {
-          head->prev->next = head->next;
-        }
-        delete head;
-
-        head = next->PruneDefeatedMapOrderChildrenAndReturnHead();
+        head = head->DeleteMapOrderChildLinkAndReturnNext();
+        head = head->PruneDefeatedMapOrderChildrenAndReturnHead();
       } else {
         head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
       }
@@ -716,7 +699,7 @@ void TShip::Sink() {
     ownerEntry->flagship = 0;
     TMapOrderChildLinkNode* node;
     for (node = head; node != 0; node = node->next) {
-      ownerEntry->flagship = static_cast<TShip*>(node->payload)->Finest(ownerEntry->flagship, 0);
+      ownerEntry->flagship = node->payload->Finest(ownerEntry->flagship, 0);
     }
 
     if (ownerEntry->shipList == 0) {
@@ -800,15 +783,7 @@ void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
       list_head = owner_ctx->shipList;
       if (list_head != 0) {
         if (this == list_head->payload) {
-          TMapOrderChildLinkNode* next = list_head->next;
-          if (next != 0) {
-            next->prev = list_head->prev;
-          }
-          if (list_head->prev != 0) {
-            list_head->prev->next = list_head->next;
-          }
-          delete list_head;
-          list_head = next;
+          list_head = list_head->DeleteMapOrderChildLinkAndReturnNext();
         } else {
           list_head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
@@ -831,8 +806,7 @@ void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
       list_head = owner_ctx->shipList;
       owner_ctx->flagship = 0;
       for (; list_head != 0; list_head = list_head->next) {
-        owner_ctx->flagship =
-            static_cast<TShip*>(list_head->payload)->Finest(owner_ctx->flagship, 0);
+        owner_ctx->flagship = list_head->payload->Finest(owner_ctx->flagship, 0);
       }
     }
 
@@ -872,7 +846,7 @@ void TShip::Capture(short nation) {
       parent->flagship = 0;
       TMapOrderChildLinkNode* node;
       for (node = parent->shipList; node != 0; node = node->next) {
-        parent->flagship = static_cast<TShip*>(node->payload)->Finest(parent->flagship, 0);
+        parent->flagship = node->payload->Finest(parent->flagship, 0);
       }
     }
 

@@ -19,16 +19,7 @@ IMPLEMENT_DYNCREATE(TTrainingOrder, TProductionOrder)
 
 // FUNCTION: IMPERIALISM 0x004b6b20
 void TTrainingOrder::ITrainingOrder(TCity* city, short resourceType) {
-  ownerCity = city;
-  productionSummary = city->productionSummary1d8;
-  resourceTypeIndex = resourceType;
-  quantity = 0;
-  for (int resource = 0; resource < kResourceKindCount; ++resource) {
-    trackingSlots[resource] = 0;
-  }
-  accumulatedValue = 0;
-  limitingConstraint = kProductionOrderLimitResources;
-  reservedWorkforce = 0;
+  TProductionOrder::IProductionOrder(city, resourceType);
 }
 
 // FUNCTION: IMPERIALISM 0x004b6b90
