@@ -48,14 +48,8 @@
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// displayedParticipantIndex03/reportKind04/location08 read up front; nationIds[1] is read later,
-// interleaved into the per-side loop below alongside nationIds[0]), resolving
-// location08 either as a raw tile/record index (land-report kinds) or, via
-// FindMapActionContextByNodeId, a live TZone* -- mirrors the port-zone/context-array
-// two-way match idiom used throughout TZone.cpp. Then for each side (0/1), reads the
-// nation-id byte, the fixed name/overlay buffers (a version-gated legacy string read
-// pre-0x2c, plain fixed-size reads from 0x2c on), the child-record count, and
-// (re)allocates + reads that many MapOrderBattleSideChildRecord entries.
+// The saved two-byte location resolves to a province index for land reports and a
+// TZone* for sea reports. Each side then reads its fixed labels and owned child rows.
 // FUNCTION: IMPERIALISM 0x004a13c0
 void MapContextActionRecord::ReadFrom(TStream* stream) {
   stream->ReadBytes(&reportParticipantIndex02, 1);
@@ -66,9 +60,9 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
   if (reportKind04 == kMapContextReportLandBattle ||
       reportKind04 == kMapContextReportPreemptedLandBattle ||
       reportKind04 == kMapContextReportUncontestedTakeover) {
-    location08 = reinterpret_cast<void*>(static_cast<int>(nodeId));
+    site08.provinceIndex = nodeId;
   } else {
-    location08 = FindMapActionContextByNodeId(nodeId);
+    site08.zone = FindMapActionContextByNodeId(nodeId);
   }
 
   for (int side = 0; side < 2; ++side) {
@@ -112,9 +106,9 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
   if (reportKind04 == kMapContextReportLandBattle ||
       reportKind04 == kMapContextReportPreemptedLandBattle ||
       reportKind04 == kMapContextReportUncontestedTakeover) {
-    nodeId = static_cast<short>(reinterpret_cast<int>(location08));
+    nodeId = static_cast<short>(site08.provinceIndex);
   } else {
-    nodeId = static_cast<TZone*>(location08)->GetContextOrdinalOrInvalid();
+    nodeId = site08.zone->GetContextOrdinalOrInvalid();
   }
   stream->WriteBytes(&nodeId, 2);
 
@@ -573,7 +567,7 @@ static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, 
 static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
                                                           TArmyStack* enemyStack,
                                                           unsigned char sideWonFlag,
-                                                          int ownerNationCodeInt, int unused) {
+                                                          int provinceIndex, int unused) {
   (void)unused;
 
   MapContextActionRecord record;
@@ -583,7 +577,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.sideChildRecords250[0] = 0;
   record.nationIds[1] = enemyStack->categoryFlag8;
   record.nationIds[0] = ourStack->categoryFlag8;
-  record.location08 = reinterpret_cast<void*>(ownerNationCodeInt);
+  record.site08.provinceIndex = provinceIndex;
   record.reportKind04 = kMapContextReportLandBattle;
   record.displayedParticipantIndex03 = 0;
 
