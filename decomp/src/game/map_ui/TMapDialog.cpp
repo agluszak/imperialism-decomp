@@ -357,7 +357,7 @@ void TMapDialog::Free() {
   }
   overlayObject35C = 0;
   TView::Free();
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  g_pUiAnimator->FreeAllAnis();
 }
 
 // FUNCTION: IMPERIALISM 0x00519d30
@@ -740,7 +740,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
   clip.top = -0x40;
   clip.right = 0x240;
   clip.bottom = 0x200;
-  g_pUiAnimator->TranslateListRectsAndDropNonIntersectingEntries(dx, dy, clip);
+  g_pUiAnimator->UpdateAniLocs(dx, dy, clip);
 }
 
 // FUNCTION: IMPERIALISM 0x0051af60
@@ -1024,7 +1024,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
               g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
           int animationTag = PointerAddressLong32(unit);
           if (unit != 0 && unit->unitOrder > static_cast<UnitOrder>(4) &&
-              g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
+              g_pUiAnimator->FindAni(animationTag) == 0) {
             short animationY;
             short animationX;
             ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
@@ -1032,7 +1032,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
             RECT animationRect = {animationX, animationY, animationX + 0x40, animationY + 0x40};
             TCivAnimation2* animation =
                 new TCivAnimation2(this, &animationRect, unit->orderType, animationTag);
-            g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+            g_pUiAnimator->AddAnimation(animation);
           }
         }
 
@@ -1054,8 +1054,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         TCivUnit* firstCivilianOrder =
             g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
         if (firstCivilianOrder != 0) {
-          TAnimation* animation =
-              g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
+          TAnimation* animation = g_pUiAnimator->FindAni(PointerAddressLong32(firstCivilianOrder));
           if (animation != 0) {
             SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
             RECT animationClip = animation->screenRect;
@@ -2437,8 +2436,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
   TCivUnit* firstCivilianOrder =
       g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
   if (firstCivilianOrder != 0) {
-    TAnimation* animation =
-        g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
+    TAnimation* animation = g_pUiAnimator->FindAni(PointerAddressLong32(firstCivilianOrder));
     if (animation != 0) {
       SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
       RECT animationClip = animation->screenRect;
@@ -2466,7 +2464,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
   bool belongsToActiveNation = orderEntry->ownerNationSlot18 == g_pSimMgr->GetActiveNationId();
   if (orderEntry->unitOrder > static_cast<UnitOrder>(4) && belongsToActiveNation) {
     int animationTag = PointerAddressLong32(orderEntry);
-    if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
+    if (g_pUiAnimator->FindAni(animationTag) == 0) {
       short animationY;
       short animationX;
       ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
@@ -2474,7 +2472,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
       CRect animationRect(animationX, animationY, animationX + 0x40, animationY + 0x40);
       TCivAnimation2* animation =
           new TCivAnimation2(this, &animationRect, orderEntry->orderType, animationTag);
-      g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+      g_pUiAnimator->AddAnimation(animation);
     }
     return;
   }

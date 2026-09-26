@@ -25,19 +25,19 @@ void TIdleMeAnimation::IIdleMeAnimation(TView* ownerView) {
   rect.right = 0;
   rect.bottom = 0;
   IAnimation(ownerView, &rect, 0, 0, 0, tag);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(this);
+  g_pUiAnimator->AddAnimation(this);
 }
 
 // FUNCTION: IMPERIALISM 0x004aca30
 void TIdleMeAnimation::Die() {
   if (this != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(registryTag);
+    g_pUiAnimator->FreeAni(registryTag);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004aca60
 void TIdleMeAnimation::Tick() {
   if (ownerView->DoIdle(1) && this != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(registryTag);
+    g_pUiAnimator->FreeAni(registryTag);
   }
 }

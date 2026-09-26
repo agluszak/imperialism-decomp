@@ -17,5 +17,5 @@ int UiAnimationRegistry::Count() {
 }
 
 bool UiAnimationRegistry::Contains(int tag) {
-  return IsReady() && g_pUiAnimator->FindRegisteredAnimationByTag(tag) != 0;
+  return IsReady() && g_pUiAnimator->FindAni(tag) != 0;
 }

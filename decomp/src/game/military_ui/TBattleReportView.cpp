@@ -222,7 +222,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   int registryTag = g_nIdleMeAnimationNextRegistryTag;
   g_nIdleMeAnimationNextRegistryTag++;
   animation->IAnimation(this, &animationRect, 0, 0, 0, registryTag);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+  g_pUiAnimator->AddAnimation(animation);
 
   TInfoBarText* cursorPanel =
       static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs)); // 'surc'
@@ -256,7 +256,7 @@ void TBattleReportView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004ad560
 void TBattleReportView::Free() {
   if (transientRegistryObject24cc != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject24cc->registryTag);
+    g_pUiAnimator->FreeAni(transientRegistryObject24cc->registryTag);
   }
   TDiplomacyMapView::Free();
 }

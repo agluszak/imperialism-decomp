@@ -598,7 +598,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       // the outline falls back to palette index 0x13 (0x005ab609..0x005ab695). The second,
       // inset pass is always drawn in palette index 0.
       short selectionPalette[2] = {0x13, 0};
-      TAnimation* blink = g_pUiAnimator->FindRegisteredAnimationByTag(0x2711);
+      TAnimation* blink = g_pUiAnimator->FindAni(0x2711);
       RECT selectionRect = tileScreenRect;
       SetQuickDrawFillColorFromPaletteIndex(blink == 0 ? 0x13
                                                        : selectionPalette[blink->frameIndex]);
@@ -722,7 +722,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   // Per-tile animation redraw hook. Retail keys this lookup by the tactical tile and
   // skips it entirely for an empty non-wall tile.
   if (occupant != 0 || edgeKind != kFortWallEdgeNone) {
-    TAnimation* selectionAnim = g_pUiAnimator->FindRegisteredAnimationByTag(tileIndex);
+    TAnimation* selectionAnim = g_pUiAnimator->FindAni(tileIndex);
     if (selectionAnim != 0) {
       POINT offset = {0, 0};
       selectionAnim->DrawNextFrame(&offset);

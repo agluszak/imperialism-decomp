@@ -1047,7 +1047,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 // FUNCTION: IMPERIALISM 0x00599b90
 void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
   if (invalidationFlag94 != 0) {
-    g_pUiAnimator->FreeUiTransientRegistryPayloads();
+    g_pUiAnimator->FreeAllAnis();
     TView* zoomControl =
         (controlOverride != nullptr) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
     zoomControl->AssertValid();

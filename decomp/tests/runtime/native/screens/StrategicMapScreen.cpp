@@ -128,7 +128,7 @@ RuntimeActionResult StrategicMapScreen::SeedOwnedAnimation(int tag) {
   TAnimation* animation = new TAnimation();
   animation->IAnimation(mapView, &bounds, kSeededFrameCount, kSeededFrameResourceBase,
                         kSeededTicksPerFrame, tag);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+  g_pUiAnimator->AddAnimation(animation);
   if (!UiAnimationRegistry::Contains(tag)) {
     return ScreenFailure("give the map an animation to own",
                          CString("the animation did not reach the registry"));

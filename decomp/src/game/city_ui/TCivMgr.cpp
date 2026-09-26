@@ -539,7 +539,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   }
 
   ownerNationState->treasuryValue10 += refundAmount;
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(PointerAddressLong32(pCivilianOrderEntry));
+  g_pUiAnimator->FreeAni(PointerAddressLong32(pCivilianOrderEntry));
 
   pCivilianOrderEntry->SetOrders(kUnitOrderIdle, subtypeOrTargetProvince);
   if ((subtypeOrTargetProvince != 0) && (subtypeOrTargetProvince != -1)) {

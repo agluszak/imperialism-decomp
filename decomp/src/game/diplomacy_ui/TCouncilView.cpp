@@ -317,7 +317,7 @@ void TCouncilView::StartVoting() {
   if (tickerAnimation != nullptr) {
     tickerAnimation->InitializeCouncilTicker(this, 2);
     if (g_pUiAnimator != nullptr) {
-      g_pUiAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
+      g_pUiAnimator->AddAnimation(tickerAnimation);
     }
   }
 

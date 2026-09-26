@@ -23,9 +23,6 @@
 
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
-// The original inlines the TEventHandler base construction (keeping only the shared
-// field-defaults helper out-of-line) and does not touch overlayPhaseTickCount; the recompile emits
-// the real base-ctor call instead -- the usual accepted ctor-inlining divergence.
 // FUNCTION: IMPERIALISM 0x004a0aa0
 TAnimator::TAnimator()
     : TEventHandler(), renderSurfaceContext(0), registryList24(0), mapUberPicture2c(0) {}
@@ -78,7 +75,7 @@ char TAnimator::DoIdle(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0d10
-void TAnimator::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
+void TAnimator::AddAnimation(TAnimation* animationObject) {
   registryList24->AddTail(animationObject);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::ObserveDeferred(kObserveAnimationAdded);
@@ -86,7 +83,7 @@ void TAnimator::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0d30
-TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
+TAnimation* TAnimator::FindAni(int tag) {
   // The original null-checks the receiver: call sites invoke this on g_pUiAnimator
   // without guarding it.
   if (this != 0) {
@@ -127,7 +124,7 @@ void TAnimator::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0e90
-void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, RECT clipRect) {
+void TAnimator::UpdateAniLocs(int dx, int dy, RECT clipRect) {
   // The original null-checks the receiver: the call site invokes this on g_pUiAnimator
   // without guarding it.
   if (this != 0) {
@@ -153,7 +150,7 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
 }
 
 // FUNCTION: IMPERIALISM 0x004a0f80
-void TAnimator::FreeUiTransientRegistryPayloads() {
+void TAnimator::FreeAllAnis() {
   if (this != 0) {
     registryList24->FreePayloads();
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -162,11 +159,9 @@ void TAnimator::FreeUiTransientRegistryPayloads() {
   }
 }
 
-// The original inlines FindRegisteredAnimationByTag here (same loop, including the
-// receiver null-check); the recompile emits the real call instead.
 // FUNCTION: IMPERIALISM 0x004a0fa0
-void TAnimator::RemoveUiTransientRegistryObjectByTag(int tag) {
-  TAnimation* animation = FindRegisteredAnimationByTag(tag);
+void TAnimator::FreeAni(int tag) {
+  TAnimation* animation = FindAni(tag);
   if (animation != 0) {
     POSITION pos = registryList24->listState.Find(animation, 0);
     if (pos != 0) {
